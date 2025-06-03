@@ -1,168 +1,402 @@
 openapi: 3.0.0
 info:
-  title: Document Grounding Pipeline API
+  title: Grounding
   version: 0.1.0
-  description: "SAP AI Core - API Specification AI Data Management api's"
+  description: Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
   contact:
     name: SAP AI Core
+x-sap-shortText: Enhance content generation with additional capabilities for business AI scenarios.
+externalDocs:
+  description: Documentation for SAP AI Core - Grounding
+  url: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding
 tags:
-  - name: pipelines
-    description: Tag for pipelines component
-  - name: vector
-    description: Tag for vector component
-  - name: retrieval
-    description: Tag for retrieval component
+- name: Pipelines
+  description: Tag for pipelines component
+- name: Vector
+  description: Tag for vector component
+- name: Retrieval
+  description: Tag for retrieval component
 servers:
-  - url: "/v2/lm/document-grounding"
+- url: https://api.ai.{region}.ml.hana.ondemand.com/v2/lm/{service}
+  description: Production endpoint for SAP AI Core
+  variables:
+    region:
+      enum:
+      - prod.eu-central-1.aws
+      - prodeuonly.eu-central-1.aws
+      - prod.us-east-1.aws
+      - prod.ap-northeast-1.aws
+      - prod.ap-southeast-2.aws
+      - prod-eu20.westeurope.azure
+      - prod-eu30.europe-west3.gcp
+      - prod-us21.eastus.azure
+      - prod-us30.us-central1.gcp
+      - prod-ap20.australiaeast.az
+      - prod-ap11.ap-southeast-1.aws
+      default: prod.eu-central-1.aws
+    service:
+      default: document-grounding
 paths:
-  "/pipelines":
+  /pipelines:
     post:
-      operationId: pipeline.v1.pipeline_endpoints.create_pipeline
-      x-sap-cloud-sdk-operation-name: createPipeline
-      description: 'Create a pipeline'
       tags:
-        - pipelines
+      - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.create_pipeline
+      summary: Pipeline Creation
+      description: Create a pipeline
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PipelinePostRequst'
+              $ref: '#/components/schemas/createPipeline'
       responses:
         '201':
           description: Returns pipelineId on successful creation.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PipelineId'
+                $ref: '#/components/schemas/pipelineId'
         '400':
           $ref: '#/components/responses/BadRequest'
     get:
-      parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - $ref: "#/components/parameters/top"
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/count'
-      operationId: pipeline.v1.pipeline_endpoints.get_all_pipelines
-      x-sap-cloud-sdk-operation-name: getAllPipelines
-      description: 'Get all pipelines'
       tags:
-        - pipelines
+      - Pipelines
+      parameters:
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - $ref: '#/components/parameters/top'
+      - $ref: '#/components/parameters/skip'
+      - $ref: '#/components/parameters/count'
+      operationId: pipeline.v1.pipeline_endpoints.get_all_pipeline
+      summary: Get Pipelines
+      description: Get all pipelines
       responses:
         '200':
           description: Returns all pipelines for the tenant.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pipelines'
+                $ref: '#/components/schemas/getPipelines'
         '400':
           $ref: '#/components/responses/BadRequest'
-  "/pipelines/{pipelineId}":
+  /pipelines/{pipelineId}:
     get:
-      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_by_id
-      x-sap-cloud-sdk-operation-name: getPipelineById
-      description: 'Get details of a pipeline by pipeline id'
       tags:
-        - pipelines
+      - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_by_id
+      summary: Get details of a Pipeline
+      description: Get details of a pipeline by pipeline id
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: pipelineId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The ID of the pipeline to get.
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: pipelineId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the pipeline to get.
       responses:
         '200':
           description: Returns the pipeline for an pipelineId
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pipeline'
+                $ref: '#/components/schemas/getPipeline'
         '400':
           $ref: '#/components/responses/BadRequest'
     delete:
-      operationId: pipeline.v1.pipeline_endpoints.delete_pipeline_by_id
-      x-sap-cloud-sdk-operation-name: deletePipelineById
-      description: 'Delete a pipeline by pipeline id'
       tags:
-        - pipelines
+      - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.delete_pipeline_by_id
+      summary: Delete pipeline
+      description: Delete a pipeline by pipeline id
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: pipelineId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The ID of the pipeline to delete.
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: pipelineId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the pipeline to delete.
       responses:
         '204':
           description: No Content
         '400':
           $ref: '#/components/responses/BadRequest'
-  "/pipelines/{pipelineId}/status":
+  /pipelines/{pipelineId}/status:
     get:
-      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_status
-      x-sap-cloud-sdk-operation-name: getPipelineStatus
-      description: 'Get pipeline status by pipeline id'
       tags:
-        - pipelines
+      - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_status
+      summary: Get status of Pipeline
+      description: Get pipeline status by pipeline id
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: pipelineId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The ID of the pipeline to get status.
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: pipelineId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the pipeline to get status.
       responses:
         '200':
           description: Returns the pipeline status for an pipelineId.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PipelineStatus'
+                $ref: '#/components/schemas/getPipelineStatus'
         '400':
           $ref: '#/components/responses/BadRequest'
-  "/vector/collections":
+  /pipelines/{pipelineId}/executions:
+    get:
+      tags:
+      - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_executions
+      summary: Get Pipeline Executions
+      description: Retrieve all executions for a specific pipeline. Optionally, filter to get only the last execution.
+      parameters:
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: pipelineId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the pipeline
+      - name: lastExecution
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Filter to get the last execution
+      - $ref: '#/components/parameters/top'
+      - $ref: '#/components/parameters/skip'
+      - $ref: '#/components/parameters/count'
+      responses:
+        '200':
+          description: Returns all executions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getPipelineExecutions'
+  /pipelines/{pipelineId}/executions/{executionId}:
+    get:
+      tags:
+      - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_execution_by_id
+      summary: Get Pipeline Execution by ID
+      description: Retrieve details of a specific pipeline execution by its execution ID.
+      parameters:
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: pipelineId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the pipeline
+      - name: executionId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the execution
+      responses:
+        '200':
+          description: Returns a response to execution id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getPipelineExecutionById'
+  /pipelines/{pipelineId}/executions/{executionId}/documents:
+    get:
+      tags:
+      - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_execution_documents
+      summary: Get Documents for a Pipeline Execution
+      description: Retrieve all documents associated with a specific pipeline execution. Optionally, filter the results using query parameters.
+      parameters:
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: pipelineId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the pipeline
+      - name: executionId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the execution
+      - $ref: '#/components/parameters/top'
+      - $ref: '#/components/parameters/skip'
+      - $ref: '#/components/parameters/count'
+      responses:
+        '200':
+          description: Returns a response to execution id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentsStatusResponse'
+  /pipelines/{pipelineId}/executions/{executionId}/documents/{documentId}:
+    get:
+      tags:
+      - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_execution_document_by_id
+      summary: Get Document by ID for a Pipeline Execution
+      description: Retrieve details of a specific document associated with a pipeline execution.
+      parameters:
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: pipelineId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the pipeline
+      - name: executionId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the execution
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the document to get.
+      responses:
+        '200':
+          description: Returns a response to execution id and document id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineDocumentResponse'
+  /pipelines/{pipelineId}/documents:
+    get:
+      tags:
+      - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_documents
+      summary: Get Documents for a Pipeline
+      description: Retrieve all documents associated with a specific pipeline. Optionally, filter the results using query parameters.
+      parameters:
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: pipelineId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the pipeline to get.
+      - $ref: '#/components/parameters/top'
+      - $ref: '#/components/parameters/skip'
+      - $ref: '#/components/parameters/count'
+      responses:
+        '200':
+          description: Returns all documents for a pipeline.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentsStatusResponse'
+  /pipelines/{pipelineId}/documents/{documentId}:
+    get:
+      tags:
+      - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.get_pipeline_document_by_id
+      summary: Get Document by ID for a Pipeline
+      description: Retrieve details of a specific document associated with a pipeline.
+      parameters:
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: pipelineId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the pipeline to get.
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: The ID of the document to get.
+      responses:
+        '200':
+          description: Returns a response to document id.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PipelineDocumentResponse'
+  /vector/collections:
     get:
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - $ref: "#/components/parameters/top"
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/count'
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - $ref: '#/components/parameters/top'
+      - $ref: '#/components/parameters/skip'
+      - $ref: '#/components/parameters/count'
       tags:
-        - vector
+      - Vector
       summary: Get collections
       description: Gets a list of collections.
       operationId: vector.v1.vector_endpoints.get_all_collections
-      x-sap-cloud-sdk-operation-name: getAllCollections
       responses:
         '200':
           description: Successful Response
@@ -174,17 +408,17 @@ paths:
           $ref: '#/components/responses/BadRequest'
     post:
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
       tags:
-        - vector
+      - Vector
       summary: Create collection
       description: Creates a collection. This operation is asynchronous. Poll the collection resource and check the status field to understand creation status.
       operationId: vector.v1.vector_endpoints.create_collection
-      x-sap-cloud-sdk-operation-name: createCollection
       requestBody:
         content:
           application/json:
@@ -198,32 +432,34 @@ paths:
             Location:
               description: The newly created collections monitor url
               schema:
-                $ref: '#/components/schemas/CollectionPendingResponse'
+                type: string
+                format: uri
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  "/vector/collections/{collectionId}":
+  /vector/collections/{collectionId}:
     get:
       tags:
-        - vector
+      - Vector
       summary: Get collection by ID
       description: Gets a specific collection by ID.
       operationId: vector.v1.vector_endpoints.get_collection_by_id
-      x-sap-cloud-sdk-operation-name: getCollectionById
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: collectionId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-            title: Collectionid
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Collectionid
+        description: Collection ID
       responses:
         '200':
           description: Successful Response
@@ -239,23 +475,24 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
     delete:
       tags:
-        - vector
+      - Vector
       summary: Delete collection by ID
       description: Deletes a specific collection by ID. This operation is asynchronous. Poll the collection for a 404 status code.
-      operationId: vector.v1.vector_endpoints.delete_collection_by_id
-      x-sap-cloud-sdk-operation-name: deleteCollectionById
+      operationId: vector.v1.vector_endpoints.delete_collection
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: collectionId
-          in: path
-          required: true
-          schema:
-            type: string
-            title: Collectionid
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Collectionid
+        description: Collection ID
       responses:
         '202':
           description: Successful Response
@@ -263,41 +500,44 @@ paths:
             Location:
               description: The deleted collections monitor url
               schema:
-                $ref: '#/components/schemas/CollectionPendingResponse'
+                type: string
+                format: uri
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  "/vector/collections/{collectionId}/documents/{documentId}":
+  /vector/collections/{collectionId}/documents/{documentId}:
     get:
       tags:
-        - vector
+      - Vector
       summary: Get document by ID
       description: Gets a specific document in a collection by ID.
       operationId: vector.v1.vector_endpoints.get_document_by_id
-      x-sap-cloud-sdk-operation-name: getDocumentById
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: collectionId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-            title: Collectionid
-        - name: documentId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-            title: Documentid
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Collectionid
+        description: Collection ID
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Documentid
+        description: Document ID
       responses:
         '200':
           description: Successful Response
@@ -313,31 +553,33 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
     delete:
       tags:
-        - vector
+      - Vector
       summary: Delete a document
       description: Deletes a specific document of a collection.
-      operationId: vector.v1.vector_endpoints.delete_document_by_id
-      x-sap-cloud-sdk-operation-name: deleteDocumentById
+      operationId: vector.v1.vector_endpoints.delete_document
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: collectionId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-            title: Collectionid
-        - name: documentId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-            title: Documentid
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Collectionid
+        description: Collection ID
+      - name: documentId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Documentid
+        description: Document ID
       responses:
         '204':
           description: Successful Response
@@ -347,30 +589,31 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  "/vector/collections/{collectionId}/documents":
+  /vector/collections/{collectionId}/documents:
     get:
       tags:
-        - vector
+      - Vector
       summary: Get documents
       description: Gets a list of documents of a collection.
       operationId: vector.v1.vector_endpoints.get_all_documents
-      x-sap-cloud-sdk-operation-name: getAllDocuments
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: collectionId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-            title: Collectionid
-        - $ref: "#/components/parameters/top"
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/count'
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Collectionid
+        description: Collection ID
+      - $ref: '#/components/parameters/top'
+      - $ref: '#/components/parameters/skip'
+      - $ref: '#/components/parameters/count'
       responses:
         '200':
           description: Successful Response
@@ -386,24 +629,25 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
     post:
       tags:
-        - vector
+      - Vector
       summary: Create documents in collection
       description: Create and stores one or multiple documents into a collection. If omitted, 'id' will be auto-generated.
       operationId: vector.v1.vector_endpoints.create_documents
-      x-sap-cloud-sdk-operation-name: createDocuments
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: collectionId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-            title: Collectionid
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Collectionid
+        description: Collection ID
       requestBody:
         required: true
         content:
@@ -425,24 +669,25 @@ paths:
           $ref: '#/components/responses/UnprocessableEntity'
     patch:
       tags:
-        - vector
+      - Vector
       summary: Upsert documents in collection
       description: Upserts the data of multiple documents into a collection.
       operationId: vector.v1.vector_endpoints.update_documents
-      x-sap-cloud-sdk-operation-name: updateDocuments
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: collectionId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-            title: Collectionid
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Collectionid
+        description: Collection ID
       requestBody:
         required: true
         content:
@@ -462,20 +707,20 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  "/vector/search":
+  /vector/search:
     post:
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
       tags:
-        - vector
+      - Vector
       summary: Search chunk by vector
-      description: "Search chunk by vector"
-      operationId: vector.v1.vector_endpoints.search
-      x-sap-cloud-sdk-operation-name: search
+      description: Search chunks
+      operationId: vector.v1.vector_endpoints.search_chunk
       requestBody:
         content:
           application/json:
@@ -495,27 +740,28 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  "/vector/collections/{id}/creationStatus":
+  /vector/collections/{id}/creationStatus:
     get:
       tags:
-        - vector
+      - Vector
       summary: Get collection status by ID
       description: Gets a specific collection status from monitor by ID.
       operationId: vector.v1.vector_endpoints.get_collection_creation_status
-      x-sap-cloud-sdk-operation-name: getCollectionCreationStatus
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-            title: ID
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: ID
+        description: Collection ID
       responses:
         '200':
           description: Successful Response
@@ -523,35 +769,37 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/CollectionCreatedResponse'
-                  - $ref: '#/components/schemas/CollectionPendingResponse'
+                - $ref: '#/components/schemas/CollectionCreatedResponse'
+                - $ref: '#/components/schemas/CollectionPendingResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  "/vector/collections/{id}/deletionStatus":
+  /vector/collections/{id}/deletionStatus:
     get:
       tags:
-        - vector
+      - Vector
       summary: Get collection status by ID
       description: Gets a specific collection status from monitor by ID.
       operationId: vector.v1.vector_endpoints.get_collection_deletion_status
       x-sap-cloud-sdk-operation-name: getCollectionDeletionStatus
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-            title: Id
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Id
+        description: Collection ID
       responses:
         '200':
           description: Successful Response
@@ -559,85 +807,87 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: '#/components/schemas/CollectionDeletedResponse'
-                  - $ref: '#/components/schemas/CollectionPendingResponse'
+                - $ref: '#/components/schemas/CollectionDeletedResponse'
+                - $ref: '#/components/schemas/CollectionPendingResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
-  "/retrieval/dataRepositories":
+  /retrieval/dataRepositories:
     get:
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - $ref: "#/components/parameters/top"
-        - $ref: '#/components/parameters/skip'
-        - $ref: '#/components/parameters/count'
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - $ref: '#/components/parameters/top'
+      - $ref: '#/components/parameters/skip'
+      - $ref: '#/components/parameters/count'
       tags:
-        - retrieval
+      - Retrieval
       summary: List all DataRepository objects.
-      description: List all DataRepository objects.
+      description: List all Data Repositories
       operationId: retrieval.v1.retrieval_endpoints.get_data_repositories
-      x-sap-cloud-sdk-operation-name: getDataRepositories
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DataRepositories"
+                $ref: '#/components/schemas/DataRepositories'
         '400':
           $ref: '#/components/responses/BadRequest'
-  "/retrieval/dataRepositories/{repositoryId}":
+  /retrieval/dataRepositories/{repositoryId}:
     get:
       tags:
-        - retrieval
+      - Retrieval
       summary: List single DataRepository object.
-      description: List single DataRepository object.
-      operationId: retrieval.v1.retrieval_endpoints.get_data_repository_by_id
-      x-sap-cloud-sdk-operation-name: getDataRepositoryById
+      description: List data repository by id
+      operationId: retrieval.v1.retrieval_endpoints.get_data_repository
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
-        - name: repositoryId
-          in: path
-          required: true
-          schema:
-            type: string
-            format: uuid
-            title: Repositoryid
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
+      - name: repositoryId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Repositoryid
+        description: Repository ID
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DataRepository"
+                $ref: '#/components/schemas/DataRepository'
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
         '404':
           $ref: '#/components/responses/NotFound'
-  "/retrieval/search":
+  /retrieval/search:
     post:
       parameters:
-        - in: header
-          name: AI-Resource-Group
-          required: true
-          schema:
-            type: string
+      - in: header
+        name: AI-Resource-Group
+        required: true
+        schema:
+          type: string
+        description: Resource Group ID
       tags:
-        - retrieval
-      summary: Retrieve relevant content given a query string.
+      - Retrieval
+      summary: Retrieve relevant content
       description: Retrieve relevant content given a query string.
       operationId: retrieval.v1.retrieval_endpoints.search
       x-sap-cloud-sdk-operation-name: search
@@ -645,7 +895,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RetrievalSearchInput"
+              $ref: '#/components/schemas/SearchInput'
         required: true
       responses:
         '200':
@@ -653,107 +903,334 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RetievalSearchResults"
+                $ref: '#/components/schemas/SearchResults'
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
 components:
+  securitySchemes:
+    Oauth2:
+      type: oauth2
+      description: OAuth client credentials (client ID and secret) are required. These can be requested from SAP BTP cloud cockpit.
+      flows:
+        clientCredentials:
+          tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
+          scopes: {}
   schemas:
-    PipelinePostRequst:
+    createPipeline:
+      oneOf:
+      - $ref: '#/components/schemas/MSSharePointPipelineCreateRequest'
+      - $ref: '#/components/schemas/S3PipelineCreateRequest'
+      - $ref: '#/components/schemas/SFTPPipelineCreateRequest'
+      discriminator:
+        propertyName: type
+        mapping:
+          MSSharePoint: '#/components/schemas/MSSharePointPipelineCreateRequest'
+          S3: '#/components/schemas/S3PipelineCreateRequest'
+          SFTP: '#/components/schemas/SFTPPipelineCreateRequest'
+    MSSharePointPipelineCreateRequest:
       type: object
       required:
       - type
       - configuration
-      additionalProperties: true
       properties:
         type:
           type: string
-          example: MSSharePoint
+          enum:
+          - MSSharePoint
         configuration:
-          type: object
-          additionalProperties: true
-          required:
-          - destination
-          properties:
-            destination:
-              type: string
-              example: destination-name
-            sharePoint:
-              type: object
-              additionalProperties: true
-              properties:
-                site:
-                  type: object
-                  additionalProperties: true
-                  properties:
-                    name:
-                      type: string
-                      example: sharepoint-site-name
-                    includePaths:
-                      type: array
-                      items:
-                        type: string
-                      example: ["/testFolder1","testFolder2"]
-    Pipelines:
+          $ref: '#/components/schemas/MSSharePointConfiguration'
+        metadata:
+          $ref: '#/components/schemas/MetaData'
+      additionalProperties: true
+    S3PipelineCreateRequest:
+      type: object
+      required:
+      - type
+      - configuration
       properties:
-        resources:
+        type:
+          type: string
+          enum:
+          - S3
+        configuration:
+          $ref: '#/components/schemas/CommonConfiguration'
+        metadata:
+          $ref: '#/components/schemas/MetaData'
+      additionalProperties: true
+    SFTPPipelineCreateRequest:
+      type: object
+      required:
+      - type
+      - configuration
+      properties:
+        type:
+          type: string
+          enum:
+          - SFTP
+        configuration:
+          $ref: '#/components/schemas/CommonConfiguration'
+        metadata:
+          $ref: '#/components/schemas/MetaData'
+      additionalProperties: true
+    MSSharePointConfiguration:
+      type: object
+      required:
+      - destination
+      - sharePoint
+      properties:
+        destination:
+          type: string
+          example: generic-secret-name
+        sharePoint:
+          $ref: '#/components/schemas/SharePointConfig'
+      additionalProperties: true
+    SharePointConfig:
+      type: object
+      required:
+      - site
+      properties:
+        site:
+          $ref: '#/components/schemas/SharePointSite'
+      additionalProperties: true
+    SharePointSite:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          example: sharepoint-site-name
+        includePaths:
           type: array
           items:
-            $ref: "#/components/schemas/Pipeline"
-          title: Get Pipelines
-        count:
-          type: integer
+            type: string
+          example:
+          - /testFolder1
+          - /testFolder2
+      additionalProperties: true
+    CommonConfiguration:
+      type: object
+      required:
+      - destination
+      properties:
+        destination:
+          type: string
+          example: generic-secret-name
+      additionalProperties: true
+    MetaData:
+      type: object
+      required:
+      - destination
+      properties:
+        destination:
+          type: string
+          example: destination-name
+      additionalProperties: true
+    getPipelines:
       type: object
       required:
       - resources
-      title: Pipelines
-    Pipeline:
+      properties:
+        count:
+          type: integer
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/getPipeline'
+    getPipeline:
+      oneOf:
+      - $ref: '#/components/schemas/MSSharePointPipelineGetResponse'
+      - $ref: '#/components/schemas/S3PipelineGetResponse'
+      - $ref: '#/components/schemas/SFTPPipelineGetResponse'
+      discriminator:
+        propertyName: type
+        mapping:
+          MSSharePoint: '#/components/schemas/MSSharePointPipelineGetResponse'
+          S3: '#/components/schemas/S3PipelineGetResponse'
+          SFTP: '#/components/schemas/SFTPPipelineGetResponse'
+    MSSharePointPipelineGetResponse:
+      allOf:
+      - $ref: '#/components/schemas/BasePipelineResponse'
+      - type: object
+        required:
+        - configuration
+        properties:
+          type:
+            type: string
+            enum:
+            - MSSharePoint
+          configuration:
+            $ref: '#/components/schemas/MSSharePointConfigurationGetResponse'
+    S3PipelineGetResponse:
+      allOf:
+      - $ref: '#/components/schemas/BasePipelineResponse'
+      - type: object
+        required:
+        - configuration
+        properties:
+          type:
+            type: string
+            enum:
+            - S3
+          configuration:
+            $ref: '#/components/schemas/CommonConfiguration'
+    SFTPPipelineGetResponse:
+      allOf:
+      - $ref: '#/components/schemas/BasePipelineResponse'
+      - type: object
+        required:
+        - configuration
+        properties:
+          type:
+            type: string
+            enum:
+            - SFTP
+          configuration:
+            $ref: '#/components/schemas/CommonConfiguration'
+    BasePipelineResponse:
       type: object
+      required:
+      - id
+      - type
       properties:
         id:
           type: string
-          example: uuid
         type:
           type: string
-          example: MSSharePoint
-        configuration:
-          type: object
-          properties:
-            destination:
-              type: string
-              example: destination-name
-            sharePoint:
-              type: object
-              properties:
-                site:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      example: sharepoint-site-id
-                    name:
-                      type: string
-                      example: sharepoint-site-name
-                    includePaths:
-                      type: array
-                      items:
-                        type: string
-                      example: ["/testFolder1","testFolder2"]
-    PipelineStatus:
+        metadata:
+          $ref: '#/components/schemas/MetaData'
+    MSSharePointConfigurationGetResponse:
+      type: object
+      required:
+      - destination
+      properties:
+        destination:
+          type: string
+        sharePoint:
+          $ref: '#/components/schemas/SharePointConfigGetResponse'
+    SharePointConfigGetResponse:
+      type: object
+      required:
+      - site
+      properties:
+        site:
+          $ref: '#/components/schemas/SharePointSiteGetResponse'
+    SharePointSiteGetResponse:
+      type: object
+      required:
+      - name
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        includePaths:
+          type: array
+          items:
+            type: string
+    getPipelineStatus:
       type: object
       properties:
         lastStarted:
           type: string
           format: date-time
           example: '2024-02-15T12:45:00.000Z'
-    PipelineId:
+        status:
+          type: string
+          example: NEW
+    pipelineId:
       type: object
       properties:
         pipelineId:
           type: string
           example: uuid
-
+    PipelineExecutionStatus:
+      type: string
+      enum:
+      - UNKNOWN
+      - INPROGRESS
+      - FINISHED
+      - FINISHEDWITHERRORS
+      - TIMEOUT
+      example: INPROGRESS
+    PipelineExecutionData:
+      type: object
+      properties:
+        id:
+          type: string
+          example: uuid
+        status:
+          $ref: '#/components/schemas/PipelineExecutionStatus'
+    getPipelineExecutions:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 2
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/PipelineExecutionData'
+    getPipelineExecutionById:
+      type: object
+      properties:
+        id:
+          type: string
+          example: uuid
+        createdAt:
+          type: string
+          example: '2024-02-15T12:45:00Z'
+        modifiedAt:
+          type: string
+          example: '2024-02-15T12:45:00Z'
+        status:
+          $ref: '#/components/schemas/PipelineExecutionStatus'
+    DocumentStatus:
+      type: string
+      enum:
+      - TO_BE_PROCESSED
+      - INDEXED
+      - REINDEXED
+      - DEINDEXED
+      - FAILED
+      example: INDEXED
+    DocumentsStatusResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 1
+        resources:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                example: uuid
+              status:
+                $ref: '#/components/schemas/DocumentStatus'
+    PipelineDocumentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: uuid
+        viewLocation:
+          type: string
+          example: location
+          nullable: true
+        downloadLocation:
+          type: string
+          example: location
+          nullable: true
+        lastUpdatedTimestamp:
+          type: string
+          example: '2024-02-15T12:45:00Z'
+        status:
+          $ref: '#/components/schemas/DocumentStatus'
     Chunk:
       properties:
         id:
@@ -765,7 +1242,7 @@ components:
         metadata:
           type: array
           items:
-            $ref: "#/components/schemas/KeyValueListPair"
+            $ref: '#/components/schemas/KeyValueListPair'
           title: Metadata
           default: []
       type: object
@@ -774,7 +1251,6 @@ components:
       - content
       title: Chunk
     DocumentKeyValueListPair:
-      additionalProperties: true
       properties:
         key:
           type: string
@@ -788,22 +1264,30 @@ components:
           title: Value
         matchMode:
           type: string
+          nullable: true
           title: MatchMode
-          additionalProperties: true
           description: Default match mode for search filters
           default: ANY
           anyOf:
-            - enum:
-              - ANY
-              - ALL
-            - {}
+          - enum:
+            - ANY
+            - ALL
+          - {}
       type: object
       required:
       - key
       - value
       title: DocumentKeyValueListPair
+    HTTPValidationError:
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+      type: object
+      title: HTTPValidationError
     KeyValueListPair:
-      additionalProperties: true
       properties:
         key:
           type: string
@@ -839,8 +1323,8 @@ components:
           title: Chunks
       type: object
       required:
-        - id
-        - chunks
+      - id
+      - chunks
       title: Document
     DocumentsChunk:
       properties:
@@ -864,10 +1348,10 @@ components:
           title: Documents
       type: object
       required:
-        - id
-        - title
-        - documents
-      title: DocumentsChunk
+      - id
+      - title
+      - documents
+      title: Collection
     PerFilterSearchResult:
       properties:
         filterId:
@@ -880,13 +1364,13 @@ components:
           title: Results
       type: object
       required:
-        - filterId
-        - results
+      - filterId
+      - results
       title: PerFilterSearchResult
     SearchConfiguration:
-      additionalProperties: true
       properties:
         maxChunkCount:
+          nullable: true
           type: integer
           minimum: 0
           maximum: 0
@@ -894,16 +1378,16 @@ components:
           title: Maxchunkcount
           description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
         maxDocumentCount:
+          nullable: true
           type: integer
           minimum: 0
           maximum: 0
           exclusiveMinimum: true
           title: Maxdocumentcount
-          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+          description: '[Only supports ''vector'' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with ''maxChunkCount''. If maxDocumentCount is given, then only one chunk per document is returned.'
       type: object
       title: SearchConfiguration
     SearchDocumentKeyValueListPair:
-      additionalProperties: true
       properties:
         key:
           type: string
@@ -918,7 +1402,7 @@ components:
         selectMode:
           type: array
           items:
-            $ref: "#/components/schemas/SearchSelectOptionEnum"
+            $ref: '#/components/schemas/SearchSelectOptionEnum'
           title: Selectmode
           description: Select mode for search filters
       type: object
@@ -932,7 +1416,7 @@ components:
           type: array
           items:
             anyOf:
-            - $ref: "#/components/schemas/PerFilterSearchResult"
+            - $ref: '#/components/schemas/PerFilterSearchResult'
           title: Results
           description: List of returned results.
       type: object
@@ -941,23 +1425,23 @@ components:
       title: SearchResults
     CollectionsListResponse:
       properties:
+        count:
+          type: integer
         resources:
           items:
             $ref: '#/components/schemas/Collection'
           type: array
           title: Collections
-        count:
-          type: integer
       type: object
       required:
-        - resources
+      - resources
       title: CollectionsListResponse
       description: A response containing collections retrieved from the server.
     CollectionRequest:
-      additionalProperties: true
       properties:
         title:
           type: string
+          nullable: true
           title: Title
         embeddingConfig:
           $ref: '#/components/schemas/EmbeddingConfig'
@@ -966,13 +1450,11 @@ components:
             $ref: '#/components/schemas/KeyValueListPair'
           type: array
           title: Metadata
-          description: >-
-            Metadata attached to collection. Useful to restrict search to a
-            subset of collections.
+          description: Metadata attached to collection. Useful to restrict search to a subset of collections.
           default: []
       type: object
       required:
-        - embeddingConfig
+      - embeddingConfig
       title: CollectionRequest
       description: A request for creating a new, single collection.
     CollectionCreatedResponse:
@@ -985,22 +1467,21 @@ components:
           title: Status
       type: object
       required:
-        - collectionURL
-        - status
+      - collectionURL
+      - status
       title: CollectionCreatedResponse
     CollectionPendingResponse:
       properties:
         Location:
           type: string
           title: Location
-          format: uri
         status:
           type: string
           title: Status
       type: object
       required:
-        - Location
-        - status
+      - Location
+      - status
       title: CollectionPendingResponse
     CollectionDeletedResponse:
       properties:
@@ -1012,11 +1493,10 @@ components:
           title: Status
       type: object
       required:
-        - collectionURL
-        - status
+      - collectionURL
+      - status
       title: CollectionDeletedResponse
     BaseDocument:
-      additionalProperties: true
       properties:
         chunks:
           items:
@@ -1030,12 +1510,11 @@ components:
           title: Metadata
       type: object
       required:
-        - chunks
-        - metadata
+      - chunks
+      - metadata
       title: BaseDocument
       description: Base class for documents, document requests and responses.
     DocumentCreateRequest:
-      additionalProperties: true
       properties:
         documents:
           items:
@@ -1044,13 +1523,10 @@ components:
           title: Documents
       type: object
       required:
-        - documents
+      - documents
       title: DocumentCreateRequest
-      description: >-
-        A create request containing one or more new documents to create and
-        store in a collection.
+      description: A create request containing one or more new documents to create and store in a collection.
     Document-Input:
-      additionalProperties: true
       properties:
         chunks:
           items:
@@ -1069,13 +1545,12 @@ components:
           description: Unique identifier of a document.
       type: object
       required:
-        - chunks
-        - metadata
-        - id
+      - chunks
+      - metadata
+      - id
       title: Document
       description: A single document stored in a collection by ID.
     DocumentUpdateRequest:
-      additionalProperties: true
       properties:
         documents:
           items:
@@ -1084,11 +1559,9 @@ components:
           title: Documents
       type: object
       required:
-        - documents
+      - documents
       title: DocumentUpdateRequest
-      description: >-
-        An update request containing one or more documents to update existing
-        documents in a collection by ID.
+      description: An update request containing one or more documents to update existing documents in a collection by ID.
     DocumentWithoutChunks:
       properties:
         metadata:
@@ -1103,12 +1576,10 @@ components:
           description: Unique identifier of a document.
       type: object
       required:
-        - metadata
-        - id
+      - metadata
+      - id
       title: DocumentWithoutChunks
-      description: >-
-        A single document stored in a collection by ID without exposing its
-        chunks.
+      description: A single document stored in a collection by ID without exposing its chunks.
     DocumentsListResponse:
       properties:
         documents:
@@ -1118,25 +1589,24 @@ components:
           title: Documents
       type: object
       required:
-        - documents
-      title: DocumentsListResponse
+      - documents
+      title: Documents
       description: A response containing documents created or updated, retrieved from the server.
     Documents:
       properties:
+        count:
+          type: integer
         resources:
           items:
             $ref: '#/components/schemas/DocumentWithoutChunks'
           type: array
           title: Documents
-        count:
-          type: integer
       type: object
       required:
-        - resources
+      - resources
       title: Documents
       description: A response containing documents retrieved from the server.
     TextOnlyBaseChunk:
-      additionalProperties: true
       properties:
         content:
           type: string
@@ -1148,8 +1618,8 @@ components:
           title: Metadata
       type: object
       required:
-        - content
-        - metadata
+      - content
+      - metadata
       title: TextOnlyBaseChunk
     DocumentResponse:
       properties:
@@ -1170,23 +1640,20 @@ components:
           description: Unique identifier of a document.
       type: object
       required:
-        - chunks
-        - metadata
-        - id
+      - chunks
+      - metadata
+      - id
       title: DocumentResponse
-      description: >-
-        A response containing information about a newly created, single
-        document.
+      description: A response containing information about a newly created, single document.
     SearchSelectOptionEnum:
       type: string
       anyOf:
-        - enum:
-          - ignoreIfKeyAbsent
-        - {}
+      - enum:
+        - ignoreIfKeyAbsent
+      - {}
       default: ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
     SearchFilter:
-      additionalProperties: true
       properties:
         id:
           type: string
@@ -1205,9 +1672,7 @@ components:
           type: array
           maxItems: 2000
           title: Collectionmetadata
-          description: >-
-            Restrict collections considered during search to those annotated
-            with the given metadata. Useful when combined with collections=['*']
+          description: Restrict collections considered during search to those annotated with the given metadata. Useful when combined with collections=['*']
           default: []
         documentMetadata:
           items:
@@ -1215,9 +1680,7 @@ components:
           type: array
           maxItems: 2000
           title: Documentmetadata
-          description: >-
-            Restrict documents considered during search to those annotated with
-            the given metadata.
+          description: Restrict documents considered during search to those annotated with the given metadata.
           default: []
         chunkMetadata:
           items:
@@ -1225,18 +1688,15 @@ components:
           type: array
           maxItems: 2000
           title: Chunkmetadata
-          description: >-
-            Restrict chunks considered during search to those with the given
-            metadata.
+          description: Restrict chunks considered during search to those with the given metadata.
           default: []
       type: object
       required:
-        - id
-        - collectionIds
-        - configuration
+      - id
+      - collectionIds
+      - configuration
       title: SearchFilter
     TextSearchRequest:
-      additionalProperties: true
       properties:
         query:
           type: string
@@ -1251,11 +1711,10 @@ components:
           title: Filters
       type: object
       required:
-        - query
-        - filters
+      - query
+      - filters
       title: TextSearchRequest
     EmbeddingConfig:
-      additionalProperties: true
       properties:
         modelName:
           type: string
@@ -1268,6 +1727,7 @@ components:
       properties:
         title:
           type: string
+          nullable: true
           title: Title
         embeddingConfig:
           $ref: '#/components/schemas/EmbeddingConfig'
@@ -1276,9 +1736,7 @@ components:
             $ref: '#/components/schemas/KeyValueListPair'
           type: array
           title: Metadata
-          description: >-
-            Metadata attached to collection. Useful to restrict search to a
-            subset of collections.
+          description: Metadata attached to collection. Useful to restrict search to a subset of collections.
           default: []
         id:
           type: string
@@ -1287,17 +1745,23 @@ components:
           description: Unique identifier of a collection.
       type: object
       required:
-        - embeddingConfig
-        - id
+      - embeddingConfig
+      - id
       title: Collection
       description: A logical grouping of content.
-    DataRepositoryType:
-      type: string
-      anyOf:
-        - enum:
-          - vector
-        - {}
-      title: DataRepositoryType
+    DataRepositories:
+      properties:
+        count:
+          type: integer
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataRepository'
+          title: Datarepositories
+      type: object
+      required:
+      - resources
+      title: DataRepositories
     DataRepository:
       properties:
         id:
@@ -1311,12 +1775,12 @@ components:
         metadata:
           type: array
           items:
-            $ref: "#/components/schemas/KeyValueListPair"
+            $ref: '#/components/schemas/KeyValueListPair'
           title: Metadata
           description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
           default: []
         type:
-          $ref: "#/components/schemas/DataRepositoryType"
+          $ref: '#/components/schemas/DataRepositoryType'
       type: object
       required:
       - id
@@ -1324,104 +1788,22 @@ components:
       - type
       title: DataRepository
       description: DataRepository schema expected by Retrieval.
-    DataRepositories:
+    DataRepositorySearchResult:
       properties:
-        resources:
-          type: array
-          items:
-            $ref: "#/components/schemas/DataRepository"
-          title: Datarepositories
-        count:
-          type: integer
+        dataRepository:
+          $ref: '#/components/schemas/DataRepositoryWithDocuments'
       type: object
       required:
-      - resources
-      title: DataRepositories
-    RetrievalSearchInput:
-      additionalProperties: true
-      properties:
-        query:
-          type: string
-          minLength: 1
-          title: Query
-          description: Query string
-        filters:
-          type: array
-          items:
-            $ref: "#/components/schemas/RetrievalSearchFilter"
-          title: Filters
-      type: object
-      required:
-      - query
-      - filters
-      title: SearchInput
-    RetrievalSearchFilter:
-      additionalProperties: true
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Identifier of this SearchFilter - unique per request.
-        searchConfiguration:
-          $ref: "#/components/schemas/SearchConfiguration"
-        dataRepositories:
-          type: array
-          items:
-            type: string
-          title: Datarepositories
-          description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
-          default:
-          - "*"
-        dataRepositoryType:
-          $ref: "#/components/schemas/DataRepositoryType"
-        dataRepositoryMetadata:
-          type: array
-          items:
-            $ref: "#/components/schemas/KeyValueListPair"
-          title: Datarepositorymetadata
-          description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
-          default: []
-        documentMetadata:
-          type: array
-          items:
-            $ref: "#/components/schemas/SearchDocumentKeyValueListPair"
-          title: Documentmetadata
-          description: Restrict documents considered during search to those annotated with the given metadata.
-          default: []
-        chunkMetadata:
-          type: array
-          items:
-            $ref: "#/components/schemas/KeyValueListPair"
-          title: Chunkmetadata
-          description: Restrict chunks considered during search to those with the given metadata.
-          default: []
-      type: object
-      required:
-      - id
-      - dataRepositoryType
-      title: RetrievalSearchFilter
-      description: Limit scope of search to certain DataRepositories, Documents or Chunks.
-    RetrievalDocument:
-      properties:
-        id:
-          type: string
-          title: Id
-        metadata:
-          type: array
-          items:
-            $ref: "#/components/schemas/DocumentKeyValueListPair"
-          title: Metadata
-          default: []
-        chunks:
-          type: array
-          items:
-            $ref: "#/components/schemas/Chunk"
-          title: Chunks
-      type: object
-      required:
-      - id
-      - chunks
-      title: RetrievalDocument
+      - dataRepository
+      title: DataRepositorySearchResult
+    DataRepositoryType:
+      type: string
+      anyOf:
+      - enum:
+        - vector
+        - help.sap.com
+      - {}
+      title: DataRepositoryType
     DataRepositoryWithDocuments:
       properties:
         id:
@@ -1435,13 +1817,13 @@ components:
         metadata:
           type: array
           items:
-            $ref: "#/components/schemas/KeyValueListPair"
+            $ref: '#/components/schemas/KeyValueListPair'
           title: Metadata
           description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
         documents:
           type: array
           items:
-            $ref: "#/components/schemas/RetrievalDocument"
+            $ref: '#/components/schemas/Document'
           title: Documents
       type: object
       required:
@@ -1450,15 +1832,28 @@ components:
       - documents
       title: DataRepositoryWithDocuments
       description: DataRepository schema returned by the Vector search endpoint
-    RetievalDataRepositorySearchResult:
+    Document:
       properties:
-        dataRepository:
-          $ref: "#/components/schemas/DataRepositoryWithDocuments"
+        id:
+          type: string
+          title: Id
+        metadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentKeyValueListPair'
+          title: Metadata
+          default: []
+        chunks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Chunk'
+          title: Chunks
       type: object
       required:
-      - dataRepository
-      title: DataRepositorySearchResult
-    RetievalPerFilterSearchResult:
+      - id
+      - chunks
+      title: Document
+    DataRepositoryPerFilterSearchResult:
       properties:
         filterId:
           type: string
@@ -1466,7 +1861,7 @@ components:
         results:
           type: array
           items:
-            $ref: "#/components/schemas/RetievalDataRepositorySearchResult"
+            $ref: '#/components/schemas/DataRepositorySearchResult'
           title: Results
           description: List of returned results.
           default: []
@@ -1474,7 +1869,7 @@ components:
       required:
       - filterId
       title: PerFilterSearchResult
-    RetievalPerFilterSearchResultWithError:
+    PerFilterSearchResultError:
       properties:
         message:
           type: string
@@ -1483,34 +1878,148 @@ components:
       required:
       - message
       title: PerFilterSearchResultError
-    RetievalSearchResults:
+    PerFilterSearchResultWithError:
+      properties:
+        filterId:
+          type: string
+          title: Filterid
+        error:
+          $ref: '#/components/schemas/PerFilterSearchResultError'
+          description: Error message if any.
+          default:
+            message: Unknown Error Occurred
+      type: object
+      required:
+      - filterId
+      title: PerFilterSearchResultWithError
+    RetrievalSearchConfiguration:
+      properties:
+        maxChunkCount:
+          nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxchunkcount
+          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
+        maxDocumentCount:
+          nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxdocumentcount
+          description: '[Only supports ''vector'' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with ''maxChunkCount''. If maxDocumentCount is given, then only one chunk per document is returned.'
+      type: object
+      title: SearchConfiguration
+    RetrievalSearchFilter:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Identifier of this SearchFilter - unique per request.
+        searchConfiguration:
+          type: object
+          nullable: true
+          $ref: '#/components/schemas/RetrievalSearchConfiguration'
+          default: {}
+          minProperties: 0
+          maxProperties: 2
+        dataRepositories:
+          type: array
+          items:
+            type: string
+          title: Datarepositories
+          description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
+          default:
+          - '*'
+        dataRepositoryType:
+          type: string
+          $ref: '#/components/schemas/DataRepositoryType'
+          description: Only include DataRepositories with the given type.
+        dataRepositoryMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Datarepositorymetadata
+          description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
+          default: []
+        documentMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchDocumentKeyValueListPair'
+          title: Documentmetadata
+          description: Restrict documents considered during search to those annotated with the given metadata.
+          default: []
+        chunkMetadata:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeyValueListPair'
+          title: Chunkmetadata
+          description: Restrict chunks considered during search to those with the given metadata.
+          default: []
+      type: object
+      required:
+      - id
+      - dataRepositoryType
+      title: SearchFilter
+      description: Limit scope of search to certain DataRepositories, Documents or Chunks.
+    SearchInput:
+      properties:
+        query:
+          type: string
+          minLength: 1
+          title: Query
+          description: Query string
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievalSearchFilter'
+          title: Filters
+      type: object
+      required:
+      - query
+      - filters
+      title: SearchInput
+    DataRepositorySearchResults:
       properties:
         results:
           type: array
           items:
             anyOf:
-            - $ref: "#/components/schemas/RetievalPerFilterSearchResult"
-            - $ref: "#/components/schemas/RetievalPerFilterSearchResultWithError"
+            - $ref: '#/components/schemas/DataRepositoryPerFilterSearchResult'
+            - $ref: '#/components/schemas/PerFilterSearchResultWithError'
           title: Results
           description: List of returned results.
       type: object
       required:
       - results
       title: SearchResults
-
-    ### ###  ########################  ### ###
-    ### ###  ###       Error      ###  ### ###
-    ### ###  ########################  ### ###
-
+    ValidationError:
+      properties:
+        loc:
+          type: array
+          items:
+            type: string
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     ApiError:
       required:
-        - code
-        - message
+      - code
+      - message
       type: object
       properties:
         code:
-          description: >-
-            Descriptive error code (not http status code).
+          description: Descriptive error code (not http status code).
           type: string
         message:
           description: plaintext error description
@@ -1525,7 +2034,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DetailsErrorResponse'
-
     DetailsErrorResponse:
       type: object
       properties:
@@ -1535,11 +2043,6 @@ components:
         message:
           description: Plaintext error description
           type: string
-
-  ### ***  *****************************************************  *** ###
-  ### ***  ***              Start of responses               ***  *** ###
-  ### ***  *****************************************************  *** ###
-
   responses:
     BadRequest:
       content:
@@ -1550,7 +2053,6 @@ components:
               error:
                 $ref: '#/components/schemas/ApiError'
       description: The specification of the resource was incorrect
-
     NotFound:
       content:
         application/json:
@@ -1560,7 +2062,6 @@ components:
               error:
                 $ref: '#/components/schemas/ApiError'
       description: The specification of the resource was incorrect
-
     UnprocessableEntity:
       description: There are validation issues with the data.
       content:
@@ -1570,8 +2071,6 @@ components:
             properties:
               error:
                 $ref: '#/components/schemas/ApiError'
-
-
   parameters:
     top:
       name: $top
@@ -1582,7 +2081,6 @@ components:
         type: integer
         minimum: 0
       example: 10
-
     skip:
       name: $skip
       description: Number of results to be skipped from the ordered list of results
@@ -1592,7 +2090,6 @@ components:
         type: integer
         minimum: 0
       example: 10
-
     count:
       name: $count
       description: When the $count field is set to false, the response contains a count of the items present in the response. When the $count field is set to true, the response contains a count of all the items present on the server, and not just the ones in the response. When the $count field is not passed, it is false by default.
