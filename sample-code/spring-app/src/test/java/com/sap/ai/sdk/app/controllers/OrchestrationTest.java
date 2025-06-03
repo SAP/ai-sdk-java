@@ -201,8 +201,7 @@ class OrchestrationTest {
   @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
   void testGroundingSharepoint() {
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
-    var response =
-        service.groundingSharepoint("What is the secret for the AI SDK e2e test?");
+    var response = service.groundingSharepoint("What is the secret for the AI SDK e2e test?");
     assertThat(response).isNotNull();
     var result = response.getOriginalResponse();
     var llmChoice =
