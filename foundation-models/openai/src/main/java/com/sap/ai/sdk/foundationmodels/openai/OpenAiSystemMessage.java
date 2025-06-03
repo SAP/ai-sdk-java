@@ -6,7 +6,6 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartText;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestSystemMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestSystemMessageContent;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestSystemMessageContentPart;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -74,7 +73,7 @@ public class OpenAiSystemMessage implements OpenAiMessage {
           .content(ChatCompletionRequestSystemMessageContent.create(textItem.text()));
     }
 
-    final var contentList = new LinkedList<ChatCompletionRequestSystemMessageContentPart>();
+    final var contentList = new LinkedList<ChatCompletionRequestMessageContentPartText>();
     for (final OpenAiContentItem item : itemList) {
       if (item instanceof OpenAiTextItem textItem) {
         contentList.add(
