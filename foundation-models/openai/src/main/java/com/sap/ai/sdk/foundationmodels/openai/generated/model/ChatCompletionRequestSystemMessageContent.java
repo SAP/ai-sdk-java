@@ -11,12 +11,10 @@
 
 package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import javax.annotation.Nonnull;
 
 /** The contents of the system message. */
-@Beta
 public interface ChatCompletionRequestSystemMessageContent {
   /**
    * Helper class to create a String that implements {@link

@@ -509,18 +509,40 @@
                                         </div>
                                     </div>
                                 </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/orchestration/localPromptTemplate"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/orchestration/localPromptTemplate</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service using a local template file.
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/localPromptTemplate"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/localPromptTemplate</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service
+                                            using a local template file.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+                        </details>
+                        <br>
+                        <details>
+                            <summary><h5 style="display:inline-block">Translation</h5>
+                            </summary>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/translation"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/translation</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            French question translated to English, sent to LLM, then
+                                            translated to German.
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </details>
                     </div>
                 </div>
@@ -710,7 +732,8 @@
                                         <code>/spring-ai-orchestration/inputFiltering/ALLOW_SAFE</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Apply strict input filtering for a request to orchestration using the SpringAI integration.
+                                        Apply strict input filtering for a request to orchestration
+                                        using the SpringAI integration.
                                     </div>
                                 </div>
                             </li>
@@ -722,7 +745,8 @@
                                         <code>/spring-ai-orchestration/outputFiltering/ALLOW_SAFE</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Apply strict output filtering for a request to orchestration using the SpringAI integration.
+                                        Apply strict output filtering for a request to orchestration
+                                        using the SpringAI integration.
                                     </div>
                                 </div>
                             </li>

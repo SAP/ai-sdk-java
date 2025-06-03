@@ -11,7 +11,6 @@
 
 package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 
-import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 
 /**
@@ -25,7 +24,6 @@ import javax.annotation.Nonnull;
  * @deprecated
  */
 @Deprecated
-@Beta
 public interface CreateChatCompletionRequestAllOfFunctionCall {
   /**
    * Helper class to create a ChatCompletionFunctionCallOption that implements {@link
