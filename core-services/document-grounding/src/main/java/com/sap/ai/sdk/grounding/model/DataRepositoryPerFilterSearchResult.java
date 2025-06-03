@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -25,32 +25,32 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** RetievalPerFilterSearchResult */
+/** DataRepositoryPerFilterSearchResult */
 // CHECKSTYLE:OFF
-public class RetievalPerFilterSearchResult
+public class DataRepositoryPerFilterSearchResult
 // CHECKSTYLE:ON
 {
   @JsonProperty("filterId")
   private String filterId;
 
   @JsonProperty("results")
-  private List<RetievalDataRepositorySearchResult> results = new ArrayList<>();
+  private List<DataRepositorySearchResult> results = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for RetievalPerFilterSearchResult. */
-  protected RetievalPerFilterSearchResult() {}
+  /** Default constructor for DataRepositoryPerFilterSearchResult. */
+  protected DataRepositoryPerFilterSearchResult() {}
 
   /**
-   * Set the filterId of this {@link RetievalPerFilterSearchResult} instance and return the same
-   * instance.
+   * Set the filterId of this {@link DataRepositoryPerFilterSearchResult} instance and return the
+   * same instance.
    *
-   * @param filterId The filterId of this {@link RetievalPerFilterSearchResult}
-   * @return The same instance of this {@link RetievalPerFilterSearchResult} class
+   * @param filterId The filterId of this {@link DataRepositoryPerFilterSearchResult}
+   * @return The same instance of this {@link DataRepositoryPerFilterSearchResult} class
    */
   @Nonnull
-  public RetievalPerFilterSearchResult filterId(@Nonnull final String filterId) {
+  public DataRepositoryPerFilterSearchResult filterId(@Nonnull final String filterId) {
     this.filterId = filterId;
     return this;
   }
@@ -58,7 +58,7 @@ public class RetievalPerFilterSearchResult
   /**
    * Get filterId
    *
-   * @return filterId The filterId of this {@link RetievalPerFilterSearchResult} instance.
+   * @return filterId The filterId of this {@link DataRepositoryPerFilterSearchResult} instance.
    */
   @Nonnull
   public String getFilterId() {
@@ -66,37 +66,37 @@ public class RetievalPerFilterSearchResult
   }
 
   /**
-   * Set the filterId of this {@link RetievalPerFilterSearchResult} instance.
+   * Set the filterId of this {@link DataRepositoryPerFilterSearchResult} instance.
    *
-   * @param filterId The filterId of this {@link RetievalPerFilterSearchResult}
+   * @param filterId The filterId of this {@link DataRepositoryPerFilterSearchResult}
    */
   public void setFilterId(@Nonnull final String filterId) {
     this.filterId = filterId;
   }
 
   /**
-   * Set the results of this {@link RetievalPerFilterSearchResult} instance and return the same
-   * instance.
+   * Set the results of this {@link DataRepositoryPerFilterSearchResult} instance and return the
+   * same instance.
    *
    * @param results List of returned results.
-   * @return The same instance of this {@link RetievalPerFilterSearchResult} class
+   * @return The same instance of this {@link DataRepositoryPerFilterSearchResult} class
    */
   @Nonnull
-  public RetievalPerFilterSearchResult results(
-      @Nullable final List<RetievalDataRepositorySearchResult> results) {
+  public DataRepositoryPerFilterSearchResult results(
+      @Nullable final List<DataRepositorySearchResult> results) {
     this.results = results;
     return this;
   }
 
   /**
-   * Add one results instance to this {@link RetievalPerFilterSearchResult}.
+   * Add one results instance to this {@link DataRepositoryPerFilterSearchResult}.
    *
    * @param resultsItem The results that should be added
-   * @return The same instance of type {@link RetievalPerFilterSearchResult}
+   * @return The same instance of type {@link DataRepositoryPerFilterSearchResult}
    */
   @Nonnull
-  public RetievalPerFilterSearchResult addResultsItem(
-      @Nonnull final RetievalDataRepositorySearchResult resultsItem) {
+  public DataRepositoryPerFilterSearchResult addResultsItem(
+      @Nonnull final DataRepositorySearchResult resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -107,24 +107,25 @@ public class RetievalPerFilterSearchResult
   /**
    * List of returned results.
    *
-   * @return results The results of this {@link RetievalPerFilterSearchResult} instance.
+   * @return results The results of this {@link DataRepositoryPerFilterSearchResult} instance.
    */
   @Nonnull
-  public List<RetievalDataRepositorySearchResult> getResults() {
+  public List<DataRepositorySearchResult> getResults() {
     return results;
   }
 
   /**
-   * Set the results of this {@link RetievalPerFilterSearchResult} instance.
+   * Set the results of this {@link DataRepositoryPerFilterSearchResult} instance.
    *
    * @param results List of returned results.
    */
-  public void setResults(@Nullable final List<RetievalDataRepositorySearchResult> results) {
+  public void setResults(@Nullable final List<DataRepositorySearchResult> results) {
     this.results = results;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link RetievalPerFilterSearchResult}.
+   * Get the names of the unrecognizable properties of the {@link
+   * DataRepositoryPerFilterSearchResult}.
    *
    * @return The set of properties names
    */
@@ -135,7 +136,7 @@ public class RetievalPerFilterSearchResult
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link RetievalPerFilterSearchResult}
+   * Get the value of an unrecognizable property of this {@link DataRepositoryPerFilterSearchResult}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -148,13 +149,13 @@ public class RetievalPerFilterSearchResult
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "RetievalPerFilterSearchResult has no field with name '" + name + "'.");
+          "DataRepositoryPerFilterSearchResult has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link RetievalPerFilterSearchResult} instance
+   * Get the value of all properties of this {@link DataRepositoryPerFilterSearchResult} instance
    * including unrecognized properties.
    *
    * @return The map of all properties
@@ -169,8 +170,8 @@ public class RetievalPerFilterSearchResult
   }
 
   /**
-   * Set an unrecognizable property of this {@link RetievalPerFilterSearchResult} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
+   * Set an unrecognizable property of this {@link DataRepositoryPerFilterSearchResult} instance. If
+   * the map previously contained a mapping for the key, the old value is replaced by the specified
    * value.
    *
    * @param customFieldName The name of the property
@@ -189,12 +190,12 @@ public class RetievalPerFilterSearchResult
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final RetievalPerFilterSearchResult retievalPerFilterSearchResult =
-        (RetievalPerFilterSearchResult) o;
+    final DataRepositoryPerFilterSearchResult dataRepositoryPerFilterSearchResult =
+        (DataRepositoryPerFilterSearchResult) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, retievalPerFilterSearchResult.cloudSdkCustomFields)
-        && Objects.equals(this.filterId, retievalPerFilterSearchResult.filterId)
-        && Objects.equals(this.results, retievalPerFilterSearchResult.results);
+            this.cloudSdkCustomFields, dataRepositoryPerFilterSearchResult.cloudSdkCustomFields)
+        && Objects.equals(this.filterId, dataRepositoryPerFilterSearchResult.filterId)
+        && Objects.equals(this.results, dataRepositoryPerFilterSearchResult.results);
   }
 
   @Override
@@ -206,7 +207,7 @@ public class RetievalPerFilterSearchResult
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class RetievalPerFilterSearchResult {\n");
+    sb.append("class DataRepositoryPerFilterSearchResult {\n");
     sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -228,20 +229,20 @@ public class RetievalPerFilterSearchResult
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * RetievalPerFilterSearchResult} instance with all required arguments.
+   * DataRepositoryPerFilterSearchResult} instance with all required arguments.
    */
   public static Builder create() {
-    return (filterId) -> new RetievalPerFilterSearchResult().filterId(filterId);
+    return (filterId) -> new DataRepositoryPerFilterSearchResult().filterId(filterId);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the filterId of this {@link RetievalPerFilterSearchResult} instance.
+     * Set the filterId of this {@link DataRepositoryPerFilterSearchResult} instance.
      *
-     * @param filterId The filterId of this {@link RetievalPerFilterSearchResult}
-     * @return The RetievalPerFilterSearchResult instance.
+     * @param filterId The filterId of this {@link DataRepositoryPerFilterSearchResult}
+     * @return The DataRepositoryPerFilterSearchResult instance.
      */
-    RetievalPerFilterSearchResult filterId(@Nonnull final String filterId);
+    DataRepositoryPerFilterSearchResult filterId(@Nonnull final String filterId);
   }
 }

@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -35,7 +35,7 @@ public class RetrievalSearchFilter
   private String id;
 
   @JsonProperty("searchConfiguration")
-  private SearchConfiguration searchConfiguration;
+  private RetrievalSearchConfiguration searchConfiguration;
 
   @JsonProperty("dataRepositories")
   private List<String> dataRepositories = new ArrayList<>(Arrays.asList("*"));
@@ -98,7 +98,7 @@ public class RetrievalSearchFilter
    */
   @Nonnull
   public RetrievalSearchFilter searchConfiguration(
-      @Nullable final SearchConfiguration searchConfiguration) {
+      @Nullable final RetrievalSearchConfiguration searchConfiguration) {
     this.searchConfiguration = searchConfiguration;
     return this;
   }
@@ -110,7 +110,7 @@ public class RetrievalSearchFilter
    *     instance.
    */
   @Nonnull
-  public SearchConfiguration getSearchConfiguration() {
+  public RetrievalSearchConfiguration getSearchConfiguration() {
     return searchConfiguration;
   }
 
@@ -119,7 +119,8 @@ public class RetrievalSearchFilter
    *
    * @param searchConfiguration The searchConfiguration of this {@link RetrievalSearchFilter}
    */
-  public void setSearchConfiguration(@Nullable final SearchConfiguration searchConfiguration) {
+  public void setSearchConfiguration(
+      @Nullable final RetrievalSearchConfiguration searchConfiguration) {
     this.searchConfiguration = searchConfiguration;
   }
 

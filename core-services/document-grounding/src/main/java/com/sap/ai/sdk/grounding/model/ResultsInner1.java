@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -34,10 +34,10 @@ public class ResultsInner1
   private String filterId;
 
   @JsonProperty("results")
-  private List<RetievalDataRepositorySearchResult> results = new ArrayList<>();
+  private List<DataRepositorySearchResult> results = new ArrayList<>();
 
-  @JsonProperty("message")
-  private String message;
+  @JsonProperty("error")
+  private PerFilterSearchResultError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -83,7 +83,7 @@ public class ResultsInner1
    * @return The same instance of this {@link ResultsInner1} class
    */
   @Nonnull
-  public ResultsInner1 results(@Nullable final List<RetievalDataRepositorySearchResult> results) {
+  public ResultsInner1 results(@Nullable final List<DataRepositorySearchResult> results) {
     this.results = results;
     return this;
   }
@@ -95,8 +95,7 @@ public class ResultsInner1
    * @return The same instance of type {@link ResultsInner1}
    */
   @Nonnull
-  public ResultsInner1 addResultsItem(
-      @Nonnull final RetievalDataRepositorySearchResult resultsItem) {
+  public ResultsInner1 addResultsItem(@Nonnull final DataRepositorySearchResult resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -110,7 +109,7 @@ public class ResultsInner1
    * @return results The results of this {@link ResultsInner1} instance.
    */
   @Nonnull
-  public List<RetievalDataRepositorySearchResult> getResults() {
+  public List<DataRepositorySearchResult> getResults() {
     return results;
   }
 
@@ -119,39 +118,39 @@ public class ResultsInner1
    *
    * @param results List of returned results.
    */
-  public void setResults(@Nullable final List<RetievalDataRepositorySearchResult> results) {
+  public void setResults(@Nullable final List<DataRepositorySearchResult> results) {
     this.results = results;
   }
 
   /**
-   * Set the message of this {@link ResultsInner1} instance and return the same instance.
+   * Set the error of this {@link ResultsInner1} instance and return the same instance.
    *
-   * @param message The message of this {@link ResultsInner1}
+   * @param error The error of this {@link ResultsInner1}
    * @return The same instance of this {@link ResultsInner1} class
    */
   @Nonnull
-  public ResultsInner1 message(@Nonnull final String message) {
-    this.message = message;
+  public ResultsInner1 error(@Nullable final PerFilterSearchResultError error) {
+    this.error = error;
     return this;
   }
 
   /**
-   * Get message
+   * Get error
    *
-   * @return message The message of this {@link ResultsInner1} instance.
+   * @return error The error of this {@link ResultsInner1} instance.
    */
   @Nonnull
-  public String getMessage() {
-    return message;
+  public PerFilterSearchResultError getError() {
+    return error;
   }
 
   /**
-   * Set the message of this {@link ResultsInner1} instance.
+   * Set the error of this {@link ResultsInner1} instance.
    *
-   * @param message The message of this {@link ResultsInner1}
+   * @param error The error of this {@link ResultsInner1}
    */
-  public void setMessage(@Nonnull final String message) {
-    this.message = message;
+  public void setError(@Nullable final PerFilterSearchResultError error) {
+    this.error = error;
   }
 
   /**
@@ -194,7 +193,7 @@ public class ResultsInner1
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (filterId != null) declaredFields.put("filterId", filterId);
     if (results != null) declaredFields.put("results", results);
-    if (message != null) declaredFields.put("message", message);
+    if (error != null) declaredFields.put("error", error);
     return declaredFields;
   }
 
@@ -222,12 +221,12 @@ public class ResultsInner1
     return Objects.equals(this.cloudSdkCustomFields, resultsInner1.cloudSdkCustomFields)
         && Objects.equals(this.filterId, resultsInner1.filterId)
         && Objects.equals(this.results, resultsInner1.results)
-        && Objects.equals(this.message, resultsInner1.message);
+        && Objects.equals(this.error, resultsInner1.error);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filterId, results, message, cloudSdkCustomFields);
+    return Objects.hash(filterId, results, error, cloudSdkCustomFields);
   }
 
   @Override
@@ -237,7 +236,7 @@ public class ResultsInner1
     sb.append("class ResultsInner1 {\n");
     sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -260,7 +259,7 @@ public class ResultsInner1
    * with all required arguments.
    */
   public static Builder create() {
-    return (filterId) -> (message) -> new ResultsInner1().filterId(filterId).message(message);
+    return (filterId) -> new ResultsInner1().filterId(filterId);
   }
 
   /** Builder helper class. */
@@ -269,19 +268,8 @@ public class ResultsInner1
      * Set the filterId of this {@link ResultsInner1} instance.
      *
      * @param filterId The filterId of this {@link ResultsInner1}
-     * @return The ResultsInner1 builder.
-     */
-    Builder1 filterId(@Nonnull final String filterId);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the message of this {@link ResultsInner1} instance.
-     *
-     * @param message The message of this {@link ResultsInner1}
      * @return The ResultsInner1 instance.
      */
-    ResultsInner1 message(@Nonnull final String message);
+    ResultsInner1 filterId(@Nonnull final String filterId);
   }
 }

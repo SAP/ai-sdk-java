@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -31,17 +31,48 @@ import javax.annotation.Nullable;
 public class DataRepositories
 // CHECKSTYLE:ON
 {
-  @JsonProperty("resources")
-  private List<DataRepository> resources = new ArrayList<>();
-
   @JsonProperty("count")
   private Integer count;
+
+  @JsonProperty("resources")
+  private List<DataRepository> resources = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /** Default constructor for DataRepositories. */
   protected DataRepositories() {}
+
+  /**
+   * Set the count of this {@link DataRepositories} instance and return the same instance.
+   *
+   * @param count The count of this {@link DataRepositories}
+   * @return The same instance of this {@link DataRepositories} class
+   */
+  @Nonnull
+  public DataRepositories count(@Nullable final Integer count) {
+    this.count = count;
+    return this;
+  }
+
+  /**
+   * Get count
+   *
+   * @return count The count of this {@link DataRepositories} instance.
+   */
+  @Nonnull
+  public Integer getCount() {
+    return count;
+  }
+
+  /**
+   * Set the count of this {@link DataRepositories} instance.
+   *
+   * @param count The count of this {@link DataRepositories}
+   */
+  public void setCount(@Nullable final Integer count) {
+    this.count = count;
+  }
 
   /**
    * Set the resources of this {@link DataRepositories} instance and return the same instance.
@@ -90,37 +121,6 @@ public class DataRepositories
   }
 
   /**
-   * Set the count of this {@link DataRepositories} instance and return the same instance.
-   *
-   * @param count The count of this {@link DataRepositories}
-   * @return The same instance of this {@link DataRepositories} class
-   */
-  @Nonnull
-  public DataRepositories count(@Nullable final Integer count) {
-    this.count = count;
-    return this;
-  }
-
-  /**
-   * Get count
-   *
-   * @return count The count of this {@link DataRepositories} instance.
-   */
-  @Nonnull
-  public Integer getCount() {
-    return count;
-  }
-
-  /**
-   * Set the count of this {@link DataRepositories} instance.
-   *
-   * @param count The count of this {@link DataRepositories}
-   */
-  public void setCount(@Nullable final Integer count) {
-    this.count = count;
-  }
-
-  /**
    * Get the names of the unrecognizable properties of the {@link DataRepositories}.
    *
    * @return The set of properties names
@@ -158,8 +158,8 @@ public class DataRepositories
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (resources != null) declaredFields.put("resources", resources);
     if (count != null) declaredFields.put("count", count);
+    if (resources != null) declaredFields.put("resources", resources);
     return declaredFields;
   }
 
@@ -185,13 +185,13 @@ public class DataRepositories
     }
     final DataRepositories dataRepositories = (DataRepositories) o;
     return Objects.equals(this.cloudSdkCustomFields, dataRepositories.cloudSdkCustomFields)
-        && Objects.equals(this.resources, dataRepositories.resources)
-        && Objects.equals(this.count, dataRepositories.count);
+        && Objects.equals(this.count, dataRepositories.count)
+        && Objects.equals(this.resources, dataRepositories.resources);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(resources, count, cloudSdkCustomFields);
+    return Objects.hash(count, resources, cloudSdkCustomFields);
   }
 
   @Override
@@ -199,8 +199,8 @@ public class DataRepositories
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class DataRepositories {\n");
-    sb.append("    resources: ").append(toIndentedString(resources)).append("\n");
     sb.append("    count: ").append(toIndentedString(count)).append("\n");
+    sb.append("    resources: ").append(toIndentedString(resources)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
