@@ -14,8 +14,8 @@ import com.sap.ai.sdk.grounding.model.DataRepositoryType;
 import com.sap.ai.sdk.grounding.model.DocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
+import com.sap.ai.sdk.grounding.model.GetPipelines;
 import com.sap.ai.sdk.grounding.model.KeyValueListPair;
-import com.sap.ai.sdk.grounding.model.Pipelines;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.util.UUID;
@@ -35,7 +35,8 @@ public class GroundingClientTest {
   void testPipelines() {
     final PipelinesApi api = new GroundingClient(SERVICE).pipelines();
 
-    final Pipelines allPipelines = api.getAllPipelines("reosurceGroup");
+    final GetPipelines allPipelines =
+        api.pipelineV1PipelineEndpointsGetAllPipeline("reosurceGroup");
     assertThat(allPipelines).isNotNull();
     assertThat(allPipelines.getResources()).isEmpty();
   }
@@ -44,7 +45,8 @@ public class GroundingClientTest {
   void testVector() {
     final VectorApi api = new GroundingClient(SERVICE).vector();
 
-    final CollectionsListResponse collections = api.getAllCollections("reosurceGroup");
+    final CollectionsListResponse collections =
+        api.vectorV1VectorEndpointsGetAllCollections("reosurceGroup");
     assertThat(collections).isNotNull();
     assertThat(collections.getResources())
         .isNotNull()
@@ -61,7 +63,8 @@ public class GroundingClientTest {
             });
 
     final UUID collectionId = collections.getResources().get(0).getId();
-    final Documents documents = api.getAllDocuments("reosurceGroup", collectionId);
+    final Documents documents =
+        api.vectorV1VectorEndpointsGetAllDocuments("reosurceGroup", collectionId);
     assertThat(documents).isNotNull();
     final DocumentKeyValueListPair documentMeta =
         DocumentKeyValueListPair.create()
@@ -80,7 +83,7 @@ public class GroundingClientTest {
 
     final UUID documentId = documents.getResources().get(0).getId();
     final DocumentResponse document =
-        api.getDocumentById("reosurceGroup", collectionId, documentId);
+        api.vectorV1VectorEndpointsGetDocumentById("reosurceGroup", collectionId, documentId);
     assertThat(document).isNotNull();
     assertThat(document.getId()).isEqualTo(documentId);
     assertThat(document.getMetadata()).isNotNull().containsExactly(documentMeta);
@@ -109,7 +112,8 @@ public class GroundingClientTest {
   void testRetrieval() {
     final RetrievalApi api = new GroundingClient(SERVICE).retrieval();
 
-    DataRepositories repositories = api.getDataRepositories("reosurceGroup");
+    DataRepositories repositories =
+        api.retrievalV1RetrievalEndpointsGetDataRepositories("reosurceGroup");
     assertThat(repositories).isNotNull();
     assertThat(repositories.getResources())
         .isNotEmpty()
