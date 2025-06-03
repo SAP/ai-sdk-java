@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 
 /** DPIConfig */
 // CHECKSTYLE:OFF
-public class DPIConfig implements MaskingProviderConfig
+public class DPIConfig
 // CHECKSTYLE:ON
 {
   /** Type of masking service provider */

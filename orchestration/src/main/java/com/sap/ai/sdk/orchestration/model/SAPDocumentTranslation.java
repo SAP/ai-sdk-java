@@ -28,7 +28,6 @@ import javax.annotation.Nullable;
 /** SAPDocumentTranslation */
 // CHECKSTYLE:OFF
 public class SAPDocumentTranslation
-    implements InputTranslationModuleConfig, OutputTranslationModuleConfig
 // CHECKSTYLE:ON
 {
   /** Type of document translation provider */

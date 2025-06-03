@@ -44,10 +44,10 @@ public class ModuleConfigs
   private GroundingModuleConfig groundingModuleConfig;
 
   @JsonProperty("input_translation_module_config")
-  private InputTranslationModuleConfig inputTranslationModuleConfig;
+  private SAPDocumentTranslation inputTranslationModuleConfig;
 
   @JsonProperty("output_translation_module_config")
-  private OutputTranslationModuleConfig outputTranslationModuleConfig;
+  private SAPDocumentTranslation outputTranslationModuleConfig;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -232,7 +232,7 @@ public class ModuleConfigs
    */
   @Nonnull
   public ModuleConfigs inputTranslationModuleConfig(
-      @Nullable final InputTranslationModuleConfig inputTranslationModuleConfig) {
+      @Nullable final SAPDocumentTranslation inputTranslationModuleConfig) {
     this.inputTranslationModuleConfig = inputTranslationModuleConfig;
     return this;
   }
@@ -244,7 +244,7 @@ public class ModuleConfigs
    *     ModuleConfigs} instance.
    */
   @Nonnull
-  public InputTranslationModuleConfig getInputTranslationModuleConfig() {
+  public SAPDocumentTranslation getInputTranslationModuleConfig() {
     return inputTranslationModuleConfig;
   }
 
@@ -255,7 +255,7 @@ public class ModuleConfigs
    *     ModuleConfigs}
    */
   public void setInputTranslationModuleConfig(
-      @Nullable final InputTranslationModuleConfig inputTranslationModuleConfig) {
+      @Nullable final SAPDocumentTranslation inputTranslationModuleConfig) {
     this.inputTranslationModuleConfig = inputTranslationModuleConfig;
   }
 
@@ -269,7 +269,7 @@ public class ModuleConfigs
    */
   @Nonnull
   public ModuleConfigs outputTranslationModuleConfig(
-      @Nullable final OutputTranslationModuleConfig outputTranslationModuleConfig) {
+      @Nullable final SAPDocumentTranslation outputTranslationModuleConfig) {
     this.outputTranslationModuleConfig = outputTranslationModuleConfig;
     return this;
   }
@@ -281,7 +281,7 @@ public class ModuleConfigs
    *     ModuleConfigs} instance.
    */
   @Nonnull
-  public OutputTranslationModuleConfig getOutputTranslationModuleConfig() {
+  public SAPDocumentTranslation getOutputTranslationModuleConfig() {
     return outputTranslationModuleConfig;
   }
 
@@ -292,7 +292,7 @@ public class ModuleConfigs
    *     ModuleConfigs}
    */
   public void setOutputTranslationModuleConfig(
-      @Nullable final OutputTranslationModuleConfig outputTranslationModuleConfig) {
+      @Nullable final SAPDocumentTranslation outputTranslationModuleConfig) {
     this.outputTranslationModuleConfig = outputTranslationModuleConfig;
   }
 
