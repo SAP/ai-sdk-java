@@ -44,9 +44,8 @@ public class GroundingClientTest {
   void testVector() {
     final VectorApi api = new GroundingClient(SERVICE).vector();
 
-    final CollectionsListResponse collections = api.getAllCollections("ai-sdk-js-e2e");
+    final CollectionsListResponse collections = api.getAllCollections("reosurceGroup");
     assertThat(collections).isNotNull();
-    assertThat(collections).isEqualTo("");
     assertThat(collections.getResources())
         .isNotNull()
         .hasSize(1)

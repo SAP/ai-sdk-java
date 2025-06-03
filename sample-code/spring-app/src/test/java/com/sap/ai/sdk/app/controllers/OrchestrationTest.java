@@ -198,6 +198,19 @@ class OrchestrationTest {
   }
 
   @Test
+  @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
+  void testGroundingSharepoint() {
+    assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
+    var response =
+        service.groundingSharepoint("What is the secret for the AI SDK e2e test?");
+    assertThat(response).isNotNull();
+    var result = response.getOriginalResponse();
+    var llmChoice =
+        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
+    assertThat(llmChoice.getMessage().getContent()).contains("&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/");
+  }
+
+  @Test
   void testCompletionWithResourceGroup() {
     var response = service.completionWithResourceGroup("ai-sdk-java-e2e", "Hello world!");
     var result = response.getOriginalResponse();
