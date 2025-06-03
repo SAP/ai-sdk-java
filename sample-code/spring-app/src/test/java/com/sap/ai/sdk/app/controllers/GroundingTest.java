@@ -9,8 +9,8 @@ import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.DocumentsListResponse;
-import com.sap.ai.sdk.grounding.model.Pipelines;
-import com.sap.ai.sdk.grounding.model.RetievalSearchResults;
+import com.sap.ai.sdk.grounding.model.GetPipelines;
+import com.sap.ai.sdk.grounding.model.SearchResults;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -29,9 +29,9 @@ class GroundingTest {
     final var controller = new GroundingController();
 
     final var result = controller.getAllPipelines(JSON_FORMAT);
-    assertThat(result).isInstanceOf(Pipelines.class);
-    final var pipelinesList = ((Pipelines) result).getResources();
-    final var pipelinesCount = ((Pipelines) result).getCount();
+    assertThat(result).isInstanceOf(GetPipelines.class);
+    final var pipelinesList = ((GetPipelines) result).getResources();
+    final var pipelinesCount = ((GetPipelines) result).getCount();
 
     // we don't have testable data yet, but the endpoint works without errors
     assertThat(pipelinesCount).isEqualTo(0);
@@ -87,9 +87,9 @@ class GroundingTest {
 
     // (4) SEARCH FOR DOCUMENTS
     Object search = controller.searchInDocuments(JSON_FORMAT);
-    assertThat(search).isInstanceOf(RetievalSearchResults.class);
+    assertThat(search).isInstanceOf(SearchResults.class);
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-    this.assertDocumentSearchResult((RetievalSearchResults) search, dayOfWeek);
+    this.assertDocumentSearchResult((SearchResults) search, dayOfWeek);
 
     // (5) CLEAN UP
     Object deletion = controller.deleteCollection(collectionUuid, JSON_FORMAT);
@@ -101,14 +101,14 @@ class GroundingTest {
         .hasMessageContaining("404 Not Found");
   }
 
-  private void assertDocumentSearchResult(RetievalSearchResults search, String dayOfWeek) {
+  private void assertDocumentSearchResult(SearchResults search, String dayOfWeek) {
     assertThat(search.getResults()).isNotEmpty();
     for (final var resultsByFilter : search.getResults()) {
       assertThat(resultsByFilter.getFilterId()).isEqualTo("question");
       assertThat(resultsByFilter.getResults()).isNotEmpty();
       for (final var result : resultsByFilter.getResults()) {
-        assertThat(result.getDataRepository().getDocuments()).isNotEmpty();
-        for (final var document : result.getDataRepository().getDocuments()) {
+        assertThat(result.getDocuments()).isNotEmpty();
+        for (final var document : result.getDocuments()) {
           assertThat(document.getChunks()).isNotEmpty();
           for (final var chunk : document.getChunks()) {
             assertThat(chunk.getContent()).contains(dayOfWeek);
