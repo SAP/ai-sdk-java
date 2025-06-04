@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 /** DPIStandardEntity */
 // CHECKSTYLE:OFF
-public class DPIStandardEntity implements DPIEntityConfig
+public class DPIStandardEntity
 // CHECKSTYLE:ON
 {
   @JsonProperty("type")

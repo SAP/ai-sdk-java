@@ -11,7 +11,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.model.DPIStandardEntity;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
@@ -88,11 +87,10 @@ class OrchestrationModuleConfigTest {
 
     assertThat(config.getMaskingConfig()).isNotNull();
     assertThat(config.getMaskingConfig().getMaskingProviders()).hasSize(1);
-    DPIConfig dpiConfig = (DPIConfig) config.getMaskingConfig().getMaskingProviders().get(0);
+    DPIConfig dpiConfig = config.getMaskingConfig().getMaskingProviders().get(0);
     assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
     assertThat(dpiConfig.getEntities()).hasSize(1);
-    assertThat(((DPIStandardEntity) dpiConfig.getEntities().get(0)).getType())
-        .isEqualTo(DPIEntities.ADDRESS);
+    assertThat(dpiConfig.getEntities().get(0).getType()).isEqualTo(DPIEntities.ADDRESS);
     assertThat(dpiConfig.getMaskGroundingInput().isEnabled()).isEqualTo(true);
     assertThat(dpiConfig.getAllowlist()).containsExactly("Alice");
 
