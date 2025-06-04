@@ -141,6 +141,9 @@
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
                     <useOneOfCreators>true</useOneOfCreators>
+                    <removeOperationIdPrefix>true</removeOperationIdPrefix>
+                    <removeOperationIdPrefixDelimiter>\.</removeOperationIdPrefixDelimiter>
+                    <removeOperationIdPrefixCount>3</removeOperationIdPrefixCount>
                   </additionalProperties>
                 </configuration>
               </execution>
