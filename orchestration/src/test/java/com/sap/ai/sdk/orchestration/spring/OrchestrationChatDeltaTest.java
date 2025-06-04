@@ -18,10 +18,7 @@ class OrchestrationChatDeltaTest {
     var choice =
         LLMChoiceStreaming.create()
             .index(0)
-            .delta(
-                ChatDelta.create()
-                    .content("Hello, world!")
-                    .role(""))
+            .delta(ChatDelta.create().content("Hello, world!").role(""))
             .finishReason("stop");
 
     Generation generation = OrchestrationSpringChatDelta.toGeneration(choice);

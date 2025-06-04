@@ -29,9 +29,6 @@ public class OrchestrationChatCompletionDelta extends CompletionPostResponseStre
   @Nullable
   @Override
   public String getFinishReason() {
-    return getOrchestrationResult()
-        .getChoices()
-        .get(0)
-        .getFinishReason();
+    return getOrchestrationResult().getChoices().get(0).getFinishReason();
   }
 }

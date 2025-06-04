@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** Output of LLM module. Follows the OpenAI spec. */
 // CHECKSTYLE:OFF
-public class LLMModuleResultStreaming implements ErrorResponseModuleResultsAllOfLlm
+public class LLMModuleResultStreaming
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")

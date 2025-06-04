@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** LLMChoiceSynchronous */
 // CHECKSTYLE:OFF
-public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutputUnmaskingInner
+public class LLMChoiceSynchronous
 // CHECKSTYLE:ON
 {
   @JsonProperty("index")

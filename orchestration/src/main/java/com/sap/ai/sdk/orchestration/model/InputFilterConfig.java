@@ -14,10 +14,10 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** ErrorResponseModuleResultsAllOfLlm */
+/** InputFilterConfig */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = LLMModuleResultStreaming.class),
-  @JsonSubTypes.Type(value = LLMModuleResultSynchronous.class),
+  @JsonSubTypes.Type(value = AzureContentSafetyInputFilterConfig.class),
+  @JsonSubTypes.Type(value = LlamaGuard38bFilterConfig.class),
 })
-public interface ErrorResponseModuleResultsAllOfLlm {}
+public interface InputFilterConfig {}

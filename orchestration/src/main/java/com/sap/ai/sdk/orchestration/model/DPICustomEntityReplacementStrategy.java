@@ -14,10 +14,9 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** ErrorResponseModuleResultsAllOfOutputUnmaskingInner */
+/** Replacement strategy to be used for the entity */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = LLMChoiceStreaming.class),
-  @JsonSubTypes.Type(value = LLMChoiceSynchronous.class),
+  @JsonSubTypes.Type(value = DPIMethodConstant.class),
 })
-public interface ErrorResponseModuleResultsAllOfOutputUnmaskingInner {}
+public interface DPICustomEntityReplacementStrategy {}
