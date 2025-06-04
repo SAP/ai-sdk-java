@@ -62,8 +62,7 @@ class GroundingController {
   @GetMapping("/pipelines/list")
   Object getAllPipelines(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var pipelines =
-        CLIENT_PIPELINES.pipelineV1PipelineEndpointsGetAllPipeline(RESOURCE_GROUP, 10, 0, true);
+    final var pipelines = CLIENT_PIPELINES.getAllPipeline(RESOURCE_GROUP, 10, 0, true);
     log.info("Found {} pipelines", pipelines.getResources().size());
 
     if ("json".equals(format)) {
@@ -88,8 +87,7 @@ class GroundingController {
   @GetMapping("/retrieval/repositories")
   Object getAllRepositories(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var repositories =
-        CLIENT_RETRIEVAL.retrievalV1RetrievalEndpointsGetDataRepositories(RESOURCE_GROUP);
+    final var repositories = CLIENT_RETRIEVAL.getDataRepositories(RESOURCE_GROUP);
     log.info("Found {} data repositories", repositories.getResources().size());
 
     if ("json".equals(format)) {
@@ -130,7 +128,7 @@ class GroundingController {
   @GetMapping("/vector/collections")
   Object getAllCollections(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var collections = CLIENT_VECTOR.vectorV1VectorEndpointsGetAllCollections(RESOURCE_GROUP);
+    final var collections = CLIENT_VECTOR.getAllCollections(RESOURCE_GROUP);
     if ("json".equals(format)) {
       return collections;
     }
@@ -144,8 +142,7 @@ class GroundingController {
   Object getDocumentsByCollectionId(
       @Nonnull @PathVariable("id") final UUID collectionId,
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var documents =
-        CLIENT_VECTOR.vectorV1VectorEndpointsGetAllDocuments(RESOURCE_GROUP, collectionId);
+    final var documents = CLIENT_VECTOR.getAllDocuments(RESOURCE_GROUP, collectionId);
     if ("json".equals(format)) {
       return documents;
     }
@@ -160,8 +157,7 @@ class GroundingController {
     final var embeddingConfig = EmbeddingConfig.create().modelName(TEXT_EMBEDDING_3_SMALL.name());
     final var request =
         CollectionRequest.create().embeddingConfig(embeddingConfig).title(COLLECTION_TITLE);
-    final var documents =
-        CLIENT_VECTOR.vectorV1VectorEndpointsCreateCollection(RESOURCE_GROUP, request);
+    final var documents = CLIENT_VECTOR.createCollection(RESOURCE_GROUP, request);
     final Map<String, List<String>> headers = documents.getHeaders();
 
     final var locationHeader = headers.get("Location").get(0);
@@ -181,8 +177,7 @@ class GroundingController {
     final var docMeta = DocumentKeyValueListPair.create().key("purpose").value("testing");
     final var doc = BaseDocument.create().chunks(chunk).metadata(docMeta);
     final var request = DocumentCreateRequest.create().documents(doc);
-    final var response =
-        CLIENT_VECTOR.vectorV1VectorEndpointsCreateDocuments(RESOURCE_GROUP, collectionId, request);
+    final var response = CLIENT_VECTOR.createDocuments(RESOURCE_GROUP, collectionId, request);
 
     if ("json".equals(format)) {
       return response;
@@ -204,22 +199,18 @@ class GroundingController {
     final var doc = BaseDocument.create().chunks(chunk).metadata(docMeta);
     final var request = DocumentCreateRequest.create().documents(doc);
 
-    final var documents =
-        CLIENT_VECTOR.vectorV1VectorEndpointsGetAllDocuments(RESOURCE_GROUP, collectionId);
+    final var documents = CLIENT_VECTOR.getAllDocuments(RESOURCE_GROUP, collectionId);
     final var ids = documents.getResources().stream().map(DocumentWithoutChunks::getId).toList();
     log.info("Deleting collection {} with {} documents: {}", collectionId, ids.size(), ids);
 
     for (final var documentId : ids) {
-      final var del =
-          CLIENT_VECTOR.vectorV1VectorEndpointsDeleteDocument(
-              RESOURCE_GROUP, collectionId, documentId);
+      final var del = CLIENT_VECTOR.deleteDocument(RESOURCE_GROUP, collectionId, documentId);
       if (del.getStatusCode() >= 400) {
         final var msg = "Document {} could not be deleted, status code [{}], headers: {}";
         log.error(msg, documentId, del.getStatusCode(), del.getHeaders());
       }
     }
-    final var response =
-        CLIENT_VECTOR.vectorV1VectorEndpointsDeleteCollection(RESOURCE_GROUP, collectionId + "");
+    final var response = CLIENT_VECTOR.deleteCollection(RESOURCE_GROUP, collectionId + "");
 
     if ("json".equals(format)) {
       return response;
@@ -233,9 +224,7 @@ class GroundingController {
       @Nonnull @PathVariable("collectionId") final UUID collectionId,
       @Nonnull @PathVariable("documentId") final UUID documentId,
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var document =
-        CLIENT_VECTOR.vectorV1VectorEndpointsGetDocumentById(
-            RESOURCE_GROUP, collectionId, documentId);
+    final var document = CLIENT_VECTOR.getDocumentById(RESOURCE_GROUP, collectionId, documentId);
     if ("json".equals(format)) {
       return document;
     }
