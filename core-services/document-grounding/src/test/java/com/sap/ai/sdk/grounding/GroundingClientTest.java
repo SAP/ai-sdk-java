@@ -35,7 +35,7 @@ public class GroundingClientTest {
   void testPipelines() {
     final PipelinesApi api = new GroundingClient(SERVICE).pipelines();
 
-    GetPipelines allPipelines = api.pipelineV1PipelineEndpointsGetAllPipeline("reosurceGroup");
+    GetPipelines allPipelines = api.getAllPipeline("reosurceGroup");
     assertThat(allPipelines).isNotNull();
     assertThat(allPipelines.getResources()).isEmpty();
   }
@@ -44,8 +44,7 @@ public class GroundingClientTest {
   void testVector() {
     final VectorApi api = new GroundingClient(SERVICE).vector();
 
-    final CollectionsListResponse collections =
-        api.vectorV1VectorEndpointsGetAllCollections("reosurceGroup");
+    final CollectionsListResponse collections = api.getAllCollections("reosurceGroup");
     assertThat(collections).isNotNull();
     assertThat(collections.getResources())
         .isNotNull()
@@ -62,8 +61,7 @@ public class GroundingClientTest {
             });
 
     final UUID collectionId = collections.getResources().get(0).getId();
-    final Documents documents =
-        api.vectorV1VectorEndpointsGetAllDocuments("reosurceGroup", collectionId);
+    final Documents documents = api.getAllDocuments("reosurceGroup", collectionId);
     assertThat(documents).isNotNull();
     final DocumentKeyValueListPair documentMeta =
         DocumentKeyValueListPair.create()
@@ -82,7 +80,7 @@ public class GroundingClientTest {
 
     final UUID documentId = documents.getResources().get(0).getId();
     final DocumentResponse document =
-        api.vectorV1VectorEndpointsGetDocumentById("reosurceGroup", collectionId, documentId);
+        api.getDocumentById("reosurceGroup", collectionId, documentId);
     assertThat(document).isNotNull();
     assertThat(document.getId()).isEqualTo(documentId);
     assertThat(document.getMetadata()).isNotNull().containsExactly(documentMeta);
@@ -111,8 +109,7 @@ public class GroundingClientTest {
   void testRetrieval() {
     final RetrievalApi api = new GroundingClient(SERVICE).retrieval();
 
-    DataRepositories repositories =
-        api.retrievalV1RetrievalEndpointsGetDataRepositories("reosurceGroup");
+    DataRepositories repositories = api.getDataRepositories("reosurceGroup");
     assertThat(repositories).isNotNull();
     assertThat(repositories.getResources())
         .isNotEmpty()
