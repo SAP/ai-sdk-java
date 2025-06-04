@@ -73,7 +73,7 @@ public class RetrievalApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DataRepositories retrievalV1RetrievalEndpointsGetDataRepositories(
+  public DataRepositories getDataRepositories(
       @Nonnull final String aiResourceGroup,
       @Nullable final Integer $top,
       @Nullable final Integer $skip,
@@ -84,7 +84,7 @@ public class RetrievalApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling retrievalV1RetrievalEndpointsGetDataRepositories");
+          "Missing the required parameter 'aiResourceGroup' when calling getDataRepositories");
     }
 
     final String localVarPath =
@@ -139,9 +139,9 @@ public class RetrievalApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DataRepositories retrievalV1RetrievalEndpointsGetDataRepositories(
-      @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-    return retrievalV1RetrievalEndpointsGetDataRepositories(aiResourceGroup, null, null, null);
+  public DataRepositories getDataRepositories(@Nonnull final String aiResourceGroup)
+      throws OpenApiRequestException {
+    return getDataRepositories(aiResourceGroup, null, null, null);
   }
 
   /**
@@ -163,7 +163,7 @@ public class RetrievalApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DataRepository retrievalV1RetrievalEndpointsGetDataRepository(
+  public DataRepository getDataRepository(
       @Nonnull final String aiResourceGroup, @Nonnull final UUID repositoryId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -171,13 +171,13 @@ public class RetrievalApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling retrievalV1RetrievalEndpointsGetDataRepository");
+          "Missing the required parameter 'aiResourceGroup' when calling getDataRepository");
     }
 
     // verify the required parameter 'repositoryId' is set
     if (repositoryId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'repositoryId' when calling retrievalV1RetrievalEndpointsGetDataRepository");
+          "Missing the required parameter 'repositoryId' when calling getDataRepository");
     }
 
     // create path and map variables
@@ -250,7 +250,7 @@ public class RetrievalApi extends AbstractOpenApiService {
     // verify the required parameter 'searchInput' is set
     if (searchInput == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'searchInput' when calling retrievalV1RetrievalEndpointsSearch");
+          "Missing the required parameter 'searchInput' when calling search");
     }
 
     final String localVarPath =
