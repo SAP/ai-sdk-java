@@ -14,14 +14,10 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/**
- * Response format that the model output should adhere to. This is the same as the OpenAI
- * definition.
- */
+/** DPIEntityConfig */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = ResponseFormatJsonObject.class),
-  @JsonSubTypes.Type(value = ResponseFormatJsonSchema.class),
-  @JsonSubTypes.Type(value = ResponseFormatText.class),
+  @JsonSubTypes.Type(value = DPICustomEntity.class),
+  @JsonSubTypes.Type(value = DPIStandardEntity.class),
 })
-public interface TemplateResponseFormat {}
+public interface DPIEntityConfig {}

@@ -195,7 +195,7 @@ components:
         - role
         - content
     # Below, OpenAI's spec marks 'content' as required but nullable: https://github.com/Azure/azure-rest-api-specs/blob/8279d4aee23a3fef5aac9c76333b0895c83e44c3/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2024-10-21/inference.yaml#L2121
-    # We've made it optional instead to maintain SDK compatibility and avoid breaking changes. 
+    # We've made it optional instead to maintain SDK compatibility and avoid breaking changes.
     # Functionally achieves the same result as both patterns permit responses without textual content
     # OpenAI via null values, ours via field omission.
     ResponseChatMessage:
@@ -453,7 +453,7 @@ components:
       properties:
         model_name:
           description: Model name as in LLM Access configuration
-          example: "gpt-4"
+          example: "gpt-4o-mini"
           type: string
         model_params: # optional, default values are used for mandatory model parameters
           description: Model parameters
@@ -510,7 +510,7 @@ components:
         model:
           type: string
           description: Model name
-          example: "gpt-4"
+          example: "gpt-4o-mini"
         system_fingerprint:
           type: string
           description: System fingerprint
@@ -649,8 +649,6 @@ components:
           description: >
             Response format that the model output should adhere to.
             This is the same as the OpenAI definition.
-
-            Compatible with GPT-4o, GPT-4o mini, GPT-4 (Turbo) and all GPT-3.5 Turbo models newer than gpt-3.5-turbo-1106.
           oneOf:
             - $ref: "#/components/schemas/ResponseFormatText"
             - $ref: "#/components/schemas/ResponseFormatJsonObject"
@@ -1052,6 +1050,22 @@ components:
     DPIEntityConfig:
       oneOf:
         - $ref: "#/components/schemas/DPIStandardEntity"
+        - $ref: "#/components/schemas/DPICustomEntity"
+
+    DPICustomEntity:
+      type: object
+      required:
+        - regex
+        - replacement_strategy
+      additionalProperties: false
+      properties:
+        regex:
+          description: Regular expression to match the entity
+          type: string
+        replacement_strategy:
+          description: Replacement strategy to be used for the entity
+          oneOf:
+            - $ref: "#/components/schemas/DPIMethodConstant"
 
     DPIStandardEntity:
       type: object

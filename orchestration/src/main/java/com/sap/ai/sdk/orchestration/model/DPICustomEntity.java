@@ -23,64 +23,63 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** DPIStandardEntity */
+/** DPICustomEntity */
 // CHECKSTYLE:OFF
-public class DPIStandardEntity implements DPIEntityConfig
+public class DPICustomEntity implements DPIEntityConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("type")
-  private DPIEntities type;
+  @JsonProperty("regex")
+  private String regex;
 
   @JsonProperty("replacement_strategy")
-  private DPIStandardEntityReplacementStrategy replacementStrategy;
+  private DPIMethodConstant replacementStrategy;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DPIStandardEntity. */
-  protected DPIStandardEntity() {}
+  /** Default constructor for DPICustomEntity. */
+  protected DPICustomEntity() {}
 
   /**
-   * Set the type of this {@link DPIStandardEntity} instance and return the same instance.
+   * Set the regex of this {@link DPICustomEntity} instance and return the same instance.
    *
-   * @param type The type of this {@link DPIStandardEntity}
-   * @return The same instance of this {@link DPIStandardEntity} class
+   * @param regex Regular expression to match the entity
+   * @return The same instance of this {@link DPICustomEntity} class
    */
   @Nonnull
-  public DPIStandardEntity type(@Nonnull final DPIEntities type) {
-    this.type = type;
+  public DPICustomEntity regex(@Nonnull final String regex) {
+    this.regex = regex;
     return this;
   }
 
   /**
-   * Get type
+   * Regular expression to match the entity
    *
-   * @return type The type of this {@link DPIStandardEntity} instance.
+   * @return regex The regex of this {@link DPICustomEntity} instance.
    */
   @Nonnull
-  public DPIEntities getType() {
-    return type;
+  public String getRegex() {
+    return regex;
   }
 
   /**
-   * Set the type of this {@link DPIStandardEntity} instance.
+   * Set the regex of this {@link DPICustomEntity} instance.
    *
-   * @param type The type of this {@link DPIStandardEntity}
+   * @param regex Regular expression to match the entity
    */
-  public void setType(@Nonnull final DPIEntities type) {
-    this.type = type;
+  public void setRegex(@Nonnull final String regex) {
+    this.regex = regex;
   }
 
   /**
-   * Set the replacementStrategy of this {@link DPIStandardEntity} instance and return the same
+   * Set the replacementStrategy of this {@link DPICustomEntity} instance and return the same
    * instance.
    *
-   * @param replacementStrategy The replacementStrategy of this {@link DPIStandardEntity}
-   * @return The same instance of this {@link DPIStandardEntity} class
+   * @param replacementStrategy The replacementStrategy of this {@link DPICustomEntity}
+   * @return The same instance of this {@link DPICustomEntity} class
    */
   @Nonnull
-  public DPIStandardEntity replacementStrategy(
-      @Nullable final DPIStandardEntityReplacementStrategy replacementStrategy) {
+  public DPICustomEntity replacementStrategy(@Nonnull final DPIMethodConstant replacementStrategy) {
     this.replacementStrategy = replacementStrategy;
     return this;
   }
@@ -88,25 +87,24 @@ public class DPIStandardEntity implements DPIEntityConfig
   /**
    * Get replacementStrategy
    *
-   * @return replacementStrategy The replacementStrategy of this {@link DPIStandardEntity} instance.
+   * @return replacementStrategy The replacementStrategy of this {@link DPICustomEntity} instance.
    */
   @Nonnull
-  public DPIStandardEntityReplacementStrategy getReplacementStrategy() {
+  public DPIMethodConstant getReplacementStrategy() {
     return replacementStrategy;
   }
 
   /**
-   * Set the replacementStrategy of this {@link DPIStandardEntity} instance.
+   * Set the replacementStrategy of this {@link DPICustomEntity} instance.
    *
-   * @param replacementStrategy The replacementStrategy of this {@link DPIStandardEntity}
+   * @param replacementStrategy The replacementStrategy of this {@link DPICustomEntity}
    */
-  public void setReplacementStrategy(
-      @Nullable final DPIStandardEntityReplacementStrategy replacementStrategy) {
+  public void setReplacementStrategy(@Nonnull final DPIMethodConstant replacementStrategy) {
     this.replacementStrategy = replacementStrategy;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link DPIStandardEntity}.
+   * Get the names of the unrecognizable properties of the {@link DPICustomEntity}.
    *
    * @return The set of properties names
    */
@@ -117,7 +115,7 @@ public class DPIStandardEntity implements DPIEntityConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DPIStandardEntity} instance.
+   * Get the value of an unrecognizable property of this {@link DPICustomEntity} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -128,14 +126,14 @@ public class DPIStandardEntity implements DPIEntityConfig
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("DPIStandardEntity has no field with name '" + name + "'.");
+      throw new NoSuchElementException("DPICustomEntity has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DPIStandardEntity} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link DPICustomEntity} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -143,14 +141,14 @@ public class DPIStandardEntity implements DPIEntityConfig
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (type != null) declaredFields.put("type", type);
+    if (regex != null) declaredFields.put("regex", regex);
     if (replacementStrategy != null) declaredFields.put("replacementStrategy", replacementStrategy);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link DPIStandardEntity} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link DPICustomEntity} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -168,23 +166,23 @@ public class DPIStandardEntity implements DPIEntityConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DPIStandardEntity dpIStandardEntity = (DPIStandardEntity) o;
-    return Objects.equals(this.cloudSdkCustomFields, dpIStandardEntity.cloudSdkCustomFields)
-        && Objects.equals(this.type, dpIStandardEntity.type)
-        && Objects.equals(this.replacementStrategy, dpIStandardEntity.replacementStrategy);
+    final DPICustomEntity dpICustomEntity = (DPICustomEntity) o;
+    return Objects.equals(this.cloudSdkCustomFields, dpICustomEntity.cloudSdkCustomFields)
+        && Objects.equals(this.regex, dpICustomEntity.regex)
+        && Objects.equals(this.replacementStrategy, dpICustomEntity.replacementStrategy);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, replacementStrategy, cloudSdkCustomFields);
+    return Objects.hash(regex, replacementStrategy, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DPIStandardEntity {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("class DPICustomEntity {\n");
+    sb.append("    regex: ").append(toIndentedString(regex)).append("\n");
     sb.append("    replacementStrategy: ")
         .append(toIndentedString(replacementStrategy))
         .append("\n");
@@ -206,21 +204,34 @@ public class DPIStandardEntity implements DPIEntityConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link DPIStandardEntity}
+   * Create a type-safe, fluent-api builder object to construct a new {@link DPICustomEntity}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new DPIStandardEntity().type(type);
+    return (regex) ->
+        (replacementStrategy) ->
+            new DPICustomEntity().regex(regex).replacementStrategy(replacementStrategy);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link DPIStandardEntity} instance.
+     * Set the regex of this {@link DPICustomEntity} instance.
      *
-     * @param type The type of this {@link DPIStandardEntity}
-     * @return The DPIStandardEntity instance.
+     * @param regex Regular expression to match the entity
+     * @return The DPICustomEntity builder.
      */
-    DPIStandardEntity type(@Nonnull final DPIEntities type);
+    Builder1 regex(@Nonnull final String regex);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the replacementStrategy of this {@link DPICustomEntity} instance.
+     *
+     * @param replacementStrategy The replacementStrategy of this {@link DPICustomEntity}
+     * @return The DPICustomEntity instance.
+     */
+    DPICustomEntity replacementStrategy(@Nonnull final DPIMethodConstant replacementStrategy);
   }
 }

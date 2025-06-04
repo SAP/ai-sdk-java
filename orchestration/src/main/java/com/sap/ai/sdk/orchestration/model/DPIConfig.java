@@ -151,7 +151,7 @@ public class DPIConfig
   private MethodEnum method;
 
   @JsonProperty("entities")
-  private List<DPIStandardEntity> entities = new ArrayList<>();
+  private List<DPIEntityConfig> entities = new ArrayList<>();
 
   @JsonProperty("allowlist")
   private List<String> allowlist = new ArrayList<>();
@@ -234,7 +234,7 @@ public class DPIConfig
    * @return The same instance of this {@link DPIConfig} class
    */
   @Nonnull
-  public DPIConfig entities(@Nonnull final List<DPIStandardEntity> entities) {
+  public DPIConfig entities(@Nonnull final List<DPIEntityConfig> entities) {
     this.entities = entities;
     return this;
   }
@@ -246,7 +246,7 @@ public class DPIConfig
    * @return The same instance of type {@link DPIConfig}
    */
   @Nonnull
-  public DPIConfig addEntitiesItem(@Nonnull final DPIStandardEntity entitiesItem) {
+  public DPIConfig addEntitiesItem(@Nonnull final DPIEntityConfig entitiesItem) {
     if (this.entities == null) {
       this.entities = new ArrayList<>();
     }
@@ -260,7 +260,7 @@ public class DPIConfig
    * @return entities The entities of this {@link DPIConfig} instance.
    */
   @Nonnull
-  public List<DPIStandardEntity> getEntities() {
+  public List<DPIEntityConfig> getEntities() {
     return entities;
   }
 
@@ -269,7 +269,7 @@ public class DPIConfig
    *
    * @param entities List of entities to be masked
    */
-  public void setEntities(@Nonnull final List<DPIStandardEntity> entities) {
+  public void setEntities(@Nonnull final List<DPIEntityConfig> entities) {
     this.entities = entities;
   }
 
@@ -499,7 +499,7 @@ public class DPIConfig
      * @param entities List of entities to be masked
      * @return The DPIConfig instance.
      */
-    DPIConfig entities(@Nonnull final List<DPIStandardEntity> entities);
+    DPIConfig entities(@Nonnull final List<DPIEntityConfig> entities);
 
     /**
      * Set the entities of this {@link DPIConfig} instance.
@@ -507,7 +507,7 @@ public class DPIConfig
      * @param entities List of entities to be masked
      * @return The DPIConfig instance.
      */
-    default DPIConfig entities(@Nonnull final DPIStandardEntity... entities) {
+    default DPIConfig entities(@Nonnull final DPIEntityConfig... entities) {
       return entities(Arrays.asList(entities));
     }
   }
