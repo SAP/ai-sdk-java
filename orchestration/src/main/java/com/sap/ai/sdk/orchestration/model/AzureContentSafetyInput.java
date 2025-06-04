@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 /** Filter configuration for Azure Content Safety */
 // CHECKSTYLE:OFF
-public class AzureContentSafety
+public class AzureContentSafetyInput
 // CHECKSTYLE:ON
 {
   @JsonProperty("Hate")
@@ -40,20 +40,23 @@ public class AzureContentSafety
   @JsonProperty("Violence")
   private AzureThreshold violence;
 
+  @JsonProperty("PromptShield")
+  private Boolean promptShield = false;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for AzureContentSafety. */
-  protected AzureContentSafety() {}
+  /** Default constructor for AzureContentSafetyInput. */
+  protected AzureContentSafetyInput() {}
 
   /**
-   * Set the hate of this {@link AzureContentSafety} instance and return the same instance.
+   * Set the hate of this {@link AzureContentSafetyInput} instance and return the same instance.
    *
-   * @param hate The hate of this {@link AzureContentSafety}
-   * @return The same instance of this {@link AzureContentSafety} class
+   * @param hate The hate of this {@link AzureContentSafetyInput}
+   * @return The same instance of this {@link AzureContentSafetyInput} class
    */
   @Nonnull
-  public AzureContentSafety hate(@Nullable final AzureThreshold hate) {
+  public AzureContentSafetyInput hate(@Nullable final AzureThreshold hate) {
     this.hate = hate;
     return this;
   }
@@ -61,7 +64,7 @@ public class AzureContentSafety
   /**
    * Get hate
    *
-   * @return hate The hate of this {@link AzureContentSafety} instance.
+   * @return hate The hate of this {@link AzureContentSafetyInput} instance.
    */
   @Nonnull
   public AzureThreshold getHate() {
@@ -69,22 +72,22 @@ public class AzureContentSafety
   }
 
   /**
-   * Set the hate of this {@link AzureContentSafety} instance.
+   * Set the hate of this {@link AzureContentSafetyInput} instance.
    *
-   * @param hate The hate of this {@link AzureContentSafety}
+   * @param hate The hate of this {@link AzureContentSafetyInput}
    */
   public void setHate(@Nullable final AzureThreshold hate) {
     this.hate = hate;
   }
 
   /**
-   * Set the selfHarm of this {@link AzureContentSafety} instance and return the same instance.
+   * Set the selfHarm of this {@link AzureContentSafetyInput} instance and return the same instance.
    *
-   * @param selfHarm The selfHarm of this {@link AzureContentSafety}
-   * @return The same instance of this {@link AzureContentSafety} class
+   * @param selfHarm The selfHarm of this {@link AzureContentSafetyInput}
+   * @return The same instance of this {@link AzureContentSafetyInput} class
    */
   @Nonnull
-  public AzureContentSafety selfHarm(@Nullable final AzureThreshold selfHarm) {
+  public AzureContentSafetyInput selfHarm(@Nullable final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
     return this;
   }
@@ -92,7 +95,7 @@ public class AzureContentSafety
   /**
    * Get selfHarm
    *
-   * @return selfHarm The selfHarm of this {@link AzureContentSafety} instance.
+   * @return selfHarm The selfHarm of this {@link AzureContentSafetyInput} instance.
    */
   @Nonnull
   public AzureThreshold getSelfHarm() {
@@ -100,22 +103,22 @@ public class AzureContentSafety
   }
 
   /**
-   * Set the selfHarm of this {@link AzureContentSafety} instance.
+   * Set the selfHarm of this {@link AzureContentSafetyInput} instance.
    *
-   * @param selfHarm The selfHarm of this {@link AzureContentSafety}
+   * @param selfHarm The selfHarm of this {@link AzureContentSafetyInput}
    */
   public void setSelfHarm(@Nullable final AzureThreshold selfHarm) {
     this.selfHarm = selfHarm;
   }
 
   /**
-   * Set the sexual of this {@link AzureContentSafety} instance and return the same instance.
+   * Set the sexual of this {@link AzureContentSafetyInput} instance and return the same instance.
    *
-   * @param sexual The sexual of this {@link AzureContentSafety}
-   * @return The same instance of this {@link AzureContentSafety} class
+   * @param sexual The sexual of this {@link AzureContentSafetyInput}
+   * @return The same instance of this {@link AzureContentSafetyInput} class
    */
   @Nonnull
-  public AzureContentSafety sexual(@Nullable final AzureThreshold sexual) {
+  public AzureContentSafetyInput sexual(@Nullable final AzureThreshold sexual) {
     this.sexual = sexual;
     return this;
   }
@@ -123,7 +126,7 @@ public class AzureContentSafety
   /**
    * Get sexual
    *
-   * @return sexual The sexual of this {@link AzureContentSafety} instance.
+   * @return sexual The sexual of this {@link AzureContentSafetyInput} instance.
    */
   @Nonnull
   public AzureThreshold getSexual() {
@@ -131,22 +134,22 @@ public class AzureContentSafety
   }
 
   /**
-   * Set the sexual of this {@link AzureContentSafety} instance.
+   * Set the sexual of this {@link AzureContentSafetyInput} instance.
    *
-   * @param sexual The sexual of this {@link AzureContentSafety}
+   * @param sexual The sexual of this {@link AzureContentSafetyInput}
    */
   public void setSexual(@Nullable final AzureThreshold sexual) {
     this.sexual = sexual;
   }
 
   /**
-   * Set the violence of this {@link AzureContentSafety} instance and return the same instance.
+   * Set the violence of this {@link AzureContentSafetyInput} instance and return the same instance.
    *
-   * @param violence The violence of this {@link AzureContentSafety}
-   * @return The same instance of this {@link AzureContentSafety} class
+   * @param violence The violence of this {@link AzureContentSafetyInput}
+   * @return The same instance of this {@link AzureContentSafetyInput} class
    */
   @Nonnull
-  public AzureContentSafety violence(@Nullable final AzureThreshold violence) {
+  public AzureContentSafetyInput violence(@Nullable final AzureThreshold violence) {
     this.violence = violence;
     return this;
   }
@@ -154,7 +157,7 @@ public class AzureContentSafety
   /**
    * Get violence
    *
-   * @return violence The violence of this {@link AzureContentSafety} instance.
+   * @return violence The violence of this {@link AzureContentSafetyInput} instance.
    */
   @Nonnull
   public AzureThreshold getViolence() {
@@ -162,16 +165,48 @@ public class AzureContentSafety
   }
 
   /**
-   * Set the violence of this {@link AzureContentSafety} instance.
+   * Set the violence of this {@link AzureContentSafetyInput} instance.
    *
-   * @param violence The violence of this {@link AzureContentSafety}
+   * @param violence The violence of this {@link AzureContentSafetyInput}
    */
   public void setViolence(@Nullable final AzureThreshold violence) {
     this.violence = violence;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link AzureContentSafety}.
+   * Set the promptShield of this {@link AzureContentSafetyInput} instance and return the same
+   * instance.
+   *
+   * @param promptShield A flag to use prompt shield
+   * @return The same instance of this {@link AzureContentSafetyInput} class
+   */
+  @Nonnull
+  public AzureContentSafetyInput promptShield(@Nullable final Boolean promptShield) {
+    this.promptShield = promptShield;
+    return this;
+  }
+
+  /**
+   * A flag to use prompt shield
+   *
+   * @return promptShield The promptShield of this {@link AzureContentSafetyInput} instance.
+   */
+  @Nonnull
+  public Boolean isPromptShield() {
+    return promptShield;
+  }
+
+  /**
+   * Set the promptShield of this {@link AzureContentSafetyInput} instance.
+   *
+   * @param promptShield A flag to use prompt shield
+   */
+  public void setPromptShield(@Nullable final Boolean promptShield) {
+    this.promptShield = promptShield;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link AzureContentSafetyInput}.
    *
    * @return The set of properties names
    */
@@ -182,7 +217,7 @@ public class AzureContentSafety
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link AzureContentSafety} instance.
+   * Get the value of an unrecognizable property of this {@link AzureContentSafetyInput} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -193,13 +228,14 @@ public class AzureContentSafety
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("AzureContentSafety has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "AzureContentSafetyInput has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link AzureContentSafety} instance including
+   * Get the value of all properties of this {@link AzureContentSafetyInput} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -212,11 +248,12 @@ public class AzureContentSafety
     if (selfHarm != null) declaredFields.put("selfHarm", selfHarm);
     if (sexual != null) declaredFields.put("sexual", sexual);
     if (violence != null) declaredFields.put("violence", violence);
+    if (promptShield != null) declaredFields.put("promptShield", promptShield);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link AzureContentSafety} instance. If the map
+   * Set an unrecognizable property of this {@link AzureContentSafetyInput} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -235,28 +272,30 @@ public class AzureContentSafety
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final AzureContentSafety azureContentSafety = (AzureContentSafety) o;
-    return Objects.equals(this.cloudSdkCustomFields, azureContentSafety.cloudSdkCustomFields)
-        && Objects.equals(this.hate, azureContentSafety.hate)
-        && Objects.equals(this.selfHarm, azureContentSafety.selfHarm)
-        && Objects.equals(this.sexual, azureContentSafety.sexual)
-        && Objects.equals(this.violence, azureContentSafety.violence);
+    final AzureContentSafetyInput azureContentSafetyInput = (AzureContentSafetyInput) o;
+    return Objects.equals(this.cloudSdkCustomFields, azureContentSafetyInput.cloudSdkCustomFields)
+        && Objects.equals(this.hate, azureContentSafetyInput.hate)
+        && Objects.equals(this.selfHarm, azureContentSafetyInput.selfHarm)
+        && Objects.equals(this.sexual, azureContentSafetyInput.sexual)
+        && Objects.equals(this.violence, azureContentSafetyInput.violence)
+        && Objects.equals(this.promptShield, azureContentSafetyInput.promptShield);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hate, selfHarm, sexual, violence, cloudSdkCustomFields);
+    return Objects.hash(hate, selfHarm, sexual, violence, promptShield, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class AzureContentSafety {\n");
+    sb.append("class AzureContentSafetyInput {\n");
     sb.append("    hate: ").append(toIndentedString(hate)).append("\n");
     sb.append("    selfHarm: ").append(toIndentedString(selfHarm)).append("\n");
     sb.append("    sexual: ").append(toIndentedString(sexual)).append("\n");
     sb.append("    violence: ").append(toIndentedString(violence)).append("\n");
+    sb.append("    promptShield: ").append(toIndentedString(promptShield)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -274,8 +313,8 @@ public class AzureContentSafety
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link AzureContentSafety} instance. No arguments are required. */
-  public static AzureContentSafety create() {
-    return new AzureContentSafety();
+  /** Create a new {@link AzureContentSafetyInput} instance. No arguments are required. */
+  public static AzureContentSafetyInput create() {
+    return new AzureContentSafetyInput();
   }
 }

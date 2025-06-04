@@ -25,22 +25,22 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** LlamaGuard38bFilterConfig */
+/** Replaces the entity with the specified value followed by an incrementing number */
 // CHECKSTYLE:OFF
-public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilterConfig
+public class DPIMethodConstant implements DPIStandardEntityReplacementStrategy
 // CHECKSTYLE:ON
 {
-  /** Name of the filter provider type */
-  public enum TypeEnum {
-    /** The LLAMA_GUARD_3_8B option of this LlamaGuard38bFilterConfig */
-    LLAMA_GUARD_3_8B("llama_guard_3_8b"),
+  /** Gets or Sets method */
+  public enum MethodEnum {
+    /** The CONSTANT option of this DPIMethodConstant */
+    CONSTANT("constant"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this LlamaGuard38bFilterConfig */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this DPIMethodConstant */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
-    TypeEnum(String value) {
+    MethodEnum(String value) {
       this.value = value;
     }
 
@@ -70,12 +70,12 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type LlamaGuard38bFilterConfig
+     * @return The enum value of type DPIMethodConstant
      */
     @JsonCreator
     @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
-      for (TypeEnum b : TypeEnum.values()) {
+    public static MethodEnum fromValue(@Nonnull final String value) {
+      for (MethodEnum b : MethodEnum.values()) {
         if (b.value.equals(value)) {
           return b;
         }
@@ -84,82 +84,82 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
     }
   }
 
-  @JsonProperty("type")
-  private TypeEnum type;
+  @JsonProperty("method")
+  private MethodEnum method;
 
-  @JsonProperty("config")
-  private LlamaGuard38b config;
+  @JsonProperty("value")
+  private String value;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for LlamaGuard38bFilterConfig. */
-  protected LlamaGuard38bFilterConfig() {}
+  /** Default constructor for DPIMethodConstant. */
+  protected DPIMethodConstant() {}
 
   /**
-   * Set the type of this {@link LlamaGuard38bFilterConfig} instance and return the same instance.
+   * Set the method of this {@link DPIMethodConstant} instance and return the same instance.
    *
-   * @param type Name of the filter provider type
-   * @return The same instance of this {@link LlamaGuard38bFilterConfig} class
+   * @param method The method of this {@link DPIMethodConstant}
+   * @return The same instance of this {@link DPIMethodConstant} class
    */
   @Nonnull
-  public LlamaGuard38bFilterConfig type(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public DPIMethodConstant method(@Nonnull final MethodEnum method) {
+    this.method = method;
     return this;
   }
 
   /**
-   * Name of the filter provider type
+   * Get method
    *
-   * @return type The type of this {@link LlamaGuard38bFilterConfig} instance.
+   * @return method The method of this {@link DPIMethodConstant} instance.
    */
   @Nonnull
-  public TypeEnum getType() {
-    return type;
+  public MethodEnum getMethod() {
+    return method;
   }
 
   /**
-   * Set the type of this {@link LlamaGuard38bFilterConfig} instance.
+   * Set the method of this {@link DPIMethodConstant} instance.
    *
-   * @param type Name of the filter provider type
+   * @param method The method of this {@link DPIMethodConstant}
    */
-  public void setType(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public void setMethod(@Nonnull final MethodEnum method) {
+    this.method = method;
   }
 
   /**
-   * Set the config of this {@link LlamaGuard38bFilterConfig} instance and return the same instance.
+   * Set the value of this {@link DPIMethodConstant} instance and return the same instance.
    *
-   * @param config The config of this {@link LlamaGuard38bFilterConfig}
-   * @return The same instance of this {@link LlamaGuard38bFilterConfig} class
+   * @param value Value to be used for replacement
+   * @return The same instance of this {@link DPIMethodConstant} class
    */
   @Nonnull
-  public LlamaGuard38bFilterConfig config(@Nonnull final LlamaGuard38b config) {
-    this.config = config;
+  public DPIMethodConstant value(@Nonnull final String value) {
+    this.value = value;
     return this;
   }
 
   /**
-   * Get config
+   * Value to be used for replacement
    *
-   * @return config The config of this {@link LlamaGuard38bFilterConfig} instance.
+   * @return value The value of this {@link DPIMethodConstant} instance.
    */
   @Nonnull
-  public LlamaGuard38b getConfig() {
-    return config;
+  public String getValue() {
+    return value;
   }
 
   /**
-   * Set the config of this {@link LlamaGuard38bFilterConfig} instance.
+   * Set the value of this {@link DPIMethodConstant} instance.
    *
-   * @param config The config of this {@link LlamaGuard38bFilterConfig}
+   * @param value Value to be used for replacement
    */
-  public void setConfig(@Nonnull final LlamaGuard38b config) {
-    this.config = config;
+  public void setValue(@Nonnull final String value) {
+    this.value = value;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link LlamaGuard38bFilterConfig}.
+   * Get the names of the unrecognizable properties of the {@link DPIMethodConstant}.
    *
    * @return The set of properties names
    */
@@ -170,7 +170,7 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link LlamaGuard38bFilterConfig} instance.
+   * Get the value of an unrecognizable property of this {@link DPIMethodConstant} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -181,14 +181,13 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "LlamaGuard38bFilterConfig has no field with name '" + name + "'.");
+      throw new NoSuchElementException("DPIMethodConstant has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link LlamaGuard38bFilterConfig} instance including
+   * Get the value of all properties of this {@link DPIMethodConstant} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -197,13 +196,13 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (type != null) declaredFields.put("type", type);
-    if (config != null) declaredFields.put("config", config);
+    if (method != null) declaredFields.put("method", method);
+    if (value != null) declaredFields.put("value", value);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link LlamaGuard38bFilterConfig} instance. If the map
+   * Set an unrecognizable property of this {@link DPIMethodConstant} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -222,24 +221,24 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final LlamaGuard38bFilterConfig llamaGuard38bFilterConfig = (LlamaGuard38bFilterConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, llamaGuard38bFilterConfig.cloudSdkCustomFields)
-        && Objects.equals(this.type, llamaGuard38bFilterConfig.type)
-        && Objects.equals(this.config, llamaGuard38bFilterConfig.config);
+    final DPIMethodConstant dpIMethodConstant = (DPIMethodConstant) o;
+    return Objects.equals(this.cloudSdkCustomFields, dpIMethodConstant.cloudSdkCustomFields)
+        && Objects.equals(this.method, dpIMethodConstant.method)
+        && Objects.equals(this.value, dpIMethodConstant.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, config, cloudSdkCustomFields);
+    return Objects.hash(method, value, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class LlamaGuard38bFilterConfig {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    config: ").append(toIndentedString(config)).append("\n");
+    sb.append("class DPIMethodConstant {\n");
+    sb.append("    method: ").append(toIndentedString(method)).append("\n");
+    sb.append("    value: ").append(toIndentedString(value)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -258,32 +257,32 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * LlamaGuard38bFilterConfig} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link DPIMethodConstant}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (config) -> new LlamaGuard38bFilterConfig().type(type).config(config);
+    return (method) -> (value) -> new DPIMethodConstant().method(method).value(value);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link LlamaGuard38bFilterConfig} instance.
+     * Set the method of this {@link DPIMethodConstant} instance.
      *
-     * @param type Name of the filter provider type
-     * @return The LlamaGuard38bFilterConfig builder.
+     * @param method The method of this {@link DPIMethodConstant}
+     * @return The DPIMethodConstant builder.
      */
-    Builder1 type(@Nonnull final TypeEnum type);
+    Builder1 method(@Nonnull final MethodEnum method);
   }
 
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the config of this {@link LlamaGuard38bFilterConfig} instance.
+     * Set the value of this {@link DPIMethodConstant} instance.
      *
-     * @param config The config of this {@link LlamaGuard38bFilterConfig}
-     * @return The LlamaGuard38bFilterConfig instance.
+     * @param value Value to be used for replacement
+     * @return The DPIMethodConstant instance.
      */
-    LlamaGuard38bFilterConfig config(@Nonnull final LlamaGuard38b config);
+    DPIMethodConstant value(@Nonnull final String value);
   }
 }
