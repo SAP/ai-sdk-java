@@ -32,7 +32,7 @@ public class TrckGetMetricResource
 // CHECKSTYLE:ON
 {
   @JsonProperty("executionId")
-  private TrckExecutionId executionId;
+  private String executionId;
 
   @JsonProperty("createdAt")
   private OffsetDateTime createdAt;
@@ -59,31 +59,31 @@ public class TrckGetMetricResource
    * Set the executionId of this {@link TrckGetMetricResource} instance and return the same
    * instance.
    *
-   * @param executionId The executionId of this {@link TrckGetMetricResource}
+   * @param executionId Generic ID
    * @return The same instance of this {@link TrckGetMetricResource} class
    */
   @Nonnull
-  public TrckGetMetricResource executionId(@Nonnull final TrckExecutionId executionId) {
+  public TrckGetMetricResource executionId(@Nonnull final String executionId) {
     this.executionId = executionId;
     return this;
   }
 
   /**
-   * Get executionId
+   * Generic ID
    *
    * @return executionId The executionId of this {@link TrckGetMetricResource} instance.
    */
   @Nonnull
-  public TrckExecutionId getExecutionId() {
+  public String getExecutionId() {
     return executionId;
   }
 
   /**
    * Set the executionId of this {@link TrckGetMetricResource} instance.
    *
-   * @param executionId The executionId of this {@link TrckGetMetricResource}
+   * @param executionId Generic ID
    */
-  public void setExecutionId(@Nonnull final TrckExecutionId executionId) {
+  public void setExecutionId(@Nonnull final String executionId) {
     this.executionId = executionId;
   }
 
@@ -413,9 +413,9 @@ public class TrckGetMetricResource
     /**
      * Set the executionId of this {@link TrckGetMetricResource} instance.
      *
-     * @param executionId The executionId of this {@link TrckGetMetricResource}
+     * @param executionId Generic ID
      * @return The TrckGetMetricResource instance.
      */
-    TrckGetMetricResource executionId(@Nonnull final TrckExecutionId executionId);
+    TrckGetMetricResource executionId(@Nonnull final String executionId);
   }
 }
