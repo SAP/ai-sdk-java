@@ -879,7 +879,7 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> response.asEntity(TranslationNotStaticNoConstructor.class))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Please make sure to use the correct class and that the class has a no-args constructor or is static")
+            "Please make sure to use the correct class and that the class has a no-args constructor and it is static")
         .hasMessageContaining("JSON content: {\"translation\":\"Apfel\",\"language\":\"German\"}");
 
     // ------------- good use -------------
