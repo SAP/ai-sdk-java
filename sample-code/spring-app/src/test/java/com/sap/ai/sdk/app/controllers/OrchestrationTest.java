@@ -318,7 +318,8 @@ class OrchestrationTest {
 
   @Test
   void testResponseFormatJsonSchema() {
-    Translation translation = service.responseFormatJsonSchema("apple");
+    Translation translation =
+        service.responseFormatJsonSchema("apple", Translation.class).asEntity(Translation.class);
     assertThat(translation.translation()).isNotEmpty();
     assertThat(translation.language()).isNotEmpty();
   }
