@@ -29,8 +29,6 @@ import javax.annotation.Nullable;
 // CHECKSTYLE:OFF
 public class ChatCompletionRequestMessageContentPartText
     implements ChatCompletionRequestAssistantMessageContentPart,
-        ChatCompletionRequestSystemMessageContentPart,
-        ChatCompletionRequestToolMessageContentPart,
         ChatCompletionRequestUserMessageContentPart
 // CHECKSTYLE:ON
 {

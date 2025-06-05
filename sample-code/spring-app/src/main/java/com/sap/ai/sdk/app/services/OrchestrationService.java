@@ -363,6 +363,34 @@ public class OrchestrationService {
   }
 
   /**
+   * Using grounding via a sharepoint repository to provide additional context to the AI model.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - Grounding</a>
+   * @param userMessage the user message to provide grounding for
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse groundingSharepoint(@Nonnull final String userMessage) {
+    //    The sharepoint for this test is in the resource group "ai-sdk-js-e2e"
+    //    under repository ID "0bd2adc2-8d0d-478a-94f6-a0c10958f602".
+    val destination =
+        new AiCoreService().getInferenceDestination("ai-sdk-js-e2e").forScenario("orchestration");
+    val customClient = new OrchestrationClient(destination);
+    val dataRepositoryId = "0bd2adc2-8d0d-478a-94f6-a0c10958f602";
+
+    val filter =
+        DocumentGroundingFilter.create()
+            .dataRepositoryType(DataRepositoryType.VECTOR)
+            .dataRepositories(List.of(dataRepositoryId))
+            .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1));
+    val groundingConfig = Grounding.create().filters(filter);
+    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+    val configWithGrounding = config.withGrounding(groundingConfig);
+    return customClient.chatCompletion(prompt, configWithGrounding);
+  }
+
+  /**
    * Using grounding via *help.sap.com* to provide additional SAP-specific context to the AI model.
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP

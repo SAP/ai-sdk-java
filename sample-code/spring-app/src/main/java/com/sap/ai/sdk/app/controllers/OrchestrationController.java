@@ -224,6 +224,17 @@ class OrchestrationController {
     return response.getContent();
   }
 
+  @GetMapping("/groundingSharepoint")
+  @Nonnull
+  Object groundingSharepoint(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.groundingSharepoint("What is the secret for the AI SDK e2e test?");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
   @GetMapping("/groundingHelpSapCom")
   @Nonnull
   Object groundingHelpSapCom(

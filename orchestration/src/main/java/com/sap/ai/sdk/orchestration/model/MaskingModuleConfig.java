@@ -32,7 +32,7 @@ public class MaskingModuleConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("masking_providers")
-  private List<MaskingProviderConfig> maskingProviders = new ArrayList<>();
+  private List<DPIConfig> maskingProviders = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -48,8 +48,7 @@ public class MaskingModuleConfig
    * @return The same instance of this {@link MaskingModuleConfig} class
    */
   @Nonnull
-  public MaskingModuleConfig maskingProviders(
-      @Nonnull final List<MaskingProviderConfig> maskingProviders) {
+  public MaskingModuleConfig maskingProviders(@Nonnull final List<DPIConfig> maskingProviders) {
     this.maskingProviders = maskingProviders;
     return this;
   }
@@ -62,7 +61,7 @@ public class MaskingModuleConfig
    */
   @Nonnull
   public MaskingModuleConfig addMaskingProvidersItem(
-      @Nonnull final MaskingProviderConfig maskingProvidersItem) {
+      @Nonnull final DPIConfig maskingProvidersItem) {
     if (this.maskingProviders == null) {
       this.maskingProviders = new ArrayList<>();
     }
@@ -76,7 +75,7 @@ public class MaskingModuleConfig
    * @return maskingProviders The maskingProviders of this {@link MaskingModuleConfig} instance.
    */
   @Nonnull
-  public List<MaskingProviderConfig> getMaskingProviders() {
+  public List<DPIConfig> getMaskingProviders() {
     return maskingProviders;
   }
 
@@ -85,7 +84,7 @@ public class MaskingModuleConfig
    *
    * @param maskingProviders List of masking service providers
    */
-  public void setMaskingProviders(@Nonnull final List<MaskingProviderConfig> maskingProviders) {
+  public void setMaskingProviders(@Nonnull final List<DPIConfig> maskingProviders) {
     this.maskingProviders = maskingProviders;
   }
 
@@ -201,8 +200,7 @@ public class MaskingModuleConfig
      * @param maskingProviders List of masking service providers
      * @return The MaskingModuleConfig instance.
      */
-    MaskingModuleConfig maskingProviders(
-        @Nonnull final List<MaskingProviderConfig> maskingProviders);
+    MaskingModuleConfig maskingProviders(@Nonnull final List<DPIConfig> maskingProviders);
 
     /**
      * Set the maskingProviders of this {@link MaskingModuleConfig} instance.
@@ -210,8 +208,7 @@ public class MaskingModuleConfig
      * @param maskingProviders List of masking service providers
      * @return The MaskingModuleConfig instance.
      */
-    default MaskingModuleConfig maskingProviders(
-        @Nonnull final MaskingProviderConfig... maskingProviders) {
+    default MaskingModuleConfig maskingProviders(@Nonnull final DPIConfig... maskingProviders) {
       return maskingProviders(Arrays.asList(maskingProviders));
     }
   }
