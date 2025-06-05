@@ -250,11 +250,7 @@ class OrchestrationController {
   @Nonnull
   Object responseFormatJsonSchema(
       @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.responseFormatJsonSchema("apple");
-    if ("json".equals(format)) {
-      return response;
-    }
-    return response.getContent();
+    return service.responseFormatJsonSchema("apple");
   }
 
   @GetMapping("/responseFormatJsonObject")

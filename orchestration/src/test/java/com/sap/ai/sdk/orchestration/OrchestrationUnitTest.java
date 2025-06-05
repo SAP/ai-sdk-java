@@ -832,6 +832,15 @@ class OrchestrationUnitTest {
     }
   }
 
+  //    Example class
+  static class Translation {
+    @JsonProperty(required = true)
+    private String language;
+
+    @JsonProperty(required = true)
+    private String translation;
+  }
+
   @Test
   void testResponseFormatJsonSchema() throws IOException {
     stubFor(
@@ -841,16 +850,8 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonSchemaResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-    //    Example class
-    class Translation {
-      @JsonProperty(required = true)
-      private String language;
-
-      @JsonProperty(required = true)
-      private String translation;
-    }
     val schema =
         ResponseJsonSchema.fromType(Translation.class)
             .withDescription("Output schema for language translation.")
@@ -863,13 +864,69 @@ class OrchestrationUnitTest {
             Message.user("Whats 'apple' in German?"),
             Message.system("You are a language translator."));
 
-    final var message = client.chatCompletion(prompt, configWithResponseSchema).getContent();
-    assertThat(message).isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
+    val response = client.chatCompletion(prompt, configWithResponseSchema);
+    assertThat(response.getContent())
+        .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
+
+    // ------------- wrong use -------------
+    class TranslationNotStaticNoConstructor {
+      @JsonProperty(required = true)
+      private String language;
+
+      @JsonProperty(required = true)
+      private String translation;
+    }
+    assertThatThrownBy(() -> response.asEntity(TranslationNotStaticNoConstructor.class))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "Please make sure to use the correct class and that the class has a no-args constructor or is static")
+        .hasMessageContaining("JSON content: {\"translation\":\"Apfel\",\"language\":\"German\"}");
+
+    // ------------- good use -------------
+    Translation translation = response.asEntity(Translation.class);
+    assertThat(translation.language).isEqualTo("German");
+    assertThat(translation.translation).isEqualTo("Apfel");
 
     try (var requestInputStream = fileLoader.apply("jsonSchemaRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
+  }
+
+  @Test
+  void testJsonSchemaWrongConfig() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val response = client.chatCompletion(prompt, config);
+
+    // no config and wrong response
+    assertThatThrownBy(() -> response.asEntity(Translation.class))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "Please configure an OrchestrationTemplate with format set to JSON schema into your OrchestrationModuleConfig")
+        .hasMessageContaining("JSON content: Le service d'orchestration fonctionne!");
+  }
+
+  @Test
+  void testJsonSchemaRefusal() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("errorJsonSchemaResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val response = client.chatCompletion(prompt, config);
+
+    assertThatThrownBy(() -> response.asEntity(Translation.class))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "The model refused to answer the question: I'm sorry, I cannot assist with that request.");
   }
 
   @Test
