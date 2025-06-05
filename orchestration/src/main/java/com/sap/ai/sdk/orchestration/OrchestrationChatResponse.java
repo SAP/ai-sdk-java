@@ -139,7 +139,7 @@ public class OrchestrationChatResponse {
       return new ObjectMapper().readValue(getContent(), type);
     } catch (InvalidDefinitionException e) {
       throw new OrchestrationClientException(
-          "Failed to deserialize the JSON content. Please make sure to use the correct class and that the class has a no-args constructor and it is static: "
+          "Failed to deserialize the JSON content. Please make sure to use the correct class and that the class has a no-args constructor or is static: "
               + e.getMessage()
               + "\nJSON content: "
               + getContent(),
