@@ -18,6 +18,7 @@
   Interfaces with only one implementation were reduced.
   As a result, the accessors for fields `OrchestrationModuleConfig.inputTranslationConfig` and `OrchestrationModuleConfig.outputTranslationConfig` now handle the implementing class explicitly.
   The same applies to helper methods `DpiMasking#createConfig()` and `MaskingProvider#createConfig()`.
+- [Orchestration] `OrchestrationTemplate.withTemplate()` has been deprecated. Please use `OrchestrationTemplate.withTemplateMessages()` instead.
 
 ### ✨ New Functionality
 

@@ -120,8 +120,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse template(@Nonnull final String language) {
     val template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-    val templatingConfig =
-        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
+    val templatingConfig = TemplateConfig.create().withMessages(template);
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val inputParams = Map.of("language", language);
@@ -462,10 +461,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonObject(@Nonnull final String word) {
     val template = Message.user("What is '%s' in German?".formatted(word));
-    val templatingConfig =
-        TemplateConfig.create()
-            .withTemplate(List.of(template.createChatMessage()))
-            .withJsonResponse();
+    val templatingConfig = TemplateConfig.create().withMessages(template).withJsonResponse();
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val prompt =

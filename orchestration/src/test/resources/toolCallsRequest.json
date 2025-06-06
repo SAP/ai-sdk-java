@@ -10,10 +10,7 @@
         "template": [
           {
             "role": "user",
-            "content": [ {
-              "type" : "text",
-              "text" : "What is the weather in Potsdam and in Toulouse?"
-            } ]
+            "content": "What is the weather in Potsdam and in Toulouse?"
           }
         ],
         "defaults": {},
