@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -23,32 +23,32 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** PipelinePostRequstConfiguration */
+/** MSSharePointConfiguration */
 // CHECKSTYLE:OFF
-public class PipelinePostRequstConfiguration
+public class MSSharePointConfiguration
 // CHECKSTYLE:ON
 {
   @JsonProperty("destination")
   private String destination;
 
   @JsonProperty("sharePoint")
-  private PipelinePostRequstConfigurationSharePoint sharePoint;
+  private SharePointConfig sharePoint;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for PipelinePostRequstConfiguration. */
-  protected PipelinePostRequstConfiguration() {}
+  /** Default constructor for MSSharePointConfiguration. */
+  protected MSSharePointConfiguration() {}
 
   /**
-   * Set the destination of this {@link PipelinePostRequstConfiguration} instance and return the
-   * same instance.
+   * Set the destination of this {@link MSSharePointConfiguration} instance and return the same
+   * instance.
    *
-   * @param destination The destination of this {@link PipelinePostRequstConfiguration}
-   * @return The same instance of this {@link PipelinePostRequstConfiguration} class
+   * @param destination The destination of this {@link MSSharePointConfiguration}
+   * @return The same instance of this {@link MSSharePointConfiguration} class
    */
   @Nonnull
-  public PipelinePostRequstConfiguration destination(@Nonnull final String destination) {
+  public MSSharePointConfiguration destination(@Nonnull final String destination) {
     this.destination = destination;
     return this;
   }
@@ -56,7 +56,7 @@ public class PipelinePostRequstConfiguration
   /**
    * Get destination
    *
-   * @return destination The destination of this {@link PipelinePostRequstConfiguration} instance.
+   * @return destination The destination of this {@link MSSharePointConfiguration} instance.
    */
   @Nonnull
   public String getDestination() {
@@ -64,24 +64,23 @@ public class PipelinePostRequstConfiguration
   }
 
   /**
-   * Set the destination of this {@link PipelinePostRequstConfiguration} instance.
+   * Set the destination of this {@link MSSharePointConfiguration} instance.
    *
-   * @param destination The destination of this {@link PipelinePostRequstConfiguration}
+   * @param destination The destination of this {@link MSSharePointConfiguration}
    */
   public void setDestination(@Nonnull final String destination) {
     this.destination = destination;
   }
 
   /**
-   * Set the sharePoint of this {@link PipelinePostRequstConfiguration} instance and return the same
+   * Set the sharePoint of this {@link MSSharePointConfiguration} instance and return the same
    * instance.
    *
-   * @param sharePoint The sharePoint of this {@link PipelinePostRequstConfiguration}
-   * @return The same instance of this {@link PipelinePostRequstConfiguration} class
+   * @param sharePoint The sharePoint of this {@link MSSharePointConfiguration}
+   * @return The same instance of this {@link MSSharePointConfiguration} class
    */
   @Nonnull
-  public PipelinePostRequstConfiguration sharePoint(
-      @Nullable final PipelinePostRequstConfigurationSharePoint sharePoint) {
+  public MSSharePointConfiguration sharePoint(@Nonnull final SharePointConfig sharePoint) {
     this.sharePoint = sharePoint;
     return this;
   }
@@ -89,24 +88,24 @@ public class PipelinePostRequstConfiguration
   /**
    * Get sharePoint
    *
-   * @return sharePoint The sharePoint of this {@link PipelinePostRequstConfiguration} instance.
+   * @return sharePoint The sharePoint of this {@link MSSharePointConfiguration} instance.
    */
   @Nonnull
-  public PipelinePostRequstConfigurationSharePoint getSharePoint() {
+  public SharePointConfig getSharePoint() {
     return sharePoint;
   }
 
   /**
-   * Set the sharePoint of this {@link PipelinePostRequstConfiguration} instance.
+   * Set the sharePoint of this {@link MSSharePointConfiguration} instance.
    *
-   * @param sharePoint The sharePoint of this {@link PipelinePostRequstConfiguration}
+   * @param sharePoint The sharePoint of this {@link MSSharePointConfiguration}
    */
-  public void setSharePoint(@Nullable final PipelinePostRequstConfigurationSharePoint sharePoint) {
+  public void setSharePoint(@Nonnull final SharePointConfig sharePoint) {
     this.sharePoint = sharePoint;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link PipelinePostRequstConfiguration}.
+   * Get the names of the unrecognizable properties of the {@link MSSharePointConfiguration}.
    *
    * @return The set of properties names
    */
@@ -117,8 +116,7 @@ public class PipelinePostRequstConfiguration
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link PipelinePostRequstConfiguration}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link MSSharePointConfiguration} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -130,14 +128,14 @@ public class PipelinePostRequstConfiguration
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "PipelinePostRequstConfiguration has no field with name '" + name + "'.");
+          "MSSharePointConfiguration has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link PipelinePostRequstConfiguration} instance
-   * including unrecognized properties.
+   * Get the value of all properties of this {@link MSSharePointConfiguration} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -151,9 +149,8 @@ public class PipelinePostRequstConfiguration
   }
 
   /**
-   * Set an unrecognizable property of this {@link PipelinePostRequstConfiguration} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
+   * Set an unrecognizable property of this {@link MSSharePointConfiguration} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -171,12 +168,10 @@ public class PipelinePostRequstConfiguration
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final PipelinePostRequstConfiguration pipelinePostRequstConfiguration =
-        (PipelinePostRequstConfiguration) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, pipelinePostRequstConfiguration.cloudSdkCustomFields)
-        && Objects.equals(this.destination, pipelinePostRequstConfiguration.destination)
-        && Objects.equals(this.sharePoint, pipelinePostRequstConfiguration.sharePoint);
+    final MSSharePointConfiguration msSharePointConfiguration = (MSSharePointConfiguration) o;
+    return Objects.equals(this.cloudSdkCustomFields, msSharePointConfiguration.cloudSdkCustomFields)
+        && Objects.equals(this.destination, msSharePointConfiguration.destination)
+        && Objects.equals(this.sharePoint, msSharePointConfiguration.sharePoint);
   }
 
   @Override
@@ -188,7 +183,7 @@ public class PipelinePostRequstConfiguration
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class PipelinePostRequstConfiguration {\n");
+    sb.append("class MSSharePointConfiguration {\n");
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
     sb.append("    sharePoint: ").append(toIndentedString(sharePoint)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -210,20 +205,33 @@ public class PipelinePostRequstConfiguration
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * PipelinePostRequstConfiguration} instance with all required arguments.
+   * MSSharePointConfiguration} instance with all required arguments.
    */
   public static Builder create() {
-    return (destination) -> new PipelinePostRequstConfiguration().destination(destination);
+    return (destination) ->
+        (sharePoint) ->
+            new MSSharePointConfiguration().destination(destination).sharePoint(sharePoint);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the destination of this {@link PipelinePostRequstConfiguration} instance.
+     * Set the destination of this {@link MSSharePointConfiguration} instance.
      *
-     * @param destination The destination of this {@link PipelinePostRequstConfiguration}
-     * @return The PipelinePostRequstConfiguration instance.
+     * @param destination The destination of this {@link MSSharePointConfiguration}
+     * @return The MSSharePointConfiguration builder.
      */
-    PipelinePostRequstConfiguration destination(@Nonnull final String destination);
+    Builder1 destination(@Nonnull final String destination);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the sharePoint of this {@link MSSharePointConfiguration} instance.
+     *
+     * @param sharePoint The sharePoint of this {@link MSSharePointConfiguration}
+     * @return The MSSharePointConfiguration instance.
+     */
+    MSSharePointConfiguration sharePoint(@Nonnull final SharePointConfig sharePoint);
   }
 }

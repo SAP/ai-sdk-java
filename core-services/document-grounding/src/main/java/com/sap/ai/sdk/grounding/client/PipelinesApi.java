@@ -1,11 +1,15 @@
 package com.sap.ai.sdk.grounding.client;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.grounding.model.Pipeline;
+import com.sap.ai.sdk.grounding.model.CreatePipeline;
+import com.sap.ai.sdk.grounding.model.DocumentsStatusResponse;
+import com.sap.ai.sdk.grounding.model.GetPipeline;
+import com.sap.ai.sdk.grounding.model.GetPipelineExecutionById;
+import com.sap.ai.sdk.grounding.model.GetPipelineExecutions;
+import com.sap.ai.sdk.grounding.model.GetPipelineStatus;
+import com.sap.ai.sdk.grounding.model.GetPipelines;
+import com.sap.ai.sdk.grounding.model.PipelineDocumentResponse;
 import com.sap.ai.sdk.grounding.model.PipelineId;
-import com.sap.ai.sdk.grounding.model.PipelinePostRequst;
-import com.sap.ai.sdk.grounding.model.PipelineStatus;
-import com.sap.ai.sdk.grounding.model.Pipelines;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
@@ -25,13 +29,17 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * Document Grounding Pipeline API in version 0.1.0.
+ * Grounding in version 0.1.0.
  *
- * <p>SAP AI Core - API Specification AI Data Management api's
+ * <p>Grounding is a service designed to handle data-related tasks, such as grounding and retrieval,
+ * using vector databases. It provides specialized data retrieval through these databases, grounding
+ * the retrieval process with your own external and context-relevant data. Grounding combines
+ * generative AI capabilities with the ability to use real-time, precise data to improve
+ * decision-making and business operations for specific AI-driven business solutions.
  */
 public class PipelinesApi extends AbstractOpenApiService {
   /**
-   * Instantiates this API class to invoke operations on the Document Grounding Pipeline API.
+   * Instantiates this API class to invoke operations on the Grounding.
    *
    * @param httpDestination The destination that API should be used with
    */
@@ -40,8 +48,8 @@ public class PipelinesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Instantiates this API class to invoke operations on the Document Grounding Pipeline API based
-   * on a given {@link ApiClient}.
+   * Instantiates this API class to invoke operations on the Grounding based on a given {@link
+   * ApiClient}.
    *
    * @param apiClient ApiClient to invoke the API on
    */
@@ -51,33 +59,35 @@ public class PipelinesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Create a pipeline
+   * Pipeline Creation
+   *
+   * <p>Create a pipeline
    *
    * <p><b>201</b> - Returns pipelineId on successful creation.
    *
    * <p><b>400</b> - The specification of the resource was incorrect
    *
-   * @param aiResourceGroup The value for the parameter aiResourceGroup
-   * @param pipelinePostRequst The value for the parameter pipelinePostRequst
+   * @param aiResourceGroup Resource Group ID
+   * @param createPipeline The value for the parameter createPipeline
    * @return PipelineId
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PipelineId createPipeline(
-      @Nonnull final String aiResourceGroup, @Nonnull final PipelinePostRequst pipelinePostRequst)
+  public PipelineId pipelineV1PipelineEndpointsCreatePipeline(
+      @Nonnull final String aiResourceGroup, @Nonnull final CreatePipeline createPipeline)
       throws OpenApiRequestException {
-    final Object localVarPostBody = pipelinePostRequst;
+    final Object localVarPostBody = createPipeline;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling createPipeline");
+          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsCreatePipeline");
     }
 
-    // verify the required parameter 'pipelinePostRequst' is set
-    if (pipelinePostRequst == null) {
+    // verify the required parameter 'createPipeline' is set
+    if (createPipeline == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelinePostRequst' when calling pipelineV1PipelineEndpointsCreatePipeline");
+          "Missing the required parameter 'createPipeline' when calling pipelineV1PipelineEndpointsCreatePipeline");
     }
 
     final String localVarPath = UriComponentsBuilder.fromPath("/pipelines").build().toUriString();
@@ -114,19 +124,21 @@ public class PipelinesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Delete a pipeline by pipeline id
+   * Delete pipeline
+   *
+   * <p>Delete a pipeline by pipeline id
    *
    * <p><b>204</b> - No Content
    *
    * <p><b>400</b> - The specification of the resource was incorrect
    *
-   * @param aiResourceGroup The value for the parameter aiResourceGroup
+   * @param aiResourceGroup Resource Group ID
    * @param pipelineId The ID of the pipeline to delete.
    * @return An OpenApiResponse containing the status code of the HttpResponse.
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public OpenApiResponse deletePipelineById(
+  public OpenApiResponse pipelineV1PipelineEndpointsDeletePipelineById(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -134,13 +146,13 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deletePipelineById");
+          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsDeletePipelineById");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling deletePipelineById");
+          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsDeletePipelineById");
     }
 
     // create path and map variables
@@ -184,24 +196,26 @@ public class PipelinesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Get all pipelines
+   * Get Pipelines
+   *
+   * <p>Get all pipelines
    *
    * <p><b>200</b> - Returns all pipelines for the tenant.
    *
    * <p><b>400</b> - The specification of the resource was incorrect
    *
-   * @param aiResourceGroup (required) The value for the parameter aiResourceGroup
+   * @param aiResourceGroup (required) Resource Group ID
    * @param $top (optional) Number of results to display
    * @param $skip (optional) Number of results to be skipped from the ordered list of results
    * @param $count (optional) When the $count field is set to false, the response contains a count
    *     of the items present in the response. When the $count field is set to true, the response
    *     contains a count of all the items present on the server, and not just the ones in the
    *     response. When the $count field is not passed, it is false by default.
-   * @return Pipelines
+   * @return GetPipelines
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public Pipelines getAllPipelines(
+  public GetPipelines pipelineV1PipelineEndpointsGetAllPipeline(
       @Nonnull final String aiResourceGroup,
       @Nullable final Integer $top,
       @Nullable final Integer $skip,
@@ -212,7 +226,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getAllPipelines");
+          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetAllPipeline");
     }
 
     final String localVarPath = UriComponentsBuilder.fromPath("/pipelines").build().toUriString();
@@ -237,8 +251,8 @@ public class PipelinesApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<Pipelines> localVarReturnType =
-        new ParameterizedTypeReference<Pipelines>() {};
+    final ParameterizedTypeReference<GetPipelines> localVarReturnType =
+        new ParameterizedTypeReference<GetPipelines>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -253,36 +267,40 @@ public class PipelinesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Get all pipelines
+   * Get Pipelines
+   *
+   * <p>Get all pipelines
    *
    * <p><b>200</b> - Returns all pipelines for the tenant.
    *
    * <p><b>400</b> - The specification of the resource was incorrect
    *
-   * @param aiResourceGroup The value for the parameter aiResourceGroup
-   * @return Pipelines
+   * @param aiResourceGroup Resource Group ID
+   * @return GetPipelines
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public Pipelines getAllPipelines(@Nonnull final String aiResourceGroup)
-      throws OpenApiRequestException {
-    return getAllPipelines(aiResourceGroup, null, null, null);
+  public GetPipelines pipelineV1PipelineEndpointsGetAllPipeline(
+      @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+    return pipelineV1PipelineEndpointsGetAllPipeline(aiResourceGroup, null, null, null);
   }
 
   /**
-   * Get details of a pipeline by pipeline id
+   * Get details of a Pipeline
+   *
+   * <p>Get details of a pipeline by pipeline id
    *
    * <p><b>200</b> - Returns the pipeline for an pipelineId
    *
    * <p><b>400</b> - The specification of the resource was incorrect
    *
-   * @param aiResourceGroup The value for the parameter aiResourceGroup
+   * @param aiResourceGroup Resource Group ID
    * @param pipelineId The ID of the pipeline to get.
-   * @return Pipeline
+   * @return GetPipeline
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public Pipeline getPipelineById(
+  public GetPipeline pipelineV1PipelineEndpointsGetPipelineById(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -290,13 +308,13 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getPipelineById");
+          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineById");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling getPipelineById");
+          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineById");
     }
 
     // create path and map variables
@@ -323,8 +341,8 @@ public class PipelinesApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<Pipeline> localVarReturnType =
-        new ParameterizedTypeReference<Pipeline>() {};
+    final ParameterizedTypeReference<GetPipeline> localVarReturnType =
+        new ParameterizedTypeReference<GetPipeline>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -339,19 +357,599 @@ public class PipelinesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Get pipeline status by pipeline id
+   * Get Document by ID for a Pipeline
+   *
+   * <p>Retrieve details of a specific document associated with a pipeline.
+   *
+   * <p><b>200</b> - Returns a response to document id.
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param pipelineId The ID of the pipeline to get.
+   * @param documentId The ID of the document to get.
+   * @return PipelineDocumentResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PipelineDocumentResponse pipelineV1PipelineEndpointsGetPipelineDocumentById(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final String pipelineId,
+      @Nonnull final String documentId)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineDocumentById");
+    }
+
+    // verify the required parameter 'pipelineId' is set
+    if (pipelineId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineDocumentById");
+    }
+
+    // verify the required parameter 'documentId' is set
+    if (documentId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'documentId' when calling pipelineV1PipelineEndpointsGetPipelineDocumentById");
+    }
+
+    // create path and map variables
+    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    localVarPathParams.put("pipelineId", pipelineId);
+    localVarPathParams.put("documentId", documentId);
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/pipelines/{pipelineId}/documents/{documentId}")
+            .buildAndExpand(localVarPathParams)
+            .toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<PipelineDocumentResponse> localVarReturnType =
+        new ParameterizedTypeReference<PipelineDocumentResponse>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.GET,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Get Documents for a Pipeline
+   *
+   * <p>Retrieve all documents associated with a specific pipeline. Optionally, filter the results
+   * using query parameters.
+   *
+   * <p><b>200</b> - Returns all documents for a pipeline.
+   *
+   * @param aiResourceGroup (required) Resource Group ID
+   * @param pipelineId (required) The ID of the pipeline to get.
+   * @param $top (optional) Number of results to display
+   * @param $skip (optional) Number of results to be skipped from the ordered list of results
+   * @param $count (optional) When the $count field is set to false, the response contains a count
+   *     of the items present in the response. When the $count field is set to true, the response
+   *     contains a count of all the items present on the server, and not just the ones in the
+   *     response. When the $count field is not passed, it is false by default.
+   * @return DocumentsStatusResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public DocumentsStatusResponse pipelineV1PipelineEndpointsGetPipelineDocuments(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final String pipelineId,
+      @Nullable final Integer $top,
+      @Nullable final Integer $skip,
+      @Nullable final Boolean $count)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineDocuments");
+    }
+
+    // verify the required parameter 'pipelineId' is set
+    if (pipelineId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineDocuments");
+    }
+
+    // create path and map variables
+    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    localVarPathParams.put("pipelineId", pipelineId);
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/pipelines/{pipelineId}/documents")
+            .buildAndExpand(localVarPathParams)
+            .toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<DocumentsStatusResponse> localVarReturnType =
+        new ParameterizedTypeReference<DocumentsStatusResponse>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.GET,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Get Documents for a Pipeline
+   *
+   * <p>Retrieve all documents associated with a specific pipeline. Optionally, filter the results
+   * using query parameters.
+   *
+   * <p><b>200</b> - Returns all documents for a pipeline.
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param pipelineId The ID of the pipeline to get.
+   * @return DocumentsStatusResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public DocumentsStatusResponse pipelineV1PipelineEndpointsGetPipelineDocuments(
+      @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
+      throws OpenApiRequestException {
+    return pipelineV1PipelineEndpointsGetPipelineDocuments(
+        aiResourceGroup, pipelineId, null, null, null);
+  }
+
+  /**
+   * Get Pipeline Execution by ID
+   *
+   * <p>Retrieve details of a specific pipeline execution by its execution ID.
+   *
+   * <p><b>200</b> - Returns a response to execution id
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param pipelineId The ID of the pipeline
+   * @param executionId The ID of the execution
+   * @return GetPipelineExecutionById
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public GetPipelineExecutionById pipelineV1PipelineEndpointsGetPipelineExecutionById(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final String pipelineId,
+      @Nonnull final String executionId)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineExecutionById");
+    }
+
+    // verify the required parameter 'pipelineId' is set
+    if (pipelineId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionById");
+    }
+
+    // verify the required parameter 'executionId' is set
+    if (executionId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'executionId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionById");
+    }
+
+    // create path and map variables
+    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    localVarPathParams.put("pipelineId", pipelineId);
+    localVarPathParams.put("executionId", executionId);
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/pipelines/{pipelineId}/executions/{executionId}")
+            .buildAndExpand(localVarPathParams)
+            .toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<GetPipelineExecutionById> localVarReturnType =
+        new ParameterizedTypeReference<GetPipelineExecutionById>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.GET,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Get Document by ID for a Pipeline Execution
+   *
+   * <p>Retrieve details of a specific document associated with a pipeline execution.
+   *
+   * <p><b>200</b> - Returns a response to execution id and document id.
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param pipelineId The ID of the pipeline
+   * @param executionId The ID of the execution
+   * @param documentId The ID of the document to get.
+   * @return PipelineDocumentResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PipelineDocumentResponse pipelineV1PipelineEndpointsGetPipelineExecutionDocumentById(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final String pipelineId,
+      @Nonnull final String executionId,
+      @Nonnull final String documentId)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocumentById");
+    }
+
+    // verify the required parameter 'pipelineId' is set
+    if (pipelineId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocumentById");
+    }
+
+    // verify the required parameter 'executionId' is set
+    if (executionId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'executionId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocumentById");
+    }
+
+    // verify the required parameter 'documentId' is set
+    if (documentId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'documentId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocumentById");
+    }
+
+    // create path and map variables
+    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    localVarPathParams.put("pipelineId", pipelineId);
+    localVarPathParams.put("executionId", executionId);
+    localVarPathParams.put("documentId", documentId);
+    final String localVarPath =
+        UriComponentsBuilder.fromPath(
+                "/pipelines/{pipelineId}/executions/{executionId}/documents/{documentId}")
+            .buildAndExpand(localVarPathParams)
+            .toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<PipelineDocumentResponse> localVarReturnType =
+        new ParameterizedTypeReference<PipelineDocumentResponse>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.GET,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Get Documents for a Pipeline Execution
+   *
+   * <p>Retrieve all documents associated with a specific pipeline execution. Optionally, filter the
+   * results using query parameters.
+   *
+   * <p><b>200</b> - Returns a response to execution id
+   *
+   * @param aiResourceGroup (required) Resource Group ID
+   * @param pipelineId (required) The ID of the pipeline
+   * @param executionId (required) The ID of the execution
+   * @param $top (optional) Number of results to display
+   * @param $skip (optional) Number of results to be skipped from the ordered list of results
+   * @param $count (optional) When the $count field is set to false, the response contains a count
+   *     of the items present in the response. When the $count field is set to true, the response
+   *     contains a count of all the items present on the server, and not just the ones in the
+   *     response. When the $count field is not passed, it is false by default.
+   * @return DocumentsStatusResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public DocumentsStatusResponse pipelineV1PipelineEndpointsGetPipelineExecutionDocuments(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final String pipelineId,
+      @Nonnull final String executionId,
+      @Nullable final Integer $top,
+      @Nullable final Integer $skip,
+      @Nullable final Boolean $count)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocuments");
+    }
+
+    // verify the required parameter 'pipelineId' is set
+    if (pipelineId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocuments");
+    }
+
+    // verify the required parameter 'executionId' is set
+    if (executionId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'executionId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocuments");
+    }
+
+    // create path and map variables
+    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    localVarPathParams.put("pipelineId", pipelineId);
+    localVarPathParams.put("executionId", executionId);
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/pipelines/{pipelineId}/executions/{executionId}/documents")
+            .buildAndExpand(localVarPathParams)
+            .toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<DocumentsStatusResponse> localVarReturnType =
+        new ParameterizedTypeReference<DocumentsStatusResponse>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.GET,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Get Documents for a Pipeline Execution
+   *
+   * <p>Retrieve all documents associated with a specific pipeline execution. Optionally, filter the
+   * results using query parameters.
+   *
+   * <p><b>200</b> - Returns a response to execution id
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param pipelineId The ID of the pipeline
+   * @param executionId The ID of the execution
+   * @return DocumentsStatusResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public DocumentsStatusResponse pipelineV1PipelineEndpointsGetPipelineExecutionDocuments(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final String pipelineId,
+      @Nonnull final String executionId)
+      throws OpenApiRequestException {
+    return pipelineV1PipelineEndpointsGetPipelineExecutionDocuments(
+        aiResourceGroup, pipelineId, executionId, null, null, null);
+  }
+
+  /**
+   * Get Pipeline Executions
+   *
+   * <p>Retrieve all executions for a specific pipeline. Optionally, filter to get only the last
+   * execution.
+   *
+   * <p><b>200</b> - Returns all executions
+   *
+   * @param aiResourceGroup (required) Resource Group ID
+   * @param pipelineId (required) The ID of the pipeline
+   * @param lastExecution (optional) Filter to get the last execution
+   * @param $top (optional) Number of results to display
+   * @param $skip (optional) Number of results to be skipped from the ordered list of results
+   * @param $count (optional) When the $count field is set to false, the response contains a count
+   *     of the items present in the response. When the $count field is set to true, the response
+   *     contains a count of all the items present on the server, and not just the ones in the
+   *     response. When the $count field is not passed, it is false by default.
+   * @return GetPipelineExecutions
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public GetPipelineExecutions pipelineV1PipelineEndpointsGetPipelineExecutions(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final String pipelineId,
+      @Nullable final Boolean lastExecution,
+      @Nullable final Integer $top,
+      @Nullable final Integer $skip,
+      @Nullable final Boolean $count)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineExecutions");
+    }
+
+    // verify the required parameter 'pipelineId' is set
+    if (pipelineId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineExecutions");
+    }
+
+    // create path and map variables
+    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    localVarPathParams.put("pipelineId", pipelineId);
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/pipelines/{pipelineId}/executions")
+            .buildAndExpand(localVarPathParams)
+            .toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    localVarQueryParams.putAll(
+        apiClient.parameterToMultiValueMap(null, "lastExecution", lastExecution));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<GetPipelineExecutions> localVarReturnType =
+        new ParameterizedTypeReference<GetPipelineExecutions>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.GET,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Get Pipeline Executions
+   *
+   * <p>Retrieve all executions for a specific pipeline. Optionally, filter to get only the last
+   * execution.
+   *
+   * <p><b>200</b> - Returns all executions
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param pipelineId The ID of the pipeline
+   * @return GetPipelineExecutions
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public GetPipelineExecutions pipelineV1PipelineEndpointsGetPipelineExecutions(
+      @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
+      throws OpenApiRequestException {
+    return pipelineV1PipelineEndpointsGetPipelineExecutions(
+        aiResourceGroup, pipelineId, null, null, null, null);
+  }
+
+  /**
+   * Get status of Pipeline
+   *
+   * <p>Get pipeline status by pipeline id
    *
    * <p><b>200</b> - Returns the pipeline status for an pipelineId.
    *
    * <p><b>400</b> - The specification of the resource was incorrect
    *
-   * @param aiResourceGroup The value for the parameter aiResourceGroup
+   * @param aiResourceGroup Resource Group ID
    * @param pipelineId The ID of the pipeline to get status.
-   * @return PipelineStatus
+   * @return GetPipelineStatus
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PipelineStatus getPipelineStatus(
+  public GetPipelineStatus pipelineV1PipelineEndpointsGetPipelineStatus(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -359,13 +957,13 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getPipelineStatus");
+          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineStatus");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling getPipelineStatus");
+          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineStatus");
     }
 
     // create path and map variables
@@ -392,8 +990,8 @@ public class PipelinesApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<PipelineStatus> localVarReturnType =
-        new ParameterizedTypeReference<PipelineStatus>() {};
+    final ParameterizedTypeReference<GetPipelineStatus> localVarReturnType =
+        new ParameterizedTypeReference<GetPipelineStatus>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
