@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.app.services.OrchestrationService;
+import com.sap.ai.sdk.app.services.OrchestrationService.Translation;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
@@ -198,6 +199,18 @@ class OrchestrationTest {
   }
 
   @Test
+  @DisabledIfSystemProperty(named = "aicore.landscape", matches = "production")
+  void testGroundingSharepoint() {
+    assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
+    var response = service.groundingSharepoint("What is the secret for the AI SDK e2e test?");
+    assertThat(response).isNotNull();
+    var result = response.getOriginalResponse();
+    var llmChoice =
+        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
+    assertThat(llmChoice.getMessage().getContent()).contains("&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/");
+  }
+
+  @Test
   void testCompletionWithResourceGroup() {
     var response = service.completionWithResourceGroup("ai-sdk-java-e2e", "Hello world!");
     var result = response.getOriginalResponse();
@@ -317,9 +330,10 @@ class OrchestrationTest {
 
   @Test
   void testResponseFormatJsonSchema() {
-    val result = service.responseFormatJsonSchema("apple").getOriginalResponse();
-    val choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    Translation translation =
+        service.responseFormatJsonSchema("apple", Translation.class).asEntity(Translation.class);
+    assertThat(translation.translation()).isNotEmpty();
+    assertThat(translation.language()).isNotEmpty();
   }
 
   @Test

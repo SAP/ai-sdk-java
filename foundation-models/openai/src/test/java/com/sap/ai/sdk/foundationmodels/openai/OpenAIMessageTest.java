@@ -171,18 +171,16 @@ class OpenAIMessageTest {
         .isEqualTo(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM);
     var values =
         ((ChatCompletionRequestSystemMessageContent
-                    .InnerChatCompletionRequestSystemMessageContentParts)
+                    .InnerChatCompletionRequestMessageContentPartTexts)
                 requestMessageWithText.getContent())
             .values();
     assertThat(values).hasSize(2);
-    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(0)).getType())
+    assertThat(values.get(0).getType())
         .isEqualTo(ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT);
-    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(0)).getText())
-        .isEqualTo(validText);
-    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(1)).getType())
+    assertThat(values.get(0).getText()).isEqualTo(validText);
+    assertThat(values.get(1).getType())
         .isEqualTo(ChatCompletionRequestMessageContentPartText.TypeEnum.TEXT);
-    assertThat(((ChatCompletionRequestMessageContentPartText) values.get(1)).getText())
-        .isEqualTo("Additional text");
+    assertThat(values.get(1).getText()).isEqualTo("Additional text");
   }
 
   @Test

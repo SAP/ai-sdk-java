@@ -8,7 +8,6 @@ import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIConfigMaskGroundingInput;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DPIEntityConfig;
-import com.sap.ai.sdk.orchestration.model.MaskingProviderConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -95,7 +94,7 @@ public class DpiMasking implements MaskingProvider {
 
   @Nonnull
   @Override
-  public MaskingProviderConfig createConfig() {
+  public DPIConfig createConfig() {
     val entitiesDTO = entities.stream().map(it -> DPIEntityConfig.create().type(it)).toList();
     return DPIConfig.create()
         .type(SAP_DATA_PRIVACY_INTEGRATION)

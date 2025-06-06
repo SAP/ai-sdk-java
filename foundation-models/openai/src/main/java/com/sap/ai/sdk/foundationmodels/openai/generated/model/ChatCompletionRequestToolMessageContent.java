@@ -36,24 +36,24 @@ public interface ChatCompletionRequestToolMessageContent {
   }
 
   /**
-   * Helper class to create a list of ChatCompletionRequestToolMessageContentPart that implements
+   * Helper class to create a list of ChatCompletionRequestMessageContentPartText that implements
    * {@link ChatCompletionRequestToolMessageContent}.
    */
-  record InnerChatCompletionRequestToolMessageContentParts(
+  record InnerChatCompletionRequestMessageContentPartTexts(
       @com.fasterxml.jackson.annotation.JsonValue @Nonnull
-          List<ChatCompletionRequestToolMessageContentPart> values)
+          List<ChatCompletionRequestMessageContentPartText> values)
       implements ChatCompletionRequestToolMessageContent {}
 
   /**
-   * Creator to enable deserialization of a list of ChatCompletionRequestToolMessageContentPart.
+   * Creator to enable deserialization of a list of ChatCompletionRequestMessageContentPartText.
    *
    * @param val the value to use
-   * @return a new instance of {@link InnerChatCompletionRequestToolMessageContentParts}.
+   * @return a new instance of {@link InnerChatCompletionRequestMessageContentPartTexts}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static InnerChatCompletionRequestToolMessageContentParts create(
-      @Nonnull final List<ChatCompletionRequestToolMessageContentPart> val) {
-    return new InnerChatCompletionRequestToolMessageContentParts(val);
+  static InnerChatCompletionRequestMessageContentPartTexts create(
+      @Nonnull final List<ChatCompletionRequestMessageContentPartText> val) {
+    return new InnerChatCompletionRequestMessageContentPartTexts(val);
   }
 }

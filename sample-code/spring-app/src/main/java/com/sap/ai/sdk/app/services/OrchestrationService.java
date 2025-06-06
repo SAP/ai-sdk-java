@@ -362,6 +362,34 @@ public class OrchestrationService {
   }
 
   /**
+   * Using grounding via a sharepoint repository to provide additional context to the AI model.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - Grounding</a>
+   * @param userMessage the user message to provide grounding for
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse groundingSharepoint(@Nonnull final String userMessage) {
+    //    The sharepoint for this test is in the resource group "ai-sdk-js-e2e"
+    //    under repository ID "0bd2adc2-8d0d-478a-94f6-a0c10958f602".
+    val destination =
+        new AiCoreService().getInferenceDestination("ai-sdk-js-e2e").forScenario("orchestration");
+    val customClient = new OrchestrationClient(destination);
+    val dataRepositoryId = "0bd2adc2-8d0d-478a-94f6-a0c10958f602";
+
+    val filter =
+        DocumentGroundingFilter.create()
+            .dataRepositoryType(DataRepositoryType.VECTOR)
+            .dataRepositories(List.of(dataRepositoryId))
+            .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1));
+    val groundingConfig = Grounding.create().filters(filter);
+    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+    val configWithGrounding = config.withGrounding(groundingConfig);
+    return customClient.chatCompletion(prompt, configWithGrounding);
+  }
+
+  /**
    * Using grounding via *help.sap.com* to provide additional SAP-specific context to the AI model.
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
@@ -382,24 +410,31 @@ public class OrchestrationService {
   }
 
   /**
+   * A simple record to demonstrate the response format feature of the orchestration service.
+   *
+   * @param translation the translated text
+   * @param language the language of the translation
+   */
+  public record Translation(
+      @JsonProperty(required = true) String translation,
+      @JsonProperty(required = true) String language) {}
+
+  /**
    * Chat request to OpenAI through the Orchestration service using response format with JSON
    * schema.
    *
+   * @param word the word to translate
+   * @param targetType the class type to use for the JSON schema
+   * @return the assistant response object
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
-   * @param word the word to translate
-   * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse responseFormatJsonSchema(@Nonnull final String word) {
-    //    Example class
-    record Translation(
-        @JsonProperty(required = true) String translation,
-        @JsonProperty(required = true) String language) {}
-
+  public OrchestrationChatResponse responseFormatJsonSchema(
+      @Nonnull final String word, @Nonnull final Class<?> targetType) {
     val schema =
-        ResponseJsonSchema.fromType(Translation.class)
+        ResponseJsonSchema.fromType(targetType)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
     val configWithResponseSchema =
