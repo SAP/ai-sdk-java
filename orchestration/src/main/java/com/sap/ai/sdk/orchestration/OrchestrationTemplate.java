@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -17,10 +16,10 @@ import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -50,11 +49,6 @@ public class OrchestrationTemplate extends TemplateConfig {
   @With(onMethod_ = {@Deprecated})
   List<ChatMessage> template;
 
-  @JsonIgnore
-  @Nullable
-  @With(AccessLevel.PRIVATE)
-  List<Message> templateMessages;
-
   @JsonProperty("defaults")
   @Nullable
   Map<String, String> defaults;
@@ -76,9 +70,7 @@ public class OrchestrationTemplate extends TemplateConfig {
    */
   @Nonnull
   public OrchestrationTemplate withMessages(@Nonnull final Message... messages) {
-    val messageList = Arrays.asList(messages);
-    return this.withTemplateMessages(messageList)
-        .withTemplate(messageList.stream().map(Message::createChatMessage).toList());
+    return this.withTemplate(Stream.of(messages).map(Message::createChatMessage).toList());
   }
 
   /**
