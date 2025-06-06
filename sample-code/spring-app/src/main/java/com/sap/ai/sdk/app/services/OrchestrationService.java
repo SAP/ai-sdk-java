@@ -425,15 +425,17 @@ public class OrchestrationService {
    * schema.
    *
    * @param word the word to translate
+   * @param targetType the class type to use for the JSON schema
    * @return the assistant response object
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
    */
   @Nonnull
-  public Translation responseFormatJsonSchema(@Nonnull final String word) {
+  public OrchestrationChatResponse responseFormatJsonSchema(
+      @Nonnull final String word, @Nonnull final Class<?> targetType) {
     val schema =
-        ResponseJsonSchema.fromType(Translation.class)
+        ResponseJsonSchema.fromType(targetType)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
     val configWithResponseSchema =
@@ -444,7 +446,7 @@ public class OrchestrationService {
             Message.user("Whats '%s' in German?".formatted(word)),
             Message.system("You are a language translator."));
 
-    return client.chatCompletion(prompt, configWithResponseSchema).asEntity(Translation.class);
+    return client.chatCompletion(prompt, configWithResponseSchema);
   }
 
   /**
