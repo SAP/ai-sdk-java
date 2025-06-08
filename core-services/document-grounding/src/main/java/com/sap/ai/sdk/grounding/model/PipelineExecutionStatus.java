@@ -17,6 +17,8 @@ import javax.annotation.Nonnull;
 
 /** Gets or Sets PipelineExecutionStatus */
 public enum PipelineExecutionStatus {
+  NEW("NEW"),
+
   UNKNOWN("UNKNOWN"),
 
   INPROGRESS("INPROGRESS"),

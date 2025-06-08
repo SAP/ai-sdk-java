@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -30,7 +29,7 @@ public class GetPipelineStatus
 // CHECKSTYLE:ON
 {
   @JsonProperty("lastStarted")
-  private OffsetDateTime lastStarted;
+  private String lastStarted;
 
   @JsonProperty("status")
   private PipelineExecutionStatus status;
@@ -48,7 +47,7 @@ public class GetPipelineStatus
    * @return The same instance of this {@link GetPipelineStatus} class
    */
   @Nonnull
-  public GetPipelineStatus lastStarted(@Nullable final OffsetDateTime lastStarted) {
+  public GetPipelineStatus lastStarted(@Nullable final String lastStarted) {
     this.lastStarted = lastStarted;
     return this;
   }
@@ -59,7 +58,7 @@ public class GetPipelineStatus
    * @return lastStarted The lastStarted of this {@link GetPipelineStatus} instance.
    */
   @Nonnull
-  public OffsetDateTime getLastStarted() {
+  public String getLastStarted() {
     return lastStarted;
   }
 
@@ -68,7 +67,7 @@ public class GetPipelineStatus
    *
    * @param lastStarted The lastStarted of this {@link GetPipelineStatus}
    */
-  public void setLastStarted(@Nullable final OffsetDateTime lastStarted) {
+  public void setLastStarted(@Nullable final String lastStarted) {
     this.lastStarted = lastStarted;
   }
 
