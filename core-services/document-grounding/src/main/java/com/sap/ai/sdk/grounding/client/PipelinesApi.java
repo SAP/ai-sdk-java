@@ -73,7 +73,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PipelineId pipelineV1PipelineEndpointsCreatePipeline(
+  public PipelineId createPipeline(
       @Nonnull final String aiResourceGroup, @Nonnull final CreatePipeline createPipeline)
       throws OpenApiRequestException {
     final Object localVarPostBody = createPipeline;
@@ -81,13 +81,13 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsCreatePipeline");
+          "Missing the required parameter 'aiResourceGroup' when calling createPipeline");
     }
 
     // verify the required parameter 'createPipeline' is set
     if (createPipeline == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'createPipeline' when calling pipelineV1PipelineEndpointsCreatePipeline");
+          "Missing the required parameter 'createPipeline' when calling createPipeline");
     }
 
     final String localVarPath = UriComponentsBuilder.fromPath("/pipelines").build().toUriString();
@@ -138,7 +138,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public OpenApiResponse pipelineV1PipelineEndpointsDeletePipelineById(
+  public OpenApiResponse deletePipelineById(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -146,13 +146,13 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsDeletePipelineById");
+          "Missing the required parameter 'aiResourceGroup' when calling deletePipelineById");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsDeletePipelineById");
+          "Missing the required parameter 'pipelineId' when calling deletePipelineById");
     }
 
     // create path and map variables
@@ -215,7 +215,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public GetPipelines pipelineV1PipelineEndpointsGetAllPipeline(
+  public GetPipelines getAllPipeline(
       @Nonnull final String aiResourceGroup,
       @Nullable final Integer $top,
       @Nullable final Integer $skip,
@@ -226,7 +226,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetAllPipeline");
+          "Missing the required parameter 'aiResourceGroup' when calling getAllPipeline");
     }
 
     final String localVarPath = UriComponentsBuilder.fromPath("/pipelines").build().toUriString();
@@ -280,9 +280,9 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public GetPipelines pipelineV1PipelineEndpointsGetAllPipeline(
-      @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-    return pipelineV1PipelineEndpointsGetAllPipeline(aiResourceGroup, null, null, null);
+  public GetPipelines getAllPipeline(@Nonnull final String aiResourceGroup)
+      throws OpenApiRequestException {
+    return getAllPipeline(aiResourceGroup, null, null, null);
   }
 
   /**
@@ -300,7 +300,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public GetPipeline pipelineV1PipelineEndpointsGetPipelineById(
+  public GetPipeline getPipelineById(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -308,13 +308,13 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineById");
+          "Missing the required parameter 'aiResourceGroup' when calling getPipelineById");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineById");
+          "Missing the required parameter 'pipelineId' when calling getPipelineById");
     }
 
     // create path and map variables
@@ -370,7 +370,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PipelineDocumentResponse pipelineV1PipelineEndpointsGetPipelineDocumentById(
+  public PipelineDocumentResponse getPipelineDocumentById(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nonnull final String documentId)
@@ -380,19 +380,19 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineDocumentById");
+          "Missing the required parameter 'aiResourceGroup' when calling getPipelineDocumentById");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineDocumentById");
+          "Missing the required parameter 'pipelineId' when calling getPipelineDocumentById");
     }
 
     // verify the required parameter 'documentId' is set
     if (documentId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentId' when calling pipelineV1PipelineEndpointsGetPipelineDocumentById");
+          "Missing the required parameter 'documentId' when calling getPipelineDocumentById");
     }
 
     // create path and map variables
@@ -455,7 +455,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DocumentsStatusResponse pipelineV1PipelineEndpointsGetPipelineDocuments(
+  public DocumentsStatusResponse getPipelineDocuments(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nullable final Integer $top,
@@ -467,13 +467,13 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineDocuments");
+          "Missing the required parameter 'aiResourceGroup' when calling getPipelineDocuments");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineDocuments");
+          "Missing the required parameter 'pipelineId' when calling getPipelineDocuments");
     }
 
     // create path and map variables
@@ -533,11 +533,10 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DocumentsStatusResponse pipelineV1PipelineEndpointsGetPipelineDocuments(
+  public DocumentsStatusResponse getPipelineDocuments(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
-    return pipelineV1PipelineEndpointsGetPipelineDocuments(
-        aiResourceGroup, pipelineId, null, null, null);
+    return getPipelineDocuments(aiResourceGroup, pipelineId, null, null, null);
   }
 
   /**
@@ -554,7 +553,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public GetPipelineExecutionById pipelineV1PipelineEndpointsGetPipelineExecutionById(
+  public GetPipelineExecutionById getPipelineExecutionById(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nonnull final String executionId)
@@ -564,19 +563,19 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineExecutionById");
+          "Missing the required parameter 'aiResourceGroup' when calling getPipelineExecutionById");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionById");
+          "Missing the required parameter 'pipelineId' when calling getPipelineExecutionById");
     }
 
     // verify the required parameter 'executionId' is set
     if (executionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'executionId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionById");
+          "Missing the required parameter 'executionId' when calling getPipelineExecutionById");
     }
 
     // create path and map variables
@@ -634,7 +633,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PipelineDocumentResponse pipelineV1PipelineEndpointsGetPipelineExecutionDocumentById(
+  public PipelineDocumentResponse getPipelineExecutionDocumentById(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nonnull final String executionId,
@@ -645,25 +644,25 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocumentById");
+          "Missing the required parameter 'aiResourceGroup' when calling getPipelineExecutionDocumentById");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocumentById");
+          "Missing the required parameter 'pipelineId' when calling getPipelineExecutionDocumentById");
     }
 
     // verify the required parameter 'executionId' is set
     if (executionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'executionId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocumentById");
+          "Missing the required parameter 'executionId' when calling getPipelineExecutionDocumentById");
     }
 
     // verify the required parameter 'documentId' is set
     if (documentId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocumentById");
+          "Missing the required parameter 'documentId' when calling getPipelineExecutionDocumentById");
     }
 
     // create path and map variables
@@ -729,7 +728,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DocumentsStatusResponse pipelineV1PipelineEndpointsGetPipelineExecutionDocuments(
+  public DocumentsStatusResponse getPipelineExecutionDocuments(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nonnull final String executionId,
@@ -742,19 +741,19 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocuments");
+          "Missing the required parameter 'aiResourceGroup' when calling getPipelineExecutionDocuments");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocuments");
+          "Missing the required parameter 'pipelineId' when calling getPipelineExecutionDocuments");
     }
 
     // verify the required parameter 'executionId' is set
     if (executionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'executionId' when calling pipelineV1PipelineEndpointsGetPipelineExecutionDocuments");
+          "Missing the required parameter 'executionId' when calling getPipelineExecutionDocuments");
     }
 
     // create path and map variables
@@ -816,12 +815,12 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DocumentsStatusResponse pipelineV1PipelineEndpointsGetPipelineExecutionDocuments(
+  public DocumentsStatusResponse getPipelineExecutionDocuments(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nonnull final String executionId)
       throws OpenApiRequestException {
-    return pipelineV1PipelineEndpointsGetPipelineExecutionDocuments(
+    return getPipelineExecutionDocuments(
         aiResourceGroup, pipelineId, executionId, null, null, null);
   }
 
@@ -846,7 +845,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public GetPipelineExecutions pipelineV1PipelineEndpointsGetPipelineExecutions(
+  public GetPipelineExecutions getPipelineExecutions(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nullable final Boolean lastExecution,
@@ -859,13 +858,13 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineExecutions");
+          "Missing the required parameter 'aiResourceGroup' when calling getPipelineExecutions");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineExecutions");
+          "Missing the required parameter 'pipelineId' when calling getPipelineExecutions");
     }
 
     // create path and map variables
@@ -927,11 +926,10 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public GetPipelineExecutions pipelineV1PipelineEndpointsGetPipelineExecutions(
+  public GetPipelineExecutions getPipelineExecutions(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
-    return pipelineV1PipelineEndpointsGetPipelineExecutions(
-        aiResourceGroup, pipelineId, null, null, null, null);
+    return getPipelineExecutions(aiResourceGroup, pipelineId, null, null, null, null);
   }
 
   /**
@@ -949,7 +947,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public GetPipelineStatus pipelineV1PipelineEndpointsGetPipelineStatus(
+  public GetPipelineStatus getPipelineStatus(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -957,13 +955,13 @@ public class PipelinesApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling pipelineV1PipelineEndpointsGetPipelineStatus");
+          "Missing the required parameter 'aiResourceGroup' when calling getPipelineStatus");
     }
 
     // verify the required parameter 'pipelineId' is set
     if (pipelineId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'pipelineId' when calling pipelineV1PipelineEndpointsGetPipelineStatus");
+          "Missing the required parameter 'pipelineId' when calling getPipelineStatus");
     }
 
     // create path and map variables
