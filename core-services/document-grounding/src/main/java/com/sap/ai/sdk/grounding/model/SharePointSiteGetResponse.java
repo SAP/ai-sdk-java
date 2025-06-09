@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -25,9 +25,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** PipelineConfigurationSharePointSite */
+/** SharePointSiteGetResponse */
 // CHECKSTYLE:OFF
-public class PipelineConfigurationSharePointSite
+public class SharePointSiteGetResponse
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
@@ -42,18 +42,17 @@ public class PipelineConfigurationSharePointSite
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for PipelineConfigurationSharePointSite. */
-  protected PipelineConfigurationSharePointSite() {}
+  /** Default constructor for SharePointSiteGetResponse. */
+  protected SharePointSiteGetResponse() {}
 
   /**
-   * Set the id of this {@link PipelineConfigurationSharePointSite} instance and return the same
-   * instance.
+   * Set the id of this {@link SharePointSiteGetResponse} instance and return the same instance.
    *
-   * @param id The id of this {@link PipelineConfigurationSharePointSite}
-   * @return The same instance of this {@link PipelineConfigurationSharePointSite} class
+   * @param id The id of this {@link SharePointSiteGetResponse}
+   * @return The same instance of this {@link SharePointSiteGetResponse} class
    */
   @Nonnull
-  public PipelineConfigurationSharePointSite id(@Nullable final String id) {
+  public SharePointSiteGetResponse id(@Nullable final String id) {
     this.id = id;
     return this;
   }
@@ -61,7 +60,7 @@ public class PipelineConfigurationSharePointSite
   /**
    * Get id
    *
-   * @return id The id of this {@link PipelineConfigurationSharePointSite} instance.
+   * @return id The id of this {@link SharePointSiteGetResponse} instance.
    */
   @Nonnull
   public String getId() {
@@ -69,23 +68,22 @@ public class PipelineConfigurationSharePointSite
   }
 
   /**
-   * Set the id of this {@link PipelineConfigurationSharePointSite} instance.
+   * Set the id of this {@link SharePointSiteGetResponse} instance.
    *
-   * @param id The id of this {@link PipelineConfigurationSharePointSite}
+   * @param id The id of this {@link SharePointSiteGetResponse}
    */
   public void setId(@Nullable final String id) {
     this.id = id;
   }
 
   /**
-   * Set the name of this {@link PipelineConfigurationSharePointSite} instance and return the same
-   * instance.
+   * Set the name of this {@link SharePointSiteGetResponse} instance and return the same instance.
    *
-   * @param name The name of this {@link PipelineConfigurationSharePointSite}
-   * @return The same instance of this {@link PipelineConfigurationSharePointSite} class
+   * @param name The name of this {@link SharePointSiteGetResponse}
+   * @return The same instance of this {@link SharePointSiteGetResponse} class
    */
   @Nonnull
-  public PipelineConfigurationSharePointSite name(@Nullable final String name) {
+  public SharePointSiteGetResponse name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
@@ -93,7 +91,7 @@ public class PipelineConfigurationSharePointSite
   /**
    * Get name
    *
-   * @return name The name of this {@link PipelineConfigurationSharePointSite} instance.
+   * @return name The name of this {@link SharePointSiteGetResponse} instance.
    */
   @Nonnull
   public String getName() {
@@ -101,37 +99,35 @@ public class PipelineConfigurationSharePointSite
   }
 
   /**
-   * Set the name of this {@link PipelineConfigurationSharePointSite} instance.
+   * Set the name of this {@link SharePointSiteGetResponse} instance.
    *
-   * @param name The name of this {@link PipelineConfigurationSharePointSite}
+   * @param name The name of this {@link SharePointSiteGetResponse}
    */
-  public void setName(@Nullable final String name) {
+  public void setName(@Nonnull final String name) {
     this.name = name;
   }
 
   /**
-   * Set the includePaths of this {@link PipelineConfigurationSharePointSite} instance and return
-   * the same instance.
+   * Set the includePaths of this {@link SharePointSiteGetResponse} instance and return the same
+   * instance.
    *
-   * @param includePaths The includePaths of this {@link PipelineConfigurationSharePointSite}
-   * @return The same instance of this {@link PipelineConfigurationSharePointSite} class
+   * @param includePaths The includePaths of this {@link SharePointSiteGetResponse}
+   * @return The same instance of this {@link SharePointSiteGetResponse} class
    */
   @Nonnull
-  public PipelineConfigurationSharePointSite includePaths(
-      @Nullable final List<String> includePaths) {
+  public SharePointSiteGetResponse includePaths(@Nullable final List<String> includePaths) {
     this.includePaths = includePaths;
     return this;
   }
 
   /**
-   * Add one includePaths instance to this {@link PipelineConfigurationSharePointSite}.
+   * Add one includePaths instance to this {@link SharePointSiteGetResponse}.
    *
    * @param includePathsItem The includePaths that should be added
-   * @return The same instance of type {@link PipelineConfigurationSharePointSite}
+   * @return The same instance of type {@link SharePointSiteGetResponse}
    */
   @Nonnull
-  public PipelineConfigurationSharePointSite addIncludePathsItem(
-      @Nonnull final String includePathsItem) {
+  public SharePointSiteGetResponse addIncludePathsItem(@Nonnull final String includePathsItem) {
     if (this.includePaths == null) {
       this.includePaths = new ArrayList<>();
     }
@@ -142,8 +138,7 @@ public class PipelineConfigurationSharePointSite
   /**
    * Get includePaths
    *
-   * @return includePaths The includePaths of this {@link PipelineConfigurationSharePointSite}
-   *     instance.
+   * @return includePaths The includePaths of this {@link SharePointSiteGetResponse} instance.
    */
   @Nonnull
   public List<String> getIncludePaths() {
@@ -151,17 +146,16 @@ public class PipelineConfigurationSharePointSite
   }
 
   /**
-   * Set the includePaths of this {@link PipelineConfigurationSharePointSite} instance.
+   * Set the includePaths of this {@link SharePointSiteGetResponse} instance.
    *
-   * @param includePaths The includePaths of this {@link PipelineConfigurationSharePointSite}
+   * @param includePaths The includePaths of this {@link SharePointSiteGetResponse}
    */
   public void setIncludePaths(@Nullable final List<String> includePaths) {
     this.includePaths = includePaths;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link
-   * PipelineConfigurationSharePointSite}.
+   * Get the names of the unrecognizable properties of the {@link SharePointSiteGetResponse}.
    *
    * @return The set of properties names
    */
@@ -172,8 +166,7 @@ public class PipelineConfigurationSharePointSite
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link PipelineConfigurationSharePointSite}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link SharePointSiteGetResponse} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -185,14 +178,14 @@ public class PipelineConfigurationSharePointSite
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "PipelineConfigurationSharePointSite has no field with name '" + name + "'.");
+          "SharePointSiteGetResponse has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link PipelineConfigurationSharePointSite} instance
-   * including unrecognized properties.
+   * Get the value of all properties of this {@link SharePointSiteGetResponse} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -207,9 +200,8 @@ public class PipelineConfigurationSharePointSite
   }
 
   /**
-   * Set an unrecognizable property of this {@link PipelineConfigurationSharePointSite} instance. If
-   * the map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
+   * Set an unrecognizable property of this {@link SharePointSiteGetResponse} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -227,13 +219,11 @@ public class PipelineConfigurationSharePointSite
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final PipelineConfigurationSharePointSite pipelineConfigurationSharePointSite =
-        (PipelineConfigurationSharePointSite) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, pipelineConfigurationSharePointSite.cloudSdkCustomFields)
-        && Objects.equals(this.id, pipelineConfigurationSharePointSite.id)
-        && Objects.equals(this.name, pipelineConfigurationSharePointSite.name)
-        && Objects.equals(this.includePaths, pipelineConfigurationSharePointSite.includePaths);
+    final SharePointSiteGetResponse sharePointSiteGetResponse = (SharePointSiteGetResponse) o;
+    return Objects.equals(this.cloudSdkCustomFields, sharePointSiteGetResponse.cloudSdkCustomFields)
+        && Objects.equals(this.id, sharePointSiteGetResponse.id)
+        && Objects.equals(this.name, sharePointSiteGetResponse.name)
+        && Objects.equals(this.includePaths, sharePointSiteGetResponse.includePaths);
   }
 
   @Override
@@ -245,7 +235,7 @@ public class PipelineConfigurationSharePointSite
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class PipelineConfigurationSharePointSite {\n");
+    sb.append("class SharePointSiteGetResponse {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    includePaths: ").append(toIndentedString(includePaths)).append("\n");
@@ -267,9 +257,21 @@ public class PipelineConfigurationSharePointSite
   }
 
   /**
-   * Create a new {@link PipelineConfigurationSharePointSite} instance. No arguments are required.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * SharePointSiteGetResponse} instance with all required arguments.
    */
-  public static PipelineConfigurationSharePointSite create() {
-    return new PipelineConfigurationSharePointSite();
+  public static Builder create() {
+    return (name) -> new SharePointSiteGetResponse().name(name);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the name of this {@link SharePointSiteGetResponse} instance.
+     *
+     * @param name The name of this {@link SharePointSiteGetResponse}
+     * @return The SharePointSiteGetResponse instance.
+     */
+    SharePointSiteGetResponse name(@Nonnull final String name);
   }
 }
