@@ -52,6 +52,9 @@ public class AiModelBaseData
   @JsonProperty("provider")
   private String provider;
 
+  @JsonProperty("allowedScenarios")
+  private List<AiModelBaseDataAllowedScenariosInner> allowedScenarios = new ArrayList<>();
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -291,6 +294,55 @@ public class AiModelBaseData
   }
 
   /**
+   * Set the allowedScenarios of this {@link AiModelBaseData} instance and return the same instance.
+   *
+   * @param allowedScenarios List of scenarioId:executableId pair where the model supported
+   * @return The same instance of this {@link AiModelBaseData} class
+   */
+  @Nonnull
+  public AiModelBaseData allowedScenarios(
+      @Nullable final List<AiModelBaseDataAllowedScenariosInner> allowedScenarios) {
+    this.allowedScenarios = allowedScenarios;
+    return this;
+  }
+
+  /**
+   * Add one allowedScenarios instance to this {@link AiModelBaseData}.
+   *
+   * @param allowedScenariosItem The allowedScenarios that should be added
+   * @return The same instance of type {@link AiModelBaseData}
+   */
+  @Nonnull
+  public AiModelBaseData addAllowedScenariosItem(
+      @Nonnull final AiModelBaseDataAllowedScenariosInner allowedScenariosItem) {
+    if (this.allowedScenarios == null) {
+      this.allowedScenarios = new ArrayList<>();
+    }
+    this.allowedScenarios.add(allowedScenariosItem);
+    return this;
+  }
+
+  /**
+   * List of scenarioId:executableId pair where the model supported
+   *
+   * @return allowedScenarios The allowedScenarios of this {@link AiModelBaseData} instance.
+   */
+  @Nonnull
+  public List<AiModelBaseDataAllowedScenariosInner> getAllowedScenarios() {
+    return allowedScenarios;
+  }
+
+  /**
+   * Set the allowedScenarios of this {@link AiModelBaseData} instance.
+   *
+   * @param allowedScenarios List of scenarioId:executableId pair where the model supported
+   */
+  public void setAllowedScenarios(
+      @Nullable final List<AiModelBaseDataAllowedScenariosInner> allowedScenarios) {
+    this.allowedScenarios = allowedScenarios;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link AiModelBaseData}.
    *
    * @return The set of properties names
@@ -335,6 +387,7 @@ public class AiModelBaseData
     if (displayName != null) declaredFields.put("displayName", displayName);
     if (accessType != null) declaredFields.put("accessType", accessType);
     if (provider != null) declaredFields.put("provider", provider);
+    if (allowedScenarios != null) declaredFields.put("allowedScenarios", allowedScenarios);
     return declaredFields;
   }
 
@@ -366,7 +419,8 @@ public class AiModelBaseData
         && Objects.equals(this.versions, aiModelBaseData.versions)
         && Objects.equals(this.displayName, aiModelBaseData.displayName)
         && Objects.equals(this.accessType, aiModelBaseData.accessType)
-        && Objects.equals(this.provider, aiModelBaseData.provider);
+        && Objects.equals(this.provider, aiModelBaseData.provider)
+        && Objects.equals(this.allowedScenarios, aiModelBaseData.allowedScenarios);
   }
 
   @Override
@@ -379,6 +433,7 @@ public class AiModelBaseData
         displayName,
         accessType,
         provider,
+        allowedScenarios,
         cloudSdkCustomFields);
   }
 
@@ -394,6 +449,7 @@ public class AiModelBaseData
     sb.append("    displayName: ").append(toIndentedString(displayName)).append("\n");
     sb.append("    accessType: ").append(toIndentedString(accessType)).append("\n");
     sb.append("    provider: ").append(toIndentedString(provider)).append("\n");
+    sb.append("    allowedScenarios: ").append(toIndentedString(allowedScenarios)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
