@@ -32,7 +32,7 @@ public class TrckCustomInfoObject
 // CHECKSTYLE:ON
 {
   @JsonProperty("name")
-  private TrckTagName name;
+  private String name;
 
   @JsonProperty("value")
   private String value;
@@ -46,31 +46,31 @@ public class TrckCustomInfoObject
   /**
    * Set the name of this {@link TrckCustomInfoObject} instance and return the same instance.
    *
-   * @param name The name of this {@link TrckCustomInfoObject}
+   * @param name Generic name which can belong to a tag,label,metric or customInfo Object
    * @return The same instance of this {@link TrckCustomInfoObject} class
    */
   @Nonnull
-  public TrckCustomInfoObject name(@Nonnull final TrckTagName name) {
+  public TrckCustomInfoObject name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
   /**
-   * Get name
+   * Generic name which can belong to a tag,label,metric or customInfo Object
    *
    * @return name The name of this {@link TrckCustomInfoObject} instance.
    */
   @Nonnull
-  public TrckTagName getName() {
+  public String getName() {
     return name;
   }
 
   /**
    * Set the name of this {@link TrckCustomInfoObject} instance.
    *
-   * @param name The name of this {@link TrckCustomInfoObject}
+   * @param name Generic name which can belong to a tag,label,metric or customInfo Object
    */
-  public void setName(@Nonnull final TrckTagName name) {
+  public void setName(@Nonnull final String name) {
     this.name = name;
   }
 
@@ -217,10 +217,10 @@ public class TrckCustomInfoObject
     /**
      * Set the name of this {@link TrckCustomInfoObject} instance.
      *
-     * @param name The name of this {@link TrckCustomInfoObject}
+     * @param name Generic name which can belong to a tag,label,metric or customInfo Object
      * @return The TrckCustomInfoObject builder.
      */
-    Builder1 name(@Nonnull final TrckTagName name);
+    Builder1 name(@Nonnull final String name);
   }
 
   /** Builder helper class. */

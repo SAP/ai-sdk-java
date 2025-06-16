@@ -29,7 +29,7 @@ public class TrckTag
 // CHECKSTYLE:ON
 {
   @JsonProperty("name")
-  private TrckTagName name;
+  private String name;
 
   @JsonProperty("value")
   private String value;
@@ -43,31 +43,31 @@ public class TrckTag
   /**
    * Set the name of this {@link TrckTag} instance and return the same instance.
    *
-   * @param name The name of this {@link TrckTag}
+   * @param name Generic name which can belong to a tag,label,metric or customInfo Object
    * @return The same instance of this {@link TrckTag} class
    */
   @Nonnull
-  public TrckTag name(@Nonnull final TrckTagName name) {
+  public TrckTag name(@Nonnull final String name) {
     this.name = name;
     return this;
   }
 
   /**
-   * Get name
+   * Generic name which can belong to a tag,label,metric or customInfo Object
    *
    * @return name The name of this {@link TrckTag} instance.
    */
   @Nonnull
-  public TrckTagName getName() {
+  public String getName() {
     return name;
   }
 
   /**
    * Set the name of this {@link TrckTag} instance.
    *
-   * @param name The name of this {@link TrckTag}
+   * @param name Generic name which can belong to a tag,label,metric or customInfo Object
    */
-  public void setName(@Nonnull final TrckTagName name) {
+  public void setName(@Nonnull final String name) {
     this.name = name;
   }
 
@@ -213,10 +213,10 @@ public class TrckTag
     /**
      * Set the name of this {@link TrckTag} instance.
      *
-     * @param name The name of this {@link TrckTag}
+     * @param name Generic name which can belong to a tag,label,metric or customInfo Object
      * @return The TrckTag builder.
      */
-    Builder1 name(@Nonnull final TrckTagName name);
+    Builder1 name(@Nonnull final String name);
   }
 
   /** Builder helper class. */

@@ -2,7 +2,6 @@ package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.TrckDeleteMetricsResponse;
-import com.sap.ai.sdk.core.model.TrckExecutionId;
 import com.sap.ai.sdk.core.model.TrckGetMetricResourceList;
 import com.sap.ai.sdk.core.model.TrckMetricResource;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
@@ -63,7 +62,7 @@ public class MetricsApi extends AbstractOpenApiService {
    */
   @Nonnull
   public TrckDeleteMetricsResponse delete(
-      @Nonnull final String aiResourceGroup, @Nonnull final TrckExecutionId executionId)
+      @Nonnull final String aiResourceGroup, @Nonnull final String executionId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
