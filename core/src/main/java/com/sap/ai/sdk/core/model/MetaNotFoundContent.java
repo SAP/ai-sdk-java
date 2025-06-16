@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** InlineObject5 */
+/** MetaNotFoundContent */
 // CHECKSTYLE:OFF
-public class InlineObject5
+public class MetaNotFoundContent
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private DSetError error;
+  private MetaApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for InlineObject5. */
-  protected InlineObject5() {}
+  /** Default constructor for MetaNotFoundContent. */
+  protected MetaNotFoundContent() {}
 
   /**
-   * Set the error of this {@link InlineObject5} instance and return the same instance.
+   * Set the error of this {@link MetaNotFoundContent} instance and return the same instance.
    *
-   * @param error The error of this {@link InlineObject5}
-   * @return The same instance of this {@link InlineObject5} class
+   * @param error The error of this {@link MetaNotFoundContent}
+   * @return The same instance of this {@link MetaNotFoundContent} class
    */
   @Nonnull
-  public InlineObject5 error(@Nullable final DSetError error) {
+  public MetaNotFoundContent error(@Nullable final MetaApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class InlineObject5
   /**
    * Get error
    *
-   * @return error The error of this {@link InlineObject5} instance.
+   * @return error The error of this {@link MetaNotFoundContent} instance.
    */
   @Nonnull
-  public DSetError getError() {
+  public MetaApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link InlineObject5} instance.
+   * Set the error of this {@link MetaNotFoundContent} instance.
    *
-   * @param error The error of this {@link InlineObject5}
+   * @param error The error of this {@link MetaNotFoundContent}
    */
-  public void setError(@Nullable final DSetError error) {
+  public void setError(@Nullable final MetaApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link InlineObject5}.
+   * Get the names of the unrecognizable properties of the {@link MetaNotFoundContent}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class InlineObject5
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link InlineObject5} instance.
+   * Get the value of an unrecognizable property of this {@link MetaNotFoundContent} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,14 +91,15 @@ public class InlineObject5
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("InlineObject5 has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "MetaNotFoundContent has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link InlineObject5} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link MetaNotFoundContent} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -111,8 +112,8 @@ public class InlineObject5
   }
 
   /**
-   * Set an unrecognizable property of this {@link InlineObject5} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link MetaNotFoundContent} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -130,9 +131,9 @@ public class InlineObject5
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final InlineObject5 inlineObject5 = (InlineObject5) o;
-    return Objects.equals(this.cloudSdkCustomFields, inlineObject5.cloudSdkCustomFields)
-        && Objects.equals(this.error, inlineObject5.error);
+    final MetaNotFoundContent metaNotFoundContent = (MetaNotFoundContent) o;
+    return Objects.equals(this.cloudSdkCustomFields, metaNotFoundContent.cloudSdkCustomFields)
+        && Objects.equals(this.error, metaNotFoundContent.error);
   }
 
   @Override
@@ -144,7 +145,7 @@ public class InlineObject5
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class InlineObject5 {\n");
+    sb.append("class MetaNotFoundContent {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -163,8 +164,8 @@ public class InlineObject5
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link InlineObject5} instance. No arguments are required. */
-  public static InlineObject5 create() {
-    return new InlineObject5();
+  /** Create a new {@link MetaNotFoundContent} instance. No arguments are required. */
+  public static MetaNotFoundContent create() {
+    return new MetaNotFoundContent();
   }
 }

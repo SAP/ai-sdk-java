@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** InlineObject */
+/** DSetRequestTooLargeContent */
 // CHECKSTYLE:OFF
-public class InlineObject
+public class DSetRequestTooLargeContent
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private MetaApiError error;
+  private DSetError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for InlineObject. */
-  protected InlineObject() {}
+  /** Default constructor for DSetRequestTooLargeContent. */
+  protected DSetRequestTooLargeContent() {}
 
   /**
-   * Set the error of this {@link InlineObject} instance and return the same instance.
+   * Set the error of this {@link DSetRequestTooLargeContent} instance and return the same instance.
    *
-   * @param error The error of this {@link InlineObject}
-   * @return The same instance of this {@link InlineObject} class
+   * @param error The error of this {@link DSetRequestTooLargeContent}
+   * @return The same instance of this {@link DSetRequestTooLargeContent} class
    */
   @Nonnull
-  public InlineObject error(@Nullable final MetaApiError error) {
+  public DSetRequestTooLargeContent error(@Nullable final DSetError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class InlineObject
   /**
    * Get error
    *
-   * @return error The error of this {@link InlineObject} instance.
+   * @return error The error of this {@link DSetRequestTooLargeContent} instance.
    */
   @Nonnull
-  public MetaApiError getError() {
+  public DSetError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link InlineObject} instance.
+   * Set the error of this {@link DSetRequestTooLargeContent} instance.
    *
-   * @param error The error of this {@link InlineObject}
+   * @param error The error of this {@link DSetRequestTooLargeContent}
    */
-  public void setError(@Nullable final MetaApiError error) {
+  public void setError(@Nullable final DSetError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link InlineObject}.
+   * Get the names of the unrecognizable properties of the {@link DSetRequestTooLargeContent}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,8 @@ public class InlineObject
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link InlineObject} instance.
+   * Get the value of an unrecognizable property of this {@link DSetRequestTooLargeContent}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,14 +92,15 @@ public class InlineObject
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("InlineObject has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "DSetRequestTooLargeContent has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link InlineObject} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link DSetRequestTooLargeContent} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -111,8 +113,8 @@ public class InlineObject
   }
 
   /**
-   * Set an unrecognizable property of this {@link InlineObject} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link DSetRequestTooLargeContent} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -130,9 +132,10 @@ public class InlineObject
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final InlineObject inlineObject = (InlineObject) o;
-    return Objects.equals(this.cloudSdkCustomFields, inlineObject.cloudSdkCustomFields)
-        && Objects.equals(this.error, inlineObject.error);
+    final DSetRequestTooLargeContent dsetRequestTooLargeContent = (DSetRequestTooLargeContent) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, dsetRequestTooLargeContent.cloudSdkCustomFields)
+        && Objects.equals(this.error, dsetRequestTooLargeContent.error);
   }
 
   @Override
@@ -144,7 +147,7 @@ public class InlineObject
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class InlineObject {\n");
+    sb.append("class DSetRequestTooLargeContent {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -163,8 +166,8 @@ public class InlineObject
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link InlineObject} instance. No arguments are required. */
-  public static InlineObject create() {
-    return new InlineObject();
+  /** Create a new {@link DSetRequestTooLargeContent} instance. No arguments are required. */
+  public static DSetRequestTooLargeContent create() {
+    return new DSetRequestTooLargeContent();
   }
 }

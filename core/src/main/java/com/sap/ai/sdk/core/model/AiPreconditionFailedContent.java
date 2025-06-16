@@ -23,28 +23,29 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** InlineObject3 */
+/** AiPreconditionFailedContent */
 // CHECKSTYLE:OFF
-public class InlineObject3
+public class AiPreconditionFailedContent
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private TntApiError error;
+  private AiApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for InlineObject3. */
-  protected InlineObject3() {}
+  /** Default constructor for AiPreconditionFailedContent. */
+  protected AiPreconditionFailedContent() {}
 
   /**
-   * Set the error of this {@link InlineObject3} instance and return the same instance.
+   * Set the error of this {@link AiPreconditionFailedContent} instance and return the same
+   * instance.
    *
-   * @param error The error of this {@link InlineObject3}
-   * @return The same instance of this {@link InlineObject3} class
+   * @param error The error of this {@link AiPreconditionFailedContent}
+   * @return The same instance of this {@link AiPreconditionFailedContent} class
    */
   @Nonnull
-  public InlineObject3 error(@Nullable final TntApiError error) {
+  public AiPreconditionFailedContent error(@Nullable final AiApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +53,24 @@ public class InlineObject3
   /**
    * Get error
    *
-   * @return error The error of this {@link InlineObject3} instance.
+   * @return error The error of this {@link AiPreconditionFailedContent} instance.
    */
   @Nonnull
-  public TntApiError getError() {
+  public AiApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link InlineObject3} instance.
+   * Set the error of this {@link AiPreconditionFailedContent} instance.
    *
-   * @param error The error of this {@link InlineObject3}
+   * @param error The error of this {@link AiPreconditionFailedContent}
    */
-  public void setError(@Nullable final TntApiError error) {
+  public void setError(@Nullable final AiApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link InlineObject3}.
+   * Get the names of the unrecognizable properties of the {@link AiPreconditionFailedContent}.
    *
    * @return The set of properties names
    */
@@ -80,7 +81,8 @@ public class InlineObject3
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link InlineObject3} instance.
+   * Get the value of an unrecognizable property of this {@link AiPreconditionFailedContent}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,14 +93,15 @@ public class InlineObject3
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("InlineObject3 has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "AiPreconditionFailedContent has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link InlineObject3} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link AiPreconditionFailedContent} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -111,8 +114,8 @@ public class InlineObject3
   }
 
   /**
-   * Set an unrecognizable property of this {@link InlineObject3} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link AiPreconditionFailedContent} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -130,9 +133,10 @@ public class InlineObject3
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final InlineObject3 inlineObject3 = (InlineObject3) o;
-    return Objects.equals(this.cloudSdkCustomFields, inlineObject3.cloudSdkCustomFields)
-        && Objects.equals(this.error, inlineObject3.error);
+    final AiPreconditionFailedContent aiPreconditionFailedContent = (AiPreconditionFailedContent) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, aiPreconditionFailedContent.cloudSdkCustomFields)
+        && Objects.equals(this.error, aiPreconditionFailedContent.error);
   }
 
   @Override
@@ -144,7 +148,7 @@ public class InlineObject3
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class InlineObject3 {\n");
+    sb.append("class AiPreconditionFailedContent {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -163,8 +167,8 @@ public class InlineObject3
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link InlineObject3} instance. No arguments are required. */
-  public static InlineObject3 create() {
-    return new InlineObject3();
+  /** Create a new {@link AiPreconditionFailedContent} instance. No arguments are required. */
+  public static AiPreconditionFailedContent create() {
+    return new AiPreconditionFailedContent();
   }
 }

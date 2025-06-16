@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** InlineObject1 */
+/** KpiNotFoundContent */
 // CHECKSTYLE:OFF
-public class InlineObject1
+public class KpiNotFoundContent
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private TrckApiError error;
+  private KpiApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for InlineObject1. */
-  protected InlineObject1() {}
+  /** Default constructor for KpiNotFoundContent. */
+  protected KpiNotFoundContent() {}
 
   /**
-   * Set the error of this {@link InlineObject1} instance and return the same instance.
+   * Set the error of this {@link KpiNotFoundContent} instance and return the same instance.
    *
-   * @param error The error of this {@link InlineObject1}
-   * @return The same instance of this {@link InlineObject1} class
+   * @param error The error of this {@link KpiNotFoundContent}
+   * @return The same instance of this {@link KpiNotFoundContent} class
    */
   @Nonnull
-  public InlineObject1 error(@Nullable final TrckApiError error) {
+  public KpiNotFoundContent error(@Nullable final KpiApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class InlineObject1
   /**
    * Get error
    *
-   * @return error The error of this {@link InlineObject1} instance.
+   * @return error The error of this {@link KpiNotFoundContent} instance.
    */
   @Nonnull
-  public TrckApiError getError() {
+  public KpiApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link InlineObject1} instance.
+   * Set the error of this {@link KpiNotFoundContent} instance.
    *
-   * @param error The error of this {@link InlineObject1}
+   * @param error The error of this {@link KpiNotFoundContent}
    */
-  public void setError(@Nullable final TrckApiError error) {
+  public void setError(@Nullable final KpiApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link InlineObject1}.
+   * Get the names of the unrecognizable properties of the {@link KpiNotFoundContent}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class InlineObject1
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link InlineObject1} instance.
+   * Get the value of an unrecognizable property of this {@link KpiNotFoundContent} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,14 +91,14 @@ public class InlineObject1
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("InlineObject1 has no field with name '" + name + "'.");
+      throw new NoSuchElementException("KpiNotFoundContent has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link InlineObject1} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link KpiNotFoundContent} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -111,8 +111,8 @@ public class InlineObject1
   }
 
   /**
-   * Set an unrecognizable property of this {@link InlineObject1} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link KpiNotFoundContent} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -130,9 +130,9 @@ public class InlineObject1
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final InlineObject1 inlineObject1 = (InlineObject1) o;
-    return Objects.equals(this.cloudSdkCustomFields, inlineObject1.cloudSdkCustomFields)
-        && Objects.equals(this.error, inlineObject1.error);
+    final KpiNotFoundContent kpiNotFoundContent = (KpiNotFoundContent) o;
+    return Objects.equals(this.cloudSdkCustomFields, kpiNotFoundContent.cloudSdkCustomFields)
+        && Objects.equals(this.error, kpiNotFoundContent.error);
   }
 
   @Override
@@ -144,7 +144,7 @@ public class InlineObject1
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class InlineObject1 {\n");
+    sb.append("class KpiNotFoundContent {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -163,8 +163,8 @@ public class InlineObject1
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link InlineObject1} instance. No arguments are required. */
-  public static InlineObject1 create() {
-    return new InlineObject1();
+  /** Create a new {@link KpiNotFoundContent} instance. No arguments are required. */
+  public static KpiNotFoundContent create() {
+    return new KpiNotFoundContent();
   }
 }
