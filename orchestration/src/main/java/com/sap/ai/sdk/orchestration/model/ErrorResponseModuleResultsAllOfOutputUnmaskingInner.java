@@ -14,10 +14,10 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** DPIEntityConfig */
+/** ErrorResponseModuleResultsAllOfOutputUnmaskingInner */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = DPICustomEntity.class),
-  @JsonSubTypes.Type(value = DPIStandardEntity.class),
+  @JsonSubTypes.Type(value = LLMChoiceStreaming.class),
+  @JsonSubTypes.Type(value = LLMChoiceSynchronous.class),
 })
-public interface DPIEntityConfig {}
+public interface ErrorResponseModuleResultsAllOfOutputUnmaskingInner {}

@@ -25,17 +25,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** LlamaGuard38bFilterConfig */
+/** AzureContentSafetyOutputFilterConfig */
 // CHECKSTYLE:OFF
-public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilterConfig
+public class AzureContentSafetyOutputFilterConfig implements OutputFilterConfig
 // CHECKSTYLE:ON
 {
   /** Name of the filter provider type */
   public enum TypeEnum {
-    /** The LLAMA_GUARD_3_8B option of this LlamaGuard38bFilterConfig */
-    LLAMA_GUARD_3_8B("llama_guard_3_8b"),
+    /** The AZURE_CONTENT_SAFETY option of this AzureContentSafetyOutputFilterConfig */
+    AZURE_CONTENT_SAFETY("azure_content_safety"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this LlamaGuard38bFilterConfig */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AzureContentSafetyOutputFilterConfig */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -70,7 +70,7 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type LlamaGuard38bFilterConfig
+     * @return The enum value of type AzureContentSafetyOutputFilterConfig
      */
     @JsonCreator
     @Nonnull
@@ -88,22 +88,23 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   private TypeEnum type;
 
   @JsonProperty("config")
-  private LlamaGuard38b config;
+  private AzureContentSafetyOutput config;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for LlamaGuard38bFilterConfig. */
-  protected LlamaGuard38bFilterConfig() {}
+  /** Default constructor for AzureContentSafetyOutputFilterConfig. */
+  protected AzureContentSafetyOutputFilterConfig() {}
 
   /**
-   * Set the type of this {@link LlamaGuard38bFilterConfig} instance and return the same instance.
+   * Set the type of this {@link AzureContentSafetyOutputFilterConfig} instance and return the same
+   * instance.
    *
    * @param type Name of the filter provider type
-   * @return The same instance of this {@link LlamaGuard38bFilterConfig} class
+   * @return The same instance of this {@link AzureContentSafetyOutputFilterConfig} class
    */
   @Nonnull
-  public LlamaGuard38bFilterConfig type(@Nonnull final TypeEnum type) {
+  public AzureContentSafetyOutputFilterConfig type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -111,7 +112,7 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   /**
    * Name of the filter provider type
    *
-   * @return type The type of this {@link LlamaGuard38bFilterConfig} instance.
+   * @return type The type of this {@link AzureContentSafetyOutputFilterConfig} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -119,7 +120,7 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   }
 
   /**
-   * Set the type of this {@link LlamaGuard38bFilterConfig} instance.
+   * Set the type of this {@link AzureContentSafetyOutputFilterConfig} instance.
    *
    * @param type Name of the filter provider type
    */
@@ -128,13 +129,15 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   }
 
   /**
-   * Set the config of this {@link LlamaGuard38bFilterConfig} instance and return the same instance.
+   * Set the config of this {@link AzureContentSafetyOutputFilterConfig} instance and return the
+   * same instance.
    *
-   * @param config The config of this {@link LlamaGuard38bFilterConfig}
-   * @return The same instance of this {@link LlamaGuard38bFilterConfig} class
+   * @param config The config of this {@link AzureContentSafetyOutputFilterConfig}
+   * @return The same instance of this {@link AzureContentSafetyOutputFilterConfig} class
    */
   @Nonnull
-  public LlamaGuard38bFilterConfig config(@Nonnull final LlamaGuard38b config) {
+  public AzureContentSafetyOutputFilterConfig config(
+      @Nullable final AzureContentSafetyOutput config) {
     this.config = config;
     return this;
   }
@@ -142,24 +145,25 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   /**
    * Get config
    *
-   * @return config The config of this {@link LlamaGuard38bFilterConfig} instance.
+   * @return config The config of this {@link AzureContentSafetyOutputFilterConfig} instance.
    */
   @Nonnull
-  public LlamaGuard38b getConfig() {
+  public AzureContentSafetyOutput getConfig() {
     return config;
   }
 
   /**
-   * Set the config of this {@link LlamaGuard38bFilterConfig} instance.
+   * Set the config of this {@link AzureContentSafetyOutputFilterConfig} instance.
    *
-   * @param config The config of this {@link LlamaGuard38bFilterConfig}
+   * @param config The config of this {@link AzureContentSafetyOutputFilterConfig}
    */
-  public void setConfig(@Nonnull final LlamaGuard38b config) {
+  public void setConfig(@Nullable final AzureContentSafetyOutput config) {
     this.config = config;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link LlamaGuard38bFilterConfig}.
+   * Get the names of the unrecognizable properties of the {@link
+   * AzureContentSafetyOutputFilterConfig}.
    *
    * @return The set of properties names
    */
@@ -170,7 +174,8 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link LlamaGuard38bFilterConfig} instance.
+   * Get the value of an unrecognizable property of this {@link
+   * AzureContentSafetyOutputFilterConfig} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -182,14 +187,14 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "LlamaGuard38bFilterConfig has no field with name '" + name + "'.");
+          "AzureContentSafetyOutputFilterConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link LlamaGuard38bFilterConfig} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link AzureContentSafetyOutputFilterConfig} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -203,8 +208,9 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   }
 
   /**
-   * Set an unrecognizable property of this {@link LlamaGuard38bFilterConfig} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link AzureContentSafetyOutputFilterConfig} instance.
+   * If the map previously contained a mapping for the key, the old value is replaced by the
+   * specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -222,10 +228,12 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final LlamaGuard38bFilterConfig llamaGuard38bFilterConfig = (LlamaGuard38bFilterConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, llamaGuard38bFilterConfig.cloudSdkCustomFields)
-        && Objects.equals(this.type, llamaGuard38bFilterConfig.type)
-        && Objects.equals(this.config, llamaGuard38bFilterConfig.config);
+    final AzureContentSafetyOutputFilterConfig azureContentSafetyOutputFilterConfig =
+        (AzureContentSafetyOutputFilterConfig) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, azureContentSafetyOutputFilterConfig.cloudSdkCustomFields)
+        && Objects.equals(this.type, azureContentSafetyOutputFilterConfig.type)
+        && Objects.equals(this.config, azureContentSafetyOutputFilterConfig.config);
   }
 
   @Override
@@ -237,7 +245,7 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class LlamaGuard38bFilterConfig {\n");
+    sb.append("class AzureContentSafetyOutputFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -259,31 +267,20 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * LlamaGuard38bFilterConfig} instance with all required arguments.
+   * AzureContentSafetyOutputFilterConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (config) -> new LlamaGuard38bFilterConfig().type(type).config(config);
+    return (type) -> new AzureContentSafetyOutputFilterConfig().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link LlamaGuard38bFilterConfig} instance.
+     * Set the type of this {@link AzureContentSafetyOutputFilterConfig} instance.
      *
      * @param type Name of the filter provider type
-     * @return The LlamaGuard38bFilterConfig builder.
+     * @return The AzureContentSafetyOutputFilterConfig instance.
      */
-    Builder1 type(@Nonnull final TypeEnum type);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the config of this {@link LlamaGuard38bFilterConfig} instance.
-     *
-     * @param config The config of this {@link LlamaGuard38bFilterConfig}
-     * @return The LlamaGuard38bFilterConfig instance.
-     */
-    LlamaGuard38bFilterConfig config(@Nonnull final LlamaGuard38b config);
+    AzureContentSafetyOutputFilterConfig type(@Nonnull final TypeEnum type);
   }
 }
