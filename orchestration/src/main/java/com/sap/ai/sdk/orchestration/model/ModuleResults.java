@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 
 /** Synchronous results of each module. */
 // CHECKSTYLE:OFF
-public class ModuleResultsSynchronous
+public class ModuleResults
 // CHECKSTYLE:ON
 {
   @JsonProperty("grounding")
@@ -52,26 +52,25 @@ public class ModuleResultsSynchronous
   private GenericModuleResult outputTranslation;
 
   @JsonProperty("llm")
-  private LLMModuleResultSynchronous llm;
+  private LLMModuleResult llm;
 
   @JsonProperty("output_unmasking")
-  private List<LLMChoiceSynchronous> outputUnmasking = new ArrayList<>();
+  private List<LLMChoice> outputUnmasking = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ModuleResultsSynchronous. */
-  protected ModuleResultsSynchronous() {}
+  /** Default constructor for ModuleResults. */
+  protected ModuleResults() {}
 
   /**
-   * Set the grounding of this {@link ModuleResultsSynchronous} instance and return the same
-   * instance.
+   * Set the grounding of this {@link ModuleResults} instance and return the same instance.
    *
-   * @param grounding The grounding of this {@link ModuleResultsSynchronous}
-   * @return The same instance of this {@link ModuleResultsSynchronous} class
+   * @param grounding The grounding of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
    */
   @Nonnull
-  public ModuleResultsSynchronous grounding(@Nullable final GenericModuleResult grounding) {
+  public ModuleResults grounding(@Nullable final GenericModuleResult grounding) {
     this.grounding = grounding;
     return this;
   }
@@ -79,7 +78,7 @@ public class ModuleResultsSynchronous
   /**
    * Get grounding
    *
-   * @return grounding The grounding of this {@link ModuleResultsSynchronous} instance.
+   * @return grounding The grounding of this {@link ModuleResults} instance.
    */
   @Nonnull
   public GenericModuleResult getGrounding() {
@@ -87,35 +86,34 @@ public class ModuleResultsSynchronous
   }
 
   /**
-   * Set the grounding of this {@link ModuleResultsSynchronous} instance.
+   * Set the grounding of this {@link ModuleResults} instance.
    *
-   * @param grounding The grounding of this {@link ModuleResultsSynchronous}
+   * @param grounding The grounding of this {@link ModuleResults}
    */
   public void setGrounding(@Nullable final GenericModuleResult grounding) {
     this.grounding = grounding;
   }
 
   /**
-   * Set the templating of this {@link ModuleResultsSynchronous} instance and return the same
-   * instance.
+   * Set the templating of this {@link ModuleResults} instance and return the same instance.
    *
-   * @param templating The templating of this {@link ModuleResultsSynchronous}
-   * @return The same instance of this {@link ModuleResultsSynchronous} class
+   * @param templating The templating of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
    */
   @Nonnull
-  public ModuleResultsSynchronous templating(@Nullable final List<ChatMessage> templating) {
+  public ModuleResults templating(@Nullable final List<ChatMessage> templating) {
     this.templating = templating;
     return this;
   }
 
   /**
-   * Add one templating instance to this {@link ModuleResultsSynchronous}.
+   * Add one templating instance to this {@link ModuleResults}.
    *
    * @param templatingItem The templating that should be added
-   * @return The same instance of type {@link ModuleResultsSynchronous}
+   * @return The same instance of type {@link ModuleResults}
    */
   @Nonnull
-  public ModuleResultsSynchronous addTemplatingItem(@Nonnull final ChatMessage templatingItem) {
+  public ModuleResults addTemplatingItem(@Nonnull final ChatMessage templatingItem) {
     if (this.templating == null) {
       this.templating = new ArrayList<>();
     }
@@ -126,7 +124,7 @@ public class ModuleResultsSynchronous
   /**
    * Get templating
    *
-   * @return templating The templating of this {@link ModuleResultsSynchronous} instance.
+   * @return templating The templating of this {@link ModuleResults} instance.
    */
   @Nonnull
   public List<ChatMessage> getTemplating() {
@@ -134,24 +132,22 @@ public class ModuleResultsSynchronous
   }
 
   /**
-   * Set the templating of this {@link ModuleResultsSynchronous} instance.
+   * Set the templating of this {@link ModuleResults} instance.
    *
-   * @param templating The templating of this {@link ModuleResultsSynchronous}
+   * @param templating The templating of this {@link ModuleResults}
    */
   public void setTemplating(@Nullable final List<ChatMessage> templating) {
     this.templating = templating;
   }
 
   /**
-   * Set the inputTranslation of this {@link ModuleResultsSynchronous} instance and return the same
-   * instance.
+   * Set the inputTranslation of this {@link ModuleResults} instance and return the same instance.
    *
-   * @param inputTranslation The inputTranslation of this {@link ModuleResultsSynchronous}
-   * @return The same instance of this {@link ModuleResultsSynchronous} class
+   * @param inputTranslation The inputTranslation of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
    */
   @Nonnull
-  public ModuleResultsSynchronous inputTranslation(
-      @Nullable final GenericModuleResult inputTranslation) {
+  public ModuleResults inputTranslation(@Nullable final GenericModuleResult inputTranslation) {
     this.inputTranslation = inputTranslation;
     return this;
   }
@@ -159,8 +155,7 @@ public class ModuleResultsSynchronous
   /**
    * Get inputTranslation
    *
-   * @return inputTranslation The inputTranslation of this {@link ModuleResultsSynchronous}
-   *     instance.
+   * @return inputTranslation The inputTranslation of this {@link ModuleResults} instance.
    */
   @Nonnull
   public GenericModuleResult getInputTranslation() {
@@ -168,23 +163,22 @@ public class ModuleResultsSynchronous
   }
 
   /**
-   * Set the inputTranslation of this {@link ModuleResultsSynchronous} instance.
+   * Set the inputTranslation of this {@link ModuleResults} instance.
    *
-   * @param inputTranslation The inputTranslation of this {@link ModuleResultsSynchronous}
+   * @param inputTranslation The inputTranslation of this {@link ModuleResults}
    */
   public void setInputTranslation(@Nullable final GenericModuleResult inputTranslation) {
     this.inputTranslation = inputTranslation;
   }
 
   /**
-   * Set the inputMasking of this {@link ModuleResultsSynchronous} instance and return the same
-   * instance.
+   * Set the inputMasking of this {@link ModuleResults} instance and return the same instance.
    *
-   * @param inputMasking The inputMasking of this {@link ModuleResultsSynchronous}
-   * @return The same instance of this {@link ModuleResultsSynchronous} class
+   * @param inputMasking The inputMasking of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
    */
   @Nonnull
-  public ModuleResultsSynchronous inputMasking(@Nullable final GenericModuleResult inputMasking) {
+  public ModuleResults inputMasking(@Nullable final GenericModuleResult inputMasking) {
     this.inputMasking = inputMasking;
     return this;
   }
@@ -192,7 +186,7 @@ public class ModuleResultsSynchronous
   /**
    * Get inputMasking
    *
-   * @return inputMasking The inputMasking of this {@link ModuleResultsSynchronous} instance.
+   * @return inputMasking The inputMasking of this {@link ModuleResults} instance.
    */
   @Nonnull
   public GenericModuleResult getInputMasking() {
@@ -200,24 +194,22 @@ public class ModuleResultsSynchronous
   }
 
   /**
-   * Set the inputMasking of this {@link ModuleResultsSynchronous} instance.
+   * Set the inputMasking of this {@link ModuleResults} instance.
    *
-   * @param inputMasking The inputMasking of this {@link ModuleResultsSynchronous}
+   * @param inputMasking The inputMasking of this {@link ModuleResults}
    */
   public void setInputMasking(@Nullable final GenericModuleResult inputMasking) {
     this.inputMasking = inputMasking;
   }
 
   /**
-   * Set the inputFiltering of this {@link ModuleResultsSynchronous} instance and return the same
-   * instance.
+   * Set the inputFiltering of this {@link ModuleResults} instance and return the same instance.
    *
-   * @param inputFiltering The inputFiltering of this {@link ModuleResultsSynchronous}
-   * @return The same instance of this {@link ModuleResultsSynchronous} class
+   * @param inputFiltering The inputFiltering of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
    */
   @Nonnull
-  public ModuleResultsSynchronous inputFiltering(
-      @Nullable final GenericModuleResult inputFiltering) {
+  public ModuleResults inputFiltering(@Nullable final GenericModuleResult inputFiltering) {
     this.inputFiltering = inputFiltering;
     return this;
   }
@@ -225,7 +217,7 @@ public class ModuleResultsSynchronous
   /**
    * Get inputFiltering
    *
-   * @return inputFiltering The inputFiltering of this {@link ModuleResultsSynchronous} instance.
+   * @return inputFiltering The inputFiltering of this {@link ModuleResults} instance.
    */
   @Nonnull
   public GenericModuleResult getInputFiltering() {
@@ -233,24 +225,22 @@ public class ModuleResultsSynchronous
   }
 
   /**
-   * Set the inputFiltering of this {@link ModuleResultsSynchronous} instance.
+   * Set the inputFiltering of this {@link ModuleResults} instance.
    *
-   * @param inputFiltering The inputFiltering of this {@link ModuleResultsSynchronous}
+   * @param inputFiltering The inputFiltering of this {@link ModuleResults}
    */
   public void setInputFiltering(@Nullable final GenericModuleResult inputFiltering) {
     this.inputFiltering = inputFiltering;
   }
 
   /**
-   * Set the outputFiltering of this {@link ModuleResultsSynchronous} instance and return the same
-   * instance.
+   * Set the outputFiltering of this {@link ModuleResults} instance and return the same instance.
    *
-   * @param outputFiltering The outputFiltering of this {@link ModuleResultsSynchronous}
-   * @return The same instance of this {@link ModuleResultsSynchronous} class
+   * @param outputFiltering The outputFiltering of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
    */
   @Nonnull
-  public ModuleResultsSynchronous outputFiltering(
-      @Nullable final GenericModuleResult outputFiltering) {
+  public ModuleResults outputFiltering(@Nullable final GenericModuleResult outputFiltering) {
     this.outputFiltering = outputFiltering;
     return this;
   }
@@ -258,7 +248,7 @@ public class ModuleResultsSynchronous
   /**
    * Get outputFiltering
    *
-   * @return outputFiltering The outputFiltering of this {@link ModuleResultsSynchronous} instance.
+   * @return outputFiltering The outputFiltering of this {@link ModuleResults} instance.
    */
   @Nonnull
   public GenericModuleResult getOutputFiltering() {
@@ -266,24 +256,22 @@ public class ModuleResultsSynchronous
   }
 
   /**
-   * Set the outputFiltering of this {@link ModuleResultsSynchronous} instance.
+   * Set the outputFiltering of this {@link ModuleResults} instance.
    *
-   * @param outputFiltering The outputFiltering of this {@link ModuleResultsSynchronous}
+   * @param outputFiltering The outputFiltering of this {@link ModuleResults}
    */
   public void setOutputFiltering(@Nullable final GenericModuleResult outputFiltering) {
     this.outputFiltering = outputFiltering;
   }
 
   /**
-   * Set the outputTranslation of this {@link ModuleResultsSynchronous} instance and return the same
-   * instance.
+   * Set the outputTranslation of this {@link ModuleResults} instance and return the same instance.
    *
-   * @param outputTranslation The outputTranslation of this {@link ModuleResultsSynchronous}
-   * @return The same instance of this {@link ModuleResultsSynchronous} class
+   * @param outputTranslation The outputTranslation of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
    */
   @Nonnull
-  public ModuleResultsSynchronous outputTranslation(
-      @Nullable final GenericModuleResult outputTranslation) {
+  public ModuleResults outputTranslation(@Nullable final GenericModuleResult outputTranslation) {
     this.outputTranslation = outputTranslation;
     return this;
   }
@@ -291,8 +279,7 @@ public class ModuleResultsSynchronous
   /**
    * Get outputTranslation
    *
-   * @return outputTranslation The outputTranslation of this {@link ModuleResultsSynchronous}
-   *     instance.
+   * @return outputTranslation The outputTranslation of this {@link ModuleResults} instance.
    */
   @Nonnull
   public GenericModuleResult getOutputTranslation() {
@@ -300,22 +287,22 @@ public class ModuleResultsSynchronous
   }
 
   /**
-   * Set the outputTranslation of this {@link ModuleResultsSynchronous} instance.
+   * Set the outputTranslation of this {@link ModuleResults} instance.
    *
-   * @param outputTranslation The outputTranslation of this {@link ModuleResultsSynchronous}
+   * @param outputTranslation The outputTranslation of this {@link ModuleResults}
    */
   public void setOutputTranslation(@Nullable final GenericModuleResult outputTranslation) {
     this.outputTranslation = outputTranslation;
   }
 
   /**
-   * Set the llm of this {@link ModuleResultsSynchronous} instance and return the same instance.
+   * Set the llm of this {@link ModuleResults} instance and return the same instance.
    *
-   * @param llm The llm of this {@link ModuleResultsSynchronous}
-   * @return The same instance of this {@link ModuleResultsSynchronous} class
+   * @param llm The llm of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
    */
   @Nonnull
-  public ModuleResultsSynchronous llm(@Nullable final LLMModuleResultSynchronous llm) {
+  public ModuleResults llm(@Nullable final LLMModuleResult llm) {
     this.llm = llm;
     return this;
   }
@@ -323,45 +310,42 @@ public class ModuleResultsSynchronous
   /**
    * Get llm
    *
-   * @return llm The llm of this {@link ModuleResultsSynchronous} instance.
+   * @return llm The llm of this {@link ModuleResults} instance.
    */
   @Nonnull
-  public LLMModuleResultSynchronous getLlm() {
+  public LLMModuleResult getLlm() {
     return llm;
   }
 
   /**
-   * Set the llm of this {@link ModuleResultsSynchronous} instance.
+   * Set the llm of this {@link ModuleResults} instance.
    *
-   * @param llm The llm of this {@link ModuleResultsSynchronous}
+   * @param llm The llm of this {@link ModuleResults}
    */
-  public void setLlm(@Nullable final LLMModuleResultSynchronous llm) {
+  public void setLlm(@Nullable final LLMModuleResult llm) {
     this.llm = llm;
   }
 
   /**
-   * Set the outputUnmasking of this {@link ModuleResultsSynchronous} instance and return the same
-   * instance.
+   * Set the outputUnmasking of this {@link ModuleResults} instance and return the same instance.
    *
-   * @param outputUnmasking The outputUnmasking of this {@link ModuleResultsSynchronous}
-   * @return The same instance of this {@link ModuleResultsSynchronous} class
+   * @param outputUnmasking The outputUnmasking of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
    */
   @Nonnull
-  public ModuleResultsSynchronous outputUnmasking(
-      @Nullable final List<LLMChoiceSynchronous> outputUnmasking) {
+  public ModuleResults outputUnmasking(@Nullable final List<LLMChoice> outputUnmasking) {
     this.outputUnmasking = outputUnmasking;
     return this;
   }
 
   /**
-   * Add one outputUnmasking instance to this {@link ModuleResultsSynchronous}.
+   * Add one outputUnmasking instance to this {@link ModuleResults}.
    *
    * @param outputUnmaskingItem The outputUnmasking that should be added
-   * @return The same instance of type {@link ModuleResultsSynchronous}
+   * @return The same instance of type {@link ModuleResults}
    */
   @Nonnull
-  public ModuleResultsSynchronous addOutputUnmaskingItem(
-      @Nonnull final LLMChoiceSynchronous outputUnmaskingItem) {
+  public ModuleResults addOutputUnmaskingItem(@Nonnull final LLMChoice outputUnmaskingItem) {
     if (this.outputUnmasking == null) {
       this.outputUnmasking = new ArrayList<>();
     }
@@ -372,24 +356,24 @@ public class ModuleResultsSynchronous
   /**
    * Get outputUnmasking
    *
-   * @return outputUnmasking The outputUnmasking of this {@link ModuleResultsSynchronous} instance.
+   * @return outputUnmasking The outputUnmasking of this {@link ModuleResults} instance.
    */
   @Nonnull
-  public List<LLMChoiceSynchronous> getOutputUnmasking() {
+  public List<LLMChoice> getOutputUnmasking() {
     return outputUnmasking;
   }
 
   /**
-   * Set the outputUnmasking of this {@link ModuleResultsSynchronous} instance.
+   * Set the outputUnmasking of this {@link ModuleResults} instance.
    *
-   * @param outputUnmasking The outputUnmasking of this {@link ModuleResultsSynchronous}
+   * @param outputUnmasking The outputUnmasking of this {@link ModuleResults}
    */
-  public void setOutputUnmasking(@Nullable final List<LLMChoiceSynchronous> outputUnmasking) {
+  public void setOutputUnmasking(@Nullable final List<LLMChoice> outputUnmasking) {
     this.outputUnmasking = outputUnmasking;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ModuleResultsSynchronous}.
+   * Get the names of the unrecognizable properties of the {@link ModuleResults}.
    *
    * @return The set of properties names
    */
@@ -400,7 +384,7 @@ public class ModuleResultsSynchronous
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ModuleResultsSynchronous} instance.
+   * Get the value of an unrecognizable property of this {@link ModuleResults} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -411,15 +395,14 @@ public class ModuleResultsSynchronous
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "ModuleResultsSynchronous has no field with name '" + name + "'.");
+      throw new NoSuchElementException("ModuleResults has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ModuleResultsSynchronous} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link ModuleResults} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -440,8 +423,8 @@ public class ModuleResultsSynchronous
   }
 
   /**
-   * Set an unrecognizable property of this {@link ModuleResultsSynchronous} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ModuleResults} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -459,17 +442,17 @@ public class ModuleResultsSynchronous
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ModuleResultsSynchronous moduleResultsSynchronous = (ModuleResultsSynchronous) o;
-    return Objects.equals(this.cloudSdkCustomFields, moduleResultsSynchronous.cloudSdkCustomFields)
-        && Objects.equals(this.grounding, moduleResultsSynchronous.grounding)
-        && Objects.equals(this.templating, moduleResultsSynchronous.templating)
-        && Objects.equals(this.inputTranslation, moduleResultsSynchronous.inputTranslation)
-        && Objects.equals(this.inputMasking, moduleResultsSynchronous.inputMasking)
-        && Objects.equals(this.inputFiltering, moduleResultsSynchronous.inputFiltering)
-        && Objects.equals(this.outputFiltering, moduleResultsSynchronous.outputFiltering)
-        && Objects.equals(this.outputTranslation, moduleResultsSynchronous.outputTranslation)
-        && Objects.equals(this.llm, moduleResultsSynchronous.llm)
-        && Objects.equals(this.outputUnmasking, moduleResultsSynchronous.outputUnmasking);
+    final ModuleResults moduleResults = (ModuleResults) o;
+    return Objects.equals(this.cloudSdkCustomFields, moduleResults.cloudSdkCustomFields)
+        && Objects.equals(this.grounding, moduleResults.grounding)
+        && Objects.equals(this.templating, moduleResults.templating)
+        && Objects.equals(this.inputTranslation, moduleResults.inputTranslation)
+        && Objects.equals(this.inputMasking, moduleResults.inputMasking)
+        && Objects.equals(this.inputFiltering, moduleResults.inputFiltering)
+        && Objects.equals(this.outputFiltering, moduleResults.outputFiltering)
+        && Objects.equals(this.outputTranslation, moduleResults.outputTranslation)
+        && Objects.equals(this.llm, moduleResults.llm)
+        && Objects.equals(this.outputUnmasking, moduleResults.outputUnmasking);
   }
 
   @Override
@@ -491,7 +474,7 @@ public class ModuleResultsSynchronous
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ModuleResultsSynchronous {\n");
+    sb.append("class ModuleResults {\n");
     sb.append("    grounding: ").append(toIndentedString(grounding)).append("\n");
     sb.append("    templating: ").append(toIndentedString(templating)).append("\n");
     sb.append("    inputTranslation: ").append(toIndentedString(inputTranslation)).append("\n");
@@ -518,8 +501,8 @@ public class ModuleResultsSynchronous
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link ModuleResultsSynchronous} instance. No arguments are required. */
-  public static ModuleResultsSynchronous create() {
-    return new ModuleResultsSynchronous();
+  /** Create a new {@link ModuleResults} instance. No arguments are required. */
+  public static ModuleResults create() {
+    return new ModuleResults();
   }
 }
