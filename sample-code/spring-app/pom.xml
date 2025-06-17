@@ -200,7 +200,6 @@
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>
