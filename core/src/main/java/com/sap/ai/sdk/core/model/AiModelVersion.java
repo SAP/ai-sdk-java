@@ -63,6 +63,12 @@ public class AiModelVersion
   @JsonProperty("suggestedReplacements")
   private List<String> suggestedReplacements = new ArrayList<>();
 
+  @JsonProperty("streamingSupported")
+  private Boolean streamingSupported;
+
+  @JsonProperty("orchestrationCapabilities")
+  private List<String> orchestrationCapabilities = new ArrayList<>();
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -458,6 +464,88 @@ public class AiModelVersion
   }
 
   /**
+   * Set the streamingSupported of this {@link AiModelVersion} instance and return the same
+   * instance.
+   *
+   * @param streamingSupported Streaming support status of the model
+   * @return The same instance of this {@link AiModelVersion} class
+   */
+  @Nonnull
+  public AiModelVersion streamingSupported(@Nullable final Boolean streamingSupported) {
+    this.streamingSupported = streamingSupported;
+    return this;
+  }
+
+  /**
+   * Streaming support status of the model
+   *
+   * @return streamingSupported The streamingSupported of this {@link AiModelVersion} instance.
+   */
+  @Nonnull
+  public Boolean isStreamingSupported() {
+    return streamingSupported;
+  }
+
+  /**
+   * Set the streamingSupported of this {@link AiModelVersion} instance.
+   *
+   * @param streamingSupported Streaming support status of the model
+   */
+  public void setStreamingSupported(@Nullable final Boolean streamingSupported) {
+    this.streamingSupported = streamingSupported;
+  }
+
+  /**
+   * Set the orchestrationCapabilities of this {@link AiModelVersion} instance and return the same
+   * instance.
+   *
+   * @param orchestrationCapabilities List of model capabilities supported by orchestration service
+   * @return The same instance of this {@link AiModelVersion} class
+   */
+  @Nonnull
+  public AiModelVersion orchestrationCapabilities(
+      @Nullable final List<String> orchestrationCapabilities) {
+    this.orchestrationCapabilities = orchestrationCapabilities;
+    return this;
+  }
+
+  /**
+   * Add one orchestrationCapabilities instance to this {@link AiModelVersion}.
+   *
+   * @param orchestrationCapabilitiesItem The orchestrationCapabilities that should be added
+   * @return The same instance of type {@link AiModelVersion}
+   */
+  @Nonnull
+  public AiModelVersion addOrchestrationCapabilitiesItem(
+      @Nonnull final String orchestrationCapabilitiesItem) {
+    if (this.orchestrationCapabilities == null) {
+      this.orchestrationCapabilities = new ArrayList<>();
+    }
+    this.orchestrationCapabilities.add(orchestrationCapabilitiesItem);
+    return this;
+  }
+
+  /**
+   * List of model capabilities supported by orchestration service
+   *
+   * @return orchestrationCapabilities The orchestrationCapabilities of this {@link AiModelVersion}
+   *     instance.
+   */
+  @Nonnull
+  public List<String> getOrchestrationCapabilities() {
+    return orchestrationCapabilities;
+  }
+
+  /**
+   * Set the orchestrationCapabilities of this {@link AiModelVersion} instance.
+   *
+   * @param orchestrationCapabilities List of model capabilities supported by orchestration service
+   */
+  public void setOrchestrationCapabilities(@Nullable final List<String> orchestrationCapabilities) {
+    this.orchestrationCapabilities = orchestrationCapabilities;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link AiModelVersion}.
    *
    * @return The set of properties names
@@ -506,6 +594,9 @@ public class AiModelVersion
     if (cost != null) declaredFields.put("cost", cost);
     if (suggestedReplacements != null)
       declaredFields.put("suggestedReplacements", suggestedReplacements);
+    if (streamingSupported != null) declaredFields.put("streamingSupported", streamingSupported);
+    if (orchestrationCapabilities != null)
+      declaredFields.put("orchestrationCapabilities", orchestrationCapabilities);
     return declaredFields;
   }
 
@@ -540,7 +631,9 @@ public class AiModelVersion
         && Objects.equals(this.capabilities, aiModelVersion.capabilities)
         && Objects.equals(this.metadata, aiModelVersion.metadata)
         && Objects.equals(this.cost, aiModelVersion.cost)
-        && Objects.equals(this.suggestedReplacements, aiModelVersion.suggestedReplacements);
+        && Objects.equals(this.suggestedReplacements, aiModelVersion.suggestedReplacements)
+        && Objects.equals(this.streamingSupported, aiModelVersion.streamingSupported)
+        && Objects.equals(this.orchestrationCapabilities, aiModelVersion.orchestrationCapabilities);
   }
 
   @Override
@@ -556,6 +649,8 @@ public class AiModelVersion
         metadata,
         cost,
         suggestedReplacements,
+        streamingSupported,
+        orchestrationCapabilities,
         cloudSdkCustomFields);
   }
 
@@ -575,6 +670,10 @@ public class AiModelVersion
     sb.append("    cost: ").append(toIndentedString(cost)).append("\n");
     sb.append("    suggestedReplacements: ")
         .append(toIndentedString(suggestedReplacements))
+        .append("\n");
+    sb.append("    streamingSupported: ").append(toIndentedString(streamingSupported)).append("\n");
+    sb.append("    orchestrationCapabilities: ")
+        .append(toIndentedString(orchestrationCapabilities))
         .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
