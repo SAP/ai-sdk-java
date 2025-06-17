@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import lombok.val;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 
@@ -29,7 +30,7 @@ class RestaurantMethod {
   @Tool(description = "Get recommended restaurants for a location")
   static RestaurantMethod.Response getRestaurants(
       @ToolParam @Nonnull final RestaurantMethod.Request request) {
-    var recommendations =
+    val recommendations =
         Map.of(
             "paris",
             List.of("Le Comptoir du Relais", "L'As du Fallafel", "Breizh Café"),

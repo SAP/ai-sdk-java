@@ -8,6 +8,7 @@ import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -18,14 +19,23 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.tool.ToolCallbacks;
 import org.springframework.stereotype.Service;
 
+/** Service class for the AgenticWorkflow service */
 @Service
+@Slf4j
 public class SpringAiAgenticWorkflowService {
   private final ChatModel client = new OrchestrationChatModel();
   private final OrchestrationModuleConfig config =
       new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
+  /**
+   * Simple agentic workflow using chain-like structure. The agent is generating a travel itinerary
+   * for a given city.
+   *
+   * @param userInput the user input including the target city
+   * @return a short travel itinerary
+   */
   @Nonnull
-  public ChatResponse runAgent(String userInput) {
+  public ChatResponse runAgent(@Nonnull final String userInput) {
 
     //    Configure chat memory
     val memory = new InMemoryChatMemory();
@@ -39,32 +49,26 @@ public class SpringAiAgenticWorkflowService {
     options.setInternalToolExecutionEnabled(true);
 
     //    Prompts for the chain workflow
-    List<String> systemPrompts =
+    final List<String> systemPrompts =
         List.of(
             "You are a traveling planning agent for a single day trip. Where appropriate, use the provided tools. First, start by suggesting some restaurants for the mentioned city.",
             "Now, check the whether for the city.",
             "Finally, combine the suggested itinerary from this conversation into a short, one-sentence plan for the day trip.");
 
     //    Perform the chain workflow
-    int step = 0;
     String responseText = userInput;
     ChatResponse response = null;
 
-    System.out.printf("\nSTEP %s:\n %s%n", step++, responseText);
-
-    for (String systemPrompt : systemPrompts) {
+    for (final String systemPrompt : systemPrompts) {
 
       // Combine the pre-defined prompt with the previous answer to get the new input
-      String input = String.format("{%s}\n {%s}", systemPrompt, responseText);
+      val input = String.format("{%s}\n {%s}", systemPrompt, responseText);
       val prompt = new Prompt(input, options);
 
       // Make a call to the LLM with the new input
       response =
-          Objects.requireNonNull(
-              cl.prompt(prompt).call().chatResponse(), "Chat response is null in step " + step);
+          Objects.requireNonNull(cl.prompt(prompt).call().chatResponse(), "Chat response is null.");
       responseText = response.getResult().getOutput().getText();
-
-      System.out.printf("\nSTEP %s:\n %s%n", step++, responseText);
     }
 
     return response;
