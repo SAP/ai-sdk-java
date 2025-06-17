@@ -25,7 +25,7 @@ public class SpringAiAgenticWorkflowService {
       new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
   @Nonnull
-  public ChatResponse chain(String userInput) {
+  public ChatResponse runAgent(String userInput) {
 
     //    Configure chat memory
     val memory = new InMemoryChatMemory();
@@ -54,11 +54,11 @@ public class SpringAiAgenticWorkflowService {
 
     for (String systemPrompt : systemPrompts) {
 
-      // 1. Compose the input using the response from the previous step.
+      // Combine the pre-defined prompt with the previous answer to get the new input
       String input = String.format("{%s}\n {%s}", systemPrompt, responseText);
       val prompt = new Prompt(input, options);
 
-      // 2. Call the chat client with the new input and get the new response.
+      // Make a call to the LLM with the new input
       response =
           Objects.requireNonNull(
               cl.prompt(prompt).call().chatResponse(), "Chat response is null in step " + step);

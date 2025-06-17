@@ -23,7 +23,7 @@ public class SpringAiAgenticWorkflowController {
   Object completion(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     val response =
-        service.chain("I want to do a one-day trip to Paris. Help me make an itinerary, please");
+        service.runAgent("I want to do a one-day trip to Paris. Help me make an itinerary, please");
 
     if ("json".equals(format)) {
       return ((OrchestrationSpringChatResponse) response)
