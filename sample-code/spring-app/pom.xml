@@ -33,7 +33,7 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <spring-boot.version>3.4.5</spring-boot.version>
+    <spring-boot.version>3.5.0</spring-boot.version>
     <logback.version>1.5.18</logback.version>
     <cf-logging.version>3.8.5</cf-logging.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
