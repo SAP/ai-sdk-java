@@ -25,17 +25,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** AzureContentSafetyFilterConfig */
+/** AzureContentSafetyInputFilterConfig */
 // CHECKSTYLE:OFF
-public class AzureContentSafetyFilterConfig implements FilterConfig
+public class AzureContentSafetyInputFilterConfig implements InputFilterConfig
 // CHECKSTYLE:ON
 {
   /** Name of the filter provider type */
   public enum TypeEnum {
-    /** The AZURE_CONTENT_SAFETY option of this AzureContentSafetyFilterConfig */
+    /** The AZURE_CONTENT_SAFETY option of this AzureContentSafetyInputFilterConfig */
     AZURE_CONTENT_SAFETY("azure_content_safety"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this AzureContentSafetyFilterConfig */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AzureContentSafetyInputFilterConfig */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -70,7 +70,7 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type AzureContentSafetyFilterConfig
+     * @return The enum value of type AzureContentSafetyInputFilterConfig
      */
     @JsonCreator
     @Nonnull
@@ -88,23 +88,23 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   private TypeEnum type;
 
   @JsonProperty("config")
-  private AzureContentSafety config;
+  private AzureContentSafetyInput config;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for AzureContentSafetyFilterConfig. */
-  protected AzureContentSafetyFilterConfig() {}
+  /** Default constructor for AzureContentSafetyInputFilterConfig. */
+  protected AzureContentSafetyInputFilterConfig() {}
 
   /**
-   * Set the type of this {@link AzureContentSafetyFilterConfig} instance and return the same
+   * Set the type of this {@link AzureContentSafetyInputFilterConfig} instance and return the same
    * instance.
    *
    * @param type Name of the filter provider type
-   * @return The same instance of this {@link AzureContentSafetyFilterConfig} class
+   * @return The same instance of this {@link AzureContentSafetyInputFilterConfig} class
    */
   @Nonnull
-  public AzureContentSafetyFilterConfig type(@Nonnull final TypeEnum type) {
+  public AzureContentSafetyInputFilterConfig type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -112,7 +112,7 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   /**
    * Name of the filter provider type
    *
-   * @return type The type of this {@link AzureContentSafetyFilterConfig} instance.
+   * @return type The type of this {@link AzureContentSafetyInputFilterConfig} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -120,7 +120,7 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   }
 
   /**
-   * Set the type of this {@link AzureContentSafetyFilterConfig} instance.
+   * Set the type of this {@link AzureContentSafetyInputFilterConfig} instance.
    *
    * @param type Name of the filter provider type
    */
@@ -129,14 +129,15 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   }
 
   /**
-   * Set the config of this {@link AzureContentSafetyFilterConfig} instance and return the same
+   * Set the config of this {@link AzureContentSafetyInputFilterConfig} instance and return the same
    * instance.
    *
-   * @param config The config of this {@link AzureContentSafetyFilterConfig}
-   * @return The same instance of this {@link AzureContentSafetyFilterConfig} class
+   * @param config The config of this {@link AzureContentSafetyInputFilterConfig}
+   * @return The same instance of this {@link AzureContentSafetyInputFilterConfig} class
    */
   @Nonnull
-  public AzureContentSafetyFilterConfig config(@Nullable final AzureContentSafety config) {
+  public AzureContentSafetyInputFilterConfig config(
+      @Nullable final AzureContentSafetyInput config) {
     this.config = config;
     return this;
   }
@@ -144,24 +145,25 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   /**
    * Get config
    *
-   * @return config The config of this {@link AzureContentSafetyFilterConfig} instance.
+   * @return config The config of this {@link AzureContentSafetyInputFilterConfig} instance.
    */
   @Nonnull
-  public AzureContentSafety getConfig() {
+  public AzureContentSafetyInput getConfig() {
     return config;
   }
 
   /**
-   * Set the config of this {@link AzureContentSafetyFilterConfig} instance.
+   * Set the config of this {@link AzureContentSafetyInputFilterConfig} instance.
    *
-   * @param config The config of this {@link AzureContentSafetyFilterConfig}
+   * @param config The config of this {@link AzureContentSafetyInputFilterConfig}
    */
-  public void setConfig(@Nullable final AzureContentSafety config) {
+  public void setConfig(@Nullable final AzureContentSafetyInput config) {
     this.config = config;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link AzureContentSafetyFilterConfig}.
+   * Get the names of the unrecognizable properties of the {@link
+   * AzureContentSafetyInputFilterConfig}.
    *
    * @return The set of properties names
    */
@@ -172,7 +174,7 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link AzureContentSafetyFilterConfig}
+   * Get the value of an unrecognizable property of this {@link AzureContentSafetyInputFilterConfig}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -185,13 +187,13 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "AzureContentSafetyFilterConfig has no field with name '" + name + "'.");
+          "AzureContentSafetyInputFilterConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link AzureContentSafetyFilterConfig} instance
+   * Get the value of all properties of this {@link AzureContentSafetyInputFilterConfig} instance
    * including unrecognized properties.
    *
    * @return The map of all properties
@@ -206,8 +208,8 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   }
 
   /**
-   * Set an unrecognizable property of this {@link AzureContentSafetyFilterConfig} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
+   * Set an unrecognizable property of this {@link AzureContentSafetyInputFilterConfig} instance. If
+   * the map previously contained a mapping for the key, the old value is replaced by the specified
    * value.
    *
    * @param customFieldName The name of the property
@@ -226,12 +228,12 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final AzureContentSafetyFilterConfig azureContentSafetyFilterConfig =
-        (AzureContentSafetyFilterConfig) o;
+    final AzureContentSafetyInputFilterConfig azureContentSafetyInputFilterConfig =
+        (AzureContentSafetyInputFilterConfig) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, azureContentSafetyFilterConfig.cloudSdkCustomFields)
-        && Objects.equals(this.type, azureContentSafetyFilterConfig.type)
-        && Objects.equals(this.config, azureContentSafetyFilterConfig.config);
+            this.cloudSdkCustomFields, azureContentSafetyInputFilterConfig.cloudSdkCustomFields)
+        && Objects.equals(this.type, azureContentSafetyInputFilterConfig.type)
+        && Objects.equals(this.config, azureContentSafetyInputFilterConfig.config);
   }
 
   @Override
@@ -243,7 +245,7 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class AzureContentSafetyFilterConfig {\n");
+    sb.append("class AzureContentSafetyInputFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -265,20 +267,20 @@ public class AzureContentSafetyFilterConfig implements FilterConfig
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * AzureContentSafetyFilterConfig} instance with all required arguments.
+   * AzureContentSafetyInputFilterConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new AzureContentSafetyFilterConfig().type(type);
+    return (type) -> new AzureContentSafetyInputFilterConfig().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link AzureContentSafetyFilterConfig} instance.
+     * Set the type of this {@link AzureContentSafetyInputFilterConfig} instance.
      *
      * @param type Name of the filter provider type
-     * @return The AzureContentSafetyFilterConfig instance.
+     * @return The AzureContentSafetyInputFilterConfig instance.
      */
-    AzureContentSafetyFilterConfig type(@Nonnull final TypeEnum type);
+    AzureContentSafetyInputFilterConfig type(@Nonnull final TypeEnum type);
   }
 }
