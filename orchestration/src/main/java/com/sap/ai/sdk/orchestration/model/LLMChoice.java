@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** LLMChoiceSynchronous */
+/** LLMChoice */
 // CHECKSTYLE:OFF
-public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutputUnmaskingInner
+public class LLMChoice
 // CHECKSTYLE:ON
 {
   @JsonProperty("index")
@@ -43,17 +43,17 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for LLMChoiceSynchronous. */
-  protected LLMChoiceSynchronous() {}
+  /** Default constructor for LLMChoice. */
+  protected LLMChoice() {}
 
   /**
-   * Set the index of this {@link LLMChoiceSynchronous} instance and return the same instance.
+   * Set the index of this {@link LLMChoice} instance and return the same instance.
    *
    * @param index Index of the choice
-   * @return The same instance of this {@link LLMChoiceSynchronous} class
+   * @return The same instance of this {@link LLMChoice} class
    */
   @Nonnull
-  public LLMChoiceSynchronous index(@Nonnull final Integer index) {
+  public LLMChoice index(@Nonnull final Integer index) {
     this.index = index;
     return this;
   }
@@ -61,7 +61,7 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   /**
    * Index of the choice
    *
-   * @return index The index of this {@link LLMChoiceSynchronous} instance.
+   * @return index The index of this {@link LLMChoice} instance.
    */
   @Nonnull
   public Integer getIndex() {
@@ -69,7 +69,7 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   }
 
   /**
-   * Set the index of this {@link LLMChoiceSynchronous} instance.
+   * Set the index of this {@link LLMChoice} instance.
    *
    * @param index Index of the choice
    */
@@ -78,13 +78,13 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   }
 
   /**
-   * Set the message of this {@link LLMChoiceSynchronous} instance and return the same instance.
+   * Set the message of this {@link LLMChoice} instance and return the same instance.
    *
-   * @param message The message of this {@link LLMChoiceSynchronous}
-   * @return The same instance of this {@link LLMChoiceSynchronous} class
+   * @param message The message of this {@link LLMChoice}
+   * @return The same instance of this {@link LLMChoice} class
    */
   @Nonnull
-  public LLMChoiceSynchronous message(@Nonnull final ResponseChatMessage message) {
+  public LLMChoice message(@Nonnull final ResponseChatMessage message) {
     this.message = message;
     return this;
   }
@@ -92,7 +92,7 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   /**
    * Get message
    *
-   * @return message The message of this {@link LLMChoiceSynchronous} instance.
+   * @return message The message of this {@link LLMChoice} instance.
    */
   @Nonnull
   public ResponseChatMessage getMessage() {
@@ -100,22 +100,22 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   }
 
   /**
-   * Set the message of this {@link LLMChoiceSynchronous} instance.
+   * Set the message of this {@link LLMChoice} instance.
    *
-   * @param message The message of this {@link LLMChoiceSynchronous}
+   * @param message The message of this {@link LLMChoice}
    */
   public void setMessage(@Nonnull final ResponseChatMessage message) {
     this.message = message;
   }
 
   /**
-   * Set the logprobs of this {@link LLMChoiceSynchronous} instance and return the same instance.
+   * Set the logprobs of this {@link LLMChoice} instance and return the same instance.
    *
-   * @param logprobs The logprobs of this {@link LLMChoiceSynchronous}
-   * @return The same instance of this {@link LLMChoiceSynchronous} class
+   * @param logprobs The logprobs of this {@link LLMChoice}
+   * @return The same instance of this {@link LLMChoice} class
    */
   @Nonnull
-  public LLMChoiceSynchronous logprobs(@Nullable final ChoiceLogprobs logprobs) {
+  public LLMChoice logprobs(@Nullable final ChoiceLogprobs logprobs) {
     this.logprobs = logprobs;
     return this;
   }
@@ -123,7 +123,7 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   /**
    * Get logprobs
    *
-   * @return logprobs The logprobs of this {@link LLMChoiceSynchronous} instance.
+   * @return logprobs The logprobs of this {@link LLMChoice} instance.
    */
   @Nonnull
   public ChoiceLogprobs getLogprobs() {
@@ -131,26 +131,25 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   }
 
   /**
-   * Set the logprobs of this {@link LLMChoiceSynchronous} instance.
+   * Set the logprobs of this {@link LLMChoice} instance.
    *
-   * @param logprobs The logprobs of this {@link LLMChoiceSynchronous}
+   * @param logprobs The logprobs of this {@link LLMChoice}
    */
   public void setLogprobs(@Nullable final ChoiceLogprobs logprobs) {
     this.logprobs = logprobs;
   }
 
   /**
-   * Set the finishReason of this {@link LLMChoiceSynchronous} instance and return the same
-   * instance.
+   * Set the finishReason of this {@link LLMChoice} instance and return the same instance.
    *
    * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model hit
    *     a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum token
    *     number was reached, &#39;content_filter&#39; if content was omitted due to a filter
    *     enforced by the LLM model provider or the content filtering module
-   * @return The same instance of this {@link LLMChoiceSynchronous} class
+   * @return The same instance of this {@link LLMChoice} class
    */
   @Nonnull
-  public LLMChoiceSynchronous finishReason(@Nonnull final String finishReason) {
+  public LLMChoice finishReason(@Nonnull final String finishReason) {
     this.finishReason = finishReason;
     return this;
   }
@@ -161,7 +160,7 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
    * &#39;content_filter&#39; if content was omitted due to a filter enforced by the LLM model
    * provider or the content filtering module
    *
-   * @return finishReason The finishReason of this {@link LLMChoiceSynchronous} instance.
+   * @return finishReason The finishReason of this {@link LLMChoice} instance.
    */
   @Nonnull
   public String getFinishReason() {
@@ -169,7 +168,7 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   }
 
   /**
-   * Set the finishReason of this {@link LLMChoiceSynchronous} instance.
+   * Set the finishReason of this {@link LLMChoice} instance.
    *
    * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model hit
    *     a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum token
@@ -181,7 +180,7 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link LLMChoiceSynchronous}.
+   * Get the names of the unrecognizable properties of the {@link LLMChoice}.
    *
    * @return The set of properties names
    */
@@ -192,7 +191,7 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link LLMChoiceSynchronous} instance.
+   * Get the value of an unrecognizable property of this {@link LLMChoice} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -203,15 +202,14 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "LLMChoiceSynchronous has no field with name '" + name + "'.");
+      throw new NoSuchElementException("LLMChoice has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link LLMChoiceSynchronous} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link LLMChoice} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -227,8 +225,8 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   }
 
   /**
-   * Set an unrecognizable property of this {@link LLMChoiceSynchronous} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link LLMChoice} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -246,12 +244,12 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final LLMChoiceSynchronous llMChoiceSynchronous = (LLMChoiceSynchronous) o;
-    return Objects.equals(this.cloudSdkCustomFields, llMChoiceSynchronous.cloudSdkCustomFields)
-        && Objects.equals(this.index, llMChoiceSynchronous.index)
-        && Objects.equals(this.message, llMChoiceSynchronous.message)
-        && Objects.equals(this.logprobs, llMChoiceSynchronous.logprobs)
-        && Objects.equals(this.finishReason, llMChoiceSynchronous.finishReason);
+    final LLMChoice llMChoice = (LLMChoice) o;
+    return Objects.equals(this.cloudSdkCustomFields, llMChoice.cloudSdkCustomFields)
+        && Objects.equals(this.index, llMChoice.index)
+        && Objects.equals(this.message, llMChoice.message)
+        && Objects.equals(this.logprobs, llMChoice.logprobs)
+        && Objects.equals(this.finishReason, llMChoice.finishReason);
   }
 
   @Override
@@ -263,7 +261,7 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class LLMChoiceSynchronous {\n");
+    sb.append("class LLMChoice {\n");
     sb.append("    index: ").append(toIndentedString(index)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    logprobs: ").append(toIndentedString(logprobs)).append("\n");
@@ -286,23 +284,23 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link LLMChoiceSynchronous}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link LLMChoice} instance
+   * with all required arguments.
    */
   public static Builder create() {
     return (index) ->
         (message) ->
             (finishReason) ->
-                new LLMChoiceSynchronous().index(index).message(message).finishReason(finishReason);
+                new LLMChoice().index(index).message(message).finishReason(finishReason);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the index of this {@link LLMChoiceSynchronous} instance.
+     * Set the index of this {@link LLMChoice} instance.
      *
      * @param index Index of the choice
-     * @return The LLMChoiceSynchronous builder.
+     * @return The LLMChoice builder.
      */
     Builder1 index(@Nonnull final Integer index);
   }
@@ -310,10 +308,10 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the message of this {@link LLMChoiceSynchronous} instance.
+     * Set the message of this {@link LLMChoice} instance.
      *
-     * @param message The message of this {@link LLMChoiceSynchronous}
-     * @return The LLMChoiceSynchronous builder.
+     * @param message The message of this {@link LLMChoice}
+     * @return The LLMChoice builder.
      */
     Builder2 message(@Nonnull final ResponseChatMessage message);
   }
@@ -321,14 +319,14 @@ public class LLMChoiceSynchronous implements ErrorResponseModuleResultsAllOfOutp
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the finishReason of this {@link LLMChoiceSynchronous} instance.
+     * Set the finishReason of this {@link LLMChoice} instance.
      *
      * @param finishReason Reason the model stopped generating tokens. &#39;stop&#39; if the model
      *     hit a natural stop point or a provided stop sequence, &#39;length&#39; if the maximum
      *     token number was reached, &#39;content_filter&#39; if content was omitted due to a filter
      *     enforced by the LLM model provider or the content filtering module
-     * @return The LLMChoiceSynchronous instance.
+     * @return The LLMChoice instance.
      */
-    LLMChoiceSynchronous finishReason(@Nonnull final String finishReason);
+    LLMChoice finishReason(@Nonnull final String finishReason);
   }
 }

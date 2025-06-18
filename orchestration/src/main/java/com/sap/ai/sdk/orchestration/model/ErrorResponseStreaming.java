@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ErrorResponse */
+/** ErrorResponseStreaming */
 // CHECKSTYLE:OFF
-public class ErrorResponse
+public class ErrorResponseStreaming
 // CHECKSTYLE:ON
 {
   @JsonProperty("request_id")
@@ -41,22 +41,22 @@ public class ErrorResponse
   private String location;
 
   @JsonProperty("module_results")
-  private ModuleResults moduleResults;
+  private ModuleResultsStreaming moduleResults;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ErrorResponse. */
-  protected ErrorResponse() {}
+  /** Default constructor for ErrorResponseStreaming. */
+  protected ErrorResponseStreaming() {}
 
   /**
-   * Set the requestId of this {@link ErrorResponse} instance and return the same instance.
+   * Set the requestId of this {@link ErrorResponseStreaming} instance and return the same instance.
    *
-   * @param requestId The requestId of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
+   * @param requestId The requestId of this {@link ErrorResponseStreaming}
+   * @return The same instance of this {@link ErrorResponseStreaming} class
    */
   @Nonnull
-  public ErrorResponse requestId(@Nonnull final String requestId) {
+  public ErrorResponseStreaming requestId(@Nonnull final String requestId) {
     this.requestId = requestId;
     return this;
   }
@@ -64,7 +64,7 @@ public class ErrorResponse
   /**
    * Get requestId
    *
-   * @return requestId The requestId of this {@link ErrorResponse} instance.
+   * @return requestId The requestId of this {@link ErrorResponseStreaming} instance.
    */
   @Nonnull
   public String getRequestId() {
@@ -72,22 +72,22 @@ public class ErrorResponse
   }
 
   /**
-   * Set the requestId of this {@link ErrorResponse} instance.
+   * Set the requestId of this {@link ErrorResponseStreaming} instance.
    *
-   * @param requestId The requestId of this {@link ErrorResponse}
+   * @param requestId The requestId of this {@link ErrorResponseStreaming}
    */
   public void setRequestId(@Nonnull final String requestId) {
     this.requestId = requestId;
   }
 
   /**
-   * Set the code of this {@link ErrorResponse} instance and return the same instance.
+   * Set the code of this {@link ErrorResponseStreaming} instance and return the same instance.
    *
-   * @param code The code of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
+   * @param code The code of this {@link ErrorResponseStreaming}
+   * @return The same instance of this {@link ErrorResponseStreaming} class
    */
   @Nonnull
-  public ErrorResponse code(@Nonnull final Integer code) {
+  public ErrorResponseStreaming code(@Nonnull final Integer code) {
     this.code = code;
     return this;
   }
@@ -95,7 +95,7 @@ public class ErrorResponse
   /**
    * Get code
    *
-   * @return code The code of this {@link ErrorResponse} instance.
+   * @return code The code of this {@link ErrorResponseStreaming} instance.
    */
   @Nonnull
   public Integer getCode() {
@@ -103,22 +103,22 @@ public class ErrorResponse
   }
 
   /**
-   * Set the code of this {@link ErrorResponse} instance.
+   * Set the code of this {@link ErrorResponseStreaming} instance.
    *
-   * @param code The code of this {@link ErrorResponse}
+   * @param code The code of this {@link ErrorResponseStreaming}
    */
   public void setCode(@Nonnull final Integer code) {
     this.code = code;
   }
 
   /**
-   * Set the message of this {@link ErrorResponse} instance and return the same instance.
+   * Set the message of this {@link ErrorResponseStreaming} instance and return the same instance.
    *
-   * @param message The message of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
+   * @param message The message of this {@link ErrorResponseStreaming}
+   * @return The same instance of this {@link ErrorResponseStreaming} class
    */
   @Nonnull
-  public ErrorResponse message(@Nonnull final String message) {
+  public ErrorResponseStreaming message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
@@ -126,7 +126,7 @@ public class ErrorResponse
   /**
    * Get message
    *
-   * @return message The message of this {@link ErrorResponse} instance.
+   * @return message The message of this {@link ErrorResponseStreaming} instance.
    */
   @Nonnull
   public String getMessage() {
@@ -134,22 +134,22 @@ public class ErrorResponse
   }
 
   /**
-   * Set the message of this {@link ErrorResponse} instance.
+   * Set the message of this {@link ErrorResponseStreaming} instance.
    *
-   * @param message The message of this {@link ErrorResponse}
+   * @param message The message of this {@link ErrorResponseStreaming}
    */
   public void setMessage(@Nonnull final String message) {
     this.message = message;
   }
 
   /**
-   * Set the location of this {@link ErrorResponse} instance and return the same instance.
+   * Set the location of this {@link ErrorResponseStreaming} instance and return the same instance.
    *
    * @param location Where the error occurred
-   * @return The same instance of this {@link ErrorResponse} class
+   * @return The same instance of this {@link ErrorResponseStreaming} class
    */
   @Nonnull
-  public ErrorResponse location(@Nonnull final String location) {
+  public ErrorResponseStreaming location(@Nonnull final String location) {
     this.location = location;
     return this;
   }
@@ -157,7 +157,7 @@ public class ErrorResponse
   /**
    * Where the error occurred
    *
-   * @return location The location of this {@link ErrorResponse} instance.
+   * @return location The location of this {@link ErrorResponseStreaming} instance.
    */
   @Nonnull
   public String getLocation() {
@@ -165,7 +165,7 @@ public class ErrorResponse
   }
 
   /**
-   * Set the location of this {@link ErrorResponse} instance.
+   * Set the location of this {@link ErrorResponseStreaming} instance.
    *
    * @param location Where the error occurred
    */
@@ -174,13 +174,15 @@ public class ErrorResponse
   }
 
   /**
-   * Set the moduleResults of this {@link ErrorResponse} instance and return the same instance.
+   * Set the moduleResults of this {@link ErrorResponseStreaming} instance and return the same
+   * instance.
    *
-   * @param moduleResults The moduleResults of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
+   * @param moduleResults The moduleResults of this {@link ErrorResponseStreaming}
+   * @return The same instance of this {@link ErrorResponseStreaming} class
    */
   @Nonnull
-  public ErrorResponse moduleResults(@Nullable final ModuleResults moduleResults) {
+  public ErrorResponseStreaming moduleResults(
+      @Nullable final ModuleResultsStreaming moduleResults) {
     this.moduleResults = moduleResults;
     return this;
   }
@@ -188,24 +190,24 @@ public class ErrorResponse
   /**
    * Get moduleResults
    *
-   * @return moduleResults The moduleResults of this {@link ErrorResponse} instance.
+   * @return moduleResults The moduleResults of this {@link ErrorResponseStreaming} instance.
    */
   @Nonnull
-  public ModuleResults getModuleResults() {
+  public ModuleResultsStreaming getModuleResults() {
     return moduleResults;
   }
 
   /**
-   * Set the moduleResults of this {@link ErrorResponse} instance.
+   * Set the moduleResults of this {@link ErrorResponseStreaming} instance.
    *
-   * @param moduleResults The moduleResults of this {@link ErrorResponse}
+   * @param moduleResults The moduleResults of this {@link ErrorResponseStreaming}
    */
-  public void setModuleResults(@Nullable final ModuleResults moduleResults) {
+  public void setModuleResults(@Nullable final ModuleResultsStreaming moduleResults) {
     this.moduleResults = moduleResults;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ErrorResponse}.
+   * Get the names of the unrecognizable properties of the {@link ErrorResponseStreaming}.
    *
    * @return The set of properties names
    */
@@ -216,7 +218,7 @@ public class ErrorResponse
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ErrorResponse} instance.
+   * Get the value of an unrecognizable property of this {@link ErrorResponseStreaming} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -227,14 +229,15 @@ public class ErrorResponse
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ErrorResponse has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "ErrorResponseStreaming has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ErrorResponse} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link ErrorResponseStreaming} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -251,8 +254,8 @@ public class ErrorResponse
   }
 
   /**
-   * Set an unrecognizable property of this {@link ErrorResponse} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ErrorResponseStreaming} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -270,13 +273,13 @@ public class ErrorResponse
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ErrorResponse errorResponse = (ErrorResponse) o;
-    return Objects.equals(this.cloudSdkCustomFields, errorResponse.cloudSdkCustomFields)
-        && Objects.equals(this.requestId, errorResponse.requestId)
-        && Objects.equals(this.code, errorResponse.code)
-        && Objects.equals(this.message, errorResponse.message)
-        && Objects.equals(this.location, errorResponse.location)
-        && Objects.equals(this.moduleResults, errorResponse.moduleResults);
+    final ErrorResponseStreaming errorResponseStreaming = (ErrorResponseStreaming) o;
+    return Objects.equals(this.cloudSdkCustomFields, errorResponseStreaming.cloudSdkCustomFields)
+        && Objects.equals(this.requestId, errorResponseStreaming.requestId)
+        && Objects.equals(this.code, errorResponseStreaming.code)
+        && Objects.equals(this.message, errorResponseStreaming.message)
+        && Objects.equals(this.location, errorResponseStreaming.location)
+        && Objects.equals(this.moduleResults, errorResponseStreaming.moduleResults);
   }
 
   @Override
@@ -288,7 +291,7 @@ public class ErrorResponse
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ErrorResponse {\n");
+    sb.append("class ErrorResponseStreaming {\n");
     sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
@@ -312,15 +315,15 @@ public class ErrorResponse
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ErrorResponse} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link ErrorResponseStreaming}
+   * instance with all required arguments.
    */
   public static Builder create() {
     return (requestId) ->
         (code) ->
             (message) ->
                 (location) ->
-                    new ErrorResponse()
+                    new ErrorResponseStreaming()
                         .requestId(requestId)
                         .code(code)
                         .message(message)
@@ -330,10 +333,10 @@ public class ErrorResponse
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the requestId of this {@link ErrorResponse} instance.
+     * Set the requestId of this {@link ErrorResponseStreaming} instance.
      *
-     * @param requestId The requestId of this {@link ErrorResponse}
-     * @return The ErrorResponse builder.
+     * @param requestId The requestId of this {@link ErrorResponseStreaming}
+     * @return The ErrorResponseStreaming builder.
      */
     Builder1 requestId(@Nonnull final String requestId);
   }
@@ -341,10 +344,10 @@ public class ErrorResponse
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the code of this {@link ErrorResponse} instance.
+     * Set the code of this {@link ErrorResponseStreaming} instance.
      *
-     * @param code The code of this {@link ErrorResponse}
-     * @return The ErrorResponse builder.
+     * @param code The code of this {@link ErrorResponseStreaming}
+     * @return The ErrorResponseStreaming builder.
      */
     Builder2 code(@Nonnull final Integer code);
   }
@@ -352,10 +355,10 @@ public class ErrorResponse
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the message of this {@link ErrorResponse} instance.
+     * Set the message of this {@link ErrorResponseStreaming} instance.
      *
-     * @param message The message of this {@link ErrorResponse}
-     * @return The ErrorResponse builder.
+     * @param message The message of this {@link ErrorResponseStreaming}
+     * @return The ErrorResponseStreaming builder.
      */
     Builder3 message(@Nonnull final String message);
   }
@@ -363,11 +366,11 @@ public class ErrorResponse
   /** Builder helper class. */
   public interface Builder3 {
     /**
-     * Set the location of this {@link ErrorResponse} instance.
+     * Set the location of this {@link ErrorResponseStreaming} instance.
      *
      * @param location Where the error occurred
-     * @return The ErrorResponse instance.
+     * @return The ErrorResponseStreaming instance.
      */
-    ErrorResponse location(@Nonnull final String location);
+    ErrorResponseStreaming location(@Nonnull final String location);
   }
 }
