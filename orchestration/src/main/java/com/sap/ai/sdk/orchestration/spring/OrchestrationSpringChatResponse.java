@@ -2,8 +2,8 @@ package com.sap.ai.sdk.orchestration.spring;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
-import com.sap.ai.sdk.orchestration.model.LLMChoiceSynchronous;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.LLMChoice;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
 import java.util.Map;
@@ -40,12 +40,12 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
   }
 
   @Nonnull
-  static List<Generation> toGenerations(@Nonnull final LLMModuleResultSynchronous result) {
+  static List<Generation> toGenerations(@Nonnull final LLMModuleResult result) {
     return result.getChoices().stream().map(OrchestrationSpringChatResponse::toGeneration).toList();
   }
 
   @Nonnull
-  static Generation toGeneration(@Nonnull final LLMChoiceSynchronous choice) {
+  static Generation toGeneration(@Nonnull final LLMChoice choice) {
     val metadata = ChatGenerationMetadata.builder().finishReason(choice.getFinishReason());
     metadata.metadata("index", choice.getIndex());
     if (!choice.getLogprobs().isEmpty()) {
@@ -68,7 +68,7 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
 
   @Nonnull
   static ChatResponseMetadata toChatResponseMetadata(
-      @Nonnull final LLMModuleResultSynchronous orchestrationResult) {
+      @Nonnull final LLMModuleResult orchestrationResult) {
     val metadataBuilder = ChatResponseMetadata.builder();
 
     metadataBuilder

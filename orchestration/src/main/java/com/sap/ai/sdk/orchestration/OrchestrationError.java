@@ -3,7 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientError;
-import com.sap.ai.sdk.orchestration.model.ErrorResponseSynchronous;
+import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import lombok.Value;
 @Value
 @Beta
 public class OrchestrationError implements ClientError {
-  ErrorResponseSynchronous originalResponse;
+  ErrorResponse originalResponse;
 
   /**
    * Gets the error message from the contained original response.

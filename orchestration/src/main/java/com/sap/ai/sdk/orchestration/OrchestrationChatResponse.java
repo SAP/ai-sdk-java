@@ -5,8 +5,8 @@ import static lombok.AccessLevel.PACKAGE;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
-import com.sap.ai.sdk.orchestration.model.CompletionPostResponseSynchronous;
-import com.sap.ai.sdk.orchestration.model.LLMChoiceSynchronous;
+import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
@@ -22,7 +22,7 @@ import lombok.val;
 @Value
 @RequiredArgsConstructor(access = PACKAGE)
 public class OrchestrationChatResponse {
-  CompletionPostResponseSynchronous originalResponse;
+  CompletionPostResponse originalResponse;
 
   /**
    * Get the message content from the output.
@@ -97,10 +97,10 @@ public class OrchestrationChatResponse {
   /**
    * Get the LLM response. Useful for accessing the finish reason or further data like logprobs.
    *
-   * @return The (first, in case of multiple) {@link LLMChoiceSynchronous}.
+   * @return The (first, in case of multiple) {@link LLMChoice}.
    */
   @Nonnull
-  public LLMChoiceSynchronous getChoice() {
+  public LLMChoice getChoice() {
     //    We expect choices to be defined and never empty.
     return originalResponse.getOrchestrationResult().getChoices().get(0);
   }
