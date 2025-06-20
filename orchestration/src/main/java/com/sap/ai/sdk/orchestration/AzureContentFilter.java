@@ -4,6 +4,7 @@ import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInputFilterConfig;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutputFilterConfig;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.NoArgsConstructor;
@@ -65,15 +66,27 @@ public class AzureContentFilter implements ContentFilter {
       throw new IllegalArgumentException("At least one filter category must be set");
     }
 
+    final var config =
+        AzureContentSafetyInput.create()
+            .hate(
+                Optional.ofNullable(hate).map(AzureFilterThreshold::getAzureThreshold).orElse(null))
+            .selfHarm(
+                Optional.ofNullable(selfHarm)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null))
+            .sexual(
+                Optional.ofNullable(sexual)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null))
+            .violence(
+                Optional.ofNullable(violence)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null))
+            .promptShield(Optional.ofNullable(promptShield).orElse(null));
+
     return AzureContentSafetyInputFilterConfig.create()
         .type(AzureContentSafetyInputFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafetyInput.create()
-                .hate(hate != null ? hate.getAzureThreshold() : null)
-                .selfHarm(selfHarm != null ? selfHarm.getAzureThreshold() : null)
-                .sexual(sexual != null ? sexual.getAzureThreshold() : null)
-                .violence(violence != null ? violence.getAzureThreshold() : null)
-                .promptShield(promptShield != null ? promptShield : null));
+        .config(config);
   }
 
   /**
@@ -90,13 +103,25 @@ public class AzureContentFilter implements ContentFilter {
       throw new IllegalArgumentException("At least one filter category must be set");
     }
 
+    final var config =
+        AzureContentSafetyOutput.create()
+            .hate(
+                Optional.ofNullable(hate).map(AzureFilterThreshold::getAzureThreshold).orElse(null))
+            .selfHarm(
+                Optional.ofNullable(selfHarm)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null))
+            .sexual(
+                Optional.ofNullable(sexual)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null))
+            .violence(
+                Optional.ofNullable(violence)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null));
+
     return AzureContentSafetyOutputFilterConfig.create()
         .type(AzureContentSafetyOutputFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafetyOutput.create()
-                .hate(hate != null ? hate.getAzureThreshold() : null)
-                .selfHarm(selfHarm != null ? selfHarm.getAzureThreshold() : null)
-                .sexual(sexual != null ? sexual.getAzureThreshold() : null)
-                .violence(violence != null ? violence.getAzureThreshold() : null));
+        .config(config);
   }
 }
