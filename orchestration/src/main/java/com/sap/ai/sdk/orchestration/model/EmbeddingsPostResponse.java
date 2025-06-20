@@ -31,11 +31,11 @@ public class EmbeddingsPostResponse
   @JsonProperty("request_id")
   private String requestId;
 
-  @JsonProperty("module_results")
-  private ModuleResultsBase moduleResults;
+  @JsonProperty("intermediate_results")
+  private ModuleResultsBase intermediateResults;
 
-  @JsonProperty("orchestration_result")
-  private EmbeddingsResponse orchestrationResult;
+  @JsonProperty("final_result")
+  private EmbeddingsResponse finalResult;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -75,69 +75,69 @@ public class EmbeddingsPostResponse
   }
 
   /**
-   * Set the moduleResults of this {@link EmbeddingsPostResponse} instance and return the same
+   * Set the intermediateResults of this {@link EmbeddingsPostResponse} instance and return the same
    * instance.
    *
-   * @param moduleResults The moduleResults of this {@link EmbeddingsPostResponse}
+   * @param intermediateResults The intermediateResults of this {@link EmbeddingsPostResponse}
    * @return The same instance of this {@link EmbeddingsPostResponse} class
    */
   @Nonnull
-  public EmbeddingsPostResponse moduleResults(@Nullable final ModuleResultsBase moduleResults) {
-    this.moduleResults = moduleResults;
+  public EmbeddingsPostResponse intermediateResults(
+      @Nullable final ModuleResultsBase intermediateResults) {
+    this.intermediateResults = intermediateResults;
     return this;
   }
 
   /**
-   * Get moduleResults
+   * Get intermediateResults
    *
-   * @return moduleResults The moduleResults of this {@link EmbeddingsPostResponse} instance.
-   */
-  @Nonnull
-  public ModuleResultsBase getModuleResults() {
-    return moduleResults;
-  }
-
-  /**
-   * Set the moduleResults of this {@link EmbeddingsPostResponse} instance.
-   *
-   * @param moduleResults The moduleResults of this {@link EmbeddingsPostResponse}
-   */
-  public void setModuleResults(@Nullable final ModuleResultsBase moduleResults) {
-    this.moduleResults = moduleResults;
-  }
-
-  /**
-   * Set the orchestrationResult of this {@link EmbeddingsPostResponse} instance and return the same
-   * instance.
-   *
-   * @param orchestrationResult The orchestrationResult of this {@link EmbeddingsPostResponse}
-   * @return The same instance of this {@link EmbeddingsPostResponse} class
-   */
-  @Nonnull
-  public EmbeddingsPostResponse orchestrationResult(
-      @Nullable final EmbeddingsResponse orchestrationResult) {
-    this.orchestrationResult = orchestrationResult;
-    return this;
-  }
-
-  /**
-   * Get orchestrationResult
-   *
-   * @return orchestrationResult The orchestrationResult of this {@link EmbeddingsPostResponse}
+   * @return intermediateResults The intermediateResults of this {@link EmbeddingsPostResponse}
    *     instance.
    */
   @Nonnull
-  public EmbeddingsResponse getOrchestrationResult() {
-    return orchestrationResult;
+  public ModuleResultsBase getIntermediateResults() {
+    return intermediateResults;
   }
 
   /**
-   * Set the orchestrationResult of this {@link EmbeddingsPostResponse} instance.
+   * Set the intermediateResults of this {@link EmbeddingsPostResponse} instance.
    *
-   * @param orchestrationResult The orchestrationResult of this {@link EmbeddingsPostResponse}
+   * @param intermediateResults The intermediateResults of this {@link EmbeddingsPostResponse}
    */
-  public void setOrchestrationResult(@Nullable final EmbeddingsResponse orchestrationResult) {
-    this.orchestrationResult = orchestrationResult;
+  public void setIntermediateResults(@Nullable final ModuleResultsBase intermediateResults) {
+    this.intermediateResults = intermediateResults;
+  }
+
+  /**
+   * Set the finalResult of this {@link EmbeddingsPostResponse} instance and return the same
+   * instance.
+   *
+   * @param finalResult The finalResult of this {@link EmbeddingsPostResponse}
+   * @return The same instance of this {@link EmbeddingsPostResponse} class
+   */
+  @Nonnull
+  public EmbeddingsPostResponse finalResult(@Nullable final EmbeddingsResponse finalResult) {
+    this.finalResult = finalResult;
+    return this;
+  }
+
+  /**
+   * Get finalResult
+   *
+   * @return finalResult The finalResult of this {@link EmbeddingsPostResponse} instance.
+   */
+  @Nonnull
+  public EmbeddingsResponse getFinalResult() {
+    return finalResult;
+  }
+
+  /**
+   * Set the finalResult of this {@link EmbeddingsPostResponse} instance.
+   *
+   * @param finalResult The finalResult of this {@link EmbeddingsPostResponse}
+   */
+  public void setFinalResult(@Nullable final EmbeddingsResponse finalResult) {
+    this.finalResult = finalResult;
   }
 
   /**
@@ -180,8 +180,8 @@ public class EmbeddingsPostResponse
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (requestId != null) declaredFields.put("requestId", requestId);
-    if (moduleResults != null) declaredFields.put("moduleResults", moduleResults);
-    if (orchestrationResult != null) declaredFields.put("orchestrationResult", orchestrationResult);
+    if (intermediateResults != null) declaredFields.put("intermediateResults", intermediateResults);
+    if (finalResult != null) declaredFields.put("finalResult", finalResult);
     return declaredFields;
   }
 
@@ -208,13 +208,13 @@ public class EmbeddingsPostResponse
     final EmbeddingsPostResponse embeddingsPostResponse = (EmbeddingsPostResponse) o;
     return Objects.equals(this.cloudSdkCustomFields, embeddingsPostResponse.cloudSdkCustomFields)
         && Objects.equals(this.requestId, embeddingsPostResponse.requestId)
-        && Objects.equals(this.moduleResults, embeddingsPostResponse.moduleResults)
-        && Objects.equals(this.orchestrationResult, embeddingsPostResponse.orchestrationResult);
+        && Objects.equals(this.intermediateResults, embeddingsPostResponse.intermediateResults)
+        && Objects.equals(this.finalResult, embeddingsPostResponse.finalResult);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(requestId, moduleResults, orchestrationResult, cloudSdkCustomFields);
+    return Objects.hash(requestId, intermediateResults, finalResult, cloudSdkCustomFields);
   }
 
   @Override
@@ -223,10 +223,10 @@ public class EmbeddingsPostResponse
     final StringBuilder sb = new StringBuilder();
     sb.append("class EmbeddingsPostResponse {\n");
     sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
-    sb.append("    moduleResults: ").append(toIndentedString(moduleResults)).append("\n");
-    sb.append("    orchestrationResult: ")
-        .append(toIndentedString(orchestrationResult))
+    sb.append("    intermediateResults: ")
+        .append(toIndentedString(intermediateResults))
         .append("\n");
+    sb.append("    finalResult: ").append(toIndentedString(finalResult)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

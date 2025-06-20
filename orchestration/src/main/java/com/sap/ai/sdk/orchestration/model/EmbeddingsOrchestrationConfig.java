@@ -28,8 +28,8 @@ import javax.annotation.Nullable;
 public class EmbeddingsOrchestrationConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("module_configs")
-  private EmbeddingsModuleConfigs moduleConfigs;
+  @JsonProperty("modules")
+  private EmbeddingsModuleConfigs modules;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -38,36 +38,35 @@ public class EmbeddingsOrchestrationConfig
   protected EmbeddingsOrchestrationConfig() {}
 
   /**
-   * Set the moduleConfigs of this {@link EmbeddingsOrchestrationConfig} instance and return the
-   * same instance.
+   * Set the modules of this {@link EmbeddingsOrchestrationConfig} instance and return the same
+   * instance.
    *
-   * @param moduleConfigs The moduleConfigs of this {@link EmbeddingsOrchestrationConfig}
+   * @param modules The modules of this {@link EmbeddingsOrchestrationConfig}
    * @return The same instance of this {@link EmbeddingsOrchestrationConfig} class
    */
   @Nonnull
-  public EmbeddingsOrchestrationConfig moduleConfigs(
-      @Nonnull final EmbeddingsModuleConfigs moduleConfigs) {
-    this.moduleConfigs = moduleConfigs;
+  public EmbeddingsOrchestrationConfig modules(@Nonnull final EmbeddingsModuleConfigs modules) {
+    this.modules = modules;
     return this;
   }
 
   /**
-   * Get moduleConfigs
+   * Get modules
    *
-   * @return moduleConfigs The moduleConfigs of this {@link EmbeddingsOrchestrationConfig} instance.
+   * @return modules The modules of this {@link EmbeddingsOrchestrationConfig} instance.
    */
   @Nonnull
-  public EmbeddingsModuleConfigs getModuleConfigs() {
-    return moduleConfigs;
+  public EmbeddingsModuleConfigs getModules() {
+    return modules;
   }
 
   /**
-   * Set the moduleConfigs of this {@link EmbeddingsOrchestrationConfig} instance.
+   * Set the modules of this {@link EmbeddingsOrchestrationConfig} instance.
    *
-   * @param moduleConfigs The moduleConfigs of this {@link EmbeddingsOrchestrationConfig}
+   * @param modules The modules of this {@link EmbeddingsOrchestrationConfig}
    */
-  public void setModuleConfigs(@Nonnull final EmbeddingsModuleConfigs moduleConfigs) {
-    this.moduleConfigs = moduleConfigs;
+  public void setModules(@Nonnull final EmbeddingsModuleConfigs modules) {
+    this.modules = modules;
   }
 
   /**
@@ -110,7 +109,7 @@ public class EmbeddingsOrchestrationConfig
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (moduleConfigs != null) declaredFields.put("moduleConfigs", moduleConfigs);
+    if (modules != null) declaredFields.put("modules", modules);
     return declaredFields;
   }
 
@@ -139,12 +138,12 @@ public class EmbeddingsOrchestrationConfig
         (EmbeddingsOrchestrationConfig) o;
     return Objects.equals(
             this.cloudSdkCustomFields, embeddingsOrchestrationConfig.cloudSdkCustomFields)
-        && Objects.equals(this.moduleConfigs, embeddingsOrchestrationConfig.moduleConfigs);
+        && Objects.equals(this.modules, embeddingsOrchestrationConfig.modules);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(moduleConfigs, cloudSdkCustomFields);
+    return Objects.hash(modules, cloudSdkCustomFields);
   }
 
   @Override
@@ -152,7 +151,7 @@ public class EmbeddingsOrchestrationConfig
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class EmbeddingsOrchestrationConfig {\n");
-    sb.append("    moduleConfigs: ").append(toIndentedString(moduleConfigs)).append("\n");
+    sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -175,18 +174,17 @@ public class EmbeddingsOrchestrationConfig
    * EmbeddingsOrchestrationConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (moduleConfigs) -> new EmbeddingsOrchestrationConfig().moduleConfigs(moduleConfigs);
+    return (modules) -> new EmbeddingsOrchestrationConfig().modules(modules);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the moduleConfigs of this {@link EmbeddingsOrchestrationConfig} instance.
+     * Set the modules of this {@link EmbeddingsOrchestrationConfig} instance.
      *
-     * @param moduleConfigs The moduleConfigs of this {@link EmbeddingsOrchestrationConfig}
+     * @param modules The modules of this {@link EmbeddingsOrchestrationConfig}
      * @return The EmbeddingsOrchestrationConfig instance.
      */
-    EmbeddingsOrchestrationConfig moduleConfigs(
-        @Nonnull final EmbeddingsModuleConfigs moduleConfigs);
+    EmbeddingsOrchestrationConfig modules(@Nonnull final EmbeddingsModuleConfigs modules);
   }
 }

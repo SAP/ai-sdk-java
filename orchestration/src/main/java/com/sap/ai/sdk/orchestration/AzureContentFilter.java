@@ -1,7 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.AzureContentSafety;
-import com.sap.ai.sdk.orchestration.model.AzureContentSafetyFilterConfig;
+import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
+import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInputFilterConfig;
+import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
+import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutputFilterConfig;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.NoArgsConstructor;
@@ -46,27 +49,79 @@ public class AzureContentFilter implements ContentFilter {
   /* The filter category for violence content. */
   @Nullable AzureFilterThreshold violence;
 
+  /* A flag to set prompt shield on in*/
+  @Nullable Boolean promptShield;
+
   /**
-   * Converts {@code AzureContentFilter} to its serializable counterpart {@link
-   * AzureContentSafetyFilterConfig}.
+   * Converts {@link AzureContentFilter} to its serializable counterpart {@link
+   * AzureContentSafetyInputFilterConfig}.
    *
-   * @return the corresponding {@code AzureContentSafetyFilterConfig} object.
+   * @return the corresponding {@link AzureContentSafetyInputFilterConfig} object.
    * @throws IllegalArgumentException if no policies are set.
    */
   @Override
   @Nonnull
-  public AzureContentSafetyFilterConfig createConfig() {
+  public AzureContentSafetyInputFilterConfig createInputFilterConfig() {
     if (hate == null && selfHarm == null && sexual == null && violence == null) {
       throw new IllegalArgumentException("At least one filter category must be set");
     }
 
-    return AzureContentSafetyFilterConfig.create()
-        .type(AzureContentSafetyFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
-        .config(
-            AzureContentSafety.create()
-                .hate(hate != null ? hate.getAzureThreshold() : null)
-                .selfHarm(selfHarm != null ? selfHarm.getAzureThreshold() : null)
-                .sexual(sexual != null ? sexual.getAzureThreshold() : null)
-                .violence(violence != null ? violence.getAzureThreshold() : null));
+    final var config =
+        AzureContentSafetyInput.create()
+            .hate(
+                Optional.ofNullable(hate).map(AzureFilterThreshold::getAzureThreshold).orElse(null))
+            .selfHarm(
+                Optional.ofNullable(selfHarm)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null))
+            .sexual(
+                Optional.ofNullable(sexual)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null))
+            .violence(
+                Optional.ofNullable(violence)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null))
+            .promptShield(Optional.ofNullable(promptShield).orElse(null));
+
+    return AzureContentSafetyInputFilterConfig.create()
+        .type(AzureContentSafetyInputFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+        .config(config);
+  }
+
+  /**
+   * Converts {@link AzureContentFilter} to its serializable counterpart {@link
+   * AzureContentSafetyOutput}.
+   *
+   * @return the corresponding {@link AzureContentSafetyOutputFilterConfig} object.
+   * @throws IllegalArgumentException if no policies are set.
+   */
+  @Override
+  @Nonnull
+  public AzureContentSafetyOutputFilterConfig createOutputFilterConfig() {
+    if (hate == null && selfHarm == null && sexual == null && violence == null) {
+      throw new IllegalArgumentException("At least one filter category must be set");
+    }
+
+    final var config =
+        AzureContentSafetyOutput.create()
+            .hate(
+                Optional.ofNullable(hate).map(AzureFilterThreshold::getAzureThreshold).orElse(null))
+            .selfHarm(
+                Optional.ofNullable(selfHarm)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null))
+            .sexual(
+                Optional.ofNullable(sexual)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null))
+            .violence(
+                Optional.ofNullable(violence)
+                    .map(AzureFilterThreshold::getAzureThreshold)
+                    .orElse(null));
+
+    return AzureContentSafetyOutputFilterConfig.create()
+        .type(AzureContentSafetyOutputFilterConfig.TypeEnum.AZURE_CONTENT_SAFETY)
+        .config(config);
   }
 }

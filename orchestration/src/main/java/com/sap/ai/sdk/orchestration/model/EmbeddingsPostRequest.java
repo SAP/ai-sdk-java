@@ -28,8 +28,8 @@ import javax.annotation.Nullable;
 public class EmbeddingsPostRequest
 // CHECKSTYLE:ON
 {
-  @JsonProperty("orchestration_config")
-  private EmbeddingsOrchestrationConfig orchestrationConfig;
+  @JsonProperty("config")
+  private EmbeddingsOrchestrationConfig config;
 
   @JsonProperty("input")
   private EmbeddingsInput input;
@@ -41,38 +41,34 @@ public class EmbeddingsPostRequest
   protected EmbeddingsPostRequest() {}
 
   /**
-   * Set the orchestrationConfig of this {@link EmbeddingsPostRequest} instance and return the same
-   * instance.
+   * Set the config of this {@link EmbeddingsPostRequest} instance and return the same instance.
    *
-   * @param orchestrationConfig The orchestrationConfig of this {@link EmbeddingsPostRequest}
+   * @param config The config of this {@link EmbeddingsPostRequest}
    * @return The same instance of this {@link EmbeddingsPostRequest} class
    */
   @Nonnull
-  public EmbeddingsPostRequest orchestrationConfig(
-      @Nonnull final EmbeddingsOrchestrationConfig orchestrationConfig) {
-    this.orchestrationConfig = orchestrationConfig;
+  public EmbeddingsPostRequest config(@Nonnull final EmbeddingsOrchestrationConfig config) {
+    this.config = config;
     return this;
   }
 
   /**
-   * Get orchestrationConfig
+   * Get config
    *
-   * @return orchestrationConfig The orchestrationConfig of this {@link EmbeddingsPostRequest}
-   *     instance.
+   * @return config The config of this {@link EmbeddingsPostRequest} instance.
    */
   @Nonnull
-  public EmbeddingsOrchestrationConfig getOrchestrationConfig() {
-    return orchestrationConfig;
+  public EmbeddingsOrchestrationConfig getConfig() {
+    return config;
   }
 
   /**
-   * Set the orchestrationConfig of this {@link EmbeddingsPostRequest} instance.
+   * Set the config of this {@link EmbeddingsPostRequest} instance.
    *
-   * @param orchestrationConfig The orchestrationConfig of this {@link EmbeddingsPostRequest}
+   * @param config The config of this {@link EmbeddingsPostRequest}
    */
-  public void setOrchestrationConfig(
-      @Nonnull final EmbeddingsOrchestrationConfig orchestrationConfig) {
-    this.orchestrationConfig = orchestrationConfig;
+  public void setConfig(@Nonnull final EmbeddingsOrchestrationConfig config) {
+    this.config = config;
   }
 
   /**
@@ -145,7 +141,7 @@ public class EmbeddingsPostRequest
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (orchestrationConfig != null) declaredFields.put("orchestrationConfig", orchestrationConfig);
+    if (config != null) declaredFields.put("config", config);
     if (input != null) declaredFields.put("input", input);
     return declaredFields;
   }
@@ -172,13 +168,13 @@ public class EmbeddingsPostRequest
     }
     final EmbeddingsPostRequest embeddingsPostRequest = (EmbeddingsPostRequest) o;
     return Objects.equals(this.cloudSdkCustomFields, embeddingsPostRequest.cloudSdkCustomFields)
-        && Objects.equals(this.orchestrationConfig, embeddingsPostRequest.orchestrationConfig)
+        && Objects.equals(this.config, embeddingsPostRequest.config)
         && Objects.equals(this.input, embeddingsPostRequest.input);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(orchestrationConfig, input, cloudSdkCustomFields);
+    return Objects.hash(config, input, cloudSdkCustomFields);
   }
 
   @Override
@@ -186,9 +182,7 @@ public class EmbeddingsPostRequest
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class EmbeddingsPostRequest {\n");
-    sb.append("    orchestrationConfig: ")
-        .append(toIndentedString(orchestrationConfig))
-        .append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     sb.append("    input: ").append(toIndentedString(input)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -212,20 +206,18 @@ public class EmbeddingsPostRequest
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (orchestrationConfig) ->
-        (input) ->
-            new EmbeddingsPostRequest().orchestrationConfig(orchestrationConfig).input(input);
+    return (config) -> (input) -> new EmbeddingsPostRequest().config(config).input(input);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the orchestrationConfig of this {@link EmbeddingsPostRequest} instance.
+     * Set the config of this {@link EmbeddingsPostRequest} instance.
      *
-     * @param orchestrationConfig The orchestrationConfig of this {@link EmbeddingsPostRequest}
+     * @param config The config of this {@link EmbeddingsPostRequest}
      * @return The EmbeddingsPostRequest builder.
      */
-    Builder1 orchestrationConfig(@Nonnull final EmbeddingsOrchestrationConfig orchestrationConfig);
+    Builder1 config(@Nonnull final EmbeddingsOrchestrationConfig config);
   }
 
   /** Builder helper class. */

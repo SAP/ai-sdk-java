@@ -14,10 +14,10 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** FilterConfig */
+/** InputFilterConfig */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = AzureContentSafetyFilterConfig.class),
+  @JsonSubTypes.Type(value = AzureContentSafetyInputFilterConfig.class),
   @JsonSubTypes.Type(value = LlamaGuard38bFilterConfig.class),
 })
-public interface FilterConfig {}
+public interface InputFilterConfig {}

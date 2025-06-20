@@ -2,8 +2,8 @@ package com.sap.ai.sdk.orchestration.spring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.orchestration.model.LLMChoiceSynchronous;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.LLMChoice;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.ResponseChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
@@ -15,7 +15,7 @@ class OrchestrationChatResponseTest {
   @Test
   void testToGeneration() {
     var choice =
-        LLMChoiceSynchronous.create()
+        LLMChoice.create()
             .index(0)
             .message(
                 ResponseChatMessage.create()
@@ -33,7 +33,7 @@ class OrchestrationChatResponseTest {
   @Test
   void testToChatResponseMetadata() {
     var moduleResult =
-        LLMModuleResultSynchronous.create()
+        LLMModuleResult.create()
             .id("test-id")
             ._object("test-object")
             .created(123456789)

@@ -33,7 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CompletionPostResponseSynchronous"
+                $ref: "#/components/schemas/CompletionPostResponse"
             text/event-stream:
               schema:
                 $ref: "#/components/schemas/CompletionPostResponseStreaming"
@@ -98,19 +98,19 @@ components:
       additionalProperties: false
       required:
         - input
-        - orchestration_config
+        - config
       properties:
-        orchestration_config:
+        config:
           $ref: "#/components/schemas/EmbeddingsOrchestrationConfig"
         input:
           $ref: "#/components/schemas/EmbeddingsInput"
     EmbeddingsOrchestrationConfig:
       type: object
       required:
-        - module_configs
+        - modules
       additionalProperties: false
       properties:
-        module_configs:
+        modules:
           $ref: "#/components/schemas/EmbeddingsModuleConfigs"
     EmbeddingsInput:
       type: object
@@ -193,10 +193,10 @@ components:
       properties:
         request_id:
           type: string
-        module_results:
+        intermediate_results:
           $ref: "#/components/schemas/ModuleResultsBase"
           description: Results of each module of /embeddings endpoint(e.g. input masking).
-        orchestration_result:
+        final_result:
           $ref: "#/components/schemas/EmbeddingsResponse"
           description: The response from request to embedding model following OpenAI specification.
     EmbeddingsResponse:
@@ -514,7 +514,7 @@ components:
                 calling your function.
       required:
         - index
-    CompletionPostResponseSynchronous:
+    CompletionPostResponse:
       type: object
       required:
         - request_id
@@ -526,9 +526,9 @@ components:
           type: string
           example: "d4a67ea1-2bf9-4df7-8105-d48203ccff76"
         module_results:
-          $ref: "#/components/schemas/ModuleResultsSynchronous"
+          $ref: "#/components/schemas/ModuleResults"
         orchestration_result:
-          $ref: "#/components/schemas/LLMModuleResultSynchronous"
+          $ref: "#/components/schemas/LLMModuleResult"
 
     CompletionPostResponseStreaming:
       type: object
@@ -577,7 +577,7 @@ components:
           $ref: "#/components/schemas/InputTranslationModuleConfig"
         output_translation_module_config:
           $ref: "#/components/schemas/OutputTranslationModuleConfig"
-    # Abstract base class encompassing fields for both `ModuleResultsSynchronous` and `ModuleResultsStreaming`
+    # Abstract base class encompassing fields for both `ModuleResults` and `ModuleResultsStreaming`
     # Not to be instantiated by llm-orchestration code
     ModuleResultsBase:
       description: Results of each module.
@@ -598,7 +598,7 @@ components:
           $ref: "#/components/schemas/GenericModuleResult"
         output_translation:
           $ref: "#/components/schemas/GenericModuleResult"
-    ModuleResultsSynchronous:
+    ModuleResults:
       description: Synchronous results of each module.
       type: object
       additionalProperties: false
@@ -607,11 +607,11 @@ components:
         - type: object
           properties:
             llm:
-              $ref: "#/components/schemas/LLMModuleResultSynchronous"
+              $ref: "#/components/schemas/LLMModuleResult"
             output_unmasking:
               type: array
               items:
-                $ref: "#/components/schemas/LLMChoiceSynchronous"
+                $ref: "#/components/schemas/LLMChoice"
     ModuleResultsStreaming:
       description: Streaming results of each module.
       type: object
@@ -685,7 +685,7 @@ components:
         data:
           type: object
           description: Additional data object from the module
-    LLMModuleResultSynchronous:
+    LLMModuleResult:
       type: object
       description: Output of LLM module. Follows the OpenAI spec.
       required:
@@ -720,7 +720,7 @@ components:
           type: array
           description: Choices
           items:
-            $ref: "#/components/schemas/LLMChoiceSynchronous"
+            $ref: "#/components/schemas/LLMChoice"
         usage:
           $ref: "#/components/schemas/TokenUsage"
     LLMModuleResultStreaming:
@@ -755,7 +755,7 @@ components:
             $ref: "#/components/schemas/LLMChoiceStreaming"
         usage:
           $ref: "#/components/schemas/TokenUsage"
-    LLMChoiceSynchronous:
+    LLMChoice:
       type: object
       required:
         - index
@@ -1062,11 +1062,11 @@ components:
       additionalProperties: false
       properties:
         filters:
-          description: Configuration for content filtering services that should be used for the given filtering step (input filtering or output filtering).
+          description: Configuration for content filtering services that should be used for the given filtering step (input filtering).
           type: array
           minItems: 1
           items:
-            $ref: "#/components/schemas/FilterConfig"
+            $ref: "#/components/schemas/InputFilterConfig"
 
     OutputFilteringConfig:
       type: object
@@ -1075,11 +1075,11 @@ components:
       additionalProperties: false
       properties:
         filters:
-          description: Configuration for content filtering services that should be used for the given filtering step (input filtering or output filtering).
+          description: Configuration for content filtering services that should be used for the given filtering step (output filtering).
           type: array
           minItems: 1
           items:
-            $ref: "#/components/schemas/FilterConfig"
+            $ref: "#/components/schemas/OutputFilterConfig"
         stream_options:
           $ref: "#/components/schemas/FilteringStreamOptions"
 
@@ -1095,12 +1095,17 @@ components:
           minimum: 0
           maximum: 10000
 
-    FilterConfig:
+    InputFilterConfig:
       oneOf:
-        - $ref: "#/components/schemas/AzureContentSafetyFilterConfig"
+        - $ref: "#/components/schemas/AzureContentSafetyInputFilterConfig"
         - $ref: "#/components/schemas/LlamaGuard38bFilterConfig"
 
-    AzureContentSafetyFilterConfig:
+    OutputFilterConfig:
+      oneOf:
+        - $ref: "#/components/schemas/AzureContentSafetyOutputFilterConfig"
+        - $ref: "#/components/schemas/LlamaGuard38bFilterConfig"
+
+    AzureContentSafetyInputFilterConfig:
       type: object
       required:
         - type
@@ -1113,9 +1118,42 @@ components:
             - azure_content_safety
           example: azure_content_safety
         config:
-          $ref: "#/components/schemas/AzureContentSafety"
+          $ref: "#/components/schemas/AzureContentSafetyInput"
 
-    AzureContentSafety:
+    AzureContentSafetyOutputFilterConfig:
+      type: object
+      required:
+        - type
+      additionalProperties: false
+      properties:
+        type:
+          description: Name of the filter provider type
+          type: string
+          enum:
+            - azure_content_safety
+          example: azure_content_safety
+        config:
+          $ref: "#/components/schemas/AzureContentSafetyOutput"
+
+    AzureContentSafetyInput:
+      description: Filter configuration for Azure Content Safety
+      type: object
+      additionalProperties: false
+      properties:
+        Hate:
+          $ref: "#/components/schemas/AzureThreshold"
+        SelfHarm:
+          $ref: "#/components/schemas/AzureThreshold"
+        Sexual:
+          $ref: "#/components/schemas/AzureThreshold"
+        Violence:
+          $ref: "#/components/schemas/AzureThreshold"
+        PromptShield:
+          type: boolean
+          description: A flag to use prompt shield
+          default: false
+
+    AzureContentSafetyOutput:
       description: Filter configuration for Azure Content Safety
       type: object
       additionalProperties: false
@@ -1543,7 +1581,7 @@ components:
               description: Language to which the text should be translated.
               example: "en-US"
 
-    ErrorResponseSynchronous:
+    ErrorResponse:
       type: object
       required:
         - request_id
@@ -1565,7 +1603,7 @@ components:
           description: Where the error occurred
           example: "LLM Module"
         module_results:
-          $ref: "#/components/schemas/ModuleResultsSynchronous"
+          $ref: "#/components/schemas/ModuleResults"
 
     ErrorResponseStreaming:
       type: object
@@ -1597,13 +1635,13 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorResponseSynchronous"
+            $ref: "#/components/schemas/ErrorResponse"
     CommonError:
       description: Common Error
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorResponseSynchronous"
+            $ref: "#/components/schemas/ErrorResponse"
 
   # https://pages.github.tools.sap/CPA/api-metadata-validator/rules/oas/sap-oas3-security/
   securitySchemes:
