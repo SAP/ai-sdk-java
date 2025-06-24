@@ -1,0 +1,17 @@
+spring:
+  ai:
+    mcp:
+      client:
+        type: SYNC
+        enabled: true
+        stdio:
+          connections:
+            localFS:
+              command: npx
+              args:
+                  - "-y"
+                  - "@modelcontextprotocol/server-filesystem"
+                  - "/ai-sdk-java"
+                  - "/ai-sdk-js"
+              env:
+                DEBUG: "true"
