@@ -27,7 +27,7 @@ class OpenAiTest {
     final var completion = service.chatCompletion("Who is the prettiest");
 
     final var message = completion.getChoices().get(0).getMessage();
-    assertThat(message.getRole()).isEqualTo("assistant");
+    assertThat(message.getRole()).isEqualTo("assistantggg");
     assertThat(message.getContent()).isNotEmpty();
   }
 
