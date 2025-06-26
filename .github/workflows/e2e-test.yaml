@@ -47,6 +47,16 @@ jobs:
           awk '/Results:/, /----/' mvn_output.log > test_error.log || true # true ensures the step doesn't fail if no match is found.
           ERROR_MSG=$(cat test_error.log | tail +4 | head -n -4 | sed ':a;N;$!ba;s/\n/\\n/g') # Slack formatting
           echo "error_message=$ERROR_MSG" >> $GITHUB_OUTPUT
+
+          if grep -q "BUILD FAILURE" mvn_output.log; then
+            echo "Maven build failed."
+            exit 1
+          elif grep -q "BUILD SUCCESS" mvn_output.log; then
+            echo "Maven build succeeded."
+          else
+            echo "Maven build status unknown."
+            exit 1
+          fi
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
