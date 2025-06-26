@@ -46,7 +46,7 @@ jobs:
 
           awk '/Results:/, /----/' mvn_output.log > test_error.log || true # true ensures the step doesn't fail if no match is found.
           ERROR_MSG=$(cat test_error.log | tail +4 | head -n -4 | awk '{gsub(/"/, "\\\""); printf "%s\\n", $0}') # Slack formatting
-          echo "error_message=$ERROR_MSG"
+          echo "$ERROR_MSG"
           echo "error_message=$ERROR_MSG" >> $GITHUB_OUTPUT
 
           if grep -q "BUILD FAILURE" mvn_output.log; then
