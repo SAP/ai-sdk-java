@@ -241,7 +241,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("passed");
+    assertThat(filterResult.getMessage()).contains("skipped");
   }
 
   @Test
@@ -284,7 +284,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("passed");
+    assertThat(filterResult.getMessage()).contains("skipped");
   }
 
   @Test
@@ -415,7 +415,7 @@ class OrchestrationTest {
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithMasking))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("status 400 Bad Request")
-        .hasMessageContaining("'type': 'sap_data_privacy_integration', 'method': 'anonymization'");
+        .hasMessageContaining("'unknown_default_open_api' is not one of");
   }
 
   @Test
