@@ -42,7 +42,9 @@ jobs:
         id: run_tests
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} surefire:test -pl :spring-app -DskipTests=false"
-          mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}" | tee mvn_output.log # tee writes to both the console and a file
+          (mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}"; echo $? > mvn_exit_code) | tee mvn_output.log # tee writes to both the console and a file
+          exit_code=$(cat mvn_exit_code)
+          exit $exit_code
 
           awk '/Results:/, /----/' mvn_output.log > test_error.log || true # true ensures the step doesn't fail if no match is found.
           ERROR_MSG=$(cat test_error.log | tail +4 | head -n -4 | sed ':a;N;$!ba;s/\n/\\n/g') # Slack formatting
