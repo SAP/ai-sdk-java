@@ -52,6 +52,11 @@
         <artifactId>tomcat-embed-core</artifactId>
         <version>11.0.8</version>
       </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-websocket</artifactId>
+        <version>10.1.42</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
