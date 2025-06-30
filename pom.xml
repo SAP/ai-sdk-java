@@ -317,7 +317,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.13.0</version>
+          <version>7.14.0</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -651,7 +651,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.26.0</version>
+        <version>3.27.0</version>
         <configuration>
           <rulesets>
             <ruleset>${project.rootdir}/.pipeline/pmd.xml</ruleset>
@@ -767,7 +767,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.9.3.0</version>
+        <version>4.9.3.2</version>
         <configuration>
           <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
