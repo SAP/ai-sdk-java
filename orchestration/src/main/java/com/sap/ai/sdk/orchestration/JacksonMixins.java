@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
@@ -20,12 +21,9 @@ final class JacksonMixins {
   @JsonDeserialize(as = LLMChoice.class)
   interface ModuleResultsOutputUnmaskingInnerMixIn {}
 
-  @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-  interface NoneTypeInfoMixin {}
-
   @JsonTypeInfo(
       use = JsonTypeInfo.Id.NAME,
-      include = JsonTypeInfo.As.PROPERTY,
+      include = As.EXISTING_PROPERTY,
       property = "type",
       visible = true)
   @JsonSubTypes({
@@ -43,7 +41,7 @@ final class JacksonMixins {
 
   @JsonTypeInfo(
       use = JsonTypeInfo.Id.NAME,
-      include = JsonTypeInfo.As.PROPERTY,
+      include = As.EXISTING_PROPERTY,
       property = "role",
       visible = true)
   @JsonSubTypes({
