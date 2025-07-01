@@ -30,4 +30,4 @@
 
 ### 🐛 Fixed Issues
 
--
+- [Orchestration] Fixed duplicate properties, Anthropic Claude chat completions are now working.
