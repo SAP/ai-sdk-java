@@ -3,7 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 final class JacksonMixins {
   /** Mixin to enforce a specific subtype to be deserialized always. */
   @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-  @JsonDeserialize(as = LLMModuleResultSynchronous.class)
+  @JsonDeserialize(as = LLMModuleResult.class)
   interface LLMModuleResultMixIn {}
 
   @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)

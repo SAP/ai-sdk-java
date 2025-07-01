@@ -1083,7 +1083,7 @@ class OrchestrationUnitTest {
                         """
                         {
                           "request_id": "2ee98443-e1ee-9503-b800-e38b5b80fe45",
-                          "module_results": {
+                          "intermediate_results": {
                             "input_masking": {
                               "message": "Embedding input is masked successfully.",
                               "data": {
@@ -1091,7 +1091,7 @@ class OrchestrationUnitTest {
                               }
                             }
                           },
-                          "orchestration_result": {
+                          "final_result": {
                             "object": "list",
                             "data": [
                               {
@@ -1134,21 +1134,20 @@ class OrchestrationUnitTest {
 
     val orchestrationConfig =
         EmbeddingsOrchestrationConfig.create()
-            .moduleConfigs(
+            .modules(
                 EmbeddingsModuleConfigs.create().embeddings(modelConfig).masking(maskingConfig));
 
     val inputText =
         EmbeddingsInput.create().text(EmbeddingsInputText.create("['Hello', 'Müller', '!']"));
 
-    val request =
-        EmbeddingsPostRequest.create().orchestrationConfig(orchestrationConfig).input(inputText);
+    val request = EmbeddingsPostRequest.create().config(orchestrationConfig).input(inputText);
 
     EmbeddingsPostResponse response = client.embed(request);
 
     assertThat(response).isNotNull();
     assertThat(response.getRequestId()).isEqualTo("2ee98443-e1ee-9503-b800-e38b5b80fe45");
 
-    val orchestrationResult = response.getOrchestrationResult();
+    val orchestrationResult = response.getFinalResult();
     assertThat(orchestrationResult).isNotNull();
     assertThat(orchestrationResult.getObject()).isEqualTo(EmbeddingsResponse.ObjectEnum.LIST);
     assertThat(orchestrationResult.getModel()).isEqualTo("text-embedding-3-large");
@@ -1171,7 +1170,7 @@ class OrchestrationUnitTest {
     assertThat(usage.getPromptTokens()).isEqualTo(10);
     assertThat(usage.getTotalTokens()).isEqualTo(10);
 
-    val moduleResults = response.getModuleResults();
+    val moduleResults = response.getIntermediateResults();
     assertThat(moduleResults).isNotNull();
     assertThat(moduleResults.getInputMasking()).isNotNull();
     assertThat(moduleResults.getInputMasking().getMessage())
@@ -1186,8 +1185,8 @@ class OrchestrationUnitTest {
                 equalToJson(
                     """
                     {
-                      "orchestration_config": {
-                        "module_configs": {
+                      "config": {
+                        "modules": {
                           "embeddings": {
                             "model": {
                               "name": "text-embedding-3-large",

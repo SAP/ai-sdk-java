@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ErrorResponseSynchronous */
+/** ErrorResponse */
 // CHECKSTYLE:OFF
-public class ErrorResponseSynchronous
+public class ErrorResponse
 // CHECKSTYLE:ON
 {
   @JsonProperty("request_id")
@@ -41,23 +41,22 @@ public class ErrorResponseSynchronous
   private String location;
 
   @JsonProperty("module_results")
-  private ModuleResultsSynchronous moduleResults;
+  private ModuleResults moduleResults;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ErrorResponseSynchronous. */
-  protected ErrorResponseSynchronous() {}
+  /** Default constructor for ErrorResponse. */
+  protected ErrorResponse() {}
 
   /**
-   * Set the requestId of this {@link ErrorResponseSynchronous} instance and return the same
-   * instance.
+   * Set the requestId of this {@link ErrorResponse} instance and return the same instance.
    *
-   * @param requestId The requestId of this {@link ErrorResponseSynchronous}
-   * @return The same instance of this {@link ErrorResponseSynchronous} class
+   * @param requestId The requestId of this {@link ErrorResponse}
+   * @return The same instance of this {@link ErrorResponse} class
    */
   @Nonnull
-  public ErrorResponseSynchronous requestId(@Nonnull final String requestId) {
+  public ErrorResponse requestId(@Nonnull final String requestId) {
     this.requestId = requestId;
     return this;
   }
@@ -65,7 +64,7 @@ public class ErrorResponseSynchronous
   /**
    * Get requestId
    *
-   * @return requestId The requestId of this {@link ErrorResponseSynchronous} instance.
+   * @return requestId The requestId of this {@link ErrorResponse} instance.
    */
   @Nonnull
   public String getRequestId() {
@@ -73,22 +72,22 @@ public class ErrorResponseSynchronous
   }
 
   /**
-   * Set the requestId of this {@link ErrorResponseSynchronous} instance.
+   * Set the requestId of this {@link ErrorResponse} instance.
    *
-   * @param requestId The requestId of this {@link ErrorResponseSynchronous}
+   * @param requestId The requestId of this {@link ErrorResponse}
    */
   public void setRequestId(@Nonnull final String requestId) {
     this.requestId = requestId;
   }
 
   /**
-   * Set the code of this {@link ErrorResponseSynchronous} instance and return the same instance.
+   * Set the code of this {@link ErrorResponse} instance and return the same instance.
    *
-   * @param code The code of this {@link ErrorResponseSynchronous}
-   * @return The same instance of this {@link ErrorResponseSynchronous} class
+   * @param code The code of this {@link ErrorResponse}
+   * @return The same instance of this {@link ErrorResponse} class
    */
   @Nonnull
-  public ErrorResponseSynchronous code(@Nonnull final Integer code) {
+  public ErrorResponse code(@Nonnull final Integer code) {
     this.code = code;
     return this;
   }
@@ -96,7 +95,7 @@ public class ErrorResponseSynchronous
   /**
    * Get code
    *
-   * @return code The code of this {@link ErrorResponseSynchronous} instance.
+   * @return code The code of this {@link ErrorResponse} instance.
    */
   @Nonnull
   public Integer getCode() {
@@ -104,22 +103,22 @@ public class ErrorResponseSynchronous
   }
 
   /**
-   * Set the code of this {@link ErrorResponseSynchronous} instance.
+   * Set the code of this {@link ErrorResponse} instance.
    *
-   * @param code The code of this {@link ErrorResponseSynchronous}
+   * @param code The code of this {@link ErrorResponse}
    */
   public void setCode(@Nonnull final Integer code) {
     this.code = code;
   }
 
   /**
-   * Set the message of this {@link ErrorResponseSynchronous} instance and return the same instance.
+   * Set the message of this {@link ErrorResponse} instance and return the same instance.
    *
-   * @param message The message of this {@link ErrorResponseSynchronous}
-   * @return The same instance of this {@link ErrorResponseSynchronous} class
+   * @param message The message of this {@link ErrorResponse}
+   * @return The same instance of this {@link ErrorResponse} class
    */
   @Nonnull
-  public ErrorResponseSynchronous message(@Nonnull final String message) {
+  public ErrorResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
@@ -127,7 +126,7 @@ public class ErrorResponseSynchronous
   /**
    * Get message
    *
-   * @return message The message of this {@link ErrorResponseSynchronous} instance.
+   * @return message The message of this {@link ErrorResponse} instance.
    */
   @Nonnull
   public String getMessage() {
@@ -135,23 +134,22 @@ public class ErrorResponseSynchronous
   }
 
   /**
-   * Set the message of this {@link ErrorResponseSynchronous} instance.
+   * Set the message of this {@link ErrorResponse} instance.
    *
-   * @param message The message of this {@link ErrorResponseSynchronous}
+   * @param message The message of this {@link ErrorResponse}
    */
   public void setMessage(@Nonnull final String message) {
     this.message = message;
   }
 
   /**
-   * Set the location of this {@link ErrorResponseSynchronous} instance and return the same
-   * instance.
+   * Set the location of this {@link ErrorResponse} instance and return the same instance.
    *
    * @param location Where the error occurred
-   * @return The same instance of this {@link ErrorResponseSynchronous} class
+   * @return The same instance of this {@link ErrorResponse} class
    */
   @Nonnull
-  public ErrorResponseSynchronous location(@Nonnull final String location) {
+  public ErrorResponse location(@Nonnull final String location) {
     this.location = location;
     return this;
   }
@@ -159,7 +157,7 @@ public class ErrorResponseSynchronous
   /**
    * Where the error occurred
    *
-   * @return location The location of this {@link ErrorResponseSynchronous} instance.
+   * @return location The location of this {@link ErrorResponse} instance.
    */
   @Nonnull
   public String getLocation() {
@@ -167,7 +165,7 @@ public class ErrorResponseSynchronous
   }
 
   /**
-   * Set the location of this {@link ErrorResponseSynchronous} instance.
+   * Set the location of this {@link ErrorResponse} instance.
    *
    * @param location Where the error occurred
    */
@@ -176,15 +174,13 @@ public class ErrorResponseSynchronous
   }
 
   /**
-   * Set the moduleResults of this {@link ErrorResponseSynchronous} instance and return the same
-   * instance.
+   * Set the moduleResults of this {@link ErrorResponse} instance and return the same instance.
    *
-   * @param moduleResults The moduleResults of this {@link ErrorResponseSynchronous}
-   * @return The same instance of this {@link ErrorResponseSynchronous} class
+   * @param moduleResults The moduleResults of this {@link ErrorResponse}
+   * @return The same instance of this {@link ErrorResponse} class
    */
   @Nonnull
-  public ErrorResponseSynchronous moduleResults(
-      @Nullable final ModuleResultsSynchronous moduleResults) {
+  public ErrorResponse moduleResults(@Nullable final ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
     return this;
   }
@@ -192,24 +188,24 @@ public class ErrorResponseSynchronous
   /**
    * Get moduleResults
    *
-   * @return moduleResults The moduleResults of this {@link ErrorResponseSynchronous} instance.
+   * @return moduleResults The moduleResults of this {@link ErrorResponse} instance.
    */
   @Nonnull
-  public ModuleResultsSynchronous getModuleResults() {
+  public ModuleResults getModuleResults() {
     return moduleResults;
   }
 
   /**
-   * Set the moduleResults of this {@link ErrorResponseSynchronous} instance.
+   * Set the moduleResults of this {@link ErrorResponse} instance.
    *
-   * @param moduleResults The moduleResults of this {@link ErrorResponseSynchronous}
+   * @param moduleResults The moduleResults of this {@link ErrorResponse}
    */
-  public void setModuleResults(@Nullable final ModuleResultsSynchronous moduleResults) {
+  public void setModuleResults(@Nullable final ModuleResults moduleResults) {
     this.moduleResults = moduleResults;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ErrorResponseSynchronous}.
+   * Get the names of the unrecognizable properties of the {@link ErrorResponse}.
    *
    * @return The set of properties names
    */
@@ -220,7 +216,7 @@ public class ErrorResponseSynchronous
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ErrorResponseSynchronous} instance.
+   * Get the value of an unrecognizable property of this {@link ErrorResponse} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -231,15 +227,14 @@ public class ErrorResponseSynchronous
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "ErrorResponseSynchronous has no field with name '" + name + "'.");
+      throw new NoSuchElementException("ErrorResponse has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ErrorResponseSynchronous} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link ErrorResponse} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -256,8 +251,8 @@ public class ErrorResponseSynchronous
   }
 
   /**
-   * Set an unrecognizable property of this {@link ErrorResponseSynchronous} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ErrorResponse} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -275,13 +270,13 @@ public class ErrorResponseSynchronous
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ErrorResponseSynchronous errorResponseSynchronous = (ErrorResponseSynchronous) o;
-    return Objects.equals(this.cloudSdkCustomFields, errorResponseSynchronous.cloudSdkCustomFields)
-        && Objects.equals(this.requestId, errorResponseSynchronous.requestId)
-        && Objects.equals(this.code, errorResponseSynchronous.code)
-        && Objects.equals(this.message, errorResponseSynchronous.message)
-        && Objects.equals(this.location, errorResponseSynchronous.location)
-        && Objects.equals(this.moduleResults, errorResponseSynchronous.moduleResults);
+    final ErrorResponse errorResponse = (ErrorResponse) o;
+    return Objects.equals(this.cloudSdkCustomFields, errorResponse.cloudSdkCustomFields)
+        && Objects.equals(this.requestId, errorResponse.requestId)
+        && Objects.equals(this.code, errorResponse.code)
+        && Objects.equals(this.message, errorResponse.message)
+        && Objects.equals(this.location, errorResponse.location)
+        && Objects.equals(this.moduleResults, errorResponse.moduleResults);
   }
 
   @Override
@@ -293,7 +288,7 @@ public class ErrorResponseSynchronous
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ErrorResponseSynchronous {\n");
+    sb.append("class ErrorResponse {\n");
     sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
@@ -317,15 +312,15 @@ public class ErrorResponseSynchronous
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * ErrorResponseSynchronous} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link ErrorResponse} instance
+   * with all required arguments.
    */
   public static Builder create() {
     return (requestId) ->
         (code) ->
             (message) ->
                 (location) ->
-                    new ErrorResponseSynchronous()
+                    new ErrorResponse()
                         .requestId(requestId)
                         .code(code)
                         .message(message)
@@ -335,10 +330,10 @@ public class ErrorResponseSynchronous
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the requestId of this {@link ErrorResponseSynchronous} instance.
+     * Set the requestId of this {@link ErrorResponse} instance.
      *
-     * @param requestId The requestId of this {@link ErrorResponseSynchronous}
-     * @return The ErrorResponseSynchronous builder.
+     * @param requestId The requestId of this {@link ErrorResponse}
+     * @return The ErrorResponse builder.
      */
     Builder1 requestId(@Nonnull final String requestId);
   }
@@ -346,10 +341,10 @@ public class ErrorResponseSynchronous
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the code of this {@link ErrorResponseSynchronous} instance.
+     * Set the code of this {@link ErrorResponse} instance.
      *
-     * @param code The code of this {@link ErrorResponseSynchronous}
-     * @return The ErrorResponseSynchronous builder.
+     * @param code The code of this {@link ErrorResponse}
+     * @return The ErrorResponse builder.
      */
     Builder2 code(@Nonnull final Integer code);
   }
@@ -357,10 +352,10 @@ public class ErrorResponseSynchronous
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the message of this {@link ErrorResponseSynchronous} instance.
+     * Set the message of this {@link ErrorResponse} instance.
      *
-     * @param message The message of this {@link ErrorResponseSynchronous}
-     * @return The ErrorResponseSynchronous builder.
+     * @param message The message of this {@link ErrorResponse}
+     * @return The ErrorResponse builder.
      */
     Builder3 message(@Nonnull final String message);
   }
@@ -368,11 +363,11 @@ public class ErrorResponseSynchronous
   /** Builder helper class. */
   public interface Builder3 {
     /**
-     * Set the location of this {@link ErrorResponseSynchronous} instance.
+     * Set the location of this {@link ErrorResponse} instance.
      *
      * @param location Where the error occurred
-     * @return The ErrorResponseSynchronous instance.
+     * @return The ErrorResponse instance.
      */
-    ErrorResponseSynchronous location(@Nonnull final String location);
+    ErrorResponse location(@Nonnull final String location);
   }
 }

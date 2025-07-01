@@ -18,10 +18,11 @@
   Interfaces with only one implementation were reduced.
   As a result, the accessors for fields `OrchestrationModuleConfig.inputTranslationConfig` and `OrchestrationModuleConfig.outputTranslationConfig` now handle the implementing class explicitly.
   The same applies to helper methods `DpiMasking#createConfig()` and `MaskingProvider#createConfig()`.
+- [Orchestration] The method `createConfig()` is removed from `ContentFilter`, `AzureContentFilter` and `LlamaGuardFilter` and is replaced by `createInputFilterConfig()` and `createOutputFilterConfig()`.
 
 ### ✨ New Functionality
 
--
+- [Orchestration] Added `AzureContentFilter#promptShield()` available for input filtering.
 
 ### 📈 Improvements
 

@@ -166,7 +166,7 @@ public class OrchestrationService {
     val prompt =
         new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
     val filterConfig =
-        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy).promptShield(true);
 
     val configWithFilter = config.withInputFiltering(filterConfig);
 

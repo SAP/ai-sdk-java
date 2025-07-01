@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
-import com.sap.ai.sdk.orchestration.model.CompletionPostResponseSynchronous;
+import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
@@ -138,9 +138,9 @@ public class OrchestrationClient {
    * @throws OrchestrationClientException If the request fails.
    */
   @Nonnull
-  public CompletionPostResponseSynchronous executeRequest(
-      @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
-    return executor.execute("/completion", request, CompletionPostResponseSynchronous.class);
+  public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
+      throws OrchestrationClientException {
+    return executor.execute("/completion", request, CompletionPostResponse.class);
   }
 
   /**
@@ -182,7 +182,7 @@ public class OrchestrationClient {
     requestJson.set("orchestration_config", moduleConfigJson);
 
     return new OrchestrationChatResponse(
-        executor.execute("/completion", requestJson, CompletionPostResponseSynchronous.class));
+        executor.execute("/completion", requestJson, CompletionPostResponse.class));
   }
 
   /**
