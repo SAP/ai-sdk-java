@@ -36,19 +36,23 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public class AzureContentFilter implements ContentFilter {
 
-  /* The filter category for hate content. */
+  /** The filter category for hate content. */
   @Nullable AzureFilterThreshold hate;
 
-  /* The filter category for self-harm content. */
+  /** The filter category for self-harm content. */
   @Nullable AzureFilterThreshold selfHarm;
 
-  /* The filter category for sexual content. */
+  /** The filter category for sexual content. */
   @Nullable AzureFilterThreshold sexual;
 
-  /* The filter category for violence content. */
+  /** The filter category for violence content. */
   @Nullable AzureFilterThreshold violence;
 
-  /* A flag to set prompt shield on input filer.*/
+  /**
+   * A flag to set prompt shield on input filer.
+   *
+   * @since 1.9.0
+   */
   @Nullable Boolean promptShield;
 
   /**
