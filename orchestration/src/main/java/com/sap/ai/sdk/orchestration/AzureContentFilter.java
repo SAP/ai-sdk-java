@@ -48,7 +48,7 @@ public class AzureContentFilter implements ContentFilter {
   /* The filter category for violence content. */
   @Nullable AzureFilterThreshold violence;
 
-  /* A flag to set prompt shield on in*/
+  /* A flag to set prompt shield on input filer.*/
   @Nullable Boolean promptShield;
 
   /**
