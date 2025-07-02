@@ -28,26 +28,20 @@ import javax.annotation.Nullable;
 public class ModuleConfigs
 // CHECKSTYLE:ON
 {
-  @JsonProperty("llm_module_config")
-  private LLMModuleConfig llmModuleConfig;
+  @JsonProperty("prompt_templating")
+  private PromptTemplatingModuleConfig promptTemplating;
 
-  @JsonProperty("templating_module_config")
-  private TemplatingModuleConfig templatingModuleConfig;
+  @JsonProperty("filtering")
+  private FilteringModuleConfig filtering;
 
-  @JsonProperty("filtering_module_config")
-  private FilteringModuleConfig filteringModuleConfig;
+  @JsonProperty("masking")
+  private MaskingModuleConfig masking;
 
-  @JsonProperty("masking_module_config")
-  private MaskingModuleConfig maskingModuleConfig;
+  @JsonProperty("grounding")
+  private GroundingModuleConfig grounding;
 
-  @JsonProperty("grounding_module_config")
-  private GroundingModuleConfig groundingModuleConfig;
-
-  @JsonProperty("input_translation_module_config")
-  private SAPDocumentTranslation inputTranslationModuleConfig;
-
-  @JsonProperty("output_translation_module_config")
-  private SAPDocumentTranslation outputTranslationModuleConfig;
+  @JsonProperty("translation")
+  private TranslationModuleConfig translation;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -56,244 +50,159 @@ public class ModuleConfigs
   protected ModuleConfigs() {}
 
   /**
-   * Set the llmModuleConfig of this {@link ModuleConfigs} instance and return the same instance.
+   * Set the promptTemplating of this {@link ModuleConfigs} instance and return the same instance.
    *
-   * @param llmModuleConfig The llmModuleConfig of this {@link ModuleConfigs}
+   * @param promptTemplating The promptTemplating of this {@link ModuleConfigs}
    * @return The same instance of this {@link ModuleConfigs} class
    */
   @Nonnull
-  public ModuleConfigs llmModuleConfig(@Nonnull final LLMModuleConfig llmModuleConfig) {
-    this.llmModuleConfig = llmModuleConfig;
+  public ModuleConfigs promptTemplating(
+      @Nonnull final PromptTemplatingModuleConfig promptTemplating) {
+    this.promptTemplating = promptTemplating;
     return this;
   }
 
   /**
-   * Get llmModuleConfig
+   * Get promptTemplating
    *
-   * @return llmModuleConfig The llmModuleConfig of this {@link ModuleConfigs} instance.
+   * @return promptTemplating The promptTemplating of this {@link ModuleConfigs} instance.
    */
   @Nonnull
-  public LLMModuleConfig getLlmModuleConfig() {
-    return llmModuleConfig;
+  public PromptTemplatingModuleConfig getPromptTemplating() {
+    return promptTemplating;
   }
 
   /**
-   * Set the llmModuleConfig of this {@link ModuleConfigs} instance.
+   * Set the promptTemplating of this {@link ModuleConfigs} instance.
    *
-   * @param llmModuleConfig The llmModuleConfig of this {@link ModuleConfigs}
+   * @param promptTemplating The promptTemplating of this {@link ModuleConfigs}
    */
-  public void setLlmModuleConfig(@Nonnull final LLMModuleConfig llmModuleConfig) {
-    this.llmModuleConfig = llmModuleConfig;
+  public void setPromptTemplating(@Nonnull final PromptTemplatingModuleConfig promptTemplating) {
+    this.promptTemplating = promptTemplating;
   }
 
   /**
-   * Set the templatingModuleConfig of this {@link ModuleConfigs} instance and return the same
-   * instance.
+   * Set the filtering of this {@link ModuleConfigs} instance and return the same instance.
    *
-   * @param templatingModuleConfig The templatingModuleConfig of this {@link ModuleConfigs}
+   * @param filtering The filtering of this {@link ModuleConfigs}
    * @return The same instance of this {@link ModuleConfigs} class
    */
   @Nonnull
-  public ModuleConfigs templatingModuleConfig(
-      @Nonnull final TemplatingModuleConfig templatingModuleConfig) {
-    this.templatingModuleConfig = templatingModuleConfig;
+  public ModuleConfigs filtering(@Nullable final FilteringModuleConfig filtering) {
+    this.filtering = filtering;
     return this;
   }
 
   /**
-   * Get templatingModuleConfig
+   * Get filtering
    *
-   * @return templatingModuleConfig The templatingModuleConfig of this {@link ModuleConfigs}
-   *     instance.
+   * @return filtering The filtering of this {@link ModuleConfigs} instance.
    */
   @Nonnull
-  public TemplatingModuleConfig getTemplatingModuleConfig() {
-    return templatingModuleConfig;
+  public FilteringModuleConfig getFiltering() {
+    return filtering;
   }
 
   /**
-   * Set the templatingModuleConfig of this {@link ModuleConfigs} instance.
+   * Set the filtering of this {@link ModuleConfigs} instance.
    *
-   * @param templatingModuleConfig The templatingModuleConfig of this {@link ModuleConfigs}
+   * @param filtering The filtering of this {@link ModuleConfigs}
    */
-  public void setTemplatingModuleConfig(
-      @Nonnull final TemplatingModuleConfig templatingModuleConfig) {
-    this.templatingModuleConfig = templatingModuleConfig;
+  public void setFiltering(@Nullable final FilteringModuleConfig filtering) {
+    this.filtering = filtering;
   }
 
   /**
-   * Set the filteringModuleConfig of this {@link ModuleConfigs} instance and return the same
-   * instance.
+   * Set the masking of this {@link ModuleConfigs} instance and return the same instance.
    *
-   * @param filteringModuleConfig The filteringModuleConfig of this {@link ModuleConfigs}
+   * @param masking The masking of this {@link ModuleConfigs}
    * @return The same instance of this {@link ModuleConfigs} class
    */
   @Nonnull
-  public ModuleConfigs filteringModuleConfig(
-      @Nullable final FilteringModuleConfig filteringModuleConfig) {
-    this.filteringModuleConfig = filteringModuleConfig;
+  public ModuleConfigs masking(@Nullable final MaskingModuleConfig masking) {
+    this.masking = masking;
     return this;
   }
 
   /**
-   * Get filteringModuleConfig
+   * Get masking
    *
-   * @return filteringModuleConfig The filteringModuleConfig of this {@link ModuleConfigs} instance.
+   * @return masking The masking of this {@link ModuleConfigs} instance.
    */
   @Nonnull
-  public FilteringModuleConfig getFilteringModuleConfig() {
-    return filteringModuleConfig;
+  public MaskingModuleConfig getMasking() {
+    return masking;
   }
 
   /**
-   * Set the filteringModuleConfig of this {@link ModuleConfigs} instance.
+   * Set the masking of this {@link ModuleConfigs} instance.
    *
-   * @param filteringModuleConfig The filteringModuleConfig of this {@link ModuleConfigs}
+   * @param masking The masking of this {@link ModuleConfigs}
    */
-  public void setFilteringModuleConfig(
-      @Nullable final FilteringModuleConfig filteringModuleConfig) {
-    this.filteringModuleConfig = filteringModuleConfig;
+  public void setMasking(@Nullable final MaskingModuleConfig masking) {
+    this.masking = masking;
   }
 
   /**
-   * Set the maskingModuleConfig of this {@link ModuleConfigs} instance and return the same
-   * instance.
+   * Set the grounding of this {@link ModuleConfigs} instance and return the same instance.
    *
-   * @param maskingModuleConfig The maskingModuleConfig of this {@link ModuleConfigs}
+   * @param grounding The grounding of this {@link ModuleConfigs}
    * @return The same instance of this {@link ModuleConfigs} class
    */
   @Nonnull
-  public ModuleConfigs maskingModuleConfig(
-      @Nullable final MaskingModuleConfig maskingModuleConfig) {
-    this.maskingModuleConfig = maskingModuleConfig;
+  public ModuleConfigs grounding(@Nullable final GroundingModuleConfig grounding) {
+    this.grounding = grounding;
     return this;
   }
 
   /**
-   * Get maskingModuleConfig
+   * Get grounding
    *
-   * @return maskingModuleConfig The maskingModuleConfig of this {@link ModuleConfigs} instance.
+   * @return grounding The grounding of this {@link ModuleConfigs} instance.
    */
   @Nonnull
-  public MaskingModuleConfig getMaskingModuleConfig() {
-    return maskingModuleConfig;
+  public GroundingModuleConfig getGrounding() {
+    return grounding;
   }
 
   /**
-   * Set the maskingModuleConfig of this {@link ModuleConfigs} instance.
+   * Set the grounding of this {@link ModuleConfigs} instance.
    *
-   * @param maskingModuleConfig The maskingModuleConfig of this {@link ModuleConfigs}
+   * @param grounding The grounding of this {@link ModuleConfigs}
    */
-  public void setMaskingModuleConfig(@Nullable final MaskingModuleConfig maskingModuleConfig) {
-    this.maskingModuleConfig = maskingModuleConfig;
+  public void setGrounding(@Nullable final GroundingModuleConfig grounding) {
+    this.grounding = grounding;
   }
 
   /**
-   * Set the groundingModuleConfig of this {@link ModuleConfigs} instance and return the same
-   * instance.
+   * Set the translation of this {@link ModuleConfigs} instance and return the same instance.
    *
-   * @param groundingModuleConfig The groundingModuleConfig of this {@link ModuleConfigs}
+   * @param translation The translation of this {@link ModuleConfigs}
    * @return The same instance of this {@link ModuleConfigs} class
    */
   @Nonnull
-  public ModuleConfigs groundingModuleConfig(
-      @Nullable final GroundingModuleConfig groundingModuleConfig) {
-    this.groundingModuleConfig = groundingModuleConfig;
+  public ModuleConfigs translation(@Nullable final TranslationModuleConfig translation) {
+    this.translation = translation;
     return this;
   }
 
   /**
-   * Get groundingModuleConfig
+   * Get translation
    *
-   * @return groundingModuleConfig The groundingModuleConfig of this {@link ModuleConfigs} instance.
+   * @return translation The translation of this {@link ModuleConfigs} instance.
    */
   @Nonnull
-  public GroundingModuleConfig getGroundingModuleConfig() {
-    return groundingModuleConfig;
+  public TranslationModuleConfig getTranslation() {
+    return translation;
   }
 
   /**
-   * Set the groundingModuleConfig of this {@link ModuleConfigs} instance.
+   * Set the translation of this {@link ModuleConfigs} instance.
    *
-   * @param groundingModuleConfig The groundingModuleConfig of this {@link ModuleConfigs}
+   * @param translation The translation of this {@link ModuleConfigs}
    */
-  public void setGroundingModuleConfig(
-      @Nullable final GroundingModuleConfig groundingModuleConfig) {
-    this.groundingModuleConfig = groundingModuleConfig;
-  }
-
-  /**
-   * Set the inputTranslationModuleConfig of this {@link ModuleConfigs} instance and return the same
-   * instance.
-   *
-   * @param inputTranslationModuleConfig The inputTranslationModuleConfig of this {@link
-   *     ModuleConfigs}
-   * @return The same instance of this {@link ModuleConfigs} class
-   */
-  @Nonnull
-  public ModuleConfigs inputTranslationModuleConfig(
-      @Nullable final SAPDocumentTranslation inputTranslationModuleConfig) {
-    this.inputTranslationModuleConfig = inputTranslationModuleConfig;
-    return this;
-  }
-
-  /**
-   * Get inputTranslationModuleConfig
-   *
-   * @return inputTranslationModuleConfig The inputTranslationModuleConfig of this {@link
-   *     ModuleConfigs} instance.
-   */
-  @Nonnull
-  public SAPDocumentTranslation getInputTranslationModuleConfig() {
-    return inputTranslationModuleConfig;
-  }
-
-  /**
-   * Set the inputTranslationModuleConfig of this {@link ModuleConfigs} instance.
-   *
-   * @param inputTranslationModuleConfig The inputTranslationModuleConfig of this {@link
-   *     ModuleConfigs}
-   */
-  public void setInputTranslationModuleConfig(
-      @Nullable final SAPDocumentTranslation inputTranslationModuleConfig) {
-    this.inputTranslationModuleConfig = inputTranslationModuleConfig;
-  }
-
-  /**
-   * Set the outputTranslationModuleConfig of this {@link ModuleConfigs} instance and return the
-   * same instance.
-   *
-   * @param outputTranslationModuleConfig The outputTranslationModuleConfig of this {@link
-   *     ModuleConfigs}
-   * @return The same instance of this {@link ModuleConfigs} class
-   */
-  @Nonnull
-  public ModuleConfigs outputTranslationModuleConfig(
-      @Nullable final SAPDocumentTranslation outputTranslationModuleConfig) {
-    this.outputTranslationModuleConfig = outputTranslationModuleConfig;
-    return this;
-  }
-
-  /**
-   * Get outputTranslationModuleConfig
-   *
-   * @return outputTranslationModuleConfig The outputTranslationModuleConfig of this {@link
-   *     ModuleConfigs} instance.
-   */
-  @Nonnull
-  public SAPDocumentTranslation getOutputTranslationModuleConfig() {
-    return outputTranslationModuleConfig;
-  }
-
-  /**
-   * Set the outputTranslationModuleConfig of this {@link ModuleConfigs} instance.
-   *
-   * @param outputTranslationModuleConfig The outputTranslationModuleConfig of this {@link
-   *     ModuleConfigs}
-   */
-  public void setOutputTranslationModuleConfig(
-      @Nullable final SAPDocumentTranslation outputTranslationModuleConfig) {
-    this.outputTranslationModuleConfig = outputTranslationModuleConfig;
+  public void setTranslation(@Nullable final TranslationModuleConfig translation) {
+    this.translation = translation;
   }
 
   /**
@@ -334,18 +243,11 @@ public class ModuleConfigs
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (llmModuleConfig != null) declaredFields.put("llmModuleConfig", llmModuleConfig);
-    if (templatingModuleConfig != null)
-      declaredFields.put("templatingModuleConfig", templatingModuleConfig);
-    if (filteringModuleConfig != null)
-      declaredFields.put("filteringModuleConfig", filteringModuleConfig);
-    if (maskingModuleConfig != null) declaredFields.put("maskingModuleConfig", maskingModuleConfig);
-    if (groundingModuleConfig != null)
-      declaredFields.put("groundingModuleConfig", groundingModuleConfig);
-    if (inputTranslationModuleConfig != null)
-      declaredFields.put("inputTranslationModuleConfig", inputTranslationModuleConfig);
-    if (outputTranslationModuleConfig != null)
-      declaredFields.put("outputTranslationModuleConfig", outputTranslationModuleConfig);
+    if (promptTemplating != null) declaredFields.put("promptTemplating", promptTemplating);
+    if (filtering != null) declaredFields.put("filtering", filtering);
+    if (masking != null) declaredFields.put("masking", masking);
+    if (grounding != null) declaredFields.put("grounding", grounding);
+    if (translation != null) declaredFields.put("translation", translation);
     return declaredFields;
   }
 
@@ -371,28 +273,17 @@ public class ModuleConfigs
     }
     final ModuleConfigs moduleConfigs = (ModuleConfigs) o;
     return Objects.equals(this.cloudSdkCustomFields, moduleConfigs.cloudSdkCustomFields)
-        && Objects.equals(this.llmModuleConfig, moduleConfigs.llmModuleConfig)
-        && Objects.equals(this.templatingModuleConfig, moduleConfigs.templatingModuleConfig)
-        && Objects.equals(this.filteringModuleConfig, moduleConfigs.filteringModuleConfig)
-        && Objects.equals(this.maskingModuleConfig, moduleConfigs.maskingModuleConfig)
-        && Objects.equals(this.groundingModuleConfig, moduleConfigs.groundingModuleConfig)
-        && Objects.equals(
-            this.inputTranslationModuleConfig, moduleConfigs.inputTranslationModuleConfig)
-        && Objects.equals(
-            this.outputTranslationModuleConfig, moduleConfigs.outputTranslationModuleConfig);
+        && Objects.equals(this.promptTemplating, moduleConfigs.promptTemplating)
+        && Objects.equals(this.filtering, moduleConfigs.filtering)
+        && Objects.equals(this.masking, moduleConfigs.masking)
+        && Objects.equals(this.grounding, moduleConfigs.grounding)
+        && Objects.equals(this.translation, moduleConfigs.translation);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        llmModuleConfig,
-        templatingModuleConfig,
-        filteringModuleConfig,
-        maskingModuleConfig,
-        groundingModuleConfig,
-        inputTranslationModuleConfig,
-        outputTranslationModuleConfig,
-        cloudSdkCustomFields);
+        promptTemplating, filtering, masking, grounding, translation, cloudSdkCustomFields);
   }
 
   @Override
@@ -400,25 +291,11 @@ public class ModuleConfigs
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class ModuleConfigs {\n");
-    sb.append("    llmModuleConfig: ").append(toIndentedString(llmModuleConfig)).append("\n");
-    sb.append("    templatingModuleConfig: ")
-        .append(toIndentedString(templatingModuleConfig))
-        .append("\n");
-    sb.append("    filteringModuleConfig: ")
-        .append(toIndentedString(filteringModuleConfig))
-        .append("\n");
-    sb.append("    maskingModuleConfig: ")
-        .append(toIndentedString(maskingModuleConfig))
-        .append("\n");
-    sb.append("    groundingModuleConfig: ")
-        .append(toIndentedString(groundingModuleConfig))
-        .append("\n");
-    sb.append("    inputTranslationModuleConfig: ")
-        .append(toIndentedString(inputTranslationModuleConfig))
-        .append("\n");
-    sb.append("    outputTranslationModuleConfig: ")
-        .append(toIndentedString(outputTranslationModuleConfig))
-        .append("\n");
+    sb.append("    promptTemplating: ").append(toIndentedString(promptTemplating)).append("\n");
+    sb.append("    filtering: ").append(toIndentedString(filtering)).append("\n");
+    sb.append("    masking: ").append(toIndentedString(masking)).append("\n");
+    sb.append("    grounding: ").append(toIndentedString(grounding)).append("\n");
+    sb.append("    translation: ").append(toIndentedString(translation)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -441,33 +318,17 @@ public class ModuleConfigs
    * with all required arguments.
    */
   public static Builder create() {
-    return (llmModuleConfig) ->
-        (templatingModuleConfig) ->
-            new ModuleConfigs()
-                .llmModuleConfig(llmModuleConfig)
-                .templatingModuleConfig(templatingModuleConfig);
+    return (promptTemplating) -> new ModuleConfigs().promptTemplating(promptTemplating);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the llmModuleConfig of this {@link ModuleConfigs} instance.
+     * Set the promptTemplating of this {@link ModuleConfigs} instance.
      *
-     * @param llmModuleConfig The llmModuleConfig of this {@link ModuleConfigs}
-     * @return The ModuleConfigs builder.
-     */
-    Builder1 llmModuleConfig(@Nonnull final LLMModuleConfig llmModuleConfig);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the templatingModuleConfig of this {@link ModuleConfigs} instance.
-     *
-     * @param templatingModuleConfig The templatingModuleConfig of this {@link ModuleConfigs}
+     * @param promptTemplating The promptTemplating of this {@link ModuleConfigs}
      * @return The ModuleConfigs instance.
      */
-    ModuleConfigs templatingModuleConfig(
-        @Nonnull final TemplatingModuleConfig templatingModuleConfig);
+    ModuleConfigs promptTemplating(@Nonnull final PromptTemplatingModuleConfig promptTemplating);
   }
 }
