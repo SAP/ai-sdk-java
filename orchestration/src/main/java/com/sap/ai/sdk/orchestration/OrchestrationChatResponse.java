@@ -123,7 +123,8 @@ public class OrchestrationChatResponse {
   @Nonnull
   public <T> T asEntity(@Nonnull final Class<T> type) throws OrchestrationClientException {
     final String refusal =
-        ((LLMModuleResultSynchronous) getOriginalResponse().getOrchestrationResult())
+        getOriginalResponse()
+            .getOrchestrationResult()
             .getChoices()
             .get(0)
             .getMessage()
