@@ -381,8 +381,7 @@ class OrchestrationTest {
   @Test
   void testStreamingErrorHandlingTemplate() {
     val template = Message.user("Bad template: {{?language!@#$}}");
-    val templatingConfig =
-        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
+    val templatingConfig = TemplateConfig.create().withMessages(template);
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
     val inputParams = Map.of("language", "German");
     val prompt = new OrchestrationPrompt(inputParams);
