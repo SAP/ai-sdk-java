@@ -3,7 +3,6 @@ package com.sap.ai.sdk.orchestration;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
@@ -43,6 +42,6 @@ class LLMModuleResultDeserializerTest {
 
     var json = String.format(JSON, choices);
     var result = OrchestrationClient.JACKSON.readValue(json, LLMModuleResult.class);
-    assertThat(result).isExactlyInstanceOf(LLMModuleResultSynchronous.class);
+    assertThat(result).isExactlyInstanceOf(LLMModuleResult.class);
   }
 }

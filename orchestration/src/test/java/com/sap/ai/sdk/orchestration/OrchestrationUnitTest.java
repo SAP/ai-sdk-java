@@ -12,6 +12,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
@@ -37,16 +38,30 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.sap.ai.sdk.orchestration.model.ChatDelta;
+import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DPIStandardEntity;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
+import com.sap.ai.sdk.orchestration.model.Embedding;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsInput;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsInputText;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelConfig;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelDetails;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParams;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModuleConfigs;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsOrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsResponse;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -58,6 +73,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -287,7 +303,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(messageList.get(2).role()).isEqualTo("assistant");
 
-    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    var llm = response.getModuleResults().getLlm();
     assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(llm.getObject()).isEqualTo("chat.completion");
@@ -303,7 +319,7 @@ class OrchestrationUnitTest {
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
-    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    var orchestrationResult = response.getOrchestrationResult();
     assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isEqualTo(1721224505);
@@ -688,9 +704,9 @@ class OrchestrationUnitTest {
         assertThat(deltaList.get(2).getFinishReason()).isEqualTo("stop");
 
         // should be of type LLMModuleResultStreaming, will be fixed with a discriminator
-        var result0 = (LLMModuleResultSynchronous) deltaList.get(0).getOrchestrationResult();
-        var result1 = (LLMModuleResultSynchronous) deltaList.get(1).getOrchestrationResult();
-        var result2 = (LLMModuleResultSynchronous) deltaList.get(2).getOrchestrationResult();
+        var result0 = deltaList.get(0).getOrchestrationResult();
+        var result1 = deltaList.get(1).getOrchestrationResult();
+        var result2 = deltaList.get(2).getOrchestrationResult();
 
         assertThat(result0.getSystemFingerprint()).isEmpty();
         assertThat(result0.getId()).isEmpty();
@@ -705,9 +721,9 @@ class OrchestrationUnitTest {
         assertThat(choices0.getFinishReason()).isEmpty();
         assertThat(choices0.toMap().get("delta")).isNotNull();
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
-        final var message0 = (Map<String, Object>) choices0.toMap().get("delta");
-        assertThat(message0.get("role")).isEqualTo("");
-        assertThat(message0.get("content")).isEqualTo("");
+        final ChatDelta message0 = choices0.getDelta();
+        assertThat(message0.getRole()).isEqualTo("");
+        assertThat(message0.getContent()).isEqualTo("");
         final var templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
 
@@ -727,9 +743,9 @@ class OrchestrationUnitTest {
         assertThat(choices1.getIndex()).isEqualTo(0);
         assertThat(choices1.getFinishReason()).isEmpty();
         assertThat(choices1.toMap().get("delta")).isNotNull();
-        final var message1 = (Map<String, Object>) choices1.toMap().get("delta");
-        assertThat(message1.get("role")).isEqualTo("assistant");
-        assertThat(message1.get("content")).isEqualTo("Sure");
+        final ChatDelta message1 = choices1.getDelta();
+        assertThat(message1.getRole()).isEqualTo("assistant");
+        assertThat(message1.getContent()).isEqualTo("Sure");
 
         assertThat(result2.getSystemFingerprint()).isEqualTo("fp_808245b034");
         assertThat(result2.getId()).isEqualTo("chatcmpl-AYZSQQwWv7ajJsyDBpMG4X01BBJxq");
@@ -743,9 +759,9 @@ class OrchestrationUnitTest {
         assertThat(choices2.getFinishReason()).isEqualTo("stop");
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
         assertThat(choices2.toMap().get("delta")).isNotNull();
-        final var message2 = (Map<String, Object>) choices2.toMap().get("delta");
-        assertThat(message2.get("role")).isEqualTo("assistant");
-        assertThat(message2.get("content")).isEqualTo("!");
+        final ChatDelta message2 = choices2.getDelta();
+        assertThat(message2.getRole()).isEqualTo("assistant");
+        assertThat(message2.getContent()).isEqualTo("!");
       }
       Mockito.verify(inputStream, times(1)).close();
     }
@@ -809,7 +825,7 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
 
     assertThat(response).isNotNull();
-    var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    var llmResults = response.getModuleResults().getLlm();
     assertThat(llmResults).isNotNull();
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
@@ -817,7 +833,7 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
-    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    var orchestrationResult = response.getOrchestrationResult();
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
@@ -1111,5 +1127,155 @@ class OrchestrationUnitTest {
     assertThat(messageListTools.get(0)).isInstanceOf(UserMessage.class);
     assertThat(messageListTools.get(1)).isInstanceOf(AssistantMessage.class);
     assertThat(messageListTools.get(2)).isInstanceOf(ToolMessage.class);
+  }
+
+  @Test
+  void testEmbeddingCallWithMasking() {
+
+    stubFor(
+        post(urlEqualTo("/v2/embeddings"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withBody(
+                        """
+                        {
+                          "request_id": "2ee98443-e1ee-9503-b800-e38b5b80fe45",
+                          "intermediate_results": {
+                            "input_masking": {
+                              "message": "Embedding input is masked successfully.",
+                              "data": {
+                                "masked_input": "['Hello', 'MASKED_PERSON', '!']"
+                              }
+                            }
+                          },
+                          "final_result": {
+                            "object": "list",
+                            "data": [
+                              {
+                                "object": "embedding",
+                                "embedding": [
+                                  0.43988228,
+                                  -0.82985526,
+                                  -0.15936942,
+                                  0.041005015,
+                                  0.30127057
+                                ],
+                                "index": 0
+                              }
+                            ],
+                            "model": "text-embedding-3-large",
+                            "usage": {
+                              "prompt_tokens": 10,
+                              "total_tokens": 10
+                            }
+                          }
+                        }
+                        """)));
+
+    val dpiConfig =
+        DPIConfig.create()
+            .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+            .method(DPIConfig.MethodEnum.ANONYMIZATION)
+            .entities(List.of(DPIStandardEntity.create().type(DPIEntities.PERSON)));
+    val maskingConfig = MaskingModuleConfig.create().maskingProviders(List.of(dpiConfig));
+
+    val modelParams =
+        EmbeddingsModelParams.create()
+            .encodingFormat(EmbeddingsModelParams.EncodingFormatEnum.FLOAT)
+            .dimensions(5)
+            .normalize(false);
+    val modelConfig =
+        EmbeddingsModelConfig.create()
+            .model(
+                EmbeddingsModelDetails.create().name("text-embedding-3-large").params(modelParams));
+
+    val orchestrationConfig =
+        EmbeddingsOrchestrationConfig.create()
+            .modules(
+                EmbeddingsModuleConfigs.create().embeddings(modelConfig).masking(maskingConfig));
+
+    val inputText =
+        EmbeddingsInput.create().text(EmbeddingsInputText.create("['Hello', 'Müller', '!']"));
+
+    val request = EmbeddingsPostRequest.create().config(orchestrationConfig).input(inputText);
+
+    EmbeddingsPostResponse response = client.embed(request);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getRequestId()).isEqualTo("2ee98443-e1ee-9503-b800-e38b5b80fe45");
+
+    val orchestrationResult = response.getFinalResult();
+    assertThat(orchestrationResult).isNotNull();
+    assertThat(orchestrationResult.getObject()).isEqualTo(EmbeddingsResponse.ObjectEnum.LIST);
+    assertThat(orchestrationResult.getModel()).isEqualTo("text-embedding-3-large");
+
+    val data = orchestrationResult.getData();
+    assertThat(data).isNotEmpty();
+    assertThat(data.get(0).getEmbedding())
+        .isEqualTo(
+            Embedding.create(
+                List.of(
+                    BigDecimal.valueOf(0.43988228),
+                    BigDecimal.valueOf(-0.82985526),
+                    BigDecimal.valueOf(-0.15936942),
+                    BigDecimal.valueOf(0.041005015),
+                    BigDecimal.valueOf(0.30127057))));
+    assertThat(data.get(0).getIndex()).isZero();
+
+    val usage = orchestrationResult.getUsage();
+    assertThat(usage).isNotNull();
+    assertThat(usage.getPromptTokens()).isEqualTo(10);
+    assertThat(usage.getTotalTokens()).isEqualTo(10);
+
+    val moduleResults = response.getIntermediateResults();
+    assertThat(moduleResults).isNotNull();
+    assertThat(moduleResults.getInputMasking()).isNotNull();
+    assertThat(moduleResults.getInputMasking().getMessage())
+        .isEqualTo("Embedding input is masked successfully.");
+    assertThat(moduleResults.getInputMasking().getData()).isNotNull();
+    assertThat(moduleResults.getInputMasking().getData())
+        .isEqualTo(Map.of("masked_input", "['Hello', 'MASKED_PERSON', '!']"));
+
+    verify(
+        postRequestedFor(urlEqualTo("/v2/embeddings"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                    {
+                      "config": {
+                        "modules": {
+                          "embeddings": {
+                            "model": {
+                              "name": "text-embedding-3-large",
+                              "version": "latest",
+                              "params": {
+                                "encoding_format": "float",
+                                "dimensions": 5,
+                                "normalize": false
+                              }
+                            }
+                          },
+                          "masking": {
+                            "masking_providers": [
+                              {
+                                "type": "sap_data_privacy_integration",
+                                "method": "anonymization",
+                                "entities": [
+                                  {
+                                    "type": "profile-person"
+                                  }
+                                ],
+                                "allowlist" : [ ]
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "input": {
+                        "text": "['Hello', 'Müller', '!']"
+                      }
+                    }
+                    """)));
   }
 }

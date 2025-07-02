@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** LLMChoice */
 // CHECKSTYLE:OFF
-public class LLMChoice implements ModuleResultsOutputUnmaskingInner
+public class LLMChoice
 // CHECKSTYLE:ON
 {
   @JsonProperty("index")

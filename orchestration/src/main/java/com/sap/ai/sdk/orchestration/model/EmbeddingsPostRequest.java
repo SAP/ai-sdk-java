@@ -15,10 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -26,71 +23,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** InputFilteringConfig */
+/** EmbeddingsPostRequest */
 // CHECKSTYLE:OFF
-public class InputFilteringConfig
+public class EmbeddingsPostRequest
 // CHECKSTYLE:ON
 {
-  @JsonProperty("filters")
-  private List<InputFilterConfig> filters = new ArrayList<>();
+  @JsonProperty("config")
+  private EmbeddingsOrchestrationConfig config;
+
+  @JsonProperty("input")
+  private EmbeddingsInput input;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for InputFilteringConfig. */
-  protected InputFilteringConfig() {}
+  /** Default constructor for EmbeddingsPostRequest. */
+  protected EmbeddingsPostRequest() {}
 
   /**
-   * Set the filters of this {@link InputFilteringConfig} instance and return the same instance.
+   * Set the config of this {@link EmbeddingsPostRequest} instance and return the same instance.
    *
-   * @param filters Configuration for content filtering services that should be used for the given
-   *     filtering step (input filtering).
-   * @return The same instance of this {@link InputFilteringConfig} class
+   * @param config The config of this {@link EmbeddingsPostRequest}
+   * @return The same instance of this {@link EmbeddingsPostRequest} class
    */
   @Nonnull
-  public InputFilteringConfig filters(@Nonnull final List<InputFilterConfig> filters) {
-    this.filters = filters;
+  public EmbeddingsPostRequest config(@Nonnull final EmbeddingsOrchestrationConfig config) {
+    this.config = config;
     return this;
   }
 
   /**
-   * Add one filters instance to this {@link InputFilteringConfig}.
+   * Get config
    *
-   * @param filtersItem The filters that should be added
-   * @return The same instance of type {@link InputFilteringConfig}
+   * @return config The config of this {@link EmbeddingsPostRequest} instance.
    */
   @Nonnull
-  public InputFilteringConfig addFiltersItem(@Nonnull final InputFilterConfig filtersItem) {
-    if (this.filters == null) {
-      this.filters = new ArrayList<>();
-    }
-    this.filters.add(filtersItem);
+  public EmbeddingsOrchestrationConfig getConfig() {
+    return config;
+  }
+
+  /**
+   * Set the config of this {@link EmbeddingsPostRequest} instance.
+   *
+   * @param config The config of this {@link EmbeddingsPostRequest}
+   */
+  public void setConfig(@Nonnull final EmbeddingsOrchestrationConfig config) {
+    this.config = config;
+  }
+
+  /**
+   * Set the input of this {@link EmbeddingsPostRequest} instance and return the same instance.
+   *
+   * @param input The input of this {@link EmbeddingsPostRequest}
+   * @return The same instance of this {@link EmbeddingsPostRequest} class
+   */
+  @Nonnull
+  public EmbeddingsPostRequest input(@Nonnull final EmbeddingsInput input) {
+    this.input = input;
     return this;
   }
 
   /**
-   * Configuration for content filtering services that should be used for the given filtering step
-   * (input filtering).
+   * Get input
    *
-   * @return filters The filters of this {@link InputFilteringConfig} instance.
+   * @return input The input of this {@link EmbeddingsPostRequest} instance.
    */
   @Nonnull
-  public List<InputFilterConfig> getFilters() {
-    return filters;
+  public EmbeddingsInput getInput() {
+    return input;
   }
 
   /**
-   * Set the filters of this {@link InputFilteringConfig} instance.
+   * Set the input of this {@link EmbeddingsPostRequest} instance.
    *
-   * @param filters Configuration for content filtering services that should be used for the given
-   *     filtering step (input filtering).
+   * @param input The input of this {@link EmbeddingsPostRequest}
    */
-  public void setFilters(@Nonnull final List<InputFilterConfig> filters) {
-    this.filters = filters;
+  public void setInput(@Nonnull final EmbeddingsInput input) {
+    this.input = input;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link InputFilteringConfig}.
+   * Get the names of the unrecognizable properties of the {@link EmbeddingsPostRequest}.
    *
    * @return The set of properties names
    */
@@ -101,7 +114,7 @@ public class InputFilteringConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link InputFilteringConfig} instance.
+   * Get the value of an unrecognizable property of this {@link EmbeddingsPostRequest} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -113,13 +126,13 @@ public class InputFilteringConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "InputFilteringConfig has no field with name '" + name + "'.");
+          "EmbeddingsPostRequest has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link InputFilteringConfig} instance including
+   * Get the value of all properties of this {@link EmbeddingsPostRequest} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -128,12 +141,13 @@ public class InputFilteringConfig
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (filters != null) declaredFields.put("filters", filters);
+    if (config != null) declaredFields.put("config", config);
+    if (input != null) declaredFields.put("input", input);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link InputFilteringConfig} instance. If the map
+   * Set an unrecognizable property of this {@link EmbeddingsPostRequest} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -152,22 +166,24 @@ public class InputFilteringConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final InputFilteringConfig inputFilteringConfig = (InputFilteringConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, inputFilteringConfig.cloudSdkCustomFields)
-        && Objects.equals(this.filters, inputFilteringConfig.filters);
+    final EmbeddingsPostRequest embeddingsPostRequest = (EmbeddingsPostRequest) o;
+    return Objects.equals(this.cloudSdkCustomFields, embeddingsPostRequest.cloudSdkCustomFields)
+        && Objects.equals(this.config, embeddingsPostRequest.config)
+        && Objects.equals(this.input, embeddingsPostRequest.input);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filters, cloudSdkCustomFields);
+    return Objects.hash(config, input, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class InputFilteringConfig {\n");
-    sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
+    sb.append("class EmbeddingsPostRequest {\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
+    sb.append("    input: ").append(toIndentedString(input)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -186,33 +202,32 @@ public class InputFilteringConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link InputFilteringConfig}
+   * Create a type-safe, fluent-api builder object to construct a new {@link EmbeddingsPostRequest}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (filters) -> new InputFilteringConfig().filters(filters);
+    return (config) -> (input) -> new EmbeddingsPostRequest().config(config).input(input);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the filters of this {@link InputFilteringConfig} instance.
+     * Set the config of this {@link EmbeddingsPostRequest} instance.
      *
-     * @param filters Configuration for content filtering services that should be used for the given
-     *     filtering step (input filtering).
-     * @return The InputFilteringConfig instance.
+     * @param config The config of this {@link EmbeddingsPostRequest}
+     * @return The EmbeddingsPostRequest builder.
      */
-    InputFilteringConfig filters(@Nonnull final List<InputFilterConfig> filters);
+    Builder1 config(@Nonnull final EmbeddingsOrchestrationConfig config);
+  }
 
+  /** Builder helper class. */
+  public interface Builder1 {
     /**
-     * Set the filters of this {@link InputFilteringConfig} instance.
+     * Set the input of this {@link EmbeddingsPostRequest} instance.
      *
-     * @param filters Configuration for content filtering services that should be used for the given
-     *     filtering step (input filtering).
-     * @return The InputFilteringConfig instance.
+     * @param input The input of this {@link EmbeddingsPostRequest}
+     * @return The EmbeddingsPostRequest instance.
      */
-    default InputFilteringConfig filters(@Nonnull final InputFilterConfig... filters) {
-      return filters(Arrays.asList(filters));
-    }
+    EmbeddingsPostRequest input(@Nonnull final EmbeddingsInput input);
   }
 }
