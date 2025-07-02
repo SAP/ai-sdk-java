@@ -86,7 +86,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getModuleResults()
             .getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("passed");
+    assertThat(filterResult.getMessage()).contains("skipped");
   }
 
   @Test

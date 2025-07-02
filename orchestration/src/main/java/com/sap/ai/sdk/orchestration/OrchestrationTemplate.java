@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -41,8 +42,11 @@ import lombok.val;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 @Beta
 public class OrchestrationTemplate extends TemplateConfig {
+
+  /** Please use {@link #withMessages(Message...)} instead. */
   @JsonProperty("template")
   @Nullable
+  @With(onMethod_ = {@Deprecated})
   List<ChatMessage> template;
 
   @JsonProperty("defaults")
@@ -57,6 +61,17 @@ public class OrchestrationTemplate extends TemplateConfig {
   @JsonProperty("tools")
   @Nullable
   List<ChatCompletionTool> tools;
+
+  /**
+   * Create a new template with the given messages.
+   *
+   * @param messages The messages to use in the template.
+   * @return The updated template.
+   */
+  @Nonnull
+  public OrchestrationTemplate withMessages(@Nonnull final Message... messages) {
+    return this.withTemplate(Stream.of(messages).map(Message::createChatMessage).toList());
+  }
 
   /**
    * Create a low-level representation of the template.

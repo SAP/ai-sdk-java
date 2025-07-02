@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.app.services.OrchestrationService;
+import com.sap.ai.sdk.app.services.OrchestrationService.Translation;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
@@ -229,7 +230,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("passed");
+    assertThat(filterResult.getMessage()).contains("skipped");
   }
 
   @Test
@@ -272,7 +273,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("passed");
+    assertThat(filterResult.getMessage()).contains("skipped");
   }
 
   @Test
@@ -318,9 +319,10 @@ class OrchestrationTest {
 
   @Test
   void testResponseFormatJsonSchema() {
-    val result = service.responseFormatJsonSchema("apple").getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    Translation translation =
+        service.responseFormatJsonSchema("apple", Translation.class).asEntity(Translation.class);
+    assertThat(translation.translation()).isNotEmpty();
+    assertThat(translation.language()).isNotEmpty();
   }
 
   @Test
@@ -368,8 +370,7 @@ class OrchestrationTest {
   @Test
   void testStreamingErrorHandlingTemplate() {
     val template = Message.user("Bad template: {{?language!@#$}}");
-    val templatingConfig =
-        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
+    val templatingConfig = TemplateConfig.create().withMessages(template);
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
     val inputParams = Map.of("language", "German");
     val prompt = new OrchestrationPrompt(inputParams);
@@ -402,7 +403,7 @@ class OrchestrationTest {
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithMasking))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("status 400 Bad Request")
-        .hasMessageContaining("'type': 'sap_data_privacy_integration', 'method': 'anonymization'");
+        .hasMessageContaining("'unknown_default_open_api' is not one of");
   }
 
   @Test

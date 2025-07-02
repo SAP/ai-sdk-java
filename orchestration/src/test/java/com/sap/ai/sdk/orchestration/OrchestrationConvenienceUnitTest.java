@@ -4,15 +4,14 @@ import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.FunctionObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
-import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
-import com.sap.ai.sdk.orchestration.model.SystemChatMessage.RoleEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
@@ -129,7 +128,8 @@ public class OrchestrationConvenienceUnitTest {
 
   @Test
   void testTemplateConstruction() {
-    List<ChatMessage> templateMessages =
+    Message templateMessages = Message.user("message");
+    List<ChatMessage> templateMessagesLowLevel =
         List.of(
             UserChatMessage.create().content(UserChatMessageContent.create("message")).role(USER));
     var defaults = Map.of("key", "value");
@@ -140,14 +140,14 @@ public class OrchestrationConvenienceUnitTest {
                 .function(FunctionObject.create().name("func")));
     var template =
         TemplateConfig.create()
-            .withTemplate(templateMessages)
+            .withMessages(templateMessages)
             .withDefaults(defaults)
             .withTools(tools)
             .withJsonResponse();
 
     var templateLowLevel =
         Template.create()
-            .template(templateMessages)
+            .template(templateMessagesLowLevel)
             .defaults(defaults)
             .responseFormat(
                 ResponseFormatJsonObject.create()
@@ -206,15 +206,9 @@ public class OrchestrationConvenienceUnitTest {
             false);
     var expectedTemplateWithJsonSchemaTools =
         OrchestrationTemplate.create()
-            .withTemplate(
-                List.of(
-                    SystemChatMessage.create()
-                        .role(RoleEnum.SYSTEM)
-                        .content(ChatMessageContent.create("You are a language translator.")),
-                    UserChatMessage.create()
-                        .content(
-                            UserChatMessageContent.create("Whats {{ ?word }} in {{ ?language }}?"))
-                        .role(USER)))
+            .withMessages(
+                Message.system("You are a language translator."),
+                Message.user("Whats {{ ?word }} in {{ ?language }}?"))
             .withDefaults(Map.of("word", "apple"))
             .withJsonSchemaResponse(
                 ResponseJsonSchema.fromMap(schema, "translation-schema")
@@ -241,7 +235,12 @@ public class OrchestrationConvenienceUnitTest {
                                             "wordToTranslate", Map.of("type", "string"))))
                                 .description("Translate a word.")
                                 .strict(true))));
-    assertThat(templateWithJsonSchemaTools).isEqualTo(expectedTemplateWithJsonSchemaTools);
+
+    var jackson = new ObjectMapper();
+    JsonNode template = jackson.readTree(jackson.writeValueAsString(templateWithJsonSchemaTools));
+    JsonNode expectedTemplate =
+        jackson.readTree(jackson.writeValueAsString(expectedTemplateWithJsonSchemaTools));
+    assertThat(template).isEqualTo(expectedTemplate);
   }
 
   @Test
@@ -267,17 +266,16 @@ public class OrchestrationConvenienceUnitTest {
     var templateWithJsonObject = TemplateConfig.create().fromYaml(promptTemplateWithJsonObject);
     var expectedTemplateWithJsonObject =
         OrchestrationTemplate.create()
-            .withTemplate(
-                List.of(
-                    SystemChatMessage.create()
-                        .role(RoleEnum.SYSTEM)
-                        .content(ChatMessageContent.create("You are a language translator.")),
-                    UserChatMessage.create()
-                        .content(
-                            UserChatMessageContent.create("Whats {{ ?word }} in {{ ?language }}?"))
-                        .role(USER)))
+            .withMessages(
+                Message.system("You are a language translator."),
+                Message.user("Whats {{ ?word }} in {{ ?language }}?"))
             .withDefaults(Map.of("word", "apple"))
             .withJsonResponse();
-    assertThat(templateWithJsonObject).isEqualTo(expectedTemplateWithJsonObject);
+
+    var jackson = new ObjectMapper();
+    JsonNode template = jackson.readTree(jackson.writeValueAsString(templateWithJsonObject));
+    JsonNode expectedTemplate =
+        jackson.readTree(jackson.writeValueAsString(expectedTemplateWithJsonObject));
+    assertThat(template).isEqualTo(expectedTemplate);
   }
 }

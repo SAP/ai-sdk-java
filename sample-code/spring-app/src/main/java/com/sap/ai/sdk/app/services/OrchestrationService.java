@@ -120,8 +120,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse template(@Nonnull final String language) {
     val template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-    val templatingConfig =
-        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
+    val templatingConfig = TemplateConfig.create().withMessages(template);
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val inputParams = Map.of("language", language);
@@ -164,7 +163,8 @@ public class OrchestrationService {
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
     val prompt =
-        new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
+        new OrchestrationPrompt(
+            "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operator in-charge.");
     val filterConfig =
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy).promptShield(true);
 
@@ -411,24 +411,31 @@ public class OrchestrationService {
   }
 
   /**
+   * A simple record to demonstrate the response format feature of the orchestration service.
+   *
+   * @param translation the translated text
+   * @param language the language of the translation
+   */
+  public record Translation(
+      @JsonProperty(required = true) String translation,
+      @JsonProperty(required = true) String language) {}
+
+  /**
    * Chat request to OpenAI through the Orchestration service using response format with JSON
    * schema.
    *
+   * @param word the word to translate
+   * @param targetType the class type to use for the JSON schema
+   * @return the assistant response object
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
-   * @param word the word to translate
-   * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse responseFormatJsonSchema(@Nonnull final String word) {
-    //    Example class
-    record Translation(
-        @JsonProperty(required = true) String translation,
-        @JsonProperty(required = true) String language) {}
-
+  public OrchestrationChatResponse responseFormatJsonSchema(
+      @Nonnull final String word, @Nonnull final Class<?> targetType) {
     val schema =
-        ResponseJsonSchema.fromType(Translation.class)
+        ResponseJsonSchema.fromType(targetType)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
     val configWithResponseSchema =
@@ -455,10 +462,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonObject(@Nonnull final String word) {
     val template = Message.user("What is '%s' in German?".formatted(word));
-    val templatingConfig =
-        TemplateConfig.create()
-            .withTemplate(List.of(template.createChatMessage()))
-            .withJsonResponse();
+    val templatingConfig = TemplateConfig.create().withMessages(template).withJsonResponse();
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val prompt =
