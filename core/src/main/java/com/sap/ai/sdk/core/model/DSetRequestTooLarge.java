@@ -23,29 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** AiPreconditionFailedContent */
+/** DSetRequestTooLarge */
 // CHECKSTYLE:OFF
-public class AiPreconditionFailedContent
+public class DSetRequestTooLarge
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private AiApiError error;
+  private DSetError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for AiPreconditionFailedContent. */
-  protected AiPreconditionFailedContent() {}
+  /** Default constructor for DSetRequestTooLarge. */
+  protected DSetRequestTooLarge() {}
 
   /**
-   * Set the error of this {@link AiPreconditionFailedContent} instance and return the same
-   * instance.
+   * Set the error of this {@link DSetRequestTooLarge} instance and return the same instance.
    *
-   * @param error The error of this {@link AiPreconditionFailedContent}
-   * @return The same instance of this {@link AiPreconditionFailedContent} class
+   * @param error The error of this {@link DSetRequestTooLarge}
+   * @return The same instance of this {@link DSetRequestTooLarge} class
    */
   @Nonnull
-  public AiPreconditionFailedContent error(@Nullable final AiApiError error) {
+  public DSetRequestTooLarge error(@Nullable final DSetError error) {
     this.error = error;
     return this;
   }
@@ -53,24 +52,24 @@ public class AiPreconditionFailedContent
   /**
    * Get error
    *
-   * @return error The error of this {@link AiPreconditionFailedContent} instance.
+   * @return error The error of this {@link DSetRequestTooLarge} instance.
    */
   @Nonnull
-  public AiApiError getError() {
+  public DSetError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link AiPreconditionFailedContent} instance.
+   * Set the error of this {@link DSetRequestTooLarge} instance.
    *
-   * @param error The error of this {@link AiPreconditionFailedContent}
+   * @param error The error of this {@link DSetRequestTooLarge}
    */
-  public void setError(@Nullable final AiApiError error) {
+  public void setError(@Nullable final DSetError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link AiPreconditionFailedContent}.
+   * Get the names of the unrecognizable properties of the {@link DSetRequestTooLarge}.
    *
    * @return The set of properties names
    */
@@ -81,8 +80,7 @@ public class AiPreconditionFailedContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link AiPreconditionFailedContent}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link DSetRequestTooLarge} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -94,13 +92,13 @@ public class AiPreconditionFailedContent
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "AiPreconditionFailedContent has no field with name '" + name + "'.");
+          "DSetRequestTooLarge has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link AiPreconditionFailedContent} instance including
+   * Get the value of all properties of this {@link DSetRequestTooLarge} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -114,7 +112,7 @@ public class AiPreconditionFailedContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link AiPreconditionFailedContent} instance. If the map
+   * Set an unrecognizable property of this {@link DSetRequestTooLarge} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -133,10 +131,9 @@ public class AiPreconditionFailedContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final AiPreconditionFailedContent aiPreconditionFailedContent = (AiPreconditionFailedContent) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, aiPreconditionFailedContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, aiPreconditionFailedContent.error);
+    final DSetRequestTooLarge dsetRequestTooLarge = (DSetRequestTooLarge) o;
+    return Objects.equals(this.cloudSdkCustomFields, dsetRequestTooLarge.cloudSdkCustomFields)
+        && Objects.equals(this.error, dsetRequestTooLarge.error);
   }
 
   @Override
@@ -148,7 +145,7 @@ public class AiPreconditionFailedContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class AiPreconditionFailedContent {\n");
+    sb.append("class DSetRequestTooLarge {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -167,8 +164,8 @@ public class AiPreconditionFailedContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link AiPreconditionFailedContent} instance. No arguments are required. */
-  public static AiPreconditionFailedContent create() {
-    return new AiPreconditionFailedContent();
+  /** Create a new {@link DSetRequestTooLarge} instance. No arguments are required. */
+  public static DSetRequestTooLarge create() {
+    return new DSetRequestTooLarge();
   }
 }

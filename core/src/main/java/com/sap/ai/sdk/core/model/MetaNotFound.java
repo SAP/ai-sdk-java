@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TrckNotFoundContent */
+/** MetaNotFound */
 // CHECKSTYLE:OFF
-public class TrckNotFoundContent
+public class MetaNotFound
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private TrckApiError error;
+  private MetaApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TrckNotFoundContent. */
-  protected TrckNotFoundContent() {}
+  /** Default constructor for MetaNotFound. */
+  protected MetaNotFound() {}
 
   /**
-   * Set the error of this {@link TrckNotFoundContent} instance and return the same instance.
+   * Set the error of this {@link MetaNotFound} instance and return the same instance.
    *
-   * @param error The error of this {@link TrckNotFoundContent}
-   * @return The same instance of this {@link TrckNotFoundContent} class
+   * @param error The error of this {@link MetaNotFound}
+   * @return The same instance of this {@link MetaNotFound} class
    */
   @Nonnull
-  public TrckNotFoundContent error(@Nullable final TrckApiError error) {
+  public MetaNotFound error(@Nullable final MetaApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class TrckNotFoundContent
   /**
    * Get error
    *
-   * @return error The error of this {@link TrckNotFoundContent} instance.
+   * @return error The error of this {@link MetaNotFound} instance.
    */
   @Nonnull
-  public TrckApiError getError() {
+  public MetaApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link TrckNotFoundContent} instance.
+   * Set the error of this {@link MetaNotFound} instance.
    *
-   * @param error The error of this {@link TrckNotFoundContent}
+   * @param error The error of this {@link MetaNotFound}
    */
-  public void setError(@Nullable final TrckApiError error) {
+  public void setError(@Nullable final MetaApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TrckNotFoundContent}.
+   * Get the names of the unrecognizable properties of the {@link MetaNotFound}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class TrckNotFoundContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TrckNotFoundContent} instance.
+   * Get the value of an unrecognizable property of this {@link MetaNotFound} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,15 +91,14 @@ public class TrckNotFoundContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "TrckNotFoundContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("MetaNotFound has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TrckNotFoundContent} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link MetaNotFound} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -112,8 +111,8 @@ public class TrckNotFoundContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link TrckNotFoundContent} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link MetaNotFound} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -131,9 +130,9 @@ public class TrckNotFoundContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TrckNotFoundContent trckNotFoundContent = (TrckNotFoundContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, trckNotFoundContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, trckNotFoundContent.error);
+    final MetaNotFound metaNotFound = (MetaNotFound) o;
+    return Objects.equals(this.cloudSdkCustomFields, metaNotFound.cloudSdkCustomFields)
+        && Objects.equals(this.error, metaNotFound.error);
   }
 
   @Override
@@ -145,7 +144,7 @@ public class TrckNotFoundContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TrckNotFoundContent {\n");
+    sb.append("class MetaNotFound {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -164,8 +163,8 @@ public class TrckNotFoundContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link TrckNotFoundContent} instance. No arguments are required. */
-  public static TrckNotFoundContent create() {
-    return new TrckNotFoundContent();
+  /** Create a new {@link MetaNotFound} instance. No arguments are required. */
+  public static MetaNotFound create() {
+    return new MetaNotFound();
   }
 }

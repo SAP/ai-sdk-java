@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TrckNotImplementedContent */
+/** AiPreconditionFailed */
 // CHECKSTYLE:OFF
-public class TrckNotImplementedContent
+public class AiPreconditionFailed
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private TrckApiError error;
+  private AiApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TrckNotImplementedContent. */
-  protected TrckNotImplementedContent() {}
+  /** Default constructor for AiPreconditionFailed. */
+  protected AiPreconditionFailed() {}
 
   /**
-   * Set the error of this {@link TrckNotImplementedContent} instance and return the same instance.
+   * Set the error of this {@link AiPreconditionFailed} instance and return the same instance.
    *
-   * @param error The error of this {@link TrckNotImplementedContent}
-   * @return The same instance of this {@link TrckNotImplementedContent} class
+   * @param error The error of this {@link AiPreconditionFailed}
+   * @return The same instance of this {@link AiPreconditionFailed} class
    */
   @Nonnull
-  public TrckNotImplementedContent error(@Nullable final TrckApiError error) {
+  public AiPreconditionFailed error(@Nullable final AiApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class TrckNotImplementedContent
   /**
    * Get error
    *
-   * @return error The error of this {@link TrckNotImplementedContent} instance.
+   * @return error The error of this {@link AiPreconditionFailed} instance.
    */
   @Nonnull
-  public TrckApiError getError() {
+  public AiApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link TrckNotImplementedContent} instance.
+   * Set the error of this {@link AiPreconditionFailed} instance.
    *
-   * @param error The error of this {@link TrckNotImplementedContent}
+   * @param error The error of this {@link AiPreconditionFailed}
    */
-  public void setError(@Nullable final TrckApiError error) {
+  public void setError(@Nullable final AiApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TrckNotImplementedContent}.
+   * Get the names of the unrecognizable properties of the {@link AiPreconditionFailed}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class TrckNotImplementedContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TrckNotImplementedContent} instance.
+   * Get the value of an unrecognizable property of this {@link AiPreconditionFailed} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -92,13 +92,13 @@ public class TrckNotImplementedContent
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "TrckNotImplementedContent has no field with name '" + name + "'.");
+          "AiPreconditionFailed has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TrckNotImplementedContent} instance including
+   * Get the value of all properties of this {@link AiPreconditionFailed} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -112,7 +112,7 @@ public class TrckNotImplementedContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link TrckNotImplementedContent} instance. If the map
+   * Set an unrecognizable property of this {@link AiPreconditionFailed} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -131,9 +131,9 @@ public class TrckNotImplementedContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TrckNotImplementedContent trckNotImplementedContent = (TrckNotImplementedContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, trckNotImplementedContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, trckNotImplementedContent.error);
+    final AiPreconditionFailed aiPreconditionFailed = (AiPreconditionFailed) o;
+    return Objects.equals(this.cloudSdkCustomFields, aiPreconditionFailed.cloudSdkCustomFields)
+        && Objects.equals(this.error, aiPreconditionFailed.error);
   }
 
   @Override
@@ -145,7 +145,7 @@ public class TrckNotImplementedContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TrckNotImplementedContent {\n");
+    sb.append("class AiPreconditionFailed {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -164,8 +164,8 @@ public class TrckNotImplementedContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link TrckNotImplementedContent} instance. No arguments are required. */
-  public static TrckNotImplementedContent create() {
-    return new TrckNotImplementedContent();
+  /** Create a new {@link AiPreconditionFailed} instance. No arguments are required. */
+  public static AiPreconditionFailed create() {
+    return new AiPreconditionFailed();
   }
 }

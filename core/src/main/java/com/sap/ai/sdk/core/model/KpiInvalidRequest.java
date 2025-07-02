@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TrckPayloadTooLargeContent */
+/** KpiInvalidRequest */
 // CHECKSTYLE:OFF
-public class TrckPayloadTooLargeContent
+public class KpiInvalidRequest
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private TrckApiError error;
+  private KpiApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TrckPayloadTooLargeContent. */
-  protected TrckPayloadTooLargeContent() {}
+  /** Default constructor for KpiInvalidRequest. */
+  protected KpiInvalidRequest() {}
 
   /**
-   * Set the error of this {@link TrckPayloadTooLargeContent} instance and return the same instance.
+   * Set the error of this {@link KpiInvalidRequest} instance and return the same instance.
    *
-   * @param error The error of this {@link TrckPayloadTooLargeContent}
-   * @return The same instance of this {@link TrckPayloadTooLargeContent} class
+   * @param error The error of this {@link KpiInvalidRequest}
+   * @return The same instance of this {@link KpiInvalidRequest} class
    */
   @Nonnull
-  public TrckPayloadTooLargeContent error(@Nullable final TrckApiError error) {
+  public KpiInvalidRequest error(@Nullable final KpiApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class TrckPayloadTooLargeContent
   /**
    * Get error
    *
-   * @return error The error of this {@link TrckPayloadTooLargeContent} instance.
+   * @return error The error of this {@link KpiInvalidRequest} instance.
    */
   @Nonnull
-  public TrckApiError getError() {
+  public KpiApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link TrckPayloadTooLargeContent} instance.
+   * Set the error of this {@link KpiInvalidRequest} instance.
    *
-   * @param error The error of this {@link TrckPayloadTooLargeContent}
+   * @param error The error of this {@link KpiInvalidRequest}
    */
-  public void setError(@Nullable final TrckApiError error) {
+  public void setError(@Nullable final KpiApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TrckPayloadTooLargeContent}.
+   * Get the names of the unrecognizable properties of the {@link KpiInvalidRequest}.
    *
    * @return The set of properties names
    */
@@ -80,8 +80,7 @@ public class TrckPayloadTooLargeContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TrckPayloadTooLargeContent}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link KpiInvalidRequest} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -92,14 +91,13 @@ public class TrckPayloadTooLargeContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "TrckPayloadTooLargeContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("KpiInvalidRequest has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TrckPayloadTooLargeContent} instance including
+   * Get the value of all properties of this {@link KpiInvalidRequest} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -113,7 +111,7 @@ public class TrckPayloadTooLargeContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link TrckPayloadTooLargeContent} instance. If the map
+   * Set an unrecognizable property of this {@link KpiInvalidRequest} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -132,10 +130,9 @@ public class TrckPayloadTooLargeContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TrckPayloadTooLargeContent trckPayloadTooLargeContent = (TrckPayloadTooLargeContent) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, trckPayloadTooLargeContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, trckPayloadTooLargeContent.error);
+    final KpiInvalidRequest kpiInvalidRequest = (KpiInvalidRequest) o;
+    return Objects.equals(this.cloudSdkCustomFields, kpiInvalidRequest.cloudSdkCustomFields)
+        && Objects.equals(this.error, kpiInvalidRequest.error);
   }
 
   @Override
@@ -147,7 +144,7 @@ public class TrckPayloadTooLargeContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TrckPayloadTooLargeContent {\n");
+    sb.append("class KpiInvalidRequest {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -166,8 +163,8 @@ public class TrckPayloadTooLargeContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link TrckPayloadTooLargeContent} instance. No arguments are required. */
-  public static TrckPayloadTooLargeContent create() {
-    return new TrckPayloadTooLargeContent();
+  /** Create a new {@link KpiInvalidRequest} instance. No arguments are required. */
+  public static KpiInvalidRequest create() {
+    return new KpiInvalidRequest();
   }
 }

@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** DSetNotFoundContent */
+/** TntNotFound */
 // CHECKSTYLE:OFF
-public class DSetNotFoundContent
+public class TntNotFound
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private DSetError error;
+  private TntApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DSetNotFoundContent. */
-  protected DSetNotFoundContent() {}
+  /** Default constructor for TntNotFound. */
+  protected TntNotFound() {}
 
   /**
-   * Set the error of this {@link DSetNotFoundContent} instance and return the same instance.
+   * Set the error of this {@link TntNotFound} instance and return the same instance.
    *
-   * @param error The error of this {@link DSetNotFoundContent}
-   * @return The same instance of this {@link DSetNotFoundContent} class
+   * @param error The error of this {@link TntNotFound}
+   * @return The same instance of this {@link TntNotFound} class
    */
   @Nonnull
-  public DSetNotFoundContent error(@Nullable final DSetError error) {
+  public TntNotFound error(@Nullable final TntApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class DSetNotFoundContent
   /**
    * Get error
    *
-   * @return error The error of this {@link DSetNotFoundContent} instance.
+   * @return error The error of this {@link TntNotFound} instance.
    */
   @Nonnull
-  public DSetError getError() {
+  public TntApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link DSetNotFoundContent} instance.
+   * Set the error of this {@link TntNotFound} instance.
    *
-   * @param error The error of this {@link DSetNotFoundContent}
+   * @param error The error of this {@link TntNotFound}
    */
-  public void setError(@Nullable final DSetError error) {
+  public void setError(@Nullable final TntApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link DSetNotFoundContent}.
+   * Get the names of the unrecognizable properties of the {@link TntNotFound}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class DSetNotFoundContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DSetNotFoundContent} instance.
+   * Get the value of an unrecognizable property of this {@link TntNotFound} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,15 +91,14 @@ public class DSetNotFoundContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "DSetNotFoundContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("TntNotFound has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DSetNotFoundContent} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link TntNotFound} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -112,8 +111,8 @@ public class DSetNotFoundContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link DSetNotFoundContent} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link TntNotFound} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -131,9 +130,9 @@ public class DSetNotFoundContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DSetNotFoundContent dsetNotFoundContent = (DSetNotFoundContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, dsetNotFoundContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, dsetNotFoundContent.error);
+    final TntNotFound tntNotFound = (TntNotFound) o;
+    return Objects.equals(this.cloudSdkCustomFields, tntNotFound.cloudSdkCustomFields)
+        && Objects.equals(this.error, tntNotFound.error);
   }
 
   @Override
@@ -145,7 +144,7 @@ public class DSetNotFoundContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DSetNotFoundContent {\n");
+    sb.append("class TntNotFound {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -164,8 +163,8 @@ public class DSetNotFoundContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link DSetNotFoundContent} instance. No arguments are required. */
-  public static DSetNotFoundContent create() {
-    return new DSetNotFoundContent();
+  /** Create a new {@link TntNotFound} instance. No arguments are required. */
+  public static TntNotFound create() {
+    return new TntNotFound();
   }
 }

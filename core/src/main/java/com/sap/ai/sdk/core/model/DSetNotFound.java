@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** DSetBadRequestContent */
+/** DSetNotFound */
 // CHECKSTYLE:OFF
-public class DSetBadRequestContent
+public class DSetNotFound
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
@@ -34,17 +34,17 @@ public class DSetBadRequestContent
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DSetBadRequestContent. */
-  protected DSetBadRequestContent() {}
+  /** Default constructor for DSetNotFound. */
+  protected DSetNotFound() {}
 
   /**
-   * Set the error of this {@link DSetBadRequestContent} instance and return the same instance.
+   * Set the error of this {@link DSetNotFound} instance and return the same instance.
    *
-   * @param error The error of this {@link DSetBadRequestContent}
-   * @return The same instance of this {@link DSetBadRequestContent} class
+   * @param error The error of this {@link DSetNotFound}
+   * @return The same instance of this {@link DSetNotFound} class
    */
   @Nonnull
-  public DSetBadRequestContent error(@Nullable final DSetError error) {
+  public DSetNotFound error(@Nullable final DSetError error) {
     this.error = error;
     return this;
   }
@@ -52,7 +52,7 @@ public class DSetBadRequestContent
   /**
    * Get error
    *
-   * @return error The error of this {@link DSetBadRequestContent} instance.
+   * @return error The error of this {@link DSetNotFound} instance.
    */
   @Nonnull
   public DSetError getError() {
@@ -60,16 +60,16 @@ public class DSetBadRequestContent
   }
 
   /**
-   * Set the error of this {@link DSetBadRequestContent} instance.
+   * Set the error of this {@link DSetNotFound} instance.
    *
-   * @param error The error of this {@link DSetBadRequestContent}
+   * @param error The error of this {@link DSetNotFound}
    */
   public void setError(@Nullable final DSetError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link DSetBadRequestContent}.
+   * Get the names of the unrecognizable properties of the {@link DSetNotFound}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class DSetBadRequestContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DSetBadRequestContent} instance.
+   * Get the value of an unrecognizable property of this {@link DSetNotFound} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,15 +91,14 @@ public class DSetBadRequestContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "DSetBadRequestContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("DSetNotFound has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DSetBadRequestContent} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link DSetNotFound} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -112,8 +111,8 @@ public class DSetBadRequestContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link DSetBadRequestContent} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link DSetNotFound} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -131,9 +130,9 @@ public class DSetBadRequestContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DSetBadRequestContent dsetBadRequestContent = (DSetBadRequestContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, dsetBadRequestContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, dsetBadRequestContent.error);
+    final DSetNotFound dsetNotFound = (DSetNotFound) o;
+    return Objects.equals(this.cloudSdkCustomFields, dsetNotFound.cloudSdkCustomFields)
+        && Objects.equals(this.error, dsetNotFound.error);
   }
 
   @Override
@@ -145,7 +144,7 @@ public class DSetBadRequestContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DSetBadRequestContent {\n");
+    sb.append("class DSetNotFound {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -164,8 +163,8 @@ public class DSetBadRequestContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link DSetBadRequestContent} instance. No arguments are required. */
-  public static DSetBadRequestContent create() {
-    return new DSetBadRequestContent();
+  /** Create a new {@link DSetNotFound} instance. No arguments are required. */
+  public static DSetNotFound create() {
+    return new DSetNotFound();
   }
 }

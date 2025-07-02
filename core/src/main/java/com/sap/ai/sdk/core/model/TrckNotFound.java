@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** DSetConflictContent */
+/** TrckNotFound */
 // CHECKSTYLE:OFF
-public class DSetConflictContent
+public class TrckNotFound
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private DSetError error;
+  private TrckApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DSetConflictContent. */
-  protected DSetConflictContent() {}
+  /** Default constructor for TrckNotFound. */
+  protected TrckNotFound() {}
 
   /**
-   * Set the error of this {@link DSetConflictContent} instance and return the same instance.
+   * Set the error of this {@link TrckNotFound} instance and return the same instance.
    *
-   * @param error The error of this {@link DSetConflictContent}
-   * @return The same instance of this {@link DSetConflictContent} class
+   * @param error The error of this {@link TrckNotFound}
+   * @return The same instance of this {@link TrckNotFound} class
    */
   @Nonnull
-  public DSetConflictContent error(@Nullable final DSetError error) {
+  public TrckNotFound error(@Nullable final TrckApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class DSetConflictContent
   /**
    * Get error
    *
-   * @return error The error of this {@link DSetConflictContent} instance.
+   * @return error The error of this {@link TrckNotFound} instance.
    */
   @Nonnull
-  public DSetError getError() {
+  public TrckApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link DSetConflictContent} instance.
+   * Set the error of this {@link TrckNotFound} instance.
    *
-   * @param error The error of this {@link DSetConflictContent}
+   * @param error The error of this {@link TrckNotFound}
    */
-  public void setError(@Nullable final DSetError error) {
+  public void setError(@Nullable final TrckApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link DSetConflictContent}.
+   * Get the names of the unrecognizable properties of the {@link TrckNotFound}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class DSetConflictContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DSetConflictContent} instance.
+   * Get the value of an unrecognizable property of this {@link TrckNotFound} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,15 +91,14 @@ public class DSetConflictContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "DSetConflictContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("TrckNotFound has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DSetConflictContent} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link TrckNotFound} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -112,8 +111,8 @@ public class DSetConflictContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link DSetConflictContent} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link TrckNotFound} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -131,9 +130,9 @@ public class DSetConflictContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DSetConflictContent dsetConflictContent = (DSetConflictContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, dsetConflictContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, dsetConflictContent.error);
+    final TrckNotFound trckNotFound = (TrckNotFound) o;
+    return Objects.equals(this.cloudSdkCustomFields, trckNotFound.cloudSdkCustomFields)
+        && Objects.equals(this.error, trckNotFound.error);
   }
 
   @Override
@@ -145,7 +144,7 @@ public class DSetConflictContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DSetConflictContent {\n");
+    sb.append("class TrckNotFound {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -164,8 +163,8 @@ public class DSetConflictContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link DSetConflictContent} instance. No arguments are required. */
-  public static DSetConflictContent create() {
-    return new DSetConflictContent();
+  /** Create a new {@link TrckNotFound} instance. No arguments are required. */
+  public static TrckNotFound create() {
+    return new TrckNotFound();
   }
 }

@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** DSetRequestTooLargeContent */
+/** DSetConflict */
 // CHECKSTYLE:OFF
-public class DSetRequestTooLargeContent
+public class DSetConflict
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
@@ -34,17 +34,17 @@ public class DSetRequestTooLargeContent
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DSetRequestTooLargeContent. */
-  protected DSetRequestTooLargeContent() {}
+  /** Default constructor for DSetConflict. */
+  protected DSetConflict() {}
 
   /**
-   * Set the error of this {@link DSetRequestTooLargeContent} instance and return the same instance.
+   * Set the error of this {@link DSetConflict} instance and return the same instance.
    *
-   * @param error The error of this {@link DSetRequestTooLargeContent}
-   * @return The same instance of this {@link DSetRequestTooLargeContent} class
+   * @param error The error of this {@link DSetConflict}
+   * @return The same instance of this {@link DSetConflict} class
    */
   @Nonnull
-  public DSetRequestTooLargeContent error(@Nullable final DSetError error) {
+  public DSetConflict error(@Nullable final DSetError error) {
     this.error = error;
     return this;
   }
@@ -52,7 +52,7 @@ public class DSetRequestTooLargeContent
   /**
    * Get error
    *
-   * @return error The error of this {@link DSetRequestTooLargeContent} instance.
+   * @return error The error of this {@link DSetConflict} instance.
    */
   @Nonnull
   public DSetError getError() {
@@ -60,16 +60,16 @@ public class DSetRequestTooLargeContent
   }
 
   /**
-   * Set the error of this {@link DSetRequestTooLargeContent} instance.
+   * Set the error of this {@link DSetConflict} instance.
    *
-   * @param error The error of this {@link DSetRequestTooLargeContent}
+   * @param error The error of this {@link DSetConflict}
    */
   public void setError(@Nullable final DSetError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link DSetRequestTooLargeContent}.
+   * Get the names of the unrecognizable properties of the {@link DSetConflict}.
    *
    * @return The set of properties names
    */
@@ -80,8 +80,7 @@ public class DSetRequestTooLargeContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DSetRequestTooLargeContent}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link DSetConflict} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -92,15 +91,14 @@ public class DSetRequestTooLargeContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "DSetRequestTooLargeContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("DSetConflict has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DSetRequestTooLargeContent} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link DSetConflict} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -113,8 +111,8 @@ public class DSetRequestTooLargeContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link DSetRequestTooLargeContent} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link DSetConflict} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -132,10 +130,9 @@ public class DSetRequestTooLargeContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DSetRequestTooLargeContent dsetRequestTooLargeContent = (DSetRequestTooLargeContent) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, dsetRequestTooLargeContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, dsetRequestTooLargeContent.error);
+    final DSetConflict dsetConflict = (DSetConflict) o;
+    return Objects.equals(this.cloudSdkCustomFields, dsetConflict.cloudSdkCustomFields)
+        && Objects.equals(this.error, dsetConflict.error);
   }
 
   @Override
@@ -147,7 +144,7 @@ public class DSetRequestTooLargeContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DSetRequestTooLargeContent {\n");
+    sb.append("class DSetConflict {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -166,8 +163,8 @@ public class DSetRequestTooLargeContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link DSetRequestTooLargeContent} instance. No arguments are required. */
-  public static DSetRequestTooLargeContent create() {
-    return new DSetRequestTooLargeContent();
+  /** Create a new {@link DSetConflict} instance. No arguments are required. */
+  public static DSetConflict create() {
+    return new DSetConflict();
   }
 }

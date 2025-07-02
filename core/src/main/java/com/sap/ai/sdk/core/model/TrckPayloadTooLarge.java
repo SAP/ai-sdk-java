@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** AiNotFoundContent */
+/** TrckPayloadTooLarge */
 // CHECKSTYLE:OFF
-public class AiNotFoundContent
+public class TrckPayloadTooLarge
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private AiApiError error;
+  private TrckApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for AiNotFoundContent. */
-  protected AiNotFoundContent() {}
+  /** Default constructor for TrckPayloadTooLarge. */
+  protected TrckPayloadTooLarge() {}
 
   /**
-   * Set the error of this {@link AiNotFoundContent} instance and return the same instance.
+   * Set the error of this {@link TrckPayloadTooLarge} instance and return the same instance.
    *
-   * @param error The error of this {@link AiNotFoundContent}
-   * @return The same instance of this {@link AiNotFoundContent} class
+   * @param error The error of this {@link TrckPayloadTooLarge}
+   * @return The same instance of this {@link TrckPayloadTooLarge} class
    */
   @Nonnull
-  public AiNotFoundContent error(@Nullable final AiApiError error) {
+  public TrckPayloadTooLarge error(@Nullable final TrckApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class AiNotFoundContent
   /**
    * Get error
    *
-   * @return error The error of this {@link AiNotFoundContent} instance.
+   * @return error The error of this {@link TrckPayloadTooLarge} instance.
    */
   @Nonnull
-  public AiApiError getError() {
+  public TrckApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link AiNotFoundContent} instance.
+   * Set the error of this {@link TrckPayloadTooLarge} instance.
    *
-   * @param error The error of this {@link AiNotFoundContent}
+   * @param error The error of this {@link TrckPayloadTooLarge}
    */
-  public void setError(@Nullable final AiApiError error) {
+  public void setError(@Nullable final TrckApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link AiNotFoundContent}.
+   * Get the names of the unrecognizable properties of the {@link TrckPayloadTooLarge}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class AiNotFoundContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link AiNotFoundContent} instance.
+   * Get the value of an unrecognizable property of this {@link TrckPayloadTooLarge} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,13 +91,14 @@ public class AiNotFoundContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("AiNotFoundContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "TrckPayloadTooLarge has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link AiNotFoundContent} instance including
+   * Get the value of all properties of this {@link TrckPayloadTooLarge} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -111,7 +112,7 @@ public class AiNotFoundContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link AiNotFoundContent} instance. If the map
+   * Set an unrecognizable property of this {@link TrckPayloadTooLarge} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -130,9 +131,9 @@ public class AiNotFoundContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final AiNotFoundContent aiNotFoundContent = (AiNotFoundContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, aiNotFoundContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, aiNotFoundContent.error);
+    final TrckPayloadTooLarge trckPayloadTooLarge = (TrckPayloadTooLarge) o;
+    return Objects.equals(this.cloudSdkCustomFields, trckPayloadTooLarge.cloudSdkCustomFields)
+        && Objects.equals(this.error, trckPayloadTooLarge.error);
   }
 
   @Override
@@ -144,7 +145,7 @@ public class AiNotFoundContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class AiNotFoundContent {\n");
+    sb.append("class TrckPayloadTooLarge {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -163,8 +164,8 @@ public class AiNotFoundContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link AiNotFoundContent} instance. No arguments are required. */
-  public static AiNotFoundContent create() {
-    return new AiNotFoundContent();
+  /** Create a new {@link TrckPayloadTooLarge} instance. No arguments are required. */
+  public static TrckPayloadTooLarge create() {
+    return new TrckPayloadTooLarge();
   }
 }

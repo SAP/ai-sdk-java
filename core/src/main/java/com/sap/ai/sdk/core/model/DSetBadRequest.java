@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** AiBadRequestContent */
+/** DSetBadRequest */
 // CHECKSTYLE:OFF
-public class AiBadRequestContent
+public class DSetBadRequest
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private AiApiError error;
+  private DSetError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for AiBadRequestContent. */
-  protected AiBadRequestContent() {}
+  /** Default constructor for DSetBadRequest. */
+  protected DSetBadRequest() {}
 
   /**
-   * Set the error of this {@link AiBadRequestContent} instance and return the same instance.
+   * Set the error of this {@link DSetBadRequest} instance and return the same instance.
    *
-   * @param error The error of this {@link AiBadRequestContent}
-   * @return The same instance of this {@link AiBadRequestContent} class
+   * @param error The error of this {@link DSetBadRequest}
+   * @return The same instance of this {@link DSetBadRequest} class
    */
   @Nonnull
-  public AiBadRequestContent error(@Nullable final AiApiError error) {
+  public DSetBadRequest error(@Nullable final DSetError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class AiBadRequestContent
   /**
    * Get error
    *
-   * @return error The error of this {@link AiBadRequestContent} instance.
+   * @return error The error of this {@link DSetBadRequest} instance.
    */
   @Nonnull
-  public AiApiError getError() {
+  public DSetError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link AiBadRequestContent} instance.
+   * Set the error of this {@link DSetBadRequest} instance.
    *
-   * @param error The error of this {@link AiBadRequestContent}
+   * @param error The error of this {@link DSetBadRequest}
    */
-  public void setError(@Nullable final AiApiError error) {
+  public void setError(@Nullable final DSetError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link AiBadRequestContent}.
+   * Get the names of the unrecognizable properties of the {@link DSetBadRequest}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class AiBadRequestContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link AiBadRequestContent} instance.
+   * Get the value of an unrecognizable property of this {@link DSetBadRequest} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,15 +91,14 @@ public class AiBadRequestContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "AiBadRequestContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("DSetBadRequest has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link AiBadRequestContent} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link DSetBadRequest} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -112,8 +111,8 @@ public class AiBadRequestContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link AiBadRequestContent} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link DSetBadRequest} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -131,9 +130,9 @@ public class AiBadRequestContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final AiBadRequestContent aiBadRequestContent = (AiBadRequestContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, aiBadRequestContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, aiBadRequestContent.error);
+    final DSetBadRequest dsetBadRequest = (DSetBadRequest) o;
+    return Objects.equals(this.cloudSdkCustomFields, dsetBadRequest.cloudSdkCustomFields)
+        && Objects.equals(this.error, dsetBadRequest.error);
   }
 
   @Override
@@ -145,7 +144,7 @@ public class AiBadRequestContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class AiBadRequestContent {\n");
+    sb.append("class DSetBadRequest {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -164,8 +163,8 @@ public class AiBadRequestContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link AiBadRequestContent} instance. No arguments are required. */
-  public static AiBadRequestContent create() {
-    return new AiBadRequestContent();
+  /** Create a new {@link DSetBadRequest} instance. No arguments are required. */
+  public static DSetBadRequest create() {
+    return new DSetBadRequest();
   }
 }

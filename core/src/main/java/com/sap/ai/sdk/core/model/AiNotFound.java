@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** KpiTooManyRequestsContent */
+/** AiNotFound */
 // CHECKSTYLE:OFF
-public class KpiTooManyRequestsContent
+public class AiNotFound
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private KpiApiError error;
+  private AiApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for KpiTooManyRequestsContent. */
-  protected KpiTooManyRequestsContent() {}
+  /** Default constructor for AiNotFound. */
+  protected AiNotFound() {}
 
   /**
-   * Set the error of this {@link KpiTooManyRequestsContent} instance and return the same instance.
+   * Set the error of this {@link AiNotFound} instance and return the same instance.
    *
-   * @param error The error of this {@link KpiTooManyRequestsContent}
-   * @return The same instance of this {@link KpiTooManyRequestsContent} class
+   * @param error The error of this {@link AiNotFound}
+   * @return The same instance of this {@link AiNotFound} class
    */
   @Nonnull
-  public KpiTooManyRequestsContent error(@Nullable final KpiApiError error) {
+  public AiNotFound error(@Nullable final AiApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class KpiTooManyRequestsContent
   /**
    * Get error
    *
-   * @return error The error of this {@link KpiTooManyRequestsContent} instance.
+   * @return error The error of this {@link AiNotFound} instance.
    */
   @Nonnull
-  public KpiApiError getError() {
+  public AiApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link KpiTooManyRequestsContent} instance.
+   * Set the error of this {@link AiNotFound} instance.
    *
-   * @param error The error of this {@link KpiTooManyRequestsContent}
+   * @param error The error of this {@link AiNotFound}
    */
-  public void setError(@Nullable final KpiApiError error) {
+  public void setError(@Nullable final AiApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link KpiTooManyRequestsContent}.
+   * Get the names of the unrecognizable properties of the {@link AiNotFound}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class KpiTooManyRequestsContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link KpiTooManyRequestsContent} instance.
+   * Get the value of an unrecognizable property of this {@link AiNotFound} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,15 +91,14 @@ public class KpiTooManyRequestsContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "KpiTooManyRequestsContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("AiNotFound has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link KpiTooManyRequestsContent} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link AiNotFound} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -112,8 +111,8 @@ public class KpiTooManyRequestsContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link KpiTooManyRequestsContent} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link AiNotFound} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -131,9 +130,9 @@ public class KpiTooManyRequestsContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final KpiTooManyRequestsContent kpiTooManyRequestsContent = (KpiTooManyRequestsContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, kpiTooManyRequestsContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, kpiTooManyRequestsContent.error);
+    final AiNotFound aiNotFound = (AiNotFound) o;
+    return Objects.equals(this.cloudSdkCustomFields, aiNotFound.cloudSdkCustomFields)
+        && Objects.equals(this.error, aiNotFound.error);
   }
 
   @Override
@@ -145,7 +144,7 @@ public class KpiTooManyRequestsContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class KpiTooManyRequestsContent {\n");
+    sb.append("class AiNotFound {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -164,8 +163,8 @@ public class KpiTooManyRequestsContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link KpiTooManyRequestsContent} instance. No arguments are required. */
-  public static KpiTooManyRequestsContent create() {
-    return new KpiTooManyRequestsContent();
+  /** Create a new {@link AiNotFound} instance. No arguments are required. */
+  public static AiNotFound create() {
+    return new AiNotFound();
   }
 }

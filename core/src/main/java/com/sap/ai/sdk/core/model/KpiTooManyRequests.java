@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TntNotFoundContent */
+/** KpiTooManyRequests */
 // CHECKSTYLE:OFF
-public class TntNotFoundContent
+public class KpiTooManyRequests
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private TntApiError error;
+  private KpiApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TntNotFoundContent. */
-  protected TntNotFoundContent() {}
+  /** Default constructor for KpiTooManyRequests. */
+  protected KpiTooManyRequests() {}
 
   /**
-   * Set the error of this {@link TntNotFoundContent} instance and return the same instance.
+   * Set the error of this {@link KpiTooManyRequests} instance and return the same instance.
    *
-   * @param error The error of this {@link TntNotFoundContent}
-   * @return The same instance of this {@link TntNotFoundContent} class
+   * @param error The error of this {@link KpiTooManyRequests}
+   * @return The same instance of this {@link KpiTooManyRequests} class
    */
   @Nonnull
-  public TntNotFoundContent error(@Nullable final TntApiError error) {
+  public KpiTooManyRequests error(@Nullable final KpiApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class TntNotFoundContent
   /**
    * Get error
    *
-   * @return error The error of this {@link TntNotFoundContent} instance.
+   * @return error The error of this {@link KpiTooManyRequests} instance.
    */
   @Nonnull
-  public TntApiError getError() {
+  public KpiApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link TntNotFoundContent} instance.
+   * Set the error of this {@link KpiTooManyRequests} instance.
    *
-   * @param error The error of this {@link TntNotFoundContent}
+   * @param error The error of this {@link KpiTooManyRequests}
    */
-  public void setError(@Nullable final TntApiError error) {
+  public void setError(@Nullable final KpiApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TntNotFoundContent}.
+   * Get the names of the unrecognizable properties of the {@link KpiTooManyRequests}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class TntNotFoundContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TntNotFoundContent} instance.
+   * Get the value of an unrecognizable property of this {@link KpiTooManyRequests} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,13 +91,13 @@ public class TntNotFoundContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("TntNotFoundContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("KpiTooManyRequests has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TntNotFoundContent} instance including
+   * Get the value of all properties of this {@link KpiTooManyRequests} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -111,7 +111,7 @@ public class TntNotFoundContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link TntNotFoundContent} instance. If the map
+   * Set an unrecognizable property of this {@link KpiTooManyRequests} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -130,9 +130,9 @@ public class TntNotFoundContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TntNotFoundContent tntNotFoundContent = (TntNotFoundContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, tntNotFoundContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, tntNotFoundContent.error);
+    final KpiTooManyRequests kpiTooManyRequests = (KpiTooManyRequests) o;
+    return Objects.equals(this.cloudSdkCustomFields, kpiTooManyRequests.cloudSdkCustomFields)
+        && Objects.equals(this.error, kpiTooManyRequests.error);
   }
 
   @Override
@@ -144,7 +144,7 @@ public class TntNotFoundContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TntNotFoundContent {\n");
+    sb.append("class KpiTooManyRequests {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -163,8 +163,8 @@ public class TntNotFoundContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link TntNotFoundContent} instance. No arguments are required. */
-  public static TntNotFoundContent create() {
-    return new TntNotFoundContent();
+  /** Create a new {@link KpiTooManyRequests} instance. No arguments are required. */
+  public static KpiTooManyRequests create() {
+    return new KpiTooManyRequests();
   }
 }

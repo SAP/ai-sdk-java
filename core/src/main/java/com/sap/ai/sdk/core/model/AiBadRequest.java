@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** KpiInvalidRequestContent */
+/** AiBadRequest */
 // CHECKSTYLE:OFF
-public class KpiInvalidRequestContent
+public class AiBadRequest
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private KpiApiError error;
+  private AiApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for KpiInvalidRequestContent. */
-  protected KpiInvalidRequestContent() {}
+  /** Default constructor for AiBadRequest. */
+  protected AiBadRequest() {}
 
   /**
-   * Set the error of this {@link KpiInvalidRequestContent} instance and return the same instance.
+   * Set the error of this {@link AiBadRequest} instance and return the same instance.
    *
-   * @param error The error of this {@link KpiInvalidRequestContent}
-   * @return The same instance of this {@link KpiInvalidRequestContent} class
+   * @param error The error of this {@link AiBadRequest}
+   * @return The same instance of this {@link AiBadRequest} class
    */
   @Nonnull
-  public KpiInvalidRequestContent error(@Nullable final KpiApiError error) {
+  public AiBadRequest error(@Nullable final AiApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class KpiInvalidRequestContent
   /**
    * Get error
    *
-   * @return error The error of this {@link KpiInvalidRequestContent} instance.
+   * @return error The error of this {@link AiBadRequest} instance.
    */
   @Nonnull
-  public KpiApiError getError() {
+  public AiApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link KpiInvalidRequestContent} instance.
+   * Set the error of this {@link AiBadRequest} instance.
    *
-   * @param error The error of this {@link KpiInvalidRequestContent}
+   * @param error The error of this {@link AiBadRequest}
    */
-  public void setError(@Nullable final KpiApiError error) {
+  public void setError(@Nullable final AiApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link KpiInvalidRequestContent}.
+   * Get the names of the unrecognizable properties of the {@link AiBadRequest}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class KpiInvalidRequestContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link KpiInvalidRequestContent} instance.
+   * Get the value of an unrecognizable property of this {@link AiBadRequest} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,15 +91,14 @@ public class KpiInvalidRequestContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "KpiInvalidRequestContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("AiBadRequest has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link KpiInvalidRequestContent} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link AiBadRequest} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -112,8 +111,8 @@ public class KpiInvalidRequestContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link KpiInvalidRequestContent} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link AiBadRequest} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -131,9 +130,9 @@ public class KpiInvalidRequestContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final KpiInvalidRequestContent kpiInvalidRequestContent = (KpiInvalidRequestContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, kpiInvalidRequestContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, kpiInvalidRequestContent.error);
+    final AiBadRequest aiBadRequest = (AiBadRequest) o;
+    return Objects.equals(this.cloudSdkCustomFields, aiBadRequest.cloudSdkCustomFields)
+        && Objects.equals(this.error, aiBadRequest.error);
   }
 
   @Override
@@ -145,7 +144,7 @@ public class KpiInvalidRequestContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class KpiInvalidRequestContent {\n");
+    sb.append("class AiBadRequest {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -164,8 +163,8 @@ public class KpiInvalidRequestContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link KpiInvalidRequestContent} instance. No arguments are required. */
-  public static KpiInvalidRequestContent create() {
-    return new KpiInvalidRequestContent();
+  /** Create a new {@link AiBadRequest} instance. No arguments are required. */
+  public static AiBadRequest create() {
+    return new AiBadRequest();
   }
 }

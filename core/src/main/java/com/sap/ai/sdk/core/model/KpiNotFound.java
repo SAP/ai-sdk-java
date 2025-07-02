@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TrckBadRequestContent */
+/** KpiNotFound */
 // CHECKSTYLE:OFF
-public class TrckBadRequestContent
+public class KpiNotFound
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private TrckApiError error;
+  private KpiApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TrckBadRequestContent. */
-  protected TrckBadRequestContent() {}
+  /** Default constructor for KpiNotFound. */
+  protected KpiNotFound() {}
 
   /**
-   * Set the error of this {@link TrckBadRequestContent} instance and return the same instance.
+   * Set the error of this {@link KpiNotFound} instance and return the same instance.
    *
-   * @param error The error of this {@link TrckBadRequestContent}
-   * @return The same instance of this {@link TrckBadRequestContent} class
+   * @param error The error of this {@link KpiNotFound}
+   * @return The same instance of this {@link KpiNotFound} class
    */
   @Nonnull
-  public TrckBadRequestContent error(@Nullable final TrckApiError error) {
+  public KpiNotFound error(@Nullable final KpiApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class TrckBadRequestContent
   /**
    * Get error
    *
-   * @return error The error of this {@link TrckBadRequestContent} instance.
+   * @return error The error of this {@link KpiNotFound} instance.
    */
   @Nonnull
-  public TrckApiError getError() {
+  public KpiApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link TrckBadRequestContent} instance.
+   * Set the error of this {@link KpiNotFound} instance.
    *
-   * @param error The error of this {@link TrckBadRequestContent}
+   * @param error The error of this {@link KpiNotFound}
    */
-  public void setError(@Nullable final TrckApiError error) {
+  public void setError(@Nullable final KpiApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TrckBadRequestContent}.
+   * Get the names of the unrecognizable properties of the {@link KpiNotFound}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class TrckBadRequestContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TrckBadRequestContent} instance.
+   * Get the value of an unrecognizable property of this {@link KpiNotFound} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,15 +91,14 @@ public class TrckBadRequestContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "TrckBadRequestContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("KpiNotFound has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TrckBadRequestContent} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link KpiNotFound} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -112,8 +111,8 @@ public class TrckBadRequestContent
   }
 
   /**
-   * Set an unrecognizable property of this {@link TrckBadRequestContent} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link KpiNotFound} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -131,9 +130,9 @@ public class TrckBadRequestContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TrckBadRequestContent trckBadRequestContent = (TrckBadRequestContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, trckBadRequestContent.cloudSdkCustomFields)
-        && Objects.equals(this.error, trckBadRequestContent.error);
+    final KpiNotFound kpiNotFound = (KpiNotFound) o;
+    return Objects.equals(this.cloudSdkCustomFields, kpiNotFound.cloudSdkCustomFields)
+        && Objects.equals(this.error, kpiNotFound.error);
   }
 
   @Override
@@ -145,7 +144,7 @@ public class TrckBadRequestContent
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TrckBadRequestContent {\n");
+    sb.append("class KpiNotFound {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -164,8 +163,8 @@ public class TrckBadRequestContent
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link TrckBadRequestContent} instance. No arguments are required. */
-  public static TrckBadRequestContent create() {
-    return new TrckBadRequestContent();
+  /** Create a new {@link KpiNotFound} instance. No arguments are required. */
+  public static KpiNotFound create() {
+    return new KpiNotFound();
   }
 }
