@@ -25,9 +25,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Synchronous results of each module. */
+/** Streaming results of each module. */
 // CHECKSTYLE:OFF
-public class ModuleResults
+public class ModuleResultsStreaming
 // CHECKSTYLE:ON
 {
   @JsonProperty("grounding")
@@ -52,25 +52,25 @@ public class ModuleResults
   private GenericModuleResult outputTranslation;
 
   @JsonProperty("llm")
-  private LLMModuleResult llm;
+  private LLMModuleResultStreaming llm;
 
   @JsonProperty("output_unmasking")
-  private List<LLMChoice> outputUnmasking = new ArrayList<>();
+  private List<LLMChoiceStreaming> outputUnmasking = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ModuleResults. */
-  protected ModuleResults() {}
+  /** Default constructor for ModuleResultsStreaming. */
+  protected ModuleResultsStreaming() {}
 
   /**
-   * Set the grounding of this {@link ModuleResults} instance and return the same instance.
+   * Set the grounding of this {@link ModuleResultsStreaming} instance and return the same instance.
    *
-   * @param grounding The grounding of this {@link ModuleResults}
-   * @return The same instance of this {@link ModuleResults} class
+   * @param grounding The grounding of this {@link ModuleResultsStreaming}
+   * @return The same instance of this {@link ModuleResultsStreaming} class
    */
   @Nonnull
-  public ModuleResults grounding(@Nullable final GenericModuleResult grounding) {
+  public ModuleResultsStreaming grounding(@Nullable final GenericModuleResult grounding) {
     this.grounding = grounding;
     return this;
   }
@@ -78,7 +78,7 @@ public class ModuleResults
   /**
    * Get grounding
    *
-   * @return grounding The grounding of this {@link ModuleResults} instance.
+   * @return grounding The grounding of this {@link ModuleResultsStreaming} instance.
    */
   @Nonnull
   public GenericModuleResult getGrounding() {
@@ -86,34 +86,35 @@ public class ModuleResults
   }
 
   /**
-   * Set the grounding of this {@link ModuleResults} instance.
+   * Set the grounding of this {@link ModuleResultsStreaming} instance.
    *
-   * @param grounding The grounding of this {@link ModuleResults}
+   * @param grounding The grounding of this {@link ModuleResultsStreaming}
    */
   public void setGrounding(@Nullable final GenericModuleResult grounding) {
     this.grounding = grounding;
   }
 
   /**
-   * Set the templating of this {@link ModuleResults} instance and return the same instance.
+   * Set the templating of this {@link ModuleResultsStreaming} instance and return the same
+   * instance.
    *
-   * @param templating The templating of this {@link ModuleResults}
-   * @return The same instance of this {@link ModuleResults} class
+   * @param templating The templating of this {@link ModuleResultsStreaming}
+   * @return The same instance of this {@link ModuleResultsStreaming} class
    */
   @Nonnull
-  public ModuleResults templating(@Nullable final List<ChatMessage> templating) {
+  public ModuleResultsStreaming templating(@Nullable final List<ChatMessage> templating) {
     this.templating = templating;
     return this;
   }
 
   /**
-   * Add one templating instance to this {@link ModuleResults}.
+   * Add one templating instance to this {@link ModuleResultsStreaming}.
    *
    * @param templatingItem The templating that should be added
-   * @return The same instance of type {@link ModuleResults}
+   * @return The same instance of type {@link ModuleResultsStreaming}
    */
   @Nonnull
-  public ModuleResults addTemplatingItem(@Nonnull final ChatMessage templatingItem) {
+  public ModuleResultsStreaming addTemplatingItem(@Nonnull final ChatMessage templatingItem) {
     if (this.templating == null) {
       this.templating = new ArrayList<>();
     }
@@ -124,7 +125,7 @@ public class ModuleResults
   /**
    * Get templating
    *
-   * @return templating The templating of this {@link ModuleResults} instance.
+   * @return templating The templating of this {@link ModuleResultsStreaming} instance.
    */
   @Nonnull
   public List<ChatMessage> getTemplating() {
@@ -132,22 +133,24 @@ public class ModuleResults
   }
 
   /**
-   * Set the templating of this {@link ModuleResults} instance.
+   * Set the templating of this {@link ModuleResultsStreaming} instance.
    *
-   * @param templating The templating of this {@link ModuleResults}
+   * @param templating The templating of this {@link ModuleResultsStreaming}
    */
   public void setTemplating(@Nullable final List<ChatMessage> templating) {
     this.templating = templating;
   }
 
   /**
-   * Set the inputTranslation of this {@link ModuleResults} instance and return the same instance.
+   * Set the inputTranslation of this {@link ModuleResultsStreaming} instance and return the same
+   * instance.
    *
-   * @param inputTranslation The inputTranslation of this {@link ModuleResults}
-   * @return The same instance of this {@link ModuleResults} class
+   * @param inputTranslation The inputTranslation of this {@link ModuleResultsStreaming}
+   * @return The same instance of this {@link ModuleResultsStreaming} class
    */
   @Nonnull
-  public ModuleResults inputTranslation(@Nullable final GenericModuleResult inputTranslation) {
+  public ModuleResultsStreaming inputTranslation(
+      @Nullable final GenericModuleResult inputTranslation) {
     this.inputTranslation = inputTranslation;
     return this;
   }
@@ -155,7 +158,7 @@ public class ModuleResults
   /**
    * Get inputTranslation
    *
-   * @return inputTranslation The inputTranslation of this {@link ModuleResults} instance.
+   * @return inputTranslation The inputTranslation of this {@link ModuleResultsStreaming} instance.
    */
   @Nonnull
   public GenericModuleResult getInputTranslation() {
@@ -163,22 +166,23 @@ public class ModuleResults
   }
 
   /**
-   * Set the inputTranslation of this {@link ModuleResults} instance.
+   * Set the inputTranslation of this {@link ModuleResultsStreaming} instance.
    *
-   * @param inputTranslation The inputTranslation of this {@link ModuleResults}
+   * @param inputTranslation The inputTranslation of this {@link ModuleResultsStreaming}
    */
   public void setInputTranslation(@Nullable final GenericModuleResult inputTranslation) {
     this.inputTranslation = inputTranslation;
   }
 
   /**
-   * Set the inputMasking of this {@link ModuleResults} instance and return the same instance.
+   * Set the inputMasking of this {@link ModuleResultsStreaming} instance and return the same
+   * instance.
    *
-   * @param inputMasking The inputMasking of this {@link ModuleResults}
-   * @return The same instance of this {@link ModuleResults} class
+   * @param inputMasking The inputMasking of this {@link ModuleResultsStreaming}
+   * @return The same instance of this {@link ModuleResultsStreaming} class
    */
   @Nonnull
-  public ModuleResults inputMasking(@Nullable final GenericModuleResult inputMasking) {
+  public ModuleResultsStreaming inputMasking(@Nullable final GenericModuleResult inputMasking) {
     this.inputMasking = inputMasking;
     return this;
   }
@@ -186,7 +190,7 @@ public class ModuleResults
   /**
    * Get inputMasking
    *
-   * @return inputMasking The inputMasking of this {@link ModuleResults} instance.
+   * @return inputMasking The inputMasking of this {@link ModuleResultsStreaming} instance.
    */
   @Nonnull
   public GenericModuleResult getInputMasking() {
@@ -194,22 +198,23 @@ public class ModuleResults
   }
 
   /**
-   * Set the inputMasking of this {@link ModuleResults} instance.
+   * Set the inputMasking of this {@link ModuleResultsStreaming} instance.
    *
-   * @param inputMasking The inputMasking of this {@link ModuleResults}
+   * @param inputMasking The inputMasking of this {@link ModuleResultsStreaming}
    */
   public void setInputMasking(@Nullable final GenericModuleResult inputMasking) {
     this.inputMasking = inputMasking;
   }
 
   /**
-   * Set the inputFiltering of this {@link ModuleResults} instance and return the same instance.
+   * Set the inputFiltering of this {@link ModuleResultsStreaming} instance and return the same
+   * instance.
    *
-   * @param inputFiltering The inputFiltering of this {@link ModuleResults}
-   * @return The same instance of this {@link ModuleResults} class
+   * @param inputFiltering The inputFiltering of this {@link ModuleResultsStreaming}
+   * @return The same instance of this {@link ModuleResultsStreaming} class
    */
   @Nonnull
-  public ModuleResults inputFiltering(@Nullable final GenericModuleResult inputFiltering) {
+  public ModuleResultsStreaming inputFiltering(@Nullable final GenericModuleResult inputFiltering) {
     this.inputFiltering = inputFiltering;
     return this;
   }
@@ -217,7 +222,7 @@ public class ModuleResults
   /**
    * Get inputFiltering
    *
-   * @return inputFiltering The inputFiltering of this {@link ModuleResults} instance.
+   * @return inputFiltering The inputFiltering of this {@link ModuleResultsStreaming} instance.
    */
   @Nonnull
   public GenericModuleResult getInputFiltering() {
@@ -225,22 +230,24 @@ public class ModuleResults
   }
 
   /**
-   * Set the inputFiltering of this {@link ModuleResults} instance.
+   * Set the inputFiltering of this {@link ModuleResultsStreaming} instance.
    *
-   * @param inputFiltering The inputFiltering of this {@link ModuleResults}
+   * @param inputFiltering The inputFiltering of this {@link ModuleResultsStreaming}
    */
   public void setInputFiltering(@Nullable final GenericModuleResult inputFiltering) {
     this.inputFiltering = inputFiltering;
   }
 
   /**
-   * Set the outputFiltering of this {@link ModuleResults} instance and return the same instance.
+   * Set the outputFiltering of this {@link ModuleResultsStreaming} instance and return the same
+   * instance.
    *
-   * @param outputFiltering The outputFiltering of this {@link ModuleResults}
-   * @return The same instance of this {@link ModuleResults} class
+   * @param outputFiltering The outputFiltering of this {@link ModuleResultsStreaming}
+   * @return The same instance of this {@link ModuleResultsStreaming} class
    */
   @Nonnull
-  public ModuleResults outputFiltering(@Nullable final GenericModuleResult outputFiltering) {
+  public ModuleResultsStreaming outputFiltering(
+      @Nullable final GenericModuleResult outputFiltering) {
     this.outputFiltering = outputFiltering;
     return this;
   }
@@ -248,7 +255,7 @@ public class ModuleResults
   /**
    * Get outputFiltering
    *
-   * @return outputFiltering The outputFiltering of this {@link ModuleResults} instance.
+   * @return outputFiltering The outputFiltering of this {@link ModuleResultsStreaming} instance.
    */
   @Nonnull
   public GenericModuleResult getOutputFiltering() {
@@ -256,22 +263,24 @@ public class ModuleResults
   }
 
   /**
-   * Set the outputFiltering of this {@link ModuleResults} instance.
+   * Set the outputFiltering of this {@link ModuleResultsStreaming} instance.
    *
-   * @param outputFiltering The outputFiltering of this {@link ModuleResults}
+   * @param outputFiltering The outputFiltering of this {@link ModuleResultsStreaming}
    */
   public void setOutputFiltering(@Nullable final GenericModuleResult outputFiltering) {
     this.outputFiltering = outputFiltering;
   }
 
   /**
-   * Set the outputTranslation of this {@link ModuleResults} instance and return the same instance.
+   * Set the outputTranslation of this {@link ModuleResultsStreaming} instance and return the same
+   * instance.
    *
-   * @param outputTranslation The outputTranslation of this {@link ModuleResults}
-   * @return The same instance of this {@link ModuleResults} class
+   * @param outputTranslation The outputTranslation of this {@link ModuleResultsStreaming}
+   * @return The same instance of this {@link ModuleResultsStreaming} class
    */
   @Nonnull
-  public ModuleResults outputTranslation(@Nullable final GenericModuleResult outputTranslation) {
+  public ModuleResultsStreaming outputTranslation(
+      @Nullable final GenericModuleResult outputTranslation) {
     this.outputTranslation = outputTranslation;
     return this;
   }
@@ -279,7 +288,8 @@ public class ModuleResults
   /**
    * Get outputTranslation
    *
-   * @return outputTranslation The outputTranslation of this {@link ModuleResults} instance.
+   * @return outputTranslation The outputTranslation of this {@link ModuleResultsStreaming}
+   *     instance.
    */
   @Nonnull
   public GenericModuleResult getOutputTranslation() {
@@ -287,22 +297,22 @@ public class ModuleResults
   }
 
   /**
-   * Set the outputTranslation of this {@link ModuleResults} instance.
+   * Set the outputTranslation of this {@link ModuleResultsStreaming} instance.
    *
-   * @param outputTranslation The outputTranslation of this {@link ModuleResults}
+   * @param outputTranslation The outputTranslation of this {@link ModuleResultsStreaming}
    */
   public void setOutputTranslation(@Nullable final GenericModuleResult outputTranslation) {
     this.outputTranslation = outputTranslation;
   }
 
   /**
-   * Set the llm of this {@link ModuleResults} instance and return the same instance.
+   * Set the llm of this {@link ModuleResultsStreaming} instance and return the same instance.
    *
-   * @param llm The llm of this {@link ModuleResults}
-   * @return The same instance of this {@link ModuleResults} class
+   * @param llm The llm of this {@link ModuleResultsStreaming}
+   * @return The same instance of this {@link ModuleResultsStreaming} class
    */
   @Nonnull
-  public ModuleResults llm(@Nullable final LLMModuleResult llm) {
+  public ModuleResultsStreaming llm(@Nullable final LLMModuleResultStreaming llm) {
     this.llm = llm;
     return this;
   }
@@ -310,42 +320,45 @@ public class ModuleResults
   /**
    * Get llm
    *
-   * @return llm The llm of this {@link ModuleResults} instance.
+   * @return llm The llm of this {@link ModuleResultsStreaming} instance.
    */
   @Nonnull
-  public LLMModuleResult getLlm() {
+  public LLMModuleResultStreaming getLlm() {
     return llm;
   }
 
   /**
-   * Set the llm of this {@link ModuleResults} instance.
+   * Set the llm of this {@link ModuleResultsStreaming} instance.
    *
-   * @param llm The llm of this {@link ModuleResults}
+   * @param llm The llm of this {@link ModuleResultsStreaming}
    */
-  public void setLlm(@Nullable final LLMModuleResult llm) {
+  public void setLlm(@Nullable final LLMModuleResultStreaming llm) {
     this.llm = llm;
   }
 
   /**
-   * Set the outputUnmasking of this {@link ModuleResults} instance and return the same instance.
+   * Set the outputUnmasking of this {@link ModuleResultsStreaming} instance and return the same
+   * instance.
    *
-   * @param outputUnmasking The outputUnmasking of this {@link ModuleResults}
-   * @return The same instance of this {@link ModuleResults} class
+   * @param outputUnmasking The outputUnmasking of this {@link ModuleResultsStreaming}
+   * @return The same instance of this {@link ModuleResultsStreaming} class
    */
   @Nonnull
-  public ModuleResults outputUnmasking(@Nullable final List<LLMChoice> outputUnmasking) {
+  public ModuleResultsStreaming outputUnmasking(
+      @Nullable final List<LLMChoiceStreaming> outputUnmasking) {
     this.outputUnmasking = outputUnmasking;
     return this;
   }
 
   /**
-   * Add one outputUnmasking instance to this {@link ModuleResults}.
+   * Add one outputUnmasking instance to this {@link ModuleResultsStreaming}.
    *
    * @param outputUnmaskingItem The outputUnmasking that should be added
-   * @return The same instance of type {@link ModuleResults}
+   * @return The same instance of type {@link ModuleResultsStreaming}
    */
   @Nonnull
-  public ModuleResults addOutputUnmaskingItem(@Nonnull final LLMChoice outputUnmaskingItem) {
+  public ModuleResultsStreaming addOutputUnmaskingItem(
+      @Nonnull final LLMChoiceStreaming outputUnmaskingItem) {
     if (this.outputUnmasking == null) {
       this.outputUnmasking = new ArrayList<>();
     }
@@ -356,24 +369,24 @@ public class ModuleResults
   /**
    * Get outputUnmasking
    *
-   * @return outputUnmasking The outputUnmasking of this {@link ModuleResults} instance.
+   * @return outputUnmasking The outputUnmasking of this {@link ModuleResultsStreaming} instance.
    */
   @Nonnull
-  public List<LLMChoice> getOutputUnmasking() {
+  public List<LLMChoiceStreaming> getOutputUnmasking() {
     return outputUnmasking;
   }
 
   /**
-   * Set the outputUnmasking of this {@link ModuleResults} instance.
+   * Set the outputUnmasking of this {@link ModuleResultsStreaming} instance.
    *
-   * @param outputUnmasking The outputUnmasking of this {@link ModuleResults}
+   * @param outputUnmasking The outputUnmasking of this {@link ModuleResultsStreaming}
    */
-  public void setOutputUnmasking(@Nullable final List<LLMChoice> outputUnmasking) {
+  public void setOutputUnmasking(@Nullable final List<LLMChoiceStreaming> outputUnmasking) {
     this.outputUnmasking = outputUnmasking;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ModuleResults}.
+   * Get the names of the unrecognizable properties of the {@link ModuleResultsStreaming}.
    *
    * @return The set of properties names
    */
@@ -384,7 +397,7 @@ public class ModuleResults
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ModuleResults} instance.
+   * Get the value of an unrecognizable property of this {@link ModuleResultsStreaming} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -395,14 +408,15 @@ public class ModuleResults
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ModuleResults has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "ModuleResultsStreaming has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ModuleResults} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link ModuleResultsStreaming} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -423,8 +437,8 @@ public class ModuleResults
   }
 
   /**
-   * Set an unrecognizable property of this {@link ModuleResults} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ModuleResultsStreaming} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -442,17 +456,17 @@ public class ModuleResults
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ModuleResults moduleResults = (ModuleResults) o;
-    return Objects.equals(this.cloudSdkCustomFields, moduleResults.cloudSdkCustomFields)
-        && Objects.equals(this.grounding, moduleResults.grounding)
-        && Objects.equals(this.templating, moduleResults.templating)
-        && Objects.equals(this.inputTranslation, moduleResults.inputTranslation)
-        && Objects.equals(this.inputMasking, moduleResults.inputMasking)
-        && Objects.equals(this.inputFiltering, moduleResults.inputFiltering)
-        && Objects.equals(this.outputFiltering, moduleResults.outputFiltering)
-        && Objects.equals(this.outputTranslation, moduleResults.outputTranslation)
-        && Objects.equals(this.llm, moduleResults.llm)
-        && Objects.equals(this.outputUnmasking, moduleResults.outputUnmasking);
+    final ModuleResultsStreaming moduleResultsStreaming = (ModuleResultsStreaming) o;
+    return Objects.equals(this.cloudSdkCustomFields, moduleResultsStreaming.cloudSdkCustomFields)
+        && Objects.equals(this.grounding, moduleResultsStreaming.grounding)
+        && Objects.equals(this.templating, moduleResultsStreaming.templating)
+        && Objects.equals(this.inputTranslation, moduleResultsStreaming.inputTranslation)
+        && Objects.equals(this.inputMasking, moduleResultsStreaming.inputMasking)
+        && Objects.equals(this.inputFiltering, moduleResultsStreaming.inputFiltering)
+        && Objects.equals(this.outputFiltering, moduleResultsStreaming.outputFiltering)
+        && Objects.equals(this.outputTranslation, moduleResultsStreaming.outputTranslation)
+        && Objects.equals(this.llm, moduleResultsStreaming.llm)
+        && Objects.equals(this.outputUnmasking, moduleResultsStreaming.outputUnmasking);
   }
 
   @Override
@@ -474,7 +488,7 @@ public class ModuleResults
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ModuleResults {\n");
+    sb.append("class ModuleResultsStreaming {\n");
     sb.append("    grounding: ").append(toIndentedString(grounding)).append("\n");
     sb.append("    templating: ").append(toIndentedString(templating)).append("\n");
     sb.append("    inputTranslation: ").append(toIndentedString(inputTranslation)).append("\n");
@@ -501,8 +515,8 @@ public class ModuleResults
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link ModuleResults} instance. No arguments are required. */
-  public static ModuleResults create() {
-    return new ModuleResults();
+  /** Create a new {@link ModuleResultsStreaming} instance. No arguments are required. */
+  public static ModuleResultsStreaming create() {
+    return new ModuleResultsStreaming();
   }
 }

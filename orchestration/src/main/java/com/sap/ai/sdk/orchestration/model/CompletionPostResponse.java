@@ -31,11 +31,11 @@ public class CompletionPostResponse
   @JsonProperty("request_id")
   private String requestId;
 
-  @JsonProperty("module_results")
-  private ModuleResults moduleResults;
+  @JsonProperty("intermediate_results")
+  private ModuleResults intermediateResults;
 
-  @JsonProperty("orchestration_result")
-  private LLMModuleResult orchestrationResult;
+  @JsonProperty("final_result")
+  private LLMModuleResult finalResult;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -75,69 +75,69 @@ public class CompletionPostResponse
   }
 
   /**
-   * Set the moduleResults of this {@link CompletionPostResponse} instance and return the same
+   * Set the intermediateResults of this {@link CompletionPostResponse} instance and return the same
    * instance.
    *
-   * @param moduleResults The moduleResults of this {@link CompletionPostResponse}
+   * @param intermediateResults The intermediateResults of this {@link CompletionPostResponse}
    * @return The same instance of this {@link CompletionPostResponse} class
    */
   @Nonnull
-  public CompletionPostResponse moduleResults(@Nonnull final ModuleResults moduleResults) {
-    this.moduleResults = moduleResults;
+  public CompletionPostResponse intermediateResults(
+      @Nonnull final ModuleResults intermediateResults) {
+    this.intermediateResults = intermediateResults;
     return this;
   }
 
   /**
-   * Get moduleResults
+   * Get intermediateResults
    *
-   * @return moduleResults The moduleResults of this {@link CompletionPostResponse} instance.
-   */
-  @Nonnull
-  public ModuleResults getModuleResults() {
-    return moduleResults;
-  }
-
-  /**
-   * Set the moduleResults of this {@link CompletionPostResponse} instance.
-   *
-   * @param moduleResults The moduleResults of this {@link CompletionPostResponse}
-   */
-  public void setModuleResults(@Nonnull final ModuleResults moduleResults) {
-    this.moduleResults = moduleResults;
-  }
-
-  /**
-   * Set the orchestrationResult of this {@link CompletionPostResponse} instance and return the same
-   * instance.
-   *
-   * @param orchestrationResult The orchestrationResult of this {@link CompletionPostResponse}
-   * @return The same instance of this {@link CompletionPostResponse} class
-   */
-  @Nonnull
-  public CompletionPostResponse orchestrationResult(
-      @Nonnull final LLMModuleResult orchestrationResult) {
-    this.orchestrationResult = orchestrationResult;
-    return this;
-  }
-
-  /**
-   * Get orchestrationResult
-   *
-   * @return orchestrationResult The orchestrationResult of this {@link CompletionPostResponse}
+   * @return intermediateResults The intermediateResults of this {@link CompletionPostResponse}
    *     instance.
    */
   @Nonnull
-  public LLMModuleResult getOrchestrationResult() {
-    return orchestrationResult;
+  public ModuleResults getIntermediateResults() {
+    return intermediateResults;
   }
 
   /**
-   * Set the orchestrationResult of this {@link CompletionPostResponse} instance.
+   * Set the intermediateResults of this {@link CompletionPostResponse} instance.
    *
-   * @param orchestrationResult The orchestrationResult of this {@link CompletionPostResponse}
+   * @param intermediateResults The intermediateResults of this {@link CompletionPostResponse}
    */
-  public void setOrchestrationResult(@Nonnull final LLMModuleResult orchestrationResult) {
-    this.orchestrationResult = orchestrationResult;
+  public void setIntermediateResults(@Nonnull final ModuleResults intermediateResults) {
+    this.intermediateResults = intermediateResults;
+  }
+
+  /**
+   * Set the finalResult of this {@link CompletionPostResponse} instance and return the same
+   * instance.
+   *
+   * @param finalResult The finalResult of this {@link CompletionPostResponse}
+   * @return The same instance of this {@link CompletionPostResponse} class
+   */
+  @Nonnull
+  public CompletionPostResponse finalResult(@Nonnull final LLMModuleResult finalResult) {
+    this.finalResult = finalResult;
+    return this;
+  }
+
+  /**
+   * Get finalResult
+   *
+   * @return finalResult The finalResult of this {@link CompletionPostResponse} instance.
+   */
+  @Nonnull
+  public LLMModuleResult getFinalResult() {
+    return finalResult;
+  }
+
+  /**
+   * Set the finalResult of this {@link CompletionPostResponse} instance.
+   *
+   * @param finalResult The finalResult of this {@link CompletionPostResponse}
+   */
+  public void setFinalResult(@Nonnull final LLMModuleResult finalResult) {
+    this.finalResult = finalResult;
   }
 
   /**
@@ -180,8 +180,8 @@ public class CompletionPostResponse
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (requestId != null) declaredFields.put("requestId", requestId);
-    if (moduleResults != null) declaredFields.put("moduleResults", moduleResults);
-    if (orchestrationResult != null) declaredFields.put("orchestrationResult", orchestrationResult);
+    if (intermediateResults != null) declaredFields.put("intermediateResults", intermediateResults);
+    if (finalResult != null) declaredFields.put("finalResult", finalResult);
     return declaredFields;
   }
 
@@ -208,13 +208,13 @@ public class CompletionPostResponse
     final CompletionPostResponse completionPostResponse = (CompletionPostResponse) o;
     return Objects.equals(this.cloudSdkCustomFields, completionPostResponse.cloudSdkCustomFields)
         && Objects.equals(this.requestId, completionPostResponse.requestId)
-        && Objects.equals(this.moduleResults, completionPostResponse.moduleResults)
-        && Objects.equals(this.orchestrationResult, completionPostResponse.orchestrationResult);
+        && Objects.equals(this.intermediateResults, completionPostResponse.intermediateResults)
+        && Objects.equals(this.finalResult, completionPostResponse.finalResult);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(requestId, moduleResults, orchestrationResult, cloudSdkCustomFields);
+    return Objects.hash(requestId, intermediateResults, finalResult, cloudSdkCustomFields);
   }
 
   @Override
@@ -223,10 +223,10 @@ public class CompletionPostResponse
     final StringBuilder sb = new StringBuilder();
     sb.append("class CompletionPostResponse {\n");
     sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
-    sb.append("    moduleResults: ").append(toIndentedString(moduleResults)).append("\n");
-    sb.append("    orchestrationResult: ")
-        .append(toIndentedString(orchestrationResult))
+    sb.append("    intermediateResults: ")
+        .append(toIndentedString(intermediateResults))
         .append("\n");
+    sb.append("    finalResult: ").append(toIndentedString(finalResult)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -250,12 +250,12 @@ public class CompletionPostResponse
    */
   public static Builder create() {
     return (requestId) ->
-        (moduleResults) ->
-            (orchestrationResult) ->
+        (intermediateResults) ->
+            (finalResult) ->
                 new CompletionPostResponse()
                     .requestId(requestId)
-                    .moduleResults(moduleResults)
-                    .orchestrationResult(orchestrationResult);
+                    .intermediateResults(intermediateResults)
+                    .finalResult(finalResult);
   }
 
   /** Builder helper class. */
@@ -272,22 +272,22 @@ public class CompletionPostResponse
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the moduleResults of this {@link CompletionPostResponse} instance.
+     * Set the intermediateResults of this {@link CompletionPostResponse} instance.
      *
-     * @param moduleResults The moduleResults of this {@link CompletionPostResponse}
+     * @param intermediateResults The intermediateResults of this {@link CompletionPostResponse}
      * @return The CompletionPostResponse builder.
      */
-    Builder2 moduleResults(@Nonnull final ModuleResults moduleResults);
+    Builder2 intermediateResults(@Nonnull final ModuleResults intermediateResults);
   }
 
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the orchestrationResult of this {@link CompletionPostResponse} instance.
+     * Set the finalResult of this {@link CompletionPostResponse} instance.
      *
-     * @param orchestrationResult The orchestrationResult of this {@link CompletionPostResponse}
+     * @param finalResult The finalResult of this {@link CompletionPostResponse}
      * @return The CompletionPostResponse instance.
      */
-    CompletionPostResponse orchestrationResult(@Nonnull final LLMModuleResult orchestrationResult);
+    CompletionPostResponse finalResult(@Nonnull final LLMModuleResult finalResult);
   }
 }

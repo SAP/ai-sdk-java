@@ -23,43 +23,42 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** CompletionPostResponseStreaming */
+/** EmbeddingsPostResponse */
 // CHECKSTYLE:OFF
-public class CompletionPostResponseStreaming
+public class EmbeddingsPostResponse
 // CHECKSTYLE:ON
 {
   @JsonProperty("request_id")
   private String requestId;
 
   @JsonProperty("intermediate_results")
-  private ModuleResultsStreaming intermediateResults;
+  private ModuleResultsBase intermediateResults;
 
   @JsonProperty("final_result")
-  private LLMModuleResultStreaming finalResult;
+  private EmbeddingsResponse finalResult;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for CompletionPostResponseStreaming. */
-  protected CompletionPostResponseStreaming() {}
+  /** Default constructor for EmbeddingsPostResponse. */
+  protected EmbeddingsPostResponse() {}
 
   /**
-   * Set the requestId of this {@link CompletionPostResponseStreaming} instance and return the same
-   * instance.
+   * Set the requestId of this {@link EmbeddingsPostResponse} instance and return the same instance.
    *
-   * @param requestId ID of the request
-   * @return The same instance of this {@link CompletionPostResponseStreaming} class
+   * @param requestId The requestId of this {@link EmbeddingsPostResponse}
+   * @return The same instance of this {@link EmbeddingsPostResponse} class
    */
   @Nonnull
-  public CompletionPostResponseStreaming requestId(@Nonnull final String requestId) {
+  public EmbeddingsPostResponse requestId(@Nonnull final String requestId) {
     this.requestId = requestId;
     return this;
   }
 
   /**
-   * ID of the request
+   * Get requestId
    *
-   * @return requestId The requestId of this {@link CompletionPostResponseStreaming} instance.
+   * @return requestId The requestId of this {@link EmbeddingsPostResponse} instance.
    */
   @Nonnull
   public String getRequestId() {
@@ -67,25 +66,24 @@ public class CompletionPostResponseStreaming
   }
 
   /**
-   * Set the requestId of this {@link CompletionPostResponseStreaming} instance.
+   * Set the requestId of this {@link EmbeddingsPostResponse} instance.
    *
-   * @param requestId ID of the request
+   * @param requestId The requestId of this {@link EmbeddingsPostResponse}
    */
   public void setRequestId(@Nonnull final String requestId) {
     this.requestId = requestId;
   }
 
   /**
-   * Set the intermediateResults of this {@link CompletionPostResponseStreaming} instance and return
-   * the same instance.
+   * Set the intermediateResults of this {@link EmbeddingsPostResponse} instance and return the same
+   * instance.
    *
-   * @param intermediateResults The intermediateResults of this {@link
-   *     CompletionPostResponseStreaming}
-   * @return The same instance of this {@link CompletionPostResponseStreaming} class
+   * @param intermediateResults The intermediateResults of this {@link EmbeddingsPostResponse}
+   * @return The same instance of this {@link EmbeddingsPostResponse} class
    */
   @Nonnull
-  public CompletionPostResponseStreaming intermediateResults(
-      @Nullable final ModuleResultsStreaming intermediateResults) {
+  public EmbeddingsPostResponse intermediateResults(
+      @Nullable final ModuleResultsBase intermediateResults) {
     this.intermediateResults = intermediateResults;
     return this;
   }
@@ -93,34 +91,32 @@ public class CompletionPostResponseStreaming
   /**
    * Get intermediateResults
    *
-   * @return intermediateResults The intermediateResults of this {@link
-   *     CompletionPostResponseStreaming} instance.
+   * @return intermediateResults The intermediateResults of this {@link EmbeddingsPostResponse}
+   *     instance.
    */
   @Nonnull
-  public ModuleResultsStreaming getIntermediateResults() {
+  public ModuleResultsBase getIntermediateResults() {
     return intermediateResults;
   }
 
   /**
-   * Set the intermediateResults of this {@link CompletionPostResponseStreaming} instance.
+   * Set the intermediateResults of this {@link EmbeddingsPostResponse} instance.
    *
-   * @param intermediateResults The intermediateResults of this {@link
-   *     CompletionPostResponseStreaming}
+   * @param intermediateResults The intermediateResults of this {@link EmbeddingsPostResponse}
    */
-  public void setIntermediateResults(@Nullable final ModuleResultsStreaming intermediateResults) {
+  public void setIntermediateResults(@Nullable final ModuleResultsBase intermediateResults) {
     this.intermediateResults = intermediateResults;
   }
 
   /**
-   * Set the finalResult of this {@link CompletionPostResponseStreaming} instance and return the
-   * same instance.
+   * Set the finalResult of this {@link EmbeddingsPostResponse} instance and return the same
+   * instance.
    *
-   * @param finalResult The finalResult of this {@link CompletionPostResponseStreaming}
-   * @return The same instance of this {@link CompletionPostResponseStreaming} class
+   * @param finalResult The finalResult of this {@link EmbeddingsPostResponse}
+   * @return The same instance of this {@link EmbeddingsPostResponse} class
    */
   @Nonnull
-  public CompletionPostResponseStreaming finalResult(
-      @Nullable final LLMModuleResultStreaming finalResult) {
+  public EmbeddingsPostResponse finalResult(@Nullable final EmbeddingsResponse finalResult) {
     this.finalResult = finalResult;
     return this;
   }
@@ -128,24 +124,24 @@ public class CompletionPostResponseStreaming
   /**
    * Get finalResult
    *
-   * @return finalResult The finalResult of this {@link CompletionPostResponseStreaming} instance.
+   * @return finalResult The finalResult of this {@link EmbeddingsPostResponse} instance.
    */
   @Nonnull
-  public LLMModuleResultStreaming getFinalResult() {
+  public EmbeddingsResponse getFinalResult() {
     return finalResult;
   }
 
   /**
-   * Set the finalResult of this {@link CompletionPostResponseStreaming} instance.
+   * Set the finalResult of this {@link EmbeddingsPostResponse} instance.
    *
-   * @param finalResult The finalResult of this {@link CompletionPostResponseStreaming}
+   * @param finalResult The finalResult of this {@link EmbeddingsPostResponse}
    */
-  public void setFinalResult(@Nullable final LLMModuleResultStreaming finalResult) {
+  public void setFinalResult(@Nullable final EmbeddingsResponse finalResult) {
     this.finalResult = finalResult;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link CompletionPostResponseStreaming}.
+   * Get the names of the unrecognizable properties of the {@link EmbeddingsPostResponse}.
    *
    * @return The set of properties names
    */
@@ -156,8 +152,7 @@ public class CompletionPostResponseStreaming
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link CompletionPostResponseStreaming}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link EmbeddingsPostResponse} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -169,14 +164,14 @@ public class CompletionPostResponseStreaming
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "CompletionPostResponseStreaming has no field with name '" + name + "'.");
+          "EmbeddingsPostResponse has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link CompletionPostResponseStreaming} instance
-   * including unrecognized properties.
+   * Get the value of all properties of this {@link EmbeddingsPostResponse} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -191,9 +186,8 @@ public class CompletionPostResponseStreaming
   }
 
   /**
-   * Set an unrecognizable property of this {@link CompletionPostResponseStreaming} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
+   * Set an unrecognizable property of this {@link EmbeddingsPostResponse} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -211,14 +205,11 @@ public class CompletionPostResponseStreaming
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final CompletionPostResponseStreaming completionPostResponseStreaming =
-        (CompletionPostResponseStreaming) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, completionPostResponseStreaming.cloudSdkCustomFields)
-        && Objects.equals(this.requestId, completionPostResponseStreaming.requestId)
-        && Objects.equals(
-            this.intermediateResults, completionPostResponseStreaming.intermediateResults)
-        && Objects.equals(this.finalResult, completionPostResponseStreaming.finalResult);
+    final EmbeddingsPostResponse embeddingsPostResponse = (EmbeddingsPostResponse) o;
+    return Objects.equals(this.cloudSdkCustomFields, embeddingsPostResponse.cloudSdkCustomFields)
+        && Objects.equals(this.requestId, embeddingsPostResponse.requestId)
+        && Objects.equals(this.intermediateResults, embeddingsPostResponse.intermediateResults)
+        && Objects.equals(this.finalResult, embeddingsPostResponse.finalResult);
   }
 
   @Override
@@ -230,7 +221,7 @@ public class CompletionPostResponseStreaming
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class CompletionPostResponseStreaming {\n");
+    sb.append("class EmbeddingsPostResponse {\n");
     sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
     sb.append("    intermediateResults: ")
         .append(toIndentedString(intermediateResults))
@@ -254,21 +245,21 @@ public class CompletionPostResponseStreaming
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * CompletionPostResponseStreaming} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link EmbeddingsPostResponse}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (requestId) -> new CompletionPostResponseStreaming().requestId(requestId);
+    return (requestId) -> new EmbeddingsPostResponse().requestId(requestId);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the requestId of this {@link CompletionPostResponseStreaming} instance.
+     * Set the requestId of this {@link EmbeddingsPostResponse} instance.
      *
-     * @param requestId ID of the request
-     * @return The CompletionPostResponseStreaming instance.
+     * @param requestId The requestId of this {@link EmbeddingsPostResponse}
+     * @return The EmbeddingsPostResponse instance.
      */
-    CompletionPostResponseStreaming requestId(@Nonnull final String requestId);
+    EmbeddingsPostResponse requestId(@Nonnull final String requestId);
   }
 }

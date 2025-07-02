@@ -15,10 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -28,7 +25,7 @@ import javax.annotation.Nullable;
 
 /** LLMChoiceStreaming */
 // CHECKSTYLE:OFF
-public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner
+public class LLMChoiceStreaming
 // CHECKSTYLE:ON
 {
   @JsonProperty("index")
@@ -38,7 +35,7 @@ public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner
   private ChatDelta delta;
 
   @JsonProperty("logprobs")
-  private Map<String, List<BigDecimal>> logprobs = new HashMap<>();
+  private ChoiceLogprobs logprobs;
 
   @JsonProperty("finish_reason")
   private String finishReason;
@@ -114,48 +111,31 @@ public class LLMChoiceStreaming implements ModuleResultsOutputUnmaskingInner
   /**
    * Set the logprobs of this {@link LLMChoiceStreaming} instance and return the same instance.
    *
-   * @param logprobs Log probabilities
+   * @param logprobs The logprobs of this {@link LLMChoiceStreaming}
    * @return The same instance of this {@link LLMChoiceStreaming} class
    */
   @Nonnull
-  public LLMChoiceStreaming logprobs(@Nullable final Map<String, List<BigDecimal>> logprobs) {
+  public LLMChoiceStreaming logprobs(@Nullable final ChoiceLogprobs logprobs) {
     this.logprobs = logprobs;
     return this;
   }
 
   /**
-   * Put one logprobs instance to this {@link LLMChoiceStreaming} instance.
-   *
-   * @param key The String key of this logprobs instance
-   * @param logprobsItem The logprobs that should be added under the given key
-   * @return The same instance of type {@link LLMChoiceStreaming}
-   */
-  @Nonnull
-  public LLMChoiceStreaming putlogprobsItem(
-      @Nonnull final String key, @Nonnull final List<BigDecimal> logprobsItem) {
-    if (this.logprobs == null) {
-      this.logprobs = new HashMap<>();
-    }
-    this.logprobs.put(key, logprobsItem);
-    return this;
-  }
-
-  /**
-   * Log probabilities
+   * Get logprobs
    *
    * @return logprobs The logprobs of this {@link LLMChoiceStreaming} instance.
    */
   @Nonnull
-  public Map<String, List<BigDecimal>> getLogprobs() {
+  public ChoiceLogprobs getLogprobs() {
     return logprobs;
   }
 
   /**
    * Set the logprobs of this {@link LLMChoiceStreaming} instance.
    *
-   * @param logprobs Log probabilities
+   * @param logprobs The logprobs of this {@link LLMChoiceStreaming}
    */
-  public void setLogprobs(@Nullable final Map<String, List<BigDecimal>> logprobs) {
+  public void setLogprobs(@Nullable final ChoiceLogprobs logprobs) {
     this.logprobs = logprobs;
   }
 
