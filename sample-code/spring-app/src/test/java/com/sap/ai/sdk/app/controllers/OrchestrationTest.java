@@ -103,7 +103,7 @@ class OrchestrationTest {
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
 
-    var orchestrationResult = (response.getOrchestrationResult());
+    var orchestrationResult = (response.getFinalResult());
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isGreaterThan(1);
     assertThat(orchestrationResult.getModel()).isEqualTo(modelName);
@@ -129,7 +129,7 @@ class OrchestrationTest {
   void testMaskingAnonymization() {
     var response = service.maskingAnonymization(DPIEntities.PERSON);
     var result = response.getOriginalResponse();
-    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getFinalResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
 
     var maskingResult = result.getModuleResults().getInputMasking();
@@ -148,7 +148,7 @@ class OrchestrationTest {
   void testMaskingPseudonymization() {
     var response = service.maskingPseudonymization(DPIEntities.PERSON);
     var result = response.getOriginalResponse();
-    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getFinalResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(llmChoice.getMessage().getContent())
         .describedAs("The final response should contain the original user name")
@@ -177,7 +177,7 @@ class OrchestrationTest {
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
     var response = service.grounding("What does Joule do?", true);
     var result = response.getOriginalResponse();
-    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getFinalResult()).getChoices().get(0);
     assertThat(response).isNotNull();
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(result.getModuleResults().getGrounding()).isNotNull();
@@ -195,7 +195,7 @@ class OrchestrationTest {
     var response = service.groundingSharepoint("What is the secret for the AI SDK e2e test?");
     assertThat(response).isNotNull();
     var result = response.getOriginalResponse();
-    var llmChoice = result.getOrchestrationResult().getChoices().get(0);
+    var llmChoice = result.getFinalResult().getChoices().get(0);
     assertThat(llmChoice.getMessage().getContent()).contains("&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/");
   }
 
@@ -203,7 +203,7 @@ class OrchestrationTest {
   void testCompletionWithResourceGroup() {
     var response = service.completionWithResourceGroup("ai-sdk-java-e2e", "Hello world!");
     var result = response.getOriginalResponse();
-    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getFinalResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(llmChoice.getMessage().getContent()).isNotEmpty();
   }
@@ -282,7 +282,7 @@ class OrchestrationTest {
             .imageInput(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png")
             .getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -301,7 +301,7 @@ class OrchestrationTest {
       System.out.println("Error fetching or reading the image from URL: " + e.getMessage());
     }
     val result = service.imageInput(dataUrl).getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -312,21 +312,21 @@ class OrchestrationTest {
             .multiStringInput(
                 List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"))
             .getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
   void testResponseFormatJsonSchema() {
     val result = service.responseFormatJsonSchema("apple").getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
   void testResponseFormatJsonObject() {
     val result = service.responseFormatJsonObject("apple").getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getContent()).contains("\"language\":");
     assertThat(choices.get(0).getMessage().getContent()).contains("\"translation\":");
@@ -335,14 +335,14 @@ class OrchestrationTest {
   @Test
   void testResponseFormatText() {
     val result = service.responseFormatText("apple").getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
   void testTemplateFromPromptRegistryById() {
     val result = service.templateFromPromptRegistryById("Cloud ERP systems").getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -350,7 +350,7 @@ class OrchestrationTest {
   void testTemplateFromPromptRegistryByScenario() {
     val result =
         service.templateFromPromptRegistryByScenario("Cloud ERP systems").getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -361,7 +361,7 @@ class OrchestrationTest {
             .localPromptTemplate(
                 Files.readString(Path.of("src/main/resources/promptTemplateExample.yaml")))
             .getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 

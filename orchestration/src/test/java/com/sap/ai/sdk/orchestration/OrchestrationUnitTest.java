@@ -319,7 +319,7 @@ class OrchestrationUnitTest {
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
-    var orchestrationResult = response.getOrchestrationResult();
+    var orchestrationResult = response.getFinalResult();
     assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isEqualTo(1721224505);
@@ -703,9 +703,9 @@ class OrchestrationUnitTest {
         assertThat(deltaList.get(2).getFinishReason()).isEqualTo("stop");
 
         // should be of type LLMModuleResultStreaming, will be fixed with a discriminator
-        var result0 = deltaList.get(0).getOrchestrationResult();
-        var result1 = deltaList.get(1).getOrchestrationResult();
-        var result2 = deltaList.get(2).getOrchestrationResult();
+        var result0 = deltaList.get(0).getFinalResult();
+        var result1 = deltaList.get(1).getFinalResult();
+        var result2 = deltaList.get(2).getFinalResult();
 
         assertThat(result0.getSystemFingerprint()).isEmpty();
         assertThat(result0.getId()).isEmpty();
@@ -832,7 +832,7 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
-    var orchestrationResult = response.getOrchestrationResult();
+    var orchestrationResult = response.getFinalResult();
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(

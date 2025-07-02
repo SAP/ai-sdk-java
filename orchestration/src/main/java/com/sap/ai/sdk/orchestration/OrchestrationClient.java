@@ -12,6 +12,7 @@ import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
+import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -196,7 +197,7 @@ public class OrchestrationClient {
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
-    request.getOrchestrationConfig().setStream(true);
+    request.getConfig().setStream(GlobalStreamOptions.create().enabled(true));
     return executor.stream(request);
   }
 

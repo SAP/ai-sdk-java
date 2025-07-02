@@ -49,7 +49,7 @@ public class OrchestrationChatResponse {
    */
   @Nonnull
   public TokenUsage getTokenUsage() {
-    return originalResponse.getOrchestrationResult().getUsage();
+    return originalResponse.getFinalResult().getUsage();
   }
 
   /**
@@ -61,7 +61,8 @@ public class OrchestrationChatResponse {
   @Nonnull
   public List<Message> getAllMessages() throws IllegalArgumentException {
     val messages = new ArrayList<Message>();
-    for (final ChatMessage chatMessage : originalResponse.getModuleResults().getTemplating()) {
+    for (final ChatMessage chatMessage :
+        originalResponse.getIntermediateResults().getTemplating()) {
       if (chatMessage instanceof AssistantChatMessage assistantChatMessage) {
         val toolCalls = assistantChatMessage.getToolCalls();
         if (!toolCalls.isEmpty()) {
@@ -102,6 +103,6 @@ public class OrchestrationChatResponse {
   @Nonnull
   public LLMChoice getChoice() {
     //    We expect choices to be defined and never empty.
-    return originalResponse.getOrchestrationResult().getChoices().get(0);
+    return originalResponse.getFinalResult().getChoices().get(0);
   }
 }
