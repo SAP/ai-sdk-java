@@ -59,6 +59,7 @@ import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigPlaceholders;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
@@ -184,8 +185,10 @@ class OrchestrationUnitTest {
             .chunkMetadata(List.of(KeyValueListPair.create().key("chunk metadata").value("1")));
     final var groundingConfigConfig =
         GroundingModuleConfigConfig.create()
-            .inputParams(List.of("query"))
-            .outputParam("results")
+            .placeholders(
+                GroundingModuleConfigConfigPlaceholders.create()
+                    .input(List.of("query"))
+                    .output("results"))
             .addFiltersItem(databaseFilter);
     final var groundingConfig =
         GroundingModuleConfig.create()
@@ -212,7 +215,7 @@ class OrchestrationUnitTest {
     assertThat(response.getOriginalResponse().getRequestId())
         .isEqualTo("e5d2add4-408c-4da5-84ca-1d8b0fe350c8");
 
-    var moduleResults = response.getOriginalResponse().getModuleResults();
+    var moduleResults = response.getOriginalResponse().getIntermediateResults();
     assertThat(moduleResults).isNotNull();
 
     var groundingModule = moduleResults.getGrounding();
@@ -227,7 +230,7 @@ class OrchestrationUnitTest {
             "First chunk```Second chunk```Last found chunk");
     assertThat(groundingModule.getData()).isEqualTo(groundingData);
 
-    var inputMasking = response.getOriginalResponse().getModuleResults().getInputMasking();
+    var inputMasking = response.getOriginalResponse().getIntermediateResults().getInputMasking();
     assertThat(inputMasking.getMessage())
         .isEqualTo("Input to LLM and Grounding is masked successfully.");
     Object data = inputMasking.getData();
@@ -262,7 +265,7 @@ class OrchestrationUnitTest {
     val response = client.chatCompletion(prompt, configWithGrounding);
 
     assertThat(
-            response.getOriginalResponse().getModuleResults().getGrounding().getData().toString())
+            response.getOriginalResponse().getIntermediateResults().getGrounding().getData().toString())
         .contains(
             "A fuzzy search is a search technique that is designed to be fast and tolerant of errors");
     assertThat(response.getContent()).startsWith("A fuzzy search is a search technique");
@@ -303,7 +306,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(messageList.get(2).role()).isEqualTo("assistant");
 
-    var llm = response.getModuleResults().getLlm();
+    var llm = response.getIntermediateResults().getLlm();
     assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(llm.getObject()).isEqualTo("chat.completion");
@@ -354,7 +357,7 @@ class OrchestrationUnitTest {
                       "code": 400,
                       "message": "Missing required parameters: ['input']",
                       "location": "Module: Templating",
-                      "module_results": {}
+                      "intermediate_results": {}
                     }
                     """,
                     SC_BAD_REQUEST)));
@@ -399,7 +402,7 @@ class OrchestrationUnitTest {
   void filteringStrict() {
     final String response =
         """
-            {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "module_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
+            {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "intermediate_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
     stubFor(post(anyUrl()).willReturn(jsonResponse(response, SC_BAD_REQUEST)));
 
     final var filter =
@@ -461,7 +464,7 @@ class OrchestrationUnitTest {
     final var response = result.getOriginalResponse();
 
     assertThat(response).isNotNull();
-    GenericModuleResult inputMasking = response.getModuleResults().getInputMasking();
+    GenericModuleResult inputMasking = response.getIntermediateResults().getInputMasking();
     assertThat(inputMasking).isNotNull();
     assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
     assertThat(inputMasking.getData()).isNotNull();
@@ -723,7 +726,7 @@ class OrchestrationUnitTest {
         final ChatDelta message0 = choices0.getDelta();
         assertThat(message0.getRole()).isEqualTo("");
         assertThat(message0.getContent()).isEqualTo("");
-        final var templating = deltaList.get(0).getModuleResults().getTemplating();
+        final var templating = deltaList.get(0).getIntermediateResults().getTemplating();
         assertThat(templating).hasSize(1);
 
         final var templateItem = (UserChatMessage) templating.get(0);
@@ -824,7 +827,7 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
 
     assertThat(response).isNotNull();
-    var llmResults = response.getModuleResults().getLlm();
+    var llmResults = response.getIntermediateResults().getLlm();
     assertThat(llmResults).isNotNull();
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
@@ -968,7 +971,7 @@ class OrchestrationUnitTest {
 
       final var response = client.chatCompletion(prompt, configWithTemplate);
       assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
-      assertThat(response.getOriginalResponse().getModuleResults().getTemplating()).hasSize(2);
+      assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
       try (var requestInputStream = fileLoader.apply("templateReferenceByIdRequest.json")) {
         final String request = new String(requestInputStream.readAllBytes());
@@ -994,7 +997,7 @@ class OrchestrationUnitTest {
 
     final var response = client.chatCompletion(prompt, configWithTemplate);
     assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
-    assertThat(response.getOriginalResponse().getModuleResults().getTemplating()).hasSize(2);
+    assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
     try (var requestInputStream = fileLoader.apply("templateReferenceByScenarioRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());

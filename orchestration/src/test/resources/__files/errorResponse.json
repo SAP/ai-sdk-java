@@ -3,5 +3,5 @@
   "code": 400,
   "message": "'orchestration_config' is a required property",
   "location": "request body",
-  "module_results": {}
+  "intermediate_results": {}
 }

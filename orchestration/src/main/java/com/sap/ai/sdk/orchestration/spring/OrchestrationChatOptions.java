@@ -70,7 +70,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
    * @return the model version to use for the chat.
    */
   @Nonnull
-  public String getModelVersion() {
+  public String getVersion() {
     return getLlmConfigNonNull().getVersion();
   }
 
