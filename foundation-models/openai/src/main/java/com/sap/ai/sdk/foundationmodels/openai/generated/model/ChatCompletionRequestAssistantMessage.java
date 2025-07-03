@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
@@ -98,6 +99,8 @@ public class ChatCompletionRequestAssistantMessage implements ChatCompletionRequ
   @JsonProperty("name")
   private String name;
 
+  // this should not be serialized if empty
+  @JsonInclude( JsonInclude.Include.NON_EMPTY)
   @JsonProperty("tool_calls")
   private List<ChatCompletionMessageToolCall> toolCalls = new ArrayList<>();
 

@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import static lombok.AccessLevel.PACKAGE;
+import static lombok.AccessLevel.PUBLIC;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMessageToolCall;
@@ -28,7 +28,7 @@ import lombok.experimental.Accessors;
 @Beta
 @Value
 @Accessors(fluent = true)
-@AllArgsConstructor(access = PACKAGE)
+@AllArgsConstructor(access = PUBLIC)
 public class OpenAiAssistantMessage implements OpenAiMessage {
 
   /** The role associated with this message. */
@@ -57,7 +57,7 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
    *
    * @param singleMessage the message.
    */
-  OpenAiAssistantMessage(@Nonnull final String singleMessage) {
+  public OpenAiAssistantMessage( @Nonnull final String singleMessage ) {
     this(
         new OpenAiMessageContent(List.of(new OpenAiTextItem(singleMessage))),
         Collections.emptyList());
