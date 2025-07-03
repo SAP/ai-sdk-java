@@ -1,9 +1,9 @@
 {
-  "orchestration_config" : {
-    "module_configurations" : {
-      "llm_module_config" : {
-        "model_name" : "gpt-4o",
-        "model_params" : {
+  "config" : {
+    "modules" : {
+      "model" : {
+        "name" : "gpt-4o",
+        "params" : {
           "max_tokens" : 50,
           "temperature" : 0.1,
           "frequency_penalty" : 0,
@@ -11,9 +11,9 @@
           "top_p" : 1,
           "n" : 1
         },
-        "model_version" : "latest"
+        "version" : "latest"
       },
-      "templating_module_config" : {
+      "prompt" : {
         "template" : [ {
           "role" : "system",
           "content" : "Context message with embedded grounding results. {{?results}}"
@@ -21,7 +21,7 @@
         "defaults" : { },
         "tools" : [ ]
       },
-      "masking_module_config" : {
+      "masking" : {
         "masking_providers" : [ {
           "type" : "sap_data_privacy_integration",
           "method" : "anonymization",
@@ -34,7 +34,7 @@
           }
         } ]
       },
-      "grounding_module_config" : {
+      "grounding" : {
         "type" : "document_grounding_service",
         "config" : {
           "filters" : [ {

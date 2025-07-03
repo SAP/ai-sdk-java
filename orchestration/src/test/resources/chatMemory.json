@@ -1,12 +1,12 @@
 {
-  "orchestration_config": {
-    "module_configurations": {
-      "llm_module_config": {
-        "model_name" : "gpt-4o",
-        "model_params": {},
-        "model_version": "latest"
+  "config": {
+    "modules": {
+      "model": {
+        "name" : "gpt-4o",
+        "params": {},
+        "version": "latest"
       },
-      "templating_module_config": {
+      "prompt": {
         "template": [
           {
             "role": "user",
