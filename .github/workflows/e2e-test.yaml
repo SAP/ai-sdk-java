@@ -39,9 +39,25 @@ jobs:
           mvn $MVN_ARGS
 
       - name: "Run tests"
+        id: run_tests
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} surefire:test -pl :spring-app -DskipTests=false"
-          mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}"
+          mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}" | tee mvn_output.log # tee writes to both the console and a file
+
+          awk '/Results:/, /----/' mvn_output.log > test_error.log || true # true ensures the step doesn't fail if no match is found.
+          ERROR_MSG=$(cat test_error.log | tail +4 | head -n -4 | awk '{gsub(/"/, "\\\""); printf "%s\\n", $0}') # Slack formatting
+          echo "$ERROR_MSG"
+          echo "error_message=$ERROR_MSG" >> $GITHUB_OUTPUT
+
+          if grep -q "BUILD FAILURE" mvn_output.log; then
+            echo "Maven build failed."
+            exit 1
+          elif grep -q "BUILD SUCCESS" mvn_output.log; then
+            echo "Maven build succeeded."
+          else
+            echo "Maven build status unknown."
+            exit 1
+          fi
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
           AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
@@ -74,7 +90,12 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook
           payload: |
-            {
-              "text": "⚠️ End-to-end tests failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
-            }
-
+            blocks:
+              - type: "section"
+                text:
+                    type: "mrkdwn"
+                    text: "⚠️ End-to-end tests failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
+              - type: "section"
+                text:
+                  type: "plain_text"
+                  text: "${{ steps.run_tests.outputs.error_message }}"

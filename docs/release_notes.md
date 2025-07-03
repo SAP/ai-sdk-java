@@ -30,4 +30,4 @@
 
 ### 🐛 Fixed Issues
 
--
+- [Orchestration] Resolved duplicate JSON property issue, enabling Anthropic Claude chat completions.
