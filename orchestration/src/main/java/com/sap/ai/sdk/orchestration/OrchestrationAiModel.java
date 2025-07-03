@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -198,8 +198,8 @@ public class OrchestrationAiModel {
   }
 
   @Nonnull
-  LLMModuleConfig createConfig() {
-    return LLMModuleConfig.create().modelName(name).modelParams(params).modelVersion(version);
+  LLMModelDetails createConfig() {
+    return LLMModelDetails.create().name(name).params(params).version(version);
   }
 
   /**

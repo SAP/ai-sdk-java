@@ -25,7 +25,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Results of each module. */
+/** Results of each module of /embeddings endpoint(e.g. input masking). */
 // CHECKSTYLE:OFF
 public class ModuleResultsBase
 // CHECKSTYLE:ON

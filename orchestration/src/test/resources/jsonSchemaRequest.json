@@ -1,46 +1,53 @@
 {
-  "orchestration_config" : {
-    "module_configurations" : {
-      "llm_module_config" : {
-        "model_name" : "gpt-4o-mini",
-        "model_params" : { },
-        "model_version" : "latest"
-      },
-      "templating_module_config" : {
-        "template" : [ {
-          "role" : "user",
-          "content" : "Whats 'apple' in German?"
-        }, {
-          "role" : "system",
-          "content" : "You are a language translator."
-        } ],
-        "defaults" : { },
-        "response_format" : {
-          "type" : "json_schema",
-          "json_schema" : {
-            "description" : "Output schema for language translation.",
-            "name" : "Translation-Schema",
-            "schema" : {
-              "type" : "object",
-              "properties" : {
-                "language" : {
-                  "type" : "string"
-                },
-                "translation" : {
-                  "type" : "string"
-                }
-              },
-              "required" : [ "language", "translation" ],
-              "additionalProperties" : false
-            },
-            "strict" : true
-          }
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o-mini",
+          "params": {},
+          "version": "latest"
         },
-        "tools" : [ ]
+        "prompt": {
+          "template": [
+            {
+              "role": "user",
+              "content": "Whats 'apple' in German?"
+            },
+            {
+              "role": "system",
+              "content": "You are a language translator."
+            }
+          ],
+          "defaults": {},
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "description": "Output schema for language translation.",
+              "name": "Translation-Schema",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "language": {
+                    "type": "string"
+                  },
+                  "translation": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "language",
+                  "translation"
+                ],
+                "additionalProperties": false
+              },
+              "strict": true
+            }
+          },
+          "tools": []
+        }
       }
-    },
-    "stream" : false
+    }
   },
-  "input_params" : { },
-  "messages_history" : [ ]
+  "placeholder_values": {},
+  "messages_history": []
 }

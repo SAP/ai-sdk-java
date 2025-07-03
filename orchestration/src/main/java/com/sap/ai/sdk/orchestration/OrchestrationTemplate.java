@@ -8,12 +8,12 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
-import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +80,7 @@ public class OrchestrationTemplate extends TemplateConfig {
    */
   @Override
   @Nonnull
-  protected TemplatingModuleConfig toLowLevel() {
+  protected PromptTemplatingModuleConfigPrompt toLowLevel() {
     final List<ChatMessage> template = this.template != null ? this.template : List.of();
     final Map<String, String> defaults = this.defaults != null ? this.defaults : new HashMap<>();
     final List<ChatCompletionTool> tools = this.tools != null ? this.tools : new ArrayList<>();

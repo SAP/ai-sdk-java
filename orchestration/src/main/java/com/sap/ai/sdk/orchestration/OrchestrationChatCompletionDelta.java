@@ -13,7 +13,7 @@ public class OrchestrationChatCompletionDelta extends CompletionPostResponseStre
   @Nonnull
   @Override
   public String getDeltaContent() {
-    val choices = getOrchestrationResult().getChoices();
+    val choices = getFinalResult().getChoices();
     // Avoid the first delta: "choices":[]
     if (!choices.isEmpty()
         // Multiple choices are spread out on multiple deltas
@@ -29,6 +29,6 @@ public class OrchestrationChatCompletionDelta extends CompletionPostResponseStre
   @Nullable
   @Override
   public String getFinishReason() {
-    return getOrchestrationResult().getChoices().get(0).getFinishReason();
+    return getFinalResult().getChoices().get(0).getFinishReason();
   }
 }

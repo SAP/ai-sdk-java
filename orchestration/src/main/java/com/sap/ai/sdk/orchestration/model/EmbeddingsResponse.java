@@ -28,7 +28,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** EmbeddingsResponse */
+/** The response from request to embedding model following OpenAI specification. */
 // CHECKSTYLE:OFF
 public class EmbeddingsResponse
 // CHECKSTYLE:ON
