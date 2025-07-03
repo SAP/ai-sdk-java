@@ -10,7 +10,6 @@ import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.val;
 
 /**
  * Internal utility class for getting a default object mapper with preset configuration.
@@ -33,10 +32,6 @@ public class OrchestrationJacksonConfiguration {
   @Beta
   public static ObjectMapper getOrchestrationObjectMapper() {
 
-    val jackson = getDefaultObjectMapper();
-
-    jackson.addMixIn(ChatMessage.class, JacksonMixins.ChatMessageMixin.class);
-
     final var module =
         new SimpleModule()
             .addDeserializer(
@@ -44,7 +39,11 @@ public class OrchestrationJacksonConfiguration {
                 PolymorphicFallbackDeserializer.fromJsonSubTypes(TemplateResponseFormat.class))
             .setMixInAnnotation(
                 TemplateResponseFormat.class, JacksonMixins.ResponseFormatSubTypesMixin.class);
-    jackson.registerModule(module);
-    return jackson;
+
+    return getDefaultObjectMapper()
+        .rebuild()
+        .addModule(module)
+        .addMixIn(ChatMessage.class, JacksonMixins.ChatMessageMixin.class)
+        .build();
   }
 }

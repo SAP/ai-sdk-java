@@ -26,6 +26,7 @@ import lombok.val;
 @Slf4j
 public class OrchestrationClient {
   private static final String DEFAULT_SCENARIO = "orchestration";
+  private static final String COMPLETION_ENDPOINT = "/v2/completion";
 
   static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
@@ -141,7 +142,7 @@ public class OrchestrationClient {
   @Nonnull
   public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
-    return executor.execute("/completion", request, CompletionPostResponse.class);
+    return executor.execute(COMPLETION_ENDPOINT, request, CompletionPostResponse.class);
   }
 
   /**
@@ -183,7 +184,7 @@ public class OrchestrationClient {
     requestJson.set("orchestration_config", moduleConfigJson);
 
     return new OrchestrationChatResponse(
-        executor.execute("/completion", requestJson, CompletionPostResponse.class));
+        executor.execute(COMPLETION_ENDPOINT, requestJson, CompletionPostResponse.class));
   }
 
   /**
@@ -198,7 +199,8 @@ public class OrchestrationClient {
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
     request.getConfig().setStream(GlobalStreamOptions.create().enabled(true));
-    return executor.stream(request);
+
+    return executor.stream(COMPLETION_ENDPOINT, request);
   }
 
   /**

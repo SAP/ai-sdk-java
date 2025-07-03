@@ -95,14 +95,20 @@ final class ConfigToRequestTransformer {
             .promptTemplating(
                 PromptTemplatingModuleConfig.create()
                     .prompt(config.getTemplateConfig())
-                    .model(llmConfig))
-            .translation(TranslationModuleConfig.create());
+                    .model(llmConfig));
 
     Option.of(config.getFilteringConfig()).forEach(moduleConfig::filtering);
     Option.of(config.getMaskingConfig()).forEach(moduleConfig::masking);
     Option.of(config.getGroundingConfig()).forEach(moduleConfig::grounding);
-    Option.of(config.getOutputTranslationConfig()).forEach(moduleConfig.getTranslation()::output);
-    Option.of(config.getInputTranslationConfig()).forEach(moduleConfig.getTranslation()::input);
+
+    val outputTranslation = Option.of(config.getOutputTranslationConfig());
+    val inputTranslation = Option.of(config.getInputTranslationConfig());
+
+    if (inputTranslation.isDefined() || outputTranslation.isDefined()) {
+      moduleConfig.setTranslation(TranslationModuleConfig.create());
+      inputTranslation.forEach(moduleConfig.getTranslation()::input);
+      outputTranslation.forEach(moduleConfig.getTranslation()::output);
+    }
 
     return moduleConfig;
   }

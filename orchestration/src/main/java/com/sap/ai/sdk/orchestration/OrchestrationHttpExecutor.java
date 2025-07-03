@@ -65,11 +65,12 @@ class OrchestrationHttpExecutor {
   }
 
   @Nonnull
-  Stream<OrchestrationChatCompletionDelta> stream(@Nonnull final Object payload) {
+  Stream<OrchestrationChatCompletionDelta> stream(
+      @Nonnull final String path, @Nonnull final Object payload) {
     try {
 
       val json = JACKSON.writeValueAsString(payload);
-      val request = new HttpPost("/completion");
+      val request = new HttpPost(path);
       request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
       val client = getHttpClient();
 

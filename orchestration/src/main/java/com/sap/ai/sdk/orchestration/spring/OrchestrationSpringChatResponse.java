@@ -34,8 +34,7 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
   OrchestrationSpringChatResponse(@Nonnull final OrchestrationChatResponse orchestrationResponse) {
     super(
         toGenerations(orchestrationResponse.getOriginalResponse().getFinalResult()),
-        toChatResponseMetadata(
-            orchestrationResponse.getOriginalResponse().getFinalResult()));
+        toChatResponseMetadata(orchestrationResponse.getOriginalResponse().getFinalResult()));
     this.orchestrationResponse = orchestrationResponse;
   }
 
@@ -48,9 +47,10 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
   static Generation toGeneration(@Nonnull final LLMChoice choice) {
     val metadata = ChatGenerationMetadata.builder().finishReason(choice.getFinishReason());
     metadata.metadata("index", choice.getIndex());
-    if (!choice.getLogprobs().getContent().isEmpty()) {
+    if (choice.getLogprobs() != null && !choice.getLogprobs().getContent().isEmpty()) {
       metadata.metadata("logprobs", choice.getLogprobs().getContent());
     }
+
     val toolCalls =
         choice.getMessage().getToolCalls().stream()
             .map(

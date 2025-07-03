@@ -124,12 +124,7 @@ public class OrchestrationChatResponse {
   @Nonnull
   public <T> T asEntity(@Nonnull final Class<T> type) throws OrchestrationClientException {
     final String refusal =
-        getOriginalResponse()
-            .getOrchestrationResult()
-            .getChoices()
-            .get(0)
-            .getMessage()
-            .getRefusal();
+        getOriginalResponse().getFinalResult().getChoices().get(0).getMessage().getRefusal();
     if (refusal != null) {
       throw new OrchestrationClientException(
           "The model refused to answer the question: " + refusal);
