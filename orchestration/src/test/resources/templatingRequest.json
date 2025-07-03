@@ -1,32 +1,33 @@
 {
   "config": {
     "modules": {
-      "model": {
-        "name": "gpt-4o",
-        "params": {
-          "max_tokens": 50,
-          "temperature": 0.1,
-          "frequency_penalty": 0,
-          "presence_penalty": 0,
-          "top_p" : 1,
-          "n" : 1
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o",
+          "params": {
+            "max_tokens": 50,
+            "temperature": 0.1,
+            "frequency_penalty": 0,
+            "presence_penalty": 0,
+            "top_p": 1,
+            "n": 1
+          },
+          "version": "latest"
         },
-        "version": "latest"
-      },
-      "prompt": {
-        "template": [
-          {
-            "role": "user",
-            "content": "{{?input}}"
-          }
-        ],
-        "defaults" : { },
-        "tools" : [ ]
+        "prompt": {
+          "template": [
+            {
+              "role": "user",
+              "content": "{{?input}}"
+            }
+          ],
+          "defaults": {},
+          "tools": []
+        }
       }
-    },
-    "stream": false
+    }
   },
-  "input_params": {
+  "placeholder_values": {
     "input": "Reply with 'Orchestration Service is working!' in German"
   },
   "messages_history": []

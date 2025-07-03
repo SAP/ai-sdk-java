@@ -13,10 +13,10 @@
       "message": "Input filter passed successfully.",
       "data": {
         "original_service_response": {
-          "Hate": 0,
-          "SelfHarm": 0,
-          "Sexual": 0,
-          "Violence": 2
+          "hate": 0,
+          "self_harm": 0,
+          "sexual": 0,
+          "violence": 2
         },
         "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."
       }
@@ -34,8 +34,7 @@
             "role": "assistant",
             "content": "Cozy Downtown Apartment for Sublet!\n\nLooking for a temporary place to call home in the heart of downtown? Look no further! This cozy apartment is up for subletting and offers a convenient and vibrant city living experience.\n\nFeatures:\n- Prime location"
           },
-          "logprobs": {
-          },
+          "logprobs": {},
           "finish_reason": "length"
         }
       ],
@@ -49,10 +48,10 @@
       "message": "Output filter passed successfully.",
       "data": {
         "original_service_response": {
-          "Hate": 0,
-          "SelfHarm": 0,
-          "Sexual": 0,
-          "Violence": 0
+          "hate": 0,
+          "self_harm": 0,
+          "sexual": 0,
+          "violence": 0
         },
         "checked_text": "Cozy Downtown Apartment for Sublet!\n\nLooking for a temporary place to call home in the heart of downtown? Look no further! This cozy apartment is up for subletting and offers a convenient and vibrant city living experience.\n\nFeatures:\n- Prime location"
       }
@@ -72,8 +71,7 @@
           "role": "assistant",
           "content": "Cozy Downtown Apartment for Sublet!\n\nLooking for a temporary place to call home in the heart of downtown? Look no further! This cozy apartment is up for subletting and offers a convenient and vibrant city living experience.\n\nFeatures:\n- Prime location"
         },
-        "logprobs": {
-        },
+        "logprobs": {},
         "finish_reason": "length"
       }
     ],

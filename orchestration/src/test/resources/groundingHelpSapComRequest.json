@@ -1,45 +1,56 @@
 {
-  "config" : {
-    "modules" : {
-      "model" : {
-        "name" : "gpt-4o",
-        "params" : {
-          "max_tokens" : 50,
-          "temperature" : 0.1,
-          "frequency_penalty" : 0,
-          "presence_penalty" : 0,
-          "top_p" : 1,
-          "n" : 1
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o",
+          "params": {
+            "max_tokens": 50,
+            "temperature": 0.1,
+            "frequency_penalty": 0,
+            "presence_penalty": 0,
+            "top_p": 1,
+            "n": 1
+          },
+          "version": "latest"
         },
-        "version" : "latest"
+        "prompt": {
+          "template": [
+            {
+              "role": "user",
+              "content": "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}"
+            }
+          ],
+          "defaults": {},
+          "tools": []
+        }
       },
-      "prompt" : {
-        "template" : [ {
-          "role" : "user",
-          "content" : "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}"
-        } ],
-        "defaults" : { },
-        "tools" : [ ]
-      },
-      "grounding" : {
-        "type" : "document_grounding_service",
-        "config" : {
-          "filters" : [ {
-            "data_repositories" : [ "*" ],
-            "data_repository_type" : "help.sap.com",
-            "data_repository_metadata" : [ ],
-            "document_metadata" : [ ],
-            "chunk_metadata" : [ ]
-          } ],
-          "input_params" : [ "userMessage" ],
-          "output_param" : "groundingContext"
+      "grounding": {
+        "type": "document_grounding_service",
+        "config": {
+          "filters": [
+            {
+              "data_repositories": [
+                "*"
+              ],
+              "data_repository_type": "help.sap.com",
+              "data_repository_metadata": [],
+              "document_metadata": [],
+              "chunk_metadata": []
+            }
+          ],
+          "placeholders": {
+            "input": [
+              "userMessage"
+            ],
+            "output": "groundingContext"
+          }
         }
       }
-    },
-    "stream" : false
+    }
   },
-  "input_params" : {
-    "userMessage" : "What is a fuzzy search?"
+  "placeholder_values": {
+    "userMessage": "What is a fuzzy search?"
   },
-  "messages_history" : [ ]
+  "messages_history": []
 }

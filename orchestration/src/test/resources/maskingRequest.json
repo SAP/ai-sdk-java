@@ -1,27 +1,29 @@
 {
   "config": {
     "modules": {
-      "model": {
-        "name": "gpt-4o",
-        "params": {
-          "presence_penalty": 0,
-          "frequency_penalty": 0,
-          "max_tokens": 50,
-          "temperature": 0.1,
-          "top_p" : 1,
-          "n" : 1
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o",
+          "params": {
+            "presence_penalty": 0,
+            "frequency_penalty": 0,
+            "max_tokens": 50,
+            "temperature": 0.1,
+            "top_p": 1,
+            "n": 1
+          },
+          "version": "latest"
         },
-        "version": "latest"
-      },
-      "prompt": {
-        "template": [
-          {
-            "role": "user",
-            "content": "Hello World! Why is this phrase so famous?"
-          }
-        ],
-        "defaults" : { },
-        "tools" : [ ]
+        "prompt": {
+          "template": [
+            {
+              "role": "user",
+              "content": "Hello World! Why is this phrase so famous?"
+            }
+          ],
+          "defaults": {},
+          "tools": []
+        }
       },
       "masking": {
         "masking_providers": [
@@ -33,16 +35,15 @@
                 "type": "profile-phone"
               }
             ],
-            "allowlist" : [ ],
-            "mask_grounding_input" : {
-              "enabled" : false
+            "allowlist": [],
+            "mask_grounding_input": {
+              "enabled": false
             }
           }
         ]
       }
-    },
-    "stream": false
+    }
   },
-  "input_params": {},
+  "placeholder_values": {},
   "messages_history": []
 }

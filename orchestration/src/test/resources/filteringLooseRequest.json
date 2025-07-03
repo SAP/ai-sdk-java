@@ -1,38 +1,40 @@
 {
   "config": {
     "modules": {
-      "model": {
-        "name": "gpt-4o",
-        "params": {
-          "temperature": 0.1,
-          "max_tokens": 50,
-          "frequency_penalty": 0,
-          "presence_penalty": 0,
-          "top_p" : 1,
-          "n" : 1
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o",
+          "params": {
+            "temperature": 0.1,
+            "max_tokens": 50,
+            "frequency_penalty": 0,
+            "presence_penalty": 0,
+            "top_p": 1,
+            "n": 1
+          },
+          "version": "latest"
         },
-        "version": "latest"
+        "prompt": {
+          "template": [
+            {
+              "role": "user",
+              "content": "Hello World! Why is this phrase so famous?"
+            }
+          ],
+          "defaults": {},
+          "tools": []
+        }
       },
-      "prompt": {
-        "template": [
-          {
-            "role": "user",
-            "content": "Hello World! Why is this phrase so famous?"
-          }
-        ],
-        "defaults" : { },
-        "tools" : [ ]
-      },
-      "filtering_module_config": {
+      "filtering": {
         "input": {
           "filters": [
             {
               "type": "azure_content_safety",
               "config": {
-                "Hate": 4,
-                "SelfHarm": 4,
-                "Sexual": 4,
-                "Violence": 4
+                "hate": 4,
+                "self_harm": 4,
+                "sexual": 4,
+                "violence": 4
               }
             },
             {
@@ -48,19 +50,17 @@
             {
               "type": "azure_content_safety",
               "config": {
-                "Hate": 4,
-                "SelfHarm": 4,
-                "Sexual": 4,
-                "Violence": 4
+                "hate": 4,
+                "self_harm": 4,
+                "sexual": 4,
+                "violence": 4
               }
             }
           ]
         }
       }
-    },
-    "stream": false
+    }
   },
-  "input_params": {
-  },
+  "placeholder_values": {},
   "messages_history": []
 }

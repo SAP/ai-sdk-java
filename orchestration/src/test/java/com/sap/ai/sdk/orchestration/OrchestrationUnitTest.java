@@ -137,7 +137,7 @@ class OrchestrationUnitTest {
   @Test
   void testCompletion() {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("templatingResponse.json")
@@ -151,7 +151,7 @@ class OrchestrationUnitTest {
   @Test
   void testCompletionError() {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withStatus(500)
@@ -166,7 +166,7 @@ class OrchestrationUnitTest {
   @Test
   void testGrounding() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("groundingResponse.json")
@@ -244,14 +244,15 @@ class OrchestrationUnitTest {
 
     try (var requestInputStream = fileLoader.apply("groundingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
     }
   }
 
   @Test
   void testGroundingWithHelpSapCom() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("groundingHelpSapComResponse.json")
@@ -265,14 +266,21 @@ class OrchestrationUnitTest {
     val response = client.chatCompletion(prompt, configWithGrounding);
 
     assertThat(
-            response.getOriginalResponse().getIntermediateResults().getGrounding().getData().toString())
+            response
+                .getOriginalResponse()
+                .getIntermediateResults()
+                .getGrounding()
+                .getData()
+                .toString())
         .contains(
             "A fuzzy search is a search technique that is designed to be fast and tolerant of errors");
     assertThat(response.getContent()).startsWith("A fuzzy search is a search technique");
 
     try (var requestInputStream = fileLoader.apply("groundingHelpSapComRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/completion"))
+              .withRequestBody(equalToJson(request, true, true)));
     }
   }
 
@@ -352,12 +360,14 @@ class OrchestrationUnitTest {
             .willReturn(
                 jsonResponse(
                     """
-                    {
-                      "request_id": "51043a32-01f5-429a-b0e7-3a99432e43a4",
-                      "code": 400,
-                      "message": "Missing required parameters: ['input']",
-                      "location": "Module: Templating",
-                      "intermediate_results": {}
+                    { "error":
+                      {
+                        "request_id": "51043a32-01f5-429a-b0e7-3a99432e43a4",
+                        "code": 400,
+                        "message": "Missing required parameters: ['input']",
+                        "location": "Module: Templating",
+                        "intermediate_results": {}
+                      }
                     }
                     """,
                     SC_BAD_REQUEST)));
@@ -394,7 +404,7 @@ class OrchestrationUnitTest {
     // verify that null fields are absent from the sent request
     try (var requestInputStream = fileLoader.apply("filteringLooseRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, true)));
     }
   }
 
@@ -402,7 +412,35 @@ class OrchestrationUnitTest {
   void filteringStrict() {
     final String response =
         """
-            {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "intermediate_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
+            {
+              "error": {
+                "request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a",
+                "code": 400,
+                "message": "Content filtered due to Safety violations. Please modify the prompt and try again.",
+                "location": "Input Filter",
+                "intermediate_results": {
+                  "templating": [
+                    {
+                      "role": "user",
+                      "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."
+                    }
+                  ],
+                  "input_filtering": {
+                    "message": "Content filtered due to Safety violations. Please modify the prompt and try again.",
+                    "data": {
+                      "original_service_response": {
+                        "Hate": 0,
+                        "SelfHarm": 0,
+                        "Sexual": 0,
+                        "Violence": 2
+                      },
+                      "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."
+                    }
+                  }
+                }
+              }
+            }""";
+
     stubFor(post(anyUrl()).willReturn(jsonResponse(response, SC_BAD_REQUEST)));
 
     final var filter =
@@ -477,7 +515,7 @@ class OrchestrationUnitTest {
     // verify that the request is sent correctly
     try (var requestInputStream = fileLoader.apply("maskingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, true)));
     }
   }
 
@@ -539,7 +577,7 @@ class OrchestrationUnitTest {
         .assertThatThrownBy(request::run)
         .describedAs("Error objects from Orchestration should be interpreted")
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("'orchestration_config' is a required property");
+        .hasMessageContaining("'config' is a required property");
 
     softly
         .assertThatThrownBy(request::run)
@@ -773,7 +811,7 @@ class OrchestrationUnitTest {
   @Test
   void testMultiMessage() throws IOException {
     stubFor(
-        post("/completion")
+        post("/v2/completion")
             .willReturn(aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
 
     var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
@@ -847,7 +885,7 @@ class OrchestrationUnitTest {
     try (var requestInputStream = fileLoader.apply("multiMessageRequest.json")) {
       final String requestBody = new String(requestInputStream.readAllBytes());
       verify(
-          postRequestedFor(urlPathEqualTo("/completion"))
+          postRequestedFor(urlPathEqualTo("/v2/completion"))
               .withRequestBody(equalToJson(requestBody)));
     }
   }
@@ -1029,7 +1067,8 @@ class OrchestrationUnitTest {
 
       final var response = client.chatCompletion(prompt, configWithTemplate);
       assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
-      assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
+      assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating())
+          .hasSize(2);
 
       try (var requestInputStream = fileLoader.apply("templateReferenceByIdRequest.json")) {
         final String request = new String(requestInputStream.readAllBytes());

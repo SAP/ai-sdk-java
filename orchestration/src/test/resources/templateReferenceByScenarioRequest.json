@@ -1,31 +1,32 @@
 {
-  "config" : {
-    "modules" : {
-      "model" : {
-        "name" : "gpt-4o",
-        "params" : {
-          "max_tokens" : 50,
-          "temperature" : 0.1,
-          "frequency_penalty" : 0,
-          "presence_penalty" : 0,
-          "top_p" : 1,
-          "n" : 1
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o",
+          "params": {
+            "max_tokens": 50,
+            "temperature": 0.1,
+            "frequency_penalty": 0,
+            "presence_penalty": 0,
+            "top_p": 1,
+            "n": 1
+          },
+          "version": "latest"
         },
-        "version" : "latest"
-      },
-      "prompt" : {
-        "template_ref" : {
-          "scenario" : "test",
-          "name" : "test",
-          "version" : "0.0.1"
+        "prompt": {
+          "template_ref": {
+            "scenario": "test",
+            "name": "test",
+            "version": "0.0.1"
+          }
         }
       }
-    },
-    "stream" : false
+    }
   },
-  "input_params" : {
-    "input" : "Cloud ERP systems",
-    "language" : "Italian"
+  "placeholder_values": {
+    "input": "Cloud ERP systems",
+    "language": "Italian"
   },
-  "messages_history" : [ ]
+  "messages_history": []
 }

@@ -1,93 +1,94 @@
 {
   "config": {
     "modules": {
-      "model": {
-        "name": "gpt-4o",
-        "params": {},
-        "version": "latest"
-      },
-      "prompt": {
-        "template": [
-          {
-            "role": "user",
-            "content": "What is the weather in Potsdam and in Toulouse?"
-          },
-          {
-            "role": "assistant",
-            "tool_calls": [
-              {
-                "id": "call_LOyP7EVdeqFlGEmVzmPdCVey",
-                "type": "function",
-                "function": {
-                  "name": "getCurrentWeather",
-                  "arguments": "{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}"
-                }
-              },
-              {
-                "id": "call_bwFjnXCfCO4N3f0bMtFMlNSg",
-                "type": "function",
-                "function": {
-                  "name": "getCurrentWeather",
-                  "arguments": "{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}"
-                }
-              }
-            ]
-          },
-          {
-            "role": "tool",
-            "tool_call_id": "call_LOyP7EVdeqFlGEmVzmPdCVey",
-            "content": "{\"temp\":30.0,\"unit\":\"C\"}"
-          },
-          {
-            "role": "tool",
-            "tool_call_id": "call_bwFjnXCfCO4N3f0bMtFMlNSg",
-            "content": "{\"temp\":30.0,\"unit\":\"C\"}"
-          }
-        ],
-        "defaults": {},
-        "tools": [
-          {
-            "type": "function",
-            "function": {
-              "description": "Get the weather in location",
-              "name": "getCurrentWeather",
-              "parameters": {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
-                "additionalProperties": false,
-                "type": "object",
-                "properties": {
-                  "arg0": {
-                    "type": "object",
-                    "properties": {
-                      "location": {
-                        "type": "string"
-                      },
-                      "unit": {
-                        "type": "string",
-                        "enum": [
-                          "C",
-                          "F"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "location",
-                      "unit"
-                    ]
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o",
+          "params": {},
+          "version": "latest"
+        },
+        "prompt": {
+          "template": [
+            {
+              "role": "user",
+              "content": "What is the weather in Potsdam and in Toulouse?"
+            },
+            {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "id": "call_LOyP7EVdeqFlGEmVzmPdCVey",
+                  "type": "function",
+                  "function": {
+                    "name": "getCurrentWeather",
+                    "arguments": "{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}"
                   }
                 },
-                "required": [
-                  "arg0"
-                ]
-              },
-              "strict": false
+                {
+                  "id": "call_bwFjnXCfCO4N3f0bMtFMlNSg",
+                  "type": "function",
+                  "function": {
+                    "name": "getCurrentWeather",
+                    "arguments": "{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "tool_call_id": "call_LOyP7EVdeqFlGEmVzmPdCVey",
+              "content": "{\"temp\":30.0,\"unit\":\"C\"}"
+            },
+            {
+              "role": "tool",
+              "tool_call_id": "call_bwFjnXCfCO4N3f0bMtFMlNSg",
+              "content": "{\"temp\":30.0,\"unit\":\"C\"}"
             }
-          }
-        ]
+          ],
+          "defaults": {},
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "description": "Get the weather in location",
+                "name": "getCurrentWeather",
+                "parameters": {
+                  "$schema": "https://json-schema.org/draft/2020-12/schema",
+                  "additionalProperties": false,
+                  "type": "object",
+                  "properties": {
+                    "arg0": {
+                      "type": "object",
+                      "properties": {
+                        "location": {
+                          "type": "string"
+                        },
+                        "unit": {
+                          "type": "string",
+                          "enum": [
+                            "C",
+                            "F"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "location",
+                        "unit"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "arg0"
+                  ]
+                },
+                "strict": false
+              }
+            }
+          ]
+        }
       }
-    },
-    "stream": false
+    }
   },
-  "input_params": {},
+  "placeholder_values": {},
   "messages_history": []
 }

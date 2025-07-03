@@ -1,7 +1,9 @@
 {
-  "request_id": "59468e72-7309-4299-b988-bf3bbea461f8",
-  "code": 400,
-  "message": "'config' is a required property",
-  "location": "request body",
-  "intermediate_results": {}
+  "error": {
+    "request_id": "59468e72-7309-4299-b988-bf3bbea461f8",
+    "code": 400,
+    "message": "'config' is a required property",
+    "location": "request body",
+    "intermediate_results": {}
+  }
 }

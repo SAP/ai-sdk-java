@@ -14,7 +14,7 @@
       "message": "Content filtered due to safety violations. Please modify the prompt and try again.",
       "data": {
         "azure_content_safety": {
-          "Hate": 2
+          "hate": 2
         }
       }
     }
