@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -26,9 +26,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** RetrievalSearchInput */
+/** SearchInput */
 // CHECKSTYLE:OFF
-public class RetrievalSearchInput
+public class SearchInput
 // CHECKSTYLE:ON
 {
   @JsonProperty("query")
@@ -40,17 +40,17 @@ public class RetrievalSearchInput
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for RetrievalSearchInput. */
-  protected RetrievalSearchInput() {}
+  /** Default constructor for SearchInput. */
+  protected SearchInput() {}
 
   /**
-   * Set the query of this {@link RetrievalSearchInput} instance and return the same instance.
+   * Set the query of this {@link SearchInput} instance and return the same instance.
    *
    * @param query Query string
-   * @return The same instance of this {@link RetrievalSearchInput} class
+   * @return The same instance of this {@link SearchInput} class
    */
   @Nonnull
-  public RetrievalSearchInput query(@Nonnull final String query) {
+  public SearchInput query(@Nonnull final String query) {
     this.query = query;
     return this;
   }
@@ -58,7 +58,7 @@ public class RetrievalSearchInput
   /**
    * Query string
    *
-   * @return query The query of this {@link RetrievalSearchInput} instance.
+   * @return query The query of this {@link SearchInput} instance.
    */
   @Nonnull
   public String getQuery() {
@@ -66,7 +66,7 @@ public class RetrievalSearchInput
   }
 
   /**
-   * Set the query of this {@link RetrievalSearchInput} instance.
+   * Set the query of this {@link SearchInput} instance.
    *
    * @param query Query string
    */
@@ -75,25 +75,25 @@ public class RetrievalSearchInput
   }
 
   /**
-   * Set the filters of this {@link RetrievalSearchInput} instance and return the same instance.
+   * Set the filters of this {@link SearchInput} instance and return the same instance.
    *
-   * @param filters The filters of this {@link RetrievalSearchInput}
-   * @return The same instance of this {@link RetrievalSearchInput} class
+   * @param filters The filters of this {@link SearchInput}
+   * @return The same instance of this {@link SearchInput} class
    */
   @Nonnull
-  public RetrievalSearchInput filters(@Nonnull final List<RetrievalSearchFilter> filters) {
+  public SearchInput filters(@Nonnull final List<RetrievalSearchFilter> filters) {
     this.filters = filters;
     return this;
   }
 
   /**
-   * Add one filters instance to this {@link RetrievalSearchInput}.
+   * Add one filters instance to this {@link SearchInput}.
    *
    * @param filtersItem The filters that should be added
-   * @return The same instance of type {@link RetrievalSearchInput}
+   * @return The same instance of type {@link SearchInput}
    */
   @Nonnull
-  public RetrievalSearchInput addFiltersItem(@Nonnull final RetrievalSearchFilter filtersItem) {
+  public SearchInput addFiltersItem(@Nonnull final RetrievalSearchFilter filtersItem) {
     if (this.filters == null) {
       this.filters = new ArrayList<>();
     }
@@ -104,7 +104,7 @@ public class RetrievalSearchInput
   /**
    * Get filters
    *
-   * @return filters The filters of this {@link RetrievalSearchInput} instance.
+   * @return filters The filters of this {@link SearchInput} instance.
    */
   @Nonnull
   public List<RetrievalSearchFilter> getFilters() {
@@ -112,16 +112,16 @@ public class RetrievalSearchInput
   }
 
   /**
-   * Set the filters of this {@link RetrievalSearchInput} instance.
+   * Set the filters of this {@link SearchInput} instance.
    *
-   * @param filters The filters of this {@link RetrievalSearchInput}
+   * @param filters The filters of this {@link SearchInput}
    */
   public void setFilters(@Nonnull final List<RetrievalSearchFilter> filters) {
     this.filters = filters;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link RetrievalSearchInput}.
+   * Get the names of the unrecognizable properties of the {@link SearchInput}.
    *
    * @return The set of properties names
    */
@@ -132,7 +132,7 @@ public class RetrievalSearchInput
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link RetrievalSearchInput} instance.
+   * Get the value of an unrecognizable property of this {@link SearchInput} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -143,15 +143,14 @@ public class RetrievalSearchInput
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "RetrievalSearchInput has no field with name '" + name + "'.");
+      throw new NoSuchElementException("SearchInput has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link RetrievalSearchInput} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link SearchInput} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -165,8 +164,8 @@ public class RetrievalSearchInput
   }
 
   /**
-   * Set an unrecognizable property of this {@link RetrievalSearchInput} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link SearchInput} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -184,10 +183,10 @@ public class RetrievalSearchInput
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final RetrievalSearchInput retrievalSearchInput = (RetrievalSearchInput) o;
-    return Objects.equals(this.cloudSdkCustomFields, retrievalSearchInput.cloudSdkCustomFields)
-        && Objects.equals(this.query, retrievalSearchInput.query)
-        && Objects.equals(this.filters, retrievalSearchInput.filters);
+    final SearchInput searchInput = (SearchInput) o;
+    return Objects.equals(this.cloudSdkCustomFields, searchInput.cloudSdkCustomFields)
+        && Objects.equals(this.query, searchInput.query)
+        && Objects.equals(this.filters, searchInput.filters);
   }
 
   @Override
@@ -199,7 +198,7 @@ public class RetrievalSearchInput
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class RetrievalSearchInput {\n");
+    sb.append("class SearchInput {\n");
     sb.append("    query: ").append(toIndentedString(query)).append("\n");
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -220,20 +219,20 @@ public class RetrievalSearchInput
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link RetrievalSearchInput}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link SearchInput} instance
+   * with all required arguments.
    */
   public static Builder create() {
-    return (query) -> (filters) -> new RetrievalSearchInput().query(query).filters(filters);
+    return (query) -> (filters) -> new SearchInput().query(query).filters(filters);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the query of this {@link RetrievalSearchInput} instance.
+     * Set the query of this {@link SearchInput} instance.
      *
      * @param query Query string
-     * @return The RetrievalSearchInput builder.
+     * @return The SearchInput builder.
      */
     Builder1 query(@Nonnull final String query);
   }
@@ -241,20 +240,20 @@ public class RetrievalSearchInput
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the filters of this {@link RetrievalSearchInput} instance.
+     * Set the filters of this {@link SearchInput} instance.
      *
-     * @param filters The filters of this {@link RetrievalSearchInput}
-     * @return The RetrievalSearchInput instance.
+     * @param filters The filters of this {@link SearchInput}
+     * @return The SearchInput instance.
      */
-    RetrievalSearchInput filters(@Nonnull final List<RetrievalSearchFilter> filters);
+    SearchInput filters(@Nonnull final List<RetrievalSearchFilter> filters);
 
     /**
-     * Set the filters of this {@link RetrievalSearchInput} instance.
+     * Set the filters of this {@link SearchInput} instance.
      *
-     * @param filters The filters of this {@link RetrievalSearchInput}
-     * @return The RetrievalSearchInput instance.
+     * @param filters The filters of this {@link SearchInput}
+     * @return The SearchInput instance.
      */
-    default RetrievalSearchInput filters(@Nonnull final RetrievalSearchFilter... filters) {
+    default SearchInput filters(@Nonnull final RetrievalSearchFilter... filters) {
       return filters(Arrays.asList(filters));
     }
   }
