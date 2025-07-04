@@ -18,6 +18,7 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.ParseException;
+import org.apache.hc.core5.http.ProtocolException;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 
@@ -33,6 +34,7 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 @RequiredArgsConstructor
 public class ClientResponseHandler<T, E extends ClientException>
     implements HttpClientResponseHandler<T> {
+  public static long time = 0;
   @Nonnull final Class<T> responseType;
   @Nonnull private final Class<? extends ClientError> errorType;
   @Nonnull final BiFunction<String, Throwable, E> exceptionConstructor;
@@ -65,6 +67,12 @@ public class ClientResponseHandler<T, E extends ClientException>
   public T handleResponse(@Nonnull final ClassicHttpResponse response) throws E {
     if (response.getCode() >= 300) {
       buildExceptionAndThrow(response);
+    }
+    try {
+      String value = response.getHeader("x-upstream-service-time").getValue();
+      time += Long.parseLong(value);
+    } catch (ProtocolException e) {
+      throw new RuntimeException(e);
     }
     return parseResponse(response);
   }
