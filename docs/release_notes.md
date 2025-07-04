@@ -24,6 +24,7 @@
 
 - [Orchestration] Added support for [transforming a JSON output into an entity](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#json_schema)
 - [Orchestration] Added new models for `OrchestrationAiModel`: `MISTRAL_SMALL_INSTRUCT`, `GPT_41_MINI`, `GPT_41`, `GPT_41_NANO`
+
 ### 📈 Improvements
 
 -
