@@ -14,10 +14,10 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** DPIEntityConfig */
+/** QueryOption2 */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = DPICustomEntity.class),
-  @JsonSubTypes.Type(value = DPIStandardEntity.class),
+  @JsonSubTypes.Type(value = QueryOption2ByInputParams.class),
+  @JsonSubTypes.Type(value = QueryOption2ByRole.class),
 })
-public interface DPIEntityConfig {}
+public interface QueryOption2 {}

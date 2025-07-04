@@ -23,87 +23,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** OrchestrationConfig */
+/** Configuration for translation module */
 // CHECKSTYLE:OFF
-public class OrchestrationConfig
+public class TranslationModuleConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("modules")
-  private ModuleConfigs modules;
+  @JsonProperty("input")
+  private SAPDocumentTranslationInput input;
 
-  @JsonProperty("stream")
-  private GlobalStreamOptions stream;
+  @JsonProperty("output")
+  private SAPDocumentTranslationOutput output;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for OrchestrationConfig. */
-  protected OrchestrationConfig() {}
+  /** Default constructor for TranslationModuleConfig. */
+  protected TranslationModuleConfig() {}
 
   /**
-   * Set the modules of this {@link OrchestrationConfig} instance and return the same instance.
+   * Set the input of this {@link TranslationModuleConfig} instance and return the same instance.
    *
-   * @param modules The modules of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
+   * @param input The input of this {@link TranslationModuleConfig}
+   * @return The same instance of this {@link TranslationModuleConfig} class
    */
   @Nonnull
-  public OrchestrationConfig modules(@Nonnull final ModuleConfigs modules) {
-    this.modules = modules;
+  public TranslationModuleConfig input(@Nullable final SAPDocumentTranslationInput input) {
+    this.input = input;
     return this;
   }
 
   /**
-   * Get modules
+   * Get input
    *
-   * @return modules The modules of this {@link OrchestrationConfig} instance.
+   * @return input The input of this {@link TranslationModuleConfig} instance.
    */
   @Nonnull
-  public ModuleConfigs getModules() {
-    return modules;
+  public SAPDocumentTranslationInput getInput() {
+    return input;
   }
 
   /**
-   * Set the modules of this {@link OrchestrationConfig} instance.
+   * Set the input of this {@link TranslationModuleConfig} instance.
    *
-   * @param modules The modules of this {@link OrchestrationConfig}
+   * @param input The input of this {@link TranslationModuleConfig}
    */
-  public void setModules(@Nonnull final ModuleConfigs modules) {
-    this.modules = modules;
+  public void setInput(@Nullable final SAPDocumentTranslationInput input) {
+    this.input = input;
   }
 
   /**
-   * Set the stream of this {@link OrchestrationConfig} instance and return the same instance.
+   * Set the output of this {@link TranslationModuleConfig} instance and return the same instance.
    *
-   * @param stream The stream of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
+   * @param output The output of this {@link TranslationModuleConfig}
+   * @return The same instance of this {@link TranslationModuleConfig} class
    */
   @Nonnull
-  public OrchestrationConfig stream(@Nullable final GlobalStreamOptions stream) {
-    this.stream = stream;
+  public TranslationModuleConfig output(@Nullable final SAPDocumentTranslationOutput output) {
+    this.output = output;
     return this;
   }
 
   /**
-   * Get stream
+   * Get output
    *
-   * @return stream The stream of this {@link OrchestrationConfig} instance.
+   * @return output The output of this {@link TranslationModuleConfig} instance.
    */
   @Nonnull
-  public GlobalStreamOptions getStream() {
-    return stream;
+  public SAPDocumentTranslationOutput getOutput() {
+    return output;
   }
 
   /**
-   * Set the stream of this {@link OrchestrationConfig} instance.
+   * Set the output of this {@link TranslationModuleConfig} instance.
    *
-   * @param stream The stream of this {@link OrchestrationConfig}
+   * @param output The output of this {@link TranslationModuleConfig}
    */
-  public void setStream(@Nullable final GlobalStreamOptions stream) {
-    this.stream = stream;
+  public void setOutput(@Nullable final SAPDocumentTranslationOutput output) {
+    this.output = output;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link OrchestrationConfig}.
+   * Get the names of the unrecognizable properties of the {@link TranslationModuleConfig}.
    *
    * @return The set of properties names
    */
@@ -114,7 +114,7 @@ public class OrchestrationConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link OrchestrationConfig} instance.
+   * Get the value of an unrecognizable property of this {@link TranslationModuleConfig} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -126,13 +126,13 @@ public class OrchestrationConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "OrchestrationConfig has no field with name '" + name + "'.");
+          "TranslationModuleConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link OrchestrationConfig} instance including
+   * Get the value of all properties of this {@link TranslationModuleConfig} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -141,13 +141,13 @@ public class OrchestrationConfig
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (modules != null) declaredFields.put("modules", modules);
-    if (stream != null) declaredFields.put("stream", stream);
+    if (input != null) declaredFields.put("input", input);
+    if (output != null) declaredFields.put("output", output);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link OrchestrationConfig} instance. If the map
+   * Set an unrecognizable property of this {@link TranslationModuleConfig} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -166,24 +166,24 @@ public class OrchestrationConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final OrchestrationConfig orchestrationConfig = (OrchestrationConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, orchestrationConfig.cloudSdkCustomFields)
-        && Objects.equals(this.modules, orchestrationConfig.modules)
-        && Objects.equals(this.stream, orchestrationConfig.stream);
+    final TranslationModuleConfig translationModuleConfig = (TranslationModuleConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, translationModuleConfig.cloudSdkCustomFields)
+        && Objects.equals(this.input, translationModuleConfig.input)
+        && Objects.equals(this.output, translationModuleConfig.output);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(modules, stream, cloudSdkCustomFields);
+    return Objects.hash(input, output, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class OrchestrationConfig {\n");
-    sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
-    sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
+    sb.append("class TranslationModuleConfig {\n");
+    sb.append("    input: ").append(toIndentedString(input)).append("\n");
+    sb.append("    output: ").append(toIndentedString(output)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -201,22 +201,8 @@ public class OrchestrationConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link OrchestrationConfig}
-   * instance with all required arguments.
-   */
-  public static Builder create() {
-    return (modules) -> new OrchestrationConfig().modules(modules);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the modules of this {@link OrchestrationConfig} instance.
-     *
-     * @param modules The modules of this {@link OrchestrationConfig}
-     * @return The OrchestrationConfig instance.
-     */
-    OrchestrationConfig modules(@Nonnull final ModuleConfigs modules);
+  /** Create a new {@link TranslationModuleConfig} instance. No arguments are required. */
+  public static TranslationModuleConfig create() {
+    return new TranslationModuleConfig();
   }
 }

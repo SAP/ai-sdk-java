@@ -23,53 +23,54 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ErrorResponse */
+/** EmbeddingsOrchestrationConfig */
 // CHECKSTYLE:OFF
-public class ErrorResponse
+public class EmbeddingsOrchestrationConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("error")
-  private Error error;
+  @JsonProperty("modules")
+  private EmbeddingsModuleConfigs modules;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ErrorResponse. */
-  protected ErrorResponse() {}
+  /** Default constructor for EmbeddingsOrchestrationConfig. */
+  protected EmbeddingsOrchestrationConfig() {}
 
   /**
-   * Set the error of this {@link ErrorResponse} instance and return the same instance.
+   * Set the modules of this {@link EmbeddingsOrchestrationConfig} instance and return the same
+   * instance.
    *
-   * @param error The error of this {@link ErrorResponse}
-   * @return The same instance of this {@link ErrorResponse} class
+   * @param modules The modules of this {@link EmbeddingsOrchestrationConfig}
+   * @return The same instance of this {@link EmbeddingsOrchestrationConfig} class
    */
   @Nonnull
-  public ErrorResponse error(@Nonnull final Error error) {
-    this.error = error;
+  public EmbeddingsOrchestrationConfig modules(@Nonnull final EmbeddingsModuleConfigs modules) {
+    this.modules = modules;
     return this;
   }
 
   /**
-   * Get error
+   * Get modules
    *
-   * @return error The error of this {@link ErrorResponse} instance.
+   * @return modules The modules of this {@link EmbeddingsOrchestrationConfig} instance.
    */
   @Nonnull
-  public Error getError() {
-    return error;
+  public EmbeddingsModuleConfigs getModules() {
+    return modules;
   }
 
   /**
-   * Set the error of this {@link ErrorResponse} instance.
+   * Set the modules of this {@link EmbeddingsOrchestrationConfig} instance.
    *
-   * @param error The error of this {@link ErrorResponse}
+   * @param modules The modules of this {@link EmbeddingsOrchestrationConfig}
    */
-  public void setError(@Nonnull final Error error) {
-    this.error = error;
+  public void setModules(@Nonnull final EmbeddingsModuleConfigs modules) {
+    this.modules = modules;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ErrorResponse}.
+   * Get the names of the unrecognizable properties of the {@link EmbeddingsOrchestrationConfig}.
    *
    * @return The set of properties names
    */
@@ -80,7 +81,8 @@ public class ErrorResponse
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ErrorResponse} instance.
+   * Get the value of an unrecognizable property of this {@link EmbeddingsOrchestrationConfig}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,14 +93,15 @@ public class ErrorResponse
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ErrorResponse has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "EmbeddingsOrchestrationConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ErrorResponse} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link EmbeddingsOrchestrationConfig} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -106,13 +109,14 @@ public class ErrorResponse
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (error != null) declaredFields.put("error", error);
+    if (modules != null) declaredFields.put("modules", modules);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ErrorResponse} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link EmbeddingsOrchestrationConfig} instance. If the
+   * map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -130,22 +134,24 @@ public class ErrorResponse
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ErrorResponse errorResponse = (ErrorResponse) o;
-    return Objects.equals(this.cloudSdkCustomFields, errorResponse.cloudSdkCustomFields)
-        && Objects.equals(this.error, errorResponse.error);
+    final EmbeddingsOrchestrationConfig embeddingsOrchestrationConfig =
+        (EmbeddingsOrchestrationConfig) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, embeddingsOrchestrationConfig.cloudSdkCustomFields)
+        && Objects.equals(this.modules, embeddingsOrchestrationConfig.modules);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(error, cloudSdkCustomFields);
+    return Objects.hash(modules, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ErrorResponse {\n");
-    sb.append("    error: ").append(toIndentedString(error)).append("\n");
+    sb.append("class EmbeddingsOrchestrationConfig {\n");
+    sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -164,21 +170,21 @@ public class ErrorResponse
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ErrorResponse} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * EmbeddingsOrchestrationConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (error) -> new ErrorResponse().error(error);
+    return (modules) -> new EmbeddingsOrchestrationConfig().modules(modules);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the error of this {@link ErrorResponse} instance.
+     * Set the modules of this {@link EmbeddingsOrchestrationConfig} instance.
      *
-     * @param error The error of this {@link ErrorResponse}
-     * @return The ErrorResponse instance.
+     * @param modules The modules of this {@link EmbeddingsOrchestrationConfig}
+     * @return The EmbeddingsOrchestrationConfig instance.
      */
-    ErrorResponse error(@Nonnull final Error error);
+    EmbeddingsOrchestrationConfig modules(@Nonnull final EmbeddingsModuleConfigs modules);
   }
 }
