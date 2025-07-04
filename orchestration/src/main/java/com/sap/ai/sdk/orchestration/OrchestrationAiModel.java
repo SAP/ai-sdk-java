@@ -52,9 +52,9 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel MISTRAL_LARGE_INSTRUCT =
       new OrchestrationAiModel("mistralai--mistral-large-instruct");
 
-  /**MistralAI Mistral Small Instruct model */
-    public static final OrchestrationAiModel MISTRAL_SMALL_INSTRUCT =
-        new OrchestrationAiModel("mistralai--mistral-small-instruct");
+  /** MistralAI Mistral Small Instruct model */
+  public static final OrchestrationAiModel MISTRAL_SMALL_INSTRUCT =
+      new OrchestrationAiModel("mistralai--mistral-small-instruct");
 
   /** MistralAI Mixtral 8x7B Instruct v01 model */
   public static final OrchestrationAiModel MIXTRAL_8X7B_INSTRUCT_V01 =
@@ -145,14 +145,14 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-4 model */
   public static final OrchestrationAiModel GPT_4 = new OrchestrationAiModel("gpt-4");
 
-  /**Azure OpenAI GPT-4.1-mini model */
-    public static final OrchestrationAiModel GPT_4_1_MINI = new OrchestrationAiModel("gpt-4.1-mini");
+  /** Azure OpenAI GPT-4.1-mini model */
+  public static final OrchestrationAiModel GPT_41_MINI = new OrchestrationAiModel("gpt-4.1-mini");
 
-  /**Azure OpenAI GPT-4.1 model */
-    public static final OrchestrationAiModel GPT_4_1 = new OrchestrationAiModel("gpt-4.1");
+  /** Azure OpenAI GPT-4.1 model */
+  public static final OrchestrationAiModel GPT_41 = new OrchestrationAiModel("gpt-4.1");
 
-  /**Azure OpenAI GPT-4.1-nano model */
-    public static final OrchestrationAiModel GPT_4_1_NANO = new OrchestrationAiModel("gpt-4.1-nano");
+  /** Azure OpenAI GPT-4.1-nano model */
+  public static final OrchestrationAiModel GPT_41_NANO = new OrchestrationAiModel("gpt-4.1-nano");
 
   /**
    * Azure OpenAI GPT-4 model
