@@ -65,15 +65,26 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplatePostRequest The value for the parameter promptTemplatePostRequest
+   * @param aiMainTenant (required) Specify a tenant id to use
+   * @param promptTemplatePostRequest (required) The value for the parameter
+   *     promptTemplatePostRequest
+   * @param aiResourceGroup (optional) Specify a resource group id to use
    * @return PromptTemplatePostResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public PromptTemplatePostResponse createUpdatePromptTemplate(
-      @Nonnull final PromptTemplatePostRequest promptTemplatePostRequest)
+      @Nonnull final String aiMainTenant,
+      @Nonnull final PromptTemplatePostRequest promptTemplatePostRequest,
+      @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
     final Object localVarPostBody = promptTemplatePostRequest;
+
+    // verify the required parameter 'aiMainTenant' is set
+    if (aiMainTenant == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiMainTenant' when calling createUpdatePromptTemplate");
+    }
 
     // verify the required parameter 'promptTemplatePostRequest' is set
     if (promptTemplatePostRequest == null) {
@@ -89,6 +100,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
+
+    if (aiMainTenant != null)
+      localVarHeaderParams.add("AI-Main-Tenant", apiClient.parameterToString(aiMainTenant));
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -113,6 +129,30 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
+   * Create or update a prompt template
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>400</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param aiMainTenant Specify a tenant id to use
+   * @param promptTemplatePostRequest The value for the parameter promptTemplatePostRequest
+   * @return PromptTemplatePostResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PromptTemplatePostResponse createUpdatePromptTemplate(
+      @Nonnull final String aiMainTenant,
+      @Nonnull final PromptTemplatePostRequest promptTemplatePostRequest)
+      throws OpenApiRequestException {
+    return createUpdatePromptTemplate(aiMainTenant, promptTemplatePostRequest, null);
+  }
+
+  /**
    * Delete prompt template
    *
    * <p><b>200</b> - Successful response
@@ -123,14 +163,25 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplateId The value for the parameter promptTemplateId
+   * @param aiMainTenant (required) Specify a tenant id to use
+   * @param promptTemplateId (required) The value for the parameter promptTemplateId
+   * @param aiResourceGroup (optional) Specify a resource group id to use
    * @return PromptTemplateDeleteResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PromptTemplateDeleteResponse deletePromptTemplate(@Nonnull final UUID promptTemplateId)
+  public PromptTemplateDeleteResponse deletePromptTemplate(
+      @Nonnull final String aiMainTenant,
+      @Nonnull final UUID promptTemplateId,
+      @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiMainTenant' is set
+    if (aiMainTenant == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiMainTenant' when calling deletePromptTemplate");
+    }
 
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
@@ -151,6 +202,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
+
+    if (aiMainTenant != null)
+      localVarHeaderParams.add("AI-Main-Tenant", apiClient.parameterToString(aiMainTenant));
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -175,6 +231,29 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
+   * Delete prompt template
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param aiMainTenant Specify a tenant id to use
+   * @param promptTemplateId The value for the parameter promptTemplateId
+   * @return PromptTemplateDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PromptTemplateDeleteResponse deletePromptTemplate(
+      @Nonnull final String aiMainTenant, @Nonnull final UUID promptTemplateId)
+      throws OpenApiRequestException {
+    return deletePromptTemplate(aiMainTenant, promptTemplateId, null);
+  }
+
+  /**
    * Export prompt template
    *
    * <p><b>200</b> - Successful response
@@ -183,14 +262,25 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplateId The value for the parameter promptTemplateId
+   * @param aiMainTenant (required) Specify a tenant id to use
+   * @param promptTemplateId (required) The value for the parameter promptTemplateId
+   * @param aiResourceGroup (optional) Specify a resource group id to use
    * @return File
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public File exportPromptTemplate(@Nonnull final UUID promptTemplateId)
+  public File exportPromptTemplate(
+      @Nonnull final String aiMainTenant,
+      @Nonnull final UUID promptTemplateId,
+      @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiMainTenant' is set
+    if (aiMainTenant == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiMainTenant' when calling exportPromptTemplate");
+    }
 
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
@@ -211,6 +301,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
+
+    if (aiMainTenant != null)
+      localVarHeaderParams.add("AI-Main-Tenant", apiClient.parameterToString(aiMainTenant));
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/octet-stream", "application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -235,6 +330,27 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
+   * Export prompt template
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>400</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param aiMainTenant Specify a tenant id to use
+   * @param promptTemplateId The value for the parameter promptTemplateId
+   * @return File
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public File exportPromptTemplate(
+      @Nonnull final String aiMainTenant, @Nonnull final UUID promptTemplateId)
+      throws OpenApiRequestException {
+    return exportPromptTemplate(aiMainTenant, promptTemplateId, null);
+  }
+
+  /**
    * Get prompt template by UUID
    *
    * <p><b>200</b> - Successful response
@@ -245,14 +361,25 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplateId The value for the parameter promptTemplateId
+   * @param aiMainTenant (required) Specify a tenant id to use
+   * @param promptTemplateId (required) The value for the parameter promptTemplateId
+   * @param aiResourceGroup (optional) Specify a resource group id to use
    * @return PromptTemplateGetResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PromptTemplateGetResponse getPromptTemplateByUuid(@Nonnull final UUID promptTemplateId)
+  public PromptTemplateGetResponse getPromptTemplateByUuid(
+      @Nonnull final String aiMainTenant,
+      @Nonnull final UUID promptTemplateId,
+      @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiMainTenant' is set
+    if (aiMainTenant == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiMainTenant' when calling getPromptTemplateByUuid");
+    }
 
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
@@ -273,6 +400,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
+
+    if (aiMainTenant != null)
+      localVarHeaderParams.add("AI-Main-Tenant", apiClient.parameterToString(aiMainTenant));
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -297,6 +429,29 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
+   * Get prompt template by UUID
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>400</b> - Bad Request
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param aiMainTenant Specify a tenant id to use
+   * @param promptTemplateId The value for the parameter promptTemplateId
+   * @return PromptTemplateGetResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PromptTemplateGetResponse getPromptTemplateByUuid(
+      @Nonnull final String aiMainTenant, @Nonnull final UUID promptTemplateId)
+      throws OpenApiRequestException {
+    return getPromptTemplateByUuid(aiMainTenant, promptTemplateId, null);
+  }
+
+  /**
    * Import prompt template
    *
    * <p><b>200</b> - Successful response
@@ -305,14 +460,25 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
+   * @param aiMainTenant (required) Specify a tenant id to use
+   * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param _file (optional) The value for the parameter _file
    * @return PromptTemplatePostResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PromptTemplatePostResponse importPromptTemplate(@Nullable final File _file)
+  public PromptTemplatePostResponse importPromptTemplate(
+      @Nonnull final String aiMainTenant,
+      @Nullable final String aiResourceGroup,
+      @Nullable final File _file)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiMainTenant' is set
+    if (aiMainTenant == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiMainTenant' when calling importPromptTemplate");
+    }
 
     final String localVarPath =
         UriComponentsBuilder.fromPath("/lm/promptTemplates/import").build().toUriString();
@@ -322,6 +488,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
+
+    if (aiMainTenant != null)
+      localVarHeaderParams.add("AI-Main-Tenant", apiClient.parameterToString(aiMainTenant));
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
 
     if (_file != null) localVarFormParams.add("file", new FileSystemResource(_file));
 
@@ -356,12 +527,14 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
+   * @param aiMainTenant Specify a tenant id to use
    * @return PromptTemplatePostResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PromptTemplatePostResponse importPromptTemplate() throws OpenApiRequestException {
-    return importPromptTemplate(null);
+  public PromptTemplatePostResponse importPromptTemplate(@Nonnull final String aiMainTenant)
+      throws OpenApiRequestException {
+    return importPromptTemplate(aiMainTenant, null, null);
   }
 
   /**
@@ -375,17 +548,29 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param scenario The value for the parameter scenario
-   * @param version The value for the parameter version
-   * @param name The value for the parameter name
+   * @param aiMainTenant (required) Specify a tenant id to use
+   * @param scenario (required) The value for the parameter scenario
+   * @param version (required) The value for the parameter version
+   * @param name (required) The value for the parameter name
+   * @param aiResourceGroup (optional) Specify a resource group id to use
    * @return PromptTemplateListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public PromptTemplateListResponse listPromptTemplateHistory(
-      @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
+      @Nonnull final String aiMainTenant,
+      @Nonnull final String scenario,
+      @Nonnull final String version,
+      @Nonnull final String name,
+      @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiMainTenant' is set
+    if (aiMainTenant == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiMainTenant' when calling listPromptTemplateHistory");
+    }
 
     // verify the required parameter 'scenario' is set
     if (scenario == null) {
@@ -422,6 +607,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
 
+    if (aiMainTenant != null)
+      localVarHeaderParams.add("AI-Main-Tenant", apiClient.parameterToString(aiMainTenant));
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
@@ -445,6 +635,34 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
+   * List prompt template history
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>400</b> - Bad Request
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param aiMainTenant Specify a tenant id to use
+   * @param scenario The value for the parameter scenario
+   * @param version The value for the parameter version
+   * @param name The value for the parameter name
+   * @return PromptTemplateListResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PromptTemplateListResponse listPromptTemplateHistory(
+      @Nonnull final String aiMainTenant,
+      @Nonnull final String scenario,
+      @Nonnull final String version,
+      @Nonnull final String name)
+      throws OpenApiRequestException {
+    return listPromptTemplateHistory(aiMainTenant, scenario, version, name, null);
+  }
+
+  /**
    * List prompt templates
    *
    * <p><b>200</b> - Successful response
@@ -455,6 +673,8 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
+   * @param aiMainTenant (required) Specify a tenant id to use
+   * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param scenario (optional) The value for the parameter scenario
    * @param name (optional) The value for the parameter name
    * @param version (optional) The value for the parameter version
@@ -465,6 +685,8 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    */
   @Nonnull
   public PromptTemplateListResponse listPromptTemplates(
+      @Nonnull final String aiMainTenant,
+      @Nullable final String aiResourceGroup,
       @Nullable final String scenario,
       @Nullable final String name,
       @Nullable final String version,
@@ -472,6 +694,12 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
       @Nullable final Boolean includeSpec)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
+
+    // verify the required parameter 'aiMainTenant' is set
+    if (aiMainTenant == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiMainTenant' when calling listPromptTemplates");
+    }
 
     final String localVarPath =
         UriComponentsBuilder.fromPath("/lm/promptTemplates").build().toUriString();
@@ -489,6 +717,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     localVarQueryParams.putAll(
         apiClient.parameterToMultiValueMap(null, "includeSpec", includeSpec));
 
+    if (aiMainTenant != null)
+      localVarHeaderParams.add("AI-Main-Tenant", apiClient.parameterToString(aiMainTenant));
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
@@ -522,12 +755,14 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
+   * @param aiMainTenant Specify a tenant id to use
    * @return PromptTemplateListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PromptTemplateListResponse listPromptTemplates() throws OpenApiRequestException {
-    return listPromptTemplates(null, null, null, null, null);
+  public PromptTemplateListResponse listPromptTemplates(@Nonnull final String aiMainTenant)
+      throws OpenApiRequestException {
+    return listPromptTemplates(aiMainTenant, null, null, null, null, null, null);
   }
 
   /**
@@ -541,7 +776,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
+   * @param aiMainTenant (required) Specify a tenant id to use
    * @param promptTemplateId (required) The value for the parameter promptTemplateId
+   * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param metadata (optional, default to false) The value for the parameter metadata
    * @param promptTemplateSubstitutionRequest (optional) The value for the parameter
    *     promptTemplateSubstitutionRequest
@@ -550,11 +787,19 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    */
   @Nonnull
   public PromptTemplateSubstitutionResponse parsePromptTemplateById(
+      @Nonnull final String aiMainTenant,
       @Nonnull final UUID promptTemplateId,
+      @Nullable final String aiResourceGroup,
       @Nullable final Boolean metadata,
       @Nullable final PromptTemplateSubstitutionRequest promptTemplateSubstitutionRequest)
       throws OpenApiRequestException {
     final Object localVarPostBody = promptTemplateSubstitutionRequest;
+
+    // verify the required parameter 'aiMainTenant' is set
+    if (aiMainTenant == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiMainTenant' when calling parsePromptTemplateById");
+    }
 
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
@@ -577,6 +822,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
         new LinkedMultiValueMap<String, Object>();
 
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "metadata", metadata));
+
+    if (aiMainTenant != null)
+      localVarHeaderParams.add("AI-Main-Tenant", apiClient.parameterToString(aiMainTenant));
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -611,14 +861,16 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
+   * @param aiMainTenant Specify a tenant id to use
    * @param promptTemplateId The value for the parameter promptTemplateId
    * @return PromptTemplateSubstitutionResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public PromptTemplateSubstitutionResponse parsePromptTemplateById(
-      @Nonnull final UUID promptTemplateId) throws OpenApiRequestException {
-    return parsePromptTemplateById(promptTemplateId, null, null);
+      @Nonnull final String aiMainTenant, @Nonnull final UUID promptTemplateId)
+      throws OpenApiRequestException {
+    return parsePromptTemplateById(aiMainTenant, promptTemplateId, null, null, null);
   }
 
   /**
@@ -632,9 +884,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
+   * @param aiMainTenant (required) Specify a tenant id to use
    * @param scenario (required) The value for the parameter scenario
    * @param version (required) The value for the parameter version
    * @param name (required) The value for the parameter name
+   * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param metadata (optional, default to false) The value for the parameter metadata
    * @param promptTemplateSubstitutionRequest (optional) The value for the parameter
    *     promptTemplateSubstitutionRequest
@@ -643,13 +897,21 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    */
   @Nonnull
   public PromptTemplateSubstitutionResponse parsePromptTemplateByNameVersion(
+      @Nonnull final String aiMainTenant,
       @Nonnull final String scenario,
       @Nonnull final String version,
       @Nonnull final String name,
+      @Nullable final String aiResourceGroup,
       @Nullable final Boolean metadata,
       @Nullable final PromptTemplateSubstitutionRequest promptTemplateSubstitutionRequest)
       throws OpenApiRequestException {
     final Object localVarPostBody = promptTemplateSubstitutionRequest;
+
+    // verify the required parameter 'aiMainTenant' is set
+    if (aiMainTenant == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiMainTenant' when calling parsePromptTemplateByNameVersion");
+    }
 
     // verify the required parameter 'scenario' is set
     if (scenario == null) {
@@ -688,6 +950,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
 
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "metadata", metadata));
 
+    if (aiMainTenant != null)
+      localVarHeaderParams.add("AI-Main-Tenant", apiClient.parameterToString(aiMainTenant));
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
@@ -721,6 +988,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
+   * @param aiMainTenant Specify a tenant id to use
    * @param scenario The value for the parameter scenario
    * @param version The value for the parameter version
    * @param name The value for the parameter name
@@ -729,8 +997,12 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    */
   @Nonnull
   public PromptTemplateSubstitutionResponse parsePromptTemplateByNameVersion(
-      @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
+      @Nonnull final String aiMainTenant,
+      @Nonnull final String scenario,
+      @Nonnull final String version,
+      @Nonnull final String name)
       throws OpenApiRequestException {
-    return parsePromptTemplateByNameVersion(scenario, version, name, null, null);
+    return parsePromptTemplateByNameVersion(
+        aiMainTenant, scenario, version, name, null, null, null);
   }
 }
