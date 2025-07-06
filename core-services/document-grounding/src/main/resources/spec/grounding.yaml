@@ -44,6 +44,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.create_pipeline
       summary: Pipeline Creation
       description: 'Create a pipeline'
+      x-sap-cloud-sdk-operation-name: createPipeline
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -82,6 +83,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.get_all_pipeline
       summary: Get Pipelines
       description: 'Get all pipelines'
+      x-sap-cloud-sdk-operation-name: getAllPipelines
       responses:
         '200':
           description: Returns all pipelines for the tenant.
@@ -98,6 +100,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_by_id
       summary: Get details of a Pipeline
       description: 'Get details of a pipeline by pipeline id'
+      x-sap-cloud-sdk-operation-name: getPipelineDetailsById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -126,6 +129,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.delete_pipeline_by_id
       summary: Delete pipeline
       description: 'Delete a pipeline by pipeline id'
+      x-sap-cloud-sdk-operation-name: deletePipelineById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -151,6 +155,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_status
       summary: Get status of Pipeline
       description: 'Get pipeline status by pipeline id'
+      x-sap-cloud-sdk-operation-name: getPipelineStatusById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -183,6 +188,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_executions
       summary: Get Pipeline Executions
       description: Retrieve all executions for a specific pipeline. Optionally, filter to get only the last execution.
+      x-sap-cloud-sdk-operation-name: getAllExecutionsForPipeline
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -220,6 +226,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_execution_by_id
       summary: Get Pipeline Execution by ID
       description: Retrieve details of a specific pipeline execution by its execution ID.
+      x-sap-cloud-sdk-operation-name: getExecutionDetailsByIdForPipelineExecution
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -254,6 +261,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_execution_documents
       summary: Get Documents for a Pipeline Execution
       description: Retrieve all documents associated with a specific pipeline execution. Optionally, filter the results using query parameters.
+      x-sap-cloud-sdk-operation-name: getDocumentsForPipelineExecution
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -291,6 +299,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_execution_document_by_id
       summary: Get Document by ID for a Pipeline Execution
       description: Retrieve details of a specific document associated with a pipeline execution.
+      x-sap-cloud-sdk-operation-name: getDocumentByIdForPipelineExecution
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -331,6 +340,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_documents
       summary: Get Documents for a Pipeline
       description: Retrieve all documents associated with a specific pipeline. Optionally, filter the results using query parameters.
+      x-sap-cloud-sdk-operation-name: getAllDocumentsForPipeline
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -362,6 +372,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_document_by_id
       summary: Get Document by ID for a Pipeline
       description: Retrieve details of a specific document associated with a pipeline.
+      x-sap-cloud-sdk-operation-name: getDocumentByIdForPipeline
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -406,6 +417,7 @@ paths:
       summary: Get collections
       description: Gets a list of collections.
       operationId: vector.v1.vector_endpoints.get_all_collections
+      x-sap-cloud-sdk-operation-name: getAllCollections
       responses:
         '200':
           description: Successful Response
@@ -428,6 +440,7 @@ paths:
       summary: Create collection
       description: Creates a collection. This operation is asynchronous. Poll the collection resource and check the status field to understand creation status.
       operationId: vector.v1.vector_endpoints.create_collection
+      x-sap-cloud-sdk-operation-name: createCollection
       requestBody:
         content:
           application/json:
@@ -455,6 +468,7 @@ paths:
       summary: Get collection by ID
       description: Gets a specific collection by ID.
       operationId: vector.v1.vector_endpoints.get_collection_by_id
+      x-sap-cloud-sdk-operation-name: getCollectionById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -489,6 +503,7 @@ paths:
       summary: Delete collection by ID
       description: Deletes a specific collection by ID. This operation is asynchronous. Poll the collection for a 404 status code.
       operationId: vector.v1.vector_endpoints.delete_collection
+      x-sap-cloud-sdk-operation-name: deleteCollectionById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -525,6 +540,7 @@ paths:
       summary: Get document by ID
       description: Gets a specific document in a collection by ID.
       operationId: vector.v1.vector_endpoints.get_document_by_id
+      x-sap-cloud-sdk-operation-name: getDocumentByIdForCollection
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -567,6 +583,7 @@ paths:
       summary: Delete a document
       description: Deletes a specific document of a collection.
       operationId: vector.v1.vector_endpoints.delete_document
+      x-sap-cloud-sdk-operation-name: deleteCollectionById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -606,6 +623,7 @@ paths:
       summary: Get documents
       description: Gets a list of documents of a collection.
       operationId: vector.v1.vector_endpoints.get_all_documents
+      x-sap-cloud-sdk-operation-name: getDocumentsByCollectionId
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -643,6 +661,7 @@ paths:
       summary: Create documents in collection
       description: Create and stores one or multiple documents into a collection. If omitted, 'id' will be auto-generated.
       operationId: vector.v1.vector_endpoints.create_documents
+      x-sap-cloud-sdk-operation-name: createCollectionDocuments
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -683,6 +702,7 @@ paths:
       summary: Upsert documents in collection
       description: Upserts the data of multiple documents into a collection.
       operationId: vector.v1.vector_endpoints.update_documents
+      x-sap-cloud-sdk-operation-name: insertOrUpdateDocumentsInCollection
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -731,6 +751,7 @@ paths:
       summary: Search chunk by vector
       description: Search chunks
       operationId: vector.v1.vector_endpoints.search_chunk
+      x-sap-cloud-sdk-operation-name: vectorSearchByChunk
       requestBody:
         content:
           application/json:
@@ -757,6 +778,7 @@ paths:
       summary: Get collection status by ID
       description: Gets a specific collection status from monitor by ID.
       operationId: vector.v1.vector_endpoints.get_collection_creation_status
+      x-sap-cloud-sdk-operation-name: getCollectionStatus
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -842,6 +864,7 @@ paths:
       summary: List all DataRepository objects.
       description: List all Data Repositories
       operationId: retrieval.v1.retrieval_endpoints.get_data_repositories
+      x-sap-cloud-sdk-operation-name: getDataRepositories
       responses:
         '200':
           description: Successful Response
@@ -858,6 +881,7 @@ paths:
       summary: List single DataRepository object.
       description: List data repository by id
       operationId: retrieval.v1.retrieval_endpoints.get_data_repository
+      x-sap-cloud-sdk-operation-name: getDataRepositoryById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -1225,6 +1249,7 @@ components:
         - REINDEXED
         - DEINDEXED
         - FAILED
+        - FAILED_TO_BE_RETRIED
       example: 'INDEXED'
 
     DocumentsStatusResponse:
