@@ -326,7 +326,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.0</version>
         <configuration>
           <fail>true</fail>
           <skip>${enforcer.skip}</skip>
@@ -889,7 +889,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-gpg-plugin</artifactId>
-              <version>3.2.7</version>
+              <version>3.2.8</version>
               <executions>
                 <execution>
                   <id>sign-artifacts</id>
