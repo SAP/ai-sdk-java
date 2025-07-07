@@ -20,10 +20,9 @@ import com.sap.ai.sdk.grounding.model.DocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.DocumentWithoutChunks;
 import com.sap.ai.sdk.grounding.model.EmbeddingConfig;
 import com.sap.ai.sdk.grounding.model.KeyValueListPair;
-import com.sap.ai.sdk.grounding.model.Pipeline;
+import com.sap.ai.sdk.grounding.model.RetrievalSearchConfiguration;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchFilter;
-import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
-import com.sap.ai.sdk.grounding.model.SearchConfiguration;
+import com.sap.ai.sdk.grounding.model.SearchInput;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunk;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import java.time.format.TextStyle;
@@ -64,7 +63,8 @@ class GroundingController {
     if ("json".equals(format)) {
       return pipelines;
     }
-    final var ids = pipelines.getResources().stream().map(Pipeline::getId).collect(joining(", "));
+    final var ids = List.of();
+    // pipelines.getResources().stream().map(getPipeline::getId).collect(joining(", "));
     return "Found pipelines with ids: " + ids;
   }
 
@@ -92,8 +92,8 @@ class GroundingController {
             .id("question")
             .dataRepositoryType(DataRepositoryType.VECTOR)
             .dataRepositories(List.of("*"))
-            .searchConfiguration(SearchConfiguration.create().maxChunkCount(10));
-    final var q = RetrievalSearchInput.create().query("When was the last upload?").filters(filter);
+            .searchConfiguration(RetrievalSearchConfiguration.create().maxChunkCount(10));
+    final var q = SearchInput.create().query("When was the last upload?").filters(filter);
     final var results = CLIENT_RETRIEVAL.search(RESOURCE_GROUP, q);
 
     if ("json".equals(format)) {
@@ -102,7 +102,7 @@ class GroundingController {
     final var messages =
         results.getResults().stream()
             .flatMap(resultsInner1 -> resultsInner1.getResults().stream())
-            .flatMap(result -> result.getDataRepository().getDocuments().stream())
+            .flatMap(result -> result.getDocuments().stream())
             .flatMap(dataRepositorySearchResult -> dataRepositorySearchResult.getChunks().stream())
             .map(Chunk::getContent)
             .toList();
@@ -127,7 +127,7 @@ class GroundingController {
   Object getDocumentsByCollectionId(
       @Nonnull @PathVariable("id") final UUID collectionId,
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var documents = CLIENT_VECTOR.getAllDocuments(RESOURCE_GROUP, collectionId);
+    final var documents = CLIENT_VECTOR.getDocumentsByCollectionId(RESOURCE_GROUP, collectionId);
     if ("json".equals(format)) {
       return documents;
     }
@@ -162,7 +162,8 @@ class GroundingController {
     final var docMeta = DocumentKeyValueListPair.create().key("purpose").value("testing");
     final var doc = BaseDocument.create().chunks(chunk).metadata(docMeta);
     final var request = DocumentCreateRequest.create().documents(doc);
-    final var response = CLIENT_VECTOR.createDocuments(RESOURCE_GROUP, collectionId, request);
+    final var response =
+        CLIENT_VECTOR.createCollectionDocuments(RESOURCE_GROUP, collectionId, request);
 
     if ("json".equals(format)) {
       return response;
@@ -184,12 +185,12 @@ class GroundingController {
     final var doc = BaseDocument.create().chunks(chunk).metadata(docMeta);
     final var request = DocumentCreateRequest.create().documents(doc);
 
-    final var documents = CLIENT_VECTOR.getAllDocuments(RESOURCE_GROUP, collectionId);
+    final var documents = CLIENT_VECTOR.getDocumentsByCollectionId(RESOURCE_GROUP, collectionId);
     final var ids = documents.getResources().stream().map(DocumentWithoutChunks::getId).toList();
     log.info("Deleting collection {} with {} documents: {}", collectionId, ids.size(), ids);
 
     for (final var documentId : ids) {
-      final var del = CLIENT_VECTOR.deleteDocumentById(RESOURCE_GROUP, collectionId, documentId);
+      final var del = CLIENT_VECTOR.deleteCollectionById(RESOURCE_GROUP, collectionId, documentId);
       if (del.getStatusCode() >= 400) {
         final var msg = "Document {} could not be deleted, status code [{}], headers: {}";
         log.error(msg, documentId, del.getStatusCode(), del.getHeaders());
@@ -209,7 +210,8 @@ class GroundingController {
       @Nonnull @PathVariable("collectionId") final UUID collectionId,
       @Nonnull @PathVariable("documentId") final UUID documentId,
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var document = CLIENT_VECTOR.getDocumentById(RESOURCE_GROUP, collectionId, documentId);
+    final var document =
+        CLIENT_VECTOR.getDocumentByIdForCollection(RESOURCE_GROUP, collectionId, documentId);
     if ("json".equals(format)) {
       return document;
     }
