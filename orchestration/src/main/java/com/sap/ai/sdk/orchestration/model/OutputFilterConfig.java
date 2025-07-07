@@ -14,10 +14,10 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** TemplatingModuleConfig */
+/** OutputFilterConfig */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = Template.class),
-  @JsonSubTypes.Type(value = TemplateRef.class),
+  @JsonSubTypes.Type(value = AzureContentSafetyOutputFilterConfig.class),
+  @JsonSubTypes.Type(value = LlamaGuard38bFilterConfig.class),
 })
-public interface TemplatingModuleConfig {}
+public interface OutputFilterConfig {}

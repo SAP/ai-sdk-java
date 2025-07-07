@@ -14,10 +14,13 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** DPIEntityConfig */
+/**
+ * The prompt template to be used. Can be either a user defined template or a reference to a
+ * template in the prompt registry.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = DPICustomEntity.class),
-  @JsonSubTypes.Type(value = DPIStandardEntity.class),
+  @JsonSubTypes.Type(value = Template.class),
+  @JsonSubTypes.Type(value = TemplateRef.class),
 })
-public interface DPIEntityConfig {}
+public interface PromptTemplatingModuleConfigPrompt {}

@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 
 /** Template */
 // CHECKSTYLE:OFF
-public class Template implements TemplatingModuleConfig
+public class Template implements PromptTemplatingModuleConfigPrompt
 // CHECKSTYLE:ON
 {
   @JsonProperty("template")

@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 /** TemplateRef */
 // CHECKSTYLE:OFF
-public class TemplateRef implements TemplatingModuleConfig
+public class TemplateRef implements PromptTemplatingModuleConfigPrompt
 // CHECKSTYLE:ON
 {
   @JsonProperty("template_ref")
