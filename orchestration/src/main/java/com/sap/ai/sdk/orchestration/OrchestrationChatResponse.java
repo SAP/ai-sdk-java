@@ -45,9 +45,9 @@ public class OrchestrationChatResponse {
       final var filterDetails =
           (Map<String, Object>)
               getOriginalResponse().getModuleResults().getOutputFiltering().getData();
-      throw new OrchestrationFilterException(
+
+      throw new OrchestrationFilterException.OrchestrationOutputFilterException(
           "Content filtered out due to policy restrictions in the output filtering module.",
-          OrchestrationFilterException.FilterLocation.INPUT_FILTER,
           filterDetails);
     }
     return choice.getMessage().getContent();

@@ -3,26 +3,25 @@ package com.sap.ai.sdk.orchestration;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.Getter;
+import lombok.experimental.StandardException;
 
+@StandardException
 public class OrchestrationFilterException extends OrchestrationClientException {
 
-  @Getter @Nonnull private final FilterLocation location;
-  @Getter @Nonnull private final Map<String, Object> filterDetails;
+  @Getter @Nonnull protected Map<String, Object> filterDetails;
 
-  public enum FilterLocation {
-    INPUT_FILTER,
-    OUTPUT_FILTER
+  public static class OrchestrationInputFilterException extends OrchestrationFilterException {
+    OrchestrationInputFilterException(
+        String message, Throwable cause, Map<String, Object> filterDetails) {
+      super(message, cause);
+      this.filterDetails = filterDetails;
+    }
   }
 
-  public OrchestrationFilterException(
-      String message, Throwable cause, FilterLocation location, Map<String, Object> filterDetails) {
-    super(message, cause);
-    this.location = location;
-    this.filterDetails = filterDetails;
-  }
-
-  public OrchestrationFilterException(
-      String message, FilterLocation location, Map<String, Object> filterDetails) {
-    this(message, null, location, filterDetails);
+  public static class OrchestrationOutputFilterException extends OrchestrationFilterException {
+    OrchestrationOutputFilterException(String message, Map<String, Object> filterDetails) {
+      super(message);
+      this.filterDetails = filterDetails;
+    }
   }
 }

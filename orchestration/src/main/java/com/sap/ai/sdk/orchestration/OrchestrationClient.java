@@ -241,10 +241,9 @@ public class OrchestrationClient {
         final var filerDetails =
             (Map<String, Object>)
                 clientError.getOriginalResponse().getModuleResults().getInputFiltering().getData();
-        throw new OrchestrationFilterException(
+        throw new OrchestrationFilterException.OrchestrationInputFilterException(
             "Content filtered out due to policy restrictions in the input filtering module.",
-            e.getCause(),
-            OrchestrationFilterException.FilterLocation.INPUT_FILTER,
+            e,
             filerDetails);
       }
       throw e;
@@ -299,6 +298,22 @@ public class OrchestrationClient {
           .handleStreamingResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
       throw new OrchestrationClientException("Request to the Orchestration service failed", e);
+    } catch (OrchestrationClientException e) {
+      if (e.getClientError() instanceof OrchestrationError clientError
+          && clientError
+              .getOriginalResponse()
+              .getLocation()
+              .equals("Filtering Module - Input Filter")) {
+
+        final var filerDetails =
+            (Map<String, Object>)
+                clientError.getOriginalResponse().getModuleResults().getInputFiltering().getData();
+        throw new OrchestrationFilterException.OrchestrationInputFilterException(
+            "Content filtered out due to policy restrictions in the input filtering module.",
+            e,
+            filerDetails);
+      }
+      throw e;
     }
   }
 }
