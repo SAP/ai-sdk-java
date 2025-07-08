@@ -592,4 +592,17 @@ public class OrchestrationService {
 
     return client.chatCompletion(prompt, configWithTranslation);
   }
+
+  @Nonnull
+  public OrchestrationChatResponse convenientInputFiltering(AzureFilterThreshold policy) {
+    val prompt =
+        new OrchestrationPrompt(
+            "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operation in-charge.");
+    val filterConfig =
+        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+
+    val configWithFilter = config.withInputFiltering(filterConfig);
+
+    return client.chatCompletion(prompt, configWithFilter);
+  }
 }

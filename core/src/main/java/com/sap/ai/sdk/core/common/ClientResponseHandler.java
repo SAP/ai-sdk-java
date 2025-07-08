@@ -145,8 +145,13 @@ public class ClientResponseHandler<T, E extends ClientException>
       throw baseException;
     }
 
-    val error = Objects.requireNonNullElse(maybeError.get().getMessage(), "");
-    val message = "%s and error message: '%s'".formatted(baseException.getMessage(), error);
-    throw exceptionConstructor.apply(message, baseException);
+    val clientError = maybeError.get();
+    val errorMessage = Objects.requireNonNullElse(clientError.getMessage(), "");
+    val finalMessage =
+        "%s and error message: '%s'".formatted(baseException.getMessage(), errorMessage);
+    val finalException = exceptionConstructor.apply(finalMessage, baseException);
+    finalException.setClientError(clientError);
+
+    throw finalException;
   }
 }

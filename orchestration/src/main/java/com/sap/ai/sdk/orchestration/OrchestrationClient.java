@@ -230,6 +230,18 @@ public class OrchestrationClient {
         | HttpClientInstantiationException
         | IOException e) {
       throw new OrchestrationClientException("Failed to execute request", e);
+    } catch (OrchestrationClientException e) {
+      if (e.getClientError() instanceof OrchestrationError clientError
+          && clientError
+              .getOriginalResponse()
+              .getLocation()
+              .equals("Filtering Module - Input Filter")) {
+        throw new OrchestrationFilterException(
+            "Content filtered out due to policy restrictions in the filtering module.",
+            e,
+            clientError);
+      }
+      throw e;
     }
   }
 

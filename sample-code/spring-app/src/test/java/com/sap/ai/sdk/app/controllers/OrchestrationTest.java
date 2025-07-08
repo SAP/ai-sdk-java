@@ -14,6 +14,7 @@ import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
@@ -433,5 +434,19 @@ class OrchestrationTest {
     assertThat(outputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage()).isEqualTo("Input to LLM is translated successfully.");
     assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
+  }
+
+  @Test
+  void testConvenientFiltering() {
+
+    try {
+      var response = service.convenientInputFiltering(AzureFilterThreshold.ALLOW_SAFE);
+
+      assertThat(response).isNotNull();
+    } catch (OrchestrationFilterException e) {
+      log.error(e.getMessage());
+      log.error(e.getFilteringReason().toString());
+      throw e;
+    }
   }
 }
