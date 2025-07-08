@@ -17,6 +17,7 @@ import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
 import com.sap.ai.sdk.orchestration.model.UserChatMessage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -34,14 +35,20 @@ public class OrchestrationChatResponse {
    * <p>Note: If there are multiple choices only the first one is returned
    *
    * @return the message content or empty string.
-   * @throws OrchestrationClientException if the content filter filtered the output.
+   * @throws OrchestrationFilterException if the content filter filtered the output.
    */
   @Nonnull
-  public String getContent() throws OrchestrationClientException {
+  public String getContent() throws OrchestrationFilterException {
     final var choice = getChoice();
 
     if ("content_filter".equals(choice.getFinishReason())) {
-      throw new OrchestrationClientException("Content filter filtered the output.");
+      final var filterDetails =
+          (Map<String, Object>)
+              getOriginalResponse().getModuleResults().getOutputFiltering().getData();
+      throw new OrchestrationFilterException(
+          "Content filtered out due to policy restrictions in the output filtering module.",
+          OrchestrationFilterException.FilterLocation.INPUT_FILTER,
+          filterDetails);
     }
     return choice.getMessage().getContent();
   }

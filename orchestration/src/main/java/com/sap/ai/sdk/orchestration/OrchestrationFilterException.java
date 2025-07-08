@@ -1,44 +1,28 @@
 package com.sap.ai.sdk.orchestration;
 
 import java.util.Map;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import lombok.Getter;
-import lombok.experimental.StandardException;
 
-@StandardException
 public class OrchestrationFilterException extends OrchestrationClientException {
 
-  @Getter @Nullable private FilterLocation location;
+  @Getter @Nonnull private final FilterLocation location;
+  @Getter @Nonnull private final Map<String, Object> filterDetails;
 
-  enum FilterLocation {
+  public enum FilterLocation {
     INPUT_FILTER,
     OUTPUT_FILTER
   }
 
   public OrchestrationFilterException(
-      String message, Throwable cause, OrchestrationError clientError) {
+      String message, Throwable cause, FilterLocation location, Map<String, Object> filterDetails) {
     super(message, cause);
-    this.clientError = clientError;
-
-    if (clientError.getOriginalResponse().getLocation().equals("Filtering Module - Input Filter")) {
-      this.location = FilterLocation.INPUT_FILTER;
-    } else {
-      this.location = FilterLocation.OUTPUT_FILTER;
-    }
+    this.location = location;
+    this.filterDetails = filterDetails;
   }
 
-  @Nullable
-  public Map<String, Object> getFilteringReason() {
-    if (getClientError() != null) {
-      var moduleResult =
-          ((OrchestrationError) getClientError()).getOriginalResponse().getModuleResults();
-
-      if (this.location == FilterLocation.INPUT_FILTER) {
-        return (Map<String, Object>) moduleResult.getInputFiltering().getData();
-      } else {
-        return (Map<String, Object>) moduleResult.getOutputFiltering().getData();
-      }
-    }
-    return null;
+  public OrchestrationFilterException(
+      String message, FilterLocation location, Map<String, Object> filterDetails) {
+    this(message, null, location, filterDetails);
   }
 }

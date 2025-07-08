@@ -22,6 +22,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessE
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstantiationException;
 import java.io.IOException;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -236,10 +237,15 @@ public class OrchestrationClient {
               .getOriginalResponse()
               .getLocation()
               .equals("Filtering Module - Input Filter")) {
+
+        final var filerDetails =
+            (Map<String, Object>)
+                clientError.getOriginalResponse().getModuleResults().getInputFiltering().getData();
         throw new OrchestrationFilterException(
-            "Content filtered out due to policy restrictions in the filtering module.",
-            e,
-            clientError);
+            "Content filtered out due to policy restrictions in the input filtering module.",
+            e.getCause(),
+            OrchestrationFilterException.FilterLocation.INPUT_FILTER,
+            filerDetails);
       }
       throw e;
     }

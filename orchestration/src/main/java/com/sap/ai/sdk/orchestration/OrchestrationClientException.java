@@ -1,10 +1,25 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.core.common.ClientException;
-import lombok.Getter;
 import lombok.experimental.StandardException;
 
 /** Exception thrown by the {@link OrchestrationClient} in case of an error. */
 @StandardException
-@Getter
-public class OrchestrationClientException extends ClientException {}
+public class OrchestrationClientException extends ClientException {
+    public OrchestrationClientException() {
+        this(null, null);
+    }
+    
+    public OrchestrationClientException(final String message) {
+        this(message, null);
+    }
+    
+    public OrchestrationClientException(final Throwable cause) {
+        this(cause != null ? cause.getMessage() : null, cause);
+    }
+    
+    public OrchestrationClientException(final String message, final Throwable cause) {
+        super(message);
+        if (cause != null) super.initCause(cause);
+    }
+}

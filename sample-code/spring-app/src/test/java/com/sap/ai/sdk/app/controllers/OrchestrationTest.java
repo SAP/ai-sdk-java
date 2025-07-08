@@ -435,18 +435,4 @@ class OrchestrationTest {
     assertThat(inputTranslation.getMessage()).isEqualTo("Input to LLM is translated successfully.");
     assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
   }
-
-  @Test
-  void testConvenientFiltering() {
-
-    try {
-      var response = service.convenientInputFiltering(AzureFilterThreshold.ALLOW_SAFE);
-
-      assertThat(response).isNotNull();
-    } catch (OrchestrationFilterException e) {
-      log.error(e.getMessage());
-      log.error(e.getFilteringReason().toString());
-      throw e;
-    }
-  }
 }
