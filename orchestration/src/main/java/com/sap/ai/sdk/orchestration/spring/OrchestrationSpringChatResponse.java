@@ -48,8 +48,8 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
   static Generation toGeneration(@Nonnull final LLMChoice choice) {
     val metadata = ChatGenerationMetadata.builder().finishReason(choice.getFinishReason());
     metadata.metadata("index", choice.getIndex());
-    if (!choice.getLogprobs().isEmpty()) {
-      metadata.metadata("logprobs", choice.getLogprobs());
+    if (choice.getLogprobs() != null) {
+      metadata.metadata("logprobs", choice.getLogprobs().getContent());
     }
     val toolCalls =
         choice.getMessage().getToolCalls().stream()
