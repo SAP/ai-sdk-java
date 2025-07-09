@@ -22,19 +22,19 @@ servers:
     variables:
       region:
         enum:
-        - prod.eu-central-1.aws
-        - prodeuonly.eu-central-1.aws
-        - prod.us-east-1.aws
-        - prod.ap-northeast-1.aws
-        - prod.ap-southeast-2.aws
-        - prod-eu20.westeurope.azure
-        - prod-eu30.europe-west3.gcp
-        - prod-us21.eastus.azure
-        - prod-us30.us-central1.gcp      
-        - prod-ap20.australiaeast.az
-        - prod-ap11.ap-southeast-1.aws
+          - prod.eu-central-1.aws
+          - prodeuonly.eu-central-1.aws
+          - prod.us-east-1.aws
+          - prod.ap-northeast-1.aws
+          - prod.ap-southeast-2.aws
+          - prod-eu20.westeurope.azure
+          - prod-eu30.europe-west3.gcp
+          - prod-us21.eastus.azure
+          - prod-us30.us-central1.gcp
+          - prod-ap20.australiaeast.az
+          - prod-ap11.ap-southeast-1.aws
         default: prod.eu-central-1.aws
-      service: 
+      service:
         default: document-grounding
 paths:
   "/pipelines":
@@ -100,7 +100,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_by_id
       summary: Get details of a Pipeline
       description: 'Get details of a pipeline by pipeline id'
-      x-sap-cloud-sdk-operation-name: getPipelineDetailsById
+      x-sap-cloud-sdk-operation-name: getPipelineById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -155,7 +155,7 @@ paths:
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_status
       summary: Get status of Pipeline
       description: 'Get pipeline status by pipeline id'
-      x-sap-cloud-sdk-operation-name: getPipelineStatusById
+      x-sap-cloud-sdk-operation-name: getPipelineStatus
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -184,7 +184,7 @@ paths:
   "/pipelines/{pipelineId}/executions":
     get:
       tags:
-      - Pipelines
+        - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_executions
       summary: Get Pipeline Executions
       description: Retrieve all executions for a specific pipeline. Optionally, filter to get only the last execution.
@@ -222,7 +222,7 @@ paths:
   "/pipelines/{pipelineId}/executions/{executionId}":
     get:
       tags:
-      - Pipelines
+        - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_execution_by_id
       summary: Get Pipeline Execution by ID
       description: Retrieve details of a specific pipeline execution by its execution ID.
@@ -540,7 +540,7 @@ paths:
       summary: Get document by ID
       description: Gets a specific document in a collection by ID.
       operationId: vector.v1.vector_endpoints.get_document_by_id
-      x-sap-cloud-sdk-operation-name: getDocumentByIdForCollection
+      x-sap-cloud-sdk-operation-name: getDocumentById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -583,7 +583,7 @@ paths:
       summary: Delete a document
       description: Deletes a specific document of a collection.
       operationId: vector.v1.vector_endpoints.delete_document
-      x-sap-cloud-sdk-operation-name: deleteCollectionById
+      x-sap-cloud-sdk-operation-name: deleteDocumentById
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -623,7 +623,7 @@ paths:
       summary: Get documents
       description: Gets a list of documents of a collection.
       operationId: vector.v1.vector_endpoints.get_all_documents
-      x-sap-cloud-sdk-operation-name: getDocumentsByCollectionId
+      x-sap-cloud-sdk-operation-name: getAllDocuments
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -661,7 +661,7 @@ paths:
       summary: Create documents in collection
       description: Create and stores one or multiple documents into a collection. If omitted, 'id' will be auto-generated.
       operationId: vector.v1.vector_endpoints.create_documents
-      x-sap-cloud-sdk-operation-name: createCollectionDocuments
+      x-sap-cloud-sdk-operation-name: createDocuments
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -702,7 +702,7 @@ paths:
       summary: Upsert documents in collection
       description: Upserts the data of multiple documents into a collection.
       operationId: vector.v1.vector_endpoints.update_documents
-      x-sap-cloud-sdk-operation-name: insertOrUpdateDocumentsInCollection
+      x-sap-cloud-sdk-operation-name: updateDocuments
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -751,7 +751,7 @@ paths:
       summary: Search chunk by vector
       description: Search chunks
       operationId: vector.v1.vector_endpoints.search_chunk
-      x-sap-cloud-sdk-operation-name: vectorSearchByChunk
+      x-sap-cloud-sdk-operation-name: search
       requestBody:
         content:
           application/json:
@@ -778,7 +778,7 @@ paths:
       summary: Get collection status by ID
       description: Gets a specific collection status from monitor by ID.
       operationId: vector.v1.vector_endpoints.get_collection_creation_status
-      x-sap-cloud-sdk-operation-name: getCollectionStatus
+      x-sap-cloud-sdk-operation-name: getCollectionCreationStatus
       parameters:
         - in: header
           name: AI-Resource-Group
@@ -860,7 +860,7 @@ paths:
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/count'
       tags:
-      - Retrieval
+        - Retrieval
       summary: List all DataRepository objects.
       description: List all Data Repositories
       operationId: retrieval.v1.retrieval_endpoints.get_data_repositories
@@ -877,7 +877,7 @@ paths:
   "/retrieval/dataRepositories/{repositoryId}":
     get:
       tags:
-      - Retrieval
+        - Retrieval
       summary: List single DataRepository object.
       description: List data repository by id
       operationId: retrieval.v1.retrieval_endpoints.get_data_repository
@@ -929,7 +929,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SearchInput"
+              $ref: "#/components/schemas/RetrievalSearchInput"
         required: true
       responses:
         '200':
@@ -1186,7 +1186,7 @@ components:
           pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
           example: '2024-02-15T12:45:00.000Z'
         status:
-          $ref: '#/components/schemas/PipelineExecutionStatus' 
+          $ref: '#/components/schemas/PipelineExecutionStatus'
 
     pipelineId:
       type: object
@@ -1214,7 +1214,7 @@ components:
           example: uuid
         status:
           $ref: '#/components/schemas/PipelineExecutionStatus'
-    
+
     getPipelineExecutions:
       type: object
       properties:
@@ -1287,7 +1287,7 @@ components:
           type: string
           example: '2024-02-15T12:45:00Z'
         status:
-            $ref: '#/components/schemas/DocumentStatus'
+          $ref: '#/components/schemas/DocumentStatus'
 
     Chunk:
       properties:
@@ -1305,8 +1305,8 @@ components:
           default: []
       type: object
       required:
-      - id
-      - content
+        - id
+        - content
       title: Chunk
     DocumentKeyValueListPair:
       properties:
@@ -1328,13 +1328,13 @@ components:
           default: ANY
           anyOf:
             - enum:
-              - ANY
-              - ALL
+                - ANY
+                - ALL
             - {}
       type: object
       required:
-      - key
-      - value
+        - key
+        - value
       title: DocumentKeyValueListPair
     HTTPValidationError:
       properties:
@@ -1359,8 +1359,8 @@ components:
           title: Value
       type: object
       required:
-      - key
-      - value
+        - key
+        - value
       title: KeyValueListPair
     Document-Output:
       properties:
@@ -1465,8 +1465,8 @@ components:
           description: Select mode for search filters
       type: object
       required:
-      - key
-      - value
+        - key
+        - value
       title: SearchDocumentKeyValueListPair
     SearchResults:
       properties:
@@ -1474,12 +1474,12 @@ components:
           type: array
           items:
             anyOf:
-            - $ref: "#/components/schemas/PerFilterSearchResult"
+              - $ref: "#/components/schemas/PerFilterSearchResult"
           title: Results
           description: List of returned results.
       type: object
       required:
-      - results
+        - results
       title: SearchResults
 
     CollectionsListResponse:
@@ -1718,7 +1718,7 @@ components:
       type: string
       anyOf:
         - enum:
-          - ignoreIfKeyAbsent
+            - ignoreIfKeyAbsent
         - {}
       default: ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
@@ -1837,7 +1837,7 @@ components:
           title: Datarepositories
       type: object
       required:
-      - resources
+        - resources
       title: DataRepositories
     DataRepository:
       properties:
@@ -1860,9 +1860,9 @@ components:
           $ref: "#/components/schemas/DataRepositoryType"
       type: object
       required:
-      - id
-      - title
-      - type
+        - id
+        - title
+        - type
       title: DataRepository
       description: DataRepository schema expected by Retrieval.
     DataRepositorySearchResult:
@@ -1871,14 +1871,14 @@ components:
           $ref: "#/components/schemas/DataRepositoryWithDocuments"
       type: object
       required:
-      - dataRepository
+        - dataRepository
       title: DataRepositorySearchResult
     DataRepositoryType:
       type: string
       anyOf:
         - enum:
-          - vector
-          - help.sap.com
+            - vector
+            - help.sap.com
         - {}
       title: DataRepositoryType
     DataRepositoryWithDocuments:
@@ -1904,9 +1904,9 @@ components:
           title: Documents
       type: object
       required:
-      - id
-      - title
-      - documents
+        - id
+        - title
+        - documents
       title: DataRepositoryWithDocuments
       description: DataRepository schema returned by the Vector search endpoint
     Document:
@@ -1927,8 +1927,8 @@ components:
           title: Chunks
       type: object
       required:
-      - id
-      - chunks
+        - id
+        - chunks
       title: Document
     DataRepositoryPerFilterSearchResult:
       properties:
@@ -1944,7 +1944,7 @@ components:
           default: []
       type: object
       required:
-      - filterId
+        - filterId
       title: PerFilterSearchResult
     PerFilterSearchResultError:
       properties:
@@ -1953,7 +1953,7 @@ components:
           title: Message
       type: object
       required:
-      - message
+        - message
       title: PerFilterSearchResultError
     PerFilterSearchResultWithError:
       properties:
@@ -1967,26 +1967,8 @@ components:
             message: Unknown Error Occurred
       type: object
       required:
-      - filterId
+        - filterId
       title: PerFilterSearchResultWithError
-    RetrievalSearchConfiguration:
-      properties:
-        maxChunkCount:
-          nullable: true
-          type: integer
-          minimum: 0
-          exclusiveMinimum: true
-          title: Maxchunkcount
-          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
-        maxDocumentCount:
-          nullable: true
-          type: integer
-          minimum: 0
-          exclusiveMinimum: true
-          title: Maxdocumentcount
-          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
-      type: object
-      title: SearchConfiguration
     RetrievalSearchFilter:
       properties:
         id:
@@ -1996,7 +1978,7 @@ components:
         searchConfiguration:
           type: object
           nullable: true
-          $ref: "#/components/schemas/RetrievalSearchConfiguration"
+          $ref: "#/components/schemas/SearchConfiguration"
           default: {}
           minProperties: 0
           maxProperties: 2
@@ -2007,7 +1989,7 @@ components:
           title: Datarepositories
           description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
           default:
-          - "*"
+            - "*"
         dataRepositoryType:
           type: string
           $ref: "#/components/schemas/DataRepositoryType"
@@ -2035,11 +2017,11 @@ components:
           default: []
       type: object
       required:
-      - id
-      - dataRepositoryType
+        - id
+        - dataRepositoryType
       title: SearchFilter
       description: Limit scope of search to certain DataRepositories, Documents or Chunks.
-    SearchInput:
+    RetrievalSearchInput:
       properties:
         query:
           type: string
@@ -2053,8 +2035,8 @@ components:
           title: Filters
       type: object
       required:
-      - query
-      - filters
+        - query
+        - filters
       title: SearchInput
     DataRepositorySearchResults:
       properties:
@@ -2062,13 +2044,13 @@ components:
           type: array
           items:
             anyOf:
-            - $ref: "#/components/schemas/DataRepositoryPerFilterSearchResult"
-            - $ref: "#/components/schemas/PerFilterSearchResultWithError"
+              - $ref: "#/components/schemas/DataRepositoryPerFilterSearchResult"
+              - $ref: "#/components/schemas/PerFilterSearchResultWithError"
           title: Results
           description: List of returned results.
       type: object
       required:
-      - results
+        - results
       title: SearchResults
     ValidationError:
       properties:
@@ -2085,9 +2067,9 @@ components:
           title: Error Type
       type: object
       required:
-      - loc
-      - msg
-      - type
+        - loc
+        - msg
+        - type
       title: ValidationError
 
     ### ###  ########################  ### ###

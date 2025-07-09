@@ -153,7 +153,7 @@ public class VectorApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DocumentsListResponse createCollectionDocuments(
+  public DocumentsListResponse createDocuments(
       @Nonnull final String aiResourceGroup,
       @Nonnull final UUID collectionId,
       @Nonnull final DocumentCreateRequest documentCreateRequest)
@@ -163,13 +163,13 @@ public class VectorApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling createCollectionDocuments");
+          "Missing the required parameter 'aiResourceGroup' when calling createDocuments");
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling createCollectionDocuments");
+          "Missing the required parameter 'collectionId' when calling createDocuments");
     }
 
     // verify the required parameter 'documentCreateRequest' is set
@@ -314,7 +314,7 @@ public class VectorApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public OpenApiResponse deleteCollectionById(
+  public OpenApiResponse deleteDocumentById(
       @Nonnull final String aiResourceGroup,
       @Nonnull final UUID collectionId,
       @Nonnull final UUID documentId)
@@ -324,19 +324,19 @@ public class VectorApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deleteCollectionById");
+          "Missing the required parameter 'aiResourceGroup' when calling deleteDocumentById");
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling deleteCollectionById");
+          "Missing the required parameter 'collectionId' when calling deleteDocumentById");
     }
 
     // verify the required parameter 'documentId' is set
     if (documentId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentId' when calling deleteCollectionById");
+          "Missing the required parameter 'documentId' when calling deleteDocumentById");
     }
 
     // create path and map variables
@@ -496,7 +496,7 @@ public class VectorApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public Documents getDocumentsByCollectionId(
+  public Documents getAllDocuments(
       @Nonnull final String aiResourceGroup,
       @Nonnull final UUID collectionId,
       @Nullable final Integer $top,
@@ -508,13 +508,13 @@ public class VectorApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getDocumentsByCollectionId");
+          "Missing the required parameter 'aiResourceGroup' when calling getAllDocuments");
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling getDocumentsByCollectionId");
+          "Missing the required parameter 'collectionId' when calling getAllDocuments");
     }
 
     // create path and map variables
@@ -579,10 +579,10 @@ public class VectorApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public Documents getDocumentsByCollectionId(
+  public Documents getAllDocuments(
       @Nonnull final String aiResourceGroup, @Nonnull final UUID collectionId)
       throws OpenApiRequestException {
-    return getDocumentsByCollectionId(aiResourceGroup, collectionId, null, null, null);
+    return getAllDocuments(aiResourceGroup, collectionId, null, null, null);
   }
 
   /**
@@ -679,7 +679,7 @@ public class VectorApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public VectorV1VectorEndpointsGetCollectionCreationStatus200Response getCollectionStatus(
+  public VectorV1VectorEndpointsGetCollectionCreationStatus200Response getCollectionCreationStatus(
       @Nonnull final String aiResourceGroup, @Nonnull final UUID id)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -687,13 +687,13 @@ public class VectorApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getCollectionStatus");
+          "Missing the required parameter 'aiResourceGroup' when calling getCollectionCreationStatus");
     }
 
     // verify the required parameter 'id' is set
     if (id == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'id' when calling getCollectionStatus");
+          "Missing the required parameter 'id' when calling getCollectionCreationStatus");
     }
 
     // create path and map variables
@@ -834,7 +834,7 @@ public class VectorApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DocumentResponse getDocumentByIdForCollection(
+  public DocumentResponse getDocumentById(
       @Nonnull final String aiResourceGroup,
       @Nonnull final UUID collectionId,
       @Nonnull final UUID documentId)
@@ -844,19 +844,19 @@ public class VectorApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getDocumentByIdForCollection");
+          "Missing the required parameter 'aiResourceGroup' when calling getDocumentById");
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling getDocumentByIdForCollection");
+          "Missing the required parameter 'collectionId' when calling getDocumentById");
     }
 
     // verify the required parameter 'documentId' is set
     if (documentId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentId' when calling getDocumentByIdForCollection");
+          "Missing the required parameter 'documentId' when calling getDocumentById");
     }
 
     // create path and map variables
@@ -918,7 +918,7 @@ public class VectorApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public SearchResults vectorSearchByChunk(
+  public SearchResults search(
       @Nonnull final String aiResourceGroup, @Nonnull final TextSearchRequest textSearchRequest)
       throws OpenApiRequestException {
     final Object localVarPostBody = textSearchRequest;
@@ -926,7 +926,7 @@ public class VectorApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling vectorSearchByChunk");
+          "Missing the required parameter 'aiResourceGroup' when calling search");
     }
 
     // verify the required parameter 'textSearchRequest' is set
@@ -989,7 +989,7 @@ public class VectorApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DocumentsListResponse insertOrUpdateDocumentsInCollection(
+  public DocumentsListResponse updateDocuments(
       @Nonnull final String aiResourceGroup,
       @Nonnull final UUID collectionId,
       @Nonnull final DocumentUpdateRequest documentUpdateRequest)
@@ -999,13 +999,13 @@ public class VectorApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling insertOrUpdateDocumentsInCollection");
+          "Missing the required parameter 'aiResourceGroup' when calling updateDocuments");
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling insertOrUpdateDocumentsInCollection");
+          "Missing the required parameter 'collectionId' when calling updateDocuments");
     }
 
     // verify the required parameter 'documentUpdateRequest' is set

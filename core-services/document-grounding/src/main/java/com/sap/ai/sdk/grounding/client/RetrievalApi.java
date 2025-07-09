@@ -3,7 +3,7 @@ package com.sap.ai.sdk.grounding.client;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DataRepository;
-import com.sap.ai.sdk.grounding.model.SearchInput;
+import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
 import com.sap.ai.sdk.grounding.model.SearchResults;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
@@ -231,15 +231,16 @@ public class RetrievalApi extends AbstractOpenApiService {
    * <p><b>422</b> - There are validation issues with the data.
    *
    * @param aiResourceGroup Resource Group ID
-   * @param searchInput The value for the parameter searchInput
+   * @param retrievalSearchInput The value for the parameter retrievalSearchInput
    * @return SearchResults
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public SearchResults search(
-      @Nonnull final String aiResourceGroup, @Nonnull final SearchInput searchInput)
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final RetrievalSearchInput retrievalSearchInput)
       throws OpenApiRequestException {
-    final Object localVarPostBody = searchInput;
+    final Object localVarPostBody = retrievalSearchInput;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -247,10 +248,10 @@ public class RetrievalApi extends AbstractOpenApiService {
           "Missing the required parameter 'aiResourceGroup' when calling search");
     }
 
-    // verify the required parameter 'searchInput' is set
-    if (searchInput == null) {
+    // verify the required parameter 'retrievalSearchInput' is set
+    if (retrievalSearchInput == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'searchInput' when calling retrievalV1RetrievalEndpointsSearch");
+          "Missing the required parameter 'retrievalSearchInput' when calling retrievalV1RetrievalEndpointsSearch");
     }
 
     final String localVarPath =
