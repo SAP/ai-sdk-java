@@ -14,10 +14,10 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** ModuleResultsOutputUnmaskingInner */
+/** InputFilterConfig */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = LLMChoice.class),
-  @JsonSubTypes.Type(value = LLMChoiceStreaming.class),
+  @JsonSubTypes.Type(value = AzureContentSafetyInputFilterConfig.class),
+  @JsonSubTypes.Type(value = LlamaGuard38bFilterConfig.class),
 })
-public interface ModuleResultsOutputUnmaskingInner {}
+public interface InputFilterConfig {}
