@@ -14,10 +14,10 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** DPIEntityConfig */
+/** OutputFilterConfig */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = DPICustomEntity.class),
-  @JsonSubTypes.Type(value = DPIStandardEntity.class),
+  @JsonSubTypes.Type(value = AzureContentSafetyOutputFilterConfig.class),
+  @JsonSubTypes.Type(value = LlamaGuard38bFilterConfig.class),
 })
-public interface DPIEntityConfig {}
+public interface OutputFilterConfig {}
