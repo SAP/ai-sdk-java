@@ -15,10 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -26,69 +23,57 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** DataRepositorySearchResults */
+/** RetrievalDataRepositorySearchResult */
 // CHECKSTYLE:OFF
-public class DataRepositorySearchResults
+public class RetrievalDataRepositorySearchResult
 // CHECKSTYLE:ON
 {
-  @JsonProperty("results")
-  private List<ResultsInner2> results = new ArrayList<>();
+  @JsonProperty("dataRepository")
+  private DataRepositoryWithDocuments dataRepository;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DataRepositorySearchResults. */
-  protected DataRepositorySearchResults() {}
+  /** Default constructor for RetrievalDataRepositorySearchResult. */
+  protected RetrievalDataRepositorySearchResult() {}
 
   /**
-   * Set the results of this {@link DataRepositorySearchResults} instance and return the same
-   * instance.
+   * Set the dataRepository of this {@link RetrievalDataRepositorySearchResult} instance and return
+   * the same instance.
    *
-   * @param results List of returned results.
-   * @return The same instance of this {@link DataRepositorySearchResults} class
+   * @param dataRepository The dataRepository of this {@link RetrievalDataRepositorySearchResult}
+   * @return The same instance of this {@link RetrievalDataRepositorySearchResult} class
    */
   @Nonnull
-  public DataRepositorySearchResults results(@Nonnull final List<ResultsInner2> results) {
-    this.results = results;
+  public RetrievalDataRepositorySearchResult dataRepository(
+      @Nonnull final DataRepositoryWithDocuments dataRepository) {
+    this.dataRepository = dataRepository;
     return this;
   }
 
   /**
-   * Add one results instance to this {@link DataRepositorySearchResults}.
+   * Get dataRepository
    *
-   * @param resultsItem The results that should be added
-   * @return The same instance of type {@link DataRepositorySearchResults}
+   * @return dataRepository The dataRepository of this {@link RetrievalDataRepositorySearchResult}
+   *     instance.
    */
   @Nonnull
-  public DataRepositorySearchResults addResultsItem(@Nonnull final ResultsInner2 resultsItem) {
-    if (this.results == null) {
-      this.results = new ArrayList<>();
-    }
-    this.results.add(resultsItem);
-    return this;
+  public DataRepositoryWithDocuments getDataRepository() {
+    return dataRepository;
   }
 
   /**
-   * List of returned results.
+   * Set the dataRepository of this {@link RetrievalDataRepositorySearchResult} instance.
    *
-   * @return results The results of this {@link DataRepositorySearchResults} instance.
+   * @param dataRepository The dataRepository of this {@link RetrievalDataRepositorySearchResult}
    */
-  @Nonnull
-  public List<ResultsInner2> getResults() {
-    return results;
+  public void setDataRepository(@Nonnull final DataRepositoryWithDocuments dataRepository) {
+    this.dataRepository = dataRepository;
   }
 
   /**
-   * Set the results of this {@link DataRepositorySearchResults} instance.
-   *
-   * @param results List of returned results.
-   */
-  public void setResults(@Nonnull final List<ResultsInner2> results) {
-    this.results = results;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link DataRepositorySearchResults}.
+   * Get the names of the unrecognizable properties of the {@link
+   * RetrievalDataRepositorySearchResult}.
    *
    * @return The set of properties names
    */
@@ -99,7 +84,7 @@ public class DataRepositorySearchResults
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DataRepositorySearchResults}
+   * Get the value of an unrecognizable property of this {@link RetrievalDataRepositorySearchResult}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -112,14 +97,14 @@ public class DataRepositorySearchResults
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "DataRepositorySearchResults has no field with name '" + name + "'.");
+          "RetrievalDataRepositorySearchResult has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DataRepositorySearchResults} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link RetrievalDataRepositorySearchResult} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -127,13 +112,14 @@ public class DataRepositorySearchResults
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (results != null) declaredFields.put("results", results);
+    if (dataRepository != null) declaredFields.put("dataRepository", dataRepository);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link DataRepositorySearchResults} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link RetrievalDataRepositorySearchResult} instance. If
+   * the map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -151,23 +137,24 @@ public class DataRepositorySearchResults
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DataRepositorySearchResults dataRepositorySearchResults = (DataRepositorySearchResults) o;
+    final RetrievalDataRepositorySearchResult retrievalDataRepositorySearchResult =
+        (RetrievalDataRepositorySearchResult) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, dataRepositorySearchResults.cloudSdkCustomFields)
-        && Objects.equals(this.results, dataRepositorySearchResults.results);
+            this.cloudSdkCustomFields, retrievalDataRepositorySearchResult.cloudSdkCustomFields)
+        && Objects.equals(this.dataRepository, retrievalDataRepositorySearchResult.dataRepository);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(results, cloudSdkCustomFields);
+    return Objects.hash(dataRepository, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DataRepositorySearchResults {\n");
-    sb.append("    results: ").append(toIndentedString(results)).append("\n");
+    sb.append("class RetrievalDataRepositorySearchResult {\n");
+    sb.append("    dataRepository: ").append(toIndentedString(dataRepository)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -187,30 +174,22 @@ public class DataRepositorySearchResults
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * DataRepositorySearchResults} instance with all required arguments.
+   * RetrievalDataRepositorySearchResult} instance with all required arguments.
    */
   public static Builder create() {
-    return (results) -> new DataRepositorySearchResults().results(results);
+    return (dataRepository) ->
+        new RetrievalDataRepositorySearchResult().dataRepository(dataRepository);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the results of this {@link DataRepositorySearchResults} instance.
+     * Set the dataRepository of this {@link RetrievalDataRepositorySearchResult} instance.
      *
-     * @param results List of returned results.
-     * @return The DataRepositorySearchResults instance.
+     * @param dataRepository The dataRepository of this {@link RetrievalDataRepositorySearchResult}
+     * @return The RetrievalDataRepositorySearchResult instance.
      */
-    DataRepositorySearchResults results(@Nonnull final List<ResultsInner2> results);
-
-    /**
-     * Set the results of this {@link DataRepositorySearchResults} instance.
-     *
-     * @param results List of returned results.
-     * @return The DataRepositorySearchResults instance.
-     */
-    default DataRepositorySearchResults results(@Nonnull final ResultsInner2... results) {
-      return results(Arrays.asList(results));
-    }
+    RetrievalDataRepositorySearchResult dataRepository(
+        @Nonnull final DataRepositoryWithDocuments dataRepository);
   }
 }

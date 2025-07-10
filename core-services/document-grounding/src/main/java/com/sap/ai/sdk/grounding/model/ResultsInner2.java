@@ -25,34 +25,34 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResultsInner1 */
+/** ResultsInner2 */
 // CHECKSTYLE:OFF
-public class ResultsInner1
+public class ResultsInner2
 // CHECKSTYLE:ON
 {
   @JsonProperty("filterId")
   private String filterId;
 
   @JsonProperty("results")
-  private List<RetrievalDataRepositorySearchResult> results = new ArrayList<>();
+  private List<DataRepositorySearchResult> results = new ArrayList<>();
 
-  @JsonProperty("message")
-  private String message;
+  @JsonProperty("error")
+  private PerFilterSearchResultError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResultsInner1. */
-  protected ResultsInner1() {}
+  /** Default constructor for ResultsInner2. */
+  protected ResultsInner2() {}
 
   /**
-   * Set the filterId of this {@link ResultsInner1} instance and return the same instance.
+   * Set the filterId of this {@link ResultsInner2} instance and return the same instance.
    *
-   * @param filterId The filterId of this {@link ResultsInner1}
-   * @return The same instance of this {@link ResultsInner1} class
+   * @param filterId The filterId of this {@link ResultsInner2}
+   * @return The same instance of this {@link ResultsInner2} class
    */
   @Nonnull
-  public ResultsInner1 filterId(@Nonnull final String filterId) {
+  public ResultsInner2 filterId(@Nonnull final String filterId) {
     this.filterId = filterId;
     return this;
   }
@@ -60,7 +60,7 @@ public class ResultsInner1
   /**
    * Get filterId
    *
-   * @return filterId The filterId of this {@link ResultsInner1} instance.
+   * @return filterId The filterId of this {@link ResultsInner2} instance.
    */
   @Nonnull
   public String getFilterId() {
@@ -68,35 +68,34 @@ public class ResultsInner1
   }
 
   /**
-   * Set the filterId of this {@link ResultsInner1} instance.
+   * Set the filterId of this {@link ResultsInner2} instance.
    *
-   * @param filterId The filterId of this {@link ResultsInner1}
+   * @param filterId The filterId of this {@link ResultsInner2}
    */
   public void setFilterId(@Nonnull final String filterId) {
     this.filterId = filterId;
   }
 
   /**
-   * Set the results of this {@link ResultsInner1} instance and return the same instance.
+   * Set the results of this {@link ResultsInner2} instance and return the same instance.
    *
    * @param results List of returned results.
-   * @return The same instance of this {@link ResultsInner1} class
+   * @return The same instance of this {@link ResultsInner2} class
    */
   @Nonnull
-  public ResultsInner1 results(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
+  public ResultsInner2 results(@Nullable final List<DataRepositorySearchResult> results) {
     this.results = results;
     return this;
   }
 
   /**
-   * Add one results instance to this {@link ResultsInner1}.
+   * Add one results instance to this {@link ResultsInner2}.
    *
    * @param resultsItem The results that should be added
-   * @return The same instance of type {@link ResultsInner1}
+   * @return The same instance of type {@link ResultsInner2}
    */
   @Nonnull
-  public ResultsInner1 addResultsItem(
-      @Nonnull final RetrievalDataRepositorySearchResult resultsItem) {
+  public ResultsInner2 addResultsItem(@Nonnull final DataRepositorySearchResult resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -107,55 +106,55 @@ public class ResultsInner1
   /**
    * List of returned results.
    *
-   * @return results The results of this {@link ResultsInner1} instance.
+   * @return results The results of this {@link ResultsInner2} instance.
    */
   @Nonnull
-  public List<RetrievalDataRepositorySearchResult> getResults() {
+  public List<DataRepositorySearchResult> getResults() {
     return results;
   }
 
   /**
-   * Set the results of this {@link ResultsInner1} instance.
+   * Set the results of this {@link ResultsInner2} instance.
    *
    * @param results List of returned results.
    */
-  public void setResults(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
+  public void setResults(@Nullable final List<DataRepositorySearchResult> results) {
     this.results = results;
   }
 
   /**
-   * Set the message of this {@link ResultsInner1} instance and return the same instance.
+   * Set the error of this {@link ResultsInner2} instance and return the same instance.
    *
-   * @param message The message of this {@link ResultsInner1}
-   * @return The same instance of this {@link ResultsInner1} class
+   * @param error The error of this {@link ResultsInner2}
+   * @return The same instance of this {@link ResultsInner2} class
    */
   @Nonnull
-  public ResultsInner1 message(@Nonnull final String message) {
-    this.message = message;
+  public ResultsInner2 error(@Nullable final PerFilterSearchResultError error) {
+    this.error = error;
     return this;
   }
 
   /**
-   * Get message
+   * Get error
    *
-   * @return message The message of this {@link ResultsInner1} instance.
+   * @return error The error of this {@link ResultsInner2} instance.
    */
   @Nonnull
-  public String getMessage() {
-    return message;
+  public PerFilterSearchResultError getError() {
+    return error;
   }
 
   /**
-   * Set the message of this {@link ResultsInner1} instance.
+   * Set the error of this {@link ResultsInner2} instance.
    *
-   * @param message The message of this {@link ResultsInner1}
+   * @param error The error of this {@link ResultsInner2}
    */
-  public void setMessage(@Nonnull final String message) {
-    this.message = message;
+  public void setError(@Nullable final PerFilterSearchResultError error) {
+    this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResultsInner1}.
+   * Get the names of the unrecognizable properties of the {@link ResultsInner2}.
    *
    * @return The set of properties names
    */
@@ -166,7 +165,7 @@ public class ResultsInner1
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResultsInner1} instance.
+   * Get the value of an unrecognizable property of this {@link ResultsInner2} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -177,13 +176,13 @@ public class ResultsInner1
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ResultsInner1 has no field with name '" + name + "'.");
+      throw new NoSuchElementException("ResultsInner2 has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResultsInner1} instance including unrecognized
+   * Get the value of all properties of this {@link ResultsInner2} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -194,12 +193,12 @@ public class ResultsInner1
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (filterId != null) declaredFields.put("filterId", filterId);
     if (results != null) declaredFields.put("results", results);
-    if (message != null) declaredFields.put("message", message);
+    if (error != null) declaredFields.put("error", error);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResultsInner1} instance. If the map previously
+   * Set an unrecognizable property of this {@link ResultsInner2} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -218,26 +217,26 @@ public class ResultsInner1
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResultsInner1 resultsInner1 = (ResultsInner1) o;
-    return Objects.equals(this.cloudSdkCustomFields, resultsInner1.cloudSdkCustomFields)
-        && Objects.equals(this.filterId, resultsInner1.filterId)
-        && Objects.equals(this.results, resultsInner1.results)
-        && Objects.equals(this.message, resultsInner1.message);
+    final ResultsInner2 resultsInner2 = (ResultsInner2) o;
+    return Objects.equals(this.cloudSdkCustomFields, resultsInner2.cloudSdkCustomFields)
+        && Objects.equals(this.filterId, resultsInner2.filterId)
+        && Objects.equals(this.results, resultsInner2.results)
+        && Objects.equals(this.error, resultsInner2.error);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filterId, results, message, cloudSdkCustomFields);
+    return Objects.hash(filterId, results, error, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResultsInner1 {\n");
+    sb.append("class ResultsInner2 {\n");
     sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -256,32 +255,21 @@ public class ResultsInner1
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ResultsInner1} instance
+   * Create a type-safe, fluent-api builder object to construct a new {@link ResultsInner2} instance
    * with all required arguments.
    */
   public static Builder create() {
-    return (filterId) -> (message) -> new ResultsInner1().filterId(filterId).message(message);
+    return (filterId) -> new ResultsInner2().filterId(filterId);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the filterId of this {@link ResultsInner1} instance.
+     * Set the filterId of this {@link ResultsInner2} instance.
      *
-     * @param filterId The filterId of this {@link ResultsInner1}
-     * @return The ResultsInner1 builder.
+     * @param filterId The filterId of this {@link ResultsInner2}
+     * @return The ResultsInner2 instance.
      */
-    Builder1 filterId(@Nonnull final String filterId);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the message of this {@link ResultsInner1} instance.
-     *
-     * @param message The message of this {@link ResultsInner1}
-     * @return The ResultsInner1 instance.
-     */
-    ResultsInner1 message(@Nonnull final String message);
+    ResultsInner2 filterId(@Nonnull final String filterId);
   }
 }

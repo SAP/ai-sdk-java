@@ -4,7 +4,7 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DataRepository;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
-import com.sap.ai.sdk.grounding.model.SearchResults;
+import com.sap.ai.sdk.grounding.model.RetrievalSearchResults;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
@@ -232,11 +232,11 @@ public class RetrievalApi extends AbstractOpenApiService {
    *
    * @param aiResourceGroup Resource Group ID
    * @param retrievalSearchInput The value for the parameter retrievalSearchInput
-   * @return SearchResults
+   * @return RetrievalSearchResults
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public SearchResults search(
+  public RetrievalSearchResults search(
       @Nonnull final String aiResourceGroup,
       @Nonnull final RetrievalSearchInput retrievalSearchInput)
       throws OpenApiRequestException {
@@ -273,8 +273,8 @@ public class RetrievalApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<SearchResults> localVarReturnType =
-        new ParameterizedTypeReference<SearchResults>() {};
+    final ParameterizedTypeReference<RetrievalSearchResults> localVarReturnType =
+        new ParameterizedTypeReference<RetrievalSearchResults>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.POST,

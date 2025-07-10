@@ -102,7 +102,7 @@ class GroundingController {
     final var messages =
         results.getResults().stream()
             .flatMap(resultsInner1 -> resultsInner1.getResults().stream())
-            .flatMap(result -> result.getDocuments().stream())
+            .flatMap(result -> result.getDataRepository().getDocuments().stream())
             .flatMap(dataRepositorySearchResult -> dataRepositorySearchResult.getChunks().stream())
             .map(Chunk::getContent)
             .toList();

@@ -937,7 +937,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SearchResults"
+                $ref: "#/components/schemas/RetrievalSearchResults"
         '400':
           $ref: '#/components/responses/BadRequest'
         '422':
@@ -2038,6 +2038,53 @@ components:
         - query
         - filters
       title: SearchInput
+    RetrievalDataRepositorySearchResult:
+      properties:
+        dataRepository:
+          $ref: "#/components/schemas/DataRepositoryWithDocuments"
+      type: object
+      required:
+        - dataRepository
+      title: DataRepositorySearchResult
+    RetrievalPerFilterSearchResult:
+      properties:
+        filterId:
+          type: string
+          title: Filterid
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/RetrievalDataRepositorySearchResult"
+          title: Results
+          description: List of returned results.
+          default: []
+      type: object
+      required:
+        - filterId
+      title: PerFilterSearchResult
+    RetrievalPerFilterSearchResultWithError:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+        - message
+      title: PerFilterSearchResultError
+    RetrievalSearchResults:
+      properties:
+        results:
+          type: array
+          items:
+            anyOf:
+              - $ref: "#/components/schemas/RetrievalPerFilterSearchResult"
+              - $ref: "#/components/schemas/RetrievalPerFilterSearchResultWithError"
+          title: Results
+          description: List of returned results.
+      type: object
+      required:
+        - results
+      title: SearchResults
     DataRepositorySearchResults:
       properties:
         results:

@@ -10,7 +10,7 @@ import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.DocumentsListResponse;
 import com.sap.ai.sdk.grounding.model.GetPipelines;
-import com.sap.ai.sdk.grounding.model.SearchResults;
+import com.sap.ai.sdk.grounding.model.RetrievalSearchResults;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import java.time.format.TextStyle;
 import java.util.Locale;
@@ -87,9 +87,9 @@ class GroundingTest {
 
     // (4) SEARCH FOR DOCUMENTS
     Object search = controller.searchInDocuments(JSON_FORMAT);
-    assertThat(search).isInstanceOf(SearchResults.class);
+    assertThat(search).isInstanceOf(RetrievalSearchResults.class);
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-    this.assertDocumentSearchResult((SearchResults) search, dayOfWeek);
+    this.assertDocumentSearchResult((RetrievalSearchResults) search, dayOfWeek);
 
     // (5) CLEAN UP
     Object deletion = controller.deleteCollection(collectionUuid, JSON_FORMAT);
@@ -101,14 +101,14 @@ class GroundingTest {
         .hasMessageContaining("404 Not Found");
   }
 
-  private void assertDocumentSearchResult(SearchResults search, String dayOfWeek) {
+  private void assertDocumentSearchResult(RetrievalSearchResults search, String dayOfWeek) {
     assertThat(search.getResults()).isNotEmpty();
     for (final var resultsByFilter : search.getResults()) {
       assertThat(resultsByFilter.getFilterId()).isEqualTo("question");
       assertThat(resultsByFilter.getResults()).isNotEmpty();
       for (final var result : resultsByFilter.getResults()) {
-        assertThat(result.getDocuments()).isNotEmpty();
-        for (final var document : result.getDocuments()) {
+        assertThat(result.getDataRepository().getDocuments()).isNotEmpty();
+        for (final var document : result.getDataRepository().getDocuments()) {
           assertThat(document.getChunks()).isNotEmpty();
           for (final var chunk : document.getChunks()) {
             assertThat(chunk.getContent()).contains(dayOfWeek);

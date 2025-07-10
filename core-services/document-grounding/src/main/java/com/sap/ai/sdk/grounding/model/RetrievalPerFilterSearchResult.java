@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,41 +25,78 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** DataRepositorySearchResults */
+/** RetrievalPerFilterSearchResult */
 // CHECKSTYLE:OFF
-public class DataRepositorySearchResults
+public class RetrievalPerFilterSearchResult
 // CHECKSTYLE:ON
 {
+  @JsonProperty("filterId")
+  private String filterId;
+
   @JsonProperty("results")
-  private List<ResultsInner2> results = new ArrayList<>();
+  private List<RetrievalDataRepositorySearchResult> results = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DataRepositorySearchResults. */
-  protected DataRepositorySearchResults() {}
+  /** Default constructor for RetrievalPerFilterSearchResult. */
+  protected RetrievalPerFilterSearchResult() {}
 
   /**
-   * Set the results of this {@link DataRepositorySearchResults} instance and return the same
+   * Set the filterId of this {@link RetrievalPerFilterSearchResult} instance and return the same
+   * instance.
+   *
+   * @param filterId The filterId of this {@link RetrievalPerFilterSearchResult}
+   * @return The same instance of this {@link RetrievalPerFilterSearchResult} class
+   */
+  @Nonnull
+  public RetrievalPerFilterSearchResult filterId(@Nonnull final String filterId) {
+    this.filterId = filterId;
+    return this;
+  }
+
+  /**
+   * Get filterId
+   *
+   * @return filterId The filterId of this {@link RetrievalPerFilterSearchResult} instance.
+   */
+  @Nonnull
+  public String getFilterId() {
+    return filterId;
+  }
+
+  /**
+   * Set the filterId of this {@link RetrievalPerFilterSearchResult} instance.
+   *
+   * @param filterId The filterId of this {@link RetrievalPerFilterSearchResult}
+   */
+  public void setFilterId(@Nonnull final String filterId) {
+    this.filterId = filterId;
+  }
+
+  /**
+   * Set the results of this {@link RetrievalPerFilterSearchResult} instance and return the same
    * instance.
    *
    * @param results List of returned results.
-   * @return The same instance of this {@link DataRepositorySearchResults} class
+   * @return The same instance of this {@link RetrievalPerFilterSearchResult} class
    */
   @Nonnull
-  public DataRepositorySearchResults results(@Nonnull final List<ResultsInner2> results) {
+  public RetrievalPerFilterSearchResult results(
+      @Nullable final List<RetrievalDataRepositorySearchResult> results) {
     this.results = results;
     return this;
   }
 
   /**
-   * Add one results instance to this {@link DataRepositorySearchResults}.
+   * Add one results instance to this {@link RetrievalPerFilterSearchResult}.
    *
    * @param resultsItem The results that should be added
-   * @return The same instance of type {@link DataRepositorySearchResults}
+   * @return The same instance of type {@link RetrievalPerFilterSearchResult}
    */
   @Nonnull
-  public DataRepositorySearchResults addResultsItem(@Nonnull final ResultsInner2 resultsItem) {
+  public RetrievalPerFilterSearchResult addResultsItem(
+      @Nonnull final RetrievalDataRepositorySearchResult resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -71,24 +107,24 @@ public class DataRepositorySearchResults
   /**
    * List of returned results.
    *
-   * @return results The results of this {@link DataRepositorySearchResults} instance.
+   * @return results The results of this {@link RetrievalPerFilterSearchResult} instance.
    */
   @Nonnull
-  public List<ResultsInner2> getResults() {
+  public List<RetrievalDataRepositorySearchResult> getResults() {
     return results;
   }
 
   /**
-   * Set the results of this {@link DataRepositorySearchResults} instance.
+   * Set the results of this {@link RetrievalPerFilterSearchResult} instance.
    *
    * @param results List of returned results.
    */
-  public void setResults(@Nonnull final List<ResultsInner2> results) {
+  public void setResults(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
     this.results = results;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link DataRepositorySearchResults}.
+   * Get the names of the unrecognizable properties of the {@link RetrievalPerFilterSearchResult}.
    *
    * @return The set of properties names
    */
@@ -99,7 +135,7 @@ public class DataRepositorySearchResults
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DataRepositorySearchResults}
+   * Get the value of an unrecognizable property of this {@link RetrievalPerFilterSearchResult}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -112,14 +148,14 @@ public class DataRepositorySearchResults
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "DataRepositorySearchResults has no field with name '" + name + "'.");
+          "RetrievalPerFilterSearchResult has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DataRepositorySearchResults} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link RetrievalPerFilterSearchResult} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -127,13 +163,15 @@ public class DataRepositorySearchResults
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (filterId != null) declaredFields.put("filterId", filterId);
     if (results != null) declaredFields.put("results", results);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link DataRepositorySearchResults} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link RetrievalPerFilterSearchResult} instance. If the
+   * map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -151,22 +189,25 @@ public class DataRepositorySearchResults
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DataRepositorySearchResults dataRepositorySearchResults = (DataRepositorySearchResults) o;
+    final RetrievalPerFilterSearchResult retrievalPerFilterSearchResult =
+        (RetrievalPerFilterSearchResult) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, dataRepositorySearchResults.cloudSdkCustomFields)
-        && Objects.equals(this.results, dataRepositorySearchResults.results);
+            this.cloudSdkCustomFields, retrievalPerFilterSearchResult.cloudSdkCustomFields)
+        && Objects.equals(this.filterId, retrievalPerFilterSearchResult.filterId)
+        && Objects.equals(this.results, retrievalPerFilterSearchResult.results);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(results, cloudSdkCustomFields);
+    return Objects.hash(filterId, results, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DataRepositorySearchResults {\n");
+    sb.append("class RetrievalPerFilterSearchResult {\n");
+    sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -187,30 +228,20 @@ public class DataRepositorySearchResults
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * DataRepositorySearchResults} instance with all required arguments.
+   * RetrievalPerFilterSearchResult} instance with all required arguments.
    */
   public static Builder create() {
-    return (results) -> new DataRepositorySearchResults().results(results);
+    return (filterId) -> new RetrievalPerFilterSearchResult().filterId(filterId);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the results of this {@link DataRepositorySearchResults} instance.
+     * Set the filterId of this {@link RetrievalPerFilterSearchResult} instance.
      *
-     * @param results List of returned results.
-     * @return The DataRepositorySearchResults instance.
+     * @param filterId The filterId of this {@link RetrievalPerFilterSearchResult}
+     * @return The RetrievalPerFilterSearchResult instance.
      */
-    DataRepositorySearchResults results(@Nonnull final List<ResultsInner2> results);
-
-    /**
-     * Set the results of this {@link DataRepositorySearchResults} instance.
-     *
-     * @param results List of returned results.
-     * @return The DataRepositorySearchResults instance.
-     */
-    default DataRepositorySearchResults results(@Nonnull final ResultsInner2... results) {
-      return results(Arrays.asList(results));
-    }
+    RetrievalPerFilterSearchResult filterId(@Nonnull final String filterId);
   }
 }
