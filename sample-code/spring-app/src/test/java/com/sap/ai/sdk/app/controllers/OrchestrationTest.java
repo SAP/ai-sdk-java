@@ -228,8 +228,13 @@ class OrchestrationTest {
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
-        .hasMessageContaining("400 Bad Request");
+            "Content filtered out due to policy restrictions in the input filtering module.");
+
+    try {
+      service.inputFiltering(policy);
+    } catch (OrchestrationFilterException.OrchestrationInputFilterException e) {
+      ((OrchestrationClientException) e.getCause()).getClientError();
+    }
   }
 
   @Test

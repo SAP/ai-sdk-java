@@ -222,7 +222,7 @@ public class OrchestrationClient {
           new ClientResponseHandler<>(
                   CompletionPostResponse.class,
                   OrchestrationError.class,
-                  OrchestrationClientException::new)
+                  new OrchestrationExceptionFactory())
               .objectMapper(JACKSON);
       return client.execute(postRequest, handler);
     } catch (DeploymentResolutionException
@@ -232,15 +232,18 @@ public class OrchestrationClient {
         | IOException e) {
       throw new OrchestrationClientException("Failed to execute request", e);
     } catch (OrchestrationClientException e) {
-      if (e.getClientError() instanceof OrchestrationError clientError
-          && clientError
-              .getOriginalResponse()
-              .getLocation()
-              .equals("Filtering Module - Input Filter")) {
+      if (e.getClientError()
+          .getOriginalResponse()
+          .getLocation()
+          .equals("Filtering Module - Input Filter")) {
 
         final var filerDetails =
             (Map<String, Object>)
-                clientError.getOriginalResponse().getModuleResults().getInputFiltering().getData();
+                e.getClientError()
+                    .getOriginalResponse()
+                    .getModuleResults()
+                    .getInputFiltering()
+                    .getData();
         throw new OrchestrationFilterException.OrchestrationInputFilterException(
             "Content filtered out due to policy restrictions in the input filtering module.",
             e,
@@ -293,21 +296,24 @@ public class OrchestrationClient {
       log.debug("Using destination {} to connect to orchestration service", destination);
       val client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return new ClientStreamingHandler<>(
-              deltaType, OrchestrationError.class, OrchestrationClientException::new)
+              deltaType, OrchestrationError.class, new OrchestrationExceptionFactory())
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
       throw new OrchestrationClientException("Request to the Orchestration service failed", e);
     } catch (OrchestrationClientException e) {
-      if (e.getClientError() instanceof OrchestrationError clientError
-          && clientError
-              .getOriginalResponse()
-              .getLocation()
-              .equals("Filtering Module - Input Filter")) {
+      if (e.getClientError()
+          .getOriginalResponse()
+          .getLocation()
+          .equals("Filtering Module - Input Filter")) {
 
         final var filerDetails =
             (Map<String, Object>)
-                clientError.getOriginalResponse().getModuleResults().getInputFiltering().getData();
+                e.getClientError()
+                    .getOriginalResponse()
+                    .getModuleResults()
+                    .getInputFiltering()
+                    .getData();
         throw new OrchestrationFilterException.OrchestrationInputFilterException(
             "Content filtered out due to policy restrictions in the input filtering module.",
             e,

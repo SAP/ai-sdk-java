@@ -8,8 +8,6 @@ import com.google.common.annotations.Beta;
 import io.vavr.control.Try;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-import java.util.function.BiFunction;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,17 +23,17 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
  * Parse incoming JSON responses and handles any errors. For internal use only.
  *
  * @param <T> The type of the response.
- * @param <E> The type of the exception to throw.
+ * @param <R> The type of the error.
  * @since 1.1.0
  */
 @Beta
 @Slf4j
 @RequiredArgsConstructor
-public class ClientResponseHandler<T, E extends ClientException>
+public class ClientResponseHandler<T, R extends ClientError>
     implements HttpClientResponseHandler<T> {
-  @Nonnull final Class<T> responseType;
-  @Nonnull private final Class<? extends ClientError> errorType;
-  @Nonnull final BiFunction<String, Throwable, E> exceptionConstructor;
+  @Nonnull protected final Class<T> responseType;
+  @Nonnull protected final Class<R> errorType;
+  @Nonnull protected final ClientExceptionFactory<? extends ClientException, R> exceptionFactory;
 
   /** The parses for JSON responses, will be private once we can remove mixins */
   @Nonnull ObjectMapper objectMapper = getDefaultObjectMapper();
@@ -48,7 +46,7 @@ public class ClientResponseHandler<T, E extends ClientException>
    */
   @Beta
   @Nonnull
-  public ClientResponseHandler<T, E> objectMapper(@Nonnull final ObjectMapper jackson) {
+  public ClientResponseHandler<T, R> objectMapper(@Nonnull final ObjectMapper jackson) {
     objectMapper = jackson;
     return this;
   }
@@ -58,24 +56,23 @@ public class ClientResponseHandler<T, E extends ClientException>
    *
    * @param response The response to process
    * @return A model class instantiated from the response
-   * @throws E in case of a problem or the connection was aborted
    */
   @Nonnull
   @Override
-  public T handleResponse(@Nonnull final ClassicHttpResponse response) throws E {
+  public T handleResponse(@Nonnull final ClassicHttpResponse response) {
     if (response.getCode() >= 300) {
       buildExceptionAndThrow(response);
     }
-    return parseResponse(response);
+    return parseSuccess(response);
   }
 
   // The InputStream of the HTTP entity is closed by EntityUtils.toString
   @SuppressWarnings("PMD.CloseResource")
   @Nonnull
-  private T parseResponse(@Nonnull final ClassicHttpResponse response) throws E {
+  private T parseSuccess(@Nonnull final ClassicHttpResponse response) {
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
-      throw exceptionConstructor.apply("Response was empty.", null);
+      throw exceptionFactory.create("Response was empty.", null);
     }
     val content = getContent(responseEntity);
     log.debug("Parsing response from JSON response: {}", content);
@@ -83,7 +80,7 @@ public class ClientResponseHandler<T, E extends ClientException>
       return objectMapper.readValue(content, responseType);
     } catch (final JsonProcessingException e) {
       log.error("Failed to parse the following response: {}", content);
-      throw exceptionConstructor.apply("Failed to parse response", e);
+      throw exceptionFactory.create("Failed to parse response", e);
     }
   }
 
@@ -92,66 +89,47 @@ public class ClientResponseHandler<T, E extends ClientException>
     try {
       return EntityUtils.toString(entity, StandardCharsets.UTF_8);
     } catch (IOException | ParseException e) {
-      throw exceptionConstructor.apply("Failed to read response content.", e);
+      throw exceptionFactory.create("Failed to read response content.", e);
     }
   }
 
   /**
    * Parse the error response and throw an exception.
    *
-   * @param response The response to process
+   * @param httpResponse The response to process
+   * @throws ClientException if the response is an error (4xx/5xx)
    */
   @SuppressWarnings("PMD.CloseResource")
-  public void buildExceptionAndThrow(@Nonnull final ClassicHttpResponse response) throws E {
-    val exception =
-        exceptionConstructor.apply(
+  protected void buildExceptionAndThrow(@Nonnull final ClassicHttpResponse httpResponse) {
+    val baseException =
+        exceptionFactory.create(
             "Request failed with status %s %s"
-                .formatted(response.getCode(), response.getReasonPhrase()),
+                .formatted(httpResponse.getCode(), httpResponse.getReasonPhrase()),
             null);
-    val entity = response.getEntity();
+    val entity = httpResponse.getEntity();
     if (entity == null) {
-      throw exception;
+      throw baseException;
     }
     val maybeContent = Try.of(() -> getContent(entity));
     if (maybeContent.isFailure()) {
-      exception.addSuppressed(maybeContent.getCause());
-      throw exception;
+      baseException.addSuppressed(maybeContent.getCause());
+      throw baseException;
     }
     val content = maybeContent.get();
     if (content.isBlank()) {
-      throw exception;
+      throw baseException;
     }
-
     log.error("The service responded with an HTTP error and the following content: {}", content);
     val contentType = ContentType.parse(entity.getContentType());
     if (!ContentType.APPLICATION_JSON.isSameMimeType(contentType)) {
-      throw exception;
+      throw baseException;
     }
-
-    parseErrorAndThrow(content, exception);
-  }
-
-  /**
-   * Parse the error response and throw an exception.
-   *
-   * @param errorResponse the error response, most likely a unique JSON class.
-   * @param baseException a base exception to add the error message to.
-   */
-  public void parseErrorAndThrow(
-      @Nonnull final String errorResponse, @Nonnull final E baseException) throws E {
-    val maybeError = Try.of(() -> objectMapper.readValue(errorResponse, errorType));
+    val maybeError = Try.of(() -> objectMapper.readValue(content, errorType));
     if (maybeError.isFailure()) {
       baseException.addSuppressed(maybeError.getCause());
       throw baseException;
     }
 
-    val clientError = maybeError.get();
-    val errorMessage = Objects.requireNonNullElse(clientError.getMessage(), "");
-    val finalMessage =
-        "%s and error message: '%s'".formatted(baseException.getMessage(), errorMessage);
-    val finalException = exceptionConstructor.apply(finalMessage, baseException);
-    finalException.setClientError(clientError);
-
-    throw finalException;
+    throw exceptionFactory.fromClientError(maybeError.get());
   }
 }
