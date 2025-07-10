@@ -50,6 +50,9 @@ public class PromptTemplateGetResponse
   @JsonProperty("isVersionHead")
   private Boolean isVersionHead;
 
+  @JsonProperty("resourceGroupId")
+  private String resourceGroupId;
+
   @JsonProperty("spec")
   private PromptTemplateSpec spec;
 
@@ -283,6 +286,38 @@ public class PromptTemplateGetResponse
   }
 
   /**
+   * Set the resourceGroupId of this {@link PromptTemplateGetResponse} instance and return the same
+   * instance.
+   *
+   * @param resourceGroupId The resourceGroupId of this {@link PromptTemplateGetResponse}
+   * @return The same instance of this {@link PromptTemplateGetResponse} class
+   */
+  @Nonnull
+  public PromptTemplateGetResponse resourceGroupId(@Nullable final String resourceGroupId) {
+    this.resourceGroupId = resourceGroupId;
+    return this;
+  }
+
+  /**
+   * Get resourceGroupId
+   *
+   * @return resourceGroupId The resourceGroupId of this {@link PromptTemplateGetResponse} instance.
+   */
+  @Nonnull
+  public String getResourceGroupId() {
+    return resourceGroupId;
+  }
+
+  /**
+   * Set the resourceGroupId of this {@link PromptTemplateGetResponse} instance.
+   *
+   * @param resourceGroupId The resourceGroupId of this {@link PromptTemplateGetResponse}
+   */
+  public void setResourceGroupId(@Nullable final String resourceGroupId) {
+    this.resourceGroupId = resourceGroupId;
+  }
+
+  /**
    * Set the spec of this {@link PromptTemplateGetResponse} instance and return the same instance.
    *
    * @param spec The spec of this {@link PromptTemplateGetResponse}
@@ -359,6 +394,7 @@ public class PromptTemplateGetResponse
     if (creationTimestamp != null) declaredFields.put("creationTimestamp", creationTimestamp);
     if (managedBy != null) declaredFields.put("managedBy", managedBy);
     if (isVersionHead != null) declaredFields.put("isVersionHead", isVersionHead);
+    if (resourceGroupId != null) declaredFields.put("resourceGroupId", resourceGroupId);
     if (spec != null) declaredFields.put("spec", spec);
     return declaredFields;
   }
@@ -392,6 +428,7 @@ public class PromptTemplateGetResponse
         && Objects.equals(this.creationTimestamp, promptTemplateGetResponse.creationTimestamp)
         && Objects.equals(this.managedBy, promptTemplateGetResponse.managedBy)
         && Objects.equals(this.isVersionHead, promptTemplateGetResponse.isVersionHead)
+        && Objects.equals(this.resourceGroupId, promptTemplateGetResponse.resourceGroupId)
         && Objects.equals(this.spec, promptTemplateGetResponse.spec);
   }
 
@@ -405,6 +442,7 @@ public class PromptTemplateGetResponse
         creationTimestamp,
         managedBy,
         isVersionHead,
+        resourceGroupId,
         spec,
         cloudSdkCustomFields);
   }
@@ -421,6 +459,7 @@ public class PromptTemplateGetResponse
     sb.append("    creationTimestamp: ").append(toIndentedString(creationTimestamp)).append("\n");
     sb.append("    managedBy: ").append(toIndentedString(managedBy)).append("\n");
     sb.append("    isVersionHead: ").append(toIndentedString(isVersionHead)).append("\n");
+    sb.append("    resourceGroupId: ").append(toIndentedString(resourceGroupId)).append("\n");
     sb.append("    spec: ").append(toIndentedString(spec)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
