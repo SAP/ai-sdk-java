@@ -61,7 +61,7 @@ public class GroundingClientTest {
             });
 
     final UUID collectionId = collections.getResources().get(0).getId();
-    final Documents documents = api.getDocumentsByCollectionId("reosurceGroup", collectionId);
+    final Documents documents = api.getAllDocuments("reosurceGroup", collectionId);
     assertThat(documents).isNotNull();
     final DocumentKeyValueListPair documentMeta =
         DocumentKeyValueListPair.create()
@@ -80,7 +80,7 @@ public class GroundingClientTest {
 
     final UUID documentId = documents.getResources().get(0).getId();
     final DocumentResponse document =
-        api.getDocumentByIdForCollection("reosurceGroup", collectionId, documentId);
+        api.getDocumentById("reosurceGroup", collectionId, documentId);
     assertThat(document).isNotNull();
     assertThat(document.getId()).isEqualTo(documentId);
     assertThat(document.getMetadata()).isNotNull().containsExactly(documentMeta);

@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
 import com.sap.ai.sdk.grounding.model.DataRepositories;
-import com.sap.ai.sdk.grounding.model.DataRepositorySearchResults;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.DocumentsListResponse;
@@ -90,7 +89,7 @@ class GroundingTest {
     Object search = controller.searchInDocuments(JSON_FORMAT);
     assertThat(search).isInstanceOf(SearchResults.class);
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-    this.assertDocumentSearchResult((DataRepositorySearchResults) search, dayOfWeek);
+    this.assertDocumentSearchResult((SearchResults) search, dayOfWeek);
 
     // (5) CLEAN UP
     Object deletion = controller.deleteCollection(collectionUuid, JSON_FORMAT);
@@ -102,14 +101,14 @@ class GroundingTest {
         .hasMessageContaining("404 Not Found");
   }
 
-  private void assertDocumentSearchResult(DataRepositorySearchResults search, String dayOfWeek) {
+  private void assertDocumentSearchResult(SearchResults search, String dayOfWeek) {
     assertThat(search.getResults()).isNotEmpty();
     for (final var resultsByFilter : search.getResults()) {
       assertThat(resultsByFilter.getFilterId()).isEqualTo("question");
       assertThat(resultsByFilter.getResults()).isNotEmpty();
       for (final var result : resultsByFilter.getResults()) {
-        assertThat(result.getDataRepository().getDocuments()).isNotEmpty();
-        for (final var document : result.getDataRepository().getDocuments()) {
+        assertThat(result.getDocuments()).isNotEmpty();
+        for (final var document : result.getDocuments()) {
           assertThat(document.getChunks()).isNotEmpty();
           for (final var chunk : document.getChunks()) {
             assertThat(chunk.getContent()).contains(dayOfWeek);
