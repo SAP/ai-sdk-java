@@ -20,7 +20,6 @@ import com.sap.ai.sdk.grounding.model.DocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.DocumentWithoutChunks;
 import com.sap.ai.sdk.grounding.model.EmbeddingConfig;
 import com.sap.ai.sdk.grounding.model.KeyValueListPair;
-import com.sap.ai.sdk.grounding.model.Pipeline;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchFilter;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
 import com.sap.ai.sdk.grounding.model.SearchConfiguration;
@@ -64,7 +63,8 @@ class GroundingController {
     if ("json".equals(format)) {
       return pipelines;
     }
-    final var ids = pipelines.getResources().stream().map(Pipeline::getId).collect(joining(", "));
+    final var ids = List.of();
+    // pipelines.getResources().stream().map(getPipeline::getId).collect(joining(", "));
     return "Found pipelines with ids: " + ids;
   }
 

@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** RetievalPerFilterSearchResultWithError */
+/** RetrievalPerFilterSearchResultWithError */
 // CHECKSTYLE:OFF
-public class RetievalPerFilterSearchResultWithError
+public class RetrievalPerFilterSearchResultWithError
 // CHECKSTYLE:ON
 {
   @JsonProperty("message")
@@ -34,18 +34,18 @@ public class RetievalPerFilterSearchResultWithError
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for RetievalPerFilterSearchResultWithError. */
-  protected RetievalPerFilterSearchResultWithError() {}
+  /** Default constructor for RetrievalPerFilterSearchResultWithError. */
+  protected RetrievalPerFilterSearchResultWithError() {}
 
   /**
-   * Set the message of this {@link RetievalPerFilterSearchResultWithError} instance and return the
+   * Set the message of this {@link RetrievalPerFilterSearchResultWithError} instance and return the
    * same instance.
    *
-   * @param message The message of this {@link RetievalPerFilterSearchResultWithError}
-   * @return The same instance of this {@link RetievalPerFilterSearchResultWithError} class
+   * @param message The message of this {@link RetrievalPerFilterSearchResultWithError}
+   * @return The same instance of this {@link RetrievalPerFilterSearchResultWithError} class
    */
   @Nonnull
-  public RetievalPerFilterSearchResultWithError message(@Nonnull final String message) {
+  public RetrievalPerFilterSearchResultWithError message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
@@ -53,7 +53,7 @@ public class RetievalPerFilterSearchResultWithError
   /**
    * Get message
    *
-   * @return message The message of this {@link RetievalPerFilterSearchResultWithError} instance.
+   * @return message The message of this {@link RetrievalPerFilterSearchResultWithError} instance.
    */
   @Nonnull
   public String getMessage() {
@@ -61,9 +61,9 @@ public class RetievalPerFilterSearchResultWithError
   }
 
   /**
-   * Set the message of this {@link RetievalPerFilterSearchResultWithError} instance.
+   * Set the message of this {@link RetrievalPerFilterSearchResultWithError} instance.
    *
-   * @param message The message of this {@link RetievalPerFilterSearchResultWithError}
+   * @param message The message of this {@link RetrievalPerFilterSearchResultWithError}
    */
   public void setMessage(@Nonnull final String message) {
     this.message = message;
@@ -71,7 +71,7 @@ public class RetievalPerFilterSearchResultWithError
 
   /**
    * Get the names of the unrecognizable properties of the {@link
-   * RetievalPerFilterSearchResultWithError}.
+   * RetrievalPerFilterSearchResultWithError}.
    *
    * @return The set of properties names
    */
@@ -83,7 +83,7 @@ public class RetievalPerFilterSearchResultWithError
 
   /**
    * Get the value of an unrecognizable property of this {@link
-   * RetievalPerFilterSearchResultWithError} instance.
+   * RetrievalPerFilterSearchResultWithError} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -95,14 +95,14 @@ public class RetievalPerFilterSearchResultWithError
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "RetievalPerFilterSearchResultWithError has no field with name '" + name + "'.");
+          "RetrievalPerFilterSearchResultWithError has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link RetievalPerFilterSearchResultWithError} instance
-   * including unrecognized properties.
+   * Get the value of all properties of this {@link RetrievalPerFilterSearchResultWithError}
+   * instance including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -115,9 +115,9 @@ public class RetievalPerFilterSearchResultWithError
   }
 
   /**
-   * Set an unrecognizable property of this {@link RetievalPerFilterSearchResultWithError} instance.
-   * If the map previously contained a mapping for the key, the old value is replaced by the
-   * specified value.
+   * Set an unrecognizable property of this {@link RetrievalPerFilterSearchResultWithError}
+   * instance. If the map previously contained a mapping for the key, the old value is replaced by
+   * the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -135,11 +135,11 @@ public class RetievalPerFilterSearchResultWithError
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final RetievalPerFilterSearchResultWithError retievalPerFilterSearchResultWithError =
-        (RetievalPerFilterSearchResultWithError) o;
+    final RetrievalPerFilterSearchResultWithError retrievalPerFilterSearchResultWithError =
+        (RetrievalPerFilterSearchResultWithError) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, retievalPerFilterSearchResultWithError.cloudSdkCustomFields)
-        && Objects.equals(this.message, retievalPerFilterSearchResultWithError.message);
+            this.cloudSdkCustomFields, retrievalPerFilterSearchResultWithError.cloudSdkCustomFields)
+        && Objects.equals(this.message, retrievalPerFilterSearchResultWithError.message);
   }
 
   @Override
@@ -151,7 +151,7 @@ public class RetievalPerFilterSearchResultWithError
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class RetievalPerFilterSearchResultWithError {\n");
+    sb.append("class RetrievalPerFilterSearchResultWithError {\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -172,20 +172,20 @@ public class RetievalPerFilterSearchResultWithError
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * RetievalPerFilterSearchResultWithError} instance with all required arguments.
+   * RetrievalPerFilterSearchResultWithError} instance with all required arguments.
    */
   public static Builder create() {
-    return (message) -> new RetievalPerFilterSearchResultWithError().message(message);
+    return (message) -> new RetrievalPerFilterSearchResultWithError().message(message);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the message of this {@link RetievalPerFilterSearchResultWithError} instance.
+     * Set the message of this {@link RetrievalPerFilterSearchResultWithError} instance.
      *
-     * @param message The message of this {@link RetievalPerFilterSearchResultWithError}
-     * @return The RetievalPerFilterSearchResultWithError instance.
+     * @param message The message of this {@link RetrievalPerFilterSearchResultWithError}
+     * @return The RetrievalPerFilterSearchResultWithError instance.
      */
-    RetievalPerFilterSearchResultWithError message(@Nonnull final String message);
+    RetrievalPerFilterSearchResultWithError message(@Nonnull final String message);
   }
 }

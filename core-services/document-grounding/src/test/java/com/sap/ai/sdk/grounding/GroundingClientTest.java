@@ -14,8 +14,8 @@ import com.sap.ai.sdk.grounding.model.DataRepositoryType;
 import com.sap.ai.sdk.grounding.model.DocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
+import com.sap.ai.sdk.grounding.model.GetPipelines;
 import com.sap.ai.sdk.grounding.model.KeyValueListPair;
-import com.sap.ai.sdk.grounding.model.Pipelines;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.util.UUID;
@@ -35,7 +35,7 @@ public class GroundingClientTest {
   void testPipelines() {
     final PipelinesApi api = new GroundingClient(SERVICE).pipelines();
 
-    final Pipelines allPipelines = api.getAllPipelines("reosurceGroup");
+    final GetPipelines allPipelines = api.getAllPipelines("reosurceGroup");
     assertThat(allPipelines).isNotNull();
     assertThat(allPipelines.getResources()).isEmpty();
   }

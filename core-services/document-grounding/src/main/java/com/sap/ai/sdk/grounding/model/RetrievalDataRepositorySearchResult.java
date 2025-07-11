@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** RetievalDataRepositorySearchResult */
+/** RetrievalDataRepositorySearchResult */
 // CHECKSTYLE:OFF
-public class RetievalDataRepositorySearchResult
+public class RetrievalDataRepositorySearchResult
 // CHECKSTYLE:ON
 {
   @JsonProperty("dataRepository")
@@ -34,18 +34,18 @@ public class RetievalDataRepositorySearchResult
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for RetievalDataRepositorySearchResult. */
-  protected RetievalDataRepositorySearchResult() {}
+  /** Default constructor for RetrievalDataRepositorySearchResult. */
+  protected RetrievalDataRepositorySearchResult() {}
 
   /**
-   * Set the dataRepository of this {@link RetievalDataRepositorySearchResult} instance and return
+   * Set the dataRepository of this {@link RetrievalDataRepositorySearchResult} instance and return
    * the same instance.
    *
-   * @param dataRepository The dataRepository of this {@link RetievalDataRepositorySearchResult}
-   * @return The same instance of this {@link RetievalDataRepositorySearchResult} class
+   * @param dataRepository The dataRepository of this {@link RetrievalDataRepositorySearchResult}
+   * @return The same instance of this {@link RetrievalDataRepositorySearchResult} class
    */
   @Nonnull
-  public RetievalDataRepositorySearchResult dataRepository(
+  public RetrievalDataRepositorySearchResult dataRepository(
       @Nonnull final DataRepositoryWithDocuments dataRepository) {
     this.dataRepository = dataRepository;
     return this;
@@ -54,7 +54,7 @@ public class RetievalDataRepositorySearchResult
   /**
    * Get dataRepository
    *
-   * @return dataRepository The dataRepository of this {@link RetievalDataRepositorySearchResult}
+   * @return dataRepository The dataRepository of this {@link RetrievalDataRepositorySearchResult}
    *     instance.
    */
   @Nonnull
@@ -63,9 +63,9 @@ public class RetievalDataRepositorySearchResult
   }
 
   /**
-   * Set the dataRepository of this {@link RetievalDataRepositorySearchResult} instance.
+   * Set the dataRepository of this {@link RetrievalDataRepositorySearchResult} instance.
    *
-   * @param dataRepository The dataRepository of this {@link RetievalDataRepositorySearchResult}
+   * @param dataRepository The dataRepository of this {@link RetrievalDataRepositorySearchResult}
    */
   public void setDataRepository(@Nonnull final DataRepositoryWithDocuments dataRepository) {
     this.dataRepository = dataRepository;
@@ -73,7 +73,7 @@ public class RetievalDataRepositorySearchResult
 
   /**
    * Get the names of the unrecognizable properties of the {@link
-   * RetievalDataRepositorySearchResult}.
+   * RetrievalDataRepositorySearchResult}.
    *
    * @return The set of properties names
    */
@@ -84,7 +84,7 @@ public class RetievalDataRepositorySearchResult
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link RetievalDataRepositorySearchResult}
+   * Get the value of an unrecognizable property of this {@link RetrievalDataRepositorySearchResult}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -97,13 +97,13 @@ public class RetievalDataRepositorySearchResult
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "RetievalDataRepositorySearchResult has no field with name '" + name + "'.");
+          "RetrievalDataRepositorySearchResult has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link RetievalDataRepositorySearchResult} instance
+   * Get the value of all properties of this {@link RetrievalDataRepositorySearchResult} instance
    * including unrecognized properties.
    *
    * @return The map of all properties
@@ -117,7 +117,7 @@ public class RetievalDataRepositorySearchResult
   }
 
   /**
-   * Set an unrecognizable property of this {@link RetievalDataRepositorySearchResult} instance. If
+   * Set an unrecognizable property of this {@link RetrievalDataRepositorySearchResult} instance. If
    * the map previously contained a mapping for the key, the old value is replaced by the specified
    * value.
    *
@@ -137,11 +137,11 @@ public class RetievalDataRepositorySearchResult
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final RetievalDataRepositorySearchResult retievalDataRepositorySearchResult =
-        (RetievalDataRepositorySearchResult) o;
+    final RetrievalDataRepositorySearchResult retrievalDataRepositorySearchResult =
+        (RetrievalDataRepositorySearchResult) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, retievalDataRepositorySearchResult.cloudSdkCustomFields)
-        && Objects.equals(this.dataRepository, retievalDataRepositorySearchResult.dataRepository);
+            this.cloudSdkCustomFields, retrievalDataRepositorySearchResult.cloudSdkCustomFields)
+        && Objects.equals(this.dataRepository, retrievalDataRepositorySearchResult.dataRepository);
   }
 
   @Override
@@ -153,7 +153,7 @@ public class RetievalDataRepositorySearchResult
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class RetievalDataRepositorySearchResult {\n");
+    sb.append("class RetrievalDataRepositorySearchResult {\n");
     sb.append("    dataRepository: ").append(toIndentedString(dataRepository)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -174,22 +174,22 @@ public class RetievalDataRepositorySearchResult
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * RetievalDataRepositorySearchResult} instance with all required arguments.
+   * RetrievalDataRepositorySearchResult} instance with all required arguments.
    */
   public static Builder create() {
     return (dataRepository) ->
-        new RetievalDataRepositorySearchResult().dataRepository(dataRepository);
+        new RetrievalDataRepositorySearchResult().dataRepository(dataRepository);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the dataRepository of this {@link RetievalDataRepositorySearchResult} instance.
+     * Set the dataRepository of this {@link RetrievalDataRepositorySearchResult} instance.
      *
-     * @param dataRepository The dataRepository of this {@link RetievalDataRepositorySearchResult}
-     * @return The RetievalDataRepositorySearchResult instance.
+     * @param dataRepository The dataRepository of this {@link RetrievalDataRepositorySearchResult}
+     * @return The RetrievalDataRepositorySearchResult instance.
      */
-    RetievalDataRepositorySearchResult dataRepository(
+    RetrievalDataRepositorySearchResult dataRepository(
         @Nonnull final DataRepositoryWithDocuments dataRepository);
   }
 }

@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -23,30 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** PipelineConfigurationSharePoint */
+/** SharePointConfigGetResponse */
 // CHECKSTYLE:OFF
-public class PipelineConfigurationSharePoint
+public class SharePointConfigGetResponse
 // CHECKSTYLE:ON
 {
   @JsonProperty("site")
-  private PipelineConfigurationSharePointSite site;
+  private SharePointSiteGetResponse site;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for PipelineConfigurationSharePoint. */
-  protected PipelineConfigurationSharePoint() {}
+  /** Default constructor for SharePointConfigGetResponse. */
+  protected SharePointConfigGetResponse() {}
 
   /**
-   * Set the site of this {@link PipelineConfigurationSharePoint} instance and return the same
-   * instance.
+   * Set the site of this {@link SharePointConfigGetResponse} instance and return the same instance.
    *
-   * @param site The site of this {@link PipelineConfigurationSharePoint}
-   * @return The same instance of this {@link PipelineConfigurationSharePoint} class
+   * @param site The site of this {@link SharePointConfigGetResponse}
+   * @return The same instance of this {@link SharePointConfigGetResponse} class
    */
   @Nonnull
-  public PipelineConfigurationSharePoint site(
-      @Nullable final PipelineConfigurationSharePointSite site) {
+  public SharePointConfigGetResponse site(@Nonnull final SharePointSiteGetResponse site) {
     this.site = site;
     return this;
   }
@@ -54,24 +52,24 @@ public class PipelineConfigurationSharePoint
   /**
    * Get site
    *
-   * @return site The site of this {@link PipelineConfigurationSharePoint} instance.
+   * @return site The site of this {@link SharePointConfigGetResponse} instance.
    */
   @Nonnull
-  public PipelineConfigurationSharePointSite getSite() {
+  public SharePointSiteGetResponse getSite() {
     return site;
   }
 
   /**
-   * Set the site of this {@link PipelineConfigurationSharePoint} instance.
+   * Set the site of this {@link SharePointConfigGetResponse} instance.
    *
-   * @param site The site of this {@link PipelineConfigurationSharePoint}
+   * @param site The site of this {@link SharePointConfigGetResponse}
    */
-  public void setSite(@Nullable final PipelineConfigurationSharePointSite site) {
+  public void setSite(@Nonnull final SharePointSiteGetResponse site) {
     this.site = site;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link PipelineConfigurationSharePoint}.
+   * Get the names of the unrecognizable properties of the {@link SharePointConfigGetResponse}.
    *
    * @return The set of properties names
    */
@@ -82,7 +80,7 @@ public class PipelineConfigurationSharePoint
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link PipelineConfigurationSharePoint}
+   * Get the value of an unrecognizable property of this {@link SharePointConfigGetResponse}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -95,14 +93,14 @@ public class PipelineConfigurationSharePoint
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "PipelineConfigurationSharePoint has no field with name '" + name + "'.");
+          "SharePointConfigGetResponse has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link PipelineConfigurationSharePoint} instance
-   * including unrecognized properties.
+   * Get the value of all properties of this {@link SharePointConfigGetResponse} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -115,9 +113,8 @@ public class PipelineConfigurationSharePoint
   }
 
   /**
-   * Set an unrecognizable property of this {@link PipelineConfigurationSharePoint} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
+   * Set an unrecognizable property of this {@link SharePointConfigGetResponse} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -135,11 +132,10 @@ public class PipelineConfigurationSharePoint
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final PipelineConfigurationSharePoint pipelineConfigurationSharePoint =
-        (PipelineConfigurationSharePoint) o;
+    final SharePointConfigGetResponse sharePointConfigGetResponse = (SharePointConfigGetResponse) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, pipelineConfigurationSharePoint.cloudSdkCustomFields)
-        && Objects.equals(this.site, pipelineConfigurationSharePoint.site);
+            this.cloudSdkCustomFields, sharePointConfigGetResponse.cloudSdkCustomFields)
+        && Objects.equals(this.site, sharePointConfigGetResponse.site);
   }
 
   @Override
@@ -151,7 +147,7 @@ public class PipelineConfigurationSharePoint
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class PipelineConfigurationSharePoint {\n");
+    sb.append("class SharePointConfigGetResponse {\n");
     sb.append("    site: ").append(toIndentedString(site)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -170,8 +166,22 @@ public class PipelineConfigurationSharePoint
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link PipelineConfigurationSharePoint} instance. No arguments are required. */
-  public static PipelineConfigurationSharePoint create() {
-    return new PipelineConfigurationSharePoint();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * SharePointConfigGetResponse} instance with all required arguments.
+   */
+  public static Builder create() {
+    return (site) -> new SharePointConfigGetResponse().site(site);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the site of this {@link SharePointConfigGetResponse} instance.
+     *
+     * @param site The site of this {@link SharePointConfigGetResponse}
+     * @return The SharePointConfigGetResponse instance.
+     */
+    SharePointConfigGetResponse site(@Nonnull final SharePointSiteGetResponse site);
   }
 }
