@@ -111,7 +111,7 @@ public class ResponseChatMessage
    * @return The same instance of this {@link ResponseChatMessage} class
    */
   @Nonnull
-  public ResponseChatMessage role(@Nullable final RoleEnum role) {
+  public ResponseChatMessage role(@Nonnull final RoleEnum role) {
     this.role = role;
     return this;
   }
@@ -131,7 +131,7 @@ public class ResponseChatMessage
    *
    * @param role The role of this {@link ResponseChatMessage}
    */
-  public void setRole(@Nullable final RoleEnum role) {
+  public void setRole(@Nonnull final RoleEnum role) {
     this.role = role;
   }
 
@@ -348,8 +348,22 @@ public class ResponseChatMessage
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link ResponseChatMessage} instance. No arguments are required. */
-  public static ResponseChatMessage create() {
-    return new ResponseChatMessage();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link ResponseChatMessage}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (role) -> new ResponseChatMessage().role(role);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the role of this {@link ResponseChatMessage} instance.
+     *
+     * @param role The role of this {@link ResponseChatMessage}
+     * @return The ResponseChatMessage instance.
+     */
+    ResponseChatMessage role(@Nonnull final RoleEnum role);
   }
 }

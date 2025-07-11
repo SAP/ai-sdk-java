@@ -10,7 +10,6 @@ import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
@@ -60,7 +59,7 @@ public class OrchestrationChatResponse {
    */
   @Nonnull
   public TokenUsage getTokenUsage() {
-    return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult()).getUsage();
+    return originalResponse.getOrchestrationResult().getUsage();
   }
 
   /**
@@ -113,9 +112,7 @@ public class OrchestrationChatResponse {
   @Nonnull
   public LLMChoice getChoice() {
     //    We expect choices to be defined and never empty.
-    return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult())
-        .getChoices()
-        .get(0);
+    return originalResponse.getOrchestrationResult().getChoices().get(0);
   }
 
   /**
@@ -133,7 +130,8 @@ public class OrchestrationChatResponse {
   @Nonnull
   public <T> T asEntity(@Nonnull final Class<T> type) throws OrchestrationClientException {
     final String refusal =
-        ((LLMModuleResultSynchronous) getOriginalResponse().getOrchestrationResult())
+        getOriginalResponse()
+            .getOrchestrationResult()
             .getChoices()
             .get(0)
             .getMessage()
