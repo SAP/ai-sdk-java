@@ -230,7 +230,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("skipped");
+    assertThat(filterResult.getMessage()).contains("passed"); // prompt shield is a filter
   }
 
   @Test
