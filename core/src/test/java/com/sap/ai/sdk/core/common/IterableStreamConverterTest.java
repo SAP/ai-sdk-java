@@ -21,6 +21,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.StandardException;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -34,7 +35,7 @@ class IterableStreamConverterTest {
     final var inputStream = spy(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
 
-    final var sut = IterableStreamConverter.lines(entity, TestClientException::new);
+    final var sut = IterableStreamConverter.lines(entity, new TestClientExceptionFactory());
     verify(inputStream, never()).read();
     verify(inputStream, never()).read(any());
     verify(inputStream, never()).read(any(), anyInt(), anyInt());
@@ -70,7 +71,7 @@ class IterableStreamConverterTest {
 
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
 
-    final var sut = IterableStreamConverter.lines(entity, TestClientException::new);
+    final var sut = IterableStreamConverter.lines(entity, new TestClientExceptionFactory());
     assertThat(sut.findFirst()).contains("Foo Bar");
     verify(inputStream, times(1)).read(any(), anyInt(), anyInt());
     verify(inputStream, never()).close();
@@ -94,7 +95,7 @@ class IterableStreamConverterTest {
 
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
 
-    final var sut = IterableStreamConverter.lines(entity, TestClientException::new);
+    final var sut = IterableStreamConverter.lines(entity, new TestClientExceptionFactory());
     assertThatThrownBy(sut::count)
         .isInstanceOf(TestClientException.class)
         .hasMessage("Parsing response content was interrupted.")
@@ -107,4 +108,20 @@ class IterableStreamConverterTest {
 
   @StandardException
   public static class TestClientException extends ClientException {}
+
+  static class TestClientExceptionFactory
+      implements ClientExceptionFactory<TestClientException, ClientError> {
+
+    @Override
+    public TestClientException create(@NotNull String message, Throwable cause) {
+      return new TestClientException(message, cause);
+    }
+
+    @Override
+    public TestClientException fromClientError(@NotNull String message, @NotNull ClientError clientError) {
+      TestClientException exception = new TestClientException(message);
+      exception.clientError = clientError;
+      return exception;
+    }
+  }
 }

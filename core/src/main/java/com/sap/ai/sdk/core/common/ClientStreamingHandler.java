@@ -12,13 +12,15 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
  * Parse incoming JSON responses and handles any errors. For internal use only.
  *
  * @param <D> The type of the response.
+ * @param <E> The type of the exception to throw.
  * @param <R> The type of the error.
  * @since 1.2.0
  */
 @Beta
 @Slf4j
-public class ClientStreamingHandler<D extends StreamedDelta, R extends ClientError>
-    extends ClientResponseHandler<D, R> {
+public class ClientStreamingHandler<
+        D extends StreamedDelta, R extends ClientError, E extends ClientException>
+    extends ClientResponseHandler<D, R, E> {
 
   /**
    * Set the {@link ObjectMapper} to use for parsing JSON responses.
@@ -27,7 +29,7 @@ public class ClientStreamingHandler<D extends StreamedDelta, R extends ClientErr
    * @return the current instance of {@link ClientStreamingHandler} with the changed object mapper
    */
   @Nonnull
-  public ClientStreamingHandler<D, R> objectMapper(@Nonnull final ObjectMapper jackson) {
+  public ClientStreamingHandler<D, R, E> objectMapper(@Nonnull final ObjectMapper jackson) {
     super.objectMapper(jackson);
     return this;
   }
@@ -42,7 +44,7 @@ public class ClientStreamingHandler<D extends StreamedDelta, R extends ClientErr
   public ClientStreamingHandler(
       @Nonnull final Class<D> deltaType,
       @Nonnull final Class<R> errorType,
-      @Nonnull final ClientExceptionFactory<? extends ClientException, R> exceptionFactory) {
+      @Nonnull final ClientExceptionFactory<E, R> exceptionFactory) {
     super(deltaType, errorType, exceptionFactory);
   }
 
@@ -57,26 +59,27 @@ public class ClientStreamingHandler<D extends StreamedDelta, R extends ClientErr
   @Nonnull
   public Stream<D> handleStreamingResponse(@Nonnull final ClassicHttpResponse response) {
     if (response.getCode() >= 300) {
-      super.buildExceptionAndThrow(response);
+      throw buildException(response);
     }
+
     return IterableStreamConverter.lines(response.getEntity(), exceptionFactory)
         // half of the lines are empty newlines, the last line is "data: [DONE]"
         .filter(line -> !line.isEmpty() && !"data: [DONE]".equals(line.trim()))
         .peek(
             line -> {
               if (!line.startsWith("data: ")) {
-                final String msg = "Failed to parse response";
-                super.parseErrorAndThrow(line, exceptionFactory.create(msg, null));
+                final String msg = "Failed to parse response: " + line;
+                throw exceptionFactory.create(msg, null);
               }
             })
         .map(
             line -> {
               final String data = line.substring(5); // remove "data: "
               try {
-                return objectMapper.readValue(data, responseType);
+                return objectMapper.readValue(data, successType);
               } catch (final IOException e) { // exception message e gets lost
                 log.error("Failed to parse the following response: {}", line);
-                throw exceptionConstructor.apply("Failed to parse delta message: " + line, e);
+                throw exceptionFactory.create("Failed to parse delta message: " + line, e);
               }
             });
   }
