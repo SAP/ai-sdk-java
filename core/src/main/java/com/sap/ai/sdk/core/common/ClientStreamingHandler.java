@@ -39,7 +39,7 @@ public class ClientStreamingHandler<
    *
    * @param deltaType The type of the response.
    * @param errorType The type of the error.
-   * @param exceptionFactory The type of the exception to throw.
+   * @param exceptionFactory The factory to create exceptions.
    */
   public ClientStreamingHandler(
       @Nonnull final Class<D> deltaType,
@@ -54,12 +54,13 @@ public class ClientStreamingHandler<
    *
    * @param response The response to process
    * @return A {@link Stream} of a model class instantiated from the response
+   * @throws E in case of a problem or the connection was aborted
    */
   @SuppressWarnings("PMD.CloseResource") // Stream is closed automatically when consumed
   @Nonnull
-  public Stream<D> handleStreamingResponse(@Nonnull final ClassicHttpResponse response) {
+  public Stream<D> handleStreamingResponse(@Nonnull final ClassicHttpResponse response) throws E {
     if (response.getCode() >= 300) {
-      throw buildException(response);
+      throw super.buildException(response);
     }
 
     return IterableStreamConverter.lines(response.getEntity(), exceptionFactory)
@@ -68,7 +69,7 @@ public class ClientStreamingHandler<
         .peek(
             line -> {
               if (!line.startsWith("data: ")) {
-                final String msg = "Failed to parse response: " + line;
+                final String msg = "Failed to parse response: %s".formatted(line);
                 throw exceptionFactory.create(msg, null);
               }
             })
@@ -79,7 +80,8 @@ public class ClientStreamingHandler<
                 return objectMapper.readValue(data, successType);
               } catch (final IOException e) { // exception message e gets lost
                 log.error("Failed to parse the following response: {}", line);
-                throw exceptionFactory.create("Failed to parse delta message: " + line, e);
+                final String msg = "Failed to parse delta message: %s".formatted(line);
+                throw exceptionFactory.create(msg, e);
               }
             });
   }

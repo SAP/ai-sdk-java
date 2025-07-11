@@ -68,7 +68,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   // The InputStream of the HTTP entity is closed by EntityUtils.toString
   @SuppressWarnings("PMD.CloseResource")
   @Nonnull
-  private T parseSuccess(@Nonnull final ClassicHttpResponse response) {
+  private T parseSuccess(@Nonnull final ClassicHttpResponse response) throws E{
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
       throw exceptionFactory.create("Response was empty.", null);
@@ -76,7 +76,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
 
     val content =
         tryGetContent(responseEntity)
-            .getOrElseThrow(e -> exceptionFactory.create("Failed to read response content.", e));
+            .getOrElseThrow(e -> exceptionFactory.create("Failed to parse response entity.", e));
     log.debug("Parsing response from JSON response: {}", content);
     try {
       return objectMapper.readValue(content, successType);

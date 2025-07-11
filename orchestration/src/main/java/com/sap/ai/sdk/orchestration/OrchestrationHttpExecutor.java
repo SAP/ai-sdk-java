@@ -13,6 +13,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessE
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstantiationException;
 import java.io.IOException;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -48,7 +49,7 @@ class OrchestrationHttpExecutor {
 
       val handler =
           new ClientResponseHandler<>(
-                  responseType, OrchestrationError.class, OrchestrationClientException::new)
+                  responseType, OrchestrationError.class, new OrchestrationExceptionFactory())
               .objectMapper(JACKSON);
       return client.execute(request, handler);
 
@@ -61,6 +62,25 @@ class OrchestrationHttpExecutor {
         | IOException e) {
       throw new OrchestrationClientException(
           "Request to Orchestration service failed for " + path, e);
+    } catch (OrchestrationClientException e) {
+      if (e.getClientError()
+          .getOriginalResponse()
+          .getLocation()
+          .equals("Filtering Module - Input Filter")) {
+
+        final var filerDetails =
+            (Map<String, Object>)
+                e.getClientError()
+                    .getOriginalResponse()
+                    .getModuleResults()
+                    .getInputFiltering()
+                    .getData();
+        throw new OrchestrationFilterException.OrchestrationInputFilterException(
+            "Content filtered out due to policy restrictions in the input filtering module.",
+            e,
+            filerDetails);
+      }
+      throw e;
     }
   }
 
@@ -76,7 +96,7 @@ class OrchestrationHttpExecutor {
       return new ClientStreamingHandler<>(
               OrchestrationChatCompletionDelta.class,
               OrchestrationError.class,
-              OrchestrationClientException::new)
+              new OrchestrationExceptionFactory())
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
 
@@ -86,6 +106,25 @@ class OrchestrationHttpExecutor {
     } catch (IOException e) {
       throw new OrchestrationClientException(
           "Streaming request to the Orchestration service failed", e);
+    } catch (OrchestrationClientException e) {
+      if (e.getClientError()
+          .getOriginalResponse()
+          .getLocation()
+          .equals("Filtering Module - Input Filter")) {
+
+        final var filerDetails =
+            (Map<String, Object>)
+                e.getClientError()
+                    .getOriginalResponse()
+                    .getModuleResults()
+                    .getInputFiltering()
+                    .getData();
+        throw new OrchestrationFilterException.OrchestrationInputFilterException(
+            "Content filtered out due to policy restrictions in the input filtering module.",
+            e,
+            filerDetails);
+      }
+      throw e;
     }
   }
 

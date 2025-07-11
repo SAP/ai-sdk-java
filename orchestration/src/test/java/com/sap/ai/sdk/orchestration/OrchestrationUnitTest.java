@@ -159,7 +159,7 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .hasMessage(
-            "Request failed with status 500 Server Error and error message: 'Internal Server Error located in Masking Module - Masking'");
+            "Request failed with status 500 Server Error: Internal Server Error located in Masking Module - Masking");
   }
 
   @Test
@@ -414,7 +414,7 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
-            "Request failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
+            "Request failed with status 400 Bad Request: Content filtered due to Safety violations. Please modify the prompt and try again.");
   }
 
   @Test
