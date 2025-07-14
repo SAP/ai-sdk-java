@@ -68,7 +68,7 @@ class GroundingController {
       return pipelines;
     }
     final var ids = new ArrayList<>();
-    for (GetPipeline resource : pipelines.getResources()) {
+    for (final GetPipeline resource : pipelines.getResources()) {
       switch (resource.getType().toString()) {
         case "MSSharePoint" -> ids.add(((MSSharePointPipelineGetResponse) resource).getId());
         case "S3" -> ids.add(((S3PipelineGetResponse) resource).getId());
