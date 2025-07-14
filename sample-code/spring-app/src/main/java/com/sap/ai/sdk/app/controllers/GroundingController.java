@@ -54,14 +54,16 @@ class GroundingController {
   private static final PipelinesApi CLIENT_PIPELINES = new GroundingClient().pipelines();
   private static final RetrievalApi CLIENT_RETRIEVAL = new GroundingClient().retrieval();
   private static final VectorApi CLIENT_VECTOR = new GroundingClient().vector();
-  private static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
+  static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
+  static final String RESOURCE_GROUP_JS = "ai-sdk-js-e2e";
   private static final String COLLECTION_TITLE = "ai-sdk-java-e2e-test";
 
   /** Retrieve (up to 10) grounding pipeline entities. */
   @GetMapping("/pipelines/list")
   Object getAllPipelines(
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var pipelines = CLIENT_PIPELINES.getAllPipelines(RESOURCE_GROUP, 10, 0, true);
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @Nonnull @RequestParam(value = "resource-group") final String resourceGroup) {
+    final var pipelines = CLIENT_PIPELINES.getAllPipelines(resourceGroup, 10, 0, true);
     log.info("Found {} pipelines", pipelines.getResources().size());
 
     if ("json".equals(format)) {

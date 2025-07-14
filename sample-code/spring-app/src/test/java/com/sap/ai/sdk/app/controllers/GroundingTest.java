@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.app.controllers.GroundingController.RESOURCE_GROUP;
+import static com.sap.ai.sdk.app.controllers.GroundingController.RESOURCE_GROUP_JS;
 import static java.time.LocalDate.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -17,25 +19,27 @@ import java.util.Locale;
 import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.client.HttpClientErrorException.NotFound;
 
 class GroundingTest {
-  /** Java end-to-end test specific configuration ID. "name":"config-java-e2e-test" */
-  public static final String CONFIG_ID = "67e8d039-c7f1-4179-9f8f-60d158a36b0e";
-
   private static final String JSON_FORMAT = "json";
 
   @Test
   void testPipelinesGetAll() {
     final var controller = new GroundingController();
 
-    final var result = controller.getAllPipelines(JSON_FORMAT);
+    // Java has no pipelines, it returns 404 for whatever reason
+    assertThatThrownBy(() -> controller.getAllPipelines(JSON_FORMAT, RESOURCE_GROUP))
+        .isExactlyInstanceOf(NotFound.class)
+        .hasMessageContaining("404");
+
+    // JS has 2 pipelines
+    final var result = controller.getAllPipelines(JSON_FORMAT, RESOURCE_GROUP_JS);
     assertThat(result).isInstanceOf(GetPipelines.class);
     final var pipelinesList = ((GetPipelines) result).getResources();
+    assertThat(pipelinesList).hasSize(2);
     final var pipelinesCount = ((GetPipelines) result).getCount();
-
-    // we don't have testable data yet, but the endpoint works without errors
-    assertThat(pipelinesCount).isEqualTo(0);
-    assertThat(pipelinesList).isEmpty();
+    assertThat(pipelinesCount).isEqualTo(2);
   }
 
   @Test
