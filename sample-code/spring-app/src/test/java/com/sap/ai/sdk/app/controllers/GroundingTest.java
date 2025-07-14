@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.app.controllers.GroundingController.RESOURCE_GROUP;
+import static com.sap.ai.sdk.app.controllers.GroundingController.RESOURCE_GROUP_JS;
 import static java.time.LocalDate.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -9,33 +11,35 @@ import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.DocumentsListResponse;
-import com.sap.ai.sdk.grounding.model.Pipelines;
-import com.sap.ai.sdk.grounding.model.RetievalSearchResults;
+import com.sap.ai.sdk.grounding.model.GetPipelines;
+import com.sap.ai.sdk.grounding.model.RetrievalSearchResults;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.client.HttpClientErrorException.NotFound;
 
 class GroundingTest {
-  /** Java end-to-end test specific configuration ID. "name":"config-java-e2e-test" */
-  public static final String CONFIG_ID = "67e8d039-c7f1-4179-9f8f-60d158a36b0e";
-
   private static final String JSON_FORMAT = "json";
 
   @Test
   void testPipelinesGetAll() {
     final var controller = new GroundingController();
 
-    final var result = controller.getAllPipelines(JSON_FORMAT);
-    assertThat(result).isInstanceOf(Pipelines.class);
-    final var pipelinesList = ((Pipelines) result).getResources();
-    final var pipelinesCount = ((Pipelines) result).getCount();
+    // Java has no pipelines, it returns 404 for whatever reason
+    assertThatThrownBy(() -> controller.getAllPipelines(JSON_FORMAT, RESOURCE_GROUP))
+        .isExactlyInstanceOf(NotFound.class)
+        .hasMessageContaining("404");
 
-    // we don't have testable data yet, but the endpoint works without errors
-    assertThat(pipelinesCount).isEqualTo(0);
-    assertThat(pipelinesList).isEmpty();
+    // JS has 2 pipelines
+    final var result = controller.getAllPipelines(JSON_FORMAT, RESOURCE_GROUP_JS);
+    assertThat(result).isInstanceOf(GetPipelines.class);
+    final var pipelinesList = ((GetPipelines) result).getResources();
+    assertThat(pipelinesList).hasSize(2);
+    final var pipelinesCount = ((GetPipelines) result).getCount();
+    assertThat(pipelinesCount).isEqualTo(2);
   }
 
   @Test
@@ -87,9 +91,9 @@ class GroundingTest {
 
     // (4) SEARCH FOR DOCUMENTS
     Object search = controller.searchInDocuments(JSON_FORMAT);
-    assertThat(search).isInstanceOf(RetievalSearchResults.class);
+    assertThat(search).isInstanceOf(RetrievalSearchResults.class);
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-    this.assertDocumentSearchResult((RetievalSearchResults) search, dayOfWeek);
+    this.assertDocumentSearchResult((RetrievalSearchResults) search, dayOfWeek);
 
     // (5) CLEAN UP
     Object deletion = controller.deleteCollection(collectionUuid, JSON_FORMAT);
@@ -101,7 +105,7 @@ class GroundingTest {
         .hasMessageContaining("404 Not Found");
   }
 
-  private void assertDocumentSearchResult(RetievalSearchResults search, String dayOfWeek) {
+  private void assertDocumentSearchResult(RetrievalSearchResults search, String dayOfWeek) {
     assertThat(search.getResults()).isNotEmpty();
     for (final var resultsByFilter : search.getResults()) {
       assertThat(resultsByFilter.getFilterId()).isEqualTo("question");

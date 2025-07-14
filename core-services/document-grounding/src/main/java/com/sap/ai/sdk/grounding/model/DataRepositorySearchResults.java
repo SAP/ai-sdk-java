@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -26,40 +26,41 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** RetievalSearchResults */
+/** DataRepositorySearchResults */
 // CHECKSTYLE:OFF
-public class RetievalSearchResults
+public class DataRepositorySearchResults
 // CHECKSTYLE:ON
 {
   @JsonProperty("results")
-  private List<ResultsInner1> results = new ArrayList<>();
+  private List<ResultsInner2> results = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for RetievalSearchResults. */
-  protected RetievalSearchResults() {}
+  /** Default constructor for DataRepositorySearchResults. */
+  protected DataRepositorySearchResults() {}
 
   /**
-   * Set the results of this {@link RetievalSearchResults} instance and return the same instance.
+   * Set the results of this {@link DataRepositorySearchResults} instance and return the same
+   * instance.
    *
    * @param results List of returned results.
-   * @return The same instance of this {@link RetievalSearchResults} class
+   * @return The same instance of this {@link DataRepositorySearchResults} class
    */
   @Nonnull
-  public RetievalSearchResults results(@Nonnull final List<ResultsInner1> results) {
+  public DataRepositorySearchResults results(@Nonnull final List<ResultsInner2> results) {
     this.results = results;
     return this;
   }
 
   /**
-   * Add one results instance to this {@link RetievalSearchResults}.
+   * Add one results instance to this {@link DataRepositorySearchResults}.
    *
    * @param resultsItem The results that should be added
-   * @return The same instance of type {@link RetievalSearchResults}
+   * @return The same instance of type {@link DataRepositorySearchResults}
    */
   @Nonnull
-  public RetievalSearchResults addResultsItem(@Nonnull final ResultsInner1 resultsItem) {
+  public DataRepositorySearchResults addResultsItem(@Nonnull final ResultsInner2 resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -70,24 +71,24 @@ public class RetievalSearchResults
   /**
    * List of returned results.
    *
-   * @return results The results of this {@link RetievalSearchResults} instance.
+   * @return results The results of this {@link DataRepositorySearchResults} instance.
    */
   @Nonnull
-  public List<ResultsInner1> getResults() {
+  public List<ResultsInner2> getResults() {
     return results;
   }
 
   /**
-   * Set the results of this {@link RetievalSearchResults} instance.
+   * Set the results of this {@link DataRepositorySearchResults} instance.
    *
    * @param results List of returned results.
    */
-  public void setResults(@Nonnull final List<ResultsInner1> results) {
+  public void setResults(@Nonnull final List<ResultsInner2> results) {
     this.results = results;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link RetievalSearchResults}.
+   * Get the names of the unrecognizable properties of the {@link DataRepositorySearchResults}.
    *
    * @return The set of properties names
    */
@@ -98,7 +99,8 @@ public class RetievalSearchResults
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link RetievalSearchResults} instance.
+   * Get the value of an unrecognizable property of this {@link DataRepositorySearchResults}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -110,13 +112,13 @@ public class RetievalSearchResults
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "RetievalSearchResults has no field with name '" + name + "'.");
+          "DataRepositorySearchResults has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link RetievalSearchResults} instance including
+   * Get the value of all properties of this {@link DataRepositorySearchResults} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -130,7 +132,7 @@ public class RetievalSearchResults
   }
 
   /**
-   * Set an unrecognizable property of this {@link RetievalSearchResults} instance. If the map
+   * Set an unrecognizable property of this {@link DataRepositorySearchResults} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -149,9 +151,10 @@ public class RetievalSearchResults
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final RetievalSearchResults retievalSearchResults = (RetievalSearchResults) o;
-    return Objects.equals(this.cloudSdkCustomFields, retievalSearchResults.cloudSdkCustomFields)
-        && Objects.equals(this.results, retievalSearchResults.results);
+    final DataRepositorySearchResults dataRepositorySearchResults = (DataRepositorySearchResults) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, dataRepositorySearchResults.cloudSdkCustomFields)
+        && Objects.equals(this.results, dataRepositorySearchResults.results);
   }
 
   @Override
@@ -163,7 +166,7 @@ public class RetievalSearchResults
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class RetievalSearchResults {\n");
+    sb.append("class DataRepositorySearchResults {\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -183,30 +186,30 @@ public class RetievalSearchResults
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link RetievalSearchResults}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * DataRepositorySearchResults} instance with all required arguments.
    */
   public static Builder create() {
-    return (results) -> new RetievalSearchResults().results(results);
+    return (results) -> new DataRepositorySearchResults().results(results);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the results of this {@link RetievalSearchResults} instance.
+     * Set the results of this {@link DataRepositorySearchResults} instance.
      *
      * @param results List of returned results.
-     * @return The RetievalSearchResults instance.
+     * @return The DataRepositorySearchResults instance.
      */
-    RetievalSearchResults results(@Nonnull final List<ResultsInner1> results);
+    DataRepositorySearchResults results(@Nonnull final List<ResultsInner2> results);
 
     /**
-     * Set the results of this {@link RetievalSearchResults} instance.
+     * Set the results of this {@link DataRepositorySearchResults} instance.
      *
      * @param results List of returned results.
-     * @return The RetievalSearchResults instance.
+     * @return The DataRepositorySearchResults instance.
      */
-    default RetievalSearchResults results(@Nonnull final ResultsInner1... results) {
+    default DataRepositorySearchResults results(@Nonnull final ResultsInner2... results) {
       return results(Arrays.asList(results));
     }
   }
