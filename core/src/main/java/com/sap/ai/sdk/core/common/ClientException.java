@@ -13,6 +13,11 @@ import lombok.experimental.StandardException;
 @Beta
 @StandardException
 public class ClientException extends RuntimeException {
+
+  /**
+   * Wraps a structured error payload received from the remote service, if available. This can be
+   * used to extract more detailed error information.
+   */
   @Nullable
   @Getter(onMethod_ = @Beta)
   public ClientError clientError;

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import java.io.IOException;
+import javax.annotation.Nonnull;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.experimental.StandardException;
@@ -16,7 +17,6 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 
 class ClientResponseHandlerTest {
@@ -33,13 +33,15 @@ class ClientResponseHandlerTest {
   static class MyException extends ClientException {}
 
   static class MyExceptionFactory implements ClientExceptionFactory<MyException, MyError> {
+    @Nonnull
     @Override
-    public MyException create(@NotNull String message, Throwable cause) {
+    public MyException create(@Nonnull String message, Throwable cause) {
       return new MyException(message, cause);
     }
 
+    @Nonnull
     @Override
-    public MyException fromClientError(@NotNull String message, @NotNull MyError clientError) {
+    public MyException fromClientError(@Nonnull String message, @Nonnull MyError clientError) {
       var ex = new MyException(message);
       ex.clientError = clientError;
       return ex;

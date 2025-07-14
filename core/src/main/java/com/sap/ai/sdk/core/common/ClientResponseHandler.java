@@ -20,9 +20,9 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 /**
  * Parse incoming JSON responses and handles any errors. For internal use only.
  *
- * @param <T> The type of the response.
+ * @param <T> The type of the successful response.
  * @param <E> The type of the exception to throw.
- * @param <R> The type of the error.
+ * @param <R> The type of the error response.
  * @since 1.1.0
  */
 @Beta
@@ -30,8 +30,13 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 @RequiredArgsConstructor
 public class ClientResponseHandler<T, R extends ClientError, E extends ClientException>
     implements HttpClientResponseHandler<T> {
+  /** The HTTP success response type */
   @Nonnull protected final Class<T> successType;
+
+  /** The HTTP error response type */
   @Nonnull protected final Class<R> errorType;
+
+  /** The factory to create exceptions for Http 4xx/5xx responses. */
   @Nonnull protected final ClientExceptionFactory<E, R> exceptionFactory;
 
   /** The parses for JSON responses, will be private once we can remove mixins */
@@ -68,7 +73,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   // The InputStream of the HTTP entity is closed by EntityUtils.toString
   @SuppressWarnings("PMD.CloseResource")
   @Nonnull
-  private T parseSuccess(@Nonnull final ClassicHttpResponse response) throws E{
+  private T parseSuccess(@Nonnull final ClassicHttpResponse response) throws E {
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
       throw exceptionFactory.create("Response was empty.", null);
@@ -96,8 +101,10 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
    *
    * @param httpResponse The response to process
    * @throws ClientException if the response is an error (4xx/5xx)
+   * @return An instance of the specific exception type returned by exceptionFactory
    */
   @SuppressWarnings("PMD.CloseResource")
+  @Nonnull
   protected E buildException(@Nonnull final ClassicHttpResponse httpResponse) {
     val baseErrorMessage =
         "Request failed with status %d %s"
@@ -128,8 +135,8 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
       baseException.addSuppressed(maybeClientError.getCause());
       return baseException;
     }
-    R clientError = maybeClientError.get();
-    var extendErrorMessage = "%s: %s".formatted(baseErrorMessage, clientError.getMessage());
+    final R clientError = maybeClientError.get();
+    val extendErrorMessage = "%s: %s".formatted(baseErrorMessage, clientError.getMessage());
     return exceptionFactory.fromClientError(extendErrorMessage, clientError);
   }
 }

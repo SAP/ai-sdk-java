@@ -62,6 +62,7 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -362,7 +363,7 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
-            "Request failed with status 400 Bad Request and error message: 'Missing required parameters: ['input']'");
+            "Request failed with status 400 Bad Request: Missing required parameters: ['input']");
   }
 
   @Test
@@ -412,7 +413,7 @@ class OrchestrationUnitTest {
     final var configWithFilter = config.withInputFiltering(filter).withOutputFiltering(filter);
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
-        .isInstanceOf(OrchestrationClientException.class)
+        .isInstanceOf(OrchestrationFilterException.OrchestrationInputFilterException.class)
         .hasMessage(
             "Request failed with status 400 Bad Request: Content filtered due to Safety violations. Please modify the prompt and try again.");
   }
@@ -626,12 +627,22 @@ class OrchestrationUnitTest {
 
     var deltaWithContentFilter = mock(OrchestrationChatCompletionDelta.class);
     when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
+
+    var moduleResults = mock(ModuleResultsStreaming.class);
+    when(deltaWithContentFilter.getModuleResults()).thenReturn(moduleResults);
+
+    var outputFiltering = mock(GenericModuleResult.class);
+    when(moduleResults.getOutputFiltering()).thenReturn(outputFiltering);
+
+    var filterDetails = Map.of("azure_content_safety", Map.of("Hate", 0, "SelfHarm", 0));
+    when(outputFiltering.getData()).thenReturn(filterDetails);
+
     when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
 
     // this must not throw, since the stream is lazily evaluated
     var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
     assertThatThrownBy(stream::toList)
-        .isInstanceOf(OrchestrationClientException.class)
+        .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
         .hasMessageContaining("Content filter");
   }
 
@@ -653,7 +664,7 @@ class OrchestrationUnitTest {
 
       try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
-            .isInstanceOf(OrchestrationClientException.class)
+            .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
             .hasMessage("Content filter filtered the output.");
       }
 

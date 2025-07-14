@@ -215,15 +215,9 @@ class OrchestrationTest {
     var policy = AzureFilterThreshold.ALLOW_SAFE;
 
     assertThatThrownBy(() -> service.inputFiltering(policy))
-        .isInstanceOf(OrchestrationClientException.class)
+        .isInstanceOf(OrchestrationFilterException.OrchestrationInputFilterException.class)
         .hasMessageContaining(
-            "Content filtered out due to policy restrictions in the input filtering module.");
-
-    try {
-      service.inputFiltering(policy);
-    } catch (OrchestrationFilterException.OrchestrationInputFilterException e) {
-      ((OrchestrationClientException) e.getCause()).getClientError();
-    }
+            "Request failed with status 400 Bad Request: 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
   }
 
   @Test
@@ -245,7 +239,7 @@ class OrchestrationTest {
     var response = service.outputFiltering(policy);
 
     assertThatThrownBy(response::getContent)
-        .isInstanceOf(OrchestrationClientException.class)
+        .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
         .hasMessageContaining("Content filter filtered the output.");
   }
 
@@ -265,9 +259,9 @@ class OrchestrationTest {
   @Test
   void testLlamaGuardEnabled() {
     assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
-        .isInstanceOf(OrchestrationClientException.class)
+        .isInstanceOf(OrchestrationFilterException.OrchestrationInputFilterException.class)
         .hasMessageContaining(
-            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
+            "Request failed with status 400 Bad Request: 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 Bad Request");
   }
 
@@ -394,7 +388,7 @@ class OrchestrationTest {
     val configWithFilter = config.withInputFiltering(filterConfig);
 
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithFilter))
-        .isInstanceOf(OrchestrationClientException.class)
+        .isInstanceOf(OrchestrationFilterException.OrchestrationInputFilterException.class)
         .hasMessageContaining("status 400 Bad Request")
         .hasMessageContaining("Filtering Module - Input Filter");
   }
