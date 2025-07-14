@@ -19,10 +19,13 @@ import com.sap.ai.sdk.grounding.model.DocumentCreateRequest;
 import com.sap.ai.sdk.grounding.model.DocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.DocumentWithoutChunks;
 import com.sap.ai.sdk.grounding.model.EmbeddingConfig;
+import com.sap.ai.sdk.grounding.model.GetPipeline;
 import com.sap.ai.sdk.grounding.model.KeyValueListPair;
-import com.sap.ai.sdk.grounding.model.Pipeline;
+import com.sap.ai.sdk.grounding.model.MSSharePointPipelineGetResponse;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchFilter;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
+import com.sap.ai.sdk.grounding.model.S3PipelineGetResponse;
+import com.sap.ai.sdk.grounding.model.SFTPPipelineGetResponse;
 import com.sap.ai.sdk.grounding.model.SearchConfiguration;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunk;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
@@ -51,20 +54,30 @@ class GroundingController {
   private static final PipelinesApi CLIENT_PIPELINES = new GroundingClient().pipelines();
   private static final RetrievalApi CLIENT_RETRIEVAL = new GroundingClient().retrieval();
   private static final VectorApi CLIENT_VECTOR = new GroundingClient().vector();
-  private static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
+  static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
+  static final String RESOURCE_GROUP_JS = "ai-sdk-js-e2e";
   private static final String COLLECTION_TITLE = "ai-sdk-java-e2e-test";
 
   /** Retrieve (up to 10) grounding pipeline entities. */
   @GetMapping("/pipelines/list")
   Object getAllPipelines(
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var pipelines = CLIENT_PIPELINES.getAllPipelines(RESOURCE_GROUP, 10, 0, true);
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @Nonnull @RequestParam(value = "resource-group") final String resourceGroup) {
+    final var pipelines = CLIENT_PIPELINES.getAllPipelines(resourceGroup, 10, 0, true);
     log.info("Found {} pipelines", pipelines.getResources().size());
 
     if ("json".equals(format)) {
       return pipelines;
     }
-    final var ids = pipelines.getResources().stream().map(Pipeline::getId).collect(joining(", "));
+    final var ids = new ArrayList<>();
+    for (final GetPipeline resource : pipelines.getResources()) {
+      switch (resource.getType().toString()) {
+        case "MSSharePoint" -> ids.add(((MSSharePointPipelineGetResponse) resource).getId());
+        case "S3" -> ids.add(((S3PipelineGetResponse) resource).getId());
+        case "SFTP" -> ids.add(((SFTPPipelineGetResponse) resource).getId());
+        default -> log.warn("Unknown pipeline type: {}", resource.getType());
+      }
+    }
     return "Found pipelines with ids: " + ids;
   }
 
