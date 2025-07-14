@@ -19,9 +19,13 @@ import com.sap.ai.sdk.grounding.model.DocumentCreateRequest;
 import com.sap.ai.sdk.grounding.model.DocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.DocumentWithoutChunks;
 import com.sap.ai.sdk.grounding.model.EmbeddingConfig;
+import com.sap.ai.sdk.grounding.model.GetPipeline;
 import com.sap.ai.sdk.grounding.model.KeyValueListPair;
+import com.sap.ai.sdk.grounding.model.MSSharePointPipelineGetResponse;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchFilter;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
+import com.sap.ai.sdk.grounding.model.S3PipelineGetResponse;
+import com.sap.ai.sdk.grounding.model.SFTPPipelineGetResponse;
 import com.sap.ai.sdk.grounding.model.SearchConfiguration;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunk;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
@@ -63,8 +67,15 @@ class GroundingController {
     if ("json".equals(format)) {
       return pipelines;
     }
-    final var ids = List.of();
-    // pipelines.getResources().stream().map(getPipeline::getId).collect(joining(", "));
+    final var ids = new ArrayList<>();
+    for (GetPipeline resource : pipelines.getResources()) {
+      switch (resource.getType().toString()) {
+        case "MSSharePoint" -> ids.add(((MSSharePointPipelineGetResponse) resource).getId());
+        case "S3" -> ids.add(((S3PipelineGetResponse) resource).getId());
+        case "SFTP" -> ids.add(((SFTPPipelineGetResponse) resource).getId());
+        default -> log.warn("Unknown pipeline type: {}", resource.getType());
+      }
+    }
     return "Found pipelines with ids: " + ids;
   }
 
