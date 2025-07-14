@@ -1,0 +1,73 @@
+{
+  "request_id": "4868def8-d509-4697-9de0-5920d69d06da",
+  "module_results": {
+    "templating": [
+      {
+        "role": "system",
+        "content": "Give three paraphrases for the following sentence"
+      },
+      {
+        "content": "'We shall spill blood tonight', said the operation in-charge.",
+        "role": "user"
+      }
+    ],
+    "output_filtering": {
+      "message": "1 of 1 choices failed the output filter.",
+      "data": {
+        "choices": [
+          {
+            "index": 0,
+            "azure_content_safety": {
+              "Hate": 0,
+              "SelfHarm": 0,
+              "Sexual": 0,
+              "Violence": 4
+            }
+          }
+        ]
+      }
+    },
+    "llm": {
+      "id": "",
+      "object": "chat.completion",
+      "created": 1752500843,
+      "model": "gemini-1.5-flash",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "1. \"There will be bloodshed tonight,\" the operation leader announced.\n2.  The head of the operation declared, \"Tonight, we will have casualties.\"\n3. \"Tonight's operation will result in fatalities,\" the commander stated grimly.\n"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 53,
+        "prompt_tokens": 22,
+        "total_tokens": 75
+      }
+    }
+  },
+  "orchestration_result": {
+    "id": "",
+    "object": "chat.completion",
+    "created": 1752500843,
+    "model": "gemini-1.5-flash",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": ""
+        },
+        "finish_reason": "content_filter"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 53,
+      "prompt_tokens": 22,
+      "total_tokens": 75
+    }
+  }
+}

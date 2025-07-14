@@ -31,7 +31,7 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 public class ClientResponseHandler<T, R extends ClientError, E extends ClientException>
     implements HttpClientResponseHandler<T> {
   /** The HTTP success response type */
-  @Nonnull protected final Class<T> successType;
+  @Nonnull final Class<T> successType;
 
   /** The HTTP error response type */
   @Nonnull protected final Class<R> errorType;

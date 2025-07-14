@@ -217,7 +217,8 @@ class OrchestrationTest {
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .isInstanceOf(OrchestrationFilterException.OrchestrationInputFilterException.class)
         .hasMessageContaining(
-            "Request failed with status 400 Bad Request: 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
+            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContaining("400 Bad Request");
   }
 
   @Test
@@ -261,7 +262,7 @@ class OrchestrationTest {
     assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
         .isInstanceOf(OrchestrationFilterException.OrchestrationInputFilterException.class)
         .hasMessageContaining(
-            "Request failed with status 400 Bad Request: 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.")
+            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 Bad Request");
   }
 

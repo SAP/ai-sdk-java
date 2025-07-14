@@ -32,12 +32,13 @@ class OrchestrationExceptionFactory
     return new OrchestrationClientException(message, clientError);
   }
 
+  @Nonnull
   private Map<String, Object> extractInputFilterDetails(@Nonnull final OrchestrationError error) {
 
     return Optional.ofNullable(error.getOriginalResponse())
-        .flatMap(resp -> Optional.ofNullable(resp.getModuleResults()))
-        .flatMap(mr -> Optional.ofNullable(mr.getInputFiltering()))
-        .flatMap(iflt -> Optional.ofNullable(iflt.getData()))
+        .flatMap(response -> Optional.ofNullable(response.getModuleResults()))
+        .flatMap(moduleResults -> Optional.ofNullable(moduleResults.getInputFiltering()))
+        .flatMap(inputFiltering -> Optional.ofNullable(inputFiltering.getData()))
         .filter(Map.class::isInstance)
         .map(map -> (Map<String, Object>) map)
         .orElseGet(Collections::emptyMap);
