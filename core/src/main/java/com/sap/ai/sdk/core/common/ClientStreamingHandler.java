@@ -77,7 +77,7 @@ public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientExc
               try {
                 return objectMapper.readValue(data, responseType);
               } catch (final IOException e) { // exception message e gets lost
-                log.error("Failed to parse thr streamed response.");
+                log.error("Failed to parse the streamed response.");
                 log.debug("Failed to parse the following response: {}", line, e);
                 throw exceptionConstructor.apply("Failed to parse delta message: " + line, e);
               }
