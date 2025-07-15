@@ -28,16 +28,16 @@ import javax.annotation.Nullable;
 public class AzureContentSafetyOutput
 // CHECKSTYLE:ON
 {
-  @JsonProperty("Hate")
+  @JsonProperty("hate")
   private AzureThreshold hate;
 
-  @JsonProperty("SelfHarm")
+  @JsonProperty("self_harm")
   private AzureThreshold selfHarm;
 
-  @JsonProperty("Sexual")
+  @JsonProperty("sexual")
   private AzureThreshold sexual;
 
-  @JsonProperty("Violence")
+  @JsonProperty("violence")
   private AzureThreshold violence;
 
   @JsonAnySetter @JsonAnyGetter

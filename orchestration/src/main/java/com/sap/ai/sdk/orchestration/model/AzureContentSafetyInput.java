@@ -28,19 +28,19 @@ import javax.annotation.Nullable;
 public class AzureContentSafetyInput
 // CHECKSTYLE:ON
 {
-  @JsonProperty("Hate")
+  @JsonProperty("hate")
   private AzureThreshold hate;
 
-  @JsonProperty("SelfHarm")
+  @JsonProperty("self_harm")
   private AzureThreshold selfHarm;
 
-  @JsonProperty("Sexual")
+  @JsonProperty("sexual")
   private AzureThreshold sexual;
 
-  @JsonProperty("Violence")
+  @JsonProperty("violence")
   private AzureThreshold violence;
 
-  @JsonProperty("PromptShield")
+  @JsonProperty("prompt_shield")
   private Boolean promptShield = false;
 
   @JsonAnySetter @JsonAnyGetter

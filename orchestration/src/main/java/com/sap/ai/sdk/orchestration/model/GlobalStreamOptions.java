@@ -25,11 +25,14 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Options for streaming. Will be ignored if stream is false. */
+/** Options for streaming. Will be ignored if enabled is false. */
 // CHECKSTYLE:OFF
 public class GlobalStreamOptions
 // CHECKSTYLE:ON
 {
+  @JsonProperty("enabled")
+  private Boolean enabled = false;
+
   @JsonProperty("chunk_size")
   private Integer chunkSize = 100;
 
@@ -41,6 +44,37 @@ public class GlobalStreamOptions
 
   /** Default constructor for GlobalStreamOptions. */
   protected GlobalStreamOptions() {}
+
+  /**
+   * Set the enabled of this {@link GlobalStreamOptions} instance and return the same instance.
+   *
+   * @param enabled If true, the response will be streamed back to the client
+   * @return The same instance of this {@link GlobalStreamOptions} class
+   */
+  @Nonnull
+  public GlobalStreamOptions enabled(@Nullable final Boolean enabled) {
+    this.enabled = enabled;
+    return this;
+  }
+
+  /**
+   * If true, the response will be streamed back to the client
+   *
+   * @return enabled The enabled of this {@link GlobalStreamOptions} instance.
+   */
+  @Nonnull
+  public Boolean isEnabled() {
+    return enabled;
+  }
+
+  /**
+   * Set the enabled of this {@link GlobalStreamOptions} instance.
+   *
+   * @param enabled If true, the response will be streamed back to the client
+   */
+  public void setEnabled(@Nullable final Boolean enabled) {
+    this.enabled = enabled;
+  }
 
   /**
    * Set the chunkSize of this {@link GlobalStreamOptions} instance and return the same instance.
@@ -167,6 +201,7 @@ public class GlobalStreamOptions
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (enabled != null) declaredFields.put("enabled", enabled);
     if (chunkSize != null) declaredFields.put("chunkSize", chunkSize);
     if (delimiters != null) declaredFields.put("delimiters", delimiters);
     return declaredFields;
@@ -194,13 +229,14 @@ public class GlobalStreamOptions
     }
     final GlobalStreamOptions globalStreamOptions = (GlobalStreamOptions) o;
     return Objects.equals(this.cloudSdkCustomFields, globalStreamOptions.cloudSdkCustomFields)
+        && Objects.equals(this.enabled, globalStreamOptions.enabled)
         && Objects.equals(this.chunkSize, globalStreamOptions.chunkSize)
         && Objects.equals(this.delimiters, globalStreamOptions.delimiters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(chunkSize, delimiters, cloudSdkCustomFields);
+    return Objects.hash(enabled, chunkSize, delimiters, cloudSdkCustomFields);
   }
 
   @Override
@@ -208,6 +244,7 @@ public class GlobalStreamOptions
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class GlobalStreamOptions {\n");
+    sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
     sb.append("    chunkSize: ").append(toIndentedString(chunkSize)).append("\n");
     sb.append("    delimiters: ").append(toIndentedString(delimiters)).append("\n");
     cloudSdkCustomFields.forEach(
