@@ -56,7 +56,13 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel MISTRAL_SMALL_INSTRUCT =
       new OrchestrationAiModel("mistralai--mistral-small-instruct");
 
-  /** MistralAI Mixtral 8x7B Instruct v01 model */
+  /**
+   * MistralAI Mixtral 8x7B Instruct v01 model
+   *
+   * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
+   *     OrchestrationAiModel#MISTRAL_SMALL_INSTRUCT}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel MIXTRAL_8X7B_INSTRUCT_V01 =
       new OrchestrationAiModel("mistralai--mixtral-8x7b-instruct-v01");
 

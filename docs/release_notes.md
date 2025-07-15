@@ -19,9 +19,10 @@
   As a result, the accessors for fields `OrchestrationModuleConfig.inputTranslationConfig` and `OrchestrationModuleConfig.outputTranslationConfig` now handle the implementing class explicitly.
   The same applies to helper methods `DpiMasking#createConfig()` and `MaskingProvider#createConfig()`.
 - [Orchestration] `OrchestrationTemplate.withTemplate()` has been deprecated. Please use `OrchestrationTemplate.withTemplateMessages()` instead.
-- [Orchestration] Deprecated : `LLAMA3_1_70B_INSTRUCT`, `CLAUDE_3_SONNET`, `TITAN_TEXT_LITE`, `TITAN_TEXT_EXPRESS`, `GPT_4`, `GPT_4_0613`.
-  -`GPT_4` and `GPT_4_0613` are replaced by : `GPT_40`or `GPT_41`.
+- [Orchestration] Deprecated : `LLAMA3_1_70B_INSTRUCT`, `CLAUDE_3_SONNET`, `TITAN_TEXT_LITE`, `TITAN_TEXT_EXPRESS`, `GPT_4`, `GPT_4_0613`, `MIXTRAL_8X7B_INSTRUCT_V01`.
+  - `GPT_4` and `GPT_4_0613` are replaced by : `GPT_40`or `GPT_41`.
   - `CLAUDE_3_SONNET` is replaced by `CLAUDE_4_SONNET`.
+  - `MIXTRAL_8X7B_INSTRUCT_V01` is replaced by `MISTRAL_SMALL_INSTRUCT`.
 
 ### ✨ New Functionality
 
