@@ -49,11 +49,9 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
    * Azure OpenAI GPT-4 model
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-09-01. The
-   *     suggested replacement model is {@link OpenAiModel#GPT_4O} or {@link
-   *     OpenAiModel#GPT_41}.
+   *     suggested replacement model is {@link OpenAiModel#GPT_4O} or {@link OpenAiModel#GPT_41}.
    */
-  @Deprecated
-  public static final OpenAiModel GPT_4 = new OpenAiModel("gpt-4", null);
+  @Deprecated public static final OpenAiModel GPT_4 = new OpenAiModel("gpt-4", null);
 
   /**
    * Azure OpenAI GPT-4 version 0613 model
@@ -61,8 +59,7 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
    * @deprecated This model is deprecated on AI Core.The suggested replacement model is {@link
    *     OpenAiModel#GPT_4O} or {@link OpenAiModel#GPT_41}.
    */
-  @Deprecated
-  public static final OpenAiModel GPT_4_0613 = new OpenAiModel("gpt-4-0613", null);
+  @Deprecated public static final OpenAiModel GPT_4_0613 = new OpenAiModel("gpt-4-0613", null);
 
   /**
    * Azure OpenAI GPT-4 model
