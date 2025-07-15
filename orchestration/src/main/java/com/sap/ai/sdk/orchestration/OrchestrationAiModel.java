@@ -176,7 +176,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("gpt-35-turbo-0125");
 
   /**
-   * Azure OpenAI GPT-4 Turbo model
+   * Azure OpenAI GPT-4 model
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-09-01. The
    *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O} or {@link
