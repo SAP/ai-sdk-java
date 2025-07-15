@@ -135,7 +135,7 @@ public class SAPDocumentTranslationConfig
    * @return The same instance of this {@link SAPDocumentTranslationConfig} class
    */
   @Nonnull
-  public SAPDocumentTranslationConfig targetLanguage(@Nonnull final String targetLanguage) {
+  public SAPDocumentTranslationConfig targetLanguage(@Nullable final String targetLanguage) {
     this.targetLanguage = targetLanguage;
     return this;
   }
@@ -156,7 +156,7 @@ public class SAPDocumentTranslationConfig
    *
    * @param targetLanguage Language to which the text should be translated.
    */
-  public void setTargetLanguage(@Nonnull final String targetLanguage) {
+  public void setTargetLanguage(@Nullable final String targetLanguage) {
     this.targetLanguage = targetLanguage;
   }
 
@@ -266,22 +266,8 @@ public class SAPDocumentTranslationConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * SAPDocumentTranslationConfig} instance with all required arguments.
-   */
-  public static Builder create() {
-    return (targetLanguage) -> new SAPDocumentTranslationConfig().targetLanguage(targetLanguage);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the targetLanguage of this {@link SAPDocumentTranslationConfig} instance.
-     *
-     * @param targetLanguage Language to which the text should be translated.
-     * @return The SAPDocumentTranslationConfig instance.
-     */
-    SAPDocumentTranslationConfig targetLanguage(@Nonnull final String targetLanguage);
+  /** Create a new {@link SAPDocumentTranslationConfig} instance. No arguments are required. */
+  public static SAPDocumentTranslationConfig create() {
+    return new SAPDocumentTranslationConfig();
   }
 }

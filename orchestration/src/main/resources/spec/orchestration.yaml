@@ -1588,8 +1588,6 @@ components:
           description: Configuration for `sap_document_translation` translation provider.
           type: object
           additionalProperties: false
-          required:
-            - target_language
           properties:
             source_language:
               type: string
