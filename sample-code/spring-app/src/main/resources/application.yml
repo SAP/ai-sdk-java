@@ -2,16 +2,18 @@ spring:
   ai:
     mcp:
       client:
+        # refer to https://docs.spring.io/spring-ai/reference/api/mcp/mcp-client-boot-starter-docs.html#_starters
         type: SYNC
-        enabled: true
         stdio:
           connections:
-            localFS:
-              command: npx
-              args:
-                  - "-y"
-                  - "@modelcontextprotocol/server-filesystem"
-                  - "/ai-sdk-java"
-                  - "/ai-sdk-js"
-              env:
-                DEBUG: "true"
+             # allows file system access to the current directory
+             # requires npx to run
+             # refer to https://www.npmjs.com/package/@modelcontextprotocol/server-filesystem
+             localFS:
+               command: npx
+               args:
+                   - "-y"
+                   - "@modelcontextprotocol/server-filesystem"
+                   - "."
+               env:
+                 DEBUG: "true"

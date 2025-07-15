@@ -19,21 +19,19 @@ import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import jakarta.annotation.PostConstruct;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.chat.messages.SystemMessage;
+import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.ai.tool.ToolCallbacks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -185,9 +183,10 @@ public class SpringAiOrchestrationService {
     options.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
     options.setInternalToolExecutionEnabled(true);
 
-    val prompt =
-        new Prompt(
-            "How can I use the Orchestration service with the SAP AI SDK for Java? Use the file system to search for the relevant documentation files and read through them before you respond.", options);
+    val sys = new SystemMessage("Please answer based on expert SAP knowledge.");
+    val usr = new UserMessage("What is SAP BTP?");
+
+    val prompt = new Prompt(List.of(sys, usr), options);
     return client.call(prompt);
   }
 

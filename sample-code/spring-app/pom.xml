@@ -95,16 +95,6 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-mcp</artifactId>
-      <version>1.0.0-M6</version>
-    </dependency>
-    <dependency>
-      <groupId>jakarta.annotation</groupId>
-      <artifactId>jakarta.annotation-api</artifactId>
-      <version>2.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.ai</groupId>
       <artifactId>spring-ai-mcp-client-spring-boot-starter</artifactId>
       <version>1.0.0-M6</version>
       <scope>runtime</scope>
