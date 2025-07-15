@@ -106,8 +106,7 @@ public class ClientResponseHandler<T, E extends ClientException>
     val errorCode = response.getCode();
     val exception =
         exceptionConstructor.apply(
-            "Request failed with status %s %s"
-                .formatted(errorCode, response.getReasonPhrase()),
+            "Request failed with status %s %s".formatted(errorCode, response.getReasonPhrase()),
             null);
     val entity = response.getEntity();
     if (entity == null) {
