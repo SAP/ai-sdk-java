@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
@@ -42,7 +42,7 @@ public class SpringAiOrchestrationService {
 
   private final ChatModel client = new OrchestrationChatModel();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+      new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
   private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);
 
   /**
@@ -177,14 +177,22 @@ public class SpringAiOrchestrationService {
     return client.call(prompt);
   }
 
+  /**
+   * Example using MCP
+   *
+   * @return the assistant response object
+   */
   @Nonnull
   public ChatResponse toolCallingMCP() {
     val options = new OrchestrationChatOptions(config);
     options.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
     options.setInternalToolExecutionEnabled(true);
 
-    val sys = new SystemMessage("Please answer based on expert SAP knowledge.");
-    val usr = new UserMessage("What is SAP BTP?");
+    val sys = new SystemMessage("""
+            Please read through the markdown files in my file system.
+            Ensure to first query the allowed directories.
+            Then use any `.md` files you find to answer the user's question.""");
+    val usr = new UserMessage("How can I use Spring AI with the SAP AI SDK?");
 
     val prompt = new Prompt(List.of(sys, usr), options);
     return client.call(prompt);
