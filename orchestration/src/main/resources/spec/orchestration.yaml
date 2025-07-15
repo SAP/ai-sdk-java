@@ -1561,13 +1561,13 @@ components:
         input:
           description: Configuration for input translation
           oneOf:
-            - $ref: "#/components/schemas/SAPDocumentTranslationInput"
+            - $ref: "#/components/schemas/SAPDocumentTranslation"
         output:
           description: Configuration for output translation
           oneOf:
-            - $ref: "#/components/schemas/SAPDocumentTranslationOutput"
+            - $ref: "#/components/schemas/SAPDocumentTranslation"
 
-    SAPDocumentTranslationInput:
+    SAPDocumentTranslation:
       type: object
       required:
         - type
@@ -1600,34 +1600,6 @@ components:
               minItems: 1
               items:
                 $ref: "#/components/schemas/TranslationTargetSelector"
-            target_language:
-              type: string
-              description: Language to which the text should be translated.
-              example: "en-US"
-
-    SAPDocumentTranslationOutput:
-      type: object
-      required:
-        - type
-        - config
-      additionalProperties: false
-      properties:
-        type:
-          description: Configuration for `sap_document_translation` translation provider.
-          type: string
-          enum:
-            - sap_document_translation
-          example: sap_document_translation
-        config:
-          type: object
-          additionalProperties: false
-          required:
-            - target_language
-          properties:
-            source_language:
-              type: string
-              description: Language of the text to be translated.
-              example: "de-DE"
             target_language:
               $ref: "#/components/schemas/OutputTargetLanguage"
 
