@@ -2,9 +2,9 @@ package com.sap.ai.sdk.orchestration;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.sap.ai.sdk.orchestration.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -12,20 +12,12 @@ import lombok.NoArgsConstructor;
 final class JacksonMixins {
   /** Mixin to enforce a specific subtype to be deserialized always. */
   @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-  @JsonDeserialize(as = LLMModuleResultSynchronous.class)
+  @JsonDeserialize(as = LLMModuleResult.class)
   interface LLMModuleResultMixIn {}
-
-  /** Mixin to enforce a specific subtype to be deserialized always. */
-  @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-  @JsonDeserialize(as = LLMChoice.class)
-  interface ModuleResultsOutputUnmaskingInnerMixIn {}
-
-  @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-  interface NoneTypeInfoMixin {}
 
   @JsonTypeInfo(
       use = JsonTypeInfo.Id.NAME,
-      include = JsonTypeInfo.As.PROPERTY,
+      include = As.EXISTING_PROPERTY,
       property = "type",
       visible = true)
   @JsonSubTypes({
@@ -43,7 +35,7 @@ final class JacksonMixins {
 
   @JsonTypeInfo(
       use = JsonTypeInfo.Id.NAME,
-      include = JsonTypeInfo.As.PROPERTY,
+      include = As.EXISTING_PROPERTY,
       property = "role",
       visible = true)
   @JsonSubTypes({

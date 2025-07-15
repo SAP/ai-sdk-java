@@ -32,7 +32,7 @@ public class InputFilteringConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("filters")
-  private List<FilterConfig> filters = new ArrayList<>();
+  private List<InputFilterConfig> filters = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -44,11 +44,11 @@ public class InputFilteringConfig
    * Set the filters of this {@link InputFilteringConfig} instance and return the same instance.
    *
    * @param filters Configuration for content filtering services that should be used for the given
-   *     filtering step (input filtering or output filtering).
+   *     filtering step (input filtering).
    * @return The same instance of this {@link InputFilteringConfig} class
    */
   @Nonnull
-  public InputFilteringConfig filters(@Nonnull final List<FilterConfig> filters) {
+  public InputFilteringConfig filters(@Nonnull final List<InputFilterConfig> filters) {
     this.filters = filters;
     return this;
   }
@@ -60,7 +60,7 @@ public class InputFilteringConfig
    * @return The same instance of type {@link InputFilteringConfig}
    */
   @Nonnull
-  public InputFilteringConfig addFiltersItem(@Nonnull final FilterConfig filtersItem) {
+  public InputFilteringConfig addFiltersItem(@Nonnull final InputFilterConfig filtersItem) {
     if (this.filters == null) {
       this.filters = new ArrayList<>();
     }
@@ -70,12 +70,12 @@ public class InputFilteringConfig
 
   /**
    * Configuration for content filtering services that should be used for the given filtering step
-   * (input filtering or output filtering).
+   * (input filtering).
    *
    * @return filters The filters of this {@link InputFilteringConfig} instance.
    */
   @Nonnull
-  public List<FilterConfig> getFilters() {
+  public List<InputFilterConfig> getFilters() {
     return filters;
   }
 
@@ -83,9 +83,9 @@ public class InputFilteringConfig
    * Set the filters of this {@link InputFilteringConfig} instance.
    *
    * @param filters Configuration for content filtering services that should be used for the given
-   *     filtering step (input filtering or output filtering).
+   *     filtering step (input filtering).
    */
-  public void setFilters(@Nonnull final List<FilterConfig> filters) {
+  public void setFilters(@Nonnull final List<InputFilterConfig> filters) {
     this.filters = filters;
   }
 
@@ -199,19 +199,19 @@ public class InputFilteringConfig
      * Set the filters of this {@link InputFilteringConfig} instance.
      *
      * @param filters Configuration for content filtering services that should be used for the given
-     *     filtering step (input filtering or output filtering).
+     *     filtering step (input filtering).
      * @return The InputFilteringConfig instance.
      */
-    InputFilteringConfig filters(@Nonnull final List<FilterConfig> filters);
+    InputFilteringConfig filters(@Nonnull final List<InputFilterConfig> filters);
 
     /**
      * Set the filters of this {@link InputFilteringConfig} instance.
      *
      * @param filters Configuration for content filtering services that should be used for the given
-     *     filtering step (input filtering or output filtering).
+     *     filtering step (input filtering).
      * @return The InputFilteringConfig instance.
      */
-    default InputFilteringConfig filters(@Nonnull final FilterConfig... filters) {
+    default InputFilteringConfig filters(@Nonnull final InputFilterConfig... filters) {
       return filters(Arrays.asList(filters));
     }
   }

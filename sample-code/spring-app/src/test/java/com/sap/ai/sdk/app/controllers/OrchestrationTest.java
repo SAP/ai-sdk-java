@@ -18,11 +18,8 @@ import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TextItem;
-import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
-import com.sap.ai.sdk.orchestration.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -92,7 +89,7 @@ class OrchestrationTest {
     assertThat(((TextItem) result.getAllMessages().get(0).content().items().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
-    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    var llm = response.getModuleResults().getLlm();
     assertThat(llm.getId()).isEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isGreaterThan(1);
@@ -107,7 +104,7 @@ class OrchestrationTest {
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
 
-    var orchestrationResult = ((LLMModuleResultSynchronous) response.getOrchestrationResult());
+    var orchestrationResult = (response.getOrchestrationResult());
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isGreaterThan(1);
     assertThat(orchestrationResult.getModel()).isEqualTo(modelName);
@@ -125,10 +122,7 @@ class OrchestrationTest {
 
   @Test
   void testMessagesHistory() {
-    CompletionPostResponse result =
-        service.messagesHistory("What is the capital of France?").getOriginalResponse();
-    val choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    assertThat(service.messagesHistory("What is the capital of France?").getContent()).isNotEmpty();
   }
 
   @SuppressWarnings("unchecked")
@@ -136,8 +130,7 @@ class OrchestrationTest {
   void testMaskingAnonymization() {
     var response = service.maskingAnonymization(DPIEntities.PERSON);
     var result = response.getOriginalResponse();
-    var llmChoice =
-        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
 
     var maskingResult = result.getModuleResults().getInputMasking();
@@ -156,8 +149,7 @@ class OrchestrationTest {
   void testMaskingPseudonymization() {
     var response = service.maskingPseudonymization(DPIEntities.PERSON);
     var result = response.getOriginalResponse();
-    var llmChoice =
-        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(llmChoice.getMessage().getContent())
         .describedAs("The final response should contain the original user name")
@@ -174,7 +166,7 @@ class OrchestrationTest {
 
     var unmaskingResult = result.getModuleResults().getOutputUnmasking();
     assertThat(unmaskingResult).isNotEmpty();
-    assertThat(((LLMChoice) unmaskingResult.get(0)).getMessage().getContent())
+    assertThat(unmaskingResult.get(0).getMessage().getContent())
         .describedAs("The unmasking step should replace the pseudonyms used by the LLM")
         .doesNotContain("MASKED_PERSON")
         .contains("Mallory");
@@ -186,8 +178,7 @@ class OrchestrationTest {
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
     var response = service.grounding("What does Joule do?", true);
     var result = response.getOriginalResponse();
-    var llmChoice =
-        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
     assertThat(response).isNotNull();
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(result.getModuleResults().getGrounding()).isNotNull();
@@ -205,8 +196,7 @@ class OrchestrationTest {
     var response = service.groundingSharepoint("What is the secret for the AI SDK e2e test?");
     assertThat(response).isNotNull();
     var result = response.getOriginalResponse();
-    var llmChoice =
-        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = result.getOrchestrationResult().getChoices().get(0);
     assertThat(llmChoice.getMessage().getContent()).contains("&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/");
   }
 
@@ -214,8 +204,7 @@ class OrchestrationTest {
   void testCompletionWithResourceGroup() {
     var response = service.completionWithResourceGroup("ai-sdk-java-e2e", "Hello world!");
     var result = response.getOriginalResponse();
-    var llmChoice =
-        ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(llmChoice.getMessage().getContent()).isNotEmpty();
   }
@@ -241,7 +230,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("passed");
+    assertThat(filterResult.getMessage()).contains("passed"); // prompt shield is a filter
   }
 
   @Test
@@ -284,7 +273,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("passed");
+    assertThat(filterResult.getMessage()).contains("skipped");
   }
 
   @Test
@@ -294,7 +283,7 @@ class OrchestrationTest {
             .imageInput(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png")
             .getOriginalResponse();
-    val choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    val choices = (result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -313,7 +302,7 @@ class OrchestrationTest {
       System.out.println("Error fetching or reading the image from URL: " + e.getMessage());
     }
     val result = service.imageInput(dataUrl).getOriginalResponse();
-    val choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    val choices = (result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -324,7 +313,7 @@ class OrchestrationTest {
             .multiStringInput(
                 List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"))
             .getOriginalResponse();
-    val choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    val choices = (result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -339,7 +328,7 @@ class OrchestrationTest {
   @Test
   void testResponseFormatJsonObject() {
     val result = service.responseFormatJsonObject("apple").getOriginalResponse();
-    val choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    val choices = (result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getContent()).contains("\"language\":");
     assertThat(choices.get(0).getMessage().getContent()).contains("\"translation\":");
@@ -348,14 +337,14 @@ class OrchestrationTest {
   @Test
   void testResponseFormatText() {
     val result = service.responseFormatText("apple").getOriginalResponse();
-    val choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    val choices = (result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
   void testTemplateFromPromptRegistryById() {
     val result = service.templateFromPromptRegistryById("Cloud ERP systems").getOriginalResponse();
-    val choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    val choices = (result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -363,7 +352,7 @@ class OrchestrationTest {
   void testTemplateFromPromptRegistryByScenario() {
     val result =
         service.templateFromPromptRegistryByScenario("Cloud ERP systems").getOriginalResponse();
-    val choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    val choices = (result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -374,15 +363,14 @@ class OrchestrationTest {
             .localPromptTemplate(
                 Files.readString(Path.of("src/main/resources/promptTemplateExample.yaml")))
             .getOriginalResponse();
-    val choices = ((LLMModuleResultSynchronous) result.getOrchestrationResult()).getChoices();
+    val choices = (result.getOrchestrationResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
   void testStreamingErrorHandlingTemplate() {
     val template = Message.user("Bad template: {{?language!@#$}}");
-    val templatingConfig =
-        TemplateConfig.create().withTemplate(List.of(template.createChatMessage()));
+    val templatingConfig = TemplateConfig.create().withMessages(template);
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
     val inputParams = Map.of("language", "German");
     val prompt = new OrchestrationPrompt(inputParams);
@@ -415,7 +403,7 @@ class OrchestrationTest {
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithMasking))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("status 400 Bad Request")
-        .hasMessageContaining("'type': 'sap_data_privacy_integration', 'method': 'anonymization'");
+        .hasMessageContaining("'unknown_default_open_api' is not one of");
   }
 
   @Test

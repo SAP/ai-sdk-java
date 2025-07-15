@@ -36,6 +36,7 @@
     <spring-boot.version>3.5.0</spring-boot.version>
     <logback.version>1.5.18</logback.version>
     <cf-logging.version>3.8.5</cf-logging.version>
+    <apache-tomcat-embed.version>11.0.9</apache-tomcat-embed.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
     <!-- Allow logging frameworks because this module is not released -->
@@ -50,7 +51,12 @@
       <dependency>
         <groupId>org.apache.tomcat.embed</groupId>
         <artifactId>tomcat-embed-core</artifactId>
-        <version>11.0.8</version>
+        <version>${apache-tomcat-embed.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.tomcat.embed</groupId>
+        <artifactId>tomcat-embed-websocket</artifactId>
+        <version>${apache-tomcat-embed.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -163,9 +163,15 @@ public class OrchestrationService {
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
     val prompt =
-        new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.");
+        new OrchestrationPrompt(
+            "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operator in-charge.");
     val filterConfig =
-        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+        new AzureContentFilter()
+            .hate(policy)
+            .selfHarm(policy)
+            .sexual(policy)
+            .violence(policy)
+            .promptShield(true);
 
     val configWithFilter = config.withInputFiltering(filterConfig);
 
