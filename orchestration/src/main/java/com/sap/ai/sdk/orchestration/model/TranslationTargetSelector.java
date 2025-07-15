@@ -102,6 +102,9 @@ public class TranslationTargetSelector
   @JsonProperty("source_language")
   private String sourceLanguage;
 
+  @JsonProperty("use_for_output_language")
+  private Boolean useForOutputLanguage = false;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -218,6 +221,40 @@ public class TranslationTargetSelector
   }
 
   /**
+   * Set the useForOutputLanguage of this {@link TranslationTargetSelector} instance and return the
+   * same instance.
+   *
+   * @param useForOutputLanguage The useForOutputLanguage of this {@link TranslationTargetSelector}
+   * @return The same instance of this {@link TranslationTargetSelector} class
+   */
+  @Nonnull
+  public TranslationTargetSelector useForOutputLanguage(
+      @Nullable final Boolean useForOutputLanguage) {
+    this.useForOutputLanguage = useForOutputLanguage;
+    return this;
+  }
+
+  /**
+   * Get useForOutputLanguage
+   *
+   * @return useForOutputLanguage The useForOutputLanguage of this {@link TranslationTargetSelector}
+   *     instance.
+   */
+  @Nonnull
+  public Boolean isUseForOutputLanguage() {
+    return useForOutputLanguage;
+  }
+
+  /**
+   * Set the useForOutputLanguage of this {@link TranslationTargetSelector} instance.
+   *
+   * @param useForOutputLanguage The useForOutputLanguage of this {@link TranslationTargetSelector}
+   */
+  public void setUseForOutputLanguage(@Nullable final Boolean useForOutputLanguage) {
+    this.useForOutputLanguage = useForOutputLanguage;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link TranslationTargetSelector}.
    *
    * @return The set of properties names
@@ -259,6 +296,8 @@ public class TranslationTargetSelector
     if (type != null) declaredFields.put("type", type);
     if (value != null) declaredFields.put("value", value);
     if (sourceLanguage != null) declaredFields.put("sourceLanguage", sourceLanguage);
+    if (useForOutputLanguage != null)
+      declaredFields.put("useForOutputLanguage", useForOutputLanguage);
     return declaredFields;
   }
 
@@ -286,12 +325,14 @@ public class TranslationTargetSelector
     return Objects.equals(this.cloudSdkCustomFields, translationTargetSelector.cloudSdkCustomFields)
         && Objects.equals(this.type, translationTargetSelector.type)
         && Objects.equals(this.value, translationTargetSelector.value)
-        && Objects.equals(this.sourceLanguage, translationTargetSelector.sourceLanguage);
+        && Objects.equals(this.sourceLanguage, translationTargetSelector.sourceLanguage)
+        && Objects.equals(
+            this.useForOutputLanguage, translationTargetSelector.useForOutputLanguage);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, value, sourceLanguage, cloudSdkCustomFields);
+    return Objects.hash(type, value, sourceLanguage, useForOutputLanguage, cloudSdkCustomFields);
   }
 
   @Override
@@ -302,6 +343,9 @@ public class TranslationTargetSelector
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    sourceLanguage: ").append(toIndentedString(sourceLanguage)).append("\n");
+    sb.append("    useForOutputLanguage: ")
+        .append(toIndentedString(useForOutputLanguage))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

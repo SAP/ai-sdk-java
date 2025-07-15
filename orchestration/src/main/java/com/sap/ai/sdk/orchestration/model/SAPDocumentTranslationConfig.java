@@ -37,7 +37,7 @@ public class SAPDocumentTranslationConfig
   private List<TranslationTargetSelector> applyTo = new ArrayList<>();
 
   @JsonProperty("target_language")
-  private OutputTargetLanguage targetLanguage;
+  private String targetLanguage;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -131,33 +131,32 @@ public class SAPDocumentTranslationConfig
    * Set the targetLanguage of this {@link SAPDocumentTranslationConfig} instance and return the
    * same instance.
    *
-   * @param targetLanguage The targetLanguage of this {@link SAPDocumentTranslationConfig}
+   * @param targetLanguage Language to which the text should be translated.
    * @return The same instance of this {@link SAPDocumentTranslationConfig} class
    */
   @Nonnull
-  public SAPDocumentTranslationConfig targetLanguage(
-      @Nonnull final OutputTargetLanguage targetLanguage) {
+  public SAPDocumentTranslationConfig targetLanguage(@Nonnull final String targetLanguage) {
     this.targetLanguage = targetLanguage;
     return this;
   }
 
   /**
-   * Get targetLanguage
+   * Language to which the text should be translated.
    *
    * @return targetLanguage The targetLanguage of this {@link SAPDocumentTranslationConfig}
    *     instance.
    */
   @Nonnull
-  public OutputTargetLanguage getTargetLanguage() {
+  public String getTargetLanguage() {
     return targetLanguage;
   }
 
   /**
    * Set the targetLanguage of this {@link SAPDocumentTranslationConfig} instance.
    *
-   * @param targetLanguage The targetLanguage of this {@link SAPDocumentTranslationConfig}
+   * @param targetLanguage Language to which the text should be translated.
    */
-  public void setTargetLanguage(@Nonnull final OutputTargetLanguage targetLanguage) {
+  public void setTargetLanguage(@Nonnull final String targetLanguage) {
     this.targetLanguage = targetLanguage;
   }
 
@@ -280,9 +279,9 @@ public class SAPDocumentTranslationConfig
     /**
      * Set the targetLanguage of this {@link SAPDocumentTranslationConfig} instance.
      *
-     * @param targetLanguage The targetLanguage of this {@link SAPDocumentTranslationConfig}
+     * @param targetLanguage Language to which the text should be translated.
      * @return The SAPDocumentTranslationConfig instance.
      */
-    SAPDocumentTranslationConfig targetLanguage(@Nonnull final OutputTargetLanguage targetLanguage);
+    SAPDocumentTranslationConfig targetLanguage(@Nonnull final String targetLanguage);
   }
 }

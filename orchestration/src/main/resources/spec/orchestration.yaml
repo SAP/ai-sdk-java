@@ -1601,14 +1601,9 @@ components:
               items:
                 $ref: "#/components/schemas/TranslationTargetSelector"
             target_language:
-              $ref: "#/components/schemas/OutputTargetLanguage"
-
-    OutputTargetLanguage:
-      oneOf:
-        - type: string
-          description: Language to which the text should be translated.
-          example: "en-US"
-        - $ref: "#/components/schemas/TranslationTargetSelector"
+              type: string
+              description: Language to which the text should be translated.
+              example: "en-US"
 
     TranslationTargetSelector:
       type: object
@@ -1636,6 +1631,9 @@ components:
           type: string
           description: Language of the text to be translated.
           example: "de-DE"
+        use_for_output_language:
+          type: boolean
+          default: false
 
     Error:
       type: object
