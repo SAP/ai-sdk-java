@@ -78,11 +78,11 @@ public class ClientResponseHandler<T, E extends ClientException>
       throw exceptionConstructor.apply("Response was empty.", null);
     }
     val content = getContent(responseEntity);
-    log.debug("Parsing response from JSON response: {}", content);
+    log.debug("Deserializing JSON response to type {}: {}", responseType.getSimpleName(), content);
     try {
       return objectMapper.readValue(content, responseType);
     } catch (final JsonProcessingException e) {
-      log.error("Failed to parse the following response: {}", content);
+      log.error("Failed to deserialize the response to type: {}", responseType.getSimpleName(), e);
       throw exceptionConstructor.apply("Failed to parse response", e);
     }
   }
@@ -103,10 +103,11 @@ public class ClientResponseHandler<T, E extends ClientException>
    */
   @SuppressWarnings("PMD.CloseResource")
   public void buildExceptionAndThrow(@Nonnull final ClassicHttpResponse response) throws E {
+    val errorCode = response.getCode();
     val exception =
         exceptionConstructor.apply(
             "Request failed with status %s %s"
-                .formatted(response.getCode(), response.getReasonPhrase()),
+                .formatted(errorCode, response.getReasonPhrase()),
             null);
     val entity = response.getEntity();
     if (entity == null) {
@@ -122,7 +123,8 @@ public class ClientResponseHandler<T, E extends ClientException>
       throw exception;
     }
 
-    log.error("The service responded with an HTTP error and the following content: {}", content);
+    log.error("The service responded with HTTP error code {}", errorCode);
+    log.debug("The service responded with HTTP error code {} and content: {}", errorCode, content);
     val contentType = ContentType.parse(entity.getContentType());
     if (!ContentType.APPLICATION_JSON.isSameMimeType(contentType)) {
       throw exception;
