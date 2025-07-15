@@ -56,7 +56,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-core</artifactId>
+      <artifactId>spring-ai-model</artifactId>
       <optional>true</optional>
     </dependency>
     <dependency>

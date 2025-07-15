@@ -67,7 +67,7 @@
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.3</surefire.version>
     <springframework.version>6.2.8</springframework.version>
-    <spring-ai.version>1.0.0-M6</spring-ai.version>
+    <spring-ai.version>1.0.0</spring-ai.version>
     <reactor-core.version>3.6.12</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.18.0</mockito.version>
@@ -119,7 +119,7 @@
       </dependency>
       <dependency>
         <groupId>org.springframework.ai</groupId>
-        <artifactId>spring-ai-core</artifactId>
+        <artifactId>spring-ai-model</artifactId>
         <version>${spring-ai.version}</version>
       </dependency>
       <dependency>
@@ -265,24 +265,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>spring-milestones</id>
-      <name>Spring Milestones</name>
-      <url>https://repo.spring.io/milestone</url>
-    </repository>
-    <repository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <id>spring-snapshots</id>
-      <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
-    </repository>
-  </repositories>
   <build>
     <resources>
       <resource>

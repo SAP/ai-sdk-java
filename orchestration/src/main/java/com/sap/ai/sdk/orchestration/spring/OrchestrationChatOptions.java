@@ -27,8 +27,8 @@ import lombok.Getter;
 import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.model.ModelOptionsUtils;
-import org.springframework.ai.model.function.FunctionCallback;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
+import org.springframework.ai.tool.ToolCallback;
 
 /**
  * Configuration to be used for orchestration requests.
@@ -43,7 +43,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   @Nonnull private OrchestrationModuleConfig config;
 
-  private List<FunctionCallback> functionCallbacks;
+  private List<ToolCallback> functionCallbacks;
 
   @Getter(AccessLevel.NONE)
   private Boolean internalToolExecutionEnabled;
@@ -186,18 +186,12 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   @Nonnull
   @Override
-  public List<FunctionCallback> getToolCallbacks() {
+  public List<ToolCallback> getToolCallbacks() {
     return functionCallbacks;
   }
 
   @Override
-  @Deprecated
-  public void setFunctionCallbacks(@Nonnull final List<FunctionCallback> toolCallbacks) {
-    setToolCallbacks(toolCallbacks);
-  }
-
-  @Override
-  public void setToolCallbacks(@Nonnull final List<FunctionCallback> toolCallbacks) {
+  public void setToolCallbacks(@Nonnull final List<ToolCallback> toolCallbacks) {
     this.functionCallbacks = toolCallbacks;
     final Template template =
         Objects.requireNonNullElse(
@@ -206,43 +200,21 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     config = config.withTemplateConfig(template.tools(tools));
   }
 
+  @Override
+  public Boolean getInternalToolExecutionEnabled() {
+    return true;
+  }
+
   private static ChatCompletionTool toOrchestrationTool(
-      @Nonnull final FunctionCallback functionCallback) {
+      @Nonnull final ToolCallback functionCallback) {
     return ChatCompletionTool.create()
         .type(TypeEnum.FUNCTION)
         .function(
             FunctionObject.create()
-                .name(functionCallback.getName())
-                .description(functionCallback.getDescription())
-                .parameters(ModelOptionsUtils.jsonToMap(functionCallback.getInputTypeSchema())));
-  }
-
-  @Override
-  @Nullable
-  public Boolean isInternalToolExecutionEnabled() {
-    return this.internalToolExecutionEnabled;
-  }
-
-  @Nonnull
-  @Override
-  public Set<String> getFunctions() {
-    return Set.of();
-  }
-
-  @Override
-  public void setFunctions(@Nonnull final Set<String> functions) {
-    //    val template =
-    //        Objects.requireNonNullElse(
-    //            (Template) config.getTemplateConfig(), Template.create().template());
-    //    val tools =
-    //        functionNames.stream()
-    //            .map(
-    //                functionName ->
-    //                    ChatCompletionTool.create()
-    //                        .type(TypeEnum.FUNCTION)
-    //                        .function(FunctionObject.create().name(functionName)))
-    //            .toList();
-    //    config = config.withTemplateConfig(template.tools(tools));
-    throw new UnsupportedOperationException("Not implemented yet");
+                .name(functionCallback.getToolDefinition().name())
+                .description(functionCallback.getToolDefinition().name())
+                .parameters(
+                    ModelOptionsUtils.jsonToMap(
+                        functionCallback.getToolDefinition().inputSchema())));
   }
 }
