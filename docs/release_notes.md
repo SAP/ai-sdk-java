@@ -25,8 +25,8 @@
     - `GPT_4` and `GPT_4_0613` are replaced by : `GPT_40`or `GPT_41`.
     - `CLAUDE_3_SONNET` is replaced by `CLAUDE_4_SONNET`.
     - `MIXTRAL_8X7B_INSTRUCT_V01` is replaced by `MISTRAL_SMALL_INSTRUCT`.
-- [OpenAI] Deprecated : `GPT_4`, `GPT_4_0613`.
-  - `GPT_4` and `GPT_4_0613` are replaced by : `GPT_40`or `GPT_41`.
+- [OpenAI] Deprecated : `GPT_4`.
+  - `GPT_4`is replaced by : `GPT_40`or `GPT_41`.
 
 - [Prompt Registry] Resource group has been added as a optional parameter to all endpoints. Set it to `"default"` if it was not set before. Examples:
   - `client.importPromptTemplate(File)` --> `client.importPromptTemplate("default", File)`.

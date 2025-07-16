@@ -34,7 +34,7 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
    *     suggested replacement model is {@link OpenAiModel#GPT_4O_MINI}.
    */
   @Deprecated
-  public static final OpenAiModel GPT_35_TURBO_0125 = new OpenAiModel("gpt-35-turbo-0125", null);
+  public static final OpenAiModel GPT_35_TURBO_1025 = new OpenAiModel("gpt-35-turbo-0125", null);
 
   /**
    * Azure OpenAI GPT-3.5 Turbo model
@@ -54,14 +54,6 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   @Deprecated public static final OpenAiModel GPT_4 = new OpenAiModel("gpt-4", null);
 
   /**
-   * Azure OpenAI GPT-4 version 0613 model
-   *
-   * @deprecated This model is deprecated on AI Core.The suggested replacement model is {@link
-   *     OpenAiModel#GPT_4O} or {@link OpenAiModel#GPT_41}.
-   */
-  @Deprecated public static final OpenAiModel GPT_4_0613 = new OpenAiModel("gpt-4-0613", null);
-
-  /**
    * Azure OpenAI GPT-4 model
    *
    * @deprecated This model is deprecated on AI Core.
@@ -75,10 +67,10 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   public static final OpenAiModel GPT_4O_MINI = new OpenAiModel("gpt-4o-mini", null);
 
   /** Azure OpenAI GPT-o3 Mini model */
-  public static final OpenAiModel OPENAI_O3_MINI = new OpenAiModel("o3-mini", null);
+  public static final OpenAiModel O3_MINI = new OpenAiModel("o3-mini", null);
 
   /** Azure OpenAI GPT-o1 model */
-  public static final OpenAiModel OPENAI_O1 = new OpenAiModel("o1", null);
+  public static final OpenAiModel O1 = new OpenAiModel("o1", null);
 
   /** Azure OpenAI Text Embedding 3 Large model */
   public static final OpenAiModel TEXT_EMBEDDING_3_LARGE =
@@ -89,10 +81,10 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
       new OpenAiModel("text-embedding-3-small", null);
 
   /** Azure OpenAI GPT-o4 Mini model */
-  public static final OpenAiModel OPENAI_O4_MINI = new OpenAiModel("o4-mini", null);
+  public static final OpenAiModel O4_MINI = new OpenAiModel("o4-mini", null);
 
   /** Azure OpenAI GPT-o3 model */
-  public static final OpenAiModel OPENAI_O3 = new OpenAiModel("o3", null);
+  public static final OpenAiModel O3 = new OpenAiModel("o3", null);
 
   /** Azure OpenAI GPT-4.1 model */
   public static final OpenAiModel GPT_41 = new OpenAiModel("gpt-4.1", null);
