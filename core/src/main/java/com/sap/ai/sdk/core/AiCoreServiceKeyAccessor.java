@@ -50,7 +50,7 @@ class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
       log.debug("No service key found in environment variable {}", ENV_VAR_KEY);
       return List.of();
     }
-    log.info(
+    log.debug(
         """
         Found a service key in environment variable {}.
         Using a service key is recommended for local testing only.

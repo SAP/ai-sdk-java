@@ -76,10 +76,11 @@ public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientExc
               final String data = line.substring(5); // remove "data: "
               try {
                 return objectMapper.readValue(data, responseType);
-              } catch (final IOException e) { // exception message e gets lost
-                log.error("Failed to parse thr streamed response.");
-                log.debug("Failed to parse the following response: {}", line, e);
-                throw exceptionConstructor.apply("Failed to parse delta message: " + line, e);
+              } catch (final IOException e) {
+                final String message = e.getMessage();
+                log.error("Failed to parse the streamed response: " + message);
+                log.trace("Failed to parse the following response: {}", line);
+                throw exceptionConstructor.apply("Failed to parse delta message: " + message, e);
               }
             });
   }
