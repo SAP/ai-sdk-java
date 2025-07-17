@@ -116,7 +116,8 @@ public class OrchestrationClient {
     if (finishReason != null && finishReason.equals("content_filter")) {
       final var filterDetails =
           (Map<String, Object>) delta.getModuleResults().getOutputFiltering().getData();
-      throw new OrchestrationFilterException.OrchestrationOutputFilterException(
+      // TODO correct nesting
+      throw new OrchestrationOutputFilterException(
           "Content filter filtered the output.", filterDetails);
     }
   }

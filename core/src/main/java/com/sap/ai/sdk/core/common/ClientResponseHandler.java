@@ -51,7 +51,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   @Beta
   @Nonnull
   public ClientResponseHandler<T, R, E> objectMapper(@Nonnull final ObjectMapper jackson) {
-    this.objectMapper = jackson;
+    objectMapper = jackson;
     return this;
   }
 
@@ -60,12 +60,13 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
    *
    * @param response The response to process
    * @return A model class instantiated from the response
+   * @throws E in case of a problem or the connection was aborted
    */
   @Nonnull
   @Override
-  public T handleResponse(@Nonnull final ClassicHttpResponse response) {
+  public T handleResponse(@Nonnull final ClassicHttpResponse response) throws E {
     if (response.getCode() >= 300) {
-      throw buildException(response);
+      buildException(response);
     }
     return parseSuccess(response);
   }
@@ -76,18 +77,18 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   private T parseSuccess(@Nonnull final ClassicHttpResponse response) throws E {
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
-      throw exceptionFactory.create("Response was empty.", null);
+      throw exceptionFactory.build("Response was empty.", null);
     }
 
     val content =
         tryGetContent(responseEntity)
-            .getOrElseThrow(e -> exceptionFactory.create("Failed to parse response entity.", e));
+            .getOrElseThrow(e -> exceptionFactory.build("Failed to parse response entity.", e));
     log.debug("Parsing response from JSON response: {}", content);
     try {
       return objectMapper.readValue(content, successType);
     } catch (final JsonProcessingException e) {
       log.error("Failed to parse the following response: {}", content);
-      throw exceptionFactory.create("Failed to parse response:", e);
+      throw exceptionFactory.build("Failed to parse response:", e);
     }
   }
 
@@ -100,7 +101,6 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
    * Parse the error response and throw an exception.
    *
    * @param httpResponse The response to process
-   * @throws ClientException if the response is an error (4xx/5xx)
    * @return An instance of the specific exception type returned by exceptionFactory
    */
   @SuppressWarnings("PMD.CloseResource")
@@ -109,7 +109,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     val baseErrorMessage =
         "Request failed with status %d %s"
             .formatted(httpResponse.getCode(), httpResponse.getReasonPhrase());
-    val baseException = exceptionFactory.create(baseErrorMessage, null);
+    val baseException = exceptionFactory.build(baseErrorMessage, null);
 
     val entity = httpResponse.getEntity();
 
@@ -130,6 +130,13 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     if (!ContentType.APPLICATION_JSON.isSameMimeType(contentType)) {
       return baseException;
     }
+    return parseErrorAndThrow(content, baseErrorMessage, baseException);
+  }
+
+  @SuppressWarnings("PMD.CloseResource")
+  public E parseErrorAndThrow(
+      @Nonnull final String content, @Nonnull final String baseErrorMessage,
+      @Nonnull final E baseException) {
     val maybeClientError = Try.of(() -> objectMapper.readValue(content, errorType));
     if (maybeClientError.isFailure()) {
       baseException.addSuppressed(maybeClientError.getCause());
@@ -137,6 +144,6 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     }
     final R clientError = maybeClientError.get();
     val extendErrorMessage = "%s: %s".formatted(baseErrorMessage, clientError.getMessage());
-    return exceptionFactory.fromClientError(extendErrorMessage, clientError);
+    return exceptionFactory.buildFromClientError(extendErrorMessage, clientError);
   }
 }

@@ -10,22 +10,23 @@ import javax.annotation.Nullable;
 
 @Beta
 class OrchestrationExceptionFactory
-    implements ClientExceptionFactory<OrchestrationClientException, OrchestrationError> {
+    implements ClientExceptionFactory<OrchestrationClientException, OrchestrationError>
+{
 
   @Nonnull
-  public OrchestrationClientException create(
+  public OrchestrationClientException build(
       @Nonnull final String message, @Nullable final Throwable cause) {
     return new OrchestrationClientException(message, cause);
   }
 
   @Nonnull
   @Override
-  public OrchestrationClientException fromClientError(
+  public OrchestrationClientException buildFromClientError(
       @Nonnull final String message, @Nonnull final OrchestrationError clientError) {
 
     final var inputFilterDetails = extractInputFilterDetails(clientError);
     if (!inputFilterDetails.isEmpty()) {
-      return new OrchestrationFilterException.OrchestrationInputFilterException(
+      return new OrchestrationInputFilterException(
           message, clientError, inputFilterDetails);
     }
 
@@ -40,7 +41,7 @@ class OrchestrationExceptionFactory
         .flatMap(moduleResults -> Optional.ofNullable(moduleResults.getInputFiltering()))
         .flatMap(inputFiltering -> Optional.ofNullable(inputFiltering.getData()))
         .filter(Map.class::isInstance)
-        .map(map -> (Map<String, Object>) map)
+        .map(map -> (Map<String, Map<String, Integer>>) map)
         .orElseGet(Collections::emptyMap);
   }
 }

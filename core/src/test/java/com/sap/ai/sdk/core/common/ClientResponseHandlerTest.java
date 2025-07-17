@@ -32,20 +32,41 @@ class ClientResponseHandlerTest {
   @StandardException
   static class MyException extends ClientException {}
 
-  static class MyExceptionFactory implements ClientExceptionFactory<MyException, MyError> {
+  static class MyExceptionFactory implements ClientExceptionFactory<MyException, MyError>
+  {
     @Nonnull
     @Override
-    public MyException create(@Nonnull String message, Throwable cause) {
+    public MyException build(@Nonnull String message, Throwable cause) {
       return new MyException(message, cause);
     }
 
     @Nonnull
     @Override
-    public MyException fromClientError(@Nonnull String message, @Nonnull MyError clientError) {
+    public MyException buildFromClientError(@Nonnull String message, @Nonnull MyError clientError) {
       var ex = new MyException(message);
       ex.clientError = clientError;
       return ex;
     }
+  }
+
+  @Test
+  public void testParseErrorAndThrow() {
+    var sut = new ClientResponseHandler<>(MyResponse.class, MyError.class, new MyExceptionFactory());
+
+    MyException cause = new MyException("Something wrong");
+
+    assertThatThrownBy(() -> sut.parseErrorAndThrow("{\"message\":\"foobar\"}", cause))
+        .isInstanceOf(MyException.class)
+        .hasMessage("Something wrong and error message: 'foobar'")
+        .hasCause(cause);
+
+    assertThatThrownBy(() -> sut.parseErrorAndThrow("{\"foo\":\"bar\"}", cause))
+        .isInstanceOf(MyException.class)
+        .hasMessage("Something wrong and error message: ''")
+        .hasCause(cause);
+
+    assertThatThrownBy(() -> sut.parseErrorAndThrow("<message>foobar</message>", cause))
+        .isEqualTo(cause);
   }
 
   @SneakyThrows

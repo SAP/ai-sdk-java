@@ -70,7 +70,7 @@ public class ClientStreamingHandler<
             line -> {
               if (!line.startsWith("data: ")) {
                 final String msg = "Failed to parse response: %s".formatted(line);
-                throw exceptionFactory.create(msg, null);
+                throw exceptionFactory.build(msg, null);
               }
             })
         .map(
@@ -81,7 +81,7 @@ public class ClientStreamingHandler<
               } catch (final IOException e) { // exception message e gets lost
                 log.error("Failed to parse the following response: {}", line);
                 final String msg = "Failed to parse delta message: %s".formatted(line);
-                throw exceptionFactory.create(msg, e);
+                throw exceptionFactory.build(msg, e);
               }
             });
   }

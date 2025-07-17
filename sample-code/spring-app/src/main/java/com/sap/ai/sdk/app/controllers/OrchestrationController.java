@@ -5,7 +5,8 @@ import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
-import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
+import com.sap.ai.sdk.orchestration.OrchestrationInputFilterException;
+import com.sap.ai.sdk.orchestration.OrchestrationOutputFilterException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
@@ -124,9 +125,9 @@ class OrchestrationController {
     final OrchestrationChatResponse response;
     try {
       response = service.inputFiltering(policy);
-    } catch (OrchestrationFilterException.OrchestrationInputFilterException e) {
+    } catch (OrchestrationInputFilterException e) {
       final var msg =
-          "Failed to obtain a %d response as the content was flagged by input filter."
+          "Failed to obtain a response as the content was flagged by input filter. Error %d"
               .formatted(e.getStatusCode());
       log.debug(msg, e);
       return ResponseEntity.internalServerError().body(msg);
@@ -149,7 +150,7 @@ class OrchestrationController {
     final String content;
     try {
       content = response.getContent();
-    } catch (OrchestrationFilterException.OrchestrationOutputFilterException e) {
+    } catch (OrchestrationOutputFilterException e) {
       final var msg = "Failed to obtain a response as the content was flagged by output filter.";
       log.debug(msg, e);
       return ResponseEntity.internalServerError().body(msg);
@@ -170,9 +171,9 @@ class OrchestrationController {
     final OrchestrationChatResponse response;
     try {
       response = service.llamaGuardInputFilter(enabled);
-    } catch (OrchestrationFilterException.OrchestrationInputFilterException e) {
+    } catch (OrchestrationInputFilterException e) {
       final var msg =
-          "Failed to obtain a %d response as the content was flagged by input filter."
+          "Failed to obtain a response as the content was flagged by input filter. Error %d"
               .formatted(e.getStatusCode());
       log.debug(msg, e);
       return ResponseEntity.internalServerError().body(msg);

@@ -110,17 +110,18 @@ class IterableStreamConverterTest {
   public static class TestClientException extends ClientException {}
 
   static class TestClientExceptionFactory
-      implements ClientExceptionFactory<TestClientException, ClientError> {
+      implements ClientExceptionFactory<TestClientException, ClientError>
+  {
 
     @Nonnull
     @Override
-    public TestClientException create(@Nonnull String message, Throwable cause) {
+    public TestClientException build(@Nonnull String message, Throwable cause) {
       return new TestClientException(message, cause);
     }
 
     @Nonnull
     @Override
-    public TestClientException fromClientError(
+    public TestClientException buildFromClientError(
         @Nonnull String message, @Nonnull ClientError clientError) {
       TestClientException exception = new TestClientException(message);
       exception.clientError = clientError;

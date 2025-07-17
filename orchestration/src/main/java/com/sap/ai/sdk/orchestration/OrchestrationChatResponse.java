@@ -44,8 +44,8 @@ public class OrchestrationChatResponse {
       final var filterDetails =
           (Map<String, Object>)
               getOriginalResponse().getModuleResults().getOutputFiltering().getData();
-
-      throw new OrchestrationFilterException.OrchestrationOutputFilterException(
+      // TODO correct nesting
+      throw new OrchestrationOutputFilterException(
           "Content filter filtered the output.", filterDetails);
     }
     return choice.getMessage().getContent();

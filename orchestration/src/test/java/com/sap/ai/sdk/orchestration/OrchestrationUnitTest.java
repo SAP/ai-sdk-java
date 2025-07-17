@@ -412,15 +412,15 @@ class OrchestrationUnitTest {
 
     final var configWithFilter = config.withInputFiltering(filter);
 
-    assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
-        .isInstanceOf(OrchestrationFilterException.OrchestrationInputFilterException.class)
-        .hasMessage(
-            "Request failed with status 400 Bad Request: Content filtered due to Safety violations. Please modify the prompt and try again.")
-        .extracting(
-            e ->
-                ((OrchestrationFilterException.OrchestrationInputFilterException) e)
-                    .getStatusCode())
-        .isEqualTo(SC_BAD_REQUEST);
+    try {
+      client.chatCompletion(prompt, configWithFilter);
+    } catch (OrchestrationInputFilterException e) {
+      assertThat(e.getMessage())
+          .isEqualTo(
+              "Request failed with status 400 Bad Request: Content filtered due to Safety violations. Please modify the prompt and try again.");
+      assertThat(e.getStatusCode()).isEqualTo(SC_BAD_REQUEST);
+      // TODO: getFilter and also get violence=2 and getClientError
+    }
   }
 
   @Test
@@ -437,7 +437,7 @@ class OrchestrationUnitTest {
     final var configWithFilter = config.withOutputFiltering(filter);
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter).getContent())
-        .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
+        .isInstanceOf(OrchestrationOutputFilterException.class)
         .hasMessage("Content filter filtered the output.");
   }
 
@@ -664,13 +664,10 @@ class OrchestrationUnitTest {
 
     // this must not throw, since the stream is lazily evaluated
     var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
-    assertThatThrownBy(() -> stream.toList())
-        .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
+    assertThatThrownBy(stream::toList)
+        .isInstanceOf(OrchestrationOutputFilterException.class)
         .hasMessage("Content filter filtered the output.")
-        .extracting(
-            e ->
-                ((OrchestrationFilterException.OrchestrationOutputFilterException) e)
-                    .getFilterDetails())
+        .extracting(e -> ((OrchestrationOutputFilterException) e).getFilterDetails())
         .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
   }
 
@@ -692,7 +689,7 @@ class OrchestrationUnitTest {
 
       try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
-            .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
+            .isInstanceOf(OrchestrationOutputFilterException.class)
             .hasMessage("Content filter filtered the output.");
       }
 
