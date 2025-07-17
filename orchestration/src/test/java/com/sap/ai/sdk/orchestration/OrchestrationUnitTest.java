@@ -62,6 +62,7 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -159,7 +160,7 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .hasMessage(
-            "Request failed with status 500 Server Error and error message: 'Internal Server Error located in Masking Module - Masking'");
+            "Request failed with status 500 Server Error: Internal Server Error located in Masking Module - Masking");
   }
 
   @Test
@@ -362,7 +363,7 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
-            "Request failed with status 400 Bad Request and error message: 'Missing required parameters: ['input']'");
+            "Request failed with status 400 Bad Request: Missing required parameters: ['input']");
   }
 
   @Test
@@ -396,7 +397,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void filteringStrict() {
+  void inputFilteringStrict() {
     final String response =
         """
             {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "module_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
@@ -409,12 +410,35 @@ class OrchestrationUnitTest {
             .sexual(ALLOW_SAFE)
             .violence(ALLOW_SAFE);
 
-    final var configWithFilter = config.withInputFiltering(filter).withOutputFiltering(filter);
+    final var configWithFilter = config.withInputFiltering(filter);
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
-        .isInstanceOf(OrchestrationClientException.class)
+        .isInstanceOf(OrchestrationFilterException.OrchestrationInputFilterException.class)
         .hasMessage(
-            "Request failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
+            "Request failed with status 400 Bad Request: Content filtered due to Safety violations. Please modify the prompt and try again.")
+        .extracting(
+            e ->
+                ((OrchestrationFilterException.OrchestrationInputFilterException) e)
+                    .getStatusCode())
+        .isEqualTo(SC_BAD_REQUEST);
+  }
+
+  @Test
+  void outputFilteringStrict() {
+    stubFor(post(anyUrl()).willReturn(aResponse().withBodyFile("outputFilteringStrict.json")));
+
+    final var filter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE)
+            .selfHarm(ALLOW_SAFE)
+            .sexual(ALLOW_SAFE)
+            .violence(ALLOW_SAFE);
+
+    final var configWithFilter = config.withOutputFiltering(filter);
+
+    assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter).getContent())
+        .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
+        .hasMessage("Content filter filtered the output.");
   }
 
   @Test
@@ -626,13 +650,28 @@ class OrchestrationUnitTest {
 
     var deltaWithContentFilter = mock(OrchestrationChatCompletionDelta.class);
     when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
+
+    var moduleResults = mock(ModuleResultsStreaming.class);
+    when(deltaWithContentFilter.getModuleResults()).thenReturn(moduleResults);
+
+    var outputFiltering = mock(GenericModuleResult.class);
+    when(moduleResults.getOutputFiltering()).thenReturn(outputFiltering);
+
+    var filterDetails = Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0));
+    when(outputFiltering.getData()).thenReturn(filterDetails);
+
     when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
 
     // this must not throw, since the stream is lazily evaluated
     var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
-    assertThatThrownBy(stream::toList)
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("Content filter");
+    assertThatThrownBy(() -> stream.toList())
+        .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
+        .hasMessage("Content filter filtered the output.")
+        .extracting(
+            e ->
+                ((OrchestrationFilterException.OrchestrationOutputFilterException) e)
+                    .getFilterDetails())
+        .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
   }
 
   @Test
@@ -653,7 +692,7 @@ class OrchestrationUnitTest {
 
       try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
-            .isInstanceOf(OrchestrationClientException.class)
+            .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
             .hasMessage("Content filter filtered the output.");
       }
 

@@ -15,6 +15,7 @@ import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -113,7 +114,10 @@ public class OrchestrationClient {
   private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta) {
     final String finishReason = delta.getFinishReason();
     if (finishReason != null && finishReason.equals("content_filter")) {
-      throw new OrchestrationClientException("Content filter filtered the output.");
+      final var filterDetails =
+          (Map<String, Object>) delta.getModuleResults().getOutputFiltering().getData();
+      throw new OrchestrationFilterException.OrchestrationOutputFilterException(
+          "Content filter filtered the output.", filterDetails);
     }
   }
 

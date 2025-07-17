@@ -5,7 +5,7 @@ import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
-import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
@@ -124,8 +124,10 @@ class OrchestrationController {
     final OrchestrationChatResponse response;
     try {
       response = service.inputFiltering(policy);
-    } catch (OrchestrationClientException e) {
-      final var msg = "Failed to obtain a response as the content was flagged by input filter.";
+    } catch (OrchestrationFilterException.OrchestrationInputFilterException e) {
+      final var msg =
+          "Failed to obtain a %d response as the content was flagged by input filter."
+              .formatted(e.getStatusCode());
       log.debug(msg, e);
       return ResponseEntity.internalServerError().body(msg);
     }
@@ -142,10 +144,12 @@ class OrchestrationController {
       @Nullable @RequestParam(value = "format", required = false) final String format,
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
 
-    final OrchestrationChatResponse response;
+    final var response = service.outputFiltering(policy);
+
+    final String content;
     try {
-      response = service.outputFiltering(policy);
-    } catch (OrchestrationClientException e) {
+      content = response.getContent();
+    } catch (OrchestrationFilterException.OrchestrationOutputFilterException e) {
       final var msg = "Failed to obtain a response as the content was flagged by output filter.";
       log.debug(msg, e);
       return ResponseEntity.internalServerError().body(msg);
@@ -154,7 +158,7 @@ class OrchestrationController {
     if ("json".equals(format)) {
       return response;
     }
-    return response.getContent();
+    return content;
   }
 
   @GetMapping("/llamaGuardFilter/{enabled}")
@@ -166,8 +170,10 @@ class OrchestrationController {
     final OrchestrationChatResponse response;
     try {
       response = service.llamaGuardInputFilter(enabled);
-    } catch (OrchestrationClientException e) {
-      final var msg = "Failed to obtain a response as the content was flagged by input filter.";
+    } catch (OrchestrationFilterException.OrchestrationInputFilterException e) {
+      final var msg =
+          "Failed to obtain a %d response as the content was flagged by input filter."
+              .formatted(e.getStatusCode());
       log.debug(msg, e);
       return ResponseEntity.internalServerError().body(msg);
     }

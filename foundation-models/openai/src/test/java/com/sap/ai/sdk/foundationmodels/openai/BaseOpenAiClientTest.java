@@ -123,7 +123,7 @@ abstract class BaseOpenAiClientTest {
         .assertThatThrownBy(request::run)
         .describedAs("Error objects from OpenAI should be interpreted")
         .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("error message: 'foo'");
+        .hasMessageContaining("400 Bad Request: foo");
 
     softly
         .assertThatThrownBy(request::run)
