@@ -22,12 +22,13 @@ import javax.annotation.Nullable;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.tool.ToolCallbacks;
+import org.springframework.ai.support.ToolCallbacks;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -178,8 +179,9 @@ public class SpringAiOrchestrationService {
    */
   @Nonnull
   public ChatResponse chatMemory() {
-    val memory = new InMemoryChatMemory();
-    val advisor = new MessageChatMemoryAdvisor(memory);
+    val repository = new InMemoryChatMemoryRepository();
+    val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
+    val advisor = MessageChatMemoryAdvisor.builder(memory).build();
     val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
     val prompt1 = new Prompt("What is the capital of France?", defaultOptions);
     val prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
