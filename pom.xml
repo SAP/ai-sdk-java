@@ -73,7 +73,7 @@
     <mockito.version>5.18.0</mockito.version>
     <javaparser.version>3.27.0</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
-    <jackson.version>2.19.1</jackson.version>
+    <jackson.version>2.19.2</jackson.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.14.2</micrometer.version>
     <json.version>20250517</json.version>
