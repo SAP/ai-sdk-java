@@ -9,14 +9,14 @@ import javax.annotation.Nullable;
 class OpenAiExceptionFactory implements ClientExceptionFactory<OpenAiClientException, OpenAiError> {
 
   @Nonnull
-  public OpenAiClientException create(
+  public OpenAiClientException build(
       @Nonnull final String message, @Nullable final Throwable cause) {
     return new OpenAiClientException(message, cause);
   }
 
   @Nonnull
   @Override
-  public OpenAiClientException fromClientError(
+  public OpenAiClientException buildFromClientError(
       @Nonnull final String message, @Nonnull final OpenAiError openAiError) {
     return new OpenAiClientException(message, openAiError);
   }

@@ -98,7 +98,7 @@ class IterableStreamConverterTest {
     final var sut = IterableStreamConverter.lines(entity, new TestClientExceptionFactory());
     assertThatThrownBy(sut::count)
         .isInstanceOf(TestClientException.class)
-        .hasMessage("Parsing response content was interrupted.")
+        .hasMessage("Parsing response content was interrupted")
         .cause()
         .isInstanceOf(IOException.class)
         .hasMessage("Ups!");
@@ -114,13 +114,13 @@ class IterableStreamConverterTest {
 
     @Nonnull
     @Override
-    public TestClientException create(@Nonnull String message, Throwable cause) {
+    public TestClientException build(@Nonnull String message, Throwable cause) {
       return new TestClientException(message, cause);
     }
 
     @Nonnull
     @Override
-    public TestClientException fromClientError(
+    public TestClientException buildFromClientError(
         @Nonnull String message, @Nonnull ClientError clientError) {
       TestClientException exception = new TestClientException(message);
       exception.clientError = clientError;

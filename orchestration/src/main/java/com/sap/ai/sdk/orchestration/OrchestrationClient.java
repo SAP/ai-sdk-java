@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationOutputFilterException;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
@@ -15,7 +16,9 @@ import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -115,8 +118,13 @@ public class OrchestrationClient {
     final String finishReason = delta.getFinishReason();
     if (finishReason != null && finishReason.equals("content_filter")) {
       final var filterDetails =
-          (Map<String, Object>) delta.getModuleResults().getOutputFiltering().getData();
-      throw new OrchestrationFilterException.OrchestrationOutputFilterException(
+          Optional.ofNullable(delta.getModuleResults().getOutputFiltering())
+              .map(outputFiltering -> (Map<String, Object>) outputFiltering.getData())
+              .map(data -> (List<Map<String, Object>>) data.get("choices"))
+              .map(choices -> choices.get(0))
+              .orElseGet(Map::of);
+
+      throw new OrchestrationOutputFilterException(
           "Content filter filtered the output.", filterDetails);
     }
   }

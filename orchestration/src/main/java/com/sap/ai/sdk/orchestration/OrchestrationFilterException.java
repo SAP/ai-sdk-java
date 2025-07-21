@@ -18,7 +18,7 @@ import lombok.experimental.StandardException;
 public class OrchestrationFilterException extends OrchestrationClientException {
 
   /** Details about the filter that caused the exception. */
-  @Getter @Nonnull protected Map<String, Object> filterDetails;
+  @Getter @Nonnull protected Map<String, Object> filterDetails = Map.of();
 
   /** Exception thrown when an error occurs during input filtering in orchestration. */
   public static class OrchestrationInputFilterException extends OrchestrationFilterException {

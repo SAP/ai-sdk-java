@@ -38,6 +38,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationInputFilterException;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationOutputFilterException;
 import com.sap.ai.sdk.orchestration.model.ChatDelta;
 import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
@@ -160,7 +162,7 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .hasMessage(
-            "Request failed with status 500 Server Error: Internal Server Error located in Masking Module - Masking");
+            "Request failed with status 500 (Server Error): Internal Server Error located in Masking Module - Masking");
   }
 
   @Test
@@ -363,7 +365,7 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
-            "Request failed with status 400 Bad Request: Missing required parameters: ['input']");
+            "Request failed with status 400 (Bad Request): Missing required parameters: ['input']");
   }
 
   @Test
@@ -398,10 +400,14 @@ class OrchestrationUnitTest {
 
   @Test
   void inputFilteringStrict() {
-    final String response =
-        """
-            {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "module_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
-    stubFor(post(anyUrl()).willReturn(jsonResponse(response, SC_BAD_REQUEST)));
+
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("strictInputFilterResponse.json")
+                    .withHeader("Content-Type", "application/json")
+                    .withStatus(SC_BAD_REQUEST)));
 
     final var filter =
         new AzureContentFilter()
@@ -412,15 +418,21 @@ class OrchestrationUnitTest {
 
     final var configWithFilter = config.withInputFiltering(filter);
 
-    assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
-        .isInstanceOf(OrchestrationFilterException.OrchestrationInputFilterException.class)
-        .hasMessage(
-            "Request failed with status 400 Bad Request: Content filtered due to Safety violations. Please modify the prompt and try again.")
-        .extracting(
-            e ->
-                ((OrchestrationFilterException.OrchestrationInputFilterException) e)
-                    .getStatusCode())
-        .isEqualTo(SC_BAD_REQUEST);
+    try {
+      client.chatCompletion(prompt, configWithFilter);
+    } catch (OrchestrationInputFilterException e) {
+      assertThat(e.getMessage())
+          .isEqualTo(
+              "Request failed with status 400 (Bad Request): 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
+      assertThat(e.getStatusCode()).isEqualTo(SC_BAD_REQUEST);
+      assertThat(e.getFilterDetails())
+          .isEqualTo(
+              Map.of(
+                  "azure_content_safety",
+                  Map.of("Hate", 0, "SelfHarm", 0, "Sexual", 0, "Violence", 0)));
+      assertThat(e.getClientError()).isNotNull();
+      assertThat(e.getClientError()).isInstanceOf(OrchestrationError.class);
+    }
   }
 
   @Test
@@ -436,9 +448,19 @@ class OrchestrationUnitTest {
 
     final var configWithFilter = config.withOutputFiltering(filter);
 
-    assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter).getContent())
-        .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
-        .hasMessage("Content filter filtered the output.");
+    try {
+      client.chatCompletion(prompt, configWithFilter).getContent();
+    } catch (OrchestrationOutputFilterException e) {
+      assertThat(e.getMessage()).isEqualTo("Content filter filtered the output.");
+      assertThat(e.getFilterDetails())
+          .isEqualTo(
+              Map.of(
+                  "index",
+                  0,
+                  "azure_content_safety",
+                  Map.of("Hate", 0, "SelfHarm", 0, "Sexual", 0, "Violence", 4)));
+      assertThat(e.getClientError()).isNull();
+    }
   }
 
   @Test
@@ -580,7 +602,7 @@ class OrchestrationUnitTest {
         .assertThatThrownBy(request::run)
         .describedAs("Empty responses should be handled")
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("was empty");
+        .hasMessageContaining("HTTP Response is empty");
 
     softly.assertAll();
   }
@@ -657,20 +679,19 @@ class OrchestrationUnitTest {
     var outputFiltering = mock(GenericModuleResult.class);
     when(moduleResults.getOutputFiltering()).thenReturn(outputFiltering);
 
-    var filterDetails = Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0));
-    when(outputFiltering.getData()).thenReturn(filterDetails);
+    var filterData =
+        Map.of(
+            "choices", List.of(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0))));
+    when(outputFiltering.getData()).thenReturn(filterData);
 
     when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
 
     // this must not throw, since the stream is lazily evaluated
     var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
     assertThatThrownBy(() -> stream.toList())
-        .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
+        .isInstanceOf(OrchestrationOutputFilterException.class)
         .hasMessage("Content filter filtered the output.")
-        .extracting(
-            e ->
-                ((OrchestrationFilterException.OrchestrationOutputFilterException) e)
-                    .getFilterDetails())
+        .extracting(e -> ((OrchestrationOutputFilterException) e).getFilterDetails())
         .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
   }
 
@@ -692,7 +713,7 @@ class OrchestrationUnitTest {
 
       try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
-            .isInstanceOf(OrchestrationFilterException.OrchestrationOutputFilterException.class)
+            .isInstanceOf(OrchestrationOutputFilterException.class)
             .hasMessage("Content filter filtered the output.");
       }
 

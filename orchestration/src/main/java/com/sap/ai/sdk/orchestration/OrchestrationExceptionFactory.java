@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientExceptionFactory;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationInputFilterException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -13,20 +14,19 @@ class OrchestrationExceptionFactory
     implements ClientExceptionFactory<OrchestrationClientException, OrchestrationError> {
 
   @Nonnull
-  public OrchestrationClientException create(
+  public OrchestrationClientException build(
       @Nonnull final String message, @Nullable final Throwable cause) {
     return new OrchestrationClientException(message, cause);
   }
 
   @Nonnull
   @Override
-  public OrchestrationClientException fromClientError(
+  public OrchestrationClientException buildFromClientError(
       @Nonnull final String message, @Nonnull final OrchestrationError clientError) {
 
     final var inputFilterDetails = extractInputFilterDetails(clientError);
     if (!inputFilterDetails.isEmpty()) {
-      return new OrchestrationFilterException.OrchestrationInputFilterException(
-          message, clientError, inputFilterDetails);
+      return new OrchestrationInputFilterException(message, clientError, inputFilterDetails);
     }
 
     return new OrchestrationClientException(message, clientError);
