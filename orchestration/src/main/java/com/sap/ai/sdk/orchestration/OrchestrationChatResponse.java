@@ -43,7 +43,8 @@ public class OrchestrationChatResponse {
     final var choice = getChoice();
 
     if ("content_filter".equals(choice.getFinishReason())) {
-      @SuppressWarnings("unchecked") final var filterDetails =
+      @SuppressWarnings("unchecked")
+      final var filterDetails =
           Optional.of(getOriginalResponse().getModuleResults().getOutputFiltering())
               .map(outputFiltering -> (Map<String, Object>) outputFiltering.getData())
               .map(data -> (List<Map<String, Object>>) data.get("choices"))
