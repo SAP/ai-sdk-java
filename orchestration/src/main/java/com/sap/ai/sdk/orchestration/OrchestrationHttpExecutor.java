@@ -40,7 +40,7 @@ class OrchestrationHttpExecutor {
       @Nonnull final Class<T> responseType) {
     try {
       val json = JACKSON.writeValueAsString(payload);
-      log.debug("Serialized request into JSON payload: {}", json);
+      log.debug("Successfully serialized request into JSON payload");
       val request = new HttpPost(path);
       request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
 
