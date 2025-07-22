@@ -43,7 +43,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   @Nonnull private OrchestrationModuleConfig config;
 
-  private List<ToolCallback> functionCallbacks;
+  private List<ToolCallback> toolCallbacks;
 
   @Getter(AccessLevel.NONE)
   private Boolean internalToolExecutionEnabled;
@@ -178,21 +178,14 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   }
 
   @Nonnull
-  private LLMModuleConfig getLlmConfigNonNull() {
-    return Objects.requireNonNull(
-        config.getLlmConfig(),
-        "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(...))");
-  }
-
-  @Nonnull
   @Override
   public List<ToolCallback> getToolCallbacks() {
-    return functionCallbacks;
+    return toolCallbacks;
   }
 
   @Override
   public void setToolCallbacks(@Nonnull final List<ToolCallback> toolCallbacks) {
-    this.functionCallbacks = toolCallbacks;
+    this.toolCallbacks = toolCallbacks;
     final Template template =
         Objects.requireNonNullElse(
             (Template) config.getTemplateConfig(), Template.create().template());
@@ -200,21 +193,27 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     config = config.withTemplateConfig(template.tools(tools));
   }
 
+  @Nullable
   @Override
   public Boolean getInternalToolExecutionEnabled() {
-    return true;
+    return this.internalToolExecutionEnabled;
   }
 
-  private static ChatCompletionTool toOrchestrationTool(
-      @Nonnull final ToolCallback functionCallback) {
+  @Nonnull
+  private LLMModuleConfig getLlmConfigNonNull() {
+    return Objects.requireNonNull(
+        config.getLlmConfig(),
+        "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(...))");
+  }
+
+  private static ChatCompletionTool toOrchestrationTool(@Nonnull final ToolCallback toolCallback) {
+    val toolDef = toolCallback.getToolDefinition();
     return ChatCompletionTool.create()
         .type(TypeEnum.FUNCTION)
         .function(
             FunctionObject.create()
-                .name(functionCallback.getToolDefinition().name())
-                .description(functionCallback.getToolDefinition().name())
-                .parameters(
-                    ModelOptionsUtils.jsonToMap(
-                        functionCallback.getToolDefinition().inputSchema())));
+                .name(toolDef.name())
+                .description(toolDef.description())
+                .parameters(ModelOptionsUtils.jsonToMap(toolDef.inputSchema())));
   }
 }

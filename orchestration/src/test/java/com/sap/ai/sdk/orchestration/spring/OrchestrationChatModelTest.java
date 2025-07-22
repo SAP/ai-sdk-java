@@ -50,7 +50,7 @@ import org.springframework.ai.support.ToolCallbacks;
 import reactor.core.publisher.Flux;
 
 @WireMockTest
-public class OrchestrationChatModelTest {
+class OrchestrationChatModelTest {
 
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
