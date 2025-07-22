@@ -48,7 +48,7 @@ public class OrchestrationChatResponse {
           Optional.of(getOriginalResponse().getModuleResults().getOutputFiltering())
               .map(outputFiltering -> (Map<String, Object>) outputFiltering.getData())
               .map(data -> (List<Map<String, Object>>) data.get("choices"))
-              .map(List::getFirst)
+              .map(choices -> choices.get(0))
               .orElseGet(Map::of);
 
       throw new OrchestrationOutputFilterException(
