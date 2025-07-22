@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientExceptionFactory;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationInputFilterException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;

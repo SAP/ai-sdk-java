@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationOutputFilterException;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
@@ -113,7 +114,8 @@ public class OrchestrationClient {
         .map(OrchestrationChatCompletionDelta::getDeltaContent);
   }
 
-  private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta) {
+  private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)
+      throws OrchestrationOutputFilterException {
     final String finishReason = delta.getFinishReason();
     if (finishReason != null && finishReason.equals("content_filter")) {
       final var filterDetails =

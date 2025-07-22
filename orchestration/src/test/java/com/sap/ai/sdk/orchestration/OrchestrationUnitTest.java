@@ -38,6 +38,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationInputFilterException;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationOutputFilterException;
 import com.sap.ai.sdk.orchestration.model.ChatDelta;
 import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
