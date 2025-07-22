@@ -134,8 +134,8 @@ class OrchestrationController {
                   .formatted(e.getStatusCode()));
 
       Optional.of(e.getFilterDetails())
-          .map(filter -> (Map<String, Object>) filter.get("azure_content_safety"))
-          .map(details -> (Integer) details.get("Violence"))
+          .map(filter -> (Map<String, Integer>) filter.get("azure_content_safety"))
+          .map(details -> details.get("Violence"))
           .filter(score -> score > policy.getAzureThreshold().getValue())
           .ifPresent(score -> msg.append("Hate score %d > threshold.".formatted(score)));
 
@@ -166,8 +166,8 @@ class OrchestrationController {
               "Failed to obtain a response as the content was flagged by output filter.");
 
       Optional.of(e.getFilterDetails())
-          .map(filter -> (Map<String, Object>) filter.get("azure_content_safety"))
-          .map(details -> (Integer) details.get("Violence"))
+          .map(filter -> (Map<String, Integer>) filter.get("azure_content_safety"))
+          .map(details -> details.get("Violence"))
           .filter(score -> score > policy.getAzureThreshold().getValue())
           .ifPresent(score -> msg.append("Hate score %d > threshold.".formatted(score)));
 
