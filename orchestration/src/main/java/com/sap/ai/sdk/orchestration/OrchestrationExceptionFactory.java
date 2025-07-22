@@ -32,10 +32,11 @@ class OrchestrationExceptionFactory
     return new OrchestrationClientException(message, clientError);
   }
 
+  @SuppressWarnings("unchecked")
   @Nonnull
   private Map<String, Object> extractInputFilterDetails(@Nonnull final OrchestrationError error) {
-
-    return Optional.ofNullable(error.getOriginalResponse())
+      
+      return Optional.of(error.getOriginalResponse())
         .flatMap(response -> Optional.ofNullable(response.getModuleResults()))
         .flatMap(moduleResults -> Optional.ofNullable(moduleResults.getInputFiltering()))
         .flatMap(inputFiltering -> Optional.ofNullable(inputFiltering.getData()))

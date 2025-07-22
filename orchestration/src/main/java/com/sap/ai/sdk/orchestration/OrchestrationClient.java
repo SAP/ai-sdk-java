@@ -118,7 +118,7 @@ public class OrchestrationClient {
       throws OrchestrationOutputFilterException {
     final String finishReason = delta.getFinishReason();
     if (finishReason != null && finishReason.equals("content_filter")) {
-      final var filterDetails =
+      @SuppressWarnings("unchecked") final var filterDetails =
           Optional.ofNullable(delta.getModuleResults().getOutputFiltering())
               .map(outputFiltering -> (Map<String, Object>) outputFiltering.getData())
               .map(data -> (List<Map<String, Object>>) data.get("choices"))
