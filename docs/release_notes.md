@@ -50,3 +50,4 @@
 ### 🐛 Fixed Issues
 
 - [Orchestration] Resolved duplicate JSON property issue, enabling Anthropic Claude chat completions.
+- Remove logging of any request/response payloads to avoid potential exposure of sensitive data.
