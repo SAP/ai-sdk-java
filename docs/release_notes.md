@@ -8,6 +8,10 @@
 
 ### 🔧 Compatibility Notes
 
+- The **Spring AI** version has been increased from `1.0.0-M6` to the GA release `1.0.0`.
+  - The `OrchestrationChatOptions` have been, replacing all references to `FunctionCallback` with `ToolCallback`.
+  - Please follow the [official Spring AI upgrade guide](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#upgrading-to-1-0-0-RC1) for further details.
+  - The `@Beta` annotations on all classes related to Spring AI have been removed.
 - The old OpenAI client (v1.0.0) is being deprecated in favor of the new OpenAI client (v1.4.0).
   [See the documentation for more details](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion)
 - Generated classes for the following service specifications are subject to change:

@@ -8,7 +8,6 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TOP_P;
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool.TypeEnum;
@@ -35,7 +34,6 @@ import org.springframework.ai.tool.ToolCallback;
  *
  * @since 1.2.0
  */
-@Beta
 @Data
 public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
@@ -43,14 +41,15 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   @Nonnull private OrchestrationModuleConfig config;
 
-  private List<ToolCallback> toolCallbacks;
+  @Nonnull private List<ToolCallback> toolCallbacks = List.of();
 
   @Getter(AccessLevel.NONE)
+  @Nullable
   private Boolean internalToolExecutionEnabled;
 
-  private Set<String> toolNames;
+  @Nonnull private Set<String> toolNames = Set.of();
 
-  private Map<String, Object> toolContext;
+  @Nonnull private Map<String, Object> toolContext = Map.of();
 
   /**
    * Returns the model to use for the chat.
@@ -175,12 +174,6 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   @Nullable
   private <T> T getLlmConfigParam(@Nonnull final String param) {
     return ((Map<String, T>) getLlmConfigNonNull().getModelParams()).get(param);
-  }
-
-  @Nonnull
-  @Override
-  public List<ToolCallback> getToolCallbacks() {
-    return toolCallbacks;
   }
 
   @Override

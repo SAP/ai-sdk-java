@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
@@ -24,7 +23,6 @@ import org.springframework.ai.chat.model.Generation;
  *
  * @since 1.2.0
  */
-@Beta
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class OrchestrationSpringChatResponse extends ChatResponse {
