@@ -15,7 +15,7 @@ public class OrchestrationClientException extends ClientException {
   OrchestrationClientException(
       @Nonnull final String message, @Nonnull final OrchestrationError clientError) {
     super(message);
-    this.clientError = clientError;
+    setClientError(clientError);
   }
 
   @Beta
