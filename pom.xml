@@ -36,8 +36,9 @@
     <module>foundation-models/openai</module>
   </modules>
   <scm>
-    <connection/>
-    <url/>
+    <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
+    <developerConnection>scm:git:ssh://github.com:SAP/ai-sdk-java.git</developerConnection>
+    <url>https://github.com/SAP/ai-sdk-java/tree/main</url>
   </scm>
   <distributionManagement>
     <repository>
