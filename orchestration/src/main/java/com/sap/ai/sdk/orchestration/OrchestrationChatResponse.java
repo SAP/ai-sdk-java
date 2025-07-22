@@ -5,6 +5,7 @@ import static lombok.AccessLevel.PACKAGE;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationOutputFilterException;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
@@ -17,6 +18,7 @@ import com.sap.ai.sdk.orchestration.model.UserChatMessage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -34,18 +36,21 @@ public class OrchestrationChatResponse {
    * <p>Note: If there are multiple choices only the first one is returned
    *
    * @return the message content or empty string.
-   * @throws OrchestrationFilterException if the content filter filtered the output.
+   * @throws OrchestrationOutputFilterException if the content filter filtered the output.
    */
   @Nonnull
-  public String getContent() throws OrchestrationFilterException {
+  public String getContent() throws OrchestrationOutputFilterException {
     final var choice = getChoice();
 
     if ("content_filter".equals(choice.getFinishReason())) {
       final var filterDetails =
-          (Map<String, Object>)
-              getOriginalResponse().getModuleResults().getOutputFiltering().getData();
+          Optional.of(getOriginalResponse().getModuleResults().getOutputFiltering())
+              .map(outputFiltering -> (Map<String, Object>) outputFiltering.getData())
+              .map(data -> (List<Map<String, Object>>) data.get("choices"))
+              .map(choices -> choices.get(0))
+              .orElseGet(Map::of);
 
-      throw new OrchestrationFilterException.OrchestrationOutputFilterException(
+      throw new OrchestrationOutputFilterException(
           "Content filter filtered the output.", filterDetails);
     }
     return choice.getMessage().getContent();

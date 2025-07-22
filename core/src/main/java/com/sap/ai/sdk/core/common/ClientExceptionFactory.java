@@ -22,7 +22,7 @@ public interface ClientExceptionFactory<E extends ClientException, R extends Cli
    * @return An instance of the specified {@link ClientException} type
    */
   @Nonnull
-  E create(@Nonnull final String message, @Nullable final Throwable cause);
+  E build(@Nonnull final String message, @Nullable final Throwable cause);
 
   /**
    * Creates an exception from a given message and an HTTP error response that has been successfully
@@ -33,5 +33,5 @@ public interface ClientExceptionFactory<E extends ClientException, R extends Cli
    * @return An instance of the specified {@link ClientException} type
    */
   @Nonnull
-  E fromClientError(@Nonnull final String message, @Nonnull final R clientError);
+  E buildFromClientError(@Nonnull final String message, @Nonnull final R clientError);
 }

@@ -5,13 +5,16 @@ import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
-import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationInputFilterException;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationOutputFilterException;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -124,12 +127,20 @@ class OrchestrationController {
     final OrchestrationChatResponse response;
     try {
       response = service.inputFiltering(policy);
-    } catch (OrchestrationFilterException.OrchestrationInputFilterException e) {
+    } catch (OrchestrationInputFilterException e) {
       final var msg =
-          "Failed to obtain a %d response as the content was flagged by input filter."
-              .formatted(e.getStatusCode());
-      log.debug(msg, e);
-      return ResponseEntity.internalServerError().body(msg);
+          new StringBuilder(
+              "Failed to obtain a response as the content was flagged by input filter. Error %d"
+                  .formatted(e.getStatusCode()));
+
+      Optional.of(e.getFilterDetails())
+          .map(filter -> (Map<String, Object>) filter.get("azure_content_safety"))
+          .map(details -> (Integer) details.get("Violence"))
+          .filter(score -> score > policy.getAzureThreshold().getValue())
+          .ifPresent(score -> msg.append("Hate score %d > threshold.".formatted(score)));
+
+      log.debug(msg.toString(), e);
+      return ResponseEntity.internalServerError().body(msg.toString());
     }
 
     if ("json".equals(format)) {
@@ -149,10 +160,19 @@ class OrchestrationController {
     final String content;
     try {
       content = response.getContent();
-    } catch (OrchestrationFilterException.OrchestrationOutputFilterException e) {
-      final var msg = "Failed to obtain a response as the content was flagged by output filter.";
-      log.debug(msg, e);
-      return ResponseEntity.internalServerError().body(msg);
+    } catch (OrchestrationOutputFilterException e) {
+      final var msg =
+          new StringBuilder(
+              "Failed to obtain a response as the content was flagged by output filter.");
+
+      Optional.of(e.getFilterDetails())
+          .map(filter -> (Map<String, Object>) filter.get("azure_content_safety"))
+          .map(details -> (Integer) details.get("Violence"))
+          .filter(score -> score > policy.getAzureThreshold().getValue())
+          .ifPresent(score -> msg.append("Hate score %d > threshold.".formatted(score)));
+
+      log.debug(msg.toString(), e);
+      return ResponseEntity.internalServerError().body(msg.toString());
     }
 
     if ("json".equals(format)) {
@@ -170,9 +190,9 @@ class OrchestrationController {
     final OrchestrationChatResponse response;
     try {
       response = service.llamaGuardInputFilter(enabled);
-    } catch (OrchestrationFilterException.OrchestrationInputFilterException e) {
+    } catch (OrchestrationInputFilterException e) {
       final var msg =
-          "Failed to obtain a %d response as the content was flagged by input filter."
+          "Failed to obtain a response as the content was flagged by input filter. Error %d"
               .formatted(e.getStatusCode());
       log.debug(msg, e);
       return ResponseEntity.internalServerError().body(msg);

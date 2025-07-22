@@ -123,7 +123,7 @@ abstract class BaseOpenAiClientTest {
         .assertThatThrownBy(request::run)
         .describedAs("Error objects from OpenAI should be interpreted")
         .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("400 Bad Request: foo");
+        .hasMessageContaining("400 (Bad Request): foo");
 
     softly
         .assertThatThrownBy(request::run)
@@ -143,7 +143,7 @@ abstract class BaseOpenAiClientTest {
         .assertThatThrownBy(request::run)
         .describedAs("Empty responses should be handled")
         .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("was empty");
+        .hasMessageContaining("is empty");
 
     softly.assertAll();
   }

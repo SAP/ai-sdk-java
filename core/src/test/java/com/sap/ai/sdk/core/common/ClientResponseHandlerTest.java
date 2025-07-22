@@ -35,13 +35,13 @@ class ClientResponseHandlerTest {
   static class MyExceptionFactory implements ClientExceptionFactory<MyException, MyError> {
     @Nonnull
     @Override
-    public MyException create(@Nonnull String message, Throwable cause) {
+    public MyException build(@Nonnull String message, Throwable cause) {
       return new MyException(message, cause);
     }
 
     @Nonnull
     @Override
-    public MyException fromClientError(@Nonnull String message, @Nonnull MyError clientError) {
+    public MyException buildFromClientError(@Nonnull String message, @Nonnull MyError clientError) {
       var ex = new MyException(message);
       ex.clientError = clientError;
       return ex;
@@ -50,7 +50,7 @@ class ClientResponseHandlerTest {
 
   @SneakyThrows
   @Test
-  public void testBuildExceptionAndThrow() {
+  void testBuildExceptionAndThrow() {
     var sut =
         new ClientResponseHandler<>(MyResponse.class, MyError.class, new MyExceptionFactory());
 
@@ -65,42 +65,60 @@ class ClientResponseHandlerTest {
         .thenReturn(new StringEntity("", ContentType.APPLICATION_JSON))
         .thenReturn(new StringEntity("<html>oh", ContentType.TEXT_HTML))
         .thenReturn(new StringEntity("{\"message\":\"foobar\"}", ContentType.APPLICATION_JSON))
-        .thenReturn(new StringEntity("{\"message\"-\"foobar\"}", ContentType.APPLICATION_JSON));
+        .thenReturn(new StringEntity("{\"message\"-\"foobar\"}", ContentType.APPLICATION_JSON))
+        .thenReturn(new StringEntity("{\"foo\":\"bar\"}", ContentType.APPLICATION_JSON))
+        .thenReturn(new StringEntity("<message>foobar</message>", ContentType.APPLICATION_JSON));
 
     assertThatThrownBy(() -> sut.handleResponse(response))
         .isInstanceOf(MyException.class)
-        .hasMessage("Request failed with status 400 Bad Request")
+        .hasMessage("Request failed with status 400 (Bad Request): The HTTP Response is empty")
         .hasNoCause()
         .extracting(e -> ((MyException) e).getClientError())
         .isNull();
     assertThatThrownBy(() -> sut.handleResponse(response))
         .isInstanceOf(MyException.class)
-        .hasMessage("Request failed with status 400 Bad Request")
+        .hasMessage(
+            "Request failed with status 400 (Bad Request): Failed to read the response content")
         .extracting(e -> e.getSuppressed()[0])
         .isInstanceOf(IOException.class)
         .extracting(Throwable::getMessage)
         .isEqualTo("Network issues");
     assertThatThrownBy(() -> sut.handleResponse(response))
         .isInstanceOf(MyException.class)
-        .hasMessage("Request failed with status 400 Bad Request")
+        .hasMessage("Request failed with status 400 (Bad Request): Empty or blank response content")
         .hasNoCause()
         .extracting(e -> ((MyException) e).getClientError())
         .isNull();
     assertThatThrownBy(() -> sut.handleResponse(response))
         .isInstanceOf(MyException.class)
-        .hasMessage("Request failed with status 400 Bad Request")
+        .hasMessage(
+            "Request failed with status 400 (Bad Request): The response Content-Type is not JSON")
         .hasNoCause()
         .extracting(e -> ((MyException) e).getClientError())
         .isNull();
     assertThatThrownBy(() -> sut.handleResponse(response))
         .isInstanceOf(MyException.class)
-        .hasMessage("Request failed with status 400 Bad Request: foobar")
+        .hasMessage("Request failed with status 400 (Bad Request): foobar")
         .hasNoCause()
         .extracting(e -> ((MyException) e).getClientError())
         .isNotNull();
     assertThatThrownBy(() -> sut.handleResponse(response))
         .isInstanceOf(MyException.class)
-        .hasMessage("Request failed with status 400 Bad Request")
+        .hasMessage(
+            "Request failed with status 400 (Bad Request): Failed to parse the JSON error response")
+        .hasNoCause()
+        .extracting(e -> e.getSuppressed()[0])
+        .isInstanceOf(JsonParseException.class);
+    assertThatThrownBy(() -> sut.handleResponse(response))
+        .isInstanceOf(MyException.class)
+        .hasMessage("Request failed with status 400 (Bad Request)")
+        .hasNoCause()
+        .extracting(e -> ((MyException) e).getClientError())
+        .isNotNull();
+    assertThatThrownBy(() -> sut.handleResponse(response))
+        .isInstanceOf(MyException.class)
+        .hasMessage(
+            "Request failed with status 400 (Bad Request): Failed to parse the JSON error response")
         .hasNoCause()
         .extracting(e -> e.getSuppressed()[0])
         .isInstanceOf(JsonParseException.class);

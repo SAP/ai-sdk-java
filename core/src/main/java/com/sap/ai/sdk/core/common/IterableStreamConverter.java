@@ -101,21 +101,21 @@ class IterableStreamConverter<T> implements Iterator<T> {
       @Nonnull final ClientExceptionFactory<? extends ClientException, R> exceptionFactory)
       throws ClientException {
     if (entity == null) {
-      throw exceptionFactory.create("Orchestration service response was empty.", null);
+      throw exceptionFactory.build("The HTTP Response is empty", null);
     }
 
     final InputStream inputStream;
     try {
       inputStream = entity.getContent();
     } catch (final IOException e) {
-      throw exceptionFactory.create("Failed to read response content.", e);
+      throw exceptionFactory.build("Failed to read response content.", e);
     }
 
     final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8), BUFFER_SIZE);
     final Runnable closeHandler =
         () -> Try.run(reader::close).onFailure(e -> log.error("Could not close input stream", e));
     final Function<Exception, RuntimeException> errHandler =
-        e -> exceptionFactory.create("Parsing response content was interrupted.", e);
+        e -> exceptionFactory.build("Parsing response content was interrupted", e);
 
     final var iterator = new IterableStreamConverter<>(reader::readLine, closeHandler, errHandler);
     final var spliterator = Spliterators.spliteratorUnknownSize(iterator, ORDERED | NONNULL);

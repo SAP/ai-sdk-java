@@ -1,0 +1,25 @@
+{
+  "request_id": "f44932a3-22a8-4a72-bccb-cfb51077a4b7",
+  "code": 400,
+  "message": "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.",
+  "location": "Filtering Module - Input Filter",
+  "module_results": {
+    "templating": [
+      {
+        "content": "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operation in-charge.",
+        "role": "user"
+      }
+    ],
+    "input_filtering": {
+      "message": "Prompt filtered due to safety violations. Please modify the prompt and try again.",
+      "data": {
+        "azure_content_safety": {
+          "Hate": 0,
+          "SelfHarm": 0,
+          "Sexual": 0,
+          "Violence": 0
+        }
+      }
+    }
+  }
+}
