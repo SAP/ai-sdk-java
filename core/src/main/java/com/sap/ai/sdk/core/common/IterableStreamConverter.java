@@ -70,11 +70,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
     } catch (final Exception e) {
       isDone = true;
       stopHandler.run();
-      log.debug(
-          "Error while reading next element (fetched={}, done={}, exType={}).",
-          isNextFetched,
-          isDone,
-          e.getClass().getSimpleName());
+      log.debug("Reading next element failed with error {})", e.getClass().getSimpleName());
       throw errorHandler.apply(e);
     }
     return !isDone;
