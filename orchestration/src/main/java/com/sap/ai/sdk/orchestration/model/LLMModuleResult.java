@@ -26,7 +26,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Output of LLM module. Follows the OpenAI spec. */
+/** Output from LLM. Follows the OpenAI spec. */
 // CHECKSTYLE:OFF
 public class LLMModuleResult
 // CHECKSTYLE:ON

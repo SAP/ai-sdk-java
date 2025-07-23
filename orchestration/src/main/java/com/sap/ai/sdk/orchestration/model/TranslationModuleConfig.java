@@ -23,53 +23,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ErrorResponseStreaming */
+/** Configuration for translation module */
 // CHECKSTYLE:OFF
-public class ErrorResponseStreaming
+public class TranslationModuleConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("error")
-  private ErrorStreaming error;
+  @JsonProperty("input")
+  private SAPDocumentTranslation input;
+
+  @JsonProperty("output")
+  private SAPDocumentTranslation output;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ErrorResponseStreaming. */
-  protected ErrorResponseStreaming() {}
+  /** Default constructor for TranslationModuleConfig. */
+  protected TranslationModuleConfig() {}
 
   /**
-   * Set the error of this {@link ErrorResponseStreaming} instance and return the same instance.
+   * Set the input of this {@link TranslationModuleConfig} instance and return the same instance.
    *
-   * @param error The error of this {@link ErrorResponseStreaming}
-   * @return The same instance of this {@link ErrorResponseStreaming} class
+   * @param input The input of this {@link TranslationModuleConfig}
+   * @return The same instance of this {@link TranslationModuleConfig} class
    */
   @Nonnull
-  public ErrorResponseStreaming error(@Nonnull final ErrorStreaming error) {
-    this.error = error;
+  public TranslationModuleConfig input(@Nullable final SAPDocumentTranslation input) {
+    this.input = input;
     return this;
   }
 
   /**
-   * Get error
+   * Get input
    *
-   * @return error The error of this {@link ErrorResponseStreaming} instance.
+   * @return input The input of this {@link TranslationModuleConfig} instance.
    */
   @Nonnull
-  public ErrorStreaming getError() {
-    return error;
+  public SAPDocumentTranslation getInput() {
+    return input;
   }
 
   /**
-   * Set the error of this {@link ErrorResponseStreaming} instance.
+   * Set the input of this {@link TranslationModuleConfig} instance.
    *
-   * @param error The error of this {@link ErrorResponseStreaming}
+   * @param input The input of this {@link TranslationModuleConfig}
    */
-  public void setError(@Nonnull final ErrorStreaming error) {
-    this.error = error;
+  public void setInput(@Nullable final SAPDocumentTranslation input) {
+    this.input = input;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ErrorResponseStreaming}.
+   * Set the output of this {@link TranslationModuleConfig} instance and return the same instance.
+   *
+   * @param output The output of this {@link TranslationModuleConfig}
+   * @return The same instance of this {@link TranslationModuleConfig} class
+   */
+  @Nonnull
+  public TranslationModuleConfig output(@Nullable final SAPDocumentTranslation output) {
+    this.output = output;
+    return this;
+  }
+
+  /**
+   * Get output
+   *
+   * @return output The output of this {@link TranslationModuleConfig} instance.
+   */
+  @Nonnull
+  public SAPDocumentTranslation getOutput() {
+    return output;
+  }
+
+  /**
+   * Set the output of this {@link TranslationModuleConfig} instance.
+   *
+   * @param output The output of this {@link TranslationModuleConfig}
+   */
+  public void setOutput(@Nullable final SAPDocumentTranslation output) {
+    this.output = output;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link TranslationModuleConfig}.
    *
    * @return The set of properties names
    */
@@ -80,7 +114,7 @@ public class ErrorResponseStreaming
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ErrorResponseStreaming} instance.
+   * Get the value of an unrecognizable property of this {@link TranslationModuleConfig} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -92,13 +126,13 @@ public class ErrorResponseStreaming
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ErrorResponseStreaming has no field with name '" + name + "'.");
+          "TranslationModuleConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ErrorResponseStreaming} instance including
+   * Get the value of all properties of this {@link TranslationModuleConfig} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -107,12 +141,13 @@ public class ErrorResponseStreaming
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (error != null) declaredFields.put("error", error);
+    if (input != null) declaredFields.put("input", input);
+    if (output != null) declaredFields.put("output", output);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ErrorResponseStreaming} instance. If the map
+   * Set an unrecognizable property of this {@link TranslationModuleConfig} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -131,22 +166,24 @@ public class ErrorResponseStreaming
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ErrorResponseStreaming errorResponseStreaming = (ErrorResponseStreaming) o;
-    return Objects.equals(this.cloudSdkCustomFields, errorResponseStreaming.cloudSdkCustomFields)
-        && Objects.equals(this.error, errorResponseStreaming.error);
+    final TranslationModuleConfig translationModuleConfig = (TranslationModuleConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, translationModuleConfig.cloudSdkCustomFields)
+        && Objects.equals(this.input, translationModuleConfig.input)
+        && Objects.equals(this.output, translationModuleConfig.output);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(error, cloudSdkCustomFields);
+    return Objects.hash(input, output, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ErrorResponseStreaming {\n");
-    sb.append("    error: ").append(toIndentedString(error)).append("\n");
+    sb.append("class TranslationModuleConfig {\n");
+    sb.append("    input: ").append(toIndentedString(input)).append("\n");
+    sb.append("    output: ").append(toIndentedString(output)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -164,22 +201,8 @@ public class ErrorResponseStreaming
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ErrorResponseStreaming}
-   * instance with all required arguments.
-   */
-  public static Builder create() {
-    return (error) -> new ErrorResponseStreaming().error(error);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the error of this {@link ErrorResponseStreaming} instance.
-     *
-     * @param error The error of this {@link ErrorResponseStreaming}
-     * @return The ErrorResponseStreaming instance.
-     */
-    ErrorResponseStreaming error(@Nonnull final ErrorStreaming error);
+  /** Create a new {@link TranslationModuleConfig} instance. No arguments are required. */
+  public static TranslationModuleConfig create() {
+    return new TranslationModuleConfig();
   }
 }

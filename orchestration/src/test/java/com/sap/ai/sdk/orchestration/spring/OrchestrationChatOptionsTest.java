@@ -27,7 +27,7 @@ class OrchestrationChatOptionsTest {
 
   private static void assertCustomLLM(OrchestrationChatOptions opts) {
     assertThat(opts.getModel()).isEqualTo(GEMINI_1_5_FLASH.getName());
-    assertThat(opts.getModelVersion()).isEqualTo(GEMINI_1_5_FLASH.getVersion());
+    assertThat(opts.getVersion()).isEqualTo(GEMINI_1_5_FLASH.getVersion());
     assertThat(opts.getFrequencyPenalty()).isEqualTo(0.5);
     assertThat(opts.getMaxTokens()).isEqualTo(100);
     assertThat(opts.getPresencePenalty()).isEqualTo(0.5);
@@ -44,7 +44,7 @@ class OrchestrationChatOptionsTest {
             new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH));
 
     assertThat(opts.getModel()).isEqualTo(GEMINI_1_5_FLASH.getName());
-    assertThat(opts.getModelVersion()).isEqualTo(GEMINI_1_5_FLASH.getVersion());
+    assertThat(opts.getVersion()).isEqualTo(GEMINI_1_5_FLASH.getVersion());
   }
 
   @Test
@@ -63,7 +63,7 @@ class OrchestrationChatOptionsTest {
 
     var copy = (OrchestrationChatOptions) opts.copy();
     assertThat(copy.getModel()).isEqualTo(GEMINI_1_5_FLASH.getName());
-    assertThat(copy.getModelVersion()).isEqualTo(GEMINI_1_5_FLASH.getVersion());
+    assertThat(copy.getVersion()).isEqualTo(GEMINI_1_5_FLASH.getVersion());
   }
 
   @Test
