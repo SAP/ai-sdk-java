@@ -49,7 +49,7 @@ public class ModuleResultsStreaming
   private GenericModuleResult outputFiltering;
 
   @JsonProperty("output_translation")
-  private GenericModuleResult outputTranslation;
+  private InputTranslationModuleResult outputTranslation;
 
   @JsonProperty("llm")
   private LLMModuleResultStreaming llm;
@@ -280,7 +280,7 @@ public class ModuleResultsStreaming
    */
   @Nonnull
   public ModuleResultsStreaming outputTranslation(
-      @Nullable final GenericModuleResult outputTranslation) {
+      @Nullable final InputTranslationModuleResult outputTranslation) {
     this.outputTranslation = outputTranslation;
     return this;
   }
@@ -292,7 +292,7 @@ public class ModuleResultsStreaming
    *     instance.
    */
   @Nonnull
-  public GenericModuleResult getOutputTranslation() {
+  public InputTranslationModuleResult getOutputTranslation() {
     return outputTranslation;
   }
 
@@ -301,7 +301,7 @@ public class ModuleResultsStreaming
    *
    * @param outputTranslation The outputTranslation of this {@link ModuleResultsStreaming}
    */
-  public void setOutputTranslation(@Nullable final GenericModuleResult outputTranslation) {
+  public void setOutputTranslation(@Nullable final InputTranslationModuleResult outputTranslation) {
     this.outputTranslation = outputTranslation;
   }
 

@@ -23,87 +23,89 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** OrchestrationConfig */
+/** Input Translation module result */
 // CHECKSTYLE:OFF
-public class OrchestrationConfig
+public class InputTranslationModuleResult
 // CHECKSTYLE:ON
 {
-  @JsonProperty("modules")
-  private ModuleConfigs modules;
+  @JsonProperty("message")
+  private String message;
 
-  @JsonProperty("stream")
-  private GlobalStreamOptions stream;
+  @JsonProperty("data")
+  private InputTranslationModuleResultData data;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for OrchestrationConfig. */
-  protected OrchestrationConfig() {}
+  /** Default constructor for InputTranslationModuleResult. */
+  protected InputTranslationModuleResult() {}
 
   /**
-   * Set the modules of this {@link OrchestrationConfig} instance and return the same instance.
+   * Set the message of this {@link InputTranslationModuleResult} instance and return the same
+   * instance.
    *
-   * @param modules The modules of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
+   * @param message The message of this {@link InputTranslationModuleResult}
+   * @return The same instance of this {@link InputTranslationModuleResult} class
    */
   @Nonnull
-  public OrchestrationConfig modules(@Nonnull final ModuleConfigs modules) {
-    this.modules = modules;
+  public InputTranslationModuleResult message(@Nonnull final String message) {
+    this.message = message;
     return this;
   }
 
   /**
-   * Get modules
+   * Get message
    *
-   * @return modules The modules of this {@link OrchestrationConfig} instance.
+   * @return message The message of this {@link InputTranslationModuleResult} instance.
    */
   @Nonnull
-  public ModuleConfigs getModules() {
-    return modules;
+  public String getMessage() {
+    return message;
   }
 
   /**
-   * Set the modules of this {@link OrchestrationConfig} instance.
+   * Set the message of this {@link InputTranslationModuleResult} instance.
    *
-   * @param modules The modules of this {@link OrchestrationConfig}
+   * @param message The message of this {@link InputTranslationModuleResult}
    */
-  public void setModules(@Nonnull final ModuleConfigs modules) {
-    this.modules = modules;
+  public void setMessage(@Nonnull final String message) {
+    this.message = message;
   }
 
   /**
-   * Set the stream of this {@link OrchestrationConfig} instance and return the same instance.
+   * Set the data of this {@link InputTranslationModuleResult} instance and return the same
+   * instance.
    *
-   * @param stream The stream of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
+   * @param data The data of this {@link InputTranslationModuleResult}
+   * @return The same instance of this {@link InputTranslationModuleResult} class
    */
   @Nonnull
-  public OrchestrationConfig stream(@Nullable final GlobalStreamOptions stream) {
-    this.stream = stream;
+  public InputTranslationModuleResult data(@Nullable final InputTranslationModuleResultData data) {
+    this.data = data;
     return this;
   }
 
   /**
-   * Get stream
+   * Get data
    *
-   * @return stream The stream of this {@link OrchestrationConfig} instance.
+   * @return data The data of this {@link InputTranslationModuleResult} instance.
    */
   @Nonnull
-  public GlobalStreamOptions getStream() {
-    return stream;
+  public InputTranslationModuleResultData getData() {
+    return data;
   }
 
   /**
-   * Set the stream of this {@link OrchestrationConfig} instance.
+   * Set the data of this {@link InputTranslationModuleResult} instance.
    *
-   * @param stream The stream of this {@link OrchestrationConfig}
+   * @param data The data of this {@link InputTranslationModuleResult}
    */
-  public void setStream(@Nullable final GlobalStreamOptions stream) {
-    this.stream = stream;
+  public void setData(@Nullable final InputTranslationModuleResultData data) {
+    this.data = data;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link OrchestrationConfig}.
+   * Get the names of the unrecognizable properties of the {@link InputTranslationModuleResult}.
    *
    * @return The set of properties names
    */
@@ -114,7 +116,8 @@ public class OrchestrationConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link OrchestrationConfig} instance.
+   * Get the value of an unrecognizable property of this {@link InputTranslationModuleResult}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -126,13 +129,13 @@ public class OrchestrationConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "OrchestrationConfig has no field with name '" + name + "'.");
+          "InputTranslationModuleResult has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link OrchestrationConfig} instance including
+   * Get the value of all properties of this {@link InputTranslationModuleResult} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -141,14 +144,15 @@ public class OrchestrationConfig
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (modules != null) declaredFields.put("modules", modules);
-    if (stream != null) declaredFields.put("stream", stream);
+    if (message != null) declaredFields.put("message", message);
+    if (data != null) declaredFields.put("data", data);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link OrchestrationConfig} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link InputTranslationModuleResult} instance. If the
+   * map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -166,24 +170,26 @@ public class OrchestrationConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final OrchestrationConfig orchestrationConfig = (OrchestrationConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, orchestrationConfig.cloudSdkCustomFields)
-        && Objects.equals(this.modules, orchestrationConfig.modules)
-        && Objects.equals(this.stream, orchestrationConfig.stream);
+    final InputTranslationModuleResult inputTranslationModuleResult =
+        (InputTranslationModuleResult) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, inputTranslationModuleResult.cloudSdkCustomFields)
+        && Objects.equals(this.message, inputTranslationModuleResult.message)
+        && Objects.equals(this.data, inputTranslationModuleResult.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(modules, stream, cloudSdkCustomFields);
+    return Objects.hash(message, data, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class OrchestrationConfig {\n");
-    sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
-    sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
+    sb.append("class InputTranslationModuleResult {\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    data: ").append(toIndentedString(data)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -202,21 +208,21 @@ public class OrchestrationConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link OrchestrationConfig}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * InputTranslationModuleResult} instance with all required arguments.
    */
   public static Builder create() {
-    return (modules) -> new OrchestrationConfig().modules(modules);
+    return (message) -> new InputTranslationModuleResult().message(message);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the modules of this {@link OrchestrationConfig} instance.
+     * Set the message of this {@link InputTranslationModuleResult} instance.
      *
-     * @param modules The modules of this {@link OrchestrationConfig}
-     * @return The OrchestrationConfig instance.
+     * @param message The message of this {@link InputTranslationModuleResult}
+     * @return The InputTranslationModuleResult instance.
      */
-    OrchestrationConfig modules(@Nonnull final ModuleConfigs modules);
+    InputTranslationModuleResult message(@Nonnull final String message);
   }
 }

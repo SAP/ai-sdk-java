@@ -49,7 +49,7 @@ public class ModuleResultsBase
   private GenericModuleResult outputFiltering;
 
   @JsonProperty("output_translation")
-  private GenericModuleResult outputTranslation;
+  private InputTranslationModuleResult outputTranslation;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -269,7 +269,7 @@ public class ModuleResultsBase
    */
   @Nonnull
   public ModuleResultsBase outputTranslation(
-      @Nullable final GenericModuleResult outputTranslation) {
+      @Nullable final InputTranslationModuleResult outputTranslation) {
     this.outputTranslation = outputTranslation;
     return this;
   }
@@ -280,7 +280,7 @@ public class ModuleResultsBase
    * @return outputTranslation The outputTranslation of this {@link ModuleResultsBase} instance.
    */
   @Nonnull
-  public GenericModuleResult getOutputTranslation() {
+  public InputTranslationModuleResult getOutputTranslation() {
     return outputTranslation;
   }
 
@@ -289,7 +289,7 @@ public class ModuleResultsBase
    *
    * @param outputTranslation The outputTranslation of this {@link ModuleResultsBase}
    */
-  public void setOutputTranslation(@Nullable final GenericModuleResult outputTranslation) {
+  public void setOutputTranslation(@Nullable final InputTranslationModuleResult outputTranslation) {
     this.outputTranslation = outputTranslation;
   }
 
