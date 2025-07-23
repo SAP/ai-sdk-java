@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.app.controllers.GroundingController.RESOURCE_GROUP;
-import static com.sap.ai.sdk.app.controllers.GroundingController.RESOURCE_GROUP_JS;
 import static java.time.LocalDate.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -19,7 +18,6 @@ import java.util.Locale;
 import java.util.UUID;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.client.HttpClientErrorException.NotFound;
 
 class GroundingTest {
   private static final String JSON_FORMAT = "json";
