@@ -154,6 +154,10 @@
       <artifactId>javaparser-core</artifactId>
       <scope>test</scope>
     </dependency>
+      <dependency>
+          <groupId>com.sap.ai.sdk</groupId>
+          <artifactId>prompt-registry</artifactId>
+      </dependency>
   </dependencies>
 
   <profiles>

@@ -166,4 +166,14 @@ class SpringAiOrchestrationTest {
     assertThat(translation.translation()).isNotEmpty();
     assertThat(translation.language()).containsIgnoringCase("dutch");
   }
+
+  @Test
+  void getPromptTemplate() {
+    var ChatResponse = service.getPromptTemplate();
+    assertThat(ChatResponse).isNotNull();
+    assertThat(ChatResponse.getResult().getOutput().getText()).isNotEmpty();
+    assertThat(ChatResponse.getResult().getOutput().getText())
+        .contains("The current timestamp is");
+  }
+
 }

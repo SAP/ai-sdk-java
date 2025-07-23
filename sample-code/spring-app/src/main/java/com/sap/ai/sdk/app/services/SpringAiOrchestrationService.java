@@ -19,6 +19,8 @@ import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringUtil;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -219,5 +221,20 @@ public class SpringAiOrchestrationService {
         new Prompt("How do I say 'AI is going to revolutionize the world' in dutch?", options);
 
     return cl.prompt(prompt).call().entity(Translation.class);
+  }
+
+  @Nullable
+  public ChatResponse getPromptTemplate() {
+    ChatModel client = new OrchestrationChatModel();
+    var memory = new InMemoryChatMemory();
+    var advisor = new MessageChatMemoryAdvisor(memory);
+    var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+
+    val prompt = OrchestrationSpringUtil.getPromptTemplate(
+        "PROMPT-CHART",
+        Map.of("current_timestamp", System.currentTimeMillis()));
+
+    var response = cl.prompt(prompt).call();
+    return response.chatResponse();
   }
 }
