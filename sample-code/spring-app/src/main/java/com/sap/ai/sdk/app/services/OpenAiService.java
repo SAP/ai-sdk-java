@@ -11,7 +11,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionFunction;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
@@ -27,6 +30,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.stereotype.Service;
 
 /** Service class for OpenAI service */
@@ -44,6 +48,28 @@ public class OpenAiService {
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt) {
     return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(prompt);
+  }
+
+  /**
+   * Chat request to OpenAI
+   *
+   * @param previousMessage The request to send to the assistant
+   * @return the assistant message response
+   */
+  @Nonnull
+  public OpenAiChatCompletionResponse messagesHistory(@Nonnull final String previousMessage) {
+    val messagesList = new ArrayList<OpenAiMessage>();
+    messagesList.add(OpenAiMessage.user(previousMessage));
+
+    final OpenAiChatCompletionResponse result =
+        OpenAiClient.forModel(GPT_4O_MINI)
+            .chatCompletion(new OpenAiChatCompletionRequest(messagesList));
+
+    messagesList.add(result.getMessage());
+    messagesList.add(OpenAiMessage.user("What is the typical food there?"));
+
+    return OpenAiClient.forModel(GPT_4O_MINI)
+        .chatCompletion(new OpenAiChatCompletionRequest(messagesList));
   }
 
   /**
