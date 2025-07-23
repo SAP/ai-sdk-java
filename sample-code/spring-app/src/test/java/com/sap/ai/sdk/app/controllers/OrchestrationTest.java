@@ -183,7 +183,8 @@ class OrchestrationTest {
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(result.getIntermediateResults().getGrounding()).isNotNull();
     assertThat(result.getIntermediateResults().getGrounding().getData()).isNotNull();
-    assertThat(result.getIntermediateResults().getGrounding().getMessage()).isEqualTo("grounding result");
+    assertThat(result.getIntermediateResults().getGrounding().getMessage())
+        .isEqualTo("grounding result");
 
     var maskingResult = result.getIntermediateResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();

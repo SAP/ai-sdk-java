@@ -198,7 +198,7 @@ public class OrchestrationClient {
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
-    request.getConfig().setStream(GlobalStreamOptions.create().enabled(true));
+    request.getConfig().setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
 
     return executor.stream(COMPLETION_ENDPOINT, request);
   }
