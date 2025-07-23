@@ -88,7 +88,7 @@ jobs:
               FILE_PATH='core-services/document-grounding/src/main/resources/spec/grounding.yaml'
               ;;
             orchestration)
-              API_URL="$API_BASE_URL/AI/llm-orchestration/contents/src/spec/api.yaml?ref=$REF"
+              API_URL="$API_BASE_URL/AI/llm-orchestration/contents/src/spec/v2.yaml?ref=$REF"
               FILE_PATH='orchestration/src/main/resources/spec/orchestration.yaml'
               ;;
             prompt-registry)

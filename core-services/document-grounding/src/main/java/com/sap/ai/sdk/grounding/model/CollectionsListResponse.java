@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -31,17 +31,48 @@ import javax.annotation.Nullable;
 public class CollectionsListResponse
 // CHECKSTYLE:ON
 {
-  @JsonProperty("resources")
-  private List<Collection> resources = new ArrayList<>();
-
   @JsonProperty("count")
   private Integer count;
+
+  @JsonProperty("resources")
+  private List<Collection> resources = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /** Default constructor for CollectionsListResponse. */
   protected CollectionsListResponse() {}
+
+  /**
+   * Set the count of this {@link CollectionsListResponse} instance and return the same instance.
+   *
+   * @param count The count of this {@link CollectionsListResponse}
+   * @return The same instance of this {@link CollectionsListResponse} class
+   */
+  @Nonnull
+  public CollectionsListResponse count(@Nullable final Integer count) {
+    this.count = count;
+    return this;
+  }
+
+  /**
+   * Get count
+   *
+   * @return count The count of this {@link CollectionsListResponse} instance.
+   */
+  @Nonnull
+  public Integer getCount() {
+    return count;
+  }
+
+  /**
+   * Set the count of this {@link CollectionsListResponse} instance.
+   *
+   * @param count The count of this {@link CollectionsListResponse}
+   */
+  public void setCount(@Nullable final Integer count) {
+    this.count = count;
+  }
 
   /**
    * Set the resources of this {@link CollectionsListResponse} instance and return the same
@@ -91,37 +122,6 @@ public class CollectionsListResponse
   }
 
   /**
-   * Set the count of this {@link CollectionsListResponse} instance and return the same instance.
-   *
-   * @param count The count of this {@link CollectionsListResponse}
-   * @return The same instance of this {@link CollectionsListResponse} class
-   */
-  @Nonnull
-  public CollectionsListResponse count(@Nullable final Integer count) {
-    this.count = count;
-    return this;
-  }
-
-  /**
-   * Get count
-   *
-   * @return count The count of this {@link CollectionsListResponse} instance.
-   */
-  @Nonnull
-  public Integer getCount() {
-    return count;
-  }
-
-  /**
-   * Set the count of this {@link CollectionsListResponse} instance.
-   *
-   * @param count The count of this {@link CollectionsListResponse}
-   */
-  public void setCount(@Nullable final Integer count) {
-    this.count = count;
-  }
-
-  /**
    * Get the names of the unrecognizable properties of the {@link CollectionsListResponse}.
    *
    * @return The set of properties names
@@ -160,8 +160,8 @@ public class CollectionsListResponse
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (resources != null) declaredFields.put("resources", resources);
     if (count != null) declaredFields.put("count", count);
+    if (resources != null) declaredFields.put("resources", resources);
     return declaredFields;
   }
 
@@ -187,13 +187,13 @@ public class CollectionsListResponse
     }
     final CollectionsListResponse collectionsListResponse = (CollectionsListResponse) o;
     return Objects.equals(this.cloudSdkCustomFields, collectionsListResponse.cloudSdkCustomFields)
-        && Objects.equals(this.resources, collectionsListResponse.resources)
-        && Objects.equals(this.count, collectionsListResponse.count);
+        && Objects.equals(this.count, collectionsListResponse.count)
+        && Objects.equals(this.resources, collectionsListResponse.resources);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(resources, count, cloudSdkCustomFields);
+    return Objects.hash(count, resources, cloudSdkCustomFields);
   }
 
   @Override
@@ -201,8 +201,8 @@ public class CollectionsListResponse
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class CollectionsListResponse {\n");
-    sb.append("    resources: ").append(toIndentedString(resources)).append("\n");
     sb.append("    count: ").append(toIndentedString(count)).append("\n");
+    sb.append("    resources: ").append(toIndentedString(resources)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

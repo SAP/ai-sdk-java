@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -23,32 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** PipelineConfiguration */
+/** CommonConfiguration */
 // CHECKSTYLE:OFF
-public class PipelineConfiguration
+public class CommonConfiguration
 // CHECKSTYLE:ON
 {
   @JsonProperty("destination")
   private String destination;
 
-  @JsonProperty("sharePoint")
-  private PipelineConfigurationSharePoint sharePoint;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for PipelineConfiguration. */
-  protected PipelineConfiguration() {}
+  /** Default constructor for CommonConfiguration. */
+  protected CommonConfiguration() {}
 
   /**
-   * Set the destination of this {@link PipelineConfiguration} instance and return the same
-   * instance.
+   * Set the destination of this {@link CommonConfiguration} instance and return the same instance.
    *
-   * @param destination The destination of this {@link PipelineConfiguration}
-   * @return The same instance of this {@link PipelineConfiguration} class
+   * @param destination The destination of this {@link CommonConfiguration}
+   * @return The same instance of this {@link CommonConfiguration} class
    */
   @Nonnull
-  public PipelineConfiguration destination(@Nullable final String destination) {
+  public CommonConfiguration destination(@Nonnull final String destination) {
     this.destination = destination;
     return this;
   }
@@ -56,7 +52,7 @@ public class PipelineConfiguration
   /**
    * Get destination
    *
-   * @return destination The destination of this {@link PipelineConfiguration} instance.
+   * @return destination The destination of this {@link CommonConfiguration} instance.
    */
   @Nonnull
   public String getDestination() {
@@ -64,48 +60,16 @@ public class PipelineConfiguration
   }
 
   /**
-   * Set the destination of this {@link PipelineConfiguration} instance.
+   * Set the destination of this {@link CommonConfiguration} instance.
    *
-   * @param destination The destination of this {@link PipelineConfiguration}
+   * @param destination The destination of this {@link CommonConfiguration}
    */
-  public void setDestination(@Nullable final String destination) {
+  public void setDestination(@Nonnull final String destination) {
     this.destination = destination;
   }
 
   /**
-   * Set the sharePoint of this {@link PipelineConfiguration} instance and return the same instance.
-   *
-   * @param sharePoint The sharePoint of this {@link PipelineConfiguration}
-   * @return The same instance of this {@link PipelineConfiguration} class
-   */
-  @Nonnull
-  public PipelineConfiguration sharePoint(
-      @Nullable final PipelineConfigurationSharePoint sharePoint) {
-    this.sharePoint = sharePoint;
-    return this;
-  }
-
-  /**
-   * Get sharePoint
-   *
-   * @return sharePoint The sharePoint of this {@link PipelineConfiguration} instance.
-   */
-  @Nonnull
-  public PipelineConfigurationSharePoint getSharePoint() {
-    return sharePoint;
-  }
-
-  /**
-   * Set the sharePoint of this {@link PipelineConfiguration} instance.
-   *
-   * @param sharePoint The sharePoint of this {@link PipelineConfiguration}
-   */
-  public void setSharePoint(@Nullable final PipelineConfigurationSharePoint sharePoint) {
-    this.sharePoint = sharePoint;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link PipelineConfiguration}.
+   * Get the names of the unrecognizable properties of the {@link CommonConfiguration}.
    *
    * @return The set of properties names
    */
@@ -116,7 +80,7 @@ public class PipelineConfiguration
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link PipelineConfiguration} instance.
+   * Get the value of an unrecognizable property of this {@link CommonConfiguration} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -128,13 +92,13 @@ public class PipelineConfiguration
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "PipelineConfiguration has no field with name '" + name + "'.");
+          "CommonConfiguration has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link PipelineConfiguration} instance including
+   * Get the value of all properties of this {@link CommonConfiguration} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -144,12 +108,11 @@ public class PipelineConfiguration
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (destination != null) declaredFields.put("destination", destination);
-    if (sharePoint != null) declaredFields.put("sharePoint", sharePoint);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link PipelineConfiguration} instance. If the map
+   * Set an unrecognizable property of this {@link CommonConfiguration} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -168,24 +131,22 @@ public class PipelineConfiguration
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final PipelineConfiguration pipelineConfiguration = (PipelineConfiguration) o;
-    return Objects.equals(this.cloudSdkCustomFields, pipelineConfiguration.cloudSdkCustomFields)
-        && Objects.equals(this.destination, pipelineConfiguration.destination)
-        && Objects.equals(this.sharePoint, pipelineConfiguration.sharePoint);
+    final CommonConfiguration commonConfiguration = (CommonConfiguration) o;
+    return Objects.equals(this.cloudSdkCustomFields, commonConfiguration.cloudSdkCustomFields)
+        && Objects.equals(this.destination, commonConfiguration.destination);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(destination, sharePoint, cloudSdkCustomFields);
+    return Objects.hash(destination, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class PipelineConfiguration {\n");
+    sb.append("class CommonConfiguration {\n");
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
-    sb.append("    sharePoint: ").append(toIndentedString(sharePoint)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -203,8 +164,22 @@ public class PipelineConfiguration
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link PipelineConfiguration} instance. No arguments are required. */
-  public static PipelineConfiguration create() {
-    return new PipelineConfiguration();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link CommonConfiguration}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (destination) -> new CommonConfiguration().destination(destination);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the destination of this {@link CommonConfiguration} instance.
+     *
+     * @param destination The destination of this {@link CommonConfiguration}
+     * @return The CommonConfiguration instance.
+     */
+    CommonConfiguration destination(@Nonnull final String destination);
   }
 }

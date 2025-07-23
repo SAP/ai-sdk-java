@@ -70,7 +70,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
     } catch (final Exception e) {
       isDone = true;
       stopHandler.run();
-      log.debug("Error while reading next element.", e);
+      log.debug("Reading next element failed with error {})", e.getClass().getSimpleName());
       throw errorHandler.apply(e);
     }
     return !isDone;
@@ -114,7 +114,13 @@ class IterableStreamConverter<T> implements Iterator<T> {
 
     final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8), BUFFER_SIZE);
     final Runnable closeHandler =
-        () -> Try.run(reader::close).onFailure(e -> log.error("Could not close input stream", e));
+        () ->
+            Try.run(reader::close)
+                .onFailure(
+                    e ->
+                        log.debug(
+                            "Could not close input stream with error: {} (ignored)",
+                            e.getClass().getSimpleName()));
     final Function<Exception, RuntimeException> errHandler =
         e -> exceptionType.apply("Parsing response content was interrupted.", e);
 

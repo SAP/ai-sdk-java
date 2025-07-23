@@ -45,14 +45,18 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   @Deprecated
   public static final OpenAiModel GPT_35_TURBO_16K = new OpenAiModel("gpt-35-turbo-16k", null);
 
-  /** Azure OpenAI GPT-4 model */
-  public static final OpenAiModel GPT_4 = new OpenAiModel("gpt-4", null);
+  /**
+   * Azure OpenAI GPT-4 model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-09-01. The
+   *     suggested replacement model is {@link OpenAiModel#GPT_4O} or {@link OpenAiModel#GPT_41}.
+   */
+  @Deprecated public static final OpenAiModel GPT_4 = new OpenAiModel("gpt-4", null);
 
   /**
    * Azure OpenAI GPT-4 model
    *
-   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-05-13. The
-   *     suggested replacement model is {@link OpenAiModel#GPT_4O}.
+   * @deprecated This model is deprecated on AI Core.
    */
   @Deprecated public static final OpenAiModel GPT_4_32K = new OpenAiModel("gpt-4-32k", null);
 

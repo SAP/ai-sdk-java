@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.sap.ai.sdk</groupId>
   <artifactId>sdk-parent</artifactId>
-  <version>1.9.0-SNAPSHOT</version>
+  <version>1.10.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Parent pom</name>
   <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. The parent pom defines dependency versions and plugin configurations</description>
@@ -36,8 +36,9 @@
     <module>foundation-models/openai</module>
   </modules>
   <scm>
-    <connection/>
-    <url/>
+    <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
+    <developerConnection>scm:git:ssh://github.com:SAP/ai-sdk-java.git</developerConnection>
+    <url>https://github.com/SAP/ai-sdk-java/tree/main</url>
   </scm>
   <distributionManagement>
     <repository>
@@ -59,7 +60,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputTimestamp>2025-04-03T13:23:00Z</project.build.outputTimestamp>
     <cloud-sdk.version>5.20.0</cloud-sdk.version>
-    <junit-jupiter.version>5.13.2</junit-jupiter.version>
+    <junit-jupiter.version>5.13.3</junit-jupiter.version>
     <wiremock.version>3.13.1</wiremock.version>
     <assertj-core.version>3.27.3</assertj-core.version>
     <slf4j.version>2.0.17</slf4j.version>
@@ -73,13 +74,13 @@
     <mockito.version>5.18.0</mockito.version>
     <javaparser.version>3.27.0</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
-    <jackson.version>2.19.1</jackson.version>
+    <jackson.version>2.19.2</jackson.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.14.2</micrometer.version>
     <json.version>20250517</json.version>
     <snakeyaml.version>2.4</snakeyaml.version>
     <!-- Formatting -->
-    <spotless.version>2.44.5</spotless.version>
+    <spotless.version>2.46.0</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
@@ -326,7 +327,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version>
+        <version>3.6.1</version>
         <configuration>
           <fail>true</fail>
           <skip>${enforcer.skip}</skip>
@@ -889,7 +890,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-gpg-plugin</artifactId>
-              <version>3.2.7</version>
+              <version>3.2.8</version>
               <executions>
                 <execution>
                   <id>sign-artifacts</id>
