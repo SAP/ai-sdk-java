@@ -26,10 +26,11 @@ class GroundingTest {
   void testPipelinesGetAll() {
     final var controller = new GroundingController();
 
+    // we don't have testable data yet, but the endpoint works without errors
     var result = controller.getAllPipelines(JSON_FORMAT, RESOURCE_GROUP);
     assertThat(result).isInstanceOf(GetPipelines.class);
     var pipelinesList = ((GetPipelines) result).getResources();
-    assertThat(pipelinesList).hasSize(0);
+    assertThat(pipelinesList).isEmpty();
     var pipelinesCount = ((GetPipelines) result).getCount();
     assertThat(pipelinesCount).isEqualTo(0);
   }
