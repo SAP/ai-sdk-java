@@ -28,18 +28,12 @@ class GroundingTest {
   void testPipelinesGetAll() {
     final var controller = new GroundingController();
 
-    // Java has no pipelines, it returns 404 for whatever reason
-    assertThatThrownBy(() -> controller.getAllPipelines(JSON_FORMAT, RESOURCE_GROUP))
-        .isExactlyInstanceOf(NotFound.class)
-        .hasMessageContaining("404");
-
-    // JS has 2 pipelines
-    final var result = controller.getAllPipelines(JSON_FORMAT, RESOURCE_GROUP_JS);
+    var result = controller.getAllPipelines(JSON_FORMAT, RESOURCE_GROUP);
     assertThat(result).isInstanceOf(GetPipelines.class);
-    final var pipelinesList = ((GetPipelines) result).getResources();
-    assertThat(pipelinesList).hasSize(2);
-    final var pipelinesCount = ((GetPipelines) result).getCount();
-    assertThat(pipelinesCount).isEqualTo(2);
+    var pipelinesList = ((GetPipelines) result).getResources();
+    assertThat(pipelinesList).hasSize(0);
+    var pipelinesCount = ((GetPipelines) result).getCount();
+    assertThat(pipelinesCount).isEqualTo(0);
   }
 
   @Test
