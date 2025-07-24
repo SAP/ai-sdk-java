@@ -47,7 +47,7 @@ body:
         - SAP Cloud SDK for AI version: ...
         - Spring Boot or CAP version: ...
         
-        <details><summary>Dependency tree via `mvn dependency:tree`</summary>
+          <details><summary>Dependency tree via <code>mvn dependency:tree</code></summary>
         
         ```
         Dependency tree here
