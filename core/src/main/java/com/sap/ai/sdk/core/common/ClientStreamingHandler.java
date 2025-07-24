@@ -77,8 +77,8 @@ public class ClientStreamingHandler<D extends StreamedDelta, E extends ClientExc
               try {
                 return objectMapper.readValue(data, responseType);
               } catch (final IOException e) { // exception message e gets lost
-                log.error("Failed to parse the following response: {}", line);
-                throw exceptionConstructor.apply("Failed to parse delta message: " + line, e);
+                log.error("Failed to parse delta chunk to type {}", responseType);
+                throw exceptionConstructor.apply("Failed to parse delta chunk", e);
               }
             });
   }

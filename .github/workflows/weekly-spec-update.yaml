@@ -12,7 +12,7 @@ jobs:
       matrix:
         file:
           - core
-          - grounding
+          - document-grounding
           - prompt-registry
 
     steps:

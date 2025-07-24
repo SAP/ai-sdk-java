@@ -8,7 +8,6 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TOP_P;
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool.TypeEnum;
@@ -27,15 +26,14 @@ import lombok.Getter;
 import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.model.ModelOptionsUtils;
-import org.springframework.ai.model.function.FunctionCallback;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
+import org.springframework.ai.tool.ToolCallback;
 
 /**
  * Configuration to be used for orchestration requests.
  *
  * @since 1.2.0
  */
-@Beta
 @Data
 public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
@@ -43,14 +41,15 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   @Nonnull private OrchestrationModuleConfig config;
 
-  private List<FunctionCallback> functionCallbacks;
+  @Nonnull private List<ToolCallback> toolCallbacks = List.of();
 
   @Getter(AccessLevel.NONE)
+  @Nullable
   private Boolean internalToolExecutionEnabled;
 
-  private Set<String> toolNames;
+  @Nonnull private Set<String> toolNames = Set.of();
 
-  private Map<String, Object> toolContext;
+  @Nonnull private Map<String, Object> toolContext = Map.of();
 
   /**
    * Returns the model to use for the chat.
@@ -177,28 +176,9 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     return ((Map<String, T>) getLlmConfigNonNull().getModelParams()).get(param);
   }
 
-  @Nonnull
-  private LLMModuleConfig getLlmConfigNonNull() {
-    return Objects.requireNonNull(
-        config.getLlmConfig(),
-        "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(...))");
-  }
-
-  @Nonnull
   @Override
-  public List<FunctionCallback> getToolCallbacks() {
-    return functionCallbacks;
-  }
-
-  @Override
-  @Deprecated
-  public void setFunctionCallbacks(@Nonnull final List<FunctionCallback> toolCallbacks) {
-    setToolCallbacks(toolCallbacks);
-  }
-
-  @Override
-  public void setToolCallbacks(@Nonnull final List<FunctionCallback> toolCallbacks) {
-    this.functionCallbacks = toolCallbacks;
+  public void setToolCallbacks(@Nonnull final List<ToolCallback> toolCallbacks) {
+    this.toolCallbacks = toolCallbacks;
     final Template template =
         Objects.requireNonNullElse(
             (Template) config.getTemplateConfig(), Template.create().template());
@@ -206,43 +186,27 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     config = config.withTemplateConfig(template.tools(tools));
   }
 
-  private static ChatCompletionTool toOrchestrationTool(
-      @Nonnull final FunctionCallback functionCallback) {
-    return ChatCompletionTool.create()
-        .type(TypeEnum.FUNCTION)
-        .function(
-            FunctionObject.create()
-                .name(functionCallback.getName())
-                .description(functionCallback.getDescription())
-                .parameters(ModelOptionsUtils.jsonToMap(functionCallback.getInputTypeSchema())));
-  }
-
-  @Override
   @Nullable
-  public Boolean isInternalToolExecutionEnabled() {
+  @Override
+  public Boolean getInternalToolExecutionEnabled() {
     return this.internalToolExecutionEnabled;
   }
 
   @Nonnull
-  @Override
-  public Set<String> getFunctions() {
-    return Set.of();
+  private LLMModuleConfig getLlmConfigNonNull() {
+    return Objects.requireNonNull(
+        config.getLlmConfig(),
+        "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(...))");
   }
 
-  @Override
-  public void setFunctions(@Nonnull final Set<String> functions) {
-    //    val template =
-    //        Objects.requireNonNullElse(
-    //            (Template) config.getTemplateConfig(), Template.create().template());
-    //    val tools =
-    //        functionNames.stream()
-    //            .map(
-    //                functionName ->
-    //                    ChatCompletionTool.create()
-    //                        .type(TypeEnum.FUNCTION)
-    //                        .function(FunctionObject.create().name(functionName)))
-    //            .toList();
-    //    config = config.withTemplateConfig(template.tools(tools));
-    throw new UnsupportedOperationException("Not implemented yet");
+  private static ChatCompletionTool toOrchestrationTool(@Nonnull final ToolCallback toolCallback) {
+    val toolDef = toolCallback.getToolDefinition();
+    return ChatCompletionTool.create()
+        .type(TypeEnum.FUNCTION)
+        .function(
+            FunctionObject.create()
+                .name(toolDef.name())
+                .description(toolDef.description())
+                .parameters(ModelOptionsUtils.jsonToMap(toolDef.inputSchema())));
   }
 }

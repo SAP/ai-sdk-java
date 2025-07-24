@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -42,7 +42,7 @@ public class DataRepositoryWithDocuments
   private List<KeyValueListPair> metadata = new ArrayList<>();
 
   @JsonProperty("documents")
-  private List<RetrievalDocument> documents = new ArrayList<>();
+  private List<Document> documents = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -171,7 +171,7 @@ public class DataRepositoryWithDocuments
    * @return The same instance of this {@link DataRepositoryWithDocuments} class
    */
   @Nonnull
-  public DataRepositoryWithDocuments documents(@Nonnull final List<RetrievalDocument> documents) {
+  public DataRepositoryWithDocuments documents(@Nonnull final List<Document> documents) {
     this.documents = documents;
     return this;
   }
@@ -183,8 +183,7 @@ public class DataRepositoryWithDocuments
    * @return The same instance of type {@link DataRepositoryWithDocuments}
    */
   @Nonnull
-  public DataRepositoryWithDocuments addDocumentsItem(
-      @Nonnull final RetrievalDocument documentsItem) {
+  public DataRepositoryWithDocuments addDocumentsItem(@Nonnull final Document documentsItem) {
     if (this.documents == null) {
       this.documents = new ArrayList<>();
     }
@@ -198,7 +197,7 @@ public class DataRepositoryWithDocuments
    * @return documents The documents of this {@link DataRepositoryWithDocuments} instance.
    */
   @Nonnull
-  public List<RetrievalDocument> getDocuments() {
+  public List<Document> getDocuments() {
     return documents;
   }
 
@@ -207,7 +206,7 @@ public class DataRepositoryWithDocuments
    *
    * @param documents The documents of this {@link DataRepositoryWithDocuments}
    */
-  public void setDocuments(@Nonnull final List<RetrievalDocument> documents) {
+  public void setDocuments(@Nonnull final List<Document> documents) {
     this.documents = documents;
   }
 
@@ -359,7 +358,7 @@ public class DataRepositoryWithDocuments
      * @param documents The documents of this {@link DataRepositoryWithDocuments}
      * @return The DataRepositoryWithDocuments instance.
      */
-    DataRepositoryWithDocuments documents(@Nonnull final List<RetrievalDocument> documents);
+    DataRepositoryWithDocuments documents(@Nonnull final List<Document> documents);
 
     /**
      * Set the documents of this {@link DataRepositoryWithDocuments} instance.
@@ -367,7 +366,7 @@ public class DataRepositoryWithDocuments
      * @param documents The documents of this {@link DataRepositoryWithDocuments}
      * @return The DataRepositoryWithDocuments instance.
      */
-    default DataRepositoryWithDocuments documents(@Nonnull final RetrievalDocument... documents) {
+    default DataRepositoryWithDocuments documents(@Nonnull final Document... documents) {
       return documents(Arrays.asList(documents));
     }
   }

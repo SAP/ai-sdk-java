@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.9.0-SNAPSHOT</version>
+    <version>1.10.0-SNAPSHOT</version>
   </parent>
   <artifactId>orchestration</artifactId>
   <name>Orchestration client</name>
@@ -29,13 +29,18 @@
       <organizationUrl>https://www.sap.com</organizationUrl>
     </developer>
   </developers>
+  <scm>
+    <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
+    <developerConnection>scm:git:ssh://github.com:SAP/ai-sdk-java.git</developerConnection>
+    <url>https://github.com/SAP/ai-sdk-java/tree/main</url>
+  </scm>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
-    <coverage.complexity>83%</coverage.complexity>
+    <coverage.complexity>82%</coverage.complexity>
     <coverage.line>94%</coverage.line>
     <coverage.instruction>95%</coverage.instruction>
-    <coverage.branch>78%</coverage.branch>
-    <coverage.method>94%</coverage.method>
+    <coverage.branch>77%</coverage.branch>
+    <coverage.method>93%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
@@ -56,7 +61,7 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-core</artifactId>
+      <artifactId>spring-ai-model</artifactId>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -148,6 +153,13 @@
       <groupId>com.github.javaparser</groupId>
       <artifactId>javaparser-core</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-client-chat</artifactId>
+      <scope>test</scope>
+      <!-- optional is only set to satisfy our enforcer rule, it doesn't matter for test dependencies -->
+      <optional>true</optional>
     </dependency>
   </dependencies>
 

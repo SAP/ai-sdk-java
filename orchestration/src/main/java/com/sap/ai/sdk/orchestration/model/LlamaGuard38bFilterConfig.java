@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 
 /** LlamaGuard38bFilterConfig */
 // CHECKSTYLE:OFF
-public class LlamaGuard38bFilterConfig implements FilterConfig
+public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilterConfig
 // CHECKSTYLE:ON
 {
   /** Name of the filter provider type */

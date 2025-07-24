@@ -9,7 +9,7 @@ on:
         required: false
         options:
           - core
-          - grounding
+          - document-grounding
           - orchestration
           - prompt-registry
         default: orchestration
@@ -83,13 +83,13 @@ jobs:
               API_URL="$API_BASE_URL/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
               FILE_PATH='core/src/main/resources/spec/aicore.yaml'
               ;;
-            grounding)
+            document-grounding)
               API_URL="$API_BASE_URL/AI/rage-proxy-inference/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
               FILE_PATH='core-services/document-grounding/src/main/resources/spec/grounding.yaml'
               ;;
             orchestration)
-              API_URL="$API_BASE_URL/AI/llm-orchestration/contents/src/spec/api.yaml?ref=$REF"
-              FILE_PATH='orchestration/src/main/resources/spec/v1.yaml'
+              API_URL="$API_BASE_URL/AI/llm-orchestration/contents/src/spec/v2.yaml?ref=$REF"
+              FILE_PATH='orchestration/src/main/resources/spec/orchestration.yaml'
               ;;
             prompt-registry)
               API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/prompt-registry.yaml?ref=$REF"

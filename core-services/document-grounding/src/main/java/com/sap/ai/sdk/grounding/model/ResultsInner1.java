@@ -1,6 +1,6 @@
 /*
- * Document Grounding Pipeline API
- * SAP AI Core - API Specification AI Data Management api's
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -34,7 +34,7 @@ public class ResultsInner1
   private String filterId;
 
   @JsonProperty("results")
-  private List<RetievalDataRepositorySearchResult> results = new ArrayList<>();
+  private List<RetrievalDataRepositorySearchResult> results = new ArrayList<>();
 
   @JsonProperty("message")
   private String message;
@@ -83,7 +83,7 @@ public class ResultsInner1
    * @return The same instance of this {@link ResultsInner1} class
    */
   @Nonnull
-  public ResultsInner1 results(@Nullable final List<RetievalDataRepositorySearchResult> results) {
+  public ResultsInner1 results(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
     this.results = results;
     return this;
   }
@@ -96,7 +96,7 @@ public class ResultsInner1
    */
   @Nonnull
   public ResultsInner1 addResultsItem(
-      @Nonnull final RetievalDataRepositorySearchResult resultsItem) {
+      @Nonnull final RetrievalDataRepositorySearchResult resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -110,7 +110,7 @@ public class ResultsInner1
    * @return results The results of this {@link ResultsInner1} instance.
    */
   @Nonnull
-  public List<RetievalDataRepositorySearchResult> getResults() {
+  public List<RetrievalDataRepositorySearchResult> getResults() {
     return results;
   }
 
@@ -119,7 +119,7 @@ public class ResultsInner1
    *
    * @param results List of returned results.
    */
-  public void setResults(@Nullable final List<RetievalDataRepositorySearchResult> results) {
+  public void setResults(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
     this.results = results;
   }
 
