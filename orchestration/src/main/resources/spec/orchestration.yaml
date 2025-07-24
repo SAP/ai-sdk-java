@@ -74,8 +74,6 @@ paths:
         default:
           $ref: "#/components/responses/CommonError"
 
-
-
 components:
   schemas:
     CompletionPostRequest:
@@ -140,7 +138,7 @@ components:
           items:
             type: string
             minLength: 1
-          example: ['Hello', 'World', '!']
+          example: ["Hello", "World", "!"]
       description: Text input for which embeddings need to be generated
       example: ["This is an input string.", "This is another input string."]
     EmbeddingsModuleConfigs:
@@ -742,7 +740,7 @@ components:
         message:
           $ref: "#/components/schemas/ResponseChatMessage"
         logprobs:
-          $ref: '#/components/schemas/ChoiceLogprobs'
+          $ref: "#/components/schemas/ChoiceLogprobs"
         finish_reason:
           type: string
           description: "Reason the model stopped generating tokens. 'stop' if the model hit a natural stop point or a provided stop sequence, 'length' if the maximum token number was reached, 'content_filter' if content was omitted due to a filter enforced by the LLM model provider or the content filtering module"
@@ -759,7 +757,7 @@ components:
         delta:
           $ref: "#/components/schemas/ChatDelta"
         logprobs:
-          $ref: '#/components/schemas/ChoiceLogprobs'
+          $ref: "#/components/schemas/ChoiceLogprobs"
         finish_reason:
           type: string
           description: Reason for stopping the model
@@ -1563,12 +1561,13 @@ components:
         input:
           description: Configuration for input translation
           oneOf:
-            - $ref: "#/components/schemas/SAPDocumentTranslation"
+            - $ref: "#/components/schemas/SAPDocumentTranslationInput"
         output:
           description: Configuration for output translation
           oneOf:
-            - $ref: "#/components/schemas/SAPDocumentTranslation"
-    SAPDocumentTranslation:
+            - $ref: "#/components/schemas/SAPDocumentTranslationOutput"
+
+    SAPDocumentTranslationInput:
       type: object
       required:
         - type
@@ -1579,23 +1578,94 @@ components:
           description: Type of document translation provider
           type: string
           enum:
-            - sap_document_translation # this would be different for other translation provider
+            - sap_document_translation
           example: sap_document_translation
+        translate_messages_history:
+          type: boolean
+          description: If true, the messages history will be translated as well.
+          default: true
         config: # `config` key, parameters specific to SAP Translation Hub that are sent to the service, might differ for translation provider
           description: Configuration for `sap_document_translation` translation provider.
           type: object
+          additionalProperties: false
           required:
             - target_language
+          properties:
+            source_language:
+              type: string
+              description: Language of the text to be translated.
+              example: "de-DE"
+            apply_to:
+              type: array
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/SAPDocumentTranslationTargetSelector"
+            target_language:
+              type: string
+              description: Language to which the text should be translated.
+              example: "en-US"
+
+    SAPDocumentTranslationOutput:
+      type: object
+      required:
+        - type
+        - config
+      additionalProperties: false
+      properties:
+        type:
+          description: Configuration for `sap_document_translation` translation provider.
+          type: string
+          enum:
+            - sap_document_translation
+          example: sap_document_translation
+        config:
+          type: object
           additionalProperties: false
+          required:
+            - target_language
           properties:
             source_language:
               type: string
               description: Language of the text to be translated.
               example: "de-DE"
             target_language:
-              type: string
-              description: Language to which the text should be translated.
-              example: "en-US"
+              $ref: "#/components/schemas/SAPDocumentTranslationOutputTargetLanguage"
+
+    SAPDocumentTranslationOutputTargetLanguage:
+      oneOf:
+        - type: string
+          description: Language to which the text should be translated.
+          example: "en-US"
+        - $ref: "#/components/schemas/SAPDocumentTranslationTargetSelector"
+
+    SAPDocumentTranslationTargetSelector:
+      type: object
+      description: >
+        This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.
+      required:
+        - category
+        - items
+      additionalProperties: false
+      properties:
+        category:
+          type: string
+          description: Category to apply translation to.
+          enum:
+            - placeholders
+            - template_roles
+        items:
+          type: array
+          description: List of placeholders or roles to apply translation to
+          items:
+            type: string
+          example:
+            - groundingInput
+            - inputContext
+        source_language:
+          type: string
+          description: Language of the text to be translated.
+          example: "de-DE"
+
     Error:
       type: object
       required:
@@ -1711,12 +1781,12 @@ components:
         content:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+            $ref: "#/components/schemas/ChatCompletionTokenLogprob"
           description: A list of message content tokens with log probability information.
         refusal:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+            $ref: "#/components/schemas/ChatCompletionTokenLogprob"
           description: A list of message refusal tokens with log probability information.
 
   responses:
