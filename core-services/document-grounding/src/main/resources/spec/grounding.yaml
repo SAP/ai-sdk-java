@@ -400,6 +400,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/PipelineDocumentResponse'
 
+  "/pipelines/trigger":
+    post:
+      tags:
+      - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.trigger_pipeline
+      summary: Pipeline Trigger
+      description: Manually trigger a pipeline
+      x-sap-cloud-sdk-operation-name: manualTriggerPipeline
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/manualPipelineTrigger'
+      responses:
+        '202':
+          description: Accepted
+          headers:
+            Location:
+              description: Location of the triggered pipeline execution
+              schema:
+                type: string
+                format: uri
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    
   "/vector/collections":
     get:
       parameters:
@@ -958,12 +991,16 @@ components:
         - $ref: "#/components/schemas/MSSharePointPipelineCreateRequest"
         - $ref: "#/components/schemas/S3PipelineCreateRequest"
         - $ref: "#/components/schemas/SFTPPipelineCreateRequest"
+        - $ref: "#/components/schemas/SDMPipelineCreateRequest"
+        - $ref: "#/components/schemas/WorkZonePipelineCreateRequest"
       discriminator:
         propertyName: type
         mapping:
           MSSharePoint: "#/components/schemas/MSSharePointPipelineCreateRequest"
           S3: "#/components/schemas/S3PipelineCreateRequest"
           SFTP: "#/components/schemas/SFTPPipelineCreateRequest"
+          SDM: "#/components/schemas/SDMPipelineCreateRequest"
+          WorkZone: "#/components/schemas/WorkZonePipelineCreateRequest"
 
     MSSharePointPipelineCreateRequest:
       type: object
@@ -1006,6 +1043,32 @@ components:
           enum: [SFTP]
         configuration:
           $ref: "#/components/schemas/CommonConfiguration"
+        metadata:
+          $ref: "#/components/schemas/MetaData"
+      additionalProperties: true
+
+    SDMPipelineCreateRequest:
+      type: object
+      required:
+        - type
+        - metadata
+      properties:
+        type:
+          type: string
+          enum: [SDM]
+        metadata:
+          $ref: "#/components/schemas/MetaData"
+      additionalProperties: true
+    
+    WorkZonePipelineCreateRequest:
+      type: object
+      required:
+        - type
+        - metadata
+      properties:
+        type:
+          type: string
+          enum: [WorkZone]
         metadata:
           $ref: "#/components/schemas/MetaData"
       additionalProperties: true
@@ -1086,12 +1149,16 @@ components:
         - $ref: "#/components/schemas/MSSharePointPipelineGetResponse"
         - $ref: "#/components/schemas/S3PipelineGetResponse"
         - $ref: "#/components/schemas/SFTPPipelineGetResponse"
+        - $ref: "#/components/schemas/SDMPipelineGetResponse"
+        - $ref: "#/components/schemas/WorkZonePipelineGetResponse"
       discriminator:
         propertyName: type
         mapping:
           MSSharePoint: "#/components/schemas/MSSharePointPipelineGetResponse"
           S3: "#/components/schemas/S3PipelineGetResponse"
           SFTP: "#/components/schemas/SFTPPipelineGetResponse"
+          SDM: "#/components/schemas/SDMPipelineGetResponse"
+          WorkZone: "#/components/schemas/WorkZonePipelineGetResponse"
 
     MSSharePointPipelineGetResponse:
       allOf:
@@ -1131,6 +1198,32 @@ components:
               enum: [SFTP]
             configuration:
               $ref: "#/components/schemas/CommonConfiguration"
+
+    SDMPipelineGetResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasePipelineResponse"
+        - type: object
+          required:
+            - metadata
+          properties:
+            type:
+              type: string
+              enum: [SDM]
+            metadata:
+              $ref: "#/components/schemas/MetaData"
+      
+    WorkZonePipelineGetResponse:
+    allOf:
+      - $ref: "#/components/schemas/BasePipelineResponse"
+      - type: object
+        required:
+          - metadata
+        properties:
+          type:
+            type: string
+            enum: [WorkZone]
+          metadata:
+              $ref: "#/components/schemas/MetaData"
 
     BasePipelineResponse:
       type: object
@@ -1250,6 +1343,7 @@ components:
         - DEINDEXED
         - FAILED
         - FAILED_TO_BE_RETRIED
+        - TO_BE_SCHEDULED
       example: 'INDEXED'
 
     DocumentsStatusResponse:
