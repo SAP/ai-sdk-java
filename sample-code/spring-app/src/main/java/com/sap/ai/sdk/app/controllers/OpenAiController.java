@@ -45,7 +45,7 @@ public class OpenAiController {
   @Nonnull
   Object messagesHistory(
       @Nullable @RequestParam(value = "format", required = false) final String format,
-      @Nonnull @RequestParam(value = "previousMessage", defaultValue = "Who is the prettiest")
+      @Nonnull @RequestParam(value = "previousMessage", defaultValue = "What is the capital of France?")
           final String previousMessage) {
     final var response = service.messagesHistory(previousMessage);
     if ("json".equals(format)) {
