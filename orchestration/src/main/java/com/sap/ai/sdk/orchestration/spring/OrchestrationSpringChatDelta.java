@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.model.LLMChoiceStreaming;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultStreaming;
@@ -22,7 +21,6 @@ import org.springframework.ai.chat.model.Generation;
  *
  * @since 1.2.0
  */
-@Beta
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class OrchestrationSpringChatDelta extends ChatResponse {
