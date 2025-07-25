@@ -72,7 +72,8 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
   ChatCompletionRequestAssistantMessage createChatCompletionRequestMessage() {
     final var message =
         new ChatCompletionRequestAssistantMessage()
-            .role(ChatCompletionRequestAssistantMessage.RoleEnum.fromValue(role()));
+            .role(ChatCompletionRequestAssistantMessage.RoleEnum.fromValue(role()))
+            .toolCalls(null);
 
     final var items = content().items();
     if (!items.isEmpty() && items.get(0) instanceof OpenAiTextItem textItem) {

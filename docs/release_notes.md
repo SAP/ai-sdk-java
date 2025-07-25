@@ -24,4 +24,4 @@
 
 ### 🐛 Fixed Issues
 
--
+- OpenAi: Fix AssistantMessage Bug by now being able to send Assistant Messages using our API Client. 

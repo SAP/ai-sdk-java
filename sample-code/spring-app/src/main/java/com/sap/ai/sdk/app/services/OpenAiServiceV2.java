@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.stereotype.Service;
 
 /** Service class for OpenAI service using latest convenience api */
@@ -35,6 +36,28 @@ public class OpenAiServiceV2 {
   public OpenAiChatCompletionResponse chatCompletion(@Nonnull final String prompt) {
     return OpenAiClient.forModel(GPT_4O_MINI)
         .chatCompletion(new OpenAiChatCompletionRequest(prompt));
+  }
+
+  /**
+   * Chat requests to OpenAI and updating the messages history
+   *
+   * @param previousMessage The request to send to the assistant
+   * @return the assistant message response
+   */
+  @Nonnull
+  public OpenAiChatCompletionResponse messagesHistory(@Nonnull final String previousMessage) {
+    val messagesList = new ArrayList<OpenAiMessage>();
+    messagesList.add(OpenAiMessage.user(previousMessage));
+
+    final OpenAiChatCompletionResponse result =
+        OpenAiClient.forModel(GPT_4O_MINI)
+            .chatCompletion(new OpenAiChatCompletionRequest(messagesList));
+
+    messagesList.add(result.getMessage());
+    messagesList.add(OpenAiMessage.user("What is the typical food there?"));
+
+    return OpenAiClient.forModel(GPT_4O_MINI)
+        .chatCompletion(new OpenAiChatCompletionRequest(messagesList));
   }
 
   /**
