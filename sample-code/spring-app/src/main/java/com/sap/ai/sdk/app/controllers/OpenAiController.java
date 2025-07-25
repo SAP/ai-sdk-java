@@ -41,19 +41,6 @@ public class OpenAiController {
     return response.getContent();
   }
 
-  @GetMapping("/messagesHistory")
-  @Nonnull
-  Object messagesHistory(
-      @Nullable @RequestParam(value = "format", required = false) final String format,
-      @Nonnull @RequestParam(value = "previousMessage", defaultValue = "What is the capital of France?")
-          final String previousMessage) {
-    final var response = service.messagesHistory(previousMessage);
-    if ("json".equals(format)) {
-      return response;
-    }
-    return response.getContent();
-  }
-
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
   @GetMapping("/streamChatCompletionDeltas")
   @Nonnull

@@ -56,21 +56,6 @@ public class OpenAiService {
    * @param previousMessage The request to send to the assistant
    * @return the assistant message response
    */
-  @Nonnull
-  public OpenAiChatCompletionResponse messagesHistory(@Nonnull final String previousMessage) {
-    val messagesList = new ArrayList<OpenAiMessage>();
-    messagesList.add(OpenAiMessage.user(previousMessage));
-
-    final OpenAiChatCompletionResponse result =
-        OpenAiClient.forModel(GPT_4O_MINI)
-            .chatCompletion(new OpenAiChatCompletionRequest(messagesList));
-
-    messagesList.add(result.getMessage());
-    messagesList.add(OpenAiMessage.user("What is the typical food there?"));
-
-    return OpenAiClient.forModel(GPT_4O_MINI)
-        .chatCompletion(new OpenAiChatCompletionRequest(messagesList));
-  }
 
   /**
    * Asynchronous stream of an OpenAI chat request

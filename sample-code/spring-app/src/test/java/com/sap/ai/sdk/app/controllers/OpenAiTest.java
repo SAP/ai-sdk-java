@@ -32,11 +32,6 @@ class OpenAiTest {
   }
 
   @Test
-  void testMessagesHistory() {
-    assertThat(service.messagesHistory("What is the capital of France?").getContent()).isNotEmpty();
-  }
-
-  @Test
   void chatCompletionImage() {
     final var completion =
         service.chatCompletionImage(
