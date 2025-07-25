@@ -5,73 +5,59 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
+import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.model.ModelOptionsUtils;
-import org.springframework.ai.model.function.FunctionCallback;
+import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
 
 @Data
 public class OpenAiChatOptions implements ToolCallingChatOptions {
 
-  private List<FunctionCallback> functionCallbacks;
+  @Nonnull private List<ToolCallback> toolCallbacks = List.of();
 
   private List<ChatCompletionTool> tools;
 
   @Getter(AccessLevel.NONE)
+  @Nullable
   private Boolean internalToolExecutionEnabled;
 
-  private Set<String> toolNames;
+  @Nonnull private Set<String> toolNames = Set.of();
 
-  private Map<String, Object> toolContext;
-
-  @Nonnull
-  @Override
-  public List<FunctionCallback> getToolCallbacks() {
-    return functionCallbacks;
-  }
+  @Nonnull private Map<String, Object> toolContext = Map.of();
 
   @Override
-  @Deprecated
-  public void setFunctionCallbacks(@Nonnull final List<FunctionCallback> toolCallbacks) {
-    setToolCallbacks(toolCallbacks);
-  }
-
-  @Override
-  public void setToolCallbacks(@Nonnull final List<FunctionCallback> toolCallbacks) {
-    this.functionCallbacks = toolCallbacks;
+  public void setToolCallbacks(@Nonnull final List<ToolCallback> toolCallbacks) {
+    this.toolCallbacks = toolCallbacks;
     tools = toolCallbacks.stream().map(OpenAiChatOptions::toOpenAiTool).toList();
   }
 
-  private static ChatCompletionTool toOpenAiTool(FunctionCallback functionCallback) {
+  @Nullable
+  @Override
+  public Boolean getInternalToolExecutionEnabled() {
+    return this.internalToolExecutionEnabled;
+  }
+
+  private static ChatCompletionTool toOpenAiTool(ToolCallback toolCallback) {
+    val toolDef = toolCallback.getToolDefinition();
     return new ChatCompletionTool()
         .type(TypeEnum.FUNCTION)
         .function(
             new FunctionObject()
-                .name(functionCallback.getName())
-                .description(functionCallback.getDescription())
-                .parameters(ModelOptionsUtils.jsonToMap(functionCallback.getInputTypeSchema())));
-  }
-
-  @Override
-  public Boolean isInternalToolExecutionEnabled() {
-    return true;
+                .name(toolDef.name())
+                .description(toolDef.description())
+                .parameters(ModelOptionsUtils.jsonToMap(toolDef.inputSchema())));
   }
 
   @Override
   public void setInternalToolExecutionEnabled(Boolean internalToolExecutionEnabled) {}
-
-  @Override
-  public Set<String> getFunctions() {
-    return Set.of();
-  }
-
-  @Override
-  public void setFunctions(Set<String> functions) {}
 
   @Override
   public String getModel() {
