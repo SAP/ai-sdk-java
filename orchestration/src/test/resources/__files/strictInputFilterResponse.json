@@ -1,12 +1,12 @@
 {
-  "request_id": "f44932a3-22a8-4a72-bccb-cfb51077a4b7",
+  "request_id": "7ed0869f-05be-406b-8124-e9d94516c190",
   "code": 400,
   "message": "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.",
   "location": "Filtering Module - Input Filter",
   "module_results": {
     "templating": [
       {
-        "content": "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operation in-charge.",
+        "content": "Let us paint the parliament red with blood of our enemies.",
         "role": "user"
       }
     ],
@@ -14,10 +14,16 @@
       "message": "Prompt filtered due to safety violations. Please modify the prompt and try again.",
       "data": {
         "azure_content_safety": {
-          "Hate": 0,
+          "Hate": 6,
           "SelfHarm": 0,
           "Sexual": 0,
-          "Violence": 0
+          "Violence": 6,
+          "userPromptAnalysis": {
+            "attackDetected": false
+          }
+        },
+        "llama_guard_3_8b": {
+          "violent_crimes": true
         }
       }
     }

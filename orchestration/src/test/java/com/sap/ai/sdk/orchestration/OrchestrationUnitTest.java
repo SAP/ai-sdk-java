@@ -20,6 +20,8 @@ import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_M
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
+import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
+import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_6;
 import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
@@ -57,6 +59,7 @@ import com.sap.ai.sdk.orchestration.model.EmbeddingsOrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsResponse;
+import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
@@ -400,7 +403,6 @@ class OrchestrationUnitTest {
 
   @Test
   void inputFilteringStrict() {
-
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -409,14 +411,16 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")
                     .withStatus(SC_BAD_REQUEST)));
 
-    final var filter =
+    final var azureFilter =
         new AzureContentFilter()
             .hate(ALLOW_SAFE)
             .selfHarm(ALLOW_SAFE)
             .sexual(ALLOW_SAFE)
             .violence(ALLOW_SAFE);
 
-    final var configWithFilter = config.withInputFiltering(filter);
+    final var llamaFilter =
+        new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
+    final var configWithFilter = config.withInputFiltering(azureFilter, llamaFilter);
 
     try {
       client.chatCompletion(prompt, configWithFilter);
@@ -429,9 +433,30 @@ class OrchestrationUnitTest {
           .isEqualTo(
               Map.of(
                   "azure_content_safety",
-                  Map.of("Hate", 0, "SelfHarm", 0, "Sexual", 0, "Violence", 0)));
-      assertThat(e.getClientError()).isNotNull();
-      assertThat(e.getClientError()).isInstanceOf(OrchestrationError.class);
+                      Map.of(
+                          "Hate", 6,
+                          "SelfHarm", 0,
+                          "Sexual", 0,
+                          "Violence", 6,
+                          "userPromptAnalysis", Map.of("attackDetected", false)),
+                  "llama_guard_3_8b", Map.of("violent_crimes", true)));
+
+      final var errorResponse = e.getErrorResponse();
+      assertThat(errorResponse).isNotNull();
+      assertThat(errorResponse).isInstanceOf(ErrorResponse.class);
+      assertThat(errorResponse.getCode()).isEqualTo(SC_BAD_REQUEST);
+      assertThat(errorResponse.getMessage())
+          .isEqualTo(
+              "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
+
+      assertThat(e.getAzureContentSafetyInput()).isNotNull();
+      assertThat(e.getAzureContentSafetyInput().getHate()).isEqualTo(NUMBER_6);
+      assertThat(e.getAzureContentSafetyInput().getSelfHarm()).isEqualTo(NUMBER_0);
+      assertThat(e.getAzureContentSafetyInput().getSexual()).isEqualTo(NUMBER_0);
+      assertThat(e.getAzureContentSafetyInput().getViolence()).isEqualTo(NUMBER_6);
+
+      assertThat(e.getLlamaGuard38b()).isNotNull();
+      assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
     }
   }
 
@@ -439,14 +464,16 @@ class OrchestrationUnitTest {
   void outputFilteringStrict() {
     stubFor(post(anyUrl()).willReturn(aResponse().withBodyFile("outputFilteringStrict.json")));
 
-    final var filter =
+    final var azureFilter =
         new AzureContentFilter()
             .hate(ALLOW_SAFE)
             .selfHarm(ALLOW_SAFE)
             .sexual(ALLOW_SAFE)
             .violence(ALLOW_SAFE);
 
-    final var configWithFilter = config.withOutputFiltering(filter);
+    final var llamaFilter =
+        new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
+    final var configWithFilter = config.withOutputFiltering(azureFilter, llamaFilter);
 
     try {
       client.chatCompletion(prompt, configWithFilter).getContent();
@@ -455,11 +482,25 @@ class OrchestrationUnitTest {
       assertThat(e.getFilterDetails())
           .isEqualTo(
               Map.of(
-                  "index",
-                  0,
+                  "index", 0,
                   "azure_content_safety",
-                  Map.of("Hate", 0, "SelfHarm", 0, "Sexual", 0, "Violence", 4)));
-      assertThat(e.getClientError()).isNull();
+                      Map.of(
+                          "Hate", 6,
+                          "SelfHarm", 0,
+                          "Sexual", 0,
+                          "Violence", 6),
+                  "llama_guard_3_8b", Map.of("violent_crimes", true)));
+      assertThat(e.getErrorResponse()).isNull();
+      assertThat(e.getStatusCode()).isNull();
+
+      assertThat(e.getAzureContentSafetyOutput()).isNotNull();
+      assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_6);
+      assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
+      assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
+      assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
+
+      assertThat(e.getLlamaGuard38b()).isNotNull();
+      assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
     }
   }
 

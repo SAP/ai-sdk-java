@@ -7,13 +7,14 @@ import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationInputFilterException;
 import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationOutputFilterException;
+import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
+import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -133,11 +134,10 @@ class OrchestrationController {
               "Failed to obtain a response as the content was flagged by input filter. Error %d"
                   .formatted(e.getStatusCode()));
 
-      Optional.of(e.getFilterDetails())
-          .map(filter -> (Map<String, Integer>) filter.get("azure_content_safety"))
-          .map(details -> details.get("Violence"))
-          .filter(score -> score > policy.getAzureThreshold().getValue())
-          .ifPresent(score -> msg.append("Hate score %d > threshold.".formatted(score)));
+      Optional.ofNullable(e.getAzureContentSafetyInput())
+          .map(AzureContentSafetyInput::getHate)
+          .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
+          .ifPresent(rating -> msg.append("Hate score %d".formatted(rating.getValue())));
 
       log.debug(msg.toString(), e);
       return ResponseEntity.internalServerError().body(msg.toString());
@@ -165,11 +165,10 @@ class OrchestrationController {
           new StringBuilder(
               "Failed to obtain a response as the content was flagged by output filter.");
 
-      Optional.of(e.getFilterDetails())
-          .map(filter -> (Map<String, Integer>) filter.get("azure_content_safety"))
-          .map(details -> details.get("Violence"))
-          .filter(score -> score > policy.getAzureThreshold().getValue())
-          .ifPresent(score -> msg.append("Hate score %d > threshold.".formatted(score)));
+      Optional.ofNullable(e.getAzureContentSafetyOutput())
+          .map(AzureContentSafetyOutput::getHate)
+          .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
+          .ifPresent(rating -> msg.append("Hate score %d ".formatted(rating.getValue())));
 
       log.debug(msg.toString(), e);
       return ResponseEntity.internalServerError().body(msg.toString());

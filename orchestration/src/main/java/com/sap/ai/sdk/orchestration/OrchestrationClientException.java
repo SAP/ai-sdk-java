@@ -18,11 +18,19 @@ public class OrchestrationClientException extends ClientException {
     setClientError(clientError);
   }
 
+  /**
+   * Retrieves the {@link ErrorResponse} from the orchestration service, if available.
+   *
+   * @return The {@link ErrorResponse} object, or {@code null} if not available.
+   */
   @Beta
   @Nullable
-  @Override
-  public OrchestrationError getClientError() {
-    return (OrchestrationError) super.getClientError();
+  public ErrorResponse getErrorResponse() {
+    final var clientError = super.getClientError();
+    if (clientError instanceof OrchestrationError orchestrationError) {
+      return orchestrationError.getErrorResponse();
+    }
+    return null;
   }
 
   /**
@@ -33,9 +41,6 @@ public class OrchestrationClientException extends ClientException {
   @Beta
   @Nullable
   public Integer getStatusCode() {
-    return Optional.ofNullable(getClientError())
-        .map(OrchestrationError::getOriginalResponse)
-        .map(ErrorResponse::getCode)
-        .orElse(null);
+    return Optional.ofNullable(getErrorResponse()).map(ErrorResponse::getCode).orElse(null);
   }
 }

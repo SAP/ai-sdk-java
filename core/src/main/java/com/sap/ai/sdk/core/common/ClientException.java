@@ -2,6 +2,7 @@ package com.sap.ai.sdk.core.common;
 
 import com.google.common.annotations.Beta;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.StandardException;
@@ -20,7 +21,7 @@ public class ClientException extends RuntimeException {
    * used to extract more detailed error information.
    */
   @Nullable
-  @Getter(onMethod_ = @Beta)
-  @Setter(onMethod_ = @Beta)
+  @Getter(onMethod_ = @Beta, value = AccessLevel.PROTECTED)
+  @Setter(onMethod_ = @Beta, value = AccessLevel.PROTECTED)
   ClientError clientError;
 }

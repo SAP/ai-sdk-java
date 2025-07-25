@@ -36,7 +36,7 @@ class OrchestrationExceptionFactory
   @Nonnull
   private Map<String, Object> extractInputFilterDetails(@Nonnull final OrchestrationError error) {
 
-    return Optional.of(error.getOriginalResponse())
+    return Optional.of(error.getErrorResponse())
         .flatMap(response -> Optional.ofNullable(response.getModuleResults()))
         .flatMap(moduleResults -> Optional.ofNullable(moduleResults.getInputFiltering()))
         .flatMap(inputFiltering -> Optional.ofNullable(inputFiltering.getData()))
