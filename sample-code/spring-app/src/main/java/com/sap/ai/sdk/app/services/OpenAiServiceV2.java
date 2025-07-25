@@ -38,6 +38,12 @@ public class OpenAiServiceV2 {
         .chatCompletion(new OpenAiChatCompletionRequest(prompt));
   }
 
+  /**
+   * Chat requests to OpenAI and updating the messages history
+   *
+   * @param previousMessage The request to send to the assistant
+   * @return the assistant message response
+   */
   @Nonnull
   public OpenAiChatCompletionResponse messagesHistory(@Nonnull final String previousMessage) {
     val messagesList = new ArrayList<OpenAiMessage>();
