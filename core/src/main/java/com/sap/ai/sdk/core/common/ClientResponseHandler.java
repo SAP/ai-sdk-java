@@ -85,12 +85,11 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     val content =
         tryGetContent(responseEntity)
             .getOrElseThrow(e -> exceptionFactory.build("Failed to parse response entity.", e));
-    log.debug("Parsing response from JSON response: {}", content);
     try {
       return objectMapper.readValue(content, successType);
     } catch (final JsonProcessingException e) {
-      log.error("Failed to parse the following response: {}", content);
-      throw exceptionFactory.build("Failed to parse response:", e);
+      log.error("Failed to parse response to type {}", successType);
+      throw exceptionFactory.build("Failed to parse response", e);
     }
   }
 
@@ -127,7 +126,11 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
       val message = getErrorMessage(httpResponse, "Empty or blank response content");
       throw exceptionFactory.build(message, null);
     }
-    log.error("The service responded with an HTTP error and the following content: {}", content);
+
+    log.error(
+        "The service responded with an HTTP {} ({})",
+        httpResponse.getCode(),
+        httpResponse.getReasonPhrase());
     val contentType = ContentType.parse(entity.getContentType());
     if (!ContentType.APPLICATION_JSON.isSameMimeType(contentType)) {
       val message = getErrorMessage(httpResponse, "The response Content-Type is not JSON");

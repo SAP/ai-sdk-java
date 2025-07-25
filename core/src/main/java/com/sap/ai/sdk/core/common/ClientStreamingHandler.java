@@ -79,9 +79,8 @@ public class ClientStreamingHandler<
               try {
                 return objectMapper.readValue(data, successType);
               } catch (final IOException e) { // exception message e gets lost
-                log.error("Failed to parse the following response: {}", line);
-                final String msg = "Failed to parse delta message: %s".formatted(line);
-                throw exceptionFactory.build(msg, e);
+                log.error("Failed to parse delta chunk to type {}", successType);
+                throw exceptionFactory.build("Failed to parse delta chunk", e);
               }
             });
   }
