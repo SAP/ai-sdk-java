@@ -1,0 +1,31 @@
+{
+  "request_id": "7ed0869f-05be-406b-8124-e9d94516c190",
+  "code": 400,
+  "message": "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.",
+  "location": "Filtering Module - Input Filter",
+  "module_results": {
+    "templating": [
+      {
+        "content": "Let us paint the parliament red with blood of our enemies.",
+        "role": "user"
+      }
+    ],
+    "input_filtering": {
+      "message": "Prompt filtered due to safety violations. Please modify the prompt and try again.",
+      "data": {
+        "azure_content_safety": {
+          "Hate": 6,
+          "SelfHarm": 0,
+          "Sexual": 0,
+          "Violence": 6,
+          "userPromptAnalysis": {
+            "attackDetected": false
+          }
+        },
+        "llama_guard_3_8b": {
+          "violent_crimes": true
+        }
+      }
+    }
+  }
+}

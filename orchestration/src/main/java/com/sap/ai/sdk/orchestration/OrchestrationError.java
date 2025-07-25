@@ -18,7 +18,7 @@ import lombok.Value;
 @Value
 @Beta
 public class OrchestrationError implements ClientError {
-  ErrorResponse originalResponse;
+  ErrorResponse errorResponse;
 
   /**
    * Gets the error message from the contained original response.
@@ -27,8 +27,8 @@ public class OrchestrationError implements ClientError {
    */
   @Nonnull
   public String getMessage() {
-    return originalResponse.getCode() == 500
-        ? originalResponse.getMessage() + " located in " + originalResponse.getLocation()
-        : originalResponse.getMessage();
+    return errorResponse.getCode() == 500
+        ? errorResponse.getMessage() + " located in " + errorResponse.getLocation()
+        : errorResponse.getMessage();
   }
 }

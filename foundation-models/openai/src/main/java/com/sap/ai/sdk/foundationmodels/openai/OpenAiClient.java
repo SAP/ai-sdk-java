@@ -431,7 +431,8 @@ public final class OpenAiClient {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(
           request,
-          new ClientResponseHandler<>(responseType, OpenAiError.class, OpenAiClientException::new));
+          new ClientResponseHandler<>(
+              responseType, OpenAiError.class, new OpenAiExceptionFactory()));
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e);
     }
@@ -442,7 +443,8 @@ public final class OpenAiClient {
       final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      return new ClientStreamingHandler<>(deltaType, OpenAiError.class, OpenAiClientException::new)
+      return new ClientStreamingHandler<>(
+              deltaType, OpenAiError.class, new OpenAiExceptionFactory())
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
