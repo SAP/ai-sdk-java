@@ -99,12 +99,12 @@ class ClientStreamingHandlerTest extends ClientResponseHandlerTest {
     var stream3 = sut.handleStreamingResponse(response);
     assertThatThrownBy(() -> stream3.toList())
         .isInstanceOf(MyException.class)
-        .hasMessageContaining("Failed to parse response: malformed line here");
+        .hasMessageContaining("Failed to parse response");
 
     var stream4 = sut.handleStreamingResponse(response);
     assertThatThrownBy(() -> stream4.toList())
         .isInstanceOf(MyException.class)
-        .hasMessageContaining("Failed to parse delta message:")
+        .hasMessageContaining("Failed to parse delta chunk")
         .hasCauseInstanceOf(JsonParseException.class);
   }
 }

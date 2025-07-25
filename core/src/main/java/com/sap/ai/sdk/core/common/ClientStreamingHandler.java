@@ -69,7 +69,7 @@ public class ClientStreamingHandler<
         .peek(
             line -> {
               if (!line.startsWith("data: ")) {
-                final String msg = "Failed to parse response: %s".formatted(line);
+                final String msg = "Failed to parse response";
                 throw exceptionFactory.build(msg, null);
               }
             })
