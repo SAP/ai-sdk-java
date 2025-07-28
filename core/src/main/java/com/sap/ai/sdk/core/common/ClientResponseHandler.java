@@ -105,7 +105,6 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
    * @throws ClientException if the response is an error (4xx/5xx)
    */
   @SuppressWarnings("PMD.CloseResource")
-  @Nonnull
   protected void buildAndThrowException(@Nonnull final ClassicHttpResponse httpResponse) throws E {
 
     val entity = httpResponse.getEntity();
