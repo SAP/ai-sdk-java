@@ -192,7 +192,7 @@ public class SpringAiOrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public ChatResponse toolCallingMCP() {
+  public ChatResponse toolCallingMcp() {
     // check if spring profile is set to 'mcp'
     if (!activeProfile.equals("mcp")) {
       throw new IllegalStateException(

@@ -133,7 +133,7 @@ class SpringAiOrchestrationController {
 
   @GetMapping("/mcp")
   Object mcp(@Nullable @RequestParam(value = "format", required = false) final String format) {
-    val response = service.toolCallingMCP();
+    val response = service.toolCallingMcp();
 
     if ("json".equals(format)) {
       return ((OrchestrationSpringChatResponse) response)
