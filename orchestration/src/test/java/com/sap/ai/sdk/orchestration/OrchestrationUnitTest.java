@@ -729,7 +729,7 @@ class OrchestrationUnitTest {
 
     // this must not throw, since the stream is lazily evaluated
     var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
-    assertThatThrownBy(() -> stream.toList())
+    assertThatThrownBy(stream::toList)
         .isInstanceOf(OrchestrationOutputFilterException.class)
         .hasMessage("Content filter filtered the output.")
         .extracting(e -> ((OrchestrationOutputFilterException) e).getFilterDetails())
