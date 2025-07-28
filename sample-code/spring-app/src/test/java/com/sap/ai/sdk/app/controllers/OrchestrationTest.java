@@ -2,6 +2,7 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+import static com.sap.ai.sdk.orchestration.model.AzureThreshold.*;
 import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -222,14 +223,12 @@ class OrchestrationTest {
         .isInstanceOfSatisfying(
             OrchestrationInputFilterException.class,
             e -> {
-              assertThat(e.getFilterDetails()).isNotNull();
-              assertThat(e.getFilterDetails()).containsKey("azure_content_safety");
-              assertThat(e.getFilterDetails().get("azure_content_safety")).isInstanceOf(Map.class);
-
-              var actualAzureContentSafety =
-                  (Map<String, Integer>) e.getFilterDetails().get("azure_content_safety");
-              assertThat(actualAzureContentSafety)
-                  .containsKeys("Hate", "Violence", "Sexual", "SelfHarm");
+              var actualAzureContentSafety = e.getAzureContentSafetyInput();
+              assertThat(actualAzureContentSafety).isNotNull();
+              assertThat(actualAzureContentSafety.getViolence()).isGreaterThan(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSexual()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getHate()).isEqualTo(NUMBER_0);
             });
   }
 
@@ -256,14 +255,12 @@ class OrchestrationTest {
         .isInstanceOfSatisfying(
             OrchestrationOutputFilterException.class,
             e -> {
-              assertThat(e.getFilterDetails()).isNotNull();
-              assertThat(e.getFilterDetails()).containsKey("azure_content_safety");
-              assertThat(e.getFilterDetails().get("azure_content_safety")).isInstanceOf(Map.class);
-
-              var actualAzureContentSafety =
-                  (Map<String, Integer>) e.getFilterDetails().get("azure_content_safety");
-              assertThat(actualAzureContentSafety)
-                  .containsKeys("Hate", "Violence", "Sexual", "SelfHarm");
+              var actualAzureContentSafety = e.getAzureContentSafetyOutput();
+              assertThat(actualAzureContentSafety).isNotNull();
+              assertThat(actualAzureContentSafety.getViolence()).isGreaterThan(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSexual()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getHate()).isEqualTo(NUMBER_0);
             });
   }
 
@@ -286,7 +283,17 @@ class OrchestrationTest {
         .isInstanceOf(OrchestrationInputFilterException.class)
         .hasMessageContaining(
             "Prompt filtered due to safety violations. Please modify the prompt and try again.")
-        .hasMessageContaining("400 (Bad Request)");
+        .hasMessageContaining("400 (Bad Request)")
+        .isInstanceOfSatisfying(
+            OrchestrationInputFilterException.class,
+            e -> {
+              var llamaGuard38b = e.getLlamaGuard38b();
+              assertThat(llamaGuard38b).isNotNull();
+              assertThat(llamaGuard38b.isViolentCrimes()).isTrue();
+              assertThat(llamaGuard38b.isHate()).isFalse();
+              assertThat(llamaGuard38b.isChildExploitation()).isFalse();
+              assertThat(llamaGuard38b.isDefamation()).isFalse();
+            });
   }
 
   @Test
