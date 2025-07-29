@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.sap.ai.sdk.app.services.SpringAiOpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import org.junit.jupiter.api.Test;
+import org.springframework.ai.chat.model.ChatResponse;
 
 class SpringAiOpenAiTest {
 
@@ -22,5 +23,19 @@ class SpringAiOpenAiTest {
     assertThat(response.getMetadata().getUsage().getTotalTokens()).isNotNull();
     assertThat(response.getMetadata().getModel())
         .isEqualTo(OpenAiModel.TEXT_EMBEDDING_3_SMALL.name());
+  }
+
+  @Test
+  void testCompletion() {
+    ChatResponse response = service.completion();
+    assertThat(response).isNotNull();
+    assertThat(response.getResult().getOutput().getText()).contains("Paris");
+  }
+
+  @Test
+  void testStreamChatCompletion() {
+    ChatResponse response = service.streamChatCompletion();
+    assertThat(response).isNotNull();
+    assertThat(response.getResult().getOutput().getText()).isNotEmpty();
   }
 }

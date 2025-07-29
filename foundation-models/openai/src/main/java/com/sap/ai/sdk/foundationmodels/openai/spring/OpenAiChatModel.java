@@ -64,12 +64,18 @@ public class OpenAiChatModel implements ChatModel {
                   case ASSISTANT -> {
                     AssistantMessage assistantMessage = (AssistantMessage) message;
                     yield assistantMessage.hasToolCalls()
-                        ? new OpenAiAssistantMessage(new OpenAiMessageContent(List.of(new OpenAiTextItem(message.getText()))),
+                        ? new OpenAiAssistantMessage(
+                            new OpenAiMessageContent(
+                                List.of(new OpenAiTextItem(message.getText()))),
                             assistantMessage.getToolCalls().stream()
                                 .map(
                                     toolCall ->
-                                        (OpenAiToolCall) new OpenAiFunctionCall(
-                                            toolCall.id(), toolCall.name(), toolCall.arguments())).toList())
+                                        (OpenAiToolCall)
+                                            new OpenAiFunctionCall(
+                                                toolCall.id(),
+                                                toolCall.name(),
+                                                toolCall.arguments()))
+                                .toList())
                         : new OpenAiAssistantMessage(message.getText());
                   }
                   case SYSTEM -> OpenAiMessage.system(message.getText());
