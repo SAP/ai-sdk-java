@@ -25,17 +25,20 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** S3PipelineCreateRequest */
+/** WorkZonePipelineGetResponse */
 // CHECKSTYLE:OFF
-public class S3PipelineCreateRequest implements CreatePipeline
+public class WorkZonePipelineGetResponse implements GetPipeline
 // CHECKSTYLE:ON
 {
+  @JsonProperty("id")
+  private String id;
+
   /** Gets or Sets type */
   public enum TypeEnum {
-    /** The S3 option of this S3PipelineCreateRequest */
-    S3("S3"),
+    /** The WORK_ZONE option of this WorkZonePipelineGetResponse */
+    WORK_ZONE("WorkZone"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this S3PipelineCreateRequest */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this WorkZonePipelineGetResponse */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -70,7 +73,7 @@ public class S3PipelineCreateRequest implements CreatePipeline
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type S3PipelineCreateRequest
+     * @return The enum value of type WorkZonePipelineGetResponse
      */
     @JsonCreator
     @Nonnull
@@ -87,26 +90,54 @@ public class S3PipelineCreateRequest implements CreatePipeline
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("configuration")
-  private S3Configuration _configuration;
-
   @JsonProperty("metadata")
   private MetaData metadata;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for S3PipelineCreateRequest. */
-  protected S3PipelineCreateRequest() {}
+  /** Default constructor for WorkZonePipelineGetResponse. */
+  protected WorkZonePipelineGetResponse() {}
 
   /**
-   * Set the type of this {@link S3PipelineCreateRequest} instance and return the same instance.
+   * Set the id of this {@link WorkZonePipelineGetResponse} instance and return the same instance.
    *
-   * @param type The type of this {@link S3PipelineCreateRequest}
-   * @return The same instance of this {@link S3PipelineCreateRequest} class
+   * @param id The id of this {@link WorkZonePipelineGetResponse}
+   * @return The same instance of this {@link WorkZonePipelineGetResponse} class
    */
   @Nonnull
-  public S3PipelineCreateRequest type(@Nonnull final TypeEnum type) {
+  public WorkZonePipelineGetResponse id(@Nonnull final String id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * Get id
+   *
+   * @return id The id of this {@link WorkZonePipelineGetResponse} instance.
+   */
+  @Nonnull
+  public String getId() {
+    return id;
+  }
+
+  /**
+   * Set the id of this {@link WorkZonePipelineGetResponse} instance.
+   *
+   * @param id The id of this {@link WorkZonePipelineGetResponse}
+   */
+  public void setId(@Nonnull final String id) {
+    this.id = id;
+  }
+
+  /**
+   * Set the type of this {@link WorkZonePipelineGetResponse} instance and return the same instance.
+   *
+   * @param type The type of this {@link WorkZonePipelineGetResponse}
+   * @return The same instance of this {@link WorkZonePipelineGetResponse} class
+   */
+  @Nonnull
+  public WorkZonePipelineGetResponse type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -114,7 +145,7 @@ public class S3PipelineCreateRequest implements CreatePipeline
   /**
    * Get type
    *
-   * @return type The type of this {@link S3PipelineCreateRequest} instance.
+   * @return type The type of this {@link WorkZonePipelineGetResponse} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -122,54 +153,23 @@ public class S3PipelineCreateRequest implements CreatePipeline
   }
 
   /**
-   * Set the type of this {@link S3PipelineCreateRequest} instance.
+   * Set the type of this {@link WorkZonePipelineGetResponse} instance.
    *
-   * @param type The type of this {@link S3PipelineCreateRequest}
+   * @param type The type of this {@link WorkZonePipelineGetResponse}
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the _configuration of this {@link S3PipelineCreateRequest} instance and return the same
+   * Set the metadata of this {@link WorkZonePipelineGetResponse} instance and return the same
    * instance.
    *
-   * @param _configuration The _configuration of this {@link S3PipelineCreateRequest}
-   * @return The same instance of this {@link S3PipelineCreateRequest} class
+   * @param metadata The metadata of this {@link WorkZonePipelineGetResponse}
+   * @return The same instance of this {@link WorkZonePipelineGetResponse} class
    */
   @Nonnull
-  public S3PipelineCreateRequest _configuration(@Nonnull final S3Configuration _configuration) {
-    this._configuration = _configuration;
-    return this;
-  }
-
-  /**
-   * Get _configuration
-   *
-   * @return _configuration The _configuration of this {@link S3PipelineCreateRequest} instance.
-   */
-  @Nonnull
-  public S3Configuration getConfiguration() {
-    return _configuration;
-  }
-
-  /**
-   * Set the _configuration of this {@link S3PipelineCreateRequest} instance.
-   *
-   * @param _configuration The _configuration of this {@link S3PipelineCreateRequest}
-   */
-  public void setConfiguration(@Nonnull final S3Configuration _configuration) {
-    this._configuration = _configuration;
-  }
-
-  /**
-   * Set the metadata of this {@link S3PipelineCreateRequest} instance and return the same instance.
-   *
-   * @param metadata The metadata of this {@link S3PipelineCreateRequest}
-   * @return The same instance of this {@link S3PipelineCreateRequest} class
-   */
-  @Nonnull
-  public S3PipelineCreateRequest metadata(@Nullable final MetaData metadata) {
+  public WorkZonePipelineGetResponse metadata(@Nonnull final MetaData metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -177,7 +177,7 @@ public class S3PipelineCreateRequest implements CreatePipeline
   /**
    * Get metadata
    *
-   * @return metadata The metadata of this {@link S3PipelineCreateRequest} instance.
+   * @return metadata The metadata of this {@link WorkZonePipelineGetResponse} instance.
    */
   @Nonnull
   public MetaData getMetadata() {
@@ -185,16 +185,16 @@ public class S3PipelineCreateRequest implements CreatePipeline
   }
 
   /**
-   * Set the metadata of this {@link S3PipelineCreateRequest} instance.
+   * Set the metadata of this {@link WorkZonePipelineGetResponse} instance.
    *
-   * @param metadata The metadata of this {@link S3PipelineCreateRequest}
+   * @param metadata The metadata of this {@link WorkZonePipelineGetResponse}
    */
-  public void setMetadata(@Nullable final MetaData metadata) {
+  public void setMetadata(@Nonnull final MetaData metadata) {
     this.metadata = metadata;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link S3PipelineCreateRequest}.
+   * Get the names of the unrecognizable properties of the {@link WorkZonePipelineGetResponse}.
    *
    * @return The set of properties names
    */
@@ -205,7 +205,8 @@ public class S3PipelineCreateRequest implements CreatePipeline
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link S3PipelineCreateRequest} instance.
+   * Get the value of an unrecognizable property of this {@link WorkZonePipelineGetResponse}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -217,13 +218,13 @@ public class S3PipelineCreateRequest implements CreatePipeline
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "S3PipelineCreateRequest has no field with name '" + name + "'.");
+          "WorkZonePipelineGetResponse has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link S3PipelineCreateRequest} instance including
+   * Get the value of all properties of this {@link WorkZonePipelineGetResponse} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -232,14 +233,14 @@ public class S3PipelineCreateRequest implements CreatePipeline
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (id != null) declaredFields.put("id", id);
     if (type != null) declaredFields.put("type", type);
-    if (_configuration != null) declaredFields.put("_configuration", _configuration);
     if (metadata != null) declaredFields.put("metadata", metadata);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link S3PipelineCreateRequest} instance. If the map
+   * Set an unrecognizable property of this {@link WorkZonePipelineGetResponse} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -258,25 +259,26 @@ public class S3PipelineCreateRequest implements CreatePipeline
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final S3PipelineCreateRequest s3PipelineCreateRequest = (S3PipelineCreateRequest) o;
-    return Objects.equals(this.cloudSdkCustomFields, s3PipelineCreateRequest.cloudSdkCustomFields)
-        && Objects.equals(this.type, s3PipelineCreateRequest.type)
-        && Objects.equals(this._configuration, s3PipelineCreateRequest._configuration)
-        && Objects.equals(this.metadata, s3PipelineCreateRequest.metadata);
+    final WorkZonePipelineGetResponse workZonePipelineGetResponse = (WorkZonePipelineGetResponse) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, workZonePipelineGetResponse.cloudSdkCustomFields)
+        && Objects.equals(this.id, workZonePipelineGetResponse.id)
+        && Objects.equals(this.type, workZonePipelineGetResponse.type)
+        && Objects.equals(this.metadata, workZonePipelineGetResponse.metadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, _configuration, metadata, cloudSdkCustomFields);
+    return Objects.hash(id, type, metadata, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class S3PipelineCreateRequest {\n");
+    sb.append("class WorkZonePipelineGetResponse {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    _configuration: ").append(toIndentedString(_configuration)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -297,32 +299,44 @@ public class S3PipelineCreateRequest implements CreatePipeline
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * S3PipelineCreateRequest} instance with all required arguments.
+   * WorkZonePipelineGetResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) ->
-        (_configuration) -> new S3PipelineCreateRequest().type(type)._configuration(_configuration);
+    return (id) ->
+        (type) ->
+            (metadata) -> new WorkZonePipelineGetResponse().id(id).type(type).metadata(metadata);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link S3PipelineCreateRequest} instance.
+     * Set the id of this {@link WorkZonePipelineGetResponse} instance.
      *
-     * @param type The type of this {@link S3PipelineCreateRequest}
-     * @return The S3PipelineCreateRequest builder.
+     * @param id The id of this {@link WorkZonePipelineGetResponse}
+     * @return The WorkZonePipelineGetResponse builder.
      */
-    Builder1 type(@Nonnull final TypeEnum type);
+    Builder1 id(@Nonnull final String id);
   }
 
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the _configuration of this {@link S3PipelineCreateRequest} instance.
+     * Set the type of this {@link WorkZonePipelineGetResponse} instance.
      *
-     * @param _configuration The _configuration of this {@link S3PipelineCreateRequest}
-     * @return The S3PipelineCreateRequest instance.
+     * @param type The type of this {@link WorkZonePipelineGetResponse}
+     * @return The WorkZonePipelineGetResponse builder.
      */
-    S3PipelineCreateRequest _configuration(@Nonnull final S3Configuration _configuration);
+    Builder2 type(@Nonnull final TypeEnum type);
+  }
+
+  /** Builder helper class. */
+  public interface Builder2 {
+    /**
+     * Set the metadata of this {@link WorkZonePipelineGetResponse} instance.
+     *
+     * @param metadata The metadata of this {@link WorkZonePipelineGetResponse}
+     * @return The WorkZonePipelineGetResponse instance.
+     */
+    WorkZonePipelineGetResponse metadata(@Nonnull final MetaData metadata);
   }
 }

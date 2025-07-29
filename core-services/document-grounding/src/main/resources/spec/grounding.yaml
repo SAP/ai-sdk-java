@@ -22,19 +22,19 @@ servers:
     variables:
       region:
         enum:
-        - prod.eu-central-1.aws
-        - prodeuonly.eu-central-1.aws
-        - prod.us-east-1.aws
-        - prod.ap-northeast-1.aws
-        - prod.ap-southeast-2.aws
-        - prod-eu20.westeurope.azure
-        - prod-eu30.europe-west3.gcp
-        - prod-us21.eastus.azure
-        - prod-us30.us-central1.gcp      
-        - prod-ap20.australiaeast.az
-        - prod-ap11.ap-southeast-1.aws
+          - prod.eu-central-1.aws
+          - prodeuonly.eu-central-1.aws
+          - prod.us-east-1.aws
+          - prod.ap-northeast-1.aws
+          - prod.ap-southeast-2.aws
+          - prod-eu20.westeurope.azure
+          - prod-eu30.europe-west3.gcp
+          - prod-us21.eastus.azure
+          - prod-us30.us-central1.gcp
+          - prod-ap20.australiaeast.az
+          - prod-ap11.ap-southeast-1.aws
         default: prod.eu-central-1.aws
-      service: 
+      service:
         default: document-grounding
 paths:
   "/pipelines":
@@ -184,7 +184,7 @@ paths:
   "/pipelines/{pipelineId}/executions":
     get:
       tags:
-      - Pipelines
+        - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_executions
       summary: Get Pipeline Executions
       description: Retrieve all executions for a specific pipeline. Optionally, filter to get only the last execution.
@@ -222,7 +222,7 @@ paths:
   "/pipelines/{pipelineId}/executions/{executionId}":
     get:
       tags:
-      - Pipelines
+        - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_execution_by_id
       summary: Get Pipeline Execution by ID
       description: Retrieve details of a specific pipeline execution by its execution ID.
@@ -399,6 +399,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PipelineDocumentResponse'
+
+  "/pipelines/trigger":
+    post:
+      tags:
+        - Pipelines
+      operationId: pipeline.v1.pipeline_endpoints.trigger_pipeline
+      summary: Pipeline Trigger
+      description: Manually trigger a pipeline
+      x-sap-cloud-sdk-operation-name: manualTriggerPipeline
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/manualPipelineTrigger'
+      responses:
+        '202':
+          description: Accepted
+          headers:
+            Location:
+              description: Location of the triggered pipeline execution
+              schema:
+                type: string
+                format: uri
+        '400':
+          $ref: '#/components/responses/BadRequest'
 
   "/vector/collections":
     get:
@@ -860,7 +893,7 @@ paths:
         - $ref: '#/components/parameters/skip'
         - $ref: '#/components/parameters/count'
       tags:
-      - Retrieval
+        - Retrieval
       summary: List all DataRepository objects.
       description: List all Data Repositories
       operationId: retrieval.v1.retrieval_endpoints.get_data_repositories
@@ -877,7 +910,7 @@ paths:
   "/retrieval/dataRepositories/{repositoryId}":
     get:
       tags:
-      - Retrieval
+        - Retrieval
       summary: List single DataRepository object.
       description: List data repository by id
       operationId: retrieval.v1.retrieval_endpoints.get_data_repository
@@ -958,12 +991,23 @@ components:
         - $ref: "#/components/schemas/MSSharePointPipelineCreateRequest"
         - $ref: "#/components/schemas/S3PipelineCreateRequest"
         - $ref: "#/components/schemas/SFTPPipelineCreateRequest"
+        - $ref: "#/components/schemas/SDMPipelineCreateRequest"
+        - $ref: "#/components/schemas/WorkZonePipelineCreateRequest"
       discriminator:
         propertyName: type
         mapping:
           MSSharePoint: "#/components/schemas/MSSharePointPipelineCreateRequest"
           S3: "#/components/schemas/S3PipelineCreateRequest"
           SFTP: "#/components/schemas/SFTPPipelineCreateRequest"
+          SDM: "#/components/schemas/SDMPipelineCreateRequest"
+          WorkZone: "#/components/schemas/WorkZonePipelineCreateRequest"
+
+    manualPipelineTrigger:
+      type: object
+      properties:
+        pipelineId:
+          type: string
+          example: uuid
 
     MSSharePointPipelineCreateRequest:
       type: object
@@ -990,7 +1034,7 @@ components:
           type: string
           enum: [S3]
         configuration:
-          $ref: "#/components/schemas/CommonConfiguration"
+          $ref: "#/components/schemas/S3Configuration"
         metadata:
           $ref: "#/components/schemas/MetaData"
       additionalProperties: true
@@ -1005,7 +1049,33 @@ components:
           type: string
           enum: [SFTP]
         configuration:
-          $ref: "#/components/schemas/CommonConfiguration"
+          $ref: "#/components/schemas/SFTPConfiguration"
+        metadata:
+          $ref: "#/components/schemas/MetaData"
+      additionalProperties: true
+
+    SDMPipelineCreateRequest:
+      type: object
+      required:
+        - type
+        - metadata
+      properties:
+        type:
+          type: string
+          enum: [SDM]
+        metadata:
+          $ref: "#/components/schemas/MetaData"
+      additionalProperties: true
+
+    WorkZonePipelineCreateRequest:
+      type: object
+      required:
+        - type
+        - metadata
+      properties:
+        type:
+          type: string
+          enum: [WorkZone]
         metadata:
           $ref: "#/components/schemas/MetaData"
       additionalProperties: true
@@ -1049,14 +1119,44 @@ components:
             - /testFolder2
       additionalProperties: true
 
-    CommonConfiguration:
+    SFTPConfiguration:
       type: object
       required:
         - destination
       properties:
         destination:
           type: string
-          example: generic-secret-name
+          example: generic-secret-
+        sftp:
+          type: object
+          properties:
+            includePaths:
+              type: array
+              items:
+                type: string
+              example:
+                - /testFolder1
+                - /testFolder2
+      additionalProperties: true
+
+    S3Configuration:
+      type: object
+      required:
+        - destination
+      properties:
+        destination:
+          type: string
+          example: generic-secret-
+        s3:
+          type: object
+          properties:
+            includePaths:
+              type: array
+              items:
+                type: string
+              example:
+                - /testFolder1
+                - /testFolder2
       additionalProperties: true
 
     MetaData:
@@ -1086,12 +1186,16 @@ components:
         - $ref: "#/components/schemas/MSSharePointPipelineGetResponse"
         - $ref: "#/components/schemas/S3PipelineGetResponse"
         - $ref: "#/components/schemas/SFTPPipelineGetResponse"
+        - $ref: "#/components/schemas/SDMPipelineGetResponse"
+        - $ref: "#/components/schemas/WorkZonePipelineGetResponse"
       discriminator:
         propertyName: type
         mapping:
           MSSharePoint: "#/components/schemas/MSSharePointPipelineGetResponse"
           S3: "#/components/schemas/S3PipelineGetResponse"
           SFTP: "#/components/schemas/SFTPPipelineGetResponse"
+          SDM: "#/components/schemas/SDMPipelineGetResponse"
+          WorkZone: "#/components/schemas/WorkZonePipelineGetResponse"
 
     MSSharePointPipelineGetResponse:
       allOf:
@@ -1117,7 +1221,7 @@ components:
               type: string
               enum: [S3]
             configuration:
-              $ref: "#/components/schemas/CommonConfiguration"
+              $ref: "#/components/schemas/S3Configuration"
 
     SFTPPipelineGetResponse:
       allOf:
@@ -1130,7 +1234,33 @@ components:
               type: string
               enum: [SFTP]
             configuration:
-              $ref: "#/components/schemas/CommonConfiguration"
+              $ref: "#/components/schemas/SFTPConfiguration"
+
+    SDMPipelineGetResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasePipelineResponse"
+        - type: object
+          required:
+            - metadata
+          properties:
+            type:
+              type: string
+              enum: [SDM]
+            metadata:
+              $ref: "#/components/schemas/MetaData"
+
+    WorkZonePipelineGetResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasePipelineResponse"
+        - type: object
+          required:
+            - metadata
+          properties:
+            type:
+              type: string
+              enum: [WorkZone]
+            metadata:
+              $ref: "#/components/schemas/MetaData"
 
     BasePipelineResponse:
       type: object
@@ -1186,7 +1316,7 @@ components:
           pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
           example: '2024-02-15T12:45:00.000Z'
         status:
-          $ref: '#/components/schemas/PipelineExecutionStatus' 
+          $ref: '#/components/schemas/PipelineExecutionStatus'
 
     pipelineId:
       type: object
@@ -1214,7 +1344,7 @@ components:
           example: uuid
         status:
           $ref: '#/components/schemas/PipelineExecutionStatus'
-    
+
     getPipelineExecutions:
       type: object
       properties:
@@ -1250,6 +1380,7 @@ components:
         - DEINDEXED
         - FAILED
         - FAILED_TO_BE_RETRIED
+        - TO_BE_SCHEDULED
       example: 'INDEXED'
 
     DocumentsStatusResponse:
@@ -1268,6 +1399,21 @@ components:
                 example: uuid
               status:
                 $ref: '#/components/schemas/DocumentStatus'
+              absoluteUrl:
+                type: string
+                nullable: true
+              title:
+                type: string
+                nullable: true
+              metadataId:
+                type: string
+                nullable: true
+              createdTimestamp:
+                type: string
+                example: '2024-02-15T12:45:00Z'
+              lastUpdatedTimestamp:
+                type: string
+                example: '2024-02-15T12:45:00Z'
 
     PipelineDocumentResponse:
       type: object
@@ -1275,19 +1421,23 @@ components:
         id:
           type: string
           example: uuid
-        viewLocation:
+        status:
+          $ref: '#/components/schemas/DocumentStatus'
+        absoluteUrl:
           type: string
-          example: 'location'
           nullable: true
-        downloadLocation:
+        title:
           type: string
-          example: 'location'
           nullable: true
+        metadataId:
+          type: string
+          nullable: true
+        createdTimestamp:
+          type: string
+          example: '2024-02-15T12:45:00Z'
         lastUpdatedTimestamp:
           type: string
           example: '2024-02-15T12:45:00Z'
-        status:
-            $ref: '#/components/schemas/DocumentStatus'
 
     Chunk:
       properties:
@@ -1305,8 +1455,8 @@ components:
           default: []
       type: object
       required:
-      - id
-      - content
+        - id
+        - content
       title: Chunk
     DocumentKeyValueListPair:
       properties:
@@ -1328,13 +1478,13 @@ components:
           default: ANY
           anyOf:
             - enum:
-              - ANY
-              - ALL
+                - ANY
+                - ALL
             - {}
       type: object
       required:
-      - key
-      - value
+        - key
+        - value
       title: DocumentKeyValueListPair
     HTTPValidationError:
       properties:
@@ -1359,8 +1509,8 @@ components:
           title: Value
       type: object
       required:
-      - key
-      - value
+        - key
+        - value
       title: KeyValueListPair
     Document-Output:
       properties:
@@ -1465,8 +1615,8 @@ components:
           description: Select mode for search filters
       type: object
       required:
-      - key
-      - value
+        - key
+        - value
       title: SearchDocumentKeyValueListPair
     SearchResults:
       properties:
@@ -1474,12 +1624,12 @@ components:
           type: array
           items:
             anyOf:
-            - $ref: "#/components/schemas/PerFilterSearchResult"
+              - $ref: "#/components/schemas/PerFilterSearchResult"
           title: Results
           description: List of returned results.
       type: object
       required:
-      - results
+        - results
       title: SearchResults
 
     CollectionsListResponse:
@@ -1718,7 +1868,7 @@ components:
       type: string
       anyOf:
         - enum:
-          - ignoreIfKeyAbsent
+            - ignoreIfKeyAbsent
         - {}
       default: ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
@@ -1837,7 +1987,7 @@ components:
           title: Datarepositories
       type: object
       required:
-      - resources
+        - resources
       title: DataRepositories
     DataRepository:
       properties:
@@ -1860,9 +2010,9 @@ components:
           $ref: "#/components/schemas/DataRepositoryType"
       type: object
       required:
-      - id
-      - title
-      - type
+        - id
+        - title
+        - type
       title: DataRepository
       description: DataRepository schema expected by Retrieval.
     DataRepositorySearchResult:
@@ -1871,14 +2021,14 @@ components:
           $ref: "#/components/schemas/DataRepositoryWithDocuments"
       type: object
       required:
-      - dataRepository
+        - dataRepository
       title: DataRepositorySearchResult
     DataRepositoryType:
       type: string
       anyOf:
         - enum:
-          - vector
-          - help.sap.com
+            - vector
+            - help.sap.com
         - {}
       title: DataRepositoryType
     DataRepositoryWithDocuments:
@@ -1904,9 +2054,9 @@ components:
           title: Documents
       type: object
       required:
-      - id
-      - title
-      - documents
+        - id
+        - title
+        - documents
       title: DataRepositoryWithDocuments
       description: DataRepository schema returned by the Vector search endpoint
     Document:
@@ -1927,8 +2077,8 @@ components:
           title: Chunks
       type: object
       required:
-      - id
-      - chunks
+        - id
+        - chunks
       title: Document
     DataRepositoryPerFilterSearchResult:
       properties:
@@ -1944,7 +2094,7 @@ components:
           default: []
       type: object
       required:
-      - filterId
+        - filterId
       title: PerFilterSearchResult
     PerFilterSearchResultError:
       properties:
@@ -1953,7 +2103,7 @@ components:
           title: Message
       type: object
       required:
-      - message
+        - message
       title: PerFilterSearchResultError
     PerFilterSearchResultWithError:
       properties:
@@ -1967,7 +2117,7 @@ components:
             message: Unknown Error Occurred
       type: object
       required:
-      - filterId
+        - filterId
       title: PerFilterSearchResultWithError
     RetrievalSearchFilter:
       properties:
@@ -1989,7 +2139,7 @@ components:
           title: Datarepositories
           description: Specify ['*'] to search across all DataRepositories or give a specific list of DataRepository ids.
           default:
-          - "*"
+            - "*"
         dataRepositoryType:
           type: string
           $ref: "#/components/schemas/DataRepositoryType"
@@ -2017,8 +2167,8 @@ components:
           default: []
       type: object
       required:
-      - id
-      - dataRepositoryType
+        - id
+        - dataRepositoryType
       title: SearchFilter
       description: Limit scope of search to certain DataRepositories, Documents or Chunks.
     RetrievalSearchInput:
@@ -2035,8 +2185,8 @@ components:
           title: Filters
       type: object
       required:
-      - query
-      - filters
+        - query
+        - filters
       title: SearchInput
     RetrievalDataRepositorySearchResult:
       properties:
@@ -2044,7 +2194,7 @@ components:
           $ref: "#/components/schemas/DataRepositoryWithDocuments"
       type: object
       required:
-      - dataRepository
+        - dataRepository
       title: DataRepositorySearchResult
     RetrievalPerFilterSearchResult:
       properties:
@@ -2060,7 +2210,7 @@ components:
           default: []
       type: object
       required:
-      - filterId
+        - filterId
       title: PerFilterSearchResult
     RetrievalPerFilterSearchResultWithError:
       properties:
@@ -2069,7 +2219,7 @@ components:
           title: Message
       type: object
       required:
-      - message
+        - message
       title: PerFilterSearchResultError
     RetrievalSearchResults:
       properties:
@@ -2077,13 +2227,13 @@ components:
           type: array
           items:
             anyOf:
-            - $ref: "#/components/schemas/RetrievalPerFilterSearchResult"
-            - $ref: "#/components/schemas/RetrievalPerFilterSearchResultWithError"
+              - $ref: "#/components/schemas/RetrievalPerFilterSearchResult"
+              - $ref: "#/components/schemas/RetrievalPerFilterSearchResultWithError"
           title: Results
           description: List of returned results.
       type: object
       required:
-      - results
+        - results
       title: SearchResults
     DataRepositorySearchResults:
       properties:
@@ -2091,13 +2241,13 @@ components:
           type: array
           items:
             anyOf:
-            - $ref: "#/components/schemas/DataRepositoryPerFilterSearchResult"
-            - $ref: "#/components/schemas/PerFilterSearchResultWithError"
+              - $ref: "#/components/schemas/DataRepositoryPerFilterSearchResult"
+              - $ref: "#/components/schemas/PerFilterSearchResultWithError"
           title: Results
           description: List of returned results.
       type: object
       required:
-      - results
+        - results
       title: SearchResults
     ValidationError:
       properties:
@@ -2114,9 +2264,9 @@ components:
           title: Error Type
       type: object
       required:
-      - loc
-      - msg
-      - type
+        - loc
+        - msg
+        - type
       title: ValidationError
 
     ### ###  ########################  ### ###
