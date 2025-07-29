@@ -72,7 +72,6 @@ public class SpringAiOpenAiService {
   @Nonnull
   public float[] embedDocument() {
     final var document = new Document("The quick brown fox jumps over the lazy dog.");
-    // return new OpenAiSpringEmbeddingModel(client).embed(document);
     return embeddingClient.embed(document);
   }
 }
