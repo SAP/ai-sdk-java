@@ -44,7 +44,7 @@ class ClientStreamingHandlerTest extends ClientResponseHandlerTest {
 
   @SneakyThrows
   @Test
-  void testHandleStreamingResponse_variousScenarios() {
+  void testHandleStreamingResponse() {
     var sut =
         new ClientStreamingHandler<>(
             MyStreamedDelta.class, MyError.class, new MyExceptionFactory());
@@ -97,12 +97,12 @@ class ClientStreamingHandlerTest extends ClientResponseHandlerTest {
     assertThat(stream2).isEmpty();
 
     var stream3 = sut.handleStreamingResponse(response);
-    assertThatThrownBy(() -> stream3.toList())
+    assertThatThrownBy(stream3::toList)
         .isInstanceOf(MyException.class)
         .hasMessageContaining("Failed to parse response");
 
     var stream4 = sut.handleStreamingResponse(response);
-    assertThatThrownBy(() -> stream4.toList())
+    assertThatThrownBy(stream4::toList)
         .isInstanceOf(MyException.class)
         .hasMessageContaining("Failed to parse delta chunk")
         .hasCauseInstanceOf(JsonParseException.class);

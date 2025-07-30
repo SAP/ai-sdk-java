@@ -36,10 +36,10 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   @Nonnull final Class<T> successType;
 
   /** The HTTP error response type */
-  @Nonnull protected final Class<R> errorType;
+  @Nonnull final Class<R> errorType;
 
   /** The factory to create exceptions for Http 4xx/5xx responses. */
-  @Nonnull protected final ClientExceptionFactory<E, R> exceptionFactory;
+  @Nonnull final ClientExceptionFactory<E, R> exceptionFactory;
 
   /** The parses for JSON responses, will be private once we can remove mixins */
   @Nonnull ObjectMapper objectMapper = getDefaultObjectMapper();

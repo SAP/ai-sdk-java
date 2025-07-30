@@ -131,13 +131,13 @@ class OrchestrationController {
     } catch (OrchestrationInputFilterException e) {
       final var msg =
           new StringBuilder(
-              "Failed to obtain a response as the content was flagged by input filter. Error %d"
+              "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
                   .formatted(e.getStatusCode()));
 
       Optional.ofNullable(e.getAzureContentSafetyInput())
-          .map(AzureContentSafetyInput::getHate)
+          .map(AzureContentSafetyInput::getViolence)
           .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
-          .ifPresent(rating -> msg.append("Hate score %d".formatted(rating.getValue())));
+          .ifPresent(rating -> msg.append("Violence score %d".formatted(rating.getValue())));
 
       log.debug(msg.toString(), e);
       return ResponseEntity.internalServerError().body(msg.toString());
@@ -163,12 +163,12 @@ class OrchestrationController {
     } catch (OrchestrationOutputFilterException e) {
       final var msg =
           new StringBuilder(
-              "Failed to obtain a response as the content was flagged by output filter.");
+              "Failed to obtain a response as the content was flagged by output filter. ");
 
       Optional.ofNullable(e.getAzureContentSafetyOutput())
-          .map(AzureContentSafetyOutput::getHate)
+          .map(AzureContentSafetyOutput::getViolence)
           .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
-          .ifPresent(rating -> msg.append("Hate score %d ".formatted(rating.getValue())));
+          .ifPresent(rating -> msg.append("Violence score %d ".formatted(rating.getValue())));
 
       log.debug(msg.toString(), e);
       return ResponseEntity.internalServerError().body(msg.toString());
@@ -190,9 +190,12 @@ class OrchestrationController {
     try {
       response = service.llamaGuardInputFilter(enabled);
     } catch (OrchestrationInputFilterException e) {
-      final var msg =
-          "Failed to obtain a response as the content was flagged by input filter. Error %d"
+      var msg =
+          "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
               .formatted(e.getStatusCode());
+      if(e.getLlamaGuard38b() != null){
+        msg += " Violent crimes are %s".formatted(e.getLlamaGuard38b().isViolentCrimes());
+      }
       log.debug(msg, e);
       return ResponseEntity.internalServerError().body(msg);
     }
