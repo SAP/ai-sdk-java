@@ -193,7 +193,7 @@ class OrchestrationController {
       var msg =
           "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
               .formatted(e.getStatusCode());
-      if(e.getLlamaGuard38b() != null){
+      if (e.getLlamaGuard38b() != null) {
         msg += " Violent crimes are %s".formatted(e.getLlamaGuard38b().isViolentCrimes());
       }
       log.debug(msg, e);
