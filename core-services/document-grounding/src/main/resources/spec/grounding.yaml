@@ -43,7 +43,7 @@ paths:
         - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.create_pipeline
       summary: Pipeline Creation
-      description: 'Create a pipeline'
+      description: Create a pipeline
       x-sap-cloud-sdk-operation-name: createPipeline
       parameters:
         - in: header
@@ -82,7 +82,7 @@ paths:
         - $ref: '#/components/parameters/count'
       operationId: pipeline.v1.pipeline_endpoints.get_all_pipeline
       summary: Get Pipelines
-      description: 'Get all pipelines'
+      description: Get all pipelines
       x-sap-cloud-sdk-operation-name: getAllPipelines
       responses:
         '200':
@@ -99,7 +99,7 @@ paths:
         - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_by_id
       summary: Get details of a Pipeline
-      description: 'Get details of a pipeline by pipeline id'
+      description: Get details of a pipeline by pipeline id
       x-sap-cloud-sdk-operation-name: getPipelineById
       parameters:
         - in: header
@@ -128,7 +128,7 @@ paths:
         - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.delete_pipeline_by_id
       summary: Delete pipeline
-      description: 'Delete a pipeline by pipeline id'
+      description: Delete a pipeline by pipeline id
       x-sap-cloud-sdk-operation-name: deletePipelineById
       parameters:
         - in: header
@@ -154,7 +154,7 @@ paths:
         - Pipelines
       operationId: pipeline.v1.pipeline_endpoints.get_pipeline_status
       summary: Get status of Pipeline
-      description: 'Get pipeline status by pipeline id'
+      description: Get pipeline status by pipeline id
       x-sap-cloud-sdk-operation-name: getPipelineStatus
       parameters:
         - in: header
@@ -797,7 +797,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchResults'
+                $ref: '#/components/schemas/VectorSearchResults'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1126,7 +1126,7 @@ components:
       properties:
         destination:
           type: string
-          example: generic-secret-
+          example: generic-secret-name
         sftp:
           type: object
           properties:
@@ -1146,7 +1146,7 @@ components:
       properties:
         destination:
           type: string
-          example: generic-secret-
+          example: generic-secret-name
         s3:
           type: object
           properties:
@@ -1315,6 +1315,16 @@ components:
           type: string
           pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
           example: '2024-02-15T12:45:00.000Z'
+        createdAt:
+          type: string
+          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          example: '2024-02-15T12:45:00.000Z'
+          nullable: true
+        lastCompletedAt:
+          type: string
+          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          example: '2024-02-15T12:45:00.000Z'
+          nullable: true
         status:
           $ref: '#/components/schemas/PipelineExecutionStatus'
 
@@ -1344,6 +1354,16 @@ components:
           example: uuid
         status:
           $ref: '#/components/schemas/PipelineExecutionStatus'
+        createdAt:
+          type: string
+          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          example: '2024-02-15T12:45:00Z'
+          nullable: true
+        modifiedAt:
+          type: string
+          pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
+          example: '2024-02-15T12:45:00Z'
+          nullable: true
 
     getPipelineExecutions:
       type: object
@@ -1458,6 +1478,44 @@ components:
         - id
         - content
       title: Chunk
+    VectorChunk:
+      properties:
+        id:
+          type: string
+          title: Id
+        content:
+          type: string
+          title: Content
+        metadata:
+          type: array
+          items:
+            $ref: "#/components/schemas/VectorKeyValueListPair"
+          title: Metadata
+          default: []
+      type: object
+      required:
+        - id
+        - content
+      title: VectorChunk
+    RetrievalChunk:
+      properties:
+        id:
+          type: string
+          title: Id
+        content:
+          type: string
+          title: Content
+        metadata:
+          type: array
+          items:
+            $ref: "#/components/schemas/RetrievalKeyValueListPair"
+          title: Metadata
+          default: []
+      type: object
+      required:
+        - id
+        - content
+      title: RetrievalChunk
     DocumentKeyValueListPair:
       properties:
         key:
@@ -1486,6 +1544,63 @@ components:
         - key
         - value
       title: DocumentKeyValueListPair
+    VectorDocumentKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        matchMode:
+          type: string
+          nullable: true
+          title: MatchMode
+          description: Default match mode for search filters
+          default: ANY
+          anyOf:
+            - enum:
+                - ANY
+                - ALL
+            - {}
+      type: object
+      required:
+        - key
+        - value
+      title: VectorDocumentKeyValueListPair
+    RetrievalDocumentKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        matchMode:
+          type: string
+          nullable: true
+          title: MatchMode
+          description: Default match mode for search filters
+          default: ANY
+          anyOf:
+            - enum:
+                - ANY
+                - ALL
+            - {}
+      type: object
+      required:
+        - key
+        - value
+      title: DocumentKeyValueListPair
+
     HTTPValidationError:
       properties:
         detail:
@@ -1512,6 +1627,40 @@ components:
         - key
         - value
       title: KeyValueListPair
+    VectorKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+      type: object
+      required:
+        - key
+        - value
+      title: VectorKeyValueListPair
+    RetrievalKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+      type: object
+      required:
+        - key
+        - value
+      title: RetrievalKeyValueListPair
     Document-Output:
       properties:
         id:
@@ -1520,15 +1669,15 @@ components:
           title: Id
         metadata:
           items:
-            $ref: '#/components/schemas/DocumentKeyValueListPair'
+            $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
           default: []
         chunks:
           items:
-            $ref: '#/components/schemas/Chunk'
+            $ref: '#/components/schemas/VectorChunk'
           type: array
-          title: Chunks
+          title: VectorChunks
       type: object
       required:
         - id
@@ -1545,7 +1694,7 @@ components:
           title: Title
         metadata:
           items:
-            $ref: '#/components/schemas/KeyValueListPair'
+            $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
           default: []
@@ -1575,6 +1724,21 @@ components:
         - filterId
         - results
       title: PerFilterSearchResult
+    VectorPerFilterSearchResult:
+      properties:
+        filterId:
+          type: string
+          title: Filterid
+        results:
+          items:
+            $ref: '#/components/schemas/DocumentsChunk'
+          type: array
+          title: Results
+      type: object
+      required:
+        - filterId
+        - results
+      title: VectorPerFilterSearchResult
     SearchConfiguration:
       properties:
         maxChunkCount:
@@ -1595,6 +1759,42 @@ components:
           description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
       type: object
       title: SearchConfiguration
+    VectorSearchConfiguration:
+      properties:
+        maxChunkCount:
+          nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxchunkcount
+          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
+        maxDocumentCount:
+          nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxdocumentcount
+          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+      type: object
+      title: VectorSearchConfiguration
+    RetrievalSearchConfiguration:
+      properties:
+        maxChunkCount:
+          nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxchunkcount
+          description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
+        maxDocumentCount:
+          nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          title: Maxdocumentcount
+          description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
+      type: object
+      title: RetrievalSearchConfiguration
     SearchDocumentKeyValueListPair:
       properties:
         key:
@@ -1618,6 +1818,52 @@ components:
         - key
         - value
       title: SearchDocumentKeyValueListPair
+    VectorSearchDocumentKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        selectMode:
+          type: array
+          items:
+            $ref: "#/components/schemas/VectorSearchSelectOptionEnum"
+          title: Selectmode
+          description: Select mode for search filters
+      type: object
+      required:
+        - key
+        - value
+      title: VectorSearchDocumentKeyValueListPair
+    RetrievalSearchDocumentKeyValueListPair:
+      properties:
+        key:
+          type: string
+          maxLength: 1024
+          title: Key
+        value:
+          type: array
+          items:
+            type: string
+            maxLength: 1024
+          title: Value
+        selectMode:
+          type: array
+          items:
+            $ref: "#/components/schemas/RetrievalSearchSelectOptionEnum"
+          title: Selectmode
+          description: Select mode for search filters
+      type: object
+      required:
+        - key
+        - value
+      title: RetrievalSearchDocumentKeyValueListPair
     SearchResults:
       properties:
         results:
@@ -1631,6 +1877,19 @@ components:
       required:
         - results
       title: SearchResults
+    VectorSearchResults:
+      properties:
+        results:
+          type: array
+          items:
+            anyOf:
+              - $ref: "#/components/schemas/VectorPerFilterSearchResult"
+          title: Results
+          description: List of returned results.
+      type: object
+      required:
+        - results
+      title: VectorSearchResults
 
     CollectionsListResponse:
       properties:
@@ -1656,7 +1915,7 @@ components:
           $ref: '#/components/schemas/EmbeddingConfig'
         metadata:
           items:
-            $ref: '#/components/schemas/KeyValueListPair'
+            $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
           description: >-
@@ -1716,7 +1975,7 @@ components:
           title: Chunks
         metadata:
           items:
-            $ref: '#/components/schemas/DocumentKeyValueListPair'
+            $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
       type: object
@@ -1748,7 +2007,7 @@ components:
           title: Chunks
         metadata:
           items:
-            $ref: '#/components/schemas/DocumentKeyValueListPair'
+            $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
         id:
@@ -1781,7 +2040,7 @@ components:
       properties:
         metadata:
           items:
-            $ref: '#/components/schemas/DocumentKeyValueListPair'
+            $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
         id:
@@ -1830,7 +2089,7 @@ components:
           title: Content
         metadata:
           items:
-            $ref: '#/components/schemas/KeyValueListPair'
+            $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
       type: object
@@ -1847,7 +2106,7 @@ components:
           title: Chunks
         metadata:
           items:
-            $ref: '#/components/schemas/DocumentKeyValueListPair'
+            $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
         id:
@@ -1872,6 +2131,21 @@ components:
         - {}
       default: ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
+    VectorSearchSelectOptionEnum:
+      type: string
+      anyOf:
+        - enum:
+            - ignoreIfKeyAbsent
+        - {}
+      default: ignoreIfKeyAbsent
+      title: VectorSearchSelectOptionEnum
+    RetrievalSearchSelectOptionEnum:
+      type: string
+      anyOf:
+        - enum:
+            - ignoreIfKeyAbsent
+        - {}
+      title: RetrievalSearchSelectOptionEnum
     SearchFilter:
       properties:
         id:
@@ -1921,6 +2195,55 @@ components:
         - collectionIds
         - configuration
       title: SearchFilter
+    VectorSearchFilter:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Identifier of this VectorSearchFilter - unique per request.
+        collectionIds:
+          items:
+            type: string
+          type: array
+          title: Collectionids
+        configuration:
+          $ref: '#/components/schemas/VectorSearchConfiguration'
+        collectionMetadata:
+          items:
+            $ref: '#/components/schemas/VectorKeyValueListPair'
+          type: array
+          maxItems: 2000
+          title: Collectionmetadata
+          description: >-
+            Restrict collections considered during search to those annotated
+            with the given metadata. Useful when combined with collections=['*']
+          default: []
+        documentMetadata:
+          items:
+            $ref: '#/components/schemas/VectorSearchDocumentKeyValueListPair'
+          type: array
+          maxItems: 2000
+          title: Documentmetadata
+          description: >-
+            Restrict documents considered during search to those annotated with
+            the given metadata.
+          default: []
+        chunkMetadata:
+          items:
+            $ref: '#/components/schemas/VectorKeyValueListPair'
+          type: array
+          maxItems: 2000
+          title: Chunkmetadata
+          description: >-
+            Restrict chunks considered during search to those with the given
+            metadata.
+          default: []
+      type: object
+      required:
+        - id
+        - collectionIds
+        - configuration
+      title: VectorSearchFilter
     TextSearchRequest:
       properties:
         query:
@@ -1931,7 +2254,7 @@ components:
           description: Query string
         filters:
           items:
-            $ref: '#/components/schemas/SearchFilter'
+            $ref: '#/components/schemas/VectorSearchFilter'
           type: array
           title: Filters
       type: object
@@ -1958,7 +2281,7 @@ components:
           $ref: '#/components/schemas/EmbeddingConfig'
         metadata:
           items:
-            $ref: '#/components/schemas/KeyValueListPair'
+            $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
           description: >-
@@ -2002,7 +2325,7 @@ components:
         metadata:
           type: array
           items:
-            $ref: "#/components/schemas/KeyValueListPair"
+            $ref: "#/components/schemas/RetrievalKeyValueListPair"
           title: Metadata
           description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
           default: []
@@ -2044,7 +2367,7 @@ components:
         metadata:
           type: array
           items:
-            $ref: "#/components/schemas/KeyValueListPair"
+            $ref: "#/components/schemas/RetrievalKeyValueListPair"
           title: Metadata
           description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
         documents:
@@ -2067,14 +2390,14 @@ components:
         metadata:
           type: array
           items:
-            $ref: "#/components/schemas/DocumentKeyValueListPair"
+            $ref: "#/components/schemas/RetrievalDocumentKeyValueListPair"
           title: Metadata
           default: []
         chunks:
           type: array
           items:
-            $ref: "#/components/schemas/Chunk"
-          title: Chunks
+            $ref: "#/components/schemas/RetrievalChunk"
+          title: RetrievalChunks
       type: object
       required:
         - id
@@ -2105,6 +2428,15 @@ components:
       required:
         - message
       title: PerFilterSearchResultError
+    RetrievalPerFilterSearchResultError:
+      properties:
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+        - message
+      title: RetrievalPerFilterSearchResultError
     PerFilterSearchResultWithError:
       properties:
         filterId:
@@ -2124,11 +2456,11 @@ components:
         id:
           type: string
           title: Id
-          description: Identifier of this SearchFilter - unique per request.
+          description: Identifier of this RetrievalSearchFilter - unique per request.
         searchConfiguration:
           type: object
           nullable: true
-          $ref: "#/components/schemas/SearchConfiguration"
+          $ref: "#/components/schemas/RetrievalSearchConfiguration"
           default: {}
           minProperties: 0
           maxProperties: 2
@@ -2147,21 +2479,21 @@ components:
         dataRepositoryMetadata:
           type: array
           items:
-            $ref: "#/components/schemas/KeyValueListPair"
+            $ref: "#/components/schemas/RetrievalKeyValueListPair"
           title: Datarepositorymetadata
           description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
           default: []
         documentMetadata:
           type: array
           items:
-            $ref: "#/components/schemas/SearchDocumentKeyValueListPair"
+            $ref: "#/components/schemas/RetrievalSearchDocumentKeyValueListPair"
           title: Documentmetadata
           description: Restrict documents considered during search to those annotated with the given metadata.
           default: []
         chunkMetadata:
           type: array
           items:
-            $ref: "#/components/schemas/KeyValueListPair"
+            $ref: "#/components/schemas/RetrievalKeyValueListPair"
           title: Chunkmetadata
           description: Restrict chunks considered during search to those with the given metadata.
           default: []
@@ -2169,7 +2501,7 @@ components:
       required:
         - id
         - dataRepositoryType
-      title: SearchFilter
+      title: RetrievalSearchFilter
       description: Limit scope of search to certain DataRepositories, Documents or Chunks.
     RetrievalSearchInput:
       properties:
@@ -2187,7 +2519,7 @@ components:
       required:
         - query
         - filters
-      title: SearchInput
+      title: RetrievalSearchInput
     RetrievalDataRepositorySearchResult:
       properties:
         dataRepository:
@@ -2195,7 +2527,7 @@ components:
       type: object
       required:
         - dataRepository
-      title: DataRepositorySearchResult
+      title: RetrievalDataRepositorySearchResult
     RetrievalPerFilterSearchResult:
       properties:
         filterId:
@@ -2211,16 +2543,21 @@ components:
       type: object
       required:
         - filterId
-      title: PerFilterSearchResult
+      title: RetrievalPerFilterSearchResult
     RetrievalPerFilterSearchResultWithError:
       properties:
-        message:
+        filterId:
           type: string
-          title: Message
+          title: Filterid
+        error:
+          $ref: "#/components/schemas/RetrievalPerFilterSearchResultError"
+          description: Error message if any.
+          default:
+            message: Unknown Error Occurred
       type: object
       required:
-        - message
-      title: PerFilterSearchResultError
+        - filterId
+      title: RetrievalPerFilterSearchResultWithError
     RetrievalSearchResults:
       properties:
         results:
@@ -2234,7 +2571,7 @@ components:
       type: object
       required:
         - results
-      title: SearchResults
+      title: RetrievalSearchResults
     DataRepositorySearchResults:
       properties:
         results:
