@@ -37,7 +37,9 @@ public class OpenAiChatModel implements ChatModel {
 
   @Override
   public ChatResponse call(Prompt prompt) {
+    System.out.println(prompt.getOptions() instanceof OpenAiChatOptions options);
     if (prompt.getOptions() instanceof OpenAiChatOptions options) {
+      System.out.println("entered the if statement in call method of OpenAiChatModel");
 
       var request =
           new OpenAiChatCompletionRequest(toOpenAiRequest(prompt)).withTools(options.getTools());
@@ -49,8 +51,10 @@ public class OpenAiChatModel implements ChatModel {
         // Send the tool execution result back to the model.
         return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
       }
+      System.out.println("this is the response in call method of OpenAiChatModel "+ response);
       return response;
     }
+    System.out.println("did not enter at all straight to the exception");
     throw new IllegalArgumentException(
         "Please add OpenAiChatOptions to the Prompt: new Prompt(\"message\", new OpenAiChatOptions(config))");
   }
