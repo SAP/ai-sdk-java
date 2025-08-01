@@ -10,11 +10,13 @@ import java.util.HashMap;
 import java.util.Optional;
 import lombok.SneakyThrows;
 import org.assertj.core.api.SoftAssertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class ScenarioTest {
 
+  @Disabled("https://github.com/SAP/ai-sdk-java-backlog/issues/306")
   @Test
   @DisplayName(
       "Declared OpenAI models must be superset of our AI Core account's available OpenAI models")
