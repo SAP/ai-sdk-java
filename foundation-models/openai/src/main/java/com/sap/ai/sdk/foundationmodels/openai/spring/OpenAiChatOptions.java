@@ -100,6 +100,12 @@ public class OpenAiChatOptions implements ToolCallingChatOptions {
 
   @Override
   public <T extends ChatOptions> T copy() {
-    return null;
+    OpenAiChatOptions copy = new OpenAiChatOptions();
+    copy.setToolCallbacks(this.toolCallbacks);
+    copy.setInternalToolExecutionEnabled(this.internalToolExecutionEnabled);
+    copy.setTools(this.tools);
+    copy.setToolNames(this.toolNames);
+    copy.setToolContext(this.toolContext);
+    return (T) copy;
   }
 }

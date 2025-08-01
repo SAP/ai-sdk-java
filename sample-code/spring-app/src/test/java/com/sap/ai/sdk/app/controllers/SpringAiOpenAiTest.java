@@ -51,10 +51,10 @@ class SpringAiOpenAiTest {
   void testChatMemory() {
     ChatResponse response = service.ChatMemory();
     assertThat(response).isNotNull();
-    //String text = response.getResult().getOutput().getText();
-    //log.info(text);
-    //assertThat(text)
-      //  .containsAnyOf(
-        //    "French", "onion", "pastries", "cheese", "baguette", "coq au vin", "foie gras");
+    String text = response.getResult().getOutput().getText();
+    log.info(text);
+    assertThat(text)
+        .containsAnyOf(
+            "French", "onion", "pastries", "cheese", "baguette", "coq au vin", "foie gras");
   }
 }
