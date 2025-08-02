@@ -27,6 +27,8 @@ Finally, you can start the sample app:
 
 Head to http://localhost:8080 in your browser to see all available endpoints.
 
+To test the MCP integration, run with `mvn spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=mcp"`:
+
 ## Run the E2E Test
 
 Trigger the [GitHub Action](https://github.com/SAP/ai-sdk-java/actions/workflows/e2e-test.yaml).

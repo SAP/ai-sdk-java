@@ -131,6 +131,20 @@ class SpringAiOrchestrationController {
     return text.isEmpty() ? message.getToolCalls().toString() : text;
   }
 
+  @GetMapping("/mcp")
+  Object mcp(@Nullable @RequestParam(value = "format", required = false) final String format) {
+    val response = service.toolCallingMcp();
+
+    if ("json".equals(format)) {
+      return ((OrchestrationSpringChatResponse) response)
+          .getOrchestrationResponse()
+          .getOriginalResponse();
+    }
+    final AssistantMessage message = response.getResult().getOutput();
+    final String text = message.getText();
+    return text.isEmpty() ? message.getToolCalls().toString() : text;
+  }
+
   @GetMapping("/chatMemory")
   Object chatMemory(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
