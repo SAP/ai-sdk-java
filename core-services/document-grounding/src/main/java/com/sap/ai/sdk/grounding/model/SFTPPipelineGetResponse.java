@@ -94,7 +94,7 @@ public class SFTPPipelineGetResponse implements GetPipeline
   private MetaData metadata;
 
   @JsonProperty("configuration")
-  private CommonConfiguration _configuration;
+  private SFTPConfiguration _configuration;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -203,7 +203,7 @@ public class SFTPPipelineGetResponse implements GetPipeline
    * @return The same instance of this {@link SFTPPipelineGetResponse} class
    */
   @Nonnull
-  public SFTPPipelineGetResponse _configuration(@Nonnull final CommonConfiguration _configuration) {
+  public SFTPPipelineGetResponse _configuration(@Nonnull final SFTPConfiguration _configuration) {
     this._configuration = _configuration;
     return this;
   }
@@ -214,7 +214,7 @@ public class SFTPPipelineGetResponse implements GetPipeline
    * @return _configuration The _configuration of this {@link SFTPPipelineGetResponse} instance.
    */
   @Nonnull
-  public CommonConfiguration getConfiguration() {
+  public SFTPConfiguration getConfiguration() {
     return _configuration;
   }
 
@@ -223,7 +223,7 @@ public class SFTPPipelineGetResponse implements GetPipeline
    *
    * @param _configuration The _configuration of this {@link SFTPPipelineGetResponse}
    */
-  public void setConfiguration(@Nonnull final CommonConfiguration _configuration) {
+  public void setConfiguration(@Nonnull final SFTPConfiguration _configuration) {
     this._configuration = _configuration;
   }
 
@@ -373,6 +373,6 @@ public class SFTPPipelineGetResponse implements GetPipeline
      * @param _configuration The _configuration of this {@link SFTPPipelineGetResponse}
      * @return The SFTPPipelineGetResponse instance.
      */
-    SFTPPipelineGetResponse _configuration(@Nonnull final CommonConfiguration _configuration);
+    SFTPPipelineGetResponse _configuration(@Nonnull final SFTPConfiguration _configuration);
   }
 }

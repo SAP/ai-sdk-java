@@ -8,6 +8,7 @@ import com.sap.ai.sdk.grounding.model.GetPipelineExecutionById;
 import com.sap.ai.sdk.grounding.model.GetPipelineExecutions;
 import com.sap.ai.sdk.grounding.model.GetPipelineStatus;
 import com.sap.ai.sdk.grounding.model.GetPipelines;
+import com.sap.ai.sdk.grounding.model.ManualPipelineTrigger;
 import com.sap.ai.sdk.grounding.model.PipelineDocumentResponse;
 import com.sap.ai.sdk.grounding.model.PipelineId;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -1001,5 +1002,73 @@ public class PipelinesApi extends AbstractOpenApiService {
         localVarContentType,
         localVarAuthNames,
         localVarReturnType);
+  }
+
+  /**
+   * Pipeline Trigger
+   *
+   * <p>Manually trigger a pipeline
+   *
+   * <p><b>202</b> - Accepted
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param manualPipelineTrigger The value for the parameter manualPipelineTrigger
+   * @return An OpenApiResponse containing the status code of the HttpResponse.
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OpenApiResponse manualTriggerPipeline(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final ManualPipelineTrigger manualPipelineTrigger)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = manualPipelineTrigger;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling manualTriggerPipeline");
+    }
+
+    // verify the required parameter 'manualPipelineTrigger' is set
+    if (manualPipelineTrigger == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'manualPipelineTrigger' when calling pipelineV1PipelineEndpointsTriggerPipeline");
+    }
+
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/pipelines/trigger").build().toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<Void> localVarReturnType =
+        new ParameterizedTypeReference<Void>() {};
+    apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.POST,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+    return new OpenApiResponse(apiClient);
   }
 }

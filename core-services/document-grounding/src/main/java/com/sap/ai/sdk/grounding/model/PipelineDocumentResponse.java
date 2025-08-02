@@ -31,17 +31,23 @@ public class PipelineDocumentResponse
   @JsonProperty("id")
   private String id;
 
-  @JsonProperty("viewLocation")
-  private String viewLocation;
+  @JsonProperty("status")
+  private DocumentStatus status;
 
-  @JsonProperty("downloadLocation")
-  private String downloadLocation;
+  @JsonProperty("absoluteUrl")
+  private String absoluteUrl;
+
+  @JsonProperty("title")
+  private String title;
+
+  @JsonProperty("metadataId")
+  private String metadataId;
+
+  @JsonProperty("createdTimestamp")
+  private String createdTimestamp;
 
   @JsonProperty("lastUpdatedTimestamp")
   private String lastUpdatedTimestamp;
-
-  @JsonProperty("status")
-  private DocumentStatus status;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -81,68 +87,162 @@ public class PipelineDocumentResponse
   }
 
   /**
-   * Set the viewLocation of this {@link PipelineDocumentResponse} instance and return the same
-   * instance.
+   * Set the status of this {@link PipelineDocumentResponse} instance and return the same instance.
    *
-   * @param viewLocation The viewLocation of this {@link PipelineDocumentResponse}
+   * @param status The status of this {@link PipelineDocumentResponse}
    * @return The same instance of this {@link PipelineDocumentResponse} class
    */
   @Nonnull
-  public PipelineDocumentResponse viewLocation(@Nullable final String viewLocation) {
-    this.viewLocation = viewLocation;
+  public PipelineDocumentResponse status(@Nullable final DocumentStatus status) {
+    this.status = status;
     return this;
   }
 
   /**
-   * Get viewLocation
+   * Get status
    *
-   * @return viewLocation The viewLocation of this {@link PipelineDocumentResponse} instance.
+   * @return status The status of this {@link PipelineDocumentResponse} instance.
+   */
+  @Nonnull
+  public DocumentStatus getStatus() {
+    return status;
+  }
+
+  /**
+   * Set the status of this {@link PipelineDocumentResponse} instance.
+   *
+   * @param status The status of this {@link PipelineDocumentResponse}
+   */
+  public void setStatus(@Nullable final DocumentStatus status) {
+    this.status = status;
+  }
+
+  /**
+   * Set the absoluteUrl of this {@link PipelineDocumentResponse} instance and return the same
+   * instance.
+   *
+   * @param absoluteUrl The absoluteUrl of this {@link PipelineDocumentResponse}
+   * @return The same instance of this {@link PipelineDocumentResponse} class
+   */
+  @Nonnull
+  public PipelineDocumentResponse absoluteUrl(@Nullable final String absoluteUrl) {
+    this.absoluteUrl = absoluteUrl;
+    return this;
+  }
+
+  /**
+   * Get absoluteUrl
+   *
+   * @return absoluteUrl The absoluteUrl of this {@link PipelineDocumentResponse} instance.
    */
   @Nullable
-  public String getViewLocation() {
-    return viewLocation;
+  public String getAbsoluteUrl() {
+    return absoluteUrl;
   }
 
   /**
-   * Set the viewLocation of this {@link PipelineDocumentResponse} instance.
+   * Set the absoluteUrl of this {@link PipelineDocumentResponse} instance.
    *
-   * @param viewLocation The viewLocation of this {@link PipelineDocumentResponse}
+   * @param absoluteUrl The absoluteUrl of this {@link PipelineDocumentResponse}
    */
-  public void setViewLocation(@Nullable final String viewLocation) {
-    this.viewLocation = viewLocation;
+  public void setAbsoluteUrl(@Nullable final String absoluteUrl) {
+    this.absoluteUrl = absoluteUrl;
   }
 
   /**
-   * Set the downloadLocation of this {@link PipelineDocumentResponse} instance and return the same
-   * instance.
+   * Set the title of this {@link PipelineDocumentResponse} instance and return the same instance.
    *
-   * @param downloadLocation The downloadLocation of this {@link PipelineDocumentResponse}
+   * @param title The title of this {@link PipelineDocumentResponse}
    * @return The same instance of this {@link PipelineDocumentResponse} class
    */
   @Nonnull
-  public PipelineDocumentResponse downloadLocation(@Nullable final String downloadLocation) {
-    this.downloadLocation = downloadLocation;
+  public PipelineDocumentResponse title(@Nullable final String title) {
+    this.title = title;
     return this;
   }
 
   /**
-   * Get downloadLocation
+   * Get title
    *
-   * @return downloadLocation The downloadLocation of this {@link PipelineDocumentResponse}
+   * @return title The title of this {@link PipelineDocumentResponse} instance.
+   */
+  @Nullable
+  public String getTitle() {
+    return title;
+  }
+
+  /**
+   * Set the title of this {@link PipelineDocumentResponse} instance.
+   *
+   * @param title The title of this {@link PipelineDocumentResponse}
+   */
+  public void setTitle(@Nullable final String title) {
+    this.title = title;
+  }
+
+  /**
+   * Set the metadataId of this {@link PipelineDocumentResponse} instance and return the same
+   * instance.
+   *
+   * @param metadataId The metadataId of this {@link PipelineDocumentResponse}
+   * @return The same instance of this {@link PipelineDocumentResponse} class
+   */
+  @Nonnull
+  public PipelineDocumentResponse metadataId(@Nullable final String metadataId) {
+    this.metadataId = metadataId;
+    return this;
+  }
+
+  /**
+   * Get metadataId
+   *
+   * @return metadataId The metadataId of this {@link PipelineDocumentResponse} instance.
+   */
+  @Nullable
+  public String getMetadataId() {
+    return metadataId;
+  }
+
+  /**
+   * Set the metadataId of this {@link PipelineDocumentResponse} instance.
+   *
+   * @param metadataId The metadataId of this {@link PipelineDocumentResponse}
+   */
+  public void setMetadataId(@Nullable final String metadataId) {
+    this.metadataId = metadataId;
+  }
+
+  /**
+   * Set the createdTimestamp of this {@link PipelineDocumentResponse} instance and return the same
+   * instance.
+   *
+   * @param createdTimestamp The createdTimestamp of this {@link PipelineDocumentResponse}
+   * @return The same instance of this {@link PipelineDocumentResponse} class
+   */
+  @Nonnull
+  public PipelineDocumentResponse createdTimestamp(@Nullable final String createdTimestamp) {
+    this.createdTimestamp = createdTimestamp;
+    return this;
+  }
+
+  /**
+   * Get createdTimestamp
+   *
+   * @return createdTimestamp The createdTimestamp of this {@link PipelineDocumentResponse}
    *     instance.
    */
-  @Nullable
-  public String getDownloadLocation() {
-    return downloadLocation;
+  @Nonnull
+  public String getCreatedTimestamp() {
+    return createdTimestamp;
   }
 
   /**
-   * Set the downloadLocation of this {@link PipelineDocumentResponse} instance.
+   * Set the createdTimestamp of this {@link PipelineDocumentResponse} instance.
    *
-   * @param downloadLocation The downloadLocation of this {@link PipelineDocumentResponse}
+   * @param createdTimestamp The createdTimestamp of this {@link PipelineDocumentResponse}
    */
-  public void setDownloadLocation(@Nullable final String downloadLocation) {
-    this.downloadLocation = downloadLocation;
+  public void setCreatedTimestamp(@Nullable final String createdTimestamp) {
+    this.createdTimestamp = createdTimestamp;
   }
 
   /**
@@ -177,37 +277,6 @@ public class PipelineDocumentResponse
    */
   public void setLastUpdatedTimestamp(@Nullable final String lastUpdatedTimestamp) {
     this.lastUpdatedTimestamp = lastUpdatedTimestamp;
-  }
-
-  /**
-   * Set the status of this {@link PipelineDocumentResponse} instance and return the same instance.
-   *
-   * @param status The status of this {@link PipelineDocumentResponse}
-   * @return The same instance of this {@link PipelineDocumentResponse} class
-   */
-  @Nonnull
-  public PipelineDocumentResponse status(@Nullable final DocumentStatus status) {
-    this.status = status;
-    return this;
-  }
-
-  /**
-   * Get status
-   *
-   * @return status The status of this {@link PipelineDocumentResponse} instance.
-   */
-  @Nonnull
-  public DocumentStatus getStatus() {
-    return status;
-  }
-
-  /**
-   * Set the status of this {@link PipelineDocumentResponse} instance.
-   *
-   * @param status The status of this {@link PipelineDocumentResponse}
-   */
-  public void setStatus(@Nullable final DocumentStatus status) {
-    this.status = status;
   }
 
   /**
@@ -250,11 +319,13 @@ public class PipelineDocumentResponse
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (id != null) declaredFields.put("id", id);
-    if (viewLocation != null) declaredFields.put("viewLocation", viewLocation);
-    if (downloadLocation != null) declaredFields.put("downloadLocation", downloadLocation);
+    if (status != null) declaredFields.put("status", status);
+    if (absoluteUrl != null) declaredFields.put("absoluteUrl", absoluteUrl);
+    if (title != null) declaredFields.put("title", title);
+    if (metadataId != null) declaredFields.put("metadataId", metadataId);
+    if (createdTimestamp != null) declaredFields.put("createdTimestamp", createdTimestamp);
     if (lastUpdatedTimestamp != null)
       declaredFields.put("lastUpdatedTimestamp", lastUpdatedTimestamp);
-    if (status != null) declaredFields.put("status", status);
     return declaredFields;
   }
 
@@ -281,16 +352,25 @@ public class PipelineDocumentResponse
     final PipelineDocumentResponse pipelineDocumentResponse = (PipelineDocumentResponse) o;
     return Objects.equals(this.cloudSdkCustomFields, pipelineDocumentResponse.cloudSdkCustomFields)
         && Objects.equals(this.id, pipelineDocumentResponse.id)
-        && Objects.equals(this.viewLocation, pipelineDocumentResponse.viewLocation)
-        && Objects.equals(this.downloadLocation, pipelineDocumentResponse.downloadLocation)
-        && Objects.equals(this.lastUpdatedTimestamp, pipelineDocumentResponse.lastUpdatedTimestamp)
-        && Objects.equals(this.status, pipelineDocumentResponse.status);
+        && Objects.equals(this.status, pipelineDocumentResponse.status)
+        && Objects.equals(this.absoluteUrl, pipelineDocumentResponse.absoluteUrl)
+        && Objects.equals(this.title, pipelineDocumentResponse.title)
+        && Objects.equals(this.metadataId, pipelineDocumentResponse.metadataId)
+        && Objects.equals(this.createdTimestamp, pipelineDocumentResponse.createdTimestamp)
+        && Objects.equals(this.lastUpdatedTimestamp, pipelineDocumentResponse.lastUpdatedTimestamp);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        id, viewLocation, downloadLocation, lastUpdatedTimestamp, status, cloudSdkCustomFields);
+        id,
+        status,
+        absoluteUrl,
+        title,
+        metadataId,
+        createdTimestamp,
+        lastUpdatedTimestamp,
+        cloudSdkCustomFields);
   }
 
   @Override
@@ -299,12 +379,14 @@ public class PipelineDocumentResponse
     final StringBuilder sb = new StringBuilder();
     sb.append("class PipelineDocumentResponse {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    viewLocation: ").append(toIndentedString(viewLocation)).append("\n");
-    sb.append("    downloadLocation: ").append(toIndentedString(downloadLocation)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    absoluteUrl: ").append(toIndentedString(absoluteUrl)).append("\n");
+    sb.append("    title: ").append(toIndentedString(title)).append("\n");
+    sb.append("    metadataId: ").append(toIndentedString(metadataId)).append("\n");
+    sb.append("    createdTimestamp: ").append(toIndentedString(createdTimestamp)).append("\n");
     sb.append("    lastUpdatedTimestamp: ")
         .append(toIndentedString(lastUpdatedTimestamp))
         .append("\n");
-    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
