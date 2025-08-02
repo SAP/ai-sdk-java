@@ -19,7 +19,7 @@ import lombok.Value;
 @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
 public class OpenAiError implements ClientError {
   /** The original error response from the OpenAI API. */
-  ErrorResponse originalResponse;
+  ErrorResponse errorResponse;
 
   /**
    * Gets the error message from the contained original response.
@@ -28,6 +28,6 @@ public class OpenAiError implements ClientError {
    */
   @Nonnull
   public String getMessage() {
-    return originalResponse.getError().getMessage();
+    return errorResponse.getError().getMessage();
   }
 }

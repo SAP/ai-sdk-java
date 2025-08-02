@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.annotation.Nonnull;
 import lombok.SneakyThrows;
 import lombok.experimental.StandardException;
 import org.apache.hc.core5.http.ContentType;
@@ -34,7 +35,7 @@ class IterableStreamConverterTest {
     final var inputStream = spy(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
 
-    final var sut = IterableStreamConverter.lines(entity, TestClientException::new);
+    final var sut = IterableStreamConverter.lines(entity, new TestClientExceptionFactory());
     verify(inputStream, never()).read();
     verify(inputStream, never()).read(any());
     verify(inputStream, never()).read(any(), anyInt(), anyInt());
@@ -70,7 +71,7 @@ class IterableStreamConverterTest {
 
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
 
-    final var sut = IterableStreamConverter.lines(entity, TestClientException::new);
+    final var sut = IterableStreamConverter.lines(entity, new TestClientExceptionFactory());
     assertThat(sut.findFirst()).contains("Foo Bar");
     verify(inputStream, times(1)).read(any(), anyInt(), anyInt());
     verify(inputStream, never()).close();
@@ -94,10 +95,10 @@ class IterableStreamConverterTest {
 
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
 
-    final var sut = IterableStreamConverter.lines(entity, TestClientException::new);
+    final var sut = IterableStreamConverter.lines(entity, new TestClientExceptionFactory());
     assertThatThrownBy(sut::count)
         .isInstanceOf(TestClientException.class)
-        .hasMessage("Parsing response content was interrupted.")
+        .hasMessage("Parsing response content was interrupted")
         .cause()
         .isInstanceOf(IOException.class)
         .hasMessage("Ups!");
@@ -107,4 +108,23 @@ class IterableStreamConverterTest {
 
   @StandardException
   public static class TestClientException extends ClientException {}
+
+  static class TestClientExceptionFactory
+      implements ClientExceptionFactory<TestClientException, ClientError> {
+
+    @Nonnull
+    @Override
+    public TestClientException build(@Nonnull String message, Throwable cause) {
+      return new TestClientException(message, cause);
+    }
+
+    @Nonnull
+    @Override
+    public TestClientException buildFromClientError(
+        @Nonnull String message, @Nonnull ClientError clientError) {
+      TestClientException exception = new TestClientException(message);
+      exception.clientError = clientError;
+      return exception;
+    }
+  }
 }
