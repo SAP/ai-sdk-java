@@ -111,8 +111,7 @@ public class SpringAiOpenAiService {
 
     cl.prompt(prompt1).call().content();
     return Objects.requireNonNull(
-            cl.prompt(prompt2).call().chatResponse(), "Chat response is null");
-
+        cl.prompt(prompt2).call().chatResponse(), "Chat response is null");
   }
 
   /**
