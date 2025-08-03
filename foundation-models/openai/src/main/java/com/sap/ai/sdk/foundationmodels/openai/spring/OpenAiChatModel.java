@@ -12,6 +12,8 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessage;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
@@ -37,9 +39,7 @@ public class OpenAiChatModel implements ChatModel {
 
   @Override
   public ChatResponse call(Prompt prompt) {
-    System.out.println(prompt.getOptions() instanceof OpenAiChatOptions options);
     if (prompt.getOptions() instanceof OpenAiChatOptions options) {
-      System.out.println("entered the if statement in call method of OpenAiChatModel");
 
       var request =
           new OpenAiChatCompletionRequest(toOpenAiRequest(prompt)).withTools(options.getTools());
@@ -51,41 +51,44 @@ public class OpenAiChatModel implements ChatModel {
         // Send the tool execution result back to the model.
         return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
       }
-      System.out.println("this is the response in call method of OpenAiChatModel "+ response);
       return response;
     }
-    System.out.println("did not enter at all straight to the exception");
     throw new IllegalArgumentException(
         "Please add OpenAiChatOptions to the Prompt: new Prompt(\"message\", new OpenAiChatOptions(config))");
   }
 
   private List<OpenAiMessage> toOpenAiRequest(Prompt prompt) {
     return prompt.getInstructions().stream()
-        .map(
+        .flatMap(
             message ->
                 switch (message.getMessageType()) {
-                  case USER -> OpenAiMessage.user(message.getText());
+                  case USER -> Stream.of(OpenAiMessage.user(message.getText()));
                   case ASSISTANT -> {
                     AssistantMessage assistantMessage = (AssistantMessage) message;
-                    yield assistantMessage.hasToolCalls()
-                        ? new OpenAiAssistantMessage(
-                            new OpenAiMessageContent(
-                                List.of(new OpenAiTextItem(message.getText()))),
-                            assistantMessage.getToolCalls().stream()
-                                .map(
-                                    toolCall ->
-                                        (OpenAiToolCall)
-                                            new OpenAiFunctionCall(
-                                                toolCall.id(),
-                                                toolCall.name(),
-                                                toolCall.arguments()))
-                                .toList())
-                        : new OpenAiAssistantMessage(message.getText());
+                    yield Stream.of(
+                        assistantMessage.hasToolCalls()
+                            ? new OpenAiAssistantMessage(
+                                new OpenAiMessageContent(
+                                    List.of(
+                                        new OpenAiTextItem(
+                                            Objects.requireNonNull(message.getText())))),
+                                assistantMessage.getToolCalls().stream()
+                                    .map(
+                                        toolCall ->
+                                            (OpenAiToolCall)
+                                                new OpenAiFunctionCall(
+                                                    toolCall.id(),
+                                                    toolCall.name(),
+                                                    toolCall.arguments()))
+                                    .toList())
+                            : new OpenAiAssistantMessage(
+                                Objects.requireNonNull(message.getText())));
                   }
-                  case SYSTEM -> OpenAiMessage.system(message.getText());
+                  case SYSTEM -> Stream.of(OpenAiMessage.system(message.getText()));
                   case TOOL -> {
-                    ToolResponse first = ((ToolResponseMessage) message).getResponses().get(0);
-                    yield OpenAiMessage.tool(first.responseData(), first.id());
+                    List<ToolResponse> responses = ((ToolResponseMessage) message).getResponses();
+                    yield responses.stream()
+                        .map(resp -> OpenAiMessage.tool(resp.responseData(), resp.id()));
                   }
                 })
         .toList();
