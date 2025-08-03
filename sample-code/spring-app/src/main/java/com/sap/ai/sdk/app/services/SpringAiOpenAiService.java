@@ -7,10 +7,7 @@ import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatOptions;
 import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiSpringEmbeddingModel;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import javax.annotation.Nonnull;
-
-import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -18,7 +15,6 @@ import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.EmbeddingOptionsBuilder;
@@ -26,8 +22,6 @@ import org.springframework.ai.embedding.EmbeddingRequest;
 import org.springframework.ai.embedding.EmbeddingResponse;
 import org.springframework.ai.support.ToolCallbacks;
 import org.springframework.stereotype.Service;
-
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 
 /** Service class for Spring AI integration with OpenAI */
 @Service
