@@ -1014,15 +1014,16 @@ public class PipelinesApi extends AbstractOpenApiService {
    * <p><b>400</b> - The specification of the resource was incorrect
    *
    * @param aiResourceGroup Resource Group ID
-   * @param body The value for the parameter body
+   * @param manualPipelineTrigger The value for the parameter manualPipelineTrigger
    * @return An OpenApiResponse containing the status code of the HttpResponse.
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public OpenApiResponse manualTriggerPipeline(
-      @Nonnull final String aiResourceGroup, @Nonnull final ManualPipelineTrigger body)
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final ManualPipelineTrigger manualPipelineTrigger)
       throws OpenApiRequestException {
-    final Object localVarPostBody = body;
+    final Object localVarPostBody = manualPipelineTrigger;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -1030,10 +1031,10 @@ public class PipelinesApi extends AbstractOpenApiService {
           "Missing the required parameter 'aiResourceGroup' when calling manualTriggerPipeline");
     }
 
-    // verify the required parameter 'body' is set
-    if (body == null) {
+    // verify the required parameter 'manualPipelineTrigger' is set
+    if (manualPipelineTrigger == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'body' when calling pipelineV1PipelineEndpointsTriggerPipeline");
+          "Missing the required parameter 'manualPipelineTrigger' when calling pipelineV1PipelineEndpointsTriggerPipeline");
     }
 
     final String localVarPath =

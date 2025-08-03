@@ -1002,6 +1002,13 @@ components:
           SDM: "#/components/schemas/SDMPipelineCreateRequest"
           WorkZone: "#/components/schemas/WorkZonePipelineCreateRequest"
 
+    manualPipelineTrigger:
+      type: object
+      properties:
+        pipelineId:
+          type: string
+          example: uuid
+
     MSSharePointPipelineCreateRequest:
       type: object
       required:
@@ -1027,7 +1034,7 @@ components:
           type: string
           enum: [S3]
         configuration:
-          $ref: "#/components/schemas/CommonConfiguration"
+          $ref: "#/components/schemas/S3Configuration"
         metadata:
           $ref: "#/components/schemas/MetaData"
       additionalProperties: true
@@ -1042,7 +1049,7 @@ components:
           type: string
           enum: [SFTP]
         configuration:
-          $ref: "#/components/schemas/CommonConfiguration"
+          $ref: "#/components/schemas/SFTPConfiguration"
         metadata:
           $ref: "#/components/schemas/MetaData"
       additionalProperties: true
@@ -1112,14 +1119,44 @@ components:
             - /testFolder2
       additionalProperties: true
 
-    CommonConfiguration:
+    SFTPConfiguration:
       type: object
       required:
         - destination
       properties:
         destination:
           type: string
-          example: generic-secret-name
+          example: generic-secret-
+        sftp:
+          type: object
+          properties:
+            includePaths:
+              type: array
+              items:
+                type: string
+              example:
+                - /testFolder1
+                - /testFolder2
+      additionalProperties: true
+    
+    S3Configuration:
+      type: object
+      required:
+        - destination
+      properties:
+        destination:
+          type: string
+          example: generic-secret-
+        s3:
+          type: object
+          properties:
+            includePaths:
+              type: array
+              items:
+                type: string
+              example:
+                - /testFolder1
+                - /testFolder2
       additionalProperties: true
 
     MetaData:
@@ -1184,7 +1221,7 @@ components:
               type: string
               enum: [S3]
             configuration:
-              $ref: "#/components/schemas/CommonConfiguration"
+              $ref: "#/components/schemas/S3Configuration"
 
     SFTPPipelineGetResponse:
       allOf:
@@ -1197,7 +1234,7 @@ components:
               type: string
               enum: [SFTP]
             configuration:
-              $ref: "#/components/schemas/CommonConfiguration"
+              $ref: "#/components/schemas/SFTPConfiguration"
 
     SDMPipelineGetResponse:
       allOf:
@@ -1213,17 +1250,17 @@ components:
               $ref: "#/components/schemas/MetaData"
       
     WorkZonePipelineGetResponse:
-    allOf:
-      - $ref: "#/components/schemas/BasePipelineResponse"
-      - type: object
-        required:
-          - metadata
-        properties:
-          type:
-            type: string
-            enum: [WorkZone]
-          metadata:
-              $ref: "#/components/schemas/MetaData"
+      allOf:
+        - $ref: "#/components/schemas/BasePipelineResponse"
+        - type: object
+          required:
+            - metadata
+          properties:
+            type:
+              type: string
+              enum: [WorkZone]
+            metadata:
+                $ref: "#/components/schemas/MetaData"
 
     BasePipelineResponse:
       type: object
@@ -1362,6 +1399,21 @@ components:
                 example: uuid
               status:
                 $ref: '#/components/schemas/DocumentStatus'
+              absoluteUrl:
+                type: string
+                nullable: true
+              title:
+                type: string
+                nullable: true
+              metadataId:
+                type: string
+                nullable: true
+              createdTimestamp:
+                type: string
+                example: '2024-02-15T12:45:00Z'
+              lastUpdatedTimestamp:
+                type: string
+                example: '2024-02-15T12:45:00Z'
 
     PipelineDocumentResponse:
       type: object
@@ -1369,19 +1421,23 @@ components:
         id:
           type: string
           example: uuid
-        viewLocation:
+        status:
+          $ref: '#/components/schemas/DocumentStatus'
+        absoluteUrl:
           type: string
-          example: 'location'
           nullable: true
-        downloadLocation:
+        title:
           type: string
-          example: 'location'
           nullable: true
+        metadataId:
+          type: string
+          nullable: true
+        createdTimestamp:
+          type: string
+          example: '2024-02-15T12:45:00Z'
         lastUpdatedTimestamp:
           type: string
           example: '2024-02-15T12:45:00Z'
-        status:
-            $ref: '#/components/schemas/DocumentStatus'
 
     Chunk:
       properties:
