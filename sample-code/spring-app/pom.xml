@@ -33,7 +33,7 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <spring-boot.version>3.5.0</spring-boot.version>
+    <spring-boot.version>3.5.4</spring-boot.version>
     <logback.version>1.5.18</logback.version>
     <cf-logging.version>3.8.5</cf-logging.version>
     <apache-tomcat-embed.version>11.0.9</apache-tomcat-embed.version>
@@ -106,6 +106,24 @@
     <dependency>
       <groupId>org.springframework.ai</groupId>
       <artifactId>spring-ai-client-chat</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-mcp</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-autoconfigure-mcp-client</artifactId>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <!-- MCP brings 3.4.5 which conflicts with our version 3.5.0.
+           Since we bring the necessary Spring dependencies, we can just exclude the transitive dependency here -->
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
