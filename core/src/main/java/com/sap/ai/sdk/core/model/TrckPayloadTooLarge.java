@@ -23,28 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** InlineObject4 */
+/** TrckPayloadTooLarge */
 // CHECKSTYLE:OFF
-public class InlineObject4
+public class TrckPayloadTooLarge
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private KpiApiError error;
+  private TrckApiError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for InlineObject4. */
-  protected InlineObject4() {}
+  /** Default constructor for TrckPayloadTooLarge. */
+  protected TrckPayloadTooLarge() {}
 
   /**
-   * Set the error of this {@link InlineObject4} instance and return the same instance.
+   * Set the error of this {@link TrckPayloadTooLarge} instance and return the same instance.
    *
-   * @param error The error of this {@link InlineObject4}
-   * @return The same instance of this {@link InlineObject4} class
+   * @param error The error of this {@link TrckPayloadTooLarge}
+   * @return The same instance of this {@link TrckPayloadTooLarge} class
    */
   @Nonnull
-  public InlineObject4 error(@Nullable final KpiApiError error) {
+  public TrckPayloadTooLarge error(@Nullable final TrckApiError error) {
     this.error = error;
     return this;
   }
@@ -52,24 +52,24 @@ public class InlineObject4
   /**
    * Get error
    *
-   * @return error The error of this {@link InlineObject4} instance.
+   * @return error The error of this {@link TrckPayloadTooLarge} instance.
    */
   @Nonnull
-  public KpiApiError getError() {
+  public TrckApiError getError() {
     return error;
   }
 
   /**
-   * Set the error of this {@link InlineObject4} instance.
+   * Set the error of this {@link TrckPayloadTooLarge} instance.
    *
-   * @param error The error of this {@link InlineObject4}
+   * @param error The error of this {@link TrckPayloadTooLarge}
    */
-  public void setError(@Nullable final KpiApiError error) {
+  public void setError(@Nullable final TrckApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link InlineObject4}.
+   * Get the names of the unrecognizable properties of the {@link TrckPayloadTooLarge}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class InlineObject4
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link InlineObject4} instance.
+   * Get the value of an unrecognizable property of this {@link TrckPayloadTooLarge} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,14 +91,15 @@ public class InlineObject4
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("InlineObject4 has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "TrckPayloadTooLarge has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link InlineObject4} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link TrckPayloadTooLarge} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -111,8 +112,8 @@ public class InlineObject4
   }
 
   /**
-   * Set an unrecognizable property of this {@link InlineObject4} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link TrckPayloadTooLarge} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -130,9 +131,9 @@ public class InlineObject4
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final InlineObject4 inlineObject4 = (InlineObject4) o;
-    return Objects.equals(this.cloudSdkCustomFields, inlineObject4.cloudSdkCustomFields)
-        && Objects.equals(this.error, inlineObject4.error);
+    final TrckPayloadTooLarge trckPayloadTooLarge = (TrckPayloadTooLarge) o;
+    return Objects.equals(this.cloudSdkCustomFields, trckPayloadTooLarge.cloudSdkCustomFields)
+        && Objects.equals(this.error, trckPayloadTooLarge.error);
   }
 
   @Override
@@ -144,7 +145,7 @@ public class InlineObject4
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class InlineObject4 {\n");
+    sb.append("class TrckPayloadTooLarge {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -163,8 +164,8 @@ public class InlineObject4
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link InlineObject4} instance. No arguments are required. */
-  public static InlineObject4 create() {
-    return new InlineObject4();
+  /** Create a new {@link TrckPayloadTooLarge} instance. No arguments are required. */
+  public static TrckPayloadTooLarge create() {
+    return new TrckPayloadTooLarge();
   }
 }

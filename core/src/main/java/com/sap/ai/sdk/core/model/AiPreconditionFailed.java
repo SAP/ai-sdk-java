@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** InlineObject2 */
+/** AiPreconditionFailed */
 // CHECKSTYLE:OFF
-public class InlineObject2
+public class AiPreconditionFailed
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
@@ -34,17 +34,17 @@ public class InlineObject2
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for InlineObject2. */
-  protected InlineObject2() {}
+  /** Default constructor for AiPreconditionFailed. */
+  protected AiPreconditionFailed() {}
 
   /**
-   * Set the error of this {@link InlineObject2} instance and return the same instance.
+   * Set the error of this {@link AiPreconditionFailed} instance and return the same instance.
    *
-   * @param error The error of this {@link InlineObject2}
-   * @return The same instance of this {@link InlineObject2} class
+   * @param error The error of this {@link AiPreconditionFailed}
+   * @return The same instance of this {@link AiPreconditionFailed} class
    */
   @Nonnull
-  public InlineObject2 error(@Nullable final AiApiError error) {
+  public AiPreconditionFailed error(@Nullable final AiApiError error) {
     this.error = error;
     return this;
   }
@@ -52,7 +52,7 @@ public class InlineObject2
   /**
    * Get error
    *
-   * @return error The error of this {@link InlineObject2} instance.
+   * @return error The error of this {@link AiPreconditionFailed} instance.
    */
   @Nonnull
   public AiApiError getError() {
@@ -60,16 +60,16 @@ public class InlineObject2
   }
 
   /**
-   * Set the error of this {@link InlineObject2} instance.
+   * Set the error of this {@link AiPreconditionFailed} instance.
    *
-   * @param error The error of this {@link InlineObject2}
+   * @param error The error of this {@link AiPreconditionFailed}
    */
   public void setError(@Nullable final AiApiError error) {
     this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link InlineObject2}.
+   * Get the names of the unrecognizable properties of the {@link AiPreconditionFailed}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class InlineObject2
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link InlineObject2} instance.
+   * Get the value of an unrecognizable property of this {@link AiPreconditionFailed} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,14 +91,15 @@ public class InlineObject2
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("InlineObject2 has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "AiPreconditionFailed has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link InlineObject2} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link AiPreconditionFailed} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -111,8 +112,8 @@ public class InlineObject2
   }
 
   /**
-   * Set an unrecognizable property of this {@link InlineObject2} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link AiPreconditionFailed} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -130,9 +131,9 @@ public class InlineObject2
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final InlineObject2 inlineObject2 = (InlineObject2) o;
-    return Objects.equals(this.cloudSdkCustomFields, inlineObject2.cloudSdkCustomFields)
-        && Objects.equals(this.error, inlineObject2.error);
+    final AiPreconditionFailed aiPreconditionFailed = (AiPreconditionFailed) o;
+    return Objects.equals(this.cloudSdkCustomFields, aiPreconditionFailed.cloudSdkCustomFields)
+        && Objects.equals(this.error, aiPreconditionFailed.error);
   }
 
   @Override
@@ -144,7 +145,7 @@ public class InlineObject2
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class InlineObject2 {\n");
+    sb.append("class AiPreconditionFailed {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -163,8 +164,8 @@ public class InlineObject2
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link InlineObject2} instance. No arguments are required. */
-  public static InlineObject2 create() {
-    return new InlineObject2();
+  /** Create a new {@link AiPreconditionFailed} instance. No arguments are required. */
+  public static AiPreconditionFailed create() {
+    return new AiPreconditionFailed();
   }
 }
