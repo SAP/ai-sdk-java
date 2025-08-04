@@ -3,7 +3,6 @@ package com.sap.ai.sdk.orchestration.spring;
 import static com.sap.ai.sdk.orchestration.OrchestrationClient.toCompletionPostRequest;
 import static com.sap.ai.sdk.orchestration.model.MessageToolCall.TypeEnum.FUNCTION;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
@@ -34,7 +33,6 @@ import reactor.core.publisher.Flux;
  *
  * @since 1.2.0
  */
-@Beta
 @Slf4j
 public class OrchestrationChatModel implements ChatModel {
   @Nonnull private final OrchestrationClient client;

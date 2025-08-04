@@ -59,28 +59,28 @@
     <maven.compiler.proc>full</maven.compiler.proc>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputTimestamp>2025-04-03T13:23:00Z</project.build.outputTimestamp>
-    <cloud-sdk.version>5.20.0</cloud-sdk.version>
-    <junit-jupiter.version>5.13.3</junit-jupiter.version>
+    <cloud-sdk.version>5.21.0</cloud-sdk.version>
+    <junit-jupiter.version>5.13.4</junit-jupiter.version>
     <wiremock.version>3.13.1</wiremock.version>
     <assertj-core.version>3.27.3</assertj-core.version>
     <slf4j.version>2.0.17</slf4j.version>
     <checkstyle.version>10.26.1</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.3</surefire.version>
-    <springframework.version>6.2.8</springframework.version>
-    <spring-ai.version>1.0.0-M6</spring-ai.version>
-    <reactor-core.version>3.6.12</reactor-core.version>
+    <springframework.version>6.2.9</springframework.version>
+    <spring-ai.version>1.0.1</spring-ai.version>
+    <reactor-core.version>3.7.8</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.18.0</mockito.version>
     <javaparser.version>3.27.0</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.19.2</jackson.version>
     <!-- conflicts resolution -->
-    <micrometer.version>1.14.2</micrometer.version>
+    <micrometer.version>1.15.2</micrometer.version>
     <json.version>20250517</json.version>
     <snakeyaml.version>2.4</snakeyaml.version>
     <!-- Formatting -->
-    <spotless.version>2.46.0</spotless.version>
+    <spotless.version>2.46.1</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
@@ -107,6 +107,13 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>org.springframework.ai</groupId>
+        <artifactId>spring-ai-bom</artifactId>
+        <version>${spring-ai.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <!-- scope "compile" -->
       <dependency>
         <groupId>org.springframework</groupId>
@@ -117,11 +124,6 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
         <version>${springframework.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.ai</groupId>
-        <artifactId>spring-ai-core</artifactId>
-        <version>${spring-ai.version}</version>
       </dependency>
       <dependency>
         <groupId>io.projectreactor</groupId>
@@ -266,24 +268,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <id>spring-milestones</id>
-      <name>Spring Milestones</name>
-      <url>https://repo.spring.io/milestone</url>
-    </repository>
-    <repository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <id>spring-snapshots</id>
-      <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
-    </repository>
-  </repositories>
   <build>
     <resources>
       <resource>

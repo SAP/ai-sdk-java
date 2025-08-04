@@ -45,6 +45,7 @@ The following table lists the required versions, based on the latest release:
 | SAP Cloud SDK          | 5.6.0           | latest              |
 | (optional) CAP Java    | 3.0.0           | latest              |
 | (optional) Spring Boot | 3.0             | latest              |
+| (optional) Spring AI   | 1.0.0           | latest              |
 
 See [an example `pom.xml` in our Spring Boot application](sample-code/spring-app/pom.xml).
 
