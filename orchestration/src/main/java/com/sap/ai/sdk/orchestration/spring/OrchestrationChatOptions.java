@@ -191,7 +191,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   public Boolean getInternalToolExecutionEnabled() {
     return this.internalToolExecutionEnabled;
   }
-  
+
   @Nonnull
   private LLMModelDetails getLlmConfigNonNull() {
     return Objects.requireNonNull(
