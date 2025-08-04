@@ -10,25 +10,16 @@
         "template": [
           {
             "role": "user",
-            "content": [ {
-              "type" : "text",
-              "text" : "What is the capital of France?"
-            } ]
+            "content": "What is the capital of France?"
           },
           {
             "role": "assistant",
-            "content" : [ {
-              "type" : "text",
-              "text" : "Le service d'orchestration fonctionne!"
-            } ],
+            "content" : "Le service d'orchestration fonctionne!",
             "tool_calls" : [ ]
           },
           {
             "role": "user",
-            "content": [ {
-              "type" : "text",
-              "text" : "And what is the typical food there?"
-            } ]
+            "content": "And what is the typical food there?"
           }
         ],
         "defaults": {},

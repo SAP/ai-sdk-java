@@ -25,7 +25,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Results of each module. */
+/** Synchronous results of each module. */
 // CHECKSTYLE:OFF
 public class ModuleResults
 // CHECKSTYLE:ON
@@ -45,17 +45,17 @@ public class ModuleResults
   @JsonProperty("input_filtering")
   private GenericModuleResult inputFiltering;
 
-  @JsonProperty("llm")
-  private LLMModuleResult llm;
-
   @JsonProperty("output_filtering")
   private GenericModuleResult outputFiltering;
 
-  @JsonProperty("output_unmasking")
-  private List<ModuleResultsOutputUnmaskingInner> outputUnmasking = new ArrayList<>();
-
   @JsonProperty("output_translation")
   private GenericModuleResult outputTranslation;
+
+  @JsonProperty("llm")
+  private LLMModuleResult llm;
+
+  @JsonProperty("output_unmasking")
+  private List<LLMChoice> outputUnmasking = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -234,37 +234,6 @@ public class ModuleResults
   }
 
   /**
-   * Set the llm of this {@link ModuleResults} instance and return the same instance.
-   *
-   * @param llm The llm of this {@link ModuleResults}
-   * @return The same instance of this {@link ModuleResults} class
-   */
-  @Nonnull
-  public ModuleResults llm(@Nullable final LLMModuleResult llm) {
-    this.llm = llm;
-    return this;
-  }
-
-  /**
-   * Get llm
-   *
-   * @return llm The llm of this {@link ModuleResults} instance.
-   */
-  @Nonnull
-  public LLMModuleResult getLlm() {
-    return llm;
-  }
-
-  /**
-   * Set the llm of this {@link ModuleResults} instance.
-   *
-   * @param llm The llm of this {@link ModuleResults}
-   */
-  public void setLlm(@Nullable final LLMModuleResult llm) {
-    this.llm = llm;
-  }
-
-  /**
    * Set the outputFiltering of this {@link ModuleResults} instance and return the same instance.
    *
    * @param outputFiltering The outputFiltering of this {@link ModuleResults}
@@ -296,55 +265,6 @@ public class ModuleResults
   }
 
   /**
-   * Set the outputUnmasking of this {@link ModuleResults} instance and return the same instance.
-   *
-   * @param outputUnmasking The outputUnmasking of this {@link ModuleResults}
-   * @return The same instance of this {@link ModuleResults} class
-   */
-  @Nonnull
-  public ModuleResults outputUnmasking(
-      @Nullable final List<ModuleResultsOutputUnmaskingInner> outputUnmasking) {
-    this.outputUnmasking = outputUnmasking;
-    return this;
-  }
-
-  /**
-   * Add one outputUnmasking instance to this {@link ModuleResults}.
-   *
-   * @param outputUnmaskingItem The outputUnmasking that should be added
-   * @return The same instance of type {@link ModuleResults}
-   */
-  @Nonnull
-  public ModuleResults addOutputUnmaskingItem(
-      @Nonnull final ModuleResultsOutputUnmaskingInner outputUnmaskingItem) {
-    if (this.outputUnmasking == null) {
-      this.outputUnmasking = new ArrayList<>();
-    }
-    this.outputUnmasking.add(outputUnmaskingItem);
-    return this;
-  }
-
-  /**
-   * Get outputUnmasking
-   *
-   * @return outputUnmasking The outputUnmasking of this {@link ModuleResults} instance.
-   */
-  @Nonnull
-  public List<ModuleResultsOutputUnmaskingInner> getOutputUnmasking() {
-    return outputUnmasking;
-  }
-
-  /**
-   * Set the outputUnmasking of this {@link ModuleResults} instance.
-   *
-   * @param outputUnmasking The outputUnmasking of this {@link ModuleResults}
-   */
-  public void setOutputUnmasking(
-      @Nullable final List<ModuleResultsOutputUnmaskingInner> outputUnmasking) {
-    this.outputUnmasking = outputUnmasking;
-  }
-
-  /**
    * Set the outputTranslation of this {@link ModuleResults} instance and return the same instance.
    *
    * @param outputTranslation The outputTranslation of this {@link ModuleResults}
@@ -373,6 +293,83 @@ public class ModuleResults
    */
   public void setOutputTranslation(@Nullable final GenericModuleResult outputTranslation) {
     this.outputTranslation = outputTranslation;
+  }
+
+  /**
+   * Set the llm of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param llm The llm of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull
+  public ModuleResults llm(@Nullable final LLMModuleResult llm) {
+    this.llm = llm;
+    return this;
+  }
+
+  /**
+   * Get llm
+   *
+   * @return llm The llm of this {@link ModuleResults} instance.
+   */
+  @Nonnull
+  public LLMModuleResult getLlm() {
+    return llm;
+  }
+
+  /**
+   * Set the llm of this {@link ModuleResults} instance.
+   *
+   * @param llm The llm of this {@link ModuleResults}
+   */
+  public void setLlm(@Nullable final LLMModuleResult llm) {
+    this.llm = llm;
+  }
+
+  /**
+   * Set the outputUnmasking of this {@link ModuleResults} instance and return the same instance.
+   *
+   * @param outputUnmasking The outputUnmasking of this {@link ModuleResults}
+   * @return The same instance of this {@link ModuleResults} class
+   */
+  @Nonnull
+  public ModuleResults outputUnmasking(@Nullable final List<LLMChoice> outputUnmasking) {
+    this.outputUnmasking = outputUnmasking;
+    return this;
+  }
+
+  /**
+   * Add one outputUnmasking instance to this {@link ModuleResults}.
+   *
+   * @param outputUnmaskingItem The outputUnmasking that should be added
+   * @return The same instance of type {@link ModuleResults}
+   */
+  @Nonnull
+  public ModuleResults addOutputUnmaskingItem(@Nonnull final LLMChoice outputUnmaskingItem) {
+    if (this.outputUnmasking == null) {
+      this.outputUnmasking = new ArrayList<>();
+    }
+    this.outputUnmasking.add(outputUnmaskingItem);
+    return this;
+  }
+
+  /**
+   * Get outputUnmasking
+   *
+   * @return outputUnmasking The outputUnmasking of this {@link ModuleResults} instance.
+   */
+  @Nonnull
+  public List<LLMChoice> getOutputUnmasking() {
+    return outputUnmasking;
+  }
+
+  /**
+   * Set the outputUnmasking of this {@link ModuleResults} instance.
+   *
+   * @param outputUnmasking The outputUnmasking of this {@link ModuleResults}
+   */
+  public void setOutputUnmasking(@Nullable final List<LLMChoice> outputUnmasking) {
+    this.outputUnmasking = outputUnmasking;
   }
 
   /**
@@ -418,10 +415,10 @@ public class ModuleResults
     if (inputTranslation != null) declaredFields.put("inputTranslation", inputTranslation);
     if (inputMasking != null) declaredFields.put("inputMasking", inputMasking);
     if (inputFiltering != null) declaredFields.put("inputFiltering", inputFiltering);
-    if (llm != null) declaredFields.put("llm", llm);
     if (outputFiltering != null) declaredFields.put("outputFiltering", outputFiltering);
-    if (outputUnmasking != null) declaredFields.put("outputUnmasking", outputUnmasking);
     if (outputTranslation != null) declaredFields.put("outputTranslation", outputTranslation);
+    if (llm != null) declaredFields.put("llm", llm);
+    if (outputUnmasking != null) declaredFields.put("outputUnmasking", outputUnmasking);
     return declaredFields;
   }
 
@@ -452,10 +449,10 @@ public class ModuleResults
         && Objects.equals(this.inputTranslation, moduleResults.inputTranslation)
         && Objects.equals(this.inputMasking, moduleResults.inputMasking)
         && Objects.equals(this.inputFiltering, moduleResults.inputFiltering)
-        && Objects.equals(this.llm, moduleResults.llm)
         && Objects.equals(this.outputFiltering, moduleResults.outputFiltering)
-        && Objects.equals(this.outputUnmasking, moduleResults.outputUnmasking)
-        && Objects.equals(this.outputTranslation, moduleResults.outputTranslation);
+        && Objects.equals(this.outputTranslation, moduleResults.outputTranslation)
+        && Objects.equals(this.llm, moduleResults.llm)
+        && Objects.equals(this.outputUnmasking, moduleResults.outputUnmasking);
   }
 
   @Override
@@ -466,10 +463,10 @@ public class ModuleResults
         inputTranslation,
         inputMasking,
         inputFiltering,
-        llm,
         outputFiltering,
-        outputUnmasking,
         outputTranslation,
+        llm,
+        outputUnmasking,
         cloudSdkCustomFields);
   }
 
@@ -483,10 +480,10 @@ public class ModuleResults
     sb.append("    inputTranslation: ").append(toIndentedString(inputTranslation)).append("\n");
     sb.append("    inputMasking: ").append(toIndentedString(inputMasking)).append("\n");
     sb.append("    inputFiltering: ").append(toIndentedString(inputFiltering)).append("\n");
-    sb.append("    llm: ").append(toIndentedString(llm)).append("\n");
     sb.append("    outputFiltering: ").append(toIndentedString(outputFiltering)).append("\n");
-    sb.append("    outputUnmasking: ").append(toIndentedString(outputUnmasking)).append("\n");
     sb.append("    outputTranslation: ").append(toIndentedString(outputTranslation)).append("\n");
+    sb.append("    llm: ").append(toIndentedString(llm)).append("\n");
+    sb.append("    outputUnmasking: ").append(toIndentedString(outputUnmasking)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

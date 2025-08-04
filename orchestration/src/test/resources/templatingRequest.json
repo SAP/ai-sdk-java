@@ -17,10 +17,7 @@
         "template": [
           {
             "role": "user",
-            "content": [ {
-              "type" : "text",
-              "text" : "{{?input}}"
-            } ]
+            "content": "{{?input}}"
           }
         ],
         "defaults" : { },

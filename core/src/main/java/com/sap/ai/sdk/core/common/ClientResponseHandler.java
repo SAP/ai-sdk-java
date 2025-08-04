@@ -78,11 +78,10 @@ public class ClientResponseHandler<T, E extends ClientException>
       throw exceptionConstructor.apply("Response was empty.", null);
     }
     val content = getContent(responseEntity);
-    log.debug("Parsing response from JSON response: {}", content);
     try {
       return objectMapper.readValue(content, responseType);
     } catch (final JsonProcessingException e) {
-      log.error("Failed to parse the following response: {}", content);
+      log.error("Failed to parse response to type {}", responseType);
       throw exceptionConstructor.apply("Failed to parse response", e);
     }
   }
@@ -92,7 +91,7 @@ public class ClientResponseHandler<T, E extends ClientException>
     try {
       return EntityUtils.toString(entity, StandardCharsets.UTF_8);
     } catch (IOException | ParseException e) {
-      throw exceptionConstructor.apply("Failed to read response content.", e);
+      throw exceptionConstructor.apply("Failed to read response content", e);
     }
   }
 
@@ -122,7 +121,10 @@ public class ClientResponseHandler<T, E extends ClientException>
       throw exception;
     }
 
-    log.error("The service responded with an HTTP error and the following content: {}", content);
+    log.error(
+        "The service responded with an HTTP {} ({})",
+        response.getCode(),
+        response.getReasonPhrase());
     val contentType = ContentType.parse(entity.getContentType());
     if (!ContentType.APPLICATION_JSON.isSameMimeType(contentType)) {
       throw exception;

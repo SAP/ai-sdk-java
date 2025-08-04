@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.10.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.foundationmodels</groupId>
@@ -31,6 +31,11 @@
       <organizationUrl>https://www.sap.com</organizationUrl>
     </developer>
   </developers>
+  <scm>
+    <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
+    <developerConnection>scm:git:ssh://github.com:SAP/ai-sdk-java.git</developerConnection>
+    <url>https://github.com/SAP/ai-sdk-java/tree/main</url>
+  </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
     <coverage.complexity>72%</coverage.complexity>
@@ -99,7 +104,12 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-core</artifactId>
+      <artifactId>spring-ai-commons</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-model</artifactId>
       <optional>true</optional>
     </dependency>
     <!-- scope "provided" -->
@@ -157,7 +167,6 @@
             <artifactId>openapi-generator-maven-plugin</artifactId>
             <configuration>
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-              <apiMaturity>beta</apiMaturity>
               <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
               <compileScope>COMPILE</compileScope>
               <deleteOutputDirectory>true</deleteOutputDirectory>

@@ -12,6 +12,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
@@ -37,16 +38,30 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.sap.ai.sdk.orchestration.model.ChatDelta;
+import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DPIStandardEntity;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
+import com.sap.ai.sdk.orchestration.model.Embedding;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsInput;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsInputText;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelConfig;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelDetails;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParams;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModuleConfigs;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsOrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsResponse;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -58,6 +73,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -287,7 +303,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(messageList.get(2).role()).isEqualTo("assistant");
 
-    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    var llm = response.getModuleResults().getLlm();
     assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(llm.getObject()).isEqualTo("chat.completion");
@@ -303,7 +319,7 @@ class OrchestrationUnitTest {
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
-    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    var orchestrationResult = response.getOrchestrationResult();
     assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isEqualTo(1721224505);
@@ -413,7 +429,11 @@ class OrchestrationUnitTest {
     final List<Message> messagesHistory =
         List.of(
             new UserMessage("What is the capital of France?"),
-            new AssistantMessage("The capital of France is Paris."));
+            new AssistantMessage(
+                new MessageContent(
+                    List.of(
+                        new TextItem("The capital of France is Paris."),
+                        new TextItem("Paris is known for its art, fashion, and culture.")))));
     final var message = new UserMessage("What is the typical food there?");
 
     prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
@@ -565,10 +585,7 @@ class OrchestrationUnitTest {
         {
           "messages_history": [{
             "role" : "user",
-            "content" : [ {
-              "type" : "text",
-              "text" : "Hello World!"
-            } ]
+            "content" : "Hello World!"
           }],
           "input_params": {
             "foo" : "bar"
@@ -687,9 +704,9 @@ class OrchestrationUnitTest {
         assertThat(deltaList.get(2).getFinishReason()).isEqualTo("stop");
 
         // should be of type LLMModuleResultStreaming, will be fixed with a discriminator
-        var result0 = (LLMModuleResultSynchronous) deltaList.get(0).getOrchestrationResult();
-        var result1 = (LLMModuleResultSynchronous) deltaList.get(1).getOrchestrationResult();
-        var result2 = (LLMModuleResultSynchronous) deltaList.get(2).getOrchestrationResult();
+        var result0 = deltaList.get(0).getOrchestrationResult();
+        var result1 = deltaList.get(1).getOrchestrationResult();
+        var result2 = deltaList.get(2).getOrchestrationResult();
 
         assertThat(result0.getSystemFingerprint()).isEmpty();
         assertThat(result0.getId()).isEmpty();
@@ -704,9 +721,9 @@ class OrchestrationUnitTest {
         assertThat(choices0.getFinishReason()).isEmpty();
         assertThat(choices0.toMap().get("delta")).isNotNull();
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
-        final var message0 = (Map<String, Object>) choices0.toMap().get("delta");
-        assertThat(message0.get("role")).isEqualTo("");
-        assertThat(message0.get("content")).isEqualTo("");
+        final ChatDelta message0 = choices0.getDelta();
+        assertThat(message0.getRole()).isEqualTo("");
+        assertThat(message0.getContent()).isEqualTo("");
         final var templating = deltaList.get(0).getModuleResults().getTemplating();
         assertThat(templating).hasSize(1);
 
@@ -726,9 +743,9 @@ class OrchestrationUnitTest {
         assertThat(choices1.getIndex()).isEqualTo(0);
         assertThat(choices1.getFinishReason()).isEmpty();
         assertThat(choices1.toMap().get("delta")).isNotNull();
-        final var message1 = (Map<String, Object>) choices1.toMap().get("delta");
-        assertThat(message1.get("role")).isEqualTo("assistant");
-        assertThat(message1.get("content")).isEqualTo("Sure");
+        final ChatDelta message1 = choices1.getDelta();
+        assertThat(message1.getRole()).isEqualTo("assistant");
+        assertThat(message1.getContent()).isEqualTo("Sure");
 
         assertThat(result2.getSystemFingerprint()).isEqualTo("fp_808245b034");
         assertThat(result2.getId()).isEqualTo("chatcmpl-AYZSQQwWv7ajJsyDBpMG4X01BBJxq");
@@ -742,9 +759,9 @@ class OrchestrationUnitTest {
         assertThat(choices2.getFinishReason()).isEqualTo("stop");
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
         assertThat(choices2.toMap().get("delta")).isNotNull();
-        final var message2 = (Map<String, Object>) choices2.toMap().get("delta");
-        assertThat(message2.get("role")).isEqualTo("assistant");
-        assertThat(message2.get("content")).isEqualTo("!");
+        final ChatDelta message2 = choices2.getDelta();
+        assertThat(message2.getRole()).isEqualTo("assistant");
+        assertThat(message2.getContent()).isEqualTo("!");
       }
       Mockito.verify(inputStream, times(1)).close();
     }
@@ -808,7 +825,7 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
 
     assertThat(response).isNotNull();
-    var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    var llmResults = response.getModuleResults().getLlm();
     assertThat(llmResults).isNotNull();
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
@@ -816,7 +833,7 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
-    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    var orchestrationResult = response.getOrchestrationResult();
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
@@ -832,6 +849,15 @@ class OrchestrationUnitTest {
     }
   }
 
+  //    Example class
+  static class Translation {
+    @JsonProperty(required = true)
+    private String language;
+
+    @JsonProperty(required = true)
+    private String translation;
+  }
+
   @Test
   void testResponseFormatJsonSchema() throws IOException {
     stubFor(
@@ -841,16 +867,8 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonSchemaResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-    //    Example class
-    class Translation {
-      @JsonProperty(required = true)
-      private String language;
-
-      @JsonProperty(required = true)
-      private String translation;
-    }
     val schema =
         ResponseJsonSchema.fromType(Translation.class)
             .withDescription("Output schema for language translation.")
@@ -863,13 +881,69 @@ class OrchestrationUnitTest {
             Message.user("Whats 'apple' in German?"),
             Message.system("You are a language translator."));
 
-    final var message = client.chatCompletion(prompt, configWithResponseSchema).getContent();
-    assertThat(message).isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
+    val response = client.chatCompletion(prompt, configWithResponseSchema);
+    assertThat(response.getContent())
+        .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
+
+    // ------------- wrong use -------------
+    class TranslationNotStaticNoConstructor {
+      @JsonProperty(required = true)
+      private String language;
+
+      @JsonProperty(required = true)
+      private String translation;
+    }
+    assertThatThrownBy(() -> response.asEntity(TranslationNotStaticNoConstructor.class))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "Please make sure to use the correct class and that the class has a no-args constructor or is static")
+        .hasMessageContaining("JSON content: {\"translation\":\"Apfel\",\"language\":\"German\"}");
+
+    // ------------- good use -------------
+    Translation translation = response.asEntity(Translation.class);
+    assertThat(translation.language).isEqualTo("German");
+    assertThat(translation.translation).isEqualTo("Apfel");
 
     try (var requestInputStream = fileLoader.apply("jsonSchemaRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
+  }
+
+  @Test
+  void testJsonSchemaWrongConfig() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val response = client.chatCompletion(prompt, config);
+
+    // no config and wrong response
+    assertThatThrownBy(() -> response.asEntity(Translation.class))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "Please configure an OrchestrationTemplate with format set to JSON schema into your OrchestrationModuleConfig")
+        .hasMessageContaining("JSON content: Le service d'orchestration fonctionne!");
+  }
+
+  @Test
+  void testJsonSchemaRefusal() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("errorJsonSchemaResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val response = client.chatCompletion(prompt, config);
+
+    assertThatThrownBy(() -> response.asEntity(Translation.class))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "The model refused to answer the question: I'm sorry, I cannot assist with that request.");
   }
 
   @Test
@@ -1053,5 +1127,155 @@ class OrchestrationUnitTest {
     assertThat(messageListTools.get(0)).isInstanceOf(UserMessage.class);
     assertThat(messageListTools.get(1)).isInstanceOf(AssistantMessage.class);
     assertThat(messageListTools.get(2)).isInstanceOf(ToolMessage.class);
+  }
+
+  @Test
+  void testEmbeddingCallWithMasking() {
+
+    stubFor(
+        post(urlEqualTo("/v2/embeddings"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withBody(
+                        """
+                        {
+                          "request_id": "2ee98443-e1ee-9503-b800-e38b5b80fe45",
+                          "intermediate_results": {
+                            "input_masking": {
+                              "message": "Embedding input is masked successfully.",
+                              "data": {
+                                "masked_input": "['Hello', 'MASKED_PERSON', '!']"
+                              }
+                            }
+                          },
+                          "final_result": {
+                            "object": "list",
+                            "data": [
+                              {
+                                "object": "embedding",
+                                "embedding": [
+                                  0.43988228,
+                                  -0.82985526,
+                                  -0.15936942,
+                                  0.041005015,
+                                  0.30127057
+                                ],
+                                "index": 0
+                              }
+                            ],
+                            "model": "text-embedding-3-large",
+                            "usage": {
+                              "prompt_tokens": 10,
+                              "total_tokens": 10
+                            }
+                          }
+                        }
+                        """)));
+
+    val dpiConfig =
+        DPIConfig.create()
+            .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+            .method(DPIConfig.MethodEnum.ANONYMIZATION)
+            .entities(List.of(DPIStandardEntity.create().type(DPIEntities.PERSON)));
+    val maskingConfig = MaskingModuleConfig.create().maskingProviders(List.of(dpiConfig));
+
+    val modelParams =
+        EmbeddingsModelParams.create()
+            .encodingFormat(EmbeddingsModelParams.EncodingFormatEnum.FLOAT)
+            .dimensions(5)
+            .normalize(false);
+    val modelConfig =
+        EmbeddingsModelConfig.create()
+            .model(
+                EmbeddingsModelDetails.create().name("text-embedding-3-large").params(modelParams));
+
+    val orchestrationConfig =
+        EmbeddingsOrchestrationConfig.create()
+            .modules(
+                EmbeddingsModuleConfigs.create().embeddings(modelConfig).masking(maskingConfig));
+
+    val inputText =
+        EmbeddingsInput.create().text(EmbeddingsInputText.create("['Hello', 'Müller', '!']"));
+
+    val request = EmbeddingsPostRequest.create().config(orchestrationConfig).input(inputText);
+
+    EmbeddingsPostResponse response = client.embed(request);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getRequestId()).isEqualTo("2ee98443-e1ee-9503-b800-e38b5b80fe45");
+
+    val orchestrationResult = response.getFinalResult();
+    assertThat(orchestrationResult).isNotNull();
+    assertThat(orchestrationResult.getObject()).isEqualTo(EmbeddingsResponse.ObjectEnum.LIST);
+    assertThat(orchestrationResult.getModel()).isEqualTo("text-embedding-3-large");
+
+    val data = orchestrationResult.getData();
+    assertThat(data).isNotEmpty();
+    assertThat(data.get(0).getEmbedding())
+        .isEqualTo(
+            Embedding.create(
+                List.of(
+                    BigDecimal.valueOf(0.43988228),
+                    BigDecimal.valueOf(-0.82985526),
+                    BigDecimal.valueOf(-0.15936942),
+                    BigDecimal.valueOf(0.041005015),
+                    BigDecimal.valueOf(0.30127057))));
+    assertThat(data.get(0).getIndex()).isZero();
+
+    val usage = orchestrationResult.getUsage();
+    assertThat(usage).isNotNull();
+    assertThat(usage.getPromptTokens()).isEqualTo(10);
+    assertThat(usage.getTotalTokens()).isEqualTo(10);
+
+    val moduleResults = response.getIntermediateResults();
+    assertThat(moduleResults).isNotNull();
+    assertThat(moduleResults.getInputMasking()).isNotNull();
+    assertThat(moduleResults.getInputMasking().getMessage())
+        .isEqualTo("Embedding input is masked successfully.");
+    assertThat(moduleResults.getInputMasking().getData()).isNotNull();
+    assertThat(moduleResults.getInputMasking().getData())
+        .isEqualTo(Map.of("masked_input", "['Hello', 'MASKED_PERSON', '!']"));
+
+    verify(
+        postRequestedFor(urlEqualTo("/v2/embeddings"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                    {
+                      "config": {
+                        "modules": {
+                          "embeddings": {
+                            "model": {
+                              "name": "text-embedding-3-large",
+                              "version": "latest",
+                              "params": {
+                                "encoding_format": "float",
+                                "dimensions": 5,
+                                "normalize": false
+                              }
+                            }
+                          },
+                          "masking": {
+                            "masking_providers": [
+                              {
+                                "type": "sap_data_privacy_integration",
+                                "method": "anonymization",
+                                "entities": [
+                                  {
+                                    "type": "profile-person"
+                                  }
+                                ],
+                                "allowlist" : [ ]
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "input": {
+                        "text": "['Hello', 'Müller', '!']"
+                      }
+                    }
+                    """)));
   }
 }

@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.MaskingProviderConfig;
+import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import javax.annotation.Nonnull;
 
 /**
@@ -17,5 +17,5 @@ public interface MaskingProvider {
    * @return the masking configuration
    */
   @Nonnull
-  MaskingProviderConfig createConfig();
+  DPIConfig createConfig();
 }

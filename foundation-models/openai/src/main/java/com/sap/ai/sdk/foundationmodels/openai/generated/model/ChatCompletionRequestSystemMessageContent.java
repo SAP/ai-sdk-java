@@ -11,12 +11,10 @@
 
 package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import javax.annotation.Nonnull;
 
 /** The contents of the system message. */
-@Beta
 public interface ChatCompletionRequestSystemMessageContent {
   /**
    * Helper class to create a String that implements {@link
@@ -38,24 +36,24 @@ public interface ChatCompletionRequestSystemMessageContent {
   }
 
   /**
-   * Helper class to create a list of ChatCompletionRequestSystemMessageContentPart that implements
+   * Helper class to create a list of ChatCompletionRequestMessageContentPartText that implements
    * {@link ChatCompletionRequestSystemMessageContent}.
    */
-  record InnerChatCompletionRequestSystemMessageContentParts(
+  record InnerChatCompletionRequestMessageContentPartTexts(
       @com.fasterxml.jackson.annotation.JsonValue @Nonnull
-          List<ChatCompletionRequestSystemMessageContentPart> values)
+          List<ChatCompletionRequestMessageContentPartText> values)
       implements ChatCompletionRequestSystemMessageContent {}
 
   /**
-   * Creator to enable deserialization of a list of ChatCompletionRequestSystemMessageContentPart.
+   * Creator to enable deserialization of a list of ChatCompletionRequestMessageContentPartText.
    *
    * @param val the value to use
-   * @return a new instance of {@link InnerChatCompletionRequestSystemMessageContentParts}.
+   * @return a new instance of {@link InnerChatCompletionRequestMessageContentPartTexts}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static InnerChatCompletionRequestSystemMessageContentParts create(
-      @Nonnull final List<ChatCompletionRequestSystemMessageContentPart> val) {
-    return new InnerChatCompletionRequestSystemMessageContentParts(val);
+  static InnerChatCompletionRequestMessageContentPartTexts create(
+      @Nonnull final List<ChatCompletionRequestMessageContentPartText> val) {
+    return new InnerChatCompletionRequestMessageContentPartTexts(val);
   }
 }

@@ -11,12 +11,10 @@
 
 package com.sap.ai.sdk.foundationmodels.openai.generated.model;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import javax.annotation.Nonnull;
 
 /** Up to 4 sequences where the API will stop generating further tokens. */
-@Beta
 public interface ChatCompletionsRequestCommonStop {
   /** Helper class to create a String that implements {@link ChatCompletionsRequestCommonStop}. */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)

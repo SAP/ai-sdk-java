@@ -29,7 +29,7 @@ public class TrckDeleteMetricsResponse
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
-  private TrckExecutionId id;
+  private String id;
 
   @JsonProperty("message")
   private String message;
@@ -43,31 +43,31 @@ public class TrckDeleteMetricsResponse
   /**
    * Set the id of this {@link TrckDeleteMetricsResponse} instance and return the same instance.
    *
-   * @param id The id of this {@link TrckDeleteMetricsResponse}
+   * @param id Generic ID
    * @return The same instance of this {@link TrckDeleteMetricsResponse} class
    */
   @Nonnull
-  public TrckDeleteMetricsResponse id(@Nullable final TrckExecutionId id) {
+  public TrckDeleteMetricsResponse id(@Nullable final String id) {
     this.id = id;
     return this;
   }
 
   /**
-   * Get id
+   * Generic ID
    *
    * @return id The id of this {@link TrckDeleteMetricsResponse} instance.
    */
   @Nonnull
-  public TrckExecutionId getId() {
+  public String getId() {
     return id;
   }
 
   /**
    * Set the id of this {@link TrckDeleteMetricsResponse} instance.
    *
-   * @param id The id of this {@link TrckDeleteMetricsResponse}
+   * @param id Generic ID
    */
-  public void setId(@Nullable final TrckExecutionId id) {
+  public void setId(@Nullable final String id) {
     this.id = id;
   }
 

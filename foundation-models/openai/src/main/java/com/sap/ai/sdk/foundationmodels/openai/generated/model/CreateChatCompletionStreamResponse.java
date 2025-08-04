@@ -17,7 +17,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
-import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,7 +31,7 @@ import javax.annotation.Nullable;
  * Represents a streamed chunk of a chat completion response returned by model, based on the
  * provided input.
  */
-@Beta // CHECKSTYLE:OFF
+// CHECKSTYLE:OFF
 public class CreateChatCompletionStreamResponse implements ChatCompletionsCreate200Response
 // CHECKSTYLE:ON
 {

@@ -8,15 +8,15 @@
 
 ### 🔧 Compatibility Notes
 
-- The constructor of the `AssistantMessage` class now takes `List<MessageToolCall>` as input instead of `List<ResponseMessageToolCall>` (the generated class got renamed).
+- The **Spring AI** version has been increased from `1.0.0-M6` to the GA release `1.0.0`.
+  - The `OrchestrationChatOptions` have been, replacing all references to `FunctionCallback` with `ToolCallback`.
+  - Please follow the [official Spring AI upgrade guide](https://docs.spring.io/spring-ai/reference/upgrade-notes.html#upgrading-to-1-0-0-RC1) for further details.
+  - The `@Beta` annotations on all classes related to Spring AI have been removed.
+
 
 ### ✨ New Functionality
 
-- [OpenAI] [Add convenience for tool definition, parsing function calls and tool execution](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#executing-tool-calls)
-- [OpenAI] Added the following new models: `o4-mini`, `o3`, `gpt-4.1`, `gpt-4.1-nano`, and `gpt-4.1-mini` 
-- [Orchestration] Added new model DeepSeek-R1: `OrchestrationAiModel.DEEPSEEK_R1`
-- [Orchestration] [Tool execution fully enabled](https://sap.github.io/ai-sdk/docs/java/spring-ai/orchestration#tool-calling)
-- [Orchestration] [Added translation](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#translation)
+-
 
 ### 📈 Improvements
 
@@ -24,4 +24,4 @@
 
 ### 🐛 Fixed Issues
 
-- [Orchestration] Fixed `OrchestrationAiModel.CLAUDE_3_7_SONNET`.
+- OpenAi: Fix AssistantMessage Bug by now being able to send Assistant Messages using our API Client. 

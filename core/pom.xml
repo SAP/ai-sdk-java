@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.10.0-SNAPSHOT</version>
   </parent>
   <artifactId>core</artifactId>
   <name>AI Core client</name>
@@ -28,6 +28,11 @@
       <organizationUrl>https://www.sap.com</organizationUrl>
     </developer>
   </developers>
+  <scm>
+    <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
+    <developerConnection>scm:git:ssh://github.com:SAP/ai-sdk-java.git</developerConnection>
+    <url>https://github.com/SAP/ai-sdk-java/tree/main</url>
+  </scm>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
     <coverage.complexity>64%</coverage.complexity>
