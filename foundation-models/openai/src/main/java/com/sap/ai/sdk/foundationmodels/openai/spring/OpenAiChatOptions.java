@@ -21,6 +21,9 @@ import org.springframework.ai.tool.ToolCallback;
 @Data
 public class OpenAiChatOptions implements ToolCallingChatOptions {
 
+  // @Nonnull
+  // private final OpenAiChatCompletionConfig config;
+
   @Nonnull private List<ToolCallback> toolCallbacks = List.of();
 
   @Nonnull private List<ChatCompletionTool> tools = List.of();
@@ -63,7 +66,7 @@ public class OpenAiChatOptions implements ToolCallingChatOptions {
   @Override
   @Nonnull
   public String getModel() {
-    return "";
+    throw new UnsupportedOperationException("Model declaration not supported in OpenAI integration.");
   }
 
   @Override
