@@ -129,7 +129,7 @@ public class OrchestrationClient {
   @SuppressWarnings("unchecked")
   private static Map<String, Object> getOutputFilteringChoices(
       @Nonnull final OrchestrationChatCompletionDelta delta) {
-    final var f = delta.getModuleResults().getOutputFiltering();
+    final var f = delta.getIntermediateResults().getOutputFiltering();
     return ((List<Map<String, Object>>) ((Map<String, Object>) f.getData()).get("choices")).get(0);
   }
 

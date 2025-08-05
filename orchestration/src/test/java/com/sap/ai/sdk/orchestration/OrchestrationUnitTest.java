@@ -455,8 +455,8 @@ class OrchestrationUnitTest {
       final var errorResponse = e.getErrorResponse();
       assertThat(errorResponse).isNotNull();
       assertThat(errorResponse).isInstanceOf(ErrorResponse.class);
-      assertThat(errorResponse.getCode()).isEqualTo(SC_BAD_REQUEST);
-      assertThat(errorResponse.getMessage())
+      assertThat(errorResponse.getError().getCode()).isEqualTo(SC_BAD_REQUEST);
+      assertThat(errorResponse.getError().getCode())
           .isEqualTo(
               "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
 
@@ -726,7 +726,7 @@ class OrchestrationUnitTest {
     when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
 
     var moduleResults = mock(ModuleResultsStreaming.class);
-    when(deltaWithContentFilter.getModuleResults()).thenReturn(moduleResults);
+    when(deltaWithContentFilter.getIntermediateResults()).thenReturn(moduleResults);
 
     var outputFiltering = mock(GenericModuleResult.class);
     when(moduleResults.getOutputFiltering()).thenReturn(outputFiltering);

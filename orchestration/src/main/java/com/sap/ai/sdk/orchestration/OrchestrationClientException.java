@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientException;
+import com.sap.ai.sdk.orchestration.model.Error;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import java.util.Optional;
 import javax.annotation.Nonnull;
@@ -41,6 +42,9 @@ public class OrchestrationClientException extends ClientException {
   @Beta
   @Nullable
   public Integer getStatusCode() {
-    return Optional.ofNullable(getErrorResponse()).map(ErrorResponse::getCode).orElse(null);
+    return Optional.ofNullable(getErrorResponse())
+        .map(ErrorResponse::getError)
+        .map(Error::getCode)
+        .orElse(null);
   }
 }

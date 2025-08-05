@@ -51,7 +51,7 @@ public class OrchestrationChatResponse {
 
   @SuppressWarnings("unchecked")
   private Map<String, Object> getOutputFilteringChoices() {
-    final var f = getOriginalResponse().getModuleResults().getOutputFiltering();
+    final var f = getOriginalResponse().getIntermediateResults().getOutputFiltering();
     return ((List<Map<String, Object>>) ((Map<String, Object>) f.getData()).get("choices")).get(0);
   }
 

@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientExceptionFactory;
+import com.sap.ai.sdk.orchestration.model.Error;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleResults;
@@ -39,7 +40,8 @@ class OrchestrationExceptionFactory
   private Map<String, Object> extractInputFilterDetails(@Nonnull final OrchestrationError error) {
 
     return Optional.of(error.getErrorResponse())
-        .map(ErrorResponse::getModuleResults)
+        .map(ErrorResponse::getError)
+        .map(Error::getIntermediateResults)
         .map(ModuleResults::getInputFiltering)
         .map(GenericModuleResult::getData)
         .filter(Map.class::isInstance)
