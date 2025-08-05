@@ -197,6 +197,7 @@
                     <removeOperationIdPrefixCount>3</removeOperationIdPrefixCount>
                     <aiSdkConstructor>true</aiSdkConstructor>
                     <useOneOfCreators>true</useOneOfCreators>
+                    <fixResponseSchemaTitles>true</fixResponseSchemaTitles>
                   </additionalProperties>
                 </configuration>
               </execution>

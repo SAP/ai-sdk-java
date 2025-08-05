@@ -16,12 +16,19 @@
 
 ### ✨ New Functionality
 
--
+- [Core] Added `ClientExceptionFactory` interface to provide custom exception mapping logic for different service clients.
+- Extend `OpenAiClientException` and `OrchestrationClientException` to  retrieve error diagnostics information received from remote service using `getErrorResponse`.
+- [Orchestration] Introduced filtering related exceptions along with convenience methods to obtain additional contextual information.
+  - `OrchestrationInputFilterException` for prompt filtering and `OrchestrationOutputFilterException` for response filtering.
+    - `getFilterDetails()`: Returns a map of all filter details.
+    - `getAzureContentSafetyInput()` and `getAzureContentSafetyInput()` : Returns Azure Content Safety filter scores
+    - `getLlamaGuard38b()`: Returns LlamaGuard filter scores
 
 ### 📈 Improvements
 
--
+- Update AI Core client to 2.40.1
+
 
 ### 🐛 Fixed Issues
 
--
+- OpenAi: Fix AssistantMessage Bug by now being able to send Assistant Messages using our API Client. 
