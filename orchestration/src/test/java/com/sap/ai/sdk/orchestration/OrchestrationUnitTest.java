@@ -20,6 +20,8 @@ import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_M
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
+import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
+import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_6;
 import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
@@ -55,6 +57,7 @@ import com.sap.ai.sdk.orchestration.model.EmbeddingsOrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsResponse;
+import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
@@ -63,6 +66,7 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigPlaceholder
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -160,7 +164,7 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .hasMessage(
-            "Request failed with status 500 Server Error and error message: 'Internal Server Error located in Masking Module - Masking'");
+            "Request failed with status 500 (Server Error): Internal Server Error located in Masking Module - Masking");
   }
 
   @Test
@@ -375,7 +379,7 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessage(
-            "Request failed with status 400 Bad Request and error message: 'Missing required parameters: ['input']'");
+            "Request failed with status 400 (Bad Request): Missing required parameters: ['input']");
   }
 
   @Test
@@ -409,53 +413,106 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void filteringStrict() {
-    final String response =
-        """
-            {
-              "error": {
-                "request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a",
-                "code": 400,
-                "message": "Content filtered due to Safety violations. Please modify the prompt and try again.",
-                "location": "Input Filter",
-                "intermediate_results": {
-                  "templating": [
-                    {
-                      "role": "user",
-                      "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."
-                    }
-                  ],
-                  "input_filtering": {
-                    "message": "Content filtered due to Safety violations. Please modify the prompt and try again.",
-                    "data": {
-                      "original_service_response": {
-                        "Hate": 0,
-                        "SelfHarm": 0,
-                        "Sexual": 0,
-                        "Violence": 2
-                      },
-                      "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."
-                    }
-                  }
-                }
-              }
-            }""";
+  void inputFilteringStrict() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("strictInputFilterResponse.json")
+                    .withHeader("Content-Type", "application/json")
+                    .withStatus(SC_BAD_REQUEST)));
 
-    stubFor(post(anyUrl()).willReturn(jsonResponse(response, SC_BAD_REQUEST)));
-
-    final var filter =
+    final var azureFilter =
         new AzureContentFilter()
             .hate(ALLOW_SAFE)
             .selfHarm(ALLOW_SAFE)
             .sexual(ALLOW_SAFE)
             .violence(ALLOW_SAFE);
 
-    final var configWithFilter = config.withInputFiltering(filter).withOutputFiltering(filter);
+    final var llamaFilter =
+        new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
+    final var configWithFilter = config.withInputFiltering(azureFilter, llamaFilter);
 
-    assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessage(
-            "Request failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
+    try {
+      client.chatCompletion(prompt, configWithFilter);
+    } catch (OrchestrationFilterException.Input e) {
+      assertThat(e.getMessage())
+          .isEqualTo(
+              "Request failed with status 400 (Bad Request): 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
+      assertThat(e.getStatusCode()).isEqualTo(SC_BAD_REQUEST);
+      assertThat(e.getFilterDetails())
+          .isEqualTo(
+              Map.of(
+                  "azure_content_safety",
+                      Map.of(
+                          "Hate", 6,
+                          "SelfHarm", 0,
+                          "Sexual", 0,
+                          "Violence", 6,
+                          "userPromptAnalysis", Map.of("attackDetected", false)),
+                  "llama_guard_3_8b", Map.of("violent_crimes", true)));
+
+      final var errorResponse = e.getErrorResponse();
+      assertThat(errorResponse).isNotNull();
+      assertThat(errorResponse).isInstanceOf(ErrorResponse.class);
+      assertThat(errorResponse.getCode()).isEqualTo(SC_BAD_REQUEST);
+      assertThat(errorResponse.getMessage())
+          .isEqualTo(
+              "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
+
+      assertThat(e.getAzureContentSafetyInput()).isNotNull();
+      assertThat(e.getAzureContentSafetyInput().getHate()).isEqualTo(NUMBER_6);
+      assertThat(e.getAzureContentSafetyInput().getSelfHarm()).isEqualTo(NUMBER_0);
+      assertThat(e.getAzureContentSafetyInput().getSexual()).isEqualTo(NUMBER_0);
+      assertThat(e.getAzureContentSafetyInput().getViolence()).isEqualTo(NUMBER_6);
+
+      assertThat(e.getLlamaGuard38b()).isNotNull();
+      assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
+    }
+  }
+
+  @Test
+  void outputFilteringStrict() {
+    stubFor(post(anyUrl()).willReturn(aResponse().withBodyFile("outputFilteringStrict.json")));
+
+    final var azureFilter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE)
+            .selfHarm(ALLOW_SAFE)
+            .sexual(ALLOW_SAFE)
+            .violence(ALLOW_SAFE);
+
+    final var llamaFilter =
+        new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
+    final var configWithFilter = config.withOutputFiltering(azureFilter, llamaFilter);
+
+    try {
+      client.chatCompletion(prompt, configWithFilter).getContent();
+    } catch (OrchestrationFilterException.Output e) {
+      assertThat(e.getMessage()).isEqualTo("Content filter filtered the output.");
+      assertThat(e.getFilterDetails())
+          .isEqualTo(
+              Map.of(
+                  "index", 0,
+                  "azure_content_safety",
+                      Map.of(
+                          "Hate", 6,
+                          "SelfHarm", 0,
+                          "Sexual", 0,
+                          "Violence", 6),
+                  "llama_guard_3_8b", Map.of("violent_crimes", true)));
+      assertThat(e.getErrorResponse()).isNull();
+      assertThat(e.getStatusCode()).isNull();
+
+      assertThat(e.getAzureContentSafetyOutput()).isNotNull();
+      assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_6);
+      assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
+      assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
+      assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
+
+      assertThat(e.getLlamaGuard38b()).isNotNull();
+      assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
+    }
   }
 
   @Test
@@ -597,7 +654,7 @@ class OrchestrationUnitTest {
         .assertThatThrownBy(request::run)
         .describedAs("Empty responses should be handled")
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("was empty");
+        .hasMessageContaining("HTTP Response is empty");
 
     softly.assertAll();
   }
@@ -667,13 +724,27 @@ class OrchestrationUnitTest {
 
     var deltaWithContentFilter = mock(OrchestrationChatCompletionDelta.class);
     when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
+
+    var moduleResults = mock(ModuleResultsStreaming.class);
+    when(deltaWithContentFilter.getModuleResults()).thenReturn(moduleResults);
+
+    var outputFiltering = mock(GenericModuleResult.class);
+    when(moduleResults.getOutputFiltering()).thenReturn(outputFiltering);
+
+    var filterData =
+        Map.of(
+            "choices", List.of(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0))));
+    when(outputFiltering.getData()).thenReturn(filterData);
+
     when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
 
     // this must not throw, since the stream is lazily evaluated
     var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
     assertThatThrownBy(stream::toList)
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("Content filter");
+        .isInstanceOf(OrchestrationFilterException.Output.class)
+        .hasMessage("Content filter filtered the output.")
+        .extracting(e -> ((OrchestrationFilterException.Output) e).getFilterDetails())
+        .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
   }
 
   @Test
@@ -694,7 +765,7 @@ class OrchestrationUnitTest {
 
       try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
-            .isInstanceOf(OrchestrationClientException.class)
+            .isInstanceOf(OrchestrationFilterException.Output.class)
             .hasMessage("Content filter filtered the output.");
       }
 

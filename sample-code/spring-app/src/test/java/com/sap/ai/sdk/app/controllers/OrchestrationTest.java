@@ -2,6 +2,7 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+import static com.sap.ai.sdk.orchestration.model.AzureThreshold.*;
 import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -14,6 +15,7 @@ import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
@@ -215,10 +217,19 @@ class OrchestrationTest {
     var policy = AzureFilterThreshold.ALLOW_SAFE;
 
     assertThatThrownBy(() -> service.inputFiltering(policy))
-        .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
             "Prompt filtered due to safety violations. Please modify the prompt and try again.")
-        .hasMessageContaining("400 Bad Request");
+        .hasMessageContaining("400 (Bad Request)")
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Input.class,
+            e -> {
+              var actualAzureContentSafety = e.getAzureContentSafetyInput();
+              assertThat(actualAzureContentSafety).isNotNull();
+              assertThat(actualAzureContentSafety.getViolence()).isGreaterThan(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSexual()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getHate()).isEqualTo(NUMBER_0);
+            });
   }
 
   @Test
@@ -240,8 +251,17 @@ class OrchestrationTest {
     var response = service.outputFiltering(policy);
 
     assertThatThrownBy(response::getContent)
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("Content filter filtered the output.");
+        .hasMessageContaining("Content filter filtered the output.")
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Output.class,
+            e -> {
+              var actualAzureContentSafety = e.getAzureContentSafetyOutput();
+              assertThat(actualAzureContentSafety).isNotNull();
+              assertThat(actualAzureContentSafety.getViolence()).isGreaterThan(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSexual()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getHate()).isEqualTo(NUMBER_0);
+            });
   }
 
   @Test
@@ -260,10 +280,20 @@ class OrchestrationTest {
   @Test
   void testLlamaGuardEnabled() {
     assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
-        .isInstanceOf(OrchestrationClientException.class)
+        .isInstanceOf(OrchestrationFilterException.Input.class)
         .hasMessageContaining(
             "Prompt filtered due to safety violations. Please modify the prompt and try again.")
-        .hasMessageContaining("400 Bad Request");
+        .hasMessageContaining("400 (Bad Request)")
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Input.class,
+            e -> {
+              var llamaGuard38b = e.getLlamaGuard38b();
+              assertThat(llamaGuard38b).isNotNull();
+              assertThat(llamaGuard38b.isViolentCrimes()).isTrue();
+              assertThat(llamaGuard38b.isHate()).isFalse();
+              assertThat(llamaGuard38b.isChildExploitation()).isFalse();
+              assertThat(llamaGuard38b.isDefamation()).isFalse();
+            });
   }
 
   @Test
@@ -378,7 +408,7 @@ class OrchestrationTest {
 
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithTemplate))
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("status 400 Bad Request")
+        .hasMessageContaining("status 400 (Bad Request)")
         .hasMessageContaining("Error processing template:");
   }
 
@@ -389,8 +419,8 @@ class OrchestrationTest {
     val configWithFilter = config.withInputFiltering(filterConfig);
 
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithFilter))
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("status 400 Bad Request")
+        .isInstanceOf(OrchestrationFilterException.Input.class)
+        .hasMessageContaining("status 400 (Bad Request)")
         .hasMessageContaining("Filtering Module - Input Filter");
   }
 
@@ -403,7 +433,7 @@ class OrchestrationTest {
 
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithMasking))
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("status 400 Bad Request")
+        .hasMessageContaining("status 400 (Bad Request)")
         .hasMessageContaining("'unknown_default_open_api' is not one of");
   }
 

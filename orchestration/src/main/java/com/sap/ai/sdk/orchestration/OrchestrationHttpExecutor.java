@@ -48,7 +48,7 @@ class OrchestrationHttpExecutor {
 
       val handler =
           new ClientResponseHandler<>(
-                  responseType, OrchestrationError.class, OrchestrationClientException::new)
+                  responseType, OrchestrationError.class, new OrchestrationExceptionFactory())
               .objectMapper(JACKSON);
       return client.execute(request, handler);
 
@@ -77,7 +77,7 @@ class OrchestrationHttpExecutor {
       return new ClientStreamingHandler<>(
               OrchestrationChatCompletionDelta.class,
               OrchestrationError.class,
-              OrchestrationClientException::new)
+              new OrchestrationExceptionFactory())
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
 
