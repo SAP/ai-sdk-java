@@ -15,10 +15,10 @@ import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
 import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import io.vavr.control.Try;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -43,18 +43,17 @@ public class OrchestrationChatResponse {
     final var choice = getChoice();
 
     if ("content_filter".equals(choice.getFinishReason())) {
-      @SuppressWarnings("unchecked")
-      final var filterDetails =
-          Optional.of(getOriginalResponse().getModuleResults().getOutputFiltering())
-              .map(outputFiltering -> (Map<String, Object>) outputFiltering.getData())
-              .map(data -> (List<Map<String, Object>>) data.get("choices"))
-              .map(choices -> choices.get(0))
-              .orElseGet(Map::of);
-
-      throw new OrchestrationOutputFilterException(
-          "Content filter filtered the output.", filterDetails);
+      final var filterDetails = Try.of(this::getOutputFilteringChoices).getOrElseGet(e -> Map.of());
+      final var message = "Content filter filtered the output.";
+      throw new OrchestrationOutputFilterException(message, filterDetails);
     }
     return choice.getMessage().getContent();
+  }
+
+  @SuppressWarnings("unchecked")
+  private Map<String, Object> getOutputFilteringChoices() {
+    final var f = getOriginalResponse().getModuleResults().getOutputFiltering();
+    return ((List<Map<String, Object>>) ((Map<String, Object>) f.getData()).get("choices")).get(0);
   }
 
   /**

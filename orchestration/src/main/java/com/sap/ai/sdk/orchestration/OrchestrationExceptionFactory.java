@@ -3,6 +3,10 @@ package com.sap.ai.sdk.orchestration;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientExceptionFactory;
 import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationInputFilterException;
+import com.sap.ai.sdk.orchestration.model.ErrorResponse;
+import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.model.ModuleResults;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -37,9 +41,9 @@ class OrchestrationExceptionFactory
   private Map<String, Object> extractInputFilterDetails(@Nonnull final OrchestrationError error) {
 
     return Optional.of(error.getErrorResponse())
-        .flatMap(response -> Optional.ofNullable(response.getModuleResults()))
-        .flatMap(moduleResults -> Optional.ofNullable(moduleResults.getInputFiltering()))
-        .flatMap(inputFiltering -> Optional.ofNullable(inputFiltering.getData()))
+        .map(ErrorResponse::getModuleResults)
+        .map(ModuleResults::getInputFiltering)
+        .map(GenericModuleResult::getData)
         .filter(Map.class::isInstance)
         .map(map -> (Map<String, Object>) map)
         .orElseGet(Collections::emptyMap);
