@@ -7,8 +7,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.With;
 
+/** Configuration for OpenAI chat completion requests. */
 @With
 @NoArgsConstructor
 @AllArgsConstructor

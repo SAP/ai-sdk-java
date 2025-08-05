@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.spring;
 
+import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
+
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
@@ -20,14 +22,15 @@ import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
-import org.springframework.ai.chat.messages.ToolResponseMessage.ToolResponse;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
-import org.springframework.ai.model.tool.ToolCallingChatOptions;
 
+/**
+ * OpenAI Chat Model implementation that interacts with the OpenAI API to generate chat completions.
+ */
 @RequiredArgsConstructor
 public class OpenAiChatModel implements ChatModel {
 
@@ -38,33 +41,33 @@ public class OpenAiChatModel implements ChatModel {
       DefaultToolCallingManager.builder().build();
 
   @Override
-  public ChatResponse call(Prompt prompt) {
-    if (prompt.getOptions() instanceof OpenAiChatOptions options) {
-
-      var request =
-          new OpenAiChatCompletionRequest(toOpenAiRequest(prompt)).withTools(options.getTools());
-      val response = new ChatResponse(toGenerations(client.chatCompletion(request)));
-
-      if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
-          && response.hasToolCalls()) {
-        val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
-        // Send the tool execution result back to the model.
-        return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
-      }
-      return response;
+  @Nonnull
+  public ChatResponse call(@Nonnull final Prompt prompt) {
+    if (!(prompt.getOptions() instanceof OpenAiChatOptions options)) {
+      throw new IllegalArgumentException(
+          "Please add OpenAiChatOptions to the Prompt: new Prompt(\"message\", new OpenAiChatOptions(config))");
     }
-    throw new IllegalArgumentException(
-        "Please add OpenAiChatOptions to the Prompt: new Prompt(\"message\", new OpenAiChatOptions(config))");
+
+    val request =
+        new OpenAiChatCompletionRequest(toOpenAiRequest(prompt)).withTools(options.getTools());
+    val response = new ChatResponse(toGenerations(client.chatCompletion(request)));
+
+    if (isInternalToolExecutionEnabled(prompt.getOptions()) && response.hasToolCalls()) {
+      val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
+      // Send the tool execution result back to the model.
+      return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
+    }
+    return response;
   }
 
-  private List<OpenAiMessage> toOpenAiRequest(Prompt prompt) {
+  private List<OpenAiMessage> toOpenAiRequest(final Prompt prompt) {
     return prompt.getInstructions().stream()
         .flatMap(
             message ->
                 switch (message.getMessageType()) {
                   case USER -> Stream.of(OpenAiMessage.user(message.getText()));
                   case ASSISTANT -> {
-                    AssistantMessage assistantMessage = (AssistantMessage) message;
+                    val assistantMessage = (AssistantMessage) message;
                     yield Stream.of(
                         assistantMessage.hasToolCalls()
                             ? new OpenAiAssistantMessage(
@@ -86,7 +89,7 @@ public class OpenAiChatModel implements ChatModel {
                   }
                   case SYSTEM -> Stream.of(OpenAiMessage.system(message.getText()));
                   case TOOL -> {
-                    List<ToolResponse> responses = ((ToolResponseMessage) message).getResponses();
+                    val responses = ((ToolResponseMessage) message).getResponses();
                     yield responses.stream()
                         .map(resp -> OpenAiMessage.tool(resp.responseData(), resp.id()));
                   }
@@ -114,7 +117,7 @@ public class OpenAiChatModel implements ChatModel {
                         toolCall.getFunction().getName(),
                         toolCall.getFunction().getArguments()))
             .toList();
-    AssistantMessage message = new AssistantMessage(choice.getContent(), Map.of(), toolCalls);
+    val message = new AssistantMessage(choice.getContent(), Map.of(), toolCalls);
     return new Generation(message);
   }
 }

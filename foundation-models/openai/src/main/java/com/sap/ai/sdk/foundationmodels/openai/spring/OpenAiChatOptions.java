@@ -17,12 +17,13 @@ import org.springframework.ai.model.ModelOptionsUtils;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
 import org.springframework.ai.tool.ToolCallback;
 
+/** OpenAI Chat Options for configuring tool callbacks and execution settings. */
 @Data
 public class OpenAiChatOptions implements ToolCallingChatOptions {
 
   @Nonnull private List<ToolCallback> toolCallbacks = List.of();
 
-  private List<ChatCompletionTool> tools;
+  @Nonnull private List<ChatCompletionTool> tools = List.of();
 
   @Getter(AccessLevel.NONE)
   @Nullable
@@ -44,7 +45,7 @@ public class OpenAiChatOptions implements ToolCallingChatOptions {
     return this.internalToolExecutionEnabled;
   }
 
-  private static ChatCompletionTool toOpenAiTool(ToolCallback toolCallback) {
+  private static ChatCompletionTool toOpenAiTool(final ToolCallback toolCallback) {
     val toolDef = toolCallback.getToolDefinition();
     return new ChatCompletionTool()
         .type(TypeEnum.FUNCTION)
@@ -56,51 +57,61 @@ public class OpenAiChatOptions implements ToolCallingChatOptions {
   }
 
   @Override
-  public void setInternalToolExecutionEnabled(Boolean internalToolExecutionEnabled) {}
+  public void setInternalToolExecutionEnabled(
+      @Nullable final Boolean internalToolExecutionEnabled) {}
 
   @Override
+  @Nonnull
   public String getModel() {
     return "";
   }
 
   @Override
+  @Nonnull
   public Double getFrequencyPenalty() {
     return 0.0;
   }
 
   @Override
+  @Nonnull
   public Integer getMaxTokens() {
     return 0;
   }
 
   @Override
+  @Nonnull
   public Double getPresencePenalty() {
     return 0.0;
   }
 
   @Override
+  @Nonnull
   public List<String> getStopSequences() {
     return List.of();
   }
 
   @Override
+  @Nonnull
   public Double getTemperature() {
     return 0.0;
   }
 
   @Override
+  @Nonnull
   public Integer getTopK() {
     return 0;
   }
 
   @Override
+  @Nonnull
   public Double getTopP() {
     return 0.0;
   }
 
   @Override
+  @Nonnull
   public <T extends ChatOptions> T copy() {
-    OpenAiChatOptions copy = new OpenAiChatOptions();
+    final OpenAiChatOptions copy = new OpenAiChatOptions();
     copy.setToolCallbacks(this.toolCallbacks);
     copy.setInternalToolExecutionEnabled(this.internalToolExecutionEnabled);
     copy.setTools(this.tools);
