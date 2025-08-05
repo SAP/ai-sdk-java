@@ -27,10 +27,6 @@ public enum DocumentStatus {
 
   FAILED("FAILED"),
 
-  FAILED_TO_BE_RETRIED("FAILED_TO_BE_RETRIED"),
-
-  TO_BE_SCHEDULED("TO_BE_SCHEDULED"),
-
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;

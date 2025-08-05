@@ -33,7 +33,7 @@ public class DocumentWithoutChunks
 // CHECKSTYLE:ON
 {
   @JsonProperty("metadata")
-  private List<VectorDocumentKeyValueListPair> metadata = new ArrayList<>();
+  private List<DocumentKeyValueListPair> metadata = new ArrayList<>();
 
   @JsonProperty("id")
   private UUID id;
@@ -51,8 +51,7 @@ public class DocumentWithoutChunks
    * @return The same instance of this {@link DocumentWithoutChunks} class
    */
   @Nonnull
-  public DocumentWithoutChunks metadata(
-      @Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
+  public DocumentWithoutChunks metadata(@Nonnull final List<DocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -65,7 +64,7 @@ public class DocumentWithoutChunks
    */
   @Nonnull
   public DocumentWithoutChunks addMetadataItem(
-      @Nonnull final VectorDocumentKeyValueListPair metadataItem) {
+      @Nonnull final DocumentKeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -79,7 +78,7 @@ public class DocumentWithoutChunks
    * @return metadata The metadata of this {@link DocumentWithoutChunks} instance.
    */
   @Nonnull
-  public List<VectorDocumentKeyValueListPair> getMetadata() {
+  public List<DocumentKeyValueListPair> getMetadata() {
     return metadata;
   }
 
@@ -88,7 +87,7 @@ public class DocumentWithoutChunks
    *
    * @param metadata The metadata of this {@link DocumentWithoutChunks}
    */
-  public void setMetadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
+  public void setMetadata(@Nonnull final List<DocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
@@ -238,7 +237,7 @@ public class DocumentWithoutChunks
      * @param metadata The metadata of this {@link DocumentWithoutChunks}
      * @return The DocumentWithoutChunks builder.
      */
-    Builder1 metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata);
+    Builder1 metadata(@Nonnull final List<DocumentKeyValueListPair> metadata);
 
     /**
      * Set the metadata of this {@link DocumentWithoutChunks} instance.
@@ -246,7 +245,7 @@ public class DocumentWithoutChunks
      * @param metadata The metadata of this {@link DocumentWithoutChunks}
      * @return The DocumentWithoutChunks builder.
      */
-    default Builder1 metadata(@Nonnull final VectorDocumentKeyValueListPair... metadata) {
+    default Builder1 metadata(@Nonnull final DocumentKeyValueListPair... metadata) {
       return metadata(Arrays.asList(metadata));
     }
   }

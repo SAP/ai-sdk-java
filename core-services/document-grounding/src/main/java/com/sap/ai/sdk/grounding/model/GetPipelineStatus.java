@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -29,16 +30,10 @@ public class GetPipelineStatus
 // CHECKSTYLE:ON
 {
   @JsonProperty("lastStarted")
-  private String lastStarted;
-
-  @JsonProperty("createdAt")
-  private String createdAt;
-
-  @JsonProperty("lastCompletedAt")
-  private String lastCompletedAt;
+  private OffsetDateTime lastStarted;
 
   @JsonProperty("status")
-  private PipelineExecutionStatus status;
+  private String status;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -53,7 +48,7 @@ public class GetPipelineStatus
    * @return The same instance of this {@link GetPipelineStatus} class
    */
   @Nonnull
-  public GetPipelineStatus lastStarted(@Nullable final String lastStarted) {
+  public GetPipelineStatus lastStarted(@Nullable final OffsetDateTime lastStarted) {
     this.lastStarted = lastStarted;
     return this;
   }
@@ -64,7 +59,7 @@ public class GetPipelineStatus
    * @return lastStarted The lastStarted of this {@link GetPipelineStatus} instance.
    */
   @Nonnull
-  public String getLastStarted() {
+  public OffsetDateTime getLastStarted() {
     return lastStarted;
   }
 
@@ -73,71 +68,8 @@ public class GetPipelineStatus
    *
    * @param lastStarted The lastStarted of this {@link GetPipelineStatus}
    */
-  public void setLastStarted(@Nullable final String lastStarted) {
+  public void setLastStarted(@Nullable final OffsetDateTime lastStarted) {
     this.lastStarted = lastStarted;
-  }
-
-  /**
-   * Set the createdAt of this {@link GetPipelineStatus} instance and return the same instance.
-   *
-   * @param createdAt The createdAt of this {@link GetPipelineStatus}
-   * @return The same instance of this {@link GetPipelineStatus} class
-   */
-  @Nonnull
-  public GetPipelineStatus createdAt(@Nullable final String createdAt) {
-    this.createdAt = createdAt;
-    return this;
-  }
-
-  /**
-   * Get createdAt
-   *
-   * @return createdAt The createdAt of this {@link GetPipelineStatus} instance.
-   */
-  @Nullable
-  public String getCreatedAt() {
-    return createdAt;
-  }
-
-  /**
-   * Set the createdAt of this {@link GetPipelineStatus} instance.
-   *
-   * @param createdAt The createdAt of this {@link GetPipelineStatus}
-   */
-  public void setCreatedAt(@Nullable final String createdAt) {
-    this.createdAt = createdAt;
-  }
-
-  /**
-   * Set the lastCompletedAt of this {@link GetPipelineStatus} instance and return the same
-   * instance.
-   *
-   * @param lastCompletedAt The lastCompletedAt of this {@link GetPipelineStatus}
-   * @return The same instance of this {@link GetPipelineStatus} class
-   */
-  @Nonnull
-  public GetPipelineStatus lastCompletedAt(@Nullable final String lastCompletedAt) {
-    this.lastCompletedAt = lastCompletedAt;
-    return this;
-  }
-
-  /**
-   * Get lastCompletedAt
-   *
-   * @return lastCompletedAt The lastCompletedAt of this {@link GetPipelineStatus} instance.
-   */
-  @Nullable
-  public String getLastCompletedAt() {
-    return lastCompletedAt;
-  }
-
-  /**
-   * Set the lastCompletedAt of this {@link GetPipelineStatus} instance.
-   *
-   * @param lastCompletedAt The lastCompletedAt of this {@link GetPipelineStatus}
-   */
-  public void setLastCompletedAt(@Nullable final String lastCompletedAt) {
-    this.lastCompletedAt = lastCompletedAt;
   }
 
   /**
@@ -147,7 +79,7 @@ public class GetPipelineStatus
    * @return The same instance of this {@link GetPipelineStatus} class
    */
   @Nonnull
-  public GetPipelineStatus status(@Nullable final PipelineExecutionStatus status) {
+  public GetPipelineStatus status(@Nullable final String status) {
     this.status = status;
     return this;
   }
@@ -158,7 +90,7 @@ public class GetPipelineStatus
    * @return status The status of this {@link GetPipelineStatus} instance.
    */
   @Nonnull
-  public PipelineExecutionStatus getStatus() {
+  public String getStatus() {
     return status;
   }
 
@@ -167,7 +99,7 @@ public class GetPipelineStatus
    *
    * @param status The status of this {@link GetPipelineStatus}
    */
-  public void setStatus(@Nullable final PipelineExecutionStatus status) {
+  public void setStatus(@Nullable final String status) {
     this.status = status;
   }
 
@@ -210,8 +142,6 @@ public class GetPipelineStatus
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (lastStarted != null) declaredFields.put("lastStarted", lastStarted);
-    if (createdAt != null) declaredFields.put("createdAt", createdAt);
-    if (lastCompletedAt != null) declaredFields.put("lastCompletedAt", lastCompletedAt);
     if (status != null) declaredFields.put("status", status);
     return declaredFields;
   }
@@ -239,14 +169,12 @@ public class GetPipelineStatus
     final GetPipelineStatus getPipelineStatus = (GetPipelineStatus) o;
     return Objects.equals(this.cloudSdkCustomFields, getPipelineStatus.cloudSdkCustomFields)
         && Objects.equals(this.lastStarted, getPipelineStatus.lastStarted)
-        && Objects.equals(this.createdAt, getPipelineStatus.createdAt)
-        && Objects.equals(this.lastCompletedAt, getPipelineStatus.lastCompletedAt)
         && Objects.equals(this.status, getPipelineStatus.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(lastStarted, createdAt, lastCompletedAt, status, cloudSdkCustomFields);
+    return Objects.hash(lastStarted, status, cloudSdkCustomFields);
   }
 
   @Override
@@ -255,8 +183,6 @@ public class GetPipelineStatus
     final StringBuilder sb = new StringBuilder();
     sb.append("class GetPipelineStatus {\n");
     sb.append("    lastStarted: ").append(toIndentedString(lastStarted)).append("\n");
-    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
-    sb.append("    lastCompletedAt: ").append(toIndentedString(lastCompletedAt)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->

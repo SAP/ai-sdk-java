@@ -36,7 +36,7 @@ public class DocumentResponse
   private List<TextOnlyBaseChunk> chunks = new ArrayList<>();
 
   @JsonProperty("metadata")
-  private List<VectorDocumentKeyValueListPair> metadata = new ArrayList<>();
+  private List<DocumentKeyValueListPair> metadata = new ArrayList<>();
 
   @JsonProperty("id")
   private UUID id;
@@ -100,7 +100,7 @@ public class DocumentResponse
    * @return The same instance of this {@link DocumentResponse} class
    */
   @Nonnull
-  public DocumentResponse metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
+  public DocumentResponse metadata(@Nonnull final List<DocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -112,8 +112,7 @@ public class DocumentResponse
    * @return The same instance of type {@link DocumentResponse}
    */
   @Nonnull
-  public DocumentResponse addMetadataItem(
-      @Nonnull final VectorDocumentKeyValueListPair metadataItem) {
+  public DocumentResponse addMetadataItem(@Nonnull final DocumentKeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -127,7 +126,7 @@ public class DocumentResponse
    * @return metadata The metadata of this {@link DocumentResponse} instance.
    */
   @Nonnull
-  public List<VectorDocumentKeyValueListPair> getMetadata() {
+  public List<DocumentKeyValueListPair> getMetadata() {
     return metadata;
   }
 
@@ -136,7 +135,7 @@ public class DocumentResponse
    *
    * @param metadata The metadata of this {@link DocumentResponse}
    */
-  public void setMetadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
+  public void setMetadata(@Nonnull final List<DocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
@@ -310,7 +309,7 @@ public class DocumentResponse
      * @param metadata The metadata of this {@link DocumentResponse}
      * @return The DocumentResponse builder.
      */
-    Builder2 metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata);
+    Builder2 metadata(@Nonnull final List<DocumentKeyValueListPair> metadata);
 
     /**
      * Set the metadata of this {@link DocumentResponse} instance.
@@ -318,7 +317,7 @@ public class DocumentResponse
      * @param metadata The metadata of this {@link DocumentResponse}
      * @return The DocumentResponse builder.
      */
-    default Builder2 metadata(@Nonnull final VectorDocumentKeyValueListPair... metadata) {
+    default Builder2 metadata(@Nonnull final DocumentKeyValueListPair... metadata) {
       return metadata(Arrays.asList(metadata));
     }
   }

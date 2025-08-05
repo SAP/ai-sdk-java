@@ -88,7 +88,7 @@ public class SFTPPipelineCreateRequest implements CreatePipeline
   private TypeEnum type;
 
   @JsonProperty("configuration")
-  private SFTPConfiguration _configuration;
+  private CommonConfiguration _configuration;
 
   @JsonProperty("metadata")
   private MetaData metadata;
@@ -138,7 +138,8 @@ public class SFTPPipelineCreateRequest implements CreatePipeline
    * @return The same instance of this {@link SFTPPipelineCreateRequest} class
    */
   @Nonnull
-  public SFTPPipelineCreateRequest _configuration(@Nonnull final SFTPConfiguration _configuration) {
+  public SFTPPipelineCreateRequest _configuration(
+      @Nonnull final CommonConfiguration _configuration) {
     this._configuration = _configuration;
     return this;
   }
@@ -149,7 +150,7 @@ public class SFTPPipelineCreateRequest implements CreatePipeline
    * @return _configuration The _configuration of this {@link SFTPPipelineCreateRequest} instance.
    */
   @Nonnull
-  public SFTPConfiguration getConfiguration() {
+  public CommonConfiguration getConfiguration() {
     return _configuration;
   }
 
@@ -158,7 +159,7 @@ public class SFTPPipelineCreateRequest implements CreatePipeline
    *
    * @param _configuration The _configuration of this {@link SFTPPipelineCreateRequest}
    */
-  public void setConfiguration(@Nonnull final SFTPConfiguration _configuration) {
+  public void setConfiguration(@Nonnull final CommonConfiguration _configuration) {
     this._configuration = _configuration;
   }
 
@@ -325,6 +326,6 @@ public class SFTPPipelineCreateRequest implements CreatePipeline
      * @param _configuration The _configuration of this {@link SFTPPipelineCreateRequest}
      * @return The SFTPPipelineCreateRequest instance.
      */
-    SFTPPipelineCreateRequest _configuration(@Nonnull final SFTPConfiguration _configuration);
+    SFTPPipelineCreateRequest _configuration(@Nonnull final CommonConfiguration _configuration);
   }
 }

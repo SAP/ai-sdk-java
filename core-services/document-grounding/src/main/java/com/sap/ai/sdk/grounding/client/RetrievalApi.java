@@ -3,8 +3,8 @@ package com.sap.ai.sdk.grounding.client;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DataRepository;
-import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
-import com.sap.ai.sdk.grounding.model.RetrievalSearchResults;
+import com.sap.ai.sdk.grounding.model.SearchInput;
+import com.sap.ai.sdk.grounding.model.SearchResults;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
@@ -73,7 +73,7 @@ public class RetrievalApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DataRepositories getDataRepositories(
+  public DataRepositories retrievalV1RetrievalEndpointsGetDataRepositories(
       @Nonnull final String aiResourceGroup,
       @Nullable final Integer $top,
       @Nullable final Integer $skip,
@@ -84,7 +84,7 @@ public class RetrievalApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getDataRepositories");
+          "Missing the required parameter 'aiResourceGroup' when calling retrievalV1RetrievalEndpointsGetDataRepositories");
     }
 
     final String localVarPath =
@@ -139,9 +139,9 @@ public class RetrievalApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DataRepositories getDataRepositories(@Nonnull final String aiResourceGroup)
-      throws OpenApiRequestException {
-    return getDataRepositories(aiResourceGroup, null, null, null);
+  public DataRepositories retrievalV1RetrievalEndpointsGetDataRepositories(
+      @Nonnull final String aiResourceGroup) throws OpenApiRequestException {
+    return retrievalV1RetrievalEndpointsGetDataRepositories(aiResourceGroup, null, null, null);
   }
 
   /**
@@ -163,7 +163,7 @@ public class RetrievalApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DataRepository getDataRepositoryById(
+  public DataRepository retrievalV1RetrievalEndpointsGetDataRepository(
       @Nonnull final String aiResourceGroup, @Nonnull final UUID repositoryId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -171,13 +171,13 @@ public class RetrievalApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getDataRepositoryById");
+          "Missing the required parameter 'aiResourceGroup' when calling retrievalV1RetrievalEndpointsGetDataRepository");
     }
 
     // verify the required parameter 'repositoryId' is set
     if (repositoryId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'repositoryId' when calling getDataRepositoryById");
+          "Missing the required parameter 'repositoryId' when calling retrievalV1RetrievalEndpointsGetDataRepository");
     }
 
     // create path and map variables
@@ -231,16 +231,15 @@ public class RetrievalApi extends AbstractOpenApiService {
    * <p><b>422</b> - There are validation issues with the data.
    *
    * @param aiResourceGroup Resource Group ID
-   * @param retrievalSearchInput The value for the parameter retrievalSearchInput
-   * @return RetrievalSearchResults
+   * @param searchInput The value for the parameter searchInput
+   * @return SearchResults
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public RetrievalSearchResults search(
-      @Nonnull final String aiResourceGroup,
-      @Nonnull final RetrievalSearchInput retrievalSearchInput)
+  public SearchResults search(
+      @Nonnull final String aiResourceGroup, @Nonnull final SearchInput searchInput)
       throws OpenApiRequestException {
-    final Object localVarPostBody = retrievalSearchInput;
+    final Object localVarPostBody = searchInput;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -248,10 +247,10 @@ public class RetrievalApi extends AbstractOpenApiService {
           "Missing the required parameter 'aiResourceGroup' when calling search");
     }
 
-    // verify the required parameter 'retrievalSearchInput' is set
-    if (retrievalSearchInput == null) {
+    // verify the required parameter 'searchInput' is set
+    if (searchInput == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'retrievalSearchInput' when calling retrievalV1RetrievalEndpointsSearch");
+          "Missing the required parameter 'searchInput' when calling retrievalV1RetrievalEndpointsSearch");
     }
 
     final String localVarPath =
@@ -273,8 +272,8 @@ public class RetrievalApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<RetrievalSearchResults> localVarReturnType =
-        new ParameterizedTypeReference<RetrievalSearchResults>() {};
+    final ParameterizedTypeReference<SearchResults> localVarReturnType =
+        new ParameterizedTypeReference<SearchResults>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.POST,

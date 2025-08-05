@@ -38,7 +38,7 @@ public class DataRepository
   private String title;
 
   @JsonProperty("metadata")
-  private List<RetrievalKeyValueListPair> metadata = new ArrayList<>();
+  private List<KeyValueListPair> metadata = new ArrayList<>();
 
   @JsonProperty("type")
   private DataRepositoryType type;
@@ -119,7 +119,7 @@ public class DataRepository
    * @return The same instance of this {@link DataRepository} class
    */
   @Nonnull
-  public DataRepository metadata(@Nullable final List<RetrievalKeyValueListPair> metadata) {
+  public DataRepository metadata(@Nullable final List<KeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -131,7 +131,7 @@ public class DataRepository
    * @return The same instance of type {@link DataRepository}
    */
   @Nonnull
-  public DataRepository addMetadataItem(@Nonnull final RetrievalKeyValueListPair metadataItem) {
+  public DataRepository addMetadataItem(@Nonnull final KeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -146,7 +146,7 @@ public class DataRepository
    * @return metadata The metadata of this {@link DataRepository} instance.
    */
   @Nonnull
-  public List<RetrievalKeyValueListPair> getMetadata() {
+  public List<KeyValueListPair> getMetadata() {
     return metadata;
   }
 
@@ -156,7 +156,7 @@ public class DataRepository
    * @param metadata Metadata attached to DataRepository. Useful to later limit search to a subset
    *     of DataRepositories.
    */
-  public void setMetadata(@Nullable final List<RetrievalKeyValueListPair> metadata) {
+  public void setMetadata(@Nullable final List<KeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 

@@ -38,7 +38,7 @@ public class Collection
   private EmbeddingConfig embeddingConfig;
 
   @JsonProperty("metadata")
-  private List<VectorKeyValueListPair> metadata = new ArrayList<>();
+  private List<KeyValueListPair> metadata = new ArrayList<>();
 
   @JsonProperty("id")
   private UUID id;
@@ -119,7 +119,7 @@ public class Collection
    * @return The same instance of this {@link Collection} class
    */
   @Nonnull
-  public Collection metadata(@Nullable final List<VectorKeyValueListPair> metadata) {
+  public Collection metadata(@Nullable final List<KeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -131,7 +131,7 @@ public class Collection
    * @return The same instance of type {@link Collection}
    */
   @Nonnull
-  public Collection addMetadataItem(@Nonnull final VectorKeyValueListPair metadataItem) {
+  public Collection addMetadataItem(@Nonnull final KeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -145,7 +145,7 @@ public class Collection
    * @return metadata The metadata of this {@link Collection} instance.
    */
   @Nonnull
-  public List<VectorKeyValueListPair> getMetadata() {
+  public List<KeyValueListPair> getMetadata() {
     return metadata;
   }
 
@@ -155,7 +155,7 @@ public class Collection
    * @param metadata Metadata attached to collection. Useful to restrict search to a subset of
    *     collections.
    */
-  public void setMetadata(@Nullable final List<VectorKeyValueListPair> metadata) {
+  public void setMetadata(@Nullable final List<KeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 

@@ -23,31 +23,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** S3Configuration */
+/** CommonConfiguration */
 // CHECKSTYLE:OFF
-public class S3Configuration
+public class CommonConfiguration
 // CHECKSTYLE:ON
 {
   @JsonProperty("destination")
   private String destination;
 
-  @JsonProperty("s3")
-  private SFTPConfigurationSftp s3;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for S3Configuration. */
-  protected S3Configuration() {}
+  /** Default constructor for CommonConfiguration. */
+  protected CommonConfiguration() {}
 
   /**
-   * Set the destination of this {@link S3Configuration} instance and return the same instance.
+   * Set the destination of this {@link CommonConfiguration} instance and return the same instance.
    *
-   * @param destination The destination of this {@link S3Configuration}
-   * @return The same instance of this {@link S3Configuration} class
+   * @param destination The destination of this {@link CommonConfiguration}
+   * @return The same instance of this {@link CommonConfiguration} class
    */
   @Nonnull
-  public S3Configuration destination(@Nonnull final String destination) {
+  public CommonConfiguration destination(@Nonnull final String destination) {
     this.destination = destination;
     return this;
   }
@@ -55,7 +52,7 @@ public class S3Configuration
   /**
    * Get destination
    *
-   * @return destination The destination of this {@link S3Configuration} instance.
+   * @return destination The destination of this {@link CommonConfiguration} instance.
    */
   @Nonnull
   public String getDestination() {
@@ -63,47 +60,16 @@ public class S3Configuration
   }
 
   /**
-   * Set the destination of this {@link S3Configuration} instance.
+   * Set the destination of this {@link CommonConfiguration} instance.
    *
-   * @param destination The destination of this {@link S3Configuration}
+   * @param destination The destination of this {@link CommonConfiguration}
    */
   public void setDestination(@Nonnull final String destination) {
     this.destination = destination;
   }
 
   /**
-   * Set the s3 of this {@link S3Configuration} instance and return the same instance.
-   *
-   * @param s3 The s3 of this {@link S3Configuration}
-   * @return The same instance of this {@link S3Configuration} class
-   */
-  @Nonnull
-  public S3Configuration s3(@Nullable final SFTPConfigurationSftp s3) {
-    this.s3 = s3;
-    return this;
-  }
-
-  /**
-   * Get s3
-   *
-   * @return s3 The s3 of this {@link S3Configuration} instance.
-   */
-  @Nonnull
-  public SFTPConfigurationSftp getS3() {
-    return s3;
-  }
-
-  /**
-   * Set the s3 of this {@link S3Configuration} instance.
-   *
-   * @param s3 The s3 of this {@link S3Configuration}
-   */
-  public void setS3(@Nullable final SFTPConfigurationSftp s3) {
-    this.s3 = s3;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link S3Configuration}.
+   * Get the names of the unrecognizable properties of the {@link CommonConfiguration}.
    *
    * @return The set of properties names
    */
@@ -114,7 +80,7 @@ public class S3Configuration
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link S3Configuration} instance.
+   * Get the value of an unrecognizable property of this {@link CommonConfiguration} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -125,14 +91,15 @@ public class S3Configuration
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("S3Configuration has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "CommonConfiguration has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link S3Configuration} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link CommonConfiguration} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -141,13 +108,12 @@ public class S3Configuration
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (destination != null) declaredFields.put("destination", destination);
-    if (s3 != null) declaredFields.put("s3", s3);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link S3Configuration} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link CommonConfiguration} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -165,24 +131,22 @@ public class S3Configuration
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final S3Configuration s3Configuration = (S3Configuration) o;
-    return Objects.equals(this.cloudSdkCustomFields, s3Configuration.cloudSdkCustomFields)
-        && Objects.equals(this.destination, s3Configuration.destination)
-        && Objects.equals(this.s3, s3Configuration.s3);
+    final CommonConfiguration commonConfiguration = (CommonConfiguration) o;
+    return Objects.equals(this.cloudSdkCustomFields, commonConfiguration.cloudSdkCustomFields)
+        && Objects.equals(this.destination, commonConfiguration.destination);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(destination, s3, cloudSdkCustomFields);
+    return Objects.hash(destination, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class S3Configuration {\n");
+    sb.append("class CommonConfiguration {\n");
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
-    sb.append("    s3: ").append(toIndentedString(s3)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -201,21 +165,21 @@ public class S3Configuration
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link S3Configuration}
+   * Create a type-safe, fluent-api builder object to construct a new {@link CommonConfiguration}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (destination) -> new S3Configuration().destination(destination);
+    return (destination) -> new CommonConfiguration().destination(destination);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the destination of this {@link S3Configuration} instance.
+     * Set the destination of this {@link CommonConfiguration} instance.
      *
-     * @param destination The destination of this {@link S3Configuration}
-     * @return The S3Configuration instance.
+     * @param destination The destination of this {@link CommonConfiguration}
+     * @return The CommonConfiguration instance.
      */
-    S3Configuration destination(@Nonnull final String destination);
+    CommonConfiguration destination(@Nonnull final String destination);
   }
 }

@@ -35,7 +35,7 @@ public class TextSearchRequest
   private String query;
 
   @JsonProperty("filters")
-  private List<VectorSearchFilter> filters = new ArrayList<>();
+  private List<SearchFilter> filters = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -81,7 +81,7 @@ public class TextSearchRequest
    * @return The same instance of this {@link TextSearchRequest} class
    */
   @Nonnull
-  public TextSearchRequest filters(@Nonnull final List<VectorSearchFilter> filters) {
+  public TextSearchRequest filters(@Nonnull final List<SearchFilter> filters) {
     this.filters = filters;
     return this;
   }
@@ -93,7 +93,7 @@ public class TextSearchRequest
    * @return The same instance of type {@link TextSearchRequest}
    */
   @Nonnull
-  public TextSearchRequest addFiltersItem(@Nonnull final VectorSearchFilter filtersItem) {
+  public TextSearchRequest addFiltersItem(@Nonnull final SearchFilter filtersItem) {
     if (this.filters == null) {
       this.filters = new ArrayList<>();
     }
@@ -107,7 +107,7 @@ public class TextSearchRequest
    * @return filters The filters of this {@link TextSearchRequest} instance.
    */
   @Nonnull
-  public List<VectorSearchFilter> getFilters() {
+  public List<SearchFilter> getFilters() {
     return filters;
   }
 
@@ -116,7 +116,7 @@ public class TextSearchRequest
    *
    * @param filters The filters of this {@link TextSearchRequest}
    */
-  public void setFilters(@Nonnull final List<VectorSearchFilter> filters) {
+  public void setFilters(@Nonnull final List<SearchFilter> filters) {
     this.filters = filters;
   }
 
@@ -245,7 +245,7 @@ public class TextSearchRequest
      * @param filters The filters of this {@link TextSearchRequest}
      * @return The TextSearchRequest instance.
      */
-    TextSearchRequest filters(@Nonnull final List<VectorSearchFilter> filters);
+    TextSearchRequest filters(@Nonnull final List<SearchFilter> filters);
 
     /**
      * Set the filters of this {@link TextSearchRequest} instance.
@@ -253,7 +253,7 @@ public class TextSearchRequest
      * @param filters The filters of this {@link TextSearchRequest}
      * @return The TextSearchRequest instance.
      */
-    default TextSearchRequest filters(@Nonnull final VectorSearchFilter... filters) {
+    default TextSearchRequest filters(@Nonnull final SearchFilter... filters) {
       return filters(Arrays.asList(filters));
     }
   }

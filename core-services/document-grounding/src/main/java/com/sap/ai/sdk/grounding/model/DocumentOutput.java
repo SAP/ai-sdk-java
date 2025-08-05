@@ -36,10 +36,10 @@ public class DocumentOutput
   private UUID id;
 
   @JsonProperty("metadata")
-  private List<VectorDocumentKeyValueListPair> metadata = new ArrayList<>();
+  private List<DocumentKeyValueListPair> metadata = new ArrayList<>();
 
   @JsonProperty("chunks")
-  private List<VectorChunk> chunks = new ArrayList<>();
+  private List<Chunk> chunks = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -85,7 +85,7 @@ public class DocumentOutput
    * @return The same instance of this {@link DocumentOutput} class
    */
   @Nonnull
-  public DocumentOutput metadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
+  public DocumentOutput metadata(@Nullable final List<DocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -97,8 +97,7 @@ public class DocumentOutput
    * @return The same instance of type {@link DocumentOutput}
    */
   @Nonnull
-  public DocumentOutput addMetadataItem(
-      @Nonnull final VectorDocumentKeyValueListPair metadataItem) {
+  public DocumentOutput addMetadataItem(@Nonnull final DocumentKeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -112,7 +111,7 @@ public class DocumentOutput
    * @return metadata The metadata of this {@link DocumentOutput} instance.
    */
   @Nonnull
-  public List<VectorDocumentKeyValueListPair> getMetadata() {
+  public List<DocumentKeyValueListPair> getMetadata() {
     return metadata;
   }
 
@@ -121,7 +120,7 @@ public class DocumentOutput
    *
    * @param metadata The metadata of this {@link DocumentOutput}
    */
-  public void setMetadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
+  public void setMetadata(@Nullable final List<DocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
@@ -132,7 +131,7 @@ public class DocumentOutput
    * @return The same instance of this {@link DocumentOutput} class
    */
   @Nonnull
-  public DocumentOutput chunks(@Nonnull final List<VectorChunk> chunks) {
+  public DocumentOutput chunks(@Nonnull final List<Chunk> chunks) {
     this.chunks = chunks;
     return this;
   }
@@ -144,7 +143,7 @@ public class DocumentOutput
    * @return The same instance of type {@link DocumentOutput}
    */
   @Nonnull
-  public DocumentOutput addChunksItem(@Nonnull final VectorChunk chunksItem) {
+  public DocumentOutput addChunksItem(@Nonnull final Chunk chunksItem) {
     if (this.chunks == null) {
       this.chunks = new ArrayList<>();
     }
@@ -158,7 +157,7 @@ public class DocumentOutput
    * @return chunks The chunks of this {@link DocumentOutput} instance.
    */
   @Nonnull
-  public List<VectorChunk> getChunks() {
+  public List<Chunk> getChunks() {
     return chunks;
   }
 
@@ -167,7 +166,7 @@ public class DocumentOutput
    *
    * @param chunks The chunks of this {@link DocumentOutput}
    */
-  public void setChunks(@Nonnull final List<VectorChunk> chunks) {
+  public void setChunks(@Nonnull final List<Chunk> chunks) {
     this.chunks = chunks;
   }
 
@@ -299,7 +298,7 @@ public class DocumentOutput
      * @param chunks The chunks of this {@link DocumentOutput}
      * @return The DocumentOutput instance.
      */
-    DocumentOutput chunks(@Nonnull final List<VectorChunk> chunks);
+    DocumentOutput chunks(@Nonnull final List<Chunk> chunks);
 
     /**
      * Set the chunks of this {@link DocumentOutput} instance.
@@ -307,7 +306,7 @@ public class DocumentOutput
      * @param chunks The chunks of this {@link DocumentOutput}
      * @return The DocumentOutput instance.
      */
-    default DocumentOutput chunks(@Nonnull final VectorChunk... chunks) {
+    default DocumentOutput chunks(@Nonnull final Chunk... chunks) {
       return chunks(Arrays.asList(chunks));
     }
   }

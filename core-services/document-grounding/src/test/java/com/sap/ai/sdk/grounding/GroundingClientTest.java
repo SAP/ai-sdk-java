@@ -11,12 +11,11 @@ import com.sap.ai.sdk.grounding.client.VectorApi;
 import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
 import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DataRepositoryType;
+import com.sap.ai.sdk.grounding.model.DocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.GetPipelines;
-import com.sap.ai.sdk.grounding.model.RetrievalKeyValueListPair;
-import com.sap.ai.sdk.grounding.model.VectorDocumentKeyValueListPair;
-import com.sap.ai.sdk.grounding.model.VectorKeyValueListPair;
+import com.sap.ai.sdk.grounding.model.KeyValueListPair;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.util.UUID;
@@ -36,7 +35,8 @@ class GroundingClientTest {
   void testPipelines() {
     final PipelinesApi api = new GroundingClient(SERVICE).pipelines();
 
-    final GetPipelines allPipelines = api.getAllPipelines("reosurceGroup");
+    final GetPipelines allPipelines =
+        api.pipelineV1PipelineEndpointsGetAllPipeline("resourceGroup");
     assertThat(allPipelines).isNotNull();
     assertThat(allPipelines.getResources()).isEmpty();
   }
@@ -45,7 +45,8 @@ class GroundingClientTest {
   void testVector() {
     final VectorApi api = new GroundingClient(SERVICE).vector();
 
-    final CollectionsListResponse collections = api.getAllCollections("reosurceGroup");
+    final CollectionsListResponse collections =
+        api.vectorV1VectorEndpointsGetAllCollections("resourceGroup");
     assertThat(collections).isNotNull();
     assertThat(collections.getResources())
         .isNotNull()
@@ -57,19 +58,19 @@ class GroundingClientTest {
               assertThat(c.getTitle()).isEqualTo("test-collection");
               assertThat(c.getEmbeddingConfig()).isNotNull();
               assertThat(c.getEmbeddingConfig().getModelName()).isEqualTo("text-embedding-ada-999");
-              final var meta =
-                  VectorKeyValueListPair.create().key("purpose").value("grounding test");
+              final var meta = KeyValueListPair.create().key("purpose").value("grounding test");
               assertThat(c.getMetadata()).isNotNull().containsExactly(meta);
             });
 
     final UUID collectionId = collections.getResources().get(0).getId();
-    final Documents documents = api.getAllDocuments("reosurceGroup", collectionId);
+    final Documents documents =
+        api.vectorV1VectorEndpointsGetAllDocuments("reosurceGroup", collectionId);
     assertThat(documents).isNotNull();
-    final var documentMeta =
-        VectorDocumentKeyValueListPair.create()
+    final DocumentKeyValueListPair documentMeta =
+        DocumentKeyValueListPair.create()
             .key("url")
             .value("http://hello.com", "123")
-            .matchMode(VectorDocumentKeyValueListPair.MatchModeEnum.ANY);
+            .matchMode(DocumentKeyValueListPair.MatchModeEnum.ANY);
     assertThat(documents.getResources())
         .isNotNull()
         .hasSize(1)
@@ -82,7 +83,7 @@ class GroundingClientTest {
 
     final UUID documentId = documents.getResources().get(0).getId();
     final DocumentResponse document =
-        api.getDocumentById("reosurceGroup", collectionId, documentId);
+        api.vectorV1VectorEndpointsGetDocumentById("reosurceGroup", collectionId, documentId);
     assertThat(document).isNotNull();
     assertThat(document.getId()).isEqualTo(documentId);
     assertThat(document.getMetadata()).isNotNull().containsExactly(documentMeta);
@@ -92,21 +93,17 @@ class GroundingClientTest {
             d1 -> {
               assertThat(d1).isNotNull();
               assertThat(d1.getContent()).isNotEmpty();
-              final var m1 = VectorKeyValueListPair.create().key("index").value("1");
+              final var m1 = KeyValueListPair.create().key("index").value("1");
               final var m2 =
-                  VectorKeyValueListPair.create()
-                      .key("sap.document-grounding/language")
-                      .value("en");
+                  KeyValueListPair.create().key("sap.document-grounding/language").value("en");
               assertThat(d1.getMetadata()).isNotNull().containsExactly(m1, m2);
             },
             d2 -> {
               assertThat(d2).isNotNull();
               assertThat(d2.getContent()).isNotEmpty();
-              final var m1 = VectorKeyValueListPair.create().key("index").value("2");
+              final var m1 = KeyValueListPair.create().key("index").value("2");
               final var m2 =
-                  VectorKeyValueListPair.create()
-                      .key("sap.document-grounding/language")
-                      .value("en");
+                  KeyValueListPair.create().key("sap.document-grounding/language").value("en");
               assertThat(d2.getMetadata()).isNotNull().containsExactly(m1, m2);
             });
   }
@@ -115,7 +112,8 @@ class GroundingClientTest {
   void testRetrieval() {
     final RetrievalApi api = new GroundingClient(SERVICE).retrieval();
 
-    DataRepositories repositories = api.getDataRepositories("reosurceGroup");
+    DataRepositories repositories =
+        api.retrievalV1RetrievalEndpointsGetDataRepositories("reosurceGroup");
     assertThat(repositories).isNotNull();
     assertThat(repositories.getResources())
         .isNotEmpty()
@@ -125,8 +123,7 @@ class GroundingClientTest {
               assertThat(r.getId()).isNotNull();
               assertThat(r.getTitle()).isEqualTo("test-collection");
               assertThat(r.getType()).isEqualTo(DataRepositoryType.VECTOR);
-              final var meta =
-                  RetrievalKeyValueListPair.create().key("purpose").value("grounding test");
+              final var meta = KeyValueListPair.create().key("purpose").value("grounding test");
               assertThat(r.getMetadata()).isNotNull().containsExactly(meta);
             },
             r2 -> {

@@ -39,7 +39,7 @@ public class DocumentsChunk
   private String title;
 
   @JsonProperty("metadata")
-  private List<VectorKeyValueListPair> metadata = new ArrayList<>();
+  private List<KeyValueListPair> metadata = new ArrayList<>();
 
   @JsonProperty("documents")
   private List<DocumentOutput> documents = new ArrayList<>();
@@ -119,7 +119,7 @@ public class DocumentsChunk
    * @return The same instance of this {@link DocumentsChunk} class
    */
   @Nonnull
-  public DocumentsChunk metadata(@Nullable final List<VectorKeyValueListPair> metadata) {
+  public DocumentsChunk metadata(@Nullable final List<KeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -131,7 +131,7 @@ public class DocumentsChunk
    * @return The same instance of type {@link DocumentsChunk}
    */
   @Nonnull
-  public DocumentsChunk addMetadataItem(@Nonnull final VectorKeyValueListPair metadataItem) {
+  public DocumentsChunk addMetadataItem(@Nonnull final KeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -145,7 +145,7 @@ public class DocumentsChunk
    * @return metadata The metadata of this {@link DocumentsChunk} instance.
    */
   @Nonnull
-  public List<VectorKeyValueListPair> getMetadata() {
+  public List<KeyValueListPair> getMetadata() {
     return metadata;
   }
 
@@ -154,7 +154,7 @@ public class DocumentsChunk
    *
    * @param metadata The metadata of this {@link DocumentsChunk}
    */
-  public void setMetadata(@Nullable final List<VectorKeyValueListPair> metadata) {
+  public void setMetadata(@Nullable final List<KeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
