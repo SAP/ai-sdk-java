@@ -14,8 +14,8 @@ import lombok.Getter;
 import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.model.ModelOptionsUtils;
-import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
+import org.springframework.ai.tool.ToolCallback;
 
 @Data
 public class OpenAiChatOptions implements ToolCallingChatOptions {

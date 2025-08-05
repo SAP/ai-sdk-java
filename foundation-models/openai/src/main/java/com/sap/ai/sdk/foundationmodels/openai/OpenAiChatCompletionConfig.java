@@ -2,21 +2,18 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfResponseFormat;
-import lombok.*;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nullable;
+import lombok.*;
 
 @With
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-class OpenAiChatCompletionConfig {
+public class OpenAiChatCompletionConfig {
 
   /** Upto 4 Stop sequences to interrupts token generation and returns a response without them. */
   @Nullable List<String> stop;
@@ -66,8 +63,7 @@ class OpenAiChatCompletionConfig {
    * 100) to the logits before sampling. Extreme values can effectively ban or enforce the selection
    * of tokens.
    */
-  @Nullable
-  Map<String, Integer> logitBias;
+  @Nullable Map<String, Integer> logitBias;
 
   /**
    * Unique identifier for the end-user making the request. This can help with monitoring and abuse
@@ -76,9 +72,7 @@ class OpenAiChatCompletionConfig {
   @Nullable String user;
 
   /** Whether to include log probabilities in the response. */
-  @With(AccessLevel.NONE)
-  @Nullable
-  Boolean logprobs;
+  @Nullable Boolean logprobs;
 
   /**
    * Number of top log probabilities to return for each token. An integer between 0 and 20. This is
@@ -90,20 +84,16 @@ class OpenAiChatCompletionConfig {
   @Nullable Integer n;
 
   /** Whether to allow parallel tool calls. */
-  @With(AccessLevel.NONE)
-  @Nullable
-  Boolean parallelToolCalls;
+  @Nullable Boolean parallelToolCalls;
 
   /** Seed for random number generation. */
   @Nullable Integer seed;
 
   /** Options for streaming the completion response. */
-  @Nullable
-  ChatCompletionStreamOptions streamOptions;
+  @Nullable ChatCompletionStreamOptions streamOptions;
 
   /** Response format for the completion. */
-  @Nullable
-  CreateChatCompletionRequestAllOfResponseFormat responseFormat;
+  @Nullable CreateChatCompletionRequestAllOfResponseFormat responseFormat;
 
   /**
    * Tools the model may invoke during chat completion (metadata only).
@@ -123,9 +113,5 @@ class OpenAiChatCompletionConfig {
   List<OpenAiTool> toolsExecutable;
 
   /** Option to control which tool is invoked by the model. */
-  @With(AccessLevel.PRIVATE)
-  @Nullable
-  ChatCompletionToolChoiceOption toolChoice;
-
-
+  @Nullable OpenAiToolChoice toolChoice;
 }

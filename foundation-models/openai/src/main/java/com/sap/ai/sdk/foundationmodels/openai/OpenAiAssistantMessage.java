@@ -57,7 +57,7 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
    *
    * @param singleMessage the message.
    */
-  public OpenAiAssistantMessage( @Nonnull final String singleMessage ) {
+  public OpenAiAssistantMessage(@Nonnull final String singleMessage) {
     this(
         new OpenAiMessageContent(List.of(new OpenAiTextItem(singleMessage))),
         Collections.emptyList());

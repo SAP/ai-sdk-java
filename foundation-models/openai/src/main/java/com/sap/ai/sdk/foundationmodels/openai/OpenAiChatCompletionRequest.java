@@ -1,9 +1,9 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.google.common.annotations.Beta;
+import com.google.common.collect.Lists;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionToolChoiceOption;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfResponseFormat;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequestAllOfStop;
@@ -11,10 +11,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import lombok.*;
 import lombok.experimental.Tolerate;
 
@@ -37,72 +35,76 @@ public class OpenAiChatCompletionRequest {
   @Nonnull List<OpenAiMessage> messages;
 
   @Setter(AccessLevel.NONE)
-  @Getter(AccessLevel.NONE)
+  @Getter(AccessLevel.PACKAGE)
   OpenAiChatCompletionConfig config;
 
-  OpenAiChatCompletionRequest withStop(@Nonnull final List<String> stop) {
+  public OpenAiChatCompletionRequest withStop(@Nonnull final List<String> stop) {
     return this.withConfig(config.withStop(stop));
   }
 
-  OpenAiChatCompletionRequest withTemperature(@Nonnull final BigDecimal temperature) {
+  public OpenAiChatCompletionRequest withTemperature(@Nonnull final BigDecimal temperature) {
     return this.withConfig(config.withTemperature(temperature));
   }
 
-  OpenAiChatCompletionRequest withTopP(@Nonnull final BigDecimal topP) {
+  public OpenAiChatCompletionRequest withTopP(@Nonnull final BigDecimal topP) {
     return this.withConfig(config.withTopP(topP));
   }
 
-  OpenAiChatCompletionRequest withMaxTokens(@Nonnull final Integer maxTokens) {
+  public OpenAiChatCompletionRequest withMaxTokens(@Nonnull final Integer maxTokens) {
     return this.withConfig(config.withMaxTokens(maxTokens));
   }
 
-  OpenAiChatCompletionRequest withMaxCompletionTokens(@Nonnull final Integer maxCompletionTokens) {
+  public OpenAiChatCompletionRequest withMaxCompletionTokens(
+      @Nonnull final Integer maxCompletionTokens) {
     return this.withConfig(config.withMaxCompletionTokens(maxCompletionTokens));
   }
 
-  OpenAiChatCompletionRequest withPresencePenalty(@Nonnull final BigDecimal presencePenalty) {
+  public OpenAiChatCompletionRequest withPresencePenalty(
+      @Nonnull final BigDecimal presencePenalty) {
     return this.withConfig(config.withPresencePenalty(presencePenalty));
   }
 
-  OpenAiChatCompletionRequest withFrequencyPenalty(@Nonnull final BigDecimal frequencyPenalty) {
+  public OpenAiChatCompletionRequest withFrequencyPenalty(
+      @Nonnull final BigDecimal frequencyPenalty) {
     return this.withConfig(config.withFrequencyPenalty(frequencyPenalty));
   }
 
-  OpenAiChatCompletionRequest withTopLogprobs(@Nonnull final Integer topLogprobs) {
+  public OpenAiChatCompletionRequest withTopLogprobs(@Nonnull final Integer topLogprobs) {
     return this.withConfig(config.withTopLogprobs(topLogprobs));
   }
 
-  OpenAiChatCompletionRequest withUser(@Nonnull final String user) {
+  public OpenAiChatCompletionRequest withUser(@Nonnull final String user) {
     return this.withConfig(config.withUser(user));
   }
 
-  OpenAiChatCompletionRequest withLogitBias(@Nonnull final Map<String, Integer> logitBias) {
+  public OpenAiChatCompletionRequest withLogitBias(@Nonnull final Map<String, Integer> logitBias) {
     return this.withConfig(config.withLogitBias(logitBias));
   }
 
-  OpenAiChatCompletionRequest withN(@Nonnull final Integer n) {
+  public OpenAiChatCompletionRequest withN(@Nonnull final Integer n) {
     return this.withConfig(config.withN(n));
   }
 
-  OpenAiChatCompletionRequest withSeed(@Nonnull final Integer seed) {
+  public OpenAiChatCompletionRequest withSeed(@Nonnull final Integer seed) {
     return this.withConfig(config.withSeed(seed));
   }
 
-  OpenAiChatCompletionRequest withStreamOptions(
+  public OpenAiChatCompletionRequest withStreamOptions(
       @Nonnull final ChatCompletionStreamOptions streamOptions) {
     return this.withConfig(config.withStreamOptions(streamOptions));
   }
 
-  OpenAiChatCompletionRequest withResponseFormat(
+  public OpenAiChatCompletionRequest withResponseFormat(
       @Nonnull final CreateChatCompletionRequestAllOfResponseFormat responseFormat) {
     return this.withConfig(config.withResponseFormat(responseFormat));
   }
 
-  OpenAiChatCompletionRequest withTools(@Nonnull final List<ChatCompletionTool> tools) {
+  public OpenAiChatCompletionRequest withTools(@Nonnull final List<ChatCompletionTool> tools) {
     return this.withConfig(config.withTools(tools));
   }
 
-  OpenAiChatCompletionRequest withToolsExecutable(@Nonnull final List<OpenAiTool> toolsExecutable) {
+  public OpenAiChatCompletionRequest withToolsExecutable(
+      @Nonnull final List<OpenAiTool> toolsExecutable) {
     return this.withConfig(config.withToolsExecutable(toolsExecutable));
   }
 
@@ -113,7 +115,30 @@ public class OpenAiChatCompletionRequest {
    */
   @Tolerate
   public OpenAiChatCompletionRequest(@Nonnull final String message) {
-    this(List.of(OpenAiMessage.user(message)), new OpenAiChatCompletionConfig());
+    this(List.of(OpenAiMessage.user(message)));
+  }
+
+  /**
+   * Creates an OpenAiChatCompletionPrompt with a multiple unpacked messages.
+   *
+   * @param message the primary message to be added to the prompt
+   * @param messages additional messages to be added to the prompt
+   */
+  @Tolerate
+  public OpenAiChatCompletionRequest(
+      @Nonnull final OpenAiMessage message, @Nonnull final OpenAiMessage... messages) {
+    this(Lists.asList(message, messages));
+  }
+
+  /**
+   * Creates an OpenAiChatCompletionPrompt with a list of messages.
+   *
+   * @param messages the list of messages to be added to the prompt
+   * @since 1.6.0
+   */
+  @Tolerate
+  public OpenAiChatCompletionRequest(@Nonnull final List<OpenAiMessage> messages) {
+    this(List.copyOf(messages), new OpenAiChatCompletionConfig());
   }
 
   /**
@@ -127,7 +152,7 @@ public class OpenAiChatCompletionRequest {
   @Nonnull
   public OpenAiChatCompletionRequest withStop(
       @Nonnull final String sequence, @Nonnull final String... sequences) {
-    return this;
+    return withStop(Lists.asList(sequence, sequences));
   }
 
   /**
@@ -139,7 +164,7 @@ public class OpenAiChatCompletionRequest {
   @Nonnull
   public OpenAiChatCompletionRequest withParallelToolCalls(
       @Nonnull final Boolean parallelToolCalls) {
-    return this;
+    return this.withConfig(config.withParallelToolCalls(parallelToolCalls));
   }
 
   /**
@@ -150,7 +175,7 @@ public class OpenAiChatCompletionRequest {
    */
   @Nonnull
   public OpenAiChatCompletionRequest withLogprobs(@Nonnull final Boolean logprobs) {
-    return this;
+    return this.withConfig(config.withLogprobs(logprobs));
   }
 
   /**
@@ -169,9 +194,8 @@ public class OpenAiChatCompletionRequest {
    * @return the current OpenAiChatCompletionRequest instance.
    */
   @Nonnull
-  @Tolerate
   public OpenAiChatCompletionRequest withToolChoice(@Nonnull final OpenAiToolChoice choice) {
-    return this;
+    return this.withConfig(config.withToolChoice(choice));
   }
 
   /**
@@ -206,7 +230,7 @@ public class OpenAiChatCompletionRequest {
     request.streamOptions(config.streamOptions);
     request.responseFormat(config.responseFormat);
     request.tools(getChatCompletionTools());
-    request.toolChoice(config.toolChoice);
+    request.toolChoice(config.toolChoice != null ? config.toolChoice.toolChoice : null);
     request.functionCall(null);
     request.functions(null);
     return request;

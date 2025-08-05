@@ -100,7 +100,7 @@ public class ChatCompletionRequestAssistantMessage implements ChatCompletionRequ
   private String name;
 
   // this should not be serialized if empty
-  @JsonInclude( JsonInclude.Include.NON_EMPTY)
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   @JsonProperty("tool_calls")
   private List<ChatCompletionMessageToolCall> toolCalls = new ArrayList<>();
 
