@@ -6,8 +6,10 @@ import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.sap.ai.sdk.core.model.AiModelBaseDataAllowedScenariosInner;
 import com.sap.ai.sdk.core.model.AiModelVersion;
 import com.sap.ai.sdk.core.model.AiScenarioLabel;
+import java.util.Map;
 import lombok.val;
 import org.apache.hc.core5.http.HttpStatus;
 import org.junit.jupiter.api.Test;
@@ -156,15 +158,37 @@ class ScenarioUnitTest extends WireMockTestServer {
                               "count": 1,
                               "resources": [
                                 {
+                                   "accessType": "Remote",
+                                   "allowedScenarios": [
+                                     {
+                                       "executableId": "aicore-opensource",
+                                       "scenarioId": "foundation-models"
+                                     },
+                                     {
+                                       "executableId": "orchestration",
+                                       "scenarioId": "orchestration"
+                                     }
+                                   ],
                                   "description": "Mistral mixtral-8x7b-instruct-v01 model",
+                                  "displayName": "Mistral FooBar",
                                   "executableId": "aicore-opensource",
                                   "model": "mistralai--mixtral-8x7b-instruct-v01",
+                                  "provider": "Mistral",
                                   "versions": [
                                     {
+                                      "capabilities": ["text-generation"],
+                                      "orchestrationCapabilities": [],
+                                      "contextLength": 8000,
+                                      "cost": [
+                                        {"inputCost": "0.00086"},
+                                        {"outputCost": "0.00158"}
+                                      ],
                                       "deprecated": false,
+                                      "inputTypes": ["text"],
                                       "isLatest": true,
                                       "name": "202407",
-                                      "retirementDate": ""
+                                      "retirementDate": "",
+                                      "streamingSupported": true
                                     }
                                   ]
                                 }
@@ -182,11 +206,29 @@ class ScenarioUnitTest extends WireMockTestServer {
     assertThat(scenario.getDescription()).isEqualTo("Mistral mixtral-8x7b-instruct-v01 model");
     assertThat(scenario.getExecutableId()).isEqualTo("aicore-opensource");
     assertThat(scenario.getModel()).isEqualTo("mistralai--mixtral-8x7b-instruct-v01");
+    assertThat(scenario.getAccessType()).isEqualTo("Remote");
+    assertThat(scenario.getDisplayName()).isEqualTo("Mistral FooBar");
+    assertThat(scenario.getProvider()).isEqualTo("Mistral");
+    assertThat(scenario.getAllowedScenarios())
+        .containsExactly(
+            AiModelBaseDataAllowedScenariosInner.create()
+                .scenarioId("foundation-models")
+                .executableId("aicore-opensource"),
+            AiModelBaseDataAllowedScenariosInner.create()
+                .scenarioId("orchestration")
+                .executableId("orchestration"));
 
     AiModelVersion aiModelVersion = scenario.getVersions().get(0);
     assertThat(aiModelVersion.getName()).isEqualTo("202407");
     assertThat(aiModelVersion.isIsLatest()).isTrue();
     assertThat(aiModelVersion.isDeprecated()).isFalse();
     assertThat(aiModelVersion.getRetirementDate()).isEmpty();
+    assertThat(aiModelVersion.getCapabilities()).containsExactly("text-generation");
+    assertThat(aiModelVersion.getOrchestrationCapabilities()).isEmpty();
+    assertThat(aiModelVersion.getContextLength()).isEqualTo(8000);
+    assertThat(aiModelVersion.getInputTypes()).containsExactly("text");
+    assertThat(aiModelVersion.isStreamingSupported()).isTrue();
+    assertThat(aiModelVersion.getCost())
+        .containsExactly(Map.of("inputCost", "0.00086"), Map.of("outputCost", "0.00158"));
   }
 }
