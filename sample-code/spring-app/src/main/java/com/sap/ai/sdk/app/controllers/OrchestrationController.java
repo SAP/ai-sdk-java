@@ -5,8 +5,7 @@ import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
-import com.sap.ai.sdk.orchestration.OrchestrationFilterException.Input;
-import com.sap.ai.sdk.orchestration.OrchestrationFilterException.Output;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
@@ -128,7 +127,7 @@ class OrchestrationController {
     final OrchestrationChatResponse response;
     try {
       response = service.inputFiltering(policy);
-    } catch (Input e) {
+    } catch (OrchestrationFilterException.Input e) {
       final var msg =
           new StringBuilder(
               "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
@@ -160,7 +159,7 @@ class OrchestrationController {
     final String content;
     try {
       content = response.getContent();
-    } catch (Output e) {
+    } catch (OrchestrationFilterException.Output e) {
       final var msg =
           new StringBuilder(
               "Failed to obtain a response as the content was flagged by output filter. ");
@@ -189,7 +188,7 @@ class OrchestrationController {
     final OrchestrationChatResponse response;
     try {
       response = service.llamaGuardInputFilter(enabled);
-    } catch (Input e) {
+    } catch (OrchestrationFilterException.Input e) {
       var msg =
           "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
               .formatted(e.getStatusCode());
