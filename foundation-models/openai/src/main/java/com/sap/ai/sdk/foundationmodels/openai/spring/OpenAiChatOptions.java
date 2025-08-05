@@ -66,7 +66,8 @@ public class OpenAiChatOptions implements ToolCallingChatOptions {
   @Override
   @Nonnull
   public String getModel() {
-    throw new UnsupportedOperationException("Model declaration not supported in OpenAI integration.");
+    throw new UnsupportedOperationException(
+        "Model declaration not supported in OpenAI integration.");
   }
 
   @Override

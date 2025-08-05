@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.app.services;
 
-
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatModel;
@@ -24,7 +23,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class SpringAiAgenticWorkflowService {
-  private final ChatModel client = new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI));
+  private final ChatModel client =
+      new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI));
 
   /**
    * Simple agentic workflow using chain-like structure. The agent is generating a travel itinerary
