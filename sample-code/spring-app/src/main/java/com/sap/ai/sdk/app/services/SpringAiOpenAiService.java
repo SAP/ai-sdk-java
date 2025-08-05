@@ -100,8 +100,8 @@ public class SpringAiOpenAiService {
     val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
     val cl = ChatClient.builder(chatClient).defaultAdvisors(advisor).build();
-    val prompt1 = new Prompt("What is the capital of France?", new OpenAiChatOptions());
-    val prompt2 = new Prompt("And what is the typical food there?", new OpenAiChatOptions());
+    val prompt1 =    new Prompt("What is the capital of France?", new OpenAiChatOptions());
+    val prompt2     = new Prompt("And what is the typical food there?", new OpenAiChatOptions());
 
     cl.prompt(prompt1).call().content();
     return Objects.requireNonNull(
