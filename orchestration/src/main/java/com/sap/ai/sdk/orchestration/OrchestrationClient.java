@@ -15,6 +15,9 @@ import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import io.vavr.control.Try;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -110,11 +113,22 @@ public class OrchestrationClient {
         .map(OrchestrationChatCompletionDelta::getDeltaContent);
   }
 
-  private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta) {
+  private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)
+      throws OrchestrationFilterException.Output {
     final String finishReason = delta.getFinishReason();
     if (finishReason != null && finishReason.equals("content_filter")) {
-      throw new OrchestrationClientException("Content filter filtered the output.");
+      final var filterDetails =
+          Try.of(() -> getOutputFilteringChoices(delta)).getOrElseGet(e -> Map.of());
+      final var message = "Content filter filtered the output.";
+      throw new OrchestrationFilterException.Output(message, filterDetails);
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  private static Map<String, Object> getOutputFilteringChoices(
+      @Nonnull final OrchestrationChatCompletionDelta delta) {
+    final var f = delta.getModuleResults().getOutputFiltering();
+    return ((List<Map<String, Object>>) ((Map<String, Object>) f.getData()).get("choices")).get(0);
   }
 
   /**
