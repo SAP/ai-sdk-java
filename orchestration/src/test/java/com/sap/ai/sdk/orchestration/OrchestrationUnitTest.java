@@ -40,8 +40,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
-import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationInputFilterException;
-import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationOutputFilterException;
 import com.sap.ai.sdk.orchestration.model.ChatDelta;
 import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
@@ -424,7 +422,7 @@ class OrchestrationUnitTest {
 
     try {
       client.chatCompletion(prompt, configWithFilter);
-    } catch (OrchestrationInputFilterException e) {
+    } catch (OrchestrationFilterException.Input e) {
       assertThat(e.getMessage())
           .isEqualTo(
               "Request failed with status 400 (Bad Request): 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
@@ -477,7 +475,7 @@ class OrchestrationUnitTest {
 
     try {
       client.chatCompletion(prompt, configWithFilter).getContent();
-    } catch (OrchestrationOutputFilterException e) {
+    } catch (Output e) {
       assertThat(e.getMessage()).isEqualTo("Content filter filtered the output.");
       assertThat(e.getFilterDetails())
           .isEqualTo(
@@ -730,9 +728,9 @@ class OrchestrationUnitTest {
     // this must not throw, since the stream is lazily evaluated
     var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
     assertThatThrownBy(stream::toList)
-        .isInstanceOf(OrchestrationOutputFilterException.class)
+        .isInstanceOf(Output.class)
         .hasMessage("Content filter filtered the output.")
-        .extracting(e -> ((OrchestrationOutputFilterException) e).getFilterDetails())
+        .extracting(e -> ((Output) e).getFilterDetails())
         .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
   }
 
@@ -754,7 +752,7 @@ class OrchestrationUnitTest {
 
       try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
-            .isInstanceOf(OrchestrationOutputFilterException.class)
+            .isInstanceOf(Output.class)
             .hasMessage("Content filter filtered the output.");
       }
 

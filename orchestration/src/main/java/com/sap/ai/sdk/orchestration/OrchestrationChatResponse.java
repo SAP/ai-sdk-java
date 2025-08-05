@@ -5,7 +5,7 @@ import static lombok.AccessLevel.PACKAGE;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
-import com.sap.ai.sdk.orchestration.OrchestrationFilterException.OrchestrationOutputFilterException;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.Output;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
@@ -36,16 +36,16 @@ public class OrchestrationChatResponse {
    * <p>Note: If there are multiple choices only the first one is returned
    *
    * @return the message content or empty string.
-   * @throws OrchestrationOutputFilterException if the content filter filtered the output.
+   * @throws Output if the content filter filtered the output.
    */
   @Nonnull
-  public String getContent() throws OrchestrationOutputFilterException {
+  public String getContent() throws Output {
     final var choice = getChoice();
 
     if ("content_filter".equals(choice.getFinishReason())) {
       final var filterDetails = Try.of(this::getOutputFilteringChoices).getOrElseGet(e -> Map.of());
       final var message = "Content filter filtered the output.";
-      throw new OrchestrationOutputFilterException(message, filterDetails);
+      throw new Output(message, filterDetails);
     }
     return choice.getMessage().getContent();
   }

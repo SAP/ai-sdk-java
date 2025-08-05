@@ -37,7 +37,7 @@ public class OrchestrationFilterException extends OrchestrationClientException {
   }
 
   /** Exception thrown when an error occurs during input filtering. */
-  public static class OrchestrationInputFilterException extends OrchestrationFilterException {
+  public static class Input extends OrchestrationFilterException {
     /**
      * Constructs a new OrchestrationInputFilterException.
      *
@@ -45,7 +45,7 @@ public class OrchestrationFilterException extends OrchestrationClientException {
      * @param clientError The specific client error.
      * @param filterDetails Details about the filter that caused the exception.
      */
-    OrchestrationInputFilterException(
+    Input(
         @Nonnull final String message,
         @Nonnull final OrchestrationError clientError,
         @Nonnull final Map<String, Object> filterDetails) {
@@ -75,15 +75,14 @@ public class OrchestrationFilterException extends OrchestrationClientException {
    * Exception thrown when an error occurs during output filtering, specifically when the finish
    * reason is a content filter.
    */
-  public static class OrchestrationOutputFilterException extends OrchestrationFilterException {
+  public static class Output extends OrchestrationFilterException {
     /**
      * Constructs a new OrchestrationOutputFilterException.
      *
      * @param message The detail message.
      * @param filterDetails Details about the filter that caused the exception.
      */
-    OrchestrationOutputFilterException(
-        @Nonnull final String message, @Nonnull final Map<String, Object> filterDetails) {
+    Output(@Nonnull final String message, @Nonnull final Map<String, Object> filterDetails) {
       super(message);
       this.filterDetails = filterDetails;
     }
