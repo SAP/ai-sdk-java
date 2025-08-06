@@ -21,6 +21,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
+import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_4;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_6;
 import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
@@ -377,9 +378,22 @@ class OrchestrationUnitTest {
                     SC_BAD_REQUEST)));
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessage(
-            "Request failed with status 400 (Bad Request): Missing required parameters: ['input']");
+        .isInstanceOfSatisfying(
+            OrchestrationClientException.class,
+            e -> {
+              assertThat(e.getMessage())
+                  .isEqualTo(
+                      "Request failed with status 400 (Bad Request): Missing required parameters: ['input']");
+              assertThat(e.getErrorResponseStreaming()).isNull();
+              assertThat(e.getErrorResponse()).isNotNull();
+              assertThat(e.getErrorResponse().getError().getMessage())
+                  .isEqualTo("Missing required parameters: ['input']");
+              assertThat(e.getErrorResponse().getError().getCode()).isEqualTo(SC_BAD_REQUEST);
+              assertThat(e.getErrorResponse().getError().getRequestId())
+                  .isEqualTo("51043a32-01f5-429a-b0e7-3a99432e43a4");
+              assertThat(e.getErrorResponse().getError().getLocation())
+                  .isEqualTo("Module: Templating");
+            });
   }
 
   @Test
@@ -769,8 +783,28 @@ class OrchestrationUnitTest {
 
       try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
-            .isInstanceOf(OrchestrationFilterException.Output.class)
-            .hasMessage("Content filter filtered the output.");
+            .hasMessage("Content filter filtered the output.")
+            .isInstanceOfSatisfying(
+                OrchestrationFilterException.Output.class,
+                e -> {
+                  assertThat(e.getErrorResponse()).isNull();
+                  assertThat(e.getErrorResponseStreaming()).isNull();
+                  assertThat(e.getStatusCode()).isNull();
+
+                  assertThat(e.getFilterDetails())
+                      .isEqualTo(
+                          Map.of(
+                              "index",
+                              0,
+                              "azure_content_safety",
+                              Map.of("Hate", 0, "SelfHarm", 0, "Sexual", 0, "Violence", 4)));
+
+                  assertThat(e.getAzureContentSafetyOutput()).isNotNull();
+                  assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_0);
+                  assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
+                  assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
+                  assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_4);
+                });
       }
 
       Mockito.verify(inputStream, times(1)).close();
