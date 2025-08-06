@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientError;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
+import com.sap.ai.sdk.orchestration.model.ErrorResponseStreaming;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,23 +15,48 @@ import lombok.Value;
  *
  * @since 1.1.0
  */
-@AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
-@Value
 @Beta
-public class OrchestrationError implements ClientError {
-  ErrorResponse errorResponse;
+public abstract class OrchestrationError implements ClientError {
 
-  /**
-   * Gets the error message from the contained original response.
-   *
-   * @return the error message
-   */
-  @Nonnull
-  public String getMessage() {
-    return errorResponse.getError().getCode() == 500
-        ? errorResponse.getError().getMessage()
-            + " located in "
-            + errorResponse.getError().getLocation()
-        : errorResponse.getError().getMessage();
+  /** Orchestration error response for synchronous requests. */
+  @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
+  @Value
+  public static class Synchronous extends OrchestrationError {
+    ErrorResponse errorResponse;
+
+    /**
+     * Gets the error message from the contained original response.
+     *
+     * @return the error message
+     */
+    @Nonnull
+    public String getMessage() {
+      return errorResponse.getError().getCode() == 500
+          ? errorResponse.getError().getMessage()
+              + " located in "
+              + errorResponse.getError().getLocation()
+          : errorResponse.getError().getMessage();
+    }
+  }
+
+  /** Orchestration error response for streaming requests. */
+  @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
+  @Value
+  public static class Streaming extends OrchestrationError {
+    ErrorResponseStreaming errorResponse;
+
+    /**
+     * Gets the error message from the contained original response.
+     *
+     * @return the error message
+     */
+    @Nonnull
+    public String getMessage() {
+      return errorResponse.getError().getCode() == 500
+          ? errorResponse.getError().getMessage()
+              + " located in "
+              + errorResponse.getError().getLocation()
+          : errorResponse.getError().getMessage();
+    }
   }
 }
