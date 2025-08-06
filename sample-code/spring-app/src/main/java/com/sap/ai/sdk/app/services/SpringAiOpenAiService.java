@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionConfig;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatModel;
@@ -53,7 +54,7 @@ public class SpringAiOpenAiService {
    */
   @Nonnull
   public ChatResponse completion() {
-    val options = new OpenAiChatOptions();
+    val options = new OpenAiChatOptions(new OpenAiChatCompletionConfig());
     val prompt = new Prompt("What is the capital of France?", options);
     return chatClient.call(prompt);
   }
@@ -65,7 +66,7 @@ public class SpringAiOpenAiService {
    */
   @Nonnull
   public ChatResponse streamChatCompletion() {
-    val options = new OpenAiChatOptions();
+    val options = new OpenAiChatOptions(new OpenAiChatCompletionConfig());
     val prompt =
         new Prompt("Can you give me the first 100 numbers of the Fibonacci sequence?", options);
     return chatClient.call(prompt);
@@ -81,7 +82,7 @@ public class SpringAiOpenAiService {
    */
   @Nonnull
   public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
-    val options = new OpenAiChatOptions();
+    val options = new OpenAiChatOptions(new OpenAiChatCompletionConfig());
     options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
     options.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
 
@@ -100,8 +101,14 @@ public class SpringAiOpenAiService {
     val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
     val cl = ChatClient.builder(chatClient).defaultAdvisors(advisor).build();
-    val prompt1 = new Prompt("What is the capital of France?", new OpenAiChatOptions());
-    val prompt2 = new Prompt("And what is the typical food there?", new OpenAiChatOptions());
+    val prompt1 =
+        new Prompt(
+            "What is the capital of France?",
+            new OpenAiChatOptions(new OpenAiChatCompletionConfig()));
+    val prompt2 =
+        new Prompt(
+            "And what is the typical food there?",
+            new OpenAiChatOptions(new OpenAiChatCompletionConfig()));
 
     cl.prompt(prompt1).call().content();
     return Objects.requireNonNull(

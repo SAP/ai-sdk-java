@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionConfig;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatModel;
@@ -43,7 +44,7 @@ public class SpringAiAgenticWorkflowService {
     val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
     //    Add (mocked) tools
-    val options = new OpenAiChatOptions();
+    val options = new OpenAiChatOptions(new OpenAiChatCompletionConfig());
     options.setToolCallbacks(
         List.of(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod())));
     options.setInternalToolExecutionEnabled(true);
