@@ -17,7 +17,9 @@
 ### ✨ New Functionality
 
 - [Core] Added `ClientExceptionFactory` interface to provide custom exception mapping logic for different service clients.
-- Extend `OpenAiClientException` and `OrchestrationClientException` to  retrieve error diagnostics information received from remote service using `getErrorResponse`.
+- Extend `OpenAiClientException` and `OrchestrationClientException` to  retrieve error diagnostics information received from remote service.
+  New available accessors for troubleshooting: `getErrorResponse()`, `getHttpResponse()` and , `getHttpRequest()`.
+  Please note: depending on the error response, these methods may return `null` if the information is not available.
 - [Orchestration] Introduced filtering related exceptions along with convenience methods to obtain additional contextual information.
   - `OrchestrationInputFilterException` for prompt filtering and `OrchestrationOutputFilterException` for response filtering.
     - `getFilterDetails()`: Returns a map of all filter details.
