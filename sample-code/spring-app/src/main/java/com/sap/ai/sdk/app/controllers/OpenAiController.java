@@ -102,7 +102,7 @@ public class OpenAiController {
     try {
       emitter.send(chunk);
     } catch (final IOException e) {
-      log.error(Arrays.toString(e.getStackTrace()));
+      log.error("Failed to send chunk: {}", e.getMessage(), e);
       emitter.completeWithError(e);
     }
   }
