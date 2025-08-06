@@ -12,12 +12,11 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiTextItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessage;
+import io.vavr.control.Option;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-
-import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage;
