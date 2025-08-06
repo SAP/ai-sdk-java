@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiClientException.FACTORY;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,7 +43,8 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
-  static final ObjectMapper JACKSON = getOpenAiObjectMapper();
+
+  private static final ObjectMapper JACKSON = getOpenAiObjectMapper();
 
   @Nullable private String systemPrompt = null;
 
@@ -431,9 +433,7 @@ public final class OpenAiClient {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
       return client.execute(
-          request,
-          new ClientResponseHandler<>(
-              responseType, OpenAiError.class, new OpenAiExceptionFactory()));
+          request, new ClientResponseHandler<>(responseType, OpenAiError.class, FACTORY));
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e).setHttpRequest(request);
     }
@@ -444,8 +444,7 @@ public final class OpenAiClient {
       final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      return new ClientStreamingHandler<>(
-              deltaType, OpenAiError.class, new OpenAiExceptionFactory())
+      return new ClientStreamingHandler<>(deltaType, OpenAiError.class, FACTORY)
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
