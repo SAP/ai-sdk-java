@@ -48,7 +48,6 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
     if (choice.getLogprobs() != null && !choice.getLogprobs().getContent().isEmpty()) {
       metadata.metadata("logprobs", choice.getLogprobs().getContent());
     }
-
     val toolCalls =
         choice.getMessage().getToolCalls().stream()
             .map(

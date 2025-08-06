@@ -433,42 +433,43 @@ class OrchestrationUnitTest {
         new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
     final var configWithFilter = config.withInputFiltering(azureFilter, llamaFilter);
 
-    try {
-      client.chatCompletion(prompt, configWithFilter);
-    } catch (OrchestrationFilterException.Input e) {
-      assertThat(e.getMessage())
-          .isEqualTo(
-              "Request failed with status 400 (Bad Request): 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
-      assertThat(e.getStatusCode()).isEqualTo(SC_BAD_REQUEST);
-      assertThat(e.getFilterDetails())
-          .isEqualTo(
-              Map.of(
-                  "azure_content_safety",
+    assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Input.class,
+            e -> {
+              assertThat(e.getMessage())
+                  .isEqualTo(
+                      "Request failed with status 400 (Bad Request): 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
+              assertThat(e.getStatusCode()).isEqualTo(SC_BAD_REQUEST);
+              assertThat(e.getFilterDetails())
+                  .isEqualTo(
                       Map.of(
-                          "Hate", 6,
-                          "SelfHarm", 0,
-                          "Sexual", 0,
-                          "Violence", 6,
-                          "userPromptAnalysis", Map.of("attackDetected", false)),
-                  "llama_guard_3_8b", Map.of("violent_crimes", true)));
+                          "azure_content_safety",
+                              Map.of(
+                                  "Hate", 6,
+                                  "SelfHarm", 0,
+                                  "Sexual", 0,
+                                  "Violence", 6,
+                                  "userPromptAnalysis", Map.of("attackDetected", false)),
+                          "llama_guard_3_8b", Map.of("violent_crimes", true)));
 
-      final var errorResponse = e.getErrorResponse();
-      assertThat(errorResponse).isNotNull();
-      assertThat(errorResponse).isInstanceOf(ErrorResponse.class);
-      assertThat(errorResponse.getError().getCode()).isEqualTo(SC_BAD_REQUEST);
-      assertThat(errorResponse.getError().getCode())
-          .isEqualTo(
-              "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
+              final var errorResponse = e.getErrorResponse();
+              assertThat(errorResponse).isNotNull();
+              assertThat(errorResponse).isInstanceOf(ErrorResponse.class);
+              assertThat(errorResponse.getError().getCode()).isEqualTo(SC_BAD_REQUEST);
+              assertThat(errorResponse.getError().getMessage())
+                  .isEqualTo(
+                      "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
 
-      assertThat(e.getAzureContentSafetyInput()).isNotNull();
-      assertThat(e.getAzureContentSafetyInput().getHate()).isEqualTo(NUMBER_6);
-      assertThat(e.getAzureContentSafetyInput().getSelfHarm()).isEqualTo(NUMBER_0);
-      assertThat(e.getAzureContentSafetyInput().getSexual()).isEqualTo(NUMBER_0);
-      assertThat(e.getAzureContentSafetyInput().getViolence()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyInput()).isNotNull();
+              assertThat(e.getAzureContentSafetyInput().getHate()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyInput().getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyInput().getSexual()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyInput().getViolence()).isEqualTo(NUMBER_6);
 
-      assertThat(e.getLlamaGuard38b()).isNotNull();
-      assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
-    }
+              assertThat(e.getLlamaGuard38b()).isNotNull();
+              assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
+            });
   }
 
   @Test
@@ -486,33 +487,36 @@ class OrchestrationUnitTest {
         new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
     final var configWithFilter = config.withOutputFiltering(azureFilter, llamaFilter);
 
-    try {
-      client.chatCompletion(prompt, configWithFilter).getContent();
-    } catch (OrchestrationFilterException.Output e) {
-      assertThat(e.getMessage()).isEqualTo("Content filter filtered the output.");
-      assertThat(e.getFilterDetails())
-          .isEqualTo(
-              Map.of(
-                  "index", 0,
-                  "azure_content_safety",
+    assertThatThrownBy(client.chatCompletion(prompt, configWithFilter)::getContent)
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Output.class,
+            e -> {
+              assertThat(e.getMessage()).isEqualTo("Content filter filtered the output.");
+              assertThat(e.getFilterDetails())
+                  .isEqualTo(
                       Map.of(
-                          "Hate", 6,
-                          "SelfHarm", 0,
-                          "Sexual", 0,
-                          "Violence", 6),
-                  "llama_guard_3_8b", Map.of("violent_crimes", true)));
-      assertThat(e.getErrorResponse()).isNull();
-      assertThat(e.getStatusCode()).isNull();
+                          "index",
+                          0,
+                          "azure_content_safety",
+                          Map.of(
+                              "Hate", 6,
+                              "SelfHarm", 0,
+                              "Sexual", 0,
+                              "Violence", 6),
+                          "llama_guard_3_8b",
+                          Map.of("violent_crimes", true)));
+              assertThat(e.getErrorResponse()).isNull();
+              assertThat(e.getStatusCode()).isNull();
 
-      assertThat(e.getAzureContentSafetyOutput()).isNotNull();
-      assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_6);
-      assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
-      assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
-      assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput()).isNotNull();
+              assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
 
-      assertThat(e.getLlamaGuard38b()).isNotNull();
-      assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
-    }
+              assertThat(e.getLlamaGuard38b()).isNotNull();
+              assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
+            });
   }
 
   @Test

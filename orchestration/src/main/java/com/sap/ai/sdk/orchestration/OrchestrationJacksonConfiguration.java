@@ -5,6 +5,8 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
+import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import javax.annotation.Nonnull;
@@ -38,7 +40,11 @@ public class OrchestrationJacksonConfiguration {
                 TemplateResponseFormat.class,
                 PolymorphicFallbackDeserializer.fromJsonSubTypes(TemplateResponseFormat.class))
             .setMixInAnnotation(
-                TemplateResponseFormat.class, JacksonMixins.ResponseFormatSubTypesMixin.class);
+                TemplateResponseFormat.class, JacksonMixins.ResponseFormatSubTypesMixin.class)
+            .setMixInAnnotation(
+                AzureContentSafetyOutput.class, JacksonMixins.AzureContentSafetyCaseAgnostic.class)
+            .setMixInAnnotation(
+                AzureContentSafetyInput.class, JacksonMixins.AzureContentSafetyCaseAgnostic.class);
 
     return getDefaultObjectMapper()
         .rebuild()

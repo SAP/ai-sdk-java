@@ -68,7 +68,7 @@ class SpringAiOrchestrationTest {
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
             "Prompt filtered due to safety violations. Please modify the prompt and try again.")
-        .hasMessageContaining("400 Bad Request");
+        .hasMessageContaining("400 (Bad Request)");
   }
 
   @Test
