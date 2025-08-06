@@ -4,15 +4,13 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionConfig;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool.TypeEnum;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
-
+import io.vavr.control.Option;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import io.vavr.control.Option;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
