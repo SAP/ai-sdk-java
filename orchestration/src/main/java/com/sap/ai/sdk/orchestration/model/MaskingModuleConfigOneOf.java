@@ -15,7 +15,10 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -23,53 +26,69 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ErrorResponseStreaming */
+/** MaskingModuleConfigOneOf */
 // CHECKSTYLE:OFF
-public class ErrorResponseStreaming
+public class MaskingModuleConfigOneOf implements MaskingModuleConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("error")
-  private ErrorStreaming error;
+  @JsonProperty("providers")
+  private List<DPIConfig> providers = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ErrorResponseStreaming. */
-  protected ErrorResponseStreaming() {}
+  /** Default constructor for MaskingModuleConfigOneOf. */
+  protected MaskingModuleConfigOneOf() {}
 
   /**
-   * Set the error of this {@link ErrorResponseStreaming} instance and return the same instance.
+   * Set the providers of this {@link MaskingModuleConfigOneOf} instance and return the same
+   * instance.
    *
-   * @param error The error of this {@link ErrorResponseStreaming}
-   * @return The same instance of this {@link ErrorResponseStreaming} class
+   * @param providers List of masking service providers
+   * @return The same instance of this {@link MaskingModuleConfigOneOf} class
    */
   @Nonnull
-  public ErrorResponseStreaming error(@Nonnull final ErrorStreaming error) {
-    this.error = error;
+  public MaskingModuleConfigOneOf providers(@Nonnull final List<DPIConfig> providers) {
+    this.providers = providers;
     return this;
   }
 
   /**
-   * Get error
+   * Add one providers instance to this {@link MaskingModuleConfigOneOf}.
    *
-   * @return error The error of this {@link ErrorResponseStreaming} instance.
+   * @param providersItem The providers that should be added
+   * @return The same instance of type {@link MaskingModuleConfigOneOf}
    */
   @Nonnull
-  public ErrorStreaming getError() {
-    return error;
+  public MaskingModuleConfigOneOf addProvidersItem(@Nonnull final DPIConfig providersItem) {
+    if (this.providers == null) {
+      this.providers = new ArrayList<>();
+    }
+    this.providers.add(providersItem);
+    return this;
   }
 
   /**
-   * Set the error of this {@link ErrorResponseStreaming} instance.
+   * List of masking service providers
    *
-   * @param error The error of this {@link ErrorResponseStreaming}
+   * @return providers The providers of this {@link MaskingModuleConfigOneOf} instance.
    */
-  public void setError(@Nonnull final ErrorStreaming error) {
-    this.error = error;
+  @Nonnull
+  public List<DPIConfig> getProviders() {
+    return providers;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ErrorResponseStreaming}.
+   * Set the providers of this {@link MaskingModuleConfigOneOf} instance.
+   *
+   * @param providers List of masking service providers
+   */
+  public void setProviders(@Nonnull final List<DPIConfig> providers) {
+    this.providers = providers;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link MaskingModuleConfigOneOf}.
    *
    * @return The set of properties names
    */
@@ -80,7 +99,7 @@ public class ErrorResponseStreaming
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ErrorResponseStreaming} instance.
+   * Get the value of an unrecognizable property of this {@link MaskingModuleConfigOneOf} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -92,13 +111,13 @@ public class ErrorResponseStreaming
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ErrorResponseStreaming has no field with name '" + name + "'.");
+          "MaskingModuleConfigOneOf has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ErrorResponseStreaming} instance including
+   * Get the value of all properties of this {@link MaskingModuleConfigOneOf} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -107,12 +126,12 @@ public class ErrorResponseStreaming
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (error != null) declaredFields.put("error", error);
+    if (providers != null) declaredFields.put("providers", providers);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ErrorResponseStreaming} instance. If the map
+   * Set an unrecognizable property of this {@link MaskingModuleConfigOneOf} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -131,22 +150,22 @@ public class ErrorResponseStreaming
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ErrorResponseStreaming errorResponseStreaming = (ErrorResponseStreaming) o;
-    return Objects.equals(this.cloudSdkCustomFields, errorResponseStreaming.cloudSdkCustomFields)
-        && Objects.equals(this.error, errorResponseStreaming.error);
+    final MaskingModuleConfigOneOf maskingModuleConfigOneOf = (MaskingModuleConfigOneOf) o;
+    return Objects.equals(this.cloudSdkCustomFields, maskingModuleConfigOneOf.cloudSdkCustomFields)
+        && Objects.equals(this.providers, maskingModuleConfigOneOf.providers);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(error, cloudSdkCustomFields);
+    return Objects.hash(providers, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ErrorResponseStreaming {\n");
-    sb.append("    error: ").append(toIndentedString(error)).append("\n");
+    sb.append("class MaskingModuleConfigOneOf {\n");
+    sb.append("    providers: ").append(toIndentedString(providers)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -165,21 +184,31 @@ public class ErrorResponseStreaming
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ErrorResponseStreaming}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * MaskingModuleConfigOneOf} instance with all required arguments.
    */
   public static Builder create() {
-    return (error) -> new ErrorResponseStreaming().error(error);
+    return (providers) -> new MaskingModuleConfigOneOf().providers(providers);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the error of this {@link ErrorResponseStreaming} instance.
+     * Set the providers of this {@link MaskingModuleConfigOneOf} instance.
      *
-     * @param error The error of this {@link ErrorResponseStreaming}
-     * @return The ErrorResponseStreaming instance.
+     * @param providers List of masking service providers
+     * @return The MaskingModuleConfigOneOf instance.
      */
-    ErrorResponseStreaming error(@Nonnull final ErrorStreaming error);
+    MaskingModuleConfigOneOf providers(@Nonnull final List<DPIConfig> providers);
+
+    /**
+     * Set the providers of this {@link MaskingModuleConfigOneOf} instance.
+     *
+     * @param providers List of masking service providers
+     * @return The MaskingModuleConfigOneOf instance.
+     */
+    default MaskingModuleConfigOneOf providers(@Nonnull final DPIConfig... providers) {
+      return providers(Arrays.asList(providers));
+    }
   }
 }
