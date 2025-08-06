@@ -117,7 +117,9 @@ abstract class BaseOpenAiClientTest {
         .assertThatThrownBy(request::run)
         .describedAs("Server errors should be handled")
         .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("500");
+        .hasMessageContaining("500")
+        .extracting(e -> ((OpenAiClientException) e).getHttpResponse())
+        .isNotNull();
 
     softly
         .assertThatThrownBy(request::run)

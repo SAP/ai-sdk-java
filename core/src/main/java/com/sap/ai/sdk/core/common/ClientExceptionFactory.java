@@ -25,6 +25,17 @@ public interface ClientExceptionFactory<E extends ClientException, R extends Cli
   E build(@Nonnull final String message, @Nullable final Throwable cause);
 
   /**
+   * Creates an exception with a message and optional cause.
+   *
+   * @param message A descriptive message for the exception.
+   * @return An instance of the specified {@link ClientException} type
+   */
+  @Nonnull
+  default E build(@Nonnull final String message) {
+    return build(message, null);
+  }
+
+  /**
    * Creates an exception from a given message and an HTTP error response that has been successfully
    * deserialized into a {@link ClientError} object.
    *

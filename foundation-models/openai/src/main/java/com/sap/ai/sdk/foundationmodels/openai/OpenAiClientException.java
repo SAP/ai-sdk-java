@@ -10,6 +10,7 @@ import lombok.experimental.StandardException;
 /** Generic exception for errors occurring when using OpenAI foundation models. */
 @StandardException
 public class OpenAiClientException extends ClientException {
+
   OpenAiClientException(@Nonnull final String message, @Nonnull final OpenAiError clientError) {
     super(message);
     setClientError(clientError);

@@ -420,7 +420,8 @@ public final class OpenAiClient {
       final var json = JACKSON.writeValueAsString(payload);
       request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
     } catch (final JsonProcessingException e) {
-      throw new OpenAiClientException("Failed to serialize request parameters", e);
+      throw new OpenAiClientException("Failed to serialize request parameters", e)
+          .setHttpRequest(request);
     }
   }
 
@@ -434,7 +435,7 @@ public final class OpenAiClient {
           new ClientResponseHandler<>(
               responseType, OpenAiError.class, new OpenAiExceptionFactory()));
     } catch (final IOException e) {
-      throw new OpenAiClientException("Request to OpenAI model failed", e);
+      throw new OpenAiClientException("Request to OpenAI model failed", e).setHttpRequest(request);
     }
   }
 
@@ -448,7 +449,7 @@ public final class OpenAiClient {
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
-      throw new OpenAiClientException("Request to OpenAI model failed", e);
+      throw new OpenAiClientException("Request to OpenAI model failed", e).setHttpRequest(request);
     }
   }
 }

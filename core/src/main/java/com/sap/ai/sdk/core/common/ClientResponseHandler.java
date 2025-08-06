@@ -79,17 +79,21 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   private T parseSuccess(@Nonnull final ClassicHttpResponse response) throws E {
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
-      throw exceptionFactory.build("The HTTP Response is empty", null);
+      throw exceptionFactory.build("The HTTP Response is empty", null).setHttpResponse(response);
     }
 
     val content =
         tryGetContent(responseEntity)
-            .getOrElseThrow(e -> exceptionFactory.build("Failed to parse response entity.", e));
+            .getOrElseThrow(
+                e ->
+                    exceptionFactory
+                        .build("Failed to parse response entity.", e)
+                        .setHttpResponse(response));
     try {
       return objectMapper.readValue(content, successType);
     } catch (final JsonProcessingException e) {
       log.error("Failed to parse response to type {}", successType);
-      throw exceptionFactory.build("Failed to parse response", e);
+      throw exceptionFactory.build("Failed to parse response", e).setHttpResponse(response);
     }
   }
 
@@ -111,19 +115,19 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
 
     if (entity == null) {
       val message = getErrorMessage(httpResponse, "The HTTP Response is empty");
-      throw exceptionFactory.build(message, null);
+      throw exceptionFactory.build(message).setHttpResponse(httpResponse);
     }
     val maybeContent = tryGetContent(entity);
     if (maybeContent.isFailure()) {
       val message = getErrorMessage(httpResponse, "Failed to read the response content");
-      val baseException = exceptionFactory.build(message, null);
+      val baseException = exceptionFactory.build(message).setHttpResponse(httpResponse);
       baseException.addSuppressed(maybeContent.getCause());
       throw baseException;
     }
     val content = maybeContent.get();
     if (content == null || content.isBlank()) {
       val message = getErrorMessage(httpResponse, "Empty or blank response content");
-      throw exceptionFactory.build(message, null);
+      throw exceptionFactory.build(message).setHttpResponse(httpResponse);
     }
 
     log.error(
@@ -133,7 +137,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     val contentType = ContentType.parse(entity.getContentType());
     if (!ContentType.APPLICATION_JSON.isSameMimeType(contentType)) {
       val message = getErrorMessage(httpResponse, "The response Content-Type is not JSON");
-      throw exceptionFactory.build(message, null);
+      throw exceptionFactory.build(message).setHttpResponse(httpResponse);
     }
 
     parseErrorResponseAndThrow(content, httpResponse);
@@ -151,7 +155,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     val maybeClientError = Try.of(() -> objectMapper.readValue(content, errorType));
     if (maybeClientError.isFailure()) {
       val message = getErrorMessage(httpResponse, "Failed to parse the JSON error response");
-      val baseException = exceptionFactory.build(message, null);
+      val baseException = exceptionFactory.build(message).setHttpResponse(httpResponse);
       baseException.addSuppressed(maybeClientError.getCause());
       throw baseException;
     }
@@ -161,10 +165,9 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   }
 
   private static String getErrorMessage(
-      @Nonnull final ClassicHttpResponse httpResponse, @Nullable final String additionalMessage) {
+      @Nonnull final ClassicHttpResponse rsp, @Nullable final String additionalMessage) {
     val baseErrorMessage =
-        "Request failed with status %d (%s)"
-            .formatted(httpResponse.getCode(), httpResponse.getReasonPhrase());
+        "Request failed with status %d (%s)".formatted(rsp.getCode(), rsp.getReasonPhrase());
 
     val message = Optional.ofNullable(additionalMessage).orElse("");
     return message.isEmpty() ? baseErrorMessage : "%s: %s".formatted(baseErrorMessage, message);

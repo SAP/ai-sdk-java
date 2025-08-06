@@ -17,11 +17,10 @@ import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 
 /**
  * Internal utility class to convert from a reading handler to {@link Iterable} and {@link Stream}.
@@ -89,7 +88,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
    * InputStream} is closed, when the resulting Stream is closed (e.g. via try-with-resources) or
    * when an exception occurred.
    *
-   * @param entity The HTTP entity object.
+   * @param response The HTTP response object.
    * @param exceptionFactory The exception factory to use for creating exceptions.
    * @return A sequential Stream object.
    * @throws ClientException if the provided HTTP entity object is {@code null} or empty.
@@ -97,18 +96,18 @@ class IterableStreamConverter<T> implements Iterator<T> {
   @SuppressWarnings("PMD.CloseResource") // Stream is closed automatically when consumed
   @Nonnull
   static <R extends ClientError> Stream<String> lines(
-      @Nullable final HttpEntity entity,
+      @Nonnull final ClassicHttpResponse response,
       @Nonnull final ClientExceptionFactory<? extends ClientException, R> exceptionFactory)
       throws ClientException {
-    if (entity == null) {
-      throw exceptionFactory.build("The HTTP Response is empty", null);
+    if (response.getEntity() == null) {
+      throw exceptionFactory.build("The HTTP Response is empty").setHttpResponse(response);
     }
 
     final InputStream inputStream;
     try {
-      inputStream = entity.getContent();
+      inputStream = response.getEntity().getContent();
     } catch (final IOException e) {
-      throw exceptionFactory.build("Failed to read response content.", e);
+      throw exceptionFactory.build("Failed to read response content.", e).setHttpResponse(response);
     }
 
     final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8), BUFFER_SIZE);
@@ -121,7 +120,10 @@ class IterableStreamConverter<T> implements Iterator<T> {
                             "Could not close input stream with error: {} (ignored)",
                             e.getClass().getSimpleName()));
     final Function<Exception, RuntimeException> errHandler =
-        e -> exceptionFactory.build("Parsing response content was interrupted", e);
+        e ->
+            exceptionFactory
+                .build("Parsing response content was interrupted", e)
+                .setHttpResponse(response);
 
     final var iterator = new IterableStreamConverter<>(reader::readLine, closeHandler, errHandler);
     final var spliterator = Spliterators.spliteratorUnknownSize(iterator, ORDERED | NONNULL);
