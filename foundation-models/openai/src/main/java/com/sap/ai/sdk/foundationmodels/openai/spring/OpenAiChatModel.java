@@ -14,9 +14,10 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessage;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+
+import io.vavr.control.Option;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage;
@@ -65,7 +66,10 @@ public class OpenAiChatModel implements ChatModel {
         .flatMap(
             message ->
                 switch (message.getMessageType()) {
-                  case USER -> Stream.of(OpenAiMessage.user(message.getText()));
+                  case USER ->
+                      Stream.of(
+                          OpenAiMessage.user(
+                              Option.of(message.getText()).getOrElse(message.getText())));
                   case ASSISTANT -> {
                     val assistantMessage = (AssistantMessage) message;
                     yield Stream.of(
@@ -74,7 +78,8 @@ public class OpenAiChatModel implements ChatModel {
                                 new OpenAiMessageContent(
                                     List.of(
                                         new OpenAiTextItem(
-                                            Objects.requireNonNull(message.getText())))),
+                                            Option.of(message.getText())
+                                                .getOrElse(message.getText())))),
                                 assistantMessage.getToolCalls().stream()
                                     .map(
                                         toolCall ->
@@ -85,7 +90,7 @@ public class OpenAiChatModel implements ChatModel {
                                                     toolCall.arguments()))
                                     .toList())
                             : new OpenAiAssistantMessage(
-                                Objects.requireNonNull(message.getText())));
+                                Option.of(message.getText()).getOrElse(message.getText())));
                   }
                   case SYSTEM -> Stream.of(OpenAiMessage.system(message.getText()));
                   case TOOL -> {
