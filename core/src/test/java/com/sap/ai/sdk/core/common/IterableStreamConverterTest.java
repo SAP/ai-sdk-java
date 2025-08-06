@@ -23,6 +23,8 @@ import lombok.experimental.StandardException;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -119,19 +121,10 @@ class IterableStreamConverterTest {
   static class TestClientExceptionFactory
       implements ClientExceptionFactory<TestClientException, ClientError> {
 
-    @Nonnull
+    @NotNull
     @Override
-    public TestClientException build(@Nonnull String message, Throwable cause) {
-      return new TestClientException(message, cause);
-    }
-
-    @Nonnull
-    @Override
-    public TestClientException buildFromClientError(
-        @Nonnull String message, @Nonnull ClientError clientError) {
-      TestClientException exception = new TestClientException(message);
-      exception.clientError = clientError;
-      return exception;
+    public TestClientException build(@NotNull String message, @Nullable ClientError clientError, @Nullable Throwable cause) {
+      return (TestClientException) new TestClientException(message, cause).setClientError(clientError);
     }
   }
 }

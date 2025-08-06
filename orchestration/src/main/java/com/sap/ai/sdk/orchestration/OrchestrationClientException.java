@@ -12,12 +12,6 @@ import lombok.experimental.StandardException;
 @StandardException
 public class OrchestrationClientException extends ClientException {
 
-  OrchestrationClientException(
-      @Nonnull final String message, @Nonnull final OrchestrationError clientError) {
-    super(message);
-    setClientError(clientError);
-  }
-
   /**
    * Retrieves the {@link ErrorResponse} from the orchestration service, if available.
    *

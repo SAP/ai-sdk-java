@@ -24,8 +24,9 @@ public class ClientException extends RuntimeException {
    * used to extract more detailed error information.
    */
   @Nullable
-  @Getter(onMethod_ = @Beta, value = AccessLevel.PROTECTED)
-  @Setter(onMethod_ = @Beta, value = AccessLevel.PROTECTED)
+  @Getter(onMethod_ = @Beta, value = AccessLevel.PUBLIC)
+  @Setter(onMethod_ = @Beta, value = AccessLevel.PUBLIC)
+  @Accessors(chain = true)
   ClientError clientError;
 
   /**

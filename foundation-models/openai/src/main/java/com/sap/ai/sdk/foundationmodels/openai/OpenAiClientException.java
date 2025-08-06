@@ -11,9 +11,8 @@ import lombok.experimental.StandardException;
 @StandardException
 public class OpenAiClientException extends ClientException {
 
-  OpenAiClientException(@Nonnull final String message, @Nonnull final OpenAiError clientError) {
-    super(message);
-    setClientError(clientError);
+  OpenAiClientException(@Nonnull final String message, @Nullable final Throwable cause) {
+    super(message, cause);
   }
 
   /**

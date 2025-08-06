@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
  * @param <R> The subtype of {@link ClientError} payload that can be processed by this factory.
  */
 @Beta
+@FunctionalInterface
 public interface ClientExceptionFactory<E extends ClientException, R extends ClientError> {
 
   /**
@@ -22,7 +23,9 @@ public interface ClientExceptionFactory<E extends ClientException, R extends Cli
    * @return An instance of the specified {@link ClientException} type
    */
   @Nonnull
-  E build(@Nonnull final String message, @Nullable final Throwable cause);
+  default E build(@Nonnull final String message, @Nullable final Throwable cause) {
+    return build(message, null, cause);
+  }
 
   /**
    * Creates an exception with a message and optional cause.
@@ -40,9 +43,10 @@ public interface ClientExceptionFactory<E extends ClientException, R extends Cli
    * deserialized into a {@link ClientError} object.
    *
    * @param message A descriptive message for the exception.
-   * @param clientError The structured {@link ClientError} object deserialized from the response.
+   * @param clientError The structured {@link ClientError} object deserialized from the response, null if not exist.
+   * @param cause An optional cause of the exception, can be null if not applicable.
    * @return An instance of the specified {@link ClientException} type
    */
   @Nonnull
-  E buildFromClientError(@Nonnull final String message, @Nonnull final R clientError);
+  E build(@Nonnull final String message, @Nullable final R clientError, @Nullable final Throwable cause);
 }

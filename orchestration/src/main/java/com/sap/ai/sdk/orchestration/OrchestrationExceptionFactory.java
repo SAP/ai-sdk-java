@@ -11,34 +11,23 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-@Beta
 class OrchestrationExceptionFactory
     implements ClientExceptionFactory<OrchestrationClientException, OrchestrationError> {
 
   @Nonnull
-  public OrchestrationClientException build(
-      @Nonnull final String message, @Nullable final Throwable cause) {
-    return new OrchestrationClientException(message, cause);
-  }
-
-  @Nonnull
   @Override
-  public OrchestrationClientException buildFromClientError(
-      @Nonnull final String message, @Nonnull final OrchestrationError clientError) {
-
-    final var inputFilterDetails = extractInputFilterDetails(clientError);
-    if (!inputFilterDetails.isEmpty()) {
-      return new OrchestrationFilterException.Input(message, clientError, inputFilterDetails);
-    }
-
-    return new OrchestrationClientException(message, clientError);
+  public OrchestrationClientException build(@Nonnull String message, @Nullable OrchestrationError clientError, @Nullable Throwable cause) {
+      final var inputFilterDetails = extractInputFilterDetails(clientError);
+      if (!inputFilterDetails.isEmpty()) {
+        return (OrchestrationClientException) new OrchestrationFilterException.Input(message,cause).setFilterDetails(inputFilterDetails).setClientError(clientError);
+      }
+    return (OrchestrationClientException) new OrchestrationClientException(message, cause).setClientError(clientError);
   }
 
   @SuppressWarnings("unchecked")
   @Nonnull
-  private Map<String, Object> extractInputFilterDetails(@Nonnull final OrchestrationError error) {
-
-    return Optional.of(error.getErrorResponse())
+  private Map<String, Object> extractInputFilterDetails(@Nullable final OrchestrationError error) {
+    return Optional.ofNullable(error).map(OrchestrationError::getErrorResponse)
         .map(ErrorResponse::getModuleResults)
         .map(ModuleResults::getInputFiltering)
         .map(GenericModuleResult::getData)

@@ -44,7 +44,7 @@ public class OrchestrationChatResponse {
     if ("content_filter".equals(choice.getFinishReason())) {
       final var filterDetails = Try.of(this::getOutputFilteringChoices).getOrElseGet(e -> Map.of());
       final var message = "Content filter filtered the output.";
-      throw new OrchestrationFilterException.Output(message, filterDetails);
+      throw new OrchestrationFilterException.Output(message).setFilterDetails(filterDetails);
     }
     return choice.getMessage().getContent();
   }

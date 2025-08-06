@@ -17,6 +17,8 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 class ClientResponseHandlerTest {
@@ -33,18 +35,10 @@ class ClientResponseHandlerTest {
   static class MyException extends ClientException {}
 
   static class MyExceptionFactory implements ClientExceptionFactory<MyException, MyError> {
-    @Nonnull
+    @NotNull
     @Override
-    public MyException build(@Nonnull String message, Throwable cause) {
-      return new MyException(message, cause);
-    }
-
-    @Nonnull
-    @Override
-    public MyException buildFromClientError(@Nonnull String message, @Nonnull MyError clientError) {
-      var ex = new MyException(message);
-      ex.clientError = clientError;
-      return ex;
+    public MyException build(@NotNull String message, @Nullable MyError clientError, @Nullable Throwable cause) {
+      return (MyException) new MyException(message, cause).setClientError(clientError);
     }
   }
 

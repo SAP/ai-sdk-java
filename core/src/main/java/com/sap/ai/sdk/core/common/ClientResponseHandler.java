@@ -79,7 +79,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   private T parseSuccess(@Nonnull final ClassicHttpResponse response) throws E {
     final HttpEntity responseEntity = response.getEntity();
     if (responseEntity == null) {
-      throw exceptionFactory.build("The HTTP Response is empty", null).setHttpResponse(response);
+      throw exceptionFactory.build("The HTTP Response is empty").setHttpResponse(response);
     }
 
     val content =
@@ -161,7 +161,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     }
     final R clientError = maybeClientError.get();
     val message = getErrorMessage(httpResponse, clientError.getMessage());
-    throw exceptionFactory.buildFromClientError(message, clientError).setHttpResponse(httpResponse);
+    throw exceptionFactory.build(message, clientError, null).setHttpResponse(httpResponse);
   }
 
   private static String getErrorMessage(
