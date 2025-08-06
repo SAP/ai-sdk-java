@@ -18,10 +18,12 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.SneakyThrows;
 import lombok.experimental.StandardException;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
+import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +36,10 @@ class IterableStreamConverterTest {
     final var input = TEMPLATE.repeat(IterableStreamConverter.BUFFER_SIZE);
     final var inputStream = spy(new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8)));
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
+    final var response = new BasicClassicHttpResponse(200, "OK");
+    response.setEntity(entity);
 
-    final var sut = IterableStreamConverter.lines(entity, new TestClientExceptionFactory());
+    final var sut = IterableStreamConverter.lines(response, new TestClientExceptionFactory());
     verify(inputStream, never()).read();
     verify(inputStream, never()).read(any());
     verify(inputStream, never()).read(any(), anyInt(), anyInt());
@@ -70,8 +74,10 @@ class IterableStreamConverterTest {
             });
 
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
+    final var response = new BasicClassicHttpResponse(200, "OK");
+    response.setEntity(entity);
 
-    final var sut = IterableStreamConverter.lines(entity, new TestClientExceptionFactory());
+    final var sut = IterableStreamConverter.lines(response, new TestClientExceptionFactory());
     assertThat(sut.findFirst()).contains("Foo Bar");
     verify(inputStream, times(1)).read(any(), anyInt(), anyInt());
     verify(inputStream, never()).close();
@@ -94,8 +100,10 @@ class IterableStreamConverterTest {
         .thenThrow(new IOException("Ups!"));
 
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
+    final var response = new BasicClassicHttpResponse(200, "OK");
+    response.setEntity(entity);
 
-    final var sut = IterableStreamConverter.lines(entity, new TestClientExceptionFactory());
+    final var sut = IterableStreamConverter.lines(response, new TestClientExceptionFactory());
     assertThatThrownBy(sut::count)
         .isInstanceOf(TestClientException.class)
         .hasMessage("Parsing response content was interrupted")
@@ -114,17 +122,11 @@ class IterableStreamConverterTest {
 
     @Nonnull
     @Override
-    public TestClientException build(@Nonnull String message, Throwable cause) {
-      return new TestClientException(message, cause);
-    }
-
-    @Nonnull
-    @Override
-    public TestClientException buildFromClientError(
-        @Nonnull String message, @Nonnull ClientError clientError) {
-      TestClientException exception = new TestClientException(message);
-      exception.clientError = clientError;
-      return exception;
+    public TestClientException build(
+        @Nonnull final String message,
+        @Nullable final ClientError clientError,
+        @Nullable final Throwable cause) {
+      return new TestClientException(message, cause).setClientError(clientError);
     }
   }
 }

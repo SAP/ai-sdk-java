@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationClientException.FACTORY;
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,6 +27,7 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 @Slf4j
 class OrchestrationHttpExecutor {
   private final Supplier<HttpDestination> destinationSupplier;
+
   private static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
   OrchestrationHttpExecutor(@Nonnull final Supplier<HttpDestination> destinationSupplier)
@@ -47,8 +49,7 @@ class OrchestrationHttpExecutor {
       val client = getHttpClient();
 
       val handler =
-          new ClientResponseHandler<>(
-                  responseType, OrchestrationError.class, new OrchestrationExceptionFactory())
+          new ClientResponseHandler<>(responseType, OrchestrationError.class, FACTORY)
               .objectMapper(JACKSON);
       return client.execute(request, handler);
 
@@ -74,9 +75,7 @@ class OrchestrationHttpExecutor {
       val client = getHttpClient();
 
       return new ClientStreamingHandler<>(
-              OrchestrationChatCompletionDelta.class,
-              OrchestrationError.class,
-              new OrchestrationExceptionFactory())
+              OrchestrationChatCompletionDelta.class, OrchestrationError.class, FACTORY)
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
 

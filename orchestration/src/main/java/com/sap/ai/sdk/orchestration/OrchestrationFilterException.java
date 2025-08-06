@@ -12,6 +12,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import lombok.experimental.StandardException;
 
 /** Base exception for errors occurring during orchestration filtering. */
@@ -20,7 +22,11 @@ import lombok.experimental.StandardException;
 public class OrchestrationFilterException extends OrchestrationClientException {
 
   /** Details about the filters that caused the exception. */
-  @Getter @Nonnull protected Map<String, Object> filterDetails = Map.of();
+  @Accessors(chain = true)
+  @Setter(AccessLevel.PACKAGE)
+  @Getter
+  @Nonnull
+  protected Map<String, Object> filterDetails = Map.of();
 
   /**
    * Retrieves LlamaGuard 3.8b details from {@code filterDetails}, if present.
@@ -37,22 +43,8 @@ public class OrchestrationFilterException extends OrchestrationClientException {
   }
 
   /** Exception thrown when an error occurs during input filtering. */
+  @StandardException
   public static class Input extends OrchestrationFilterException {
-    /**
-     * Constructs a new OrchestrationInputFilterException.
-     *
-     * @param message The detail message.
-     * @param clientError The specific client error.
-     * @param filterDetails Details about the filter that caused the exception.
-     */
-    Input(
-        @Nonnull final String message,
-        @Nonnull final OrchestrationError clientError,
-        @Nonnull final Map<String, Object> filterDetails) {
-      super(message);
-      setClientError(clientError);
-      this.filterDetails = filterDetails;
-    }
 
     /**
      * Retrieves Azure Content Safety input details from {@code filterDetails}, if present.
@@ -75,17 +67,8 @@ public class OrchestrationFilterException extends OrchestrationClientException {
    * Exception thrown when an error occurs during output filtering, specifically when the finish
    * reason is a content filter.
    */
+  @StandardException
   public static class Output extends OrchestrationFilterException {
-    /**
-     * Constructs a new OrchestrationOutputFilterException.
-     *
-     * @param message The detail message.
-     * @param filterDetails Details about the filter that caused the exception.
-     */
-    Output(@Nonnull final String message, @Nonnull final Map<String, Object> filterDetails) {
-      super(message);
-      this.filterDetails = filterDetails;
-    }
 
     /**
      * Retrieves Azure Content Safety output details from {@code filterDetails}, if present.

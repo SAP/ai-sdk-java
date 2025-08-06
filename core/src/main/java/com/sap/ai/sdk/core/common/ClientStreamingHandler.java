@@ -63,14 +63,14 @@ public class ClientStreamingHandler<
       super.buildAndThrowException(response);
     }
 
-    return IterableStreamConverter.lines(response.getEntity(), exceptionFactory)
+    return IterableStreamConverter.lines(response, exceptionFactory)
         // half of the lines are empty newlines, the last line is "data: [DONE]"
         .filter(line -> !line.isEmpty() && !"data: [DONE]".equals(line.trim()))
         .peek(
             line -> {
               if (!line.startsWith("data: ")) {
                 final String msg = "Failed to parse response";
-                throw exceptionFactory.build(msg, null);
+                throw exceptionFactory.build(msg).setHttpResponse(response);
               }
             })
         .map(
@@ -80,7 +80,8 @@ public class ClientStreamingHandler<
                 return objectMapper.readValue(data, successType);
               } catch (final IOException e) { // exception message e gets lost
                 log.error("Failed to parse delta chunk to type {}", successType);
-                throw exceptionFactory.build("Failed to parse delta chunk", e);
+                final String message = "Failed to parse delta chunk";
+                throw exceptionFactory.build(message, e).setHttpResponse(response);
               }
             });
   }

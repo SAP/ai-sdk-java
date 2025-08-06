@@ -2,7 +2,13 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientException;
+import com.sap.ai.sdk.core.common.ClientExceptionFactory;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException.Input;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
+import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.model.ModuleResults;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -12,10 +18,26 @@ import lombok.experimental.StandardException;
 @StandardException
 public class OrchestrationClientException extends ClientException {
 
-  OrchestrationClientException(
-      @Nonnull final String message, @Nonnull final OrchestrationError clientError) {
-    super(message);
-    setClientError(clientError);
+  static final ClientExceptionFactory<OrchestrationClientException, OrchestrationError> FACTORY =
+      (message, clientError, cause) -> {
+        final var details = extractInputFilterDetails(clientError);
+        if (details.isEmpty()) {
+          return new OrchestrationClientException(message, cause).setClientError(clientError);
+        }
+        return new Input(message, cause).setFilterDetails(details).setClientError(clientError);
+      };
+
+  @SuppressWarnings("unchecked")
+  @Nonnull
+  static Map<String, Object> extractInputFilterDetails(@Nullable final OrchestrationError error) {
+    return Optional.ofNullable(error)
+        .map(OrchestrationError::getErrorResponse)
+        .map(ErrorResponse::getModuleResults)
+        .map(ModuleResults::getInputFiltering)
+        .map(GenericModuleResult::getData)
+        .filter(Map.class::isInstance)
+        .map(map -> (Map<String, Object>) map)
+        .orElseGet(Collections::emptyMap);
   }
 
   /**

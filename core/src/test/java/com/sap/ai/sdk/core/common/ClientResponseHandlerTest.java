@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import java.io.IOException;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.experimental.StandardException;
@@ -35,16 +36,11 @@ class ClientResponseHandlerTest {
   static class MyExceptionFactory implements ClientExceptionFactory<MyException, MyError> {
     @Nonnull
     @Override
-    public MyException build(@Nonnull String message, Throwable cause) {
-      return new MyException(message, cause);
-    }
-
-    @Nonnull
-    @Override
-    public MyException buildFromClientError(@Nonnull String message, @Nonnull MyError clientError) {
-      var ex = new MyException(message);
-      ex.clientError = clientError;
-      return ex;
+    public MyException build(
+        @Nonnull final String message,
+        @Nullable final MyError clientError,
+        @Nullable final Throwable cause) {
+      return new MyException(message, cause).setClientError(clientError);
     }
   }
 
