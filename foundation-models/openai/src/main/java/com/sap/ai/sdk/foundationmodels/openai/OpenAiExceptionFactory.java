@@ -10,7 +10,8 @@ class OpenAiExceptionFactory implements ClientExceptionFactory<OpenAiClientExcep
 
   @Nonnull
   @Override
-  public OpenAiClientException build(@Nonnull String message, @Nullable Throwable cause) {
+  public OpenAiClientException build(
+      @Nonnull final String message, @Nullable final Throwable cause) {
     return new OpenAiClientException(message, cause);
   }
 
