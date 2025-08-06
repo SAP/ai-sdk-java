@@ -161,7 +161,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     }
     final R clientError = maybeClientError.get();
     val message = getErrorMessage(httpResponse, clientError.getMessage());
-    throw exceptionFactory.buildFromClientError(message, clientError);
+    throw exceptionFactory.buildFromClientError(message, clientError).setHttpResponse(httpResponse);
   }
 
   private static String getErrorMessage(
