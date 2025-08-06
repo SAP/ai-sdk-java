@@ -1,13 +1,18 @@
 package com.sap.ai.sdk.foundationmodels.openai.spring;
 
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionConfig;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool.TypeEnum;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import io.vavr.control.Option;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -21,8 +26,7 @@ import org.springframework.ai.tool.ToolCallback;
 @Data
 public class OpenAiChatOptions implements ToolCallingChatOptions {
 
-  // @Nonnull
-  // private final OpenAiChatCompletionConfig config;
+  @Nonnull private OpenAiChatCompletionConfig config;
 
   @Nonnull private List<ToolCallback> toolCallbacks = List.of();
 
@@ -71,51 +75,51 @@ public class OpenAiChatOptions implements ToolCallingChatOptions {
   }
 
   @Override
-  @Nonnull
+  @Nullable
   public Double getFrequencyPenalty() {
-    return 0.0;
+    return Option.of(config.getFrequencyPenalty()).map(BigDecimal::doubleValue).getOrNull();
   }
 
   @Override
-  @Nonnull
+  @Nullable
   public Integer getMaxTokens() {
-    return 0;
+    return config.getMaxTokens();
   }
 
   @Override
-  @Nonnull
+  @Nullable
   public Double getPresencePenalty() {
-    return 0.0;
+    return Option.of(config.getPresencePenalty()).map(BigDecimal::doubleValue).getOrNull();
   }
 
   @Override
-  @Nonnull
+  @Nullable
   public List<String> getStopSequences() {
-    return List.of();
+    return config.getStop();
   }
 
   @Override
-  @Nonnull
+  @Nullable
   public Double getTemperature() {
-    return 0.0;
+    return Option.of(config.getTemperature()).map(BigDecimal::doubleValue).getOrNull();
   }
 
   @Override
-  @Nonnull
+  @Nullable // this is available here but not in OpenAiChatCompletionConfig so added it there ?
   public Integer getTopK() {
-    return 0;
+    return config.getTopK();
   }
 
   @Override
-  @Nonnull
+  @Nullable
   public Double getTopP() {
-    return 0.0;
+    return Option.of(config.getTopP()).map(BigDecimal::doubleValue).getOrNull();
   }
 
   @Override
   @Nonnull
   public <T extends ChatOptions> T copy() {
-    final OpenAiChatOptions copy = new OpenAiChatOptions();
+    final OpenAiChatOptions copy = new OpenAiChatOptions(new OpenAiChatCompletionConfig());
     copy.setToolCallbacks(this.toolCallbacks);
     copy.setInternalToolExecutionEnabled(this.internalToolExecutionEnabled);
     copy.setTools(this.tools);
