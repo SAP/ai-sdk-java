@@ -80,9 +80,8 @@ public class ClientStreamingHandler<
                 return objectMapper.readValue(data, successType);
               } catch (final IOException e) { // exception message e gets lost
                 log.error("Failed to parse delta chunk to type {}", successType);
-                throw exceptionFactory
-                    .build("Failed to parse delta chunk", e)
-                    .setHttpResponse(response);
+                final String message = "Failed to parse delta chunk";
+                throw exceptionFactory.build(message, e).setHttpResponse(response);
               }
             });
   }

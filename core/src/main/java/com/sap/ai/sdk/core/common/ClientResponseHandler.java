@@ -82,13 +82,10 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
       throw exceptionFactory.build("The HTTP Response is empty").setHttpResponse(response);
     }
 
+    val message = "Failed to parse response entity.";
     val content =
         tryGetContent(responseEntity)
-            .getOrElseThrow(
-                e ->
-                    exceptionFactory
-                        .build("Failed to parse response entity.", e)
-                        .setHttpResponse(response));
+            .getOrElseThrow(e -> exceptionFactory.build(message, e).setHttpResponse(response));
     try {
       return objectMapper.readValue(content, successType);
     } catch (final JsonProcessingException e) {

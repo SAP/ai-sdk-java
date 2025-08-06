@@ -6,8 +6,6 @@ import static java.util.Spliterator.ORDERED;
 
 import io.vavr.control.Try;
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -36,6 +34,10 @@ class IterableStreamConverter<T> implements Iterator<T> {
   /** see DEFAULT_CHAR_BUFFER_SIZE in {@link BufferedReader} * */
   static final int BUFFER_SIZE = 8192;
 
+  private static final String ERR_CONTENT = "Failed to read response content.";
+  private static final String ERR_INTERRUPTED = "Parsing response content was interrupted";
+  private static final String ERR_CLOSE = "Could not close input stream with error: {} (ignored)";
+
   /** Read next entry for Stream or {@code null} when no further entry can be read. */
   private final Callable<T> readHandler;
 
@@ -43,7 +45,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
   private final Runnable stopHandler;
 
   /** Error handler to be called when Stream is interrupted. */
-  private final Function<Exception, RuntimeException> errorHandler;
+  private final Function<Throwable, RuntimeException> errorHandler;
 
   private boolean isDone = false;
   private boolean isNextFetched = false;
@@ -85,8 +87,8 @@ class IterableStreamConverter<T> implements Iterator<T> {
 
   /**
    * Create a sequential Stream of lines from an HTTP response string (UTF-8). The underlying {@link
-   * InputStream} is closed, when the resulting Stream is closed (e.g. via try-with-resources) or
-   * when an exception occurred.
+   * java.io.InputStream} is closed, when the resulting Stream is closed (e.g. via
+   * try-with-resources) or when an exception occurred.
    *
    * @param response The HTTP response object.
    * @param exceptionFactory The exception factory to use for creating exceptions.
@@ -103,29 +105,26 @@ class IterableStreamConverter<T> implements Iterator<T> {
       throw exceptionFactory.build("The HTTP Response is empty").setHttpResponse(response);
     }
 
-    final InputStream inputStream;
-    try {
-      inputStream = response.getEntity().getContent();
-    } catch (final IOException e) {
-      throw exceptionFactory.build("Failed to read response content.", e).setHttpResponse(response);
-    }
+    // access input stream
+    final var inputStream =
+        Try.of(() -> response.getEntity().getContent())
+            .getOrElseThrow(e -> exceptionFactory.build(ERR_CONTENT, e).setHttpResponse(response));
 
+    // initialize buffered reader
     final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8), BUFFER_SIZE);
-    final Runnable closeHandler =
-        () ->
-            Try.run(reader::close)
-                .onFailure(
-                    e ->
-                        log.debug(
-                            "Could not close input stream with error: {} (ignored)",
-                            e.getClass().getSimpleName()));
-    final Function<Exception, RuntimeException> errHandler =
-        e ->
-            exceptionFactory
-                .build("Parsing response content was interrupted", e)
-                .setHttpResponse(response);
 
+    // define close handler
+    final Runnable closeHandler =
+        () -> Try.run(reader::close).onFailure(e -> log.debug(ERR_CLOSE, e.getClass()));
+
+    // define error handler
+    final Function<Throwable, RuntimeException> errHandler =
+        e -> exceptionFactory.build(ERR_INTERRUPTED, e).setHttpResponse(response);
+
+    // initialize lazy stream iterator
     final var iterator = new IterableStreamConverter<>(reader::readLine, closeHandler, errHandler);
+
+    // create lazy stream as output
     final var spliterator = Spliterators.spliteratorUnknownSize(iterator, ORDERED | NONNULL);
     return StreamSupport.stream(spliterator, /* NOT PARALLEL */ false).onClose(closeHandler);
   }
