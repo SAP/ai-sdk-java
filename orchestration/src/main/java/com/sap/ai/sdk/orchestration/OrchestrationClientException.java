@@ -4,7 +4,6 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientException;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import java.util.Optional;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.experimental.StandardException;
 

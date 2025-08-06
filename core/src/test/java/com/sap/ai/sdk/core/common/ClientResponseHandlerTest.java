@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import java.io.IOException;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.experimental.StandardException;
@@ -17,8 +18,6 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 class ClientResponseHandlerTest {
@@ -35,10 +34,13 @@ class ClientResponseHandlerTest {
   static class MyException extends ClientException {}
 
   static class MyExceptionFactory implements ClientExceptionFactory<MyException, MyError> {
-    @NotNull
+    @Nonnull
     @Override
-    public MyException build(@NotNull String message, @Nullable MyError clientError, @Nullable Throwable cause) {
-      return (MyException) new MyException(message, cause).setClientError(clientError);
+    public MyException build(
+        @Nonnull final String message,
+        @Nullable final MyError clientError,
+        @Nullable final Throwable cause) {
+      return new MyException(message, cause).setClientError(clientError);
     }
   }
 

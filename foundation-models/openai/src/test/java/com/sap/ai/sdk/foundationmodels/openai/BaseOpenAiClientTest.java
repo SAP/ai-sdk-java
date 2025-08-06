@@ -10,6 +10,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -118,8 +119,7 @@ abstract class BaseOpenAiClientTest {
         .describedAs("Server errors should be handled")
         .isInstanceOf(OpenAiClientException.class)
         .hasMessageContaining("500")
-        .extracting(e -> ((OpenAiClientException) e).getHttpResponse())
-        .isNotNull();
+        .satisfies(e -> assertThat(((OpenAiClientException) e).getHttpResponse()).isNotNull());
 
     softly
         .assertThatThrownBy(request::run)

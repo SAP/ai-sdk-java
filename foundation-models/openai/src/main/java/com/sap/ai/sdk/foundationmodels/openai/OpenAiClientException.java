@@ -3,17 +3,12 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientException;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ErrorResponse;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.experimental.StandardException;
 
 /** Generic exception for errors occurring when using OpenAI foundation models. */
 @StandardException
 public class OpenAiClientException extends ClientException {
-
-  OpenAiClientException(@Nonnull final String message, @Nullable final Throwable cause) {
-    super(message, cause);
-  }
 
   /**
    * Retrieves the {@link ErrorResponse} from the OpenAI service, if available.

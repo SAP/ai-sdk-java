@@ -18,13 +18,12 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.SneakyThrows;
 import lombok.experimental.StandardException;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -121,10 +120,13 @@ class IterableStreamConverterTest {
   static class TestClientExceptionFactory
       implements ClientExceptionFactory<TestClientException, ClientError> {
 
-    @NotNull
+    @Nonnull
     @Override
-    public TestClientException build(@NotNull String message, @Nullable ClientError clientError, @Nullable Throwable cause) {
-      return (TestClientException) new TestClientException(message, cause).setClientError(clientError);
+    public TestClientException build(
+        @Nonnull final String message,
+        @Nullable final ClientError clientError,
+        @Nullable final Throwable cause) {
+      return new TestClientException(message, cause).setClientError(clientError);
     }
   }
 }

@@ -24,7 +24,9 @@ public class OrchestrationFilterException extends OrchestrationClientException {
   /** Details about the filters that caused the exception. */
   @Accessors(chain = true)
   @Setter(AccessLevel.PACKAGE)
-  @Getter @Nonnull protected Map<String, Object> filterDetails = Map.of();
+  @Getter
+  @Nonnull
+  protected Map<String, Object> filterDetails = Map.of();
 
   /**
    * Retrieves LlamaGuard 3.8b details from {@code filterDetails}, if present.
