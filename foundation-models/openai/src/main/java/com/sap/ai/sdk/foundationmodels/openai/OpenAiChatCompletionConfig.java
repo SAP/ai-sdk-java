@@ -40,6 +40,14 @@ public class OpenAiChatCompletionConfig {
    */
   @Nullable BigDecimal topP;
 
+  /**
+   * Controls the number of top tokens to consider for sampling.
+   *
+   * <p>Higher values (e.g. 50) allow the model to consider more tokens, while lower values (e.g. 1)
+   * restrict it to the most probable token.
+   */
+  @Nullable Integer topK;
+
   /** Maximum number of tokens that can be generated for the completion. */
   @Nullable Integer maxTokens;
 
