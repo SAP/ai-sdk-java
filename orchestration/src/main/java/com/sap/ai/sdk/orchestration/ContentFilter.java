@@ -1,6 +1,8 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.FilterConfig;
+import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.orchestration.model.InputFilterConfig;
+import com.sap.ai.sdk.orchestration.model.OutputFilterConfig;
 import javax.annotation.Nonnull;
 
 /**
@@ -17,11 +19,22 @@ import javax.annotation.Nonnull;
 public interface ContentFilter {
 
   /**
-   * A method that produces the serializable equivalent {@link FilterConfig} object from data
+   * A method that produces the serializable equivalent {@link InputFilterConfig} object from data
    * encapsulated in the {@link ContentFilter} object.
    *
-   * @return the corresponding {@code FilterConfig} object.
+   * @return the corresponding {@link InputFilterConfig} object.
    */
+  @Beta
   @Nonnull
-  FilterConfig createConfig();
+  InputFilterConfig createInputFilterConfig();
+
+  /**
+   * A method that produces the serializable equivalent {@link OutputFilterConfig} object from data
+   * encapsulated in the {@link ContentFilter} object.
+   *
+   * @return the corresponding {@link OutputFilterConfig} object.
+   */
+  @Beta
+  @Nonnull
+  OutputFilterConfig createOutputFilterConfig();
 }

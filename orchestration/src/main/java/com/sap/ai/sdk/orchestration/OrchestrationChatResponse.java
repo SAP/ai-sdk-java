@@ -10,13 +10,14 @@ import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
 import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import io.vavr.control.Try;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -34,16 +35,24 @@ public class OrchestrationChatResponse {
    * <p>Note: If there are multiple choices only the first one is returned
    *
    * @return the message content or empty string.
-   * @throws OrchestrationClientException if the content filter filtered the output.
+   * @throws OrchestrationFilterException.Output if the content filter filtered the output.
    */
   @Nonnull
-  public String getContent() throws OrchestrationClientException {
+  public String getContent() throws OrchestrationFilterException.Output {
     final var choice = getChoice();
 
     if ("content_filter".equals(choice.getFinishReason())) {
-      throw new OrchestrationClientException("Content filter filtered the output.");
+      final var filterDetails = Try.of(this::getOutputFilteringChoices).getOrElseGet(e -> Map.of());
+      final var message = "Content filter filtered the output.";
+      throw new OrchestrationFilterException.Output(message, filterDetails);
     }
     return choice.getMessage().getContent();
+  }
+
+  @SuppressWarnings("unchecked")
+  private Map<String, Object> getOutputFilteringChoices() {
+    final var f = getOriginalResponse().getIntermediateResults().getOutputFiltering();
+    return ((List<Map<String, Object>>) ((Map<String, Object>) f.getData()).get("choices")).get(0);
   }
 
   /**
@@ -53,7 +62,7 @@ public class OrchestrationChatResponse {
    */
   @Nonnull
   public TokenUsage getTokenUsage() {
-    return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult()).getUsage();
+    return originalResponse.getFinalResult().getUsage();
   }
 
   /**
@@ -65,7 +74,8 @@ public class OrchestrationChatResponse {
   @Nonnull
   public List<Message> getAllMessages() throws IllegalArgumentException {
     val messages = new ArrayList<Message>();
-    for (final ChatMessage chatMessage : originalResponse.getModuleResults().getTemplating()) {
+    for (final ChatMessage chatMessage :
+        originalResponse.getIntermediateResults().getTemplating()) {
       if (chatMessage instanceof AssistantChatMessage assistantChatMessage) {
         val toolCalls = assistantChatMessage.getToolCalls();
         if (!toolCalls.isEmpty()) {
@@ -106,9 +116,7 @@ public class OrchestrationChatResponse {
   @Nonnull
   public LLMChoice getChoice() {
     //    We expect choices to be defined and never empty.
-    return ((LLMModuleResultSynchronous) originalResponse.getOrchestrationResult())
-        .getChoices()
-        .get(0);
+    return originalResponse.getFinalResult().getChoices().get(0);
   }
 
   /**
@@ -126,11 +134,7 @@ public class OrchestrationChatResponse {
   @Nonnull
   public <T> T asEntity(@Nonnull final Class<T> type) throws OrchestrationClientException {
     final String refusal =
-        ((LLMModuleResultSynchronous) getOriginalResponse().getOrchestrationResult())
-            .getChoices()
-            .get(0)
-            .getMessage()
-            .getRefusal();
+        getOriginalResponse().getFinalResult().getChoices().get(0).getMessage().getRefusal();
     if (refusal != null) {
       throw new OrchestrationClientException(
           "The model refused to answer the question: " + refusal);

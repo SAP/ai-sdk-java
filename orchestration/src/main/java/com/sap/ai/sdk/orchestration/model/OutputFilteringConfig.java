@@ -32,7 +32,7 @@ public class OutputFilteringConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("filters")
-  private List<FilterConfig> filters = new ArrayList<>();
+  private List<OutputFilterConfig> filters = new ArrayList<>();
 
   @JsonProperty("stream_options")
   private FilteringStreamOptions streamOptions;
@@ -47,11 +47,11 @@ public class OutputFilteringConfig
    * Set the filters of this {@link OutputFilteringConfig} instance and return the same instance.
    *
    * @param filters Configuration for content filtering services that should be used for the given
-   *     filtering step (input filtering or output filtering).
+   *     filtering step (output filtering).
    * @return The same instance of this {@link OutputFilteringConfig} class
    */
   @Nonnull
-  public OutputFilteringConfig filters(@Nonnull final List<FilterConfig> filters) {
+  public OutputFilteringConfig filters(@Nonnull final List<OutputFilterConfig> filters) {
     this.filters = filters;
     return this;
   }
@@ -63,7 +63,7 @@ public class OutputFilteringConfig
    * @return The same instance of type {@link OutputFilteringConfig}
    */
   @Nonnull
-  public OutputFilteringConfig addFiltersItem(@Nonnull final FilterConfig filtersItem) {
+  public OutputFilteringConfig addFiltersItem(@Nonnull final OutputFilterConfig filtersItem) {
     if (this.filters == null) {
       this.filters = new ArrayList<>();
     }
@@ -73,12 +73,12 @@ public class OutputFilteringConfig
 
   /**
    * Configuration for content filtering services that should be used for the given filtering step
-   * (input filtering or output filtering).
+   * (output filtering).
    *
    * @return filters The filters of this {@link OutputFilteringConfig} instance.
    */
   @Nonnull
-  public List<FilterConfig> getFilters() {
+  public List<OutputFilterConfig> getFilters() {
     return filters;
   }
 
@@ -86,9 +86,9 @@ public class OutputFilteringConfig
    * Set the filters of this {@link OutputFilteringConfig} instance.
    *
    * @param filters Configuration for content filtering services that should be used for the given
-   *     filtering step (input filtering or output filtering).
+   *     filtering step (output filtering).
    */
-  public void setFilters(@Nonnull final List<FilterConfig> filters) {
+  public void setFilters(@Nonnull final List<OutputFilterConfig> filters) {
     this.filters = filters;
   }
 
@@ -237,19 +237,19 @@ public class OutputFilteringConfig
      * Set the filters of this {@link OutputFilteringConfig} instance.
      *
      * @param filters Configuration for content filtering services that should be used for the given
-     *     filtering step (input filtering or output filtering).
+     *     filtering step (output filtering).
      * @return The OutputFilteringConfig instance.
      */
-    OutputFilteringConfig filters(@Nonnull final List<FilterConfig> filters);
+    OutputFilteringConfig filters(@Nonnull final List<OutputFilterConfig> filters);
 
     /**
      * Set the filters of this {@link OutputFilteringConfig} instance.
      *
      * @param filters Configuration for content filtering services that should be used for the given
-     *     filtering step (input filtering or output filtering).
+     *     filtering step (output filtering).
      * @return The OutputFilteringConfig instance.
      */
-    default OutputFilteringConfig filters(@Nonnull final FilterConfig... filters) {
+    default OutputFilteringConfig filters(@Nonnull final OutputFilterConfig... filters) {
       return filters(Arrays.asList(filters));
     }
   }

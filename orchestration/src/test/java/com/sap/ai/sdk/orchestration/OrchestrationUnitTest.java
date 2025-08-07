@@ -12,6 +12,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
@@ -19,6 +20,9 @@ import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_M
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
+import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
+import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_4;
+import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_6;
 import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
 import static org.apache.hc.core5.http.HttpStatus.SC_BAD_REQUEST;
@@ -37,16 +41,33 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
+import com.sap.ai.sdk.orchestration.model.ChatDelta;
+import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DPIStandardEntity;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
+import com.sap.ai.sdk.orchestration.model.Embedding;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsInput;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsInputText;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelConfig;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelDetails;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParams;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModuleConfigs;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsOrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsResponse;
+import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigPlaceholders;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -58,6 +79,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -120,7 +142,7 @@ class OrchestrationUnitTest {
   @Test
   void testCompletion() {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("templatingResponse.json")
@@ -134,7 +156,7 @@ class OrchestrationUnitTest {
   @Test
   void testCompletionError() {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withStatus(500)
@@ -143,13 +165,13 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .hasMessage(
-            "Request failed with status 500 Server Error and error message: 'Internal Server Error located in Masking Module - Masking'");
+            "Request failed with status 500 (Server Error): Internal Server Error located in Masking Module - Masking");
   }
 
   @Test
   void testGrounding() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("groundingResponse.json")
@@ -168,8 +190,10 @@ class OrchestrationUnitTest {
             .chunkMetadata(List.of(KeyValueListPair.create().key("chunk metadata").value("1")));
     final var groundingConfigConfig =
         GroundingModuleConfigConfig.create()
-            .inputParams(List.of("query"))
-            .outputParam("results")
+            .placeholders(
+                GroundingModuleConfigConfigPlaceholders.create()
+                    .input(List.of("query"))
+                    .output("results"))
             .addFiltersItem(databaseFilter);
     final var groundingConfig =
         GroundingModuleConfig.create()
@@ -196,7 +220,7 @@ class OrchestrationUnitTest {
     assertThat(response.getOriginalResponse().getRequestId())
         .isEqualTo("e5d2add4-408c-4da5-84ca-1d8b0fe350c8");
 
-    var moduleResults = response.getOriginalResponse().getModuleResults();
+    var moduleResults = response.getOriginalResponse().getIntermediateResults();
     assertThat(moduleResults).isNotNull();
 
     var groundingModule = moduleResults.getGrounding();
@@ -211,7 +235,7 @@ class OrchestrationUnitTest {
             "First chunk```Second chunk```Last found chunk");
     assertThat(groundingModule.getData()).isEqualTo(groundingData);
 
-    var inputMasking = response.getOriginalResponse().getModuleResults().getInputMasking();
+    var inputMasking = response.getOriginalResponse().getIntermediateResults().getInputMasking();
     assertThat(inputMasking.getMessage())
         .isEqualTo("Input to LLM and Grounding is masked successfully.");
     Object data = inputMasking.getData();
@@ -225,14 +249,15 @@ class OrchestrationUnitTest {
 
     try (var requestInputStream = fileLoader.apply("groundingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
     }
   }
 
   @Test
   void testGroundingWithHelpSapCom() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("groundingHelpSapComResponse.json")
@@ -246,14 +271,21 @@ class OrchestrationUnitTest {
     val response = client.chatCompletion(prompt, configWithGrounding);
 
     assertThat(
-            response.getOriginalResponse().getModuleResults().getGrounding().getData().toString())
+            response
+                .getOriginalResponse()
+                .getIntermediateResults()
+                .getGrounding()
+                .getData()
+                .toString())
         .contains(
             "A fuzzy search is a search technique that is designed to be fast and tolerant of errors");
     assertThat(response.getContent()).startsWith("A fuzzy search is a search technique");
 
     try (var requestInputStream = fileLoader.apply("groundingHelpSapComRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(urlPathEqualTo("/completion")).withRequestBody(equalToJson(request)));
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/completion"))
+              .withRequestBody(equalToJson(request, true, true)));
     }
   }
 
@@ -287,7 +319,7 @@ class OrchestrationUnitTest {
         .isEqualTo("Orchestration Service funktioniert!");
     assertThat(messageList.get(2).role()).isEqualTo("assistant");
 
-    var llm = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    var llm = response.getIntermediateResults().getLlm();
     assertThat(llm).isNotNull();
     assertThat(llm.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(llm.getObject()).isEqualTo("chat.completion");
@@ -303,7 +335,7 @@ class OrchestrationUnitTest {
     assertThat(usage.getCompletionTokens()).isEqualTo(7);
     assertThat(usage.getPromptTokens()).isEqualTo(19);
     assertThat(usage.getTotalTokens()).isEqualTo(26);
-    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    var orchestrationResult = response.getFinalResult();
     assertThat(orchestrationResult.getId()).isEqualTo("chatcmpl-9lzPV4kLrXjFckOp2yY454wksWBoj");
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isEqualTo(1721224505);
@@ -333,20 +365,35 @@ class OrchestrationUnitTest {
             .willReturn(
                 jsonResponse(
                     """
-                    {
-                      "request_id": "51043a32-01f5-429a-b0e7-3a99432e43a4",
-                      "code": 400,
-                      "message": "Missing required parameters: ['input']",
-                      "location": "Module: Templating",
-                      "module_results": {}
+                    { "error":
+                      {
+                        "request_id": "51043a32-01f5-429a-b0e7-3a99432e43a4",
+                        "code": 400,
+                        "message": "Missing required parameters: ['input']",
+                        "location": "Module: Templating",
+                        "intermediate_results": {}
+                      }
                     }
                     """,
                     SC_BAD_REQUEST)));
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessage(
-            "Request failed with status 400 Bad Request and error message: 'Missing required parameters: ['input']'");
+        .isInstanceOfSatisfying(
+            OrchestrationClientException.class,
+            e -> {
+              assertThat(e.getMessage())
+                  .isEqualTo(
+                      "Request failed with status 400 (Bad Request): Missing required parameters: ['input']");
+              assertThat(e.getErrorResponseStreaming()).isNull();
+              assertThat(e.getErrorResponse()).isNotNull();
+              assertThat(e.getErrorResponse().getError().getMessage())
+                  .isEqualTo("Missing required parameters: ['input']");
+              assertThat(e.getErrorResponse().getError().getCode()).isEqualTo(SC_BAD_REQUEST);
+              assertThat(e.getErrorResponse().getError().getRequestId())
+                  .isEqualTo("51043a32-01f5-429a-b0e7-3a99432e43a4");
+              assertThat(e.getErrorResponse().getError().getLocation())
+                  .isEqualTo("Module: Templating");
+            });
   }
 
   @Test
@@ -375,30 +422,115 @@ class OrchestrationUnitTest {
     // verify that null fields are absent from the sent request
     try (var requestInputStream = fileLoader.apply("filteringLooseRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, true)));
     }
   }
 
   @Test
-  void filteringStrict() {
-    final String response =
-        """
-            {"request_id": "bf6d6792-7adf-4d3c-9368-a73615af8c5a", "code": 400, "message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "location": "Input Filter", "module_results": {"templating": [{"role": "user", "content": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}], "input_filtering": {"message": "Content filtered due to Safety violations. Please modify the prompt and try again.", "data": {"original_service_response": {"Hate": 0, "SelfHarm": 0, "Sexual": 0, "Violence": 2}, "checked_text": "Create a rental posting for subletting my apartment in the downtown area. Keep it short. Make sure to add the following disclaimer to the end. Do not change it! ```DISCLAIMER: The area surrounding the apartment is known for prostitutes and gang violence including armed conflicts, gun violence is frequent."}}}}""";
-    stubFor(post(anyUrl()).willReturn(jsonResponse(response, SC_BAD_REQUEST)));
+  void inputFilteringStrict() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("strictInputFilterResponse.json")
+                    .withHeader("Content-Type", "application/json")
+                    .withStatus(SC_BAD_REQUEST)));
 
-    final var filter =
+    final var azureFilter =
         new AzureContentFilter()
             .hate(ALLOW_SAFE)
             .selfHarm(ALLOW_SAFE)
             .sexual(ALLOW_SAFE)
             .violence(ALLOW_SAFE);
 
-    final var configWithFilter = config.withInputFiltering(filter).withOutputFiltering(filter);
+    final var llamaFilter =
+        new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
+    final var configWithFilter = config.withInputFiltering(azureFilter, llamaFilter);
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessage(
-            "Request failed with status 400 Bad Request and error message: 'Content filtered due to Safety violations. Please modify the prompt and try again.'");
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Input.class,
+            e -> {
+              assertThat(e.getMessage())
+                  .isEqualTo(
+                      "Request failed with status 400 (Bad Request): 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
+              assertThat(e.getStatusCode()).isEqualTo(SC_BAD_REQUEST);
+              assertThat(e.getFilterDetails())
+                  .isEqualTo(
+                      Map.of(
+                          "azure_content_safety",
+                              Map.of(
+                                  "Hate", 6,
+                                  "SelfHarm", 0,
+                                  "Sexual", 0,
+                                  "Violence", 6,
+                                  "userPromptAnalysis", Map.of("attackDetected", false)),
+                          "llama_guard_3_8b", Map.of("violent_crimes", true)));
+
+              final var errorResponse = e.getErrorResponse();
+              assertThat(errorResponse).isNotNull();
+              assertThat(errorResponse).isInstanceOf(ErrorResponse.class);
+              assertThat(errorResponse.getError().getCode()).isEqualTo(SC_BAD_REQUEST);
+              assertThat(errorResponse.getError().getMessage())
+                  .isEqualTo(
+                      "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
+
+              assertThat(e.getAzureContentSafetyInput()).isNotNull();
+              assertThat(e.getAzureContentSafetyInput().getHate()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyInput().getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyInput().getSexual()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyInput().getViolence()).isEqualTo(NUMBER_6);
+
+              assertThat(e.getLlamaGuard38b()).isNotNull();
+              assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
+            });
+  }
+
+  @Test
+  void outputFilteringStrict() {
+    stubFor(post(anyUrl()).willReturn(aResponse().withBodyFile("outputFilteringStrict.json")));
+
+    final var azureFilter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE)
+            .selfHarm(ALLOW_SAFE)
+            .sexual(ALLOW_SAFE)
+            .violence(ALLOW_SAFE);
+
+    final var llamaFilter =
+        new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
+    final var configWithFilter = config.withOutputFiltering(azureFilter, llamaFilter);
+
+    assertThatThrownBy(client.chatCompletion(prompt, configWithFilter)::getContent)
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Output.class,
+            e -> {
+              assertThat(e.getMessage()).isEqualTo("Content filter filtered the output.");
+              assertThat(e.getFilterDetails())
+                  .isEqualTo(
+                      Map.of(
+                          "index",
+                          0,
+                          "azure_content_safety",
+                          Map.of(
+                              "Hate", 6,
+                              "SelfHarm", 0,
+                              "Sexual", 0,
+                              "Violence", 6),
+                          "llama_guard_3_8b",
+                          Map.of("violent_crimes", true)));
+              assertThat(e.getErrorResponse()).isNull();
+              assertThat(e.getStatusCode()).isNull();
+
+              assertThat(e.getAzureContentSafetyOutput()).isNotNull();
+              assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
+
+              assertThat(e.getLlamaGuard38b()).isNotNull();
+              assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
+            });
   }
 
   @Test
@@ -449,7 +581,7 @@ class OrchestrationUnitTest {
     final var response = result.getOriginalResponse();
 
     assertThat(response).isNotNull();
-    GenericModuleResult inputMasking = response.getModuleResults().getInputMasking();
+    GenericModuleResult inputMasking = response.getIntermediateResults().getInputMasking();
     assertThat(inputMasking).isNotNull();
     assertThat(inputMasking.getMessage()).isEqualTo("Input to LLM is masked successfully.");
     assertThat(inputMasking.getData()).isNotNull();
@@ -458,7 +590,7 @@ class OrchestrationUnitTest {
     // verify that the request is sent correctly
     try (var requestInputStream = fileLoader.apply("maskingRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, true)));
     }
   }
 
@@ -520,7 +652,7 @@ class OrchestrationUnitTest {
         .assertThatThrownBy(request::run)
         .describedAs("Error objects from Orchestration should be interpreted")
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("'orchestration_config' is a required property");
+        .hasMessageContaining("'config' is a required property");
 
     softly
         .assertThatThrownBy(request::run)
@@ -540,7 +672,7 @@ class OrchestrationUnitTest {
         .assertThatThrownBy(request::run)
         .describedAs("Empty responses should be handled")
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("was empty");
+        .hasMessageContaining("HTTP Response is empty");
 
     softly.assertAll();
   }
@@ -610,13 +742,27 @@ class OrchestrationUnitTest {
 
     var deltaWithContentFilter = mock(OrchestrationChatCompletionDelta.class);
     when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
+
+    var moduleResults = mock(ModuleResultsStreaming.class);
+    when(deltaWithContentFilter.getIntermediateResults()).thenReturn(moduleResults);
+
+    var outputFiltering = mock(GenericModuleResult.class);
+    when(moduleResults.getOutputFiltering()).thenReturn(outputFiltering);
+
+    var filterData =
+        Map.of(
+            "choices", List.of(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0))));
+    when(outputFiltering.getData()).thenReturn(filterData);
+
     when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
 
     // this must not throw, since the stream is lazily evaluated
     var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
     assertThatThrownBy(stream::toList)
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("Content filter");
+        .isInstanceOf(OrchestrationFilterException.Output.class)
+        .hasMessage("Content filter filtered the output.")
+        .extracting(e -> ((OrchestrationFilterException.Output) e).getFilterDetails())
+        .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
   }
 
   @Test
@@ -637,8 +783,28 @@ class OrchestrationUnitTest {
 
       try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
-            .isInstanceOf(OrchestrationClientException.class)
-            .hasMessage("Content filter filtered the output.");
+            .hasMessage("Content filter filtered the output.")
+            .isInstanceOfSatisfying(
+                OrchestrationFilterException.Output.class,
+                e -> {
+                  assertThat(e.getErrorResponse()).isNull();
+                  assertThat(e.getErrorResponseStreaming()).isNull();
+                  assertThat(e.getStatusCode()).isNull();
+
+                  assertThat(e.getFilterDetails())
+                      .isEqualTo(
+                          Map.of(
+                              "index",
+                              0,
+                              "azure_content_safety",
+                              Map.of("Hate", 0, "SelfHarm", 0, "Sexual", 0, "Violence", 4)));
+
+                  assertThat(e.getAzureContentSafetyOutput()).isNotNull();
+                  assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_0);
+                  assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
+                  assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
+                  assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_4);
+                });
       }
 
       Mockito.verify(inputStream, times(1)).close();
@@ -688,9 +854,9 @@ class OrchestrationUnitTest {
         assertThat(deltaList.get(2).getFinishReason()).isEqualTo("stop");
 
         // should be of type LLMModuleResultStreaming, will be fixed with a discriminator
-        var result0 = (LLMModuleResultSynchronous) deltaList.get(0).getOrchestrationResult();
-        var result1 = (LLMModuleResultSynchronous) deltaList.get(1).getOrchestrationResult();
-        var result2 = (LLMModuleResultSynchronous) deltaList.get(2).getOrchestrationResult();
+        var result0 = deltaList.get(0).getFinalResult();
+        var result1 = deltaList.get(1).getFinalResult();
+        var result2 = deltaList.get(2).getFinalResult();
 
         assertThat(result0.getSystemFingerprint()).isEmpty();
         assertThat(result0.getId()).isEmpty();
@@ -705,10 +871,10 @@ class OrchestrationUnitTest {
         assertThat(choices0.getFinishReason()).isEmpty();
         assertThat(choices0.toMap().get("delta")).isNotNull();
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
-        final var message0 = (Map<String, Object>) choices0.toMap().get("delta");
-        assertThat(message0.get("role")).isEqualTo("");
-        assertThat(message0.get("content")).isEqualTo("");
-        final var templating = deltaList.get(0).getModuleResults().getTemplating();
+        final ChatDelta message0 = choices0.getDelta();
+        assertThat(message0.getRole()).isEqualTo("");
+        assertThat(message0.getContent()).isEqualTo("");
+        final var templating = deltaList.get(0).getIntermediateResults().getTemplating();
         assertThat(templating).hasSize(1);
 
         final var templateItem = (UserChatMessage) templating.get(0);
@@ -727,9 +893,9 @@ class OrchestrationUnitTest {
         assertThat(choices1.getIndex()).isEqualTo(0);
         assertThat(choices1.getFinishReason()).isEmpty();
         assertThat(choices1.toMap().get("delta")).isNotNull();
-        final var message1 = (Map<String, Object>) choices1.toMap().get("delta");
-        assertThat(message1.get("role")).isEqualTo("assistant");
-        assertThat(message1.get("content")).isEqualTo("Sure");
+        final ChatDelta message1 = choices1.getDelta();
+        assertThat(message1.getRole()).isEqualTo("assistant");
+        assertThat(message1.getContent()).isEqualTo("Sure");
 
         assertThat(result2.getSystemFingerprint()).isEqualTo("fp_808245b034");
         assertThat(result2.getId()).isEqualTo("chatcmpl-AYZSQQwWv7ajJsyDBpMG4X01BBJxq");
@@ -743,9 +909,9 @@ class OrchestrationUnitTest {
         assertThat(choices2.getFinishReason()).isEqualTo("stop");
         // this should be getDelta(), only when the result is of type LLMModuleResultStreaming
         assertThat(choices2.toMap().get("delta")).isNotNull();
-        final var message2 = (Map<String, Object>) choices2.toMap().get("delta");
-        assertThat(message2.get("role")).isEqualTo("assistant");
-        assertThat(message2.get("content")).isEqualTo("!");
+        final ChatDelta message2 = choices2.getDelta();
+        assertThat(message2.getRole()).isEqualTo("assistant");
+        assertThat(message2.getContent()).isEqualTo("!");
       }
       Mockito.verify(inputStream, times(1)).close();
     }
@@ -754,7 +920,7 @@ class OrchestrationUnitTest {
   @Test
   void testMultiMessage() throws IOException {
     stubFor(
-        post("/completion")
+        post("/v2/completion")
             .willReturn(aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
 
     var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
@@ -809,7 +975,7 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
 
     assertThat(response).isNotNull();
-    var llmResults = (LLMModuleResultSynchronous) response.getModuleResults().getLlm();
+    var llmResults = response.getIntermediateResults().getLlm();
     assertThat(llmResults).isNotNull();
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
@@ -817,7 +983,7 @@ class OrchestrationUnitTest {
             "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
-    var orchestrationResult = (LLMModuleResultSynchronous) response.getOrchestrationResult();
+    var orchestrationResult = response.getFinalResult();
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
         .isEqualTo(
@@ -828,7 +994,7 @@ class OrchestrationUnitTest {
     try (var requestInputStream = fileLoader.apply("multiMessageRequest.json")) {
       final String requestBody = new String(requestInputStream.readAllBytes());
       verify(
-          postRequestedFor(urlPathEqualTo("/completion"))
+          postRequestedFor(urlPathEqualTo("/v2/completion"))
               .withRequestBody(equalToJson(requestBody)));
     }
   }
@@ -1010,7 +1176,8 @@ class OrchestrationUnitTest {
 
       final var response = client.chatCompletion(prompt, configWithTemplate);
       assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
-      assertThat(response.getOriginalResponse().getModuleResults().getTemplating()).hasSize(2);
+      assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating())
+          .hasSize(2);
 
       try (var requestInputStream = fileLoader.apply("templateReferenceByIdRequest.json")) {
         final String request = new String(requestInputStream.readAllBytes());
@@ -1036,7 +1203,7 @@ class OrchestrationUnitTest {
 
     final var response = client.chatCompletion(prompt, configWithTemplate);
     assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
-    assertThat(response.getOriginalResponse().getModuleResults().getTemplating()).hasSize(2);
+    assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
     try (var requestInputStream = fileLoader.apply("templateReferenceByScenarioRequest.json")) {
       final String request = new String(requestInputStream.readAllBytes());
@@ -1111,5 +1278,155 @@ class OrchestrationUnitTest {
     assertThat(messageListTools.get(0)).isInstanceOf(UserMessage.class);
     assertThat(messageListTools.get(1)).isInstanceOf(AssistantMessage.class);
     assertThat(messageListTools.get(2)).isInstanceOf(ToolMessage.class);
+  }
+
+  @Test
+  void testEmbeddingCallWithMasking() {
+
+    stubFor(
+        post(urlEqualTo("/v2/embeddings"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withBody(
+                        """
+                        {
+                          "request_id": "2ee98443-e1ee-9503-b800-e38b5b80fe45",
+                          "intermediate_results": {
+                            "input_masking": {
+                              "message": "Embedding input is masked successfully.",
+                              "data": {
+                                "masked_input": "['Hello', 'MASKED_PERSON', '!']"
+                              }
+                            }
+                          },
+                          "final_result": {
+                            "object": "list",
+                            "data": [
+                              {
+                                "object": "embedding",
+                                "embedding": [
+                                  0.43988228,
+                                  -0.82985526,
+                                  -0.15936942,
+                                  0.041005015,
+                                  0.30127057
+                                ],
+                                "index": 0
+                              }
+                            ],
+                            "model": "text-embedding-3-large",
+                            "usage": {
+                              "prompt_tokens": 10,
+                              "total_tokens": 10
+                            }
+                          }
+                        }
+                        """)));
+
+    val dpiConfig =
+        DPIConfig.create()
+            .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
+            .method(DPIConfig.MethodEnum.ANONYMIZATION)
+            .entities(List.of(DPIStandardEntity.create().type(DPIEntities.PERSON)));
+    val maskingConfig = MaskingModuleConfig.create().maskingProviders(List.of(dpiConfig));
+
+    val modelParams =
+        EmbeddingsModelParams.create()
+            .encodingFormat(EmbeddingsModelParams.EncodingFormatEnum.FLOAT)
+            .dimensions(5)
+            .normalize(false);
+    val modelConfig =
+        EmbeddingsModelConfig.create()
+            .model(
+                EmbeddingsModelDetails.create().name("text-embedding-3-large").params(modelParams));
+
+    val orchestrationConfig =
+        EmbeddingsOrchestrationConfig.create()
+            .modules(
+                EmbeddingsModuleConfigs.create().embeddings(modelConfig).masking(maskingConfig));
+
+    val inputText =
+        EmbeddingsInput.create().text(EmbeddingsInputText.create("['Hello', 'Müller', '!']"));
+
+    val request = EmbeddingsPostRequest.create().config(orchestrationConfig).input(inputText);
+
+    EmbeddingsPostResponse response = client.embed(request);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getRequestId()).isEqualTo("2ee98443-e1ee-9503-b800-e38b5b80fe45");
+
+    val orchestrationResult = response.getFinalResult();
+    assertThat(orchestrationResult).isNotNull();
+    assertThat(orchestrationResult.getObject()).isEqualTo(EmbeddingsResponse.ObjectEnum.LIST);
+    assertThat(orchestrationResult.getModel()).isEqualTo("text-embedding-3-large");
+
+    val data = orchestrationResult.getData();
+    assertThat(data).isNotEmpty();
+    assertThat(data.get(0).getEmbedding())
+        .isEqualTo(
+            Embedding.create(
+                List.of(
+                    BigDecimal.valueOf(0.43988228),
+                    BigDecimal.valueOf(-0.82985526),
+                    BigDecimal.valueOf(-0.15936942),
+                    BigDecimal.valueOf(0.041005015),
+                    BigDecimal.valueOf(0.30127057))));
+    assertThat(data.get(0).getIndex()).isZero();
+
+    val usage = orchestrationResult.getUsage();
+    assertThat(usage).isNotNull();
+    assertThat(usage.getPromptTokens()).isEqualTo(10);
+    assertThat(usage.getTotalTokens()).isEqualTo(10);
+
+    val moduleResults = response.getIntermediateResults();
+    assertThat(moduleResults).isNotNull();
+    assertThat(moduleResults.getInputMasking()).isNotNull();
+    assertThat(moduleResults.getInputMasking().getMessage())
+        .isEqualTo("Embedding input is masked successfully.");
+    assertThat(moduleResults.getInputMasking().getData()).isNotNull();
+    assertThat(moduleResults.getInputMasking().getData())
+        .isEqualTo(Map.of("masked_input", "['Hello', 'MASKED_PERSON', '!']"));
+
+    verify(
+        postRequestedFor(urlEqualTo("/v2/embeddings"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                    {
+                      "config": {
+                        "modules": {
+                          "embeddings": {
+                            "model": {
+                              "name": "text-embedding-3-large",
+                              "version": "latest",
+                              "params": {
+                                "encoding_format": "float",
+                                "dimensions": 5,
+                                "normalize": false
+                              }
+                            }
+                          },
+                          "masking": {
+                            "masking_providers": [
+                              {
+                                "type": "sap_data_privacy_integration",
+                                "method": "anonymization",
+                                "entities": [
+                                  {
+                                    "type": "profile-person"
+                                  }
+                                ],
+                                "allowlist" : [ ]
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "input": {
+                        "text": "['Hello', 'Müller', '!']"
+                      }
+                    }
+                    """)));
   }
 }

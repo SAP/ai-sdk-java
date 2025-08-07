@@ -3,7 +3,10 @@ package com.sap.ai.sdk.orchestration;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientError;
+import com.sap.ai.sdk.orchestration.model.Error;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
+import com.sap.ai.sdk.orchestration.model.ErrorResponseStreaming;
+import com.sap.ai.sdk.orchestration.model.ErrorStreaming;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,21 +17,52 @@ import lombok.Value;
  *
  * @since 1.1.0
  */
-@AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
-@Value
 @Beta
-public class OrchestrationError implements ClientError {
-  ErrorResponse originalResponse;
+public interface OrchestrationError extends ClientError {
 
   /**
-   * Gets the error message from the contained original response.
+   * Orchestration error response for synchronous requests.
    *
-   * @return the error message
+   * @since 1.10.0
    */
-  @Nonnull
-  public String getMessage() {
-    return originalResponse.getCode() == 500
-        ? originalResponse.getMessage() + " located in " + originalResponse.getLocation()
-        : originalResponse.getMessage();
+  @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
+  @Value
+  class Synchronous implements OrchestrationError {
+    ErrorResponse errorResponse;
+
+    /**
+     * Gets the error message from the contained original response.
+     *
+     * @return the error message
+     */
+    @Nonnull
+    public String getMessage() {
+      final Error e = errorResponse.getError();
+      final String message = e.getMessage();
+      return e.getCode() == 500 ? "%s located in %s".formatted(message, e.getLocation()) : message;
+    }
+  }
+
+  /**
+   * Orchestration error response for streaming requests.
+   *
+   * @since 1.10.0
+   */
+  @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
+  @Value
+  class Streaming implements OrchestrationError {
+    ErrorResponseStreaming errorResponse;
+
+    /**
+     * Gets the error message from the contained original response.
+     *
+     * @return the error message
+     */
+    @Nonnull
+    public String getMessage() {
+      final ErrorStreaming e = errorResponse.getError();
+      final String message = e.getMessage();
+      return e.getCode() == 500 ? "%s located in %s".formatted(message, e.getLocation()) : message;
+    }
   }
 }

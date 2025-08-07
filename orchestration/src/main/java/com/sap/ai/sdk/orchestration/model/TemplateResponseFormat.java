@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * Response format that the model output should adhere to. This is the same as the OpenAI
- * definition. Compatible with GPT-4o, GPT-4o mini, GPT-4 (Turbo) and all GPT-3.5 Turbo models newer
- * than gpt-3.5-turbo-1106.
+ * definition.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({

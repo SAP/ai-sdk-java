@@ -1,6 +1,6 @@
 {
   "request_id": "e5d2add4-408c-4da5-84ca-1d8b0fe350c8",
-  "module_results": {
+  "intermediate_results": {
     "grounding": {
       "message": "grounding result",
       "data": {
@@ -44,7 +44,7 @@
       }
     }
   },
-  "orchestration_result": {
+  "final_result": {
     "id": "chatcmpl-Apz5s3CMf99jkOnxvPshH1rGLwvvU",
     "object": "chat.completion",
     "created": 1736952936,

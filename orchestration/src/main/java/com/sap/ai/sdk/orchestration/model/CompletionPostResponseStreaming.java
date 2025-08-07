@@ -31,11 +31,11 @@ public class CompletionPostResponseStreaming
   @JsonProperty("request_id")
   private String requestId;
 
-  @JsonProperty("module_results")
-  private ModuleResults moduleResults;
+  @JsonProperty("intermediate_results")
+  private ModuleResultsStreaming intermediateResults;
 
-  @JsonProperty("orchestration_result")
-  private LLMModuleResultStreaming orchestrationResult;
+  @JsonProperty("final_result")
+  private LLMModuleResultStreaming finalResult;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -76,73 +76,72 @@ public class CompletionPostResponseStreaming
   }
 
   /**
-   * Set the moduleResults of this {@link CompletionPostResponseStreaming} instance and return the
-   * same instance.
-   *
-   * @param moduleResults The moduleResults of this {@link CompletionPostResponseStreaming}
-   * @return The same instance of this {@link CompletionPostResponseStreaming} class
-   */
-  @Nonnull
-  public CompletionPostResponseStreaming moduleResults(
-      @Nullable final ModuleResults moduleResults) {
-    this.moduleResults = moduleResults;
-    return this;
-  }
-
-  /**
-   * Get moduleResults
-   *
-   * @return moduleResults The moduleResults of this {@link CompletionPostResponseStreaming}
-   *     instance.
-   */
-  @Nonnull
-  public ModuleResults getModuleResults() {
-    return moduleResults;
-  }
-
-  /**
-   * Set the moduleResults of this {@link CompletionPostResponseStreaming} instance.
-   *
-   * @param moduleResults The moduleResults of this {@link CompletionPostResponseStreaming}
-   */
-  public void setModuleResults(@Nullable final ModuleResults moduleResults) {
-    this.moduleResults = moduleResults;
-  }
-
-  /**
-   * Set the orchestrationResult of this {@link CompletionPostResponseStreaming} instance and return
+   * Set the intermediateResults of this {@link CompletionPostResponseStreaming} instance and return
    * the same instance.
    *
-   * @param orchestrationResult The orchestrationResult of this {@link
+   * @param intermediateResults The intermediateResults of this {@link
    *     CompletionPostResponseStreaming}
    * @return The same instance of this {@link CompletionPostResponseStreaming} class
    */
   @Nonnull
-  public CompletionPostResponseStreaming orchestrationResult(
-      @Nullable final LLMModuleResultStreaming orchestrationResult) {
-    this.orchestrationResult = orchestrationResult;
+  public CompletionPostResponseStreaming intermediateResults(
+      @Nullable final ModuleResultsStreaming intermediateResults) {
+    this.intermediateResults = intermediateResults;
     return this;
   }
 
   /**
-   * Get orchestrationResult
+   * Get intermediateResults
    *
-   * @return orchestrationResult The orchestrationResult of this {@link
+   * @return intermediateResults The intermediateResults of this {@link
    *     CompletionPostResponseStreaming} instance.
    */
   @Nonnull
-  public LLMModuleResultStreaming getOrchestrationResult() {
-    return orchestrationResult;
+  public ModuleResultsStreaming getIntermediateResults() {
+    return intermediateResults;
   }
 
   /**
-   * Set the orchestrationResult of this {@link CompletionPostResponseStreaming} instance.
+   * Set the intermediateResults of this {@link CompletionPostResponseStreaming} instance.
    *
-   * @param orchestrationResult The orchestrationResult of this {@link
+   * @param intermediateResults The intermediateResults of this {@link
    *     CompletionPostResponseStreaming}
    */
-  public void setOrchestrationResult(@Nullable final LLMModuleResultStreaming orchestrationResult) {
-    this.orchestrationResult = orchestrationResult;
+  public void setIntermediateResults(@Nullable final ModuleResultsStreaming intermediateResults) {
+    this.intermediateResults = intermediateResults;
+  }
+
+  /**
+   * Set the finalResult of this {@link CompletionPostResponseStreaming} instance and return the
+   * same instance.
+   *
+   * @param finalResult The finalResult of this {@link CompletionPostResponseStreaming}
+   * @return The same instance of this {@link CompletionPostResponseStreaming} class
+   */
+  @Nonnull
+  public CompletionPostResponseStreaming finalResult(
+      @Nullable final LLMModuleResultStreaming finalResult) {
+    this.finalResult = finalResult;
+    return this;
+  }
+
+  /**
+   * Get finalResult
+   *
+   * @return finalResult The finalResult of this {@link CompletionPostResponseStreaming} instance.
+   */
+  @Nonnull
+  public LLMModuleResultStreaming getFinalResult() {
+    return finalResult;
+  }
+
+  /**
+   * Set the finalResult of this {@link CompletionPostResponseStreaming} instance.
+   *
+   * @param finalResult The finalResult of this {@link CompletionPostResponseStreaming}
+   */
+  public void setFinalResult(@Nullable final LLMModuleResultStreaming finalResult) {
+    this.finalResult = finalResult;
   }
 
   /**
@@ -186,8 +185,8 @@ public class CompletionPostResponseStreaming
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (requestId != null) declaredFields.put("requestId", requestId);
-    if (moduleResults != null) declaredFields.put("moduleResults", moduleResults);
-    if (orchestrationResult != null) declaredFields.put("orchestrationResult", orchestrationResult);
+    if (intermediateResults != null) declaredFields.put("intermediateResults", intermediateResults);
+    if (finalResult != null) declaredFields.put("finalResult", finalResult);
     return declaredFields;
   }
 
@@ -217,14 +216,14 @@ public class CompletionPostResponseStreaming
     return Objects.equals(
             this.cloudSdkCustomFields, completionPostResponseStreaming.cloudSdkCustomFields)
         && Objects.equals(this.requestId, completionPostResponseStreaming.requestId)
-        && Objects.equals(this.moduleResults, completionPostResponseStreaming.moduleResults)
         && Objects.equals(
-            this.orchestrationResult, completionPostResponseStreaming.orchestrationResult);
+            this.intermediateResults, completionPostResponseStreaming.intermediateResults)
+        && Objects.equals(this.finalResult, completionPostResponseStreaming.finalResult);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(requestId, moduleResults, orchestrationResult, cloudSdkCustomFields);
+    return Objects.hash(requestId, intermediateResults, finalResult, cloudSdkCustomFields);
   }
 
   @Override
@@ -233,10 +232,10 @@ public class CompletionPostResponseStreaming
     final StringBuilder sb = new StringBuilder();
     sb.append("class CompletionPostResponseStreaming {\n");
     sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
-    sb.append("    moduleResults: ").append(toIndentedString(moduleResults)).append("\n");
-    sb.append("    orchestrationResult: ")
-        .append(toIndentedString(orchestrationResult))
+    sb.append("    intermediateResults: ")
+        .append(toIndentedString(intermediateResults))
         .append("\n");
+    sb.append("    finalResult: ").append(toIndentedString(finalResult)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

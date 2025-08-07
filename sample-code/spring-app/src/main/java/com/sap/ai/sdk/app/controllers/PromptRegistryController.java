@@ -70,7 +70,7 @@ class PromptRegistryController {
   @GetMapping("/importTemplate")
   PromptTemplatePostResponse importTemplate() throws IOException {
     final Resource template = new ClassPathResource("prompt-template.yaml");
-    return client.importPromptTemplate(template.getFile());
+    return client.importPromptTemplate("default", template.getFile());
   }
 
   @GetMapping("/exportTemplate")
@@ -84,6 +84,7 @@ class PromptRegistryController {
     final var template = createTemplate();
     return client.parsePromptTemplateById(
         template.getId(),
+        "default",
         false,
         PromptTemplateSubstitutionRequest.create()
             .inputParams(Map.of("inputExample", "I love football")));

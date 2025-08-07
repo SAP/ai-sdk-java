@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DPIStandardEntity;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
@@ -87,10 +88,11 @@ class OrchestrationModuleConfigTest {
 
     assertThat(config.getMaskingConfig()).isNotNull();
     assertThat(config.getMaskingConfig().getMaskingProviders()).hasSize(1);
-    DPIConfig dpiConfig = (DPIConfig) config.getMaskingConfig().getMaskingProviders().get(0);
+    DPIConfig dpiConfig = config.getMaskingConfig().getMaskingProviders().get(0);
     assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
     assertThat(dpiConfig.getEntities()).hasSize(1);
-    assertThat(dpiConfig.getEntities().get(0).getType()).isEqualTo(DPIEntities.ADDRESS);
+    assertThat(((DPIStandardEntity) dpiConfig.getEntities().get(0)).getType())
+        .isEqualTo(DPIEntities.ADDRESS);
     assertThat(dpiConfig.getMaskGroundingInput().isEnabled()).isEqualTo(true);
     assertThat(dpiConfig.getAllowlist()).containsExactly("Alice");
 
@@ -147,9 +149,9 @@ class OrchestrationModuleConfigTest {
     var config = new OrchestrationModuleConfig().withLlmConfig(aiModel);
 
     assertThat(config.getLlmConfig()).isNotNull();
-    assertThat(config.getLlmConfig().getModelName()).isEqualTo(GPT_4O.getName());
-    assertThat(config.getLlmConfig().getModelParams()).isEqualTo(params);
-    assertThat(config.getLlmConfig().getModelVersion()).isEqualTo(version);
+    assertThat(config.getLlmConfig().getName()).isEqualTo(GPT_4O.getName());
+    assertThat(config.getLlmConfig().getParams()).isEqualTo(params);
+    assertThat(config.getLlmConfig().getVersion()).isEqualTo(version);
 
     assertThat(GPT_4O.getParams()).withFailMessage("Static models should be unchanged").isEmpty();
     assertThat(GPT_4O.getVersion())
@@ -168,8 +170,8 @@ class OrchestrationModuleConfigTest {
 
     GroundingModuleConfigConfig configConfig = config.getGroundingConfig().getConfig();
     assertThat(configConfig).isNotNull();
-    assertThat(configConfig.getInputParams()).containsExactly("userMessage");
-    assertThat(configConfig.getOutputParam()).isEqualTo("groundingContext");
+    assertThat(configConfig.getPlaceholders().getInput()).containsExactly("userMessage");
+    assertThat(configConfig.getPlaceholders().getOutput()).isEqualTo("groundingContext");
 
     List<GroundingModuleConfigConfigFiltersInner> filters = configConfig.getFilters();
     assertThat(filters).hasSize(1);

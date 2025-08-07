@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Spliterators;
 import java.util.concurrent.Callable;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -70,7 +69,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
     } catch (final Exception e) {
       isDone = true;
       stopHandler.run();
-      log.debug("Error while reading next element.", e);
+      log.debug("Reading next element failed with error {})", e.getClass().getSimpleName());
       throw errorHandler.apply(e);
     }
     return !isDone;
@@ -91,32 +90,38 @@ class IterableStreamConverter<T> implements Iterator<T> {
    * when an exception occurred.
    *
    * @param entity The HTTP entity object.
-   * @param exceptionType The type of the client exception to throw in case of an error.
+   * @param exceptionFactory The exception factory to use for creating exceptions.
    * @return A sequential Stream object.
    * @throws ClientException if the provided HTTP entity object is {@code null} or empty.
    */
   @SuppressWarnings("PMD.CloseResource") // Stream is closed automatically when consumed
   @Nonnull
-  static Stream<String> lines(
+  static <R extends ClientError> Stream<String> lines(
       @Nullable final HttpEntity entity,
-      @Nonnull final BiFunction<String, Throwable, ? extends ClientException> exceptionType)
+      @Nonnull final ClientExceptionFactory<? extends ClientException, R> exceptionFactory)
       throws ClientException {
     if (entity == null) {
-      throw exceptionType.apply("Orchestration service response was empty.", null);
+      throw exceptionFactory.build("The HTTP Response is empty", null);
     }
 
     final InputStream inputStream;
     try {
       inputStream = entity.getContent();
     } catch (final IOException e) {
-      throw exceptionType.apply("Failed to read response content.", e);
+      throw exceptionFactory.build("Failed to read response content.", e);
     }
 
     final var reader = new BufferedReader(new InputStreamReader(inputStream, UTF_8), BUFFER_SIZE);
     final Runnable closeHandler =
-        () -> Try.run(reader::close).onFailure(e -> log.error("Could not close input stream", e));
+        () ->
+            Try.run(reader::close)
+                .onFailure(
+                    e ->
+                        log.debug(
+                            "Could not close input stream with error: {} (ignored)",
+                            e.getClass().getSimpleName()));
     final Function<Exception, RuntimeException> errHandler =
-        e -> exceptionType.apply("Parsing response content was interrupted.", e);
+        e -> exceptionFactory.build("Parsing response content was interrupted", e);
 
     final var iterator = new IterableStreamConverter<>(reader::readLine, closeHandler, errHandler);
     final var spliterator = Spliterators.spliteratorUnknownSize(iterator, ORDERED | NONNULL);

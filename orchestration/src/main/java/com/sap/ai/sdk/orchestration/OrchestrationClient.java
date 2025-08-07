@@ -8,43 +8,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.DeploymentResolutionException;
-import com.sap.ai.sdk.core.common.ClientResponseHandler;
-import com.sap.ai.sdk.core.common.ClientStreamingHandler;
-import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
+import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
-import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
-import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
-import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstantiationException;
-import java.io.IOException;
+import io.vavr.control.Try;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.http.io.entity.StringEntity;
-import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 
 /** Client to execute requests to the orchestration service. */
 @Slf4j
 public class OrchestrationClient {
   private static final String DEFAULT_SCENARIO = "orchestration";
+  private static final String COMPLETION_ENDPOINT = "/v2/completion";
 
   static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
-  @Nonnull private final Supplier<HttpDestination> destinationSupplier;
+  private final OrchestrationHttpExecutor executor;
 
   /** Default constructor. */
   public OrchestrationClient() {
-    destinationSupplier =
+    final Supplier<HttpDestination> destinationSupplier =
         () -> new AiCoreService().getInferenceDestination().forScenario(DEFAULT_SCENARIO);
+    this.executor = new OrchestrationHttpExecutor(destinationSupplier);
   }
 
   /**
@@ -64,7 +59,7 @@ public class OrchestrationClient {
    */
   @Beta
   public OrchestrationClient(@Nonnull final HttpDestination destination) {
-    this.destinationSupplier = () -> destination;
+    this.executor = new OrchestrationHttpExecutor(() -> destination);
   }
 
   /**
@@ -120,11 +115,22 @@ public class OrchestrationClient {
         .map(OrchestrationChatCompletionDelta::getDeltaContent);
   }
 
-  private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta) {
+  private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)
+      throws OrchestrationFilterException.Output {
     final String finishReason = delta.getFinishReason();
     if (finishReason != null && finishReason.equals("content_filter")) {
-      throw new OrchestrationClientException("Content filter filtered the output.");
+      final var filterDetails =
+          Try.of(() -> getOutputFilteringChoices(delta)).getOrElseGet(e -> Map.of());
+      final var message = "Content filter filtered the output.";
+      throw new OrchestrationFilterException.Output(message, filterDetails);
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  private static Map<String, Object> getOutputFilteringChoices(
+      @Nonnull final OrchestrationChatCompletionDelta delta) {
+    final var f = delta.getIntermediateResults().getOutputFiltering();
+    return ((List<Map<String, Object>>) ((Map<String, Object>) f.getData()).get("choices")).get(0);
   }
 
   /**
@@ -150,15 +156,7 @@ public class OrchestrationClient {
   @Nonnull
   public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
-    final String jsonRequest;
-    try {
-      jsonRequest = JACKSON.writeValueAsString(request);
-      log.debug("Serialized request into JSON payload: {}", jsonRequest);
-    } catch (final JsonProcessingException e) {
-      throw new OrchestrationClientException("Failed to serialize request parameters", e);
-    }
-
-    return executeRequest(jsonRequest);
+    return executor.execute(COMPLETION_ENDPOINT, request, CompletionPostResponse.class);
   }
 
   /**
@@ -199,38 +197,8 @@ public class OrchestrationClient {
     }
     requestJson.set("orchestration_config", moduleConfigJson);
 
-    final String body;
-    try {
-      body = JACKSON.writeValueAsString(requestJson);
-    } catch (JsonProcessingException e) {
-      throw new OrchestrationClientException("Failed to serialize request to JSON", e);
-    }
-    return new OrchestrationChatResponse(executeRequest(body));
-  }
-
-  @Nonnull
-  CompletionPostResponse executeRequest(@Nonnull final String request) {
-    val postRequest = new HttpPost("/completion");
-    postRequest.setEntity(new StringEntity(request, ContentType.APPLICATION_JSON));
-
-    try {
-      val destination = destinationSupplier.get();
-      log.debug("Using destination {} to connect to orchestration service", destination);
-      val client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      val handler =
-          new ClientResponseHandler<>(
-                  CompletionPostResponse.class,
-                  OrchestrationError.class,
-                  OrchestrationClientException::new)
-              .objectMapper(JACKSON);
-      return client.execute(postRequest, handler);
-    } catch (DeploymentResolutionException
-        | DestinationAccessException
-        | DestinationNotFoundException
-        | HttpClientInstantiationException
-        | IOException e) {
-      throw new OrchestrationClientException("Failed to execute request", e);
-    }
+    return new OrchestrationChatResponse(
+        executor.execute(COMPLETION_ENDPOINT, requestJson, CompletionPostResponse.class));
   }
 
   /**
@@ -244,43 +212,22 @@ public class OrchestrationClient {
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
-    request.getOrchestrationConfig().setStream(true);
-    return executeStream("/completion", request, OrchestrationChatCompletionDelta.class);
+    request.getConfig().setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
+
+    return executor.stream(COMPLETION_ENDPOINT, request);
   }
 
+  /**
+   * Generate embeddings for the given request.
+   *
+   * @param request the request containing the input text and other parameters.
+   * @return the response containing the embeddings.
+   * @throws OrchestrationClientException if the request fails
+   * @since 1.9.0
+   */
   @Nonnull
-  private <D extends StreamedDelta> Stream<D> executeStream(
-      @Nonnull final String path,
-      @Nonnull final Object payload,
-      @Nonnull final Class<D> deltaType) {
-    final var request = new HttpPost(path);
-    serializeAndSetHttpEntity(request, payload);
-    return streamRequest(request, deltaType);
-  }
-
-  private static void serializeAndSetHttpEntity(
-      @Nonnull final BasicClassicHttpRequest request, @Nonnull final Object payload) {
-    try {
-      final var json = JACKSON.writeValueAsString(payload);
-      request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
-    } catch (final JsonProcessingException e) {
-      throw new OrchestrationClientException("Failed to serialize request parameters", e);
-    }
-  }
-
-  @Nonnull
-  private <D extends StreamedDelta> Stream<D> streamRequest(
-      final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
-    try {
-      val destination = destinationSupplier.get();
-      log.debug("Using destination {} to connect to orchestration service", destination);
-      val client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      return new ClientStreamingHandler<>(
-              deltaType, OrchestrationError.class, OrchestrationClientException::new)
-          .objectMapper(JACKSON)
-          .handleStreamingResponse(client.executeOpen(null, request, null));
-    } catch (final IOException e) {
-      throw new OrchestrationClientException("Request to the Orchestration service failed", e);
-    }
+  EmbeddingsPostResponse embed(@Nonnull final EmbeddingsPostRequest request)
+      throws OrchestrationClientException {
+    return executor.execute("/v2/embeddings", request, EmbeddingsPostResponse.class);
   }
 }

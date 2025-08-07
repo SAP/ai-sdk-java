@@ -779,6 +779,18 @@
                             <li class="list-group-item">
                                 <div class="info-tooltip">
                                     <button type="submit"
+                                            formaction="/spring-ai-orchestration/mcp"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/spring-ai-orchestration/mcp</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Use an MCP file system server as tool to answer questions about the SDK itself. ⚠️ Only works if the server is started with the "mcp" Spring profile ⚠️.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
                                             formaction="/spring-ai-orchestration/chatMemory"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/spring-ai-orchestration/chatMemory</code>
@@ -853,6 +865,7 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
+                                    <input type="hidden" name="resource-group" value="ai-sdk-js-e2e">
                                     <button type="submit" formaction="/grounding/pipelines/list"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/grounding/pipelines/list</code>

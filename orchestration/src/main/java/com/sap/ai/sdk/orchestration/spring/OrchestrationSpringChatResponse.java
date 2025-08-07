@@ -1,9 +1,8 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
-import com.sap.ai.sdk.orchestration.model.LLMModuleResultSynchronous;
+import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,6 @@ import org.springframework.ai.chat.model.Generation;
  *
  * @since 1.2.0
  */
-@Beta
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class OrchestrationSpringChatResponse extends ChatResponse {
@@ -33,17 +31,13 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
 
   OrchestrationSpringChatResponse(@Nonnull final OrchestrationChatResponse orchestrationResponse) {
     super(
-        toGenerations(
-            (LLMModuleResultSynchronous)
-                orchestrationResponse.getOriginalResponse().getOrchestrationResult()),
-        toChatResponseMetadata(
-            (LLMModuleResultSynchronous)
-                orchestrationResponse.getOriginalResponse().getOrchestrationResult()));
+        toGenerations(orchestrationResponse.getOriginalResponse().getFinalResult()),
+        toChatResponseMetadata(orchestrationResponse.getOriginalResponse().getFinalResult()));
     this.orchestrationResponse = orchestrationResponse;
   }
 
   @Nonnull
-  static List<Generation> toGenerations(@Nonnull final LLMModuleResultSynchronous result) {
+  static List<Generation> toGenerations(@Nonnull final LLMModuleResult result) {
     return result.getChoices().stream().map(OrchestrationSpringChatResponse::toGeneration).toList();
   }
 
@@ -51,8 +45,8 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
   static Generation toGeneration(@Nonnull final LLMChoice choice) {
     val metadata = ChatGenerationMetadata.builder().finishReason(choice.getFinishReason());
     metadata.metadata("index", choice.getIndex());
-    if (!choice.getLogprobs().isEmpty()) {
-      metadata.metadata("logprobs", choice.getLogprobs());
+    if (choice.getLogprobs() != null && !choice.getLogprobs().getContent().isEmpty()) {
+      metadata.metadata("logprobs", choice.getLogprobs().getContent());
     }
     val toolCalls =
         choice.getMessage().getToolCalls().stream()
@@ -71,7 +65,7 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
 
   @Nonnull
   static ChatResponseMetadata toChatResponseMetadata(
-      @Nonnull final LLMModuleResultSynchronous orchestrationResult) {
+      @Nonnull final LLMModuleResult orchestrationResult) {
     val metadataBuilder = ChatResponseMetadata.builder();
 
     metadataBuilder

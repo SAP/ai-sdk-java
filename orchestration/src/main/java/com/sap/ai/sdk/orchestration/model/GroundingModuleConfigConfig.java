@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +33,8 @@ public class GroundingModuleConfigConfig
   @JsonProperty("filters")
   private List<GroundingModuleConfigConfigFiltersInner> filters = new ArrayList<>();
 
-  @JsonProperty("input_params")
-  private List<String> inputParams = new ArrayList<>();
-
-  @JsonProperty("output_param")
-  private String outputParam;
+  @JsonProperty("placeholders")
+  private GroundingModuleConfigConfigPlaceholders placeholders;
 
   @JsonProperty("metadata_params")
   private List<String> metadataParams = new ArrayList<>();
@@ -99,82 +95,36 @@ public class GroundingModuleConfigConfig
   }
 
   /**
-   * Set the inputParams of this {@link GroundingModuleConfigConfig} instance and return the same
+   * Set the placeholders of this {@link GroundingModuleConfigConfig} instance and return the same
    * instance.
    *
-   * @param inputParams Contains the input parameters used for grounding input questions
+   * @param placeholders The placeholders of this {@link GroundingModuleConfigConfig}
    * @return The same instance of this {@link GroundingModuleConfigConfig} class
    */
   @Nonnull
-  public GroundingModuleConfigConfig inputParams(@Nonnull final List<String> inputParams) {
-    this.inputParams = inputParams;
+  public GroundingModuleConfigConfig placeholders(
+      @Nonnull final GroundingModuleConfigConfigPlaceholders placeholders) {
+    this.placeholders = placeholders;
     return this;
   }
 
   /**
-   * Add one inputParams instance to this {@link GroundingModuleConfigConfig}.
+   * Get placeholders
    *
-   * @param inputParamsItem The inputParams that should be added
-   * @return The same instance of type {@link GroundingModuleConfigConfig}
+   * @return placeholders The placeholders of this {@link GroundingModuleConfigConfig} instance.
    */
   @Nonnull
-  public GroundingModuleConfigConfig addInputParamsItem(@Nonnull final String inputParamsItem) {
-    if (this.inputParams == null) {
-      this.inputParams = new ArrayList<>();
-    }
-    this.inputParams.add(inputParamsItem);
-    return this;
+  public GroundingModuleConfigConfigPlaceholders getPlaceholders() {
+    return placeholders;
   }
 
   /**
-   * Contains the input parameters used for grounding input questions
+   * Set the placeholders of this {@link GroundingModuleConfigConfig} instance.
    *
-   * @return inputParams The inputParams of this {@link GroundingModuleConfigConfig} instance.
+   * @param placeholders The placeholders of this {@link GroundingModuleConfigConfig}
    */
-  @Nonnull
-  public List<String> getInputParams() {
-    return inputParams;
-  }
-
-  /**
-   * Set the inputParams of this {@link GroundingModuleConfigConfig} instance.
-   *
-   * @param inputParams Contains the input parameters used for grounding input questions
-   */
-  public void setInputParams(@Nonnull final List<String> inputParams) {
-    this.inputParams = inputParams;
-  }
-
-  /**
-   * Set the outputParam of this {@link GroundingModuleConfigConfig} instance and return the same
-   * instance.
-   *
-   * @param outputParam Parameter name used for grounding output
-   * @return The same instance of this {@link GroundingModuleConfigConfig} class
-   */
-  @Nonnull
-  public GroundingModuleConfigConfig outputParam(@Nonnull final String outputParam) {
-    this.outputParam = outputParam;
-    return this;
-  }
-
-  /**
-   * Parameter name used for grounding output
-   *
-   * @return outputParam The outputParam of this {@link GroundingModuleConfigConfig} instance.
-   */
-  @Nonnull
-  public String getOutputParam() {
-    return outputParam;
-  }
-
-  /**
-   * Set the outputParam of this {@link GroundingModuleConfigConfig} instance.
-   *
-   * @param outputParam Parameter name used for grounding output
-   */
-  public void setOutputParam(@Nonnull final String outputParam) {
-    this.outputParam = outputParam;
+  public void setPlaceholders(@Nonnull final GroundingModuleConfigConfigPlaceholders placeholders) {
+    this.placeholders = placeholders;
   }
 
   /**
@@ -266,8 +216,7 @@ public class GroundingModuleConfigConfig
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (filters != null) declaredFields.put("filters", filters);
-    if (inputParams != null) declaredFields.put("inputParams", inputParams);
-    if (outputParam != null) declaredFields.put("outputParam", outputParam);
+    if (placeholders != null) declaredFields.put("placeholders", placeholders);
     if (metadataParams != null) declaredFields.put("metadataParams", metadataParams);
     return declaredFields;
   }
@@ -296,14 +245,13 @@ public class GroundingModuleConfigConfig
     return Objects.equals(
             this.cloudSdkCustomFields, groundingModuleConfigConfig.cloudSdkCustomFields)
         && Objects.equals(this.filters, groundingModuleConfigConfig.filters)
-        && Objects.equals(this.inputParams, groundingModuleConfigConfig.inputParams)
-        && Objects.equals(this.outputParam, groundingModuleConfigConfig.outputParam)
+        && Objects.equals(this.placeholders, groundingModuleConfigConfig.placeholders)
         && Objects.equals(this.metadataParams, groundingModuleConfigConfig.metadataParams);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filters, inputParams, outputParam, metadataParams, cloudSdkCustomFields);
+    return Objects.hash(filters, placeholders, metadataParams, cloudSdkCustomFields);
   }
 
   @Override
@@ -312,8 +260,7 @@ public class GroundingModuleConfigConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class GroundingModuleConfigConfig {\n");
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
-    sb.append("    inputParams: ").append(toIndentedString(inputParams)).append("\n");
-    sb.append("    outputParam: ").append(toIndentedString(outputParam)).append("\n");
+    sb.append("    placeholders: ").append(toIndentedString(placeholders)).append("\n");
     sb.append("    metadataParams: ").append(toIndentedString(metadataParams)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -337,40 +284,18 @@ public class GroundingModuleConfigConfig
    * GroundingModuleConfigConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (inputParams) ->
-        (outputParam) ->
-            new GroundingModuleConfigConfig().inputParams(inputParams).outputParam(outputParam);
+    return (placeholders) -> new GroundingModuleConfigConfig().placeholders(placeholders);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the inputParams of this {@link GroundingModuleConfigConfig} instance.
+     * Set the placeholders of this {@link GroundingModuleConfigConfig} instance.
      *
-     * @param inputParams Contains the input parameters used for grounding input questions
-     * @return The GroundingModuleConfigConfig builder.
-     */
-    Builder1 inputParams(@Nonnull final List<String> inputParams);
-
-    /**
-     * Set the inputParams of this {@link GroundingModuleConfigConfig} instance.
-     *
-     * @param inputParams Contains the input parameters used for grounding input questions
-     * @return The GroundingModuleConfigConfig builder.
-     */
-    default Builder1 inputParams(@Nonnull final String... inputParams) {
-      return inputParams(Arrays.asList(inputParams));
-    }
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the outputParam of this {@link GroundingModuleConfigConfig} instance.
-     *
-     * @param outputParam Parameter name used for grounding output
+     * @param placeholders The placeholders of this {@link GroundingModuleConfigConfig}
      * @return The GroundingModuleConfigConfig instance.
      */
-    GroundingModuleConfigConfig outputParam(@Nonnull final String outputParam);
+    GroundingModuleConfigConfig placeholders(
+        @Nonnull final GroundingModuleConfigConfigPlaceholders placeholders);
   }
 }
