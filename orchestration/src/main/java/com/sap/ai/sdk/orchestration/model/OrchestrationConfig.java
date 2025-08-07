@@ -28,14 +28,11 @@ import javax.annotation.Nullable;
 public class OrchestrationConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("module_configurations")
-  private ModuleConfigs moduleConfigurations;
+  @JsonProperty("modules")
+  private ModuleConfigs modules;
 
   @JsonProperty("stream")
-  private Boolean stream = false;
-
-  @JsonProperty("stream_options")
-  private GlobalStreamOptions streamOptions;
+  private GlobalStreamOptions stream;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -44,100 +41,65 @@ public class OrchestrationConfig
   protected OrchestrationConfig() {}
 
   /**
-   * Set the moduleConfigurations of this {@link OrchestrationConfig} instance and return the same
-   * instance.
+   * Set the modules of this {@link OrchestrationConfig} instance and return the same instance.
    *
-   * @param moduleConfigurations The moduleConfigurations of this {@link OrchestrationConfig}
+   * @param modules The modules of this {@link OrchestrationConfig}
    * @return The same instance of this {@link OrchestrationConfig} class
    */
   @Nonnull
-  public OrchestrationConfig moduleConfigurations(
-      @Nonnull final ModuleConfigs moduleConfigurations) {
-    this.moduleConfigurations = moduleConfigurations;
+  public OrchestrationConfig modules(@Nonnull final ModuleConfigs modules) {
+    this.modules = modules;
     return this;
   }
 
   /**
-   * Get moduleConfigurations
+   * Get modules
    *
-   * @return moduleConfigurations The moduleConfigurations of this {@link OrchestrationConfig}
-   *     instance.
+   * @return modules The modules of this {@link OrchestrationConfig} instance.
    */
   @Nonnull
-  public ModuleConfigs getModuleConfigurations() {
-    return moduleConfigurations;
+  public ModuleConfigs getModules() {
+    return modules;
   }
 
   /**
-   * Set the moduleConfigurations of this {@link OrchestrationConfig} instance.
+   * Set the modules of this {@link OrchestrationConfig} instance.
    *
-   * @param moduleConfigurations The moduleConfigurations of this {@link OrchestrationConfig}
+   * @param modules The modules of this {@link OrchestrationConfig}
    */
-  public void setModuleConfigurations(@Nonnull final ModuleConfigs moduleConfigurations) {
-    this.moduleConfigurations = moduleConfigurations;
+  public void setModules(@Nonnull final ModuleConfigs modules) {
+    this.modules = modules;
   }
 
   /**
    * Set the stream of this {@link OrchestrationConfig} instance and return the same instance.
    *
-   * @param stream If true, the response will be streamed back to the client
+   * @param stream The stream of this {@link OrchestrationConfig}
    * @return The same instance of this {@link OrchestrationConfig} class
    */
   @Nonnull
-  public OrchestrationConfig stream(@Nullable final Boolean stream) {
+  public OrchestrationConfig stream(@Nullable final GlobalStreamOptions stream) {
     this.stream = stream;
     return this;
   }
 
   /**
-   * If true, the response will be streamed back to the client
+   * Get stream
    *
    * @return stream The stream of this {@link OrchestrationConfig} instance.
    */
   @Nonnull
-  public Boolean isStream() {
+  public GlobalStreamOptions getStream() {
     return stream;
   }
 
   /**
    * Set the stream of this {@link OrchestrationConfig} instance.
    *
-   * @param stream If true, the response will be streamed back to the client
+   * @param stream The stream of this {@link OrchestrationConfig}
    */
-  public void setStream(@Nullable final Boolean stream) {
+  public void setStream(@Nullable final GlobalStreamOptions stream) {
     this.stream = stream;
-  }
-
-  /**
-   * Set the streamOptions of this {@link OrchestrationConfig} instance and return the same
-   * instance.
-   *
-   * @param streamOptions The streamOptions of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
-   */
-  @Nonnull
-  public OrchestrationConfig streamOptions(@Nullable final GlobalStreamOptions streamOptions) {
-    this.streamOptions = streamOptions;
-    return this;
-  }
-
-  /**
-   * Get streamOptions
-   *
-   * @return streamOptions The streamOptions of this {@link OrchestrationConfig} instance.
-   */
-  @Nonnull
-  public GlobalStreamOptions getStreamOptions() {
-    return streamOptions;
-  }
-
-  /**
-   * Set the streamOptions of this {@link OrchestrationConfig} instance.
-   *
-   * @param streamOptions The streamOptions of this {@link OrchestrationConfig}
-   */
-  public void setStreamOptions(@Nullable final GlobalStreamOptions streamOptions) {
-    this.streamOptions = streamOptions;
   }
 
   /**
@@ -179,10 +141,8 @@ public class OrchestrationConfig
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (moduleConfigurations != null)
-      declaredFields.put("moduleConfigurations", moduleConfigurations);
+    if (modules != null) declaredFields.put("modules", modules);
     if (stream != null) declaredFields.put("stream", stream);
-    if (streamOptions != null) declaredFields.put("streamOptions", streamOptions);
     return declaredFields;
   }
 
@@ -208,14 +168,13 @@ public class OrchestrationConfig
     }
     final OrchestrationConfig orchestrationConfig = (OrchestrationConfig) o;
     return Objects.equals(this.cloudSdkCustomFields, orchestrationConfig.cloudSdkCustomFields)
-        && Objects.equals(this.moduleConfigurations, orchestrationConfig.moduleConfigurations)
-        && Objects.equals(this.stream, orchestrationConfig.stream)
-        && Objects.equals(this.streamOptions, orchestrationConfig.streamOptions);
+        && Objects.equals(this.modules, orchestrationConfig.modules)
+        && Objects.equals(this.stream, orchestrationConfig.stream);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(moduleConfigurations, stream, streamOptions, cloudSdkCustomFields);
+    return Objects.hash(modules, stream, cloudSdkCustomFields);
   }
 
   @Override
@@ -223,11 +182,8 @@ public class OrchestrationConfig
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class OrchestrationConfig {\n");
-    sb.append("    moduleConfigurations: ")
-        .append(toIndentedString(moduleConfigurations))
-        .append("\n");
+    sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
     sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
-    sb.append("    streamOptions: ").append(toIndentedString(streamOptions)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -250,18 +206,17 @@ public class OrchestrationConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (moduleConfigurations) ->
-        new OrchestrationConfig().moduleConfigurations(moduleConfigurations);
+    return (modules) -> new OrchestrationConfig().modules(modules);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the moduleConfigurations of this {@link OrchestrationConfig} instance.
+     * Set the modules of this {@link OrchestrationConfig} instance.
      *
-     * @param moduleConfigurations The moduleConfigurations of this {@link OrchestrationConfig}
+     * @param modules The modules of this {@link OrchestrationConfig}
      * @return The OrchestrationConfig instance.
      */
-    OrchestrationConfig moduleConfigurations(@Nonnull final ModuleConfigs moduleConfigurations);
+    OrchestrationConfig modules(@Nonnull final ModuleConfigs modules);
   }
 }
