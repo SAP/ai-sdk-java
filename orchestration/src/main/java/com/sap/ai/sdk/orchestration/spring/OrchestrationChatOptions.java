@@ -167,7 +167,10 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
             .withLlmConfig(config.getLlmConfig())
             .withMaskingConfig(config.getMaskingConfig())
             .withGroundingConfig(config.getGroundingConfig());
-    return (T) new OrchestrationChatOptions(copyConfig);
+    val result = new OrchestrationChatOptions(copyConfig);
+    result.setToolCallbacks(toolCallbacks);
+    result.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
+    return (T) result;
   }
 
   @SuppressWarnings("unchecked")
