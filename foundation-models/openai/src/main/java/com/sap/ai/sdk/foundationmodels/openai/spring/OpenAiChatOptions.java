@@ -11,10 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.val;
+
+import lombok.*;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.model.ModelOptionsUtils;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
@@ -22,6 +20,7 @@ import org.springframework.ai.tool.ToolCallback;
 
 /** OpenAI Chat Options for configuring tool callbacks and execution settings. */
 @Data
+@NoArgsConstructor
 public class OpenAiChatOptions implements ToolCallingChatOptions {
 
   @Nonnull private OpenAiChatCompletionConfig config;
@@ -52,13 +51,12 @@ public class OpenAiChatOptions implements ToolCallingChatOptions {
 
   private static ChatCompletionTool toOpenAiTool(final ToolCallback toolCallback) {
     val toolDef = toolCallback.getToolDefinition();
-    return new ChatCompletionTool()
-        .type(TypeEnum.FUNCTION)
-        .function(
-            new FunctionObject()
-                .name(toolDef.name())
-                .description(toolDef.description())
-                .parameters(ModelOptionsUtils.jsonToMap(toolDef.inputSchema())));
+    val functionobject =
+        new FunctionObject()
+            .name(toolDef.name())
+            .description(toolDef.description())
+            .parameters(ModelOptionsUtils.jsonToMap(toolDef.inputSchema()));
+    return new ChatCompletionTool().type(TypeEnum.FUNCTION).function(functionobject);
   }
 
   @Override
@@ -117,7 +115,7 @@ public class OpenAiChatOptions implements ToolCallingChatOptions {
   @Override
   @Nonnull
   public <T extends ChatOptions> T copy() {
-    final OpenAiChatOptions copy = new OpenAiChatOptions(new OpenAiChatCompletionConfig());
+    final OpenAiChatOptions copy = new OpenAiChatOptions();
     copy.setToolCallbacks(this.toolCallbacks);
     copy.setInternalToolExecutionEnabled(this.internalToolExecutionEnabled);
     copy.setTools(this.tools);
