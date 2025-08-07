@@ -18,7 +18,11 @@ import lombok.Value;
 @Beta
 public abstract class OrchestrationError implements ClientError {
 
-  /** Orchestration error response for synchronous requests. */
+  /**
+   * Orchestration error response for synchronous requests.
+   *
+   * @since 1.10.0
+   */
   @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
   @Value
   public static class Synchronous extends OrchestrationError {
@@ -39,7 +43,11 @@ public abstract class OrchestrationError implements ClientError {
     }
   }
 
-  /** Orchestration error response for streaming requests. */
+  /**
+   * Orchestration error response for streaming requests.
+   *
+   * @since 1.10.0
+   */
   @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
   @Value
   public static class Streaming extends OrchestrationError {
