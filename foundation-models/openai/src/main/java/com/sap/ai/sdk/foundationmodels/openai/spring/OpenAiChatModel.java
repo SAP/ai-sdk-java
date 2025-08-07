@@ -111,17 +111,12 @@ public class OpenAiChatModel implements ChatModel {
   @Nonnull
   static Generation toGeneration(@Nonnull final ChatCompletionResponseMessage choice) {
     // no metadata for now
-    val toolCalls =
-        choice.getToolCalls().stream()
-            .map(
-                toolCall ->
-                    new ToolCall(
-                        toolCall.getId(),
-                        toolCall.getType().getValue(),
-                        toolCall.getFunction().getName(),
-                        toolCall.getFunction().getArguments()))
-            .toList();
-    val message = new AssistantMessage(choice.getContent(), Map.of(), toolCalls);
+    val calls = new ArrayList<ToolCall>();
+    for (final ChatCompletionMessageToolCall c : choice.getToolCalls()) {
+      val fnc = c.getFunction();
+      calls.add(new ToolCall(c.getId(), c.getType().getValue(), fnc.getName(), fnc.getArguments()));
+    }
+    val message = new AssistantMessage(choice.getContent(), Map.of(), calls);
     return new Generation(message);
   }
 }
