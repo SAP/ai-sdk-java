@@ -38,8 +38,8 @@ public interface OrchestrationError extends ClientError {
     @Nonnull
     public String getMessage() {
       final Error e = errorResponse.getError();
-      final Integer code = e.getCode();
-      return code == 500 ? "%s located in %s".formatted(code, e.getLocation()) : e.getMessage();
+      final String message = e.getMessage();
+      return e.getCode() == 500 ? "%s located in %s".formatted(message, e.getLocation()) : message;
     }
   }
 
@@ -61,8 +61,8 @@ public interface OrchestrationError extends ClientError {
     @Nonnull
     public String getMessage() {
       final ErrorStreaming e = errorResponse.getError();
-      final Integer code = e.getCode();
-      return code == 500 ? "%s located in %s".formatted(code, e.getLocation()) : e.getMessage();
+      final String message = e.getMessage();
+      return e.getCode() == 500 ? "%s located in %s".formatted(message, e.getLocation()) : message;
     }
   }
 }
