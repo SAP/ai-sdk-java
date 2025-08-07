@@ -60,6 +60,10 @@ final class JacksonMixins {
   })
   interface ChatMessageMixin {}
 
+  /**
+   * Mixin used for parsing response "data" field of
+   * error.intermediate_results.input_filtering.data.azure_content_safety
+   */
   abstract static class AzureContentSafetyCaseAgnostic {
     @JsonProperty("hate")
     @JsonAlias("Hate")
