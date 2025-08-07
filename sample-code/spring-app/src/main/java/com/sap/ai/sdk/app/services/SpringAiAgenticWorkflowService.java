@@ -44,7 +44,7 @@ public class SpringAiAgenticWorkflowService {
     val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
     //    Add (mocked) tools
-    val options = new OpenAiChatOptions(new OpenAiChatCompletionConfig());
+    val options = new OpenAiChatOptions();
     options.setToolCallbacks(
         List.of(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod())));
     options.setInternalToolExecutionEnabled(true);
