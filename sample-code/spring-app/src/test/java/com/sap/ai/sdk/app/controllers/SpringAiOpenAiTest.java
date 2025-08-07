@@ -5,7 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.sap.ai.sdk.app.services.SpringAiOpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import org.junit.jupiter.api.Test;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatResponse;
+
+import java.util.List;
 
 class SpringAiOpenAiTest {
 
@@ -47,6 +50,23 @@ class SpringAiOpenAiTest {
     assertThat(response.getResult().getOutput().getText()).contains("Potsdam", "Toulouse", "°C");
   }
 
+  @Test
+  void testToolCallingWithoutExecution() {
+    ChatResponse response = service.toolCalling(false);
+    assertThat(response.getResult().getOutput().getText()).contains("Potsdam", "Toulouse", "°C");
+    List<AssistantMessage.ToolCall> toolCalls = response.getResult().getOutput().getToolCalls();
+    assertThat(toolCalls).hasSize(2);
+    AssistantMessage.ToolCall toolCall1 = toolCalls.get(0);
+    AssistantMessage.ToolCall toolCall2 = toolCalls.get(1);
+    assertThat(toolCall1.type()).isEqualTo("function");
+    assertThat(toolCall2.type()).isEqualTo("function");
+    assertThat(toolCall1.name()).isEqualTo("getCurrentWeather");
+    assertThat(toolCall2.name()).isEqualTo("getCurrentWeather");
+    assertThat(toolCall1.arguments())
+            .isEqualTo("{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}");
+    assertThat(toolCall2.arguments())
+            .isEqualTo("{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}");
+  }
   @Test
   void testChatMemory() {
     ChatResponse response = service.ChatMemory();
