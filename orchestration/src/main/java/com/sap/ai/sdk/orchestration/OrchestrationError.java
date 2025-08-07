@@ -3,8 +3,10 @@ package com.sap.ai.sdk.orchestration;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientError;
+import com.sap.ai.sdk.orchestration.model.Error;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import com.sap.ai.sdk.orchestration.model.ErrorResponseStreaming;
+import com.sap.ai.sdk.orchestration.model.ErrorStreaming;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -35,11 +37,9 @@ public abstract class OrchestrationError implements ClientError {
      */
     @Nonnull
     public String getMessage() {
-      return errorResponse.getError().getCode() == 500
-          ? errorResponse.getError().getMessage()
-              + " located in "
-              + errorResponse.getError().getLocation()
-          : errorResponse.getError().getMessage();
+      final Error e = errorResponse.getError();
+      final Integer code = e.getCode();
+      return code == 500 ? "%s located in %s".formatted(code, e.getLocation()) : e.getMessage();
     }
   }
 
@@ -60,11 +60,9 @@ public abstract class OrchestrationError implements ClientError {
      */
     @Nonnull
     public String getMessage() {
-      return errorResponse.getError().getCode() == 500
-          ? errorResponse.getError().getMessage()
-              + " located in "
-              + errorResponse.getError().getLocation()
-          : errorResponse.getError().getMessage();
+      final ErrorStreaming e = errorResponse.getError();
+      final Integer code = e.getCode();
+      return code == 500 ? "%s located in %s".formatted(code, e.getLocation()) : e.getMessage();
     }
   }
 }
