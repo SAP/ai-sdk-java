@@ -2,9 +2,13 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientExceptionFactory;
+import com.sap.ai.sdk.orchestration.model.Error;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
+import com.sap.ai.sdk.orchestration.model.ErrorResponseStreaming;
+import com.sap.ai.sdk.orchestration.model.ErrorStreaming;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleResults;
+import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
@@ -38,12 +42,25 @@ class OrchestrationExceptionFactory
   @Nonnull
   private Map<String, Object> extractInputFilterDetails(@Nonnull final OrchestrationError error) {
 
-    return Optional.of(error.getErrorResponse())
-        .map(ErrorResponse::getModuleResults)
-        .map(ModuleResults::getInputFiltering)
-        .map(GenericModuleResult::getData)
-        .filter(Map.class::isInstance)
-        .map(map -> (Map<String, Object>) map)
-        .orElseGet(Collections::emptyMap);
+    if (error instanceof OrchestrationError.Synchronous synchronousError) {
+      return Optional.of(synchronousError.getErrorResponse())
+          .map(ErrorResponse::getError)
+          .map(Error::getIntermediateResults)
+          .map(ModuleResults::getInputFiltering)
+          .map(GenericModuleResult::getData)
+          .filter(Map.class::isInstance)
+          .map(map -> (Map<String, Object>) map)
+          .orElseGet(Collections::emptyMap);
+    } else if (error instanceof OrchestrationError.Streaming streamingError) {
+      return Optional.of(streamingError.getErrorResponse())
+          .map(ErrorResponseStreaming::getError)
+          .map(ErrorStreaming::getIntermediateResults)
+          .map(ModuleResultsStreaming::getInputFiltering)
+          .map(GenericModuleResult::getData)
+          .filter(Map.class::isInstance)
+          .map(map -> (Map<String, Object>) map)
+          .orElseGet(Collections::emptyMap);
+    }
+    return Collections.emptyMap();
   }
 }

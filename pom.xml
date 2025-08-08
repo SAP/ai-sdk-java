@@ -684,6 +684,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/prompt/registry/model/*</exclude>
             <exclude>com/sap/ai/sdk/prompt/registry/client/*</exclude>
             <exclude>com/sap/ai/sdk/app/**/*</exclude>
+            <exclude>com/sap/ai/sdk/orchestration/JacksonMixins*</exclude>
           </excludes>
         </configuration>
         <executions>

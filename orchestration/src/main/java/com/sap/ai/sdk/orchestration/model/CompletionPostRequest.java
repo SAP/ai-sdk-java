@@ -31,11 +31,11 @@ import javax.annotation.Nullable;
 public class CompletionPostRequest
 // CHECKSTYLE:ON
 {
-  @JsonProperty("orchestration_config")
-  private OrchestrationConfig orchestrationConfig;
+  @JsonProperty("config")
+  private OrchestrationConfig config;
 
-  @JsonProperty("input_params")
-  private Map<String, String> inputParams = new HashMap<>();
+  @JsonProperty("placeholder_values")
+  private Map<String, String> placeholderValues = new HashMap<>();
 
   @JsonProperty("messages_history")
   private List<ChatMessage> messagesHistory;
@@ -47,86 +47,84 @@ public class CompletionPostRequest
   protected CompletionPostRequest() {}
 
   /**
-   * Set the orchestrationConfig of this {@link CompletionPostRequest} instance and return the same
-   * instance.
+   * Set the config of this {@link CompletionPostRequest} instance and return the same instance.
    *
-   * @param orchestrationConfig The orchestrationConfig of this {@link CompletionPostRequest}
+   * @param config The config of this {@link CompletionPostRequest}
    * @return The same instance of this {@link CompletionPostRequest} class
    */
   @Nonnull
-  public CompletionPostRequest orchestrationConfig(
-      @Nonnull final OrchestrationConfig orchestrationConfig) {
-    this.orchestrationConfig = orchestrationConfig;
+  public CompletionPostRequest config(@Nonnull final OrchestrationConfig config) {
+    this.config = config;
     return this;
   }
 
   /**
-   * Get orchestrationConfig
+   * Get config
    *
-   * @return orchestrationConfig The orchestrationConfig of this {@link CompletionPostRequest}
-   *     instance.
+   * @return config The config of this {@link CompletionPostRequest} instance.
    */
   @Nonnull
-  public OrchestrationConfig getOrchestrationConfig() {
-    return orchestrationConfig;
+  public OrchestrationConfig getConfig() {
+    return config;
   }
 
   /**
-   * Set the orchestrationConfig of this {@link CompletionPostRequest} instance.
+   * Set the config of this {@link CompletionPostRequest} instance.
    *
-   * @param orchestrationConfig The orchestrationConfig of this {@link CompletionPostRequest}
+   * @param config The config of this {@link CompletionPostRequest}
    */
-  public void setOrchestrationConfig(@Nonnull final OrchestrationConfig orchestrationConfig) {
-    this.orchestrationConfig = orchestrationConfig;
+  public void setConfig(@Nonnull final OrchestrationConfig config) {
+    this.config = config;
   }
 
   /**
-   * Set the inputParams of this {@link CompletionPostRequest} instance and return the same
+   * Set the placeholderValues of this {@link CompletionPostRequest} instance and return the same
    * instance.
    *
-   * @param inputParams The inputParams of this {@link CompletionPostRequest}
+   * @param placeholderValues The placeholderValues of this {@link CompletionPostRequest}
    * @return The same instance of this {@link CompletionPostRequest} class
    */
   @Nonnull
-  public CompletionPostRequest inputParams(@Nullable final Map<String, String> inputParams) {
-    this.inputParams = inputParams;
+  public CompletionPostRequest placeholderValues(
+      @Nullable final Map<String, String> placeholderValues) {
+    this.placeholderValues = placeholderValues;
     return this;
   }
 
   /**
-   * Put one inputParams instance to this {@link CompletionPostRequest} instance.
+   * Put one placeholderValues instance to this {@link CompletionPostRequest} instance.
    *
-   * @param key The String key of this inputParams instance
-   * @param inputParamsItem The inputParams that should be added under the given key
+   * @param key The String key of this placeholderValues instance
+   * @param placeholderValuesItem The placeholderValues that should be added under the given key
    * @return The same instance of type {@link CompletionPostRequest}
    */
   @Nonnull
-  public CompletionPostRequest putinputParamsItem(
-      @Nonnull final String key, @Nonnull final String inputParamsItem) {
-    if (this.inputParams == null) {
-      this.inputParams = new HashMap<>();
+  public CompletionPostRequest putplaceholderValuesItem(
+      @Nonnull final String key, @Nonnull final String placeholderValuesItem) {
+    if (this.placeholderValues == null) {
+      this.placeholderValues = new HashMap<>();
     }
-    this.inputParams.put(key, inputParamsItem);
+    this.placeholderValues.put(key, placeholderValuesItem);
     return this;
   }
 
   /**
-   * Get inputParams
+   * Get placeholderValues
    *
-   * @return inputParams The inputParams of this {@link CompletionPostRequest} instance.
+   * @return placeholderValues The placeholderValues of this {@link CompletionPostRequest} instance.
    */
   @Nonnull
-  public Map<String, String> getInputParams() {
-    return inputParams;
+  public Map<String, String> getPlaceholderValues() {
+    return placeholderValues;
   }
 
   /**
-   * Set the inputParams of this {@link CompletionPostRequest} instance.
+   * Set the placeholderValues of this {@link CompletionPostRequest} instance.
    *
-   * @param inputParams The inputParams of this {@link CompletionPostRequest}
+   * @param placeholderValues The placeholderValues of this {@link CompletionPostRequest}
    */
-  public void setInputParams(@Nullable final Map<String, String> inputParams) {
-    this.inputParams = inputParams;
+  public void setPlaceholderValues(@Nullable final Map<String, String> placeholderValues) {
+    this.placeholderValues = placeholderValues;
   }
 
   /**
@@ -219,8 +217,8 @@ public class CompletionPostRequest
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (orchestrationConfig != null) declaredFields.put("orchestrationConfig", orchestrationConfig);
-    if (inputParams != null) declaredFields.put("inputParams", inputParams);
+    if (config != null) declaredFields.put("config", config);
+    if (placeholderValues != null) declaredFields.put("placeholderValues", placeholderValues);
     if (messagesHistory != null) declaredFields.put("messagesHistory", messagesHistory);
     return declaredFields;
   }
@@ -247,14 +245,14 @@ public class CompletionPostRequest
     }
     final CompletionPostRequest completionPostRequest = (CompletionPostRequest) o;
     return Objects.equals(this.cloudSdkCustomFields, completionPostRequest.cloudSdkCustomFields)
-        && Objects.equals(this.orchestrationConfig, completionPostRequest.orchestrationConfig)
-        && Objects.equals(this.inputParams, completionPostRequest.inputParams)
+        && Objects.equals(this.config, completionPostRequest.config)
+        && Objects.equals(this.placeholderValues, completionPostRequest.placeholderValues)
         && Objects.equals(this.messagesHistory, completionPostRequest.messagesHistory);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(orchestrationConfig, inputParams, messagesHistory, cloudSdkCustomFields);
+    return Objects.hash(config, placeholderValues, messagesHistory, cloudSdkCustomFields);
   }
 
   @Override
@@ -262,10 +260,8 @@ public class CompletionPostRequest
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class CompletionPostRequest {\n");
-    sb.append("    orchestrationConfig: ")
-        .append(toIndentedString(orchestrationConfig))
-        .append("\n");
-    sb.append("    inputParams: ").append(toIndentedString(inputParams)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
+    sb.append("    placeholderValues: ").append(toIndentedString(placeholderValues)).append("\n");
     sb.append("    messagesHistory: ").append(toIndentedString(messagesHistory)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -289,19 +285,17 @@ public class CompletionPostRequest
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (orchestrationConfig) ->
-        new CompletionPostRequest().orchestrationConfig(orchestrationConfig);
+    return (config) -> new CompletionPostRequest().config(config);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the orchestrationConfig of this {@link CompletionPostRequest} instance.
+     * Set the config of this {@link CompletionPostRequest} instance.
      *
-     * @param orchestrationConfig The orchestrationConfig of this {@link CompletionPostRequest}
+     * @param config The config of this {@link CompletionPostRequest}
      * @return The CompletionPostRequest instance.
      */
-    CompletionPostRequest orchestrationConfig(
-        @Nonnull final OrchestrationConfig orchestrationConfig);
+    CompletionPostRequest config(@Nonnull final OrchestrationConfig config);
   }
 }

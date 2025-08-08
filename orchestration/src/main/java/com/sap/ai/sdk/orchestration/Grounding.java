@@ -7,6 +7,7 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig.TypeEnum;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
+import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigPlaceholders;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -81,8 +82,10 @@ public class Grounding implements GroundingProvider {
   public GroundingModuleConfig createConfig() {
     val groundingConfigConfig =
         GroundingModuleConfigConfig.create()
-            .inputParams(List.of("userMessage"))
-            .outputParam("groundingContext")
+            .placeholders(
+                GroundingModuleConfigConfigPlaceholders.create()
+                    .input(List.of("userMessage"))
+                    .output("groundingContext"))
             .filters(filters);
 
     if (filters.contains(

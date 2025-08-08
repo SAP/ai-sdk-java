@@ -1,9 +1,9 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
+import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
-import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
 
@@ -22,7 +22,7 @@ public abstract class TemplateConfig {
    * @return The low-level representation of the template.
    */
   @Nonnull
-  protected abstract TemplatingModuleConfig toLowLevel();
+  protected abstract PromptTemplatingModuleConfigPrompt toLowLevel();
 
   /**
    * Build a template.
