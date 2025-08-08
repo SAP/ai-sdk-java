@@ -64,7 +64,9 @@ public class OpenAiChatOptions implements ToolCallingChatOptions {
 
   @Override
   public void setInternalToolExecutionEnabled(
-      @Nullable final Boolean internalToolExecutionEnabled) {}
+      @Nullable final Boolean internalToolExecutionEnabled) {
+    this.internalToolExecutionEnabled = internalToolExecutionEnabled;
+  }
 
   @Override
   @Nonnull
