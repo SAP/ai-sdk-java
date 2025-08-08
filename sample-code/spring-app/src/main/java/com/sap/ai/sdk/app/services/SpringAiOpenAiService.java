@@ -95,7 +95,7 @@ public class SpringAiOpenAiService {
    * @return the assistant response object
    */
   @Nonnull
-  public ChatResponse ChatMemory() {
+  public ChatResponse chatMemory() {
     val repository = new InMemoryChatMemoryRepository();
     val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
