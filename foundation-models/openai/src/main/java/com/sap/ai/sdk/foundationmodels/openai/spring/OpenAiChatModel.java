@@ -14,7 +14,6 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiTextItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMessageToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessage;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,14 +67,16 @@ public class OpenAiChatModel implements ChatModel {
   private List<OpenAiMessage> toOpenAiRequest(final Prompt prompt) {
     final List<OpenAiMessage> result = new ArrayList<>();
     for (final Message message : prompt.getInstructions()) {
-      //if(((message.getMessageType() == MessageType.USER || message.getMessageType() ==MessageType.ASSISTANT || message.getMessageType() ==MessageType.SYSTEM ) && message.getText() != null) || (message.getMessageType() == MessageType.TOOL)) {
+      // if(((message.getMessageType() == MessageType.USER || message.getMessageType()
+      // ==MessageType.ASSISTANT || message.getMessageType() ==MessageType.SYSTEM ) &&
+      // message.getText() != null) || (message.getMessageType() == MessageType.TOOL)) {
       switch (message.getMessageType()) {
         case USER -> result.add(OpenAiMessage.user(message.getText()));
         case ASSISTANT -> result.add(toAssistantMessage((AssistantMessage) message));
         case SYSTEM -> result.add(OpenAiMessage.system(message.getText()));
         case TOOL -> result.addAll(toToolMessages((ToolResponseMessage) message));
       }
-      //}
+      // }
     }
     return result;
   }
