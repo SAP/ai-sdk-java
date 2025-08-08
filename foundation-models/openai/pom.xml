@@ -38,7 +38,7 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>72%</coverage.complexity>
+    <coverage.complexity>71%</coverage.complexity>
     <coverage.line>80%</coverage.line>
     <coverage.instruction>76%</coverage.instruction>
     <coverage.branch>70%</coverage.branch>

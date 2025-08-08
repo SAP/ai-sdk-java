@@ -22,9 +22,9 @@ import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
-import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
@@ -50,13 +50,10 @@ public class OpenAiChatModel implements ChatModel {
       throw new IllegalArgumentException(
           "Please add OpenAiChatOptions to the Prompt: new Prompt(\"message\", new OpenAiChatOptions(config))");
     }
-    System.out.println("I entered OpenAiChatModel.call() with tools: " + options.getTools());
     val openAiRequest = toOpenAiRequest(prompt);
     val request = new OpenAiChatCompletionRequest(openAiRequest).withTools(options.getTools());
     val result = client.chatCompletion(request);
     val response = new ChatResponse(toGenerations(result));
-
-    System.out.println("I entered OpenAiChatModel.call() with response: " + response);
 
     if (isInternalToolExecutionEnabled(prompt.getOptions()) && response.hasToolCalls()) {
       val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
@@ -83,7 +80,7 @@ public class OpenAiChatModel implements ChatModel {
     return result;
   }
 
-  private static OpenAiAssistantMessage toAssistantMessage(AssistantMessage message) {
+  private static OpenAiAssistantMessage toAssistantMessage(final AssistantMessage message) {
     if (!message.hasToolCalls()) {
       return OpenAiMessage.assistant(message.getText());
     }
@@ -94,7 +91,7 @@ public class OpenAiChatModel implements ChatModel {
     return new OpenAiAssistantMessage(content, calls);
   }
 
-  private static List<? extends OpenAiMessage> toToolMessages(ToolResponseMessage message) {
+  private static List<? extends OpenAiMessage> toToolMessages(final ToolResponseMessage message) {
     return message.getResponses().stream().map(r -> tool(r.responseData(), r.id())).toList();
   }
 

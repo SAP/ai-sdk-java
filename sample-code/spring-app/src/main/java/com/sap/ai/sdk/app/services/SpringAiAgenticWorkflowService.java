@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.app.services;
 
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionConfig;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatModel;
