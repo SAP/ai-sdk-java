@@ -79,7 +79,7 @@ class OrchestrationChatModelTest {
   @Test
   void testCompletion() {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("templatingResponse.json")
@@ -149,7 +149,7 @@ class OrchestrationChatModelTest {
   @Test
   void testToolCallsWithoutExecution() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("toolCallsResponse.json")
@@ -183,7 +183,7 @@ class OrchestrationChatModelTest {
   void testToolCallsWithExecution() throws IOException {
     // https://platform.openai.com/docs/guides/function-calling
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .inScenario("Tool Calls")
             .whenScenarioStateIs(STARTED)
             .willReturn(
@@ -193,7 +193,7 @@ class OrchestrationChatModelTest {
             .willSetStateTo("Second Call"));
 
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .inScenario("Tool Calls")
             .whenScenarioStateIs("Second Call")
             .willReturn(
@@ -221,7 +221,7 @@ class OrchestrationChatModelTest {
   @Test
   void testChatMemory() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .inScenario("Chat Memory")
             .whenScenarioStateIs(STARTED)
             .willReturn(
@@ -231,7 +231,7 @@ class OrchestrationChatModelTest {
             .willSetStateTo("Second Call"));
 
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .inScenario("Chat Memory")
             .whenScenarioStateIs("Second Call")
             .willReturn(

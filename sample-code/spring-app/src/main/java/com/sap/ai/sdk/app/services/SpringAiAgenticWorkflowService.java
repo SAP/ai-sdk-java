@@ -1,9 +1,10 @@
 package com.sap.ai.sdk.app.services;
 
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
-import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatModel;
-import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatOptions;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
+
+import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
+import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
+import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
@@ -23,8 +24,9 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class SpringAiAgenticWorkflowService {
-  private final ChatModel client =
-      new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI));
+  private final ChatModel client = new OrchestrationChatModel();
+  private final OrchestrationModuleConfig config =
+      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
   /**
    * Simple agentic workflow using chain-like structure. The agent is generating a travel itinerary
@@ -43,7 +45,7 @@ public class SpringAiAgenticWorkflowService {
     val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
     //    Add (mocked) tools
-    val options = new OpenAiChatOptions();
+    val options = new OrchestrationChatOptions(config);
     options.setToolCallbacks(
         List.of(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod())));
     options.setInternalToolExecutionEnabled(true);
@@ -56,17 +58,19 @@ public class SpringAiAgenticWorkflowService {
             "Finally, combine the suggested itinerary from this conversation into a short, one-sentence plan for the day trip.");
 
     //    Perform the chain workflow
+    String responseText = userInput;
     ChatResponse response = null;
 
     for (final String systemPrompt : systemPrompts) {
 
       // Combine the pre-defined prompt with the previous answer to get the new input
-      val input = String.format("{%s}\n {%s}", systemPrompt, userInput);
+      val input = String.format("{%s}\n {%s}", systemPrompt, responseText);
       val prompt = new Prompt(input, options);
 
       // Make a call to the LLM with the new input
       response =
           Objects.requireNonNull(cl.prompt(prompt).call().chatResponse(), "Chat response is null.");
+      responseText = response.getResult().getOutput().getText();
     }
 
     return response;

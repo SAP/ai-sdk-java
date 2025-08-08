@@ -1,33 +1,34 @@
 {
-  "orchestration_config": {
-    "module_configurations": {
-      "llm_module_config": {
-        "model_name" : "gpt-4o",
-        "model_params": {},
-        "model_version": "latest"
-      },
-      "templating_module_config": {
-        "template": [
-          {
-            "role": "user",
-            "content": "What is the capital of France?"
-          },
-          {
-            "role": "assistant",
-            "content" : "Le service d'orchestration fonctionne!",
-            "tool_calls" : [ ]
-          },
-          {
-            "role": "user",
-            "content": "And what is the typical food there?"
-          }
-        ],
-        "defaults": {},
-        "tools": []
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o",
+          "params": {},
+          "version": "latest"
+        },
+        "prompt": {
+          "template": [
+            {
+              "role": "user",
+              "content": "What is the capital of France?"
+            },
+            {
+              "role": "assistant",
+              "content": "Le service d'orchestration fonctionne!",
+              "tool_calls": []
+            },
+            {
+              "role": "user",
+              "content": "And what is the typical food there?"
+            }
+          ],
+          "defaults": {},
+          "tools": []
+        }
       }
-    },
-    "stream": false
+    }
   },
-  "input_params": {},
+  "placeholder_values": {},
   "messages_history": []
 }

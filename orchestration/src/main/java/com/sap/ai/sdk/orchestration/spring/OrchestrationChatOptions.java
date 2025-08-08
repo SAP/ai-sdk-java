@@ -12,7 +12,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool.TypeEnum;
 import com.sap.ai.sdk.orchestration.model.FunctionObject;
-import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
 import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
@@ -60,7 +60,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   @Nonnull
   @Override
   public String getModel() {
-    return getLlmConfigNonNull().getModelName();
+    return getLlmConfigNonNull().getName();
   }
 
   /**
@@ -70,7 +70,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
    */
   @Nonnull
   public String getModelVersion() {
-    return getLlmConfigNonNull().getModelVersion();
+    return getLlmConfigNonNull().getVersion();
   }
 
   /**
@@ -167,13 +167,16 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
             .withLlmConfig(config.getLlmConfig())
             .withMaskingConfig(config.getMaskingConfig())
             .withGroundingConfig(config.getGroundingConfig());
-    return (T) new OrchestrationChatOptions(copyConfig);
+    val result = new OrchestrationChatOptions(copyConfig);
+    result.setToolCallbacks(toolCallbacks);
+    result.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
+    return (T) result;
   }
 
   @SuppressWarnings("unchecked")
   @Nullable
   private <T> T getLlmConfigParam(@Nonnull final String param) {
-    return ((Map<String, T>) getLlmConfigNonNull().getModelParams()).get(param);
+    return ((Map<String, T>) getLlmConfigNonNull().getParams()).get(param);
   }
 
   @Override
@@ -193,7 +196,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   }
 
   @Nonnull
-  private LLMModuleConfig getLlmConfigNonNull() {
+  private LLMModelDetails getLlmConfigNonNull() {
     return Objects.requireNonNull(
         config.getLlmConfig(),
         "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(...))");

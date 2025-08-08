@@ -4,11 +4,11 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
-import com.sap.ai.sdk.orchestration.model.LLMModuleConfig;
+import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
+import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslation;
-import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -54,7 +54,7 @@ public class OrchestrationModuleConfig {
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/model-configuration">
    *     SAP AI Core: Orchestration - Model Configuration</a>
    */
-  @Nullable LLMModuleConfig llmConfig;
+  @Nullable LLMModelDetails llmConfig;
 
   /**
    * A template to be populated with input parameters. Upon request execution, this template will be
@@ -63,7 +63,7 @@ public class OrchestrationModuleConfig {
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
    */
-  @Nullable TemplatingModuleConfig templateConfig;
+  @Nullable PromptTemplatingModuleConfigPrompt templateConfig;
 
   /**
    * A masking configuration to pseudonymous or anonymize sensitive data in the input.
