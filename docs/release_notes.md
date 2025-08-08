@@ -31,16 +31,16 @@
 ### ✨ New Functionality
 
 - [Core] Added `ClientExceptionFactory` interface to provide custom exception mapping logic for different service clients.
-  - Extend `OpenAiClientException` and `OrchestrationClientException` to retrieve error diagnostics information received from remote service using `getErrorResponse`.
+- Extend `OpenAiClientException` and `OrchestrationClientException` to  retrieve error diagnostics information received from remote service using `getErrorResponse`.
 - [Orchestration] Introduced filtering related exceptions along with convenience methods to obtain additional contextual information.
   - `OrchestrationInputFilterException` for prompt filtering and `OrchestrationOutputFilterException` for response filtering.
-      - `getFilterDetails()`: Returns a map of all filter details.
-      - `getAzureContentSafetyInput()` and `getAzureContentSafetyInput()` : Returns Azure Content Safety filter scores
-      - `getLlamaGuard38b()`: Returns LlamaGuard filter scores
+    - `getFilterDetails()`: Returns a map of all filter details.
+    - `getAzureContentSafetyInput()` and `getAzureContentSafetyInput()` : Returns Azure Content Safety filter scores
+    - `getLlamaGuard38b()`: Returns LlamaGuard filter scores
 - [Document Grounding] Extend pipline operations, notably:
-    - Added new pipeline creation requests for SDM and WorkZone with `SDMPipelineCreateRequest` and `WorkZonePipelineCreateRequest`.
-    - S3 and SFTP pipeline configurations extended with `S3Configuration` and `SFTPConfiguration` for including data sources.
-    - Support `/pipelines/trigger` endpoint to trigger pipelines on-demand via `PipelinesApi#manualTriggerPipeline()`.
+  - Added new pipeline creation requests for SDM and WorkZone with `SDMPipelineCreateRequest` and `WorkZonePipelineCreateRequest`.
+  - S3 and SFTP pipeline configurations extended with `S3Configuration` and `SFTPConfiguration` for including data sources.
+  - Support `/pipelines/trigger` endpoint to trigger pipelines on-demand via `PipelinesApi#manualTriggerPipeline()`.
 
 ### 📈 Improvements
 
