@@ -16,6 +16,17 @@
   - `LLMModuleConfig` is replaced by `LLMModelDetails` in `withLLmConfig` method of `OrchestrationModuleConfig` class.
   - `PromptTemplatingModuleConfigPrompt` replaces `TemplatingModuleConfig` in the `withTemplateConfig` method of `OrchestrationModuleConfig` class.
   - The generated model classes will reflect payload updates including restructuring of the module configurations and renaming of several fields.
+- [Document Grounding] Breaking: The `message` field in `RetrievalPerFilterSearchResultWithError` is replaced by `error` and `filterId` with more specific error details.
+- [Document Grounding] Extensive generated model class renaming for better specificity due to API spec changes.
+  - `SearchResults` → `VectorSearchResults`
+  - `KeyValueListPair` split into context-specific classes:
+      - `VectorKeyValueListPair` for vector operations
+      - `RetrievalKeyValueListPair` for retrieval operations
+      - `VectorDocumentKeyValueListPair` for vector document operations
+      - `RetrievalDocumentKeyValueListPair` for retrieval document operations
+  - `Chunk` → `VectorChunk` and `RetrievalChunk` for different contexts
+  - `SearchFilter` → `VectorSearchFilter` and `RetrievalSearchFilter`
+  - `SearchConfiguration` → `VectorSearchConfiguration` and `RetrievalSearchConfiguration`
 
 ### ✨ New Functionality
 
@@ -26,11 +37,15 @@
     - `getFilterDetails()`: Returns a map of all filter details.
     - `getAzureContentSafetyInput()` and `getAzureContentSafetyInput()` : Returns Azure Content Safety filter scores
     - `getLlamaGuard38b()`: Returns LlamaGuard filter scores
+- [Document Grounding] Extend pipline operations, notably:
+  - Added new pipeline creation requests for SDM and WorkZone with `SDMPipelineCreateRequest` and `WorkZonePipelineCreateRequest`.
+  - S3 and SFTP pipeline configurations extended with `S3Configuration` and `SFTPConfiguration` for including data sources.
+  - Support `/pipelines/trigger` endpoint to trigger pipelines on-demand via `PipelinesApi#manualTriggerPipeline()`.
 
 ### 📈 Improvements
 
 - Update AI Core client to 2.40.1
-
+- [Document Grounding] Enhanced pipeline status reporting with additional metadata such as `createdAt`, `modifiedAt`, `lastCompletedAt`.
 
 ### 🐛 Fixed Issues
 

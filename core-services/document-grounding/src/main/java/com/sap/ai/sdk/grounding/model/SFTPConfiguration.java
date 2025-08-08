@@ -15,10 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -26,69 +23,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** DataRepositorySearchResults */
+/** SFTPConfiguration */
 // CHECKSTYLE:OFF
-public class DataRepositorySearchResults
+public class SFTPConfiguration
 // CHECKSTYLE:ON
 {
-  @JsonProperty("results")
-  private List<ResultsInner3> results = new ArrayList<>();
+  @JsonProperty("destination")
+  private String destination;
+
+  @JsonProperty("sftp")
+  private SFTPConfigurationSftp sftp;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DataRepositorySearchResults. */
-  protected DataRepositorySearchResults() {}
+  /** Default constructor for SFTPConfiguration. */
+  protected SFTPConfiguration() {}
 
   /**
-   * Set the results of this {@link DataRepositorySearchResults} instance and return the same
-   * instance.
+   * Set the destination of this {@link SFTPConfiguration} instance and return the same instance.
    *
-   * @param results List of returned results.
-   * @return The same instance of this {@link DataRepositorySearchResults} class
+   * @param destination The destination of this {@link SFTPConfiguration}
+   * @return The same instance of this {@link SFTPConfiguration} class
    */
   @Nonnull
-  public DataRepositorySearchResults results(@Nonnull final List<ResultsInner3> results) {
-    this.results = results;
+  public SFTPConfiguration destination(@Nonnull final String destination) {
+    this.destination = destination;
     return this;
   }
 
   /**
-   * Add one results instance to this {@link DataRepositorySearchResults}.
+   * Get destination
    *
-   * @param resultsItem The results that should be added
-   * @return The same instance of type {@link DataRepositorySearchResults}
+   * @return destination The destination of this {@link SFTPConfiguration} instance.
    */
   @Nonnull
-  public DataRepositorySearchResults addResultsItem(@Nonnull final ResultsInner3 resultsItem) {
-    if (this.results == null) {
-      this.results = new ArrayList<>();
-    }
-    this.results.add(resultsItem);
+  public String getDestination() {
+    return destination;
+  }
+
+  /**
+   * Set the destination of this {@link SFTPConfiguration} instance.
+   *
+   * @param destination The destination of this {@link SFTPConfiguration}
+   */
+  public void setDestination(@Nonnull final String destination) {
+    this.destination = destination;
+  }
+
+  /**
+   * Set the sftp of this {@link SFTPConfiguration} instance and return the same instance.
+   *
+   * @param sftp The sftp of this {@link SFTPConfiguration}
+   * @return The same instance of this {@link SFTPConfiguration} class
+   */
+  @Nonnull
+  public SFTPConfiguration sftp(@Nullable final SFTPConfigurationSftp sftp) {
+    this.sftp = sftp;
     return this;
   }
 
   /**
-   * List of returned results.
+   * Get sftp
    *
-   * @return results The results of this {@link DataRepositorySearchResults} instance.
+   * @return sftp The sftp of this {@link SFTPConfiguration} instance.
    */
   @Nonnull
-  public List<ResultsInner3> getResults() {
-    return results;
+  public SFTPConfigurationSftp getSftp() {
+    return sftp;
   }
 
   /**
-   * Set the results of this {@link DataRepositorySearchResults} instance.
+   * Set the sftp of this {@link SFTPConfiguration} instance.
    *
-   * @param results List of returned results.
+   * @param sftp The sftp of this {@link SFTPConfiguration}
    */
-  public void setResults(@Nonnull final List<ResultsInner3> results) {
-    this.results = results;
+  public void setSftp(@Nullable final SFTPConfigurationSftp sftp) {
+    this.sftp = sftp;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link DataRepositorySearchResults}.
+   * Get the names of the unrecognizable properties of the {@link SFTPConfiguration}.
    *
    * @return The set of properties names
    */
@@ -99,8 +114,7 @@ public class DataRepositorySearchResults
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DataRepositorySearchResults}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link SFTPConfiguration} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -111,14 +125,13 @@ public class DataRepositorySearchResults
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "DataRepositorySearchResults has no field with name '" + name + "'.");
+      throw new NoSuchElementException("SFTPConfiguration has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DataRepositorySearchResults} instance including
+   * Get the value of all properties of this {@link SFTPConfiguration} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -127,12 +140,13 @@ public class DataRepositorySearchResults
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (results != null) declaredFields.put("results", results);
+    if (destination != null) declaredFields.put("destination", destination);
+    if (sftp != null) declaredFields.put("sftp", sftp);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link DataRepositorySearchResults} instance. If the map
+   * Set an unrecognizable property of this {@link SFTPConfiguration} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -151,23 +165,24 @@ public class DataRepositorySearchResults
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DataRepositorySearchResults dataRepositorySearchResults = (DataRepositorySearchResults) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, dataRepositorySearchResults.cloudSdkCustomFields)
-        && Objects.equals(this.results, dataRepositorySearchResults.results);
+    final SFTPConfiguration sfTPConfiguration = (SFTPConfiguration) o;
+    return Objects.equals(this.cloudSdkCustomFields, sfTPConfiguration.cloudSdkCustomFields)
+        && Objects.equals(this.destination, sfTPConfiguration.destination)
+        && Objects.equals(this.sftp, sfTPConfiguration.sftp);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(results, cloudSdkCustomFields);
+    return Objects.hash(destination, sftp, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DataRepositorySearchResults {\n");
-    sb.append("    results: ").append(toIndentedString(results)).append("\n");
+    sb.append("class SFTPConfiguration {\n");
+    sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
+    sb.append("    sftp: ").append(toIndentedString(sftp)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -186,31 +201,21 @@ public class DataRepositorySearchResults
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * DataRepositorySearchResults} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link SFTPConfiguration}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (results) -> new DataRepositorySearchResults().results(results);
+    return (destination) -> new SFTPConfiguration().destination(destination);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the results of this {@link DataRepositorySearchResults} instance.
+     * Set the destination of this {@link SFTPConfiguration} instance.
      *
-     * @param results List of returned results.
-     * @return The DataRepositorySearchResults instance.
+     * @param destination The destination of this {@link SFTPConfiguration}
+     * @return The SFTPConfiguration instance.
      */
-    DataRepositorySearchResults results(@Nonnull final List<ResultsInner3> results);
-
-    /**
-     * Set the results of this {@link DataRepositorySearchResults} instance.
-     *
-     * @param results List of returned results.
-     * @return The DataRepositorySearchResults instance.
-     */
-    default DataRepositorySearchResults results(@Nonnull final ResultsInner3... results) {
-      return results(Arrays.asList(results));
-    }
+    SFTPConfiguration destination(@Nonnull final String destination);
   }
 }

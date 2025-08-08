@@ -35,7 +35,7 @@ public class RetrievalSearchFilter
   private String id;
 
   @JsonProperty("searchConfiguration")
-  private SearchConfiguration searchConfiguration;
+  private RetrievalSearchConfiguration searchConfiguration;
 
   @JsonProperty("dataRepositories")
   private List<String> dataRepositories = new ArrayList<>(Arrays.asList("*"));
@@ -44,13 +44,13 @@ public class RetrievalSearchFilter
   private DataRepositoryType dataRepositoryType;
 
   @JsonProperty("dataRepositoryMetadata")
-  private List<KeyValueListPair> dataRepositoryMetadata = new ArrayList<>();
+  private List<RetrievalKeyValueListPair> dataRepositoryMetadata = new ArrayList<>();
 
   @JsonProperty("documentMetadata")
-  private List<SearchDocumentKeyValueListPair> documentMetadata = new ArrayList<>();
+  private List<RetrievalSearchDocumentKeyValueListPair> documentMetadata = new ArrayList<>();
 
   @JsonProperty("chunkMetadata")
-  private List<KeyValueListPair> chunkMetadata = new ArrayList<>();
+  private List<RetrievalKeyValueListPair> chunkMetadata = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -61,7 +61,7 @@ public class RetrievalSearchFilter
   /**
    * Set the id of this {@link RetrievalSearchFilter} instance and return the same instance.
    *
-   * @param id Identifier of this SearchFilter - unique per request.
+   * @param id Identifier of this RetrievalSearchFilter - unique per request.
    * @return The same instance of this {@link RetrievalSearchFilter} class
    */
   @Nonnull
@@ -71,7 +71,7 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Identifier of this SearchFilter - unique per request.
+   * Identifier of this RetrievalSearchFilter - unique per request.
    *
    * @return id The id of this {@link RetrievalSearchFilter} instance.
    */
@@ -83,7 +83,7 @@ public class RetrievalSearchFilter
   /**
    * Set the id of this {@link RetrievalSearchFilter} instance.
    *
-   * @param id Identifier of this SearchFilter - unique per request.
+   * @param id Identifier of this RetrievalSearchFilter - unique per request.
    */
   public void setId(@Nonnull final String id) {
     this.id = id;
@@ -98,7 +98,7 @@ public class RetrievalSearchFilter
    */
   @Nonnull
   public RetrievalSearchFilter searchConfiguration(
-      @Nullable final SearchConfiguration searchConfiguration) {
+      @Nullable final RetrievalSearchConfiguration searchConfiguration) {
     this.searchConfiguration = searchConfiguration;
     return this;
   }
@@ -110,7 +110,7 @@ public class RetrievalSearchFilter
    *     instance.
    */
   @Nonnull
-  public SearchConfiguration getSearchConfiguration() {
+  public RetrievalSearchConfiguration getSearchConfiguration() {
     return searchConfiguration;
   }
 
@@ -119,7 +119,8 @@ public class RetrievalSearchFilter
    *
    * @param searchConfiguration The searchConfiguration of this {@link RetrievalSearchFilter}
    */
-  public void setSearchConfiguration(@Nullable final SearchConfiguration searchConfiguration) {
+  public void setSearchConfiguration(
+      @Nullable final RetrievalSearchConfiguration searchConfiguration) {
     this.searchConfiguration = searchConfiguration;
   }
 
@@ -218,7 +219,7 @@ public class RetrievalSearchFilter
    */
   @Nonnull
   public RetrievalSearchFilter dataRepositoryMetadata(
-      @Nullable final List<KeyValueListPair> dataRepositoryMetadata) {
+      @Nullable final List<RetrievalKeyValueListPair> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
     return this;
   }
@@ -231,7 +232,7 @@ public class RetrievalSearchFilter
    */
   @Nonnull
   public RetrievalSearchFilter addDataRepositoryMetadataItem(
-      @Nonnull final KeyValueListPair dataRepositoryMetadataItem) {
+      @Nonnull final RetrievalKeyValueListPair dataRepositoryMetadataItem) {
     if (this.dataRepositoryMetadata == null) {
       this.dataRepositoryMetadata = new ArrayList<>();
     }
@@ -247,7 +248,7 @@ public class RetrievalSearchFilter
    *     instance.
    */
   @Nonnull
-  public List<KeyValueListPair> getDataRepositoryMetadata() {
+  public List<RetrievalKeyValueListPair> getDataRepositoryMetadata() {
     return dataRepositoryMetadata;
   }
 
@@ -259,7 +260,7 @@ public class RetrievalSearchFilter
    *     dataRepositories&#x3D;[&#39;*&#39;]
    */
   public void setDataRepositoryMetadata(
-      @Nullable final List<KeyValueListPair> dataRepositoryMetadata) {
+      @Nullable final List<RetrievalKeyValueListPair> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
   }
 
@@ -273,7 +274,7 @@ public class RetrievalSearchFilter
    */
   @Nonnull
   public RetrievalSearchFilter documentMetadata(
-      @Nullable final List<SearchDocumentKeyValueListPair> documentMetadata) {
+      @Nullable final List<RetrievalSearchDocumentKeyValueListPair> documentMetadata) {
     this.documentMetadata = documentMetadata;
     return this;
   }
@@ -286,7 +287,7 @@ public class RetrievalSearchFilter
    */
   @Nonnull
   public RetrievalSearchFilter addDocumentMetadataItem(
-      @Nonnull final SearchDocumentKeyValueListPair documentMetadataItem) {
+      @Nonnull final RetrievalSearchDocumentKeyValueListPair documentMetadataItem) {
     if (this.documentMetadata == null) {
       this.documentMetadata = new ArrayList<>();
     }
@@ -300,7 +301,7 @@ public class RetrievalSearchFilter
    * @return documentMetadata The documentMetadata of this {@link RetrievalSearchFilter} instance.
    */
   @Nonnull
-  public List<SearchDocumentKeyValueListPair> getDocumentMetadata() {
+  public List<RetrievalSearchDocumentKeyValueListPair> getDocumentMetadata() {
     return documentMetadata;
   }
 
@@ -311,7 +312,7 @@ public class RetrievalSearchFilter
    *     given metadata.
    */
   public void setDocumentMetadata(
-      @Nullable final List<SearchDocumentKeyValueListPair> documentMetadata) {
+      @Nullable final List<RetrievalSearchDocumentKeyValueListPair> documentMetadata) {
     this.documentMetadata = documentMetadata;
   }
 
@@ -323,7 +324,8 @@ public class RetrievalSearchFilter
    * @return The same instance of this {@link RetrievalSearchFilter} class
    */
   @Nonnull
-  public RetrievalSearchFilter chunkMetadata(@Nullable final List<KeyValueListPair> chunkMetadata) {
+  public RetrievalSearchFilter chunkMetadata(
+      @Nullable final List<RetrievalKeyValueListPair> chunkMetadata) {
     this.chunkMetadata = chunkMetadata;
     return this;
   }
@@ -336,7 +338,7 @@ public class RetrievalSearchFilter
    */
   @Nonnull
   public RetrievalSearchFilter addChunkMetadataItem(
-      @Nonnull final KeyValueListPair chunkMetadataItem) {
+      @Nonnull final RetrievalKeyValueListPair chunkMetadataItem) {
     if (this.chunkMetadata == null) {
       this.chunkMetadata = new ArrayList<>();
     }
@@ -350,7 +352,7 @@ public class RetrievalSearchFilter
    * @return chunkMetadata The chunkMetadata of this {@link RetrievalSearchFilter} instance.
    */
   @Nonnull
-  public List<KeyValueListPair> getChunkMetadata() {
+  public List<RetrievalKeyValueListPair> getChunkMetadata() {
     return chunkMetadata;
   }
 
@@ -359,7 +361,7 @@ public class RetrievalSearchFilter
    *
    * @param chunkMetadata Restrict chunks considered during search to those with the given metadata.
    */
-  public void setChunkMetadata(@Nullable final List<KeyValueListPair> chunkMetadata) {
+  public void setChunkMetadata(@Nullable final List<RetrievalKeyValueListPair> chunkMetadata) {
     this.chunkMetadata = chunkMetadata;
   }
 
@@ -505,7 +507,7 @@ public class RetrievalSearchFilter
     /**
      * Set the id of this {@link RetrievalSearchFilter} instance.
      *
-     * @param id Identifier of this SearchFilter - unique per request.
+     * @param id Identifier of this RetrievalSearchFilter - unique per request.
      * @return The RetrievalSearchFilter builder.
      */
     Builder1 id(@Nonnull final String id);

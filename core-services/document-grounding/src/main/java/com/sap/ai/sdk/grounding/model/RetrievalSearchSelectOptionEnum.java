@@ -15,27 +15,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
-/** Gets or Sets DocumentStatus */
-public enum DocumentStatus {
-  TO_BE_PROCESSED("TO_BE_PROCESSED"),
-
-  INDEXED("INDEXED"),
-
-  REINDEXED("REINDEXED"),
-
-  DEINDEXED("DEINDEXED"),
-
-  FAILED("FAILED"),
-
-  FAILED_TO_BE_RETRIED("FAILED_TO_BE_RETRIED"),
-
-  TO_BE_SCHEDULED("TO_BE_SCHEDULED"),
+/** Gets or Sets RetrievalSearchSelectOptionEnum */
+public enum RetrievalSearchSelectOptionEnum {
+  IGNORE_IF_KEY_ABSENT("ignoreIfKeyAbsent"),
 
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
 
-  DocumentStatus(String value) {
+  RetrievalSearchSelectOptionEnum(String value) {
     this.value = value;
   }
 
@@ -63,12 +51,12 @@ public enum DocumentStatus {
    * @return The enum representation of the given value.
    */
   @JsonCreator
-  public static DocumentStatus fromValue(@Nonnull final String value) {
-    for (final DocumentStatus b : DocumentStatus.values()) {
+  public static RetrievalSearchSelectOptionEnum fromValue(@Nonnull final String value) {
+    for (final RetrievalSearchSelectOptionEnum b : RetrievalSearchSelectOptionEnum.values()) {
       if (b.value.equals(value)) {
         return b;
       }
     }
-    return UNKNOWN_DEFAULT_OPEN_API;
+    return null;
   }
 }

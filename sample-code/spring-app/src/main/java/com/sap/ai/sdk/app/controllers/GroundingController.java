@@ -9,25 +9,25 @@ import com.sap.ai.sdk.grounding.client.PipelinesApi;
 import com.sap.ai.sdk.grounding.client.RetrievalApi;
 import com.sap.ai.sdk.grounding.client.VectorApi;
 import com.sap.ai.sdk.grounding.model.BaseDocument;
-import com.sap.ai.sdk.grounding.model.Chunk;
 import com.sap.ai.sdk.grounding.model.Collection;
 import com.sap.ai.sdk.grounding.model.CollectionRequest;
 import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
 import com.sap.ai.sdk.grounding.model.DataRepository;
 import com.sap.ai.sdk.grounding.model.DataRepositoryType;
 import com.sap.ai.sdk.grounding.model.DocumentCreateRequest;
-import com.sap.ai.sdk.grounding.model.DocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.DocumentWithoutChunks;
 import com.sap.ai.sdk.grounding.model.EmbeddingConfig;
 import com.sap.ai.sdk.grounding.model.GetPipeline;
-import com.sap.ai.sdk.grounding.model.KeyValueListPair;
 import com.sap.ai.sdk.grounding.model.MSSharePointPipelineGetResponse;
+import com.sap.ai.sdk.grounding.model.RetrievalChunk;
+import com.sap.ai.sdk.grounding.model.RetrievalSearchConfiguration;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchFilter;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
 import com.sap.ai.sdk.grounding.model.S3PipelineGetResponse;
 import com.sap.ai.sdk.grounding.model.SFTPPipelineGetResponse;
-import com.sap.ai.sdk.grounding.model.SearchConfiguration;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunk;
+import com.sap.ai.sdk.grounding.model.VectorDocumentKeyValueListPair;
+import com.sap.ai.sdk.grounding.model.VectorKeyValueListPair;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -105,7 +105,7 @@ class GroundingController {
             .id("question")
             .dataRepositoryType(DataRepositoryType.VECTOR)
             .dataRepositories(List.of("*"))
-            .searchConfiguration(SearchConfiguration.create().maxChunkCount(10));
+            .searchConfiguration(RetrievalSearchConfiguration.create().maxChunkCount(10));
     final var q = RetrievalSearchInput.create().query("When was the last upload?").filters(filter);
     final var results = CLIENT_RETRIEVAL.search(RESOURCE_GROUP, q);
 
@@ -117,7 +117,7 @@ class GroundingController {
             .flatMap(resultsInner1 -> resultsInner1.getResults().stream())
             .flatMap(result -> result.getDataRepository().getDocuments().stream())
             .flatMap(dataRepositorySearchResult -> dataRepositorySearchResult.getChunks().stream())
-            .map(Chunk::getContent)
+            .map(RetrievalChunk::getContent)
             .toList();
     return "Found the following response(s): " + messages;
   }
@@ -170,9 +170,9 @@ class GroundingController {
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
     final var documentContent = "Last upload on " + dayOfWeek;
 
-    final var chunkMeta = KeyValueListPair.create().key("context").value("day-of-week");
+    final var chunkMeta = VectorKeyValueListPair.create().key("context").value("day-of-week");
     final var chunk = TextOnlyBaseChunk.create().content(documentContent).metadata(chunkMeta);
-    final var docMeta = DocumentKeyValueListPair.create().key("purpose").value("testing");
+    final var docMeta = VectorDocumentKeyValueListPair.create().key("purpose").value("testing");
     final var doc = BaseDocument.create().chunks(chunk).metadata(docMeta);
     final var request = DocumentCreateRequest.create().documents(doc);
     final var response = CLIENT_VECTOR.createDocuments(RESOURCE_GROUP, collectionId, request);
@@ -190,10 +190,10 @@ class GroundingController {
       @Nonnull @PathVariable("id") final UUID collectionId,
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-    final var chunkMeta = KeyValueListPair.create().key("context").value("day-of-week");
+    final var chunkMeta = VectorKeyValueListPair.create().key("context").value("day-of-week");
     final var chunk =
         TextOnlyBaseChunk.create().content("Today is " + dayOfWeek).metadata(chunkMeta);
-    final var docMeta = DocumentKeyValueListPair.create().key("purpose").value("testing");
+    final var docMeta = VectorDocumentKeyValueListPair.create().key("purpose").value("testing");
     final var doc = BaseDocument.create().chunks(chunk).metadata(docMeta);
     final var request = DocumentCreateRequest.create().documents(doc);
 

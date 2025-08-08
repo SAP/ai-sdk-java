@@ -26,74 +26,40 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResultsInner1 */
+/** VectorSearchResults */
 // CHECKSTYLE:OFF
-public class ResultsInner1
+public class VectorSearchResults
 // CHECKSTYLE:ON
 {
-  @JsonProperty("filterId")
-  private String filterId;
-
   @JsonProperty("results")
-  private List<DocumentsChunk> results = new ArrayList<>();
+  private List<ResultsInner1> results = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResultsInner1. */
-  protected ResultsInner1() {}
+  /** Default constructor for VectorSearchResults. */
+  protected VectorSearchResults() {}
 
   /**
-   * Set the filterId of this {@link ResultsInner1} instance and return the same instance.
+   * Set the results of this {@link VectorSearchResults} instance and return the same instance.
    *
-   * @param filterId The filterId of this {@link ResultsInner1}
-   * @return The same instance of this {@link ResultsInner1} class
+   * @param results List of returned results.
+   * @return The same instance of this {@link VectorSearchResults} class
    */
   @Nonnull
-  public ResultsInner1 filterId(@Nonnull final String filterId) {
-    this.filterId = filterId;
-    return this;
-  }
-
-  /**
-   * Get filterId
-   *
-   * @return filterId The filterId of this {@link ResultsInner1} instance.
-   */
-  @Nonnull
-  public String getFilterId() {
-    return filterId;
-  }
-
-  /**
-   * Set the filterId of this {@link ResultsInner1} instance.
-   *
-   * @param filterId The filterId of this {@link ResultsInner1}
-   */
-  public void setFilterId(@Nonnull final String filterId) {
-    this.filterId = filterId;
-  }
-
-  /**
-   * Set the results of this {@link ResultsInner1} instance and return the same instance.
-   *
-   * @param results The results of this {@link ResultsInner1}
-   * @return The same instance of this {@link ResultsInner1} class
-   */
-  @Nonnull
-  public ResultsInner1 results(@Nonnull final List<DocumentsChunk> results) {
+  public VectorSearchResults results(@Nonnull final List<ResultsInner1> results) {
     this.results = results;
     return this;
   }
 
   /**
-   * Add one results instance to this {@link ResultsInner1}.
+   * Add one results instance to this {@link VectorSearchResults}.
    *
    * @param resultsItem The results that should be added
-   * @return The same instance of type {@link ResultsInner1}
+   * @return The same instance of type {@link VectorSearchResults}
    */
   @Nonnull
-  public ResultsInner1 addResultsItem(@Nonnull final DocumentsChunk resultsItem) {
+  public VectorSearchResults addResultsItem(@Nonnull final ResultsInner1 resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -102,26 +68,26 @@ public class ResultsInner1
   }
 
   /**
-   * Get results
+   * List of returned results.
    *
-   * @return results The results of this {@link ResultsInner1} instance.
+   * @return results The results of this {@link VectorSearchResults} instance.
    */
   @Nonnull
-  public List<DocumentsChunk> getResults() {
+  public List<ResultsInner1> getResults() {
     return results;
   }
 
   /**
-   * Set the results of this {@link ResultsInner1} instance.
+   * Set the results of this {@link VectorSearchResults} instance.
    *
-   * @param results The results of this {@link ResultsInner1}
+   * @param results List of returned results.
    */
-  public void setResults(@Nonnull final List<DocumentsChunk> results) {
+  public void setResults(@Nonnull final List<ResultsInner1> results) {
     this.results = results;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResultsInner1}.
+   * Get the names of the unrecognizable properties of the {@link VectorSearchResults}.
    *
    * @return The set of properties names
    */
@@ -132,7 +98,7 @@ public class ResultsInner1
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResultsInner1} instance.
+   * Get the value of an unrecognizable property of this {@link VectorSearchResults} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -143,14 +109,15 @@ public class ResultsInner1
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ResultsInner1 has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "VectorSearchResults has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResultsInner1} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link VectorSearchResults} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -158,14 +125,13 @@ public class ResultsInner1
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (filterId != null) declaredFields.put("filterId", filterId);
     if (results != null) declaredFields.put("results", results);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResultsInner1} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link VectorSearchResults} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -183,23 +149,21 @@ public class ResultsInner1
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResultsInner1 resultsInner1 = (ResultsInner1) o;
-    return Objects.equals(this.cloudSdkCustomFields, resultsInner1.cloudSdkCustomFields)
-        && Objects.equals(this.filterId, resultsInner1.filterId)
-        && Objects.equals(this.results, resultsInner1.results);
+    final VectorSearchResults vectorSearchResults = (VectorSearchResults) o;
+    return Objects.equals(this.cloudSdkCustomFields, vectorSearchResults.cloudSdkCustomFields)
+        && Objects.equals(this.results, vectorSearchResults.results);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filterId, results, cloudSdkCustomFields);
+    return Objects.hash(results, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResultsInner1 {\n");
-    sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
+    sb.append("class VectorSearchResults {\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -219,41 +183,30 @@ public class ResultsInner1
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ResultsInner1} instance
-   * with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link VectorSearchResults}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (filterId) -> (results) -> new ResultsInner1().filterId(filterId).results(results);
+    return (results) -> new VectorSearchResults().results(results);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the filterId of this {@link ResultsInner1} instance.
+     * Set the results of this {@link VectorSearchResults} instance.
      *
-     * @param filterId The filterId of this {@link ResultsInner1}
-     * @return The ResultsInner1 builder.
+     * @param results List of returned results.
+     * @return The VectorSearchResults instance.
      */
-    Builder1 filterId(@Nonnull final String filterId);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the results of this {@link ResultsInner1} instance.
-     *
-     * @param results The results of this {@link ResultsInner1}
-     * @return The ResultsInner1 instance.
-     */
-    ResultsInner1 results(@Nonnull final List<DocumentsChunk> results);
+    VectorSearchResults results(@Nonnull final List<ResultsInner1> results);
 
     /**
-     * Set the results of this {@link ResultsInner1} instance.
+     * Set the results of this {@link VectorSearchResults} instance.
      *
-     * @param results The results of this {@link ResultsInner1}
-     * @return The ResultsInner1 instance.
+     * @param results List of returned results.
+     * @return The VectorSearchResults instance.
      */
-    default ResultsInner1 results(@Nonnull final DocumentsChunk... results) {
+    default VectorSearchResults results(@Nonnull final ResultsInner1... results) {
       return results(Arrays.asList(results));
     }
   }

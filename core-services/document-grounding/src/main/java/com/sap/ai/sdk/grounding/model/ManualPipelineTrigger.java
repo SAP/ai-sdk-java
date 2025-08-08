@@ -15,10 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -26,68 +23,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** RetrievalSearchResults */
+/** ManualPipelineTrigger */
 // CHECKSTYLE:OFF
-public class RetrievalSearchResults
+public class ManualPipelineTrigger
 // CHECKSTYLE:ON
 {
-  @JsonProperty("results")
-  private List<ResultsInner2> results = new ArrayList<>();
+  @JsonProperty("pipelineId")
+  private String pipelineId;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for RetrievalSearchResults. */
-  protected RetrievalSearchResults() {}
+  /** Default constructor for ManualPipelineTrigger. */
+  protected ManualPipelineTrigger() {}
 
   /**
-   * Set the results of this {@link RetrievalSearchResults} instance and return the same instance.
+   * Set the pipelineId of this {@link ManualPipelineTrigger} instance and return the same instance.
    *
-   * @param results List of returned results.
-   * @return The same instance of this {@link RetrievalSearchResults} class
+   * @param pipelineId The pipelineId of this {@link ManualPipelineTrigger}
+   * @return The same instance of this {@link ManualPipelineTrigger} class
    */
   @Nonnull
-  public RetrievalSearchResults results(@Nonnull final List<ResultsInner2> results) {
-    this.results = results;
+  public ManualPipelineTrigger pipelineId(@Nullable final String pipelineId) {
+    this.pipelineId = pipelineId;
     return this;
   }
 
   /**
-   * Add one results instance to this {@link RetrievalSearchResults}.
+   * Get pipelineId
    *
-   * @param resultsItem The results that should be added
-   * @return The same instance of type {@link RetrievalSearchResults}
+   * @return pipelineId The pipelineId of this {@link ManualPipelineTrigger} instance.
    */
   @Nonnull
-  public RetrievalSearchResults addResultsItem(@Nonnull final ResultsInner2 resultsItem) {
-    if (this.results == null) {
-      this.results = new ArrayList<>();
-    }
-    this.results.add(resultsItem);
-    return this;
+  public String getPipelineId() {
+    return pipelineId;
   }
 
   /**
-   * List of returned results.
+   * Set the pipelineId of this {@link ManualPipelineTrigger} instance.
    *
-   * @return results The results of this {@link RetrievalSearchResults} instance.
+   * @param pipelineId The pipelineId of this {@link ManualPipelineTrigger}
    */
-  @Nonnull
-  public List<ResultsInner2> getResults() {
-    return results;
+  public void setPipelineId(@Nullable final String pipelineId) {
+    this.pipelineId = pipelineId;
   }
 
   /**
-   * Set the results of this {@link RetrievalSearchResults} instance.
-   *
-   * @param results List of returned results.
-   */
-  public void setResults(@Nonnull final List<ResultsInner2> results) {
-    this.results = results;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link RetrievalSearchResults}.
+   * Get the names of the unrecognizable properties of the {@link ManualPipelineTrigger}.
    *
    * @return The set of properties names
    */
@@ -98,7 +80,7 @@ public class RetrievalSearchResults
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link RetrievalSearchResults} instance.
+   * Get the value of an unrecognizable property of this {@link ManualPipelineTrigger} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -110,13 +92,13 @@ public class RetrievalSearchResults
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "RetrievalSearchResults has no field with name '" + name + "'.");
+          "ManualPipelineTrigger has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link RetrievalSearchResults} instance including
+   * Get the value of all properties of this {@link ManualPipelineTrigger} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -125,12 +107,12 @@ public class RetrievalSearchResults
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (results != null) declaredFields.put("results", results);
+    if (pipelineId != null) declaredFields.put("pipelineId", pipelineId);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link RetrievalSearchResults} instance. If the map
+   * Set an unrecognizable property of this {@link ManualPipelineTrigger} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -149,22 +131,22 @@ public class RetrievalSearchResults
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final RetrievalSearchResults retrievalSearchResults = (RetrievalSearchResults) o;
-    return Objects.equals(this.cloudSdkCustomFields, retrievalSearchResults.cloudSdkCustomFields)
-        && Objects.equals(this.results, retrievalSearchResults.results);
+    final ManualPipelineTrigger manualPipelineTrigger = (ManualPipelineTrigger) o;
+    return Objects.equals(this.cloudSdkCustomFields, manualPipelineTrigger.cloudSdkCustomFields)
+        && Objects.equals(this.pipelineId, manualPipelineTrigger.pipelineId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(results, cloudSdkCustomFields);
+    return Objects.hash(pipelineId, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class RetrievalSearchResults {\n");
-    sb.append("    results: ").append(toIndentedString(results)).append("\n");
+    sb.append("class ManualPipelineTrigger {\n");
+    sb.append("    pipelineId: ").append(toIndentedString(pipelineId)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -182,32 +164,8 @@ public class RetrievalSearchResults
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link RetrievalSearchResults}
-   * instance with all required arguments.
-   */
-  public static Builder create() {
-    return (results) -> new RetrievalSearchResults().results(results);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the results of this {@link RetrievalSearchResults} instance.
-     *
-     * @param results List of returned results.
-     * @return The RetrievalSearchResults instance.
-     */
-    RetrievalSearchResults results(@Nonnull final List<ResultsInner2> results);
-
-    /**
-     * Set the results of this {@link RetrievalSearchResults} instance.
-     *
-     * @param results List of returned results.
-     * @return The RetrievalSearchResults instance.
-     */
-    default RetrievalSearchResults results(@Nonnull final ResultsInner2... results) {
-      return results(Arrays.asList(results));
-    }
+  /** Create a new {@link ManualPipelineTrigger} instance. No arguments are required. */
+  public static ManualPipelineTrigger create() {
+    return new ManualPipelineTrigger();
   }
 }

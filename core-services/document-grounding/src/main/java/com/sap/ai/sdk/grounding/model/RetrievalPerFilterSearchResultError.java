@@ -15,10 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -26,69 +23,55 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** DataRepositorySearchResults */
+/** RetrievalPerFilterSearchResultError */
 // CHECKSTYLE:OFF
-public class DataRepositorySearchResults
+public class RetrievalPerFilterSearchResultError
 // CHECKSTYLE:ON
 {
-  @JsonProperty("results")
-  private List<ResultsInner3> results = new ArrayList<>();
+  @JsonProperty("message")
+  private String message;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DataRepositorySearchResults. */
-  protected DataRepositorySearchResults() {}
+  /** Default constructor for RetrievalPerFilterSearchResultError. */
+  protected RetrievalPerFilterSearchResultError() {}
 
   /**
-   * Set the results of this {@link DataRepositorySearchResults} instance and return the same
-   * instance.
+   * Set the message of this {@link RetrievalPerFilterSearchResultError} instance and return the
+   * same instance.
    *
-   * @param results List of returned results.
-   * @return The same instance of this {@link DataRepositorySearchResults} class
+   * @param message The message of this {@link RetrievalPerFilterSearchResultError}
+   * @return The same instance of this {@link RetrievalPerFilterSearchResultError} class
    */
   @Nonnull
-  public DataRepositorySearchResults results(@Nonnull final List<ResultsInner3> results) {
-    this.results = results;
+  public RetrievalPerFilterSearchResultError message(@Nonnull final String message) {
+    this.message = message;
     return this;
   }
 
   /**
-   * Add one results instance to this {@link DataRepositorySearchResults}.
+   * Get message
    *
-   * @param resultsItem The results that should be added
-   * @return The same instance of type {@link DataRepositorySearchResults}
+   * @return message The message of this {@link RetrievalPerFilterSearchResultError} instance.
    */
   @Nonnull
-  public DataRepositorySearchResults addResultsItem(@Nonnull final ResultsInner3 resultsItem) {
-    if (this.results == null) {
-      this.results = new ArrayList<>();
-    }
-    this.results.add(resultsItem);
-    return this;
+  public String getMessage() {
+    return message;
   }
 
   /**
-   * List of returned results.
+   * Set the message of this {@link RetrievalPerFilterSearchResultError} instance.
    *
-   * @return results The results of this {@link DataRepositorySearchResults} instance.
+   * @param message The message of this {@link RetrievalPerFilterSearchResultError}
    */
-  @Nonnull
-  public List<ResultsInner3> getResults() {
-    return results;
+  public void setMessage(@Nonnull final String message) {
+    this.message = message;
   }
 
   /**
-   * Set the results of this {@link DataRepositorySearchResults} instance.
-   *
-   * @param results List of returned results.
-   */
-  public void setResults(@Nonnull final List<ResultsInner3> results) {
-    this.results = results;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link DataRepositorySearchResults}.
+   * Get the names of the unrecognizable properties of the {@link
+   * RetrievalPerFilterSearchResultError}.
    *
    * @return The set of properties names
    */
@@ -99,7 +82,7 @@ public class DataRepositorySearchResults
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DataRepositorySearchResults}
+   * Get the value of an unrecognizable property of this {@link RetrievalPerFilterSearchResultError}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -112,14 +95,14 @@ public class DataRepositorySearchResults
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "DataRepositorySearchResults has no field with name '" + name + "'.");
+          "RetrievalPerFilterSearchResultError has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DataRepositorySearchResults} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link RetrievalPerFilterSearchResultError} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -127,13 +110,14 @@ public class DataRepositorySearchResults
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (results != null) declaredFields.put("results", results);
+    if (message != null) declaredFields.put("message", message);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link DataRepositorySearchResults} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link RetrievalPerFilterSearchResultError} instance. If
+   * the map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -151,23 +135,24 @@ public class DataRepositorySearchResults
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DataRepositorySearchResults dataRepositorySearchResults = (DataRepositorySearchResults) o;
+    final RetrievalPerFilterSearchResultError retrievalPerFilterSearchResultError =
+        (RetrievalPerFilterSearchResultError) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, dataRepositorySearchResults.cloudSdkCustomFields)
-        && Objects.equals(this.results, dataRepositorySearchResults.results);
+            this.cloudSdkCustomFields, retrievalPerFilterSearchResultError.cloudSdkCustomFields)
+        && Objects.equals(this.message, retrievalPerFilterSearchResultError.message);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(results, cloudSdkCustomFields);
+    return Objects.hash(message, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DataRepositorySearchResults {\n");
-    sb.append("    results: ").append(toIndentedString(results)).append("\n");
+    sb.append("class RetrievalPerFilterSearchResultError {\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -187,30 +172,20 @@ public class DataRepositorySearchResults
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * DataRepositorySearchResults} instance with all required arguments.
+   * RetrievalPerFilterSearchResultError} instance with all required arguments.
    */
   public static Builder create() {
-    return (results) -> new DataRepositorySearchResults().results(results);
+    return (message) -> new RetrievalPerFilterSearchResultError().message(message);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the results of this {@link DataRepositorySearchResults} instance.
+     * Set the message of this {@link RetrievalPerFilterSearchResultError} instance.
      *
-     * @param results List of returned results.
-     * @return The DataRepositorySearchResults instance.
+     * @param message The message of this {@link RetrievalPerFilterSearchResultError}
+     * @return The RetrievalPerFilterSearchResultError instance.
      */
-    DataRepositorySearchResults results(@Nonnull final List<ResultsInner3> results);
-
-    /**
-     * Set the results of this {@link DataRepositorySearchResults} instance.
-     *
-     * @param results List of returned results.
-     * @return The DataRepositorySearchResults instance.
-     */
-    default DataRepositorySearchResults results(@Nonnull final ResultsInner3... results) {
-      return results(Arrays.asList(results));
-    }
+    RetrievalPerFilterSearchResultError message(@Nonnull final String message);
   }
 }
