@@ -34,6 +34,12 @@ public class DocumentsStatusResponseResourcesInner
   @JsonProperty("status")
   private DocumentStatus status;
 
+  @JsonProperty("viewLocation")
+  private String viewLocation;
+
+  @JsonProperty("downloadLocation")
+  private String downloadLocation;
+
   @JsonProperty("absoluteUrl")
   private String absoluteUrl;
 
@@ -117,6 +123,75 @@ public class DocumentsStatusResponseResourcesInner
    */
   public void setStatus(@Nullable final DocumentStatus status) {
     this.status = status;
+  }
+
+  /**
+   * Set the viewLocation of this {@link DocumentsStatusResponseResourcesInner} instance and return
+   * the same instance.
+   *
+   * @param viewLocation The viewLocation of this {@link DocumentsStatusResponseResourcesInner}
+   * @return The same instance of this {@link DocumentsStatusResponseResourcesInner} class
+   */
+  @Nonnull
+  public DocumentsStatusResponseResourcesInner viewLocation(@Nullable final String viewLocation) {
+    this.viewLocation = viewLocation;
+    return this;
+  }
+
+  /**
+   * Get viewLocation
+   *
+   * @return viewLocation The viewLocation of this {@link DocumentsStatusResponseResourcesInner}
+   *     instance.
+   */
+  @Nullable
+  public String getViewLocation() {
+    return viewLocation;
+  }
+
+  /**
+   * Set the viewLocation of this {@link DocumentsStatusResponseResourcesInner} instance.
+   *
+   * @param viewLocation The viewLocation of this {@link DocumentsStatusResponseResourcesInner}
+   */
+  public void setViewLocation(@Nullable final String viewLocation) {
+    this.viewLocation = viewLocation;
+  }
+
+  /**
+   * Set the downloadLocation of this {@link DocumentsStatusResponseResourcesInner} instance and
+   * return the same instance.
+   *
+   * @param downloadLocation The downloadLocation of this {@link
+   *     DocumentsStatusResponseResourcesInner}
+   * @return The same instance of this {@link DocumentsStatusResponseResourcesInner} class
+   */
+  @Nonnull
+  public DocumentsStatusResponseResourcesInner downloadLocation(
+      @Nullable final String downloadLocation) {
+    this.downloadLocation = downloadLocation;
+    return this;
+  }
+
+  /**
+   * Get downloadLocation
+   *
+   * @return downloadLocation The downloadLocation of this {@link
+   *     DocumentsStatusResponseResourcesInner} instance.
+   */
+  @Nullable
+  public String getDownloadLocation() {
+    return downloadLocation;
+  }
+
+  /**
+   * Set the downloadLocation of this {@link DocumentsStatusResponseResourcesInner} instance.
+   *
+   * @param downloadLocation The downloadLocation of this {@link
+   *     DocumentsStatusResponseResourcesInner}
+   */
+  public void setDownloadLocation(@Nullable final String downloadLocation) {
+    this.downloadLocation = downloadLocation;
   }
 
   /**
@@ -332,6 +407,8 @@ public class DocumentsStatusResponseResourcesInner
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (id != null) declaredFields.put("id", id);
     if (status != null) declaredFields.put("status", status);
+    if (viewLocation != null) declaredFields.put("viewLocation", viewLocation);
+    if (downloadLocation != null) declaredFields.put("downloadLocation", downloadLocation);
     if (absoluteUrl != null) declaredFields.put("absoluteUrl", absoluteUrl);
     if (title != null) declaredFields.put("title", title);
     if (metadataId != null) declaredFields.put("metadataId", metadataId);
@@ -368,6 +445,9 @@ public class DocumentsStatusResponseResourcesInner
             this.cloudSdkCustomFields, documentsStatusResponseResourcesInner.cloudSdkCustomFields)
         && Objects.equals(this.id, documentsStatusResponseResourcesInner.id)
         && Objects.equals(this.status, documentsStatusResponseResourcesInner.status)
+        && Objects.equals(this.viewLocation, documentsStatusResponseResourcesInner.viewLocation)
+        && Objects.equals(
+            this.downloadLocation, documentsStatusResponseResourcesInner.downloadLocation)
         && Objects.equals(this.absoluteUrl, documentsStatusResponseResourcesInner.absoluteUrl)
         && Objects.equals(this.title, documentsStatusResponseResourcesInner.title)
         && Objects.equals(this.metadataId, documentsStatusResponseResourcesInner.metadataId)
@@ -382,6 +462,8 @@ public class DocumentsStatusResponseResourcesInner
     return Objects.hash(
         id,
         status,
+        viewLocation,
+        downloadLocation,
         absoluteUrl,
         title,
         metadataId,
@@ -397,6 +479,8 @@ public class DocumentsStatusResponseResourcesInner
     sb.append("class DocumentsStatusResponseResourcesInner {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    viewLocation: ").append(toIndentedString(viewLocation)).append("\n");
+    sb.append("    downloadLocation: ").append(toIndentedString(downloadLocation)).append("\n");
     sb.append("    absoluteUrl: ").append(toIndentedString(absoluteUrl)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    metadataId: ").append(toIndentedString(metadataId)).append("\n");

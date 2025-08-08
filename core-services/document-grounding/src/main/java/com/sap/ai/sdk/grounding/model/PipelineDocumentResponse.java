@@ -34,6 +34,12 @@ public class PipelineDocumentResponse
   @JsonProperty("status")
   private DocumentStatus status;
 
+  @JsonProperty("viewLocation")
+  private String viewLocation;
+
+  @JsonProperty("downloadLocation")
+  private String downloadLocation;
+
   @JsonProperty("absoluteUrl")
   private String absoluteUrl;
 
@@ -115,6 +121,71 @@ public class PipelineDocumentResponse
    */
   public void setStatus(@Nullable final DocumentStatus status) {
     this.status = status;
+  }
+
+  /**
+   * Set the viewLocation of this {@link PipelineDocumentResponse} instance and return the same
+   * instance.
+   *
+   * @param viewLocation The viewLocation of this {@link PipelineDocumentResponse}
+   * @return The same instance of this {@link PipelineDocumentResponse} class
+   */
+  @Nonnull
+  public PipelineDocumentResponse viewLocation(@Nullable final String viewLocation) {
+    this.viewLocation = viewLocation;
+    return this;
+  }
+
+  /**
+   * Get viewLocation
+   *
+   * @return viewLocation The viewLocation of this {@link PipelineDocumentResponse} instance.
+   */
+  @Nullable
+  public String getViewLocation() {
+    return viewLocation;
+  }
+
+  /**
+   * Set the viewLocation of this {@link PipelineDocumentResponse} instance.
+   *
+   * @param viewLocation The viewLocation of this {@link PipelineDocumentResponse}
+   */
+  public void setViewLocation(@Nullable final String viewLocation) {
+    this.viewLocation = viewLocation;
+  }
+
+  /**
+   * Set the downloadLocation of this {@link PipelineDocumentResponse} instance and return the same
+   * instance.
+   *
+   * @param downloadLocation The downloadLocation of this {@link PipelineDocumentResponse}
+   * @return The same instance of this {@link PipelineDocumentResponse} class
+   */
+  @Nonnull
+  public PipelineDocumentResponse downloadLocation(@Nullable final String downloadLocation) {
+    this.downloadLocation = downloadLocation;
+    return this;
+  }
+
+  /**
+   * Get downloadLocation
+   *
+   * @return downloadLocation The downloadLocation of this {@link PipelineDocumentResponse}
+   *     instance.
+   */
+  @Nullable
+  public String getDownloadLocation() {
+    return downloadLocation;
+  }
+
+  /**
+   * Set the downloadLocation of this {@link PipelineDocumentResponse} instance.
+   *
+   * @param downloadLocation The downloadLocation of this {@link PipelineDocumentResponse}
+   */
+  public void setDownloadLocation(@Nullable final String downloadLocation) {
+    this.downloadLocation = downloadLocation;
   }
 
   /**
@@ -320,6 +391,8 @@ public class PipelineDocumentResponse
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (id != null) declaredFields.put("id", id);
     if (status != null) declaredFields.put("status", status);
+    if (viewLocation != null) declaredFields.put("viewLocation", viewLocation);
+    if (downloadLocation != null) declaredFields.put("downloadLocation", downloadLocation);
     if (absoluteUrl != null) declaredFields.put("absoluteUrl", absoluteUrl);
     if (title != null) declaredFields.put("title", title);
     if (metadataId != null) declaredFields.put("metadataId", metadataId);
@@ -353,6 +426,8 @@ public class PipelineDocumentResponse
     return Objects.equals(this.cloudSdkCustomFields, pipelineDocumentResponse.cloudSdkCustomFields)
         && Objects.equals(this.id, pipelineDocumentResponse.id)
         && Objects.equals(this.status, pipelineDocumentResponse.status)
+        && Objects.equals(this.viewLocation, pipelineDocumentResponse.viewLocation)
+        && Objects.equals(this.downloadLocation, pipelineDocumentResponse.downloadLocation)
         && Objects.equals(this.absoluteUrl, pipelineDocumentResponse.absoluteUrl)
         && Objects.equals(this.title, pipelineDocumentResponse.title)
         && Objects.equals(this.metadataId, pipelineDocumentResponse.metadataId)
@@ -365,6 +440,8 @@ public class PipelineDocumentResponse
     return Objects.hash(
         id,
         status,
+        viewLocation,
+        downloadLocation,
         absoluteUrl,
         title,
         metadataId,
@@ -380,6 +457,8 @@ public class PipelineDocumentResponse
     sb.append("class PipelineDocumentResponse {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    viewLocation: ").append(toIndentedString(viewLocation)).append("\n");
+    sb.append("    downloadLocation: ").append(toIndentedString(downloadLocation)).append("\n");
     sb.append("    absoluteUrl: ").append(toIndentedString(absoluteUrl)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    metadataId: ").append(toIndentedString(metadataId)).append("\n");

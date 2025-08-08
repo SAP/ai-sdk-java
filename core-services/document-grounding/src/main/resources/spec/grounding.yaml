@@ -984,7 +984,7 @@ components:
       flows:
         clientCredentials:
           tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
-          scopes: {}
+          scopes: { }
   schemas:
     createPipeline:
       oneOf:
@@ -1017,7 +1017,7 @@ components:
       properties:
         type:
           type: string
-          enum: [MSSharePoint]
+          enum: [ MSSharePoint ]
         configuration:
           $ref: "#/components/schemas/MSSharePointConfiguration"
         metadata:
@@ -1032,7 +1032,7 @@ components:
       properties:
         type:
           type: string
-          enum: [S3]
+          enum: [ S3 ]
         configuration:
           $ref: "#/components/schemas/S3Configuration"
         metadata:
@@ -1047,7 +1047,7 @@ components:
       properties:
         type:
           type: string
-          enum: [SFTP]
+          enum: [ SFTP ]
         configuration:
           $ref: "#/components/schemas/SFTPConfiguration"
         metadata:
@@ -1062,7 +1062,7 @@ components:
       properties:
         type:
           type: string
-          enum: [SDM]
+          enum: [ SDM ]
         metadata:
           $ref: "#/components/schemas/MetaData"
       additionalProperties: true
@@ -1075,7 +1075,7 @@ components:
       properties:
         type:
           type: string
-          enum: [WorkZone]
+          enum: [ WorkZone ]
         metadata:
           $ref: "#/components/schemas/MetaData"
       additionalProperties: true
@@ -1206,7 +1206,7 @@ components:
           properties:
             type:
               type: string
-              enum: [MSSharePoint]
+              enum: [ MSSharePoint ]
             configuration:
               $ref: "#/components/schemas/MSSharePointConfigurationGetResponse"
 
@@ -1219,7 +1219,7 @@ components:
           properties:
             type:
               type: string
-              enum: [S3]
+              enum: [ S3 ]
             configuration:
               $ref: "#/components/schemas/S3Configuration"
 
@@ -1232,7 +1232,7 @@ components:
           properties:
             type:
               type: string
-              enum: [SFTP]
+              enum: [ SFTP ]
             configuration:
               $ref: "#/components/schemas/SFTPConfiguration"
 
@@ -1245,7 +1245,7 @@ components:
           properties:
             type:
               type: string
-              enum: [SDM]
+              enum: [ SDM ]
             metadata:
               $ref: "#/components/schemas/MetaData"
 
@@ -1258,7 +1258,7 @@ components:
           properties:
             type:
               type: string
-              enum: [WorkZone]
+              enum: [ WorkZone ]
             metadata:
               $ref: "#/components/schemas/MetaData"
 
@@ -1419,6 +1419,14 @@ components:
                 example: uuid
               status:
                 $ref: '#/components/schemas/DocumentStatus'
+              viewLocation:
+                type: string
+                example: 'location'
+                nullable: true
+              downloadLocation:
+                type: string
+                example: 'location'
+                nullable: true
               absoluteUrl:
                 type: string
                 nullable: true
@@ -1443,6 +1451,14 @@ components:
           example: uuid
         status:
           $ref: '#/components/schemas/DocumentStatus'
+        viewLocation:
+          type: string
+          example: 'location'
+          nullable: true
+        downloadLocation:
+          type: string
+          example: 'location'
+          nullable: true
         absoluteUrl:
           type: string
           nullable: true
@@ -1472,7 +1488,7 @@ components:
           items:
             $ref: "#/components/schemas/KeyValueListPair"
           title: Metadata
-          default: []
+          default: [ ]
       type: object
       required:
         - id
@@ -1491,7 +1507,7 @@ components:
           items:
             $ref: "#/components/schemas/VectorKeyValueListPair"
           title: Metadata
-          default: []
+          default: [ ]
       type: object
       required:
         - id
@@ -1510,7 +1526,7 @@ components:
           items:
             $ref: "#/components/schemas/RetrievalKeyValueListPair"
           title: Metadata
-          default: []
+          default: [ ]
       type: object
       required:
         - id
@@ -1538,7 +1554,7 @@ components:
             - enum:
                 - ANY
                 - ALL
-            - {}
+            - { }
       type: object
       required:
         - key
@@ -1566,7 +1582,7 @@ components:
             - enum:
                 - ANY
                 - ALL
-            - {}
+            - { }
       type: object
       required:
         - key
@@ -1594,7 +1610,7 @@ components:
             - enum:
                 - ANY
                 - ALL
-            - {}
+            - { }
       type: object
       required:
         - key
@@ -1672,7 +1688,7 @@ components:
             $ref: '#/components/schemas/VectorDocumentKeyValueListPair'
           type: array
           title: Metadata
-          default: []
+          default: [ ]
         chunks:
           items:
             $ref: '#/components/schemas/VectorChunk'
@@ -1697,7 +1713,7 @@ components:
             $ref: '#/components/schemas/VectorKeyValueListPair'
           type: array
           title: Metadata
-          default: []
+          default: [ ]
         documents:
           items:
             $ref: '#/components/schemas/Document-Output'
@@ -1921,7 +1937,7 @@ components:
           description: >-
             Metadata attached to collection. Useful to restrict search to a
             subset of collections.
-          default: []
+          default: [ ]
       type: object
       required:
         - embeddingConfig
@@ -2128,7 +2144,7 @@ components:
       anyOf:
         - enum:
             - ignoreIfKeyAbsent
-        - {}
+        - { }
       default: ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
     VectorSearchSelectOptionEnum:
@@ -2136,7 +2152,7 @@ components:
       anyOf:
         - enum:
             - ignoreIfKeyAbsent
-        - {}
+        - { }
       default: ignoreIfKeyAbsent
       title: VectorSearchSelectOptionEnum
     RetrievalSearchSelectOptionEnum:
@@ -2144,7 +2160,7 @@ components:
       anyOf:
         - enum:
             - ignoreIfKeyAbsent
-        - {}
+        - { }
       title: RetrievalSearchSelectOptionEnum
     SearchFilter:
       properties:
@@ -2168,7 +2184,7 @@ components:
           description: >-
             Restrict collections considered during search to those annotated
             with the given metadata. Useful when combined with collections=['*']
-          default: []
+          default: [ ]
         documentMetadata:
           items:
             $ref: '#/components/schemas/SearchDocumentKeyValueListPair'
@@ -2178,7 +2194,7 @@ components:
           description: >-
             Restrict documents considered during search to those annotated with
             the given metadata.
-          default: []
+          default: [ ]
         chunkMetadata:
           items:
             $ref: '#/components/schemas/KeyValueListPair'
@@ -2188,7 +2204,7 @@ components:
           description: >-
             Restrict chunks considered during search to those with the given
             metadata.
-          default: []
+          default: [ ]
       type: object
       required:
         - id
@@ -2217,7 +2233,7 @@ components:
           description: >-
             Restrict collections considered during search to those annotated
             with the given metadata. Useful when combined with collections=['*']
-          default: []
+          default: [ ]
         documentMetadata:
           items:
             $ref: '#/components/schemas/VectorSearchDocumentKeyValueListPair'
@@ -2227,7 +2243,7 @@ components:
           description: >-
             Restrict documents considered during search to those annotated with
             the given metadata.
-          default: []
+          default: [ ]
         chunkMetadata:
           items:
             $ref: '#/components/schemas/VectorKeyValueListPair'
@@ -2237,7 +2253,7 @@ components:
           description: >-
             Restrict chunks considered during search to those with the given
             metadata.
-          default: []
+          default: [ ]
       type: object
       required:
         - id
@@ -2287,7 +2303,7 @@ components:
           description: >-
             Metadata attached to collection. Useful to restrict search to a
             subset of collections.
-          default: []
+          default: [ ]
         id:
           type: string
           format: uuid
@@ -2328,7 +2344,7 @@ components:
             $ref: "#/components/schemas/RetrievalKeyValueListPair"
           title: Metadata
           description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
-          default: []
+          default: [ ]
         type:
           $ref: "#/components/schemas/DataRepositoryType"
       type: object
@@ -2352,7 +2368,7 @@ components:
         - enum:
             - vector
             - help.sap.com
-        - {}
+        - { }
       title: DataRepositoryType
     DataRepositoryWithDocuments:
       properties:
@@ -2392,7 +2408,7 @@ components:
           items:
             $ref: "#/components/schemas/RetrievalDocumentKeyValueListPair"
           title: Metadata
-          default: []
+          default: [ ]
         chunks:
           type: array
           items:
@@ -2414,7 +2430,7 @@ components:
             $ref: "#/components/schemas/DataRepositorySearchResult"
           title: Results
           description: List of returned results.
-          default: []
+          default: [ ]
       type: object
       required:
         - filterId
@@ -2461,7 +2477,7 @@ components:
           type: object
           nullable: true
           $ref: "#/components/schemas/RetrievalSearchConfiguration"
-          default: {}
+          default: { }
           minProperties: 0
           maxProperties: 2
         dataRepositories:
@@ -2482,21 +2498,21 @@ components:
             $ref: "#/components/schemas/RetrievalKeyValueListPair"
           title: Datarepositorymetadata
           description: Restrict DataRepositories considered during search to those annotated with the given metadata. Useful when combined with dataRepositories=['*']
-          default: []
+          default: [ ]
         documentMetadata:
           type: array
           items:
             $ref: "#/components/schemas/RetrievalSearchDocumentKeyValueListPair"
           title: Documentmetadata
           description: Restrict documents considered during search to those annotated with the given metadata.
-          default: []
+          default: [ ]
         chunkMetadata:
           type: array
           items:
             $ref: "#/components/schemas/RetrievalKeyValueListPair"
           title: Chunkmetadata
           description: Restrict chunks considered during search to those with the given metadata.
-          default: []
+          default: [ ]
       type: object
       required:
         - id
@@ -2539,7 +2555,7 @@ components:
             $ref: "#/components/schemas/RetrievalDataRepositorySearchResult"
           title: Results
           description: List of returned results.
-          default: []
+          default: [ ]
       type: object
       required:
         - filterId
