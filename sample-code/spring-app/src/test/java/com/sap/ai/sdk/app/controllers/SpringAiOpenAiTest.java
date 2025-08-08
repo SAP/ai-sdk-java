@@ -4,11 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.app.services.SpringAiOpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatResponse;
-
-import java.util.List;
 
 class SpringAiOpenAiTest {
 
@@ -63,10 +62,11 @@ class SpringAiOpenAiTest {
     assertThat(toolCall1.name()).isEqualTo("getCurrentWeather");
     assertThat(toolCall2.name()).isEqualTo("getCurrentWeather");
     assertThat(toolCall1.arguments())
-            .isEqualTo("{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}");
+        .isEqualTo("{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}");
     assertThat(toolCall2.arguments())
-            .isEqualTo("{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}");
+        .isEqualTo("{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}");
   }
+
   @Test
   void testChatMemory() {
     ChatResponse response = service.ChatMemory();
