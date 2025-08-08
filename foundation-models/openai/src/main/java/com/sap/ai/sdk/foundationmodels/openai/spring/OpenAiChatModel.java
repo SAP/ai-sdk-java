@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai.spring;
 
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage.tool;
 import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
 
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiAssistantMessage;
@@ -14,6 +13,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiTextItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMessageToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessage;
+import io.vavr.control.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -66,33 +66,37 @@ public class OpenAiChatModel implements ChatModel {
   private List<OpenAiMessage> toOpenAiRequest(final Prompt prompt) {
     final List<OpenAiMessage> result = new ArrayList<>();
     for (final Message message : prompt.getInstructions()) {
-      // if(((message.getMessageType() == MessageType.USER || message.getMessageType()
-      // ==MessageType.ASSISTANT || message.getMessageType() ==MessageType.SYSTEM ) &&
-      // message.getText() != null) || (message.getMessageType() == MessageType.TOOL)) {
       switch (message.getMessageType()) {
-        case USER -> result.add(OpenAiMessage.user(message.getText()));
-        case ASSISTANT -> result.add(toAssistantMessage((AssistantMessage) message));
-        case SYSTEM -> result.add(OpenAiMessage.system(message.getText()));
-        case TOOL -> result.addAll(toToolMessages((ToolResponseMessage) message));
+        case USER -> Option.of(message.getText()).peek(t -> result.add(OpenAiMessage.user(t)));
+        case SYSTEM -> Option.of(message.getText()).peek(t -> result.add(OpenAiMessage.system(t)));
+        case ASSISTANT -> addAssistantMessage(result, (AssistantMessage) message);
+        case TOOL -> addToolMessages(result, (ToolResponseMessage) message);
       }
-      // }
     }
     return result;
   }
 
-  private static OpenAiAssistantMessage toAssistantMessage(final AssistantMessage message) {
+  private static void addAssistantMessage(
+      final List<OpenAiMessage> result, final AssistantMessage message) {
+    if (message.getText() == null) {
+      return;
+    }
     if (!message.hasToolCalls()) {
-      return OpenAiMessage.assistant(message.getText());
+      result.add(OpenAiMessage.assistant(message.getText()));
+      return;
     }
     final Function<ToolCall, OpenAiToolCall> callTranslate =
         toolCall -> new OpenAiFunctionCall(toolCall.id(), toolCall.name(), toolCall.arguments());
     val content = new OpenAiMessageContent(List.of(new OpenAiTextItem(message.getText())));
     val calls = message.getToolCalls().stream().map(callTranslate).toList();
-    return new OpenAiAssistantMessage(content, calls);
+    result.add(new OpenAiAssistantMessage(content, calls));
   }
 
-  private static List<? extends OpenAiMessage> toToolMessages(final ToolResponseMessage message) {
-    return message.getResponses().stream().map(r -> tool(r.responseData(), r.id())).toList();
+  private static void addToolMessages(
+      final List<OpenAiMessage> result, final ToolResponseMessage message) {
+    for (final ToolResponseMessage.ToolResponse response : message.getResponses()) {
+      result.add(OpenAiMessage.tool(response.responseData(), response.id()));
+    }
   }
 
   @Nonnull
