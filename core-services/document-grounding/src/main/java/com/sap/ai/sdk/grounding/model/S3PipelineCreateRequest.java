@@ -88,7 +88,7 @@ public class S3PipelineCreateRequest implements CreatePipeline
   private TypeEnum type;
 
   @JsonProperty("configuration")
-  private CommonConfiguration _configuration;
+  private S3Configuration _configuration;
 
   @JsonProperty("metadata")
   private MetaData metadata;
@@ -138,7 +138,7 @@ public class S3PipelineCreateRequest implements CreatePipeline
    * @return The same instance of this {@link S3PipelineCreateRequest} class
    */
   @Nonnull
-  public S3PipelineCreateRequest _configuration(@Nonnull final CommonConfiguration _configuration) {
+  public S3PipelineCreateRequest _configuration(@Nonnull final S3Configuration _configuration) {
     this._configuration = _configuration;
     return this;
   }
@@ -149,7 +149,7 @@ public class S3PipelineCreateRequest implements CreatePipeline
    * @return _configuration The _configuration of this {@link S3PipelineCreateRequest} instance.
    */
   @Nonnull
-  public CommonConfiguration getConfiguration() {
+  public S3Configuration getConfiguration() {
     return _configuration;
   }
 
@@ -158,7 +158,7 @@ public class S3PipelineCreateRequest implements CreatePipeline
    *
    * @param _configuration The _configuration of this {@link S3PipelineCreateRequest}
    */
-  public void setConfiguration(@Nonnull final CommonConfiguration _configuration) {
+  public void setConfiguration(@Nonnull final S3Configuration _configuration) {
     this._configuration = _configuration;
   }
 
@@ -323,6 +323,6 @@ public class S3PipelineCreateRequest implements CreatePipeline
      * @param _configuration The _configuration of this {@link S3PipelineCreateRequest}
      * @return The S3PipelineCreateRequest instance.
      */
-    S3PipelineCreateRequest _configuration(@Nonnull final CommonConfiguration _configuration);
+    S3PipelineCreateRequest _configuration(@Nonnull final S3Configuration _configuration);
   }
 }

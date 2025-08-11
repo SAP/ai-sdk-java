@@ -11,18 +11,19 @@ import com.sap.ai.sdk.grounding.client.VectorApi;
 import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
 import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DataRepositoryType;
-import com.sap.ai.sdk.grounding.model.DocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.GetPipelines;
-import com.sap.ai.sdk.grounding.model.KeyValueListPair;
+import com.sap.ai.sdk.grounding.model.RetrievalKeyValueListPair;
+import com.sap.ai.sdk.grounding.model.VectorDocumentKeyValueListPair;
+import com.sap.ai.sdk.grounding.model.VectorKeyValueListPair;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-public class GroundingClientTest {
+class GroundingClientTest {
 
   @RegisterExtension
   private static final WireMockExtension WM =
@@ -56,18 +57,19 @@ public class GroundingClientTest {
               assertThat(c.getTitle()).isEqualTo("test-collection");
               assertThat(c.getEmbeddingConfig()).isNotNull();
               assertThat(c.getEmbeddingConfig().getModelName()).isEqualTo("text-embedding-ada-999");
-              final var meta = KeyValueListPair.create().key("purpose").value("grounding test");
+              final var meta =
+                  VectorKeyValueListPair.create().key("purpose").value("grounding test");
               assertThat(c.getMetadata()).isNotNull().containsExactly(meta);
             });
 
     final UUID collectionId = collections.getResources().get(0).getId();
     final Documents documents = api.getAllDocuments("reosurceGroup", collectionId);
     assertThat(documents).isNotNull();
-    final DocumentKeyValueListPair documentMeta =
-        DocumentKeyValueListPair.create()
+    final var documentMeta =
+        VectorDocumentKeyValueListPair.create()
             .key("url")
             .value("http://hello.com", "123")
-            .matchMode(DocumentKeyValueListPair.MatchModeEnum.ANY);
+            .matchMode(VectorDocumentKeyValueListPair.MatchModeEnum.ANY);
     assertThat(documents.getResources())
         .isNotNull()
         .hasSize(1)
@@ -90,17 +92,21 @@ public class GroundingClientTest {
             d1 -> {
               assertThat(d1).isNotNull();
               assertThat(d1.getContent()).isNotEmpty();
-              final var m1 = KeyValueListPair.create().key("index").value("1");
+              final var m1 = VectorKeyValueListPair.create().key("index").value("1");
               final var m2 =
-                  KeyValueListPair.create().key("sap.document-grounding/language").value("en");
+                  VectorKeyValueListPair.create()
+                      .key("sap.document-grounding/language")
+                      .value("en");
               assertThat(d1.getMetadata()).isNotNull().containsExactly(m1, m2);
             },
             d2 -> {
               assertThat(d2).isNotNull();
               assertThat(d2.getContent()).isNotEmpty();
-              final var m1 = KeyValueListPair.create().key("index").value("2");
+              final var m1 = VectorKeyValueListPair.create().key("index").value("2");
               final var m2 =
-                  KeyValueListPair.create().key("sap.document-grounding/language").value("en");
+                  VectorKeyValueListPair.create()
+                      .key("sap.document-grounding/language")
+                      .value("en");
               assertThat(d2.getMetadata()).isNotNull().containsExactly(m1, m2);
             });
   }
@@ -119,7 +125,8 @@ public class GroundingClientTest {
               assertThat(r.getId()).isNotNull();
               assertThat(r.getTitle()).isEqualTo("test-collection");
               assertThat(r.getType()).isEqualTo(DataRepositoryType.VECTOR);
-              final var meta = KeyValueListPair.create().key("purpose").value("grounding test");
+              final var meta =
+                  RetrievalKeyValueListPair.create().key("purpose").value("grounding test");
               assertThat(r.getMetadata()).isNotNull().containsExactly(meta);
             },
             r2 -> {

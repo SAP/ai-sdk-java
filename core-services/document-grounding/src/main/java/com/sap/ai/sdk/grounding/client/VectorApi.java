@@ -9,8 +9,8 @@ import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.DocumentUpdateRequest;
 import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.DocumentsListResponse;
-import com.sap.ai.sdk.grounding.model.SearchResults;
 import com.sap.ai.sdk.grounding.model.TextSearchRequest;
+import com.sap.ai.sdk.grounding.model.VectorSearchResults;
 import com.sap.ai.sdk.grounding.model.VectorV1VectorEndpointsGetCollectionCreationStatus200Response;
 import com.sap.ai.sdk.grounding.model.VectorV1VectorEndpointsGetCollectionDeletionStatus200Response;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -914,11 +914,11 @@ public class VectorApi extends AbstractOpenApiService {
    *
    * @param aiResourceGroup Resource Group ID
    * @param textSearchRequest The value for the parameter textSearchRequest
-   * @return SearchResults
+   * @return VectorSearchResults
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public SearchResults search(
+  public VectorSearchResults search(
       @Nonnull final String aiResourceGroup, @Nonnull final TextSearchRequest textSearchRequest)
       throws OpenApiRequestException {
     final Object localVarPostBody = textSearchRequest;
@@ -954,8 +954,8 @@ public class VectorApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<SearchResults> localVarReturnType =
-        new ParameterizedTypeReference<SearchResults>() {};
+    final ParameterizedTypeReference<VectorSearchResults> localVarReturnType =
+        new ParameterizedTypeReference<VectorSearchResults>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.POST,
