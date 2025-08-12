@@ -76,7 +76,6 @@ public class OrchestrationClientException extends ClientException {
     return null;
   }
 
-
   /**
    * Retrieves the {@link ErrorResponseStreaming} from the orchestration service, if available.
    *
