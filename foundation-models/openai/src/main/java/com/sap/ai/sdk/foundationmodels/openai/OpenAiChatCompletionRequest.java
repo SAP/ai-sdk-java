@@ -265,6 +265,7 @@ public class OpenAiChatCompletionRequest {
    * @param sequences additional stop sequences
    * @return a new OpenAiChatCompletionRequest instance with the specified stop sequences
    */
+  @Tolerate
   @Nonnull
   public OpenAiChatCompletionRequest withStop(
       @Nonnull final String sequence, @Nonnull final String... sequences) {
@@ -358,8 +359,8 @@ public class OpenAiChatCompletionRequest {
     if (config.tools != null) {
       toolsCombined.addAll(config.tools);
     }
-    if (config.toolsExecutable != null) {
-      for (final OpenAiTool tool : config.toolsExecutable) {
+    if (config.getToolsExecutable() != null) {
+      for (final OpenAiTool tool : config.getToolsExecutable()) {
         toolsCombined.add(tool.createChatCompletionTool());
       }
     }
