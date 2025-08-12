@@ -82,7 +82,7 @@ public class OpenAiChatModel implements ChatModel {
       return;
     }
     final Function<ToolCall, OpenAiToolCall> callTranslate =
-        toolCall -> OpenAiToolCall.create(toolCall.id(), toolCall.name(), toolCall.arguments());
+        toolCall -> OpenAiToolCall.function(toolCall.id(), toolCall.name(), toolCall.arguments());
     val calls = message.getToolCalls().stream().map(callTranslate).toList();
     result.add(OpenAiMessage.assistant(message.getText()).withToolCalls(calls));
   }

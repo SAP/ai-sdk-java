@@ -17,9 +17,10 @@ public sealed interface OpenAiToolCall permits OpenAiFunctionCall {
    * @param name The name of the tool to be called.
    * @param arguments The arguments for the tool call, encoded as a JSON string.
    * @return A new instance of {@link OpenAiToolCall}.
+   * @since 1.10.0
    */
   @Nonnull
-  static OpenAiToolCall create(
+  static OpenAiToolCall function(
       @Nonnull final String id, @Nonnull final String name, @Nonnull final String arguments) {
     return new OpenAiFunctionCall(id, name, arguments);
   }
