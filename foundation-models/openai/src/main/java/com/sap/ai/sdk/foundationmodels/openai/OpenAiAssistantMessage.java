@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import static lombok.AccessLevel.PUBLIC;
+import static lombok.AccessLevel.PACKAGE;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMessageToolCall;
@@ -8,6 +8,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMess
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessageContent;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ToolCallType;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -28,7 +29,7 @@ import lombok.experimental.Accessors;
 @Beta
 @Value
 @Accessors(fluent = true)
-@AllArgsConstructor(access = PUBLIC)
+@AllArgsConstructor(access = PACKAGE)
 public class OpenAiAssistantMessage implements OpenAiMessage {
 
   /** The role associated with this message. */
@@ -53,11 +54,26 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
   List<OpenAiToolCall> toolCalls;
 
   /**
+   * Creates a new assistant message with the given content and additional tool calls.
+   *
+   * @param toolCalls the additional tool calls to associate with the message.
+   * @return a new assistant message with the given content and additional tool calls.
+   * @since 1.10.0
+   */
+  @Nonnull
+  public OpenAiAssistantMessage withToolCalls(
+      @Nonnull final List<? extends OpenAiToolCall> toolCalls) {
+    final List<OpenAiToolCall> newToolCalls = new ArrayList<>(this.toolCalls);
+    newToolCalls.addAll(toolCalls);
+    return new OpenAiAssistantMessage(content, newToolCalls);
+  }
+
+  /**
    * Creates a new assistant message with the given single message as text content.
    *
    * @param singleMessage the message.
    */
-  public OpenAiAssistantMessage(@Nonnull final String singleMessage) {
+  OpenAiAssistantMessage(@Nonnull final String singleMessage) {
     this(
         new OpenAiMessageContent(List.of(new OpenAiTextItem(singleMessage))),
         Collections.emptyList());
