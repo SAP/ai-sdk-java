@@ -19,15 +19,6 @@ import lombok.Value;
  */
 @Beta
 public interface OrchestrationError extends ClientError {
-
-  /**
-   * Gets the error message from the orchestration error.
-   *
-   * @return the error message
-   */
-  @Nonnull
-  String getMessage();
-
   /**
    * Orchestration error response for synchronous requests.
    *
