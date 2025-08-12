@@ -2,7 +2,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 
@@ -13,7 +12,7 @@ import lombok.Value;
  */
 @Beta
 @Value
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = lombok.AccessLevel.PACKAGE)
 public class OpenAiFunctionCall implements OpenAiToolCall {
   /** The unique identifier for the function call. */
   @Nonnull String id;

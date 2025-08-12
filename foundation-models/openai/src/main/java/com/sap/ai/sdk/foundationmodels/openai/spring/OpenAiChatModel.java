@@ -2,14 +2,10 @@ package com.sap.ai.sdk.foundationmodels.openai.spring;
 
 import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
 
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiFunctionCall;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessageContent;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiTextItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMessageToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessage;
@@ -86,10 +82,9 @@ public class OpenAiChatModel implements ChatModel {
       return;
     }
     final Function<ToolCall, OpenAiToolCall> callTranslate =
-        toolCall -> new OpenAiFunctionCall(toolCall.id(), toolCall.name(), toolCall.arguments());
-    val content = new OpenAiMessageContent(List.of(new OpenAiTextItem(message.getText())));
+        toolCall -> OpenAiToolCall.function(toolCall.id(), toolCall.name(), toolCall.arguments());
     val calls = message.getToolCalls().stream().map(callTranslate).toList();
-    result.add(new OpenAiAssistantMessage(content, calls));
+    result.add(OpenAiMessage.assistant(message.getText()).withToolCalls(calls));
   }
 
   private static void addToolMessages(
