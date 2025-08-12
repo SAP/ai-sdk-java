@@ -32,7 +32,7 @@ public class DataRepositorySearchResults
 // CHECKSTYLE:ON
 {
   @JsonProperty("results")
-  private List<ResultsInner2> results = new ArrayList<>();
+  private List<ResultsInner3> results = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -48,7 +48,7 @@ public class DataRepositorySearchResults
    * @return The same instance of this {@link DataRepositorySearchResults} class
    */
   @Nonnull
-  public DataRepositorySearchResults results(@Nonnull final List<ResultsInner2> results) {
+  public DataRepositorySearchResults results(@Nonnull final List<ResultsInner3> results) {
     this.results = results;
     return this;
   }
@@ -60,7 +60,7 @@ public class DataRepositorySearchResults
    * @return The same instance of type {@link DataRepositorySearchResults}
    */
   @Nonnull
-  public DataRepositorySearchResults addResultsItem(@Nonnull final ResultsInner2 resultsItem) {
+  public DataRepositorySearchResults addResultsItem(@Nonnull final ResultsInner3 resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -74,7 +74,7 @@ public class DataRepositorySearchResults
    * @return results The results of this {@link DataRepositorySearchResults} instance.
    */
   @Nonnull
-  public List<ResultsInner2> getResults() {
+  public List<ResultsInner3> getResults() {
     return results;
   }
 
@@ -83,7 +83,7 @@ public class DataRepositorySearchResults
    *
    * @param results List of returned results.
    */
-  public void setResults(@Nonnull final List<ResultsInner2> results) {
+  public void setResults(@Nonnull final List<ResultsInner3> results) {
     this.results = results;
   }
 
@@ -201,7 +201,7 @@ public class DataRepositorySearchResults
      * @param results List of returned results.
      * @return The DataRepositorySearchResults instance.
      */
-    DataRepositorySearchResults results(@Nonnull final List<ResultsInner2> results);
+    DataRepositorySearchResults results(@Nonnull final List<ResultsInner3> results);
 
     /**
      * Set the results of this {@link DataRepositorySearchResults} instance.
@@ -209,7 +209,7 @@ public class DataRepositorySearchResults
      * @param results List of returned results.
      * @return The DataRepositorySearchResults instance.
      */
-    default DataRepositorySearchResults results(@Nonnull final ResultsInner2... results) {
+    default DataRepositorySearchResults results(@Nonnull final ResultsInner3... results) {
       return results(Arrays.asList(results));
     }
   }

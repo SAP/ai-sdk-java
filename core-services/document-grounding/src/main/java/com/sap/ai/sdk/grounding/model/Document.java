@@ -35,10 +35,10 @@ public class Document
   private String id;
 
   @JsonProperty("metadata")
-  private List<DocumentKeyValueListPair> metadata = new ArrayList<>();
+  private List<RetrievalDocumentKeyValueListPair> metadata = new ArrayList<>();
 
   @JsonProperty("chunks")
-  private List<Chunk> chunks = new ArrayList<>();
+  private List<RetrievalChunk> chunks = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -84,7 +84,7 @@ public class Document
    * @return The same instance of this {@link Document} class
    */
   @Nonnull
-  public Document metadata(@Nullable final List<DocumentKeyValueListPair> metadata) {
+  public Document metadata(@Nullable final List<RetrievalDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -96,7 +96,7 @@ public class Document
    * @return The same instance of type {@link Document}
    */
   @Nonnull
-  public Document addMetadataItem(@Nonnull final DocumentKeyValueListPair metadataItem) {
+  public Document addMetadataItem(@Nonnull final RetrievalDocumentKeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -110,7 +110,7 @@ public class Document
    * @return metadata The metadata of this {@link Document} instance.
    */
   @Nonnull
-  public List<DocumentKeyValueListPair> getMetadata() {
+  public List<RetrievalDocumentKeyValueListPair> getMetadata() {
     return metadata;
   }
 
@@ -119,7 +119,7 @@ public class Document
    *
    * @param metadata The metadata of this {@link Document}
    */
-  public void setMetadata(@Nullable final List<DocumentKeyValueListPair> metadata) {
+  public void setMetadata(@Nullable final List<RetrievalDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
@@ -130,7 +130,7 @@ public class Document
    * @return The same instance of this {@link Document} class
    */
   @Nonnull
-  public Document chunks(@Nonnull final List<Chunk> chunks) {
+  public Document chunks(@Nonnull final List<RetrievalChunk> chunks) {
     this.chunks = chunks;
     return this;
   }
@@ -142,7 +142,7 @@ public class Document
    * @return The same instance of type {@link Document}
    */
   @Nonnull
-  public Document addChunksItem(@Nonnull final Chunk chunksItem) {
+  public Document addChunksItem(@Nonnull final RetrievalChunk chunksItem) {
     if (this.chunks == null) {
       this.chunks = new ArrayList<>();
     }
@@ -156,7 +156,7 @@ public class Document
    * @return chunks The chunks of this {@link Document} instance.
    */
   @Nonnull
-  public List<Chunk> getChunks() {
+  public List<RetrievalChunk> getChunks() {
     return chunks;
   }
 
@@ -165,7 +165,7 @@ public class Document
    *
    * @param chunks The chunks of this {@link Document}
    */
-  public void setChunks(@Nonnull final List<Chunk> chunks) {
+  public void setChunks(@Nonnull final List<RetrievalChunk> chunks) {
     this.chunks = chunks;
   }
 
@@ -297,7 +297,7 @@ public class Document
      * @param chunks The chunks of this {@link Document}
      * @return The Document instance.
      */
-    Document chunks(@Nonnull final List<Chunk> chunks);
+    Document chunks(@Nonnull final List<RetrievalChunk> chunks);
 
     /**
      * Set the chunks of this {@link Document} instance.
@@ -305,7 +305,7 @@ public class Document
      * @param chunks The chunks of this {@link Document}
      * @return The Document instance.
      */
-    default Document chunks(@Nonnull final Chunk... chunks) {
+    default Document chunks(@Nonnull final RetrievalChunk... chunks) {
       return chunks(Arrays.asList(chunks));
     }
   }

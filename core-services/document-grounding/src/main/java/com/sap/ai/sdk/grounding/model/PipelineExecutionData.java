@@ -34,6 +34,12 @@ public class PipelineExecutionData
   @JsonProperty("status")
   private PipelineExecutionStatus status;
 
+  @JsonProperty("createdAt")
+  private String createdAt;
+
+  @JsonProperty("modifiedAt")
+  private String modifiedAt;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -103,6 +109,68 @@ public class PipelineExecutionData
   }
 
   /**
+   * Set the createdAt of this {@link PipelineExecutionData} instance and return the same instance.
+   *
+   * @param createdAt The createdAt of this {@link PipelineExecutionData}
+   * @return The same instance of this {@link PipelineExecutionData} class
+   */
+  @Nonnull
+  public PipelineExecutionData createdAt(@Nullable final String createdAt) {
+    this.createdAt = createdAt;
+    return this;
+  }
+
+  /**
+   * Get createdAt
+   *
+   * @return createdAt The createdAt of this {@link PipelineExecutionData} instance.
+   */
+  @Nullable
+  public String getCreatedAt() {
+    return createdAt;
+  }
+
+  /**
+   * Set the createdAt of this {@link PipelineExecutionData} instance.
+   *
+   * @param createdAt The createdAt of this {@link PipelineExecutionData}
+   */
+  public void setCreatedAt(@Nullable final String createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  /**
+   * Set the modifiedAt of this {@link PipelineExecutionData} instance and return the same instance.
+   *
+   * @param modifiedAt The modifiedAt of this {@link PipelineExecutionData}
+   * @return The same instance of this {@link PipelineExecutionData} class
+   */
+  @Nonnull
+  public PipelineExecutionData modifiedAt(@Nullable final String modifiedAt) {
+    this.modifiedAt = modifiedAt;
+    return this;
+  }
+
+  /**
+   * Get modifiedAt
+   *
+   * @return modifiedAt The modifiedAt of this {@link PipelineExecutionData} instance.
+   */
+  @Nullable
+  public String getModifiedAt() {
+    return modifiedAt;
+  }
+
+  /**
+   * Set the modifiedAt of this {@link PipelineExecutionData} instance.
+   *
+   * @param modifiedAt The modifiedAt of this {@link PipelineExecutionData}
+   */
+  public void setModifiedAt(@Nullable final String modifiedAt) {
+    this.modifiedAt = modifiedAt;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link PipelineExecutionData}.
    *
    * @return The set of properties names
@@ -143,6 +211,8 @@ public class PipelineExecutionData
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (id != null) declaredFields.put("id", id);
     if (status != null) declaredFields.put("status", status);
+    if (createdAt != null) declaredFields.put("createdAt", createdAt);
+    if (modifiedAt != null) declaredFields.put("modifiedAt", modifiedAt);
     return declaredFields;
   }
 
@@ -169,12 +239,14 @@ public class PipelineExecutionData
     final PipelineExecutionData pipelineExecutionData = (PipelineExecutionData) o;
     return Objects.equals(this.cloudSdkCustomFields, pipelineExecutionData.cloudSdkCustomFields)
         && Objects.equals(this.id, pipelineExecutionData.id)
-        && Objects.equals(this.status, pipelineExecutionData.status);
+        && Objects.equals(this.status, pipelineExecutionData.status)
+        && Objects.equals(this.createdAt, pipelineExecutionData.createdAt)
+        && Objects.equals(this.modifiedAt, pipelineExecutionData.modifiedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, status, cloudSdkCustomFields);
+    return Objects.hash(id, status, createdAt, modifiedAt, cloudSdkCustomFields);
   }
 
   @Override
@@ -184,6 +256,8 @@ public class PipelineExecutionData
     sb.append("class PipelineExecutionData {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    modifiedAt: ").append(toIndentedString(modifiedAt)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

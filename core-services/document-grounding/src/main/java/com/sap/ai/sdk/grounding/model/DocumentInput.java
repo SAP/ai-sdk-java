@@ -36,7 +36,7 @@ public class DocumentInput
   private List<TextOnlyBaseChunk> chunks = new ArrayList<>();
 
   @JsonProperty("metadata")
-  private List<DocumentKeyValueListPair> metadata = new ArrayList<>();
+  private List<VectorDocumentKeyValueListPair> metadata = new ArrayList<>();
 
   @JsonProperty("id")
   private UUID id;
@@ -100,7 +100,7 @@ public class DocumentInput
    * @return The same instance of this {@link DocumentInput} class
    */
   @Nonnull
-  public DocumentInput metadata(@Nonnull final List<DocumentKeyValueListPair> metadata) {
+  public DocumentInput metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -112,7 +112,7 @@ public class DocumentInput
    * @return The same instance of type {@link DocumentInput}
    */
   @Nonnull
-  public DocumentInput addMetadataItem(@Nonnull final DocumentKeyValueListPair metadataItem) {
+  public DocumentInput addMetadataItem(@Nonnull final VectorDocumentKeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -126,7 +126,7 @@ public class DocumentInput
    * @return metadata The metadata of this {@link DocumentInput} instance.
    */
   @Nonnull
-  public List<DocumentKeyValueListPair> getMetadata() {
+  public List<VectorDocumentKeyValueListPair> getMetadata() {
     return metadata;
   }
 
@@ -135,7 +135,7 @@ public class DocumentInput
    *
    * @param metadata The metadata of this {@link DocumentInput}
    */
-  public void setMetadata(@Nonnull final List<DocumentKeyValueListPair> metadata) {
+  public void setMetadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
@@ -309,7 +309,7 @@ public class DocumentInput
      * @param metadata The metadata of this {@link DocumentInput}
      * @return The DocumentInput builder.
      */
-    Builder2 metadata(@Nonnull final List<DocumentKeyValueListPair> metadata);
+    Builder2 metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata);
 
     /**
      * Set the metadata of this {@link DocumentInput} instance.
@@ -317,7 +317,7 @@ public class DocumentInput
      * @param metadata The metadata of this {@link DocumentInput}
      * @return The DocumentInput builder.
      */
-    default Builder2 metadata(@Nonnull final DocumentKeyValueListPair... metadata) {
+    default Builder2 metadata(@Nonnull final VectorDocumentKeyValueListPair... metadata) {
       return metadata(Arrays.asList(metadata));
     }
   }

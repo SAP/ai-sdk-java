@@ -35,7 +35,7 @@ public class BaseDocument
   private List<TextOnlyBaseChunk> chunks = new ArrayList<>();
 
   @JsonProperty("metadata")
-  private List<DocumentKeyValueListPair> metadata = new ArrayList<>();
+  private List<VectorDocumentKeyValueListPair> metadata = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -96,7 +96,7 @@ public class BaseDocument
    * @return The same instance of this {@link BaseDocument} class
    */
   @Nonnull
-  public BaseDocument metadata(@Nonnull final List<DocumentKeyValueListPair> metadata) {
+  public BaseDocument metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -108,7 +108,7 @@ public class BaseDocument
    * @return The same instance of type {@link BaseDocument}
    */
   @Nonnull
-  public BaseDocument addMetadataItem(@Nonnull final DocumentKeyValueListPair metadataItem) {
+  public BaseDocument addMetadataItem(@Nonnull final VectorDocumentKeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -122,7 +122,7 @@ public class BaseDocument
    * @return metadata The metadata of this {@link BaseDocument} instance.
    */
   @Nonnull
-  public List<DocumentKeyValueListPair> getMetadata() {
+  public List<VectorDocumentKeyValueListPair> getMetadata() {
     return metadata;
   }
 
@@ -131,7 +131,7 @@ public class BaseDocument
    *
    * @param metadata The metadata of this {@link BaseDocument}
    */
-  public void setMetadata(@Nonnull final List<DocumentKeyValueListPair> metadata) {
+  public void setMetadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
@@ -270,7 +270,7 @@ public class BaseDocument
      * @param metadata The metadata of this {@link BaseDocument}
      * @return The BaseDocument instance.
      */
-    BaseDocument metadata(@Nonnull final List<DocumentKeyValueListPair> metadata);
+    BaseDocument metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata);
 
     /**
      * Set the metadata of this {@link BaseDocument} instance.
@@ -278,7 +278,7 @@ public class BaseDocument
      * @param metadata The metadata of this {@link BaseDocument}
      * @return The BaseDocument instance.
      */
-    default BaseDocument metadata(@Nonnull final DocumentKeyValueListPair... metadata) {
+    default BaseDocument metadata(@Nonnull final VectorDocumentKeyValueListPair... metadata) {
       return metadata(Arrays.asList(metadata));
     }
   }
