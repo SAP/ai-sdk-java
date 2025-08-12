@@ -55,6 +55,12 @@ public class OrchestrationClientException extends ClientException {
     return Collections.emptyMap();
   }
 
+  @Override
+  @Nullable
+  public OrchestrationError getClientError() {
+    return (OrchestrationError) super.getClientError();
+  }
+
   /**
    * Retrieves the {@link ErrorResponse} from the orchestration service, if available.
    *
@@ -64,12 +70,12 @@ public class OrchestrationClientException extends ClientException {
   @Beta
   @Nullable
   public ErrorResponse getErrorResponse() {
-    final var clientError = super.getClientError();
-    if (clientError instanceof OrchestrationError.Synchronous orchestrationError) {
+    if (getClientError() instanceof OrchestrationError.Synchronous orchestrationError) {
       return orchestrationError.getErrorResponse();
     }
     return null;
   }
+
 
   /**
    * Retrieves the {@link ErrorResponseStreaming} from the orchestration service, if available.
@@ -80,8 +86,7 @@ public class OrchestrationClientException extends ClientException {
   @Beta
   @Nullable
   public ErrorResponseStreaming getErrorResponseStreaming() {
-    final var clientError = super.getClientError();
-    if (clientError instanceof OrchestrationError.Streaming orchestrationError) {
+    if (getClientError() instanceof OrchestrationError.Streaming orchestrationError) {
       return orchestrationError.getErrorResponse();
     }
     return null;

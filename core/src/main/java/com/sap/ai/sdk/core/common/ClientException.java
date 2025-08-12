@@ -21,6 +21,8 @@ public class ClientException extends RuntimeException {
   /**
    * Wraps a structured error payload received from the remote service, if available. This can be
    * used to extract more detailed error information.
+   *
+   * @since 1.10.0
    */
   @Nullable
   @Getter(onMethod_ = @Beta, value = AccessLevel.PUBLIC)
