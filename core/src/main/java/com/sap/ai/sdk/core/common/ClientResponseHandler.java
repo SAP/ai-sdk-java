@@ -36,7 +36,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   @Nonnull final Class<T> successType;
 
   /** The HTTP error response type */
-  @Nonnull final Class<R> errorType;
+  @Nonnull final Class<? extends R> errorType;
 
   /** The factory to create exceptions for Http 4xx/5xx responses. */
   @Nonnull final ClientExceptionFactory<E, R> exceptionFactory;

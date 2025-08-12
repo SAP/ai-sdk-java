@@ -94,7 +94,7 @@ public class S3PipelineGetResponse implements GetPipeline
   private MetaData metadata;
 
   @JsonProperty("configuration")
-  private CommonConfiguration _configuration;
+  private S3Configuration _configuration;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -203,7 +203,7 @@ public class S3PipelineGetResponse implements GetPipeline
    * @return The same instance of this {@link S3PipelineGetResponse} class
    */
   @Nonnull
-  public S3PipelineGetResponse _configuration(@Nonnull final CommonConfiguration _configuration) {
+  public S3PipelineGetResponse _configuration(@Nonnull final S3Configuration _configuration) {
     this._configuration = _configuration;
     return this;
   }
@@ -214,7 +214,7 @@ public class S3PipelineGetResponse implements GetPipeline
    * @return _configuration The _configuration of this {@link S3PipelineGetResponse} instance.
    */
   @Nonnull
-  public CommonConfiguration getConfiguration() {
+  public S3Configuration getConfiguration() {
     return _configuration;
   }
 
@@ -223,7 +223,7 @@ public class S3PipelineGetResponse implements GetPipeline
    *
    * @param _configuration The _configuration of this {@link S3PipelineGetResponse}
    */
-  public void setConfiguration(@Nonnull final CommonConfiguration _configuration) {
+  public void setConfiguration(@Nonnull final S3Configuration _configuration) {
     this._configuration = _configuration;
   }
 
@@ -373,6 +373,6 @@ public class S3PipelineGetResponse implements GetPipeline
      * @param _configuration The _configuration of this {@link S3PipelineGetResponse}
      * @return The S3PipelineGetResponse instance.
      */
-    S3PipelineGetResponse _configuration(@Nonnull final CommonConfiguration _configuration);
+    S3PipelineGetResponse _configuration(@Nonnull final S3Configuration _configuration);
   }
 }

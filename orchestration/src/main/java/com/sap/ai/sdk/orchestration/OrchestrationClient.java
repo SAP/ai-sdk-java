@@ -12,6 +12,7 @@ import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
+import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -28,6 +29,7 @@ import lombok.val;
 @Slf4j
 public class OrchestrationClient {
   private static final String DEFAULT_SCENARIO = "orchestration";
+  private static final String COMPLETION_ENDPOINT = "/v2/completion";
 
   static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
@@ -127,7 +129,7 @@ public class OrchestrationClient {
   @SuppressWarnings("unchecked")
   private static Map<String, Object> getOutputFilteringChoices(
       @Nonnull final OrchestrationChatCompletionDelta delta) {
-    final var f = delta.getModuleResults().getOutputFiltering();
+    final var f = delta.getIntermediateResults().getOutputFiltering();
     return ((List<Map<String, Object>>) ((Map<String, Object>) f.getData()).get("choices")).get(0);
   }
 
@@ -154,7 +156,7 @@ public class OrchestrationClient {
   @Nonnull
   public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
-    return executor.execute("/completion", request, CompletionPostResponse.class);
+    return executor.execute(COMPLETION_ENDPOINT, request, CompletionPostResponse.class);
   }
 
   /**
@@ -196,7 +198,7 @@ public class OrchestrationClient {
     requestJson.set("orchestration_config", moduleConfigJson);
 
     return new OrchestrationChatResponse(
-        executor.execute("/completion", requestJson, CompletionPostResponse.class));
+        executor.execute(COMPLETION_ENDPOINT, requestJson, CompletionPostResponse.class));
   }
 
   /**
@@ -210,8 +212,9 @@ public class OrchestrationClient {
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
-    request.getOrchestrationConfig().setStream(true);
-    return executor.stream(request);
+    request.getConfig().setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
+
+    return executor.stream(COMPLETION_ENDPOINT, request);
   }
 
   /**

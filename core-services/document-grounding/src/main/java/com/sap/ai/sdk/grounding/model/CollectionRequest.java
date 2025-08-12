@@ -37,7 +37,7 @@ public class CollectionRequest
   private EmbeddingConfig embeddingConfig;
 
   @JsonProperty("metadata")
-  private List<KeyValueListPair> metadata = new ArrayList<>();
+  private List<VectorKeyValueListPair> metadata = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -116,7 +116,7 @@ public class CollectionRequest
    * @return The same instance of this {@link CollectionRequest} class
    */
   @Nonnull
-  public CollectionRequest metadata(@Nullable final List<KeyValueListPair> metadata) {
+  public CollectionRequest metadata(@Nullable final List<VectorKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -128,7 +128,7 @@ public class CollectionRequest
    * @return The same instance of type {@link CollectionRequest}
    */
   @Nonnull
-  public CollectionRequest addMetadataItem(@Nonnull final KeyValueListPair metadataItem) {
+  public CollectionRequest addMetadataItem(@Nonnull final VectorKeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -142,7 +142,7 @@ public class CollectionRequest
    * @return metadata The metadata of this {@link CollectionRequest} instance.
    */
   @Nonnull
-  public List<KeyValueListPair> getMetadata() {
+  public List<VectorKeyValueListPair> getMetadata() {
     return metadata;
   }
 
@@ -152,7 +152,7 @@ public class CollectionRequest
    * @param metadata Metadata attached to collection. Useful to restrict search to a subset of
    *     collections.
    */
-  public void setMetadata(@Nullable final List<KeyValueListPair> metadata) {
+  public void setMetadata(@Nullable final List<VectorKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 

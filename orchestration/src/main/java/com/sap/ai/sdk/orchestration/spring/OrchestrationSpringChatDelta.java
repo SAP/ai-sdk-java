@@ -26,9 +26,7 @@ import org.springframework.ai.chat.model.Generation;
 public class OrchestrationSpringChatDelta extends ChatResponse {
 
   OrchestrationSpringChatDelta(@Nonnull final OrchestrationChatCompletionDelta delta) {
-    super(
-        toGenerations(delta.getOrchestrationResult()),
-        toChatResponseMetadata(delta.getOrchestrationResult()));
+    super(toGenerations(delta.getFinalResult()), toChatResponseMetadata(delta.getFinalResult()));
   }
 
   @Nonnull
@@ -40,7 +38,7 @@ public class OrchestrationSpringChatDelta extends ChatResponse {
   static Generation toGeneration(@Nonnull final LLMChoiceStreaming choice) {
     val metadata = ChatGenerationMetadata.builder().finishReason(choice.getFinishReason());
     metadata.metadata("index", choice.getIndex());
-    if (choice.getLogprobs() != null) {
+    if (choice.getLogprobs() != null && !choice.getLogprobs().getContent().isEmpty()) {
       metadata.metadata("logprobs", choice.getLogprobs().getContent());
     }
     return new Generation(new AssistantMessage(choice.getDelta().getContent()), metadata.build());

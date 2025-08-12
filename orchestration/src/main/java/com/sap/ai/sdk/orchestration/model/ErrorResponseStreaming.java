@@ -28,20 +28,8 @@ import javax.annotation.Nullable;
 public class ErrorResponseStreaming
 // CHECKSTYLE:ON
 {
-  @JsonProperty("request_id")
-  private String requestId;
-
-  @JsonProperty("code")
-  private Integer code;
-
-  @JsonProperty("message")
-  private String message;
-
-  @JsonProperty("location")
-  private String location;
-
-  @JsonProperty("module_results")
-  private ModuleResultsStreaming moduleResults;
+  @JsonProperty("error")
+  private ErrorStreaming error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -50,160 +38,34 @@ public class ErrorResponseStreaming
   protected ErrorResponseStreaming() {}
 
   /**
-   * Set the requestId of this {@link ErrorResponseStreaming} instance and return the same instance.
+   * Set the error of this {@link ErrorResponseStreaming} instance and return the same instance.
    *
-   * @param requestId The requestId of this {@link ErrorResponseStreaming}
+   * @param error The error of this {@link ErrorResponseStreaming}
    * @return The same instance of this {@link ErrorResponseStreaming} class
    */
   @Nonnull
-  public ErrorResponseStreaming requestId(@Nonnull final String requestId) {
-    this.requestId = requestId;
+  public ErrorResponseStreaming error(@Nonnull final ErrorStreaming error) {
+    this.error = error;
     return this;
   }
 
   /**
-   * Get requestId
+   * Get error
    *
-   * @return requestId The requestId of this {@link ErrorResponseStreaming} instance.
+   * @return error The error of this {@link ErrorResponseStreaming} instance.
    */
   @Nonnull
-  public String getRequestId() {
-    return requestId;
+  public ErrorStreaming getError() {
+    return error;
   }
 
   /**
-   * Set the requestId of this {@link ErrorResponseStreaming} instance.
+   * Set the error of this {@link ErrorResponseStreaming} instance.
    *
-   * @param requestId The requestId of this {@link ErrorResponseStreaming}
+   * @param error The error of this {@link ErrorResponseStreaming}
    */
-  public void setRequestId(@Nonnull final String requestId) {
-    this.requestId = requestId;
-  }
-
-  /**
-   * Set the code of this {@link ErrorResponseStreaming} instance and return the same instance.
-   *
-   * @param code The code of this {@link ErrorResponseStreaming}
-   * @return The same instance of this {@link ErrorResponseStreaming} class
-   */
-  @Nonnull
-  public ErrorResponseStreaming code(@Nonnull final Integer code) {
-    this.code = code;
-    return this;
-  }
-
-  /**
-   * Get code
-   *
-   * @return code The code of this {@link ErrorResponseStreaming} instance.
-   */
-  @Nonnull
-  public Integer getCode() {
-    return code;
-  }
-
-  /**
-   * Set the code of this {@link ErrorResponseStreaming} instance.
-   *
-   * @param code The code of this {@link ErrorResponseStreaming}
-   */
-  public void setCode(@Nonnull final Integer code) {
-    this.code = code;
-  }
-
-  /**
-   * Set the message of this {@link ErrorResponseStreaming} instance and return the same instance.
-   *
-   * @param message The message of this {@link ErrorResponseStreaming}
-   * @return The same instance of this {@link ErrorResponseStreaming} class
-   */
-  @Nonnull
-  public ErrorResponseStreaming message(@Nonnull final String message) {
-    this.message = message;
-    return this;
-  }
-
-  /**
-   * Get message
-   *
-   * @return message The message of this {@link ErrorResponseStreaming} instance.
-   */
-  @Nonnull
-  public String getMessage() {
-    return message;
-  }
-
-  /**
-   * Set the message of this {@link ErrorResponseStreaming} instance.
-   *
-   * @param message The message of this {@link ErrorResponseStreaming}
-   */
-  public void setMessage(@Nonnull final String message) {
-    this.message = message;
-  }
-
-  /**
-   * Set the location of this {@link ErrorResponseStreaming} instance and return the same instance.
-   *
-   * @param location Where the error occurred
-   * @return The same instance of this {@link ErrorResponseStreaming} class
-   */
-  @Nonnull
-  public ErrorResponseStreaming location(@Nonnull final String location) {
-    this.location = location;
-    return this;
-  }
-
-  /**
-   * Where the error occurred
-   *
-   * @return location The location of this {@link ErrorResponseStreaming} instance.
-   */
-  @Nonnull
-  public String getLocation() {
-    return location;
-  }
-
-  /**
-   * Set the location of this {@link ErrorResponseStreaming} instance.
-   *
-   * @param location Where the error occurred
-   */
-  public void setLocation(@Nonnull final String location) {
-    this.location = location;
-  }
-
-  /**
-   * Set the moduleResults of this {@link ErrorResponseStreaming} instance and return the same
-   * instance.
-   *
-   * @param moduleResults The moduleResults of this {@link ErrorResponseStreaming}
-   * @return The same instance of this {@link ErrorResponseStreaming} class
-   */
-  @Nonnull
-  public ErrorResponseStreaming moduleResults(
-      @Nullable final ModuleResultsStreaming moduleResults) {
-    this.moduleResults = moduleResults;
-    return this;
-  }
-
-  /**
-   * Get moduleResults
-   *
-   * @return moduleResults The moduleResults of this {@link ErrorResponseStreaming} instance.
-   */
-  @Nonnull
-  public ModuleResultsStreaming getModuleResults() {
-    return moduleResults;
-  }
-
-  /**
-   * Set the moduleResults of this {@link ErrorResponseStreaming} instance.
-   *
-   * @param moduleResults The moduleResults of this {@link ErrorResponseStreaming}
-   */
-  public void setModuleResults(@Nullable final ModuleResultsStreaming moduleResults) {
-    this.moduleResults = moduleResults;
+  public void setError(@Nonnull final ErrorStreaming error) {
+    this.error = error;
   }
 
   /**
@@ -245,11 +107,7 @@ public class ErrorResponseStreaming
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (requestId != null) declaredFields.put("requestId", requestId);
-    if (code != null) declaredFields.put("code", code);
-    if (message != null) declaredFields.put("message", message);
-    if (location != null) declaredFields.put("location", location);
-    if (moduleResults != null) declaredFields.put("moduleResults", moduleResults);
+    if (error != null) declaredFields.put("error", error);
     return declaredFields;
   }
 
@@ -275,16 +133,12 @@ public class ErrorResponseStreaming
     }
     final ErrorResponseStreaming errorResponseStreaming = (ErrorResponseStreaming) o;
     return Objects.equals(this.cloudSdkCustomFields, errorResponseStreaming.cloudSdkCustomFields)
-        && Objects.equals(this.requestId, errorResponseStreaming.requestId)
-        && Objects.equals(this.code, errorResponseStreaming.code)
-        && Objects.equals(this.message, errorResponseStreaming.message)
-        && Objects.equals(this.location, errorResponseStreaming.location)
-        && Objects.equals(this.moduleResults, errorResponseStreaming.moduleResults);
+        && Objects.equals(this.error, errorResponseStreaming.error);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(requestId, code, message, location, moduleResults, cloudSdkCustomFields);
+    return Objects.hash(error, cloudSdkCustomFields);
   }
 
   @Override
@@ -292,11 +146,7 @@ public class ErrorResponseStreaming
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class ErrorResponseStreaming {\n");
-    sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
-    sb.append("    code: ").append(toIndentedString(code)).append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    sb.append("    location: ").append(toIndentedString(location)).append("\n");
-    sb.append("    moduleResults: ").append(toIndentedString(moduleResults)).append("\n");
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -319,58 +169,17 @@ public class ErrorResponseStreaming
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (requestId) ->
-        (code) ->
-            (message) ->
-                (location) ->
-                    new ErrorResponseStreaming()
-                        .requestId(requestId)
-                        .code(code)
-                        .message(message)
-                        .location(location);
+    return (error) -> new ErrorResponseStreaming().error(error);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the requestId of this {@link ErrorResponseStreaming} instance.
+     * Set the error of this {@link ErrorResponseStreaming} instance.
      *
-     * @param requestId The requestId of this {@link ErrorResponseStreaming}
-     * @return The ErrorResponseStreaming builder.
-     */
-    Builder1 requestId(@Nonnull final String requestId);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the code of this {@link ErrorResponseStreaming} instance.
-     *
-     * @param code The code of this {@link ErrorResponseStreaming}
-     * @return The ErrorResponseStreaming builder.
-     */
-    Builder2 code(@Nonnull final Integer code);
-  }
-
-  /** Builder helper class. */
-  public interface Builder2 {
-    /**
-     * Set the message of this {@link ErrorResponseStreaming} instance.
-     *
-     * @param message The message of this {@link ErrorResponseStreaming}
-     * @return The ErrorResponseStreaming builder.
-     */
-    Builder3 message(@Nonnull final String message);
-  }
-
-  /** Builder helper class. */
-  public interface Builder3 {
-    /**
-     * Set the location of this {@link ErrorResponseStreaming} instance.
-     *
-     * @param location Where the error occurred
+     * @param error The error of this {@link ErrorResponseStreaming}
      * @return The ErrorResponseStreaming instance.
      */
-    ErrorResponseStreaming location(@Nonnull final String location);
+    ErrorResponseStreaming error(@Nonnull final ErrorStreaming error);
   }
 }

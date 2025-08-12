@@ -1,28 +1,32 @@
 {
-  "orchestration_config" : {
-    "module_configurations" : {
-      "llm_module_config" : {
-        "model_name" : "gpt-4o-mini",
-        "model_params" : { },
-        "model_version" : "latest"
-      },
-      "templating_module_config" : {
-        "template" : [ {
-          "role" : "user",
-          "content" : "What is 'apple' in German?"
-        }, {
-          "role" : "system",
-          "content" : "You are a language translator. Answer using JSON."
-        } ],
-        "defaults" : { },
-        "response_format" : {
-          "type" : "text"
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o-mini",
+          "params": {},
+          "version": "latest"
         },
-        "tools" : [ ]
+        "prompt": {
+          "template": [
+            {
+              "role": "user",
+              "content": "What is 'apple' in German?"
+            },
+            {
+              "role": "system",
+              "content": "You are a language translator. Answer using JSON."
+            }
+          ],
+          "defaults": {},
+          "response_format": {
+            "type": "text"
+          },
+          "tools": []
+        }
       }
-    },
-    "stream" : false
+    }
   },
-  "input_params" : { },
-  "messages_history" : [ ]
+  "placeholder_values": {},
+  "messages_history": []
 }

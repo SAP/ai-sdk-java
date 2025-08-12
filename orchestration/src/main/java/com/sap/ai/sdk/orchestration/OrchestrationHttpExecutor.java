@@ -49,7 +49,10 @@ class OrchestrationHttpExecutor {
       val client = getHttpClient();
 
       val handler =
-          new ClientResponseHandler<>(responseType, OrchestrationError.class, FACTORY)
+          new ClientResponseHandler<>(
+                  responseType,
+                  OrchestrationError.Synchronous.class,
+                  FACTORY)
               .objectMapper(JACKSON);
       return client.execute(request, handler);
 
@@ -66,16 +69,19 @@ class OrchestrationHttpExecutor {
   }
 
   @Nonnull
-  Stream<OrchestrationChatCompletionDelta> stream(@Nonnull final Object payload) {
+  Stream<OrchestrationChatCompletionDelta> stream(
+      @Nonnull final String path, @Nonnull final Object payload) {
     try {
 
       val json = JACKSON.writeValueAsString(payload);
-      val request = new HttpPost("/completion");
+      val request = new HttpPost(path);
       request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
       val client = getHttpClient();
 
       return new ClientStreamingHandler<>(
-              OrchestrationChatCompletionDelta.class, OrchestrationError.class, FACTORY)
+              OrchestrationChatCompletionDelta.class,
+              OrchestrationError.Streaming.class,
+              FACTORY)
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
 

@@ -43,7 +43,7 @@ public class ClientStreamingHandler<
    */
   public ClientStreamingHandler(
       @Nonnull final Class<D> deltaType,
-      @Nonnull final Class<R> errorType,
+      @Nonnull final Class<? extends R> errorType,
       @Nonnull final ClientExceptionFactory<E, R> exceptionFactory) {
     super(deltaType, errorType, exceptionFactory);
   }

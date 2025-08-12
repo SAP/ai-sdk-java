@@ -1,9 +1,12 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.sap.ai.sdk.orchestration.model.AzureThreshold;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -56,4 +59,26 @@ final class JacksonMixins {
         name = "user")
   })
   interface ChatMessageMixin {}
+
+  /**
+   * Mixin used for parsing response "data" field of
+   * error.intermediate_results.input_filtering.data.azure_content_safety
+   */
+  abstract static class AzureContentSafetyCaseAgnostic {
+    @JsonProperty("hate")
+    @JsonAlias("Hate")
+    private AzureThreshold hate;
+
+    @JsonProperty("self_harm")
+    @JsonAlias("SelfHarm")
+    private AzureThreshold selfHarm;
+
+    @JsonProperty("sexual")
+    @JsonAlias("Sexual")
+    private AzureThreshold sexual;
+
+    @JsonProperty("violence")
+    @JsonAlias("Violence")
+    private AzureThreshold violence;
+  }
 }

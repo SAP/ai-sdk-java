@@ -35,7 +35,7 @@ public class TextOnlyBaseChunk
   private String content;
 
   @JsonProperty("metadata")
-  private List<KeyValueListPair> metadata = new ArrayList<>();
+  private List<VectorKeyValueListPair> metadata = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -81,7 +81,7 @@ public class TextOnlyBaseChunk
    * @return The same instance of this {@link TextOnlyBaseChunk} class
    */
   @Nonnull
-  public TextOnlyBaseChunk metadata(@Nonnull final List<KeyValueListPair> metadata) {
+  public TextOnlyBaseChunk metadata(@Nonnull final List<VectorKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -93,7 +93,7 @@ public class TextOnlyBaseChunk
    * @return The same instance of type {@link TextOnlyBaseChunk}
    */
   @Nonnull
-  public TextOnlyBaseChunk addMetadataItem(@Nonnull final KeyValueListPair metadataItem) {
+  public TextOnlyBaseChunk addMetadataItem(@Nonnull final VectorKeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -107,7 +107,7 @@ public class TextOnlyBaseChunk
    * @return metadata The metadata of this {@link TextOnlyBaseChunk} instance.
    */
   @Nonnull
-  public List<KeyValueListPair> getMetadata() {
+  public List<VectorKeyValueListPair> getMetadata() {
     return metadata;
   }
 
@@ -116,7 +116,7 @@ public class TextOnlyBaseChunk
    *
    * @param metadata The metadata of this {@link TextOnlyBaseChunk}
    */
-  public void setMetadata(@Nonnull final List<KeyValueListPair> metadata) {
+  public void setMetadata(@Nonnull final List<VectorKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
@@ -245,7 +245,7 @@ public class TextOnlyBaseChunk
      * @param metadata The metadata of this {@link TextOnlyBaseChunk}
      * @return The TextOnlyBaseChunk instance.
      */
-    TextOnlyBaseChunk metadata(@Nonnull final List<KeyValueListPair> metadata);
+    TextOnlyBaseChunk metadata(@Nonnull final List<VectorKeyValueListPair> metadata);
 
     /**
      * Set the metadata of this {@link TextOnlyBaseChunk} instance.
@@ -253,7 +253,7 @@ public class TextOnlyBaseChunk
      * @param metadata The metadata of this {@link TextOnlyBaseChunk}
      * @return The TextOnlyBaseChunk instance.
      */
-    default TextOnlyBaseChunk metadata(@Nonnull final KeyValueListPair... metadata) {
+    default TextOnlyBaseChunk metadata(@Nonnull final VectorKeyValueListPair... metadata) {
       return metadata(Arrays.asList(metadata));
     }
   }
