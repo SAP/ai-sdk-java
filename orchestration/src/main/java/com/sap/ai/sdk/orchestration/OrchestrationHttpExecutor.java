@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationClientException.FACTORY;
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException.Streaming;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException.Synchronous;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
@@ -49,7 +50,8 @@ class OrchestrationHttpExecutor {
       val client = getHttpClient();
 
       val handler =
-          new ClientResponseHandler<>(responseType, OrchestrationError.Synchronous.class, FACTORY)
+          new ClientResponseHandler<>(
+                  responseType, OrchestrationError.Synchronous.class, Synchronous.FACTORY)
               .objectMapper(JACKSON);
       return client.execute(request, handler);
 
@@ -76,7 +78,9 @@ class OrchestrationHttpExecutor {
       val client = getHttpClient();
 
       return new ClientStreamingHandler<>(
-              OrchestrationChatCompletionDelta.class, OrchestrationError.Streaming.class, FACTORY)
+              OrchestrationChatCompletionDelta.class,
+              OrchestrationError.Streaming.class,
+              Streaming.FACTORY)
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
 
