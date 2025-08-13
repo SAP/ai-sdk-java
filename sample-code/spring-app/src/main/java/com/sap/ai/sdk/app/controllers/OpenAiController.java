@@ -7,7 +7,6 @@ import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiUsage;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -102,7 +101,7 @@ public class OpenAiController {
     try {
       emitter.send(chunk);
     } catch (final IOException e) {
-      log.error(Arrays.toString(e.getStackTrace()));
+      log.error("Failed to send chunk: {}", e.getMessage(), e);
       emitter.completeWithError(e);
     }
   }
