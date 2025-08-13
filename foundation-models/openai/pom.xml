@@ -154,7 +154,12 @@
       <artifactId>javaparser-core</artifactId>
       <scope>test</scope>
     </dependency>
-  </dependencies>
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-client-chat</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
   <profiles>
     <profile>

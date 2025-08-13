@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai.spring;
 
-import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,11 +14,6 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResp
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import io.vavr.control.Option;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage;
@@ -34,6 +27,14 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.model.tool.DefaultToolCallingChatOptions;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
 import reactor.core.publisher.Flux;
+
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
 
 /**
  * OpenAI Chat Model implementation that interacts with the OpenAI API to generate chat completions.
@@ -163,9 +164,12 @@ public class OpenAiChatModel implements ChatModel {
   static Generation toGeneration(@Nonnull final ChatCompletionResponseMessage choice) {
     // no metadata for now
     val calls = new ArrayList<ToolCall>();
-    for (final ChatCompletionMessageToolCall c : choice.getToolCalls()) {
-      val fnc = c.getFunction();
-      calls.add(new ToolCall(c.getId(), c.getType().getValue(), fnc.getName(), fnc.getArguments()));
+    if (choice.getToolCalls() != null) {
+      for (final ChatCompletionMessageToolCall c : choice.getToolCalls()) {
+        val fnc = c.getFunction();
+        calls.add(
+            new ToolCall(c.getId(), c.getType().getValue(), fnc.getName(), fnc.getArguments()));
+      }
     }
     val message = new AssistantMessage(choice.getContent(), Map.of(), calls);
     return new Generation(message);
