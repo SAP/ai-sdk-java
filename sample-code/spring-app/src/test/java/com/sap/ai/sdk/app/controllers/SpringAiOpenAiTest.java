@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.sap.ai.sdk.app.services.SpringAiOpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -38,9 +40,23 @@ class SpringAiOpenAiTest {
 
   @Test
   void testStreamChatCompletion() {
-    ChatResponse response = service.streamChatCompletion();
-    assertThat(response).isNotNull();
-    assertThat(response.getResult().getOutput().getText()).isNotEmpty();
+    final var stream = service.streamChatCompletion().toStream();
+
+    final var filledDeltaCount = new AtomicInteger(0);
+    stream
+        // foreach consumes all elements, closing the stream at the end
+        .forEach(
+        delta -> {
+          log.info("delta: {}", delta);
+          String text = delta.getResult().getOutput().getText();
+          if (text != null && !text.isEmpty()) {
+            filledDeltaCount.incrementAndGet();
+          }
+        });
+
+    // the first two and the last delta don't have any content
+    // see OpenAiChatCompletionDelta#getDeltaContent
+    assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
   @Test

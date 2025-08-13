@@ -2,6 +2,11 @@ package com.sap.ai.sdk.foundationmodels.openai.spring;
 
 import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiAssistantMessage;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
@@ -9,6 +14,8 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMessageToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import io.vavr.control.Option;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +32,9 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.model.tool.DefaultToolCallingChatOptions;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
+import reactor.core.publisher.Flux;
 
 /**
  * OpenAI Chat Model implementation that interacts with the OpenAI API to generate chat completions.
@@ -42,21 +51,74 @@ public class OpenAiChatModel implements ChatModel {
   @Override
   @Nonnull
   public ChatResponse call(@Nonnull final Prompt prompt) {
-    if (!(prompt.getOptions() instanceof OpenAiChatOptions options)) {
-      throw new IllegalArgumentException(
-          "Please add OpenAiChatOptions to the Prompt: new Prompt(\"message\", new OpenAiChatOptions(config))");
-    }
     val openAiRequest = toOpenAiRequest(prompt);
-    val request = new OpenAiChatCompletionRequest(openAiRequest).withTools(options.getTools());
+    var request = new OpenAiChatCompletionRequest(openAiRequest);
+
+    if ((prompt.getOptions() instanceof DefaultToolCallingChatOptions options)) {
+      request = request.withTools(extractTools(options));
+    }
+
     val result = client.chatCompletion(request);
     val response = new ChatResponse(toGenerations(result));
 
-    if (isInternalToolExecutionEnabled(prompt.getOptions()) && response.hasToolCalls()) {
+    if (prompt.getOptions() != null
+        && isInternalToolExecutionEnabled(prompt.getOptions())
+        && response.hasToolCalls()) {
       val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
       // Send the tool execution result back to the model.
       return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
     }
     return response;
+  }
+
+  @Override
+  @Nonnull
+  public Flux<ChatResponse> stream(@Nonnull final Prompt prompt) {
+    val openAiRequest = toOpenAiRequest(prompt);
+    var request = new OpenAiChatCompletionRequest(openAiRequest);
+    if ((prompt.getOptions() instanceof DefaultToolCallingChatOptions options)) {
+      request = request.withTools(extractTools(options));
+    }
+    val stream = client.streamChatCompletionDeltas(request);
+    final Flux<OpenAiChatCompletionDelta> flux =
+        Flux.generate(
+            stream::iterator,
+            (iterator, sink) -> {
+              if (iterator.hasNext()) {
+                sink.next(iterator.next());
+              } else {
+                sink.complete();
+              }
+              return iterator;
+            });
+    return flux.map(OpenAiChatModel::toChatResponse);
+  }
+
+  private List<ChatCompletionTool> extractTools(final DefaultToolCallingChatOptions options) {
+    val tools = new ArrayList<ChatCompletionTool>();
+    for (val toolCallback : options.getToolCallbacks()) {
+      val toolDefinition = toolCallback.getToolDefinition();
+      try {
+        final Map<String, Object> params =
+            new ObjectMapper().readValue(toolDefinition.inputSchema(), new TypeReference<>() {});
+        val tool =
+            new ChatCompletionTool()
+                .type(ChatCompletionTool.TypeEnum.FUNCTION)
+                .function(
+                    new FunctionObject()
+                        .name(toolDefinition.name())
+                        .description(toolDefinition.description())
+                        .parameters(params));
+        tools.add(tool);
+      } catch (JsonProcessingException ignored) {
+      }
+    }
+    return tools;
+  }
+
+  private static ChatResponse toChatResponse(final OpenAiChatCompletionDelta delta) {
+    val assistantMessage = new AssistantMessage(delta.getDeltaContent(), Map.of());
+    return new ChatResponse(List.of(new Generation(assistantMessage)));
   }
 
   private List<OpenAiMessage> toOpenAiRequest(final Prompt prompt) {
@@ -74,17 +136,14 @@ public class OpenAiChatModel implements ChatModel {
 
   private static void addAssistantMessage(
       final List<OpenAiMessage> result, final AssistantMessage message) {
-    if (message.getText() == null) {
-      return;
-    }
-    if (!message.hasToolCalls()) {
+    if (message.getText() != null) {
       result.add(OpenAiMessage.assistant(message.getText()));
       return;
     }
     final Function<ToolCall, OpenAiToolCall> callTranslate =
         toolCall -> OpenAiToolCall.function(toolCall.id(), toolCall.name(), toolCall.arguments());
     val calls = message.getToolCalls().stream().map(callTranslate).toList();
-    result.add(OpenAiMessage.assistant(message.getText()).withToolCalls(calls));
+    result.add(new OpenAiAssistantMessage(calls));
   }
 
   private static void addToolMessages(

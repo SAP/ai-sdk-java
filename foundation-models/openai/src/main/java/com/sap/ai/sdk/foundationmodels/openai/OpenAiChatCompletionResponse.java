@@ -112,7 +112,7 @@ public class OpenAiChatCompletionResponse {
    */
   @Nonnull
   public List<OpenAiToolMessage> executeTools() {
-    final var tools = originalRequest.getConfig().getToolsExecutable();
+    final var tools = originalRequest.getToolsExecutable();
     return OpenAiTool.execute(tools != null ? tools : List.of(), getMessage());
   }
 }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Value;
@@ -41,7 +42,7 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
    * <p>May contain an empty list of {@link OpenAiContentItem} when tool calls are present.
    */
   @Getter(onMethod_ = @Beta)
-  @Nonnull
+  @Nullable
   OpenAiMessageContent content;
 
   /**
@@ -57,15 +58,10 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
    * Creates a new assistant message with the given content and additional tool calls.
    *
    * @param toolCalls the additional tool calls to associate with the message.
-   * @return a new assistant message with the given content and additional tool calls.
    * @since 1.10.0
    */
-  @Nonnull
-  public OpenAiAssistantMessage withToolCalls(
-      @Nonnull final List<? extends OpenAiToolCall> toolCalls) {
-    final List<OpenAiToolCall> newToolCalls = new ArrayList<>(this.toolCalls);
-    newToolCalls.addAll(toolCalls);
-    return new OpenAiAssistantMessage(content, newToolCalls);
+  public OpenAiAssistantMessage(@Nonnull final List<? extends OpenAiToolCall> toolCalls) {
+    this(null, new ArrayList<>(toolCalls));
   }
 
   /**
@@ -91,9 +87,11 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
             .role(ChatCompletionRequestAssistantMessage.RoleEnum.fromValue(role()))
             .toolCalls(null);
 
-    final var items = content().items();
-    if (!items.isEmpty() && items.get(0) instanceof OpenAiTextItem textItem) {
-      message.content(ChatCompletionRequestAssistantMessageContent.create(textItem.text()));
+    if (content() != null) {
+      final var items = content().items();
+      if (!items.isEmpty() && items.get(0) instanceof OpenAiTextItem textItem) {
+        message.content(ChatCompletionRequestAssistantMessageContent.create(textItem.text()));
+      }
     }
 
     for (final var item : toolCalls()) {
