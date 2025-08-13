@@ -139,7 +139,7 @@ public class OpenAiChatModelTest {
             .willReturn(
                 aResponse()
                     .withHeader("Content-Type", "application/json")
-                    .withBodyFile("chatCompletionToolResponse.json")));
+                    .withBodyFile("weatherToolResponse.json")));
 
     var options = new DefaultToolCallingChatOptions();
     options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
@@ -175,16 +175,16 @@ public class OpenAiChatModelTest {
             .willReturn(
                 aResponse()
                     .withHeader("Content-Type", "application/json")
-                    .withBodyFile("chatCompletionToolResponse.json"))
+                    .withBodyFile("weatherToolResponse.json"))
             .willSetStateTo("Second Call"));
 
     stubFor(
-        post(urlPathEqualTo("/v2/completion"))
+        post(urlPathEqualTo("/chat/completions"))
             .inScenario("Tool Calls")
             .whenScenarioStateIs("Second Call")
             .willReturn(
                 aResponse()
-                    .withBodyFile("toolCallsResponse2.json")
+                    .withBodyFile("weatherToolResponse2.json")
                     .withHeader("Content-Type", "application/json")));
 
     var options = new DefaultToolCallingChatOptions();
@@ -208,7 +208,7 @@ public class OpenAiChatModelTest {
   @Test
   void testChatMemory() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/v2/completion"))
+        post(urlPathEqualTo("/chat/completions"))
             .inScenario("Chat Memory")
             .whenScenarioStateIs(STARTED)
             .willReturn(
@@ -223,7 +223,7 @@ public class OpenAiChatModelTest {
             .whenScenarioStateIs("Second Call")
             .willReturn(
                 aResponse()
-                    .withBodyFile("templatingResponse.json") // The response is not important
+                    .withBodyFile("templatingResponse2.json") // The response is not important
                     .withHeader("Content-Type", "application/json")));
 
     val repository = new InMemoryChatMemoryRepository();
