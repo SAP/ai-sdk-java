@@ -5,7 +5,6 @@ import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInterna
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiAssistantMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
@@ -143,7 +142,7 @@ public class OpenAiChatModel implements ChatModel {
     final Function<ToolCall, OpenAiToolCall> callTranslate =
         toolCall -> OpenAiToolCall.function(toolCall.id(), toolCall.name(), toolCall.arguments());
     val calls = message.getToolCalls().stream().map(callTranslate).toList();
-    result.add(new OpenAiAssistantMessage(calls));
+    result.add(OpenAiMessage.assistant(calls));
   }
 
   private static void addToolMessages(
