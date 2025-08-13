@@ -19,7 +19,6 @@ import lombok.Value;
  */
 @Beta
 public interface OrchestrationError extends ClientError {
-
   /**
    * Orchestration error response for synchronous requests.
    *
@@ -30,11 +29,7 @@ public interface OrchestrationError extends ClientError {
   class Synchronous implements OrchestrationError {
     ErrorResponse errorResponse;
 
-    /**
-     * Gets the error message from the contained original response.
-     *
-     * @return the error message
-     */
+    @Override
     @Nonnull
     public String getMessage() {
       final Error e = errorResponse.getError();
@@ -53,11 +48,7 @@ public interface OrchestrationError extends ClientError {
   class Streaming implements OrchestrationError {
     ErrorResponseStreaming errorResponse;
 
-    /**
-     * Gets the error message from the contained original response.
-     *
-     * @return the error message
-     */
+    @Override
     @Nonnull
     public String getMessage() {
       final ErrorStreaming e = errorResponse.getError();

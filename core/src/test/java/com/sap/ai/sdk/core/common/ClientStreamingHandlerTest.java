@@ -79,11 +79,7 @@ class ClientStreamingHandlerTest extends ClientResponseHandlerTest {
         """;
 
     var response = spy(new BasicClassicHttpResponse(200, "OK"));
-    when(response.getEntity())
-        .thenReturn(new StringEntity(validStreamContent))
-        .thenReturn(new StringEntity(emptyStreamContent))
-        .thenReturn(new StringEntity(malformedLineContent))
-        .thenReturn(new StringEntity(invalidJsonContent));
+    when(response.getEntity()).thenReturn(new StringEntity(validStreamContent));
 
     var stream1 = sut.handleStreamingResponse(response);
     var deltas1 = stream1.toList();
@@ -93,14 +89,17 @@ class ClientStreamingHandlerTest extends ClientResponseHandlerTest {
     assertThat(deltas1.get(1).getDeltaContent()).isEqualTo("delta2");
     assertThat(deltas1.get(1).getFinishReason()).isEqualTo("length");
 
+    when(response.getEntity()).thenReturn(new StringEntity(emptyStreamContent));
     var stream2 = sut.handleStreamingResponse(response);
     assertThat(stream2).isEmpty();
 
+    when(response.getEntity()).thenReturn(new StringEntity(malformedLineContent));
     var stream3 = sut.handleStreamingResponse(response);
     assertThatThrownBy(stream3::toList)
         .isInstanceOf(MyException.class)
         .hasMessageContaining("Failed to parse response");
 
+    when(response.getEntity()).thenReturn(new StringEntity(invalidJsonContent));
     var stream4 = sut.handleStreamingResponse(response);
     assertThatThrownBy(stream4::toList)
         .isInstanceOf(MyException.class)
