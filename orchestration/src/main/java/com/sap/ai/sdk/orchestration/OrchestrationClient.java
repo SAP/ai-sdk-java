@@ -122,7 +122,7 @@ public class OrchestrationClient {
       final var filterDetails =
           Try.of(() -> getOutputFilteringChoices(delta)).getOrElseGet(e -> Map.of());
       final var message = "Content filter filtered the output.";
-      throw new OrchestrationFilterException.Output(message, filterDetails);
+      throw new OrchestrationFilterException.Output(message).setFilterDetails(filterDetails);
     }
   }
 
