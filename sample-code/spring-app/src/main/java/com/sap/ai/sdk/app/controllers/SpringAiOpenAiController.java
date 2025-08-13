@@ -1,10 +1,8 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.app.services.SpringAiOpenAiService;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.beans.factory.annotation.Autowired;

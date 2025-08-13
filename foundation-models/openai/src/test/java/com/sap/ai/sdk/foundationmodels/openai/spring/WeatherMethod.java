@@ -1,12 +1,10 @@
 package com.sap.ai.sdk.foundationmodels.openai.spring;
 
+import javax.annotation.Nonnull;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 
-import javax.annotation.Nonnull;
-
-public class WeatherMethod
-{
+public class WeatherMethod {
 
   /** Unit of temperature */
   public enum Unit {
