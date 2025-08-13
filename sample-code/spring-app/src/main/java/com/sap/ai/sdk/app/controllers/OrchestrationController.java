@@ -133,7 +133,7 @@ class OrchestrationController {
               "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
                   .formatted(e.getStatusCode()));
 
-      Optional.ofNullable(e.getAzureContentSafety())
+      Optional.ofNullable(e.getAzureContentSafetyInput())
           .map(AzureContentSafetyInput::getViolence)
           .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
           .ifPresent(rating -> msg.append("Violence score %d".formatted(rating.getValue())));
@@ -164,7 +164,7 @@ class OrchestrationController {
           new StringBuilder(
               "Failed to obtain a response as the content was flagged by output filter. ");
 
-      Optional.ofNullable(e.getAzureContentSafety())
+      Optional.ofNullable(e.getAzureContentSafetyOutput())
           .map(AzureContentSafetyOutput::getViolence)
           .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
           .ifPresent(rating -> msg.append("Violence score %d ".formatted(rating.getValue())));

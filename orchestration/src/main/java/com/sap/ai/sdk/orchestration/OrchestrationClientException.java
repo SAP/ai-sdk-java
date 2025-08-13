@@ -241,7 +241,7 @@ public class OrchestrationClientException extends ClientException {
        * @return the {@link AzureContentSafetyInput} object, or {@code null} if not available.
        */
       @Nullable
-      default AzureContentSafetyInput getAzureContentSafety() {
+      default AzureContentSafetyInput getAzureContentSafetyInput() {
         return Optional.ofNullable(getFilterDetails().get("azure_content_safety"))
             .map(obj -> MAPPER.convertValue(obj, AzureContentSafetyInput.class))
             .orElse(null);
@@ -256,7 +256,7 @@ public class OrchestrationClientException extends ClientException {
        * @return the {@link AzureContentSafetyOutput} object, or {@code null} if not available.
        */
       @Nullable
-      default AzureContentSafetyOutput getAzureContentSafety() {
+      default AzureContentSafetyOutput getAzureContentSafetyOutput() {
         return Optional.ofNullable(getFilterDetails().get("azure_content_safety"))
             .map(obj -> MAPPER.convertValue(obj, AzureContentSafetyOutput.class))
             .orElse(null);

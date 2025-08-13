@@ -222,7 +222,7 @@ class OrchestrationTest {
         .isInstanceOfSatisfying(
             OrchestrationClientException.Synchronous.InputFilter.class,
             e -> {
-              var actualAzureContentSafety = e.getAzureContentSafety();
+              var actualAzureContentSafety = e.getAzureContentSafetyInput();
               assertThat(actualAzureContentSafety).isNotNull();
               assertThat(actualAzureContentSafety.getViolence()).isGreaterThan(NUMBER_0);
               assertThat(actualAzureContentSafety.getSelfHarm()).isEqualTo(NUMBER_0);
@@ -254,7 +254,7 @@ class OrchestrationTest {
         .isInstanceOfSatisfying(
             OrchestrationClientException.Synchronous.OutputFilter.class,
             e -> {
-              var actualAzureContentSafety = e.getAzureContentSafety();
+              var actualAzureContentSafety = e.getAzureContentSafetyOutput();
               assertThat(actualAzureContentSafety).isNotNull();
               assertThat(actualAzureContentSafety.getViolence()).isGreaterThan(NUMBER_0);
               assertThat(actualAzureContentSafety.getSelfHarm()).isEqualTo(NUMBER_0);

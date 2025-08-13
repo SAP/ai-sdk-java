@@ -474,11 +474,11 @@ class OrchestrationUnitTest {
                   .isEqualTo(
                       "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
 
-              assertThat(e.getAzureContentSafety()).isNotNull();
-              assertThat(e.getAzureContentSafety().getHate()).isEqualTo(NUMBER_6);
-              assertThat(e.getAzureContentSafety().getSelfHarm()).isEqualTo(NUMBER_0);
-              assertThat(e.getAzureContentSafety().getSexual()).isEqualTo(NUMBER_0);
-              assertThat(e.getAzureContentSafety().getViolence()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyInput()).isNotNull();
+              assertThat(e.getAzureContentSafetyInput().getHate()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyInput().getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyInput().getSexual()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyInput().getViolence()).isEqualTo(NUMBER_6);
 
               assertThat(e.getLlamaGuard38b()).isNotNull();
               assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
@@ -520,11 +520,11 @@ class OrchestrationUnitTest {
                           Map.of("violent_crimes", true)));
               assertThat(e.getErrorResponse()).isNull();
 
-              assertThat(e.getAzureContentSafety()).isNotNull();
-              assertThat(e.getAzureContentSafety().getHate()).isEqualTo(NUMBER_6);
-              assertThat(e.getAzureContentSafety().getSelfHarm()).isEqualTo(NUMBER_0);
-              assertThat(e.getAzureContentSafety().getSexual()).isEqualTo(NUMBER_0);
-              assertThat(e.getAzureContentSafety().getViolence()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput()).isNotNull();
+              assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
 
               assertThat(e.getLlamaGuard38b()).isNotNull();
               assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
@@ -796,11 +796,11 @@ class OrchestrationUnitTest {
                               "azure_content_safety",
                               Map.of("Hate", 0, "SelfHarm", 0, "Sexual", 0, "Violence", 4)));
 
-                  assertThat(e.getAzureContentSafety()).isNotNull();
-                  assertThat(e.getAzureContentSafety().getHate()).isEqualTo(NUMBER_0);
-                  assertThat(e.getAzureContentSafety().getSelfHarm()).isEqualTo(NUMBER_0);
-                  assertThat(e.getAzureContentSafety().getSexual()).isEqualTo(NUMBER_0);
-                  assertThat(e.getAzureContentSafety().getViolence()).isEqualTo(NUMBER_4);
+                  assertThat(e.getAzureContentSafetyOutput()).isNotNull();
+                  assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_0);
+                  assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
+                  assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
+                  assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_4);
                 });
       }
 
