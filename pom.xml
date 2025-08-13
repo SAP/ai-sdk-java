@@ -41,10 +41,6 @@
     <url>https://github.com/SAP/ai-sdk-java/tree/main</url>
   </scm>
   <distributionManagement>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org</url>
-    </repository>
     <snapshotRepository>
       <id>artifactory-snapshots</id>
       <url>https://common.repositories.cloud.sap/artifactory/build-snapshots-cloudsdk</url>
