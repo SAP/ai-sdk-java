@@ -7,8 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
-import com.sap.ai.sdk.orchestration.OrchestrationClientException.Streaming;
-import com.sap.ai.sdk.orchestration.OrchestrationClientException.Synchronous;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
@@ -51,7 +49,9 @@ class OrchestrationHttpExecutor {
 
       val handler =
           new ClientResponseHandler<>(
-                  responseType, OrchestrationError.Synchronous.class, Synchronous.FACTORY)
+                  responseType,
+                  OrchestrationError.Synchronous.class,
+                  OrchestrationClientException.Synchronous.FACTORY)
               .objectMapper(JACKSON);
       return client.execute(request, handler);
 
@@ -80,7 +80,7 @@ class OrchestrationHttpExecutor {
       return new ClientStreamingHandler<>(
               OrchestrationChatCompletionDelta.class,
               OrchestrationError.Streaming.class,
-              Streaming.FACTORY)
+              OrchestrationClientException.Streaming.FACTORY)
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
 
