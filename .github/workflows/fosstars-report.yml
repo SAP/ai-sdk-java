@@ -13,8 +13,10 @@ env:
 
 jobs:
   create_fosstars_report:
-    runs-on: ubuntu-latest
     name: "Security rating"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
