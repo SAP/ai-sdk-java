@@ -7,9 +7,11 @@ on:
 
 jobs:
   deploy-snapshot:
-    name: Deploy Snapshot
+    name: "Deploy Snapshot"
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v4

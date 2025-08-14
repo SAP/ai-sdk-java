@@ -10,6 +10,8 @@ env:
 
 jobs:
   end-to-end-tests:
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -41,6 +43,12 @@ jobs:
       - name: "Run tests"
         id: run_tests
         run: |
+          if [ "${{ matrix.environment }}" = "canary" ]; then
+              export AICORE_SERVICE_KEY="${{ secrets.AI_CORE_CANARY }}"
+          else
+              export AICORE_SERVICE_KEY="${{ secrets.AI_CORE_PRODUCTION }}"
+          fi
+          
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} surefire:test -pl :spring-app -DskipTests=false"
           mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}" | tee mvn_output.log # tee writes to both the console and a file
 
@@ -60,10 +68,17 @@ jobs:
           fi
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
-          AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
+          AI_CORE_PRODUCTION: ${{ secrets.production }}
+          AI_CORE_CANARY: ${{ secrets.canary }}
 
       - name: "Start Application Locally"
         run: |
+          if [ "${{ matrix.environment }}" = "canary" ]; then
+              export AICORE_SERVICE_KEY="${{ secrets.AI_CORE_CANARY }}"
+          else
+              export AICORE_SERVICE_KEY="${{ secrets.AI_CORE_PRODUCTION }}"
+          fi
+          
           cd sample-code/spring-app
           mvn spring-boot:run &
           timeout=15
@@ -77,7 +92,8 @@ jobs:
           done
         env:
           # See "End-to-end test application instructions" on the README.md to update the secret
-          AICORE_SERVICE_KEY: ${{ secrets[matrix.secret-name] }}
+          AI_CORE_PRODUCTION: ${{ secrets.production }}
+          AI_CORE_CANARY: ${{ secrets.canary }}
 
       - name: "Health Check"
         # print response body with headers to stdout.  q:body only  O:print  -:stdout  S:headers
