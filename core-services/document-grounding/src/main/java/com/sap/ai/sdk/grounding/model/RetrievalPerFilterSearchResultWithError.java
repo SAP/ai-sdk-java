@@ -28,8 +28,11 @@ import javax.annotation.Nullable;
 public class RetrievalPerFilterSearchResultWithError
 // CHECKSTYLE:ON
 {
-  @JsonProperty("message")
-  private String message;
+  @JsonProperty("filterId")
+  private String filterId;
+
+  @JsonProperty("error")
+  private RetrievalPerFilterSearchResultError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -38,35 +41,68 @@ public class RetrievalPerFilterSearchResultWithError
   protected RetrievalPerFilterSearchResultWithError() {}
 
   /**
-   * Set the message of this {@link RetrievalPerFilterSearchResultWithError} instance and return the
-   * same instance.
+   * Set the filterId of this {@link RetrievalPerFilterSearchResultWithError} instance and return
+   * the same instance.
    *
-   * @param message The message of this {@link RetrievalPerFilterSearchResultWithError}
+   * @param filterId The filterId of this {@link RetrievalPerFilterSearchResultWithError}
    * @return The same instance of this {@link RetrievalPerFilterSearchResultWithError} class
    */
   @Nonnull
-  public RetrievalPerFilterSearchResultWithError message(@Nonnull final String message) {
-    this.message = message;
+  public RetrievalPerFilterSearchResultWithError filterId(@Nonnull final String filterId) {
+    this.filterId = filterId;
     return this;
   }
 
   /**
-   * Get message
+   * Get filterId
    *
-   * @return message The message of this {@link RetrievalPerFilterSearchResultWithError} instance.
+   * @return filterId The filterId of this {@link RetrievalPerFilterSearchResultWithError} instance.
    */
   @Nonnull
-  public String getMessage() {
-    return message;
+  public String getFilterId() {
+    return filterId;
   }
 
   /**
-   * Set the message of this {@link RetrievalPerFilterSearchResultWithError} instance.
+   * Set the filterId of this {@link RetrievalPerFilterSearchResultWithError} instance.
    *
-   * @param message The message of this {@link RetrievalPerFilterSearchResultWithError}
+   * @param filterId The filterId of this {@link RetrievalPerFilterSearchResultWithError}
    */
-  public void setMessage(@Nonnull final String message) {
-    this.message = message;
+  public void setFilterId(@Nonnull final String filterId) {
+    this.filterId = filterId;
+  }
+
+  /**
+   * Set the error of this {@link RetrievalPerFilterSearchResultWithError} instance and return the
+   * same instance.
+   *
+   * @param error The error of this {@link RetrievalPerFilterSearchResultWithError}
+   * @return The same instance of this {@link RetrievalPerFilterSearchResultWithError} class
+   */
+  @Nonnull
+  public RetrievalPerFilterSearchResultWithError error(
+      @Nullable final RetrievalPerFilterSearchResultError error) {
+    this.error = error;
+    return this;
+  }
+
+  /**
+   * Get error
+   *
+   * @return error The error of this {@link RetrievalPerFilterSearchResultWithError} instance.
+   */
+  @Nonnull
+  public RetrievalPerFilterSearchResultError getError() {
+    return error;
+  }
+
+  /**
+   * Set the error of this {@link RetrievalPerFilterSearchResultWithError} instance.
+   *
+   * @param error The error of this {@link RetrievalPerFilterSearchResultWithError}
+   */
+  public void setError(@Nullable final RetrievalPerFilterSearchResultError error) {
+    this.error = error;
   }
 
   /**
@@ -110,7 +146,8 @@ public class RetrievalPerFilterSearchResultWithError
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (message != null) declaredFields.put("message", message);
+    if (filterId != null) declaredFields.put("filterId", filterId);
+    if (error != null) declaredFields.put("error", error);
     return declaredFields;
   }
 
@@ -139,12 +176,13 @@ public class RetrievalPerFilterSearchResultWithError
         (RetrievalPerFilterSearchResultWithError) o;
     return Objects.equals(
             this.cloudSdkCustomFields, retrievalPerFilterSearchResultWithError.cloudSdkCustomFields)
-        && Objects.equals(this.message, retrievalPerFilterSearchResultWithError.message);
+        && Objects.equals(this.filterId, retrievalPerFilterSearchResultWithError.filterId)
+        && Objects.equals(this.error, retrievalPerFilterSearchResultWithError.error);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(message, cloudSdkCustomFields);
+    return Objects.hash(filterId, error, cloudSdkCustomFields);
   }
 
   @Override
@@ -152,7 +190,8 @@ public class RetrievalPerFilterSearchResultWithError
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class RetrievalPerFilterSearchResultWithError {\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -175,17 +214,17 @@ public class RetrievalPerFilterSearchResultWithError
    * RetrievalPerFilterSearchResultWithError} instance with all required arguments.
    */
   public static Builder create() {
-    return (message) -> new RetrievalPerFilterSearchResultWithError().message(message);
+    return (filterId) -> new RetrievalPerFilterSearchResultWithError().filterId(filterId);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the message of this {@link RetrievalPerFilterSearchResultWithError} instance.
+     * Set the filterId of this {@link RetrievalPerFilterSearchResultWithError} instance.
      *
-     * @param message The message of this {@link RetrievalPerFilterSearchResultWithError}
+     * @param filterId The filterId of this {@link RetrievalPerFilterSearchResultWithError}
      * @return The RetrievalPerFilterSearchResultWithError instance.
      */
-    RetrievalPerFilterSearchResultWithError message(@Nonnull final String message);
+    RetrievalPerFilterSearchResultWithError filterId(@Nonnull final String filterId);
   }
 }

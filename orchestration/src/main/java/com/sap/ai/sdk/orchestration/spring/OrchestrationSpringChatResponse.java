@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
@@ -24,7 +23,6 @@ import org.springframework.ai.chat.model.Generation;
  *
  * @since 1.2.0
  */
-@Beta
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class OrchestrationSpringChatResponse extends ChatResponse {
@@ -33,9 +31,8 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
 
   OrchestrationSpringChatResponse(@Nonnull final OrchestrationChatResponse orchestrationResponse) {
     super(
-        toGenerations(orchestrationResponse.getOriginalResponse().getOrchestrationResult()),
-        toChatResponseMetadata(
-            orchestrationResponse.getOriginalResponse().getOrchestrationResult()));
+        toGenerations(orchestrationResponse.getOriginalResponse().getFinalResult()),
+        toChatResponseMetadata(orchestrationResponse.getOriginalResponse().getFinalResult()));
     this.orchestrationResponse = orchestrationResponse;
   }
 
@@ -48,7 +45,7 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
   static Generation toGeneration(@Nonnull final LLMChoice choice) {
     val metadata = ChatGenerationMetadata.builder().finishReason(choice.getFinishReason());
     metadata.metadata("index", choice.getIndex());
-    if (choice.getLogprobs() != null) {
+    if (choice.getLogprobs() != null && !choice.getLogprobs().getContent().isEmpty()) {
       metadata.metadata("logprobs", choice.getLogprobs().getContent());
     }
     val toolCalls =

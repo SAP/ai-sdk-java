@@ -149,9 +149,9 @@ class OrchestrationModuleConfigTest {
     var config = new OrchestrationModuleConfig().withLlmConfig(aiModel);
 
     assertThat(config.getLlmConfig()).isNotNull();
-    assertThat(config.getLlmConfig().getModelName()).isEqualTo(GPT_4O.getName());
-    assertThat(config.getLlmConfig().getModelParams()).isEqualTo(params);
-    assertThat(config.getLlmConfig().getModelVersion()).isEqualTo(version);
+    assertThat(config.getLlmConfig().getName()).isEqualTo(GPT_4O.getName());
+    assertThat(config.getLlmConfig().getParams()).isEqualTo(params);
+    assertThat(config.getLlmConfig().getVersion()).isEqualTo(version);
 
     assertThat(GPT_4O.getParams()).withFailMessage("Static models should be unchanged").isEmpty();
     assertThat(GPT_4O.getVersion())
@@ -170,8 +170,8 @@ class OrchestrationModuleConfigTest {
 
     GroundingModuleConfigConfig configConfig = config.getGroundingConfig().getConfig();
     assertThat(configConfig).isNotNull();
-    assertThat(configConfig.getInputParams()).containsExactly("userMessage");
-    assertThat(configConfig.getOutputParam()).isEqualTo("groundingContext");
+    assertThat(configConfig.getPlaceholders().getInput()).containsExactly("userMessage");
+    assertThat(configConfig.getPlaceholders().getOutput()).isEqualTo("groundingContext");
 
     List<GroundingModuleConfigConfigFiltersInner> filters = configConfig.getFilters();
     assertThat(filters).hasSize(1);

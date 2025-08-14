@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.model.LLMChoiceStreaming;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResultStreaming;
@@ -22,15 +21,12 @@ import org.springframework.ai.chat.model.Generation;
  *
  * @since 1.2.0
  */
-@Beta
 @Value
 @EqualsAndHashCode(callSuper = true)
 public class OrchestrationSpringChatDelta extends ChatResponse {
 
   OrchestrationSpringChatDelta(@Nonnull final OrchestrationChatCompletionDelta delta) {
-    super(
-        toGenerations(delta.getOrchestrationResult()),
-        toChatResponseMetadata(delta.getOrchestrationResult()));
+    super(toGenerations(delta.getFinalResult()), toChatResponseMetadata(delta.getFinalResult()));
   }
 
   @Nonnull
@@ -42,7 +38,7 @@ public class OrchestrationSpringChatDelta extends ChatResponse {
   static Generation toGeneration(@Nonnull final LLMChoiceStreaming choice) {
     val metadata = ChatGenerationMetadata.builder().finishReason(choice.getFinishReason());
     metadata.metadata("index", choice.getIndex());
-    if (choice.getLogprobs() != null) {
+    if (choice.getLogprobs() != null && !choice.getLogprobs().getContent().isEmpty()) {
       metadata.metadata("logprobs", choice.getLogprobs().getContent());
     }
     return new Generation(new AssistantMessage(choice.getDelta().getContent()), metadata.build());

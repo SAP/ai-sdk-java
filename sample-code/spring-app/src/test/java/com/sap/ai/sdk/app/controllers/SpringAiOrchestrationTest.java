@@ -68,7 +68,7 @@ class SpringAiOrchestrationTest {
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
             "Prompt filtered due to safety violations. Please modify the prompt and try again.")
-        .hasMessageContaining("400 Bad Request");
+        .hasMessageContaining("400 (Bad Request)");
   }
 
   @Test
@@ -84,7 +84,7 @@ class SpringAiOrchestrationTest {
         ((OrchestrationSpringChatResponse) response)
             .getOrchestrationResponse()
             .getOriginalResponse()
-            .getModuleResults()
+            .getIntermediateResults()
             .getInputFiltering();
     assertThat(filterResult.getMessage()).contains("skipped");
   }
@@ -102,7 +102,7 @@ class SpringAiOrchestrationTest {
         ((OrchestrationSpringChatResponse) response)
             .getOrchestrationResponse()
             .getOriginalResponse()
-            .getModuleResults()
+            .getIntermediateResults()
             .getOutputFiltering();
     assertThat(filterResult.getMessage()).containsPattern("1 of 1 choices failed");
   }
@@ -120,7 +120,7 @@ class SpringAiOrchestrationTest {
         ((OrchestrationSpringChatResponse) response)
             .getOrchestrationResponse()
             .getOriginalResponse()
-            .getModuleResults()
+            .getIntermediateResults()
             .getOutputFiltering();
     assertThat(filterResult.getMessage()).containsPattern("0 of \\d+ choices failed");
   }

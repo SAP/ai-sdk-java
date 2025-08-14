@@ -1,6 +1,6 @@
 /*
- * AI Core
- * Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a batch job, for example to pre-process or train your models, or perform batch inference.  Serve inference requests of trained models. Deploy а trained machine learning model as a web service to serve inference requests with high performance.  Register your own Docker registry, synchronize your AI content from your own git repository, and register your own object store for training data and trained models.
+ * Grounding
+ * Grounding is a service designed to handle data-related tasks, such as grounding and retrieval, using vector databases. It provides specialized data retrieval through these databases, grounding the retrieval process with your own external and context-relevant data. Grounding combines generative AI capabilities with the ability to use real-time, precise data to improve decision-making and business operations for specific AI-driven business solutions.
  *
  *
  *
@@ -9,7 +9,7 @@
  * Do not edit the class manually.
  */
 
-package com.sap.ai.sdk.core.model;
+package com.sap.ai.sdk.grounding.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -23,53 +23,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** InlineObject2 */
+/** ManualPipelineTrigger */
 // CHECKSTYLE:OFF
-public class InlineObject2
+public class ManualPipelineTrigger
 // CHECKSTYLE:ON
 {
-  @JsonProperty("error")
-  private AiApiError error;
+  @JsonProperty("pipelineId")
+  private String pipelineId;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for InlineObject2. */
-  protected InlineObject2() {}
+  /** Default constructor for ManualPipelineTrigger. */
+  protected ManualPipelineTrigger() {}
 
   /**
-   * Set the error of this {@link InlineObject2} instance and return the same instance.
+   * Set the pipelineId of this {@link ManualPipelineTrigger} instance and return the same instance.
    *
-   * @param error The error of this {@link InlineObject2}
-   * @return The same instance of this {@link InlineObject2} class
+   * @param pipelineId The pipelineId of this {@link ManualPipelineTrigger}
+   * @return The same instance of this {@link ManualPipelineTrigger} class
    */
   @Nonnull
-  public InlineObject2 error(@Nullable final AiApiError error) {
-    this.error = error;
+  public ManualPipelineTrigger pipelineId(@Nullable final String pipelineId) {
+    this.pipelineId = pipelineId;
     return this;
   }
 
   /**
-   * Get error
+   * Get pipelineId
    *
-   * @return error The error of this {@link InlineObject2} instance.
+   * @return pipelineId The pipelineId of this {@link ManualPipelineTrigger} instance.
    */
   @Nonnull
-  public AiApiError getError() {
-    return error;
+  public String getPipelineId() {
+    return pipelineId;
   }
 
   /**
-   * Set the error of this {@link InlineObject2} instance.
+   * Set the pipelineId of this {@link ManualPipelineTrigger} instance.
    *
-   * @param error The error of this {@link InlineObject2}
+   * @param pipelineId The pipelineId of this {@link ManualPipelineTrigger}
    */
-  public void setError(@Nullable final AiApiError error) {
-    this.error = error;
+  public void setPipelineId(@Nullable final String pipelineId) {
+    this.pipelineId = pipelineId;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link InlineObject2}.
+   * Get the names of the unrecognizable properties of the {@link ManualPipelineTrigger}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class InlineObject2
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link InlineObject2} instance.
+   * Get the value of an unrecognizable property of this {@link ManualPipelineTrigger} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,14 +91,15 @@ public class InlineObject2
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("InlineObject2 has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "ManualPipelineTrigger has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link InlineObject2} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link ManualPipelineTrigger} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -106,13 +107,13 @@ public class InlineObject2
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (error != null) declaredFields.put("error", error);
+    if (pipelineId != null) declaredFields.put("pipelineId", pipelineId);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link InlineObject2} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ManualPipelineTrigger} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -130,22 +131,22 @@ public class InlineObject2
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final InlineObject2 inlineObject2 = (InlineObject2) o;
-    return Objects.equals(this.cloudSdkCustomFields, inlineObject2.cloudSdkCustomFields)
-        && Objects.equals(this.error, inlineObject2.error);
+    final ManualPipelineTrigger manualPipelineTrigger = (ManualPipelineTrigger) o;
+    return Objects.equals(this.cloudSdkCustomFields, manualPipelineTrigger.cloudSdkCustomFields)
+        && Objects.equals(this.pipelineId, manualPipelineTrigger.pipelineId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(error, cloudSdkCustomFields);
+    return Objects.hash(pipelineId, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class InlineObject2 {\n");
-    sb.append("    error: ").append(toIndentedString(error)).append("\n");
+    sb.append("class ManualPipelineTrigger {\n");
+    sb.append("    pipelineId: ").append(toIndentedString(pipelineId)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -163,8 +164,8 @@ public class InlineObject2
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link InlineObject2} instance. No arguments are required. */
-  public static InlineObject2 create() {
-    return new InlineObject2();
+  /** Create a new {@link ManualPipelineTrigger} instance. No arguments are required. */
+  public static ManualPipelineTrigger create() {
+    return new ManualPipelineTrigger();
   }
 }

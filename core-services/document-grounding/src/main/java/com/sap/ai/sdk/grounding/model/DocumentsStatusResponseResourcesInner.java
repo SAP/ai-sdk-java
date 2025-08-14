@@ -34,6 +34,27 @@ public class DocumentsStatusResponseResourcesInner
   @JsonProperty("status")
   private DocumentStatus status;
 
+  @JsonProperty("viewLocation")
+  private String viewLocation;
+
+  @JsonProperty("downloadLocation")
+  private String downloadLocation;
+
+  @JsonProperty("absoluteUrl")
+  private String absoluteUrl;
+
+  @JsonProperty("title")
+  private String title;
+
+  @JsonProperty("metadataId")
+  private String metadataId;
+
+  @JsonProperty("createdTimestamp")
+  private String createdTimestamp;
+
+  @JsonProperty("lastUpdatedTimestamp")
+  private String lastUpdatedTimestamp;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -105,6 +126,245 @@ public class DocumentsStatusResponseResourcesInner
   }
 
   /**
+   * Set the viewLocation of this {@link DocumentsStatusResponseResourcesInner} instance and return
+   * the same instance.
+   *
+   * @param viewLocation The viewLocation of this {@link DocumentsStatusResponseResourcesInner}
+   * @return The same instance of this {@link DocumentsStatusResponseResourcesInner} class
+   */
+  @Nonnull
+  public DocumentsStatusResponseResourcesInner viewLocation(@Nullable final String viewLocation) {
+    this.viewLocation = viewLocation;
+    return this;
+  }
+
+  /**
+   * Get viewLocation
+   *
+   * @return viewLocation The viewLocation of this {@link DocumentsStatusResponseResourcesInner}
+   *     instance.
+   */
+  @Nullable
+  public String getViewLocation() {
+    return viewLocation;
+  }
+
+  /**
+   * Set the viewLocation of this {@link DocumentsStatusResponseResourcesInner} instance.
+   *
+   * @param viewLocation The viewLocation of this {@link DocumentsStatusResponseResourcesInner}
+   */
+  public void setViewLocation(@Nullable final String viewLocation) {
+    this.viewLocation = viewLocation;
+  }
+
+  /**
+   * Set the downloadLocation of this {@link DocumentsStatusResponseResourcesInner} instance and
+   * return the same instance.
+   *
+   * @param downloadLocation The downloadLocation of this {@link
+   *     DocumentsStatusResponseResourcesInner}
+   * @return The same instance of this {@link DocumentsStatusResponseResourcesInner} class
+   */
+  @Nonnull
+  public DocumentsStatusResponseResourcesInner downloadLocation(
+      @Nullable final String downloadLocation) {
+    this.downloadLocation = downloadLocation;
+    return this;
+  }
+
+  /**
+   * Get downloadLocation
+   *
+   * @return downloadLocation The downloadLocation of this {@link
+   *     DocumentsStatusResponseResourcesInner} instance.
+   */
+  @Nullable
+  public String getDownloadLocation() {
+    return downloadLocation;
+  }
+
+  /**
+   * Set the downloadLocation of this {@link DocumentsStatusResponseResourcesInner} instance.
+   *
+   * @param downloadLocation The downloadLocation of this {@link
+   *     DocumentsStatusResponseResourcesInner}
+   */
+  public void setDownloadLocation(@Nullable final String downloadLocation) {
+    this.downloadLocation = downloadLocation;
+  }
+
+  /**
+   * Set the absoluteUrl of this {@link DocumentsStatusResponseResourcesInner} instance and return
+   * the same instance.
+   *
+   * @param absoluteUrl The absoluteUrl of this {@link DocumentsStatusResponseResourcesInner}
+   * @return The same instance of this {@link DocumentsStatusResponseResourcesInner} class
+   */
+  @Nonnull
+  public DocumentsStatusResponseResourcesInner absoluteUrl(@Nullable final String absoluteUrl) {
+    this.absoluteUrl = absoluteUrl;
+    return this;
+  }
+
+  /**
+   * Get absoluteUrl
+   *
+   * @return absoluteUrl The absoluteUrl of this {@link DocumentsStatusResponseResourcesInner}
+   *     instance.
+   */
+  @Nullable
+  public String getAbsoluteUrl() {
+    return absoluteUrl;
+  }
+
+  /**
+   * Set the absoluteUrl of this {@link DocumentsStatusResponseResourcesInner} instance.
+   *
+   * @param absoluteUrl The absoluteUrl of this {@link DocumentsStatusResponseResourcesInner}
+   */
+  public void setAbsoluteUrl(@Nullable final String absoluteUrl) {
+    this.absoluteUrl = absoluteUrl;
+  }
+
+  /**
+   * Set the title of this {@link DocumentsStatusResponseResourcesInner} instance and return the
+   * same instance.
+   *
+   * @param title The title of this {@link DocumentsStatusResponseResourcesInner}
+   * @return The same instance of this {@link DocumentsStatusResponseResourcesInner} class
+   */
+  @Nonnull
+  public DocumentsStatusResponseResourcesInner title(@Nullable final String title) {
+    this.title = title;
+    return this;
+  }
+
+  /**
+   * Get title
+   *
+   * @return title The title of this {@link DocumentsStatusResponseResourcesInner} instance.
+   */
+  @Nullable
+  public String getTitle() {
+    return title;
+  }
+
+  /**
+   * Set the title of this {@link DocumentsStatusResponseResourcesInner} instance.
+   *
+   * @param title The title of this {@link DocumentsStatusResponseResourcesInner}
+   */
+  public void setTitle(@Nullable final String title) {
+    this.title = title;
+  }
+
+  /**
+   * Set the metadataId of this {@link DocumentsStatusResponseResourcesInner} instance and return
+   * the same instance.
+   *
+   * @param metadataId The metadataId of this {@link DocumentsStatusResponseResourcesInner}
+   * @return The same instance of this {@link DocumentsStatusResponseResourcesInner} class
+   */
+  @Nonnull
+  public DocumentsStatusResponseResourcesInner metadataId(@Nullable final String metadataId) {
+    this.metadataId = metadataId;
+    return this;
+  }
+
+  /**
+   * Get metadataId
+   *
+   * @return metadataId The metadataId of this {@link DocumentsStatusResponseResourcesInner}
+   *     instance.
+   */
+  @Nullable
+  public String getMetadataId() {
+    return metadataId;
+  }
+
+  /**
+   * Set the metadataId of this {@link DocumentsStatusResponseResourcesInner} instance.
+   *
+   * @param metadataId The metadataId of this {@link DocumentsStatusResponseResourcesInner}
+   */
+  public void setMetadataId(@Nullable final String metadataId) {
+    this.metadataId = metadataId;
+  }
+
+  /**
+   * Set the createdTimestamp of this {@link DocumentsStatusResponseResourcesInner} instance and
+   * return the same instance.
+   *
+   * @param createdTimestamp The createdTimestamp of this {@link
+   *     DocumentsStatusResponseResourcesInner}
+   * @return The same instance of this {@link DocumentsStatusResponseResourcesInner} class
+   */
+  @Nonnull
+  public DocumentsStatusResponseResourcesInner createdTimestamp(
+      @Nullable final String createdTimestamp) {
+    this.createdTimestamp = createdTimestamp;
+    return this;
+  }
+
+  /**
+   * Get createdTimestamp
+   *
+   * @return createdTimestamp The createdTimestamp of this {@link
+   *     DocumentsStatusResponseResourcesInner} instance.
+   */
+  @Nonnull
+  public String getCreatedTimestamp() {
+    return createdTimestamp;
+  }
+
+  /**
+   * Set the createdTimestamp of this {@link DocumentsStatusResponseResourcesInner} instance.
+   *
+   * @param createdTimestamp The createdTimestamp of this {@link
+   *     DocumentsStatusResponseResourcesInner}
+   */
+  public void setCreatedTimestamp(@Nullable final String createdTimestamp) {
+    this.createdTimestamp = createdTimestamp;
+  }
+
+  /**
+   * Set the lastUpdatedTimestamp of this {@link DocumentsStatusResponseResourcesInner} instance and
+   * return the same instance.
+   *
+   * @param lastUpdatedTimestamp The lastUpdatedTimestamp of this {@link
+   *     DocumentsStatusResponseResourcesInner}
+   * @return The same instance of this {@link DocumentsStatusResponseResourcesInner} class
+   */
+  @Nonnull
+  public DocumentsStatusResponseResourcesInner lastUpdatedTimestamp(
+      @Nullable final String lastUpdatedTimestamp) {
+    this.lastUpdatedTimestamp = lastUpdatedTimestamp;
+    return this;
+  }
+
+  /**
+   * Get lastUpdatedTimestamp
+   *
+   * @return lastUpdatedTimestamp The lastUpdatedTimestamp of this {@link
+   *     DocumentsStatusResponseResourcesInner} instance.
+   */
+  @Nonnull
+  public String getLastUpdatedTimestamp() {
+    return lastUpdatedTimestamp;
+  }
+
+  /**
+   * Set the lastUpdatedTimestamp of this {@link DocumentsStatusResponseResourcesInner} instance.
+   *
+   * @param lastUpdatedTimestamp The lastUpdatedTimestamp of this {@link
+   *     DocumentsStatusResponseResourcesInner}
+   */
+  public void setLastUpdatedTimestamp(@Nullable final String lastUpdatedTimestamp) {
+    this.lastUpdatedTimestamp = lastUpdatedTimestamp;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link
    * DocumentsStatusResponseResourcesInner}.
    *
@@ -147,6 +407,14 @@ public class DocumentsStatusResponseResourcesInner
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (id != null) declaredFields.put("id", id);
     if (status != null) declaredFields.put("status", status);
+    if (viewLocation != null) declaredFields.put("viewLocation", viewLocation);
+    if (downloadLocation != null) declaredFields.put("downloadLocation", downloadLocation);
+    if (absoluteUrl != null) declaredFields.put("absoluteUrl", absoluteUrl);
+    if (title != null) declaredFields.put("title", title);
+    if (metadataId != null) declaredFields.put("metadataId", metadataId);
+    if (createdTimestamp != null) declaredFields.put("createdTimestamp", createdTimestamp);
+    if (lastUpdatedTimestamp != null)
+      declaredFields.put("lastUpdatedTimestamp", lastUpdatedTimestamp);
     return declaredFields;
   }
 
@@ -176,12 +444,32 @@ public class DocumentsStatusResponseResourcesInner
     return Objects.equals(
             this.cloudSdkCustomFields, documentsStatusResponseResourcesInner.cloudSdkCustomFields)
         && Objects.equals(this.id, documentsStatusResponseResourcesInner.id)
-        && Objects.equals(this.status, documentsStatusResponseResourcesInner.status);
+        && Objects.equals(this.status, documentsStatusResponseResourcesInner.status)
+        && Objects.equals(this.viewLocation, documentsStatusResponseResourcesInner.viewLocation)
+        && Objects.equals(
+            this.downloadLocation, documentsStatusResponseResourcesInner.downloadLocation)
+        && Objects.equals(this.absoluteUrl, documentsStatusResponseResourcesInner.absoluteUrl)
+        && Objects.equals(this.title, documentsStatusResponseResourcesInner.title)
+        && Objects.equals(this.metadataId, documentsStatusResponseResourcesInner.metadataId)
+        && Objects.equals(
+            this.createdTimestamp, documentsStatusResponseResourcesInner.createdTimestamp)
+        && Objects.equals(
+            this.lastUpdatedTimestamp, documentsStatusResponseResourcesInner.lastUpdatedTimestamp);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, status, cloudSdkCustomFields);
+    return Objects.hash(
+        id,
+        status,
+        viewLocation,
+        downloadLocation,
+        absoluteUrl,
+        title,
+        metadataId,
+        createdTimestamp,
+        lastUpdatedTimestamp,
+        cloudSdkCustomFields);
   }
 
   @Override
@@ -191,6 +479,15 @@ public class DocumentsStatusResponseResourcesInner
     sb.append("class DocumentsStatusResponseResourcesInner {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    viewLocation: ").append(toIndentedString(viewLocation)).append("\n");
+    sb.append("    downloadLocation: ").append(toIndentedString(downloadLocation)).append("\n");
+    sb.append("    absoluteUrl: ").append(toIndentedString(absoluteUrl)).append("\n");
+    sb.append("    title: ").append(toIndentedString(title)).append("\n");
+    sb.append("    metadataId: ").append(toIndentedString(metadataId)).append("\n");
+    sb.append("    createdTimestamp: ").append(toIndentedString(createdTimestamp)).append("\n");
+    sb.append("    lastUpdatedTimestamp: ")
+        .append(toIndentedString(lastUpdatedTimestamp))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +35,7 @@ public class ResultsInner1
   private String filterId;
 
   @JsonProperty("results")
-  private List<RetrievalDataRepositorySearchResult> results = new ArrayList<>();
-
-  @JsonProperty("message")
-  private String message;
+  private List<DocumentsChunk> results = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -79,11 +77,11 @@ public class ResultsInner1
   /**
    * Set the results of this {@link ResultsInner1} instance and return the same instance.
    *
-   * @param results List of returned results.
+   * @param results The results of this {@link ResultsInner1}
    * @return The same instance of this {@link ResultsInner1} class
    */
   @Nonnull
-  public ResultsInner1 results(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
+  public ResultsInner1 results(@Nonnull final List<DocumentsChunk> results) {
     this.results = results;
     return this;
   }
@@ -95,8 +93,7 @@ public class ResultsInner1
    * @return The same instance of type {@link ResultsInner1}
    */
   @Nonnull
-  public ResultsInner1 addResultsItem(
-      @Nonnull final RetrievalDataRepositorySearchResult resultsItem) {
+  public ResultsInner1 addResultsItem(@Nonnull final DocumentsChunk resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -105,53 +102,22 @@ public class ResultsInner1
   }
 
   /**
-   * List of returned results.
+   * Get results
    *
    * @return results The results of this {@link ResultsInner1} instance.
    */
   @Nonnull
-  public List<RetrievalDataRepositorySearchResult> getResults() {
+  public List<DocumentsChunk> getResults() {
     return results;
   }
 
   /**
    * Set the results of this {@link ResultsInner1} instance.
    *
-   * @param results List of returned results.
+   * @param results The results of this {@link ResultsInner1}
    */
-  public void setResults(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
+  public void setResults(@Nonnull final List<DocumentsChunk> results) {
     this.results = results;
-  }
-
-  /**
-   * Set the message of this {@link ResultsInner1} instance and return the same instance.
-   *
-   * @param message The message of this {@link ResultsInner1}
-   * @return The same instance of this {@link ResultsInner1} class
-   */
-  @Nonnull
-  public ResultsInner1 message(@Nonnull final String message) {
-    this.message = message;
-    return this;
-  }
-
-  /**
-   * Get message
-   *
-   * @return message The message of this {@link ResultsInner1} instance.
-   */
-  @Nonnull
-  public String getMessage() {
-    return message;
-  }
-
-  /**
-   * Set the message of this {@link ResultsInner1} instance.
-   *
-   * @param message The message of this {@link ResultsInner1}
-   */
-  public void setMessage(@Nonnull final String message) {
-    this.message = message;
   }
 
   /**
@@ -194,7 +160,6 @@ public class ResultsInner1
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (filterId != null) declaredFields.put("filterId", filterId);
     if (results != null) declaredFields.put("results", results);
-    if (message != null) declaredFields.put("message", message);
     return declaredFields;
   }
 
@@ -221,13 +186,12 @@ public class ResultsInner1
     final ResultsInner1 resultsInner1 = (ResultsInner1) o;
     return Objects.equals(this.cloudSdkCustomFields, resultsInner1.cloudSdkCustomFields)
         && Objects.equals(this.filterId, resultsInner1.filterId)
-        && Objects.equals(this.results, resultsInner1.results)
-        && Objects.equals(this.message, resultsInner1.message);
+        && Objects.equals(this.results, resultsInner1.results);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filterId, results, message, cloudSdkCustomFields);
+    return Objects.hash(filterId, results, cloudSdkCustomFields);
   }
 
   @Override
@@ -237,7 +201,6 @@ public class ResultsInner1
     sb.append("class ResultsInner1 {\n");
     sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -260,7 +223,7 @@ public class ResultsInner1
    * with all required arguments.
    */
   public static Builder create() {
-    return (filterId) -> (message) -> new ResultsInner1().filterId(filterId).message(message);
+    return (filterId) -> (results) -> new ResultsInner1().filterId(filterId).results(results);
   }
 
   /** Builder helper class. */
@@ -277,11 +240,21 @@ public class ResultsInner1
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the message of this {@link ResultsInner1} instance.
+     * Set the results of this {@link ResultsInner1} instance.
      *
-     * @param message The message of this {@link ResultsInner1}
+     * @param results The results of this {@link ResultsInner1}
      * @return The ResultsInner1 instance.
      */
-    ResultsInner1 message(@Nonnull final String message);
+    ResultsInner1 results(@Nonnull final List<DocumentsChunk> results);
+
+    /**
+     * Set the results of this {@link ResultsInner1} instance.
+     *
+     * @param results The results of this {@link ResultsInner1}
+     * @return The ResultsInner1 instance.
+     */
+    default ResultsInner1 results(@Nonnull final DocumentsChunk... results) {
+      return results(Arrays.asList(results));
+    }
   }
 }

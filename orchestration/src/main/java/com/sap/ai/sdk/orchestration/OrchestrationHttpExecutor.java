@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationClientException.FACTORY;
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,6 +27,7 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 @Slf4j
 class OrchestrationHttpExecutor {
   private final Supplier<HttpDestination> destinationSupplier;
+
   private static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
   OrchestrationHttpExecutor(@Nonnull final Supplier<HttpDestination> destinationSupplier)
@@ -47,8 +49,7 @@ class OrchestrationHttpExecutor {
       val client = getHttpClient();
 
       val handler =
-          new ClientResponseHandler<>(
-                  responseType, OrchestrationError.class, OrchestrationClientException::new)
+          new ClientResponseHandler<>(responseType, OrchestrationError.Synchronous.class, FACTORY)
               .objectMapper(JACKSON);
       return client.execute(request, handler);
 
@@ -65,18 +66,17 @@ class OrchestrationHttpExecutor {
   }
 
   @Nonnull
-  Stream<OrchestrationChatCompletionDelta> stream(@Nonnull final Object payload) {
+  Stream<OrchestrationChatCompletionDelta> stream(
+      @Nonnull final String path, @Nonnull final Object payload) {
     try {
 
       val json = JACKSON.writeValueAsString(payload);
-      val request = new HttpPost("/completion");
+      val request = new HttpPost(path);
       request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
       val client = getHttpClient();
 
       return new ClientStreamingHandler<>(
-              OrchestrationChatCompletionDelta.class,
-              OrchestrationError.class,
-              OrchestrationClientException::new)
+              OrchestrationChatCompletionDelta.class, OrchestrationError.Streaming.class, FACTORY)
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
 

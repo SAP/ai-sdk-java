@@ -5,13 +5,16 @@ import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
-import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
+import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
+import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -124,10 +127,19 @@ class OrchestrationController {
     final OrchestrationChatResponse response;
     try {
       response = service.inputFiltering(policy);
-    } catch (OrchestrationClientException e) {
-      final var msg = "Failed to obtain a response as the content was flagged by input filter.";
-      log.debug(msg, e);
-      return ResponseEntity.internalServerError().body(msg);
+    } catch (OrchestrationFilterException.Input e) {
+      final var msg =
+          new StringBuilder(
+              "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
+                  .formatted(e.getStatusCode()));
+
+      Optional.ofNullable(e.getAzureContentSafetyInput())
+          .map(AzureContentSafetyInput::getViolence)
+          .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
+          .ifPresent(rating -> msg.append("Violence score %d".formatted(rating.getValue())));
+
+      log.debug(msg.toString(), e);
+      return ResponseEntity.internalServerError().body(msg.toString());
     }
 
     if ("json".equals(format)) {
@@ -142,19 +154,29 @@ class OrchestrationController {
       @Nullable @RequestParam(value = "format", required = false) final String format,
       @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
 
-    final OrchestrationChatResponse response;
+    final var response = service.outputFiltering(policy);
+
+    final String content;
     try {
-      response = service.outputFiltering(policy);
-    } catch (OrchestrationClientException e) {
-      final var msg = "Failed to obtain a response as the content was flagged by output filter.";
-      log.debug(msg, e);
-      return ResponseEntity.internalServerError().body(msg);
+      content = response.getContent();
+    } catch (OrchestrationFilterException.Output e) {
+      final var msg =
+          new StringBuilder(
+              "Failed to obtain a response as the content was flagged by output filter. ");
+
+      Optional.ofNullable(e.getAzureContentSafetyOutput())
+          .map(AzureContentSafetyOutput::getViolence)
+          .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
+          .ifPresent(rating -> msg.append("Violence score %d ".formatted(rating.getValue())));
+
+      log.debug(msg.toString(), e);
+      return ResponseEntity.internalServerError().body(msg.toString());
     }
 
     if ("json".equals(format)) {
       return response;
     }
-    return response.getContent();
+    return content;
   }
 
   @GetMapping("/llamaGuardFilter/{enabled}")
@@ -166,8 +188,13 @@ class OrchestrationController {
     final OrchestrationChatResponse response;
     try {
       response = service.llamaGuardInputFilter(enabled);
-    } catch (OrchestrationClientException e) {
-      final var msg = "Failed to obtain a response as the content was flagged by input filter.";
+    } catch (OrchestrationFilterException.Input e) {
+      var msg =
+          "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
+              .formatted(e.getStatusCode());
+      if (e.getLlamaGuard38b() != null) {
+        msg += " Violent crimes are %s".formatted(e.getLlamaGuard38b().isViolentCrimes());
+      }
       log.debug(msg, e);
       return ResponseEntity.internalServerError().body(msg);
     }

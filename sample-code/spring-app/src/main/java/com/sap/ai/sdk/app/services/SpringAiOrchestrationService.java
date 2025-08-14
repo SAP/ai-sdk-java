@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,12 +25,18 @@ import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringUtil;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.chat.messages.SystemMessage;
+import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.tool.ToolCallbacks;
+import org.springframework.ai.support.ToolCallbacks;
+import org.springframework.ai.tool.ToolCallbackProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -40,6 +47,13 @@ public class SpringAiOrchestrationService {
   private final OrchestrationModuleConfig config =
       new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
   private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);
+
+  @Nullable
+  @Autowired(required = false)
+  ToolCallbackProvider toolCallbackProvider;
+
+  @Value("${spring.profiles.active:}")
+  private String activeProfile;
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -174,14 +188,50 @@ public class SpringAiOrchestrationService {
   }
 
   /**
+   * Example using an MCP client to use a file system tool. Enabled via dedicated Spring profile,
+   * since it requires an actual MCP server to run.
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public ChatResponse toolCallingMcp() {
+    // check if spring profile is set to 'mcp'
+    if (!activeProfile.equals("mcp")) {
+      throw new IllegalStateException(
+          "The 'mcp' Spring profile is not active. Set it, e.g. by passing a JVM parameter '-Dspring.profiles.active=mcp'.");
+    }
+    if (toolCallbackProvider == null) {
+      throw new IllegalStateException(
+          "No MCP clients were found. Ensure that you configured the clients correctly in the application.yaml file.");
+    }
+    // GPT-4o-mini doesn't work too well with the file system tool, so we use 4o here
+    val options = new OrchestrationChatOptions(config.withLlmConfig(GPT_4O));
+    options.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
+    options.setInternalToolExecutionEnabled(true);
+
+    val sys =
+        new SystemMessage(
+            """
+            Please read through the markdown files in my file system.
+            Ensure to first query the allowed directories.
+            Then use any `.md` files you find to answer the user's question.
+            Do **NOT** query for `*.md` since that doesn't work, ensure to query for `.md` instead.""");
+    val usr = new UserMessage("How can I use Spring AI with the SAP AI SDK?");
+
+    val prompt = new Prompt(List.of(sys, usr), options);
+    return client.call(prompt);
+  }
+
+  /**
    * Chat request to OpenAI through the Orchestration service using chat memory.
    *
    * @return the assistant response object
    */
   @Nonnull
   public ChatResponse chatMemory() {
-    val memory = new InMemoryChatMemory();
-    val advisor = new MessageChatMemoryAdvisor(memory);
+    val repository = new InMemoryChatMemoryRepository();
+    val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
+    val advisor = MessageChatMemoryAdvisor.builder(memory).build();
     val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
     val prompt1 = new Prompt("What is the capital of France?", defaultOptions);
     val prompt2 = new Prompt("And what is the typical food there?", defaultOptions);

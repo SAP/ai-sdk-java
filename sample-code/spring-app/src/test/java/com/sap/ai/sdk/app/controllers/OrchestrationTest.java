@@ -2,6 +2,7 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+import static com.sap.ai.sdk.orchestration.model.AzureThreshold.*;
 import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -14,6 +15,7 @@ import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
@@ -80,7 +82,7 @@ class OrchestrationTest {
   @Test
   void testTemplate() {
     assertThat(service.getConfig().getLlmConfig()).isNotNull();
-    val modelName = service.getConfig().getLlmConfig().getModelName();
+    val modelName = service.getConfig().getLlmConfig().getName();
 
     val result = service.template("German");
     val response = result.getOriginalResponse();
@@ -89,7 +91,7 @@ class OrchestrationTest {
     assertThat(((TextItem) result.getAllMessages().get(0).content().items().get(0)).text())
         .isEqualTo("Reply with 'Orchestration Service is working!' in German");
     assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
-    var llm = response.getModuleResults().getLlm();
+    var llm = response.getIntermediateResults().getLlm();
     assertThat(llm.getId()).isEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");
     assertThat(llm.getCreated()).isGreaterThan(1);
@@ -104,7 +106,7 @@ class OrchestrationTest {
     assertThat(usage.getPromptTokens()).isGreaterThan(1);
     assertThat(usage.getTotalTokens()).isGreaterThan(1);
 
-    var orchestrationResult = (response.getOrchestrationResult());
+    var orchestrationResult = (response.getFinalResult());
     assertThat(orchestrationResult.getObject()).isEqualTo("chat.completion");
     assertThat(orchestrationResult.getCreated()).isGreaterThan(1);
     assertThat(orchestrationResult.getModel()).isEqualTo(modelName);
@@ -130,10 +132,10 @@ class OrchestrationTest {
   void testMaskingAnonymization() {
     var response = service.maskingAnonymization(DPIEntities.PERSON);
     var result = response.getOriginalResponse();
-    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getFinalResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
 
-    var maskingResult = result.getModuleResults().getInputMasking();
+    var maskingResult = result.getIntermediateResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();
     var data = (Map<String, Object>) maskingResult.getData();
     var maskedMessage = (String) data.get("masked_template");
@@ -141,7 +143,7 @@ class OrchestrationTest {
         .describedAs("The masked input should not contain any user names")
         .doesNotContain("Alice", "Bob");
 
-    assertThat(result.getModuleResults().getOutputUnmasking()).isEmpty();
+    assertThat(result.getIntermediateResults().getOutputUnmasking()).isEmpty();
   }
 
   @SuppressWarnings("unchecked")
@@ -149,13 +151,13 @@ class OrchestrationTest {
   void testMaskingPseudonymization() {
     var response = service.maskingPseudonymization(DPIEntities.PERSON);
     var result = response.getOriginalResponse();
-    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getFinalResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(llmChoice.getMessage().getContent())
         .describedAs("The final response should contain the original user name")
         .contains("Mallory");
 
-    var maskingResult = result.getModuleResults().getInputMasking();
+    var maskingResult = result.getIntermediateResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();
     var data = (Map<String, Object>) maskingResult.getData();
     var maskedMessage = (String) data.get("masked_template");
@@ -164,7 +166,7 @@ class OrchestrationTest {
         .doesNotContain("Mallory", "Alice", "Bob")
         .contains("MASKED_PERSON");
 
-    var unmaskingResult = result.getModuleResults().getOutputUnmasking();
+    var unmaskingResult = result.getIntermediateResults().getOutputUnmasking();
     assertThat(unmaskingResult).isNotEmpty();
     assertThat(unmaskingResult.get(0).getMessage().getContent())
         .describedAs("The unmasking step should replace the pseudonyms used by the LLM")
@@ -178,14 +180,15 @@ class OrchestrationTest {
     assertThat(System.getProperty("aicore.landscape")).isNotEqualTo("production");
     var response = service.grounding("What does Joule do?", true);
     var result = response.getOriginalResponse();
-    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getFinalResult()).getChoices().get(0);
     assertThat(response).isNotNull();
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
-    assertThat(result.getModuleResults().getGrounding()).isNotNull();
-    assertThat(result.getModuleResults().getGrounding().getData()).isNotNull();
-    assertThat(result.getModuleResults().getGrounding().getMessage()).isEqualTo("grounding result");
+    assertThat(result.getIntermediateResults().getGrounding()).isNotNull();
+    assertThat(result.getIntermediateResults().getGrounding().getData()).isNotNull();
+    assertThat(result.getIntermediateResults().getGrounding().getMessage())
+        .isEqualTo("grounding result");
 
-    var maskingResult = result.getModuleResults().getInputMasking();
+    var maskingResult = result.getIntermediateResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();
   }
 
@@ -196,7 +199,7 @@ class OrchestrationTest {
     var response = service.groundingSharepoint("What is the secret for the AI SDK e2e test?");
     assertThat(response).isNotNull();
     var result = response.getOriginalResponse();
-    var llmChoice = result.getOrchestrationResult().getChoices().get(0);
+    var llmChoice = result.getFinalResult().getChoices().get(0);
     assertThat(llmChoice.getMessage().getContent()).contains("&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/");
   }
 
@@ -204,7 +207,7 @@ class OrchestrationTest {
   void testCompletionWithResourceGroup() {
     var response = service.completionWithResourceGroup("ai-sdk-java-e2e", "Hello world!");
     var result = response.getOriginalResponse();
-    var llmChoice = (result.getOrchestrationResult()).getChoices().get(0);
+    var llmChoice = (result.getFinalResult()).getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(llmChoice.getMessage().getContent()).isNotEmpty();
   }
@@ -214,10 +217,19 @@ class OrchestrationTest {
     var policy = AzureFilterThreshold.ALLOW_SAFE;
 
     assertThatThrownBy(() -> service.inputFiltering(policy))
-        .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
             "Prompt filtered due to safety violations. Please modify the prompt and try again.")
-        .hasMessageContaining("400 Bad Request");
+        .hasMessageContaining("400 (Bad Request)")
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Input.class,
+            e -> {
+              var actualAzureContentSafety = e.getAzureContentSafetyInput();
+              assertThat(actualAzureContentSafety).isNotNull();
+              assertThat(actualAzureContentSafety.getViolence()).isGreaterThan(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSexual()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getHate()).isEqualTo(NUMBER_0);
+            });
   }
 
   @Test
@@ -229,7 +241,7 @@ class OrchestrationTest {
     assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
     assertThat(response.getContent()).isNotEmpty();
 
-    var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
+    var filterResult = response.getOriginalResponse().getIntermediateResults().getInputFiltering();
     assertThat(filterResult.getMessage()).contains("passed"); // prompt shield is a filter
   }
 
@@ -239,8 +251,17 @@ class OrchestrationTest {
     var response = service.outputFiltering(policy);
 
     assertThatThrownBy(response::getContent)
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("Content filter filtered the output.");
+        .hasMessageContaining("Content filter filtered the output.")
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Output.class,
+            e -> {
+              var actualAzureContentSafety = e.getAzureContentSafetyOutput();
+              assertThat(actualAzureContentSafety).isNotNull();
+              assertThat(actualAzureContentSafety.getViolence()).isGreaterThan(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getSexual()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.getHate()).isEqualTo(NUMBER_0);
+            });
   }
 
   @Test
@@ -252,17 +273,27 @@ class OrchestrationTest {
     assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
     assertThat(response.getContent()).isNotEmpty();
 
-    var filterResult = response.getOriginalResponse().getModuleResults().getOutputFiltering();
+    var filterResult = response.getOriginalResponse().getIntermediateResults().getOutputFiltering();
     assertThat(filterResult.getMessage()).containsPattern("0 of \\d+ choices failed");
   }
 
   @Test
   void testLlamaGuardEnabled() {
     assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
-        .isInstanceOf(OrchestrationClientException.class)
+        .isInstanceOf(OrchestrationFilterException.Input.class)
         .hasMessageContaining(
             "Prompt filtered due to safety violations. Please modify the prompt and try again.")
-        .hasMessageContaining("400 Bad Request");
+        .hasMessageContaining("400 (Bad Request)")
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Input.class,
+            e -> {
+              var llamaGuard38b = e.getLlamaGuard38b();
+              assertThat(llamaGuard38b).isNotNull();
+              assertThat(llamaGuard38b.isViolentCrimes()).isTrue();
+              assertThat(llamaGuard38b.isHate()).isFalse();
+              assertThat(llamaGuard38b.isChildExploitation()).isFalse();
+              assertThat(llamaGuard38b.isDefamation()).isFalse();
+            });
   }
 
   @Test
@@ -272,7 +303,7 @@ class OrchestrationTest {
     assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
     assertThat(response.getContent()).isNotEmpty();
 
-    var filterResult = response.getOriginalResponse().getModuleResults().getInputFiltering();
+    var filterResult = response.getOriginalResponse().getIntermediateResults().getInputFiltering();
     assertThat(filterResult.getMessage()).contains("skipped");
   }
 
@@ -283,7 +314,7 @@ class OrchestrationTest {
             .imageInput(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png")
             .getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -302,7 +333,7 @@ class OrchestrationTest {
       System.out.println("Error fetching or reading the image from URL: " + e.getMessage());
     }
     val result = service.imageInput(dataUrl).getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -313,7 +344,7 @@ class OrchestrationTest {
             .multiStringInput(
                 List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"))
             .getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -328,7 +359,7 @@ class OrchestrationTest {
   @Test
   void testResponseFormatJsonObject() {
     val result = service.responseFormatJsonObject("apple").getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
     assertThat(choices.get(0).getMessage().getContent()).contains("\"language\":");
     assertThat(choices.get(0).getMessage().getContent()).contains("\"translation\":");
@@ -337,14 +368,14 @@ class OrchestrationTest {
   @Test
   void testResponseFormatText() {
     val result = service.responseFormatText("apple").getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
   void testTemplateFromPromptRegistryById() {
     val result = service.templateFromPromptRegistryById("Cloud ERP systems").getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -352,7 +383,7 @@ class OrchestrationTest {
   void testTemplateFromPromptRegistryByScenario() {
     val result =
         service.templateFromPromptRegistryByScenario("Cloud ERP systems").getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -363,7 +394,7 @@ class OrchestrationTest {
             .localPromptTemplate(
                 Files.readString(Path.of("src/main/resources/promptTemplateExample.yaml")))
             .getOriginalResponse();
-    val choices = (result.getOrchestrationResult()).getChoices();
+    val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
@@ -377,7 +408,7 @@ class OrchestrationTest {
 
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithTemplate))
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("status 400 Bad Request")
+        .hasMessageContaining("status 400 (Bad Request)")
         .hasMessageContaining("Error processing template:");
   }
 
@@ -388,8 +419,8 @@ class OrchestrationTest {
     val configWithFilter = config.withInputFiltering(filterConfig);
 
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithFilter))
-        .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("status 400 Bad Request")
+        .isInstanceOf(OrchestrationFilterException.Input.class)
+        .hasMessageContaining("status 400 (Bad Request)")
         .hasMessageContaining("Filtering Module - Input Filter");
   }
 
@@ -402,7 +433,7 @@ class OrchestrationTest {
 
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithMasking))
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining("status 400 Bad Request")
+        .hasMessageContaining("status 400 (Bad Request)")
         .hasMessageContaining("'unknown_default_open_api' is not one of");
   }
 
@@ -415,9 +446,9 @@ class OrchestrationTest {
     assertThat(content).contains("Der", "ist");
 
     GenericModuleResult inputTranslation =
-        result.getOriginalResponse().getModuleResults().getInputTranslation();
+        result.getOriginalResponse().getIntermediateResults().getInputTranslation();
     GenericModuleResult outputTranslation =
-        result.getOriginalResponse().getModuleResults().getOutputTranslation();
+        result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
     assertThat(inputTranslation).isNotNull();
     assertThat(outputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage()).isEqualTo("Input to LLM is translated successfully.");

@@ -10,6 +10,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -117,13 +118,14 @@ abstract class BaseOpenAiClientTest {
         .assertThatThrownBy(request::run)
         .describedAs("Server errors should be handled")
         .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("500");
+        .hasMessageContaining("500")
+        .satisfies(e -> assertThat(((OpenAiClientException) e).getHttpResponse()).isNotNull());
 
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Error objects from OpenAI should be interpreted")
         .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("error message: 'foo'");
+        .hasMessageContaining("400 (Bad Request): foo");
 
     softly
         .assertThatThrownBy(request::run)
@@ -143,7 +145,7 @@ abstract class BaseOpenAiClientTest {
         .assertThatThrownBy(request::run)
         .describedAs("Empty responses should be handled")
         .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("was empty");
+        .hasMessageContaining("is empty");
 
     softly.assertAll();
   }

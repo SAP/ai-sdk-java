@@ -19,12 +19,18 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonSubTypes({
   @JsonSubTypes.Type(value = MSSharePointPipelineGetResponse.class, name = "MSSharePoint"),
   @JsonSubTypes.Type(value = S3PipelineGetResponse.class, name = "S3"),
+  @JsonSubTypes.Type(value = SDMPipelineGetResponse.class, name = "SDM"),
   @JsonSubTypes.Type(value = SFTPPipelineGetResponse.class, name = "SFTP"),
+  @JsonSubTypes.Type(value = WorkZonePipelineGetResponse.class, name = "WorkZone"),
   @JsonSubTypes.Type(
       value = MSSharePointPipelineGetResponse.class,
       name = "MSSharePointPipelineGetResponse"),
   @JsonSubTypes.Type(value = S3PipelineGetResponse.class, name = "S3PipelineGetResponse"),
+  @JsonSubTypes.Type(value = SDMPipelineGetResponse.class, name = "SDMPipelineGetResponse"),
   @JsonSubTypes.Type(value = SFTPPipelineGetResponse.class, name = "SFTPPipelineGetResponse"),
+  @JsonSubTypes.Type(
+      value = WorkZonePipelineGetResponse.class,
+      name = "WorkZonePipelineGetResponse"),
 })
 public interface GetPipeline {
   Object getType();

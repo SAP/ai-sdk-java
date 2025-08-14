@@ -41,15 +41,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.tool.ToolCallbacks;
+import org.springframework.ai.support.ToolCallbacks;
 import reactor.core.publisher.Flux;
 
 @WireMockTest
-public class OrchestrationChatModelTest {
+class OrchestrationChatModelTest {
 
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
@@ -78,7 +79,7 @@ public class OrchestrationChatModelTest {
   @Test
   void testCompletion() {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("templatingResponse.json")
@@ -148,7 +149,7 @@ public class OrchestrationChatModelTest {
   @Test
   void testToolCallsWithoutExecution() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .willReturn(
                 aResponse()
                     .withBodyFile("toolCallsResponse.json")
@@ -182,7 +183,7 @@ public class OrchestrationChatModelTest {
   void testToolCallsWithExecution() throws IOException {
     // https://platform.openai.com/docs/guides/function-calling
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .inScenario("Tool Calls")
             .whenScenarioStateIs(STARTED)
             .willReturn(
@@ -192,7 +193,7 @@ public class OrchestrationChatModelTest {
             .willSetStateTo("Second Call"));
 
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .inScenario("Tool Calls")
             .whenScenarioStateIs("Second Call")
             .willReturn(
@@ -220,7 +221,7 @@ public class OrchestrationChatModelTest {
   @Test
   void testChatMemory() throws IOException {
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .inScenario("Chat Memory")
             .whenScenarioStateIs(STARTED)
             .willReturn(
@@ -230,7 +231,7 @@ public class OrchestrationChatModelTest {
             .willSetStateTo("Second Call"));
 
     stubFor(
-        post(urlPathEqualTo("/completion"))
+        post(urlPathEqualTo("/v2/completion"))
             .inScenario("Chat Memory")
             .whenScenarioStateIs("Second Call")
             .willReturn(
@@ -238,8 +239,9 @@ public class OrchestrationChatModelTest {
                     .withBodyFile("templatingResponse.json") // The response is not important
                     .withHeader("Content-Type", "application/json")));
 
-    val memory = new InMemoryChatMemory();
-    val advisor = new MessageChatMemoryAdvisor(memory);
+    val repository = new InMemoryChatMemoryRepository();
+    val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
+    val advisor = MessageChatMemoryAdvisor.builder(memory).build();
     val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
     val prompt1 = new Prompt("What is the capital of France?", defaultOptions);
     val prompt2 = new Prompt("And what is the typical food there?", defaultOptions);

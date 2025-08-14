@@ -4,9 +4,11 @@ import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
-import com.sap.ai.sdk.orchestration.model.TemplatingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
 import javax.annotation.Nonnull;
@@ -37,14 +39,15 @@ final class ConfigToRequestTransformer {
     val moduleConfigs = toModuleConfigs(configCopy);
 
     return CompletionPostRequest.create()
-        .orchestrationConfig(OrchestrationConfig.create().moduleConfigurations(moduleConfigs))
-        .inputParams(prompt.getTemplateParameters())
+        .config(OrchestrationConfig.create().modules(moduleConfigs))
+        .placeholderValues(prompt.getTemplateParameters())
         .messagesHistory(messageHistory);
   }
 
   @Nonnull
-  static TemplatingModuleConfig toTemplateModuleConfig(
-      @Nonnull final OrchestrationPrompt prompt, @Nullable final TemplatingModuleConfig config) {
+  static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
+      @Nonnull final OrchestrationPrompt prompt,
+      @Nullable final PromptTemplatingModuleConfigPrompt config) {
     /*
      * Currently, we have to merge the prompt into the template configuration.
      * This works around the limitation that the template config is required.
@@ -89,16 +92,23 @@ final class ConfigToRequestTransformer {
     //noinspection DataFlowIssue the template is always non-null here
     val moduleConfig =
         ModuleConfigs.create()
-            .llmModuleConfig(llmConfig)
-            .templatingModuleConfig(config.getTemplateConfig());
+            .promptTemplating(
+                PromptTemplatingModuleConfig.create()
+                    .prompt(config.getTemplateConfig())
+                    .model(llmConfig));
 
-    Option.of(config.getFilteringConfig()).forEach(moduleConfig::filteringModuleConfig);
-    Option.of(config.getMaskingConfig()).forEach(moduleConfig::maskingModuleConfig);
-    Option.of(config.getGroundingConfig()).forEach(moduleConfig::groundingModuleConfig);
-    Option.of(config.getOutputTranslationConfig())
-        .forEach(moduleConfig::outputTranslationModuleConfig);
-    Option.of(config.getInputTranslationConfig())
-        .forEach(moduleConfig::inputTranslationModuleConfig);
+    Option.of(config.getFilteringConfig()).forEach(moduleConfig::filtering);
+    Option.of(config.getMaskingConfig()).forEach(moduleConfig::masking);
+    Option.of(config.getGroundingConfig()).forEach(moduleConfig::grounding);
+
+    val outputTranslation = Option.of(config.getOutputTranslationConfig());
+    val inputTranslation = Option.of(config.getInputTranslationConfig());
+
+    if (inputTranslation.isDefined() || outputTranslation.isDefined()) {
+      moduleConfig.setTranslation(TranslationModuleConfig.create());
+      inputTranslation.forEach(moduleConfig.getTranslation()::input);
+      outputTranslation.forEach(moduleConfig.getTranslation()::output);
+    }
 
     return moduleConfig;
   }
