@@ -41,6 +41,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       cache-key: ${{ steps.cache-build.outputs.cache-key }}
+    permissions:
+      contents: read
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
