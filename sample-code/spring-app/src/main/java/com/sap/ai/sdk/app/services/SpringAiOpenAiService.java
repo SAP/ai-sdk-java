@@ -76,8 +76,7 @@ public class SpringAiOpenAiService {
    */
   @Nonnull
   public Flux<ChatResponse> streamChatCompletion() {
-    val prompt =
-        new Prompt("Can you give me the first 100 numbers of the Fibonacci sequence?");
+    val prompt = new Prompt("Can you give me the first 100 numbers of the Fibonacci sequence?");
     return chatClient.stream(prompt);
   }
 
