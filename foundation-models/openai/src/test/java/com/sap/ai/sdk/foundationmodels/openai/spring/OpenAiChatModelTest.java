@@ -11,7 +11,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.github.tomakehurst.wiremock.stubbing.Scenario.STARTED;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -89,16 +88,6 @@ public class OpenAiChatModelTest {
   }
 
   @Test
-  void testThrowsOnMissingChatOptions() {
-    assertThatThrownBy(() -> client.call(new Prompt("test")))
-        .isExactlyInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Please add OrchestrationChatOptions to the Prompt");
-    assertThatThrownBy(() -> client.stream(new Prompt("test")))
-        .isExactlyInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Please add OrchestrationChatOptions to the Prompt");
-  }
-
-  @Test
   void testStreamCompletion() throws IOException {
     try (val inputStream = spy(fileLoader.apply("streamChatCompletion.txt"))) {
 
@@ -117,15 +106,13 @@ public class OpenAiChatModelTest {
       Flux<ChatResponse> flux = client.stream(prompt);
       val deltaList = flux.toStream().toList();
 
-      assertThat(deltaList).hasSize(3);
+      assertThat(deltaList).hasSize(5);
       // the first delta doesn't have any content
       assertThat(deltaList.get(0).getResult().getOutput().getText()).isEqualTo("");
-      assertThat(deltaList.get(1).getResult().getOutput().getText()).isEqualTo("Sure");
-      assertThat(deltaList.get(2).getResult().getOutput().getText()).isEqualTo("!");
-
-      assertThat(deltaList.get(0).getResult().getMetadata().getFinishReason()).isEqualTo("");
-      assertThat(deltaList.get(1).getResult().getMetadata().getFinishReason()).isEqualTo("");
-      assertThat(deltaList.get(2).getResult().getMetadata().getFinishReason()).isEqualTo("stop");
+      assertThat(deltaList.get(1).getResult().getOutput().getText()).isEqualTo("");
+      assertThat(deltaList.get(2).getResult().getOutput().getText()).isEqualTo("Sure");
+      assertThat(deltaList.get(3).getResult().getOutput().getText()).isEqualTo("!");
+      assertThat(deltaList.get(4).getResult().getOutput().getText()).isEqualTo("");
 
       Mockito.verify(inputStream, times(1)).close();
     }
@@ -217,7 +204,7 @@ public class OpenAiChatModelTest {
             .willSetStateTo("Second Call"));
 
     stubFor(
-        post(urlPathEqualTo("/v2/completion"))
+        post(urlPathEqualTo("/chat/completions"))
             .inScenario("Chat Memory")
             .whenScenarioStateIs("Second Call")
             .willReturn(

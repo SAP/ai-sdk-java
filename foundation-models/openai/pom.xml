@@ -38,12 +38,12 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>70%</coverage.complexity>
-    <coverage.line>80%</coverage.line>
-    <coverage.instruction>76%</coverage.instruction>
-    <coverage.branch>70%</coverage.branch>
-    <coverage.method>75%</coverage.method>
-    <coverage.class>84%</coverage.class>
+    <coverage.complexity>83%</coverage.complexity>
+    <coverage.line>92%</coverage.line>
+    <coverage.instruction>90%</coverage.instruction>
+    <coverage.branch>81%</coverage.branch>
+    <coverage.method>90%</coverage.method>
+    <coverage.class>92%</coverage.class>
   </properties>
   <dependencies>
     <dependency>
@@ -158,6 +158,7 @@
       <groupId>org.springframework.ai</groupId>
       <artifactId>spring-ai-client-chat</artifactId>
       <scope>test</scope>
+      <optional>true</optional>
     </dependency>
   </dependencies>
 
