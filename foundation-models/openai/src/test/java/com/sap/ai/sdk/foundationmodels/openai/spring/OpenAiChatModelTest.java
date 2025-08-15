@@ -114,6 +114,12 @@ public class OpenAiChatModelTest {
       assertThat(deltaList.get(3).getResult().getOutput().getText()).isEqualTo("!");
       assertThat(deltaList.get(4).getResult().getOutput().getText()).isEqualTo("");
 
+      assertThat(deltaList.get(0).getResult().getMetadata().getFinishReason()).isEqualTo(null);
+      assertThat(deltaList.get(1).getResult().getMetadata().getFinishReason()).isEqualTo(null);
+      assertThat(deltaList.get(2).getResult().getMetadata().getFinishReason()).isEqualTo(null);
+      assertThat(deltaList.get(3).getResult().getMetadata().getFinishReason()).isEqualTo(null);
+      assertThat(deltaList.get(4).getResult().getMetadata().getFinishReason()).isEqualTo("stop");
+
       Mockito.verify(inputStream, times(1)).close();
     }
   }

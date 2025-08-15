@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai.spring;
 
-import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,28 +10,34 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMessageToolCall;
-import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import io.vavr.control.Option;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
+import org.springframework.ai.chat.metadata.ChatGenerationMetadata;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
+import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.model.tool.DefaultToolCallingChatOptions;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
+import org.springframework.ai.model.tool.ToolCallingChatOptions;
 import reactor.core.publisher.Flux;
+
+import javax.annotation.Nonnull;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
 
 /**
  * OpenAI Chat Model implementation that interacts with the OpenAI API to generate chat completions.
@@ -50,22 +54,23 @@ public class OpenAiChatModel implements ChatModel {
   @Override
   @Nonnull
   public ChatResponse call(@Nonnull final Prompt prompt) {
-    val openAiRequest = toOpenAiRequest(prompt);
-    var request = new OpenAiChatCompletionRequest(openAiRequest);
+    val options = prompt.getOptions();
+    var request = new OpenAiChatCompletionRequest(extractMessages(prompt));
 
-    if ((prompt.getOptions() instanceof DefaultToolCallingChatOptions options)) {
-      request = request.withTools(extractTools(options));
+    if (options != null) {
+      request = extractOptions(request, options);
+    }
+    if ((options instanceof ToolCallingChatOptions toolOptions)) {
+      request = request.withTools(extractTools(toolOptions));
     }
 
     val result = client.chatCompletion(request);
     val response = new ChatResponse(toGenerations(result));
 
-    if (prompt.getOptions() != null
-        && isInternalToolExecutionEnabled(prompt.getOptions())
-        && response.hasToolCalls()) {
+    if (options != null && isInternalToolExecutionEnabled(options) && response.hasToolCalls()) {
       val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
       // Send the tool execution result back to the model.
-      return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
+      return call(new Prompt(toolExecutionResult.conversationHistory(), options));
     }
     return response;
   }
@@ -73,11 +78,16 @@ public class OpenAiChatModel implements ChatModel {
   @Override
   @Nonnull
   public Flux<ChatResponse> stream(@Nonnull final Prompt prompt) {
-    val openAiRequest = toOpenAiRequest(prompt);
-    var request = new OpenAiChatCompletionRequest(openAiRequest);
-    if ((prompt.getOptions() instanceof DefaultToolCallingChatOptions options)) {
-      request = request.withTools(extractTools(options));
+    val options = prompt.getOptions();
+    var request = new OpenAiChatCompletionRequest(extractMessages(prompt));
+
+    if (options != null) {
+      request = extractOptions(request, options);
     }
+    if ((options instanceof ToolCallingChatOptions toolOptions)) {
+      request = request.withTools(extractTools(toolOptions));
+    }
+
     val stream = client.streamChatCompletionDeltas(request);
     final Flux<OpenAiChatCompletionDelta> flux =
         Flux.generate(
@@ -90,37 +100,16 @@ public class OpenAiChatModel implements ChatModel {
               }
               return iterator;
             });
-    return flux.map(OpenAiChatModel::toChatResponse);
+    return flux.map(
+        delta -> {
+          val assistantMessage = new AssistantMessage(delta.getDeltaContent(), Map.of());
+          val metadata =
+              ChatGenerationMetadata.builder().finishReason(delta.getFinishReason()).build();
+          return new ChatResponse(List.of(new Generation(assistantMessage, metadata)));
+        });
   }
 
-  private List<ChatCompletionTool> extractTools(final DefaultToolCallingChatOptions options) {
-    val tools = new ArrayList<ChatCompletionTool>();
-    for (val toolCallback : options.getToolCallbacks()) {
-      val toolDefinition = toolCallback.getToolDefinition();
-      try {
-        final Map<String, Object> params =
-            new ObjectMapper().readValue(toolDefinition.inputSchema(), new TypeReference<>() {});
-        val tool =
-            new ChatCompletionTool()
-                .type(ChatCompletionTool.TypeEnum.FUNCTION)
-                .function(
-                    new FunctionObject()
-                        .name(toolDefinition.name())
-                        .description(toolDefinition.description())
-                        .parameters(params));
-        tools.add(tool);
-      } catch (JsonProcessingException ignored) {
-      }
-    }
-    return tools;
-  }
-
-  private static ChatResponse toChatResponse(final OpenAiChatCompletionDelta delta) {
-    val assistantMessage = new AssistantMessage(delta.getDeltaContent(), Map.of());
-    return new ChatResponse(List.of(new Generation(assistantMessage)));
-  }
-
-  private List<OpenAiMessage> toOpenAiRequest(final Prompt prompt) {
+  private List<OpenAiMessage> extractMessages(final Prompt prompt) {
     final List<OpenAiMessage> result = new ArrayList<>();
     for (final Message message : prompt.getInstructions()) {
       switch (message.getMessageType()) {
@@ -153,24 +142,73 @@ public class OpenAiChatModel implements ChatModel {
   }
 
   @Nonnull
-  static List<Generation> toGenerations(@Nonnull final OpenAiChatCompletionResponse result) {
+  private static List<Generation> toGenerations(
+      @Nonnull final OpenAiChatCompletionResponse result) {
     return result.getOriginalResponse().getChoices().stream()
-        .map(message -> toGeneration(message.getMessage()))
+        .map(OpenAiChatModel::toGeneration)
         .toList();
   }
 
   @Nonnull
-  static Generation toGeneration(@Nonnull final ChatCompletionResponseMessage choice) {
-    // no metadata for now
+  private static Generation toGeneration(
+      @Nonnull final CreateChatCompletionResponseChoicesInner choice) {
+    val metadata =
+        ChatGenerationMetadata.builder().finishReason(choice.getFinishReason().getValue());
+    metadata.metadata("index", choice.getIndex());
+    if (choice.getLogprobs() != null && !choice.getLogprobs().getContent().isEmpty()) {
+      metadata.metadata("logprobs", choice.getLogprobs().getContent());
+    }
+    val message = choice.getMessage();
     val calls = new ArrayList<ToolCall>();
-    if (choice.getToolCalls() != null) {
-      for (final ChatCompletionMessageToolCall c : choice.getToolCalls()) {
+    if (message.getToolCalls() != null) {
+      for (final ChatCompletionMessageToolCall c : message.getToolCalls()) {
         val fnc = c.getFunction();
         calls.add(
             new ToolCall(c.getId(), c.getType().getValue(), fnc.getName(), fnc.getArguments()));
       }
     }
-    val message = new AssistantMessage(choice.getContent(), Map.of(), calls);
-    return new Generation(message);
+
+    val assistantMessage = new AssistantMessage(message.getContent(), Map.of(), calls);
+    return new Generation(assistantMessage, metadata.build());
+  }
+
+  private OpenAiChatCompletionRequest extractOptions(
+      @Nonnull OpenAiChatCompletionRequest request, @Nonnull final ChatOptions options) {
+    request = request.withStop(options.getStopSequences()).withMaxTokens(options.getMaxTokens());
+    if (options.getTemperature() != null) {
+      request = request.withTemperature(BigDecimal.valueOf(options.getTemperature()));
+    }
+    if (options.getTopP() != null) {
+      request = request.withTopP(BigDecimal.valueOf(options.getTopP()));
+    }
+    if (options.getPresencePenalty() != null) {
+      request = request.withPresencePenalty(BigDecimal.valueOf(options.getPresencePenalty()));
+    }
+    if (options.getFrequencyPenalty() != null) {
+      request = request.withFrequencyPenalty(BigDecimal.valueOf(options.getFrequencyPenalty()));
+    }
+    return request;
+  }
+
+  private List<ChatCompletionTool> extractTools(final ToolCallingChatOptions options) {
+    val tools = new ArrayList<ChatCompletionTool>();
+    for (val toolCallback : options.getToolCallbacks()) {
+      val toolDefinition = toolCallback.getToolDefinition();
+      try {
+        final Map<String, Object> params =
+            new ObjectMapper().readValue(toolDefinition.inputSchema(), new TypeReference<>() {});
+        val tool =
+            new ChatCompletionTool()
+                .type(ChatCompletionTool.TypeEnum.FUNCTION)
+                .function(
+                    new FunctionObject()
+                        .name(toolDefinition.name())
+                        .description(toolDefinition.description())
+                        .parameters(params));
+        tools.add(tool);
+      } catch (JsonProcessingException ignored) {
+      }
+    }
+    return tools;
   }
 }
