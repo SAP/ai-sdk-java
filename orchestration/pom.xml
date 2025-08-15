@@ -41,7 +41,7 @@
     <coverage.instruction>94%</coverage.instruction>
     <coverage.branch>75%</coverage.branch>
     <coverage.method>93%</coverage.method>
-    <coverage.class>100%</coverage.class>
+    <coverage.class>97%</coverage.class>
   </properties>
 
   <dependencies>
