@@ -24,7 +24,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** LLMModelDetails */
+/**
+ * The model and parameters to be used for the prompt templating. This is the model that will be
+ * used to generate the response.
+ */
 // CHECKSTYLE:OFF
 public class LLMModelDetails
 // CHECKSTYLE:ON

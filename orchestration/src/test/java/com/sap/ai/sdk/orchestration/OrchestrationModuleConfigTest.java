@@ -15,6 +15,7 @@ import com.sap.ai.sdk.orchestration.model.DPIStandardEntity;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
+import com.sap.ai.sdk.orchestration.model.MaskingModuleConfigProviders;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.Template;
@@ -87,8 +88,10 @@ class OrchestrationModuleConfigTest {
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withMaskingConfig(maskingConfig);
 
     assertThat(config.getMaskingConfig()).isNotNull();
-    assertThat(config.getMaskingConfig().getMaskingProviders()).hasSize(1);
-    DPIConfig dpiConfig = config.getMaskingConfig().getMaskingProviders().get(0);
+    assertThat(((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders())
+        .hasSize(1);
+    DPIConfig dpiConfig =
+        ((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders().get(0);
     assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
     assertThat(dpiConfig.getEntities()).hasSize(1);
     assertThat(((DPIStandardEntity) dpiConfig.getEntities().get(0)).getType())
@@ -98,7 +101,7 @@ class OrchestrationModuleConfigTest {
 
     var configModified = config.withMaskingConfig(maskingConfig);
     assertThat(configModified.getMaskingConfig()).isNotNull();
-    assertThat(configModified.getMaskingConfig().getMaskingProviders())
+    assertThat(((MaskingModuleConfigProviders) configModified.getMaskingConfig()).getProviders())
         .withFailMessage("withMaskingConfig() should overwrite the existing config and not append")
         .hasSize(1);
   }
