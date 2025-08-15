@@ -11,7 +11,6 @@ import com.sap.ai.sdk.orchestration.model.ErrorStreaming;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleResults;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nonnull;
@@ -24,35 +23,29 @@ public class OrchestrationClientException extends ClientException {
 
   static final ClientExceptionFactory<OrchestrationClientException, OrchestrationError> FACTORY =
       (message, clientError, cause) -> {
-        final var details = extractInputFilterDetails(clientError);
-        if (details.isEmpty()) {
-          return new OrchestrationClientException(message, cause).setClientError(clientError);
+        var details = extractResults(clientError).map(GenericModuleResult::getData).orElse(null);
+        if (details instanceof Map<?, ?> m) {
+          return new Input(message, cause)
+              .setFilterDetails((Map<String, Object>) m)
+              .setClientError(clientError);
         }
-        return new Input(message, cause).setFilterDetails(details).setClientError(clientError);
+        return new OrchestrationClientException(message, cause).setClientError(clientError);
       };
 
-  @SuppressWarnings("unchecked")
   @Nonnull
-  static Map<String, Object> extractInputFilterDetails(@Nullable final OrchestrationError error) {
+  static Optional<GenericModuleResult> extractResults(@Nullable final OrchestrationError error) {
     if (error instanceof OrchestrationError.Synchronous synchronousError) {
       return Optional.of(synchronousError.getErrorResponse())
           .map(ErrorResponse::getError)
           .map(Error::getIntermediateResults)
-          .map(ModuleResults::getInputFiltering)
-          .map(GenericModuleResult::getData)
-          .map(map -> (Map<String, Object>) map)
-          .orElseGet(Collections::emptyMap);
+          .map(ModuleResults::getInputFiltering);
     } else if (error instanceof OrchestrationError.Streaming streamingError) {
       return Optional.of(streamingError.getErrorResponse())
           .map(ErrorResponseStreaming::getError)
           .map(ErrorStreaming::getIntermediateResults)
-          .map(ModuleResultsStreaming::getInputFiltering)
-          .map(GenericModuleResult::getData)
-          .filter(Map.class::isInstance)
-          .map(map -> (Map<String, Object>) map)
-          .orElseGet(Collections::emptyMap);
+          .map(ModuleResultsStreaming::getInputFiltering);
     }
-    return Collections.emptyMap();
+    return Optional.empty();
   }
 
   @Override
