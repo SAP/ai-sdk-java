@@ -16,7 +16,8 @@ jobs:
     name: "Security rating"
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+      actions: write
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
