@@ -28,6 +28,8 @@ jobs:
       release-commit: ${{ steps.prepare-release.outputs.RELEASE_COMMIT_ID }}
       release-tag: ${{ steps.prepare-release.outputs.TAG_NAME }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v4
@@ -155,6 +157,9 @@ jobs:
     outputs:
       pr-url: ${{ steps.create-release-notes-pr.outputs.PR_URL }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: "Checkout Code Repository"
         uses: actions/checkout@v4
@@ -233,6 +238,9 @@ jobs:
     outputs:
       pr-url: ${{ steps.create-code-pr.outputs.PR_URL }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v4

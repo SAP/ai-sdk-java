@@ -10,6 +10,8 @@ env:
 jobs:
   fetch-dependency-versions:
     runs-on: ubuntu-latest
+    permissions:
+      contents: none
     outputs:
       versions: ${{ steps.fetch-versions.outputs.VERSIONS }}
 
@@ -39,6 +41,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       cache-key: ${{ steps.cache-build.outputs.cache-key }}
+    permissions:
+      contents: read
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
@@ -75,6 +79,8 @@ jobs:
       matrix:
         version: ${{ fromJson(needs.fetch-dependency-versions.outputs.versions) }}
     continue-on-error: true
+    permissions:
+      contents: read
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
