@@ -35,16 +35,16 @@ public class OrchestrationChatResponse {
    * <p>Note: If there are multiple choices only the first one is returned
    *
    * @return the message content or empty string.
-   * @throws OrchestrationFilterException.Output if the content filter filtered the output.
+   * @throws OrchestrationClientException if the content filter filtered the output.
    */
   @Nonnull
-  public String getContent() throws OrchestrationFilterException.Output {
+  public String getContent() throws OrchestrationClientException {
     final var choice = getChoice();
 
     if ("content_filter".equals(choice.getFinishReason())) {
       final var filterDetails = Try.of(this::getOutputFilteringChoices).getOrElseGet(e -> Map.of());
       final var message = "Content filter filtered the output.";
-      throw new OrchestrationFilterException.Output(message).setFilterDetails(filterDetails);
+      throw new OrchestrationClientException(message).setFilterDetails(filterDetails);
     }
     return choice.getMessage().getContent();
   }
