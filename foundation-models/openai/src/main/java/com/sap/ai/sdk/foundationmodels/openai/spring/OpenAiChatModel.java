@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.spring;
 
+import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +16,12 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import io.vavr.control.Option;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage;
@@ -29,15 +37,6 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
 import reactor.core.publisher.Flux;
-
-import javax.annotation.Nonnull;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-
-import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
 
 /**
  * OpenAI Chat Model implementation that interacts with the OpenAI API to generate chat completions.
