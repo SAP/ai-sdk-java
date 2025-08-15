@@ -100,14 +100,13 @@ public class OpenAiChatModel implements ChatModel {
       try {
         final Map<String, Object> params =
             new ObjectMapper().readValue(toolDefinition.inputSchema(), new TypeReference<>() {});
-        val tool =
-            new ChatCompletionTool()
-                .type(ChatCompletionTool.TypeEnum.FUNCTION)
-                .function(
-                    new FunctionObject()
-                        .name(toolDefinition.name())
-                        .description(toolDefinition.description())
-                        .parameters(params));
+        val toolType = ChatCompletionTool.TypeEnum.FUNCTION;
+        val toolFunction =
+            new FunctionObject()
+                .name(toolDefinition.name())
+                .description(toolDefinition.description())
+                .parameters(params);
+        val tool = new ChatCompletionTool().type(toolType).function(toolFunction);
         tools.add(tool);
       } catch (JsonProcessingException ignored) {
       }
