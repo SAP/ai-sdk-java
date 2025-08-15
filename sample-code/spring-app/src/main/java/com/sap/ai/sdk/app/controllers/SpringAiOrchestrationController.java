@@ -128,7 +128,7 @@ class SpringAiOrchestrationController {
     }
     final AssistantMessage message = response.getResult().getOutput();
     final String text = message.getText();
-    return text.isEmpty() ? message.getToolCalls().toString() : text;
+    return text != null && text.isEmpty() ? message.getToolCalls().toString() : text;
   }
 
   @GetMapping("/mcp")

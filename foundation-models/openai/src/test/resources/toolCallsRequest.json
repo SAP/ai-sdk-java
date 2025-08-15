@@ -1,0 +1,47 @@
+{
+  "messages": [
+    {
+      "content": "What is the weather in Potsdam and in Toulouse?",
+      "role": "user"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "description": "Get the weather in location",
+        "name": "getCurrentWeather",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "arg0": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "C",
+                    "F"
+                  ]
+                }
+              },
+              "required": [
+                "location",
+                "unit"
+              ]
+            }
+          },
+          "required": [
+            "arg0"
+          ],
+          "additionalProperties": false
+        },
+        "strict": false
+      }
+    }
+  ]
+}

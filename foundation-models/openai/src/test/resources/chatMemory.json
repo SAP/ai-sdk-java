@@ -1,0 +1,16 @@
+{
+  "messages": [
+    {
+      "content": "What is the capital of France?",
+      "role": "user"
+    },
+    {
+      "content": "The capital of France is Paris.",
+      "role": "assistant"
+    },
+    {
+      "content": "And what is the typical food there?",
+      "role": "user"
+    }
+  ]
+}

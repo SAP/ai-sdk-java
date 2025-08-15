@@ -784,7 +784,8 @@
                                         <code>/spring-ai-orchestration/mcp</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Use an MCP file system server as tool to answer questions about the SDK itself. ⚠️ Only works if the server is started with the "mcp" Spring profile ⚠️.
+                                        Use an MCP file system server as tool to answer questions about the SDK itself.
+                                        ⚠️ Only works if the server is started with the "mcp" Spring profile ⚠️.
                                     </div>
                                 </div>
                             </li>
@@ -837,8 +838,58 @@
                                         <code>/spring-ai-openai/embed/strings</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Get the embedding for a given string using SpringAI from
+                                        Get the embedding for a given string using OpenAI.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/spring-ai-openai/completion"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/spring-ai-openai/completion</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Chat Request with a simple prompt using OpenAI.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/spring-ai-openai/streamChatCompletion"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/spring-ai-openai/streamChatCompletion</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Asynchronous stream of a request using OpenAI.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/spring-ai-openai/toolCalling"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/spring-ai-openai/toolCalling</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Register a function that will be called when the user asks for the weather using
                                         OpenAI.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/spring-ai-openai/chatMemory"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/spring-ai-openai/chatMemory</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        The user firsts asks the capital of France, then the typical
+                                        for there, chat memory will remember that the user is
+                                        inquiring about France using OpenAI.
                                     </div>
                                 </div>
                             </li>

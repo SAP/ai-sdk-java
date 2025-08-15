@@ -1,0 +1,78 @@
+{
+  "messages": [
+    {
+      "content": "What is the weather in Potsdam and in Toulouse?",
+      "role": "user"
+    },
+    {
+      "role": "assistant",
+      "tool_calls": [
+        {
+          "id": "call_MQ7MyYGmoP5TpMSv6AfeWCg5",
+          "type": "function",
+          "function": {
+            "name": "getCurrentWeather",
+            "arguments": "{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}"
+          }
+        },
+        {
+          "id": "call_BQpUfvkUUqx7e3yZv7Rmpnxy",
+          "type": "function",
+          "function": {
+            "name": "getCurrentWeather",
+            "arguments": "{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "content": "{\"temp\":30.0,\"unit\":\"C\"}",
+      "tool_call_id": "call_MQ7MyYGmoP5TpMSv6AfeWCg5"
+    },
+    {
+      "role": "tool",
+      "content": "{\"temp\":30.0,\"unit\":\"C\"}",
+      "tool_call_id": "call_BQpUfvkUUqx7e3yZv7Rmpnxy"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "description": "Get the weather in location",
+        "name": "getCurrentWeather",
+        "parameters": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "arg0": {
+              "type": "object",
+              "properties": {
+                "location": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string",
+                  "enum": [
+                    "C",
+                    "F"
+                  ]
+                }
+              },
+              "required": [
+                "location",
+                "unit"
+              ]
+            }
+          },
+          "required": [
+            "arg0"
+          ],
+          "additionalProperties": false
+        },
+        "strict": false
+      }
+    }
+  ]
+}

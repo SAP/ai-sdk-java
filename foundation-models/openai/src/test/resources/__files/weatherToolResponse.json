@@ -1,0 +1,76 @@
+{
+  "choices": [
+    {
+      "content_filter_results": {},
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "annotations": [],
+        "content": null,
+        "refusal": null,
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}",
+              "name": "getCurrentWeather"
+            },
+            "id": "call_MQ7MyYGmoP5TpMSv6AfeWCg5",
+            "type": "function"
+          },
+          {
+            "function": {
+              "arguments": "{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}",
+              "name": "getCurrentWeather"
+            },
+            "id": "call_BQpUfvkUUqx7e3yZv7Rmpnxy",
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1755092903,
+  "id": "chatcmpl-C467zkarjmr5ggy6qN41vBfseOJBK",
+  "model": "gpt-4o-mini-2024-07-18",
+  "object": "chat.completion",
+  "prompt_filter_results": [
+    {
+      "content_filter_results": {
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        }
+      },
+      "prompt_index": 0
+    }
+  ],
+  "system_fingerprint": "fp_efad92c60b",
+  "usage": {
+    "completion_tokens": 66,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens": 70,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    },
+    "total_tokens": 136
+  }
+}

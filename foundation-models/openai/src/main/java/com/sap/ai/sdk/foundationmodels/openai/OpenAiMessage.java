@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.google.common.annotations.Beta;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -44,6 +45,18 @@ public sealed interface OpenAiMessage
   @Nonnull
   static OpenAiAssistantMessage assistant(@Nonnull final String message) {
     return new OpenAiAssistantMessage(message);
+  }
+
+  /**
+   * A convenience method to create an assistant message.
+   *
+   * @param toolCalls tool calls to associate with the message.
+   * @return the assistant message.
+   */
+  @Nonnull
+  static OpenAiAssistantMessage assistant(@Nonnull final List<OpenAiToolCall> toolCalls) {
+    return new OpenAiAssistantMessage(
+        new OpenAiMessageContent(List.of()), new ArrayList<>(toolCalls));
   }
 
   /**
