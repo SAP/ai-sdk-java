@@ -6,6 +6,7 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.MaskingModuleConfigProviders;
 import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslation;
@@ -130,9 +131,9 @@ public class OrchestrationModuleConfig {
       @Nonnull final MaskingProvider maskingProvider,
       @Nonnull final MaskingProvider... maskingProviders) {
     val newMaskingConfig =
-        MaskingModuleConfig.create().maskingProviders(maskingProvider.createConfig());
+        MaskingModuleConfigProviders.create().providers(maskingProvider.createConfig());
     Arrays.stream(maskingProviders)
-        .forEach(it -> newMaskingConfig.addMaskingProvidersItem(it.createConfig()));
+        .forEach(it -> newMaskingConfig.addProvidersItem(it.createConfig()));
 
     return withMaskingConfig(newMaskingConfig);
   }
