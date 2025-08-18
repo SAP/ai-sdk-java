@@ -67,16 +67,16 @@
     <checkstyle.version>11.0.0</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.3</surefire.version>
-    <springframework.version>6.2.9</springframework.version>
+    <springframework.version>6.2.10</springframework.version>
     <spring-ai.version>1.0.1</spring-ai.version>
-    <reactor-core.version>3.7.8</reactor-core.version>
+    <reactor-core.version>3.7.9</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
-    <mockito.version>5.18.0</mockito.version>
+    <mockito.version>5.19.0</mockito.version>
     <javaparser.version>3.27.0</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.19.2</jackson.version>
     <!-- conflicts resolution -->
-    <micrometer.version>1.15.2</micrometer.version>
+    <micrometer.version>1.15.3</micrometer.version>
     <json.version>20250517</json.version>
     <snakeyaml.version>2.4</snakeyaml.version>
     <!-- Formatting -->
@@ -856,7 +856,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-javadoc-plugin</artifactId>
-              <version>3.11.2</version>
+              <version>3.11.3</version>
               <configuration>
                 <quiet>true</quiet>
                 <additionalOptions>-Xdoclint:none</additionalOptions>
