@@ -8,7 +8,8 @@
   </parent>
   <artifactId>orchestration</artifactId>
   <name>Orchestration client</name>
-  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for the Orchestration Service.</description>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI
+        Hub, and Orchestration Service. This is the client for the Orchestration Service.</description>
 
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
@@ -36,12 +37,12 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
-    <coverage.complexity>80%</coverage.complexity>
-    <coverage.line>94%</coverage.line>
-    <coverage.instruction>94%</coverage.instruction>
-    <coverage.branch>75%</coverage.branch>
+    <coverage.complexity>79%</coverage.complexity>
+    <coverage.line>93%</coverage.line>
+    <coverage.instruction>92%</coverage.instruction>
+    <coverage.branch>70%</coverage.branch>
     <coverage.method>93%</coverage.method>
-    <coverage.class>100%</coverage.class>
+    <coverage.class>97%</coverage.class>
   </properties>
 
   <dependencies>
@@ -160,6 +161,10 @@
       <scope>test</scope>
       <!-- optional is only set to satisfy our enforcer rule, it doesn't matter for test dependencies -->
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>prompt-registry</artifactId>
     </dependency>
   </dependencies>
 

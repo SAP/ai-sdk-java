@@ -15,13 +15,12 @@ import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
+import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringUtil;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -273,18 +272,24 @@ public class SpringAiOrchestrationService {
     return cl.prompt(prompt).call().entity(Translation.class);
   }
 
+  /**
+   * Get a prompt template by name and input parameters.
+   *
+   * @return the chat response containing the prompt template
+   */
   @Nullable
   public ChatResponse getPromptTemplate() {
-    ChatModel client = new OrchestrationChatModel();
-    var memory = new InMemoryChatMemory();
-    var advisor = new MessageChatMemoryAdvisor(memory);
-    var cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
+    val repository = new InMemoryChatMemoryRepository();
+    val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
+    val advisor = MessageChatMemoryAdvisor.builder(memory).build();
+    val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
-    val prompt = OrchestrationSpringUtil.getPromptTemplate(
-        "PROMPT-CHART",
-        Map.of("current_timestamp", System.currentTimeMillis()));
+    val prompt =
+        OrchestrationSpringUtil.getPromptTemplate(
+            "prompt_template_name",
+            Map.of("current_timestamp", System.currentTimeMillis(), "topic", "Time"));
 
-    var response = cl.prompt(prompt).call();
+    val response = cl.prompt(prompt).call();
     return response.chatResponse();
   }
 }

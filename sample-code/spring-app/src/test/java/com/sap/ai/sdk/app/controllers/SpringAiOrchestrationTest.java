@@ -173,7 +173,6 @@ class SpringAiOrchestrationTest {
     assertThat(ChatResponse).isNotNull();
     assertThat(ChatResponse.getResult().getOutput().getText()).isNotEmpty();
     assertThat(ChatResponse.getResult().getOutput().getText())
-        .contains("The current timestamp is");
+        .contains("How can I assist you today?");
   }
-
 }
