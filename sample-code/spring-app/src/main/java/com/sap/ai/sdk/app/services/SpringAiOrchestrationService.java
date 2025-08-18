@@ -288,8 +288,6 @@ public class SpringAiOrchestrationService {
         OrchestrationSpringUtil.getPromptTemplate(
             "prompt_template_name",
             Map.of("current_timestamp", System.currentTimeMillis(), "topic", "Time"));
-
-    val response = cl.prompt(prompt).call();
-    return response.chatResponse();
+    return cl.prompt(prompt).call().chatResponse();
   }
 }
