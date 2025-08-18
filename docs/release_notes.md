@@ -16,8 +16,8 @@
   from remote service.
   New available accessors for troubleshooting: `getErrorResponse()`, `getHttpResponse()` and, `getHttpRequest()`.
   Please note: depending on the error response, these methods may return `null` if the information is not available.
-- [OpenAI] Introduced `completion`, `streamChatCompletion`, `toolCalling` and `chatMemory` for OpenAI using SpringAI
-  making SpringAI fully integrated with our OpenAI client.
+- [OpenAI] [Introduced SpringAI integration with our OpenAI client.](https://sap.github.io/ai-sdk/docs/java/spring-ai/openai)
+  - Added `OpenAiChatModel`
 
 ### 📈 Improvements
 
