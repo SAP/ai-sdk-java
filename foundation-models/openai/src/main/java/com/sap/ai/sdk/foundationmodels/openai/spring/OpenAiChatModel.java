@@ -204,7 +204,9 @@ public class OpenAiChatModel implements ChatModel {
                 .parameters(params);
         val tool = new ChatCompletionTool().type(toolType).function(toolFunction);
         tools.add(tool);
-      } catch (JsonProcessingException ignored) {
+      } catch (JsonProcessingException e) {
+        throw new IllegalArgumentException(
+            "Failed to parse tool definition input schema: " + toolDefinition.inputSchema(), e);
       }
     }
     return tools;
