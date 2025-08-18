@@ -95,6 +95,15 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   /** Azure OpenAI GPT-4.1-mini model */
   public static final OpenAiModel GPT_41_MINI = new OpenAiModel("gpt-4.1-mini", null);
 
+  /** Azure OpenAI GPT-5 model */
+  public static final OpenAiModel GPT_5 = new OpenAiModel("gpt-5", null);
+
+  /** Azure OpenAI GPT-5-mini model */
+  public static final OpenAiModel GPT_5_MINI = new OpenAiModel("gpt-5-mini", null);
+
+  /** Azure OpenAI GPT-5-nano model */
+  public static final OpenAiModel GPT_5_NANO = new OpenAiModel("gpt-5-nano", null);
+
   /**
    * Azure OpenAI Text Embedding ADA 002 model
    *
