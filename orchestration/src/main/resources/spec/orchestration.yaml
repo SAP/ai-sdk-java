@@ -97,7 +97,7 @@ components:
           allOf:
             - $ref: "#/components/schemas/ChatMessages"
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-
+    
     # Embedings Schemas
     EmbeddingsPostRequest:
       type: object
@@ -173,7 +173,7 @@ components:
           type: string
           default: "latest"
         params:
-          $ref: "#/components/schemas/EmbeddingsModelParams"
+          $ref: "#/components/schemas/EmbeddingsModelParams"   
     EmbeddingsModelParams:
       type: object
       description: Additional parameters for generating input's embeddings. Default values are used for mandatory parameters.
@@ -182,7 +182,7 @@ components:
         dimensions:
           type: integer
           description: >
-            The number of dimensions the resulting output embeddings should have.
+            The number of dimensions the resulting output embeddings should have.  
         encoding_format:
           type: string
           enum: [float, base64, binary]
@@ -270,7 +270,7 @@ components:
           description: "An array of numbers representing the embedding."
         - type: string
           description: "A single base64 string representing the embedding."
-
+    
     # Chat Completion Schemas
     ChatMessages:
       type: array
@@ -401,7 +401,7 @@ components:
         - role
         - content
     # Below, OpenAI's spec marks 'content' as required but nullable: https://github.com/Azure/azure-rest-api-specs/blob/8279d4aee23a3fef5aac9c76333b0895c83e44c3/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2024-10-21/inference.yaml#L2121
-    # We've made it optional instead to maintain SDK compatibility and avoid breaking changes.
+    # We've made it optional instead to maintain SDK compatibility and avoid breaking changes. 
     # Functionally achieves the same result as both patterns permit responses without textual content
     # OpenAI via null values, ours via field omission.
     ResponseChatMessage:
@@ -799,11 +799,11 @@ components:
             - $ref: "#/components/schemas/Template"
             - $ref: "#/components/schemas/TemplateRef"
         model:
-          description: >
-            The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.
           $ref: "#/components/schemas/LLMModelDetails"
     LLMModelDetails:
       type: object
+      description: >
+        The model and parameters to be used for the prompt templating. This is the model that will be used to generate the response.
       required:
         - name
       additionalProperties: false
@@ -1230,19 +1230,33 @@ components:
           type: boolean
 
     # --- Masking module ---
-
     MaskingModuleConfig:
-      type: object
-      required:
-        - masking_providers
-      additionalProperties: false
-      properties:
-        masking_providers:
-          type: array
-          minItems: 1
-          items:
-            $ref: "#/components/schemas/MaskingProviderConfig"
-          description: List of masking service providers
+      oneOf:
+        - type: object
+          title: MaskingModuleConfigProviders
+          properties:
+            providers:
+              description: List of masking service providers
+              type: array
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/MaskingProviderConfig"
+          required:
+            - providers
+          additionalProperties: false
+        - type: object
+          title: MaskingModuleConfigMaskingProviders
+          properties:
+            masking_providers:
+              deprecated: true
+              description: "This field is **DEPRECATED** and will be removed on August 05, 2026. Use `providers` property instead. List of masking service providers."
+              type: array
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/MaskingProviderConfig"
+          required:
+            - masking_providers
+          additionalProperties: false
 
     MaskingProviderConfig:
       oneOf:
@@ -1718,7 +1732,7 @@ components:
           items:
             $ref: '#/components/schemas/ChatCompletionTokenLogprob'
           description: A list of message refusal tokens with log probability information.
-
+          
   responses:
     BadRequest:
       description: Bad Request

@@ -66,7 +66,7 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigPlaceholders;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
-import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
+import com.sap.ai.sdk.orchestration.model.MaskingModuleConfigProviders;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
@@ -1329,7 +1329,7 @@ class OrchestrationUnitTest {
             .type(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION)
             .method(DPIConfig.MethodEnum.ANONYMIZATION)
             .entities(List.of(DPIStandardEntity.create().type(DPIEntities.PERSON)));
-    val maskingConfig = MaskingModuleConfig.create().maskingProviders(List.of(dpiConfig));
+    val maskingConfig = MaskingModuleConfigProviders.create().providers(List.of(dpiConfig));
 
     val modelParams =
         EmbeddingsModelParams.create()
@@ -1408,7 +1408,7 @@ class OrchestrationUnitTest {
                             }
                           },
                           "masking": {
-                            "masking_providers": [
+                            "providers": [
                               {
                                 "type": "sap_data_privacy_integration",
                                 "method": "anonymization",
