@@ -3,6 +3,7 @@ package com.sap.ai.sdk.foundationmodels.openai.spring;
 import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
@@ -41,6 +42,7 @@ import reactor.core.publisher.Flux;
 /**
  * OpenAI Chat Model implementation that interacts with the OpenAI API to generate chat completions.
  */
+@Slf4j
 @RequiredArgsConstructor
 public class OpenAiChatModel implements ChatModel {
 
@@ -205,8 +207,7 @@ public class OpenAiChatModel implements ChatModel {
         val tool = new ChatCompletionTool().type(toolType).function(toolFunction);
         tools.add(tool);
       } catch (JsonProcessingException e) {
-        throw new IllegalArgumentException(
-            "Failed to parse tool definition input schema: " + toolDefinition.inputSchema(), e);
+        log.warn("Failed to add tool to the chat request: {}", e.getMessage());
       }
     }
     return tools;
