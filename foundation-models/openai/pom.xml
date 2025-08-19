@@ -38,12 +38,12 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>72%</coverage.complexity>
-    <coverage.line>80%</coverage.line>
-    <coverage.instruction>76%</coverage.instruction>
-    <coverage.branch>70%</coverage.branch>
-    <coverage.method>83%</coverage.method>
-    <coverage.class>84%</coverage.class>
+    <coverage.complexity>81%</coverage.complexity>
+    <coverage.line>91%</coverage.line>
+    <coverage.instruction>88%</coverage.instruction>
+    <coverage.branch>79%</coverage.branch>
+    <coverage.method>90%</coverage.method>
+    <coverage.class>92%</coverage.class>
   </properties>
   <dependencies>
     <dependency>
@@ -112,6 +112,11 @@
       <artifactId>spring-ai-model</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-core</artifactId>
+      <optional>true</optional>
+    </dependency>
     <!-- scope "provided" -->
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -148,6 +153,12 @@
       <groupId>com.github.javaparser</groupId>
       <artifactId>javaparser-core</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-client-chat</artifactId>
+      <scope>test</scope>
+      <optional>true</optional>
     </dependency>
   </dependencies>
 
