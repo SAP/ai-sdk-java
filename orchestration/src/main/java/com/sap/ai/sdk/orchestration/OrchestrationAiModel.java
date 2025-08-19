@@ -44,7 +44,13 @@ public class OrchestrationAiModel {
   /** The version of the model, defaults to "latest". */
   String version;
 
-  /** IBM Granite 13B Chat model */
+  /**
+   * IBM Granite 13B Chat model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement not earlier than
+   *     2025-09-30.
+   */
+  @Deprecated
   public static final OrchestrationAiModel IBM_GRANITE_13B_CHAT =
       new OrchestrationAiModel("ibm--granite-13b-chat");
 
@@ -228,6 +234,15 @@ public class OrchestrationAiModel {
   /** Azure OpenAI o3 model */
   public static final OrchestrationAiModel OPENAI_O3 = new OrchestrationAiModel("o3");
 
+  /** Azure OpenAI GPT-5 model */
+  public static final OrchestrationAiModel GPT_5 = new OrchestrationAiModel("gpt-5");
+
+  /** Azure OpenAI GPT-5-mini model */
+  public static final OrchestrationAiModel GPT_5_MINI = new OrchestrationAiModel("gpt-5-mini");
+
+  /** Azure OpenAI GPT-5-nano model */
+  public static final OrchestrationAiModel GPT_5_NANO = new OrchestrationAiModel("gpt-5-nano");
+
   /**
    * Google Cloud Platform Gemini 1.0 Pro model
    *
@@ -239,11 +254,23 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_1_0_PRO =
       new OrchestrationAiModel("gemini-1.0-pro");
 
-  /** Google Cloud Platform Gemini 1.5 Pro model */
+  /**
+   * Google Cloud Platform Gemini 1.5 Pro model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-09-24. The
+   *     suggested replacement model is {@link OrchestrationAiModel#GEMINI_2_5_PRO}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GEMINI_1_5_PRO =
       new OrchestrationAiModel("gemini-1.5-pro");
 
-  /** Google Cloud Platform Gemini 1.5 Flash model */
+  /**
+   * Google Cloud Platform Gemini 1.5 Flash model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-09-24. The
+   *     suggested replacement model is {@link OrchestrationAiModel#GEMINI_2_5_FLASH}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GEMINI_1_5_FLASH =
       new OrchestrationAiModel("gemini-1.5-flash");
 

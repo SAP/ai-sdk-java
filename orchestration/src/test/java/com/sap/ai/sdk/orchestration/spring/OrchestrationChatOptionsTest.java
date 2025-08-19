@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_1_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.FREQUENCY_PENALTY;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.PRESENCE_PENALTY;
@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 class OrchestrationChatOptionsTest {
 
   static final OrchestrationAiModel CUSTOM_LLM =
-      GEMINI_1_5_FLASH
+      GEMINI_2_5_FLASH
           .withParam(FREQUENCY_PENALTY, 0.5)
           .withParam(MAX_TOKENS, 100)
           .withParam(PRESENCE_PENALTY, 0.5)
@@ -26,8 +26,8 @@ class OrchestrationChatOptionsTest {
           .withParam(TOP_P, 0.5);
 
   private static void assertCustomLLM(OrchestrationChatOptions opts) {
-    assertThat(opts.getModel()).isEqualTo(GEMINI_1_5_FLASH.getName());
-    assertThat(opts.getModelVersion()).isEqualTo(GEMINI_1_5_FLASH.getVersion());
+    assertThat(opts.getModel()).isEqualTo(GEMINI_2_5_FLASH.getName());
+    assertThat(opts.getModelVersion()).isEqualTo(GEMINI_2_5_FLASH.getVersion());
     assertThat(opts.getFrequencyPenalty()).isEqualTo(0.5);
     assertThat(opts.getMaxTokens()).isEqualTo(100);
     assertThat(opts.getPresencePenalty()).isEqualTo(0.5);
@@ -41,10 +41,10 @@ class OrchestrationChatOptionsTest {
   void testParametersAreInherited() {
     var opts =
         new OrchestrationChatOptions(
-            new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH));
+            new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH));
 
-    assertThat(opts.getModel()).isEqualTo(GEMINI_1_5_FLASH.getName());
-    assertThat(opts.getModelVersion()).isEqualTo(GEMINI_1_5_FLASH.getVersion());
+    assertThat(opts.getModel()).isEqualTo(GEMINI_2_5_FLASH.getName());
+    assertThat(opts.getModelVersion()).isEqualTo(GEMINI_2_5_FLASH.getVersion());
   }
 
   @Test
@@ -59,11 +59,11 @@ class OrchestrationChatOptionsTest {
   void testCopy() {
     var opts =
         new OrchestrationChatOptions(
-            new OrchestrationModuleConfig().withLlmConfig(GEMINI_1_5_FLASH));
+            new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH));
 
     var copy = (OrchestrationChatOptions) opts.copy();
-    assertThat(copy.getModel()).isEqualTo(GEMINI_1_5_FLASH.getName());
-    assertThat(copy.getModelVersion()).isEqualTo(GEMINI_1_5_FLASH.getVersion());
+    assertThat(copy.getModel()).isEqualTo(GEMINI_2_5_FLASH.getName());
+    assertThat(copy.getModelVersion()).isEqualTo(GEMINI_2_5_FLASH.getVersion());
   }
 
   @Test
