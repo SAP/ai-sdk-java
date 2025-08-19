@@ -172,7 +172,6 @@ class SpringAiOrchestrationTest {
     var ChatResponse = service.getPromptTemplate();
     assertThat(ChatResponse).isNotNull();
     assertThat(ChatResponse.getResult().getOutput().getText()).isNotEmpty();
-    assertThat(ChatResponse.getResult().getOutput().getText())
-        .contains("blabla");
+    assertThat(ChatResponse.getResult().getOutput().getText()).contains("blabla");
   }
 }

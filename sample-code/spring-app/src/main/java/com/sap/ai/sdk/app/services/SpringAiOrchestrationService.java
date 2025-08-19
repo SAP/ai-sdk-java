@@ -287,8 +287,11 @@ public class SpringAiOrchestrationService {
 
     List<Message> m =
         OrchestrationSpringUtil.getPromptTemplate(
-            "prompt_template_name", "MyScenario", "1.0.0",
-            Map.of("current_timestamp", String.valueOf(System.currentTimeMillis()), "topic", "Time"));
+            "prompt_template_name",
+            "MyScenario",
+            "1.0.0",
+            Map.of(
+                "current_timestamp", String.valueOf(System.currentTimeMillis()), "topic", "Time"));
     val prompt = new Prompt(m, defaultOptions);
     return cl.prompt(prompt).call().chatResponse();
   }

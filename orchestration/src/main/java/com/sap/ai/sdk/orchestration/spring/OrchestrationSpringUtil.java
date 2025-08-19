@@ -1,13 +1,9 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
-
-import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.prompt.registry.PromptClient;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.Template;
-
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -16,7 +12,6 @@ import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
-import org.springframework.ai.chat.prompt.Prompt;
 
 /** Utility class for orchestration-related operations in a Spring context. */
 public class OrchestrationSpringUtil {
