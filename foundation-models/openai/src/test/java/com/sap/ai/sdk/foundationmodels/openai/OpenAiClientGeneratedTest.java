@@ -49,13 +49,13 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
 
   @Test
   void openAiModels() {
-    var model = OpenAiModel.GPT_4;
+    var model = OpenAiModel.GPT_5;
     var newModel = model.withVersion("v1");
 
-    assertThat(model.name()).isEqualTo("gpt-4");
+    assertThat(model.name()).isEqualTo("gpt-5");
     assertThat(model.version()).isNull();
 
-    assertThat(newModel.name()).isEqualTo("gpt-4");
+    assertThat(newModel.name()).isEqualTo("gpt-5");
     assertThat(newModel.version()).isEqualTo("v1");
 
     assertThat(model).isNotSameAs(newModel);
