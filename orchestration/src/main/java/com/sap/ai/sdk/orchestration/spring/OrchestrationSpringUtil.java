@@ -7,6 +7,8 @@ import com.sap.ai.sdk.prompt.registry.PromptClient;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.Template;
+
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.val;
@@ -18,10 +20,6 @@ import org.springframework.ai.chat.prompt.Prompt;
 
 /** Utility class for orchestration-related operations in a Spring context. */
 public class OrchestrationSpringUtil {
-  private static final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
-  private static final OrchestrationChatOptions defaultOptions =
-      new OrchestrationChatOptions(config);
 
   private OrchestrationSpringUtil() {
     // Utility class, no instantiation allowed
@@ -35,13 +33,16 @@ public class OrchestrationSpringUtil {
    * @return a Prompt object containing the messages from the template
    */
   @Nonnull
-  public static Prompt getPromptTemplate(
-      @Nonnull final String templateName, @Nonnull final Map<String, Object> inputParams) {
+  public static List<Message> getPromptTemplate(
+      @Nonnull final String templateName,
+      @Nonnull final String Scenario,
+      @Nonnull final String Version,
+      @Nonnull final Map<String, Object> inputParams) {
     val templateMessages =
         new PromptClient()
             .parsePromptTemplateByNameVersion(
-                "MyScenario",
-                "1.0.0",
+                Scenario,
+                Version,
                 templateName,
                 "default",
                 false,
@@ -65,6 +66,6 @@ public class OrchestrationSpringUtil {
                       };
                 })
             .toList();
-    return new Prompt(messages, defaultOptions);
+    return messages;
   }
 }

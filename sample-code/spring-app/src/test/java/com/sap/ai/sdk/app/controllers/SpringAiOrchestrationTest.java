@@ -173,6 +173,6 @@ class SpringAiOrchestrationTest {
     assertThat(ChatResponse).isNotNull();
     assertThat(ChatResponse.getResult().getOutput().getText()).isNotEmpty();
     assertThat(ChatResponse.getResult().getOutput().getText())
-        .contains("How can I assist you today?");
+        .contains("blabla");
   }
 }

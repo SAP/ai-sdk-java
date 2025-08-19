@@ -26,6 +26,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatModel;
@@ -284,10 +285,11 @@ public class SpringAiOrchestrationService {
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
     val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
-    val prompt =
+    List<Message> m =
         OrchestrationSpringUtil.getPromptTemplate(
-            "prompt_template_name",
-            Map.of("current_timestamp", System.currentTimeMillis(), "topic", "Time"));
+            "prompt_template_name", "MyScenario", "1.0.0",
+            Map.of("current_timestamp", String.valueOf(System.currentTimeMillis()), "topic", "Time"));
+    val prompt = new Prompt(m, defaultOptions);
     return cl.prompt(prompt).call().chatResponse();
   }
 }
