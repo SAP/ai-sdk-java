@@ -1,0 +1,75 @@
+{
+  "choices": [
+    {
+      "content_filter_results": {
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        }
+      },
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "annotations": [],
+        "content": "Typical food in Paris includes a variety of French cuisine, such as:\n\n1. **Croissants** - Flaky, buttery pastries often enjoyed at breakfast.\n2. **Baguette** - A long, thin loaf of French bread, commonly used for making sandwiches.\n3. **Escargots** - Snails typically cooked in garlic butter, often served as an appetizer.\n4. **Coq au Vin** - A classic French dish made with chicken braised in red wine, usually with mushrooms and lardons.\n5. **Ratatouille** - A vegetable dish that includes ingredients like zucchini, eggplant, bell peppers, and tomatoes.\n6. **Duck Confit** - Slow-cooked duck leg that is crispy on the outside and tender on the inside.\n7. **Cr\u00eapes** - Thin pancakes that can be filled with sweet or savory ingredients.\n8. **Tarte Tatin** - An upside-down caramelized apple tart.\n9. **Macarons** - Colorful almond meringue cookies filled with ganache, buttercream, or jam.\n\nParis is also known for its vibrant caf\u00e9 culture, where you can enjoy coffee alongside pastries or light meals.",
+        "refusal": null,
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1755099739,
+  "id": "chatcmpl-C47uFlhhRd3CbStgBf77Unh8RJnMG",
+  "model": "gpt-4o-mini-2024-07-18",
+  "object": "chat.completion",
+  "prompt_filter_results": [
+    {
+      "content_filter_results": {
+        "hate": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "self_harm": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "sexual": {
+          "filtered": false,
+          "severity": "safe"
+        },
+        "violence": {
+          "filtered": false,
+          "severity": "safe"
+        }
+      },
+      "prompt_index": 0
+    }
+  ],
+  "system_fingerprint": "fp_efad92c60b",
+  "usage": {
+    "completion_tokens": 242,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": 0,
+      "audio_tokens": 0,
+      "reasoning_tokens": 0,
+      "rejected_prediction_tokens": 0
+    },
+    "prompt_tokens": 37,
+    "prompt_tokens_details": {
+      "audio_tokens": 0,
+      "cached_tokens": 0
+    },
+    "total_tokens": 279
+  }
+}
