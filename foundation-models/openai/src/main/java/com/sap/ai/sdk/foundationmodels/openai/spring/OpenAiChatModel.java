@@ -110,7 +110,7 @@ public class OpenAiChatModel implements ChatModel {
         });
   }
 
-  private List<OpenAiMessage> extractMessages(final Prompt prompt) {
+  private static List<OpenAiMessage> extractMessages(final Prompt prompt) {
     final List<OpenAiMessage> result = new ArrayList<>();
     for (final Message message : prompt.getInstructions()) {
       switch (message.getMessageType()) {
@@ -173,7 +173,15 @@ public class OpenAiChatModel implements ChatModel {
     return new Generation(assistantMessage, metadata.build());
   }
 
-  private OpenAiChatCompletionRequest extractOptions(
+  /**
+   * Adds options to the request.
+   *
+   * @param request the request to modify
+   * @param options the options to extract
+   * @return the modified request with options applied
+   */
+  @Nonnull
+  protected static OpenAiChatCompletionRequest extractOptions(
       @Nonnull OpenAiChatCompletionRequest request, @Nonnull final ChatOptions options) {
     request = request.withStop(options.getStopSequences()).withMaxTokens(options.getMaxTokens());
     if (options.getTemperature() != null) {
@@ -191,7 +199,7 @@ public class OpenAiChatModel implements ChatModel {
     return request;
   }
 
-  private List<ChatCompletionTool> extractTools(final ToolCallingChatOptions options) {
+  private static List<ChatCompletionTool> extractTools(final ToolCallingChatOptions options) {
     val tools = new ArrayList<ChatCompletionTool>();
     for (val toolCallback : options.getToolCallbacks()) {
       val toolDefinition = toolCallback.getToolDefinition();
