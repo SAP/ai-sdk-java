@@ -11,7 +11,7 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 
-/** Utility class for orchestration-related operations in a Spring context. */
+/** Utility class for prompt registry related operations in a Spring context. */
 public class SpringAiConverter {
 
   private SpringAiConverter() {
