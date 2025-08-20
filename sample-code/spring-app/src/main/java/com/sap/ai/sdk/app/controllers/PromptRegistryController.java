@@ -12,12 +12,11 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpec;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
+import com.sap.ai.sdk.prompt.registry.spring.SpringAiConverter;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
-import com.sap.ai.sdk.prompt.registry.spring.SpringAiConverter;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
