@@ -275,32 +275,4 @@ public class SpringAiOrchestrationService {
 
     return cl.prompt(prompt).call().entity(Translation.class);
   }
-
-  /**
-   * Get a prompt template by name and input parameters.
-   *
-   * @return the chat response containing the prompt template
-   */
-  @Nullable
-  public ChatResponse promptRegistryToSpringAi() {
-    val repository = new InMemoryChatMemoryRepository();
-    val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
-    val advisor = MessageChatMemoryAdvisor.builder(memory).build();
-    val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
-
-    val promptResponse =
-        new PromptClient()
-            .parsePromptTemplateByNameVersion(
-                "categorization",
-                "0.0.1",
-                "java-e2e-test",
-                "default",
-                false,
-                PromptTemplateSubstitutionRequest.create()
-                    .inputParams(Map.of("inputExample", "I love football")));
-
-    List<Message> messages = SpringUtil.promptRegistryToSpringAi(promptResponse);
-    val prompt = new Prompt(messages, defaultOptions);
-    return cl.prompt(prompt).call().chatResponse();
-  }
 }

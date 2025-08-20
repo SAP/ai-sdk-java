@@ -85,4 +85,12 @@ public class PromptRegistryTest {
     assertThat(deletedTemplate).hasSize(1);
     assertThat(deletedTemplate.get(0).getMessage()).contains("successful");
   }
+
+  @Test
+  void promptRegistryToSpringAi() {
+    var controller = new PromptRegistryController();
+    var ChatResponse = controller.promptRegistryToSpringAi();
+    assertThat(ChatResponse).isNotNull();
+    assertThat(ChatResponse.getOutput().getText()).contains("Sports");
+  }
 }

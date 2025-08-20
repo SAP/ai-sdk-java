@@ -40,7 +40,7 @@ public class PromptTemplateSubstitutionResponse
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /** Default constructor for PromptTemplateSubstitutionResponse. */
-  protected PromptTemplateSubstitutionResponse() {}
+  public PromptTemplateSubstitutionResponse() {}
 
   /**
    * Set the parsedPrompt of this {@link PromptTemplateSubstitutionResponse} instance and return the

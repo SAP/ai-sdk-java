@@ -166,11 +166,4 @@ class SpringAiOrchestrationTest {
     assertThat(translation.translation()).isNotEmpty();
     assertThat(translation.language()).containsIgnoringCase("dutch");
   }
-
-  @Test
-  void promptRegistryToSpringAi() {
-    var ChatResponse = service.promptRegistryToSpringAi();
-    assertThat(ChatResponse).isNotNull();
-    assertThat(ChatResponse.getResult().getOutput().getText()).contains("Sports");
-  }
 }
