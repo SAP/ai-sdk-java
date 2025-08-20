@@ -23,7 +23,6 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.messages.Message;
-import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.core.io.ClassPathResource;
@@ -115,7 +114,7 @@ class PromptRegistryController {
 
   @GetMapping("/promptRegistryToSpringAi")
   Generation promptRegistryToSpringAi() {
-    ChatModel openAiClient = new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI));
+    val openAiClient = new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI));
     val repository = new InMemoryChatMemoryRepository();
     val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
@@ -132,7 +131,7 @@ class PromptRegistryController {
                 PromptTemplateSubstitutionRequest.create()
                     .inputParams(Map.of("inputExample", "I love football")));
 
-    List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
+    final List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
     val prompt = new Prompt(messages);
     val response = cl.prompt(prompt).call().chatResponse();
     return response != null ? response.getResult() : null;

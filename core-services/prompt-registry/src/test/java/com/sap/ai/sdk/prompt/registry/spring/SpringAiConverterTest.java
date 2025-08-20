@@ -2,7 +2,7 @@ package com.sap.ai.sdk.prompt.registry.spring;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.prompt.registry.PromptClient;
@@ -27,7 +27,7 @@ public class SpringAiConverterTest {
   private final AiCoreService SERVICE = new AiCoreService().withBaseDestination(DESTINATION);
 
   @Test
-  void testPipelines() {
+  void testPromptRegistryToSpringAi() {
     var client = new PromptClient(SERVICE);
     val promptResponse =
         client.parsePromptTemplateByNameVersion(
@@ -46,5 +46,23 @@ public class SpringAiConverterTest {
                 new SystemMessage(
                     "You classify input text into the two following categories: Finance, Tech, Sports, Politics"),
                 new UserMessage("I love football")));
+  }
+
+  @Test
+  void testInvalidRoleThrowsException() {
+    var client = new PromptClient(SERVICE);
+    val errorPrompt =
+        client.parsePromptTemplateByNameVersion(
+            "categorization",
+            "0.0.1",
+            "error",
+            "default",
+            false,
+            PromptTemplateSubstitutionRequest.create()
+                .inputParams(Map.of("inputExample", "I love football")));
+
+    assertThatThrownBy(() -> SpringAiConverter.promptTemplateToMessages(errorPrompt))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Unknown role: error");
   }
 }
