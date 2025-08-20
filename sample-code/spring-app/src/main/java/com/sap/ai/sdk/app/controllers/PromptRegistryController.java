@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import com.sap.ai.sdk.prompt.registry.spring.SpringUtil;
+import com.sap.ai.sdk.prompt.registry.spring.SpringAiConverter;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -25,17 +25,13 @@ import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Nullable;
 
 /** Endpoint for Prompt Registry operations */
 @SuppressWarnings("unused") // debug class that doesn't need to be tested
@@ -137,7 +133,7 @@ class PromptRegistryController {
                 PromptTemplateSubstitutionRequest.create()
                     .inputParams(Map.of("inputExample", "I love football")));
 
-    List<Message> messages = SpringUtil.promptRegistryToSpringAi(promptResponse);
+    List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
     val prompt = new Prompt(messages);
     val response = cl.prompt(prompt).call().chatResponse();
     return response != null ? response.getResult() : null;

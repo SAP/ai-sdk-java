@@ -12,9 +12,9 @@ import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 
 /** Utility class for orchestration-related operations in a Spring context. */
-public class SpringUtil {
+public class SpringAiConverter {
 
-  private SpringUtil() {
+  private SpringAiConverter() {
     // Utility class, no instantiation allowed
   }
 
@@ -25,7 +25,7 @@ public class SpringUtil {
    * @return list of SpringAI messages.
    */
   @Nonnull
-  public static List<Message> promptRegistryToSpringAi(
+  public static List<Message> promptTemplateToMessages(
       @Nonnull final PromptTemplateSubstitutionResponse promptResponse) {
 
     val res = promptResponse.getParsedPrompt();

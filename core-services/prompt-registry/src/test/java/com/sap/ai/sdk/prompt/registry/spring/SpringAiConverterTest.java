@@ -19,7 +19,7 @@ import java.util.Map;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SpringUtilTest {
+public class SpringAiConverterTest {
   @RegisterExtension
   private static final WireMockExtension WM =
       WireMockExtension.newInstance().options(wireMockConfig().dynamicPort()).build();
@@ -40,7 +40,7 @@ public class SpringUtilTest {
             PromptTemplateSubstitutionRequest.create()
                 .inputParams(Map.of("inputExample", "I love football")));
 
-    List<Message> messages = SpringUtil.promptRegistryToSpringAi(promptResponse);
+    List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
     assertThat(messages)
         .isEqualTo(
             List.of(

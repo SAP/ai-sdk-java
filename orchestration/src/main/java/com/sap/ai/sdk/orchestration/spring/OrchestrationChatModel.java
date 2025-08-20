@@ -64,6 +64,7 @@ public class OrchestrationChatModel implements ChatModel {
   @Override
   public ChatResponse call(@Nonnull final Prompt prompt) {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
+
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val response =
           new OrchestrationSpringChatResponse(
