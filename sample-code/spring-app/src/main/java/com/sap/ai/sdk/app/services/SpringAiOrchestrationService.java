@@ -15,12 +15,15 @@ import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
-import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringUtil;
+import com.sap.ai.sdk.prompt.registry.spring.SpringUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import com.sap.ai.sdk.prompt.registry.PromptClient;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -279,20 +282,25 @@ public class SpringAiOrchestrationService {
    * @return the chat response containing the prompt template
    */
   @Nullable
-  public ChatResponse getPromptTemplate() {
+  public ChatResponse promptRegistryToSpringAi() {
     val repository = new InMemoryChatMemoryRepository();
     val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
     val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
-    List<Message> m =
-        OrchestrationSpringUtil.getPromptTemplate(
-            "prompt_template_name",
-            "MyScenario",
-            "1.0.0",
-            Map.of(
-                "current_timestamp", String.valueOf(System.currentTimeMillis()), "topic", "Time"));
-    val prompt = new Prompt(m, defaultOptions);
+    val promptResponse =
+        new PromptClient()
+            .parsePromptTemplateByNameVersion(
+                "categorization",
+                "0.0.1",
+                "java-e2e-test",
+                "default",
+                false,
+                PromptTemplateSubstitutionRequest.create()
+                    .inputParams(Map.of("inputExample", "I love football")));
+
+    List<Message> messages = SpringUtil.promptRegistryToSpringAi(promptResponse);
+    val prompt = new Prompt(messages, defaultOptions);
     return cl.prompt(prompt).call().chatResponse();
   }
 }
