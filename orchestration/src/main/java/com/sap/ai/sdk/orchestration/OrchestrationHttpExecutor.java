@@ -9,11 +9,14 @@ import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstantiationException;
 import java.io.IOException;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -39,14 +42,15 @@ class OrchestrationHttpExecutor {
   <T> T execute(
       @Nonnull final String path,
       @Nonnull final Object payload,
-      @Nonnull final Class<T> responseType) {
+      @Nonnull final Class<T> responseType,
+      @Nonnull final List<Header> customHeaders) {
     try {
       val json = JACKSON.writeValueAsString(payload);
       log.debug("Successfully serialized request into JSON payload");
       val request = new HttpPost(path);
       request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
 
-      val client = getHttpClient();
+      val client = getHttpClient(customHeaders);
 
       val handler =
           new ClientResponseHandler<>(responseType, OrchestrationError.Synchronous.class, FACTORY)
@@ -67,13 +71,13 @@ class OrchestrationHttpExecutor {
 
   @Nonnull
   Stream<OrchestrationChatCompletionDelta> stream(
-      @Nonnull final String path, @Nonnull final Object payload) {
+      @Nonnull final String path, @Nonnull final Object payload, @Nonnull final List<Header> customHeaders) {
     try {
 
       val json = JACKSON.writeValueAsString(payload);
       val request = new HttpPost(path);
       request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
-      val client = getHttpClient();
+      val client = getHttpClient(customHeaders);
 
       return new ClientStreamingHandler<>(
               OrchestrationChatCompletionDelta.class, OrchestrationError.Streaming.class, FACTORY)
@@ -90,8 +94,8 @@ class OrchestrationHttpExecutor {
   }
 
   @Nonnull
-  private HttpClient getHttpClient() {
-    val destination = destinationSupplier.get();
+  private HttpClient getHttpClient(@Nonnull final List<Header> customHeaders) {
+    val destination = DefaultHttpDestination.fromDestination(destinationSupplier.get()).headers(customHeaders).build();
     log.debug("Using destination {} to connect to orchestration service", destination);
     return ApacheHttpClient5Accessor.getHttpClient(destination);
   }

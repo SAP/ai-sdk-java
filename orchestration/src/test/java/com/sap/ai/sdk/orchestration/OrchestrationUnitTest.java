@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.badRequest;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
@@ -88,6 +89,8 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+
+import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import lombok.val;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
@@ -166,6 +169,33 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .hasMessage(
             "Request failed with status 500 (Server Error): Internal Server Error located in Masking Module - Masking");
+  }
+
+  @Test
+  void testCustomHeaders() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var customHeader = new Header("foo", "bar");
+    final var result = client.withHeader("footoo", "barzar").withHeader(customHeader).chatCompletion(prompt, config);
+    assertThat(result).isNotNull();
+
+    var newCustomHeader = new Header("foo", "baz");
+    var streamResult = client.withHeader("footoo", "barz").withHeader(newCustomHeader).streamChatCompletion(prompt, config);
+    assertThat(streamResult).isNotNull();
+
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("foo", equalTo("bar"))
+            .withHeader("footoo", equalTo("barzar")));
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("foo", equalTo("baz"))
+            .withHeader("footoo", equalTo("barz")));
   }
 
   @Test
