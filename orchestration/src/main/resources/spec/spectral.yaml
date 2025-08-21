@@ -1,0 +1,21 @@
+extends: spectral:oas
+
+rules:
+  oneOfs-with-multi-array:
+    description: The Java SDK cannot handle oneOfs with multiple array options.
+    given: $..oneOf
+    severity: error
+    then:
+      function: length
+      functionOptions:
+        max: 1
+      field: "[?(@.type=='array')]"
+
+  oneOf-object-distinguishability:
+    given: $..oneOf
+    severity: warn
+    then:
+      function: oneOfObjectDistinguishability
+
+functions:
+  - "oneOfObjectDistinguishability"
