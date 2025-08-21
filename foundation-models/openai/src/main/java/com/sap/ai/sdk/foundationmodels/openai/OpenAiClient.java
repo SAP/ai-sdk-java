@@ -25,6 +25,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -126,6 +127,36 @@ public final class OpenAiClient {
   public OpenAiClient withSystemPrompt(@Nonnull final String systemPrompt) {
     this.systemPrompt = systemPrompt;
     return this;
+  }
+
+  /**
+   * Create a new OpenAI client with a custom header added to every call made with this client
+   *
+   * @param customHeader the custom header to add
+   * @return a new client.
+   */
+  @Beta
+  @Nonnull
+  public OpenAiClient withHeader(@Nonnull final Header customHeader) {
+    final var newDestination =
+        DefaultHttpDestination.fromDestination(this.destination)
+            .header(customHeader)
+            .build();
+    return new OpenAiClient(newDestination);
+  }
+
+  /**
+   * Create a new OpenAI client with a custom header added to every call made with this client
+   *
+   * @param key the key of the custom header to add
+   * @param value the value of the custom header to add
+   * @return a new client.
+   */
+  @Beta
+  @Nonnull
+  public OpenAiClient withHeader(@Nonnull final String key, @Nonnull final String value) {
+    final var customHeader = new Header(key, value);
+    return this.withHeader(customHeader);
   }
 
   /**

@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.*;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterSeverityResult.Severity.SAFE;
@@ -21,6 +22,8 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+
+import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -479,5 +482,28 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
                         }
                       }
                       """)));
+  }
+
+  @Test
+  void testCustomHeaders() {
+    stubForChatCompletion();
+    final var request = new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+
+    var customHeader = new Header("foo", "bar");
+    final var result = client.withHeader("footoo", "barzar").withHeader(customHeader).chatCompletion(request);
+    assertThat(result).isNotNull();
+
+    var newCustomHeader = new Header("foo", "baz");
+    var streamResult = client.withHeader("footoo", "barz").withHeader(newCustomHeader).streamChatCompletion("Hello World! Why is this phrase so famous?");
+    assertThat(streamResult).isNotNull();
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("foo", equalTo("bar"))
+            .withHeader("footoo", equalTo("barzar")));
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("foo", equalTo("baz"))
+            .withHeader("footoo", equalTo("barz")));
   }
 }
