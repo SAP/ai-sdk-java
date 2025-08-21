@@ -4,7 +4,7 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.app.services.OpenAiServiceV2;
+import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
@@ -18,11 +18,11 @@ import org.junit.jupiter.api.Test;
 
 @Slf4j
 class OpenAiV2Test {
-  OpenAiServiceV2 service;
+  OpenAiService service;
 
   @BeforeEach
   void setUp() {
-    service = new OpenAiServiceV2();
+    service = new OpenAiService();
   }
 
   @Test
