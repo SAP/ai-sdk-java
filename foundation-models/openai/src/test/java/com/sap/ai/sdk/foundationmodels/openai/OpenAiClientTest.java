@@ -16,14 +16,13 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParamete
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-
-import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -487,14 +486,20 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
   @Test
   void testCustomHeaders() {
     stubForChatCompletion();
-    final var request = new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+    final var request =
+        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
 
     var customHeader = new Header("foo", "bar");
-    final var result = client.withHeader("footoo", "barzar").withHeader(customHeader).chatCompletion(request);
+    final var result =
+        client.withHeader("footoo", "barzar").withHeader(customHeader).chatCompletion(request);
     assertThat(result).isNotNull();
 
     var newCustomHeader = new Header("foo", "baz");
-    var streamResult = client.withHeader("footoo", "barz").withHeader(newCustomHeader).streamChatCompletion("Hello World! Why is this phrase so famous?");
+    var streamResult =
+        client
+            .withHeader("footoo", "barz")
+            .withHeader(newCustomHeader)
+            .streamChatCompletion("Hello World! Why is this phrase so famous?");
     assertThat(streamResult).isNotNull();
 
     verify(

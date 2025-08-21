@@ -139,9 +139,7 @@ public final class OpenAiClient {
   @Nonnull
   public OpenAiClient withHeader(@Nonnull final Header customHeader) {
     final var newDestination =
-        DefaultHttpDestination.fromDestination(this.destination)
-            .header(customHeader)
-            .build();
+        DefaultHttpDestination.fromDestination(this.destination).header(customHeader).build();
     return new OpenAiClient(newDestination);
   }
 

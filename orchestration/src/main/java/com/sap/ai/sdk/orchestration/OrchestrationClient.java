@@ -18,7 +18,6 @@ import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import io.vavr.control.Try;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,6 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
@@ -68,7 +66,9 @@ public class OrchestrationClient {
     this.executor = new OrchestrationHttpExecutor(() -> destination);
   }
 
-  private OrchestrationClient(@Nonnull OrchestrationHttpExecutor executor, @Nullable List<Header> customHeaders) {
+  private OrchestrationClient(
+      @Nonnull final OrchestrationHttpExecutor executor,
+      @Nullable final List<Header> customHeaders) {
     this.executor = executor;
     if (customHeaders != null) {
       this.customHeaders.addAll(customHeaders);
@@ -169,7 +169,8 @@ public class OrchestrationClient {
   @Nonnull
   public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
-    return executor.execute(COMPLETION_ENDPOINT, request, CompletionPostResponse.class, customHeaders);
+    return executor.execute(
+        COMPLETION_ENDPOINT, request, CompletionPostResponse.class, customHeaders);
   }
 
   /**
@@ -211,7 +212,8 @@ public class OrchestrationClient {
     requestJson.set("orchestration_config", moduleConfigJson);
 
     return new OrchestrationChatResponse(
-        executor.execute(COMPLETION_ENDPOINT, requestJson, CompletionPostResponse.class, customHeaders));
+        executor.execute(
+            COMPLETION_ENDPOINT, requestJson, CompletionPostResponse.class, customHeaders));
   }
 
   /**
@@ -244,16 +246,32 @@ public class OrchestrationClient {
     return executor.execute("/v2/embeddings", request, EmbeddingsPostResponse.class, customHeaders);
   }
 
-  private OrchestrationClient addHeader(Header header) {
-    this.customHeaders.add(header);
-    return this;
-  }
-
-  public OrchestrationClient withHeader(String key, String value) {
+  /**
+   * Create a new orchestration client with a custom header added to every call made with this
+   * client
+   *
+   * @param key the key of the custom header to add
+   * @param value the value of the custom header to add
+   * @return a new client.
+   */
+  @Beta
+  @Nonnull
+  public OrchestrationClient withHeader(@Nonnull final String key, @Nonnull final String value) {
     return this.withHeader(new Header(key, value));
   }
 
-  public OrchestrationClient withHeader(Header header) {
-    return new OrchestrationClient(this.executor, this.customHeaders).addHeader(header);
+  /**
+   * Create a new orchestration client with a custom header added to every call made with this
+   * client
+   *
+   * @param customHeader the custom header to add
+   * @return a new client.
+   */
+  @Beta
+  @Nonnull
+  public OrchestrationClient withHeader(@Nonnull final Header customHeader) {
+    final var newClient = new OrchestrationClient(this.executor, this.customHeaders);
+    newClient.customHeaders.add(customHeader);
+    return newClient;
   }
 }

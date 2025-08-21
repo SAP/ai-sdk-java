@@ -71,7 +71,9 @@ class OrchestrationHttpExecutor {
 
   @Nonnull
   Stream<OrchestrationChatCompletionDelta> stream(
-      @Nonnull final String path, @Nonnull final Object payload, @Nonnull final List<Header> customHeaders) {
+      @Nonnull final String path,
+      @Nonnull final Object payload,
+      @Nonnull final List<Header> customHeaders) {
     try {
 
       val json = JACKSON.writeValueAsString(payload);
@@ -95,7 +97,10 @@ class OrchestrationHttpExecutor {
 
   @Nonnull
   private HttpClient getHttpClient(@Nonnull final List<Header> customHeaders) {
-    val destination = DefaultHttpDestination.fromDestination(destinationSupplier.get()).headers(customHeaders).build();
+    val destination =
+        DefaultHttpDestination.fromDestination(destinationSupplier.get())
+            .headers(customHeaders)
+            .build();
     log.debug("Using destination {} to connect to orchestration service", destination);
     return ApacheHttpClient5Accessor.getHttpClient(destination);
   }

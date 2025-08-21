@@ -78,6 +78,7 @@ import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -89,8 +90,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-
-import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import lombok.val;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
@@ -181,11 +180,19 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     var customHeader = new Header("foo", "bar");
-    final var result = client.withHeader("footoo", "barzar").withHeader(customHeader).chatCompletion(prompt, config);
+    final var result =
+        client
+            .withHeader("footoo", "barzar")
+            .withHeader(customHeader)
+            .chatCompletion(prompt, config);
     assertThat(result).isNotNull();
 
     var newCustomHeader = new Header("foo", "baz");
-    var streamResult = client.withHeader("footoo", "barz").withHeader(newCustomHeader).streamChatCompletion(prompt, config);
+    var streamResult =
+        client
+            .withHeader("footoo", "barz")
+            .withHeader(newCustomHeader)
+            .streamChatCompletion(prompt, config);
     assertThat(streamResult).isNotNull();
 
     verify(
