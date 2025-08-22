@@ -1,3 +1,5 @@
+import { createRulesetFunction } from "@stoplight/spectral-core";
+
 /**
  * Spectral rule function to validate oneOf object distinguishability for Java SDK deserialization.
  * 
@@ -9,24 +11,25 @@
  * @param {Object} context - Spectral context containing document and path information
  * @returns {Array} Array of validation errors, empty if validation passes
  */
-export default function oneOfObjectDistinguishability(oneOfArray, opts, context) {
-  // Early validation - ensure we have a valid oneOf array
-  if (!Array.isArray(oneOfArray) || oneOfArray.length < 2) {
-    return [];
-  }
-
-  const { document, path } = context;
-
+export default createRulesetFunction(
+  {
+    input: {
+      type: "array",
+      minItems: 2
+    },
+    options: null
+  },
+  function oneOfObjectDistinguishability(oneOfArray, opts, context) {
   try {
     // Check if parent schema has discriminator (automatic pass)
-    if (hasDiscriminator(path, document)) {
+    if (hasDiscriminator(context.path, context.document)) {
       return [];
     }
 
     // Resolve and filter to object schemas only
     const objectSchemas = oneOfArray
-      .map((schema, index) => ({ 
-        ...resolveSchemaReference(schema, document), 
+      .map((schema, index) => ({
+        ...resolveSchemaReference(schema, context.document),
         index
       }))
       .filter(isObjectSchema);
@@ -42,7 +45,7 @@ export default function oneOfObjectDistinguishability(oneOfArray, opts, context)
     // Build property signature map in single pass
     for (const schema of objectSchemas) {
       const required = schema.required || [];
-      const signature = [...required].sort().join(','); // Create copy before sorting
+      const signature = required.toSorted().join(',');
       
       if (!propertySignatures.has(signature)) {
         propertySignatures.set(signature, []);
@@ -57,7 +60,7 @@ export default function oneOfObjectDistinguishability(oneOfArray, opts, context)
         // These schemas are indistinguishable - report all conflicting schemas
         const indices = schemas.map(schema => schema.index).join(', ');
         const errorMessage = `Cannot distinguish oneOf options {${indices}}. Add discriminator or ensure unique required properties.`;
-        errors.push({ message: errorMessage, path: [...path] });
+        errors.push({ message: errorMessage, path: [...context.path] });
       }
     }
 
@@ -68,7 +71,8 @@ export default function oneOfObjectDistinguishability(oneOfArray, opts, context)
     console.warn(`oneOfObjectDistinguishability validation error: ${error.message}`);
     return [];
   }
-}
+  }
+);
 
 /**
  * Checks if the parent schema has a discriminator property
