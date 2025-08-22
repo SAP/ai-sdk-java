@@ -113,9 +113,9 @@ public class GlobalStreamOptions
   /**
    * Set the delimiters of this {@link GlobalStreamOptions} instance and return the same instance.
    *
-   * @param delimiters List of delimiters to split the input text into chunks.Please note, this is a
-   *     required parameter when &#x60;input_translation_module_config&#x60; or
-   *     &#x60;output_translation_module_config&#x60; are configured.
+   * @param delimiters List of delimiters to split the input text into chunks. Please note, this is
+   *     a required parameter when &#x60;config.modules.translation.input&#x60; or
+   *     &#x60;config.modules.translation.output&#x60; are configured.
    * @return The same instance of this {@link GlobalStreamOptions} class
    */
   @Nonnull
@@ -140,9 +140,9 @@ public class GlobalStreamOptions
   }
 
   /**
-   * List of delimiters to split the input text into chunks.Please note, this is a required
-   * parameter when &#x60;input_translation_module_config&#x60; or
-   * &#x60;output_translation_module_config&#x60; are configured.
+   * List of delimiters to split the input text into chunks. Please note, this is a required
+   * parameter when &#x60;config.modules.translation.input&#x60; or
+   * &#x60;config.modules.translation.output&#x60; are configured.
    *
    * @return delimiters The delimiters of this {@link GlobalStreamOptions} instance.
    */
@@ -154,9 +154,9 @@ public class GlobalStreamOptions
   /**
    * Set the delimiters of this {@link GlobalStreamOptions} instance.
    *
-   * @param delimiters List of delimiters to split the input text into chunks.Please note, this is a
-   *     required parameter when &#x60;input_translation_module_config&#x60; or
-   *     &#x60;output_translation_module_config&#x60; are configured.
+   * @param delimiters List of delimiters to split the input text into chunks. Please note, this is
+   *     a required parameter when &#x60;config.modules.translation.input&#x60; or
+   *     &#x60;config.modules.translation.output&#x60; are configured.
    */
   public void setDelimiters(@Nullable final List<String> delimiters) {
     this.delimiters = delimiters;
