@@ -14,7 +14,6 @@ rules:
       field: "[?(@.type=='array')]"
 
   oneOf-object-distinguishability:
-    description: "[Java SDK] oneOf options in response schemas may not be distinguishable for deserialization. Add discriminator or ensure unique required properties exist."
     given:
       - $..responses..oneOf
       - $.components.schemas..oneOf

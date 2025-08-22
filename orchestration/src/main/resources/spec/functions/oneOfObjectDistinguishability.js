@@ -25,7 +25,10 @@ export default function oneOfObjectDistinguishability(oneOfArray, opts, context)
 
     // Resolve and filter to object schemas only
     const objectSchemas = oneOfArray
-      .map((schema, index) => ({ ...resolveSchemaReference(schema, document), index }))
+      .map((schema, index) => ({ 
+        ...resolveSchemaReference(schema, document), 
+        index
+      }))
       .filter(isObjectSchema);
 
     // Skip if fewer than 2 object schemas
@@ -33,23 +36,28 @@ export default function oneOfObjectDistinguishability(oneOfArray, opts, context)
       return [];
     }
 
-    // Find non-distinguishable schemas and return errors
-    const errors = [];
-    for (const [currentIndex, currentSchema] of objectSchemas.entries()) {
-      const currentRequired = new Set(currentSchema.required || []);
+    // Find non-distinguishable schemas using O(n) approach
+    const propertySignatures = new Map(); // signature -> [schema objects]
+    
+    // Build property signature map in single pass
+    for (const schema of objectSchemas) {
+      const required = schema.required || [];
+      const signature = [...required].sort().join(','); // Create copy before sorting
       
-      for (const otherSchema of objectSchemas.slice(currentIndex + 1)) {
-        const otherRequired = new Set(otherSchema.required || []);
-        
-        // Check if schemas cannot be distinguished
-        const cannotDistinguish = !hasUniqueRequiredProperties(currentRequired, otherRequired) && 
-                                  !hasUniqueRequiredProperties(otherRequired, currentRequired);
-        
-        if (cannotDistinguish) {
-          const errorMessage = `Cannot distinguish oneOf option ${currentSchema.index} from option ${otherSchema.index}. Add discriminator or unique required properties.`;
-          errors.push({ message: errorMessage, path: [...path] });
-          break; // Only report first conflict per schema
-        }
+      if (!propertySignatures.has(signature)) {
+        propertySignatures.set(signature, []);
+      }
+      propertySignatures.get(signature).push(schema);
+    }
+    
+    // Find conflicts - any signature with multiple schemas
+    const errors = [];
+    for (const [signature, schemas] of propertySignatures) {
+      if (schemas.length > 1) {
+        // These schemas are indistinguishable - report all conflicting schemas
+        const indices = schemas.map(schema => schema.index).join(', ');
+        const errorMessage = `Cannot distinguish oneOf options {${indices}}. Add discriminator or ensure unique required properties.`;
+        errors.push({ message: errorMessage, path: [...path] });
       }
     }
 
@@ -113,16 +121,4 @@ function isObjectSchema(schema) {
 
   // Default to object for untyped schemas (conservative approach)
   return true;
-}
-
-/**
- * Checks if a schema has at least one required property that others don't have
- */
-function hasUniqueRequiredProperties(schemaRequired, otherRequired) {
-  for (const prop of schemaRequired) {
-    if (!otherRequired.has(prop)) {
-      return true;
-    }
-  }
-  return false;
 }
