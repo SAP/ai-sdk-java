@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/v2/lm/scenarios/categorization/promptTemplates/java-e2e-test/versions/0.0.1/substitution?metadata=false"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "parsedPrompt": [
+        {
+          "role": "system",
+          "content": "You classify input text into the two following categories: Finance, Tech, Sports, Politics"
+        },
+        {
+          "role": "user",
+          "content": "I love football"
+        }
+      ]
+    }
+  }
+}
+
+
