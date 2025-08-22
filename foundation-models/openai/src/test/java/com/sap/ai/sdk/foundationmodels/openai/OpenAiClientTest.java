@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.*;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterSeverityResult.Severity.SAFE;
@@ -15,6 +16,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParamete
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -479,5 +481,34 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
                         }
                       }
                       """)));
+  }
+
+  @Test
+  void testCustomHeaders() {
+    stubForChatCompletion();
+    final var request =
+        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+
+    var customHeader = new Header("foo", "bar");
+    final var result =
+        client.withHeader("footoo", "barzar").withHeader(customHeader).chatCompletion(request);
+    assertThat(result).isNotNull();
+
+    var newCustomHeader = new Header("foo", "baz");
+    var streamResult =
+        client
+            .withHeader("footoo", "barz")
+            .withHeader(newCustomHeader)
+            .streamChatCompletion("Hello World! Why is this phrase so famous?");
+    assertThat(streamResult).isNotNull();
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("foo", equalTo("bar"))
+            .withHeader("footoo", equalTo("barzar")));
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("foo", equalTo("baz"))
+            .withHeader("footoo", equalTo("barz")));
   }
 }
