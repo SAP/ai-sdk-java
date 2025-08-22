@@ -2,7 +2,7 @@ extends: spectral:oas
 
 rules:
   oneOfs-with-multi-array:
-    description: The Java SDK cannot handle oneOfs with multiple array options.
+    description: "[Java SDK] Cannot handle oneOfs with multiple array options."
     given: $..oneOf
     severity: error
     then:
@@ -12,9 +12,9 @@ rules:
       field: "[?(@.type=='array')]"
 
   oneOf-object-distinguishability:
-    description: oneOf schemas in API responses must be distinguishable for Java SDK deserialization
+    description: "[Java SDK] oneOf options in response schemas may not be distinguishable for deserialization. Add discriminator or ensure unique required properties exist."
     given:
-      - $.paths[*][*].responses[*]..oneOf
+      - $..responses[*]..oneOf
       - $.components.schemas[*]..oneOf
     severity: warn
     then:
