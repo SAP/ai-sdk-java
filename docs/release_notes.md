@@ -25,8 +25,8 @@
 - [Orchestration] Deprecated `OrchestrationAiModel.IBM_GRANITE_13B_CHAT` with no replacement.
 - [OpenAI] [Introduced SpringAI integration with our OpenAI client.](https://sap.github.io/ai-sdk/docs/java/spring-ai/openai)
   - Added `OpenAiChatModel`
-- [Orchestration] [Added convenience to add custom headers to individual orchestration calls.](add link here)
-- [OpenAI] [Added convenience to add custom headers to individual LLM calls.](add link here)
+- [Orchestration] [Added convenience to add custom headers to individual orchestration calls.](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#custom-headers)
+- [OpenAI] [Added convenience to add custom headers to individual LLM calls.](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#custom-headers)
 
 ### 📈 Improvements
 
