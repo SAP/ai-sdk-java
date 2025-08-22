@@ -25,7 +25,11 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Options for streaming. Will be ignored if enabled is false. */
+/**
+ * Options for streaming. Will be ignored if enabled is false. **Note**: The &#x60;delimiters&#x60;
+ * field is required when either &#x60;config.modules.translation.input&#x60; or
+ * &#x60;config.modules.translation.output&#x60; are configured.
+ */
 // CHECKSTYLE:OFF
 public class GlobalStreamOptions
 // CHECKSTYLE:ON
@@ -113,9 +117,9 @@ public class GlobalStreamOptions
   /**
    * Set the delimiters of this {@link GlobalStreamOptions} instance and return the same instance.
    *
-   * @param delimiters List of delimiters to split the input text into chunks. Please note, this is
-   *     a required parameter when &#x60;config.modules.translation.input&#x60; or
-   *     &#x60;config.modules.translation.output&#x60; are configured.
+   * @param delimiters List of delimiters to split the input text into chunks. **Required** if
+   *     &#x60;config.modules.translation.input&#x60; or
+   *     &#x60;config.modules.translation.output&#x60; is configured.
    * @return The same instance of this {@link GlobalStreamOptions} class
    */
   @Nonnull
@@ -140,9 +144,9 @@ public class GlobalStreamOptions
   }
 
   /**
-   * List of delimiters to split the input text into chunks. Please note, this is a required
-   * parameter when &#x60;config.modules.translation.input&#x60; or
-   * &#x60;config.modules.translation.output&#x60; are configured.
+   * List of delimiters to split the input text into chunks. **Required** if
+   * &#x60;config.modules.translation.input&#x60; or &#x60;config.modules.translation.output&#x60;
+   * is configured.
    *
    * @return delimiters The delimiters of this {@link GlobalStreamOptions} instance.
    */
@@ -154,9 +158,9 @@ public class GlobalStreamOptions
   /**
    * Set the delimiters of this {@link GlobalStreamOptions} instance.
    *
-   * @param delimiters List of delimiters to split the input text into chunks. Please note, this is
-   *     a required parameter when &#x60;config.modules.translation.input&#x60; or
-   *     &#x60;config.modules.translation.output&#x60; are configured.
+   * @param delimiters List of delimiters to split the input text into chunks. **Required** if
+   *     &#x60;config.modules.translation.input&#x60; or
+   *     &#x60;config.modules.translation.output&#x60; is configured.
    */
   public void setDelimiters(@Nullable final List<String> delimiters) {
     this.delimiters = delimiters;
