@@ -47,7 +47,7 @@ export default function oneOfObjectDistinguishability(oneOfArray, opts, context)
         
         if (cannotDistinguish) {
           const errorMessage = `Cannot distinguish oneOf option ${currentSchema.index} from option ${otherSchema.index}. Add discriminator or unique required properties.`;
-          errors.push({ message: errorMessage, path: [...path, currentSchema.index] });
+          errors.push({ message: errorMessage, path: [...path] });
           break; // Only report first conflict per schema
         }
       }
