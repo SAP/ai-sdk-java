@@ -12,7 +12,10 @@ rules:
       field: "[?(@.type=='array')]"
 
   oneOf-object-distinguishability:
-    given: $..oneOf
+    description: oneOf schemas in API responses must be distinguishable for Java SDK deserialization
+    given:
+      - $.paths[*][*].responses[*]..oneOf
+      - $.components.schemas[*]..oneOf
     severity: warn
     then:
       function: oneOfObjectDistinguishability
