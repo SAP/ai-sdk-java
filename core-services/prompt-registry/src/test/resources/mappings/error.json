@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/v2/lm/scenarios/categorization/promptTemplates/error/versions/0.0.1/substitution?metadata=false"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "parsedPrompt": [
+        {
+          "role": "assistant",
+          "content": "What can I help you with?"
+        },
+        {
+          "role": "error",
+          "content": "What is this?"
+        }
+      ]
+    }
+  }
+}
+
+
