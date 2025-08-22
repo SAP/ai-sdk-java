@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 /**
  * Options for streaming. Will be ignored if enabled is false. **Note**: The &#x60;delimiters&#x60;
  * field is required when either &#x60;config.modules.translation.input&#x60; or
- * &#x60;config.modules.translation.output&#x60; are configured.
+ * &#x60;config.modules.translation.output&#x60; is configured.
  */
 // CHECKSTYLE:OFF
 public class GlobalStreamOptions
