@@ -44,7 +44,7 @@ jobs:
         id: run_tests
         run: |
           if [ "${{ matrix.environment }}" = "canary" ]; then
-              export AICORE_SERVICE_KEY="${{ secrets.AI_CORE_CANARY | replace '\"' \"'\" }}"
+              export AICORE_SERVICE_KEY='${{ secrets.AI_CORE_CANARY }}'
           else
               export AICORE_SERVICE_KEY='${{ secrets.AI_CORE_PRODUCTION }}'
           fi
