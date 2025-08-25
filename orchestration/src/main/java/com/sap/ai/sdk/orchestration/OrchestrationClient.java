@@ -116,13 +116,13 @@ public class OrchestrationClient {
   }
 
   private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)
-      throws OrchestrationFilterException.Output {
+      throws OrchestrationClientException {
     final String finishReason = delta.getFinishReason();
     if (finishReason != null && finishReason.equals("content_filter")) {
       final var filterDetails =
           Try.of(() -> getOutputFilteringChoices(delta)).getOrElseGet(e -> Map.of());
       final var message = "Content filter filtered the output.";
-      throw new OrchestrationFilterException.Output(message).setFilterDetails(filterDetails);
+      throw new OrchestrationClientException(message).setFilterDetails(filterDetails);
     }
   }
 

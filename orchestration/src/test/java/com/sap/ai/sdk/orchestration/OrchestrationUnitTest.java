@@ -449,7 +449,7 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
         .isInstanceOfSatisfying(
-            OrchestrationFilterException.Input.class,
+            OrchestrationClientException.class,
             e -> {
               assertThat(e.getMessage())
                   .isEqualTo(
@@ -503,7 +503,7 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(client.chatCompletion(prompt, configWithFilter)::getContent)
         .isInstanceOfSatisfying(
-            OrchestrationFilterException.Output.class,
+            OrchestrationClientException.class,
             e -> {
               assertThat(e.getMessage()).isEqualTo("Content filter filtered the output.");
               assertThat(e.getFilterDetails())
@@ -759,9 +759,9 @@ class OrchestrationUnitTest {
     // this must not throw, since the stream is lazily evaluated
     var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
     assertThatThrownBy(stream::toList)
-        .isInstanceOf(OrchestrationFilterException.Output.class)
+        .isInstanceOf(OrchestrationClientException.class)
         .hasMessage("Content filter filtered the output.")
-        .extracting(e -> ((OrchestrationFilterException.Output) e).getFilterDetails())
+        .extracting(e -> ((OrchestrationClientException) e).getFilterDetails())
         .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
   }
 
@@ -785,7 +785,7 @@ class OrchestrationUnitTest {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
             .hasMessage("Content filter filtered the output.")
             .isInstanceOfSatisfying(
-                OrchestrationFilterException.Output.class,
+                OrchestrationClientException.class,
                 e -> {
                   assertThat(e.getErrorResponse()).isNull();
                   assertThat(e.getErrorResponseStreaming()).isNull();
