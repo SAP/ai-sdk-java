@@ -1,14 +1,17 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.app.services.OpenAiService;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
+import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,9 +29,13 @@ class OpenAiTest {
   void chatCompletion() {
     final var completion = service.chatCompletion("Who is the prettiest");
 
-    final var message = completion.getChoices().get(0).getMessage();
-    assertThat(message.getRole()).isEqualTo("assistant");
-    assertThat(message.getContent()).isNotEmpty();
+    assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
+    assertThat(completion.getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testMessagesHistory() {
+    assertThat(service.messagesHistory("What is the capital of France?").getContent()).isNotEmpty();
   }
 
   @Test
@@ -37,25 +44,24 @@ class OpenAiTest {
         service.chatCompletionImage(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
 
-    final var message = completion.getChoices().get(0).getMessage();
-    assertThat(message.getRole()).isEqualTo("assistant");
-    assertThat(message.getContent()).isNotEmpty();
+    assertThat(completion.getContent()).isNotEmpty();
+    assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
   }
 
   @Test
   void streamChatCompletion() {
-    final var request =
-        new OpenAiChatCompletionParameters()
-            .addMessages(new OpenAiChatUserMessage().addText("Who is the prettiest?"));
+    final var userMessage = OpenAiMessage.user("Who is the prettiest?");
+    final var prompt = new OpenAiChatCompletionRequest(userMessage);
 
-    final var totalOutput = new OpenAiChatCompletionOutput();
+    final var usageRef = new AtomicReference<CompletionUsage>();
     final var filledDeltaCount = new AtomicInteger(0);
+
     OpenAiClient.forModel(GPT_4O_MINI)
-        .streamChatCompletionDeltas(request)
-        .peek(totalOutput::addDelta)
+        .streamChatCompletionDeltas(prompt)
         // foreach consumes all elements, closing the stream at the end
         .forEach(
             delta -> {
+              usageRef.compareAndExchange(null, delta.getCompletionUsage());
               final String deltaContent = delta.getDeltaContent();
               log.info("delta: {}", delta);
               if (!deltaContent.isEmpty()) {
@@ -63,23 +69,24 @@ class OpenAiTest {
               }
             });
 
-    // the first two and the last delta don't have any content
-    // see OpenAiChatCompletionDelta#getDeltaContent
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
 
-    assertThat(totalOutput.getChoices()).isNotEmpty();
-    assertThat(totalOutput.getChoices().get(0).getMessage().getContent()).isNotEmpty();
-    assertThat(totalOutput.getPromptFilterResults()).isNotNull();
-    assertThat(totalOutput.getChoices().get(0).getContentFilterResults()).isNotNull();
+    assertThat(usageRef.get().getTotalTokens()).isGreaterThan(0);
+    assertThat(usageRef.get().getPromptTokens()).isGreaterThan(0);
+    assertThat(usageRef.get().getCompletionTokens()).isGreaterThan(0);
   }
 
   @Test
   void embedding() {
     final var embedding = service.embedding("Hello world");
 
-    assertThat(embedding.getData().get(0).getEmbedding()).hasSizeGreaterThan(1);
-    assertThat(embedding.getModel()).isEqualTo("text-embedding-3-small");
-    assertThat(embedding.getObject()).isEqualTo("list");
+    assertThat(embedding.getOriginalResponse().getData().get(0).getEmbedding())
+        .hasSizeGreaterThan(1);
+    assertThat(embedding.getEmbeddingVectors()).isInstanceOf(ArrayList.class);
+    assertThat(embedding.getEmbeddingVectors().get(0)).isInstanceOf(float[].class);
+
+    assertThat(embedding.getOriginalResponse().getModel()).isEqualTo("text-embedding-3-small");
+    assertThat(embedding.getOriginalResponse().getObject()).isEqualTo("list");
   }
 
   @Test
@@ -87,9 +94,8 @@ class OpenAiTest {
     final var completion =
         service.chatCompletionWithResource("ai-sdk-java-e2e", "Where is the nearest coffee shop?");
 
-    final var message = completion.getChoices().get(0).getMessage();
-    assertThat(message.getRole()).isEqualTo("assistant");
-    assertThat(message.getContent()).isNotEmpty();
+    assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
+    assertThat(completion.getContent()).isNotEmpty();
   }
 
   @Test

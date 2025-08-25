@@ -5,7 +5,6 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObject
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
@@ -73,7 +72,6 @@ public final class OpenAiClient {
    * @param apiVersion the API version to target.
    * @return a new client.
    */
-  @Beta
   @Nonnull
   public OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
     final var newDestination =
@@ -101,7 +99,6 @@ public final class OpenAiClient {
    * @see AiCoreService#getInferenceDestination(String)
    * @return a new OpenAI client.
    */
-  @Beta
   @Nonnull
   public static OpenAiClient withCustomDestination(@Nonnull final Destination destination) {
     final OpenAiClient client = new OpenAiClient(destination);
@@ -156,7 +153,6 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletion(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
@@ -173,7 +169,6 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public CreateChatCompletionResponse chatCompletion(
       @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
@@ -274,7 +269,6 @@ public final class OpenAiClient {
    * @see #streamChatCompletion(String)
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
@@ -291,7 +285,6 @@ public final class OpenAiClient {
    * @see #streamChatCompletionDeltas(OpenAiChatCompletionRequest) for a higher-level API
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
@@ -358,7 +351,6 @@ public final class OpenAiClient {
    * @see #embedding(EmbeddingsCreateRequest) for full confgurability.
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public OpenAiEmbeddingResponse embedding(@Nonnull final OpenAiEmbeddingRequest request)
       throws OpenAiClientException {
@@ -374,7 +366,6 @@ public final class OpenAiClient {
    * @see #embedding(OpenAiEmbeddingRequest) for conveninece api
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public EmbeddingsCreate200Response embedding(@Nonnull final EmbeddingsCreateRequest request)
       throws OpenAiClientException {
