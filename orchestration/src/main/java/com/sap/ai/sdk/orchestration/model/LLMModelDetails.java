@@ -41,6 +41,12 @@ public class LLMModelDetails
   @JsonProperty("params")
   private Map<String, Object> params = new HashMap<>();
 
+  @JsonProperty("timeout")
+  private Integer timeout = 600;
+
+  @JsonProperty("max_retries")
+  private Integer maxRetries = 2;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -160,6 +166,74 @@ public class LLMModelDetails
   }
 
   /**
+   * Set the timeout of this {@link LLMModelDetails} instance and return the same instance.
+   *
+   * @param timeout Timeout for the LLM request in seconds. This parameter is currently ignored for
+   *     Vertex AI models. Minimum: 1 Maximum: 600
+   * @return The same instance of this {@link LLMModelDetails} class
+   */
+  @Nonnull
+  public LLMModelDetails timeout(@Nullable final Integer timeout) {
+    this.timeout = timeout;
+    return this;
+  }
+
+  /**
+   * Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI
+   * models. minimum: 1 maximum: 600
+   *
+   * @return timeout The timeout of this {@link LLMModelDetails} instance.
+   */
+  @Nonnull
+  public Integer getTimeout() {
+    return timeout;
+  }
+
+  /**
+   * Set the timeout of this {@link LLMModelDetails} instance.
+   *
+   * @param timeout Timeout for the LLM request in seconds. This parameter is currently ignored for
+   *     Vertex AI models. Minimum: 1 Maximum: 600
+   */
+  public void setTimeout(@Nullable final Integer timeout) {
+    this.timeout = timeout;
+  }
+
+  /**
+   * Set the maxRetries of this {@link LLMModelDetails} instance and return the same instance.
+   *
+   * @param maxRetries Maximum number of retries for the LLM request. This parameter is currently
+   *     ignored for Vertex AI models. Minimum: 0 Maximum: 5
+   * @return The same instance of this {@link LLMModelDetails} class
+   */
+  @Nonnull
+  public LLMModelDetails maxRetries(@Nullable final Integer maxRetries) {
+    this.maxRetries = maxRetries;
+    return this;
+  }
+
+  /**
+   * Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex
+   * AI models. minimum: 0 maximum: 5
+   *
+   * @return maxRetries The maxRetries of this {@link LLMModelDetails} instance.
+   */
+  @Nonnull
+  public Integer getMaxRetries() {
+    return maxRetries;
+  }
+
+  /**
+   * Set the maxRetries of this {@link LLMModelDetails} instance.
+   *
+   * @param maxRetries Maximum number of retries for the LLM request. This parameter is currently
+   *     ignored for Vertex AI models. Minimum: 0 Maximum: 5
+   */
+  public void setMaxRetries(@Nullable final Integer maxRetries) {
+    this.maxRetries = maxRetries;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link LLMModelDetails}.
    *
    * @return The set of properties names
@@ -200,6 +274,8 @@ public class LLMModelDetails
     if (name != null) declaredFields.put("name", name);
     if (version != null) declaredFields.put("version", version);
     if (params != null) declaredFields.put("params", params);
+    if (timeout != null) declaredFields.put("timeout", timeout);
+    if (maxRetries != null) declaredFields.put("maxRetries", maxRetries);
     return declaredFields;
   }
 
@@ -227,12 +303,14 @@ public class LLMModelDetails
     return Objects.equals(this.cloudSdkCustomFields, llMModelDetails.cloudSdkCustomFields)
         && Objects.equals(this.name, llMModelDetails.name)
         && Objects.equals(this.version, llMModelDetails.version)
-        && Objects.equals(this.params, llMModelDetails.params);
+        && Objects.equals(this.params, llMModelDetails.params)
+        && Objects.equals(this.timeout, llMModelDetails.timeout)
+        && Objects.equals(this.maxRetries, llMModelDetails.maxRetries);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, version, params, cloudSdkCustomFields);
+    return Objects.hash(name, version, params, timeout, maxRetries, cloudSdkCustomFields);
   }
 
   @Override
@@ -243,6 +321,8 @@ public class LLMModelDetails
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    params: ").append(toIndentedString(params)).append("\n");
+    sb.append("    timeout: ").append(toIndentedString(timeout)).append("\n");
+    sb.append("    maxRetries: ").append(toIndentedString(maxRetries)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
