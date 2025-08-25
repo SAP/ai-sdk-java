@@ -31,12 +31,6 @@ public class EmbeddingsModelConfig
   @JsonProperty("model")
   private EmbeddingsModelDetails model;
 
-  @JsonProperty("timeout")
-  private Integer timeout = 600;
-
-  @JsonProperty("max_retries")
-  private Integer maxRetries = 2;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -72,78 +66,6 @@ public class EmbeddingsModelConfig
    */
   public void setModel(@Nonnull final EmbeddingsModelDetails model) {
     this.model = model;
-  }
-
-  /**
-   * Set the timeout of this {@link EmbeddingsModelConfig} instance and return the same instance.
-   *
-   * @param timeout Timeout for the Embeddings request in seconds. This parameter will be ignored
-   *     for Vertex AI models. Support for Vertex AI models will be added in the future. Minimum: 1
-   *     Maximum: 600
-   * @return The same instance of this {@link EmbeddingsModelConfig} class
-   */
-  @Nonnull
-  public EmbeddingsModelConfig timeout(@Nullable final Integer timeout) {
-    this.timeout = timeout;
-    return this;
-  }
-
-  /**
-   * Timeout for the Embeddings request in seconds. This parameter will be ignored for Vertex AI
-   * models. Support for Vertex AI models will be added in the future. minimum: 1 maximum: 600
-   *
-   * @return timeout The timeout of this {@link EmbeddingsModelConfig} instance.
-   */
-  @Nonnull
-  public Integer getTimeout() {
-    return timeout;
-  }
-
-  /**
-   * Set the timeout of this {@link EmbeddingsModelConfig} instance.
-   *
-   * @param timeout Timeout for the Embeddings request in seconds. This parameter will be ignored
-   *     for Vertex AI models. Support for Vertex AI models will be added in the future. Minimum: 1
-   *     Maximum: 600
-   */
-  public void setTimeout(@Nullable final Integer timeout) {
-    this.timeout = timeout;
-  }
-
-  /**
-   * Set the maxRetries of this {@link EmbeddingsModelConfig} instance and return the same instance.
-   *
-   * @param maxRetries Maximum number of retries for the Embeddings request. This parameter will be
-   *     ignored for Vertex AI models. Support for Vertex AI models will be added in the future.
-   *     Minimum: 0 Maximum: 10
-   * @return The same instance of this {@link EmbeddingsModelConfig} class
-   */
-  @Nonnull
-  public EmbeddingsModelConfig maxRetries(@Nullable final Integer maxRetries) {
-    this.maxRetries = maxRetries;
-    return this;
-  }
-
-  /**
-   * Maximum number of retries for the Embeddings request. This parameter will be ignored for Vertex
-   * AI models. Support for Vertex AI models will be added in the future. minimum: 0 maximum: 10
-   *
-   * @return maxRetries The maxRetries of this {@link EmbeddingsModelConfig} instance.
-   */
-  @Nonnull
-  public Integer getMaxRetries() {
-    return maxRetries;
-  }
-
-  /**
-   * Set the maxRetries of this {@link EmbeddingsModelConfig} instance.
-   *
-   * @param maxRetries Maximum number of retries for the Embeddings request. This parameter will be
-   *     ignored for Vertex AI models. Support for Vertex AI models will be added in the future.
-   *     Minimum: 0 Maximum: 10
-   */
-  public void setMaxRetries(@Nullable final Integer maxRetries) {
-    this.maxRetries = maxRetries;
   }
 
   /**
@@ -186,8 +108,6 @@ public class EmbeddingsModelConfig
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (model != null) declaredFields.put("model", model);
-    if (timeout != null) declaredFields.put("timeout", timeout);
-    if (maxRetries != null) declaredFields.put("maxRetries", maxRetries);
     return declaredFields;
   }
 
@@ -213,14 +133,12 @@ public class EmbeddingsModelConfig
     }
     final EmbeddingsModelConfig embeddingsModelConfig = (EmbeddingsModelConfig) o;
     return Objects.equals(this.cloudSdkCustomFields, embeddingsModelConfig.cloudSdkCustomFields)
-        && Objects.equals(this.model, embeddingsModelConfig.model)
-        && Objects.equals(this.timeout, embeddingsModelConfig.timeout)
-        && Objects.equals(this.maxRetries, embeddingsModelConfig.maxRetries);
+        && Objects.equals(this.model, embeddingsModelConfig.model);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(model, timeout, maxRetries, cloudSdkCustomFields);
+    return Objects.hash(model, cloudSdkCustomFields);
   }
 
   @Override
@@ -229,8 +147,6 @@ public class EmbeddingsModelConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class EmbeddingsModelConfig {\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
-    sb.append("    timeout: ").append(toIndentedString(timeout)).append("\n");
-    sb.append("    maxRetries: ").append(toIndentedString(maxRetries)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

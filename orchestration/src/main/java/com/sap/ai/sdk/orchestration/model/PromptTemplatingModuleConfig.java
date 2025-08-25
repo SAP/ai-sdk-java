@@ -34,12 +34,6 @@ public class PromptTemplatingModuleConfig
   @JsonProperty("model")
   private LLMModelDetails model;
 
-  @JsonProperty("timeout")
-  private Integer timeout = 600;
-
-  @JsonProperty("max_retries")
-  private Integer maxRetries = 2;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -112,80 +106,6 @@ public class PromptTemplatingModuleConfig
   }
 
   /**
-   * Set the timeout of this {@link PromptTemplatingModuleConfig} instance and return the same
-   * instance.
-   *
-   * @param timeout Timeout for the LLM request in seconds. This parameter will be ignored for
-   *     Vertex AI models. Support for Vertex AI models will be added in the future. Minimum: 1
-   *     Maximum: 600
-   * @return The same instance of this {@link PromptTemplatingModuleConfig} class
-   */
-  @Nonnull
-  public PromptTemplatingModuleConfig timeout(@Nullable final Integer timeout) {
-    this.timeout = timeout;
-    return this;
-  }
-
-  /**
-   * Timeout for the LLM request in seconds. This parameter will be ignored for Vertex AI models.
-   * Support for Vertex AI models will be added in the future. minimum: 1 maximum: 600
-   *
-   * @return timeout The timeout of this {@link PromptTemplatingModuleConfig} instance.
-   */
-  @Nonnull
-  public Integer getTimeout() {
-    return timeout;
-  }
-
-  /**
-   * Set the timeout of this {@link PromptTemplatingModuleConfig} instance.
-   *
-   * @param timeout Timeout for the LLM request in seconds. This parameter will be ignored for
-   *     Vertex AI models. Support for Vertex AI models will be added in the future. Minimum: 1
-   *     Maximum: 600
-   */
-  public void setTimeout(@Nullable final Integer timeout) {
-    this.timeout = timeout;
-  }
-
-  /**
-   * Set the maxRetries of this {@link PromptTemplatingModuleConfig} instance and return the same
-   * instance.
-   *
-   * @param maxRetries Maximum number of retries for the LLM request. This parameter will be ignored
-   *     for Vertex AI models. Support for Vertex AI models will be added in the future. Minimum: 0
-   *     Maximum: 10
-   * @return The same instance of this {@link PromptTemplatingModuleConfig} class
-   */
-  @Nonnull
-  public PromptTemplatingModuleConfig maxRetries(@Nullable final Integer maxRetries) {
-    this.maxRetries = maxRetries;
-    return this;
-  }
-
-  /**
-   * Maximum number of retries for the LLM request. This parameter will be ignored for Vertex AI
-   * models. Support for Vertex AI models will be added in the future. minimum: 0 maximum: 10
-   *
-   * @return maxRetries The maxRetries of this {@link PromptTemplatingModuleConfig} instance.
-   */
-  @Nonnull
-  public Integer getMaxRetries() {
-    return maxRetries;
-  }
-
-  /**
-   * Set the maxRetries of this {@link PromptTemplatingModuleConfig} instance.
-   *
-   * @param maxRetries Maximum number of retries for the LLM request. This parameter will be ignored
-   *     for Vertex AI models. Support for Vertex AI models will be added in the future. Minimum: 0
-   *     Maximum: 10
-   */
-  public void setMaxRetries(@Nullable final Integer maxRetries) {
-    this.maxRetries = maxRetries;
-  }
-
-  /**
    * Get the names of the unrecognizable properties of the {@link PromptTemplatingModuleConfig}.
    *
    * @return The set of properties names
@@ -227,8 +147,6 @@ public class PromptTemplatingModuleConfig
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (prompt != null) declaredFields.put("prompt", prompt);
     if (model != null) declaredFields.put("model", model);
-    if (timeout != null) declaredFields.put("timeout", timeout);
-    if (maxRetries != null) declaredFields.put("maxRetries", maxRetries);
     return declaredFields;
   }
 
@@ -258,14 +176,12 @@ public class PromptTemplatingModuleConfig
     return Objects.equals(
             this.cloudSdkCustomFields, promptTemplatingModuleConfig.cloudSdkCustomFields)
         && Objects.equals(this.prompt, promptTemplatingModuleConfig.prompt)
-        && Objects.equals(this.model, promptTemplatingModuleConfig.model)
-        && Objects.equals(this.timeout, promptTemplatingModuleConfig.timeout)
-        && Objects.equals(this.maxRetries, promptTemplatingModuleConfig.maxRetries);
+        && Objects.equals(this.model, promptTemplatingModuleConfig.model);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(prompt, model, timeout, maxRetries, cloudSdkCustomFields);
+    return Objects.hash(prompt, model, cloudSdkCustomFields);
   }
 
   @Override
@@ -275,8 +191,6 @@ public class PromptTemplatingModuleConfig
     sb.append("class PromptTemplatingModuleConfig {\n");
     sb.append("    prompt: ").append(toIndentedString(prompt)).append("\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
-    sb.append("    timeout: ").append(toIndentedString(timeout)).append("\n");
-    sb.append("    maxRetries: ").append(toIndentedString(maxRetries)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
