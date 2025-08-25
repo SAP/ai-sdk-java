@@ -44,9 +44,9 @@ jobs:
         id: run_tests
         run: |
           if [ "${{ matrix.environment }}" = "canary" ]; then
-              export AICORE_SERVICE_KEY="${{ secrets.AI_CORE_CANARY }}"
+              export AICORE_SERVICE_KEY="${{ secrets.AI_CORE_CANARY | replace '\"' \"'\" }}"
           else
-              export AICORE_SERVICE_KEY="${{ secrets.AI_CORE_PRODUCTION }}"
+              export AICORE_SERVICE_KEY='${{ secrets.AI_CORE_PRODUCTION }}'
           fi
           
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} surefire:test -pl :spring-app -DskipTests=false"
