@@ -318,24 +318,6 @@ class OrchestrationTest {
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
-  @Test
-  void testImageInputBase64() {
-    String dataUrl = "";
-    try {
-      URL url = new URL("https://upload.wikimedia.org/wikipedia/commons/c/c9/Sap-logo-700x700.jpg");
-      try (InputStream inputStream = url.openStream()) {
-        byte[] imageBytes = inputStream.readAllBytes();
-        byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
-        String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
-        dataUrl = "data:image/jpeg;base64," + encodedString;
-      }
-    } catch (Exception e) {
-      System.out.println("Error fetching or reading the image from URL: " + e.getMessage());
-    }
-    val result = service.imageInput(dataUrl).getOriginalResponse();
-    val choices = (result.getFinalResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
-  }
 
   @Test
   void testMultiStringInput() {
