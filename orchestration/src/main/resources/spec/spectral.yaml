@@ -5,7 +5,6 @@ rules:
     description: "[Java SDK] Please limit to one array type per oneOf in responses objects." 
     given:
       - $..responses..oneOf
-      - $.components.schemas..oneOf
     severity: warn
     then:
       function: length
@@ -18,7 +17,6 @@ rules:
     message: "{{error}}"
     given:
       - $..responses..oneOf
-      - $.components.schemas..oneOf
     severity: warn
     then:
       function: oneOfObjectDistinguishability

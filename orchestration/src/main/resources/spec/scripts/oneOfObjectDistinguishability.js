@@ -26,12 +26,9 @@ export default createRulesetFunction(
       return [];
     }
 
-    // Resolve $refs, track index and filter to object schemas only
+    // Track index and filter to object schemas only
     const objectSchemas = oneOfs
-      .map((schema, index) => ({
-        ...resolveSchemaReference(schema, context.document),
-        index
-      }))
+      .map((schema, index) => ({ ...schema, index }))
       .filter(isObjectSchema);
 
     // Skip if fewer than 2 object schemas
@@ -58,7 +55,7 @@ export default createRulesetFunction(
     for (const [signature, schemas] of propertySignatures) {
       if (schemas.length > 1) {
         const indices = schemas.map(schema => schema.index).join(', ');
-        const errorMessage = `Cannot distinguish oneOf options {${indices}}. Add discriminator or ensure unique required properties.`;
+        const errorMessage = `[Java SDK] Cannot distinguish oneOf options {${indices}}. Add discriminator or ensure unique required properties.`;
         conflicts.push({ message: errorMessage, path: [...context.path] });
       }
     }
@@ -85,23 +82,6 @@ function hasDiscriminator(path, document) {
   const parentSchema = parentPath.reduce((obj, key) => obj?.[key], document.data || document);
   
   return parentSchema?.discriminator;
-}
-
-/**
- * Resolves a schema reference if it's a $ref, otherwise returns the schema as-is
- */
-function resolveSchemaReference(schema, document) {
-  if (!schema?.$ref) {
-    return schema || {};
-  }
-
-  try {
-    const segments = schema.$ref.slice(2).split("/");
-    
-    return segments.reduce((obj, seg) => obj?.[seg], document.data || document) || {};
-  } catch {
-    return {};
-  }
 }
 
 /**
