@@ -130,7 +130,7 @@ public final class OpenAiClient {
   }
 
   /**
-   * Create a new OpenAI client with a custom header added to every call made with this client
+   * Create a new OpenAI client with a custom HTTP request header added to every call made with this client
    *
    * @param customHeader the custom header to add
    * @return a new client.
