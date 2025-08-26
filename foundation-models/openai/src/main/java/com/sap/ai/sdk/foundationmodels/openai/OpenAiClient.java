@@ -135,6 +135,7 @@ public final class OpenAiClient {
    *
    * @param customHeader the custom header to add
    * @return a new client.
+   * @since 1.11.0
    */
   @Beta
   @Nonnull
@@ -150,6 +151,7 @@ public final class OpenAiClient {
    * @param key the key of the custom header to add
    * @param value the value of the custom header to add
    * @return a new client.
+   * @since 1.11.0
    */
   @Beta
   @Nonnull

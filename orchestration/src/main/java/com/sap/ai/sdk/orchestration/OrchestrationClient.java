@@ -253,6 +253,7 @@ public class OrchestrationClient {
    * @param key the key of the custom header to add
    * @param value the value of the custom header to add
    * @return a new client.
+   * @since 1.11.0
    */
   @Beta
   @Nonnull
@@ -266,6 +267,7 @@ public class OrchestrationClient {
    *
    * @param customHeader the custom header to add
    * @return a new client.
+   * @since 1.11.0
    */
   @Beta
   @Nonnull
