@@ -2,7 +2,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import static lombok.AccessLevel.PACKAGE;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessageContent;
 import java.util.List;
@@ -16,7 +15,6 @@ import lombok.experimental.Accessors;
  *
  * @since 1.4.0
  */
-@Beta
 @Value
 @Accessors(fluent = true)
 @AllArgsConstructor(access = PACKAGE)

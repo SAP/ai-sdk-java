@@ -3,7 +3,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import static lombok.AccessLevel.NONE;
 import static lombok.AccessLevel.PACKAGE;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200Response;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,6 @@ import lombok.Value;
  *
  * @since 1.4.0
  */
-@Beta
 @Value
 @AllArgsConstructor(access = PACKAGE)
 @Setter(value = NONE)

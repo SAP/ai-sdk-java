@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import java.util.Collections;
@@ -16,7 +15,6 @@ import lombok.Value;
  *
  * @since 1.4.0
  */
-@Beta
 @Value
 public class OpenAiEmbeddingRequest {
   /** List of tokens to be embedded. */
