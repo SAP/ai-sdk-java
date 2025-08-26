@@ -2,7 +2,7 @@ import { createRulesetFunction } from "@stoplight/spectral-core";
 
 /**
  * Spectral rule function to validate oneOf object distinguishability for Java SDK deserialization.
- * Spectral finds each oneOf in your document and calls the function once per oneOf.
+ * Spectral finds each oneOf in the document and calls the function once per oneOf.
  * 
  * This function ensures that oneOf schemas containing object types can be properly distinguished
  * during deserialization by checking for unique required properties or discriminators.
@@ -39,7 +39,7 @@ export default createRulesetFunction(
       return [];
     }
 
-    // Find non-distinguishable schemas using O(n) approach
+
     const propertySignatures = new Map(); // signature -> [schema objects]
     
     // Build signature map - group schemas by their required properties
@@ -57,7 +57,6 @@ export default createRulesetFunction(
     const conflicts = [];
     for (const [signature, schemas] of propertySignatures) {
       if (schemas.length > 1) {
-        // These schemas are indistinguishable - report all conflicting schemas
         const indices = schemas.map(schema => schema.index).join(', ');
         const errorMessage = `Cannot distinguish oneOf options {${indices}}. Add discriminator or ensure unique required properties.`;
         conflicts.push({ message: errorMessage, path: [...context.path] });
@@ -67,7 +66,6 @@ export default createRulesetFunction(
     return conflicts;
 
   } catch (error) {
-    // Gracefully handle any conflicts during validation
     console.warn(`oneOfObjectDistinguishability validation error: ${error.message}`);
     return [];
   }

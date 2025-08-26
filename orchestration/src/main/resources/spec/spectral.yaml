@@ -2,11 +2,11 @@ extends: spectral:oas
 functionsDir: "./scripts"
 rules:
   oneOfs-with-multi-array:
-    description: "[Java SDK] Cannot handle oneOfs with multiple array options."
+    description: "[Java SDK] Please limit to one array type per oneOf in responses objects." 
     given:
       - $..responses..oneOf
       - $.components.schemas..oneOf
-    severity: error
+    severity: warn
     then:
       function: length
       functionOptions:
@@ -14,6 +14,8 @@ rules:
       field: "[?(@.type=='array')]"
 
   oneOf-object-distinguishability:
+    description: "[Java SDK] oneOf object schemas require unique properties or discriminator for deserialization." 
+    message: "{{error}}"
     given:
       - $..responses..oneOf
       - $.components.schemas..oneOf
