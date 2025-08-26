@@ -2,14 +2,15 @@ import { createRulesetFunction } from "@stoplight/spectral-core";
 
 /**
  * Spectral rule function to validate oneOf object distinguishability for Java SDK deserialization.
+ * Spectral finds each oneOf in your document and calls the function once per oneOf.
  * 
  * This function ensures that oneOf schemas containing object types can be properly distinguished
  * during deserialization by checking for unique required properties or discriminators.
  * 
- * @param {Array} oneOfArray - The oneOf array from the OpenAPI specification
+ * @param {Array} oneOfs - The oneOf array from the OpenAPI specification
  * @param {Object} opts - Options passed to the function (unused)
  * @param {Object} context - Spectral context containing document and path information
- * @returns {Array} Array of validation errors, empty if validation passes
+ * @returns {Array} Array of conflicts, empty if validation passes
  */
 export default createRulesetFunction(
   {
@@ -19,15 +20,14 @@ export default createRulesetFunction(
     },
     options: null
   },
-  function oneOfObjectDistinguishability(oneOfArray, opts, context) {
+  function oneOfObjectDistinguishability(oneOfs, opts, context) {
   try {
-    // Check if parent schema has discriminator (automatic pass)
     if (hasDiscriminator(context.path, context.document)) {
       return [];
     }
 
-    // Resolve and filter to object schemas only
-    const objectSchemas = oneOfArray
+    // Resolve $refs, track index and filter to object schemas only
+    const objectSchemas = oneOfs
       .map((schema, index) => ({
         ...resolveSchemaReference(schema, context.document),
         index
@@ -42,7 +42,7 @@ export default createRulesetFunction(
     // Find non-distinguishable schemas using O(n) approach
     const propertySignatures = new Map(); // signature -> [schema objects]
     
-    // Build property signature map in single pass
+    // Build signature map - group schemas by their required properties
     for (const schema of objectSchemas) {
       const required = schema.required || [];
       const signature = required.toSorted().join(',');
@@ -54,20 +54,20 @@ export default createRulesetFunction(
     }
     
     // Find conflicts - any signature with multiple schemas
-    const errors = [];
+    const conflicts = [];
     for (const [signature, schemas] of propertySignatures) {
       if (schemas.length > 1) {
         // These schemas are indistinguishable - report all conflicting schemas
         const indices = schemas.map(schema => schema.index).join(', ');
         const errorMessage = `Cannot distinguish oneOf options {${indices}}. Add discriminator or ensure unique required properties.`;
-        errors.push({ message: errorMessage, path: [...context.path] });
+        conflicts.push({ message: errorMessage, path: [...context.path] });
       }
     }
 
-    return errors;
+    return conflicts;
 
   } catch (error) {
-    // Gracefully handle any errors during validation
+    // Gracefully handle any conflicts during validation
     console.warn(`oneOfObjectDistinguishability validation error: ${error.message}`);
     return [];
   }
@@ -78,8 +78,11 @@ export default createRulesetFunction(
  * Checks if the parent schema has a discriminator property
  */
 function hasDiscriminator(path, document) {
+
+  // Example path: ["components", "schemas", "Animal", "properties", "type", "oneOf"]
   if (path.length === 0) return false;
   
+  // Navigate to parent schema (one level up from oneOf)
   const parentPath = path.slice(0, -1);
   const parentSchema = parentPath.reduce((obj, key) => obj?.[key], document.data || document);
   
@@ -95,8 +98,7 @@ function resolveSchemaReference(schema, document) {
   }
 
   try {
-    const segments = schema.$ref.slice(2).split("/")
-      .map(s => s.replace(/~1/g, "/").replace(/~0/g, "~"));
+    const segments = schema.$ref.slice(2).split("/");
     
     return segments.reduce((obj, seg) => obj?.[seg], document.data || document) || {};
   } catch {
