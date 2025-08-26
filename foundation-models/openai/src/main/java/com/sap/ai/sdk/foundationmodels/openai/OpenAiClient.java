@@ -156,7 +156,6 @@ public final class OpenAiClient {
    * @since 1.4.0
    */
   @Nonnull
-  @Beta
   public OpenAiChatCompletionResponse chatCompletion(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
     warnIfUnsupportedUsage();
@@ -273,7 +272,6 @@ public final class OpenAiClient {
    * @since 1.4.0
    */
   @Nonnull
-  @Beta
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
     return streamChatCompletionDeltas(request.createCreateChatCompletionRequest());
@@ -356,7 +354,6 @@ public final class OpenAiClient {
    * @since 1.4.0
    */
   @Nonnull
-  @Beta
   public OpenAiEmbeddingResponse embedding(@Nonnull final OpenAiEmbeddingRequest request)
       throws OpenAiClientException {
     return new OpenAiEmbeddingResponse(embedding(request.createEmbeddingsCreateRequest()));
