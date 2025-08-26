@@ -24,6 +24,7 @@ import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -323,7 +324,10 @@ class OrchestrationTest {
     String dataUrl = "";
     try {
       URL url = new URL("https://upload.wikimedia.org/wikipedia/commons/c/c9/Sap-logo-700x700.jpg");
-      try (InputStream inputStream = url.openStream()) {
+      // the "User-Agent" header is required to avoid a 403
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      connection.setRequestProperty("User-Agent", "Test implementation");
+      try (InputStream inputStream = connection.getInputStream()) {
         byte[] imageBytes = inputStream.readAllBytes();
         byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
         String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
