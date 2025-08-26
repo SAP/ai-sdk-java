@@ -1,5 +1,5 @@
 extends: spectral:oas
-
+functionsDir: "./scripts"
 rules:
   oneOfs-with-multi-array:
     description: "[Java SDK] Cannot handle oneOfs with multiple array options."
