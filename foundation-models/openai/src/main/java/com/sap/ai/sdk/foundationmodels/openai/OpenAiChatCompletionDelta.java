@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObject
 import static lombok.AccessLevel.PACKAGE;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponse;
@@ -22,7 +21,6 @@ import lombok.ToString;
  *
  * @since 1.4.0
  */
-@Beta
 @RequiredArgsConstructor(onConstructor_ = @JsonCreator, access = PACKAGE)
 @Getter
 @ToString

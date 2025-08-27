@@ -2,7 +2,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import static lombok.AccessLevel.PACKAGE;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartText;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestSystemMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestSystemMessageContent;
@@ -20,7 +19,6 @@ import lombok.experimental.Tolerate;
  *
  * @since 1.4.0
  */
-@Beta
 @Value
 @Accessors(fluent = true)
 @AllArgsConstructor(access = PACKAGE)
@@ -30,9 +28,7 @@ public class OpenAiSystemMessage implements OpenAiMessage {
   @Nonnull String role = "system";
 
   /** The content of the message. */
-  @Getter(onMethod_ = @Beta)
-  @Nonnull
-  OpenAiMessageContent content;
+  @Getter @Nonnull OpenAiMessageContent content;
 
   /**
    * Creates a new system message from a string.

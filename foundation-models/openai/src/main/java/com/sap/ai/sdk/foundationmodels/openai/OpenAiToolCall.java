@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 
 /**
@@ -8,7 +7,6 @@ import javax.annotation.Nonnull;
  *
  * @since 1.6.0
  */
-@Beta
 public sealed interface OpenAiToolCall permits OpenAiFunctionCall {
   /**
    * Creates a new instance of {@link OpenAiToolCall}.
