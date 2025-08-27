@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import com.google.common.annotations.Beta;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -10,7 +9,6 @@ import javax.annotation.Nonnull;
  *
  * @since 1.4.0
  */
-@Beta
 public sealed interface OpenAiMessage
     permits OpenAiUserMessage, OpenAiAssistantMessage, OpenAiSystemMessage, OpenAiToolMessage {
 
@@ -95,7 +93,6 @@ public sealed interface OpenAiMessage
    *
    * @return the content.
    */
-  @Beta
   @Nonnull
   OpenAiMessageContent content();
 }
