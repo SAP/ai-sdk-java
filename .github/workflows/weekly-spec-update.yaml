@@ -24,6 +24,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: "Get orchestration version"
+        if: matrix.file == 'orchestration'
         run: |
           ORCH_VERSION=$(curl --silent --request GET --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github.v3.raw" | grep 'version:' | awk '{print $2}')
 
@@ -35,15 +36,15 @@ jobs:
 
       - name: "Trigger spec update"
         run: |
-          FILE_REF="main"
+          BRANCH="main"
           if [ "${{ matrix.file }}" = "orchestration" ]; then
-            FILE_REF="$ORCH_VERSION"
+            BRANCH="v$ORCH_VERSION"
           fi
-          echo "Using file ref: $FILE_REF"
+          echo "Using branch: $BRANCH"
 
           gh workflow run spec-update.yaml \
             --field file=${{ matrix.file }} \
-            --field file-ref=main \
+            --field file-ref=$BRANCH \
             --field create-pr=true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
