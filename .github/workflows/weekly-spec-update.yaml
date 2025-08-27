@@ -42,7 +42,7 @@ jobs:
         run: |
           BRANCH="main"
           if [ "${{ matrix.file }}" = "orchestration" ]; then
-            BRANCH="v$ORCH_VERSION"
+            BRANCH="rel/$ORCH_VERSION"
           fi
           echo "Using branch: $BRANCH"
 
