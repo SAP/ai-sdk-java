@@ -24,12 +24,13 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 /** Client to execute requests to the orchestration service. */
 @Slf4j
+@RequiredArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class OrchestrationClient {
   private static final String DEFAULT_SCENARIO = "orchestration";
   private static final String COMPLETION_ENDPOINT = "/v2/completion";
@@ -63,16 +64,7 @@ public class OrchestrationClient {
    */
   @Beta
   public OrchestrationClient(@Nonnull final HttpDestination destination) {
-    this.executor = new OrchestrationHttpExecutor(() -> destination);
-  }
-
-  private OrchestrationClient(
-      @Nonnull final OrchestrationHttpExecutor executor,
-      @Nullable final List<Header> customHeaders) {
-    this.executor = executor;
-    if (customHeaders != null) {
-      this.customHeaders.addAll(customHeaders);
-    }
+    this(new OrchestrationHttpExecutor(() -> destination));
   }
 
   /**
@@ -272,7 +264,8 @@ public class OrchestrationClient {
   @Beta
   @Nonnull
   public OrchestrationClient withHeader(@Nonnull final Header customHeader) {
-    final var newClient = new OrchestrationClient(this.executor, this.customHeaders);
+    final var newClient = new OrchestrationClient(this.executor);
+    newClient.customHeaders.addAll(customHeaders);
     newClient.customHeaders.add(customHeader);
     return newClient;
   }
