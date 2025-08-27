@@ -3,7 +3,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionsCreate200Response;
 import javax.annotation.Nonnull;
