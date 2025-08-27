@@ -78,7 +78,6 @@ import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -179,30 +178,14 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var customHeader = new Header("foo", "bar");
-    final var result =
-        client
-            .withHeader("footoo", "barzar")
-            .withHeader(customHeader)
-            .chatCompletion(prompt, config);
+    final var result = client.withHeader("foo", "bar").chatCompletion(prompt, config);
     assertThat(result).isNotNull();
 
-    var newCustomHeader = new Header("foo", "baz");
-    var streamResult =
-        client
-            .withHeader("footoo", "barz")
-            .withHeader(newCustomHeader)
-            .streamChatCompletion(prompt, config);
+    var streamResult = client.withHeader("foot", "baz").streamChatCompletion(prompt, config);
     assertThat(streamResult).isNotNull();
 
-    verify(
-        postRequestedFor(urlPathEqualTo("/v2/completion"))
-            .withHeader("foo", equalTo("bar"))
-            .withHeader("footoo", equalTo("barzar")));
-    verify(
-        postRequestedFor(urlPathEqualTo("/v2/completion"))
-            .withHeader("foo", equalTo("baz"))
-            .withHeader("footoo", equalTo("barz")));
+    verify(postRequestedFor(urlPathEqualTo("/v2/completion")).withHeader("foo", equalTo("bar")));
+    verify(postRequestedFor(urlPathEqualTo("/v2/completion")).withHeader("foot", equalTo("baz")));
   }
 
   @Test

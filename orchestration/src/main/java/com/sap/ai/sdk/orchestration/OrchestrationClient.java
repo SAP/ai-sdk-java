@@ -24,12 +24,13 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 /** Client to execute requests to the orchestration service. */
 @Slf4j
+@RequiredArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class OrchestrationClient {
   private static final String DEFAULT_SCENARIO = "orchestration";
   private static final String COMPLETION_ENDPOINT = "/v2/completion";
@@ -64,15 +65,6 @@ public class OrchestrationClient {
   @Beta
   public OrchestrationClient(@Nonnull final HttpDestination destination) {
     this.executor = new OrchestrationHttpExecutor(() -> destination);
-  }
-
-  private OrchestrationClient(
-      @Nonnull final OrchestrationHttpExecutor executor,
-      @Nullable final List<Header> customHeaders) {
-    this.executor = executor;
-    if (customHeaders != null) {
-      this.customHeaders.addAll(customHeaders);
-    }
   }
 
   /**
@@ -258,22 +250,9 @@ public class OrchestrationClient {
   @Beta
   @Nonnull
   public OrchestrationClient withHeader(@Nonnull final String key, @Nonnull final String value) {
-    return this.withHeader(new Header(key, value));
-  }
-
-  /**
-   * Create a new orchestration client with a custom header added to every call made with this
-   * client
-   *
-   * @param customHeader the custom header to add
-   * @return a new client.
-   * @since 1.11.0
-   */
-  @Beta
-  @Nonnull
-  public OrchestrationClient withHeader(@Nonnull final Header customHeader) {
-    final var newClient = new OrchestrationClient(this.executor, this.customHeaders);
-    newClient.customHeaders.add(customHeader);
+    final var newClient = new OrchestrationClient(this.executor);
+    newClient.customHeaders.addAll(this.customHeaders);
+    newClient.customHeaders.add(new Header(key, value));
     return newClient;
   }
 }

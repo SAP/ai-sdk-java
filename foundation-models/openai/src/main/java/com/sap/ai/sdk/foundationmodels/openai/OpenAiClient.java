@@ -130,22 +130,6 @@ public final class OpenAiClient {
   }
 
   /**
-   * Create a new OpenAI client with a custom HTTP request header added to every call made with this
-   * client
-   *
-   * @param customHeader the custom header to add
-   * @return a new client.
-   * @since 1.11.0
-   */
-  @Beta
-  @Nonnull
-  public OpenAiClient withHeader(@Nonnull final Header customHeader) {
-    final var newDestination =
-        DefaultHttpDestination.fromDestination(this.destination).header(customHeader).build();
-    return new OpenAiClient(newDestination);
-  }
-
-  /**
    * Create a new OpenAI client with a custom header added to every call made with this client
    *
    * @param key the key of the custom header to add
@@ -156,8 +140,11 @@ public final class OpenAiClient {
   @Beta
   @Nonnull
   public OpenAiClient withHeader(@Nonnull final String key, @Nonnull final String value) {
-    final var customHeader = new Header(key, value);
-    return this.withHeader(customHeader);
+    final var newDestination =
+        DefaultHttpDestination.fromDestination(this.destination)
+            .header(new Header(key, value))
+            .build();
+    return new OpenAiClient(newDestination);
   }
 
   /**

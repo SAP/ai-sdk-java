@@ -16,7 +16,6 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParamete
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterPromptResults;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -489,26 +488,16 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     final var request =
         new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
 
-    var customHeader = new Header("foo", "bar");
-    final var result =
-        client.withHeader("footoo", "barzar").withHeader(customHeader).chatCompletion(request);
+    final var result = client.withHeader("foo", "bar").chatCompletion(request);
     assertThat(result).isNotNull();
 
-    var newCustomHeader = new Header("foo", "baz");
     var streamResult =
         client
-            .withHeader("footoo", "barz")
-            .withHeader(newCustomHeader)
+            .withHeader("foot", "baz")
             .streamChatCompletion("Hello World! Why is this phrase so famous?");
     assertThat(streamResult).isNotNull();
 
-    verify(
-        postRequestedFor(anyUrl())
-            .withHeader("foo", equalTo("bar"))
-            .withHeader("footoo", equalTo("barzar")));
-    verify(
-        postRequestedFor(anyUrl())
-            .withHeader("foo", equalTo("baz"))
-            .withHeader("footoo", equalTo("barz")));
+    verify(postRequestedFor(anyUrl()).withHeader("foo", equalTo("bar")));
+    verify(postRequestedFor(anyUrl()).withHeader("foot", equalTo("baz")));
   }
 }
