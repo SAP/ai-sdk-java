@@ -42,7 +42,6 @@ import lombok.extern.slf4j.Slf4j;
  * @since 1.8.0
  */
 @Slf4j
-@Beta
 @Value
 @With
 @Getter(AccessLevel.PACKAGE)

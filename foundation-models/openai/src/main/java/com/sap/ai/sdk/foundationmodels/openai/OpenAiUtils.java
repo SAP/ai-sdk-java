@@ -15,7 +15,6 @@ import javax.annotation.Nonnull;
  *
  * @since 1.4.0
  */
-@Beta
 class OpenAiUtils {
 
   /**
