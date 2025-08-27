@@ -18,7 +18,7 @@ import lombok.Value;
 @Value
 public class OpenAiEmbeddingRequest {
   /** List of tokens to be embedded. */
-  @Nonnull private final List<String> tokens;
+  @Nonnull List<String> tokens;
 
   /**
    * Constructs an OpenAiEmbeddingRequest from a list of strings.

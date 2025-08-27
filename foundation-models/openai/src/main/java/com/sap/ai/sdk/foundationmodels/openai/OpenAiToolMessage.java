@@ -27,7 +27,7 @@ public class OpenAiToolMessage implements OpenAiMessage {
   @Nonnull OpenAiMessageContent content;
 
   /** The tool call id associated with this message. */
-  @Nonnull private final String toolCallId;
+  @Nonnull String toolCallId;
 
   /**
    * Creates a new tool message from a tool execution response and tool call id.
