@@ -3,13 +3,13 @@ name: "Weekly Spec Update"
 on:
   schedule:
     - cron: '0 0 * * SUN' # Every Sunday at midnight UTC
+  workflow_dispatch:
 
 jobs:
   update-all-specs:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      actions: write
 
     strategy:
       matrix:
@@ -17,13 +17,30 @@ jobs:
           - core
           - document-grounding
           - prompt-registry
+          - orchestration
 
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
 
+      - name: "Get orchestration version"
+        run: |
+          ORCH_VERSION=$(curl --silent --request GET --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github.v3.raw" | grep 'version:' | awk '{print $2}')
+
+          echo "Orchestration version: $ORCH_VERSION"
+          echo "ORCH_VERSION=$ORCH_VERSION" >> $GITHUB_ENV
+        env:
+          TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
+
+
       - name: "Trigger spec update"
         run: |
+          FILE_REF="main"
+          if [ "${{ matrix.file }}" = "orchestration" ]; then
+            FILE_REF="$ORCH_VERSION"
+          fi
+          echo "Using file ref: $FILE_REF"
+
           gh workflow run spec-update.yaml \
             --field file=${{ matrix.file }} \
             --field file-ref=main \
