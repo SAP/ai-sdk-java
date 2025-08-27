@@ -9,7 +9,6 @@ import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
@@ -49,8 +48,9 @@ class OrchestrationHttpExecutor {
       log.debug("Successfully serialized request into JSON payload");
       val request = new HttpPost(path);
       request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+      customHeaders.forEach(h -> request.addHeader(h.getName(), h.getValue()));
 
-      val client = getHttpClient(customHeaders);
+      val client = getHttpClient();
 
       val handler =
           new ClientResponseHandler<>(responseType, OrchestrationError.Synchronous.class, FACTORY)
@@ -75,11 +75,12 @@ class OrchestrationHttpExecutor {
       @Nonnull final Object payload,
       @Nonnull final List<Header> customHeaders) {
     try {
-
       val json = JACKSON.writeValueAsString(payload);
       val request = new HttpPost(path);
       request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
-      val client = getHttpClient(customHeaders);
+      customHeaders.forEach(h -> request.addHeader(h.getName(), h.getValue()));
+
+      val client = getHttpClient();
 
       return new ClientStreamingHandler<>(
               OrchestrationChatCompletionDelta.class, OrchestrationError.Streaming.class, FACTORY)
@@ -96,11 +97,8 @@ class OrchestrationHttpExecutor {
   }
 
   @Nonnull
-  private HttpClient getHttpClient(@Nonnull final List<Header> customHeaders) {
-    val destination =
-        DefaultHttpDestination.fromDestination(destinationSupplier.get())
-            .headers(customHeaders)
-            .build();
+  private HttpClient getHttpClient() {
+    val destination = destinationSupplier.get();
     log.debug("Using destination {} to connect to orchestration service", destination);
     return ApacheHttpClient5Accessor.getHttpClient(destination);
   }
