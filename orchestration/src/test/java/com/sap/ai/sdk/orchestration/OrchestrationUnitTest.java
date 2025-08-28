@@ -379,12 +379,11 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .isInstanceOfSatisfying(
-            OrchestrationClientException.class,
+            OrchestrationClientException.Synchronous.class,
             e -> {
               assertThat(e.getMessage())
                   .isEqualTo(
                       "Request failed with status 400 (Bad Request): Missing required parameters: ['input']");
-              assertThat(e.getErrorResponseStreaming()).isNull();
               assertThat(e.getErrorResponse()).isNotNull();
               assertThat(e.getErrorResponse().getError().getMessage())
                   .isEqualTo("Missing required parameters: ['input']");
@@ -449,7 +448,7 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
         .isInstanceOfSatisfying(
-            OrchestrationFilterException.Input.class,
+            OrchestrationClientException.Synchronous.InputFilter.class,
             e -> {
               assertThat(e.getMessage())
                   .isEqualTo(
@@ -503,7 +502,7 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(client.chatCompletion(prompt, configWithFilter)::getContent)
         .isInstanceOfSatisfying(
-            OrchestrationFilterException.Output.class,
+            OrchestrationClientException.Synchronous.OutputFilter.class,
             e -> {
               assertThat(e.getMessage()).isEqualTo("Content filter filtered the output.");
               assertThat(e.getFilterDetails())
@@ -520,7 +519,6 @@ class OrchestrationUnitTest {
                           "llama_guard_3_8b",
                           Map.of("violent_crimes", true)));
               assertThat(e.getErrorResponse()).isNull();
-              assertThat(e.getStatusCode()).isNull();
 
               assertThat(e.getAzureContentSafetyOutput()).isNotNull();
               assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_6);
@@ -759,9 +757,10 @@ class OrchestrationUnitTest {
     // this must not throw, since the stream is lazily evaluated
     var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
     assertThatThrownBy(stream::toList)
-        .isInstanceOf(OrchestrationFilterException.Output.class)
+        .isInstanceOf(OrchestrationClientException.Streaming.OutputFilter.class)
         .hasMessage("Content filter filtered the output.")
-        .extracting(e -> ((OrchestrationFilterException.Output) e).getFilterDetails())
+        .extracting(
+            e -> ((OrchestrationClientException.Streaming.OutputFilter) e).getFilterDetails())
         .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
   }
 
@@ -785,11 +784,9 @@ class OrchestrationUnitTest {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
             .hasMessage("Content filter filtered the output.")
             .isInstanceOfSatisfying(
-                OrchestrationFilterException.Output.class,
+                OrchestrationClientException.Streaming.OutputFilter.class,
                 e -> {
                   assertThat(e.getErrorResponse()).isNull();
-                  assertThat(e.getErrorResponseStreaming()).isNull();
-                  assertThat(e.getStatusCode()).isNull();
 
                   assertThat(e.getFilterDetails())
                       .isEqualTo(
