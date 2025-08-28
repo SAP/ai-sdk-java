@@ -900,7 +900,7 @@ public class VectorApi extends AbstractOpenApiService {
   }
 
   /**
-   * Search chunk by vector
+   * Search chunks by vector
    *
    * <p>Search chunks
    *
