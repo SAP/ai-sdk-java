@@ -180,6 +180,9 @@ OpenAiClient client2 = OpenAiClient.withCustomDestination(destination);
 
 For more information, please refer to the [AI Core connectivity guide](https://sap.github.io/ai-sdk/docs/java/guides/connecting-to-ai-core) and the [SAP Cloud SDK documentation](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations).
 
+There is also a convenient method to add custom headers to single calls through the orchestration or OpenAI client.
+For more information, see the respective documentation of the [OrchestrationClient](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#custom-headers) and [OpenAIClient](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#custom-headers).
+
 ### _"There's a vulnerability warning `CVE-2021-41251`?"_
 
 This is a known false-positive finding.

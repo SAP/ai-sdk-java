@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.*;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterSeverityResult.Severity.SAFE;
@@ -479,5 +480,24 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
                         }
                       }
                       """)));
+  }
+
+  @Test
+  void testCustomHeaders() {
+    stubForChatCompletion();
+    final var request =
+        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+
+    final var result = client.withHeader("foo", "bar").chatCompletion(request);
+    assertThat(result).isNotNull();
+
+    var streamResult =
+        client
+            .withHeader("foot", "baz")
+            .streamChatCompletion("Hello World! Why is this phrase so famous?");
+    assertThat(streamResult).isNotNull();
+
+    verify(postRequestedFor(anyUrl()).withHeader("foo", equalTo("bar")));
+    verify(postRequestedFor(anyUrl()).withHeader("foot", equalTo("baz")));
   }
 }
