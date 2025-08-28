@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OpenAiService;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiUsage;
+import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
@@ -47,14 +47,14 @@ public class OpenAiController {
     final var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
     final var stream = service.streamChatCompletionDeltas(message);
     final var emitter = new ResponseBodyEmitter();
-    final var totalUsage = new AtomicReference<OpenAiUsage>();
+    final var totalUsage = new AtomicReference<CompletionUsage>();
     final Runnable consumeStream =
         () -> {
           try (stream) {
             stream.forEach(
                 delta -> {
                   // Instead of getCompletionUsage(MAPPER), we now use getUsage()
-                  final var usage = delta.getUsage();
+                  final var usage = delta.getCompletionUsage();
                   totalUsage.compareAndExchange(null, usage);
                   send(emitter, delta.getDeltaContent());
                 });
@@ -116,7 +116,7 @@ public class OpenAiController {
     if ("json".equals(format)) {
       return response;
     }
-    return response.getChoices().get(0).getMessage();
+    return response.getContent();
   }
 
   @GetMapping("/chatCompletionToolExecution")

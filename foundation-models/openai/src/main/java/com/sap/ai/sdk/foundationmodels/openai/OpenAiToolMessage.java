@@ -2,7 +2,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import static lombok.AccessLevel.PACKAGE;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestToolMessageContent;
 import java.util.List;
@@ -16,7 +15,6 @@ import lombok.experimental.Accessors;
  *
  * @since 1.4.0
  */
-@Beta
 @Value
 @Accessors(fluent = true)
 @AllArgsConstructor(access = PACKAGE)
@@ -29,7 +27,7 @@ public class OpenAiToolMessage implements OpenAiMessage {
   @Nonnull OpenAiMessageContent content;
 
   /** The tool call id associated with this message. */
-  @Nonnull private final String toolCallId;
+  @Nonnull String toolCallId;
 
   /**
    * Creates a new tool message from a tool execution response and tool call id.
