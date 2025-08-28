@@ -226,7 +226,7 @@ public class OrchestrationClient {
    * @since 1.9.0
    */
   @Nonnull
-  EmbeddingsPostResponse embed(@Nonnull final EmbeddingsPostRequest request)
+  public EmbeddingsPostResponse embed(@Nonnull final EmbeddingsPostRequest request)
       throws OrchestrationClientException {
     return executor.execute("/v2/embeddings", request, EmbeddingsPostResponse.class);
   }
