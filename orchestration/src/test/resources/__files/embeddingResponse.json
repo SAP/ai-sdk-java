@@ -1,0 +1,46 @@
+{
+  "request_id": "62935941-7c2d-4c16-8a35-0b9dce7c8c9e",
+  "intermediate_results": {
+    "input_masking": {
+      "message": "Embedding input is masked successfully.",
+      "data": {
+        "masked_input": [
+          "Hi SAP Orchestration Service",
+          "I am MASKED_PERSON"
+        ]
+      }
+    }
+  },
+  "final_result": {
+    "object": "list",
+    "data": [
+      {
+        "object": "embedding",
+        "embedding": [
+          -0.09068491,
+          -0.3462946,
+          0.88297224,
+          -0.29537824,
+          0.0704844
+        ],
+        "index": 0
+      },
+      {
+        "object": "embedding",
+        "embedding": [
+          0.18703203,
+          -0.10362422,
+          -0.65176725,
+          0.6386932,
+          -0.34864223
+        ],
+        "index": 1
+      }
+    ],
+    "model": "text-embedding-3-small",
+    "usage": {
+      "prompt_tokens": 11,
+      "total_tokens": 11
+    }
+  }
+}
