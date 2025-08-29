@@ -231,6 +231,7 @@ public class OrchestrationModuleConfig {
    * @param outputFilteringStreamOptions The output filtering stream options to use.
    * @return A new configuration with the given output filtering stream options.
    */
+  @Nonnull
   public OrchestrationModuleConfig withOutputFilteringStreamOptions(
       @Nullable final FilteringStreamOptions outputFilteringStreamOptions) {
     if (filteringConfig != null && filteringConfig.getOutput() != null) {
