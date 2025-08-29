@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
+import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
@@ -99,6 +100,11 @@ public class OrchestrationModuleConfig {
   @Nullable SAPDocumentTranslation inputTranslationConfig;
 
   @Nullable SAPDocumentTranslation outputTranslationConfig;
+
+  /** Configuration of optional streaming options for output filtering. */
+  @With(AccessLevel.NONE)
+  @Nullable
+  FilteringStreamOptions outputFilteringStreamOptions;
 
   /**
    * Creates a new configuration with the given LLM configuration.
@@ -203,7 +209,10 @@ public class OrchestrationModuleConfig {
             .map(ContentFilter::createOutputFilterConfig)
             .toList();
 
-    final var outputFilter = OutputFilteringConfig.create().filters(filterConfigs);
+    final var outputFilter =
+        OutputFilteringConfig.create()
+            .filters(filterConfigs)
+            .streamOptions(outputFilteringStreamOptions);
 
     final var newFilteringConfig =
         FilteringModuleConfig.create()
@@ -211,6 +220,28 @@ public class OrchestrationModuleConfig {
             .input(this.filteringConfig != null ? this.filteringConfig.getInput() : null);
 
     return this.withFilteringConfig(newFilteringConfig);
+  }
+
+  /**
+   * Creates a new configuration with the given output filtering stream options.
+   *
+   * @param outputFilteringStreamOptions The output filtering stream options to use.
+   * @return A new configuration with the given output filtering stream options.
+   */
+  public OrchestrationModuleConfig withOutputFilteringStreamOptions(
+      @Nullable final FilteringStreamOptions outputFilteringStreamOptions) {
+    if (filteringConfig != null && filteringConfig.getOutput() != null) {
+      filteringConfig.getOutput().setStreamOptions(outputFilteringStreamOptions);
+    }
+    return new OrchestrationModuleConfig(
+        this.llmConfig,
+        this.templateConfig,
+        this.maskingConfig,
+        this.filteringConfig,
+        this.groundingConfig,
+        this.inputTranslationConfig,
+        this.outputTranslationConfig,
+        outputFilteringStreamOptions);
   }
 
   /**
