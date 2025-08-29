@@ -203,7 +203,6 @@
                     <useOneOfInterfaces>true</useOneOfInterfaces>
                     <removeEnumValuePrefix>true</removeEnumValuePrefix>
                     <useOneOfCreators>true</useOneOfCreators>
-                    <useFloatArrays>true</useFloatArrays>
                   </additionalProperties>
                 </configuration>
               </execution>

@@ -15,6 +15,8 @@ import lombok.Value;
  * Response wrapper for orchestration embedding operations.
  *
  * <p>Wraps {@link EmbeddingsPostResponse} and provides convenient access to embedding vectors.
+ *
+ * @since 1.11.0
  */
 @Beta
 @Value

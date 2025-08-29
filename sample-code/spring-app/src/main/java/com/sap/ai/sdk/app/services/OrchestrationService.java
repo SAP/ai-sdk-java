@@ -604,9 +604,8 @@ public class OrchestrationService {
   /**
    * Create text embeddings using the Orchestration service.
    *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/embeddings?locale=en-US">
-   *     AI Core: Orchestration - Embedding
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/embeddings">AI
+   *     Core: Orchestration - Embedding</a>
    * @param texts the list of texts to embed
    * @return the embedding response object
    */
