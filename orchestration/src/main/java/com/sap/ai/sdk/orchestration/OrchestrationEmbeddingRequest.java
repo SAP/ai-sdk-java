@@ -1,8 +1,8 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.model.EmbeddingsInput.TypeEnum.DOCUMENT;
-import static com.sap.ai.sdk.orchestration.model.EmbeddingsInput.TypeEnum.QUERY;
-import static com.sap.ai.sdk.orchestration.model.EmbeddingsInput.TypeEnum.TEXT;
+import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest.TokenType.DOCUMENT;
+import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest.TokenType.QUERY;
+import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest.TokenType.TEXT;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.google.common.annotations.Beta;
@@ -18,33 +18,86 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.With;
 import lombok.experimental.Tolerate;
 
-// Do we need staged input builder here?
-// Do we need an enum for tokenType?
+/**
+ * Represents a request for generating embeddings through the SAP AI Core Orchestration service.
+ *
+ * @since 1.11.0
+ */
 @Beta
 @Value
 @AllArgsConstructor(access = PRIVATE)
 public class OrchestrationEmbeddingRequest {
 
+  /** The embedding model to use for generating vector representations. */
   @Nonnull OrchestrationEmbeddingModel model;
+
+  /** The list of text inputs to be converted into embeddings. */
   @Nonnull List<String> tokens;
 
+  /** Optional masking providers for data privacy and security. */
   @With(value = PRIVATE)
   @Nullable
   List<MaskingProvider> masking;
 
+  /** Optional token type classification to optimize embedding generation. */
   @With(value = PRIVATE)
   @Nullable
-  EmbeddingsInput.TypeEnum tokenType;
+  TokenType tokenType;
 
-  public static OrchestrationEmbeddingRequest create(
-      OrchestrationEmbeddingModel model, List<String> tokens) {
-    return new OrchestrationEmbeddingRequest(model, tokens, null, null);
+  /**
+   * Create an embedding request using fluent API starting with model selection.
+   *
+   * <pre>{@code
+   * OrchestrationEmbeddingRequest.forModel(myModel).forInputs("text to embed");
+   * }</pre>
+   *
+   * @param model the embedding model to use
+   * @return a step for specifying inputs
+   */
+  @Nonnull
+  public static InputStep forModel(@Nonnull final OrchestrationEmbeddingModel model) {
+    return tokens -> new OrchestrationEmbeddingRequest(model, List.copyOf(tokens), null, null);
   }
 
+  /** Builder step for specifying text inputs to embed. */
+  @FunctionalInterface
+  public interface InputStep {
+
+    /**
+     * Specifies text inputs to be embedded.
+     *
+     * @param tokens the text strings to embed
+     * @return a new embedding request instance
+     */
+    @Nonnull
+    OrchestrationEmbeddingRequest forInputs(@Nonnull final List<String> tokens);
+
+    /**
+     * Specifies multiple text inputs using variable arguments.
+     *
+     * @param tokens one or more strings to embed
+     * @return a new embedding request instance
+     */
+    @Nonnull
+    default OrchestrationEmbeddingRequest forInputs(@Nonnull final String... tokens) {
+      return forInputs(List.of(tokens));
+    }
+  }
+
+  /**
+   * Adds data masking providers to enable detection and masking of sensitive information.
+   *
+   * @param maskingProvider the primary masking provider
+   * @param maskingProviders additional masking providers
+   * @return a new request instance with the specified masking providers
+   * @see MaskingProvider
+   */
   @Tolerate
   @Nonnull
   public OrchestrationEmbeddingRequest withMasking(
@@ -53,36 +106,71 @@ public class OrchestrationEmbeddingRequest {
     return withMasking(Lists.asList(maskingProvider, maskingProviders));
   }
 
+  /**
+   * Configures this request to optimize embeddings for document content.
+   *
+   * @return a new request instance configured for document embedding
+   */
   @Nonnull
   public OrchestrationEmbeddingRequest asDocument() {
     return withTokenType(DOCUMENT);
   }
 
+  /**
+   * Configures this request to optimize embeddings for general text content.
+   *
+   * @return a new request instance configured for text embedding
+   */
   @Nonnull
   public OrchestrationEmbeddingRequest asText() {
     return withTokenType(TEXT);
   }
 
+  /**
+   * Configures this request to optimize embeddings for query content.
+   *
+   * @return a new request instance configured for query embedding
+   */
   @Nonnull
   public OrchestrationEmbeddingRequest asQuery() {
     return withTokenType(QUERY);
   }
 
+  @Nonnull
   EmbeddingsPostRequest createEmbeddingsPostRequest() {
 
-    final var input =
-        EmbeddingsInput.create().text(EmbeddingsInputText.create(tokens)).type(tokenType);
+    final var input = EmbeddingsInput.create().text(EmbeddingsInputText.create(tokens));
     final var embeddingsModelConfig =
-        EmbeddingsModelConfig.create().model(this.model.createEmbeddingsModelDetails());
+        EmbeddingsModelConfig.create().model(model.createEmbeddingsModelDetails());
     final var modules =
         EmbeddingsOrchestrationConfig.create()
             .modules(EmbeddingsModuleConfigs.create().embeddings(embeddingsModelConfig));
 
+    if (tokenType != null) {
+      input.setType(EmbeddingsInput.TypeEnum.fromValue(tokenType.getValue()));
+    }
     if (masking != null) {
-      final var dpiConfigs = this.masking.stream().map(MaskingProvider::createConfig).toList();
+      final var dpiConfigs = masking.stream().map(MaskingProvider::createConfig).toList();
       modules.getModules().setMasking(MaskingModuleConfigProviders.create().providers(dpiConfigs));
     }
-
     return EmbeddingsPostRequest.create().config(modules).input(input);
+  }
+
+  /**
+   * Token type classification for optimizing embedding generation.
+   *
+   * <p>Token types may influence how the embedding model processes and represents the input text.
+   */
+  @Getter
+  @RequiredArgsConstructor
+  public enum TokenType {
+    /** For document content. */
+    DOCUMENT("document"),
+    /** For general text (default). */
+    TEXT("text"),
+    /** For search queries. */
+    QUERY("query");
+
+    private final String value;
   }
 }

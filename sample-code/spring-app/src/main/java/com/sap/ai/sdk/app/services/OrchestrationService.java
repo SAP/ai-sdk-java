@@ -3,6 +3,7 @@ package com.sap.ai.sdk.app.services;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.orchestration.model.SAPDocumentTranslation.TypeEnum.SAP_DOCUMENT_TRANSLATION;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,6 +18,8 @@ import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
+import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
@@ -596,5 +599,28 @@ public class OrchestrationService {
                             .sourceLanguage("en-US"))); // optional source language
 
     return client.chatCompletion(prompt, configWithTranslation);
+  }
+
+  /**
+   * Create text embeddings using the Orchestration service.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/embeddings?locale=en-US">
+   *     AI Core: Orchestration - Embedding
+   * @param texts the list of texts to embed
+   * @return the embedding response object
+   */
+  @Nonnull
+  public OrchestrationEmbeddingResponse embed(@Nonnull final List<String> texts) {
+    final var masking =
+        DpiMasking.anonymization()
+            .withEntities(DPIEntities.PERSON)
+            .withAllowList(List.of("SAP", "Joule"));
+
+    final var request =
+        OrchestrationEmbeddingRequest.forModel(TEXT_EMBEDDING_3_SMALL)
+            .forInputs(texts)
+            .withMasking(masking);
+    return client.embed(request);
   }
 }

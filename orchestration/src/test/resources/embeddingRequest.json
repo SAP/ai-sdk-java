@@ -1,0 +1,40 @@
+{
+  "config": {
+    "modules": {
+      "embeddings": {
+        "model": {
+          "name": "text-embedding-3-small",
+          "params": {
+            "encoding_format": "float"
+          }
+        }
+      },
+      "masking": {
+        "providers": [
+          {
+            "type": "sap_data_privacy_integration",
+            "method": "anonymization",
+            "entities": [
+              {
+                "type": "profile-person"
+              }
+            ],
+            "allowlist": [
+              "SAP",
+              "Joule"
+            ],
+            "mask_grounding_input": {
+              "enabled": false
+            }
+          }
+        ]
+      }
+    }
+  },
+  "input": {
+    "text": [
+      "Hi SAP Orchestration Service",
+      "I am John Doe"
+    ]
+  }
+}

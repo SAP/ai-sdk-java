@@ -1,77 +1,147 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
+import static com.sap.ai.sdk.orchestration.model.DPIEntities.PERSON;
+import static com.sap.ai.sdk.orchestration.model.EmbeddingResult.ObjectEnum.EMBEDDING;
 import static com.sap.ai.sdk.orchestration.model.EmbeddingsInput.TypeEnum.DOCUMENT;
-import static com.sap.ai.sdk.orchestration.model.EmbeddingsModelParams.EncodingFormatEnum.BASE64;
+import static com.sap.ai.sdk.orchestration.model.EmbeddingsInput.TypeEnum.QUERY;
+import static com.sap.ai.sdk.orchestration.model.EmbeddingsInput.TypeEnum.TEXT;
+import static com.sap.ai.sdk.orchestration.model.EmbeddingsResponse.ObjectEnum.LIST;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.orchestration.model.DPIConfig;
-import com.sap.ai.sdk.orchestration.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.model.DPIStandardEntity;
-import com.sap.ai.sdk.orchestration.model.EmbeddingsInputText;
-import com.sap.ai.sdk.orchestration.model.MaskingModuleConfigProviders;
+import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParams.EncodingFormatEnum;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import lombok.SneakyThrows;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+@WireMockTest
 class OrchestrationEmbeddingTest {
+  private static OrchestrationClient client;
 
-  @Test
-  void embeddingModelTest() {
-    final var model = TEXT_EMBEDDING_3_SMALL;
-    assertThat(model.name().equals("text-embedding-3-small"));
-    assertThat(model.version()).isNull();
-    assertThat(model.dimensions()).isNull();
-    assertThat(model.encodingFormat()).isNull();
-    assertThat(model.normalize()).isNull();
+  private final Function<String, InputStream> fileLoader =
+      filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
-    final var model2 =
-        TEXT_EMBEDDING_3_SMALL
-            .withVersion("some-version")
-            .withDimensions(1536)
-            .withNormalize(true)
-            .withEncodingFormat(BASE64);
-    assertThat(model2.name().equals("text-embedding-3-large"));
-    assertThat(model2.version().equals("some-version"));
-    assertThat(model2.dimensions().equals(1536));
-    assertThat(model2.normalize().equals(true));
-    assertThat(model2.encodingFormat().equals(BASE64));
+  @BeforeEach
+  void setup(WireMockRuntimeInfo server) {
+    final DefaultHttpDestination destination =
+        DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
+    client = new OrchestrationClient(destination);
+    ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
+  }
 
-    final var custom = new OrchestrationEmbeddingModel("custom-model");
-    assertThat(custom.name()).isEqualTo("custom-model");
+  @AfterEach
+  void reset() {
+    ApacheHttpClient5Accessor.setHttpClientCache(null);
+    ApacheHttpClient5Accessor.setHttpClientFactory(null);
   }
 
   @Test
-  void embeddingRequestTest() {
+  void testEmbeddingModel() {
+    final var model =
+        TEXT_EMBEDDING_3_SMALL.withVersion("v1").withDimensions(1536).withNormalize(true);
+
+    final var lowLevelModel1 = model.createEmbeddingsModelDetails();
+    assertThat(lowLevelModel1.getName()).isEqualTo("text-embedding-3-small");
+    assertThat(lowLevelModel1.getVersion()).isEqualTo("v1");
+    assertThat(lowLevelModel1.getParams().getDimensions()).isEqualTo(1536);
+    assertThat(lowLevelModel1.getParams().isNormalize()).isTrue();
+    assertThat(lowLevelModel1.getParams().getEncodingFormat()).isEqualTo(EncodingFormatEnum.FLOAT);
+
+    final var model2 = new OrchestrationEmbeddingModel("custom-model");
+    final var lowLevelModel2 = model2.createEmbeddingsModelDetails();
+    assertThat(lowLevelModel2.getName()).isEqualTo("custom-model");
+  }
+
+  @Test
+  void testEmbeddingRequestTokenTypes() {
+    var request =
+        OrchestrationEmbeddingRequest.forModel(TEXT_EMBEDDING_3_SMALL).forInputs("Hello World");
+
+    request = request.asText();
+    var lowLevelRequest = request.createEmbeddingsPostRequest();
+    assertThat(lowLevelRequest.getInput().getType()).isEqualTo(TEXT);
+
+    request = request.asDocument();
+    lowLevelRequest = request.createEmbeddingsPostRequest();
+    assertThat(lowLevelRequest.getInput().getType()).isEqualTo(DOCUMENT);
+
+    request = request.asQuery();
+    lowLevelRequest = request.createEmbeddingsPostRequest();
+    assertThat(lowLevelRequest.getInput().getType()).isEqualTo(QUERY);
+  }
+
+  @SneakyThrows
+  @Test
+  void testEmbeddingRequest() {
+    stubFor(
+        post(urlPathEqualTo("/v2/embeddings"))
+            .withHeader("Content-Type", equalTo("application/json; charset=UTF-8"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("embeddingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var masking =
+        DpiMasking.anonymization().withEntities(PERSON).withAllowList(List.of("SAP", "Joule"));
     final var request =
-        OrchestrationEmbeddingRequest.create(TEXT_EMBEDDING_3_SMALL, List.of("token1", "token2"))
-            .asDocument()
-            .withMasking(
-                DpiMasking.anonymization()
-                    .withEntities(DPIEntities.ADDRESS)
-                    .withAllowList(List.of("Alice")));
+        OrchestrationEmbeddingRequest.forModel(TEXT_EMBEDDING_3_SMALL)
+            .forInputs(List.of("Hi SAP Orchestration Service", "I am John Doe"))
+            .withMasking(masking);
 
-    final var postRequest = request.createEmbeddingsPostRequest();
-    assertThat(postRequest.getInput().getText())
-        .isEqualTo(EmbeddingsInputText.create(List.of("token1", "token2")));
-    assertThat(postRequest.getInput().getType()).isEqualTo(DOCUMENT);
-    final var embeddingsModelConfig = postRequest.getConfig().getModules().getEmbeddings();
-    assertThat(embeddingsModelConfig.getModel().getName()).isEqualTo("text-embedding-3-small");
-    assertThat(embeddingsModelConfig.getModel().getVersion()).isNull();
-    assertThat(embeddingsModelConfig.getModel().getParams().getDimensions()).isNull();
-    assertThat(embeddingsModelConfig.getModel().getParams().getEncodingFormat()).isNull();
-    assertThat(embeddingsModelConfig.getModel().getParams().isNormalize()).isNull();
+    final var response = client.embed(request);
 
-    final var maskingConfig = postRequest.getConfig().getModules().getMasking();
-    assertThat(maskingConfig)
-        .isInstanceOfSatisfying(
-            MaskingModuleConfigProviders.class,
-            cfg -> {
-              assertThat(cfg.getProviders()).hasSize(1);
-              assertThat(cfg.getProviders().get(0).getType())
-                  .isEqualTo(DPIConfig.TypeEnum.SAP_DATA_PRIVACY_INTEGRATION);
-              assertThat(cfg.getProviders().get(0).getEntities())
-                  .isEqualTo(List.of(DPIStandardEntity.create().type(DPIEntities.ADDRESS)));
-              assertThat(cfg.getProviders().get(0).getAllowlist()).isEqualTo(List.of("Alice"));
+    assertThat(response.getEmbeddingVectors())
+        .isNotNull()
+        .hasSize(2)
+        .isInstanceOf(List.class)
+        .contains(
+            new float[] {-0.09068491f, -0.3462946f, 0.88297224f, -0.29537824f, 0.0704844f},
+            new float[] {0.18703203f, -0.10362422f, -0.65176725f, 0.6386932f, -0.34864223f});
+
+    assertThat(response.getOriginalResponse().getRequestId())
+        .isEqualTo("62935941-7c2d-4c16-8a35-0b9dce7c8c9e");
+    assertThat(response.getOriginalResponse().getIntermediateResults().getInputMasking().getData())
+        .isEqualTo(
+            Map.of("masked_input", List.of("Hi SAP Orchestration Service", "I am MASKED_PERSON")));
+    final var finalResult = response.getOriginalResponse().getFinalResult();
+    assertThat(finalResult.getModel()).isEqualTo("text-embedding-3-small");
+
+    assertThat(finalResult.getUsage().getPromptTokens()).isEqualTo(11);
+    assertThat(finalResult.getUsage().getTotalTokens()).isEqualTo(11);
+    assertThat(finalResult.getObject()).isEqualTo(LIST);
+    assertThat(finalResult.getData())
+        .hasSize(2)
+        .allSatisfy(
+            embeddingData -> {
+              assertThat(embeddingData.getObject()).isEqualTo(EMBEDDING);
+              assertThat(embeddingData.getEmbedding()).isNotNull();
+              assertThat(embeddingData.getIndex()).isIn(0, 1);
             });
+
+    try (var inputStream = fileLoader.apply("embeddingRequest.json")) {
+      var requestJson = new String(inputStream.readAllBytes());
+      verify(
+          postRequestedFor(urlEqualTo("/v2/embeddings")).withRequestBody(equalToJson(requestJson)));
+    }
   }
 }
