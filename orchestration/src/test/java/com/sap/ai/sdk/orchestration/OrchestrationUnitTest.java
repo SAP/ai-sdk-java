@@ -59,6 +59,7 @@ import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsResponse;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
+import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
@@ -77,6 +78,7 @@ import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import io.vavr.control.Try;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -118,6 +120,8 @@ class OrchestrationUnitTest {
 
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
+  private final Function<String, String> fileLoaderStr =
+      filename -> new String(Try.of(() -> fileLoader.apply(filename).readAllBytes()).get());
 
   private static OrchestrationClient client;
   private static OrchestrationModuleConfig config;
@@ -247,11 +251,9 @@ class OrchestrationUnitTest {
                 "masked_grounding_input", // maskGroundingInput: true will make this field present
                 "[\"What does Joule do?\"]"));
 
-    try (var requestInputStream = fileLoader.apply("groundingRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
-      verify(
-          postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
-    }
+    final String request = fileLoaderStr.apply("groundingRequest.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
   }
 
   @Test
@@ -281,12 +283,10 @@ class OrchestrationUnitTest {
             "A fuzzy search is a search technique that is designed to be fast and tolerant of errors");
     assertThat(response.getContent()).startsWith("A fuzzy search is a search technique");
 
-    try (var requestInputStream = fileLoader.apply("groundingHelpSapComRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
-      verify(
-          postRequestedFor(urlPathEqualTo("/v2/completion"))
-              .withRequestBody(equalToJson(request, true, true)));
-    }
+    final String request = fileLoaderStr.apply("groundingHelpSapComRequest.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(equalToJson(request, true, true)));
   }
 
   @Test
@@ -352,10 +352,8 @@ class OrchestrationUnitTest {
     assertThat(usage.getTotalTokens()).isEqualTo(26);
 
     // verify that null fields are absent from the sent request
-    try (var requestInputStream = fileLoader.apply("templatingRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
-    }
+    final String request = fileLoaderStr.apply("templatingRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
   }
 
   @Test
@@ -420,10 +418,39 @@ class OrchestrationUnitTest {
     // the result is asserted in the verify step below
 
     // verify that null fields are absent from the sent request
-    try (var requestInputStream = fileLoader.apply("filteringLooseRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, true)));
-    }
+    final String request = fileLoaderStr.apply("filteringLooseRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, true)));
+  }
+
+  @Test
+  void filteringLooseStream() throws IOException {
+    final var res = new String(fileLoader.apply("streamChatCompletion.txt").readAllBytes());
+    stubFor(
+        post(anyUrl())
+            .willReturn(aResponse().withBody(res).withHeader("Content-Type", "application/json")));
+
+    final var azureFilter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE_LOW_MEDIUM)
+            .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+            .sexual(ALLOW_SAFE_LOW_MEDIUM)
+            .violence(ALLOW_SAFE_LOW_MEDIUM);
+
+    final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
+
+    OrchestrationModuleConfig myConfig =
+        config
+            .withInputFiltering(azureFilter, llamaFilter)
+            .withOutputFiltering(azureFilter)
+            .withOutputFilteringStreamOptions(FilteringStreamOptions.create().overlap(1_000));
+
+    Stream<String> result = client.streamChatCompletion(prompt, myConfig);
+    assertThat(result).containsExactly("", "Sure", "!");
+    // the result is asserted in the verify step below
+
+    // verify that null fields are absent from the sent request
+    final String request = fileLoaderStr.apply("filteringLooseRequestStream.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, false)));
   }
 
   @Test
@@ -560,10 +587,8 @@ class OrchestrationUnitTest {
         .isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
 
     // verify that the history is sent correctly
-    try (var requestInputStream = fileLoader.apply("messagesHistoryRequest.json")) {
-      final String requestBody = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(requestBody)));
-    }
+    final String requestBody = fileLoaderStr.apply("messagesHistoryRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(requestBody)));
   }
 
   @Test
@@ -588,10 +613,8 @@ class OrchestrationUnitTest {
     assertThat(result.getContent()).contains("Hi Mallory");
 
     // verify that the request is sent correctly
-    try (var requestInputStream = fileLoader.apply("maskingRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, true)));
-    }
+    final String request = fileLoaderStr.apply("maskingRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, true)));
   }
 
   private static Runnable[] errorHandlingCalls() {
@@ -991,12 +1014,10 @@ class OrchestrationUnitTest {
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
 
-    try (var requestInputStream = fileLoader.apply("multiMessageRequest.json")) {
-      final String requestBody = new String(requestInputStream.readAllBytes());
-      verify(
-          postRequestedFor(urlPathEqualTo("/v2/completion"))
-              .withRequestBody(equalToJson(requestBody)));
-    }
+    final String requestBody = fileLoaderStr.apply("multiMessageRequest.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(equalToJson(requestBody)));
   }
 
   //    Example class
@@ -1054,10 +1075,8 @@ class OrchestrationUnitTest {
     assertThat(translation.language).isEqualTo("German");
     assertThat(translation.translation).isEqualTo("Apfel");
 
-    try (var requestInputStream = fileLoader.apply("jsonSchemaRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
-    }
+    final String request = fileLoaderStr.apply("jsonSchemaRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
   }
 
   @Test
@@ -1119,10 +1138,8 @@ class OrchestrationUnitTest {
     final var message = client.chatCompletion(prompt, configWithJsonResponse).getContent();
     assertThat(message).isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
 
-    try (var requestInputStream = fileLoader.apply("jsonObjectRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
-    }
+    final String request = fileLoaderStr.apply("jsonObjectRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
   }
 
   @Test
@@ -1152,10 +1169,8 @@ class OrchestrationUnitTest {
         .isEqualTo(
             "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
 
-    try (var requestInputStream = fileLoader.apply("responseFormatTextRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
-    }
+    final String request = fileLoaderStr.apply("responseFormatTextRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
   }
 
   @Test
@@ -1179,10 +1194,8 @@ class OrchestrationUnitTest {
       assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating())
           .hasSize(2);
 
-      try (var requestInputStream = fileLoader.apply("templateReferenceByIdRequest.json")) {
-        final String request = new String(requestInputStream.readAllBytes());
-        verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
-      }
+      final String request = fileLoaderStr.apply("templateReferenceByIdRequest.json");
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
     }
   }
 
@@ -1205,10 +1218,8 @@ class OrchestrationUnitTest {
     assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
-    try (var requestInputStream = fileLoader.apply("templateReferenceByScenarioRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
-    }
+    final String request = fileLoaderStr.apply("templateReferenceByScenarioRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
   }
 
   @Test
@@ -1231,10 +1242,8 @@ class OrchestrationUnitTest {
 
     final var response = client.chatCompletion(prompt, configWithTemplate);
 
-    try (var requestInputStream = fileLoader.apply("localTemplateRequest.json")) {
-      final String request = new String(requestInputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
-    }
+    final String request = fileLoaderStr.apply("localTemplateRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
   }
 
   @Test
