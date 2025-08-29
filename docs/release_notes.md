@@ -23,6 +23,7 @@
   `OrchestrationAiModel.GEMINI_1_5_FLASH`
   - Replacement are `GEMINI_2_5_PRO` and `GEMINI_2_5_FLASH`.
 - [Orchestration] Deprecated `OrchestrationAiModel.IBM_GRANITE_13B_CHAT` with no replacement.
+- [Orchestration] OutputFilter configuration for streaming can be conveniently set via `OrchestrationModuleConfig#withOutputFilteringStreamOptions`.
 - [OpenAI] [Introduced SpringAI integration with our OpenAI client.](https://sap.github.io/ai-sdk/docs/java/spring-ai/openai)
   - Added `OpenAiChatModel`
 - [Prompt Registry] [Using Prompt Registry Templates in SpringAI.](https://sap.github.io/ai-sdk/docs/java/ai-core/prompt-registry#using-templates-in-springai)
