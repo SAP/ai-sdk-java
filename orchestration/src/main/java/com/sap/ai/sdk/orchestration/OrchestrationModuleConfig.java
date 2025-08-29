@@ -225,6 +225,9 @@ public class OrchestrationModuleConfig {
   /**
    * Creates a new configuration with the given output filtering stream options.
    *
+   * @see <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming">Orchestration
+   *     documentation on streaming.</a>
    * @param outputFilteringStreamOptions The output filtering stream options to use.
    * @return A new configuration with the given output filtering stream options.
    */
