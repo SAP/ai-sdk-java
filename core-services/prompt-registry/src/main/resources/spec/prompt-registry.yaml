@@ -8,6 +8,8 @@ info:
 tags:
   - name: prompt templates
     description: Tag for prompt templates operations
+  - name: orchestration configs
+    description: Tag for orchestration configs operations
 
 paths:
   /lm/promptTemplates:
@@ -314,10 +316,262 @@ paths:
           $ref: "#/components/responses/ForbiddenError"
         default:
           $ref: "#/components/responses/CommonError"
+  /lm/orchestrationConfigs:
+    post:
+      operationId: registry.controller.orchestration_config_controller.create_update_orchestration_config
+      x-sap-cloud-sdk-operation-name: createUpdateOrchestrationConfig
+      description: Create or update an orchestration config
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: "#/components/parameters/ai-resource-group"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrchestrationConfigPostRequest"
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrchestrationConfigPostResponse"
+        403:
+          $ref: "#/components/responses/ForbiddenError"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        default:
+          $ref: "#/components/responses/CommonError"
+    get:
+      operationId: registry.controller.orchestration_config_controller.list_orchestration_configs
+      x-sap-cloud-sdk-operation-name: listOrchestrationConfigs
+      description: List orchestration configs
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: "#/components/parameters/ai-resource-group"
+        - name: scenario
+          in: query
+          schema:
+            type: string
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: version
+          in: query
+          schema:
+            type: string
+        - name: model_name
+          in: query
+          schema:
+            type: string
+        - name: retrieve
+          in: query
+          schema:
+            type: string
+            default: both
+            enum:
+              - both
+              - imperative
+              - declarative
+        - name: include_spec
+          in: query
+          schema:
+            type: boolean
+            default: false
+        - name: resolve_template_ref
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrchestrationConfigListResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        403:
+          $ref: "#/components/responses/ForbiddenError"
+        default:
+          $ref: "#/components/responses/CommonError"
+  /lm/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/models/{model_name}/history:
+    get:
+      operationId: registry.controller.orchestration_config_controller.list_orchestration_config_history
+      x-sap-cloud-sdk-operation-name: listOrchestrationConfigHistory
+      description: List orchestration config history
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: "#/components/parameters/ai-resource-group"
+        - name: scenario
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: version
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: model_name
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: include_spec
+          in: query
+          schema:
+            type: boolean
+            default: false
+        - name: resolve_template_ref
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrchestrationConfigListResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        403:
+          $ref: "#/components/responses/ForbiddenError"
+        default:
+          $ref: "#/components/responses/CommonError"
+  /lm/orchestrationConfigs/{orchestrationConfigId}:
+    get:
+      operationId: registry.controller.orchestration_config_controller.get_orchestration_config_by_uuid
+      x-sap-cloud-sdk-operation-name: getOrchestrationConfigByUuid
+      description: Get orchestration config by UUID
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: "#/components/parameters/ai-resource-group"
+        - name: orchestrationConfigId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: resolve_template_ref
+          in: query
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrchestrationConfigGetResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        403:
+          $ref: "#/components/responses/ForbiddenError"
+        default:
+          $ref: "#/components/responses/CommonError"
+    delete:
+      operationId: registry.controller.orchestration_config_controller.delete_orchestration_config
+      x-sap-cloud-sdk-operation-name: deleteOrchestrationConfig
+      description: Delete orchestration config
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: "#/components/parameters/ai-resource-group"
+        - name: orchestrationConfigId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrchestrationConfigDeleteResponse"
+        404:
+          $ref: "#/components/responses/NotFound"
+        403:
+          $ref: "#/components/responses/ForbiddenError"
+        default:
+          $ref: "#/components/responses/CommonError"
+  /lm/orchestrationConfigs/import:
+    post:
+      operationId: registry.controller.orchestration_config_controller.import_orchestration_config
+      x-sap-cloud-sdk-operation-name: importOrchestrationConfig
+      description: Import orchestration config
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: "#/components/parameters/ai-resource-group"
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrchestrationConfigPostResponse"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        default:
+          $ref: "#/components/responses/CommonError"
+  /lm/orchestrationConfigs/{orchestrationConfigId}/export:
+    get:
+      operationId: registry.controller.orchestration_config_controller.export_orchestration_config
+      x-sap-cloud-sdk-operation-name: exportOrchestrationConfig
+      description: Export orchestration config
+      tags:
+        - orchestration configs
+      parameters:
+        - $ref: "#/components/parameters/ai-resource-group"
+        - name: orchestrationConfigId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        400:
+          $ref: "#/components/responses/BadRequest"
+        default:
+          $ref: "#/components/responses/CommonError"
 
 components:
   schemas:
-    Template:
+    PromptTemplate:
       oneOf:
         - $ref: "#/components/schemas/SingleChatTemplate"
         - $ref: "#/components/schemas/MultiChatTemplate"
@@ -391,7 +645,7 @@ components:
         template:
           type: array
           items:
-            $ref: "#/components/schemas/Template"
+            $ref: "#/components/schemas/PromptTemplate"
         defaults:
           type: object
         additionalFields:
@@ -657,7 +911,7 @@ components:
         parsedPrompt:
           type: array
           items:
-            $ref: "#/components/schemas/Template"
+            $ref: "#/components/schemas/PromptTemplate"
         resource:
           $ref: "#/components/schemas/PromptTemplateGetResponse"
     ErrorResponse:
@@ -670,6 +924,137 @@ components:
           type: string
         message:
           type: string
+    OrchestrationConfigResource:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        version:
+          type: string
+        scenario:
+          type: string
+        creation_timestamp:
+          type: string
+          format: timestamp
+        managed_by:
+          type: string
+        is_version_head:
+          type: boolean
+        resource_group_id:
+          type: string
+        spec:
+          $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
+    OrchestrationConfigListResponse:
+      type: object
+      required:
+        - count
+        - resources
+      properties:
+        count:
+          type: integer
+        resources:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrchestrationConfigGetResponse"
+    # Orchestration Config Schemas - referencing v2.yaml
+    OrchestrationConfigPostRequest:
+      type: object
+      required:
+        - name
+        - version
+        - scenario
+        - spec
+      properties:
+        name:
+          type: string
+          maxLength: 120
+          pattern: "^[a-zA-Z0-9_-]+$"
+        version:
+          type: string
+          maxLength: 10
+          pattern: "^[a-zA-Z0-9._-]+$"
+        scenario:
+          type: string
+          maxLength: 120
+          pattern: "^[a-zA-Z0-9_-]+$"
+        spec:
+          $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
+    OrchestrationConfigPostResponse:
+      type: object
+      required:
+        - message
+        - id
+        - scenario
+        - name
+        - version
+        - model_name
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+          format: uuid
+        scenario:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+        model_name:
+          type: string
+    OrchestrationConfigGetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        version:
+          type: string
+        scenario:
+          type: string
+        model_name:
+          type: string
+        creation_timestamp:
+          type: string
+          format: timestamp
+        managed_by:
+          type: string
+        is_version_head:
+          type: boolean
+        resource_group_id:
+          type: string
+        spec:
+          $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
+    OrchestrationConfigDeleteResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    RuntimeOrchestrationConfigFile:
+      type: object
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+          properties:
+            name:
+              type: string
+            version:
+              type: string
+            scenario:
+              type: string
+        spec:
+          $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
   responses:
     BadRequest:
       description: Bad Request

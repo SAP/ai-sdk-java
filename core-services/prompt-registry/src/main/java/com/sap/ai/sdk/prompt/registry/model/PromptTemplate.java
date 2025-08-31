@@ -14,10 +14,10 @@ package com.sap.ai.sdk.prompt.registry.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** Template */
+/** PromptTemplate */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
   @JsonSubTypes.Type(value = MultiChatTemplate.class),
   @JsonSubTypes.Type(value = SingleChatTemplate.class),
 })
-public interface Template {}
+public interface PromptTemplate {}
