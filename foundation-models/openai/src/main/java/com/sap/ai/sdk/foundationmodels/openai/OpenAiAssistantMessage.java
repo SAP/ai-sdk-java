@@ -2,7 +2,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import static lombok.AccessLevel.PACKAGE;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMessageToolCall;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionMessageToolCallFunction;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestAssistantMessage;
@@ -25,7 +24,6 @@ import lombok.experimental.Accessors;
  *
  * @since 1.4.0
  */
-@Beta
 @Value
 @Accessors(fluent = true)
 @AllArgsConstructor(access = PACKAGE)
@@ -39,18 +37,14 @@ public class OpenAiAssistantMessage implements OpenAiMessage {
    *
    * <p>May contain an empty list of {@link OpenAiContentItem} when tool calls are present.
    */
-  @Getter(onMethod_ = @Beta)
-  @Nonnull
-  OpenAiMessageContent content;
+  @Getter @Nonnull OpenAiMessageContent content;
 
   /**
    * The tool calls associated with this message if present.
    *
    * @since 1.6.0
    */
-  @Getter(onMethod_ = @Beta)
-  @Nonnull
-  List<OpenAiToolCall> toolCalls;
+  @Getter @Nonnull List<OpenAiToolCall> toolCalls;
 
   /**
    * Creates a new assistant message with the given single message as text content.
