@@ -102,7 +102,6 @@ public final class OpenAiClient {
    * @see AiCoreService#getInferenceDestination(String)
    * @return a new OpenAI client.
    */
-  @Beta
   @Nonnull
   public static OpenAiClient withCustomDestination(@Nonnull final Destination destination) {
     final OpenAiClient client = new OpenAiClient(destination);
@@ -175,7 +174,6 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletion(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
@@ -192,7 +190,6 @@ public final class OpenAiClient {
    * @throws OpenAiClientException if the request fails
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public CreateChatCompletionResponse chatCompletion(
       @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
@@ -293,7 +290,6 @@ public final class OpenAiClient {
    * @see #streamChatCompletion(String)
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final OpenAiChatCompletionRequest request) throws OpenAiClientException {
@@ -310,7 +306,6 @@ public final class OpenAiClient {
    * @see #streamChatCompletionDeltas(OpenAiChatCompletionRequest) for a higher-level API
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
@@ -377,7 +372,6 @@ public final class OpenAiClient {
    * @see #embedding(EmbeddingsCreateRequest) for full confgurability.
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public OpenAiEmbeddingResponse embedding(@Nonnull final OpenAiEmbeddingRequest request)
       throws OpenAiClientException {
@@ -393,7 +387,6 @@ public final class OpenAiClient {
    * @see #embedding(OpenAiEmbeddingRequest) for conveninece api
    * @since 1.4.0
    */
-  @Beta
   @Nonnull
   public EmbeddingsCreate200Response embedding(@Nonnull final EmbeddingsCreateRequest request)
       throws OpenAiClientException {
