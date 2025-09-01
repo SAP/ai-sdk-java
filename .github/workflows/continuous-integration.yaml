@@ -20,14 +20,14 @@ jobs:
     steps:
 
       - name: "Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: "Setup java"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}
