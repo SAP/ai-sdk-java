@@ -7,7 +7,7 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
-import com.sap.ai.sdk.prompt.registry.model.Template;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,7 @@ public class PromptRegistryTest {
 
     // use template
     PromptTemplateSubstitutionResponse template = controller.useTemplate();
-    List<Template> prompt = template.getParsedPrompt();
+    List<PromptTemplate> prompt = template.getParsedPrompt();
     assertThat(prompt).hasSize(2);
     SingleChatTemplate userMessage = (SingleChatTemplate) prompt.get(1);
     assertThat(userMessage.getRole()).isEqualTo("user");

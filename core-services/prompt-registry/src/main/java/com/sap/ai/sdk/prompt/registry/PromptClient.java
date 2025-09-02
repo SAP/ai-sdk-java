@@ -10,7 +10,7 @@ import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpecResponseFormat;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatText;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
-import com.sap.ai.sdk.prompt.registry.model.Template;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import javax.annotation.Nonnull;
@@ -59,7 +59,7 @@ public class PromptClient extends PromptTemplatesApi {
             converter ->
                 converter.setObjectMapper(
                     getDefaultObjectMapper()
-                        .addMixIn(Template.class, JacksonMixin.TemplateMixIn.class)
+                        .addMixIn(PromptTemplate.class, JacksonMixin.TemplateMixIn.class)
                         .addMixIn(
                             PromptTemplateSpecResponseFormat.class,
                             JacksonMixin.ResponseFormat.class)));
