@@ -487,17 +487,24 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
     stubForChatCompletion();
     final var request =
         new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+    final var clientWithHeader = client.withHeader("Header-For-Both", "value");
 
-    final var result = client.withHeader("foo", "bar").chatCompletion(request);
+    final var result = clientWithHeader.withHeader("foo", "bar").chatCompletion(request);
     assertThat(result).isNotNull();
 
     var streamResult =
-        client
+        clientWithHeader
             .withHeader("foot", "baz")
             .streamChatCompletion("Hello World! Why is this phrase so famous?");
     assertThat(streamResult).isNotNull();
 
-    verify(postRequestedFor(anyUrl()).withHeader("foo", equalTo("bar")));
-    verify(postRequestedFor(anyUrl()).withHeader("foot", equalTo("baz")));
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foo", equalTo("bar")));
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foot", equalTo("baz")));
   }
 }

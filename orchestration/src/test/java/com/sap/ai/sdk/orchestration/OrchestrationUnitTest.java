@@ -178,14 +178,22 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var result = client.withHeader("foo", "bar").chatCompletion(prompt, config);
+    final var clientWithHeader = client.withHeader("Header-For-Both", "value");
+    final var result = clientWithHeader.withHeader("foo", "bar").chatCompletion(prompt, config);
     assertThat(result).isNotNull();
 
-    var streamResult = client.withHeader("foot", "baz").streamChatCompletion(prompt, config);
+    var streamResult =
+        clientWithHeader.withHeader("foot", "baz").streamChatCompletion(prompt, config);
     assertThat(streamResult).isNotNull();
 
-    verify(postRequestedFor(urlPathEqualTo("/v2/completion")).withHeader("foo", equalTo("bar")));
-    verify(postRequestedFor(urlPathEqualTo("/v2/completion")).withHeader("foot", equalTo("baz")));
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foo", equalTo("bar")));
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foot", equalTo("baz")));
   }
 
   @Test
