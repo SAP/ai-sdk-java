@@ -48,12 +48,12 @@ jobs:
       CREATE_PR: ${{ github.event.inputs.create-pr }}
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
       - name: "Setup Java"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}

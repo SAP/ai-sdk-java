@@ -1400,6 +1400,8 @@ class OrchestrationUnitTest {
                             "model": {
                               "name": "text-embedding-3-large",
                               "version": "latest",
+                              "timeout" : 600,
+                              "max_retries" : 2,
                               "params": {
                                 "encoding_format": "float",
                                 "dimensions": 5,
