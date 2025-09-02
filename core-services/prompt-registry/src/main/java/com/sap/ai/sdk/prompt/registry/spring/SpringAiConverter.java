@@ -1,8 +1,8 @@
 package com.sap.ai.sdk.prompt.registry.spring;
 
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
-import com.sap.ai.sdk.prompt.registry.model.Template;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.val;
@@ -33,7 +33,7 @@ public class SpringAiConverter {
     // TRANSFORM TEMPLATE TO SPRING AI MESSAGES
     return res.stream()
         .map(
-            (Template t) -> {
+            (PromptTemplate t) -> {
               final SingleChatTemplate message = (SingleChatTemplate) t;
               return (Message)
                   switch (message.getRole()) {
