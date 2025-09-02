@@ -1,8 +1,8 @@
 package com.sap.ai.sdk.prompt.registry.spring;
 
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
-import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.val;

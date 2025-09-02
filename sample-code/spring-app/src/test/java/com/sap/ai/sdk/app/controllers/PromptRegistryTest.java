@@ -2,12 +2,12 @@ package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
-import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
