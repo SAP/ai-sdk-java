@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- [Prompt Registry] `Template` has been renamed to `PromptTemplate`.
 
 ### ✨ New Functionality
 
