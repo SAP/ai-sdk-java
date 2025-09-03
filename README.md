@@ -159,6 +159,7 @@ For SAP internal development, you can also use `SNAPSHOT` builds from the [inter
 
 The AI SDK leverages the destination concept from the SAP Cloud SDK to manage the connection to AI Core.
 This opens up a wide range of possibilities to customize the connection, including adding custom headers.
+The following shows how to add custom headers to all requests sent to AI Core.
 
 ```java
 var service = new AiCoreService();
@@ -170,18 +171,19 @@ var destination =
 // AI Core client
 service = service.withBaseDestination(destination);
 DeploymentApi client = new DeploymentApi(service);
-
-// Orchestration client
-OrchestrationClient client = new OrchestrationClient(destination);
-
-// OpenAI client
-OpenAiClient client2 = OpenAiClient.withCustomDestination(destination);
 ```
 
 For more information, please refer to the [AI Core connectivity guide](https://sap.github.io/ai-sdk/docs/java/guides/connecting-to-ai-core) and the [SAP Cloud SDK documentation](https://sap.github.io/cloud-sdk/docs/java/features/connectivity/http-destinations).
 
-There is also a convenient method to add custom headers to single calls through the orchestration or OpenAI client.
-For more information, see the respective documentation of the [OrchestrationClient](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#custom-headers) and [OpenAIClient](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#custom-headers).
+There is also a convenient method to add custom headers to single calls through the Orchestration or OpenAI client.
+
+```java
+var client = new OrchestrationClient();
+
+var result = client.withHeader("my-header-key", "my-header-value").chatCompletion(prompt, config);
+```
+
+For more information on this feature, see the respective documentation of the [OrchestrationClient](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#custom-headers) and [OpenAIClient](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#custom-headers).
 
 ### _"There's a vulnerability warning `CVE-2021-41251`?"_
 
