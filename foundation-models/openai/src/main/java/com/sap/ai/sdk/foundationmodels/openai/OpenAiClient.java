@@ -25,8 +25,11 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -49,6 +52,7 @@ public final class OpenAiClient {
   @Nullable private String systemPrompt = null;
 
   @Nonnull private final Destination destination;
+  @Nonnull private final List<Header> customHeaders = new ArrayList<>();
 
   /**
    * Create a new OpenAI client for the given foundation model, using the default resource group.
@@ -125,6 +129,23 @@ public final class OpenAiClient {
   public OpenAiClient withSystemPrompt(@Nonnull final String systemPrompt) {
     this.systemPrompt = systemPrompt;
     return this;
+  }
+
+  /**
+   * Create a new OpenAI client with a custom header added to every call made with this client
+   *
+   * @param key the key of the custom header to add
+   * @param value the value of the custom header to add
+   * @return a new client.
+   * @since 1.11.0
+   */
+  @Beta
+  @Nonnull
+  public OpenAiClient withHeader(@Nonnull final String key, @Nonnull final String value) {
+    final var newClient = new OpenAiClient(this.destination);
+    newClient.customHeaders.addAll(this.customHeaders);
+    newClient.customHeaders.add(new Header(key, value));
+    return newClient;
   }
 
   /**
@@ -395,7 +416,7 @@ public final class OpenAiClient {
       @Nonnull final Object payload,
       @Nonnull final Class<T> responseType) {
     final var request = new HttpPost(path);
-    serializeAndSetHttpEntity(request, payload);
+    serializeAndSetHttpEntity(request, payload, this.customHeaders);
     return executeRequest(request, responseType);
   }
 
@@ -405,15 +426,18 @@ public final class OpenAiClient {
       @Nonnull final Object payload,
       @Nonnull final Class<D> deltaType) {
     final var request = new HttpPost(path);
-    serializeAndSetHttpEntity(request, payload);
+    serializeAndSetHttpEntity(request, payload, this.customHeaders);
     return streamRequest(request, deltaType);
   }
 
   private static void serializeAndSetHttpEntity(
-      @Nonnull final BasicClassicHttpRequest request, @Nonnull final Object payload) {
+      @Nonnull final BasicClassicHttpRequest request,
+      @Nonnull final Object payload,
+      @Nonnull final List<Header> customHeaders) {
     try {
       final var json = JACKSON.writeValueAsString(payload);
       request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+      customHeaders.forEach(h -> request.addHeader(h.getName(), h.getValue()));
     } catch (final JsonProcessingException e) {
       throw new OpenAiClientException("Failed to serialize request parameters", e)
           .setHttpRequest(request);

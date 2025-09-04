@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.badRequest;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
@@ -166,6 +167,33 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .hasMessage(
             "Request failed with status 500 (Server Error): Internal Server Error located in Masking Module - Masking");
+  }
+
+  @Test
+  void testCustomHeaders() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var clientWithHeader = client.withHeader("Header-For-Both", "value");
+    final var result = clientWithHeader.withHeader("foo", "bar").chatCompletion(prompt, config);
+    assertThat(result).isNotNull();
+
+    var streamResult =
+        clientWithHeader.withHeader("foot", "baz").streamChatCompletion(prompt, config);
+    assertThat(streamResult).isNotNull();
+
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foo", equalTo("bar")));
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foot", equalTo("baz")));
   }
 
   @Test
