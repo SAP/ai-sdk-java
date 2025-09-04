@@ -15,18 +15,22 @@ import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import io.vavr.control.Try;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 /** Client to execute requests to the orchestration service. */
 @Slf4j
+@RequiredArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class OrchestrationClient {
   private static final String DEFAULT_SCENARIO = "orchestration";
   private static final String COMPLETION_ENDPOINT = "/v2/completion";
@@ -34,6 +38,7 @@ public class OrchestrationClient {
   static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
   private final OrchestrationHttpExecutor executor;
+  private final List<Header> customHeaders = new ArrayList<>();
 
   /** Default constructor. */
   public OrchestrationClient() {
@@ -156,7 +161,8 @@ public class OrchestrationClient {
   @Nonnull
   public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
-    return executor.execute(COMPLETION_ENDPOINT, request, CompletionPostResponse.class);
+    return executor.execute(
+        COMPLETION_ENDPOINT, request, CompletionPostResponse.class, customHeaders);
   }
 
   /**
@@ -198,7 +204,8 @@ public class OrchestrationClient {
     requestJson.set("orchestration_config", moduleConfigJson);
 
     return new OrchestrationChatResponse(
-        executor.execute(COMPLETION_ENDPOINT, requestJson, CompletionPostResponse.class));
+        executor.execute(
+            COMPLETION_ENDPOINT, requestJson, CompletionPostResponse.class, customHeaders));
   }
 
   /**
@@ -214,7 +221,7 @@ public class OrchestrationClient {
       @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
     request.getConfig().setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
 
-    return executor.stream(COMPLETION_ENDPOINT, request);
+    return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
   }
 
   /**
@@ -247,6 +254,24 @@ public class OrchestrationClient {
   @Nonnull
   public EmbeddingsPostResponse embed(@Nonnull final EmbeddingsPostRequest request)
       throws OrchestrationClientException {
-    return executor.execute("/v2/embeddings", request, EmbeddingsPostResponse.class);
+    return executor.execute("/v2/embeddings", request, EmbeddingsPostResponse.class, customHeaders);
+  }
+
+  /**
+   * Create a new orchestration client with a custom header added to every call made with this
+   * client
+   *
+   * @param key the key of the custom header to add
+   * @param value the value of the custom header to add
+   * @return a new client.
+   * @since 1.11.0
+   */
+  @Beta
+  @Nonnull
+  public OrchestrationClient withHeader(@Nonnull final String key, @Nonnull final String value) {
+    final var newClient = new OrchestrationClient(this.executor);
+    newClient.customHeaders.addAll(this.customHeaders);
+    newClient.customHeaders.add(new Header(key, value));
+    return newClient;
   }
 }

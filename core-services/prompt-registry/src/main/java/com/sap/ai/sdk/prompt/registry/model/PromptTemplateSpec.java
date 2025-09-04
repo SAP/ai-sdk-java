@@ -32,7 +32,7 @@ public class PromptTemplateSpec
 // CHECKSTYLE:ON
 {
   @JsonProperty("template")
-  private List<Template> template = new ArrayList<>();
+  private List<PromptTemplate> template = new ArrayList<>();
 
   @JsonProperty("defaults")
   private Object defaults;
@@ -59,7 +59,7 @@ public class PromptTemplateSpec
    * @return The same instance of this {@link PromptTemplateSpec} class
    */
   @Nonnull
-  public PromptTemplateSpec template(@Nonnull final List<Template> template) {
+  public PromptTemplateSpec template(@Nonnull final List<PromptTemplate> template) {
     this.template = template;
     return this;
   }
@@ -71,7 +71,7 @@ public class PromptTemplateSpec
    * @return The same instance of type {@link PromptTemplateSpec}
    */
   @Nonnull
-  public PromptTemplateSpec addTemplateItem(@Nonnull final Template templateItem) {
+  public PromptTemplateSpec addTemplateItem(@Nonnull final PromptTemplate templateItem) {
     if (this.template == null) {
       this.template = new ArrayList<>();
     }
@@ -85,7 +85,7 @@ public class PromptTemplateSpec
    * @return template The template of this {@link PromptTemplateSpec} instance.
    */
   @Nonnull
-  public List<Template> getTemplate() {
+  public List<PromptTemplate> getTemplate() {
     return template;
   }
 
@@ -94,7 +94,7 @@ public class PromptTemplateSpec
    *
    * @param template The template of this {@link PromptTemplateSpec}
    */
-  public void setTemplate(@Nonnull final List<Template> template) {
+  public void setTemplate(@Nonnull final List<PromptTemplate> template) {
     this.template = template;
   }
 
@@ -369,7 +369,7 @@ public class PromptTemplateSpec
      * @param template The template of this {@link PromptTemplateSpec}
      * @return The PromptTemplateSpec instance.
      */
-    PromptTemplateSpec template(@Nonnull final List<Template> template);
+    PromptTemplateSpec template(@Nonnull final List<PromptTemplate> template);
 
     /**
      * Set the template of this {@link PromptTemplateSpec} instance.
@@ -377,7 +377,7 @@ public class PromptTemplateSpec
      * @param template The template of this {@link PromptTemplateSpec}
      * @return The PromptTemplateSpec instance.
      */
-    default PromptTemplateSpec template(@Nonnull final Template... template) {
+    default PromptTemplateSpec template(@Nonnull final PromptTemplate... template) {
       return template(Arrays.asList(template));
     }
   }
