@@ -1,8 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest.TokenType.DOCUMENT;
-import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest.TokenType.QUERY;
-import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest.TokenType.TEXT;
+import static lombok.AccessLevel.NONE;
 import static lombok.AccessLevel.PRIVATE;
 
 import com.google.common.annotations.Beta;
@@ -19,7 +17,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.With;
 import lombok.experimental.Tolerate;
@@ -47,8 +44,9 @@ public class OrchestrationEmbeddingRequest {
 
   /** Optional token type classification to optimize embedding generation. */
   @With(value = PRIVATE)
+  @Getter(NONE)
   @Nullable
-  TokenType tokenType;
+  EmbeddingsInput.TypeEnum tokenType;
 
   /**
    * Create an embedding request using fluent API starting with model selection.
@@ -113,7 +111,7 @@ public class OrchestrationEmbeddingRequest {
    */
   @Nonnull
   public OrchestrationEmbeddingRequest asDocument() {
-    return withTokenType(DOCUMENT);
+    return withTokenType(EmbeddingsInput.TypeEnum.DOCUMENT);
   }
 
   /**
@@ -123,7 +121,7 @@ public class OrchestrationEmbeddingRequest {
    */
   @Nonnull
   public OrchestrationEmbeddingRequest asText() {
-    return withTokenType(TEXT);
+    return withTokenType(EmbeddingsInput.TypeEnum.TEXT);
   }
 
   /**
@@ -133,44 +131,24 @@ public class OrchestrationEmbeddingRequest {
    */
   @Nonnull
   public OrchestrationEmbeddingRequest asQuery() {
-    return withTokenType(QUERY);
+    return withTokenType(EmbeddingsInput.TypeEnum.QUERY);
   }
 
   @Nonnull
   EmbeddingsPostRequest createEmbeddingsPostRequest() {
 
-    final var input = EmbeddingsInput.create().text(EmbeddingsInputText.create(tokens));
+    final var input =
+        EmbeddingsInput.create().text(EmbeddingsInputText.create(tokens)).type(tokenType);
     final var embeddingsModelConfig =
         EmbeddingsModelConfig.create().model(model.createEmbeddingsModelDetails());
     final var modules =
         EmbeddingsOrchestrationConfig.create()
             .modules(EmbeddingsModuleConfigs.create().embeddings(embeddingsModelConfig));
 
-    if (tokenType != null) {
-      input.setType(EmbeddingsInput.TypeEnum.fromValue(tokenType.getValue()));
-    }
     if (masking != null) {
       final var dpiConfigs = masking.stream().map(MaskingProvider::createConfig).toList();
       modules.getModules().setMasking(MaskingModuleConfigProviders.create().providers(dpiConfigs));
     }
     return EmbeddingsPostRequest.create().config(modules).input(input);
-  }
-
-  /**
-   * Token type classification for optimizing embedding generation.
-   *
-   * <p>Token types may influence how the embedding model processes and represents the input text.
-   */
-  @Getter
-  @RequiredArgsConstructor
-  public enum TokenType {
-    /** For document content. */
-    DOCUMENT("document"),
-    /** For general text (default). */
-    TEXT("text"),
-    /** For search queries. */
-    QUERY("query");
-
-    private final String value;
   }
 }

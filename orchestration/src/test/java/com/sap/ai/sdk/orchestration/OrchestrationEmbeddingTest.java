@@ -123,9 +123,9 @@ class OrchestrationEmbeddingTest {
     assertThat(response.getOriginalResponse().getIntermediateResults().getInputMasking().getData())
         .isEqualTo(
             Map.of("masked_input", List.of("Hi SAP Orchestration Service", "I am MASKED_PERSON")));
+
     final var finalResult = response.getOriginalResponse().getFinalResult();
     assertThat(finalResult.getModel()).isEqualTo("text-embedding-3-small");
-
     assertThat(finalResult.getUsage().getPromptTokens()).isEqualTo(11);
     assertThat(finalResult.getUsage().getTotalTokens()).isEqualTo(11);
     assertThat(finalResult.getObject()).isEqualTo(LIST);
@@ -137,6 +137,16 @@ class OrchestrationEmbeddingTest {
               assertThat(embeddingData.getEmbedding()).isNotNull();
               assertThat(embeddingData.getIndex()).isIn(0, 1);
             });
+
+    final var moduleResults = response.getOriginalResponse().getIntermediateResults();
+    assertThat(moduleResults).isNotNull();
+    assertThat(moduleResults.getInputMasking()).isNotNull();
+    assertThat(moduleResults.getInputMasking().getMessage())
+        .isEqualTo("Embedding input is masked successfully.");
+    assertThat(moduleResults.getInputMasking().getData()).isNotNull();
+    assertThat(moduleResults.getInputMasking().getData())
+        .isEqualTo(
+            Map.of("masked_input", List.of("Hi SAP Orchestration Service", "I am MASKED_PERSON")));
 
     try (var inputStream = fileLoader.apply("embeddingRequest.json")) {
       var requestJson = new String(inputStream.readAllBytes());
