@@ -46,7 +46,7 @@ public class OrchestrationEmbeddingModel implements AiModel {
 
   /** Amazon Titan Embed Text model */
   public static final OrchestrationEmbeddingModel AMAZON_TITAN_EMBED_TEXT =
-      new OrchestrationEmbeddingModel("amazon.titan-embed-text");
+      new OrchestrationEmbeddingModel("amazon--titan-embed-text");
 
   /** NVIDIA LLaMA 3.2 7B NV EmbedQA model */
   public static final OrchestrationEmbeddingModel NVIDIA_LLAMA_32_NV_EMBEDQA_1B =
