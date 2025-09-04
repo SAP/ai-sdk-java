@@ -6,7 +6,9 @@
           "name": "text-embedding-3-small",
           "params": {
             "encoding_format": "float"
-          }
+          },
+          "timeout": 600,
+          "max_retries": 2
         }
       },
       "masking": {
