@@ -1104,4 +1104,4 @@ components:
       required: false
       schema:
         type: string
-        enum: [ "true", "True", "false", "False" ]
+        enum: ["true", "True", "false", "False"]
