@@ -21,6 +21,7 @@ paths:
         - prompt templates
       parameters:
         - $ref: "#/components/parameters/ai-resource-group"
+        - $ref: "#/components/parameters/ai-resource-group-scope"
       requestBody:
         required: true
         content:
@@ -48,6 +49,7 @@ paths:
         - prompt templates
       parameters:
         - $ref: "#/components/parameters/ai-resource-group"
+        - $ref: "#/components/parameters/ai-resource-group-scope"
         - name: scenario
           in: query
           schema:
@@ -92,6 +94,7 @@ paths:
         - prompt templates
       parameters:
         - $ref: "#/components/parameters/ai-resource-group"
+        - $ref: "#/components/parameters/ai-resource-group-scope"
         - name: scenario
           in: path
           required: true
@@ -129,6 +132,7 @@ paths:
         - prompt templates
       parameters:
         - $ref: "#/components/parameters/ai-resource-group"
+        - $ref: "#/components/parameters/ai-resource-group-scope"
         - name: promptTemplateId
           in: path
           required: true
@@ -156,6 +160,7 @@ paths:
         - prompt templates
       parameters:
         - $ref: "#/components/parameters/ai-resource-group"
+        - $ref: "#/components/parameters/ai-resource-group-scope"
         - name: promptTemplateId
           in: path
           required: true
@@ -184,6 +189,7 @@ paths:
         - prompt templates
       parameters:
         - $ref: "#/components/parameters/ai-resource-group"
+        - $ref: "#/components/parameters/ai-resource-group-scope"
       requestBody:
         content:
           multipart/form-data:
@@ -213,6 +219,7 @@ paths:
         - prompt templates
       parameters:
         - $ref: "#/components/parameters/ai-resource-group"
+        - $ref: "#/components/parameters/ai-resource-group-scope"
         - name: promptTemplateId
           in: path
           required: true
@@ -240,6 +247,7 @@ paths:
         - prompt templates
       parameters:
         - $ref: "#/components/parameters/ai-resource-group"
+        - $ref: "#/components/parameters/ai-resource-group-scope"
         - name: promptTemplateId
           in: path
           required: true
@@ -278,6 +286,7 @@ paths:
         - prompt templates
       parameters:
         - $ref: "#/components/parameters/ai-resource-group"
+        - $ref: "#/components/parameters/ai-resource-group-scope"
         - name: scenario
           in: path
           required: true
@@ -316,7 +325,7 @@ paths:
           $ref: "#/components/responses/ForbiddenError"
         default:
           $ref: "#/components/responses/CommonError"
-  /lm/orchestrationConfigs:
+  /registry/v2/orchestrationConfigs:
     post:
       operationId: registry.controller.orchestration_config_controller.create_update_orchestration_config
       x-sap-cloud-sdk-operation-name: createUpdateOrchestrationConfig
@@ -400,7 +409,7 @@ paths:
           $ref: "#/components/responses/ForbiddenError"
         default:
           $ref: "#/components/responses/CommonError"
-  /lm/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/models/{model_name}/history:
+  /registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/models/{model_name}/history:
     get:
       operationId: registry.controller.orchestration_config_controller.list_orchestration_config_history
       x-sap-cloud-sdk-operation-name: listOrchestrationConfigHistory
@@ -452,7 +461,7 @@ paths:
           $ref: "#/components/responses/ForbiddenError"
         default:
           $ref: "#/components/responses/CommonError"
-  /lm/orchestrationConfigs/{orchestrationConfigId}:
+  /registry/v2/orchestrationConfigs/{orchestrationConfigId}:
     get:
       operationId: registry.controller.orchestration_config_controller.get_orchestration_config_by_uuid
       x-sap-cloud-sdk-operation-name: getOrchestrationConfigByUuid
@@ -512,7 +521,7 @@ paths:
           $ref: "#/components/responses/ForbiddenError"
         default:
           $ref: "#/components/responses/CommonError"
-  /lm/orchestrationConfigs/import:
+  /registry/v2/orchestrationConfigs/import:
     post:
       operationId: registry.controller.orchestration_config_controller.import_orchestration_config
       x-sap-cloud-sdk-operation-name: importOrchestrationConfig
@@ -541,7 +550,7 @@ paths:
           $ref: "#/components/responses/BadRequest"
         default:
           $ref: "#/components/responses/CommonError"
-  /lm/orchestrationConfigs/{orchestrationConfigId}/export:
+  /registry/v2/orchestrationConfigs/{orchestrationConfigId}/export:
     get:
       operationId: registry.controller.orchestration_config_controller.export_orchestration_config
       x-sap-cloud-sdk-operation-name: exportOrchestrationConfig
@@ -818,6 +827,7 @@ components:
           type: string
           maxLength: 120
           pattern: "^[a-zA-Z0-9_-]+$"
+        # spec contains the specification of the prompt template being written to the registry
         spec:
           $ref: "#/components/schemas/PromptTemplateSpec"
     PromptTemplatePostResponse:
@@ -861,6 +871,7 @@ components:
           type: boolean
         resourceGroupId:
           type: string
+        # spec contains the specification of the prompt template being written to the registry
         spec:
           $ref: "#/components/schemas/PromptTemplateSpec"
     PromptTemplateListResponse:
@@ -898,6 +909,7 @@ components:
               type: string
             scenario:
               type: string
+        # spec contains the specification of the prompt template being written to the registry
         spec:
           $ref: "#/components/schemas/PromptTemplateSpec"
     PromptTemplateSubstitutionRequest:
@@ -945,6 +957,7 @@ components:
           type: boolean
         resource_group_id:
           type: string
+        # spec contains the specification of the orchestration config being written to the registry
         spec:
           $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
     OrchestrationConfigListResponse:
@@ -980,6 +993,7 @@ components:
           type: string
           maxLength: 120
           pattern: "^[a-zA-Z0-9_-]+$"
+        # spec contains the specification of the orchestration config being written to the registry
         spec:
           $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
     OrchestrationConfigPostResponse:
@@ -1028,6 +1042,7 @@ components:
           type: boolean
         resource_group_id:
           type: string
+        # spec contains the specification of the orchestration config being written to the registry
         spec:
           $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
     OrchestrationConfigDeleteResponse:
@@ -1053,6 +1068,7 @@ components:
               type: string
             scenario:
               type: string
+        # spec contains the specification of the orchestration config being written to the registry
         spec:
           $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
   responses:
@@ -1088,3 +1104,11 @@ components:
       required: false
       schema:
         type: string
+    ai-resource-group-scope:
+      name: AI-Resource-Group-Scope
+      in: header
+      description: Specify whether the resource group scope is to be used
+      required: false
+      schema:
+        type: string
+        enum: ["true", "True", "false", "False"]

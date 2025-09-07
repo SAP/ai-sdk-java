@@ -68,13 +68,15 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    * @param promptTemplatePostRequest (required) The value for the parameter
    *     promptTemplatePostRequest
    * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @return PromptTemplatePostResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public PromptTemplatePostResponse createUpdatePromptTemplate(
       @Nonnull final PromptTemplatePostRequest promptTemplatePostRequest,
-      @Nullable final String aiResourceGroup)
+      @Nullable final String aiResourceGroup,
+      @Nullable final String aiResourceGroupScope)
       throws OpenApiRequestException {
     final Object localVarPostBody = promptTemplatePostRequest;
 
@@ -95,6 +97,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    if (aiResourceGroupScope != null)
+      localVarHeaderParams.add(
+          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -137,7 +142,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   public PromptTemplatePostResponse createUpdatePromptTemplate(
       @Nonnull final PromptTemplatePostRequest promptTemplatePostRequest)
       throws OpenApiRequestException {
-    return createUpdatePromptTemplate(promptTemplatePostRequest, null);
+    return createUpdatePromptTemplate(promptTemplatePostRequest, null, null);
   }
 
   /**
@@ -153,12 +158,15 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * @param promptTemplateId (required) The value for the parameter promptTemplateId
    * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @return PromptTemplateDeleteResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public PromptTemplateDeleteResponse deletePromptTemplate(
-      @Nonnull final UUID promptTemplateId, @Nullable final String aiResourceGroup)
+      @Nonnull final UUID promptTemplateId,
+      @Nullable final String aiResourceGroup,
+      @Nullable final String aiResourceGroupScope)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -184,6 +192,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    if (aiResourceGroupScope != null)
+      localVarHeaderParams.add(
+          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -225,7 +236,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   @Nonnull
   public PromptTemplateDeleteResponse deletePromptTemplate(@Nonnull final UUID promptTemplateId)
       throws OpenApiRequestException {
-    return deletePromptTemplate(promptTemplateId, null);
+    return deletePromptTemplate(promptTemplateId, null, null);
   }
 
   /**
@@ -239,12 +250,15 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * @param promptTemplateId (required) The value for the parameter promptTemplateId
    * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @return File
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public File exportPromptTemplate(
-      @Nonnull final UUID promptTemplateId, @Nullable final String aiResourceGroup)
+      @Nonnull final UUID promptTemplateId,
+      @Nullable final String aiResourceGroup,
+      @Nullable final String aiResourceGroupScope)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -270,6 +284,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    if (aiResourceGroupScope != null)
+      localVarHeaderParams.add(
+          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/octet-stream", "application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -309,7 +326,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   @Nonnull
   public File exportPromptTemplate(@Nonnull final UUID promptTemplateId)
       throws OpenApiRequestException {
-    return exportPromptTemplate(promptTemplateId, null);
+    return exportPromptTemplate(promptTemplateId, null, null);
   }
 
   /**
@@ -325,12 +342,15 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * @param promptTemplateId (required) The value for the parameter promptTemplateId
    * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @return PromptTemplateGetResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public PromptTemplateGetResponse getPromptTemplateByUuid(
-      @Nonnull final UUID promptTemplateId, @Nullable final String aiResourceGroup)
+      @Nonnull final UUID promptTemplateId,
+      @Nullable final String aiResourceGroup,
+      @Nullable final String aiResourceGroupScope)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -356,6 +376,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    if (aiResourceGroupScope != null)
+      localVarHeaderParams.add(
+          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -397,7 +420,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   @Nonnull
   public PromptTemplateGetResponse getPromptTemplateByUuid(@Nonnull final UUID promptTemplateId)
       throws OpenApiRequestException {
-    return getPromptTemplateByUuid(promptTemplateId, null);
+    return getPromptTemplateByUuid(promptTemplateId, null, null);
   }
 
   /**
@@ -410,13 +433,16 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    * <p><b>0</b> - Common Error
    *
    * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @param _file (optional) The value for the parameter _file
    * @return PromptTemplatePostResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public PromptTemplatePostResponse importPromptTemplate(
-      @Nullable final String aiResourceGroup, @Nullable final File _file)
+      @Nullable final String aiResourceGroup,
+      @Nullable final String aiResourceGroupScope,
+      @Nullable final File _file)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -431,6 +457,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    if (aiResourceGroupScope != null)
+      localVarHeaderParams.add(
+          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
 
     if (_file != null) localVarFormParams.add("file", new FileSystemResource(_file));
 
@@ -470,7 +499,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    */
   @Nonnull
   public PromptTemplatePostResponse importPromptTemplate() throws OpenApiRequestException {
-    return importPromptTemplate(null, null);
+    return importPromptTemplate(null, null, null);
   }
 
   /**
@@ -488,6 +517,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    * @param version (required) The value for the parameter version
    * @param name (required) The value for the parameter name
    * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @return PromptTemplateListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -496,7 +526,8 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
       @Nonnull final String scenario,
       @Nonnull final String version,
       @Nonnull final String name,
-      @Nullable final String aiResourceGroup)
+      @Nullable final String aiResourceGroup,
+      @Nullable final String aiResourceGroupScope)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -537,6 +568,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    if (aiResourceGroupScope != null)
+      localVarHeaderParams.add(
+          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -581,7 +615,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   public PromptTemplateListResponse listPromptTemplateHistory(
       @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
       throws OpenApiRequestException {
-    return listPromptTemplateHistory(scenario, version, name, null);
+    return listPromptTemplateHistory(scenario, version, name, null, null);
   }
 
   /**
@@ -596,6 +630,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    * <p><b>0</b> - Common Error
    *
    * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @param scenario (optional) The value for the parameter scenario
    * @param name (optional) The value for the parameter name
    * @param version (optional) The value for the parameter version
@@ -607,6 +642,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   @Nonnull
   public PromptTemplateListResponse listPromptTemplates(
       @Nullable final String aiResourceGroup,
+      @Nullable final String aiResourceGroupScope,
       @Nullable final String scenario,
       @Nullable final String name,
       @Nullable final String version,
@@ -633,6 +669,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    if (aiResourceGroupScope != null)
+      localVarHeaderParams.add(
+          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -672,7 +711,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    */
   @Nonnull
   public PromptTemplateListResponse listPromptTemplates() throws OpenApiRequestException {
-    return listPromptTemplates(null, null, null, null, null, null);
+    return listPromptTemplates(null, null, null, null, null, null, null);
   }
 
   /**
@@ -688,6 +727,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * @param promptTemplateId (required) The value for the parameter promptTemplateId
    * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @param metadata (optional, default to false) The value for the parameter metadata
    * @param promptTemplateSubstitutionRequest (optional) The value for the parameter
    *     promptTemplateSubstitutionRequest
@@ -698,6 +738,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   public PromptTemplateSubstitutionResponse parsePromptTemplateById(
       @Nonnull final UUID promptTemplateId,
       @Nullable final String aiResourceGroup,
+      @Nullable final String aiResourceGroupScope,
       @Nullable final Boolean metadata,
       @Nullable final PromptTemplateSubstitutionRequest promptTemplateSubstitutionRequest)
       throws OpenApiRequestException {
@@ -727,6 +768,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    if (aiResourceGroupScope != null)
+      localVarHeaderParams.add(
+          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -768,7 +812,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   @Nonnull
   public PromptTemplateSubstitutionResponse parsePromptTemplateById(
       @Nonnull final UUID promptTemplateId) throws OpenApiRequestException {
-    return parsePromptTemplateById(promptTemplateId, null, null, null);
+    return parsePromptTemplateById(promptTemplateId, null, null, null, null);
   }
 
   /**
@@ -786,6 +830,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    * @param version (required) The value for the parameter version
    * @param name (required) The value for the parameter name
    * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @param metadata (optional, default to false) The value for the parameter metadata
    * @param promptTemplateSubstitutionRequest (optional) The value for the parameter
    *     promptTemplateSubstitutionRequest
@@ -798,6 +843,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
       @Nonnull final String version,
       @Nonnull final String name,
       @Nullable final String aiResourceGroup,
+      @Nullable final String aiResourceGroupScope,
       @Nullable final Boolean metadata,
       @Nullable final PromptTemplateSubstitutionRequest promptTemplateSubstitutionRequest)
       throws OpenApiRequestException {
@@ -842,6 +888,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    if (aiResourceGroupScope != null)
+      localVarHeaderParams.add(
+          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -886,6 +935,6 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   public PromptTemplateSubstitutionResponse parsePromptTemplateByNameVersion(
       @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
       throws OpenApiRequestException {
-    return parsePromptTemplateByNameVersion(scenario, version, name, null, null, null);
+    return parsePromptTemplateByNameVersion(scenario, version, name, null, null, null, null);
   }
 }

@@ -83,7 +83,7 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
     }
 
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/orchestrationConfigs").build().toUriString();
+        UriComponentsBuilder.fromPath("/registry/v2/orchestrationConfigs").build().toUriString();
 
     final MultiValueMap<String, String> localVarQueryParams =
         new LinkedMultiValueMap<String, String>();
@@ -171,7 +171,7 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
     final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
     localVarPathParams.put("orchestrationConfigId", orchestrationConfigId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/orchestrationConfigs/{orchestrationConfigId}")
+        UriComponentsBuilder.fromPath("/registry/v2/orchestrationConfigs/{orchestrationConfigId}")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
@@ -257,7 +257,8 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
     final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
     localVarPathParams.put("orchestrationConfigId", orchestrationConfigId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/orchestrationConfigs/{orchestrationConfigId}/export")
+        UriComponentsBuilder.fromPath(
+                "/registry/v2/orchestrationConfigs/{orchestrationConfigId}/export")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
@@ -347,7 +348,7 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
     final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
     localVarPathParams.put("orchestrationConfigId", orchestrationConfigId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/orchestrationConfigs/{orchestrationConfigId}")
+        UriComponentsBuilder.fromPath("/registry/v2/orchestrationConfigs/{orchestrationConfigId}")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
@@ -427,7 +428,9 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
     final Object localVarPostBody = null;
 
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/orchestrationConfigs/import").build().toUriString();
+        UriComponentsBuilder.fromPath("/registry/v2/orchestrationConfigs/import")
+            .build()
+            .toUriString();
 
     final MultiValueMap<String, String> localVarQueryParams =
         new LinkedMultiValueMap<String, String>();
@@ -546,7 +549,7 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
     localVarPathParams.put("model_name", modelName);
     final String localVarPath =
         UriComponentsBuilder.fromPath(
-                "/lm/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/models/{model_name}/history")
+                "/registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/models/{model_name}/history")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
@@ -651,7 +654,7 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
     final Object localVarPostBody = null;
 
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/orchestrationConfigs").build().toUriString();
+        UriComponentsBuilder.fromPath("/registry/v2/orchestrationConfigs").build().toUriString();
 
     final MultiValueMap<String, String> localVarQueryParams =
         new LinkedMultiValueMap<String, String>();
