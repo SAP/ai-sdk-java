@@ -827,6 +827,7 @@ components:
           type: string
           maxLength: 120
           pattern: "^[a-zA-Z0-9_-]+$"
+        # spec contains the specification of the prompt template being written to the registry
         spec:
           $ref: "#/components/schemas/PromptTemplateSpec"
     PromptTemplatePostResponse:
@@ -870,6 +871,7 @@ components:
           type: boolean
         resourceGroupId:
           type: string
+        # spec contains the specification of the prompt template being written to the registry
         spec:
           $ref: "#/components/schemas/PromptTemplateSpec"
     PromptTemplateListResponse:
@@ -907,6 +909,7 @@ components:
               type: string
             scenario:
               type: string
+        # spec contains the specification of the prompt template being written to the registry
         spec:
           $ref: "#/components/schemas/PromptTemplateSpec"
     PromptTemplateSubstitutionRequest:
@@ -954,6 +957,7 @@ components:
           type: boolean
         resource_group_id:
           type: string
+        # spec contains the specification of the orchestration config being written to the registry
         spec:
           $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
     OrchestrationConfigListResponse:
@@ -989,6 +993,7 @@ components:
           type: string
           maxLength: 120
           pattern: "^[a-zA-Z0-9_-]+$"
+        # spec contains the specification of the orchestration config being written to the registry
         spec:
           $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
     OrchestrationConfigPostResponse:
@@ -1037,6 +1042,7 @@ components:
           type: boolean
         resource_group_id:
           type: string
+        # spec contains the specification of the orchestration config being written to the registry
         spec:
           $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
     OrchestrationConfigDeleteResponse:
@@ -1062,6 +1068,7 @@ components:
               type: string
             scenario:
               type: string
+        # spec contains the specification of the orchestration config being written to the registry
         spec:
           $ref: "llm-orchestration/src/spec/v2.yaml#/components/schemas/OrchestrationConfig"
   responses:
