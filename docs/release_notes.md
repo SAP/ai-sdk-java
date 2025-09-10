@@ -8,7 +8,11 @@
 
 ### 🔧 Compatibility Notes
 
-- [Prompt Registry] `Template` has been renamed to `PromptTemplate`.
+- [Prompt Registry] breaking changes:
+  - `Template` has been renamed to `PromptTemplate`.
+  - Some endpoints have a new parameter `String aiResourceGroupScope` which can be set to `null`.
+
+  For more details please refer to the [sample code](https://github.com/SAP/ai-sdk-java/blob/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java).
 
 ### ✨ New Functionality
 

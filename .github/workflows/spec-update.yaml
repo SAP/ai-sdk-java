@@ -87,7 +87,7 @@ jobs:
               FILE_PATH='orchestration/src/main/resources/spec/orchestration.yaml'
               ;;
             prompt-registry)
-              API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/prompt-registry.yaml?ref=$REF"
+              API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml?ref=$REF"
               FILE_PATH='core-services/prompt-registry/src/main/resources/spec/prompt-registry.yaml'
               ;;
           esac

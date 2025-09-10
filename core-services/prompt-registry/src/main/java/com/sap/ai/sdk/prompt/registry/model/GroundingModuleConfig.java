@@ -25,18 +25,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseFormatJsonObject */
+/** GroundingModuleConfig */
 // CHECKSTYLE:OFF
-public class ResponseFormatJsonObject
-    implements PromptTemplateSpecResponseFormat, TemplateResponseFormat
+public class GroundingModuleConfig
 // CHECKSTYLE:ON
 {
-  /** The type of response format being defined: &#x60;json_object&#x60; */
+  /** Gets or Sets type */
   public enum TypeEnum {
-    /** The JSON_OBJECT option of this ResponseFormatJsonObject */
-    JSON_OBJECT("json_object"),
+    /** The DOCUMENT_GROUNDING_SERVICE option of this GroundingModuleConfig */
+    DOCUMENT_GROUNDING_SERVICE("document_grounding_service"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatJsonObject */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this GroundingModuleConfig */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -71,62 +70,96 @@ public class ResponseFormatJsonObject
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ResponseFormatJsonObject
+     * @return The enum value of type GroundingModuleConfig
      */
     @JsonCreator
-    @Nonnull
+    @Nullable
     public static TypeEnum fromValue(@Nonnull final String value) {
       for (TypeEnum b : TypeEnum.values()) {
         if (b.value.equals(value)) {
           return b;
         }
       }
-      return UNKNOWN_DEFAULT_OPEN_API;
+      return null;
     }
   }
 
   @JsonProperty("type")
   private TypeEnum type;
 
+  @JsonProperty("config")
+  private GroundingModuleConfigConfig config;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseFormatJsonObject. */
-  protected ResponseFormatJsonObject() {}
+  /** Default constructor for GroundingModuleConfig. */
+  protected GroundingModuleConfig() {}
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance and return the same instance.
+   * Set the type of this {@link GroundingModuleConfig} instance and return the same instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
-   * @return The same instance of this {@link ResponseFormatJsonObject} class
+   * @param type The type of this {@link GroundingModuleConfig}
+   * @return The same instance of this {@link GroundingModuleConfig} class
    */
   @Nonnull
-  public ResponseFormatJsonObject type(@Nonnull final TypeEnum type) {
+  public GroundingModuleConfig type(@Nullable final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * The type of response format being defined: &#x60;json_object&#x60;
+   * Get type
    *
-   * @return type The type of this {@link ResponseFormatJsonObject} instance.
+   * @return type The type of this {@link GroundingModuleConfig} instance.
    */
-  @Nonnull
+  @Nullable
   public TypeEnum getType() {
     return type;
   }
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance.
+   * Set the type of this {@link GroundingModuleConfig} instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
+   * @param type The type of this {@link GroundingModuleConfig}
    */
-  public void setType(@Nonnull final TypeEnum type) {
+  public void setType(@Nullable final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseFormatJsonObject}.
+   * Set the config of this {@link GroundingModuleConfig} instance and return the same instance.
+   *
+   * @param config The config of this {@link GroundingModuleConfig}
+   * @return The same instance of this {@link GroundingModuleConfig} class
+   */
+  @Nonnull
+  public GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config) {
+    this.config = config;
+    return this;
+  }
+
+  /**
+   * Get config
+   *
+   * @return config The config of this {@link GroundingModuleConfig} instance.
+   */
+  @Nonnull
+  public GroundingModuleConfigConfig getConfig() {
+    return config;
+  }
+
+  /**
+   * Set the config of this {@link GroundingModuleConfig} instance.
+   *
+   * @param config The config of this {@link GroundingModuleConfig}
+   */
+  public void setConfig(@Nonnull final GroundingModuleConfigConfig config) {
+    this.config = config;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link GroundingModuleConfig}.
    *
    * @return The set of properties names
    */
@@ -137,7 +170,7 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseFormatJsonObject} instance.
+   * Get the value of an unrecognizable property of this {@link GroundingModuleConfig} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -149,13 +182,13 @@ public class ResponseFormatJsonObject
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ResponseFormatJsonObject has no field with name '" + name + "'.");
+          "GroundingModuleConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseFormatJsonObject} instance including
+   * Get the value of all properties of this {@link GroundingModuleConfig} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -165,11 +198,12 @@ public class ResponseFormatJsonObject
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
+    if (config != null) declaredFields.put("config", config);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseFormatJsonObject} instance. If the map
+   * Set an unrecognizable property of this {@link GroundingModuleConfig} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -188,22 +222,24 @@ public class ResponseFormatJsonObject
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseFormatJsonObject responseFormatJsonObject = (ResponseFormatJsonObject) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseFormatJsonObject.cloudSdkCustomFields)
-        && Objects.equals(this.type, responseFormatJsonObject.type);
+    final GroundingModuleConfig groundingModuleConfig = (GroundingModuleConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, groundingModuleConfig.cloudSdkCustomFields)
+        && Objects.equals(this.type, groundingModuleConfig.type)
+        && Objects.equals(this.config, groundingModuleConfig.config);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, cloudSdkCustomFields);
+    return Objects.hash(type, config, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseFormatJsonObject {\n");
+    sb.append("class GroundingModuleConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -222,21 +258,32 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * ResponseFormatJsonObject} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link GroundingModuleConfig}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new ResponseFormatJsonObject().type(type);
+    return (type) -> (config) -> new GroundingModuleConfig().type(type).config(config);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ResponseFormatJsonObject} instance.
+     * Set the type of this {@link GroundingModuleConfig} instance.
      *
-     * @param type The type of response format being defined: &#x60;json_object&#x60;
-     * @return The ResponseFormatJsonObject instance.
+     * @param type The type of this {@link GroundingModuleConfig}
+     * @return The GroundingModuleConfig builder.
      */
-    ResponseFormatJsonObject type(@Nonnull final TypeEnum type);
+    Builder1 type(@Nullable final TypeEnum type);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the config of this {@link GroundingModuleConfig} instance.
+     *
+     * @param config The config of this {@link GroundingModuleConfig}
+     * @return The GroundingModuleConfig instance.
+     */
+    GroundingModuleConfig config(@Nonnull final GroundingModuleConfigConfig config);
   }
 }

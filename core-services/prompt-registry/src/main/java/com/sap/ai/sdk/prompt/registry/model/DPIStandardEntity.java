@@ -13,10 +13,8 @@ package com.sap.ai.sdk.prompt.registry.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -25,107 +23,90 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseFormatText */
+/** DPIStandardEntity */
 // CHECKSTYLE:OFF
-public class ResponseFormatText implements PromptTemplateSpecResponseFormat, TemplateResponseFormat
+public class DPIStandardEntity implements DPIEntityConfig
 // CHECKSTYLE:ON
 {
-  /** The type of response format being defined: &#x60;text&#x60; */
-  public enum TypeEnum {
-    /** The TEXT option of this ResponseFormatText */
-    TEXT("text"),
-
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatText */
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type ResponseFormatText
-     */
-    @JsonCreator
-    @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      return UNKNOWN_DEFAULT_OPEN_API;
-    }
-  }
-
   @JsonProperty("type")
-  private TypeEnum type;
+  private DPIEntities type;
+
+  @JsonProperty("replacement_strategy")
+  private DPIStandardEntityReplacementStrategy replacementStrategy;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseFormatText. */
-  protected ResponseFormatText() {}
+  /** Default constructor for DPIStandardEntity. */
+  protected DPIStandardEntity() {}
 
   /**
-   * Set the type of this {@link ResponseFormatText} instance and return the same instance.
+   * Set the type of this {@link DPIStandardEntity} instance and return the same instance.
    *
-   * @param type The type of response format being defined: &#x60;text&#x60;
-   * @return The same instance of this {@link ResponseFormatText} class
+   * @param type The type of this {@link DPIStandardEntity}
+   * @return The same instance of this {@link DPIStandardEntity} class
    */
   @Nonnull
-  public ResponseFormatText type(@Nonnull final TypeEnum type) {
+  public DPIStandardEntity type(@Nonnull final DPIEntities type) {
     this.type = type;
     return this;
   }
 
   /**
-   * The type of response format being defined: &#x60;text&#x60;
+   * Get type
    *
-   * @return type The type of this {@link ResponseFormatText} instance.
+   * @return type The type of this {@link DPIStandardEntity} instance.
    */
   @Nonnull
-  public TypeEnum getType() {
+  public DPIEntities getType() {
     return type;
   }
 
   /**
-   * Set the type of this {@link ResponseFormatText} instance.
+   * Set the type of this {@link DPIStandardEntity} instance.
    *
-   * @param type The type of response format being defined: &#x60;text&#x60;
+   * @param type The type of this {@link DPIStandardEntity}
    */
-  public void setType(@Nonnull final TypeEnum type) {
+  public void setType(@Nonnull final DPIEntities type) {
     this.type = type;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseFormatText}.
+   * Set the replacementStrategy of this {@link DPIStandardEntity} instance and return the same
+   * instance.
+   *
+   * @param replacementStrategy The replacementStrategy of this {@link DPIStandardEntity}
+   * @return The same instance of this {@link DPIStandardEntity} class
+   */
+  @Nonnull
+  public DPIStandardEntity replacementStrategy(
+      @Nullable final DPIStandardEntityReplacementStrategy replacementStrategy) {
+    this.replacementStrategy = replacementStrategy;
+    return this;
+  }
+
+  /**
+   * Get replacementStrategy
+   *
+   * @return replacementStrategy The replacementStrategy of this {@link DPIStandardEntity} instance.
+   */
+  @Nonnull
+  public DPIStandardEntityReplacementStrategy getReplacementStrategy() {
+    return replacementStrategy;
+  }
+
+  /**
+   * Set the replacementStrategy of this {@link DPIStandardEntity} instance.
+   *
+   * @param replacementStrategy The replacementStrategy of this {@link DPIStandardEntity}
+   */
+  public void setReplacementStrategy(
+      @Nullable final DPIStandardEntityReplacementStrategy replacementStrategy) {
+    this.replacementStrategy = replacementStrategy;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link DPIStandardEntity}.
    *
    * @return The set of properties names
    */
@@ -136,7 +117,7 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseFormatText} instance.
+   * Get the value of an unrecognizable property of this {@link DPIStandardEntity} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -147,13 +128,13 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ResponseFormatText has no field with name '" + name + "'.");
+      throw new NoSuchElementException("DPIStandardEntity has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseFormatText} instance including
+   * Get the value of all properties of this {@link DPIStandardEntity} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -163,11 +144,12 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
+    if (replacementStrategy != null) declaredFields.put("replacementStrategy", replacementStrategy);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseFormatText} instance. If the map
+   * Set an unrecognizable property of this {@link DPIStandardEntity} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -186,22 +168,26 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseFormatText responseFormatText = (ResponseFormatText) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseFormatText.cloudSdkCustomFields)
-        && Objects.equals(this.type, responseFormatText.type);
+    final DPIStandardEntity dpIStandardEntity = (DPIStandardEntity) o;
+    return Objects.equals(this.cloudSdkCustomFields, dpIStandardEntity.cloudSdkCustomFields)
+        && Objects.equals(this.type, dpIStandardEntity.type)
+        && Objects.equals(this.replacementStrategy, dpIStandardEntity.replacementStrategy);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, cloudSdkCustomFields);
+    return Objects.hash(type, replacementStrategy, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseFormatText {\n");
+    sb.append("class DPIStandardEntity {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    replacementStrategy: ")
+        .append(toIndentedString(replacementStrategy))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -220,21 +206,21 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ResponseFormatText}
+   * Create a type-safe, fluent-api builder object to construct a new {@link DPIStandardEntity}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new ResponseFormatText().type(type);
+    return (type) -> new DPIStandardEntity().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ResponseFormatText} instance.
+     * Set the type of this {@link DPIStandardEntity} instance.
      *
-     * @param type The type of response format being defined: &#x60;text&#x60;
-     * @return The ResponseFormatText instance.
+     * @param type The type of this {@link DPIStandardEntity}
+     * @return The DPIStandardEntity instance.
      */
-    ResponseFormatText type(@Nonnull final TypeEnum type);
+    DPIStandardEntity type(@Nonnull final DPIEntities type);
   }
 }

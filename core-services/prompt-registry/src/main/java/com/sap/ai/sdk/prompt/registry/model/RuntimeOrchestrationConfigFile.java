@@ -38,7 +38,7 @@ public class RuntimeOrchestrationConfigFile
   private RuntimePromptTemplateFileMetadata metadata;
 
   @JsonProperty("spec")
-  private Object spec = null;
+  private OrchestrationConfig spec;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -151,7 +151,7 @@ public class RuntimeOrchestrationConfigFile
    * @return The same instance of this {@link RuntimeOrchestrationConfigFile} class
    */
   @Nonnull
-  public RuntimeOrchestrationConfigFile spec(@Nullable final Object spec) {
+  public RuntimeOrchestrationConfigFile spec(@Nullable final OrchestrationConfig spec) {
     this.spec = spec;
     return this;
   }
@@ -162,7 +162,7 @@ public class RuntimeOrchestrationConfigFile
    * @return spec The spec of this {@link RuntimeOrchestrationConfigFile} instance.
    */
   @Nonnull
-  public Object getSpec() {
+  public OrchestrationConfig getSpec() {
     return spec;
   }
 
@@ -171,7 +171,7 @@ public class RuntimeOrchestrationConfigFile
    *
    * @param spec The spec of this {@link RuntimeOrchestrationConfigFile}
    */
-  public void setSpec(@Nullable final Object spec) {
+  public void setSpec(@Nullable final OrchestrationConfig spec) {
     this.spec = spec;
   }
 

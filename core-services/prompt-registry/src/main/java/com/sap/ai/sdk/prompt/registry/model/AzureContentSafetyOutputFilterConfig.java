@@ -25,18 +25,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseFormatJsonObject */
+/** AzureContentSafetyOutputFilterConfig */
 // CHECKSTYLE:OFF
-public class ResponseFormatJsonObject
-    implements PromptTemplateSpecResponseFormat, TemplateResponseFormat
+public class AzureContentSafetyOutputFilterConfig implements OutputFilterConfig
 // CHECKSTYLE:ON
 {
-  /** The type of response format being defined: &#x60;json_object&#x60; */
+  /** Name of the filter provider type */
   public enum TypeEnum {
-    /** The JSON_OBJECT option of this ResponseFormatJsonObject */
-    JSON_OBJECT("json_object"),
+    /** The AZURE_CONTENT_SAFETY option of this AzureContentSafetyOutputFilterConfig */
+    AZURE_CONTENT_SAFETY("azure_content_safety"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatJsonObject */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AzureContentSafetyOutputFilterConfig */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -71,7 +70,7 @@ public class ResponseFormatJsonObject
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ResponseFormatJsonObject
+     * @return The enum value of type AzureContentSafetyOutputFilterConfig
      */
     @JsonCreator
     @Nonnull
@@ -88,28 +87,32 @@ public class ResponseFormatJsonObject
   @JsonProperty("type")
   private TypeEnum type;
 
+  @JsonProperty("config")
+  private AzureContentSafetyOutput config;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseFormatJsonObject. */
-  protected ResponseFormatJsonObject() {}
+  /** Default constructor for AzureContentSafetyOutputFilterConfig. */
+  protected AzureContentSafetyOutputFilterConfig() {}
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance and return the same instance.
+   * Set the type of this {@link AzureContentSafetyOutputFilterConfig} instance and return the same
+   * instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
-   * @return The same instance of this {@link ResponseFormatJsonObject} class
+   * @param type Name of the filter provider type
+   * @return The same instance of this {@link AzureContentSafetyOutputFilterConfig} class
    */
   @Nonnull
-  public ResponseFormatJsonObject type(@Nonnull final TypeEnum type) {
+  public AzureContentSafetyOutputFilterConfig type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * The type of response format being defined: &#x60;json_object&#x60;
+   * Name of the filter provider type
    *
-   * @return type The type of this {@link ResponseFormatJsonObject} instance.
+   * @return type The type of this {@link AzureContentSafetyOutputFilterConfig} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -117,16 +120,50 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance.
+   * Set the type of this {@link AzureContentSafetyOutputFilterConfig} instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
+   * @param type Name of the filter provider type
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseFormatJsonObject}.
+   * Set the config of this {@link AzureContentSafetyOutputFilterConfig} instance and return the
+   * same instance.
+   *
+   * @param config The config of this {@link AzureContentSafetyOutputFilterConfig}
+   * @return The same instance of this {@link AzureContentSafetyOutputFilterConfig} class
+   */
+  @Nonnull
+  public AzureContentSafetyOutputFilterConfig config(
+      @Nullable final AzureContentSafetyOutput config) {
+    this.config = config;
+    return this;
+  }
+
+  /**
+   * Get config
+   *
+   * @return config The config of this {@link AzureContentSafetyOutputFilterConfig} instance.
+   */
+  @Nonnull
+  public AzureContentSafetyOutput getConfig() {
+    return config;
+  }
+
+  /**
+   * Set the config of this {@link AzureContentSafetyOutputFilterConfig} instance.
+   *
+   * @param config The config of this {@link AzureContentSafetyOutputFilterConfig}
+   */
+  public void setConfig(@Nullable final AzureContentSafetyOutput config) {
+    this.config = config;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link
+   * AzureContentSafetyOutputFilterConfig}.
    *
    * @return The set of properties names
    */
@@ -137,7 +174,8 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseFormatJsonObject} instance.
+   * Get the value of an unrecognizable property of this {@link
+   * AzureContentSafetyOutputFilterConfig} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -149,14 +187,14 @@ public class ResponseFormatJsonObject
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ResponseFormatJsonObject has no field with name '" + name + "'.");
+          "AzureContentSafetyOutputFilterConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseFormatJsonObject} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link AzureContentSafetyOutputFilterConfig} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -165,12 +203,14 @@ public class ResponseFormatJsonObject
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
+    if (config != null) declaredFields.put("config", config);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseFormatJsonObject} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link AzureContentSafetyOutputFilterConfig} instance.
+   * If the map previously contained a mapping for the key, the old value is replaced by the
+   * specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -188,22 +228,26 @@ public class ResponseFormatJsonObject
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseFormatJsonObject responseFormatJsonObject = (ResponseFormatJsonObject) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseFormatJsonObject.cloudSdkCustomFields)
-        && Objects.equals(this.type, responseFormatJsonObject.type);
+    final AzureContentSafetyOutputFilterConfig azureContentSafetyOutputFilterConfig =
+        (AzureContentSafetyOutputFilterConfig) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, azureContentSafetyOutputFilterConfig.cloudSdkCustomFields)
+        && Objects.equals(this.type, azureContentSafetyOutputFilterConfig.type)
+        && Objects.equals(this.config, azureContentSafetyOutputFilterConfig.config);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, cloudSdkCustomFields);
+    return Objects.hash(type, config, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseFormatJsonObject {\n");
+    sb.append("class AzureContentSafetyOutputFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -223,20 +267,20 @@ public class ResponseFormatJsonObject
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * ResponseFormatJsonObject} instance with all required arguments.
+   * AzureContentSafetyOutputFilterConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new ResponseFormatJsonObject().type(type);
+    return (type) -> new AzureContentSafetyOutputFilterConfig().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ResponseFormatJsonObject} instance.
+     * Set the type of this {@link AzureContentSafetyOutputFilterConfig} instance.
      *
-     * @param type The type of response format being defined: &#x60;json_object&#x60;
-     * @return The ResponseFormatJsonObject instance.
+     * @param type Name of the filter provider type
+     * @return The AzureContentSafetyOutputFilterConfig instance.
      */
-    ResponseFormatJsonObject type(@Nonnull final TypeEnum type);
+    AzureContentSafetyOutputFilterConfig type(@Nonnull final TypeEnum type);
   }
 }

@@ -25,23 +25,22 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseFormatJsonObject */
+/** Replaces the entity with the specified value followed by an incrementing number */
 // CHECKSTYLE:OFF
-public class ResponseFormatJsonObject
-    implements PromptTemplateSpecResponseFormat, TemplateResponseFormat
+public class DPIMethodConstant implements DPIStandardEntityReplacementStrategy
 // CHECKSTYLE:ON
 {
-  /** The type of response format being defined: &#x60;json_object&#x60; */
-  public enum TypeEnum {
-    /** The JSON_OBJECT option of this ResponseFormatJsonObject */
-    JSON_OBJECT("json_object"),
+  /** Gets or Sets method */
+  public enum MethodEnum {
+    /** The CONSTANT option of this DPIMethodConstant */
+    CONSTANT("constant"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatJsonObject */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this DPIMethodConstant */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
-    TypeEnum(String value) {
+    MethodEnum(String value) {
       this.value = value;
     }
 
@@ -71,12 +70,12 @@ public class ResponseFormatJsonObject
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ResponseFormatJsonObject
+     * @return The enum value of type DPIMethodConstant
      */
     @JsonCreator
     @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
-      for (TypeEnum b : TypeEnum.values()) {
+    public static MethodEnum fromValue(@Nonnull final String value) {
+      for (MethodEnum b : MethodEnum.values()) {
         if (b.value.equals(value)) {
           return b;
         }
@@ -85,48 +84,82 @@ public class ResponseFormatJsonObject
     }
   }
 
-  @JsonProperty("type")
-  private TypeEnum type;
+  @JsonProperty("method")
+  private MethodEnum method;
+
+  @JsonProperty("value")
+  private String value;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseFormatJsonObject. */
-  protected ResponseFormatJsonObject() {}
+  /** Default constructor for DPIMethodConstant. */
+  protected DPIMethodConstant() {}
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance and return the same instance.
+   * Set the method of this {@link DPIMethodConstant} instance and return the same instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
-   * @return The same instance of this {@link ResponseFormatJsonObject} class
+   * @param method The method of this {@link DPIMethodConstant}
+   * @return The same instance of this {@link DPIMethodConstant} class
    */
   @Nonnull
-  public ResponseFormatJsonObject type(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public DPIMethodConstant method(@Nonnull final MethodEnum method) {
+    this.method = method;
     return this;
   }
 
   /**
-   * The type of response format being defined: &#x60;json_object&#x60;
+   * Get method
    *
-   * @return type The type of this {@link ResponseFormatJsonObject} instance.
+   * @return method The method of this {@link DPIMethodConstant} instance.
    */
   @Nonnull
-  public TypeEnum getType() {
-    return type;
+  public MethodEnum getMethod() {
+    return method;
   }
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance.
+   * Set the method of this {@link DPIMethodConstant} instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
+   * @param method The method of this {@link DPIMethodConstant}
    */
-  public void setType(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public void setMethod(@Nonnull final MethodEnum method) {
+    this.method = method;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseFormatJsonObject}.
+   * Set the value of this {@link DPIMethodConstant} instance and return the same instance.
+   *
+   * @param value Value to be used for replacement
+   * @return The same instance of this {@link DPIMethodConstant} class
+   */
+  @Nonnull
+  public DPIMethodConstant value(@Nonnull final String value) {
+    this.value = value;
+    return this;
+  }
+
+  /**
+   * Value to be used for replacement
+   *
+   * @return value The value of this {@link DPIMethodConstant} instance.
+   */
+  @Nonnull
+  public String getValue() {
+    return value;
+  }
+
+  /**
+   * Set the value of this {@link DPIMethodConstant} instance.
+   *
+   * @param value Value to be used for replacement
+   */
+  public void setValue(@Nonnull final String value) {
+    this.value = value;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link DPIMethodConstant}.
    *
    * @return The set of properties names
    */
@@ -137,7 +170,7 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseFormatJsonObject} instance.
+   * Get the value of an unrecognizable property of this {@link DPIMethodConstant} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -148,14 +181,13 @@ public class ResponseFormatJsonObject
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "ResponseFormatJsonObject has no field with name '" + name + "'.");
+      throw new NoSuchElementException("DPIMethodConstant has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseFormatJsonObject} instance including
+   * Get the value of all properties of this {@link DPIMethodConstant} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -164,12 +196,13 @@ public class ResponseFormatJsonObject
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (type != null) declaredFields.put("type", type);
+    if (method != null) declaredFields.put("method", method);
+    if (value != null) declaredFields.put("value", value);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseFormatJsonObject} instance. If the map
+   * Set an unrecognizable property of this {@link DPIMethodConstant} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -188,22 +221,24 @@ public class ResponseFormatJsonObject
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseFormatJsonObject responseFormatJsonObject = (ResponseFormatJsonObject) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseFormatJsonObject.cloudSdkCustomFields)
-        && Objects.equals(this.type, responseFormatJsonObject.type);
+    final DPIMethodConstant dpIMethodConstant = (DPIMethodConstant) o;
+    return Objects.equals(this.cloudSdkCustomFields, dpIMethodConstant.cloudSdkCustomFields)
+        && Objects.equals(this.method, dpIMethodConstant.method)
+        && Objects.equals(this.value, dpIMethodConstant.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, cloudSdkCustomFields);
+    return Objects.hash(method, value, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseFormatJsonObject {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("class DPIMethodConstant {\n");
+    sb.append("    method: ").append(toIndentedString(method)).append("\n");
+    sb.append("    value: ").append(toIndentedString(value)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -222,21 +257,32 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * ResponseFormatJsonObject} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link DPIMethodConstant}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new ResponseFormatJsonObject().type(type);
+    return (method) -> (value) -> new DPIMethodConstant().method(method).value(value);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ResponseFormatJsonObject} instance.
+     * Set the method of this {@link DPIMethodConstant} instance.
      *
-     * @param type The type of response format being defined: &#x60;json_object&#x60;
-     * @return The ResponseFormatJsonObject instance.
+     * @param method The method of this {@link DPIMethodConstant}
+     * @return The DPIMethodConstant builder.
      */
-    ResponseFormatJsonObject type(@Nonnull final TypeEnum type);
+    Builder1 method(@Nonnull final MethodEnum method);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the value of this {@link DPIMethodConstant} instance.
+     *
+     * @param value Value to be used for replacement
+     * @return The DPIMethodConstant instance.
+     */
+    DPIMethodConstant value(@Nonnull final String value);
   }
 }
