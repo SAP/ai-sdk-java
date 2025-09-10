@@ -51,6 +51,11 @@ public class OpenAiChatCompletionDelta implements StreamedDelta {
     return null;
   }
 
+  @Override
+  public boolean isError() {
+    return originalResponse.getCustomFieldNames().contains("error");
+  }
+
   /**
    * Retrieves the completion usage from the response, or null if it is not available.
    *

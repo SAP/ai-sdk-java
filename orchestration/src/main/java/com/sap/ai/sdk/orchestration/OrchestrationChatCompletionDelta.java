@@ -31,4 +31,9 @@ public class OrchestrationChatCompletionDelta extends CompletionPostResponseStre
   public String getFinishReason() {
     return getFinalResult().getChoices().get(0).getFinishReason();
   }
+
+  @Override
+  public boolean isError() {
+    return getCustomFieldNames().contains("error");
+  }
 }

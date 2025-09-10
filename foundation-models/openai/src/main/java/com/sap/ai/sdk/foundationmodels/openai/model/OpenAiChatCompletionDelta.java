@@ -59,4 +59,9 @@ public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements
     }
     return null;
   }
+
+  @Override
+  public boolean isError() {
+    return false;
+  }
 }

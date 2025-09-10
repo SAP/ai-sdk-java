@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.core.common;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.Beta;
 import java.io.IOException;
@@ -77,12 +78,26 @@ public class ClientStreamingHandler<
             line -> {
               final String data = line.substring(5); // remove "data: "
               try {
-                return objectMapper.readValue(data, successType);
+                final D delta = objectMapper.readValue(data, successType);
+                if (delta.isError()) {
+                  throwErrorType(response, data);
+                }
+                return delta;
               } catch (final IOException e) { // exception message e gets lost
                 log.error("Failed to parse delta chunk to type {}", successType);
                 final String message = "Failed to parse delta chunk";
                 throw exceptionFactory.build(message, e).setHttpResponse(response);
               }
             });
+  }
+
+  private void throwErrorType(final @Nonnull ClassicHttpResponse response, final String data)
+      throws JsonProcessingException, E {
+    final R error = objectMapper.readValue(data, errorType);
+    final String msg =
+        (error != null && error.getMessage() != null)
+            ? error.getMessage()
+            : "Error, unable to parse http response.";
+    throw exceptionFactory.build(msg).setHttpResponse(response);
   }
 }
