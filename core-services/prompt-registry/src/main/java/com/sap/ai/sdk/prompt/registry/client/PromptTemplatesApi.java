@@ -59,9 +59,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>200</b> - Successful response
    *
-   * <p><b>403</b> - Forbidden Error
-   *
    * <p><b>400</b> - Bad Request
+   *
+   * <p><b>403</b> - Forbidden Error
    *
    * <p><b>0</b> - Common Error
    *
@@ -128,9 +128,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>200</b> - Successful response
    *
-   * <p><b>403</b> - Forbidden Error
-   *
    * <p><b>400</b> - Bad Request
+   *
+   * <p><b>403</b> - Forbidden Error
    *
    * <p><b>0</b> - Common Error
    *
@@ -150,9 +150,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>200</b> - Successful response
    *
-   * <p><b>404</b> - Bad Request
-   *
    * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
    *
    * <p><b>0</b> - Common Error
    *
@@ -223,9 +223,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>200</b> - Successful response
    *
-   * <p><b>404</b> - Bad Request
-   *
    * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
    *
    * <p><b>0</b> - Common Error
    *

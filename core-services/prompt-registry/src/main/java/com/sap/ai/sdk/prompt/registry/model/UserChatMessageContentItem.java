@@ -25,18 +25,20 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseFormatJsonObject */
+/** UserChatMessageContentItem */
 // CHECKSTYLE:OFF
-public class ResponseFormatJsonObject
-    implements PromptTemplateSpecResponseFormat, TemplateResponseFormat
+public class UserChatMessageContentItem
 // CHECKSTYLE:ON
 {
-  /** The type of response format being defined: &#x60;json_object&#x60; */
+  /** Gets or Sets type */
   public enum TypeEnum {
-    /** The JSON_OBJECT option of this ResponseFormatJsonObject */
-    JSON_OBJECT("json_object"),
+    /** The TEXT option of this UserChatMessageContentItem */
+    TEXT("text"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatJsonObject */
+    /** The IMAGE_URL option of this UserChatMessageContentItem */
+    IMAGE_URL("image_url"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this UserChatMessageContentItem */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -71,7 +73,7 @@ public class ResponseFormatJsonObject
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ResponseFormatJsonObject
+     * @return The enum value of type UserChatMessageContentItem
      */
     @JsonCreator
     @Nonnull
@@ -88,28 +90,34 @@ public class ResponseFormatJsonObject
   @JsonProperty("type")
   private TypeEnum type;
 
+  @JsonProperty("text")
+  private String text;
+
+  @JsonProperty("image_url")
+  private ImageContentUrl imageUrl;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseFormatJsonObject. */
-  protected ResponseFormatJsonObject() {}
+  /** Default constructor for UserChatMessageContentItem. */
+  protected UserChatMessageContentItem() {}
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance and return the same instance.
+   * Set the type of this {@link UserChatMessageContentItem} instance and return the same instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
-   * @return The same instance of this {@link ResponseFormatJsonObject} class
+   * @param type The type of this {@link UserChatMessageContentItem}
+   * @return The same instance of this {@link UserChatMessageContentItem} class
    */
   @Nonnull
-  public ResponseFormatJsonObject type(@Nonnull final TypeEnum type) {
+  public UserChatMessageContentItem type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * The type of response format being defined: &#x60;json_object&#x60;
+   * Get type
    *
-   * @return type The type of this {@link ResponseFormatJsonObject} instance.
+   * @return type The type of this {@link UserChatMessageContentItem} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -117,16 +125,79 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance.
+   * Set the type of this {@link UserChatMessageContentItem} instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
+   * @param type The type of this {@link UserChatMessageContentItem}
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseFormatJsonObject}.
+   * Set the text of this {@link UserChatMessageContentItem} instance and return the same instance.
+   *
+   * @param text The text of this {@link UserChatMessageContentItem}
+   * @return The same instance of this {@link UserChatMessageContentItem} class
+   */
+  @Nonnull
+  public UserChatMessageContentItem text(@Nullable final String text) {
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Get text
+   *
+   * @return text The text of this {@link UserChatMessageContentItem} instance.
+   */
+  @Nonnull
+  public String getText() {
+    return text;
+  }
+
+  /**
+   * Set the text of this {@link UserChatMessageContentItem} instance.
+   *
+   * @param text The text of this {@link UserChatMessageContentItem}
+   */
+  public void setText(@Nullable final String text) {
+    this.text = text;
+  }
+
+  /**
+   * Set the imageUrl of this {@link UserChatMessageContentItem} instance and return the same
+   * instance.
+   *
+   * @param imageUrl The imageUrl of this {@link UserChatMessageContentItem}
+   * @return The same instance of this {@link UserChatMessageContentItem} class
+   */
+  @Nonnull
+  public UserChatMessageContentItem imageUrl(@Nullable final ImageContentUrl imageUrl) {
+    this.imageUrl = imageUrl;
+    return this;
+  }
+
+  /**
+   * Get imageUrl
+   *
+   * @return imageUrl The imageUrl of this {@link UserChatMessageContentItem} instance.
+   */
+  @Nonnull
+  public ImageContentUrl getImageUrl() {
+    return imageUrl;
+  }
+
+  /**
+   * Set the imageUrl of this {@link UserChatMessageContentItem} instance.
+   *
+   * @param imageUrl The imageUrl of this {@link UserChatMessageContentItem}
+   */
+  public void setImageUrl(@Nullable final ImageContentUrl imageUrl) {
+    this.imageUrl = imageUrl;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link UserChatMessageContentItem}.
    *
    * @return The set of properties names
    */
@@ -137,7 +208,8 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseFormatJsonObject} instance.
+   * Get the value of an unrecognizable property of this {@link UserChatMessageContentItem}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -149,13 +221,13 @@ public class ResponseFormatJsonObject
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ResponseFormatJsonObject has no field with name '" + name + "'.");
+          "UserChatMessageContentItem has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseFormatJsonObject} instance including
+   * Get the value of all properties of this {@link UserChatMessageContentItem} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -165,11 +237,13 @@ public class ResponseFormatJsonObject
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
+    if (text != null) declaredFields.put("text", text);
+    if (imageUrl != null) declaredFields.put("imageUrl", imageUrl);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseFormatJsonObject} instance. If the map
+   * Set an unrecognizable property of this {@link UserChatMessageContentItem} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -188,22 +262,27 @@ public class ResponseFormatJsonObject
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseFormatJsonObject responseFormatJsonObject = (ResponseFormatJsonObject) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseFormatJsonObject.cloudSdkCustomFields)
-        && Objects.equals(this.type, responseFormatJsonObject.type);
+    final UserChatMessageContentItem userChatMessageContentItem = (UserChatMessageContentItem) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, userChatMessageContentItem.cloudSdkCustomFields)
+        && Objects.equals(this.type, userChatMessageContentItem.type)
+        && Objects.equals(this.text, userChatMessageContentItem.text)
+        && Objects.equals(this.imageUrl, userChatMessageContentItem.imageUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, cloudSdkCustomFields);
+    return Objects.hash(type, text, imageUrl, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseFormatJsonObject {\n");
+    sb.append("class UserChatMessageContentItem {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    text: ").append(toIndentedString(text)).append("\n");
+    sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -223,20 +302,20 @@ public class ResponseFormatJsonObject
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * ResponseFormatJsonObject} instance with all required arguments.
+   * UserChatMessageContentItem} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new ResponseFormatJsonObject().type(type);
+    return (type) -> new UserChatMessageContentItem().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ResponseFormatJsonObject} instance.
+     * Set the type of this {@link UserChatMessageContentItem} instance.
      *
-     * @param type The type of response format being defined: &#x60;json_object&#x60;
-     * @return The ResponseFormatJsonObject instance.
+     * @param type The type of this {@link UserChatMessageContentItem}
+     * @return The UserChatMessageContentItem instance.
      */
-    ResponseFormatJsonObject type(@Nonnull final TypeEnum type);
+    UserChatMessageContentItem type(@Nonnull final TypeEnum type);
   }
 }

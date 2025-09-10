@@ -54,7 +54,7 @@ public class OrchestrationConfigResource
   private String resourceGroupId;
 
   @JsonProperty("spec")
-  private Object spec = null;
+  private OrchestrationConfig spec;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -325,7 +325,7 @@ public class OrchestrationConfigResource
    * @return The same instance of this {@link OrchestrationConfigResource} class
    */
   @Nonnull
-  public OrchestrationConfigResource spec(@Nullable final Object spec) {
+  public OrchestrationConfigResource spec(@Nullable final OrchestrationConfig spec) {
     this.spec = spec;
     return this;
   }
@@ -336,7 +336,7 @@ public class OrchestrationConfigResource
    * @return spec The spec of this {@link OrchestrationConfigResource} instance.
    */
   @Nonnull
-  public Object getSpec() {
+  public OrchestrationConfig getSpec() {
     return spec;
   }
 
@@ -345,7 +345,7 @@ public class OrchestrationConfigResource
    *
    * @param spec The spec of this {@link OrchestrationConfigResource}
    */
-  public void setSpec(@Nullable final Object spec) {
+  public void setSpec(@Nullable final OrchestrationConfig spec) {
     this.spec = spec;
   }
 

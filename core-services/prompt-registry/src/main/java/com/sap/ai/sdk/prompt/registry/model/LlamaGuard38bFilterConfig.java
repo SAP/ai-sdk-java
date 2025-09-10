@@ -25,18 +25,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseFormatJsonObject */
+/** LlamaGuard38bFilterConfig */
 // CHECKSTYLE:OFF
-public class ResponseFormatJsonObject
-    implements PromptTemplateSpecResponseFormat, TemplateResponseFormat
+public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilterConfig
 // CHECKSTYLE:ON
 {
-  /** The type of response format being defined: &#x60;json_object&#x60; */
+  /** Name of the filter provider type */
   public enum TypeEnum {
-    /** The JSON_OBJECT option of this ResponseFormatJsonObject */
-    JSON_OBJECT("json_object"),
+    /** The LLAMA_GUARD_3_8B option of this LlamaGuard38bFilterConfig */
+    LLAMA_GUARD_3_8B("llama_guard_3_8b"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatJsonObject */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this LlamaGuard38bFilterConfig */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -71,7 +70,7 @@ public class ResponseFormatJsonObject
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ResponseFormatJsonObject
+     * @return The enum value of type LlamaGuard38bFilterConfig
      */
     @JsonCreator
     @Nonnull
@@ -88,28 +87,31 @@ public class ResponseFormatJsonObject
   @JsonProperty("type")
   private TypeEnum type;
 
+  @JsonProperty("config")
+  private LlamaGuard38b config;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseFormatJsonObject. */
-  protected ResponseFormatJsonObject() {}
+  /** Default constructor for LlamaGuard38bFilterConfig. */
+  protected LlamaGuard38bFilterConfig() {}
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance and return the same instance.
+   * Set the type of this {@link LlamaGuard38bFilterConfig} instance and return the same instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
-   * @return The same instance of this {@link ResponseFormatJsonObject} class
+   * @param type Name of the filter provider type
+   * @return The same instance of this {@link LlamaGuard38bFilterConfig} class
    */
   @Nonnull
-  public ResponseFormatJsonObject type(@Nonnull final TypeEnum type) {
+  public LlamaGuard38bFilterConfig type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * The type of response format being defined: &#x60;json_object&#x60;
+   * Name of the filter provider type
    *
-   * @return type The type of this {@link ResponseFormatJsonObject} instance.
+   * @return type The type of this {@link LlamaGuard38bFilterConfig} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -117,16 +119,47 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance.
+   * Set the type of this {@link LlamaGuard38bFilterConfig} instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
+   * @param type Name of the filter provider type
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseFormatJsonObject}.
+   * Set the config of this {@link LlamaGuard38bFilterConfig} instance and return the same instance.
+   *
+   * @param config The config of this {@link LlamaGuard38bFilterConfig}
+   * @return The same instance of this {@link LlamaGuard38bFilterConfig} class
+   */
+  @Nonnull
+  public LlamaGuard38bFilterConfig config(@Nonnull final LlamaGuard38b config) {
+    this.config = config;
+    return this;
+  }
+
+  /**
+   * Get config
+   *
+   * @return config The config of this {@link LlamaGuard38bFilterConfig} instance.
+   */
+  @Nonnull
+  public LlamaGuard38b getConfig() {
+    return config;
+  }
+
+  /**
+   * Set the config of this {@link LlamaGuard38bFilterConfig} instance.
+   *
+   * @param config The config of this {@link LlamaGuard38bFilterConfig}
+   */
+  public void setConfig(@Nonnull final LlamaGuard38b config) {
+    this.config = config;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link LlamaGuard38bFilterConfig}.
    *
    * @return The set of properties names
    */
@@ -137,7 +170,7 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseFormatJsonObject} instance.
+   * Get the value of an unrecognizable property of this {@link LlamaGuard38bFilterConfig} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -149,13 +182,13 @@ public class ResponseFormatJsonObject
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ResponseFormatJsonObject has no field with name '" + name + "'.");
+          "LlamaGuard38bFilterConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseFormatJsonObject} instance including
+   * Get the value of all properties of this {@link LlamaGuard38bFilterConfig} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -165,11 +198,12 @@ public class ResponseFormatJsonObject
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
+    if (config != null) declaredFields.put("config", config);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseFormatJsonObject} instance. If the map
+   * Set an unrecognizable property of this {@link LlamaGuard38bFilterConfig} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -188,22 +222,24 @@ public class ResponseFormatJsonObject
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseFormatJsonObject responseFormatJsonObject = (ResponseFormatJsonObject) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseFormatJsonObject.cloudSdkCustomFields)
-        && Objects.equals(this.type, responseFormatJsonObject.type);
+    final LlamaGuard38bFilterConfig llamaGuard38bFilterConfig = (LlamaGuard38bFilterConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, llamaGuard38bFilterConfig.cloudSdkCustomFields)
+        && Objects.equals(this.type, llamaGuard38bFilterConfig.type)
+        && Objects.equals(this.config, llamaGuard38bFilterConfig.config);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, cloudSdkCustomFields);
+    return Objects.hash(type, config, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseFormatJsonObject {\n");
+    sb.append("class LlamaGuard38bFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -223,20 +259,31 @@ public class ResponseFormatJsonObject
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * ResponseFormatJsonObject} instance with all required arguments.
+   * LlamaGuard38bFilterConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new ResponseFormatJsonObject().type(type);
+    return (type) -> (config) -> new LlamaGuard38bFilterConfig().type(type).config(config);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ResponseFormatJsonObject} instance.
+     * Set the type of this {@link LlamaGuard38bFilterConfig} instance.
      *
-     * @param type The type of response format being defined: &#x60;json_object&#x60;
-     * @return The ResponseFormatJsonObject instance.
+     * @param type Name of the filter provider type
+     * @return The LlamaGuard38bFilterConfig builder.
      */
-    ResponseFormatJsonObject type(@Nonnull final TypeEnum type);
+    Builder1 type(@Nonnull final TypeEnum type);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the config of this {@link LlamaGuard38bFilterConfig} instance.
+     *
+     * @param config The config of this {@link LlamaGuard38bFilterConfig}
+     * @return The LlamaGuard38bFilterConfig instance.
+     */
+    LlamaGuard38bFilterConfig config(@Nonnull final LlamaGuard38b config);
   }
 }

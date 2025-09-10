@@ -25,23 +25,22 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseFormatJsonObject */
+/** SystemChatMessage */
 // CHECKSTYLE:OFF
-public class ResponseFormatJsonObject
-    implements PromptTemplateSpecResponseFormat, TemplateResponseFormat
+public class SystemChatMessage implements ChatMessage
 // CHECKSTYLE:ON
 {
-  /** The type of response format being defined: &#x60;json_object&#x60; */
-  public enum TypeEnum {
-    /** The JSON_OBJECT option of this ResponseFormatJsonObject */
-    JSON_OBJECT("json_object"),
+  /** Gets or Sets role */
+  public enum RoleEnum {
+    /** The SYSTEM option of this SystemChatMessage */
+    SYSTEM("system"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatJsonObject */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this SystemChatMessage */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
-    TypeEnum(String value) {
+    RoleEnum(String value) {
       this.value = value;
     }
 
@@ -71,12 +70,12 @@ public class ResponseFormatJsonObject
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ResponseFormatJsonObject
+     * @return The enum value of type SystemChatMessage
      */
     @JsonCreator
     @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
-      for (TypeEnum b : TypeEnum.values()) {
+    public static RoleEnum fromValue(@Nonnull final String value) {
+      for (RoleEnum b : RoleEnum.values()) {
         if (b.value.equals(value)) {
           return b;
         }
@@ -85,48 +84,82 @@ public class ResponseFormatJsonObject
     }
   }
 
-  @JsonProperty("type")
-  private TypeEnum type;
+  @JsonProperty("role")
+  private RoleEnum role;
+
+  @JsonProperty("content")
+  private ChatMessageContent content;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseFormatJsonObject. */
-  protected ResponseFormatJsonObject() {}
+  /** Default constructor for SystemChatMessage. */
+  protected SystemChatMessage() {}
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance and return the same instance.
+   * Set the role of this {@link SystemChatMessage} instance and return the same instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
-   * @return The same instance of this {@link ResponseFormatJsonObject} class
+   * @param role The role of this {@link SystemChatMessage}
+   * @return The same instance of this {@link SystemChatMessage} class
    */
   @Nonnull
-  public ResponseFormatJsonObject type(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public SystemChatMessage role(@Nonnull final RoleEnum role) {
+    this.role = role;
     return this;
   }
 
   /**
-   * The type of response format being defined: &#x60;json_object&#x60;
+   * Get role
    *
-   * @return type The type of this {@link ResponseFormatJsonObject} instance.
+   * @return role The role of this {@link SystemChatMessage} instance.
    */
   @Nonnull
-  public TypeEnum getType() {
-    return type;
+  public RoleEnum getRole() {
+    return role;
   }
 
   /**
-   * Set the type of this {@link ResponseFormatJsonObject} instance.
+   * Set the role of this {@link SystemChatMessage} instance.
    *
-   * @param type The type of response format being defined: &#x60;json_object&#x60;
+   * @param role The role of this {@link SystemChatMessage}
    */
-  public void setType(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public void setRole(@Nonnull final RoleEnum role) {
+    this.role = role;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseFormatJsonObject}.
+   * Set the content of this {@link SystemChatMessage} instance and return the same instance.
+   *
+   * @param content The content of this {@link SystemChatMessage}
+   * @return The same instance of this {@link SystemChatMessage} class
+   */
+  @Nonnull
+  public SystemChatMessage content(@Nonnull final ChatMessageContent content) {
+    this.content = content;
+    return this;
+  }
+
+  /**
+   * Get content
+   *
+   * @return content The content of this {@link SystemChatMessage} instance.
+   */
+  @Nonnull
+  public ChatMessageContent getContent() {
+    return content;
+  }
+
+  /**
+   * Set the content of this {@link SystemChatMessage} instance.
+   *
+   * @param content The content of this {@link SystemChatMessage}
+   */
+  public void setContent(@Nonnull final ChatMessageContent content) {
+    this.content = content;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link SystemChatMessage}.
    *
    * @return The set of properties names
    */
@@ -137,7 +170,7 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseFormatJsonObject} instance.
+   * Get the value of an unrecognizable property of this {@link SystemChatMessage} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -148,14 +181,13 @@ public class ResponseFormatJsonObject
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "ResponseFormatJsonObject has no field with name '" + name + "'.");
+      throw new NoSuchElementException("SystemChatMessage has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseFormatJsonObject} instance including
+   * Get the value of all properties of this {@link SystemChatMessage} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -164,12 +196,13 @@ public class ResponseFormatJsonObject
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (type != null) declaredFields.put("type", type);
+    if (role != null) declaredFields.put("role", role);
+    if (content != null) declaredFields.put("content", content);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseFormatJsonObject} instance. If the map
+   * Set an unrecognizable property of this {@link SystemChatMessage} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -188,22 +221,24 @@ public class ResponseFormatJsonObject
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseFormatJsonObject responseFormatJsonObject = (ResponseFormatJsonObject) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseFormatJsonObject.cloudSdkCustomFields)
-        && Objects.equals(this.type, responseFormatJsonObject.type);
+    final SystemChatMessage systemChatMessage = (SystemChatMessage) o;
+    return Objects.equals(this.cloudSdkCustomFields, systemChatMessage.cloudSdkCustomFields)
+        && Objects.equals(this.role, systemChatMessage.role)
+        && Objects.equals(this.content, systemChatMessage.content);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, cloudSdkCustomFields);
+    return Objects.hash(role, content, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseFormatJsonObject {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("class SystemChatMessage {\n");
+    sb.append("    role: ").append(toIndentedString(role)).append("\n");
+    sb.append("    content: ").append(toIndentedString(content)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -222,21 +257,32 @@ public class ResponseFormatJsonObject
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * ResponseFormatJsonObject} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link SystemChatMessage}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new ResponseFormatJsonObject().type(type);
+    return (role) -> (content) -> new SystemChatMessage().role(role).content(content);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ResponseFormatJsonObject} instance.
+     * Set the role of this {@link SystemChatMessage} instance.
      *
-     * @param type The type of response format being defined: &#x60;json_object&#x60;
-     * @return The ResponseFormatJsonObject instance.
+     * @param role The role of this {@link SystemChatMessage}
+     * @return The SystemChatMessage builder.
      */
-    ResponseFormatJsonObject type(@Nonnull final TypeEnum type);
+    Builder1 role(@Nonnull final RoleEnum role);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the content of this {@link SystemChatMessage} instance.
+     *
+     * @param content The content of this {@link SystemChatMessage}
+     * @return The SystemChatMessage instance.
+     */
+    SystemChatMessage content(@Nonnull final ChatMessageContent content);
   }
 }
