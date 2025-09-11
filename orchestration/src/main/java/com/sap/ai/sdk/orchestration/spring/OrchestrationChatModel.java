@@ -124,7 +124,7 @@ public class OrchestrationChatModel implements ChatModel {
         val sprTls = ((AssistantMessage) msg).getToolCalls();
         val orchTls = sprTls.stream().map(OrchestrationChatModel::toOrchestrationToolCall).toList();
         if (!orchTls.isEmpty()) {
-          return List.of(Message.assistant(orchTls));
+          return List.of(Message.assistant(msg.getText(), orchTls));
         }
         return List.of(Message.assistant(msg.getText()));
       case TOOL:
