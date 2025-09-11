@@ -71,6 +71,7 @@ public class AssistantMessage implements Message {
    * Creates a new assistant message instance with added tool calls.
    *
    * @param toolCalls list of new tool call objects
+   * @return a new assistant message instance with added tool calls
    * @since 1.11.0
    */
   @Nonnull
