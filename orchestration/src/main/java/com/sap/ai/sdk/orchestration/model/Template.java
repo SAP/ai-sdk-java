@@ -53,9 +53,9 @@ public class Template implements PromptTemplatingModuleConfigPrompt
   /**
    * Set the template of this {@link Template} instance and return the same instance.
    *
-   * @param template A chat message array to be formatted with values from input_params. Both role
-   *     and content can be templated. If messages_history is provided, the templated messages will
-   *     be appended.
+   * @param template A chat message array to be formatted with values from placeholder_values. Both
+   *     role and content can be templated. If messages_history is provided, the templated messages
+   *     will be appended.
    * @return The same instance of this {@link Template} class
    */
   @Nonnull
@@ -80,8 +80,8 @@ public class Template implements PromptTemplatingModuleConfigPrompt
   }
 
   /**
-   * A chat message array to be formatted with values from input_params. Both role and content can
-   * be templated. If messages_history is provided, the templated messages will be appended.
+   * A chat message array to be formatted with values from placeholder_values. Both role and content
+   * can be templated. If messages_history is provided, the templated messages will be appended.
    *
    * @return template The template of this {@link Template} instance.
    */
@@ -93,9 +93,9 @@ public class Template implements PromptTemplatingModuleConfigPrompt
   /**
    * Set the template of this {@link Template} instance.
    *
-   * @param template A chat message array to be formatted with values from input_params. Both role
-   *     and content can be templated. If messages_history is provided, the templated messages will
-   *     be appended.
+   * @param template A chat message array to be formatted with values from placeholder_values. Both
+   *     role and content can be templated. If messages_history is provided, the templated messages
+   *     will be appended.
    */
   public void setTemplate(@Nonnull final List<ChatMessage> template) {
     this.template = template;
@@ -347,9 +347,9 @@ public class Template implements PromptTemplatingModuleConfigPrompt
     /**
      * Set the template of this {@link Template} instance.
      *
-     * @param template A chat message array to be formatted with values from input_params. Both role
-     *     and content can be templated. If messages_history is provided, the templated messages
-     *     will be appended.
+     * @param template A chat message array to be formatted with values from placeholder_values.
+     *     Both role and content can be templated. If messages_history is provided, the templated
+     *     messages will be appended.
      * @return The Template instance.
      */
     Template template(@Nonnull final List<ChatMessage> template);
@@ -357,9 +357,9 @@ public class Template implements PromptTemplatingModuleConfigPrompt
     /**
      * Set the template of this {@link Template} instance.
      *
-     * @param template A chat message array to be formatted with values from input_params. Both role
-     *     and content can be templated. If messages_history is provided, the templated messages
-     *     will be appended.
+     * @param template A chat message array to be formatted with values from placeholder_values.
+     *     Both role and content can be templated. If messages_history is provided, the templated
+     *     messages will be appended.
      * @return The Template instance.
      */
     default Template template(@Nonnull final ChatMessage... template) {
