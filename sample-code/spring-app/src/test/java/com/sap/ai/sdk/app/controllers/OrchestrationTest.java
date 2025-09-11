@@ -458,4 +458,16 @@ class OrchestrationTest {
     assertThat(inputTranslation.getMessage()).isEqualTo("Input to LLM is translated successfully.");
     assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
   }
+
+  @Test
+  void testEmbedding() {
+    val result = service.embed(List.of("Hi SAP Orchestration Service", "I am John Doe"));
+    val embeddingVectors = result.getEmbeddingVectors();
+
+    assertThat(embeddingVectors)
+        .isNotNull()
+        .hasSize(2)
+        .isInstanceOf(List.class)
+        .allSatisfy(vector -> assertThat(vector).isInstanceOf(float[].class));
+  }
 }
