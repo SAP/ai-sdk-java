@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** MultiChatTemplate */
 // CHECKSTYLE:OFF
-public class MultiChatTemplate implements Template
+public class MultiChatTemplate implements PromptTemplate
 // CHECKSTYLE:ON
 {
   @JsonProperty("role")

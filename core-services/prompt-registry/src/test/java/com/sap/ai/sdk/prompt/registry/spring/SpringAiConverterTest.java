@@ -36,6 +36,7 @@ public class SpringAiConverterTest {
             "0.0.1",
             "java-e2e-test",
             "default",
+            null,
             false,
             PromptTemplateSubstitutionRequest.create()
                 .inputParams(Map.of("inputExample", "I love football")));
@@ -58,6 +59,7 @@ public class SpringAiConverterTest {
             "0.0.1",
             "error",
             "default",
+            null,
             false,
             PromptTemplateSubstitutionRequest.create()
                 .inputParams(Map.of("inputExample", "I love football")));

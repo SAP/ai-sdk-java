@@ -48,7 +48,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
 
       - name: "Checkout Repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Check Whether Code PR Can Be Merged"
         if: ${{ inputs.skip-pr-merge != 'true' }}
@@ -89,7 +89,7 @@ jobs:
       pull-requests: write # needed to merge the release PR
     steps:
       - name: "Setup java"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}

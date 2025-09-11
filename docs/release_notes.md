@@ -8,7 +8,11 @@
 
 ### 🔧 Compatibility Notes
 
--
+- [Prompt Registry] breaking changes:
+  - `Template` has been renamed to `PromptTemplate`.
+  - Some endpoints have a new parameter `String aiResourceGroupScope` which can be set to `null`.
+
+  For more details please refer to the [sample code](https://github.com/SAP/ai-sdk-java/blob/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java).
 
 ### ✨ New Functionality
 
@@ -27,6 +31,8 @@
   - Added `OpenAiChatModel`
 - [Prompt Registry] [Using Prompt Registry Templates in SpringAI.](https://sap.github.io/ai-sdk/docs/java/ai-core/prompt-registry#using-templates-in-springai)
   - Added `SpringAiConverter`
+- [Orchestration] [Added convenience to add custom headers to individual orchestration calls.](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#custom-headers)
+- [OpenAI] [Added convenience to add custom headers to individual LLM calls.](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#custom-headers)
 
 ### 📈 Improvements
 

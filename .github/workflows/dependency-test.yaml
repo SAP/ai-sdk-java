@@ -45,10 +45,10 @@ jobs:
       contents: read
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Setup java"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}
@@ -83,10 +83,10 @@ jobs:
       contents: read
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Setup java"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}

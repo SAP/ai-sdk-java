@@ -31,7 +31,7 @@ public class PromptTemplateSubstitutionResponse
 // CHECKSTYLE:ON
 {
   @JsonProperty("parsedPrompt")
-  private List<Template> parsedPrompt = new ArrayList<>();
+  private List<PromptTemplate> parsedPrompt = new ArrayList<>();
 
   @JsonProperty("resource")
   private PromptTemplateGetResponse resource;
@@ -51,7 +51,7 @@ public class PromptTemplateSubstitutionResponse
    */
   @Nonnull
   public PromptTemplateSubstitutionResponse parsedPrompt(
-      @Nullable final List<Template> parsedPrompt) {
+      @Nullable final List<PromptTemplate> parsedPrompt) {
     this.parsedPrompt = parsedPrompt;
     return this;
   }
@@ -64,7 +64,7 @@ public class PromptTemplateSubstitutionResponse
    */
   @Nonnull
   public PromptTemplateSubstitutionResponse addParsedPromptItem(
-      @Nonnull final Template parsedPromptItem) {
+      @Nonnull final PromptTemplate parsedPromptItem) {
     if (this.parsedPrompt == null) {
       this.parsedPrompt = new ArrayList<>();
     }
@@ -79,7 +79,7 @@ public class PromptTemplateSubstitutionResponse
    *     instance.
    */
   @Nonnull
-  public List<Template> getParsedPrompt() {
+  public List<PromptTemplate> getParsedPrompt() {
     return parsedPrompt;
   }
 
@@ -88,7 +88,7 @@ public class PromptTemplateSubstitutionResponse
    *
    * @param parsedPrompt The parsedPrompt of this {@link PromptTemplateSubstitutionResponse}
    */
-  public void setParsedPrompt(@Nullable final List<Template> parsedPrompt) {
+  public void setParsedPrompt(@Nullable final List<PromptTemplate> parsedPrompt) {
     this.parsedPrompt = parsedPrompt;
   }
 
