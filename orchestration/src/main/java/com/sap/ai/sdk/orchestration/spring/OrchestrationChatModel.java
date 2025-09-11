@@ -133,7 +133,7 @@ public class OrchestrationChatModel implements ChatModel {
                       springToolCalls.stream()
                           .map(OrchestrationChatModel::toOrchestrationToolCall)
                           .toList();
-                  yield List.of(new AssistantMessage(sdkToolCalls));
+                  yield List.of(new AssistantMessage(msg.getText(), sdkToolCalls));
                 }
                 yield List.of(new AssistantMessage(msg.getText()));
               case TOOL:

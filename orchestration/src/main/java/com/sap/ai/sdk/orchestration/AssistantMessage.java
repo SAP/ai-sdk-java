@@ -63,24 +63,40 @@ public class AssistantMessage implements Message {
     this.toolCalls = toolCalls;
   }
 
+  /**
+   * Creates a new assistant message with the given message and tool calls.
+   *
+   * @param singleMessage the message content.
+   * @param toolCalls list of tool call objects
+   * @since 1.11.0
+   */
+  public AssistantMessage(
+      @Nonnull final String singleMessage, @Nullable final List<MessageToolCall> toolCalls) {
+    this.content = new MessageContent(List.of(new TextItem(singleMessage)));
+    this.toolCalls = toolCalls;
+  }
+
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
-    if (toolCalls != null) {
-      return AssistantChatMessage.create().role(ASSISTANT).toolCalls(toolCalls);
-    }
-    if (content.items().size() == 1 && content.items().get(0) instanceof TextItem textItem) {
-      return AssistantChatMessage.create()
-          .role(ASSISTANT)
-          .content(ChatMessageContent.create(textItem.text()));
-    }
-    val texts =
-        content.items().stream()
-            .filter(item -> item instanceof TextItem)
-            .map(item -> (TextItem) item)
-            .map(item -> TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text()))
-            .toList();
+    var assistantChatMessage = AssistantChatMessage.create().role(ASSISTANT);
 
-    return AssistantChatMessage.create().role(ASSISTANT).content(ChatMessageContent.create(texts));
+    if (toolCalls != null) {
+      assistantChatMessage.setToolCalls(toolCalls);
+    }
+
+    ChatMessageContent text;
+    if (content.items().size() == 1 && content.items().get(0) instanceof TextItem textItem) {
+      text = ChatMessageContent.create(textItem.text());
+    } else {
+      val texts =
+          content.items().stream()
+              .filter(item -> item instanceof TextItem)
+              .map(item -> (TextItem) item)
+              .map(item -> TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text()))
+              .toList();
+      text = ChatMessageContent.create(texts);
+    }
+    return assistantChatMessage.content(text);
   }
 }
