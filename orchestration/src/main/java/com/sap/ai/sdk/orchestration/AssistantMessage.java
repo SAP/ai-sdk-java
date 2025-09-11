@@ -79,7 +79,7 @@ public class AssistantMessage implements Message {
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
-    var assistantChatMessage = AssistantChatMessage.create().role(ASSISTANT);
+    val assistantChatMessage = AssistantChatMessage.create().role(ASSISTANT);
 
     if (toolCalls != null) {
       assistantChatMessage.setToolCalls(toolCalls);
