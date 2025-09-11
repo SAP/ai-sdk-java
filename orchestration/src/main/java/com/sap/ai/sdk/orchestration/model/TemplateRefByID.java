@@ -31,6 +31,9 @@ public class TemplateRefByID implements TemplateRefTemplateRef
   @JsonProperty("id")
   private String id;
 
+  @JsonProperty("is_rg_scoped")
+  private Boolean isRgScoped = false;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -66,6 +69,37 @@ public class TemplateRefByID implements TemplateRefTemplateRef
    */
   public void setId(@Nonnull final String id) {
     this.id = id;
+  }
+
+  /**
+   * Set the isRgScoped of this {@link TemplateRefByID} instance and return the same instance.
+   *
+   * @param isRgScoped Whether the template is resource group scoped
+   * @return The same instance of this {@link TemplateRefByID} class
+   */
+  @Nonnull
+  public TemplateRefByID isRgScoped(@Nullable final Boolean isRgScoped) {
+    this.isRgScoped = isRgScoped;
+    return this;
+  }
+
+  /**
+   * Whether the template is resource group scoped
+   *
+   * @return isRgScoped The isRgScoped of this {@link TemplateRefByID} instance.
+   */
+  @Nonnull
+  public Boolean isIsRgScoped() {
+    return isRgScoped;
+  }
+
+  /**
+   * Set the isRgScoped of this {@link TemplateRefByID} instance.
+   *
+   * @param isRgScoped Whether the template is resource group scoped
+   */
+  public void setIsRgScoped(@Nullable final Boolean isRgScoped) {
+    this.isRgScoped = isRgScoped;
   }
 
   /**
@@ -107,6 +141,7 @@ public class TemplateRefByID implements TemplateRefTemplateRef
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (id != null) declaredFields.put("id", id);
+    if (isRgScoped != null) declaredFields.put("isRgScoped", isRgScoped);
     return declaredFields;
   }
 
@@ -132,12 +167,13 @@ public class TemplateRefByID implements TemplateRefTemplateRef
     }
     final TemplateRefByID templateRefByID = (TemplateRefByID) o;
     return Objects.equals(this.cloudSdkCustomFields, templateRefByID.cloudSdkCustomFields)
-        && Objects.equals(this.id, templateRefByID.id);
+        && Objects.equals(this.id, templateRefByID.id)
+        && Objects.equals(this.isRgScoped, templateRefByID.isRgScoped);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, cloudSdkCustomFields);
+    return Objects.hash(id, isRgScoped, cloudSdkCustomFields);
   }
 
   @Override
@@ -146,6 +182,7 @@ public class TemplateRefByID implements TemplateRefTemplateRef
     final StringBuilder sb = new StringBuilder();
     sb.append("class TemplateRefByID {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    isRgScoped: ").append(toIndentedString(isRgScoped)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

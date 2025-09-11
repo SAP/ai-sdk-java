@@ -37,6 +37,9 @@ public class TemplateRefByScenarioNameVersion implements TemplateRefTemplateRef
   @JsonProperty("version")
   private String version;
 
+  @JsonProperty("is_rg_scoped")
+  private Boolean isRgScoped = false;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -140,6 +143,38 @@ public class TemplateRefByScenarioNameVersion implements TemplateRefTemplateRef
   }
 
   /**
+   * Set the isRgScoped of this {@link TemplateRefByScenarioNameVersion} instance and return the
+   * same instance.
+   *
+   * @param isRgScoped Whether the template is resource group scoped
+   * @return The same instance of this {@link TemplateRefByScenarioNameVersion} class
+   */
+  @Nonnull
+  public TemplateRefByScenarioNameVersion isRgScoped(@Nullable final Boolean isRgScoped) {
+    this.isRgScoped = isRgScoped;
+    return this;
+  }
+
+  /**
+   * Whether the template is resource group scoped
+   *
+   * @return isRgScoped The isRgScoped of this {@link TemplateRefByScenarioNameVersion} instance.
+   */
+  @Nonnull
+  public Boolean isIsRgScoped() {
+    return isRgScoped;
+  }
+
+  /**
+   * Set the isRgScoped of this {@link TemplateRefByScenarioNameVersion} instance.
+   *
+   * @param isRgScoped Whether the template is resource group scoped
+   */
+  public void setIsRgScoped(@Nullable final Boolean isRgScoped) {
+    this.isRgScoped = isRgScoped;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link TemplateRefByScenarioNameVersion}.
    *
    * @return The set of properties names
@@ -182,6 +217,7 @@ public class TemplateRefByScenarioNameVersion implements TemplateRefTemplateRef
     if (scenario != null) declaredFields.put("scenario", scenario);
     if (name != null) declaredFields.put("name", name);
     if (version != null) declaredFields.put("version", version);
+    if (isRgScoped != null) declaredFields.put("isRgScoped", isRgScoped);
     return declaredFields;
   }
 
@@ -212,12 +248,13 @@ public class TemplateRefByScenarioNameVersion implements TemplateRefTemplateRef
             this.cloudSdkCustomFields, templateRefByScenarioNameVersion.cloudSdkCustomFields)
         && Objects.equals(this.scenario, templateRefByScenarioNameVersion.scenario)
         && Objects.equals(this.name, templateRefByScenarioNameVersion.name)
-        && Objects.equals(this.version, templateRefByScenarioNameVersion.version);
+        && Objects.equals(this.version, templateRefByScenarioNameVersion.version)
+        && Objects.equals(this.isRgScoped, templateRefByScenarioNameVersion.isRgScoped);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(scenario, name, version, cloudSdkCustomFields);
+    return Objects.hash(scenario, name, version, isRgScoped, cloudSdkCustomFields);
   }
 
   @Override
@@ -228,6 +265,7 @@ public class TemplateRefByScenarioNameVersion implements TemplateRefTemplateRef
     sb.append("    scenario: ").append(toIndentedString(scenario)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
+    sb.append("    isRgScoped: ").append(toIndentedString(isRgScoped)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

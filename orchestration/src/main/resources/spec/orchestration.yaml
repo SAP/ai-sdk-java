@@ -185,7 +185,7 @@ components:
           type: integer
           default: 2
           minimum: 0
-          maximum: 5
+          maximum: 5   
     EmbeddingsModelParams:
       type: object
       description: Additional parameters for generating input's embeddings. Default values are used for mandatory parameters.
@@ -865,7 +865,7 @@ components:
         template:
           allOf:
             - $ref: "#/components/schemas/TemplatingChatMessage"
-          description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+          description: A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
         defaults:
           description: Optional default values for the template. If a parameter has no default it is required.
           type: object
@@ -1044,6 +1044,10 @@ components:
           type: string
           description: ID of the template in prompt registry
           example: "template_id"
+        is_rg_scoped:
+          type: boolean
+          description: Whether the template is resource group scoped
+          default: false
 
     TemplateRefByScenarioNameVersion:
       type: object
@@ -1065,6 +1069,10 @@ components:
           type: string
           description: Version of the template
           example: "some version, can be `latest`"
+        is_rg_scoped:
+          type: boolean
+          description: Whether the template is resource group scoped
+          default: false
 
     # --- Filtering Module ---
     FilteringModuleConfig:
