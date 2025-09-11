@@ -82,7 +82,7 @@ public class OrchestrationChatResponse {
   }
 
   @SuppressWarnings("deprecation") // constructors should be package-private instead of public
-  private static Message getConvenienceMessage(ChatMessage chatMessage) {
+  private static Message getConvenienceMessage(@Nonnull final ChatMessage chatMessage) {
     if (chatMessage instanceof AssistantChatMessage m) {
       if (!m.getToolCalls().isEmpty()) {
         return new AssistantMessage(m.getToolCalls());
