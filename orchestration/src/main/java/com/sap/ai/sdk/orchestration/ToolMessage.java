@@ -26,6 +26,19 @@ public class ToolMessage implements Message {
 
   @Nonnull String content;
 
+  /**
+   * Creates a new tool message from an id and content.
+   *
+   * @param id the tool id
+   * @param content the tool content
+   * @deprecated Please use {@link Message#tool(String, String)} instead.
+   */
+  @Deprecated
+  public ToolMessage(@Nonnull final String id, @Nonnull final String content) {
+    this.id = id;
+    this.content = content;
+  }
+
   @Nonnull
   @Override
   public MessageContent content() {

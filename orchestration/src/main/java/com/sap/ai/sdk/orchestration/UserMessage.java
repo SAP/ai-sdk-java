@@ -38,8 +38,10 @@ public class UserMessage implements Message {
    * Creates a new user message from a string.
    *
    * @param message the first message.
+   * @deprecated Please use {@link Message#user(String)} instead.
    */
   @Tolerate
+  @Deprecated
   public UserMessage(@Nonnull final String message) {
     this(new MessageContent(List.of(new TextItem(message))));
   }
@@ -53,7 +55,7 @@ public class UserMessage implements Message {
    */
   @Nonnull
   public UserMessage withText(@Nonnull final String message) {
-    final var contentItems = new LinkedList<>(content.items());
+    final var contentItems = new LinkedList<ContentItem>(content.items());
     contentItems.add(new TextItem(message));
     return new UserMessage(new MessageContent(contentItems));
   }
@@ -69,7 +71,7 @@ public class UserMessage implements Message {
   @Nonnull
   public UserMessage withImage(
       @Nonnull final String imageUrl, @Nonnull final ImageItem.DetailLevel detailLevel) {
-    final var contentItems = new LinkedList<>(content.items());
+    final var contentItems = new LinkedList<ContentItem>(content.items());
     contentItems.add(new ImageItem(imageUrl, detailLevel));
     return new UserMessage(new MessageContent(contentItems));
   }
@@ -83,7 +85,7 @@ public class UserMessage implements Message {
    */
   @Nonnull
   public UserMessage withImage(@Nonnull final String imageUrl) {
-    final var contentItems = new LinkedList<>(content.items());
+    final var contentItems = new LinkedList<ContentItem>(content.items());
     contentItems.add(new ImageItem(imageUrl));
     return new UserMessage(new MessageContent(contentItems));
   }

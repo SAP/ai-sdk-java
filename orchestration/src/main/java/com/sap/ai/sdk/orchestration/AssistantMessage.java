@@ -12,6 +12,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.val;
@@ -20,6 +21,7 @@ import lombok.val;
 @Value
 @Getter
 @Accessors(fluent = true)
+@RequiredArgsConstructor(access = lombok.AccessLevel.PACKAGE)
 public class AssistantMessage implements Message {
 
   /** The role of the assistant. */
@@ -37,10 +39,11 @@ public class AssistantMessage implements Message {
    * Creates a new assistant message with the given single message.
    *
    * @param singleMessage the single message.
+   * @deprecated Please use {@link Message#assistant(String...)} instead.
    */
+  @Deprecated
   public AssistantMessage(@Nonnull final String singleMessage) {
-    content = new MessageContent(List.of(new TextItem(singleMessage)));
-    toolCalls = null;
+    this(new MessageContent(List.of(new TextItem(singleMessage))));
   }
 
   /**
@@ -49,18 +52,18 @@ public class AssistantMessage implements Message {
    * @param content the single message.
    */
   AssistantMessage(@Nonnull final MessageContent content) {
-    this.content = content;
-    toolCalls = null;
+    this(content, null);
   }
 
   /**
    * Creates a new assistant message with the given tool calls.
    *
    * @param toolCalls list of tool call objects
+   * @deprecated Please use {@link Message#assistant(List<MessageToolCall>)}.
    */
+  @Deprecated
   public AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
-    content = new MessageContent(List.of());
-    this.toolCalls = toolCalls;
+    this(new MessageContent(List.of()), toolCalls);
   }
 
   @Nonnull

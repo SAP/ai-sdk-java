@@ -14,20 +14,16 @@ import lombok.val;
  * @param items a list of the content items
  * @since 1.3.0
  */
-public record MessageContent(@Nonnull List<ContentItem> items) {
+public record MessageContent(@Nonnull List<? extends ContentItem> items) {
   @Nonnull
   static MessageContent fromChatMessageContent(final ChatMessageContent chatMessageContent) {
+    List<? extends ContentItem> texts = List.of();
     if (chatMessageContent instanceof ChatMessageContent.InnerString innerString) {
-      return new MessageContent(List.of(new TextItem(innerString.value())));
-    } else if (chatMessageContent
-        instanceof ChatMessageContent.InnerTextContents innerTextContents) {
-      val texts =
-          innerTextContents.values().stream()
-              .map(textContent -> ((ContentItem) new TextItem(textContent.getText())))
-              .toList();
-      return new MessageContent(texts);
+      texts = List.of(new TextItem(innerString.value()));
+    } else if (chatMessageContent instanceof ChatMessageContent.InnerTextContents innerText) {
+      texts = innerText.values().stream().map(content -> new TextItem(content.getText())).toList();
     }
-    return new MessageContent(List.of());
+    return new MessageContent(texts);
   }
 
   @Nonnull

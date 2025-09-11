@@ -3,23 +3,19 @@ package com.sap.ai.sdk.orchestration.spring;
 import static com.sap.ai.sdk.orchestration.OrchestrationClient.toCompletionPostRequest;
 import static com.sap.ai.sdk.orchestration.model.MessageToolCall.TypeEnum.FUNCTION;
 
-import com.sap.ai.sdk.orchestration.AssistantMessage;
+import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.SystemMessage;
-import com.sap.ai.sdk.orchestration.ToolMessage;
-import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.MessageToolCall;
 import com.sap.ai.sdk.orchestration.model.MessageToolCallFunction;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
-import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -111,44 +107,31 @@ public class OrchestrationChatModel implements ChatModel {
 
   @Nonnull
   private OrchestrationPrompt toOrchestrationPrompt(@Nonnull final Prompt prompt) {
-    val messages = toOrchestrationMessages(prompt.getInstructions());
-    return new OrchestrationPrompt(Map.of(), messages);
+    val instruct = prompt.getInstructions();
+    val orchMessages = instruct.stream().flatMap(i -> toOrchestrationMessages(i).stream()).toList();
+    return new OrchestrationPrompt(Map.of(), orchMessages.toArray(Message[]::new));
   }
 
   @Nonnull
-  private static com.sap.ai.sdk.orchestration.Message[] toOrchestrationMessages(
-      @Nonnull final List<Message> messages) {
-    final Function<Message, List<com.sap.ai.sdk.orchestration.Message>> mapper =
-        msg ->
-            switch (msg.getMessageType()) {
-              case SYSTEM:
-                yield List.of(new SystemMessage(msg.getText()));
-              case USER:
-                yield List.of(new UserMessage(msg.getText()));
-              case ASSISTANT:
-                val springToolCalls =
-                    ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
-                if (springToolCalls != null && !springToolCalls.isEmpty()) {
-                  final List<MessageToolCall> sdkToolCalls =
-                      springToolCalls.stream()
-                          .map(OrchestrationChatModel::toOrchestrationToolCall)
-                          .toList();
-                  yield List.of(new AssistantMessage(sdkToolCalls));
-                }
-                yield List.of(new AssistantMessage(msg.getText()));
-              case TOOL:
-                val toolResponses = ((ToolResponseMessage) msg).getResponses();
-                yield toolResponses.stream()
-                    .map(
-                        r ->
-                            (com.sap.ai.sdk.orchestration.Message)
-                                new ToolMessage(r.id(), r.responseData()))
-                    .toList();
-            };
-    return messages.stream()
-        .map(mapper)
-        .flatMap(List::stream)
-        .toArray(com.sap.ai.sdk.orchestration.Message[]::new);
+  private static List<? extends Message> toOrchestrationMessages(
+      @Nonnull final org.springframework.ai.chat.messages.Message msg) {
+    switch (msg.getMessageType()) {
+      case SYSTEM:
+        return List.of(Message.system(msg.getText()));
+      case USER:
+        return List.of(Message.user(msg.getText()));
+      case ASSISTANT:
+        val sprTls = ((AssistantMessage) msg).getToolCalls();
+        val orchTls = sprTls.stream().map(OrchestrationChatModel::toOrchestrationToolCall).toList();
+        if (!orchTls.isEmpty()) {
+          return List.of(Message.assistant(orchTls));
+        }
+        return List.of(Message.assistant(msg.getText()));
+      case TOOL:
+        val sprResps = ((ToolResponseMessage) msg).getResponses();
+        return sprResps.stream().map(res -> Message.tool(res.id(), res.responseData())).toList();
+    }
+    throw new IllegalArgumentException("Unknown message type: " + msg.getMessageType());
   }
 
   @Nonnull

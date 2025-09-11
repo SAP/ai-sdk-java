@@ -36,10 +36,12 @@ public class SystemMessage implements Message {
    * Creates a new system message from a string.
    *
    * @param message the first message.
+   * @deprecated Please use {@link Message#system(String)} instead.
    */
   @Tolerate
+  @Deprecated
   public SystemMessage(@Nonnull final String message) {
-    content = new MessageContent(List.of(new TextItem(message)));
+    this(new MessageContent(List.of(new TextItem(message))));
   }
 
   /**
@@ -51,7 +53,7 @@ public class SystemMessage implements Message {
    */
   @Nonnull
   public SystemMessage withText(@Nonnull final String message) {
-    final var contentItems = new LinkedList<>(content.items());
+    final var contentItems = new LinkedList<ContentItem>(content.items());
     contentItems.add(new TextItem(message));
     return new SystemMessage(new MessageContent(contentItems));
   }

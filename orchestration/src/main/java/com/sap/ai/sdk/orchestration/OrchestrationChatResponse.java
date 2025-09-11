@@ -74,38 +74,33 @@ public class OrchestrationChatResponse {
   @Nonnull
   public List<Message> getAllMessages() throws IllegalArgumentException {
     val messages = new ArrayList<Message>();
-    for (final ChatMessage chatMessage :
-        originalResponse.getIntermediateResults().getTemplating()) {
-      if (chatMessage instanceof AssistantChatMessage assistantChatMessage) {
-        val toolCalls = assistantChatMessage.getToolCalls();
-        if (!toolCalls.isEmpty()) {
-          messages.add(new AssistantMessage(toolCalls));
-        } else {
-          messages.add(
-              new AssistantMessage(
-                  MessageContent.fromChatMessageContent(assistantChatMessage.getContent())));
-        }
-      } else if (chatMessage instanceof SystemChatMessage systemChatMessage) {
-        messages.add(
-            new SystemMessage(
-                MessageContent.fromChatMessageContent(systemChatMessage.getContent())));
-      } else if (chatMessage instanceof UserChatMessage userChatMessage) {
-        messages.add(
-            new UserMessage(
-                MessageContent.fromUserChatMessageContent(userChatMessage.getContent())));
-      } else if (chatMessage instanceof ToolChatMessage toolChatMessage) {
-        messages.add(
-            new ToolMessage(
-                toolChatMessage.getToolCallId(),
-                ((ChatMessageContent.InnerString) toolChatMessage.getContent()).value()));
-      } else {
-        throw new IllegalArgumentException(
-            "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");
-      }
+    for (final ChatMessage message : originalResponse.getIntermediateResults().getTemplating()) {
+      messages.add(getConvenienceMessage(message));
     }
-
     messages.add(Message.assistant(getChoice().getMessage().getContent()));
     return messages;
+  }
+
+  @SuppressWarnings("deprecation") // constructors should be package-private instead of public
+  private static Message getConvenienceMessage(ChatMessage chatMessage) {
+    if (chatMessage instanceof AssistantChatMessage m) {
+      if (!m.getToolCalls().isEmpty()) {
+        return new AssistantMessage(m.getToolCalls());
+      }
+      return new AssistantMessage(MessageContent.fromChatMessageContent(m.getContent()));
+    }
+    if (chatMessage instanceof SystemChatMessage m) {
+      return new SystemMessage(MessageContent.fromChatMessageContent(m.getContent()));
+    }
+    if (chatMessage instanceof UserChatMessage m) {
+      return new UserMessage(MessageContent.fromUserChatMessageContent(m.getContent()));
+    }
+    if (chatMessage instanceof ToolChatMessage m) {
+      val content = (ChatMessageContent.InnerString) m.getContent();
+      return new ToolMessage(m.getToolCallId(), content.value());
+    }
+    throw new IllegalArgumentException(
+        "Messages of type " + chatMessage.getClass() + " are not supported by convenience API");
   }
 
   /**

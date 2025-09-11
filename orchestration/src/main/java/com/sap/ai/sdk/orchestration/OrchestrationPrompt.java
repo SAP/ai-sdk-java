@@ -31,7 +31,7 @@ public class OrchestrationPrompt {
    * @param message A user message.
    */
   public OrchestrationPrompt(@Nonnull final String message) {
-    messages.add(new UserMessage(message));
+    messages.add(Message.user(message));
   }
 
   /**

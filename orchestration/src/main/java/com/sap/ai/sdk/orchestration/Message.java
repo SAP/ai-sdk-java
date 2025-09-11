@@ -2,6 +2,8 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.MessageToolCall;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -16,7 +18,7 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    */
   @Nonnull
   static UserMessage user(@Nonnull final String message) {
-    return new UserMessage(message);
+    return new UserMessage(new MessageContent(List.of(new TextItem(message))));
   }
 
   /**
@@ -34,12 +36,24 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
   /**
    * A convenience method to create an assistant message.
    *
-   * @param message the message content.
+   * @param messages the messages.
    * @return the assistant message.
    */
   @Nonnull
-  static AssistantMessage assistant(@Nonnull final String message) {
-    return new AssistantMessage(message);
+  static AssistantMessage assistant(@Nonnull final String... messages) {
+    final var content = new MessageContent(Arrays.stream(messages).map(TextItem::new).toList());
+    return new AssistantMessage(content);
+  }
+
+  /**
+   * A convenience method to create an assistant message.
+   *
+   * @param toolCalls the tool calls.
+   * @return the assistant message.
+   */
+  @Nonnull
+  static AssistantMessage assistant(@Nonnull final List<MessageToolCall> toolCalls) {
+    return new AssistantMessage(new MessageContent(List.of()), toolCalls);
   }
 
   /**
@@ -50,7 +64,20 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    */
   @Nonnull
   static SystemMessage system(@Nonnull final String message) {
-    return new SystemMessage(message);
+    return new SystemMessage(new MessageContent(List.of(new TextItem(message))));
+  }
+
+  /**
+   * A convenience method to create a tool message from an id and content.
+   *
+   * @param id the tool id.
+   * @param content the tool content.
+   * @return the tool message.
+   */
+  @Nonnull
+  static ToolMessage tool(@Nonnull final String id, @Nonnull final String content) {
+    //noinspection deprecation: constructor is deprecated, will be made package-private in future
+    return new ToolMessage(id, content);
   }
 
   /**
