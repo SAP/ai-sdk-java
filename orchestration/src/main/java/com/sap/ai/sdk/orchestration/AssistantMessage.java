@@ -8,6 +8,7 @@ import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.MessageToolCall;
 import com.sap.ai.sdk.orchestration.model.TextContent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -67,16 +68,16 @@ public class AssistantMessage implements Message {
   }
 
   /**
-   * Creates a new assistant message with the given message and tool calls.
+   * Creates a new assistant message instance with added tool calls.
    *
-   * @param singleMessage the message content.
-   * @param toolCalls list of tool call objects
+   * @param toolCalls list of new tool call objects
    * @since 1.11.0
    */
-  public AssistantMessage(
-      @Nonnull final String singleMessage, @Nullable final List<MessageToolCall> toolCalls) {
-    this.content = new MessageContent(List.of(new TextItem(singleMessage)));
-    this.toolCalls = toolCalls;
+  @Nonnull
+  public AssistantMessage withToolCalls(@Nonnull final List<MessageToolCall> toolCalls) {
+    val newToolcalls = new ArrayList<>(this.toolCalls != null ? this.toolCalls : List.of());
+    newToolcalls.addAll(toolCalls);
+    return new AssistantMessage(this.content, newToolcalls);
   }
 
   @Nonnull
