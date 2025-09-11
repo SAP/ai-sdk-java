@@ -40,11 +40,6 @@ class ClientStreamingHandlerTest extends ClientResponseHandlerTest {
     public String getFinishReason() {
       return finishReason;
     }
-
-    @Override
-    public boolean isError() {
-      return false;
-    }
   }
 
   @SneakyThrows

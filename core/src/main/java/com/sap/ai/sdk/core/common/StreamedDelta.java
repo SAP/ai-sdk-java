@@ -42,11 +42,4 @@ public interface StreamedDelta {
    */
   @Nullable
   String getFinishReason();
-
-  /**
-   * Indicates if the delta is an error of type {@link ClientError}
-   *
-   * @return true if the delta is an error, false otherwise.
-   */
-  boolean isError();
 }

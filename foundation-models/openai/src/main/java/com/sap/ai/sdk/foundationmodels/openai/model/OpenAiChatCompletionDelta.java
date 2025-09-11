@@ -21,11 +21,6 @@ public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements
   @Getter(onMethod_ = @Nonnull)
   private List<OpenAiDeltaChatCompletionChoice> choices;
 
-  /** error field in case of an error. */
-  @JsonProperty("error")
-  @Getter(onMethod_ = @Nullable)
-  private Object error;
-
   /**
    * Can be used in conjunction with the seed request parameter to understand when backend changes
    * have been made that might impact determinism.
@@ -63,10 +58,5 @@ public class OpenAiChatCompletionDelta extends OpenAiCompletionOutput implements
       return getChoices().get(0).getFinishReason();
     }
     return null;
-  }
-
-  @Override
-  public boolean isError() {
-    return error != null;
   }
 }
