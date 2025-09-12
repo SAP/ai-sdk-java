@@ -13,8 +13,10 @@ package com.sap.ai.sdk.orchestration.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -37,8 +39,69 @@ public class TemplateRefByScenarioNameVersion implements TemplateRefTemplateRef
   @JsonProperty("version")
   private String version;
 
-  @JsonProperty("is_rg_scoped")
-  private Boolean isRgScoped = false;
+  /**
+   * Defines the scope that is searched for the referenced template. &#39;tenant&#39; indicates the
+   * template is shared across all resource groups within the tenant, while &#39;resource_group&#39;
+   * indicates the template is only accessible within the specific resource group.
+   */
+  public enum ScopeEnum {
+    /** The RESOURCE_GROUP option of this TemplateRefByScenarioNameVersion */
+    RESOURCE_GROUP("resource_group"),
+
+    /** The TENANT option of this TemplateRefByScenarioNameVersion */
+    TENANT("tenant"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this TemplateRefByScenarioNameVersion */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    ScopeEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type TemplateRefByScenarioNameVersion
+     */
+    @JsonCreator
+    @Nonnull
+    public static ScopeEnum fromValue(@Nonnull final String value) {
+      for (ScopeEnum b : ScopeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+  }
+
+  @JsonProperty("scope")
+  private ScopeEnum scope = ScopeEnum.TENANT;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -143,35 +206,43 @@ public class TemplateRefByScenarioNameVersion implements TemplateRefTemplateRef
   }
 
   /**
-   * Set the isRgScoped of this {@link TemplateRefByScenarioNameVersion} instance and return the
-   * same instance.
+   * Set the scope of this {@link TemplateRefByScenarioNameVersion} instance and return the same
+   * instance.
    *
-   * @param isRgScoped Whether the template is resource group scoped
+   * @param scope Defines the scope that is searched for the referenced template. &#39;tenant&#39;
+   *     indicates the template is shared across all resource groups within the tenant, while
+   *     &#39;resource_group&#39; indicates the template is only accessible within the specific
+   *     resource group.
    * @return The same instance of this {@link TemplateRefByScenarioNameVersion} class
    */
   @Nonnull
-  public TemplateRefByScenarioNameVersion isRgScoped(@Nullable final Boolean isRgScoped) {
-    this.isRgScoped = isRgScoped;
+  public TemplateRefByScenarioNameVersion scope(@Nullable final ScopeEnum scope) {
+    this.scope = scope;
     return this;
   }
 
   /**
-   * Whether the template is resource group scoped
+   * Defines the scope that is searched for the referenced template. &#39;tenant&#39; indicates the
+   * template is shared across all resource groups within the tenant, while &#39;resource_group&#39;
+   * indicates the template is only accessible within the specific resource group.
    *
-   * @return isRgScoped The isRgScoped of this {@link TemplateRefByScenarioNameVersion} instance.
+   * @return scope The scope of this {@link TemplateRefByScenarioNameVersion} instance.
    */
   @Nonnull
-  public Boolean isIsRgScoped() {
-    return isRgScoped;
+  public ScopeEnum getScope() {
+    return scope;
   }
 
   /**
-   * Set the isRgScoped of this {@link TemplateRefByScenarioNameVersion} instance.
+   * Set the scope of this {@link TemplateRefByScenarioNameVersion} instance.
    *
-   * @param isRgScoped Whether the template is resource group scoped
+   * @param scope Defines the scope that is searched for the referenced template. &#39;tenant&#39;
+   *     indicates the template is shared across all resource groups within the tenant, while
+   *     &#39;resource_group&#39; indicates the template is only accessible within the specific
+   *     resource group.
    */
-  public void setIsRgScoped(@Nullable final Boolean isRgScoped) {
-    this.isRgScoped = isRgScoped;
+  public void setScope(@Nullable final ScopeEnum scope) {
+    this.scope = scope;
   }
 
   /**
@@ -217,7 +288,7 @@ public class TemplateRefByScenarioNameVersion implements TemplateRefTemplateRef
     if (scenario != null) declaredFields.put("scenario", scenario);
     if (name != null) declaredFields.put("name", name);
     if (version != null) declaredFields.put("version", version);
-    if (isRgScoped != null) declaredFields.put("isRgScoped", isRgScoped);
+    if (scope != null) declaredFields.put("scope", scope);
     return declaredFields;
   }
 
@@ -249,12 +320,12 @@ public class TemplateRefByScenarioNameVersion implements TemplateRefTemplateRef
         && Objects.equals(this.scenario, templateRefByScenarioNameVersion.scenario)
         && Objects.equals(this.name, templateRefByScenarioNameVersion.name)
         && Objects.equals(this.version, templateRefByScenarioNameVersion.version)
-        && Objects.equals(this.isRgScoped, templateRefByScenarioNameVersion.isRgScoped);
+        && Objects.equals(this.scope, templateRefByScenarioNameVersion.scope);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(scenario, name, version, isRgScoped, cloudSdkCustomFields);
+    return Objects.hash(scenario, name, version, scope, cloudSdkCustomFields);
   }
 
   @Override
@@ -265,7 +336,7 @@ public class TemplateRefByScenarioNameVersion implements TemplateRefTemplateRef
     sb.append("    scenario: ").append(toIndentedString(scenario)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
-    sb.append("    isRgScoped: ").append(toIndentedString(isRgScoped)).append("\n");
+    sb.append("    scope: ").append(toIndentedString(scope)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

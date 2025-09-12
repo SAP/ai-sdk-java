@@ -13,8 +13,10 @@ package com.sap.ai.sdk.orchestration.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -31,8 +33,69 @@ public class TemplateRefByID implements TemplateRefTemplateRef
   @JsonProperty("id")
   private String id;
 
-  @JsonProperty("is_rg_scoped")
-  private Boolean isRgScoped = false;
+  /**
+   * Defines the scope that is searched for the referenced template. &#39;tenant&#39; indicates the
+   * template is shared across all resource groups within the tenant, while &#39;resource_group&#39;
+   * indicates the template is only accessible within the specific resource group.
+   */
+  public enum ScopeEnum {
+    /** The RESOURCE_GROUP option of this TemplateRefByID */
+    RESOURCE_GROUP("resource_group"),
+
+    /** The TENANT option of this TemplateRefByID */
+    TENANT("tenant"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this TemplateRefByID */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    ScopeEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type TemplateRefByID
+     */
+    @JsonCreator
+    @Nonnull
+    public static ScopeEnum fromValue(@Nonnull final String value) {
+      for (ScopeEnum b : ScopeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+  }
+
+  @JsonProperty("scope")
+  private ScopeEnum scope = ScopeEnum.TENANT;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -72,34 +135,42 @@ public class TemplateRefByID implements TemplateRefTemplateRef
   }
 
   /**
-   * Set the isRgScoped of this {@link TemplateRefByID} instance and return the same instance.
+   * Set the scope of this {@link TemplateRefByID} instance and return the same instance.
    *
-   * @param isRgScoped Whether the template is resource group scoped
+   * @param scope Defines the scope that is searched for the referenced template. &#39;tenant&#39;
+   *     indicates the template is shared across all resource groups within the tenant, while
+   *     &#39;resource_group&#39; indicates the template is only accessible within the specific
+   *     resource group.
    * @return The same instance of this {@link TemplateRefByID} class
    */
   @Nonnull
-  public TemplateRefByID isRgScoped(@Nullable final Boolean isRgScoped) {
-    this.isRgScoped = isRgScoped;
+  public TemplateRefByID scope(@Nullable final ScopeEnum scope) {
+    this.scope = scope;
     return this;
   }
 
   /**
-   * Whether the template is resource group scoped
+   * Defines the scope that is searched for the referenced template. &#39;tenant&#39; indicates the
+   * template is shared across all resource groups within the tenant, while &#39;resource_group&#39;
+   * indicates the template is only accessible within the specific resource group.
    *
-   * @return isRgScoped The isRgScoped of this {@link TemplateRefByID} instance.
+   * @return scope The scope of this {@link TemplateRefByID} instance.
    */
   @Nonnull
-  public Boolean isIsRgScoped() {
-    return isRgScoped;
+  public ScopeEnum getScope() {
+    return scope;
   }
 
   /**
-   * Set the isRgScoped of this {@link TemplateRefByID} instance.
+   * Set the scope of this {@link TemplateRefByID} instance.
    *
-   * @param isRgScoped Whether the template is resource group scoped
+   * @param scope Defines the scope that is searched for the referenced template. &#39;tenant&#39;
+   *     indicates the template is shared across all resource groups within the tenant, while
+   *     &#39;resource_group&#39; indicates the template is only accessible within the specific
+   *     resource group.
    */
-  public void setIsRgScoped(@Nullable final Boolean isRgScoped) {
-    this.isRgScoped = isRgScoped;
+  public void setScope(@Nullable final ScopeEnum scope) {
+    this.scope = scope;
   }
 
   /**
@@ -141,7 +212,7 @@ public class TemplateRefByID implements TemplateRefTemplateRef
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (id != null) declaredFields.put("id", id);
-    if (isRgScoped != null) declaredFields.put("isRgScoped", isRgScoped);
+    if (scope != null) declaredFields.put("scope", scope);
     return declaredFields;
   }
 
@@ -168,12 +239,12 @@ public class TemplateRefByID implements TemplateRefTemplateRef
     final TemplateRefByID templateRefByID = (TemplateRefByID) o;
     return Objects.equals(this.cloudSdkCustomFields, templateRefByID.cloudSdkCustomFields)
         && Objects.equals(this.id, templateRefByID.id)
-        && Objects.equals(this.isRgScoped, templateRefByID.isRgScoped);
+        && Objects.equals(this.scope, templateRefByID.scope);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, isRgScoped, cloudSdkCustomFields);
+    return Objects.hash(id, scope, cloudSdkCustomFields);
   }
 
   @Override
@@ -182,7 +253,7 @@ public class TemplateRefByID implements TemplateRefTemplateRef
     final StringBuilder sb = new StringBuilder();
     sb.append("class TemplateRefByID {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    isRgScoped: ").append(toIndentedString(isRgScoped)).append("\n");
+    sb.append("    scope: ").append(toIndentedString(scope)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
