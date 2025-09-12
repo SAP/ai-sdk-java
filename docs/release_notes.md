@@ -40,5 +40,5 @@
 
 ### 🐛 Fixed Issues
 
--
+- [Orchestration] Fixed getting `OrchestrationFilterException.Input` for bad requests with input filter.
 - [Orchestration] Tool calling works on all models
