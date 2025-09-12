@@ -8,31 +8,11 @@
 
 ### 🔧 Compatibility Notes
 
-- [Prompt Registry] breaking changes:
-  - `Template` has been renamed to `PromptTemplate`.
-  - Some endpoints have a new parameter `String aiResourceGroupScope` which can be set to `null`.
-
-  For more details please refer to the [sample code](https://github.com/SAP/ai-sdk-java/blob/main/sample-code/spring-app/src/main/java/com/sap/ai/sdk/app/controllers/PromptRegistryController.java).
+-
 
 ### ✨ New Functionality
 
-- Extend `OpenAiClientException` and `OrchestrationClientException` to retrieve error diagnostics information received
-  from remote service.
-  New available accessors for troubleshooting: `getErrorResponse()`, `getHttpResponse()` and, `getHttpRequest()`.
-  Please note: depending on the error response, these methods may return `null` if the information is not available.
-- [OpenAI] Added new models for `OpenAiModel`: `GPT_5`, `GPT_5_MINI` and `GPT_5_NANO`.
-- [Orchestration] Added new models for `OrchestrationAiModel`: `GPT_5`, `GPT_5_MINI` and
-  `GPT_5_NANO`.
-- [Orchestration] Deprecated models for `OrchestrationAiModel`: `GEMINI_1_5_PRO` and
-  `OrchestrationAiModel.GEMINI_1_5_FLASH`
-  - Replacement are `GEMINI_2_5_PRO` and `GEMINI_2_5_FLASH`.
-- [Orchestration] Deprecated `OrchestrationAiModel.IBM_GRANITE_13B_CHAT` with no replacement.
-- [OpenAI] [Introduced SpringAI integration with our OpenAI client.](https://sap.github.io/ai-sdk/docs/java/spring-ai/openai)
-  - Added `OpenAiChatModel`
-- [Prompt Registry] [Using Prompt Registry Templates in SpringAI.](https://sap.github.io/ai-sdk/docs/java/ai-core/prompt-registry#using-templates-in-springai)
-  - Added `SpringAiConverter`
-- [Orchestration] [Added convenience to add custom headers to individual orchestration calls.](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#custom-headers)
-- [OpenAI] [Added convenience to add custom headers to individual LLM calls.](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#custom-headers)
+-
 
 ### 📈 Improvements
 
@@ -40,4 +20,4 @@
 
 ### 🐛 Fixed Issues
 
-- [Orchestration] Fixed getting `OrchestrationFilterException.Input` for bad requests with input filter.
+-
