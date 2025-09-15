@@ -23,88 +23,54 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ManualPipelineTrigger */
+/** PatchPipelineConfiguration */
 // CHECKSTYLE:OFF
-public class ManualPipelineTrigger
+public class PatchPipelineConfiguration
 // CHECKSTYLE:ON
 {
-  @JsonProperty("pipelineId")
-  private String pipelineId;
-
-  @JsonProperty("metadataOnly")
-  private Boolean metadataOnly;
+  @JsonProperty("cronExpression")
+  private String cronExpression;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ManualPipelineTrigger. */
-  protected ManualPipelineTrigger() {}
+  /** Default constructor for PatchPipelineConfiguration. */
+  protected PatchPipelineConfiguration() {}
 
   /**
-   * Set the pipelineId of this {@link ManualPipelineTrigger} instance and return the same instance.
-   *
-   * @param pipelineId The pipelineId of this {@link ManualPipelineTrigger}
-   * @return The same instance of this {@link ManualPipelineTrigger} class
-   */
-  @Nonnull
-  public ManualPipelineTrigger pipelineId(@Nullable final String pipelineId) {
-    this.pipelineId = pipelineId;
-    return this;
-  }
-
-  /**
-   * Get pipelineId
-   *
-   * @return pipelineId The pipelineId of this {@link ManualPipelineTrigger} instance.
-   */
-  @Nonnull
-  public String getPipelineId() {
-    return pipelineId;
-  }
-
-  /**
-   * Set the pipelineId of this {@link ManualPipelineTrigger} instance.
-   *
-   * @param pipelineId The pipelineId of this {@link ManualPipelineTrigger}
-   */
-  public void setPipelineId(@Nullable final String pipelineId) {
-    this.pipelineId = pipelineId;
-  }
-
-  /**
-   * Set the metadataOnly of this {@link ManualPipelineTrigger} instance and return the same
+   * Set the cronExpression of this {@link PatchPipelineConfiguration} instance and return the same
    * instance.
    *
-   * @param metadataOnly The metadataOnly of this {@link ManualPipelineTrigger}
-   * @return The same instance of this {@link ManualPipelineTrigger} class
+   * @param cronExpression The cronExpression of this {@link PatchPipelineConfiguration}
+   * @return The same instance of this {@link PatchPipelineConfiguration} class
    */
   @Nonnull
-  public ManualPipelineTrigger metadataOnly(@Nullable final Boolean metadataOnly) {
-    this.metadataOnly = metadataOnly;
+  public PatchPipelineConfiguration cronExpression(@Nullable final String cronExpression) {
+    this.cronExpression = cronExpression;
     return this;
   }
 
   /**
-   * Get metadataOnly
+   * Get cronExpression
    *
-   * @return metadataOnly The metadataOnly of this {@link ManualPipelineTrigger} instance.
+   * @return cronExpression The cronExpression of this {@link PatchPipelineConfiguration} instance.
    */
   @Nonnull
-  public Boolean isMetadataOnly() {
-    return metadataOnly;
+  public String getCronExpression() {
+    return cronExpression;
   }
 
   /**
-   * Set the metadataOnly of this {@link ManualPipelineTrigger} instance.
+   * Set the cronExpression of this {@link PatchPipelineConfiguration} instance.
    *
-   * @param metadataOnly The metadataOnly of this {@link ManualPipelineTrigger}
+   * @param cronExpression The cronExpression of this {@link PatchPipelineConfiguration}
    */
-  public void setMetadataOnly(@Nullable final Boolean metadataOnly) {
-    this.metadataOnly = metadataOnly;
+  public void setCronExpression(@Nullable final String cronExpression) {
+    this.cronExpression = cronExpression;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ManualPipelineTrigger}.
+   * Get the names of the unrecognizable properties of the {@link PatchPipelineConfiguration}.
    *
    * @return The set of properties names
    */
@@ -115,7 +81,8 @@ public class ManualPipelineTrigger
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ManualPipelineTrigger} instance.
+   * Get the value of an unrecognizable property of this {@link PatchPipelineConfiguration}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -127,13 +94,13 @@ public class ManualPipelineTrigger
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ManualPipelineTrigger has no field with name '" + name + "'.");
+          "PatchPipelineConfiguration has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ManualPipelineTrigger} instance including
+   * Get the value of all properties of this {@link PatchPipelineConfiguration} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -142,13 +109,12 @@ public class ManualPipelineTrigger
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (pipelineId != null) declaredFields.put("pipelineId", pipelineId);
-    if (metadataOnly != null) declaredFields.put("metadataOnly", metadataOnly);
+    if (cronExpression != null) declaredFields.put("cronExpression", cronExpression);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ManualPipelineTrigger} instance. If the map
+   * Set an unrecognizable property of this {@link PatchPipelineConfiguration} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -167,24 +133,23 @@ public class ManualPipelineTrigger
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ManualPipelineTrigger manualPipelineTrigger = (ManualPipelineTrigger) o;
-    return Objects.equals(this.cloudSdkCustomFields, manualPipelineTrigger.cloudSdkCustomFields)
-        && Objects.equals(this.pipelineId, manualPipelineTrigger.pipelineId)
-        && Objects.equals(this.metadataOnly, manualPipelineTrigger.metadataOnly);
+    final PatchPipelineConfiguration patchPipelineConfiguration = (PatchPipelineConfiguration) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, patchPipelineConfiguration.cloudSdkCustomFields)
+        && Objects.equals(this.cronExpression, patchPipelineConfiguration.cronExpression);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(pipelineId, metadataOnly, cloudSdkCustomFields);
+    return Objects.hash(cronExpression, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ManualPipelineTrigger {\n");
-    sb.append("    pipelineId: ").append(toIndentedString(pipelineId)).append("\n");
-    sb.append("    metadataOnly: ").append(toIndentedString(metadataOnly)).append("\n");
+    sb.append("class PatchPipelineConfiguration {\n");
+    sb.append("    cronExpression: ").append(toIndentedString(cronExpression)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -202,8 +167,8 @@ public class ManualPipelineTrigger
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link ManualPipelineTrigger} instance. No arguments are required. */
-  public static ManualPipelineTrigger create() {
-    return new ManualPipelineTrigger();
+  /** Create a new {@link PatchPipelineConfiguration} instance. No arguments are required. */
+  public static PatchPipelineConfiguration create() {
+    return new PatchPipelineConfiguration();
   }
 }

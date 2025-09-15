@@ -82,7 +82,7 @@ public class MSSharePointConfigurationGetResponse
    */
   @Nonnull
   public MSSharePointConfigurationGetResponse sharePoint(
-      @Nullable final SharePointConfigGetResponse sharePoint) {
+      @Nonnull final SharePointConfigGetResponse sharePoint) {
     this.sharePoint = sharePoint;
     return this;
   }
@@ -103,7 +103,7 @@ public class MSSharePointConfigurationGetResponse
    *
    * @param sharePoint The sharePoint of this {@link MSSharePointConfigurationGetResponse}
    */
-  public void setSharePoint(@Nullable final SharePointConfigGetResponse sharePoint) {
+  public void setSharePoint(@Nonnull final SharePointConfigGetResponse sharePoint) {
     this.sharePoint = sharePoint;
   }
 
@@ -216,7 +216,11 @@ public class MSSharePointConfigurationGetResponse
    * MSSharePointConfigurationGetResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (destination) -> new MSSharePointConfigurationGetResponse().destination(destination);
+    return (destination) ->
+        (sharePoint) ->
+            new MSSharePointConfigurationGetResponse()
+                .destination(destination)
+                .sharePoint(sharePoint);
   }
 
   /** Builder helper class. */
@@ -225,8 +229,20 @@ public class MSSharePointConfigurationGetResponse
      * Set the destination of this {@link MSSharePointConfigurationGetResponse} instance.
      *
      * @param destination The destination of this {@link MSSharePointConfigurationGetResponse}
+     * @return The MSSharePointConfigurationGetResponse builder.
+     */
+    Builder1 destination(@Nonnull final String destination);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the sharePoint of this {@link MSSharePointConfigurationGetResponse} instance.
+     *
+     * @param sharePoint The sharePoint of this {@link MSSharePointConfigurationGetResponse}
      * @return The MSSharePointConfigurationGetResponse instance.
      */
-    MSSharePointConfigurationGetResponse destination(@Nonnull final String destination);
+    MSSharePointConfigurationGetResponse sharePoint(
+        @Nonnull final SharePointConfigGetResponse sharePoint);
   }
 }
