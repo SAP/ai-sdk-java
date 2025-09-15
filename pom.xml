@@ -62,7 +62,7 @@
     <slf4j.version>2.0.17</slf4j.version>
     <checkstyle.version>11.0.1</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
-    <surefire.version>3.5.3</surefire.version>
+    <surefire.version>3.5.4</surefire.version>
     <springframework.version>6.2.10</springframework.version>
     <spring-ai.version>1.0.1</spring-ai.version>
     <reactor-core.version>3.7.9</reactor-core.version>
