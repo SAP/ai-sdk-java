@@ -8,6 +8,7 @@ import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.MessageToolCall;
 import com.sap.ai.sdk.orchestration.model.TextContent;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -57,23 +58,32 @@ public class AssistantMessage implements Message {
    * Creates a new assistant message with the given tool calls.
    *
    * @param toolCalls list of tool call objects
+   * @deprecated Please use {@link #withToolCalls(List)} instead.
    */
+  @Deprecated
   public AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
     content = new MessageContent(List.of());
     this.toolCalls = toolCalls;
   }
 
-  /**
-   * Creates a new assistant message with the given message and tool calls.
-   *
-   * @param singleMessage the message content.
-   * @param toolCalls list of tool call objects
-   * @since 1.11.0
-   */
-  public AssistantMessage(
-      @Nonnull final String singleMessage, @Nullable final List<MessageToolCall> toolCalls) {
-    this.content = new MessageContent(List.of(new TextItem(singleMessage)));
+  private AssistantMessage(
+      @Nonnull final MessageContent content, @Nullable final List<MessageToolCall> toolCalls) {
+    this.content = content;
     this.toolCalls = toolCalls;
+  }
+
+  /**
+   * Returns a new AssistantMessage instance with the provided tool calls added to the existing
+   * ones.
+   *
+   * @param toolCalls the list of tool calls to add.
+   * @return a new AssistantMessage instance with the combined tool calls.
+   */
+  @Nonnull
+  public AssistantMessage withToolCalls(@Nonnull final List<MessageToolCall> toolCalls) {
+    val newToolcalls = new ArrayList<>(this.toolCalls != null ? this.toolCalls : List.of());
+    newToolcalls.addAll(toolCalls);
+    return new AssistantMessage(this.content, newToolcalls);
   }
 
   @Nonnull
