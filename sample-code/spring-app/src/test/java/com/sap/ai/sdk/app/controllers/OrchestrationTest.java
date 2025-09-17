@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.*;
 import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
@@ -469,5 +470,31 @@ class OrchestrationTest {
         .hasSize(2)
         .isInstanceOf(List.class)
         .allSatisfy(vector -> assertThat(vector).isInstanceOf(float[].class));
+  }
+
+  @Test
+  void wrongModelVersion() {
+    val filterConfig =
+        new OrchestrationModuleConfig()
+            .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
+    val prompt = new OrchestrationPrompt("HelloWorld!");
+
+    assertThatThrownBy(
+            () ->
+                client.chatCompletion(
+                    prompt, filterConfig.withLlmConfig(GPT_5.withName("wrong-model"))))
+        .isExactlyInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("400")
+        .hasMessageContaining("Model name must be one of");
+
+    assertThatThrownBy(
+            () ->
+                client
+                    .streamChatCompletion(
+                        prompt, filterConfig.withLlmConfig(GPT_5.withVersion("wrong-version")))
+                    .forEach(System.out::println))
+        .isExactlyInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("400")
+        .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
   }
 }

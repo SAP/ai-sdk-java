@@ -87,7 +87,7 @@ jobs:
               FILE_PATH='orchestration/src/main/resources/spec/orchestration.yaml'
               ;;
             prompt-registry)
-              API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/prompt-registry.yaml?ref=$REF"
+              API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml?ref=$REF"
               FILE_PATH='core-services/prompt-registry/src/main/resources/spec/prompt-registry.yaml'
               ;;
           esac
@@ -105,16 +105,11 @@ jobs:
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: "Install Baseline SDK Version"
-        # this is needed as otherwise "process sources" will fail on e.g. orchestration module, if the core module isn't in the maven cache
-        run: |
-          mvn install -DskipTests
-
       - name: "Generate"
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
-          mvn process-sources -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }}
+          mvn install -DskipTests -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }}
 
       - name: "Compile and Test"
         id: compile
