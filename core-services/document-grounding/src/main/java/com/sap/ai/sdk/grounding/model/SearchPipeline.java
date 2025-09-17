@@ -25,76 +25,45 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** MetaData */
+/** SearchPipeline */
 // CHECKSTYLE:OFF
-public class MetaData
+public class SearchPipeline
 // CHECKSTYLE:ON
 {
-  @JsonProperty("destination")
-  private String destination;
-
   @JsonProperty("dataRepositoryMetadata")
-  private List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata = new ArrayList<>();
+  private List<SearchPipelineDataRepositoryMetadataInner> dataRepositoryMetadata =
+      new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for MetaData. */
-  protected MetaData() {}
+  /** Default constructor for SearchPipeline. */
+  protected SearchPipeline() {}
 
   /**
-   * Set the destination of this {@link MetaData} instance and return the same instance.
+   * Set the dataRepositoryMetadata of this {@link SearchPipeline} instance and return the same
+   * instance.
    *
-   * @param destination The destination of this {@link MetaData}
-   * @return The same instance of this {@link MetaData} class
+   * @param dataRepositoryMetadata Search for metadata happens at key level. Pipelines matching the
+   *     search criteria will be returned.
+   * @return The same instance of this {@link SearchPipeline} class
    */
   @Nonnull
-  public MetaData destination(@Nullable final String destination) {
-    this.destination = destination;
-    return this;
-  }
-
-  /**
-   * Get destination
-   *
-   * @return destination The destination of this {@link MetaData} instance.
-   */
-  @Nonnull
-  public String getDestination() {
-    return destination;
-  }
-
-  /**
-   * Set the destination of this {@link MetaData} instance.
-   *
-   * @param destination The destination of this {@link MetaData}
-   */
-  public void setDestination(@Nullable final String destination) {
-    this.destination = destination;
-  }
-
-  /**
-   * Set the dataRepositoryMetadata of this {@link MetaData} instance and return the same instance.
-   *
-   * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link MetaData}
-   * @return The same instance of this {@link MetaData} class
-   */
-  @Nonnull
-  public MetaData dataRepositoryMetadata(
-      @Nullable final List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata) {
+  public SearchPipeline dataRepositoryMetadata(
+      @Nullable final List<SearchPipelineDataRepositoryMetadataInner> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
     return this;
   }
 
   /**
-   * Add one dataRepositoryMetadata instance to this {@link MetaData}.
+   * Add one dataRepositoryMetadata instance to this {@link SearchPipeline}.
    *
    * @param dataRepositoryMetadataItem The dataRepositoryMetadata that should be added
-   * @return The same instance of type {@link MetaData}
+   * @return The same instance of type {@link SearchPipeline}
    */
   @Nonnull
-  public MetaData addDataRepositoryMetadataItem(
-      @Nonnull final MetaDataDataRepositoryMetadataInner dataRepositoryMetadataItem) {
+  public SearchPipeline addDataRepositoryMetadataItem(
+      @Nonnull final SearchPipelineDataRepositoryMetadataInner dataRepositoryMetadataItem) {
     if (this.dataRepositoryMetadata == null) {
       this.dataRepositoryMetadata = new ArrayList<>();
     }
@@ -103,27 +72,30 @@ public class MetaData
   }
 
   /**
-   * Get dataRepositoryMetadata
+   * Search for metadata happens at key level. Pipelines matching the search criteria will be
+   * returned.
    *
-   * @return dataRepositoryMetadata The dataRepositoryMetadata of this {@link MetaData} instance.
+   * @return dataRepositoryMetadata The dataRepositoryMetadata of this {@link SearchPipeline}
+   *     instance.
    */
   @Nonnull
-  public List<MetaDataDataRepositoryMetadataInner> getDataRepositoryMetadata() {
+  public List<SearchPipelineDataRepositoryMetadataInner> getDataRepositoryMetadata() {
     return dataRepositoryMetadata;
   }
 
   /**
-   * Set the dataRepositoryMetadata of this {@link MetaData} instance.
+   * Set the dataRepositoryMetadata of this {@link SearchPipeline} instance.
    *
-   * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link MetaData}
+   * @param dataRepositoryMetadata Search for metadata happens at key level. Pipelines matching the
+   *     search criteria will be returned.
    */
   public void setDataRepositoryMetadata(
-      @Nullable final List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata) {
+      @Nullable final List<SearchPipelineDataRepositoryMetadataInner> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link MetaData}.
+   * Get the names of the unrecognizable properties of the {@link SearchPipeline}.
    *
    * @return The set of properties names
    */
@@ -134,7 +106,7 @@ public class MetaData
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link MetaData} instance.
+   * Get the value of an unrecognizable property of this {@link SearchPipeline} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -145,13 +117,13 @@ public class MetaData
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("MetaData has no field with name '" + name + "'.");
+      throw new NoSuchElementException("SearchPipeline has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link MetaData} instance including unrecognized
+   * Get the value of all properties of this {@link SearchPipeline} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -160,14 +132,13 @@ public class MetaData
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (destination != null) declaredFields.put("destination", destination);
     if (dataRepositoryMetadata != null)
       declaredFields.put("dataRepositoryMetadata", dataRepositoryMetadata);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link MetaData} instance. If the map previously
+   * Set an unrecognizable property of this {@link SearchPipeline} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -186,23 +157,21 @@ public class MetaData
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final MetaData metaData = (MetaData) o;
-    return Objects.equals(this.cloudSdkCustomFields, metaData.cloudSdkCustomFields)
-        && Objects.equals(this.destination, metaData.destination)
-        && Objects.equals(this.dataRepositoryMetadata, metaData.dataRepositoryMetadata);
+    final SearchPipeline searchPipeline = (SearchPipeline) o;
+    return Objects.equals(this.cloudSdkCustomFields, searchPipeline.cloudSdkCustomFields)
+        && Objects.equals(this.dataRepositoryMetadata, searchPipeline.dataRepositoryMetadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(destination, dataRepositoryMetadata, cloudSdkCustomFields);
+    return Objects.hash(dataRepositoryMetadata, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class MetaData {\n");
-    sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
+    sb.append("class SearchPipeline {\n");
     sb.append("    dataRepositoryMetadata: ")
         .append(toIndentedString(dataRepositoryMetadata))
         .append("\n");
@@ -223,8 +192,8 @@ public class MetaData
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link MetaData} instance. No arguments are required. */
-  public static MetaData create() {
-    return new MetaData();
+  /** Create a new {@link SearchPipeline} instance. No arguments are required. */
+  public static SearchPipeline create() {
+    return new SearchPipeline();
   }
 }
