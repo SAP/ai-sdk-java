@@ -24,7 +24,7 @@ import lombok.experimental.Tolerate;
 /**
  * Represents a request for generating embeddings through the SAP AI Core Orchestration service.
  *
- * @since 1.11.0
+ * @since 1.12.0
  */
 @Beta
 @Value

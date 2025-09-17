@@ -230,7 +230,7 @@ public class OrchestrationClient {
    * @param request the request containing the input text and other parameters.
    * @return the response containing the embeddings.
    * @throws OrchestrationClientException if the request fails
-   * @since 1.11.0
+   * @since 1.12.0
    */
   @Nonnull
   public OrchestrationEmbeddingResponse embed(@Nonnull final OrchestrationEmbeddingRequest request)
@@ -248,7 +248,7 @@ public class OrchestrationClient {
    * @param request the low-level API request
    * @return the low level response object
    * @throws OrchestrationClientException if the request fails
-   * @since 1.11.0
+   * @since 1.12.0
    * @see #embed(OrchestrationEmbeddingRequest)
    */
   @Nonnull
