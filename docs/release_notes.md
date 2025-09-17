@@ -20,4 +20,4 @@
 
 ### 🐛 Fixed Issues
 
--
+- [Orchestration] Tool calling works on all models
