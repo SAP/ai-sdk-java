@@ -126,6 +126,7 @@ public class OrchestrationChatModel implements ChatModel {
               case USER:
                 yield List.of(new UserMessage(msg.getText()));
               case ASSISTANT:
+                val assistantMessage = new AssistantMessage(msg.getText());
                 val springToolCalls =
                     ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
                 if (springToolCalls != null && !springToolCalls.isEmpty()) {
@@ -133,9 +134,9 @@ public class OrchestrationChatModel implements ChatModel {
                       springToolCalls.stream()
                           .map(OrchestrationChatModel::toOrchestrationToolCall)
                           .toList();
-                  yield List.of(new AssistantMessage(sdkToolCalls));
+                  yield List.of(assistantMessage.withToolCalls(sdkToolCalls));
                 }
-                yield List.of(new AssistantMessage(msg.getText()));
+                yield List.of(assistantMessage);
               case TOOL:
                 val toolResponses = ((ToolResponseMessage) msg).getResponses();
                 yield toolResponses.stream()
