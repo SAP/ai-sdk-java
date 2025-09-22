@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] OutputFilter configuration for streaming can be conveniently set via `OrchestrationModuleConfig#withOutputFilteringStreamOptions`.
+- [Orchestration] For streaming, add convenience configuration AOU for output-filter-overlap, chunk-size, and delimiters via `OrchestrationModuleConfig#withStreamConfig`.
 
 ### 📈 Improvements
 
