@@ -8,8 +8,7 @@ jobs:
   update-all-specs:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      actions: write
 
     strategy:
       matrix:
@@ -17,16 +16,51 @@ jobs:
           - core
           - document-grounding
           - prompt-registry
+          - orchestration
 
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: "Get orchestration version"
+        if: matrix.file == 'orchestration'
+        run: |
+          ORCH_VERSION=$(curl --silent --request GET --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github.v3.raw" | grep 'version:' | awk '{print $2}')
+
+          if [ -z "$ORCH_VERSION" ]; then
+              echo "Failed to fetch orchestration version"
+              exit 1
+          fi
+          echo "Orchestration version: $ORCH_VERSION"
+          echo "ORCH_VERSION=$ORCH_VERSION" >> $GITHUB_ENV
+        env:
+          TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
+
 
       - name: "Trigger spec update"
         run: |
+          BRANCH="main"
+          if [ "${{ matrix.file }}" = "orchestration" ]; then
+            BRANCH="rel/$ORCH_VERSION"
+          fi
+          echo "Using branch: $BRANCH"
+
           gh workflow run spec-update.yaml \
             --field file=${{ matrix.file }} \
-            --field file-ref=main \
+            --field file-ref=$BRANCH \
             --field create-pr=true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Slack Notification"
+        if: failure()
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "section"
+                text:
+                    type: "mrkdwn"
+                    text: "⚠️ Weekly spec update failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"

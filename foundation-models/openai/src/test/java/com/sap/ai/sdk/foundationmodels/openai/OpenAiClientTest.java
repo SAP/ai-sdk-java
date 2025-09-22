@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.*;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiContentFilterSeverityResult.Severity.SAFE;
@@ -261,7 +262,7 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
       try (var stream = client.streamChatCompletionDeltas(request)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
             .isInstanceOf(OpenAiClientException.class)
-            .hasMessage("Failed to parse response");
+            .hasMessage("exceeded token rate limit");
       }
 
       Mockito.verify(inputStream, times(1)).close();
@@ -479,5 +480,31 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
                         }
                       }
                       """)));
+  }
+
+  @Test
+  void testCustomHeaders() {
+    stubForChatCompletion();
+    final var request =
+        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+    final var clientWithHeader = client.withHeader("Header-For-Both", "value");
+
+    final var result = clientWithHeader.withHeader("foo", "bar").chatCompletion(request);
+    assertThat(result).isNotNull();
+
+    var streamResult =
+        clientWithHeader
+            .withHeader("foot", "baz")
+            .streamChatCompletion("Hello World! Why is this phrase so famous?");
+    assertThat(streamResult).isNotNull();
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foo", equalTo("bar")));
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foot", equalTo("baz")));
   }
 }

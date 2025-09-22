@@ -14,7 +14,6 @@ import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
 import com.github.victools.jsonschema.generator.SchemaVersion;
 import com.github.victools.jsonschema.module.jackson.JacksonModule;
 import com.github.victools.jsonschema.module.jackson.JacksonOption;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import java.util.ArrayList;
@@ -42,7 +41,6 @@ import lombok.extern.slf4j.Slf4j;
  * @since 1.8.0
  */
 @Slf4j
-@Beta
 @Value
 @With
 @Getter(AccessLevel.PACKAGE)
@@ -165,7 +163,6 @@ public class OpenAiTool {
    * @param msg the assistant message containing a list of tool calls with arguments
    * @return The list of tool messages with the results.
    */
-  @Beta
   @Nonnull
   static List<OpenAiToolMessage> execute(
       @Nonnull final List<OpenAiTool> tools, @Nonnull final OpenAiAssistantMessage msg) {

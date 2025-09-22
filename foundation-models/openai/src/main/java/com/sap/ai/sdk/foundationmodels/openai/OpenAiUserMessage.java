@@ -2,7 +2,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import static lombok.AccessLevel.PACKAGE;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartImage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartImageImageUrl;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionRequestMessageContentPartText;
@@ -25,7 +24,6 @@ import lombok.experimental.Tolerate;
  *
  * @since 1.4.0
  */
-@Beta
 @Value
 @Accessors(fluent = true)
 @AllArgsConstructor(access = PACKAGE)
@@ -35,9 +33,7 @@ public class OpenAiUserMessage implements OpenAiMessage {
   @Nonnull String role = "user";
 
   /** The content of the message. */
-  @Getter(onMethod_ = @Beta)
-  @Nonnull
-  OpenAiMessageContent content;
+  @Getter @Nonnull OpenAiMessageContent content;
 
   /**
    * Creates a new user message from a string.

@@ -4,6 +4,17 @@
     "code": 400,
     "message": "'config' is a required property",
     "location": "request body",
-    "intermediate_results": {}
+    "intermediate_results": {
+      "input_filtering": {
+        "message": "Input Filter passed successfully.",
+        "data": {
+          "azure_content_safety": {
+            "userPromptAnalysis": {
+              "attackDetected": false
+            }
+          }
+        }
+      }
+    }
   }
 }

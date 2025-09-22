@@ -48,21 +48,16 @@ jobs:
       CREATE_PR: ${{ github.event.inputs.create-pr }}
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
       - name: "Setup Java"
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
-
-      - name: "Install Baseline SDK Version"
-        # this is needed as otherwise "process sources" will fail on e.g. orchestration module, if the core module isn't in the maven cache
-        run: |
-          mvn install -DskipTests
 
       - name: "Checkout or Create Branch"
         id: branch
@@ -92,7 +87,7 @@ jobs:
               FILE_PATH='orchestration/src/main/resources/spec/orchestration.yaml'
               ;;
             prompt-registry)
-              API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/prompt-registry.yaml?ref=$REF"
+              API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml?ref=$REF"
               FILE_PATH='core-services/prompt-registry/src/main/resources/spec/prompt-registry.yaml'
               ;;
           esac
@@ -114,7 +109,7 @@ jobs:
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
-          mvn process-sources -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }}
+          mvn install -DskipTests -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }}
 
       - name: "Compile and Test"
         id: compile

@@ -5,7 +5,9 @@
         "model": {
           "name": "gpt-4o",
           "params": {},
-          "version": "latest"
+          "version": "latest",
+          "timeout" : 600,
+          "max_retries" : 2
         },
         "prompt": {
           "template": [
@@ -15,6 +17,7 @@
             },
             {
               "role": "assistant",
+              "content" : "",
               "tool_calls": [
                 {
                   "id": "call_LOyP7EVdeqFlGEmVzmPdCVey",

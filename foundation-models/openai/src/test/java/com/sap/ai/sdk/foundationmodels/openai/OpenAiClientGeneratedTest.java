@@ -298,7 +298,7 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
       try (var stream = client.streamChatCompletionDeltas(request)) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
             .isInstanceOf(OpenAiClientException.class)
-            .hasMessage("Failed to parse response");
+            .hasMessage("exceeded token rate limit");
       }
 
       Mockito.verify(inputStream, times(1)).close();

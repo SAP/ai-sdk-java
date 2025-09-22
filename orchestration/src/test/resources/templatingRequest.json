@@ -12,7 +12,9 @@
             "top_p": 1,
             "n": 1
           },
-          "version": "latest"
+          "version": "latest",
+          "timeout" : 600,
+          "max_retries" : 2
         },
         "prompt": {
           "template": [

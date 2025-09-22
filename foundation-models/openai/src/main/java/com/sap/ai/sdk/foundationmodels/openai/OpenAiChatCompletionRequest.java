@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
@@ -30,7 +29,6 @@ import lombok.experimental.Tolerate;
  *     API Reference</a>
  * @since 1.4.0
  */
-@Beta
 @Value
 @With
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

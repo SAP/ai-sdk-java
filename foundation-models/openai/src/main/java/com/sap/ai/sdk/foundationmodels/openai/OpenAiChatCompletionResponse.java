@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatC
 import static lombok.AccessLevel.NONE;
 import static lombok.AccessLevel.PACKAGE;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
@@ -21,7 +20,6 @@ import lombok.Value;
  *
  * @since 1.4.0
  */
-@Beta
 @Value
 @RequiredArgsConstructor(access = PACKAGE)
 @Setter(value = NONE)

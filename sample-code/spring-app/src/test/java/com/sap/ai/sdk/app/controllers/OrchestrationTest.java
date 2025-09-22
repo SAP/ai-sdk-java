@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.*;
 import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
@@ -24,6 +25,7 @@ import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -323,7 +325,10 @@ class OrchestrationTest {
     String dataUrl = "";
     try {
       URL url = new URL("https://upload.wikimedia.org/wikipedia/commons/c/c9/Sap-logo-700x700.jpg");
-      try (InputStream inputStream = url.openStream()) {
+      // the "User-Agent" header is required to avoid a 403
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      connection.setRequestProperty("User-Agent", "Test implementation");
+      try (InputStream inputStream = connection.getInputStream()) {
         byte[] imageBytes = inputStream.readAllBytes();
         byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
         String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
@@ -453,5 +458,31 @@ class OrchestrationTest {
     assertThat(outputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage()).isEqualTo("Input to LLM is translated successfully.");
     assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
+  }
+
+  @Test
+  void wrongModelVersion() {
+    val filterConfig =
+        new OrchestrationModuleConfig()
+            .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
+    val prompt = new OrchestrationPrompt("HelloWorld!");
+
+    assertThatThrownBy(
+            () ->
+                client.chatCompletion(
+                    prompt, filterConfig.withLlmConfig(GPT_5.withName("wrong-model"))))
+        .isExactlyInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("400")
+        .hasMessageContaining("Model name must be one of");
+
+    assertThatThrownBy(
+            () ->
+                client
+                    .streamChatCompletion(
+                        prompt, filterConfig.withLlmConfig(GPT_5.withVersion("wrong-version")))
+                    .forEach(System.out::println))
+        .isExactlyInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("400")
+        .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
   }
 }
