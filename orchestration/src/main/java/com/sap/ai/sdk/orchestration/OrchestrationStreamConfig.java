@@ -47,7 +47,7 @@ public class OrchestrationStreamConfig {
     if (chunkSize == null && delimiters == null) {
       return null;
     }
-    val opts = GlobalStreamOptions.create().enabled(true);
+    val opts = GlobalStreamOptions.create();
     Optional.ofNullable(chunkSize).ifPresent(opts::setChunkSize);
     opts.setDelimiters(delimiters == null ? null : List.copyOf(delimiters));
     return opts;
