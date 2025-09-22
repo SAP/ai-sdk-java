@@ -24,17 +24,22 @@ public class OrchestrationStreamConfig {
    * Number of characters that should be additionally sent to content filtering services from
    * previous chunks as additional context.
    */
-  @Nullable Integer overlap;
+  @Nullable Integer filterOverlap;
 
   /** Size of the chunks the response will be split into when streaming. */
-  @Nullable Integer chunkSize = null;
+  @Nullable Integer chunkSize;
 
   /** List of delimiters to use for chunking the response when streaming. */
-  @Nullable List<String> delimiters = null;
+  @Nullable List<String> delimiters;
+
+  /** Default constructor for OrchestrationStreamConfig. */
+  public OrchestrationStreamConfig() {
+    this(null, null, null);
+  }
 
   @Nullable
   FilteringStreamOptions createFilteringStreamOptions() {
-    return overlap == null ? null : FilteringStreamOptions.create().overlap(overlap);
+    return filterOverlap == null ? null : FilteringStreamOptions.create().overlap(filterOverlap);
   }
 
   @Nullable
@@ -42,9 +47,9 @@ public class OrchestrationStreamConfig {
     if (chunkSize == null && delimiters == null) {
       return null;
     }
-    val opts = GlobalStreamOptions.create();
+    val opts = GlobalStreamOptions.create().enabled(true);
     Optional.ofNullable(chunkSize).ifPresent(opts::setChunkSize);
-    Optional.ofNullable(delimiters).ifPresent(d -> opts.setDelimiters(List.copyOf(d)));
+    opts.setDelimiters(delimiters == null ? null : List.copyOf(delimiters));
     return opts;
   }
 }

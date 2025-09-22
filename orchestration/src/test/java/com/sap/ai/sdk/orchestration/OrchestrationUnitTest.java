@@ -482,6 +482,28 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void convenienceConfig() {
+    final var azureFilter = new AzureContentFilter().hate(ALLOW_SAFE_LOW_MEDIUM);
+
+    OrchestrationModuleConfig myConfig =
+        config
+            .withOutputFiltering(azureFilter)
+            .withOutputFilteringStreamOptions(FilteringStreamOptions.create().overlap(1_000));
+    OrchestrationModuleConfig myConfig2 =
+        config
+            .withOutputFiltering(azureFilter)
+            .withStreamConfig(new OrchestrationStreamConfig().withFilterOverlap(1_000));
+    assertThat(myConfig).isEqualTo(myConfig2);
+
+    OrchestrationModuleConfig myConfig3 =
+        config
+            .withOutputFiltering(azureFilter)
+            .withStreamConfig(
+                new OrchestrationStreamConfig().withFilterOverlap(1_000).withChunkSize(10));
+    assertThat(myConfig2).isNotEqualTo(myConfig3);
+  }
+
+  @Test
   void inputFilteringStrict() {
     stubFor(
         post(anyUrl())

@@ -219,7 +219,13 @@ public class OrchestrationClient {
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
-    request.getConfig().setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
+    val config = request.getConfig();
+    val stream = config.getStream();
+    if (stream == null) {
+      config.setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
+    } else {
+      stream.enabled(true);
+    }
 
     return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
   }
