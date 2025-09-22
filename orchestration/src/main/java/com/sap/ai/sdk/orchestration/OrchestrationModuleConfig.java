@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
+import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
@@ -18,6 +19,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.With;
@@ -102,9 +104,16 @@ public class OrchestrationModuleConfig {
   @Nullable SAPDocumentTranslation outputTranslationConfig;
 
   /** Configuration of optional streaming options for output filtering. */
-  @With(AccessLevel.NONE)
+  @With(AccessLevel.NONE) // may be exposed to public in the future
+  @Getter(AccessLevel.PACKAGE)
   @Nullable
   FilteringStreamOptions outputFilteringStreamOptions;
+
+  /** Configuration of optional streaming options for output filtering. */
+  @With(AccessLevel.PRIVATE) // may be exposed to public in the future
+  @Getter(AccessLevel.PACKAGE)
+  @Nullable
+  GlobalStreamOptions globalStreamOptions;
 
   /**
    * Creates a new configuration with the given LLM configuration.
@@ -119,6 +128,19 @@ public class OrchestrationModuleConfig {
   @Nonnull
   public OrchestrationModuleConfig withLlmConfig(@Nonnull final OrchestrationAiModel aiModel) {
     return withLlmConfig(aiModel.createConfig());
+  }
+
+  /**
+   * Creates a new configuration with the given stream configuration.
+   *
+   * @param config The stream configuration to use.
+   * @return A new configuration with the given stream configuration.
+   */
+  @Nonnull
+  public OrchestrationModuleConfig withStreamConfig(
+      @Nonnull final OrchestrationStreamConfig config) {
+    return this.withOutputFilteringStreamOptions(config.createFilteringStreamOptions())
+        .withGlobalStreamOptions(config.createGlobalStreamOptions());
   }
 
   /**
@@ -232,7 +254,7 @@ public class OrchestrationModuleConfig {
    * @return A new configuration with the given output filtering stream options.
    */
   @Nonnull
-  public OrchestrationModuleConfig withOutputFilteringStreamOptions(
+  OrchestrationModuleConfig withOutputFilteringStreamOptions(
       @Nullable final FilteringStreamOptions outputFilteringStreamOptions) {
     if (filteringConfig != null && filteringConfig.getOutput() != null) {
       filteringConfig.getOutput().setStreamOptions(outputFilteringStreamOptions);
@@ -245,7 +267,8 @@ public class OrchestrationModuleConfig {
         this.groundingConfig,
         this.inputTranslationConfig,
         this.outputTranslationConfig,
-        outputFilteringStreamOptions);
+        outputFilteringStreamOptions,
+        this.globalStreamOptions);
   }
 
   /**
