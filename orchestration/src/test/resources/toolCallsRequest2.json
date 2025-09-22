@@ -17,6 +17,7 @@
             },
             {
               "role": "assistant",
+              "content" : "",
               "tool_calls": [
                 {
                   "id": "call_LOyP7EVdeqFlGEmVzmPdCVey",
