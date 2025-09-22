@@ -27,7 +27,8 @@ import javax.annotation.Nullable;
 
 /** ResponseFormatJsonSchema */
 // CHECKSTYLE:OFF
-public class ResponseFormatJsonSchema implements PromptTemplateSpecResponseFormat
+public class ResponseFormatJsonSchema
+    implements PromptTemplateSpecResponseFormat, TemplateResponseFormat
 // CHECKSTYLE:ON
 {
   /** The type of response format being defined: &#x60;json_schema&#x60; */

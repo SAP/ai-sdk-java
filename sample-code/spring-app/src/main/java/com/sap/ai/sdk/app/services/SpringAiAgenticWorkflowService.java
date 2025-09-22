@@ -55,7 +55,7 @@ public class SpringAiAgenticWorkflowService {
         List.of(
             "You are a traveling planning agent for a single day trip. Where appropriate, use the provided tools. First, start by suggesting some restaurants for the mentioned city.",
             "Now, check the whether for the city.",
-            "Finally, combine the suggested itinerary from this conversation into a short, one-sentence plan for the day trip.");
+            "Finally, combine the suggested itinerary from this conversation into a short, one-sentence plan for the day trip. Make sure to include all the restaurants suggested by the tools and the actual temperature in your reply.");
 
     //    Perform the chain workflow
     String responseText = userInput;

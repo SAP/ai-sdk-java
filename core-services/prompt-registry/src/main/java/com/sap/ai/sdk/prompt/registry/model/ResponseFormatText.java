@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 
 /** ResponseFormatText */
 // CHECKSTYLE:OFF
-public class ResponseFormatText implements PromptTemplateSpecResponseFormat
+public class ResponseFormatText implements PromptTemplateSpecResponseFormat, TemplateResponseFormat
 // CHECKSTYLE:ON
 {
   /** The type of response format being defined: &#x60;text&#x60; */

@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.badRequest;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
@@ -170,6 +171,33 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> client.chatCompletion(prompt, config))
         .hasMessage(
             "Request failed with status 500 (Server Error): Internal Server Error located in Masking Module - Masking");
+  }
+
+  @Test
+  void testCustomHeaders() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var clientWithHeader = client.withHeader("Header-For-Both", "value");
+    final var result = clientWithHeader.withHeader("foo", "bar").chatCompletion(prompt, config);
+    assertThat(result).isNotNull();
+
+    var streamResult =
+        clientWithHeader.withHeader("foot", "baz").streamChatCompletion(prompt, config);
+    assertThat(streamResult).isNotNull();
+
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foo", equalTo("bar")));
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foot", equalTo("baz")));
   }
 
   @Test
@@ -668,19 +696,19 @@ class OrchestrationUnitTest {
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Server errors should be handled")
-        .isInstanceOf(OrchestrationClientException.class)
+        .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("500");
 
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Error objects from Orchestration should be interpreted")
-        .isInstanceOf(OrchestrationClientException.class)
+        .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("'config' is a required property");
 
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Failures while parsing error message should be handled")
-        .isInstanceOf(OrchestrationClientException.class)
+        .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400")
         .extracting(e -> e.getSuppressed()[0])
         .isInstanceOf(JsonParseException.class);
@@ -688,13 +716,13 @@ class OrchestrationUnitTest {
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Non-JSON responses should be handled")
-        .isInstanceOf(OrchestrationClientException.class)
+        .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("Failed to parse");
 
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Empty responses should be handled")
-        .isInstanceOf(OrchestrationClientException.class)
+        .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("HTTP Response is empty");
 
     softly.assertAll();
@@ -831,6 +859,35 @@ class OrchestrationUnitTest {
       }
 
       Mockito.verify(inputStream, times(1)).close();
+    }
+  }
+
+  @Test
+  void testStreamingErrorHandlingBadRequest() throws IOException {
+    try (var inputStream = fileLoader.apply("streamError.txt")) {
+      final var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+
+      // Create a mock response
+      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
+      final var inputStreamEntity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
+      mockResponse.setEntity(inputStreamEntity);
+      mockResponse.setHeader("Content-Type", "text/event-stream");
+
+      // Configure the HttpClient mock to return the mock response
+      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
+
+      val wrongConfig =
+          new OrchestrationModuleConfig()
+              .withLlmConfig(GPT_4O_MINI.withVersion("wrong-version"))
+              .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
+      val prompt = new OrchestrationPrompt("HelloWorld!");
+
+      assertThatThrownBy(
+              () -> client.streamChatCompletion(prompt, wrongConfig).forEach(System.out::println))
+          .isExactlyInstanceOf(OrchestrationClientException.class)
+          .hasMessageContaining("400")
+          .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
     }
   }
 
@@ -1409,6 +1466,8 @@ class OrchestrationUnitTest {
                             "model": {
                               "name": "text-embedding-3-large",
                               "version": "latest",
+                              "timeout" : 600,
+                              "max_retries" : 2,
                               "params": {
                                 "encoding_format": "float",
                                 "dimensions": 5,
