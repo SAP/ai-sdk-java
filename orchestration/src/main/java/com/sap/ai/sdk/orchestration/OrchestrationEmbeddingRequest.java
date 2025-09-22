@@ -35,18 +35,18 @@ public class OrchestrationEmbeddingRequest {
   @Nonnull OrchestrationEmbeddingModel model;
 
   /** The list of text inputs to be converted into embeddings. */
-  @Nonnull List<String> tokens;
+  @Nonnull List<String> inputs;
 
   /** Optional masking providers for data privacy and security. */
   @With(value = PRIVATE)
   @Nullable
   List<MaskingProvider> masking;
 
-  /** Optional token type classification to optimize embedding generation. */
+  /** Optional embedding input type classification to optimize embedding generation. */
   @With(value = PRIVATE)
   @Getter(NONE)
   @Nullable
-  EmbeddingsInput.TypeEnum tokenType;
+  EmbeddingsInput.TypeEnum inputType;
 
   /**
    * Create an embedding request using fluent API starting with model selection.
@@ -60,7 +60,7 @@ public class OrchestrationEmbeddingRequest {
    */
   @Nonnull
   public static InputStep forModel(@Nonnull final OrchestrationEmbeddingModel model) {
-    return tokens -> new OrchestrationEmbeddingRequest(model, List.copyOf(tokens), null, null);
+    return inputs -> new OrchestrationEmbeddingRequest(model, List.copyOf(inputs), null, null);
   }
 
   /** Builder step for specifying text inputs to embed. */
@@ -70,21 +70,22 @@ public class OrchestrationEmbeddingRequest {
     /**
      * Specifies text inputs to be embedded.
      *
-     * @param tokens the text strings to embed
+     * @param inputs the text strings to embed
      * @return a new embedding request instance
      */
     @Nonnull
-    OrchestrationEmbeddingRequest forInputs(@Nonnull final List<String> tokens);
+    OrchestrationEmbeddingRequest forInputs(@Nonnull final List<String> inputs);
 
     /**
      * Specifies multiple text inputs using variable arguments.
      *
-     * @param tokens one or more strings to embed
+     * @param inputs one or more strings to embed
      * @return a new embedding request instance
      */
     @Nonnull
-    default OrchestrationEmbeddingRequest forInputs(@Nonnull final String... tokens) {
-      return forInputs(List.of(tokens));
+    default OrchestrationEmbeddingRequest forInputs(
+        @Nonnull final String firstInput, String... inputs) {
+      return forInputs(Lists.asList(firstInput, inputs));
     }
   }
 
@@ -111,7 +112,7 @@ public class OrchestrationEmbeddingRequest {
    */
   @Nonnull
   public OrchestrationEmbeddingRequest asDocument() {
-    return withTokenType(EmbeddingsInput.TypeEnum.DOCUMENT);
+    return withInputType(EmbeddingsInput.TypeEnum.DOCUMENT);
   }
 
   /**
@@ -121,7 +122,7 @@ public class OrchestrationEmbeddingRequest {
    */
   @Nonnull
   public OrchestrationEmbeddingRequest asText() {
-    return withTokenType(EmbeddingsInput.TypeEnum.TEXT);
+    return withInputType(EmbeddingsInput.TypeEnum.TEXT);
   }
 
   /**
@@ -131,14 +132,14 @@ public class OrchestrationEmbeddingRequest {
    */
   @Nonnull
   public OrchestrationEmbeddingRequest asQuery() {
-    return withTokenType(EmbeddingsInput.TypeEnum.QUERY);
+    return withInputType(EmbeddingsInput.TypeEnum.QUERY);
   }
 
   @Nonnull
   EmbeddingsPostRequest createEmbeddingsPostRequest() {
 
     final var input =
-        EmbeddingsInput.create().text(EmbeddingsInputText.create(tokens)).type(tokenType);
+        EmbeddingsInput.create().text(EmbeddingsInputText.create(inputs)).type(inputType);
     final var embeddingsModelConfig =
         EmbeddingsModelConfig.create().model(model.createEmbeddingsModelDetails());
     final var modules =
