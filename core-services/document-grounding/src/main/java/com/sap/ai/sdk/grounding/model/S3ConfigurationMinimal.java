@@ -23,88 +23,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ManualPipelineTrigger */
+/** S3ConfigurationMinimal */
 // CHECKSTYLE:OFF
-public class ManualPipelineTrigger
+public class S3ConfigurationMinimal
 // CHECKSTYLE:ON
 {
-  @JsonProperty("pipelineId")
-  private String pipelineId;
-
-  @JsonProperty("metadataOnly")
-  private Boolean metadataOnly;
+  @JsonProperty("s3")
+  private SFTPConfigurationSftp s3;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ManualPipelineTrigger. */
-  protected ManualPipelineTrigger() {}
+  /** Default constructor for S3ConfigurationMinimal. */
+  protected S3ConfigurationMinimal() {}
 
   /**
-   * Set the pipelineId of this {@link ManualPipelineTrigger} instance and return the same instance.
+   * Set the s3 of this {@link S3ConfigurationMinimal} instance and return the same instance.
    *
-   * @param pipelineId The pipelineId of this {@link ManualPipelineTrigger}
-   * @return The same instance of this {@link ManualPipelineTrigger} class
+   * @param s3 The s3 of this {@link S3ConfigurationMinimal}
+   * @return The same instance of this {@link S3ConfigurationMinimal} class
    */
   @Nonnull
-  public ManualPipelineTrigger pipelineId(@Nullable final String pipelineId) {
-    this.pipelineId = pipelineId;
+  public S3ConfigurationMinimal s3(@Nonnull final SFTPConfigurationSftp s3) {
+    this.s3 = s3;
     return this;
   }
 
   /**
-   * Get pipelineId
+   * Get s3
    *
-   * @return pipelineId The pipelineId of this {@link ManualPipelineTrigger} instance.
+   * @return s3 The s3 of this {@link S3ConfigurationMinimal} instance.
    */
   @Nonnull
-  public String getPipelineId() {
-    return pipelineId;
+  public SFTPConfigurationSftp getS3() {
+    return s3;
   }
 
   /**
-   * Set the pipelineId of this {@link ManualPipelineTrigger} instance.
+   * Set the s3 of this {@link S3ConfigurationMinimal} instance.
    *
-   * @param pipelineId The pipelineId of this {@link ManualPipelineTrigger}
+   * @param s3 The s3 of this {@link S3ConfigurationMinimal}
    */
-  public void setPipelineId(@Nullable final String pipelineId) {
-    this.pipelineId = pipelineId;
+  public void setS3(@Nonnull final SFTPConfigurationSftp s3) {
+    this.s3 = s3;
   }
 
   /**
-   * Set the metadataOnly of this {@link ManualPipelineTrigger} instance and return the same
-   * instance.
-   *
-   * @param metadataOnly The metadataOnly of this {@link ManualPipelineTrigger}
-   * @return The same instance of this {@link ManualPipelineTrigger} class
-   */
-  @Nonnull
-  public ManualPipelineTrigger metadataOnly(@Nullable final Boolean metadataOnly) {
-    this.metadataOnly = metadataOnly;
-    return this;
-  }
-
-  /**
-   * Get metadataOnly
-   *
-   * @return metadataOnly The metadataOnly of this {@link ManualPipelineTrigger} instance.
-   */
-  @Nonnull
-  public Boolean isMetadataOnly() {
-    return metadataOnly;
-  }
-
-  /**
-   * Set the metadataOnly of this {@link ManualPipelineTrigger} instance.
-   *
-   * @param metadataOnly The metadataOnly of this {@link ManualPipelineTrigger}
-   */
-  public void setMetadataOnly(@Nullable final Boolean metadataOnly) {
-    this.metadataOnly = metadataOnly;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link ManualPipelineTrigger}.
+   * Get the names of the unrecognizable properties of the {@link S3ConfigurationMinimal}.
    *
    * @return The set of properties names
    */
@@ -115,7 +80,7 @@ public class ManualPipelineTrigger
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ManualPipelineTrigger} instance.
+   * Get the value of an unrecognizable property of this {@link S3ConfigurationMinimal} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -127,13 +92,13 @@ public class ManualPipelineTrigger
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ManualPipelineTrigger has no field with name '" + name + "'.");
+          "S3ConfigurationMinimal has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ManualPipelineTrigger} instance including
+   * Get the value of all properties of this {@link S3ConfigurationMinimal} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -142,13 +107,12 @@ public class ManualPipelineTrigger
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (pipelineId != null) declaredFields.put("pipelineId", pipelineId);
-    if (metadataOnly != null) declaredFields.put("metadataOnly", metadataOnly);
+    if (s3 != null) declaredFields.put("s3", s3);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ManualPipelineTrigger} instance. If the map
+   * Set an unrecognizable property of this {@link S3ConfigurationMinimal} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -167,24 +131,22 @@ public class ManualPipelineTrigger
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ManualPipelineTrigger manualPipelineTrigger = (ManualPipelineTrigger) o;
-    return Objects.equals(this.cloudSdkCustomFields, manualPipelineTrigger.cloudSdkCustomFields)
-        && Objects.equals(this.pipelineId, manualPipelineTrigger.pipelineId)
-        && Objects.equals(this.metadataOnly, manualPipelineTrigger.metadataOnly);
+    final S3ConfigurationMinimal s3ConfigurationMinimal = (S3ConfigurationMinimal) o;
+    return Objects.equals(this.cloudSdkCustomFields, s3ConfigurationMinimal.cloudSdkCustomFields)
+        && Objects.equals(this.s3, s3ConfigurationMinimal.s3);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(pipelineId, metadataOnly, cloudSdkCustomFields);
+    return Objects.hash(s3, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ManualPipelineTrigger {\n");
-    sb.append("    pipelineId: ").append(toIndentedString(pipelineId)).append("\n");
-    sb.append("    metadataOnly: ").append(toIndentedString(metadataOnly)).append("\n");
+    sb.append("class S3ConfigurationMinimal {\n");
+    sb.append("    s3: ").append(toIndentedString(s3)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -202,8 +164,22 @@ public class ManualPipelineTrigger
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link ManualPipelineTrigger} instance. No arguments are required. */
-  public static ManualPipelineTrigger create() {
-    return new ManualPipelineTrigger();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link S3ConfigurationMinimal}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (s3) -> new S3ConfigurationMinimal().s3(s3);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the s3 of this {@link S3ConfigurationMinimal} instance.
+     *
+     * @param s3 The s3 of this {@link S3ConfigurationMinimal}
+     * @return The S3ConfigurationMinimal instance.
+     */
+    S3ConfigurationMinimal s3(@Nonnull final SFTPConfigurationSftp s3);
   }
 }

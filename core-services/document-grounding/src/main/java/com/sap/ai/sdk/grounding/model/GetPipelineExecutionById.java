@@ -38,7 +38,7 @@ public class GetPipelineExecutionById
   private String modifiedAt;
 
   @JsonProperty("status")
-  private PipelineExecutionStatus status;
+  private String status;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -148,7 +148,7 @@ public class GetPipelineExecutionById
    * @return The same instance of this {@link GetPipelineExecutionById} class
    */
   @Nonnull
-  public GetPipelineExecutionById status(@Nullable final PipelineExecutionStatus status) {
+  public GetPipelineExecutionById status(@Nullable final String status) {
     this.status = status;
     return this;
   }
@@ -159,7 +159,7 @@ public class GetPipelineExecutionById
    * @return status The status of this {@link GetPipelineExecutionById} instance.
    */
   @Nonnull
-  public PipelineExecutionStatus getStatus() {
+  public String getStatus() {
     return status;
   }
 
@@ -168,7 +168,7 @@ public class GetPipelineExecutionById
    *
    * @param status The status of this {@link GetPipelineExecutionById}
    */
-  public void setStatus(@Nullable final PipelineExecutionStatus status) {
+  public void setStatus(@Nullable final String status) {
     this.status = status;
   }
 

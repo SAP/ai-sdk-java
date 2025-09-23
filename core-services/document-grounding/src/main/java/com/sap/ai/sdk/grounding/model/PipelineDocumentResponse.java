@@ -32,7 +32,7 @@ public class PipelineDocumentResponse
   private String id;
 
   @JsonProperty("status")
-  private DocumentStatus status;
+  private String status;
 
   @JsonProperty("viewLocation")
   private String viewLocation;
@@ -99,7 +99,7 @@ public class PipelineDocumentResponse
    * @return The same instance of this {@link PipelineDocumentResponse} class
    */
   @Nonnull
-  public PipelineDocumentResponse status(@Nullable final DocumentStatus status) {
+  public PipelineDocumentResponse status(@Nullable final String status) {
     this.status = status;
     return this;
   }
@@ -110,7 +110,7 @@ public class PipelineDocumentResponse
    * @return status The status of this {@link PipelineDocumentResponse} instance.
    */
   @Nonnull
-  public DocumentStatus getStatus() {
+  public String getStatus() {
     return status;
   }
 
@@ -119,7 +119,7 @@ public class PipelineDocumentResponse
    *
    * @param status The status of this {@link PipelineDocumentResponse}
    */
-  public void setStatus(@Nullable final DocumentStatus status) {
+  public void setStatus(@Nullable final String status) {
     this.status = status;
   }
 

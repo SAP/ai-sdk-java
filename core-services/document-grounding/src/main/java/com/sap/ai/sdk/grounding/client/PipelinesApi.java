@@ -9,8 +9,11 @@ import com.sap.ai.sdk.grounding.model.GetPipelineExecutions;
 import com.sap.ai.sdk.grounding.model.GetPipelineStatus;
 import com.sap.ai.sdk.grounding.model.GetPipelines;
 import com.sap.ai.sdk.grounding.model.ManualPipelineTrigger;
+import com.sap.ai.sdk.grounding.model.PatchPipeline;
 import com.sap.ai.sdk.grounding.model.PipelineDocumentResponse;
 import com.sap.ai.sdk.grounding.model.PipelineId;
+import com.sap.ai.sdk.grounding.model.SearchPipeline;
+import com.sap.ai.sdk.grounding.model.SearchPipelinesResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
@@ -1002,6 +1005,188 @@ public class PipelinesApi extends AbstractOpenApiService {
         localVarContentType,
         localVarAuthNames,
         localVarReturnType);
+  }
+
+  /**
+   * Patch pipeline
+   *
+   * <p>Patch a pipeline by pipeline id
+   *
+   * <p><b>204</b> - No Content
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param pipelineId The ID of the pipeline to patch.
+   * @param patchPipeline The value for the parameter patchPipeline
+   * @return An OpenApiResponse containing the status code of the HttpResponse.
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OpenApiResponse patchPipelineById(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final String pipelineId,
+      @Nonnull final PatchPipeline patchPipeline)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = patchPipeline;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling patchPipelineById");
+    }
+
+    // verify the required parameter 'pipelineId' is set
+    if (pipelineId == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'pipelineId' when calling patchPipelineById");
+    }
+
+    // verify the required parameter 'patchPipeline' is set
+    if (patchPipeline == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'patchPipeline' when calling pipelineV1PipelineEndpointsPatchPipelineById");
+    }
+
+    // create path and map variables
+    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    localVarPathParams.put("pipelineId", pipelineId);
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/pipelines/{pipelineId}")
+            .buildAndExpand(localVarPathParams)
+            .toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<Void> localVarReturnType =
+        new ParameterizedTypeReference<Void>() {};
+    apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.PATCH,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+    return new OpenApiResponse(apiClient);
+  }
+
+  /**
+   * Pipeline Search by Metadata
+   *
+   * <p>Search for pipelines based on metadata
+   *
+   * <p><b>200</b> - Returns pipelines for the tenant that matches the metadata
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * @param aiResourceGroup (required) Resource Group ID
+   * @param searchPipeline (required) The value for the parameter searchPipeline
+   * @param $top (optional) Number of results to display
+   * @param $skip (optional) Number of results to be skipped from the ordered list of results
+   * @param $count (optional) When the $count field is set to false, the response contains a count
+   *     of the items present in the response. When the $count field is set to true, the response
+   *     contains a count of all the items present on the server, and not just the ones in the
+   *     response. When the $count field is not passed, it is false by default.
+   * @return SearchPipelinesResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public SearchPipelinesResponse searchPipelinesByMetadata(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final SearchPipeline searchPipeline,
+      @Nullable final Integer $top,
+      @Nullable final Integer $skip,
+      @Nullable final Boolean $count)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = searchPipeline;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling searchPipelinesByMetadata");
+    }
+
+    // verify the required parameter 'searchPipeline' is set
+    if (searchPipeline == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'searchPipeline' when calling pipelineV1PipelineEndpointsSearchPipeline");
+    }
+
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/pipelines/search").build().toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<SearchPipelinesResponse> localVarReturnType =
+        new ParameterizedTypeReference<SearchPipelinesResponse>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.POST,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Pipeline Search by Metadata
+   *
+   * <p>Search for pipelines based on metadata
+   *
+   * <p><b>200</b> - Returns pipelines for the tenant that matches the metadata
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param searchPipeline The value for the parameter searchPipeline
+   * @return SearchPipelinesResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public SearchPipelinesResponse searchPipelinesByMetadata(
+      @Nonnull final String aiResourceGroup, @Nonnull final SearchPipeline searchPipeline)
+      throws OpenApiRequestException {
+    return searchPipelinesByMetadata(aiResourceGroup, searchPipeline, null, null, null);
   }
 
   /**
