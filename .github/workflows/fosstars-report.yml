@@ -82,13 +82,13 @@ jobs:
           report-branch: fosstars-report
           token: ${{ secrets.GITHUB_TOKEN }}
 
-#      - name: "Slack Notification"
-#        if: failure()
-#        uses: slackapi/slack-github-action@v2.1.1
-#        with:
-#          webhook: ${{ secrets.SLACK_WEBHOOK }}
-#          webhook-type: incoming-webhook
-#          payload: |
-#            {
-#              "text": "⚠️ OWASP Dependency check failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
-#            }
+      - name: "Slack Notification"
+        if: failure()
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": "⚠️ OWASP Dependency check failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
+            }
