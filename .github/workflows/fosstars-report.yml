@@ -44,8 +44,11 @@ jobs:
       - name: "CVE Scan"
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-        run: |
-          mvn -T1 --no-transfer-progress --batch-mode org.owasp:dependency-check-maven:check org.owasp:dependency-check-maven:aggregate
+        run: >
+          mvn -T1 --no-transfer-progress 
+          --batch-mode org.owasp:dependency-check-maven:check org.owasp:dependency-check-maven:aggregate
+          --ossIndexUsername "${{ secrets.OSS_INDEX_USERNAME }}"
+          --ossIndexPassword "${{ secrets.OSS_INDEX_PASSWORD }}"
 
       - name: "Archive CVE Report"
         uses: actions/upload-artifact@v4
