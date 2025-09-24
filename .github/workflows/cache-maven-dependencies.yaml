@@ -1,4 +1,6 @@
 name: "Cache Maven Dependencies"
+permissions:
+  contents: read
 
 on:
   workflow_dispatch:
