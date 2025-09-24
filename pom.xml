@@ -780,6 +780,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           <suppressionFile>${project.rootdir}/.pipeline/dependency-check-suppression.xml</suppressionFile>
           <nvdValidForHours>46</nvdValidForHours>
           <skipProvidedScope>true</skipProvidedScope>
+          <ossIndexServerId>ossindex</ossIndexServerId>
         </configuration>
       </plugin>
     </plugins>
