@@ -4,8 +4,12 @@
 
 ### 🚧 Known Issues
 
+-
+
+### 🔧 Compatibility Notes
+
 - Breaking change:
-  - two fields in `OrchestrationModuleConfig` changed: 
+  - two fields in `OrchestrationModuleConfig` changed:
     - `inputTranslationConfig` is now of type `SAPDocumentTranslationInput`
     - `outputTranslationConfig` is now of type `SAPDocumentTranslationOutput`
   - when using `OrchestrationModuleConfig.withInputTranslationConfig()` and `OrchestrationModuleConfig.withOutputTranslationConfig()` consider the following diff:
@@ -32,10 +36,6 @@
     +                          SAPDocumentTranslationOutputTargetLanguage.create("de-DE"))
                            .sourceLanguage("en-US"))); 
     ```
-
-### 🔧 Compatibility Notes
-
--
 
 ### ✨ New Functionality
 
