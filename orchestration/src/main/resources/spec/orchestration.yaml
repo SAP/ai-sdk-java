@@ -74,8 +74,6 @@ paths:
         default:
           $ref: "#/components/responses/CommonError"
 
-
-
 components:
   schemas:
     CompletionPostRequest:
@@ -97,8 +95,8 @@ components:
           allOf:
             - $ref: "#/components/schemas/ChatMessages"
           description: History of chat messages. Can be used to provide system and assistant messages to set the context of the conversation. Will be merged with the template message
-    
-    # Embedings Schemas
+
+    # Embeddings Schemas
     EmbeddingsPostRequest:
       type: object
       additionalProperties: false
@@ -140,7 +138,7 @@ components:
           items:
             type: string
             minLength: 1
-          example: ['Hello', 'World', '!']
+          example: ["Hello", "World", "!"]
       description: Text input for which embeddings need to be generated
       example: ["This is an input string.", "This is another input string."]
     EmbeddingsModuleConfigs:
@@ -194,7 +192,7 @@ components:
         dimensions:
           type: integer
           description: >
-            The number of dimensions the resulting output embeddings should have.  
+            The number of dimensions the resulting output embeddings should have.
         encoding_format:
           type: string
           enum: [float, base64, binary]
@@ -282,7 +280,7 @@ components:
           description: "An array of numbers representing the embedding."
         - type: string
           description: "A single base64 string representing the embedding."
-    
+
     # Chat Completion Schemas
     ChatMessages:
       type: array
@@ -413,7 +411,7 @@ components:
         - role
         - content
     # Below, OpenAI's spec marks 'content' as required but nullable: https://github.com/Azure/azure-rest-api-specs/blob/8279d4aee23a3fef5aac9c76333b0895c83e44c3/specification/cognitiveservices/data-plane/AzureOpenAI/inference/stable/2024-10-21/inference.yaml#L2121
-    # We've made it optional instead to maintain SDK compatibility and avoid breaking changes. 
+    # We've made it optional instead to maintain SDK compatibility and avoid breaking changes.
     # Functionally achieves the same result as both patterns permit responses without textual content
     # OpenAI via null values, ours via field omission.
     ResponseChatMessage:
@@ -597,7 +595,7 @@ components:
         templating:
           $ref: "#/components/schemas/TemplatingChatMessage"
         input_translation:
-          $ref: "#/components/schemas/GenericModuleResult"
+          $ref: "#/components/schemas/InputTranslationModuleResult"
         input_masking:
           $ref: "#/components/schemas/GenericModuleResult"
         input_filtering:
@@ -670,6 +668,44 @@ components:
         data:
           type: object
           description: Additional data object from the module
+
+    InputTranslationModuleResult:
+      type: object
+      description: Input Translation module result
+      required:
+        - message
+      additionalProperties: false
+      properties:
+        message:
+          type: string
+          description: Status message describing the translation operation outcome.
+          example: Translated successfully placeholders 'issue_title', 'issue_description'.
+        data:
+          type: object
+          additionalProperties: false
+          properties:
+            translated_template:
+              type: string
+              deprecated: true
+              example: "[{'role': 'user', 'content': 'translated content'}, ...]"
+            translated_template_roles:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+              example:
+                user:
+                  ["translated user content", "another translated user content"]
+                system: ["translated system message"]
+            translated_placeholders:
+              type: object
+              additionalProperties:
+                type: string
+              example:
+                groundingInput: "translated grounding input"
+                inputContext: "translated input context"
+
     LLMModuleResult:
       type: object
       description: Output from LLM. Follows the OpenAI spec.
@@ -754,7 +790,7 @@ components:
         message:
           $ref: "#/components/schemas/ResponseChatMessage"
         logprobs:
-          $ref: '#/components/schemas/ChoiceLogprobs'
+          $ref: "#/components/schemas/ChoiceLogprobs"
         finish_reason:
           type: string
           description: "Reason the model stopped generating tokens. 'stop' if the model hit a natural stop point or a provided stop sequence, 'length' if the maximum token number was reached, 'content_filter' if content was omitted due to a filter enforced by the LLM model provider or the content filtering module"
@@ -771,7 +807,7 @@ components:
         delta:
           $ref: "#/components/schemas/ChatDelta"
         logprobs:
-          $ref: '#/components/schemas/ChoiceLogprobs'
+          $ref: "#/components/schemas/ChoiceLogprobs"
         finish_reason:
           type: string
           description: Reason for stopping the model
@@ -865,7 +901,7 @@ components:
         template:
           allOf:
             - $ref: "#/components/schemas/TemplatingChatMessage"
-          description: A chat message array to be formatted with values from input_params. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
+          description: A chat message array to be formatted with values from placeholder_values. Both role and content can be templated. If messages_history is provided, the templated messages will be appended.
         defaults:
           description: Optional default values for the template. If a parameter has no default it is required.
           type: object
@@ -1044,6 +1080,16 @@ components:
           type: string
           description: ID of the template in prompt registry
           example: "template_id"
+        scope:
+          type: string
+          description: >
+            Defines the scope that is searched for the referenced template. 
+            'tenant' indicates the template is shared across all resource groups within the tenant, 
+            while 'resource_group' indicates the template is only accessible within the specific resource group.
+          enum:
+            - resource_group
+            - tenant
+          default: tenant
 
     TemplateRefByScenarioNameVersion:
       type: object
@@ -1065,6 +1111,16 @@ components:
           type: string
           description: Version of the template
           example: "some version, can be `latest`"
+        scope:
+          type: string
+          description: >
+            Defines the scope that is searched for the referenced template. 
+            'tenant' indicates the template is shared across all resource groups within the tenant, 
+            while 'resource_group' indicates the template is only accessible within the specific resource group.
+          enum:
+            - resource_group
+            - tenant
+          default: tenant
 
     # --- Filtering Module ---
     FilteringModuleConfig:
@@ -1601,12 +1657,13 @@ components:
         input:
           description: Configuration for input translation
           oneOf:
-            - $ref: "#/components/schemas/SAPDocumentTranslation"
+            - $ref: "#/components/schemas/SAPDocumentTranslationInput"
         output:
           description: Configuration for output translation
           oneOf:
-            - $ref: "#/components/schemas/SAPDocumentTranslation"
-    SAPDocumentTranslation:
+            - $ref: "#/components/schemas/SAPDocumentTranslationOutput"
+
+    SAPDocumentTranslationInput:
       type: object
       required:
         - type
@@ -1617,23 +1674,94 @@ components:
           description: Type of document translation provider
           type: string
           enum:
-            - sap_document_translation # this would be different for other translation provider
+            - sap_document_translation
           example: sap_document_translation
+        translate_messages_history:
+          type: boolean
+          description: If true, the messages history will be translated as well.
+          default: true
         config: # `config` key, parameters specific to SAP Translation Hub that are sent to the service, might differ for translation provider
           description: Configuration for `sap_document_translation` translation provider.
           type: object
+          additionalProperties: false
           required:
             - target_language
+          properties:
+            source_language:
+              type: string
+              description: Language of the text to be translated.
+              example: "de-DE"
+            apply_to:
+              type: array
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/SAPDocumentTranslationApplyToSelector"
+            target_language:
+              type: string
+              description: Language to which the text should be translated.
+              example: "en-US"
+
+    SAPDocumentTranslationOutput:
+      type: object
+      required:
+        - type
+        - config
+      additionalProperties: false
+      properties:
+        type:
+          description: Configuration for `sap_document_translation` translation provider.
+          type: string
+          enum:
+            - sap_document_translation
+          example: sap_document_translation
+        config:
+          type: object
           additionalProperties: false
+          required:
+            - target_language
           properties:
             source_language:
               type: string
               description: Language of the text to be translated.
               example: "de-DE"
             target_language:
-              type: string
-              description: Language to which the text should be translated.
-              example: "en-US"
+              $ref: "#/components/schemas/SAPDocumentTranslationOutputTargetLanguage"
+
+    SAPDocumentTranslationOutputTargetLanguage:
+      oneOf:
+        - type: string
+          description: Language to which the text should be translated.
+          example: "en-US"
+        - $ref: "#/components/schemas/SAPDocumentTranslationApplyToSelector"
+
+    SAPDocumentTranslationApplyToSelector:
+      type: object
+      description: >
+        This selector allows you to define the scope of translation, such as specific placeholders or messages with specific roles. For example, `{"category": "placeholders", "items": ["user_input"], "source_language": "de-DE"}` targets the value of "user_input" in `placeholder_values` specified in the request payload; and considers the value to be in German.
+      required:
+        - category
+        - items
+      additionalProperties: false
+      properties:
+        category:
+          type: string
+          description: Category to apply translation to.
+          enum:
+            - placeholders
+            - template_roles
+        items:
+          type: array
+          description: List of placeholders or roles to apply translation to
+          items:
+            type: string
+          example:
+            - groundingInput
+            - inputContext
+        source_language:
+          type: string
+          description: Language of the text to be translated.
+          example: "de-DE"
+
     Error:
       type: object
       required:
@@ -1749,14 +1877,14 @@ components:
         content:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+            $ref: "#/components/schemas/ChatCompletionTokenLogprob"
           description: A list of message content tokens with log probability information.
         refusal:
           type: array
           items:
-            $ref: '#/components/schemas/ChatCompletionTokenLogprob'
+            $ref: "#/components/schemas/ChatCompletionTokenLogprob"
           description: A list of message refusal tokens with log probability information.
-          
+
   responses:
     BadRequest:
       description: Bad Request
