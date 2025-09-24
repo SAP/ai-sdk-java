@@ -23,6 +23,7 @@ import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.model.InputTranslationModuleResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -450,7 +451,7 @@ class OrchestrationTest {
     assertThat(content).contains("Englisch");
     assertThat(content).contains("Der", "ist");
 
-    GenericModuleResult inputTranslation =
+    InputTranslationModuleResult inputTranslation =
         result.getOriginalResponse().getIntermediateResults().getInputTranslation();
     GenericModuleResult outputTranslation =
         result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
