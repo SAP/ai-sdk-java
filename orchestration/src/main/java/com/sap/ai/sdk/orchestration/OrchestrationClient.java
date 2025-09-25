@@ -10,6 +10,7 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
@@ -76,7 +77,7 @@ public class OrchestrationClient {
    * @return The low-level request data object to send to orchestration.
    */
   @Nonnull
-  public static CompletionPostRequest toCompletionPostRequest(
+  public static CompletionRequestConfiguration toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
     return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config);
   }
@@ -218,7 +219,7 @@ public class OrchestrationClient {
    */
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
-      @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
+      @Nonnull final CompletionRequestConfiguration request) throws OrchestrationClientException {
     request.getConfig().setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
 
     return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
