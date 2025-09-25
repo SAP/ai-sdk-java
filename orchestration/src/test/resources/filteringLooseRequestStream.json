@@ -1,0 +1,75 @@
+{
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o",
+          "params": {
+            "temperature": 0.1,
+            "max_tokens": 50,
+            "frequency_penalty": 0,
+            "presence_penalty": 0,
+            "top_p": 1,
+            "n": 1
+          },
+          "version": "latest",
+          "timeout" : 600,
+          "max_retries" : 2
+        },
+        "prompt": {
+          "template": [
+            {
+              "role": "user",
+              "content": "Hello World! Why is this phrase so famous?"
+            }
+          ],
+          "defaults": {},
+          "tools": []
+        }
+      },
+      "filtering": {
+        "input": {
+          "filters": [
+            {
+              "type": "azure_content_safety",
+              "config": {
+                "hate": 4,
+                "self_harm": 4,
+                "sexual": 4,
+                "violence": 4
+              }
+            },
+            {
+              "type": "llama_guard_3_8b",
+              "config": {
+                "self_harm": true
+              }
+            }
+          ]
+        },
+        "output": {
+          "filters": [
+            {
+              "type": "azure_content_safety",
+              "config": {
+                "hate": 4,
+                "self_harm": 4,
+                "sexual": 4,
+                "violence": 4
+              }
+            }
+          ],
+          "stream_options" : {
+            "overlap" : 1000
+          }
+        }
+      }
+    },
+    "stream" : {
+      "enabled" : true,
+      "chunk_size" : 100
+    }
+  },
+  "placeholder_values": {},
+  "messages_history": []
+}

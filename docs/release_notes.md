@@ -39,7 +39,7 @@
 
 ### ✨ New Functionality
 
--
+- [Orchestration] For streaming, add convenience configuration AOU for output-filter-overlap, chunk-size, and delimiters via `OrchestrationModuleConfig#withStreamConfig`.
 
 ### 📈 Improvements
 
