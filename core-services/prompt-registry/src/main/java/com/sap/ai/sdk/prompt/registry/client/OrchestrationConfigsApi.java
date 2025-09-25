@@ -497,7 +497,6 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * @param scenario (required) The value for the parameter scenario
    * @param version (required) The value for the parameter version
    * @param name (required) The value for the parameter name
-   * @param modelName (required) The value for the parameter modelName
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param includeSpec (optional, default to false) The value for the parameter includeSpec
    * @param resolveTemplateRef (optional, default to false) The value for the parameter
@@ -510,7 +509,6 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
       @Nonnull final String scenario,
       @Nonnull final String version,
       @Nonnull final String name,
-      @Nonnull final String modelName,
       @Nullable final String aiResourceGroup,
       @Nullable final Boolean includeSpec,
       @Nullable final Boolean resolveTemplateRef)
@@ -535,21 +533,14 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
           "Missing the required parameter 'name' when calling listOrchestrationConfigHistory");
     }
 
-    // verify the required parameter 'modelName' is set
-    if (modelName == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'modelName' when calling listOrchestrationConfigHistory");
-    }
-
     // create path and map variables
     final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
     localVarPathParams.put("scenario", scenario);
     localVarPathParams.put("version", version);
     localVarPathParams.put("name", name);
-    localVarPathParams.put("model_name", modelName);
     final String localVarPath =
         UriComponentsBuilder.fromPath(
-                "/registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/models/{model_name}/history")
+                "/registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/history")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
@@ -603,18 +594,14 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * @param scenario The value for the parameter scenario
    * @param version The value for the parameter version
    * @param name The value for the parameter name
-   * @param modelName The value for the parameter modelName
    * @return OrchestrationConfigListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public OrchestrationConfigListResponse listOrchestrationConfigHistory(
-      @Nonnull final String scenario,
-      @Nonnull final String version,
-      @Nonnull final String name,
-      @Nonnull final String modelName)
+      @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
       throws OpenApiRequestException {
-    return listOrchestrationConfigHistory(scenario, version, name, modelName, null, null, null);
+    return listOrchestrationConfigHistory(scenario, version, name, null, null, null);
   }
 
   /**
@@ -632,7 +619,6 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * @param scenario (optional) The value for the parameter scenario
    * @param name (optional) The value for the parameter name
    * @param version (optional) The value for the parameter version
-   * @param modelName (optional) The value for the parameter modelName
    * @param retrieve (optional, default to both) The value for the parameter retrieve
    * @param includeSpec (optional, default to false) The value for the parameter includeSpec
    * @param resolveTemplateRef (optional, default to false) The value for the parameter
@@ -646,7 +632,6 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
       @Nullable final String scenario,
       @Nullable final String name,
       @Nullable final String version,
-      @Nullable final String modelName,
       @Nullable final String retrieve,
       @Nullable final Boolean includeSpec,
       @Nullable final Boolean resolveTemplateRef)
@@ -665,7 +650,6 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "scenario", scenario));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "name", name));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "version", version));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "model_name", modelName));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "retrieve", retrieve));
     localVarQueryParams.putAll(
         apiClient.parameterToMultiValueMap(null, "include_spec", includeSpec));
@@ -713,6 +697,6 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    */
   @Nonnull
   public OrchestrationConfigListResponse listOrchestrationConfigs() throws OpenApiRequestException {
-    return listOrchestrationConfigs(null, null, null, null, null, null, null, null);
+    return listOrchestrationConfigs(null, null, null, null, null, null, null);
   }
 }

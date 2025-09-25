@@ -44,9 +44,6 @@ public class OrchestrationConfigPostResponse
   @JsonProperty("version")
   private String version;
 
-  @JsonProperty("model_name")
-  private String modelName;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -214,38 +211,6 @@ public class OrchestrationConfigPostResponse
   }
 
   /**
-   * Set the modelName of this {@link OrchestrationConfigPostResponse} instance and return the same
-   * instance.
-   *
-   * @param modelName The modelName of this {@link OrchestrationConfigPostResponse}
-   * @return The same instance of this {@link OrchestrationConfigPostResponse} class
-   */
-  @Nonnull
-  public OrchestrationConfigPostResponse modelName(@Nonnull final String modelName) {
-    this.modelName = modelName;
-    return this;
-  }
-
-  /**
-   * Get modelName
-   *
-   * @return modelName The modelName of this {@link OrchestrationConfigPostResponse} instance.
-   */
-  @Nonnull
-  public String getModelName() {
-    return modelName;
-  }
-
-  /**
-   * Set the modelName of this {@link OrchestrationConfigPostResponse} instance.
-   *
-   * @param modelName The modelName of this {@link OrchestrationConfigPostResponse}
-   */
-  public void setModelName(@Nonnull final String modelName) {
-    this.modelName = modelName;
-  }
-
-  /**
    * Get the names of the unrecognizable properties of the {@link OrchestrationConfigPostResponse}.
    *
    * @return The set of properties names
@@ -290,7 +255,6 @@ public class OrchestrationConfigPostResponse
     if (scenario != null) declaredFields.put("scenario", scenario);
     if (name != null) declaredFields.put("name", name);
     if (version != null) declaredFields.put("version", version);
-    if (modelName != null) declaredFields.put("modelName", modelName);
     return declaredFields;
   }
 
@@ -323,13 +287,12 @@ public class OrchestrationConfigPostResponse
         && Objects.equals(this.id, orchestrationConfigPostResponse.id)
         && Objects.equals(this.scenario, orchestrationConfigPostResponse.scenario)
         && Objects.equals(this.name, orchestrationConfigPostResponse.name)
-        && Objects.equals(this.version, orchestrationConfigPostResponse.version)
-        && Objects.equals(this.modelName, orchestrationConfigPostResponse.modelName);
+        && Objects.equals(this.version, orchestrationConfigPostResponse.version);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(message, id, scenario, name, version, modelName, cloudSdkCustomFields);
+    return Objects.hash(message, id, scenario, name, version, cloudSdkCustomFields);
   }
 
   @Override
@@ -342,7 +305,6 @@ public class OrchestrationConfigPostResponse
     sb.append("    scenario: ").append(toIndentedString(scenario)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
-    sb.append("    modelName: ").append(toIndentedString(modelName)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -370,14 +332,12 @@ public class OrchestrationConfigPostResponse
             (scenario) ->
                 (name) ->
                     (version) ->
-                        (modelName) ->
-                            new OrchestrationConfigPostResponse()
-                                .message(message)
-                                .id(id)
-                                .scenario(scenario)
-                                .name(name)
-                                .version(version)
-                                .modelName(modelName);
+                        new OrchestrationConfigPostResponse()
+                            .message(message)
+                            .id(id)
+                            .scenario(scenario)
+                            .name(name)
+                            .version(version);
   }
 
   /** Builder helper class. */
@@ -430,19 +390,8 @@ public class OrchestrationConfigPostResponse
      * Set the version of this {@link OrchestrationConfigPostResponse} instance.
      *
      * @param version The version of this {@link OrchestrationConfigPostResponse}
-     * @return The OrchestrationConfigPostResponse builder.
-     */
-    Builder5 version(@Nonnull final String version);
-  }
-
-  /** Builder helper class. */
-  public interface Builder5 {
-    /**
-     * Set the modelName of this {@link OrchestrationConfigPostResponse} instance.
-     *
-     * @param modelName The modelName of this {@link OrchestrationConfigPostResponse}
      * @return The OrchestrationConfigPostResponse instance.
      */
-    OrchestrationConfigPostResponse modelName(@Nonnull final String modelName);
+    OrchestrationConfigPostResponse version(@Nonnull final String version);
   }
 }
