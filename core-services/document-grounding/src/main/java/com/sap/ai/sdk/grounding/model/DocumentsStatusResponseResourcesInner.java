@@ -32,7 +32,7 @@ public class DocumentsStatusResponseResourcesInner
   private String id;
 
   @JsonProperty("status")
-  private String status;
+  private DocumentsStatusResponseResourcesInnerStatus status;
 
   @JsonProperty("viewLocation")
   private String viewLocation;
@@ -101,7 +101,8 @@ public class DocumentsStatusResponseResourcesInner
    * @return The same instance of this {@link DocumentsStatusResponseResourcesInner} class
    */
   @Nonnull
-  public DocumentsStatusResponseResourcesInner status(@Nullable final String status) {
+  public DocumentsStatusResponseResourcesInner status(
+      @Nullable final DocumentsStatusResponseResourcesInnerStatus status) {
     this.status = status;
     return this;
   }
@@ -112,7 +113,7 @@ public class DocumentsStatusResponseResourcesInner
    * @return status The status of this {@link DocumentsStatusResponseResourcesInner} instance.
    */
   @Nonnull
-  public String getStatus() {
+  public DocumentsStatusResponseResourcesInnerStatus getStatus() {
     return status;
   }
 
@@ -121,7 +122,7 @@ public class DocumentsStatusResponseResourcesInner
    *
    * @param status The status of this {@link DocumentsStatusResponseResourcesInner}
    */
-  public void setStatus(@Nullable final String status) {
+  public void setStatus(@Nullable final DocumentsStatusResponseResourcesInnerStatus status) {
     this.status = status;
   }
 

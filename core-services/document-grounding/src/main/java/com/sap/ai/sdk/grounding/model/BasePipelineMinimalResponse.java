@@ -32,7 +32,7 @@ public class BasePipelineMinimalResponse
   private String id;
 
   @JsonProperty("status")
-  private String status;
+  private PipelineExecutionDataStatus status;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -79,7 +79,7 @@ public class BasePipelineMinimalResponse
    * @return The same instance of this {@link BasePipelineMinimalResponse} class
    */
   @Nonnull
-  public BasePipelineMinimalResponse status(@Nonnull final String status) {
+  public BasePipelineMinimalResponse status(@Nonnull final PipelineExecutionDataStatus status) {
     this.status = status;
     return this;
   }
@@ -90,7 +90,7 @@ public class BasePipelineMinimalResponse
    * @return status The status of this {@link BasePipelineMinimalResponse} instance.
    */
   @Nonnull
-  public String getStatus() {
+  public PipelineExecutionDataStatus getStatus() {
     return status;
   }
 
@@ -99,7 +99,7 @@ public class BasePipelineMinimalResponse
    *
    * @param status The status of this {@link BasePipelineMinimalResponse}
    */
-  public void setStatus(@Nonnull final String status) {
+  public void setStatus(@Nonnull final PipelineExecutionDataStatus status) {
     this.status = status;
   }
 
@@ -231,6 +231,6 @@ public class BasePipelineMinimalResponse
      * @param status The status of this {@link BasePipelineMinimalResponse}
      * @return The BasePipelineMinimalResponse instance.
      */
-    BasePipelineMinimalResponse status(@Nonnull final String status);
+    BasePipelineMinimalResponse status(@Nonnull final PipelineExecutionDataStatus status);
   }
 }

@@ -34,7 +34,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
   private String id;
 
   @JsonProperty("status")
-  private String status;
+  private PipelineExecutionDataStatus status;
 
   /** Gets or Sets type */
   public enum TypeEnum {
@@ -143,7 +143,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
    * @return The same instance of this {@link S3PipelineMinimalResponse} class
    */
   @Nonnull
-  public S3PipelineMinimalResponse status(@Nonnull final String status) {
+  public S3PipelineMinimalResponse status(@Nonnull final PipelineExecutionDataStatus status) {
     this.status = status;
     return this;
   }
@@ -154,7 +154,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
    * @return status The status of this {@link S3PipelineMinimalResponse} instance.
    */
   @Nonnull
-  public String getStatus() {
+  public PipelineExecutionDataStatus getStatus() {
     return status;
   }
 
@@ -163,7 +163,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @param status The status of this {@link S3PipelineMinimalResponse}
    */
-  public void setStatus(@Nonnull final String status) {
+  public void setStatus(@Nonnull final PipelineExecutionDataStatus status) {
     this.status = status;
   }
 
@@ -406,7 +406,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
      * @param status The status of this {@link S3PipelineMinimalResponse}
      * @return The S3PipelineMinimalResponse builder.
      */
-    Builder2 status(@Nonnull final String status);
+    Builder2 status(@Nonnull final PipelineExecutionDataStatus status);
   }
 
   /** Builder helper class. */

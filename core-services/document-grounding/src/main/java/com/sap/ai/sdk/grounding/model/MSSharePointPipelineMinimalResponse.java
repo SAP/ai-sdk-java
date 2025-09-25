@@ -34,7 +34,7 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
   private String id;
 
   @JsonProperty("status")
-  private String status;
+  private PipelineExecutionDataStatus status;
 
   /** Gets or Sets type */
   public enum TypeEnum {
@@ -145,7 +145,8 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
    * @return The same instance of this {@link MSSharePointPipelineMinimalResponse} class
    */
   @Nonnull
-  public MSSharePointPipelineMinimalResponse status(@Nonnull final String status) {
+  public MSSharePointPipelineMinimalResponse status(
+      @Nonnull final PipelineExecutionDataStatus status) {
     this.status = status;
     return this;
   }
@@ -156,7 +157,7 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
    * @return status The status of this {@link MSSharePointPipelineMinimalResponse} instance.
    */
   @Nonnull
-  public String getStatus() {
+  public PipelineExecutionDataStatus getStatus() {
     return status;
   }
 
@@ -165,7 +166,7 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
    *
    * @param status The status of this {@link MSSharePointPipelineMinimalResponse}
    */
-  public void setStatus(@Nonnull final String status) {
+  public void setStatus(@Nonnull final PipelineExecutionDataStatus status) {
     this.status = status;
   }
 
@@ -415,7 +416,7 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
      * @param status The status of this {@link MSSharePointPipelineMinimalResponse}
      * @return The MSSharePointPipelineMinimalResponse builder.
      */
-    Builder2 status(@Nonnull final String status);
+    Builder2 status(@Nonnull final PipelineExecutionDataStatus status);
   }
 
   /** Builder helper class. */

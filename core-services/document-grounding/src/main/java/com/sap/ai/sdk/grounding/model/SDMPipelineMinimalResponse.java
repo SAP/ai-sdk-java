@@ -34,7 +34,7 @@ public class SDMPipelineMinimalResponse implements PipelineMinimalResponse
   private String id;
 
   @JsonProperty("status")
-  private String status;
+  private PipelineExecutionDataStatus status;
 
   /** Gets or Sets type */
   public enum TypeEnum {
@@ -141,7 +141,7 @@ public class SDMPipelineMinimalResponse implements PipelineMinimalResponse
    * @return The same instance of this {@link SDMPipelineMinimalResponse} class
    */
   @Nonnull
-  public SDMPipelineMinimalResponse status(@Nonnull final String status) {
+  public SDMPipelineMinimalResponse status(@Nonnull final PipelineExecutionDataStatus status) {
     this.status = status;
     return this;
   }
@@ -152,7 +152,7 @@ public class SDMPipelineMinimalResponse implements PipelineMinimalResponse
    * @return status The status of this {@link SDMPipelineMinimalResponse} instance.
    */
   @Nonnull
-  public String getStatus() {
+  public PipelineExecutionDataStatus getStatus() {
     return status;
   }
 
@@ -161,7 +161,7 @@ public class SDMPipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @param status The status of this {@link SDMPipelineMinimalResponse}
    */
-  public void setStatus(@Nonnull final String status) {
+  public void setStatus(@Nonnull final PipelineExecutionDataStatus status) {
     this.status = status;
   }
 
@@ -363,7 +363,7 @@ public class SDMPipelineMinimalResponse implements PipelineMinimalResponse
      * @param status The status of this {@link SDMPipelineMinimalResponse}
      * @return The SDMPipelineMinimalResponse builder.
      */
-    Builder2 status(@Nonnull final String status);
+    Builder2 status(@Nonnull final PipelineExecutionDataStatus status);
   }
 
   /** Builder helper class. */

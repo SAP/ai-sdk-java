@@ -32,7 +32,7 @@ public class PipelineExecutionData
   private String id;
 
   @JsonProperty("status")
-  private String status;
+  private PipelineExecutionDataStatus status;
 
   @JsonProperty("createdAt")
   private String createdAt;
@@ -84,7 +84,7 @@ public class PipelineExecutionData
    * @return The same instance of this {@link PipelineExecutionData} class
    */
   @Nonnull
-  public PipelineExecutionData status(@Nullable final String status) {
+  public PipelineExecutionData status(@Nullable final PipelineExecutionDataStatus status) {
     this.status = status;
     return this;
   }
@@ -95,7 +95,7 @@ public class PipelineExecutionData
    * @return status The status of this {@link PipelineExecutionData} instance.
    */
   @Nonnull
-  public String getStatus() {
+  public PipelineExecutionDataStatus getStatus() {
     return status;
   }
 
@@ -104,7 +104,7 @@ public class PipelineExecutionData
    *
    * @param status The status of this {@link PipelineExecutionData}
    */
-  public void setStatus(@Nullable final String status) {
+  public void setStatus(@Nullable final PipelineExecutionDataStatus status) {
     this.status = status;
   }
 
