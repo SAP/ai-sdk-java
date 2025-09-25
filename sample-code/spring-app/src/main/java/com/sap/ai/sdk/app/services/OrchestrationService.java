@@ -3,7 +3,6 @@ package com.sap.ai.sdk.app.services;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
-import static com.sap.ai.sdk.orchestration.model.SAPDocumentTranslation.TypeEnum.SAP_DOCUMENT_TRANSLATION;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -27,8 +26,11 @@ import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslation;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationConfig;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInput;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInputConfig;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputConfig;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
@@ -611,15 +613,16 @@ public class OrchestrationService {
     val configWithTranslation =
         config
             .withInputTranslationConfig(
-                SAPDocumentTranslation.create()
-                    .type(SAP_DOCUMENT_TRANSLATION)
-                    .config(SAPDocumentTranslationConfig.create().targetLanguage("en-US")))
+                SAPDocumentTranslationInput.create()
+                    .type(SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
+                    .config(SAPDocumentTranslationInputConfig.create().targetLanguage("en-US")))
             .withOutputTranslationConfig(
-                SAPDocumentTranslation.create()
-                    .type(SAP_DOCUMENT_TRANSLATION)
+                SAPDocumentTranslationOutput.create()
+                    .type(SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
                     .config(
-                        SAPDocumentTranslationConfig.create()
-                            .targetLanguage("de-DE")
+                        SAPDocumentTranslationOutputConfig.create()
+                            .targetLanguage(
+                                SAPDocumentTranslationOutputTargetLanguage.create("de-DE"))
                             .sourceLanguage("en-US"))); // optional source language
 
     return client.chatCompletion(prompt, configWithTranslation);

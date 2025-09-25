@@ -30,24 +30,26 @@ The SDK simplifies the setup and interaction with SAP AI Core, allowing you to f
 
 ## General Requirements
 
-To use the SDK in a Java application, it is necessary to understand the technical prerequisites and required versions for common dependencies.
+#### Development Environment
 
-- Java 17 or higher.
-- Access to an **SAP AI Core Service** instance.
+These are required on the developer side to build and run applications with the SDK:
 
-Please refer to [this documentation on **how to connect the SDK to AI Core**](https://sap.github.io/ai-sdk/docs/java/guides/connecting-to-ai-core).
+* **Java JDK**: 17 or higher (21 LTS recommended).
+* **SAP Cloud SDK**: 5.6.0 or later (latest recommended, added as a Maven dependency).
 
-The following table lists the required versions, based on the latest release:
+#### SAP AI Core Service instance
 
-| Dependency             | Minimum Version | Recommended Version |
-|------------------------|-----------------|---------------------|
-| JDK                    | 17 (LTS)        | 21 (LTS)            |
-| SAP Cloud SDK          | 5.6.0           | latest              |
-| (optional) CAP Java    | 3.0.0           | latest              |
-| (optional) Spring Boot | 3.0             | latest              |
-| (optional) Spring AI   | 1.0.0           | latest              |
+To make of use the services supported by the SDK, you need to have access to an SAP AI Core Service instance. Checkout [how to connect](link).
 
-See [an example `pom.xml` in our Spring Boot application](sample-code/spring-app/pom.xml).
+#### Optional Integrations
+
+The SDK can be combined with popular Java frameworks. These are not required for core functionality, but version compatibility is listed for reference:
+
+* **Spring AI** ≥ 1.0.0
+* **Spring Boot** ≥ 3.0
+* **CAP Java** ≥ 3.0.0
+
+👉 See an [example `pom.xml`](link) in our sample Spring Boot application.
 
 > [!WARNING]  
 > All classes under any of the `...model` packages are generated from an OpenAPI specification and marked as `@Beta`.
