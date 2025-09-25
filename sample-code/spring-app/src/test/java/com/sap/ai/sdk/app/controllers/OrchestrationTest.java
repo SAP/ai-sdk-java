@@ -148,6 +148,25 @@ class OrchestrationTest {
     assertThat(result.getIntermediateResults().getOutputUnmasking()).isEmpty();
   }
 
+  @Test
+  void testMaskingCustomAnonymization() {
+    var response = service.maskingCustomAnonymization();
+    var result = response.getOriginalResponse();
+    var llmChoice = result.getFinalResult().getChoices().get(0);
+    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
+
+    var maskingResult = result.getIntermediateResults().getInputMasking();
+    assertThat(maskingResult.getMessage()).isNotEmpty();
+    var data = (Map<String, Object>) maskingResult.getData();
+    var maskedMessage = (String) data.get("masked_template");
+    assertThat(maskedMessage)
+        .describedAs("The masked input should replace patient IDs with REDACTED_ID")
+        .doesNotContain("patient_id_123")
+        .contains("REDACTED_ID");
+
+    assertThat(result.getIntermediateResults().getOutputUnmasking()).isEmpty();
+  }
+
   @SuppressWarnings("unchecked")
   @Test
   void testMaskingPseudonymization() {

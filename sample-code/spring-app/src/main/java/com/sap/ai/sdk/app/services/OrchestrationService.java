@@ -262,12 +262,40 @@ public class OrchestrationService {
     val userMessage =
         Message.user(
             """
-                            I think the SDK is good, but could use some further enhancements.
-                            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-                            """);
+    I think the SDK is good, but could use some further enhancements.
+    My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+    """);
 
     val prompt = new OrchestrationPrompt(systemMessage, userMessage);
     val maskingConfig = DpiMasking.anonymization().withEntities(entity);
+    val configWithMasking = config.withMaskingConfig(maskingConfig);
+
+    return client.chatCompletion(prompt, configWithMasking);
+  }
+
+  /**
+   * Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
+   * user. Anonymize any patient IDs given as they are not relevant for judging the sentiment of the
+   * feedback.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse maskingCustomAnonymization() {
+    val systemMessage = Message.system("Repeat this phrase");
+    val userMessage =
+        Message.user(
+            """
+       The patient id is patient_id_123.
+        """);
+
+    val prompt = new OrchestrationPrompt(systemMessage, userMessage);
+    val regex = "patient_id_[0-9]+";
+    val replacement = "REDACTED_ID";
+    val maskingConfig = DpiMasking.anonymization().withRegex(regex, replacement);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
