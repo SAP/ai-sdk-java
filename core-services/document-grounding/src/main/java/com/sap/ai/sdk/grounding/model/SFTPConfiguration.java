@@ -34,6 +34,9 @@ public class SFTPConfiguration
   @JsonProperty("sftp")
   private SFTPConfigurationSftp sftp;
 
+  @JsonProperty("cronExpression")
+  private String cronExpression;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -103,6 +106,37 @@ public class SFTPConfiguration
   }
 
   /**
+   * Set the cronExpression of this {@link SFTPConfiguration} instance and return the same instance.
+   *
+   * @param cronExpression The cronExpression of this {@link SFTPConfiguration}
+   * @return The same instance of this {@link SFTPConfiguration} class
+   */
+  @Nonnull
+  public SFTPConfiguration cronExpression(@Nullable final String cronExpression) {
+    this.cronExpression = cronExpression;
+    return this;
+  }
+
+  /**
+   * Get cronExpression
+   *
+   * @return cronExpression The cronExpression of this {@link SFTPConfiguration} instance.
+   */
+  @Nonnull
+  public String getCronExpression() {
+    return cronExpression;
+  }
+
+  /**
+   * Set the cronExpression of this {@link SFTPConfiguration} instance.
+   *
+   * @param cronExpression The cronExpression of this {@link SFTPConfiguration}
+   */
+  public void setCronExpression(@Nullable final String cronExpression) {
+    this.cronExpression = cronExpression;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link SFTPConfiguration}.
    *
    * @return The set of properties names
@@ -142,6 +176,7 @@ public class SFTPConfiguration
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (destination != null) declaredFields.put("destination", destination);
     if (sftp != null) declaredFields.put("sftp", sftp);
+    if (cronExpression != null) declaredFields.put("cronExpression", cronExpression);
     return declaredFields;
   }
 
@@ -168,12 +203,13 @@ public class SFTPConfiguration
     final SFTPConfiguration sfTPConfiguration = (SFTPConfiguration) o;
     return Objects.equals(this.cloudSdkCustomFields, sfTPConfiguration.cloudSdkCustomFields)
         && Objects.equals(this.destination, sfTPConfiguration.destination)
-        && Objects.equals(this.sftp, sfTPConfiguration.sftp);
+        && Objects.equals(this.sftp, sfTPConfiguration.sftp)
+        && Objects.equals(this.cronExpression, sfTPConfiguration.cronExpression);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(destination, sftp, cloudSdkCustomFields);
+    return Objects.hash(destination, sftp, cronExpression, cloudSdkCustomFields);
   }
 
   @Override
@@ -183,6 +219,7 @@ public class SFTPConfiguration
     sb.append("class SFTPConfiguration {\n");
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
     sb.append("    sftp: ").append(toIndentedString(sftp)).append("\n");
+    sb.append("    cronExpression: ").append(toIndentedString(cronExpression)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
