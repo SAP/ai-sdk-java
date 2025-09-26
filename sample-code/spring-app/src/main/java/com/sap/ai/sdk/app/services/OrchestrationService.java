@@ -287,12 +287,8 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse maskingCustomAnonymization() {
-    val systemMessage = Message.system("Repeat this phrase");
-    val userMessage =
-        Message.user(
-            """
-       The patient id is patient_id_123.
-        """);
+    val systemMessage = Message.system("Repeat following messages");
+    val userMessage = Message.user("The patient id is patient_id_123.");
 
     val prompt = new OrchestrationPrompt(systemMessage, userMessage);
     val regex = "patient_id_[0-9]+";
