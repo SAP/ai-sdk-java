@@ -1,0 +1,47 @@
+name: "Cache Maven Dependencies"
+permissions:
+  contents: read
+
+on:
+  workflow_dispatch:
+  schedule:
+      - cron: '57 4 * * Sun'
+
+env:
+  MAVEN_CACHE_REF: refs/heads/main
+  MAVEN_CACHE_KEY: maven-dependencies
+  MAVEN_CACHE_DIR: ~/.m2
+
+jobs:
+  update-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ env.MAVEN_CACHE_REF }}
+
+      - name: "Setup Java"
+        uses: actions/setup-java@v5
+        with:
+          distribution: "sapmachine"
+          java-version: 17
+
+      - name: "Download Dependencies"
+        run: mvn -B dependency:go-offline
+
+      - name: "Delete Existing Caches"
+        run: |
+          CACHE_IDS=$(gh cache list --key "${{ env.MAVEN_CACHE_KEY }}" --ref "${{ env.MAVEN_CACHE_REF }}" --json id | jq -r '.[] | .id')
+          for CACHE_ID in $CACHE_IDS; do
+              echo "Deleting cache with ID: $CACHE_ID"
+              gh cache delete "${CACHE_ID}"
+          done
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+
+      - name: "Cache Dependencies"
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.MAVEN_CACHE_DIR }}
+          key: ${{ env.MAVEN_CACHE_KEY }}
