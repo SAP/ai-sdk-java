@@ -34,6 +34,9 @@ public class S3Configuration
   @JsonProperty("s3")
   private SFTPConfigurationSftp s3;
 
+  @JsonProperty("cronExpression")
+  private String cronExpression;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -103,6 +106,37 @@ public class S3Configuration
   }
 
   /**
+   * Set the cronExpression of this {@link S3Configuration} instance and return the same instance.
+   *
+   * @param cronExpression The cronExpression of this {@link S3Configuration}
+   * @return The same instance of this {@link S3Configuration} class
+   */
+  @Nonnull
+  public S3Configuration cronExpression(@Nullable final String cronExpression) {
+    this.cronExpression = cronExpression;
+    return this;
+  }
+
+  /**
+   * Get cronExpression
+   *
+   * @return cronExpression The cronExpression of this {@link S3Configuration} instance.
+   */
+  @Nonnull
+  public String getCronExpression() {
+    return cronExpression;
+  }
+
+  /**
+   * Set the cronExpression of this {@link S3Configuration} instance.
+   *
+   * @param cronExpression The cronExpression of this {@link S3Configuration}
+   */
+  public void setCronExpression(@Nullable final String cronExpression) {
+    this.cronExpression = cronExpression;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link S3Configuration}.
    *
    * @return The set of properties names
@@ -142,6 +176,7 @@ public class S3Configuration
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (destination != null) declaredFields.put("destination", destination);
     if (s3 != null) declaredFields.put("s3", s3);
+    if (cronExpression != null) declaredFields.put("cronExpression", cronExpression);
     return declaredFields;
   }
 
@@ -168,12 +203,13 @@ public class S3Configuration
     final S3Configuration s3Configuration = (S3Configuration) o;
     return Objects.equals(this.cloudSdkCustomFields, s3Configuration.cloudSdkCustomFields)
         && Objects.equals(this.destination, s3Configuration.destination)
-        && Objects.equals(this.s3, s3Configuration.s3);
+        && Objects.equals(this.s3, s3Configuration.s3)
+        && Objects.equals(this.cronExpression, s3Configuration.cronExpression);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(destination, s3, cloudSdkCustomFields);
+    return Objects.hash(destination, s3, cronExpression, cloudSdkCustomFields);
   }
 
   @Override
@@ -183,6 +219,7 @@ public class S3Configuration
     sb.append("class S3Configuration {\n");
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
     sb.append("    s3: ").append(toIndentedString(s3)).append("\n");
+    sb.append("    cronExpression: ").append(toIndentedString(cronExpression)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
