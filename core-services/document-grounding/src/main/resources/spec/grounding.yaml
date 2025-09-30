@@ -1246,8 +1246,8 @@ components:
                 nullable: false
                 minItems: 1
             required:
-            - key
-            - value
+              - key
+              - value
           example:
             - key: purpose
               value:
@@ -1410,16 +1410,7 @@ components:
           type: string
           example: uuid
         status:
-          type: string
-          anyOf:
-            - enum:
-              - NEW
-              - UNKNOWN
-              - INPROGRESS
-              - FINISHED
-              - FINISHEDWITHERRORS
-              - TIMEOUT
-            - {}
+          $ref: '#/components/schemas/PipelineExecutionStatus'
         createdAt:
           type: string
           pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
@@ -1449,6 +1440,9 @@ components:
           example: '2024-02-15T12:45:00.000Z'
           nullable: true
         status:
+          $ref: '#/components/schemas/PipelineExecutionStatus'
+
+    PipelineExecutionStatus:      
           type: string
           anyOf:
             - enum:
@@ -1484,16 +1478,21 @@ components:
           type: string
           example: '2024-02-15T12:45:00Z' # UTC
         status:
-          type: string
-          anyOf:
-            - enum:
-              - NEW
-              - UNKNOWN
-              - INPROGRESS
-              - FINISHED
-              - FINISHEDWITHERRORS
-              - TIMEOUT
-            - {}
+          $ref: '#/components/schemas/DocumentStatus'
+
+    DocumentStatus:
+      type: string
+      anyOf:
+        - enum:
+          - TO_BE_PROCESSED
+          - INDEXED
+          - REINDEXED
+          - DEINDEXED
+          - FAILED
+          - FAILED_TO_BE_RETRIED
+          - TO_BE_SCHEDULED
+        - {}
+      example: 'INDEXED'
 
     DocumentsStatusResponse:
       type: object
@@ -1510,18 +1509,7 @@ components:
                 type: string
                 example: uuid
               status:
-                type: string
-                anyOf:
-                  - enum:
-                    - TO_BE_PROCESSED
-                    - INDEXED
-                    - REINDEXED
-                    - DEINDEXED
-                    - FAILED
-                    - FAILED_TO_BE_RETRIED
-                    - TO_BE_SCHEDULED
-                  - {}
-                example: 'INDEXED'
+                $ref: '#/components/schemas/DocumentStatus'
               viewLocation:
                 type: string
                 example: 'location'
@@ -1553,18 +1541,7 @@ components:
           type: string
           example: uuid
         status:
-          type: string
-          anyOf:
-            - enum:
-              - TO_BE_PROCESSED
-              - INDEXED
-              - REINDEXED
-              - DEINDEXED
-              - FAILED
-              - FAILED_TO_BE_RETRIED
-              - TO_BE_SCHEDULED
-            - {}
-          example: 'INDEXED'
+          $ref: '#/components/schemas/DocumentStatus'
         viewLocation:
           type: string
           example: 'location'
@@ -1611,6 +1588,9 @@ components:
                     nullable: false
                   nullable: false
                   minItems: 1
+              required:
+                - key
+                - value
             example:
               - key: purpose
                 value:
@@ -1633,20 +1613,20 @@ components:
             $ref: "#/components/schemas/PipelineMinimalResponse"
 
     PipelineMinimalResponse:
-       oneOf:
-         - $ref: "#/components/schemas/MSSharePointPipelineMinimalResponse"
-         - $ref: "#/components/schemas/S3PipelineMinimalResponse"
-         - $ref: "#/components/schemas/SFTPPipelineMinimalResponse"
-         - $ref: "#/components/schemas/SDMPipelineMinimalResponse"
-         - $ref: "#/components/schemas/WorkZonePipelineMinimalResponse"
-       discriminator:
-         propertyName: type
-         mapping:
-           MSSharePoint: "#/components/schemas/MSSharePointPipelineMinimalResponse"
-           S3: "#/components/schemas/S3PipelineMinimalResponse"
-           SFTP: "#/components/schemas/SFTPPipelineMinimalResponse"
-           SDM: "#/components/schemas/SDMPipelineMinimalResponse"
-           WorkZone: "#/components/schemas/WorkZonePipelineMinimalResponse"
+      oneOf:
+        - $ref: "#/components/schemas/MSSharePointPipelineMinimalResponse"
+        - $ref: "#/components/schemas/S3PipelineMinimalResponse"
+        - $ref: "#/components/schemas/SFTPPipelineMinimalResponse"
+        - $ref: "#/components/schemas/SDMPipelineMinimalResponse"
+        - $ref: "#/components/schemas/WorkZonePipelineMinimalResponse"
+      discriminator:
+        propertyName: type
+        mapping:
+          MSSharePoint: "#/components/schemas/MSSharePointPipelineMinimalResponse"
+          S3: "#/components/schemas/S3PipelineMinimalResponse"
+          SFTP: "#/components/schemas/SFTPPipelineMinimalResponse"
+          SDM: "#/components/schemas/SDMPipelineMinimalResponse"
+          WorkZone: "#/components/schemas/WorkZonePipelineMinimalResponse"
 
     MSSharePointPipelineMinimalResponse:
       allOf:
@@ -1716,7 +1696,7 @@ components:
             metadata:
               type: boolean
               example: true
-
+      
     WorkZonePipelineMinimalResponse:
       allOf:
         - $ref: "#/components/schemas/BasePipelineMinimalResponse"
@@ -1742,16 +1722,7 @@ components:
           type: string
           example: uuid
         status:
-          type: string
-          anyOf:
-            - enum:
-              - NEW
-              - UNKNOWN
-              - INPROGRESS
-              - FINISHED
-              - FINISHEDWITHERRORS
-              - TIMEOUT
-            - {}
+          $ref: '#/components/schemas/PipelineExecutionStatus'
 
     MSSharePointConfigurationMinimal:
       type: object
@@ -1806,7 +1777,7 @@ components:
       example:
         - /testFolder1
         - /testFolder2
-                  
+
     patchPipeline:
       type: object
       properties:
@@ -1833,6 +1804,9 @@ components:
                       nullable: false
                     nullable: false
                     minItems: 1
+                required:
+                  - key
+                  - value
               example:
                 - key: purpose
                   value:

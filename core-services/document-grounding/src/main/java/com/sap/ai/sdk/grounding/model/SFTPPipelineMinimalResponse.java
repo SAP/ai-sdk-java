@@ -33,77 +33,8 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
   @JsonProperty("id")
   private String id;
 
-  /** Gets or Sets status */
-  public enum StatusEnum {
-    /** The NEW option of this SFTPPipelineMinimalResponse */
-    NEW("NEW"),
-
-    /** The UNKNOWN option of this SFTPPipelineMinimalResponse */
-    UNKNOWN("UNKNOWN"),
-
-    /** The INPROGRESS option of this SFTPPipelineMinimalResponse */
-    INPROGRESS("INPROGRESS"),
-
-    /** The FINISHED option of this SFTPPipelineMinimalResponse */
-    FINISHED("FINISHED"),
-
-    /** The FINISHEDWITHERRORS option of this SFTPPipelineMinimalResponse */
-    FINISHEDWITHERRORS("FINISHEDWITHERRORS"),
-
-    /** The TIMEOUT option of this SFTPPipelineMinimalResponse */
-    TIMEOUT("TIMEOUT"),
-
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this SFTPPipelineMinimalResponse */
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
-
-    private String value;
-
-    StatusEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type SFTPPipelineMinimalResponse
-     */
-    @JsonCreator
-    @Nullable
-    public static StatusEnum fromValue(@Nonnull final String value) {
-      for (StatusEnum b : StatusEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
-
   @JsonProperty("status")
-  private StatusEnum status;
+  private PipelineExecutionStatus status;
 
   /** Gets or Sets type */
   public enum TypeEnum {
@@ -213,7 +144,7 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
    * @return The same instance of this {@link SFTPPipelineMinimalResponse} class
    */
   @Nonnull
-  public SFTPPipelineMinimalResponse status(@Nullable final StatusEnum status) {
+  public SFTPPipelineMinimalResponse status(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
     return this;
   }
@@ -224,7 +155,7 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
    * @return status The status of this {@link SFTPPipelineMinimalResponse} instance.
    */
   @Nullable
-  public StatusEnum getStatus() {
+  public PipelineExecutionStatus getStatus() {
     return status;
   }
 
@@ -233,7 +164,7 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @param status The status of this {@link SFTPPipelineMinimalResponse}
    */
-  public void setStatus(@Nullable final StatusEnum status) {
+  public void setStatus(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
   }
 
@@ -478,7 +409,7 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
      * @param status The status of this {@link SFTPPipelineMinimalResponse}
      * @return The SFTPPipelineMinimalResponse builder.
      */
-    Builder2 status(@Nullable final StatusEnum status);
+    Builder2 status(@Nullable final PipelineExecutionStatus status);
   }
 
   /** Builder helper class. */
