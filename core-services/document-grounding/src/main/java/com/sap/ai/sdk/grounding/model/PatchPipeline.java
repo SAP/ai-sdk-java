@@ -23,88 +23,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ManualPipelineTrigger */
+/** PatchPipeline */
 // CHECKSTYLE:OFF
-public class ManualPipelineTrigger
+public class PatchPipeline
 // CHECKSTYLE:ON
 {
-  @JsonProperty("pipelineId")
-  private String pipelineId;
+  @JsonProperty("metadata")
+  private PatchPipelineMetadata metadata;
 
-  @JsonProperty("metadataOnly")
-  private Boolean metadataOnly;
+  @JsonProperty("configuration")
+  private PatchPipelineConfiguration _configuration;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ManualPipelineTrigger. */
-  protected ManualPipelineTrigger() {}
+  /** Default constructor for PatchPipeline. */
+  protected PatchPipeline() {}
 
   /**
-   * Set the pipelineId of this {@link ManualPipelineTrigger} instance and return the same instance.
+   * Set the metadata of this {@link PatchPipeline} instance and return the same instance.
    *
-   * @param pipelineId The pipelineId of this {@link ManualPipelineTrigger}
-   * @return The same instance of this {@link ManualPipelineTrigger} class
+   * @param metadata The metadata of this {@link PatchPipeline}
+   * @return The same instance of this {@link PatchPipeline} class
    */
   @Nonnull
-  public ManualPipelineTrigger pipelineId(@Nullable final String pipelineId) {
-    this.pipelineId = pipelineId;
+  public PatchPipeline metadata(@Nullable final PatchPipelineMetadata metadata) {
+    this.metadata = metadata;
     return this;
   }
 
   /**
-   * Get pipelineId
+   * Get metadata
    *
-   * @return pipelineId The pipelineId of this {@link ManualPipelineTrigger} instance.
+   * @return metadata The metadata of this {@link PatchPipeline} instance.
    */
   @Nonnull
-  public String getPipelineId() {
-    return pipelineId;
+  public PatchPipelineMetadata getMetadata() {
+    return metadata;
   }
 
   /**
-   * Set the pipelineId of this {@link ManualPipelineTrigger} instance.
+   * Set the metadata of this {@link PatchPipeline} instance.
    *
-   * @param pipelineId The pipelineId of this {@link ManualPipelineTrigger}
+   * @param metadata The metadata of this {@link PatchPipeline}
    */
-  public void setPipelineId(@Nullable final String pipelineId) {
-    this.pipelineId = pipelineId;
+  public void setMetadata(@Nullable final PatchPipelineMetadata metadata) {
+    this.metadata = metadata;
   }
 
   /**
-   * Set the metadataOnly of this {@link ManualPipelineTrigger} instance and return the same
-   * instance.
+   * Set the _configuration of this {@link PatchPipeline} instance and return the same instance.
    *
-   * @param metadataOnly The metadataOnly of this {@link ManualPipelineTrigger}
-   * @return The same instance of this {@link ManualPipelineTrigger} class
+   * @param _configuration The _configuration of this {@link PatchPipeline}
+   * @return The same instance of this {@link PatchPipeline} class
    */
   @Nonnull
-  public ManualPipelineTrigger metadataOnly(@Nullable final Boolean metadataOnly) {
-    this.metadataOnly = metadataOnly;
+  public PatchPipeline _configuration(@Nullable final PatchPipelineConfiguration _configuration) {
+    this._configuration = _configuration;
     return this;
   }
 
   /**
-   * Get metadataOnly
+   * Get _configuration
    *
-   * @return metadataOnly The metadataOnly of this {@link ManualPipelineTrigger} instance.
+   * @return _configuration The _configuration of this {@link PatchPipeline} instance.
    */
   @Nonnull
-  public Boolean isMetadataOnly() {
-    return metadataOnly;
+  public PatchPipelineConfiguration getConfiguration() {
+    return _configuration;
   }
 
   /**
-   * Set the metadataOnly of this {@link ManualPipelineTrigger} instance.
+   * Set the _configuration of this {@link PatchPipeline} instance.
    *
-   * @param metadataOnly The metadataOnly of this {@link ManualPipelineTrigger}
+   * @param _configuration The _configuration of this {@link PatchPipeline}
    */
-  public void setMetadataOnly(@Nullable final Boolean metadataOnly) {
-    this.metadataOnly = metadataOnly;
+  public void setConfiguration(@Nullable final PatchPipelineConfiguration _configuration) {
+    this._configuration = _configuration;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ManualPipelineTrigger}.
+   * Get the names of the unrecognizable properties of the {@link PatchPipeline}.
    *
    * @return The set of properties names
    */
@@ -115,7 +114,7 @@ public class ManualPipelineTrigger
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ManualPipelineTrigger} instance.
+   * Get the value of an unrecognizable property of this {@link PatchPipeline} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -126,15 +125,14 @@ public class ManualPipelineTrigger
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "ManualPipelineTrigger has no field with name '" + name + "'.");
+      throw new NoSuchElementException("PatchPipeline has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ManualPipelineTrigger} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link PatchPipeline} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -142,14 +140,14 @@ public class ManualPipelineTrigger
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (pipelineId != null) declaredFields.put("pipelineId", pipelineId);
-    if (metadataOnly != null) declaredFields.put("metadataOnly", metadataOnly);
+    if (metadata != null) declaredFields.put("metadata", metadata);
+    if (_configuration != null) declaredFields.put("_configuration", _configuration);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ManualPipelineTrigger} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link PatchPipeline} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -167,24 +165,24 @@ public class ManualPipelineTrigger
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ManualPipelineTrigger manualPipelineTrigger = (ManualPipelineTrigger) o;
-    return Objects.equals(this.cloudSdkCustomFields, manualPipelineTrigger.cloudSdkCustomFields)
-        && Objects.equals(this.pipelineId, manualPipelineTrigger.pipelineId)
-        && Objects.equals(this.metadataOnly, manualPipelineTrigger.metadataOnly);
+    final PatchPipeline patchPipeline = (PatchPipeline) o;
+    return Objects.equals(this.cloudSdkCustomFields, patchPipeline.cloudSdkCustomFields)
+        && Objects.equals(this.metadata, patchPipeline.metadata)
+        && Objects.equals(this._configuration, patchPipeline._configuration);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(pipelineId, metadataOnly, cloudSdkCustomFields);
+    return Objects.hash(metadata, _configuration, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ManualPipelineTrigger {\n");
-    sb.append("    pipelineId: ").append(toIndentedString(pipelineId)).append("\n");
-    sb.append("    metadataOnly: ").append(toIndentedString(metadataOnly)).append("\n");
+    sb.append("class PatchPipeline {\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    _configuration: ").append(toIndentedString(_configuration)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -202,8 +200,8 @@ public class ManualPipelineTrigger
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link ManualPipelineTrigger} instance. No arguments are required. */
-  public static ManualPipelineTrigger create() {
-    return new ManualPipelineTrigger();
+  /** Create a new {@link PatchPipeline} instance. No arguments are required. */
+  public static PatchPipeline create() {
+    return new PatchPipeline();
   }
 }
