@@ -9,10 +9,14 @@
 ### 🔧 Compatibility Notes
 
 - Breaking change:
-  - two fields in `OrchestrationModuleConfig` changed:
+  - `CompletionPostRequest` is now an interface instead of a class. 
+    For all previous use-cases, it should be substitutable with the new class `CompletionRequestConfiguration`.
+    - `OrchestrationClient.toCompletionPostRequest()` now returns `CompletionRequestConfiguration`.
+    - `OrchestrationClient.streamChatCompletionDeltas()` takes `CompletionRequestConfiguration` as an input now.
+  - Two fields in `OrchestrationModuleConfig` changed:
     - `inputTranslationConfig` is now of type `SAPDocumentTranslationInput`
     - `outputTranslationConfig` is now of type `SAPDocumentTranslationOutput`
-  - when using `OrchestrationModuleConfig.withInputTranslationConfig()` and `OrchestrationModuleConfig.withOutputTranslationConfig()` consider the following diff:
+  - When using `OrchestrationModuleConfig.withInputTranslationConfig()` and `OrchestrationModuleConfig.withOutputTranslationConfig()` consider the following diff:
     ```diff
     var config = new OrchestrationModuleConfig("some prompt");
     config
