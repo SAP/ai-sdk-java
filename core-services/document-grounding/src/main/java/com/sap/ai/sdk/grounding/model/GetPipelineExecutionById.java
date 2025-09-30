@@ -13,8 +13,10 @@ package com.sap.ai.sdk.grounding.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -37,8 +39,77 @@ public class GetPipelineExecutionById
   @JsonProperty("modifiedAt")
   private String modifiedAt;
 
+  /** Gets or Sets status */
+  public enum StatusEnum {
+    /** The NEW option of this GetPipelineExecutionById */
+    NEW("NEW"),
+
+    /** The UNKNOWN option of this GetPipelineExecutionById */
+    UNKNOWN("UNKNOWN"),
+
+    /** The INPROGRESS option of this GetPipelineExecutionById */
+    INPROGRESS("INPROGRESS"),
+
+    /** The FINISHED option of this GetPipelineExecutionById */
+    FINISHED("FINISHED"),
+
+    /** The FINISHEDWITHERRORS option of this GetPipelineExecutionById */
+    FINISHEDWITHERRORS("FINISHEDWITHERRORS"),
+
+    /** The TIMEOUT option of this GetPipelineExecutionById */
+    TIMEOUT("TIMEOUT"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this GetPipelineExecutionById */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    StatusEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type GetPipelineExecutionById
+     */
+    @JsonCreator
+    @Nullable
+    public static StatusEnum fromValue(@Nonnull final String value) {
+      for (StatusEnum b : StatusEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+
   @JsonProperty("status")
-  private PipelineExecutionDataStatus status;
+  private StatusEnum status;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -148,7 +219,7 @@ public class GetPipelineExecutionById
    * @return The same instance of this {@link GetPipelineExecutionById} class
    */
   @Nonnull
-  public GetPipelineExecutionById status(@Nullable final PipelineExecutionDataStatus status) {
+  public GetPipelineExecutionById status(@Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -158,8 +229,8 @@ public class GetPipelineExecutionById
    *
    * @return status The status of this {@link GetPipelineExecutionById} instance.
    */
-  @Nonnull
-  public PipelineExecutionDataStatus getStatus() {
+  @Nullable
+  public StatusEnum getStatus() {
     return status;
   }
 
@@ -168,7 +239,7 @@ public class GetPipelineExecutionById
    *
    * @param status The status of this {@link GetPipelineExecutionById}
    */
-  public void setStatus(@Nullable final PipelineExecutionDataStatus status) {
+  public void setStatus(@Nullable final StatusEnum status) {
     this.status = status;
   }
 

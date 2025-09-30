@@ -1410,16 +1410,16 @@ components:
           type: string
           example: uuid
         status:
+          type: string
           anyOf:
-            - type: string
-              enum:
-                - NEW
-                - UNKNOWN
-                - INPROGRESS
-                - FINISHED
-                - FINISHEDWITHERRORS
-                - TIMEOUT
-            - type: string
+            - enum:
+              - NEW
+              - UNKNOWN
+              - INPROGRESS
+              - FINISHED
+              - FINISHEDWITHERRORS
+              - TIMEOUT
+            - {}
         createdAt:
           type: string
           pattern: '^$|^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$'
@@ -1449,16 +1449,16 @@ components:
           example: '2024-02-15T12:45:00.000Z'
           nullable: true
         status:
+          type: string
           anyOf:
-            - type: string
-              enum:
-                - NEW
-                - UNKNOWN
-                - INPROGRESS
-                - FINISHED
-                - FINISHEDWITHERRORS
-                - TIMEOUT
-            - type: string
+            - enum:
+              - NEW
+              - UNKNOWN
+              - INPROGRESS
+              - FINISHED
+              - FINISHEDWITHERRORS
+              - TIMEOUT
+            - {}
     
     getPipelineExecutions:
       type: object
@@ -1484,16 +1484,16 @@ components:
           type: string
           example: '2024-02-15T12:45:00Z' # UTC
         status:
+          type: string
           anyOf:
-            - type: string
-              enum:
-                - NEW
-                - UNKNOWN
-                - INPROGRESS
-                - FINISHED
-                - FINISHEDWITHERRORS
-                - TIMEOUT
-            - type: string
+            - enum:
+              - NEW
+              - UNKNOWN
+              - INPROGRESS
+              - FINISHED
+              - FINISHEDWITHERRORS
+              - TIMEOUT
+            - {}
 
     DocumentsStatusResponse:
       type: object
@@ -1510,17 +1510,17 @@ components:
                 type: string
                 example: uuid
               status:
+                type: string
                 anyOf:
-                  - type: string
-                    enum:
-                      - TO_BE_PROCESSED
-                      - INDEXED
-                      - REINDEXED
-                      - DEINDEXED
-                      - FAILED
-                      - FAILED_TO_BE_RETRIED
-                      - TO_BE_SCHEDULED
-                  - type: string
+                  - enum:
+                    - TO_BE_PROCESSED
+                    - INDEXED
+                    - REINDEXED
+                    - DEINDEXED
+                    - FAILED
+                    - FAILED_TO_BE_RETRIED
+                    - TO_BE_SCHEDULED
+                  - {}
                 example: 'INDEXED'
               viewLocation:
                 type: string
@@ -1553,17 +1553,17 @@ components:
           type: string
           example: uuid
         status:
+          type: string
           anyOf:
-            - type: string
-              enum:
-                - TO_BE_PROCESSED
-                - INDEXED
-                - REINDEXED
-                - DEINDEXED
-                - FAILED
-                - FAILED_TO_BE_RETRIED
-                - TO_BE_SCHEDULED
-            - type: string
+            - enum:
+              - TO_BE_PROCESSED
+              - INDEXED
+              - REINDEXED
+              - DEINDEXED
+              - FAILED
+              - FAILED_TO_BE_RETRIED
+              - TO_BE_SCHEDULED
+            - {}
           example: 'INDEXED'
         viewLocation:
           type: string
@@ -1742,16 +1742,16 @@ components:
           type: string
           example: uuid
         status:
+          type: string
           anyOf:
-            - type: string
-              enum:
-                - NEW
-                - UNKNOWN
-                - INPROGRESS
-                - FINISHED
-                - FINISHEDWITHERRORS
-                - TIMEOUT
-            - type: string
+            - enum:
+              - NEW
+              - UNKNOWN
+              - INPROGRESS
+              - FINISHED
+              - FINISHEDWITHERRORS
+              - TIMEOUT
+            - {}
 
     MSSharePointConfigurationMinimal:
       type: object

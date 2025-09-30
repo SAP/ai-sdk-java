@@ -13,8 +13,10 @@ package com.sap.ai.sdk.grounding.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -31,8 +33,80 @@ public class DocumentsStatusResponseResourcesInner
   @JsonProperty("id")
   private String id;
 
+  /** Gets or Sets status */
+  public enum StatusEnum {
+    /** The TO_BE_PROCESSED option of this DocumentsStatusResponseResourcesInner */
+    TO_BE_PROCESSED("TO_BE_PROCESSED"),
+
+    /** The INDEXED option of this DocumentsStatusResponseResourcesInner */
+    INDEXED("INDEXED"),
+
+    /** The REINDEXED option of this DocumentsStatusResponseResourcesInner */
+    REINDEXED("REINDEXED"),
+
+    /** The DEINDEXED option of this DocumentsStatusResponseResourcesInner */
+    DEINDEXED("DEINDEXED"),
+
+    /** The FAILED option of this DocumentsStatusResponseResourcesInner */
+    FAILED("FAILED"),
+
+    /** The FAILED_TO_BE_RETRIED option of this DocumentsStatusResponseResourcesInner */
+    FAILED_TO_BE_RETRIED("FAILED_TO_BE_RETRIED"),
+
+    /** The TO_BE_SCHEDULED option of this DocumentsStatusResponseResourcesInner */
+    TO_BE_SCHEDULED("TO_BE_SCHEDULED"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this DocumentsStatusResponseResourcesInner */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    StatusEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type DocumentsStatusResponseResourcesInner
+     */
+    @JsonCreator
+    @Nullable
+    public static StatusEnum fromValue(@Nonnull final String value) {
+      for (StatusEnum b : StatusEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+
   @JsonProperty("status")
-  private DocumentsStatusResponseResourcesInnerStatus status;
+  private StatusEnum status;
 
   @JsonProperty("viewLocation")
   private String viewLocation;
@@ -101,8 +175,7 @@ public class DocumentsStatusResponseResourcesInner
    * @return The same instance of this {@link DocumentsStatusResponseResourcesInner} class
    */
   @Nonnull
-  public DocumentsStatusResponseResourcesInner status(
-      @Nullable final DocumentsStatusResponseResourcesInnerStatus status) {
+  public DocumentsStatusResponseResourcesInner status(@Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -112,8 +185,8 @@ public class DocumentsStatusResponseResourcesInner
    *
    * @return status The status of this {@link DocumentsStatusResponseResourcesInner} instance.
    */
-  @Nonnull
-  public DocumentsStatusResponseResourcesInnerStatus getStatus() {
+  @Nullable
+  public StatusEnum getStatus() {
     return status;
   }
 
@@ -122,7 +195,7 @@ public class DocumentsStatusResponseResourcesInner
    *
    * @param status The status of this {@link DocumentsStatusResponseResourcesInner}
    */
-  public void setStatus(@Nullable final DocumentsStatusResponseResourcesInnerStatus status) {
+  public void setStatus(@Nullable final StatusEnum status) {
     this.status = status;
   }
 

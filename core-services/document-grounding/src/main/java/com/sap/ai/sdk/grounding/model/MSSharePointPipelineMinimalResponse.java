@@ -33,8 +33,77 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
   @JsonProperty("id")
   private String id;
 
+  /** Gets or Sets status */
+  public enum StatusEnum {
+    /** The NEW option of this MSSharePointPipelineMinimalResponse */
+    NEW("NEW"),
+
+    /** The UNKNOWN option of this MSSharePointPipelineMinimalResponse */
+    UNKNOWN("UNKNOWN"),
+
+    /** The INPROGRESS option of this MSSharePointPipelineMinimalResponse */
+    INPROGRESS("INPROGRESS"),
+
+    /** The FINISHED option of this MSSharePointPipelineMinimalResponse */
+    FINISHED("FINISHED"),
+
+    /** The FINISHEDWITHERRORS option of this MSSharePointPipelineMinimalResponse */
+    FINISHEDWITHERRORS("FINISHEDWITHERRORS"),
+
+    /** The TIMEOUT option of this MSSharePointPipelineMinimalResponse */
+    TIMEOUT("TIMEOUT"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this MSSharePointPipelineMinimalResponse */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    StatusEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type MSSharePointPipelineMinimalResponse
+     */
+    @JsonCreator
+    @Nullable
+    public static StatusEnum fromValue(@Nonnull final String value) {
+      for (StatusEnum b : StatusEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+
   @JsonProperty("status")
-  private PipelineExecutionDataStatus status;
+  private StatusEnum status;
 
   /** Gets or Sets type */
   public enum TypeEnum {
@@ -145,8 +214,7 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
    * @return The same instance of this {@link MSSharePointPipelineMinimalResponse} class
    */
   @Nonnull
-  public MSSharePointPipelineMinimalResponse status(
-      @Nonnull final PipelineExecutionDataStatus status) {
+  public MSSharePointPipelineMinimalResponse status(@Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -156,8 +224,8 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
    *
    * @return status The status of this {@link MSSharePointPipelineMinimalResponse} instance.
    */
-  @Nonnull
-  public PipelineExecutionDataStatus getStatus() {
+  @Nullable
+  public StatusEnum getStatus() {
     return status;
   }
 
@@ -166,7 +234,7 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
    *
    * @param status The status of this {@link MSSharePointPipelineMinimalResponse}
    */
-  public void setStatus(@Nonnull final PipelineExecutionDataStatus status) {
+  public void setStatus(@Nullable final StatusEnum status) {
     this.status = status;
   }
 
@@ -416,7 +484,7 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
      * @param status The status of this {@link MSSharePointPipelineMinimalResponse}
      * @return The MSSharePointPipelineMinimalResponse builder.
      */
-    Builder2 status(@Nonnull final PipelineExecutionDataStatus status);
+    Builder2 status(@Nullable final StatusEnum status);
   }
 
   /** Builder helper class. */

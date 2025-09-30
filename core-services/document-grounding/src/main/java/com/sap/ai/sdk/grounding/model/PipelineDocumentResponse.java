@@ -13,8 +13,10 @@ package com.sap.ai.sdk.grounding.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -31,8 +33,80 @@ public class PipelineDocumentResponse
   @JsonProperty("id")
   private String id;
 
+  /** Gets or Sets status */
+  public enum StatusEnum {
+    /** The TO_BE_PROCESSED option of this PipelineDocumentResponse */
+    TO_BE_PROCESSED("TO_BE_PROCESSED"),
+
+    /** The INDEXED option of this PipelineDocumentResponse */
+    INDEXED("INDEXED"),
+
+    /** The REINDEXED option of this PipelineDocumentResponse */
+    REINDEXED("REINDEXED"),
+
+    /** The DEINDEXED option of this PipelineDocumentResponse */
+    DEINDEXED("DEINDEXED"),
+
+    /** The FAILED option of this PipelineDocumentResponse */
+    FAILED("FAILED"),
+
+    /** The FAILED_TO_BE_RETRIED option of this PipelineDocumentResponse */
+    FAILED_TO_BE_RETRIED("FAILED_TO_BE_RETRIED"),
+
+    /** The TO_BE_SCHEDULED option of this PipelineDocumentResponse */
+    TO_BE_SCHEDULED("TO_BE_SCHEDULED"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this PipelineDocumentResponse */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    StatusEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type PipelineDocumentResponse
+     */
+    @JsonCreator
+    @Nullable
+    public static StatusEnum fromValue(@Nonnull final String value) {
+      for (StatusEnum b : StatusEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+
   @JsonProperty("status")
-  private DocumentsStatusResponseResourcesInnerStatus status;
+  private StatusEnum status;
 
   @JsonProperty("viewLocation")
   private String viewLocation;
@@ -99,8 +173,7 @@ public class PipelineDocumentResponse
    * @return The same instance of this {@link PipelineDocumentResponse} class
    */
   @Nonnull
-  public PipelineDocumentResponse status(
-      @Nullable final DocumentsStatusResponseResourcesInnerStatus status) {
+  public PipelineDocumentResponse status(@Nullable final StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -110,8 +183,8 @@ public class PipelineDocumentResponse
    *
    * @return status The status of this {@link PipelineDocumentResponse} instance.
    */
-  @Nonnull
-  public DocumentsStatusResponseResourcesInnerStatus getStatus() {
+  @Nullable
+  public StatusEnum getStatus() {
     return status;
   }
 
@@ -120,7 +193,7 @@ public class PipelineDocumentResponse
    *
    * @param status The status of this {@link PipelineDocumentResponse}
    */
-  public void setStatus(@Nullable final DocumentsStatusResponseResourcesInnerStatus status) {
+  public void setStatus(@Nullable final StatusEnum status) {
     this.status = status;
   }
 
