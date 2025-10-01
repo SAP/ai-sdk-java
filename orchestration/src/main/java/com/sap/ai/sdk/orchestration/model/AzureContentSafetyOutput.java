@@ -179,7 +179,9 @@ public class AzureContentSafetyOutput
    * Set the protectedMaterialDetectionForCode of this {@link AzureContentSafetyOutput} instance and
    * return the same instance.
    *
-   * @param protectedMaterialDetectionForCode A flag to detect protected material for code
+   * @param protectedMaterialDetectionForCode Detect protected code content from known GitHub
+   *     repositories. The scan includes software libraries, source code, algorithms, and other
+   *     proprietary programming content.
    * @return The same instance of this {@link AzureContentSafetyOutput} class
    */
   @Nonnull
@@ -190,7 +192,8 @@ public class AzureContentSafetyOutput
   }
 
   /**
-   * A flag to detect protected material for code
+   * Detect protected code content from known GitHub repositories. The scan includes software
+   * libraries, source code, algorithms, and other proprietary programming content.
    *
    * @return protectedMaterialDetectionForCode The protectedMaterialDetectionForCode of this {@link
    *     AzureContentSafetyOutput} instance.
@@ -203,7 +206,9 @@ public class AzureContentSafetyOutput
   /**
    * Set the protectedMaterialDetectionForCode of this {@link AzureContentSafetyOutput} instance.
    *
-   * @param protectedMaterialDetectionForCode A flag to detect protected material for code
+   * @param protectedMaterialDetectionForCode Detect protected code content from known GitHub
+   *     repositories. The scan includes software libraries, source code, algorithms, and other
+   *     proprietary programming content.
    */
   public void setProtectedMaterialDetectionForCode(
       @Nullable final Boolean protectedMaterialDetectionForCode) {
