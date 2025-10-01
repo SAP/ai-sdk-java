@@ -216,6 +216,17 @@ class OrchestrationController {
     return response.getContent();
   }
 
+  @GetMapping("/maskingRegex")
+  @Nonnull
+    Object maskingRegex(
+        @Nullable @RequestParam(value = "format", required = false) final String format) {
+        final var response = service.maskingRegex();
+        if ("json".equals(format)) {
+        return response;
+        }
+        return response.getContent();
+    }
+
   @GetMapping("/completion/{resourceGroup}")
   @Nonnull
   Object completionWithResourceGroup(

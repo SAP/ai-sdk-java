@@ -274,19 +274,18 @@ public class OrchestrationService {
 
     return client.chatCompletion(prompt, configWithMasking);
   }
-
-  /**
-   * Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
-   * user. Anonymize any patient IDs given as they are not relevant for judging the sentiment of the
-   * feedback.
-   *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
-   *     Core: Orchestration - Data Masking</a>
-   * @return the assistant response object
-   */
+    /**
+     * Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
+     * user. Mask any patient IDs given as they are not relevant for judging the sentiment of the
+     * feedback.
+     *
+     * @link <a
+     *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+     *     Core: Orchestration - Data Masking</a>
+     * @return the assistant response object
+     */
   @Nonnull
-  public OrchestrationChatResponse maskingCustomAnonymization() {
+  public OrchestrationChatResponse maskingRegex() {
     val systemMessage = Message.system("Repeat following messages");
     val userMessage = Message.user("The patient id is patient_id_123.");
 

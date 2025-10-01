@@ -151,8 +151,8 @@ class OrchestrationTest {
   }
 
   @Test
-  void testMaskingCustomAnonymization() {
-    var response = service.maskingCustomAnonymization();
+  void testMaskingRegex() {
+    var response = service.maskingRegex();
     var result = response.getOriginalResponse();
     var llmChoice = result.getFinalResult().getChoices().get(0);
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");

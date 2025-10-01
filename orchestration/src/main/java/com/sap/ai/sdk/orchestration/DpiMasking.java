@@ -106,6 +106,18 @@ public class DpiMasking implements MaskingProvider {
   }
 
   /**
+   * Specifies a custom regex pattern for masking.
+   *
+   * @param regex The regex pattern to match
+   * @param replacement The replacement string
+   * @return A new {@link DpiMasking} instance
+   */
+  @Nonnull
+  public DpiMasking withRegex(@Nonnull final String regex, @Nonnull final String replacement) {
+    return new DpiMasking(maskingMethod, entities, customEntities, maskGroundingInput, allowList);
+  }
+
+  /**
    * Set words that should not be masked.
    *
    * @param allowList List of strings that should not be masked
