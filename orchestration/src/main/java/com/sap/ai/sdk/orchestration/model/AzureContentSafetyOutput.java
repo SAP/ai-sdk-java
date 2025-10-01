@@ -40,6 +40,9 @@ public class AzureContentSafetyOutput
   @JsonProperty("violence")
   private AzureThreshold violence;
 
+  @JsonProperty("protected_material_detection_for_code")
+  private Boolean protectedMaterialDetectionForCode = false;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -173,6 +176,41 @@ public class AzureContentSafetyOutput
   }
 
   /**
+   * Set the protectedMaterialDetectionForCode of this {@link AzureContentSafetyOutput} instance and
+   * return the same instance.
+   *
+   * @param protectedMaterialDetectionForCode A flag to detect protected material for code
+   * @return The same instance of this {@link AzureContentSafetyOutput} class
+   */
+  @Nonnull
+  public AzureContentSafetyOutput protectedMaterialDetectionForCode(
+      @Nullable final Boolean protectedMaterialDetectionForCode) {
+    this.protectedMaterialDetectionForCode = protectedMaterialDetectionForCode;
+    return this;
+  }
+
+  /**
+   * A flag to detect protected material for code
+   *
+   * @return protectedMaterialDetectionForCode The protectedMaterialDetectionForCode of this {@link
+   *     AzureContentSafetyOutput} instance.
+   */
+  @Nonnull
+  public Boolean isProtectedMaterialDetectionForCode() {
+    return protectedMaterialDetectionForCode;
+  }
+
+  /**
+   * Set the protectedMaterialDetectionForCode of this {@link AzureContentSafetyOutput} instance.
+   *
+   * @param protectedMaterialDetectionForCode A flag to detect protected material for code
+   */
+  public void setProtectedMaterialDetectionForCode(
+      @Nullable final Boolean protectedMaterialDetectionForCode) {
+    this.protectedMaterialDetectionForCode = protectedMaterialDetectionForCode;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link AzureContentSafetyOutput}.
    *
    * @return The set of properties names
@@ -215,6 +253,8 @@ public class AzureContentSafetyOutput
     if (selfHarm != null) declaredFields.put("selfHarm", selfHarm);
     if (sexual != null) declaredFields.put("sexual", sexual);
     if (violence != null) declaredFields.put("violence", violence);
+    if (protectedMaterialDetectionForCode != null)
+      declaredFields.put("protectedMaterialDetectionForCode", protectedMaterialDetectionForCode);
     return declaredFields;
   }
 
@@ -243,12 +283,16 @@ public class AzureContentSafetyOutput
         && Objects.equals(this.hate, azureContentSafetyOutput.hate)
         && Objects.equals(this.selfHarm, azureContentSafetyOutput.selfHarm)
         && Objects.equals(this.sexual, azureContentSafetyOutput.sexual)
-        && Objects.equals(this.violence, azureContentSafetyOutput.violence);
+        && Objects.equals(this.violence, azureContentSafetyOutput.violence)
+        && Objects.equals(
+            this.protectedMaterialDetectionForCode,
+            azureContentSafetyOutput.protectedMaterialDetectionForCode);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hate, selfHarm, sexual, violence, cloudSdkCustomFields);
+    return Objects.hash(
+        hate, selfHarm, sexual, violence, protectedMaterialDetectionForCode, cloudSdkCustomFields);
   }
 
   @Override
@@ -260,6 +304,9 @@ public class AzureContentSafetyOutput
     sb.append("    selfHarm: ").append(toIndentedString(selfHarm)).append("\n");
     sb.append("    sexual: ").append(toIndentedString(sexual)).append("\n");
     sb.append("    violence: ").append(toIndentedString(violence)).append("\n");
+    sb.append("    protectedMaterialDetectionForCode: ")
+        .append(toIndentedString(protectedMaterialDetectionForCode))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
