@@ -10,6 +10,8 @@ import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
+import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
+import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
@@ -257,11 +259,13 @@ public class SpringAiOrchestrationService {
    */
   @Nullable
   public Translation responseFormat() {
+    val schema = ResponseJsonSchema.fromType(Translation.class);
+    val template = TemplateConfig.create().withJsonSchemaResponse(schema);
+    val options = new OrchestrationChatOptions(config.withTemplateConfig(template));
     val cl = ChatClient.builder(new OrchestrationChatModel()).build();
 
     val prompt =
-        new Prompt(
-            "How do I say 'AI is going to revolutionize the world' in dutch?", defaultOptions);
+        new Prompt("How do I say 'AI is going to revolutionize the world' in dutch?", options);
     return cl.prompt(prompt).call().entity(Translation.class);
   }
 }
