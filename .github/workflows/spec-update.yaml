@@ -27,6 +27,9 @@ on:
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
   JAVA_VERSION: 17
+  # keep the following two variables in sync with our 'cache-maven-dependencies.yaml' workflow
+  MAVEN_CACHE_KEY: maven-dependencies
+  MAVEN_CACHE_DIR: ~/.m2
 
 jobs:
   generate:
@@ -58,6 +61,13 @@ jobs:
           distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
+
+      - name: "Restore Dependencies"
+        id: restore-dependencies
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ env.MAVEN_CACHE_KEY }}
+          path: ${{ env.MAVEN_CACHE_DIR }}
 
       - name: "Checkout or Create Branch"
         id: branch

@@ -10,6 +10,9 @@ env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
   MVN_SKIP_CI_PLUGINS: -DskipFormatting -Denforcer.skip -Djacoco.skip -Dmdep.analyze.skip
   JAVA_VERSION: 17
+  # keep the following two variables in sync with our 'cache-maven-dependencies.yaml' workflow
+  MAVEN_CACHE_KEY: maven-dependencies
+  MAVEN_CACHE_DIR: ~/.m2
 
 jobs:
 
@@ -32,6 +35,13 @@ jobs:
           distribution: "sapmachine"
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
+
+      - name: "Restore Dependencies"
+        id: restore-dependencies
+        uses: actions/cache/restore@v4
+        with:
+          key: ${{ env.MAVEN_CACHE_KEY }}
+          path: ${{ env.MAVEN_CACHE_DIR }}
 
       - name: "REUSE Compliance Check"
         uses: fsfe/reuse-action@v5

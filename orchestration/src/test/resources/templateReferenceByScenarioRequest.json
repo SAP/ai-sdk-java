@@ -20,7 +20,8 @@
           "template_ref": {
             "scenario": "test",
             "name": "test",
-            "version": "0.0.1"
+            "version": "0.0.1",
+            "scope" : "tenant"
           }
         }
       }

@@ -41,9 +41,6 @@ public class OrchestrationConfigGetResponse
   @JsonProperty("scenario")
   private String scenario;
 
-  @JsonProperty("model_name")
-  private String modelName;
-
   @JsonProperty("creation_timestamp")
   private String creationTimestamp;
 
@@ -191,38 +188,6 @@ public class OrchestrationConfigGetResponse
    */
   public void setScenario(@Nullable final String scenario) {
     this.scenario = scenario;
-  }
-
-  /**
-   * Set the modelName of this {@link OrchestrationConfigGetResponse} instance and return the same
-   * instance.
-   *
-   * @param modelName The modelName of this {@link OrchestrationConfigGetResponse}
-   * @return The same instance of this {@link OrchestrationConfigGetResponse} class
-   */
-  @Nonnull
-  public OrchestrationConfigGetResponse modelName(@Nullable final String modelName) {
-    this.modelName = modelName;
-    return this;
-  }
-
-  /**
-   * Get modelName
-   *
-   * @return modelName The modelName of this {@link OrchestrationConfigGetResponse} instance.
-   */
-  @Nonnull
-  public String getModelName() {
-    return modelName;
-  }
-
-  /**
-   * Set the modelName of this {@link OrchestrationConfigGetResponse} instance.
-   *
-   * @param modelName The modelName of this {@link OrchestrationConfigGetResponse}
-   */
-  public void setModelName(@Nullable final String modelName) {
-    this.modelName = modelName;
   }
 
   /**
@@ -433,7 +398,6 @@ public class OrchestrationConfigGetResponse
     if (name != null) declaredFields.put("name", name);
     if (version != null) declaredFields.put("version", version);
     if (scenario != null) declaredFields.put("scenario", scenario);
-    if (modelName != null) declaredFields.put("modelName", modelName);
     if (creationTimestamp != null) declaredFields.put("creationTimestamp", creationTimestamp);
     if (managedBy != null) declaredFields.put("managedBy", managedBy);
     if (isVersionHead != null) declaredFields.put("isVersionHead", isVersionHead);
@@ -471,7 +435,6 @@ public class OrchestrationConfigGetResponse
         && Objects.equals(this.name, orchestrationConfigGetResponse.name)
         && Objects.equals(this.version, orchestrationConfigGetResponse.version)
         && Objects.equals(this.scenario, orchestrationConfigGetResponse.scenario)
-        && Objects.equals(this.modelName, orchestrationConfigGetResponse.modelName)
         && Objects.equals(this.creationTimestamp, orchestrationConfigGetResponse.creationTimestamp)
         && Objects.equals(this.managedBy, orchestrationConfigGetResponse.managedBy)
         && Objects.equals(this.isVersionHead, orchestrationConfigGetResponse.isVersionHead)
@@ -486,7 +449,6 @@ public class OrchestrationConfigGetResponse
         name,
         version,
         scenario,
-        modelName,
         creationTimestamp,
         managedBy,
         isVersionHead,
@@ -504,7 +466,6 @@ public class OrchestrationConfigGetResponse
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    scenario: ").append(toIndentedString(scenario)).append("\n");
-    sb.append("    modelName: ").append(toIndentedString(modelName)).append("\n");
     sb.append("    creationTimestamp: ").append(toIndentedString(creationTimestamp)).append("\n");
     sb.append("    managedBy: ").append(toIndentedString(managedBy)).append("\n");
     sb.append("    isVersionHead: ").append(toIndentedString(isVersionHead)).append("\n");

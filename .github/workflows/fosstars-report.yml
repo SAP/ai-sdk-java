@@ -41,11 +41,16 @@ jobs:
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
 
+      - name: "Create settings.xml"
+        run: |
+          echo '${{ secrets.OSS_INDEX_SETTINGS_XML }}' > settings.xml
+
       - name: "CVE Scan"
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-        run: |
-          mvn -T1 --no-transfer-progress --batch-mode org.owasp:dependency-check-maven:check org.owasp:dependency-check-maven:aggregate
+        run: >
+          mvn -T1 --no-transfer-progress -s settings.xml
+          --batch-mode org.owasp:dependency-check-maven:check org.owasp:dependency-check-maven:aggregate
 
       - name: "Archive CVE Report"
         uses: actions/upload-artifact@v4

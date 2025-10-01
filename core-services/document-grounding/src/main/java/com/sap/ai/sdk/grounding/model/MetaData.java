@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -31,6 +33,9 @@ public class MetaData
   @JsonProperty("destination")
   private String destination;
 
+  @JsonProperty("dataRepositoryMetadata")
+  private List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata = new ArrayList<>();
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -44,7 +49,7 @@ public class MetaData
    * @return The same instance of this {@link MetaData} class
    */
   @Nonnull
-  public MetaData destination(@Nonnull final String destination) {
+  public MetaData destination(@Nullable final String destination) {
     this.destination = destination;
     return this;
   }
@@ -64,8 +69,57 @@ public class MetaData
    *
    * @param destination The destination of this {@link MetaData}
    */
-  public void setDestination(@Nonnull final String destination) {
+  public void setDestination(@Nullable final String destination) {
     this.destination = destination;
+  }
+
+  /**
+   * Set the dataRepositoryMetadata of this {@link MetaData} instance and return the same instance.
+   *
+   * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link MetaData}
+   * @return The same instance of this {@link MetaData} class
+   */
+  @Nonnull
+  public MetaData dataRepositoryMetadata(
+      @Nullable final List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata) {
+    this.dataRepositoryMetadata = dataRepositoryMetadata;
+    return this;
+  }
+
+  /**
+   * Add one dataRepositoryMetadata instance to this {@link MetaData}.
+   *
+   * @param dataRepositoryMetadataItem The dataRepositoryMetadata that should be added
+   * @return The same instance of type {@link MetaData}
+   */
+  @Nonnull
+  public MetaData addDataRepositoryMetadataItem(
+      @Nonnull final MetaDataDataRepositoryMetadataInner dataRepositoryMetadataItem) {
+    if (this.dataRepositoryMetadata == null) {
+      this.dataRepositoryMetadata = new ArrayList<>();
+    }
+    this.dataRepositoryMetadata.add(dataRepositoryMetadataItem);
+    return this;
+  }
+
+  /**
+   * Get dataRepositoryMetadata
+   *
+   * @return dataRepositoryMetadata The dataRepositoryMetadata of this {@link MetaData} instance.
+   */
+  @Nonnull
+  public List<MetaDataDataRepositoryMetadataInner> getDataRepositoryMetadata() {
+    return dataRepositoryMetadata;
+  }
+
+  /**
+   * Set the dataRepositoryMetadata of this {@link MetaData} instance.
+   *
+   * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link MetaData}
+   */
+  public void setDataRepositoryMetadata(
+      @Nullable final List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata) {
+    this.dataRepositoryMetadata = dataRepositoryMetadata;
   }
 
   /**
@@ -107,6 +161,8 @@ public class MetaData
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (destination != null) declaredFields.put("destination", destination);
+    if (dataRepositoryMetadata != null)
+      declaredFields.put("dataRepositoryMetadata", dataRepositoryMetadata);
     return declaredFields;
   }
 
@@ -132,12 +188,13 @@ public class MetaData
     }
     final MetaData metaData = (MetaData) o;
     return Objects.equals(this.cloudSdkCustomFields, metaData.cloudSdkCustomFields)
-        && Objects.equals(this.destination, metaData.destination);
+        && Objects.equals(this.destination, metaData.destination)
+        && Objects.equals(this.dataRepositoryMetadata, metaData.dataRepositoryMetadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(destination, cloudSdkCustomFields);
+    return Objects.hash(destination, dataRepositoryMetadata, cloudSdkCustomFields);
   }
 
   @Override
@@ -146,6 +203,9 @@ public class MetaData
     final StringBuilder sb = new StringBuilder();
     sb.append("class MetaData {\n");
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
+    sb.append("    dataRepositoryMetadata: ")
+        .append(toIndentedString(dataRepositoryMetadata))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -163,22 +223,8 @@ public class MetaData
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link MetaData} instance with
-   * all required arguments.
-   */
-  public static Builder create() {
-    return (destination) -> new MetaData().destination(destination);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the destination of this {@link MetaData} instance.
-     *
-     * @param destination The destination of this {@link MetaData}
-     * @return The MetaData instance.
-     */
-    MetaData destination(@Nonnull final String destination);
+  /** Create a new {@link MetaData} instance. No arguments are required. */
+  public static MetaData create() {
+    return new MetaData();
   }
 }
