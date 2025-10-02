@@ -11,7 +11,6 @@ import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DPIEntityConfig;
 import com.sap.ai.sdk.orchestration.model.DPIMethodConstant;
 import com.sap.ai.sdk.orchestration.model.DPIStandardEntity;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
