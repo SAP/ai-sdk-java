@@ -351,4 +351,14 @@ class OrchestrationController {
     }
     return response.getContent();
   }
+
+  @GetMapping("/embedding")
+  @Nonnull
+  Object embedding(@RequestParam(value = "format", required = false) final String format) {
+    final var response = service.embed(List.of("Hi SAP Orchestration Service", "I am John Doe"));
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getEmbeddingVectors();
+  }
 }
