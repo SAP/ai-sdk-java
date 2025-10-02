@@ -291,10 +291,7 @@ public class OrchestrationService {
     val prompt = new OrchestrationPrompt(systemMessage, userMessage);
     val regex = "patient_id_[0-9]+";
     val replacement = "REDACTED_ID";
-    val maskingConfig =
-        DpiMasking.anonymization()
-            .withRegex(regex, replacement)
-            .withRegex("student_id_[0-9]+", "student_id");
+    val maskingConfig = DpiMasking.anonymization().withRegex(regex, replacement);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
