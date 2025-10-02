@@ -49,7 +49,7 @@
   
 ### 📈 Improvements
 
--
+- [Orchestration] Supported new Data Masking config : `DPICustomEntity` with `replacement_strategy`.
 
 ### 🐛 Fixed Issues
 
