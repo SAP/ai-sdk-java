@@ -115,15 +115,20 @@ public class DpiMasking implements MaskingProvider {
    */
   @Nonnull
   public DpiMasking withRegex(@Nonnull final String regex, @Nonnull final String replacement) {
-    val newEntities = new ArrayList<>(entitiesDTO);
-    newEntities.add(
-        DPICustomEntity.create()
-            .regex(regex)
-            .replacementStrategy(
-                DPIMethodConstant.create()
-                    .method(DPIMethodConstant.MethodEnum.CONSTANT)
-                    .value(replacement)));
-    return new DpiMasking(maskingMethod, newEntities, maskGroundingInput, allowList);
+    return new DpiMasking(
+        maskingMethod,
+        Stream.concat(
+                entitiesDTO.stream(),
+                Stream.of(
+                    DPICustomEntity.create()
+                        .regex(regex)
+                        .replacementStrategy(
+                            DPIMethodConstant.create()
+                                .method(DPIMethodConstant.MethodEnum.CONSTANT)
+                                .value(replacement))))
+            .toList(),
+        maskGroundingInput,
+        allowList);
   }
 
   /**
