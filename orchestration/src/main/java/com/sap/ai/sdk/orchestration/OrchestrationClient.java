@@ -226,15 +226,34 @@ public class OrchestrationClient {
   }
 
   /**
-   * Generate embeddings for the given request.
+   * Generate embeddings for a {@code OrchestrationEmbeddingRequest} request.
    *
    * @param request the request containing the input text and other parameters.
    * @return the response containing the embeddings.
    * @throws OrchestrationClientException if the request fails
-   * @since 1.9.0
+   * @since 1.12.0
    */
   @Nonnull
-  EmbeddingsPostResponse embed(@Nonnull final EmbeddingsPostRequest request)
+  public OrchestrationEmbeddingResponse embed(@Nonnull final OrchestrationEmbeddingRequest request)
+      throws OrchestrationClientException {
+    final var response = embed(request.createEmbeddingsPostRequest());
+    return new OrchestrationEmbeddingResponse(response);
+  }
+
+  /**
+   * Generates embeddings using the low-level API request.
+   *
+   * <p>This method provides direct access to the underlying API for advanced use cases. For most
+   * scenarios, prefer {@link #embed(OrchestrationEmbeddingRequest)}.
+   *
+   * @param request the low-level API request
+   * @return the low level response object
+   * @throws OrchestrationClientException if the request fails
+   * @since 1.12.0
+   * @see #embed(OrchestrationEmbeddingRequest)
+   */
+  @Nonnull
+  public EmbeddingsPostResponse embed(@Nonnull final EmbeddingsPostRequest request)
       throws OrchestrationClientException {
     return executor.execute("/v2/embeddings", request, EmbeddingsPostResponse.class, customHeaders);
   }

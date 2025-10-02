@@ -466,6 +466,18 @@ class OrchestrationTest {
   }
 
   @Test
+  void testEmbedding() {
+    val result = service.embed(List.of("Hi SAP Orchestration Service", "I am John Doe"));
+    val embeddingVectors = result.getEmbeddingVectors();
+
+    assertThat(embeddingVectors)
+        .isNotNull()
+        .hasSize(2)
+        .isInstanceOf(List.class)
+        .allSatisfy(vector -> assertThat(vector).isInstanceOf(float[].class));
+  }
+
+  @Test
   void wrongModelVersion() {
     val filterConfig =
         new OrchestrationModuleConfig()
