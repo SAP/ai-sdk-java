@@ -274,16 +274,15 @@ public class OrchestrationService {
 
     return client.chatCompletion(prompt, configWithMasking);
   }
-    /**
-     * Let the orchestration service evaluate the feedback on the AI SDK provided by a hypothetical
-     * user. Mask any patient IDs given as they are not relevant for judging the sentiment of the
-     * feedback.
-     *
-     * @link <a
-     *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
-     *     Core: Orchestration - Data Masking</a>
-     * @return the assistant response object
-     */
+
+  /**
+   * Let the LLM respond with a masked repeated phrase of patient IDs.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
+   * @return the assistant response object
+   */
   @Nonnull
   public OrchestrationChatResponse maskingRegex() {
     val systemMessage = Message.system("Repeat following messages");
@@ -292,7 +291,10 @@ public class OrchestrationService {
     val prompt = new OrchestrationPrompt(systemMessage, userMessage);
     val regex = "patient_id_[0-9]+";
     val replacement = "REDACTED_ID";
-    val maskingConfig = DpiMasking.anonymization().withRegex(regex, replacement);
+    val maskingConfig =
+        DpiMasking.anonymization()
+            .withRegex(regex, replacement)
+            .withRegex("student_id_[0-9]+", "student_id");
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);

@@ -34,8 +34,7 @@ import lombok.val;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class DpiMasking implements MaskingProvider {
   @Nonnull DPIConfig.MethodEnum maskingMethod;
-  @Nonnull List<DPIEntities> entities;
-  @Nonnull List<DPICustomEntity> customEntities;
+  @Nonnull List<DPIEntityConfig> entitiesDTO;
   @With boolean maskGroundingInput;
   @Nonnull List<String> allowList;
 
@@ -81,7 +80,13 @@ public class DpiMasking implements MaskingProvider {
       val entitiesList = new ArrayList<DPIEntities>();
       entitiesList.add(entity);
       entitiesList.addAll(Arrays.asList(entities));
-      return new DpiMasking(maskingMethod, entitiesList, List.of(), false, List.of());
+
+      val entitiesDTO =
+          new ArrayList<>(
+              entitiesList.stream()
+                  .map(it -> (DPIEntityConfig) DPIStandardEntity.create().type(it))
+                  .toList());
+      return new DpiMasking(maskingMethod, entitiesDTO, false, List.of());
     }
 
     /**
@@ -101,7 +106,7 @@ public class DpiMasking implements MaskingProvider {
                       .method(DPIMethodConstant.MethodEnum.CONSTANT)
                       .value(replacement));
 
-      return new DpiMasking(maskingMethod, List.of(), List.of(customEntity), false, List.of());
+      return new DpiMasking(maskingMethod, List.of(customEntity), false, List.of());
     }
   }
 
@@ -114,7 +119,7 @@ public class DpiMasking implements MaskingProvider {
    */
   @Nonnull
   public DpiMasking withRegex(@Nonnull final String regex, @Nonnull final String replacement) {
-    return new DpiMasking(maskingMethod, entities, customEntities, maskGroundingInput, allowList);
+    return new DpiMasking(maskingMethod, entitiesDTO, maskGroundingInput, allowList);
   }
 
   /**
@@ -125,18 +130,12 @@ public class DpiMasking implements MaskingProvider {
    */
   @Nonnull
   public DpiMasking withAllowList(@Nonnull final List<String> allowList) {
-    return new DpiMasking(maskingMethod, entities, customEntities, maskGroundingInput, allowList);
+    return new DpiMasking(maskingMethod, entitiesDTO, maskGroundingInput, allowList);
   }
 
   @Nonnull
   @Override
   public DPIConfig createConfig() {
-    val entitiesDTO =
-        new ArrayList<>(
-            entities.stream()
-                .map(it -> (DPIEntityConfig) DPIStandardEntity.create().type(it))
-                .toList());
-    entitiesDTO.addAll(customEntities);
     return DPIConfig.create()
         .type(SAP_DATA_PRIVACY_INTEGRATION)
         .method(maskingMethod)
