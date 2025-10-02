@@ -14,6 +14,7 @@ import com.sap.ai.sdk.orchestration.model.DPIStandardEntity;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -77,15 +78,10 @@ public class DpiMasking implements MaskingProvider {
     @Nonnull
     public DpiMasking withEntities(
         @Nonnull final DPIEntities entity, @Nonnull final DPIEntities... entities) {
-      val entitiesList = new ArrayList<DPIEntities>();
-      entitiesList.add(entity);
-      entitiesList.addAll(Arrays.asList(entities));
-
       val entitiesDTO =
-          new ArrayList<>(
-              entitiesList.stream()
-                  .map(it -> (DPIEntityConfig) DPIStandardEntity.create().type(it))
-                  .toList());
+          Stream.concat(Stream.of(entity), Arrays.stream(entities))
+              .map(it -> (DPIEntityConfig) DPIStandardEntity.create().type(it))
+              .toList();
       return new DpiMasking(maskingMethod, entitiesDTO, false, List.of());
     }
 
@@ -119,7 +115,15 @@ public class DpiMasking implements MaskingProvider {
    */
   @Nonnull
   public DpiMasking withRegex(@Nonnull final String regex, @Nonnull final String replacement) {
-    return new DpiMasking(maskingMethod, entitiesDTO, maskGroundingInput, allowList);
+    val newEntities = new ArrayList<>(entitiesDTO);
+    newEntities.add(
+        DPICustomEntity.create()
+            .regex(regex)
+            .replacementStrategy(
+                DPIMethodConstant.create()
+                    .method(DPIMethodConstant.MethodEnum.CONSTANT)
+                    .value(replacement)));
+    return new DpiMasking(maskingMethod, newEntities, maskGroundingInput, allowList);
   }
 
   /**
