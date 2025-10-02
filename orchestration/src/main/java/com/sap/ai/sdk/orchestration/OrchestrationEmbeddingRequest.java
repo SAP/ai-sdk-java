@@ -79,12 +79,13 @@ public class OrchestrationEmbeddingRequest {
     /**
      * Specifies multiple text inputs using variable arguments.
      *
-     * @param inputs one or more strings to embed
+     * @param firstInput string to embed
+     * @param inputs optional additional strings to embed
      * @return a new embedding request instance
      */
     @Nonnull
     default OrchestrationEmbeddingRequest forInputs(
-        @Nonnull final String firstInput, String... inputs) {
+        @Nonnull final String firstInput, @Nonnull final String... inputs) {
       return forInputs(Lists.asList(firstInput, inputs));
     }
   }
