@@ -34,6 +34,9 @@ public class MSSharePointConfiguration
   @JsonProperty("sharePoint")
   private SharePointConfig sharePoint;
 
+  @JsonProperty("cronExpression")
+  private String cronExpression;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -105,6 +108,38 @@ public class MSSharePointConfiguration
   }
 
   /**
+   * Set the cronExpression of this {@link MSSharePointConfiguration} instance and return the same
+   * instance.
+   *
+   * @param cronExpression The cronExpression of this {@link MSSharePointConfiguration}
+   * @return The same instance of this {@link MSSharePointConfiguration} class
+   */
+  @Nonnull
+  public MSSharePointConfiguration cronExpression(@Nullable final String cronExpression) {
+    this.cronExpression = cronExpression;
+    return this;
+  }
+
+  /**
+   * Get cronExpression
+   *
+   * @return cronExpression The cronExpression of this {@link MSSharePointConfiguration} instance.
+   */
+  @Nonnull
+  public String getCronExpression() {
+    return cronExpression;
+  }
+
+  /**
+   * Set the cronExpression of this {@link MSSharePointConfiguration} instance.
+   *
+   * @param cronExpression The cronExpression of this {@link MSSharePointConfiguration}
+   */
+  public void setCronExpression(@Nullable final String cronExpression) {
+    this.cronExpression = cronExpression;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link MSSharePointConfiguration}.
    *
    * @return The set of properties names
@@ -145,6 +180,7 @@ public class MSSharePointConfiguration
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (destination != null) declaredFields.put("destination", destination);
     if (sharePoint != null) declaredFields.put("sharePoint", sharePoint);
+    if (cronExpression != null) declaredFields.put("cronExpression", cronExpression);
     return declaredFields;
   }
 
@@ -171,12 +207,13 @@ public class MSSharePointConfiguration
     final MSSharePointConfiguration msSharePointConfiguration = (MSSharePointConfiguration) o;
     return Objects.equals(this.cloudSdkCustomFields, msSharePointConfiguration.cloudSdkCustomFields)
         && Objects.equals(this.destination, msSharePointConfiguration.destination)
-        && Objects.equals(this.sharePoint, msSharePointConfiguration.sharePoint);
+        && Objects.equals(this.sharePoint, msSharePointConfiguration.sharePoint)
+        && Objects.equals(this.cronExpression, msSharePointConfiguration.cronExpression);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(destination, sharePoint, cloudSdkCustomFields);
+    return Objects.hash(destination, sharePoint, cronExpression, cloudSdkCustomFields);
   }
 
   @Override
@@ -186,6 +223,7 @@ public class MSSharePointConfiguration
     sb.append("class MSSharePointConfiguration {\n");
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
     sb.append("    sharePoint: ").append(toIndentedString(sharePoint)).append("\n");
+    sb.append("    cronExpression: ").append(toIndentedString(cronExpression)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
