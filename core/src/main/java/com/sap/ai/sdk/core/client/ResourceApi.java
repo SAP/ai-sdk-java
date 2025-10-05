@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.core.client;
 
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.core.model.BckndInstanceTypeGetResponse;
 import com.sap.ai.sdk.core.model.BckndResourceGetResponse;
 import com.sap.ai.sdk.core.model.BckndResourcePatchBody;
 import com.sap.ai.sdk.core.model.BckndResourcePatchResponse;
@@ -18,7 +19,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.40.1.
+ * AI Core in version 2.41.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -114,6 +115,79 @@ public class ResourceApi extends AbstractOpenApiService {
   @Nonnull
   public BckndResourceGetResponse get() throws OpenApiRequestException {
     return get(null);
+  }
+
+  /**
+   * Get list of available instance types
+   *
+   * <p>Lists all the instance types available in the cluster.
+   *
+   * <p><b>200</b> - List of available instance types
+   *
+   * <p><b>400</b> - The request was malformed and could thus not be processed.
+   *
+   * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+   *
+   * @param authorization (optional) Authorization bearer token containing a JWT token.
+   * @return BckndInstanceTypeGetResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public BckndInstanceTypeGetResponse get_0(@Nullable final String authorization)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = null;
+
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/admin/resources/instanceTypes").build().toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (authorization != null)
+      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
+
+    final ParameterizedTypeReference<BckndInstanceTypeGetResponse> localVarReturnType =
+        new ParameterizedTypeReference<BckndInstanceTypeGetResponse>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.GET,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Get list of available instance types
+   *
+   * <p>Lists all the instance types available in the cluster.
+   *
+   * <p><b>200</b> - List of available instance types
+   *
+   * <p><b>400</b> - The request was malformed and could thus not be processed.
+   *
+   * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
+   *
+   * @return BckndInstanceTypeGetResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public BckndInstanceTypeGetResponse get_0() throws OpenApiRequestException {
+    return get_0(null);
   }
 
   /**
