@@ -40,8 +40,8 @@ public class AzureContentSafetyOutput
   @JsonProperty("violence")
   private AzureThreshold violence;
 
-  @JsonProperty("protected_material_code_detection")
-  private Boolean protectedMaterialCodeDetection = false;
+  @JsonProperty("protected_material_code")
+  private Boolean protectedMaterialCode = false;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -176,18 +176,18 @@ public class AzureContentSafetyOutput
   }
 
   /**
-   * Set the protectedMaterialCodeDetection of this {@link AzureContentSafetyOutput} instance and
-   * return the same instance.
+   * Set the protectedMaterialCode of this {@link AzureContentSafetyOutput} instance and return the
+   * same instance.
    *
-   * @param protectedMaterialCodeDetection Detect protected code content from known GitHub
-   *     repositories. The scan includes software libraries, source code, algorithms, and other
-   *     proprietary programming content.
+   * @param protectedMaterialCode Detect protected code content from known GitHub repositories. The
+   *     scan includes software libraries, source code, algorithms, and other proprietary
+   *     programming content.
    * @return The same instance of this {@link AzureContentSafetyOutput} class
    */
   @Nonnull
-  public AzureContentSafetyOutput protectedMaterialCodeDetection(
-      @Nullable final Boolean protectedMaterialCodeDetection) {
-    this.protectedMaterialCodeDetection = protectedMaterialCodeDetection;
+  public AzureContentSafetyOutput protectedMaterialCode(
+      @Nullable final Boolean protectedMaterialCode) {
+    this.protectedMaterialCode = protectedMaterialCode;
     return this;
   }
 
@@ -195,24 +195,23 @@ public class AzureContentSafetyOutput
    * Detect protected code content from known GitHub repositories. The scan includes software
    * libraries, source code, algorithms, and other proprietary programming content.
    *
-   * @return protectedMaterialCodeDetection The protectedMaterialCodeDetection of this {@link
+   * @return protectedMaterialCode The protectedMaterialCode of this {@link
    *     AzureContentSafetyOutput} instance.
    */
   @Nonnull
-  public Boolean isProtectedMaterialCodeDetection() {
-    return protectedMaterialCodeDetection;
+  public Boolean isProtectedMaterialCode() {
+    return protectedMaterialCode;
   }
 
   /**
-   * Set the protectedMaterialCodeDetection of this {@link AzureContentSafetyOutput} instance.
+   * Set the protectedMaterialCode of this {@link AzureContentSafetyOutput} instance.
    *
-   * @param protectedMaterialCodeDetection Detect protected code content from known GitHub
-   *     repositories. The scan includes software libraries, source code, algorithms, and other
-   *     proprietary programming content.
+   * @param protectedMaterialCode Detect protected code content from known GitHub repositories. The
+   *     scan includes software libraries, source code, algorithms, and other proprietary
+   *     programming content.
    */
-  public void setProtectedMaterialCodeDetection(
-      @Nullable final Boolean protectedMaterialCodeDetection) {
-    this.protectedMaterialCodeDetection = protectedMaterialCodeDetection;
+  public void setProtectedMaterialCode(@Nullable final Boolean protectedMaterialCode) {
+    this.protectedMaterialCode = protectedMaterialCode;
   }
 
   /**
@@ -258,8 +257,8 @@ public class AzureContentSafetyOutput
     if (selfHarm != null) declaredFields.put("selfHarm", selfHarm);
     if (sexual != null) declaredFields.put("sexual", sexual);
     if (violence != null) declaredFields.put("violence", violence);
-    if (protectedMaterialCodeDetection != null)
-      declaredFields.put("protectedMaterialCodeDetection", protectedMaterialCodeDetection);
+    if (protectedMaterialCode != null)
+      declaredFields.put("protectedMaterialCode", protectedMaterialCode);
     return declaredFields;
   }
 
@@ -290,14 +289,13 @@ public class AzureContentSafetyOutput
         && Objects.equals(this.sexual, azureContentSafetyOutput.sexual)
         && Objects.equals(this.violence, azureContentSafetyOutput.violence)
         && Objects.equals(
-            this.protectedMaterialCodeDetection,
-            azureContentSafetyOutput.protectedMaterialCodeDetection);
+            this.protectedMaterialCode, azureContentSafetyOutput.protectedMaterialCode);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        hate, selfHarm, sexual, violence, protectedMaterialCodeDetection, cloudSdkCustomFields);
+        hate, selfHarm, sexual, violence, protectedMaterialCode, cloudSdkCustomFields);
   }
 
   @Override
@@ -309,8 +307,8 @@ public class AzureContentSafetyOutput
     sb.append("    selfHarm: ").append(toIndentedString(selfHarm)).append("\n");
     sb.append("    sexual: ").append(toIndentedString(sexual)).append("\n");
     sb.append("    violence: ").append(toIndentedString(violence)).append("\n");
-    sb.append("    protectedMaterialCodeDetection: ")
-        .append(toIndentedString(protectedMaterialCodeDetection))
+    sb.append("    protectedMaterialCode: ")
+        .append(toIndentedString(protectedMaterialCode))
         .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
