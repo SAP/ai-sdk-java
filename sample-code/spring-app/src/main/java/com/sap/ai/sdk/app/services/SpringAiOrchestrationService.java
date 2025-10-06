@@ -203,7 +203,6 @@ public class SpringAiOrchestrationService {
     // GPT-4o-mini doesn't work too well with the file system tool, so we use 4o here
     val options = new OrchestrationChatOptions(config.withLlmConfig(GPT_4O));
     options.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
-    options.setInternalToolExecutionEnabled(true);
 
     val sys =
         new SystemMessage(
