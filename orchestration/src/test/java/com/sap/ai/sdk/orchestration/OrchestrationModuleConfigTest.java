@@ -107,8 +107,7 @@ class OrchestrationModuleConfigTest {
         .withFailMessage("withMaskingConfig() should overwrite the existing config and not append")
         .hasSize(1);
 
-    var masking =
-        DpiMasking.anonymization().withRegex("\\d{3}-\\d{2}-\\d{4}", "***-**-****");
+    var masking = DpiMasking.anonymization().withRegex("\\d{3}-\\d{2}-\\d{4}", "***-**-****");
     config = config.withMaskingConfig(masking);
     assertThat(config.getMaskingConfig()).isNotNull();
     assertThat(((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders())
