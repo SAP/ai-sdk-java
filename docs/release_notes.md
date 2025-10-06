@@ -49,7 +49,7 @@
   
 ### 📈 Improvements
 
-- [Orchestration] Supported new Data Masking config : `DPICustomEntity` with `replacement_strategy`.
+- [Orchestration] Added new API : `DpiMasking#withRegex`.
 
 ### 🐛 Fixed Issues
 
