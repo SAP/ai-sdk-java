@@ -10,7 +10,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.orchestration.model.DPIConfig;
+import com.sap.ai.sdk.orchestration.model.DPICustomEntity;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
+import com.sap.ai.sdk.orchestration.model.DPIMethodConstant;
 import com.sap.ai.sdk.orchestration.model.DPIStandardEntity;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
@@ -104,6 +106,23 @@ class OrchestrationModuleConfigTest {
     assertThat(((MaskingModuleConfigProviders) configModified.getMaskingConfig()).getProviders())
         .withFailMessage("withMaskingConfig() should overwrite the existing config and not append")
         .hasSize(1);
+
+    var masking =
+        DpiMasking.anonymization().withRegex("\\d{3}-\\d{2}-\\d{4}", "***-**-****");
+    config = config.withMaskingConfig(masking);
+    assertThat(config.getMaskingConfig()).isNotNull();
+    assertThat(((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders())
+        .hasSize(1);
+    dpiConfig = ((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders().get(0);
+    assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
+    assertThat(dpiConfig.getEntities()).hasSize(1);
+    assertThat(((DPICustomEntity) dpiConfig.getEntities().get(0)).getRegex())
+        .isEqualTo("\\d{3}-\\d{2}-\\d{4}");
+    assertThat(((DPICustomEntity) dpiConfig.getEntities().get(0)).getReplacementStrategy())
+        .isEqualTo(
+            DPIMethodConstant.create()
+                .method(DPIMethodConstant.MethodEnum.CONSTANT)
+                .value("***-**-****"));
   }
 
   @Test
