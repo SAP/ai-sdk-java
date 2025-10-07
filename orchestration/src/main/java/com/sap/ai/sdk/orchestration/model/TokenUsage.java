@@ -23,19 +23,25 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Usage of tokens in the response */
+/** Usage statistics for the completion request. */
 // CHECKSTYLE:OFF
 public class TokenUsage
 // CHECKSTYLE:ON
 {
   @JsonProperty("completion_tokens")
-  private Integer completionTokens;
+  private Integer completionTokens = 0;
 
   @JsonProperty("prompt_tokens")
-  private Integer promptTokens;
+  private Integer promptTokens = 0;
 
   @JsonProperty("total_tokens")
-  private Integer totalTokens;
+  private Integer totalTokens = 0;
+
+  @JsonProperty("completion_tokens_details")
+  private TokenUsageCompletionTokensDetails completionTokensDetails;
+
+  @JsonProperty("prompt_tokens_details")
+  private TokenUsagePromptTokensDetails promptTokensDetails;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -46,7 +52,7 @@ public class TokenUsage
   /**
    * Set the completionTokens of this {@link TokenUsage} instance and return the same instance.
    *
-   * @param completionTokens Number of tokens used in the input
+   * @param completionTokens Number of tokens in the generated completion.
    * @return The same instance of this {@link TokenUsage} class
    */
   @Nonnull
@@ -56,7 +62,7 @@ public class TokenUsage
   }
 
   /**
-   * Number of tokens used in the input
+   * Number of tokens in the generated completion.
    *
    * @return completionTokens The completionTokens of this {@link TokenUsage} instance.
    */
@@ -68,7 +74,7 @@ public class TokenUsage
   /**
    * Set the completionTokens of this {@link TokenUsage} instance.
    *
-   * @param completionTokens Number of tokens used in the input
+   * @param completionTokens Number of tokens in the generated completion.
    */
   public void setCompletionTokens(@Nonnull final Integer completionTokens) {
     this.completionTokens = completionTokens;
@@ -77,7 +83,7 @@ public class TokenUsage
   /**
    * Set the promptTokens of this {@link TokenUsage} instance and return the same instance.
    *
-   * @param promptTokens Number of tokens used in the output
+   * @param promptTokens Number of tokens in the prompt.
    * @return The same instance of this {@link TokenUsage} class
    */
   @Nonnull
@@ -87,7 +93,7 @@ public class TokenUsage
   }
 
   /**
-   * Number of tokens used in the output
+   * Number of tokens in the prompt.
    *
    * @return promptTokens The promptTokens of this {@link TokenUsage} instance.
    */
@@ -99,7 +105,7 @@ public class TokenUsage
   /**
    * Set the promptTokens of this {@link TokenUsage} instance.
    *
-   * @param promptTokens Number of tokens used in the output
+   * @param promptTokens Number of tokens in the prompt.
    */
   public void setPromptTokens(@Nonnull final Integer promptTokens) {
     this.promptTokens = promptTokens;
@@ -108,7 +114,7 @@ public class TokenUsage
   /**
    * Set the totalTokens of this {@link TokenUsage} instance and return the same instance.
    *
-   * @param totalTokens Total number of tokens used
+   * @param totalTokens Total number of tokens used in the request (prompt + completion).
    * @return The same instance of this {@link TokenUsage} class
    */
   @Nonnull
@@ -118,7 +124,7 @@ public class TokenUsage
   }
 
   /**
-   * Total number of tokens used
+   * Total number of tokens used in the request (prompt + completion).
    *
    * @return totalTokens The totalTokens of this {@link TokenUsage} instance.
    */
@@ -130,10 +136,78 @@ public class TokenUsage
   /**
    * Set the totalTokens of this {@link TokenUsage} instance.
    *
-   * @param totalTokens Total number of tokens used
+   * @param totalTokens Total number of tokens used in the request (prompt + completion).
    */
   public void setTotalTokens(@Nonnull final Integer totalTokens) {
     this.totalTokens = totalTokens;
+  }
+
+  /**
+   * Set the completionTokensDetails of this {@link TokenUsage} instance and return the same
+   * instance.
+   *
+   * @param completionTokensDetails The completionTokensDetails of this {@link TokenUsage}
+   * @return The same instance of this {@link TokenUsage} class
+   */
+  @Nonnull
+  public TokenUsage completionTokensDetails(
+      @Nullable final TokenUsageCompletionTokensDetails completionTokensDetails) {
+    this.completionTokensDetails = completionTokensDetails;
+    return this;
+  }
+
+  /**
+   * Get completionTokensDetails
+   *
+   * @return completionTokensDetails The completionTokensDetails of this {@link TokenUsage}
+   *     instance.
+   */
+  @Nonnull
+  public TokenUsageCompletionTokensDetails getCompletionTokensDetails() {
+    return completionTokensDetails;
+  }
+
+  /**
+   * Set the completionTokensDetails of this {@link TokenUsage} instance.
+   *
+   * @param completionTokensDetails The completionTokensDetails of this {@link TokenUsage}
+   */
+  public void setCompletionTokensDetails(
+      @Nullable final TokenUsageCompletionTokensDetails completionTokensDetails) {
+    this.completionTokensDetails = completionTokensDetails;
+  }
+
+  /**
+   * Set the promptTokensDetails of this {@link TokenUsage} instance and return the same instance.
+   *
+   * @param promptTokensDetails The promptTokensDetails of this {@link TokenUsage}
+   * @return The same instance of this {@link TokenUsage} class
+   */
+  @Nonnull
+  public TokenUsage promptTokensDetails(
+      @Nullable final TokenUsagePromptTokensDetails promptTokensDetails) {
+    this.promptTokensDetails = promptTokensDetails;
+    return this;
+  }
+
+  /**
+   * Get promptTokensDetails
+   *
+   * @return promptTokensDetails The promptTokensDetails of this {@link TokenUsage} instance.
+   */
+  @Nonnull
+  public TokenUsagePromptTokensDetails getPromptTokensDetails() {
+    return promptTokensDetails;
+  }
+
+  /**
+   * Set the promptTokensDetails of this {@link TokenUsage} instance.
+   *
+   * @param promptTokensDetails The promptTokensDetails of this {@link TokenUsage}
+   */
+  public void setPromptTokensDetails(
+      @Nullable final TokenUsagePromptTokensDetails promptTokensDetails) {
+    this.promptTokensDetails = promptTokensDetails;
   }
 
   /**
@@ -177,6 +251,9 @@ public class TokenUsage
     if (completionTokens != null) declaredFields.put("completionTokens", completionTokens);
     if (promptTokens != null) declaredFields.put("promptTokens", promptTokens);
     if (totalTokens != null) declaredFields.put("totalTokens", totalTokens);
+    if (completionTokensDetails != null)
+      declaredFields.put("completionTokensDetails", completionTokensDetails);
+    if (promptTokensDetails != null) declaredFields.put("promptTokensDetails", promptTokensDetails);
     return declaredFields;
   }
 
@@ -204,12 +281,20 @@ public class TokenUsage
     return Objects.equals(this.cloudSdkCustomFields, tokenUsage.cloudSdkCustomFields)
         && Objects.equals(this.completionTokens, tokenUsage.completionTokens)
         && Objects.equals(this.promptTokens, tokenUsage.promptTokens)
-        && Objects.equals(this.totalTokens, tokenUsage.totalTokens);
+        && Objects.equals(this.totalTokens, tokenUsage.totalTokens)
+        && Objects.equals(this.completionTokensDetails, tokenUsage.completionTokensDetails)
+        && Objects.equals(this.promptTokensDetails, tokenUsage.promptTokensDetails);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(completionTokens, promptTokens, totalTokens, cloudSdkCustomFields);
+    return Objects.hash(
+        completionTokens,
+        promptTokens,
+        totalTokens,
+        completionTokensDetails,
+        promptTokensDetails,
+        cloudSdkCustomFields);
   }
 
   @Override
@@ -220,6 +305,12 @@ public class TokenUsage
     sb.append("    completionTokens: ").append(toIndentedString(completionTokens)).append("\n");
     sb.append("    promptTokens: ").append(toIndentedString(promptTokens)).append("\n");
     sb.append("    totalTokens: ").append(toIndentedString(totalTokens)).append("\n");
+    sb.append("    completionTokensDetails: ")
+        .append(toIndentedString(completionTokensDetails))
+        .append("\n");
+    sb.append("    promptTokensDetails: ")
+        .append(toIndentedString(promptTokensDetails))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -256,7 +347,7 @@ public class TokenUsage
     /**
      * Set the completionTokens of this {@link TokenUsage} instance.
      *
-     * @param completionTokens Number of tokens used in the input
+     * @param completionTokens Number of tokens in the generated completion.
      * @return The TokenUsage builder.
      */
     Builder1 completionTokens(@Nonnull final Integer completionTokens);
@@ -267,7 +358,7 @@ public class TokenUsage
     /**
      * Set the promptTokens of this {@link TokenUsage} instance.
      *
-     * @param promptTokens Number of tokens used in the output
+     * @param promptTokens Number of tokens in the prompt.
      * @return The TokenUsage builder.
      */
     Builder2 promptTokens(@Nonnull final Integer promptTokens);
@@ -278,7 +369,7 @@ public class TokenUsage
     /**
      * Set the totalTokens of this {@link TokenUsage} instance.
      *
-     * @param totalTokens Total number of tokens used
+     * @param totalTokens Total number of tokens used in the request (prompt + completion).
      * @return The TokenUsage instance.
      */
     TokenUsage totalTokens(@Nonnull final Integer totalTokens);
