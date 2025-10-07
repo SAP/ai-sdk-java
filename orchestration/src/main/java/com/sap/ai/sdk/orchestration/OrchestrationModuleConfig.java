@@ -110,7 +110,7 @@ public class OrchestrationModuleConfig {
   @Nullable
   FilteringStreamOptions outputFilteringStreamOptions;
 
-  /** Configuration of optional streaming options for output filtering. */
+  /** Configuration of optional global streaming options, e.g. chunk-size. */
   @With(AccessLevel.PRIVATE) // may be exposed to public in the future
   @Getter(AccessLevel.PACKAGE)
   @Nullable
