@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
-import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfig;
@@ -21,7 +21,7 @@ import lombok.val;
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ConfigToRequestTransformer {
   @Nonnull
-  static CompletionPostRequest toCompletionPostRequest(
+  static CompletionRequestConfiguration toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
     val template = toTemplateModuleConfig(prompt, config.getTemplateConfig());
 
@@ -41,7 +41,7 @@ final class ConfigToRequestTransformer {
     val reqConfig =
         OrchestrationConfig.create().modules(moduleConfigs).stream(config.getGlobalStreamOptions());
 
-    return CompletionPostRequest.create()
+    return CompletionRequestConfiguration.create()
         .config(reqConfig)
         .placeholderValues(prompt.getTemplateParameters())
         .messagesHistory(messageHistory);

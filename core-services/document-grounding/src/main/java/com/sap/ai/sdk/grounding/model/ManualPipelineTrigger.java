@@ -31,6 +31,9 @@ public class ManualPipelineTrigger
   @JsonProperty("pipelineId")
   private String pipelineId;
 
+  @JsonProperty("metadataOnly")
+  private Boolean metadataOnly;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -66,6 +69,38 @@ public class ManualPipelineTrigger
    */
   public void setPipelineId(@Nullable final String pipelineId) {
     this.pipelineId = pipelineId;
+  }
+
+  /**
+   * Set the metadataOnly of this {@link ManualPipelineTrigger} instance and return the same
+   * instance.
+   *
+   * @param metadataOnly The metadataOnly of this {@link ManualPipelineTrigger}
+   * @return The same instance of this {@link ManualPipelineTrigger} class
+   */
+  @Nonnull
+  public ManualPipelineTrigger metadataOnly(@Nullable final Boolean metadataOnly) {
+    this.metadataOnly = metadataOnly;
+    return this;
+  }
+
+  /**
+   * Get metadataOnly
+   *
+   * @return metadataOnly The metadataOnly of this {@link ManualPipelineTrigger} instance.
+   */
+  @Nonnull
+  public Boolean isMetadataOnly() {
+    return metadataOnly;
+  }
+
+  /**
+   * Set the metadataOnly of this {@link ManualPipelineTrigger} instance.
+   *
+   * @param metadataOnly The metadataOnly of this {@link ManualPipelineTrigger}
+   */
+  public void setMetadataOnly(@Nullable final Boolean metadataOnly) {
+    this.metadataOnly = metadataOnly;
   }
 
   /**
@@ -108,6 +143,7 @@ public class ManualPipelineTrigger
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (pipelineId != null) declaredFields.put("pipelineId", pipelineId);
+    if (metadataOnly != null) declaredFields.put("metadataOnly", metadataOnly);
     return declaredFields;
   }
 
@@ -133,12 +169,13 @@ public class ManualPipelineTrigger
     }
     final ManualPipelineTrigger manualPipelineTrigger = (ManualPipelineTrigger) o;
     return Objects.equals(this.cloudSdkCustomFields, manualPipelineTrigger.cloudSdkCustomFields)
-        && Objects.equals(this.pipelineId, manualPipelineTrigger.pipelineId);
+        && Objects.equals(this.pipelineId, manualPipelineTrigger.pipelineId)
+        && Objects.equals(this.metadataOnly, manualPipelineTrigger.metadataOnly);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(pipelineId, cloudSdkCustomFields);
+    return Objects.hash(pipelineId, metadataOnly, cloudSdkCustomFields);
   }
 
   @Override
@@ -147,6 +184,7 @@ public class ManualPipelineTrigger
     final StringBuilder sb = new StringBuilder();
     sb.append("class ManualPipelineTrigger {\n");
     sb.append("    pipelineId: ").append(toIndentedString(pipelineId)).append("\n");
+    sb.append("    metadataOnly: ").append(toIndentedString(metadataOnly)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

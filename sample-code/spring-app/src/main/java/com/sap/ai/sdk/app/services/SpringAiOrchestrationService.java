@@ -10,8 +10,6 @@ import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
-import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
-import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
@@ -205,7 +203,6 @@ public class SpringAiOrchestrationService {
     // GPT-4o-mini doesn't work too well with the file system tool, so we use 4o here
     val options = new OrchestrationChatOptions(config.withLlmConfig(GPT_4O));
     options.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
-    options.setInternalToolExecutionEnabled(true);
 
     val sys =
         new SystemMessage(
@@ -261,13 +258,9 @@ public class SpringAiOrchestrationService {
   public Translation responseFormat() {
     val cl = ChatClient.builder(new OrchestrationChatModel()).build();
 
-    val schema = ResponseJsonSchema.fromType(Translation.class);
-    val template = TemplateConfig.create().withJsonSchemaResponse(schema);
-
-    val options = new OrchestrationChatOptions(config.withTemplateConfig(template));
     val prompt =
-        new Prompt("How do I say 'AI is going to revolutionize the world' in dutch?", options);
-
+        new Prompt(
+            "How do I say 'AI is going to revolutionize the world' in dutch?", defaultOptions);
     return cl.prompt(prompt).call().entity(Translation.class);
   }
 }

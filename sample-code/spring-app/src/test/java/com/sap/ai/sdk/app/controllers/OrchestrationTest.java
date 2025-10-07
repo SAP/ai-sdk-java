@@ -23,6 +23,7 @@ import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.model.InputTranslationModuleResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -37,6 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
@@ -378,6 +380,7 @@ class OrchestrationTest {
   }
 
   @Test
+  @Disabled("This behaviour is not released to canary yet.")
   void testTemplateFromPromptRegistryById() {
     val result = service.templateFromPromptRegistryById("Cloud ERP systems").getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
@@ -385,6 +388,7 @@ class OrchestrationTest {
   }
 
   @Test
+  @Disabled("This behaviour is not released to canary yet.")
   void testTemplateFromPromptRegistryByScenario() {
     val result =
         service.templateFromPromptRegistryByScenario("Cloud ERP systems").getOriginalResponse();
@@ -443,6 +447,7 @@ class OrchestrationTest {
   }
 
   @Test
+  @Disabled("This behaviour is not released to canary yet.")
   void testTranslation() {
     val result = service.translation();
     val content = result.getContent();
@@ -450,7 +455,7 @@ class OrchestrationTest {
     assertThat(content).contains("Englisch");
     assertThat(content).contains("Der", "ist");
 
-    GenericModuleResult inputTranslation =
+    InputTranslationModuleResult inputTranslation =
         result.getOriginalResponse().getIntermediateResults().getInputTranslation();
     GenericModuleResult outputTranslation =
         result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
@@ -458,6 +463,18 @@ class OrchestrationTest {
     assertThat(outputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage()).isEqualTo("Input to LLM is translated successfully.");
     assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
+  }
+
+  @Test
+  void testEmbedding() {
+    val result = service.embed(List.of("Hi SAP Orchestration Service", "I am John Doe"));
+    val embeddingVectors = result.getEmbeddingVectors();
+
+    assertThat(embeddingVectors)
+        .isNotNull()
+        .hasSize(2)
+        .isInstanceOf(List.class)
+        .allSatisfy(vector -> assertThat(vector).isInstanceOf(float[].class));
   }
 
   @Test

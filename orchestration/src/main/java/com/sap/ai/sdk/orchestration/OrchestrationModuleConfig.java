@@ -11,7 +11,8 @@ import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfigProviders;
 import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslation;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInput;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -99,9 +100,9 @@ public class OrchestrationModuleConfig {
    */
   @Nullable GroundingModuleConfig groundingConfig;
 
-  @Nullable SAPDocumentTranslation inputTranslationConfig;
+  @Nullable SAPDocumentTranslationInput inputTranslationConfig;
 
-  @Nullable SAPDocumentTranslation outputTranslationConfig;
+  @Nullable SAPDocumentTranslationOutput outputTranslationConfig;
 
   /** Configuration of optional streaming options for output filtering. */
   @With(AccessLevel.NONE) // may be exposed to public in the future
