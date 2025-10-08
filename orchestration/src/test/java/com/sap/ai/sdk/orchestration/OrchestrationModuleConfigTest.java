@@ -107,14 +107,17 @@ class OrchestrationModuleConfigTest {
         .withFailMessage("withMaskingConfig() should overwrite the existing config and not append")
         .hasSize(1);
 
-    var masking = DpiMasking.anonymization().withRegex("\\d{3}-\\d{2}-\\d{4}", "***-**-****");
+    var masking =
+        DpiMasking.anonymization()
+            .withRegex("\\d{3}-\\d{2}-\\d{4}", "***-**-****")
+            .withRegex("\\d{2}-\\d{2}-\\d{5}", "**-**-*****");
     config = config.withMaskingConfig(masking);
     assertThat(config.getMaskingConfig()).isNotNull();
     assertThat(((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders())
         .hasSize(1);
     dpiConfig = ((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders().get(0);
     assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
-    assertThat(dpiConfig.getEntities()).hasSize(1);
+    assertThat(dpiConfig.getEntities()).hasSize(2);
     assertThat(((DPICustomEntity) dpiConfig.getEntities().get(0)).getRegex())
         .isEqualTo("\\d{3}-\\d{2}-\\d{4}");
     assertThat(((DPICustomEntity) dpiConfig.getEntities().get(0)).getReplacementStrategy())
@@ -122,6 +125,13 @@ class OrchestrationModuleConfigTest {
             DPIMethodConstant.create()
                 .method(DPIMethodConstant.MethodEnum.CONSTANT)
                 .value("***-**-****"));
+    assertThat(((DPICustomEntity) dpiConfig.getEntities().get(1)).getRegex())
+        .isEqualTo("\\d{2}-\\d{2}-\\d{5}");
+    assertThat(((DPICustomEntity) dpiConfig.getEntities().get(1)).getReplacementStrategy())
+        .isEqualTo(
+            DPIMethodConstant.create()
+                .method(DPIMethodConstant.MethodEnum.CONSTANT)
+                .value("**-**-*****"));
   }
 
   @Test
