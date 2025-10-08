@@ -48,7 +48,6 @@ public class SpringAiAgenticWorkflowService {
     val options = new OrchestrationChatOptions(config);
     options.setToolCallbacks(
         List.of(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod())));
-    options.setInternalToolExecutionEnabled(true);
 
     //    Prompts for the chain workflow
     final List<String> systemPrompts =

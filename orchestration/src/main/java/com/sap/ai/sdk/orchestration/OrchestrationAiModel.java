@@ -62,6 +62,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel MISTRAL_SMALL_INSTRUCT =
       new OrchestrationAiModel("mistralai--mistral-small-instruct");
 
+  /** MistralAI Mistral Medium Instruct model */
+  public static final OrchestrationAiModel MISTRAL_MEDIUM_INSTRUCT =
+      new OrchestrationAiModel("mistralai--mistral-medium-instruct");
+
   /**
    * MistralAI Mixtral 8x7B Instruct v01 model
    *
@@ -104,11 +108,23 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_3_HAIKU =
       new OrchestrationAiModel("anthropic--claude-3-haiku");
 
-  /** Anthropic Claude 3 Opus model */
+  /**
+   * Anthropic Claude 3 Opus model
+   *
+   * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
+   *     OrchestrationAiModel#CLAUDE_4_OPUS}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel CLAUDE_3_OPUS =
       new OrchestrationAiModel("anthropic--claude-3-opus");
 
-  /** Anthropic Claude 3.5 Sonnet model */
+  /**
+   * Anthropic Claude 3.5 Sonnet model
+   *
+   * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
+   *     OrchestrationAiModel#CLAUDE_4_SONNET}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel CLAUDE_3_5_SONNET =
       new OrchestrationAiModel("anthropic--claude-3.5-sonnet");
 
