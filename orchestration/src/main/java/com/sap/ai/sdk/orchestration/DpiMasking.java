@@ -114,14 +114,14 @@ public class DpiMasking implements MaskingProvider {
    */
   @Nonnull
   public DpiMasking withRegex(@Nonnull final String regex, @Nonnull final String replacement) {
-    var customEntity =
+    val customEntity =
         DPICustomEntity.create()
             .regex(regex)
             .replacementStrategy(
                 DPIMethodConstant.create()
                     .method(DPIMethodConstant.MethodEnum.CONSTANT)
                     .value(replacement));
-    var newEntities = new java.util.ArrayList<>(entitiesDTO);
+    val newEntities = new java.util.ArrayList<>(entitiesDTO);
     newEntities.add(customEntity);
     return new DpiMasking(maskingMethod, newEntities, maskGroundingInput, allowList);
   }
