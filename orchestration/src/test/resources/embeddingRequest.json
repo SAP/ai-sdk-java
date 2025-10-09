@@ -24,10 +24,7 @@
             "allowlist": [
               "SAP",
               "Joule"
-            ],
-            "mask_grounding_input": {
-              "enabled": false
-            }
+            ]
           }
         ]
       }
