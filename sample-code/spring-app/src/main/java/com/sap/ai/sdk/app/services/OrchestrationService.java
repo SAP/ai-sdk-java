@@ -279,8 +279,7 @@ public class OrchestrationService {
   }
 
   /**
-   * Let the LLM respond with a masked repeated phrase of patient ID. It could be called multiple
-   * times and each call adds to an internal collection of masked patient IDs.
+   * Let the LLM respond with a masked repeated phrase of patient IDs.
    *
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI

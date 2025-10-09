@@ -85,7 +85,7 @@ public class DpiMasking implements MaskingProvider {
     }
 
     /**
-     * Specifies a custom regex pattern for masking.
+     * Adds a custom regex pattern for masking.
      *
      * @param regex The regex pattern to match
      * @param replacement The replacement string
