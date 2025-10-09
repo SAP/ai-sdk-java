@@ -29,10 +29,10 @@ public class TranslationModuleConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("input")
-  private SAPDocumentTranslationInput input;
+  private SAPDocumentTranslation input;
 
   @JsonProperty("output")
-  private SAPDocumentTranslationOutput output;
+  private SAPDocumentTranslation output;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -47,7 +47,7 @@ public class TranslationModuleConfig
    * @return The same instance of this {@link TranslationModuleConfig} class
    */
   @Nonnull
-  public TranslationModuleConfig input(@Nullable final SAPDocumentTranslationInput input) {
+  public TranslationModuleConfig input(@Nullable final SAPDocumentTranslation input) {
     this.input = input;
     return this;
   }
@@ -58,7 +58,7 @@ public class TranslationModuleConfig
    * @return input The input of this {@link TranslationModuleConfig} instance.
    */
   @Nonnull
-  public SAPDocumentTranslationInput getInput() {
+  public SAPDocumentTranslation getInput() {
     return input;
   }
 
@@ -67,7 +67,7 @@ public class TranslationModuleConfig
    *
    * @param input The input of this {@link TranslationModuleConfig}
    */
-  public void setInput(@Nullable final SAPDocumentTranslationInput input) {
+  public void setInput(@Nullable final SAPDocumentTranslation input) {
     this.input = input;
   }
 
@@ -78,7 +78,7 @@ public class TranslationModuleConfig
    * @return The same instance of this {@link TranslationModuleConfig} class
    */
   @Nonnull
-  public TranslationModuleConfig output(@Nullable final SAPDocumentTranslationOutput output) {
+  public TranslationModuleConfig output(@Nullable final SAPDocumentTranslation output) {
     this.output = output;
     return this;
   }
@@ -89,7 +89,7 @@ public class TranslationModuleConfig
    * @return output The output of this {@link TranslationModuleConfig} instance.
    */
   @Nonnull
-  public SAPDocumentTranslationOutput getOutput() {
+  public SAPDocumentTranslation getOutput() {
     return output;
   }
 
@@ -98,7 +98,7 @@ public class TranslationModuleConfig
    *
    * @param output The output of this {@link TranslationModuleConfig}
    */
-  public void setOutput(@Nullable final SAPDocumentTranslationOutput output) {
+  public void setOutput(@Nullable final SAPDocumentTranslation output) {
     this.output = output;
   }
 

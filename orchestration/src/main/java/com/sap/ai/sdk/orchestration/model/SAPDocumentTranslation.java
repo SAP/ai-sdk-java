@@ -25,17 +25,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** SAPDocumentTranslationOutput */
+/** SAPDocumentTranslation */
 // CHECKSTYLE:OFF
-public class SAPDocumentTranslationOutput
+public class SAPDocumentTranslation
 // CHECKSTYLE:ON
 {
-  /** Configuration for &#x60;sap_document_translation&#x60; translation provider. */
+  /** Type of document translation provider */
   public enum TypeEnum {
-    /** The SAP_DOCUMENT_TRANSLATION option of this SAPDocumentTranslationOutput */
+    /** The SAP_DOCUMENT_TRANSLATION option of this SAPDocumentTranslation */
     SAP_DOCUMENT_TRANSLATION("sap_document_translation"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this SAPDocumentTranslationOutput */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this SAPDocumentTranslation */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -70,7 +70,7 @@ public class SAPDocumentTranslationOutput
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type SAPDocumentTranslationOutput
+     * @return The enum value of type SAPDocumentTranslation
      */
     @JsonCreator
     @Nonnull
@@ -88,31 +88,30 @@ public class SAPDocumentTranslationOutput
   private TypeEnum type;
 
   @JsonProperty("config")
-  private SAPDocumentTranslationOutputConfig config;
+  private SAPDocumentTranslationConfig config;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for SAPDocumentTranslationOutput. */
-  protected SAPDocumentTranslationOutput() {}
+  /** Default constructor for SAPDocumentTranslation. */
+  protected SAPDocumentTranslation() {}
 
   /**
-   * Set the type of this {@link SAPDocumentTranslationOutput} instance and return the same
-   * instance.
+   * Set the type of this {@link SAPDocumentTranslation} instance and return the same instance.
    *
-   * @param type Configuration for &#x60;sap_document_translation&#x60; translation provider.
-   * @return The same instance of this {@link SAPDocumentTranslationOutput} class
+   * @param type Type of document translation provider
+   * @return The same instance of this {@link SAPDocumentTranslation} class
    */
   @Nonnull
-  public SAPDocumentTranslationOutput type(@Nonnull final TypeEnum type) {
+  public SAPDocumentTranslation type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * Configuration for &#x60;sap_document_translation&#x60; translation provider.
+   * Type of document translation provider
    *
-   * @return type The type of this {@link SAPDocumentTranslationOutput} instance.
+   * @return type The type of this {@link SAPDocumentTranslation} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -120,24 +119,22 @@ public class SAPDocumentTranslationOutput
   }
 
   /**
-   * Set the type of this {@link SAPDocumentTranslationOutput} instance.
+   * Set the type of this {@link SAPDocumentTranslation} instance.
    *
-   * @param type Configuration for &#x60;sap_document_translation&#x60; translation provider.
+   * @param type Type of document translation provider
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the config of this {@link SAPDocumentTranslationOutput} instance and return the same
-   * instance.
+   * Set the config of this {@link SAPDocumentTranslation} instance and return the same instance.
    *
-   * @param config The config of this {@link SAPDocumentTranslationOutput}
-   * @return The same instance of this {@link SAPDocumentTranslationOutput} class
+   * @param config The config of this {@link SAPDocumentTranslation}
+   * @return The same instance of this {@link SAPDocumentTranslation} class
    */
   @Nonnull
-  public SAPDocumentTranslationOutput config(
-      @Nonnull final SAPDocumentTranslationOutputConfig config) {
+  public SAPDocumentTranslation config(@Nonnull final SAPDocumentTranslationConfig config) {
     this.config = config;
     return this;
   }
@@ -145,24 +142,24 @@ public class SAPDocumentTranslationOutput
   /**
    * Get config
    *
-   * @return config The config of this {@link SAPDocumentTranslationOutput} instance.
+   * @return config The config of this {@link SAPDocumentTranslation} instance.
    */
   @Nonnull
-  public SAPDocumentTranslationOutputConfig getConfig() {
+  public SAPDocumentTranslationConfig getConfig() {
     return config;
   }
 
   /**
-   * Set the config of this {@link SAPDocumentTranslationOutput} instance.
+   * Set the config of this {@link SAPDocumentTranslation} instance.
    *
-   * @param config The config of this {@link SAPDocumentTranslationOutput}
+   * @param config The config of this {@link SAPDocumentTranslation}
    */
-  public void setConfig(@Nonnull final SAPDocumentTranslationOutputConfig config) {
+  public void setConfig(@Nonnull final SAPDocumentTranslationConfig config) {
     this.config = config;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link SAPDocumentTranslationOutput}.
+   * Get the names of the unrecognizable properties of the {@link SAPDocumentTranslation}.
    *
    * @return The set of properties names
    */
@@ -173,8 +170,7 @@ public class SAPDocumentTranslationOutput
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link SAPDocumentTranslationOutput}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link SAPDocumentTranslation} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -186,13 +182,13 @@ public class SAPDocumentTranslationOutput
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "SAPDocumentTranslationOutput has no field with name '" + name + "'.");
+          "SAPDocumentTranslation has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link SAPDocumentTranslationOutput} instance including
+   * Get the value of all properties of this {@link SAPDocumentTranslation} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -207,9 +203,8 @@ public class SAPDocumentTranslationOutput
   }
 
   /**
-   * Set an unrecognizable property of this {@link SAPDocumentTranslationOutput} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
+   * Set an unrecognizable property of this {@link SAPDocumentTranslation} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -227,12 +222,10 @@ public class SAPDocumentTranslationOutput
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final SAPDocumentTranslationOutput saPDocumentTranslationOutput =
-        (SAPDocumentTranslationOutput) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, saPDocumentTranslationOutput.cloudSdkCustomFields)
-        && Objects.equals(this.type, saPDocumentTranslationOutput.type)
-        && Objects.equals(this.config, saPDocumentTranslationOutput.config);
+    final SAPDocumentTranslation saPDocumentTranslation = (SAPDocumentTranslation) o;
+    return Objects.equals(this.cloudSdkCustomFields, saPDocumentTranslation.cloudSdkCustomFields)
+        && Objects.equals(this.type, saPDocumentTranslation.type)
+        && Objects.equals(this.config, saPDocumentTranslation.config);
   }
 
   @Override
@@ -244,7 +237,7 @@ public class SAPDocumentTranslationOutput
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class SAPDocumentTranslationOutput {\n");
+    sb.append("class SAPDocumentTranslation {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -265,20 +258,20 @@ public class SAPDocumentTranslationOutput
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * SAPDocumentTranslationOutput} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link SAPDocumentTranslation}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (config) -> new SAPDocumentTranslationOutput().type(type).config(config);
+    return (type) -> (config) -> new SAPDocumentTranslation().type(type).config(config);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link SAPDocumentTranslationOutput} instance.
+     * Set the type of this {@link SAPDocumentTranslation} instance.
      *
-     * @param type Configuration for &#x60;sap_document_translation&#x60; translation provider.
-     * @return The SAPDocumentTranslationOutput builder.
+     * @param type Type of document translation provider
+     * @return The SAPDocumentTranslation builder.
      */
     Builder1 type(@Nonnull final TypeEnum type);
   }
@@ -286,11 +279,11 @@ public class SAPDocumentTranslationOutput
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the config of this {@link SAPDocumentTranslationOutput} instance.
+     * Set the config of this {@link SAPDocumentTranslation} instance.
      *
-     * @param config The config of this {@link SAPDocumentTranslationOutput}
-     * @return The SAPDocumentTranslationOutput instance.
+     * @param config The config of this {@link SAPDocumentTranslation}
+     * @return The SAPDocumentTranslation instance.
      */
-    SAPDocumentTranslationOutput config(@Nonnull final SAPDocumentTranslationOutputConfig config);
+    SAPDocumentTranslation config(@Nonnull final SAPDocumentTranslationConfig config);
   }
 }
