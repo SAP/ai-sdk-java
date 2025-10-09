@@ -106,16 +106,21 @@ class OrchestrationModuleConfigTest {
     assertThat(((MaskingModuleConfigProviders) configModified.getMaskingConfig()).getProviders())
         .withFailMessage("withMaskingConfig() should overwrite the existing config and not append")
         .hasSize(1);
+  }
+
+  @Test
+  void testCustomRegex() {
 
     var masking =
         DpiMasking.anonymization()
             .withRegex("\\d{3}-\\d{2}-\\d{4}", "***-**-****")
             .withRegex("\\d{2}-\\d{2}-\\d{5}", "**-**-*****");
-    config = config.withMaskingConfig(masking);
+    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withMaskingConfig(masking);
     assertThat(config.getMaskingConfig()).isNotNull();
     assertThat(((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders())
         .hasSize(1);
-    dpiConfig = ((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders().get(0);
+    DPIConfig dpiConfig =
+        ((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders().get(0);
     assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
     assertThat(dpiConfig.getEntities()).hasSize(2);
     assertThat(((DPICustomEntity) dpiConfig.getEntities().get(0)).getRegex())

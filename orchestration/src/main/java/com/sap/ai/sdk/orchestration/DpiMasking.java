@@ -34,7 +34,7 @@ import lombok.val;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class DpiMasking implements MaskingProvider {
   @Nonnull DPIConfig.MethodEnum maskingMethod;
-  @Nonnull List<DPIEntityConfig> entitiesDTO;
+  @Nonnull List<DPIEntityConfig> entitiesConfig;
   @With boolean maskGroundingInput;
   @Nonnull List<String> allowList;
 
@@ -77,11 +77,11 @@ public class DpiMasking implements MaskingProvider {
     @Nonnull
     public DpiMasking withEntities(
         @Nonnull final DPIEntities entity, @Nonnull final DPIEntities... entities) {
-      val entitiesDTO =
+      val entitiesConfig =
           Stream.concat(Stream.of(entity), Arrays.stream(entities))
               .map(it -> (DPIEntityConfig) DPIStandardEntity.create().type(it))
               .toList();
-      return new DpiMasking(maskingMethod, entitiesDTO, false, List.of());
+      return new DpiMasking(maskingMethod, entitiesConfig, false, List.of());
     }
 
     /**
@@ -121,7 +121,7 @@ public class DpiMasking implements MaskingProvider {
                 DPIMethodConstant.create()
                     .method(DPIMethodConstant.MethodEnum.CONSTANT)
                     .value(replacement));
-    val newEntities = new java.util.ArrayList<>(entitiesDTO);
+    val newEntities = new java.util.ArrayList<>(entitiesConfig);
     newEntities.add(customEntity);
     return new DpiMasking(maskingMethod, newEntities, maskGroundingInput, allowList);
   }
@@ -134,7 +134,7 @@ public class DpiMasking implements MaskingProvider {
    */
   @Nonnull
   public DpiMasking withAllowList(@Nonnull final List<String> allowList) {
-    return new DpiMasking(maskingMethod, entitiesDTO, maskGroundingInput, allowList);
+    return new DpiMasking(maskingMethod, entitiesConfig, maskGroundingInput, allowList);
   }
 
   @Nonnull
@@ -143,7 +143,7 @@ public class DpiMasking implements MaskingProvider {
     return DPIConfig.create()
         .type(SAP_DATA_PRIVACY_INTEGRATION)
         .method(maskingMethod)
-        .entities(entitiesDTO)
+        .entities(entitiesConfig)
         .maskGroundingInput(DPIConfigMaskGroundingInput.create().enabled(maskGroundingInput))
         .allowlist(allowList);
   }
