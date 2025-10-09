@@ -1218,7 +1218,7 @@ components:
           $ref: "#/components/schemas/AzureThreshold"
         prompt_shield:
           type: boolean
-          description: A flag to use prompt shield
+          description: Filter prompts for harmful content such as jailbreaks and prompt injections.
           default: false
 
     AzureContentSafetyOutput:
@@ -1234,6 +1234,10 @@ components:
           $ref: "#/components/schemas/AzureThreshold"
         violence:
           $ref: "#/components/schemas/AzureThreshold"
+        protected_material_code:
+          type: boolean
+          description: Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.
+          default: false
 
     AzureThreshold:
       type: integer
@@ -1315,7 +1319,7 @@ components:
           properties:
             masking_providers:
               deprecated: true
-              description: "This field is **DEPRECATED** and will be removed on August 05, 2026. Use `providers` property instead. List of masking service providers."
+              description: "List of masking service providers. **DEPRECATED**:  will be removed Sept 15, 2026. Use `providers` property instead."
               type: array
               minItems: 1
               items:
