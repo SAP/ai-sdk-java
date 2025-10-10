@@ -37,7 +37,7 @@ public class ModuleResultsBase
   private List<ChatMessage> templating = new ArrayList<>();
 
   @JsonProperty("input_translation")
-  private InputTranslationModuleResult inputTranslation;
+  private GenericModuleResult inputTranslation;
 
   @JsonProperty("input_masking")
   private GenericModuleResult inputMasking;
@@ -142,8 +142,7 @@ public class ModuleResultsBase
    * @return The same instance of this {@link ModuleResultsBase} class
    */
   @Nonnull
-  public ModuleResultsBase inputTranslation(
-      @Nullable final InputTranslationModuleResult inputTranslation) {
+  public ModuleResultsBase inputTranslation(@Nullable final GenericModuleResult inputTranslation) {
     this.inputTranslation = inputTranslation;
     return this;
   }
@@ -154,7 +153,7 @@ public class ModuleResultsBase
    * @return inputTranslation The inputTranslation of this {@link ModuleResultsBase} instance.
    */
   @Nonnull
-  public InputTranslationModuleResult getInputTranslation() {
+  public GenericModuleResult getInputTranslation() {
     return inputTranslation;
   }
 
@@ -163,7 +162,7 @@ public class ModuleResultsBase
    *
    * @param inputTranslation The inputTranslation of this {@link ModuleResultsBase}
    */
-  public void setInputTranslation(@Nullable final InputTranslationModuleResult inputTranslation) {
+  public void setInputTranslation(@Nullable final GenericModuleResult inputTranslation) {
     this.inputTranslation = inputTranslation;
   }
 
