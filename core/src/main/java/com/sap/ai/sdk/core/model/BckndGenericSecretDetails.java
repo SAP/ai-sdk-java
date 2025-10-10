@@ -15,8 +15,10 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -34,6 +36,9 @@ public class BckndGenericSecretDetails
 
   @JsonProperty("createdAt")
   private String createdAt;
+
+  @JsonProperty("labels")
+  private List<BckndGenericSecretLabel> labels = new ArrayList<>();
 
   @JsonProperty("resourceGroupSecretsSyncStatus")
   private Map<String, Boolean> resourceGroupSecretsSyncStatus = new HashMap<>();
@@ -105,6 +110,53 @@ public class BckndGenericSecretDetails
    */
   public void setCreatedAt(@Nonnull final String createdAt) {
     this.createdAt = createdAt;
+  }
+
+  /**
+   * Set the labels of this {@link BckndGenericSecretDetails} instance and return the same instance.
+   *
+   * @param labels Arbitrary labels as meta information
+   * @return The same instance of this {@link BckndGenericSecretDetails} class
+   */
+  @Nonnull
+  public BckndGenericSecretDetails labels(@Nullable final List<BckndGenericSecretLabel> labels) {
+    this.labels = labels;
+    return this;
+  }
+
+  /**
+   * Add one labels instance to this {@link BckndGenericSecretDetails}.
+   *
+   * @param labelsItem The labels that should be added
+   * @return The same instance of type {@link BckndGenericSecretDetails}
+   */
+  @Nonnull
+  public BckndGenericSecretDetails addLabelsItem(
+      @Nonnull final BckndGenericSecretLabel labelsItem) {
+    if (this.labels == null) {
+      this.labels = new ArrayList<>();
+    }
+    this.labels.add(labelsItem);
+    return this;
+  }
+
+  /**
+   * Arbitrary labels as meta information
+   *
+   * @return labels The labels of this {@link BckndGenericSecretDetails} instance.
+   */
+  @Nonnull
+  public List<BckndGenericSecretLabel> getLabels() {
+    return labels;
+  }
+
+  /**
+   * Set the labels of this {@link BckndGenericSecretDetails} instance.
+   *
+   * @param labels Arbitrary labels as meta information
+   */
+  public void setLabels(@Nullable final List<BckndGenericSecretLabel> labels) {
+    this.labels = labels;
   }
 
   /**
@@ -204,6 +256,7 @@ public class BckndGenericSecretDetails
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (name != null) declaredFields.put("name", name);
     if (createdAt != null) declaredFields.put("createdAt", createdAt);
+    if (labels != null) declaredFields.put("labels", labels);
     if (resourceGroupSecretsSyncStatus != null)
       declaredFields.put("resourceGroupSecretsSyncStatus", resourceGroupSecretsSyncStatus);
     return declaredFields;
@@ -233,6 +286,7 @@ public class BckndGenericSecretDetails
     return Objects.equals(this.cloudSdkCustomFields, bckndGenericSecretDetails.cloudSdkCustomFields)
         && Objects.equals(this.name, bckndGenericSecretDetails.name)
         && Objects.equals(this.createdAt, bckndGenericSecretDetails.createdAt)
+        && Objects.equals(this.labels, bckndGenericSecretDetails.labels)
         && Objects.equals(
             this.resourceGroupSecretsSyncStatus,
             bckndGenericSecretDetails.resourceGroupSecretsSyncStatus);
@@ -240,7 +294,8 @@ public class BckndGenericSecretDetails
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, createdAt, resourceGroupSecretsSyncStatus, cloudSdkCustomFields);
+    return Objects.hash(
+        name, createdAt, labels, resourceGroupSecretsSyncStatus, cloudSdkCustomFields);
   }
 
   @Override
@@ -250,6 +305,7 @@ public class BckndGenericSecretDetails
     sb.append("class BckndGenericSecretDetails {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+    sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
     sb.append("    resourceGroupSecretsSyncStatus: ")
         .append(toIndentedString(resourceGroupSecretsSyncStatus))
         .append("\n");

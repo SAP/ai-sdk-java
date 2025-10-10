@@ -37,6 +37,9 @@ public class BckndServiceCapabilitiesBasic
   @JsonProperty("createExecutions")
   private Boolean createExecutions;
 
+  @JsonProperty("userPromptTemplates")
+  private Boolean userPromptTemplates;
+
   @JsonProperty("multitenant")
   private Boolean multitenant;
 
@@ -156,6 +159,42 @@ public class BckndServiceCapabilitiesBasic
   }
 
   /**
+   * Set the userPromptTemplates of this {@link BckndServiceCapabilitiesBasic} instance and return
+   * the same instance.
+   *
+   * @param userPromptTemplates Services that only support create, read and delete of prompt
+   *     templates
+   * @return The same instance of this {@link BckndServiceCapabilitiesBasic} class
+   */
+  @Nonnull
+  public BckndServiceCapabilitiesBasic userPromptTemplates(
+      @Nullable final Boolean userPromptTemplates) {
+    this.userPromptTemplates = userPromptTemplates;
+    return this;
+  }
+
+  /**
+   * Services that only support create, read and delete of prompt templates
+   *
+   * @return userPromptTemplates The userPromptTemplates of this {@link
+   *     BckndServiceCapabilitiesBasic} instance.
+   */
+  @Nonnull
+  public Boolean isUserPromptTemplates() {
+    return userPromptTemplates;
+  }
+
+  /**
+   * Set the userPromptTemplates of this {@link BckndServiceCapabilitiesBasic} instance.
+   *
+   * @param userPromptTemplates Services that only support create, read and delete of prompt
+   *     templates
+   */
+  public void setUserPromptTemplates(@Nullable final Boolean userPromptTemplates) {
+    this.userPromptTemplates = userPromptTemplates;
+  }
+
+  /**
    * Set the multitenant of this {@link BckndServiceCapabilitiesBasic} instance and return the same
    * instance.
    *
@@ -235,6 +274,7 @@ public class BckndServiceCapabilitiesBasic
     if (staticDeployments != null) declaredFields.put("staticDeployments", staticDeployments);
     if (userDeployments != null) declaredFields.put("userDeployments", userDeployments);
     if (createExecutions != null) declaredFields.put("createExecutions", createExecutions);
+    if (userPromptTemplates != null) declaredFields.put("userPromptTemplates", userPromptTemplates);
     if (multitenant != null) declaredFields.put("multitenant", multitenant);
     return declaredFields;
   }
@@ -267,13 +307,20 @@ public class BckndServiceCapabilitiesBasic
         && Objects.equals(this.staticDeployments, bckndServiceCapabilitiesBasic.staticDeployments)
         && Objects.equals(this.userDeployments, bckndServiceCapabilitiesBasic.userDeployments)
         && Objects.equals(this.createExecutions, bckndServiceCapabilitiesBasic.createExecutions)
+        && Objects.equals(
+            this.userPromptTemplates, bckndServiceCapabilitiesBasic.userPromptTemplates)
         && Objects.equals(this.multitenant, bckndServiceCapabilitiesBasic.multitenant);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        staticDeployments, userDeployments, createExecutions, multitenant, cloudSdkCustomFields);
+        staticDeployments,
+        userDeployments,
+        createExecutions,
+        userPromptTemplates,
+        multitenant,
+        cloudSdkCustomFields);
   }
 
   @Override
@@ -284,6 +331,9 @@ public class BckndServiceCapabilitiesBasic
     sb.append("    staticDeployments: ").append(toIndentedString(staticDeployments)).append("\n");
     sb.append("    userDeployments: ").append(toIndentedString(userDeployments)).append("\n");
     sb.append("    createExecutions: ").append(toIndentedString(createExecutions)).append("\n");
+    sb.append("    userPromptTemplates: ")
+        .append(toIndentedString(userPromptTemplates))
+        .append("\n");
     sb.append("    multitenant: ").append(toIndentedString(multitenant)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->

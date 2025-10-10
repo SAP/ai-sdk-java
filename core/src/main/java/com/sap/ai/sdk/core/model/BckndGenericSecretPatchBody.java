@@ -15,8 +15,10 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -31,6 +33,9 @@ public class BckndGenericSecretPatchBody
 {
   @JsonProperty("data")
   private Map<String, String> data = new HashMap<>();
+
+  @JsonProperty("labels")
+  private List<BckndGenericSecretLabel> labels = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -84,6 +89,54 @@ public class BckndGenericSecretPatchBody
   }
 
   /**
+   * Set the labels of this {@link BckndGenericSecretPatchBody} instance and return the same
+   * instance.
+   *
+   * @param labels Arbitrary labels as meta information
+   * @return The same instance of this {@link BckndGenericSecretPatchBody} class
+   */
+  @Nonnull
+  public BckndGenericSecretPatchBody labels(@Nullable final List<BckndGenericSecretLabel> labels) {
+    this.labels = labels;
+    return this;
+  }
+
+  /**
+   * Add one labels instance to this {@link BckndGenericSecretPatchBody}.
+   *
+   * @param labelsItem The labels that should be added
+   * @return The same instance of type {@link BckndGenericSecretPatchBody}
+   */
+  @Nonnull
+  public BckndGenericSecretPatchBody addLabelsItem(
+      @Nonnull final BckndGenericSecretLabel labelsItem) {
+    if (this.labels == null) {
+      this.labels = new ArrayList<>();
+    }
+    this.labels.add(labelsItem);
+    return this;
+  }
+
+  /**
+   * Arbitrary labels as meta information
+   *
+   * @return labels The labels of this {@link BckndGenericSecretPatchBody} instance.
+   */
+  @Nonnull
+  public List<BckndGenericSecretLabel> getLabels() {
+    return labels;
+  }
+
+  /**
+   * Set the labels of this {@link BckndGenericSecretPatchBody} instance.
+   *
+   * @param labels Arbitrary labels as meta information
+   */
+  public void setLabels(@Nullable final List<BckndGenericSecretLabel> labels) {
+    this.labels = labels;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link BckndGenericSecretPatchBody}.
    *
    * @return The set of properties names
@@ -124,6 +177,7 @@ public class BckndGenericSecretPatchBody
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (data != null) declaredFields.put("data", data);
+    if (labels != null) declaredFields.put("labels", labels);
     return declaredFields;
   }
 
@@ -150,12 +204,13 @@ public class BckndGenericSecretPatchBody
     final BckndGenericSecretPatchBody bckndGenericSecretPatchBody = (BckndGenericSecretPatchBody) o;
     return Objects.equals(
             this.cloudSdkCustomFields, bckndGenericSecretPatchBody.cloudSdkCustomFields)
-        && Objects.equals(this.data, bckndGenericSecretPatchBody.data);
+        && Objects.equals(this.data, bckndGenericSecretPatchBody.data)
+        && Objects.equals(this.labels, bckndGenericSecretPatchBody.labels);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(data, cloudSdkCustomFields);
+    return Objects.hash(data, labels, cloudSdkCustomFields);
   }
 
   @Override
@@ -164,6 +219,7 @@ public class BckndGenericSecretPatchBody
     final StringBuilder sb = new StringBuilder();
     sb.append("class BckndGenericSecretPatchBody {\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
+    sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
