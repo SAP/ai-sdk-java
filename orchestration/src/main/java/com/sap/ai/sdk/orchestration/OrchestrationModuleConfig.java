@@ -136,7 +136,9 @@ public class OrchestrationModuleConfig {
    *
    * @param config The stream configuration to use.
    * @return A new configuration with the given stream configuration.
+   * @since 1.12.0
    */
+  @Beta
   @Nonnull
   public OrchestrationModuleConfig withStreamConfig(
       @Nonnull final OrchestrationStreamConfig config) {
