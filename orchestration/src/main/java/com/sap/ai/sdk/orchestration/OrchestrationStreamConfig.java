@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import java.util.List;
@@ -18,6 +19,7 @@ import lombok.val;
  */
 @Value
 @With
+@Beta
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrchestrationStreamConfig {
   /**
