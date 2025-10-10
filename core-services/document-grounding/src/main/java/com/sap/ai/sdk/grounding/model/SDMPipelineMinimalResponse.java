@@ -141,7 +141,7 @@ public class SDMPipelineMinimalResponse implements PipelineMinimalResponse
    * @return The same instance of this {@link SDMPipelineMinimalResponse} class
    */
   @Nonnull
-  public SDMPipelineMinimalResponse status(@Nonnull final PipelineExecutionStatus status) {
+  public SDMPipelineMinimalResponse status(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
     return this;
   }
@@ -151,7 +151,7 @@ public class SDMPipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @return status The status of this {@link SDMPipelineMinimalResponse} instance.
    */
-  @Nonnull
+  @Nullable
   public PipelineExecutionStatus getStatus() {
     return status;
   }
@@ -161,7 +161,7 @@ public class SDMPipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @param status The status of this {@link SDMPipelineMinimalResponse}
    */
-  public void setStatus(@Nonnull final PipelineExecutionStatus status) {
+  public void setStatus(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
   }
 
@@ -363,7 +363,7 @@ public class SDMPipelineMinimalResponse implements PipelineMinimalResponse
      * @param status The status of this {@link SDMPipelineMinimalResponse}
      * @return The SDMPipelineMinimalResponse builder.
      */
-    Builder2 status(@Nonnull final PipelineExecutionStatus status);
+    Builder2 status(@Nullable final PipelineExecutionStatus status);
   }
 
   /** Builder helper class. */

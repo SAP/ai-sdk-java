@@ -79,7 +79,7 @@ public class BasePipelineMinimalResponse
    * @return The same instance of this {@link BasePipelineMinimalResponse} class
    */
   @Nonnull
-  public BasePipelineMinimalResponse status(@Nonnull final PipelineExecutionStatus status) {
+  public BasePipelineMinimalResponse status(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
     return this;
   }
@@ -89,7 +89,7 @@ public class BasePipelineMinimalResponse
    *
    * @return status The status of this {@link BasePipelineMinimalResponse} instance.
    */
-  @Nonnull
+  @Nullable
   public PipelineExecutionStatus getStatus() {
     return status;
   }
@@ -99,7 +99,7 @@ public class BasePipelineMinimalResponse
    *
    * @param status The status of this {@link BasePipelineMinimalResponse}
    */
-  public void setStatus(@Nonnull final PipelineExecutionStatus status) {
+  public void setStatus(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
   }
 
@@ -231,6 +231,6 @@ public class BasePipelineMinimalResponse
      * @param status The status of this {@link BasePipelineMinimalResponse}
      * @return The BasePipelineMinimalResponse instance.
      */
-    BasePipelineMinimalResponse status(@Nonnull final PipelineExecutionStatus status);
+    BasePipelineMinimalResponse status(@Nullable final PipelineExecutionStatus status);
   }
 }

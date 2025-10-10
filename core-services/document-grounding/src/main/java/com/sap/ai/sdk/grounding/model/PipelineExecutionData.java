@@ -94,7 +94,7 @@ public class PipelineExecutionData
    *
    * @return status The status of this {@link PipelineExecutionData} instance.
    */
-  @Nonnull
+  @Nullable
   public PipelineExecutionStatus getStatus() {
     return status;
   }

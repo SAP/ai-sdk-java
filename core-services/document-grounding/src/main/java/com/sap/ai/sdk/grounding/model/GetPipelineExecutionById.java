@@ -158,7 +158,7 @@ public class GetPipelineExecutionById
    *
    * @return status The status of this {@link GetPipelineExecutionById} instance.
    */
-  @Nonnull
+  @Nullable
   public PipelineExecutionStatus getStatus() {
     return status;
   }

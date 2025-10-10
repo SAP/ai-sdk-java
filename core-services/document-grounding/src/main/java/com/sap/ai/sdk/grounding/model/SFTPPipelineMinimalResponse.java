@@ -144,7 +144,7 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
    * @return The same instance of this {@link SFTPPipelineMinimalResponse} class
    */
   @Nonnull
-  public SFTPPipelineMinimalResponse status(@Nonnull final PipelineExecutionStatus status) {
+  public SFTPPipelineMinimalResponse status(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
     return this;
   }
@@ -154,7 +154,7 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @return status The status of this {@link SFTPPipelineMinimalResponse} instance.
    */
-  @Nonnull
+  @Nullable
   public PipelineExecutionStatus getStatus() {
     return status;
   }
@@ -164,7 +164,7 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @param status The status of this {@link SFTPPipelineMinimalResponse}
    */
-  public void setStatus(@Nonnull final PipelineExecutionStatus status) {
+  public void setStatus(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
   }
 
@@ -409,7 +409,7 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
      * @param status The status of this {@link SFTPPipelineMinimalResponse}
      * @return The SFTPPipelineMinimalResponse builder.
      */
-    Builder2 status(@Nonnull final PipelineExecutionStatus status);
+    Builder2 status(@Nullable final PipelineExecutionStatus status);
   }
 
   /** Builder helper class. */

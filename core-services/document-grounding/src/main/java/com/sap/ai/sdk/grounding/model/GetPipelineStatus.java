@@ -157,7 +157,7 @@ public class GetPipelineStatus
    *
    * @return status The status of this {@link GetPipelineStatus} instance.
    */
-  @Nonnull
+  @Nullable
   public PipelineExecutionStatus getStatus() {
     return status;
   }
