@@ -109,7 +109,7 @@ class OrchestrationModuleConfigTest {
   }
 
   @Test
-  void testCustomRegex() {
+  void testDpiMaskingRegex() {
     var masking =
         DpiMasking.anonymization()
             .withRegex("\\d{3}-\\d{2}-\\d{4}", "***-**-****")
