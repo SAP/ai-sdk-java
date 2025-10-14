@@ -11,18 +11,32 @@
 
 package com.sap.ai.sdk.orchestration.model;
 
-import java.math.BigDecimal;
-import java.util.List;
 import javax.annotation.Nonnull;
 
 /** Embedding */
 public interface Embedding {
-  /** Helper class to create a String that implements {@link Embedding}. */
+  /** Helper class to create {@code float[] } that implements {@link Embedding}. */
+  record ArrayOfFloats(@com.fasterxml.jackson.annotation.JsonValue @Nonnull float[] values)
+      implements Embedding {}
+
+  /**
+   * Creator to enable deserialization of {@code float[] }.
+   *
+   * @param val the value to use
+   * @return a new instance of {@link ArrayOfFloats}.
+   */
+  @com.fasterxml.jackson.annotation.JsonCreator
+  @Nonnull
+  static ArrayOfFloats createArrayOfFloats(@Nonnull final float[] val) {
+    return new ArrayOfFloats(val);
+  }
+
+  /** Helper class to create {@code String } that implements {@link Embedding}. */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
       implements Embedding {}
 
   /**
-   * Creator to enable deserialization of a String.
+   * Creator to enable deserialization of {@code String }.
    *
    * @param val the value to use
    * @return a new instance of {@link InnerString}.
@@ -31,22 +45,5 @@ public interface Embedding {
   @Nonnull
   static InnerString create(@Nonnull final String val) {
     return new InnerString(val);
-  }
-
-  /** Helper class to create a list of BigDecimal that implements {@link Embedding}. */
-  record InnerBigDecimals(
-      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<BigDecimal> values)
-      implements Embedding {}
-
-  /**
-   * Creator to enable deserialization of a list of BigDecimal.
-   *
-   * @param val the value to use
-   * @return a new instance of {@link InnerBigDecimals}.
-   */
-  @com.fasterxml.jackson.annotation.JsonCreator
-  @Nonnull
-  static InnerBigDecimals create(@Nonnull final List<BigDecimal> val) {
-    return new InnerBigDecimals(val);
   }
 }
