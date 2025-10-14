@@ -42,6 +42,8 @@
     ```
 - [Orchestration] Deprecated models `OrchestrationAiModel.CLAUDE_3_OPUS` and `OrchestrationAiModel.CLAUDE_3_5_SONNET`.
   - Replacement are respectively `OrchestrationAiModel.CLAUDE_4_OPUS` and `OrchestrationAiModel.CLAUDE_4_SONNET`.
+- Inner record classes and their creator methods in  model interfaces are renamed to be more descriptive and type-specific.
+  - eg: `InnerString` -> `ListOfStrings`, `create()` -> `createListOfStrings()`
 
 ### ✨ New Functionality
 
