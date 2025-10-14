@@ -90,7 +90,7 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
       @Nonnull final EmbeddingRequest request) {
     return new EmbeddingsCreateRequest()
         .dimensions(request.getOptions().getDimensions())
-        .input(EmbeddingsCreateRequestInput.create(request.getInstructions()));
+        .input(EmbeddingsCreateRequestInput.createListOfStrings(request.getInstructions()));
   }
 
   private EmbeddingResponse createSpringAiEmbeddingResponse(
