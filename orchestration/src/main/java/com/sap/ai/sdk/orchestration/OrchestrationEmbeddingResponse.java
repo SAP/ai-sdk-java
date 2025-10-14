@@ -3,9 +3,9 @@ package com.sap.ai.sdk.orchestration;
 import static lombok.AccessLevel.PACKAGE;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.orchestration.model.Embedding;
+import com.sap.ai.sdk.orchestration.model.Embedding.ArrayOfFloats;
+import com.sap.ai.sdk.orchestration.model.EmbeddingResult;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
@@ -33,16 +33,11 @@ public class OrchestrationEmbeddingResponse {
    */
   @Nonnull
   public List<float[]> getEmbeddingVectors() {
-    final var embeddings = new ArrayList<float[]>();
-    for (final var container : originalResponse.getFinalResult().getData()) {
-      final var bigDecimals = (Embedding.InnerBigDecimals) container.getEmbedding();
-      final var values = bigDecimals.values();
-      final float[] arr = new float[values.size()];
-      for (int i = 0; i < values.size(); i++) {
-        arr[i] = values.get(i).floatValue();
-      }
-      embeddings.add(arr);
-    }
-    return embeddings;
+    return originalResponse.getFinalResult().getData().stream()
+        .map(EmbeddingResult::getEmbedding)
+        .filter(ArrayOfFloats.class::isInstance)
+        .map(ArrayOfFloats.class::cast)
+        .map(ArrayOfFloats::values)
+        .toList();
   }
 }
