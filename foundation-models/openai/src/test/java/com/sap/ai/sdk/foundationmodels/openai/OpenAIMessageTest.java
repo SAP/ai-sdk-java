@@ -133,7 +133,8 @@ class OpenAIMessageTest {
         .isEqualTo(ChatCompletionRequestUserMessage.RoleEnum.USER);
 
     var values =
-        ((ChatCompletionRequestUserMessageContent.InnerChatCompletionRequestUserMessageContentParts)
+        ((ChatCompletionRequestUserMessageContent
+                    .ListOfChatCompletionRequestUserMessageContentParts)
                 requestMessageWithImage.getContent())
             .values();
     assertThat(values).hasSize(2);
@@ -171,7 +172,7 @@ class OpenAIMessageTest {
         .isEqualTo(ChatCompletionRequestSystemMessage.RoleEnum.SYSTEM);
     var values =
         ((ChatCompletionRequestSystemMessageContent
-                    .InnerChatCompletionRequestMessageContentPartTexts)
+                    .ListOfChatCompletionRequestMessageContentPartTexts)
                 requestMessageWithText.getContent())
             .values();
     assertThat(values).hasSize(2);

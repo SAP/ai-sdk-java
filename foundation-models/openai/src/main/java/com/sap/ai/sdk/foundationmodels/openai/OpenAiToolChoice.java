@@ -39,7 +39,7 @@ public class OpenAiToolChoice {
   @Nonnull
   public static OpenAiToolChoice function(@Nonnull final String functionName) {
     return new OpenAiToolChoice(
-        ChatCompletionToolChoiceOption.create(
+        ChatCompletionToolChoiceOption.createInnerChatCompletionNamedToolChoice(
             new ChatCompletionNamedToolChoice()
                 .type(ChatCompletionNamedToolChoice.TypeEnum.FUNCTION)
                 .function(new ChatCompletionNamedToolChoiceFunction().name(functionName))));

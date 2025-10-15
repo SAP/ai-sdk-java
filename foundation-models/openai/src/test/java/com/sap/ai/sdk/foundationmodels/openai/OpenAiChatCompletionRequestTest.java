@@ -23,7 +23,7 @@ class OpenAiChatCompletionRequestTest {
 
     var lowLevelRequest = request.createCreateChatCompletionRequest();
     assertThat(
-            ((CreateChatCompletionRequestAllOfStop.InnerStrings) lowLevelRequest.getStop())
+            ((CreateChatCompletionRequestAllOfStop.ListOfStrings) lowLevelRequest.getStop())
                 .values())
         .containsExactly("stop1", "stop2 stopNot3", "stop3");
   }
