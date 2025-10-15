@@ -140,7 +140,9 @@ public class OrchestrationEmbeddingRequest {
   EmbeddingsPostRequest createEmbeddingsPostRequest() {
 
     final var input =
-        EmbeddingsInput.create().text(EmbeddingsInputText.create(inputs)).type(inputType);
+        EmbeddingsInput.create()
+            .text(EmbeddingsInputText.createListOfStrings(inputs))
+            .type(inputType);
     final var embeddingsModelConfig =
         EmbeddingsModelConfig.create().model(model.createEmbeddingsModelDetails());
     final var modules =

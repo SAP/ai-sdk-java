@@ -11,5 +11,39 @@
 
 package com.sap.ai.sdk.core.model;
 
+import javax.annotation.Nonnull;
+
 /** KpiResultRowItem */
-public interface KpiResultRowItem {}
+public interface KpiResultRowItem {
+  /** Helper class to create {@code Long } that implements {@link KpiResultRowItem}. */
+  record InnerLong(@com.fasterxml.jackson.annotation.JsonValue @Nonnull Long value)
+      implements KpiResultRowItem {}
+
+  /**
+   * Creator to enable deserialization of {@code Long }.
+   *
+   * @param val the value to use
+   * @return a new instance of {@link InnerLong}.
+   */
+  @com.fasterxml.jackson.annotation.JsonCreator
+  @Nonnull
+  static InnerLong create(@Nonnull final Long val) {
+    return new InnerLong(val);
+  }
+
+  /** Helper class to create {@code String } that implements {@link KpiResultRowItem}. */
+  record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
+      implements KpiResultRowItem {}
+
+  /**
+   * Creator to enable deserialization of {@code String }.
+   *
+   * @param val the value to use
+   * @return a new instance of {@link InnerString}.
+   */
+  @com.fasterxml.jackson.annotation.JsonCreator
+  @Nonnull
+  static InnerString create(@Nonnull final String val) {
+    return new InnerString(val);
+  }
+}
