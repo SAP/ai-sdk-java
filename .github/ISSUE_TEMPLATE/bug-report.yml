@@ -1,7 +1,5 @@
-name: Bug Report
+name: Problem Report
 description: Released feature does not work as expected in the SAP Cloud SDK for AI (Java).
-labels:
-  - bug
 body:
   - type: markdown
     attributes:
@@ -11,8 +9,8 @@ body:
         **Missing information may result in delayed response**
   - type: textarea
     attributes:
-      label: "Describe the Bug"
-      description: "A clear and concise description of what the bug is."
+      label: "Describe the Problem"
+      description: "A clear and concise description of what the problem is."
     validations:
       required: true
   - type: textarea
