@@ -443,12 +443,14 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(
       @Nonnull final String word, @Nonnull final Class<?> targetType) {
+    final var configWithGpt4 =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
     val schema =
         ResponseJsonSchema.fromType(targetType)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
     val configWithResponseSchema =
-        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+        configWithGpt4.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
     val prompt =
         new OrchestrationPrompt(
@@ -564,8 +566,10 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
       throws IOException {
+    final var configWithGpt4 =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
     val template = TemplateConfig.create().fromYaml(promptTemplate);
-    val configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
+    val configWithTemplate = template != null ? configWithGpt4.withTemplateConfig(template) : configWithGpt4;
 
     val inputParams = Map.of("language", "German");
     val prompt = new OrchestrationPrompt(inputParams);

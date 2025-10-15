@@ -8,7 +8,10 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+
 import lombok.SneakyThrows;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -95,19 +98,27 @@ class ScenarioTest {
       }
     }
 
+    // Set of internal-only models
+    var internalOnlyModels = Set.of("abap-codestral");
+
     // Assert that the declared Orchestration models match the expected list
-    assertThat(declaredOrchestrationModelList.keySet())
+    var declaredAndInternalOnlyModels = new HashSet<>(declaredOrchestrationModelList.keySet());
+    declaredAndInternalOnlyModels.addAll(internalOnlyModels);
+
+    assertThat(declaredAndInternalOnlyModels)
         .containsAll(availableOrchestrationModels.keySet());
 
     SoftAssertions softly = new SoftAssertions();
     for (var model : availableOrchestrationModels.entrySet()) {
       Boolean declaredDeprecated = declaredOrchestrationModelList.get(model.getKey());
-      softly
-          .assertThat(declaredDeprecated)
-          .withFailMessage(
-              "%s is deprecated:%s on AI Core but deprecated:%s in AI SDK",
-              model.getKey(), model.getValue(), declaredDeprecated)
-          .isEqualTo(model.getValue());
+      if (!internalOnlyModels.contains(model.getKey())) {
+        softly
+            .assertThat(declaredDeprecated)
+            .withFailMessage(
+                "%s is deprecated:%s on AI Core but deprecated:%s in AI SDK",
+                model.getKey(), model.getValue(), declaredDeprecated)
+            .isEqualTo(model.getValue());
+      }
     }
     softly.assertAll();
   }
