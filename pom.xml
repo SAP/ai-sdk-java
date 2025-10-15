@@ -632,7 +632,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.27.0</version>
+        <version>3.28.0</version>
         <configuration>
           <rulesets>
             <ruleset>${project.rootdir}/.pipeline/pmd.xml</ruleset>
@@ -667,7 +667,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.13</version>
+        <version>0.8.14</version>
         <configuration>
           <excludes>
             <!-- Exclude generated clients and end to end application from test coverage -->
