@@ -17,14 +17,38 @@ import javax.annotation.Nonnull;
 /** The contents of the user message. */
 public interface ChatCompletionRequestUserMessageContent {
   /**
-   * Helper class to create a String that implements {@link
+   * Helper class to create {@code List<ChatCompletionRequestUserMessageContentPart> } that
+   * implements {@link ChatCompletionRequestUserMessageContent}.
+   */
+  record ListOfChatCompletionRequestUserMessageContentParts(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull
+          List<ChatCompletionRequestUserMessageContentPart> values)
+      implements ChatCompletionRequestUserMessageContent {}
+
+  /**
+   * Creator to enable deserialization of {@code List<ChatCompletionRequestUserMessageContentPart>
+   * }.
+   *
+   * @param val the value to use
+   * @return a new instance of {@link ListOfChatCompletionRequestUserMessageContentParts}.
+   */
+  @com.fasterxml.jackson.annotation.JsonCreator
+  @Nonnull
+  static ListOfChatCompletionRequestUserMessageContentParts
+      createListOfChatCompletionRequestUserMessageContentParts(
+          @Nonnull final List<ChatCompletionRequestUserMessageContentPart> val) {
+    return new ListOfChatCompletionRequestUserMessageContentParts(val);
+  }
+
+  /**
+   * Helper class to create {@code String } that implements {@link
    * ChatCompletionRequestUserMessageContent}.
    */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
       implements ChatCompletionRequestUserMessageContent {}
 
   /**
-   * Creator to enable deserialization of a String.
+   * Creator to enable deserialization of {@code String }.
    *
    * @param val the value to use
    * @return a new instance of {@link InnerString}.
@@ -33,27 +57,5 @@ public interface ChatCompletionRequestUserMessageContent {
   @Nonnull
   static InnerString create(@Nonnull final String val) {
     return new InnerString(val);
-  }
-
-  /**
-   * Helper class to create a list of ChatCompletionRequestUserMessageContentPart that implements
-   * {@link ChatCompletionRequestUserMessageContent}.
-   */
-  record InnerChatCompletionRequestUserMessageContentParts(
-      @com.fasterxml.jackson.annotation.JsonValue @Nonnull
-          List<ChatCompletionRequestUserMessageContentPart> values)
-      implements ChatCompletionRequestUserMessageContent {}
-
-  /**
-   * Creator to enable deserialization of a list of ChatCompletionRequestUserMessageContentPart.
-   *
-   * @param val the value to use
-   * @return a new instance of {@link InnerChatCompletionRequestUserMessageContentParts}.
-   */
-  @com.fasterxml.jackson.annotation.JsonCreator
-  @Nonnull
-  static InnerChatCompletionRequestUserMessageContentParts create(
-      @Nonnull final List<ChatCompletionRequestUserMessageContentPart> val) {
-    return new InnerChatCompletionRequestUserMessageContentParts(val);
   }
 }

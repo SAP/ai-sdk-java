@@ -201,12 +201,12 @@ jobs:
         run: |
           PR_TITLE="Java: Add release notes for release ${{ needs.bump-version.outputs.release-version }}"
 
-          # if the minor version is a multiple of 15, then change the PR_BODY to "# ⚠️Update the `docs-java/release-notes/index.jsx` file⚠️"
+          # if the minor version is a multiple of 15, then change the PR_BODY to "# ⚠️Update the `docs-java/release-notes.mdx` file⚠️"
           # else the PR_BODY will be "Add the SAP Cloud SDK ${{ needs.bump-version.outputs.release-version }} release notes"
 
           minor_version=$(echo ${{ needs.bump-version.outputs.release-version }} | cut -d '.' -f 2)
           if [[ $((minor_version % 15)) -eq 0 ]]; then
-            PR_BODY="# ⚠️Update the \`docs-java/release-notes/index.jsx\` file⚠️"
+            PR_BODY="# ⚠️Update the \`docs-java/release-notes.mdx\` file⚠️"
           else
             PR_BODY="Add the SAP Cloud SDK ${{ needs.bump-version.outputs.release-version }} release notes"
           fi

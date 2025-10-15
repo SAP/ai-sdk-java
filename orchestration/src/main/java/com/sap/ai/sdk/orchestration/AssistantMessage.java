@@ -105,7 +105,7 @@ public class AssistantMessage implements Message {
               .map(item -> (TextItem) item)
               .map(item -> TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text()))
               .toList();
-      text = ChatMessageContent.create(texts);
+      text = ChatMessageContent.createListOfTextContents(texts);
     }
     return assistantChatMessage.content(text);
   }

@@ -309,7 +309,9 @@ public class OpenAiChatCompletionRequest {
         message ->
             request.addMessagesItem(OpenAiUtils.createChatCompletionRequestMessage(message)));
 
-    request.stop(this.stop != null ? CreateChatCompletionRequestAllOfStop.create(this.stop) : null);
+    if (stop != null) {
+      request.stop(CreateChatCompletionRequestAllOfStop.createListOfStrings(this.stop));
+    }
 
     request.temperature(this.temperature);
     request.topP(this.topP);
