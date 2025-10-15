@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
 import lombok.SneakyThrows;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -105,8 +104,7 @@ class ScenarioTest {
     var declaredAndInternalOnlyModels = new HashSet<>(declaredOrchestrationModelList.keySet());
     declaredAndInternalOnlyModels.addAll(internalOnlyModels);
 
-    assertThat(declaredAndInternalOnlyModels)
-        .containsAll(availableOrchestrationModels.keySet());
+    assertThat(declaredAndInternalOnlyModels).containsAll(availableOrchestrationModels.keySet());
 
     SoftAssertions softly = new SoftAssertions();
     for (var model : availableOrchestrationModels.entrySet()) {
