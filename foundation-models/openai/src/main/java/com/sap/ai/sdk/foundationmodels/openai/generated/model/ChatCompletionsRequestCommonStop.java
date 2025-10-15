@@ -16,12 +16,34 @@ import javax.annotation.Nonnull;
 
 /** Up to 4 sequences where the API will stop generating further tokens. */
 public interface ChatCompletionsRequestCommonStop {
-  /** Helper class to create a String that implements {@link ChatCompletionsRequestCommonStop}. */
+  /**
+   * Helper class to create {@code List<String> } that implements {@link
+   * ChatCompletionsRequestCommonStop}.
+   */
+  record ListOfStrings(@com.fasterxml.jackson.annotation.JsonValue @Nonnull List<String> values)
+      implements ChatCompletionsRequestCommonStop {}
+
+  /**
+   * Creator to enable deserialization of {@code List<String> }.
+   *
+   * @param val the value to use
+   * @return a new instance of {@link ListOfStrings}.
+   */
+  @com.fasterxml.jackson.annotation.JsonCreator
+  @Nonnull
+  static ListOfStrings createListOfStrings(@Nonnull final List<String> val) {
+    return new ListOfStrings(val);
+  }
+
+  /**
+   * Helper class to create {@code String } that implements {@link
+   * ChatCompletionsRequestCommonStop}.
+   */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
       implements ChatCompletionsRequestCommonStop {}
 
   /**
-   * Creator to enable deserialization of a String.
+   * Creator to enable deserialization of {@code String }.
    *
    * @param val the value to use
    * @return a new instance of {@link InnerString}.
@@ -30,24 +52,5 @@ public interface ChatCompletionsRequestCommonStop {
   @Nonnull
   static InnerString create(@Nonnull final String val) {
     return new InnerString(val);
-  }
-
-  /**
-   * Helper class to create a list of String that implements {@link
-   * ChatCompletionsRequestCommonStop}.
-   */
-  record InnerStrings(@com.fasterxml.jackson.annotation.JsonValue @Nonnull List<String> values)
-      implements ChatCompletionsRequestCommonStop {}
-
-  /**
-   * Creator to enable deserialization of a list of String.
-   *
-   * @param val the value to use
-   * @return a new instance of {@link InnerStrings}.
-   */
-  @com.fasterxml.jackson.annotation.JsonCreator
-  @Nonnull
-  static InnerStrings create(@Nonnull final List<String> val) {
-    return new InnerStrings(val);
   }
 }

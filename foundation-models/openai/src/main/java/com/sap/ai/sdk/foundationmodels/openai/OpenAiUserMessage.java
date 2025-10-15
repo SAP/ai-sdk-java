@@ -116,7 +116,9 @@ public class OpenAiUserMessage implements OpenAiMessage {
 
     return new ChatCompletionRequestUserMessage()
         .role(ChatCompletionRequestUserMessage.RoleEnum.fromValue(role()))
-        .content(ChatCompletionRequestUserMessageContent.create(messageParts));
+        .content(
+            ChatCompletionRequestUserMessageContent
+                .createListOfChatCompletionRequestUserMessageContentParts(messageParts));
   }
 
   @Nonnull

@@ -17,7 +17,7 @@ class EmbeddingConvenienceTest {
     var request = new OpenAiEmbeddingRequest(List.of("token1", "token2", "token3"));
     var lowLevelRequest = request.createEmbeddingsCreateRequest();
 
-    assertThat(((EmbeddingsCreateRequestInput.InnerStrings) lowLevelRequest.getInput()).values())
+    assertThat(((EmbeddingsCreateRequestInput.ListOfStrings) lowLevelRequest.getInput()).values())
         .containsExactly("token1", "token2", "token3");
   }
 
