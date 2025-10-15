@@ -41,6 +41,7 @@ public class OpenAiEmbeddingRequest {
           .input(EmbeddingsCreateRequestInput.create(tokens.get(0)));
     }
 
-    return new EmbeddingsCreateRequest().input(EmbeddingsCreateRequestInput.create(tokens));
+    return new EmbeddingsCreateRequest()
+        .input(EmbeddingsCreateRequestInput.createListOfStrings(tokens));
   }
 }
