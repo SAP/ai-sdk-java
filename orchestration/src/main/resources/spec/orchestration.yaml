@@ -530,6 +530,11 @@ components:
           $ref: "#/components/schemas/ModuleResults"
         final_result:
           $ref: "#/components/schemas/LLMModuleResult"
+        intermediate_failures:
+          type: array
+          description: List of errors encountered during processing for unsuccessful modules configurations
+          items:
+            $ref: "#/components/schemas/Error"
 
     CompletionPostResponseStreaming:
       type: object
@@ -543,6 +548,11 @@ components:
           $ref: "#/components/schemas/ModuleResultsStreaming"
         final_result:
           $ref: "#/components/schemas/LLMModuleResultStreaming"
+        intermediate_failures:
+          type: array
+          description: List of errors encountered during processing for unsuccessful modules configurations
+          items:
+            $ref: "#/components/schemas/ErrorStreaming"
     OrchestrationConfig:
       type: object
       required:
@@ -550,7 +560,9 @@ components:
       additionalProperties: false
       properties:
         modules:
-          $ref: "#/components/schemas/ModuleConfigs"
+          oneOf:
+            - $ref: "#/components/schemas/ModuleConfigs"
+            - $ref: "#/components/schemas/ModuleConfigsList"
         stream:
           $ref: "#/components/schemas/GlobalStreamOptions"
     ModuleConfigs:
@@ -569,6 +581,12 @@ components:
           $ref: "#/components/schemas/GroundingModuleConfig"
         translation:
           $ref: "#/components/schemas/TranslationModuleConfig"
+    ModuleConfigsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ModuleConfigs"
+      description: >
+        A list of module configurations. The first configuration in the list that succeeds will be used.
     # Abstract base class encompassing fields for both `ModuleResults` and `ModuleResultsStreaming`
     # Not to be instantiated by llm-orchestration code
     ModuleResultsBase:
@@ -1218,7 +1236,7 @@ components:
           $ref: "#/components/schemas/AzureThreshold"
         prompt_shield:
           type: boolean
-          description: A flag to use prompt shield
+          description: Filter prompts for harmful content such as jailbreaks and prompt injections.
           default: false
 
     AzureContentSafetyOutput:
@@ -1234,6 +1252,10 @@ components:
           $ref: "#/components/schemas/AzureThreshold"
         violence:
           $ref: "#/components/schemas/AzureThreshold"
+        protected_material_code:
+          type: boolean
+          description: Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.
+          default: false
 
     AzureThreshold:
       type: integer
@@ -1315,7 +1337,7 @@ components:
           properties:
             masking_providers:
               deprecated: true
-              description: "This field is **DEPRECATED** and will be removed on August 05, 2026. Use `providers` property instead. List of masking service providers."
+              description: "List of masking service providers. **DEPRECATED**:  will be removed Sept 15, 2026. Use `providers` property instead."
               type: array
               minItems: 1
               items:
@@ -1772,6 +1794,11 @@ components:
         intermediate_results:
           $ref: "#/components/schemas/ModuleResults"
 
+    ErrorList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Error"
+
     ErrorStreaming:
       type: object
       required:
@@ -1796,13 +1823,20 @@ components:
         intermediate_results:
           $ref: "#/components/schemas/ModuleResultsStreaming"
 
+    ErrorStreamingList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ErrorStreaming"
+
     ErrorResponse:
       type: object
       required:
         - error
       properties:
         error:
-          $ref: "#/components/schemas/Error"
+          oneOf:
+            - $ref: "#/components/schemas/Error"
+            - $ref: "#/components/schemas/ErrorList"
 
     ErrorResponseStreaming:
       type: object
@@ -1810,7 +1844,9 @@ components:
         - error
       properties:
         error:
-          $ref: "#/components/schemas/ErrorStreaming"
+          oneOf:
+            - $ref: "#/components/schemas/ErrorStreaming"
+            - $ref: "#/components/schemas/ErrorStreamingList"
 
     # ref : https://github.com/openai/openai-python/blob/main/src/openai/types/chat/chat_completion_token_logprob.py
     ChatCompletionTokenLogprob:
