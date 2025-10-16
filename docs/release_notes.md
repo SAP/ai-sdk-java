@@ -52,6 +52,8 @@
   - Added `OrchestrationEmbeddingModel` with `TEXT_EMBEDDING_3_SMALL`, `TEXT_EMBEDDING_3_LARGE`, `AMAZON_TITAN_EMBED_TEXT` and `NVIDIA_LLAMA_32_NV_EMBEDQA_1B` embedding models.
   - Introduced `OrchestrationEmbeddingRequest` for building requests fluently and `OrchestrationEmbeddingResponse#getEmbeddingVectors()` to retrieve embeddings.
 - [Orchestration] Added new model `OrchestrationAiModel.MISTRAL_MEDIUM_INSTRUCT`.
+- [Orchestration] Introduced Spring AI integration for embeddings generation with the new `OrchestrationSpringAiEmbeddingModel` class.
+
   
 ### 📈 Improvements
 
