@@ -57,7 +57,7 @@
   
 ### 📈 Improvements
 
--
+- [Orchestration] Added new API `DpiMasking#withRegex` to apply custom masking patterns.
 
 ### 🐛 Fixed Issues
 
