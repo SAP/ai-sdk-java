@@ -465,6 +465,8 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(
       @Nonnull final String word, @Nonnull final Class<?> targetType) {
+    // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
+    // release 2510b. See https://jira.tools.sap/browse/AI-125770
     final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
     val schema =
         ResponseJsonSchema.fromType(targetType)
@@ -587,6 +589,8 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
       throws IOException {
+    // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
+    // release 2510b. See https://jira.tools.sap/browse/AI-125770
     final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
     val template = TemplateConfig.create().fromYaml(promptTemplate);
     val configWithTemplate =
