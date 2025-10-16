@@ -20,7 +20,7 @@ public record MessageContent(@Nonnull List<ContentItem> items) {
     if (chatMessageContent instanceof ChatMessageContent.InnerString innerString) {
       return new MessageContent(List.of(new TextItem(innerString.value())));
     } else if (chatMessageContent
-        instanceof ChatMessageContent.InnerTextContents innerTextContents) {
+        instanceof ChatMessageContent.ListOfTextContents innerTextContents) {
       val texts =
           innerTextContents.values().stream()
               .map(textContent -> ((ContentItem) new TextItem(textContent.getText())))
@@ -37,7 +37,7 @@ public record MessageContent(@Nonnull List<ContentItem> items) {
       return new MessageContent(List.of(new TextItem(innerString.value())));
     } else if (chatMessageContent
         instanceof
-        final UserChatMessageContent.InnerUserChatMessageContentItems innerContentItems) {
+        final UserChatMessageContent.ListOfUserChatMessageContentItems innerContentItems) {
       val items = new ArrayList<ContentItem>();
       for (val value : innerContentItems.values()) {
         if (value.getType().equals(UserChatMessageContentItem.TypeEnum.TEXT)) {

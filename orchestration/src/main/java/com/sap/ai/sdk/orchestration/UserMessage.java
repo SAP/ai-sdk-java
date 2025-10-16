@@ -107,6 +107,8 @@ public class UserMessage implements Message {
         contentList.add(UserChatMessageContentItem.create().type(IMAGE_URL).imageUrl(img));
       }
     }
-    return UserChatMessage.create().content(UserChatMessageContent.create(contentList)).role(USER);
+    return UserChatMessage.create()
+        .content(UserChatMessageContent.createListOfUserChatMessageContentItems(contentList))
+        .role(USER);
   }
 }

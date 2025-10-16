@@ -46,7 +46,7 @@ class EmbeddingModelTest {
 
     val expectedOpenAiRequest =
         new EmbeddingsCreateRequest()
-            .input(EmbeddingsCreateRequestInput.create(texts))
+            .input(EmbeddingsCreateRequestInput.createListOfStrings(texts))
             .dimensions(128);
 
     when(client.embedding(assertArg(assertRecursiveEquals(expectedOpenAiRequest))))
@@ -89,9 +89,9 @@ class EmbeddingModelTest {
                 getClass().getClassLoader().getResource("__files/embeddingResponse.json"),
                 EmbeddingsCreate200Response.class);
 
+    val docs = List.of(document.getFormattedContent());
     val expectedOpenAiRequest =
-        new EmbeddingsCreateRequest()
-            .input(EmbeddingsCreateRequestInput.create(List.of(document.getFormattedContent())));
+        new EmbeddingsCreateRequest().input(EmbeddingsCreateRequestInput.createListOfStrings(docs));
 
     when(client.embedding(assertArg(assertRecursiveEquals(expectedOpenAiRequest))))
         .thenReturn(expectedOpenAiResponse);

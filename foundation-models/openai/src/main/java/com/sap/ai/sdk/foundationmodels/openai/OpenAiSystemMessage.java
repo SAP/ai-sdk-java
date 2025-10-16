@@ -83,6 +83,8 @@ public class OpenAiSystemMessage implements OpenAiMessage {
     }
     return new ChatCompletionRequestSystemMessage()
         .role(ChatCompletionRequestSystemMessage.RoleEnum.fromValue(role()))
-        .content(ChatCompletionRequestSystemMessageContent.create(contentList));
+        .content(
+            ChatCompletionRequestSystemMessageContent
+                .createListOfChatCompletionRequestMessageContentPartTexts(contentList));
   }
 }

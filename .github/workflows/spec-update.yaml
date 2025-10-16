@@ -34,7 +34,7 @@ env:
 jobs:
   generate:
     name: "Download, Generate, Compile and Push"
-    runs-on: [ubuntu-latest]
+    runs-on: [ ubuntu-latest ]
     permissions:
       pull-requests: write
       contents: write
@@ -119,7 +119,11 @@ jobs:
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
         run: |
-          mvn install -DskipTests -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }}
+          if mvn install -DskipTests -Dgenerate ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
+            echo "generation_result=success" >> "$GITHUB_OUTPUT"
+          else
+            echo "generation_result=failure" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: "Compile and Test"
         id: compile
@@ -196,9 +200,15 @@ jobs:
           echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}" >> $GITHUB_STEP_SUMMARY
           
           if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
-            echo "| Client Generation | ${{ steps.generate.outcome == 'success' && '✅' || '❌' }} ${{ steps.generate.outcome }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Client Generation | ${{ steps.generate.outputs.generation_result == 'success' && '✅' || '❌' }} ${{ steps.generate.outputs.generation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Pull Request Creation | ${{ env.CREATE_PR == 'false' && '⏩ skipped' || '' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' || '' }}" >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: "Fail if generation failed"
+        if: steps.generate.outputs.generation_result == 'failure'
+        run: |
+          echo "Client generation failed. Please check the Generate step logs for details."
+          exit 1

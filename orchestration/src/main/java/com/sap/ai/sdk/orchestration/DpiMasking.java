@@ -6,12 +6,14 @@ import static com.sap.ai.sdk.orchestration.model.DPIConfig.TypeEnum.SAP_DATA_PRI
 
 import com.sap.ai.sdk.orchestration.model.DPIConfig;
 import com.sap.ai.sdk.orchestration.model.DPIConfigMaskGroundingInput;
+import com.sap.ai.sdk.orchestration.model.DPICustomEntity;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DPIEntityConfig;
+import com.sap.ai.sdk.orchestration.model.DPIMethodConstant;
 import com.sap.ai.sdk.orchestration.model.DPIStandardEntity;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,7 +34,7 @@ import lombok.val;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class DpiMasking implements MaskingProvider {
   @Nonnull DPIConfig.MethodEnum maskingMethod;
-  @Nonnull List<DPIEntities> entities;
+  @Nonnull List<DPIEntityConfig> entitiesConfig;
   @With boolean maskGroundingInput;
   @Nonnull List<String> allowList;
 
@@ -75,11 +77,53 @@ public class DpiMasking implements MaskingProvider {
     @Nonnull
     public DpiMasking withEntities(
         @Nonnull final DPIEntities entity, @Nonnull final DPIEntities... entities) {
-      val entitiesList = new ArrayList<DPIEntities>();
-      entitiesList.add(entity);
-      entitiesList.addAll(Arrays.asList(entities));
-      return new DpiMasking(maskingMethod, entitiesList, false, List.of());
+      val entitiesConfig =
+          Stream.concat(Stream.of(entity), Arrays.stream(entities))
+              .map(it -> (DPIEntityConfig) DPIStandardEntity.create().type(it))
+              .toList();
+      return new DpiMasking(maskingMethod, entitiesConfig, false, List.of());
     }
+
+    /**
+     * Adds a custom regex pattern for masking.
+     *
+     * @param regex The regex pattern to match
+     * @param replacement The replacement string
+     * @return A new {@link DpiMasking} instance
+     */
+    @Nonnull
+    public DpiMasking withRegex(@Nonnull final String regex, @Nonnull final String replacement) {
+      val customEntity =
+          DPICustomEntity.create()
+              .regex(regex)
+              .replacementStrategy(
+                  DPIMethodConstant.create()
+                      .method(DPIMethodConstant.MethodEnum.CONSTANT)
+                      .value(replacement));
+
+      return new DpiMasking(maskingMethod, List.of(customEntity), false, List.of());
+    }
+  }
+
+  /**
+   * Specifies a custom regex pattern for masking.
+   *
+   * @param regex The regex pattern to match
+   * @param replacement The replacement string
+   * @return A new {@link DpiMasking} instance
+   */
+  @Nonnull
+  public DpiMasking withRegex(@Nonnull final String regex, @Nonnull final String replacement) {
+    val customEntity =
+        DPICustomEntity.create()
+            .regex(regex)
+            .replacementStrategy(
+                DPIMethodConstant.create()
+                    .method(DPIMethodConstant.MethodEnum.CONSTANT)
+                    .value(replacement));
+    val newEntities = new java.util.ArrayList<>(entitiesConfig);
+    newEntities.add(customEntity);
+    return new DpiMasking(maskingMethod, newEntities, maskGroundingInput, allowList);
   }
 
   /**
@@ -90,18 +134,16 @@ public class DpiMasking implements MaskingProvider {
    */
   @Nonnull
   public DpiMasking withAllowList(@Nonnull final List<String> allowList) {
-    return new DpiMasking(maskingMethod, entities, maskGroundingInput, allowList);
+    return new DpiMasking(maskingMethod, entitiesConfig, maskGroundingInput, allowList);
   }
 
   @Nonnull
   @Override
   public DPIConfig createConfig() {
-    val entitiesDTO =
-        entities.stream().map(it -> (DPIEntityConfig) DPIStandardEntity.create().type(it)).toList();
     return DPIConfig.create()
         .type(SAP_DATA_PRIVACY_INTEGRATION)
         .method(maskingMethod)
-        .entities(entitiesDTO)
+        .entities(entitiesConfig)
         .maskGroundingInput(DPIConfigMaskGroundingInput.create().enabled(maskGroundingInput))
         .allowlist(allowList);
   }

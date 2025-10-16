@@ -2,6 +2,8 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
+import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
+import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
@@ -18,6 +20,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.With;
@@ -101,6 +104,18 @@ public class OrchestrationModuleConfig {
 
   @Nullable SAPDocumentTranslationOutput outputTranslationConfig;
 
+  /** Configuration of optional streaming options for output filtering. */
+  @With(AccessLevel.NONE) // may be exposed to public in the future
+  @Getter(AccessLevel.PACKAGE)
+  @Nullable
+  FilteringStreamOptions outputFilteringStreamOptions;
+
+  /** Configuration of optional global streaming options, e.g. chunk-size. */
+  @With(AccessLevel.PRIVATE) // may be exposed to public in the future
+  @Getter(AccessLevel.PACKAGE)
+  @Nullable
+  GlobalStreamOptions globalStreamOptions;
+
   /**
    * Creates a new configuration with the given LLM configuration.
    *
@@ -114,6 +129,21 @@ public class OrchestrationModuleConfig {
   @Nonnull
   public OrchestrationModuleConfig withLlmConfig(@Nonnull final OrchestrationAiModel aiModel) {
     return withLlmConfig(aiModel.createConfig());
+  }
+
+  /**
+   * Creates a new configuration with the given stream configuration.
+   *
+   * @param config The stream configuration to use.
+   * @return A new configuration with the given stream configuration.
+   * @since 1.12.0
+   */
+  @Beta
+  @Nonnull
+  public OrchestrationModuleConfig withStreamConfig(
+      @Nonnull final OrchestrationStreamConfig config) {
+    return this.withOutputFilteringStreamOptions(config.createFilteringStreamOptions())
+        .withGlobalStreamOptions(config.createGlobalStreamOptions());
   }
 
   /**
@@ -204,7 +234,10 @@ public class OrchestrationModuleConfig {
             .map(ContentFilter::createOutputFilterConfig)
             .toList();
 
-    final var outputFilter = OutputFilteringConfig.create().filters(filterConfigs);
+    final var outputFilter =
+        OutputFilteringConfig.create()
+            .filters(filterConfigs)
+            .streamOptions(outputFilteringStreamOptions);
 
     final var newFilteringConfig =
         FilteringModuleConfig.create()
@@ -212,6 +245,33 @@ public class OrchestrationModuleConfig {
             .input(this.filteringConfig != null ? this.filteringConfig.getInput() : null);
 
     return this.withFilteringConfig(newFilteringConfig);
+  }
+
+  /**
+   * Creates a new configuration with the given output filtering stream options.
+   *
+   * @see <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming">Orchestration
+   *     documentation on streaming.</a>
+   * @param outputFilteringStreamOptions The output filtering stream options to use.
+   * @return A new configuration with the given output filtering stream options.
+   */
+  @Nonnull
+  OrchestrationModuleConfig withOutputFilteringStreamOptions(
+      @Nullable final FilteringStreamOptions outputFilteringStreamOptions) {
+    if (filteringConfig != null && filteringConfig.getOutput() != null) {
+      filteringConfig.getOutput().setStreamOptions(outputFilteringStreamOptions);
+    }
+    return new OrchestrationModuleConfig(
+        this.llmConfig,
+        this.templateConfig,
+        this.maskingConfig,
+        this.filteringConfig,
+        this.groundingConfig,
+        this.inputTranslationConfig,
+        this.outputTranslationConfig,
+        outputFilteringStreamOptions,
+        this.globalStreamOptions);
   }
 
   /**
