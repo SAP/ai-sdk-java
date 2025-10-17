@@ -24,7 +24,7 @@ import org.springframework.ai.embedding.EmbeddingResponseMetadata;
  * A Spring-based implementation of the {@link EmbeddingModel} interface that integrates with the
  * Orchestration SDK to provide embedding functionality.
  *
- * @since 1.12.0
+ * @since 1.13.0
  */
 @Beta
 @RequiredArgsConstructor
