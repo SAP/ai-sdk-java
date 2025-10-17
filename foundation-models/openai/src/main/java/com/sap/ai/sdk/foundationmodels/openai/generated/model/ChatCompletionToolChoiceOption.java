@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
  */
 public interface ChatCompletionToolChoiceOption {
   /**
-   * Helper class to create a ChatCompletionNamedToolChoice that implements {@link
+   * Helper class to create {@code ChatCompletionNamedToolChoice } that implements {@link
    * ChatCompletionToolChoiceOption}.
    */
   record InnerChatCompletionNamedToolChoice(
@@ -32,24 +32,26 @@ public interface ChatCompletionToolChoiceOption {
       implements ChatCompletionToolChoiceOption {}
 
   /**
-   * Creator to enable deserialization of a ChatCompletionNamedToolChoice.
+   * Creator to enable deserialization of {@code ChatCompletionNamedToolChoice }.
    *
    * @param val the value to use
    * @return a new instance of {@link InnerChatCompletionNamedToolChoice}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static InnerChatCompletionNamedToolChoice create(
+  static InnerChatCompletionNamedToolChoice createInnerChatCompletionNamedToolChoice(
       @Nonnull final ChatCompletionNamedToolChoice val) {
     return new InnerChatCompletionNamedToolChoice(val);
   }
 
-  /** Helper class to create a String that implements {@link ChatCompletionToolChoiceOption}. */
+  /**
+   * Helper class to create {@code String } that implements {@link ChatCompletionToolChoiceOption}.
+   */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
       implements ChatCompletionToolChoiceOption {}
 
   /**
-   * Creator to enable deserialization of a String.
+   * Creator to enable deserialization of {@code String }.
    *
    * @param val the value to use
    * @return a new instance of {@link InnerString}.

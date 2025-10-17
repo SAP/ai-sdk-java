@@ -38,8 +38,11 @@ final class ConfigToRequestTransformer {
 
     val moduleConfigs = toModuleConfigs(configCopy);
 
+    val reqConfig =
+        OrchestrationConfig.create().modules(moduleConfigs).stream(config.getGlobalStreamOptions());
+
     return CompletionRequestConfiguration.create()
-        .config(OrchestrationConfig.create().modules(moduleConfigs))
+        .config(reqConfig)
         .placeholderValues(prompt.getTemplateParameters())
         .messagesHistory(messageHistory);
   }

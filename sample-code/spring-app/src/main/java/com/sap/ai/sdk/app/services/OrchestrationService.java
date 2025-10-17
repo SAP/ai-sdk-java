@@ -267,12 +267,34 @@ public class OrchestrationService {
     val userMessage =
         Message.user(
             """
-                            I think the SDK is good, but could use some further enhancements.
-                            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-                            """);
+    I think the SDK is good, but could use some further enhancements.
+    My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+    """);
 
     val prompt = new OrchestrationPrompt(systemMessage, userMessage);
     val maskingConfig = DpiMasking.anonymization().withEntities(entity);
+    val configWithMasking = config.withMaskingConfig(maskingConfig);
+
+    return client.chatCompletion(prompt, configWithMasking);
+  }
+
+  /**
+   * Let the LLM respond with a masked repeated phrase of patient IDs.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse maskingRegex() {
+    val systemMessage = Message.system("Repeat following messages");
+    val userMessage = Message.user("The patient id is patient_id_123.");
+
+    val prompt = new OrchestrationPrompt(systemMessage, userMessage);
+    val regex = "patient_id_[0-9]+";
+    val replacement = "REDACTED_ID";
+    val maskingConfig = DpiMasking.anonymization().withRegex(regex, replacement);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
@@ -443,12 +465,15 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(
       @Nonnull final String word, @Nonnull final Class<?> targetType) {
+    // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
+    // release 2510b. See https://jira.tools.sap/browse/AI-125770
+    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
     val schema =
         ResponseJsonSchema.fromType(targetType)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
     val configWithResponseSchema =
-        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+        configWithGpt4.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
     val prompt =
         new OrchestrationPrompt(
@@ -564,8 +589,12 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
       throws IOException {
+    // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
+    // release 2510b. See https://jira.tools.sap/browse/AI-125770
+    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
     val template = TemplateConfig.create().fromYaml(promptTemplate);
-    val configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
+    val configWithTemplate =
+        template != null ? configWithGpt4.withTemplateConfig(template) : configWithGpt4;
 
     val inputParams = Map.of("language", "German");
     val prompt = new OrchestrationPrompt(inputParams);

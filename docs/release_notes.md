@@ -40,16 +40,22 @@
     +                          SAPDocumentTranslationOutputTargetLanguage.create("de-DE"))
                            .sourceLanguage("en-US"))); 
     ```
+- [Orchestration] Deprecated models `OrchestrationAiModel.CLAUDE_3_OPUS` and `OrchestrationAiModel.CLAUDE_3_5_SONNET`.
+  - Replacement are respectively `OrchestrationAiModel.CLAUDE_4_OPUS` and `OrchestrationAiModel.CLAUDE_4_SONNET`.
+- Inner record classes and their creator methods in  model interfaces are renamed to be more descriptive and type-specific.
+  - eg: `InnerString` -> `ListOfStrings`, `create()` -> `createListOfStrings()`
 
 ### ✨ New Functionality
 
+- [Orchestration] For streaming, add convenience configuration for output-filter-overlap, chunk-size, and delimiters via `OrchestrationModuleConfig#withStreamConfig`.
 - [Orchestration] Added embedding generation support with new `OrchestrationClient#embed()` methods.
   - Added `OrchestrationEmbeddingModel` with `TEXT_EMBEDDING_3_SMALL`, `TEXT_EMBEDDING_3_LARGE`, `AMAZON_TITAN_EMBED_TEXT` and `NVIDIA_LLAMA_32_NV_EMBEDQA_1B` embedding models.
   - Introduced `OrchestrationEmbeddingRequest` for building requests fluently and `OrchestrationEmbeddingResponse#getEmbeddingVectors()` to retrieve embeddings.
+- [Orchestration] Added new model `OrchestrationAiModel.MISTRAL_MEDIUM_INSTRUCT`.
   
 ### 📈 Improvements
 
--
+- [Orchestration] Added new API `DpiMasking#withRegex` to apply custom masking patterns.
 
 ### 🐛 Fixed Issues
 

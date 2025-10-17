@@ -109,7 +109,7 @@ public class PipelineDocumentResponse
    *
    * @return status The status of this {@link PipelineDocumentResponse} instance.
    */
-  @Nonnull
+  @Nullable
   public DocumentStatus getStatus() {
     return status;
   }

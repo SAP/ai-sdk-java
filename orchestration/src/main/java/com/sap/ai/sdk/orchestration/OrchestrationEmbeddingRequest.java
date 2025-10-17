@@ -140,7 +140,9 @@ public class OrchestrationEmbeddingRequest {
   EmbeddingsPostRequest createEmbeddingsPostRequest() {
 
     final var input =
-        EmbeddingsInput.create().text(EmbeddingsInputText.create(inputs)).type(inputType);
+        EmbeddingsInput.create()
+            .text(EmbeddingsInputText.createListOfStrings(inputs))
+            .type(inputType);
     final var embeddingsModelConfig =
         EmbeddingsModelConfig.create().model(model.createEmbeddingsModelDetails());
     final var modules =
@@ -148,7 +150,11 @@ public class OrchestrationEmbeddingRequest {
             .modules(EmbeddingsModuleConfigs.create().embeddings(embeddingsModelConfig));
 
     if (masking != null) {
-      final var dpiConfigs = masking.stream().map(MaskingProvider::createConfig).toList();
+      final var dpiConfigs =
+          masking.stream()
+              .map(MaskingProvider::createConfig)
+              .map(config -> config.maskGroundingInput(null))
+              .toList();
       modules.getModules().setMasking(MaskingModuleConfigProviders.create().providers(dpiConfigs));
     }
     return EmbeddingsPostRequest.create().config(modules).input(input);
