@@ -166,4 +166,11 @@ class SpringAiOrchestrationTest {
     assertThat(translation.translation()).isNotEmpty();
     assertThat(translation.language()).containsIgnoringCase("dutch");
   }
+
+  @Test
+  void testEmbedding() {
+    final var embeddings = service.embed("Hello World!");
+    assertThat(embeddings).isInstanceOf(float[].class);
+    assertThat(embeddings.length).isGreaterThan(0);
+  }
 }

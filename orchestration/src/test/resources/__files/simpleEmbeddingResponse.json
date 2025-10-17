@@ -1,0 +1,24 @@
+{
+  "request_id": "a99625bc-1dc2-9b95-82c1-c6175dc7407b",
+  "final_result": {
+    "object": "list",
+    "data": [
+      {
+        "object": "embedding",
+        "embedding": [
+          -0.003806071,
+          -0.01453408,
+          0.037058588,
+          -0.012397106,
+          0.0029582495
+        ],
+        "index": 0
+      }
+    ],
+    "model": "text-embedding-3-small",
+    "usage": {
+      "prompt_tokens": 6,
+      "total_tokens": 6
+    }
+  }
+}
