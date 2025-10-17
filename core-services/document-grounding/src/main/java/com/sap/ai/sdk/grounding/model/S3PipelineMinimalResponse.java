@@ -143,7 +143,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
    * @return The same instance of this {@link S3PipelineMinimalResponse} class
    */
   @Nonnull
-  public S3PipelineMinimalResponse status(@Nonnull final PipelineExecutionStatus status) {
+  public S3PipelineMinimalResponse status(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
     return this;
   }
@@ -153,7 +153,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @return status The status of this {@link S3PipelineMinimalResponse} instance.
    */
-  @Nonnull
+  @Nullable
   public PipelineExecutionStatus getStatus() {
     return status;
   }
@@ -163,7 +163,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @param status The status of this {@link S3PipelineMinimalResponse}
    */
-  public void setStatus(@Nonnull final PipelineExecutionStatus status) {
+  public void setStatus(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
   }
 
@@ -406,7 +406,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
      * @param status The status of this {@link S3PipelineMinimalResponse}
      * @return The S3PipelineMinimalResponse builder.
      */
-    Builder2 status(@Nonnull final PipelineExecutionStatus status);
+    Builder2 status(@Nullable final PipelineExecutionStatus status);
   }
 
   /** Builder helper class. */
