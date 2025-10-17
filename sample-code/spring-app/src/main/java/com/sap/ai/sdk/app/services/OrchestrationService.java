@@ -619,7 +619,10 @@ public class OrchestrationService {
             .withInputTranslationConfig(
                 SAPDocumentTranslationInput.create()
                     .type(SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
-                    .config(SAPDocumentTranslationInputConfig.create().targetLanguage("en-US")))
+                    .config(
+                        SAPDocumentTranslationInputConfig.create()
+                            .targetLanguage("en-US")
+                            .applyTo(null)))
             .withOutputTranslationConfig(
                 SAPDocumentTranslationOutput.create()
                     .type(SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
