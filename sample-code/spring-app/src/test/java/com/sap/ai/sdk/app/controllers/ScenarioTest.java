@@ -9,6 +9,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Set;
 import lombok.SneakyThrows;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -70,6 +71,8 @@ class ScenarioTest {
     // Gather AI Core's list of available Orchestration models
     final var aiModelList = new ScenarioController().getModels().getResources();
 
+    var internalOnlyModels = Set.of("abap-codestral");
+
     final var availableOrchestrationModels =
         aiModelList.stream()
             .filter(
@@ -77,6 +80,7 @@ class ScenarioTest {
                     model.getAllowedScenarios().stream()
                         .anyMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
             .filter(model -> !model.getModel().contains("embed"))
+            .filter(model -> !internalOnlyModels.contains(model.getModel()))
             .collect(
                 () -> new HashMap<String, Boolean>(),
                 (list, model) -> list.put(model.getModel(), isDeprecated(model)),
