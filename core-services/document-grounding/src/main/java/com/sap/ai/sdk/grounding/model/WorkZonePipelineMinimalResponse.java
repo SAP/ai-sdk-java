@@ -142,7 +142,7 @@ public class WorkZonePipelineMinimalResponse implements PipelineMinimalResponse
    * @return The same instance of this {@link WorkZonePipelineMinimalResponse} class
    */
   @Nonnull
-  public WorkZonePipelineMinimalResponse status(@Nonnull final PipelineExecutionStatus status) {
+  public WorkZonePipelineMinimalResponse status(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
     return this;
   }
@@ -152,7 +152,7 @@ public class WorkZonePipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @return status The status of this {@link WorkZonePipelineMinimalResponse} instance.
    */
-  @Nonnull
+  @Nullable
   public PipelineExecutionStatus getStatus() {
     return status;
   }
@@ -162,7 +162,7 @@ public class WorkZonePipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @param status The status of this {@link WorkZonePipelineMinimalResponse}
    */
-  public void setStatus(@Nonnull final PipelineExecutionStatus status) {
+  public void setStatus(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
   }
 
@@ -368,7 +368,7 @@ public class WorkZonePipelineMinimalResponse implements PipelineMinimalResponse
      * @param status The status of this {@link WorkZonePipelineMinimalResponse}
      * @return The WorkZonePipelineMinimalResponse builder.
      */
-    Builder2 status(@Nonnull final PipelineExecutionStatus status);
+    Builder2 status(@Nullable final PipelineExecutionStatus status);
   }
 
   /** Builder helper class. */
