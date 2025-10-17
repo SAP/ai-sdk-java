@@ -16,7 +16,7 @@
   - Two fields in `OrchestrationModuleConfig` changed:
     - `inputTranslationConfig` is now of type `SAPDocumentTranslationInput`
     - `outputTranslationConfig` is now of type `SAPDocumentTranslationOutput`
-  - When using `OrchestrationModuleConfig.withInputTranslationConfig()` and `OrchestrationModuleConfig.withOutputTranslationConfig()` consider the following diff:
+  - When using `OrchestrationModuleConfig.withInputTranslationConfig()` and `OrchestrationModuleConfig.withOutputTranslationConfig()` consider the following diff (note, especially, that setting `.applyTo()` to either `null` or to an actual value is necessary):
     ```diff
     var config = new OrchestrationModuleConfig("some prompt");
     config
@@ -26,7 +26,10 @@
     -              .config(SAPDocumentTranslationConfig.create().targetLanguage("en-US")))
     +          SAPDocumentTranslationInput.create()
     +              .type(SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
-    +              .config(SAPDocumentTranslationInputConfig.create().targetLanguage("en-US")))
+    +              .config(
+    +                    SAPDocumentTranslationInputConfig.create()
+    +                        .targetLanguage("en-US")
+    +                        .applyTo(null)))
             .withOutputTranslationConfig(
     -          SAPDocumentTranslation.create()
     -              .type(SAP_DOCUMENT_TRANSLATION)
