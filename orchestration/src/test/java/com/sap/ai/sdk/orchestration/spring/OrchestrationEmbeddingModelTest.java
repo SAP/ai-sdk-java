@@ -31,7 +31,7 @@ import org.springframework.ai.embedding.EmbeddingRequest;
 class OrchestrationEmbeddingModelTest {
 
   private static EmbeddingOptions options;
-  private static OrchestrationSpringAiEmbeddingModel model;
+  private static OrchestrationSpringEmbeddingModel model;
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
@@ -41,7 +41,7 @@ class OrchestrationEmbeddingModelTest {
 
     final var destination = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     final var client = new OrchestrationClient(destination);
-    model = new OrchestrationSpringAiEmbeddingModel(options, client, MetadataMode.EMBED);
+    model = new OrchestrationSpringEmbeddingModel(options, client, MetadataMode.EMBED);
   }
 
   @Test
@@ -55,7 +55,7 @@ class OrchestrationEmbeddingModelTest {
     assertThat(response.getResult().getOutput())
         .isEqualTo(
             new float[] {-0.003806071f, -0.01453408f, 0.037058588f, -0.012397106f, 0.0029582495f});
-    assertThat(response.getMetadata().getModel()).isEqualTo("text-embedding-3-small");
+    assertThat(response.getMetadata().getModel()).isEqualTo(options.getModel());
     assertThat(response.getMetadata().getUsage().getPromptTokens()).isEqualTo(6);
     assertThat(response.getMetadata().getUsage().getTotalTokens()).isEqualTo(6);
 

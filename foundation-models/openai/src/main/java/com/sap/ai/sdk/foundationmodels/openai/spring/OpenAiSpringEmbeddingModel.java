@@ -28,8 +28,8 @@ import org.springframework.ai.embedding.EmbeddingResponseMetadata;
  */
 public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
 
-  private final OpenAiClient client;
-  private final MetadataMode metadataMode;
+  @Nonnull private final OpenAiClient client;
+  @Nonnull private final MetadataMode metadataMode;
 
   /**
    * Constructs an {@code OpenAiSpringEmbeddingModel} with the specified {@link OpenAiClient} of

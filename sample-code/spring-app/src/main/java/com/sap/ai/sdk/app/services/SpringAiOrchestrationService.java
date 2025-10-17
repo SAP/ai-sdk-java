@@ -9,11 +9,12 @@ import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
-import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringAiEmbeddingModel;
+import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringEmbeddingModel;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -275,7 +276,9 @@ public class SpringAiOrchestrationService {
   @Nonnull
   public float[] embed(@Nonnull final String inputText) {
     val embedOptions =
-        EmbeddingOptionsBuilder.builder().withModel("text-embedding-3-small").build();
-    return new OrchestrationSpringAiEmbeddingModel(embedOptions).embed(inputText);
+        EmbeddingOptionsBuilder.builder()
+            .withModel(OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL.name())
+            .build();
+    return new OrchestrationSpringEmbeddingModel(embedOptions).embed(inputText);
   }
 }

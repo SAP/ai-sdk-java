@@ -158,7 +158,7 @@ class SpringAiOrchestrationController {
     return response.getResult().getOutput().getText();
   }
 
-  @GetMapping("/embedding")
+  @GetMapping("/embed/string")
   Object embedding(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     return service.embed("Hello, world!");

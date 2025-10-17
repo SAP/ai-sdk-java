@@ -28,30 +28,30 @@ import org.springframework.ai.embedding.EmbeddingResponseMetadata;
  */
 @Beta
 @RequiredArgsConstructor
-public class OrchestrationSpringAiEmbeddingModel implements EmbeddingModel {
+public class OrchestrationSpringEmbeddingModel implements EmbeddingModel {
 
   /**
    * Default embedding options to provide model name and other parameters.
    *
    * <p>Can be overridden by options in the request.
    *
-   * @see OrchestrationSpringAiEmbeddingModel#call(EmbeddingRequest)
+   * @see OrchestrationSpringEmbeddingModel#call(EmbeddingRequest)
    */
-  private final EmbeddingOptions defaultOptions;
+  @Nonnull private final EmbeddingOptions defaultOptions;
 
   /** Client for interacting with the Orchestration SDK. */
-  private final OrchestrationClient client;
+  @Nonnull private final OrchestrationClient client;
 
   /** Metadata mode to determine how document metadata is handled. */
-  private final MetadataMode metadataMode;
+  @Nonnull private final MetadataMode metadataMode;
 
   /**
-   * Constructs an instance with default options, a new {@link OrchestrationClient}, and {@link
-   * MetadataMode#EMBED}.
+   * Constructs an instance with default options, a new {@link OrchestrationClient}, and sets the
+   * metadata mode to {@link MetadataMode#EMBED}.
    *
    * @param defaultOptions Default embedding options.
    */
-  public OrchestrationSpringAiEmbeddingModel(@Nonnull final EmbeddingOptions defaultOptions) {
+  public OrchestrationSpringEmbeddingModel(@Nonnull final EmbeddingOptions defaultOptions) {
     this(defaultOptions, new OrchestrationClient(), MetadataMode.EMBED);
   }
 
@@ -67,7 +67,8 @@ public class OrchestrationSpringAiEmbeddingModel implements EmbeddingModel {
   @Nonnull
   public EmbeddingResponse call(@Nonnull final EmbeddingRequest request) {
     final var orchestrationRequest = createOrchestrationEmbeddingRequest(request);
-    return createSpringAiEmbeddingResponse(client.embed(orchestrationRequest));
+    final var orchestrationResponse = client.embed(orchestrationRequest);
+    return createSpringAiEmbeddingResponse(orchestrationResponse);
   }
 
   @Override
@@ -80,9 +81,8 @@ public class OrchestrationSpringAiEmbeddingModel implements EmbeddingModel {
   @Nonnull
   public List<float[]> embed(@Nonnull final List<String> texts) {
     // Propagate defaultOptions instead of incomplete options in default method implementation
-    return this.call(new EmbeddingRequest(texts, this.defaultOptions)).getResults().stream()
-        .map(Embedding::getOutput)
-        .toList();
+    final var response = this.call(new EmbeddingRequest(texts, this.defaultOptions));
+    return response.getResults().stream().map(Embedding::getOutput).toList();
   }
 
   @Nonnull
