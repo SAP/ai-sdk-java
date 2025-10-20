@@ -103,7 +103,6 @@ public class OrchestrationSpringEmbeddingModel implements EmbeddingModel {
         IntStream.range(0, response.getEmbeddingVectors().size())
             .mapToObj(i -> new Embedding(response.getEmbeddingVectors().get(i), i))
             .toList();
-
     final var finalResult = response.getOriginalResponse().getFinalResult();
     final var orchUsage = finalResult.getUsage();
     final var usage =
