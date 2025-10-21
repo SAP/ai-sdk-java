@@ -79,11 +79,11 @@ public class OrchestrationClient {
   @Nonnull
   public static CompletionRequestConfiguration toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
-    if(prompt.getMessages().size()==1 && prompt.getMessages().get(0) instanceof UserMessage m) {
+    if (prompt.getMessages().size() == 1 && prompt.getMessages().get(0) instanceof UserMessage m) {
       val items = m.content().items();
       if (items.size() == 1 && items.get(0) instanceof TextItem t) {
         val JSON_SCHEMA = "https://json-schema.org/draft/2020-12/schema";
-        if (t.text().contains(JSON_SCHEMA) && config.getTemplateConfig()!=null) {
+        if (t.text().contains(JSON_SCHEMA) && config.getTemplateConfig() != null) {
           log.warn("Combination of `entity(...)` and `withTemplateConfig(...)` is not supported.");
         }
       }
