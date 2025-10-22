@@ -40,7 +40,7 @@ These are required on the developer side to build and run applications with the 
 
 #### SAP AI Core Service instance
 
-To make of use the services supported by the SDK, you need to have access to an SAP AI Core Service instance. Checkout [how to connect](link).
+To make of use the services supported by the SDK, you need to have access to an SAP AI Core Service instance. Checkout [how to connect](https://sap.github.io/ai-sdk/docs/java/guides/connecting-to-ai-core).
 
 #### Optional Integrations
 
@@ -50,7 +50,7 @@ The SDK can be combined with popular Java frameworks. These are not required for
 * **Spring Boot** ≥ 3.0
 * **CAP Java** ≥ 3.0.0
 
-👉 See an [example `pom.xml`](link) in our sample Spring Boot application.
+👉 See an [example `pom.xml`](sample-code/spring-app/pom.xml) in our sample Spring Boot application.
 
 > [!WARNING]  
 > All classes under any of the `...model` packages are generated from an OpenAPI specification and marked as `@Beta`.
