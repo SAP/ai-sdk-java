@@ -11,12 +11,10 @@ import com.sap.cloud.environment.servicebinding.api.exception.ServiceBindingAcce
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvBuilder;
 import io.vavr.Lazy;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -28,69 +26,68 @@ import lombok.val;
 @Slf4j
 @AllArgsConstructor
 class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
-    static final String ENV_VAR_KEY = "AICORE_SERVICE_KEY";
-    private static final AtomicBoolean INFO_LOG_EMITTED = new AtomicBoolean(false);
+  static final String ENV_VAR_KEY = "AICORE_SERVICE_KEY";
+  private static final AtomicBoolean INFO_LOG_EMITTED = new AtomicBoolean(false);
 
-    private final Lazy<Dotenv> dotenv;
+  private final Lazy<Dotenv> dotenv;
 
-    AiCoreServiceKeyAccessor() {
-        this(Dotenv.configure().ignoreIfMissing().ignoreIfMalformed());
+  AiCoreServiceKeyAccessor() {
+    this(Dotenv.configure().ignoreIfMissing().ignoreIfMalformed());
+  }
+
+  AiCoreServiceKeyAccessor(@Nonnull final DotenvBuilder dotenvBuilder) {
+    dotenv = Lazy.of(dotenvBuilder::load);
+  }
+
+  @Nonnull
+  @Override
+  public List<ServiceBinding> getServiceBindings() throws ServiceBindingAccessException {
+    final String serviceKey;
+    try {
+      serviceKey = dotenv.get().get(ENV_VAR_KEY);
+    } catch (Exception e) {
+      throw new ServiceBindingAccessException("Failed to load service key from environment", e);
     }
-
-    AiCoreServiceKeyAccessor(@Nonnull final DotenvBuilder dotenvBuilder) {
-        dotenv = Lazy.of(dotenvBuilder::load);
+    if (serviceKey == null) {
+      log.debug("No service key found in environment variable {}", ENV_VAR_KEY);
+      return List.of();
     }
-
-    @Nonnull
-    @Override
-    public List<ServiceBinding> getServiceBindings() throws ServiceBindingAccessException {
-        final String serviceKey;
-        try {
-            serviceKey = dotenv.get().get(ENV_VAR_KEY);
-        } catch (Exception e) {
-            throw new ServiceBindingAccessException("Failed to load service key from environment", e);
-        }
-        if (serviceKey == null) {
-            log.debug("No service key found in environment variable {}", ENV_VAR_KEY);
-            return List.of();
-        }
-        if (INFO_LOG_EMITTED.compareAndSet(false, true)) {
-            log.info(
-                    """
+    if (INFO_LOG_EMITTED.compareAndSet(false, true)) {
+      log.info(
+          """
                             Found a service key in environment variable {}.
                             Using a service key is recommended for local testing only.
                             Bind the AI Core service to the application for productive usage.
                             """,
-                    ENV_VAR_KEY);
-        }
-
-        val binding = createServiceBinding(serviceKey);
-        return List.of(binding);
+          ENV_VAR_KEY);
     }
 
-    static ServiceBinding createServiceBinding(@Nonnull final String serviceKey)
-            throws ServiceBindingAccessException {
-        final HashMap<String, Object> credentials;
-        try {
-            credentials = new ObjectMapper().readValue(serviceKey, new TypeReference<>() {
-            });
-        } catch (JsonProcessingException e) {
-            throw new ServiceBindingAccessException(
-                    new AiCoreCredentialsInvalidException(
-                            "Error in parsing service key from the " + ENV_VAR_KEY + " environment variable.",
-                            e));
-        }
-        if (credentials.get("clientid") == null) {
-            // explicitly check for the client ID to improve the error message
-            // otherwise we get a rather generic DestinationNotFoundException error that none of the
-            // loaders matched the binding
-            throw new ServiceBindingAccessException(
-                    new AiCoreCredentialsInvalidException("Missing clientid in service key"));
-        }
+    val binding = createServiceBinding(serviceKey);
+    return List.of(binding);
+  }
 
-        return new DefaultServiceBindingBuilder()
-                .withServiceIdentifier(ServiceIdentifier.AI_CORE)
-                .withCredentials(credentials)
-                .build();
+  static ServiceBinding createServiceBinding(@Nonnull final String serviceKey)
+      throws ServiceBindingAccessException {
+    final HashMap<String, Object> credentials;
+    try {
+      credentials = new ObjectMapper().readValue(serviceKey, new TypeReference<>() {});
+    } catch (JsonProcessingException e) {
+      throw new ServiceBindingAccessException(
+          new AiCoreCredentialsInvalidException(
+              "Error in parsing service key from the " + ENV_VAR_KEY + " environment variable.",
+              e));
     }
+    if (credentials.get("clientid") == null) {
+      // explicitly check for the client ID to improve the error message
+      // otherwise we get a rather generic DestinationNotFoundException error that none of the
+      // loaders matched the binding
+      throw new ServiceBindingAccessException(
+          new AiCoreCredentialsInvalidException("Missing clientid in service key"));
+    }
+
+    return new DefaultServiceBindingBuilder()
+        .withServiceIdentifier(ServiceIdentifier.AI_CORE)
+        .withCredentials(credentials)
+        .build();
+  }
 }
