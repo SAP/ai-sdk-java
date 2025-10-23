@@ -145,7 +145,8 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
    * @return The same instance of this {@link MSSharePointPipelineMinimalResponse} class
    */
   @Nonnull
-  public MSSharePointPipelineMinimalResponse status(@Nonnull final PipelineExecutionStatus status) {
+  public MSSharePointPipelineMinimalResponse status(
+      @Nullable final PipelineExecutionStatus status) {
     this.status = status;
     return this;
   }
@@ -155,7 +156,7 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
    *
    * @return status The status of this {@link MSSharePointPipelineMinimalResponse} instance.
    */
-  @Nonnull
+  @Nullable
   public PipelineExecutionStatus getStatus() {
     return status;
   }
@@ -165,7 +166,7 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
    *
    * @param status The status of this {@link MSSharePointPipelineMinimalResponse}
    */
-  public void setStatus(@Nonnull final PipelineExecutionStatus status) {
+  public void setStatus(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
   }
 
@@ -415,7 +416,7 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
      * @param status The status of this {@link MSSharePointPipelineMinimalResponse}
      * @return The MSSharePointPipelineMinimalResponse builder.
      */
-    Builder2 status(@Nonnull final PipelineExecutionStatus status);
+    Builder2 status(@Nullable final PipelineExecutionStatus status);
   }
 
   /** Builder helper class. */

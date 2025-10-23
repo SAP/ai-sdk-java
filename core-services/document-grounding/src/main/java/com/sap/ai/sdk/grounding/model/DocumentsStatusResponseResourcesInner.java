@@ -111,7 +111,7 @@ public class DocumentsStatusResponseResourcesInner
    *
    * @return status The status of this {@link DocumentsStatusResponseResourcesInner} instance.
    */
-  @Nonnull
+  @Nullable
   public DocumentStatus getStatus() {
     return status;
   }
