@@ -140,6 +140,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_4_SONNET =
       new OrchestrationAiModel("anthropic--claude-4-sonnet");
 
+  /** Anthropic Claude 4.5 Sonnet model */
+  public static final OrchestrationAiModel CLAUDE_4_5_SONNET =
+      new OrchestrationAiModel("anthropic--claude-4.5-sonnet");
+
   /**
    * Amazon Titan Text Lite model
    *
