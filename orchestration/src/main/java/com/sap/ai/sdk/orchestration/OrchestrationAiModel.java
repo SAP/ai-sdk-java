@@ -365,7 +365,7 @@ public class OrchestrationAiModel {
   @FunctionalInterface
   public interface Parameter<ValueT> {
     /** The maximum number of tokens to generate. */
-    Parameter<Integer> MAX_TOKENS = () -> "max_tokens";
+    Parameter<Integer> MAX_TOKENS = () -> "max_completion_tokens";
 
     /** The sampling temperature. */
     Parameter<Number> TEMPERATURE = () -> "temperature";
