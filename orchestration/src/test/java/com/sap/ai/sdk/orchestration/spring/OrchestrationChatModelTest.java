@@ -84,7 +84,7 @@ class OrchestrationChatModelTest {
                 aResponse()
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
-    val result = client.call(prompt);
+    val result = client. call(prompt);
 
     assertThat(result).isNotNull();
     assertThat(result.getResult().getOutput().getText()).isNotEmpty();
