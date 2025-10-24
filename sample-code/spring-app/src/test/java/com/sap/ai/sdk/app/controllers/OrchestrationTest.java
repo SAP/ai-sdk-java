@@ -296,7 +296,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("0 of \\d+ choices failed");
+    assertThat(filterResult.getMessage()).containsPattern("Choice 0: Output Filter was skipped");
   }
 
   @Test
