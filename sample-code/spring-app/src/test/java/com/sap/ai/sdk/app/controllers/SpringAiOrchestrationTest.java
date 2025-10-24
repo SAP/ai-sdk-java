@@ -104,7 +104,8 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("1 of 1 choices failed");
+    assertThat(filterResult.getMessage())
+        .contains("Choice 0: LLM response filtered due to safety violations");
   }
 
   @Test
@@ -122,7 +123,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("0 of \\d+ choices failed");
+    assertThat(filterResult.getMessage()).contains("Choice 0: Output Filter was skipped");
   }
 
   @Test
