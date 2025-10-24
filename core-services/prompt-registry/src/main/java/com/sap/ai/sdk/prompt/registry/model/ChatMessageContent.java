@@ -16,12 +16,31 @@ import javax.annotation.Nonnull;
 
 /** ChatMessageContent */
 public interface ChatMessageContent {
-  /** Helper class to create a String that implements {@link ChatMessageContent}. */
+  /**
+   * Helper class to create {@code List<TextContent> } that implements {@link ChatMessageContent}.
+   */
+  record ListOfTextContents(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<TextContent> values)
+      implements ChatMessageContent {}
+
+  /**
+   * Creator to enable deserialization of {@code List<TextContent> }.
+   *
+   * @param val the value to use
+   * @return a new instance of {@link ListOfTextContents}.
+   */
+  @com.fasterxml.jackson.annotation.JsonCreator
+  @Nonnull
+  static ListOfTextContents createListOfTextContents(@Nonnull final List<TextContent> val) {
+    return new ListOfTextContents(val);
+  }
+
+  /** Helper class to create {@code String } that implements {@link ChatMessageContent}. */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
       implements ChatMessageContent {}
 
   /**
-   * Creator to enable deserialization of a String.
+   * Creator to enable deserialization of {@code String }.
    *
    * @param val the value to use
    * @return a new instance of {@link InnerString}.
@@ -30,22 +49,5 @@ public interface ChatMessageContent {
   @Nonnull
   static InnerString create(@Nonnull final String val) {
     return new InnerString(val);
-  }
-
-  /** Helper class to create a list of TextContent that implements {@link ChatMessageContent}. */
-  record InnerTextContents(
-      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<TextContent> values)
-      implements ChatMessageContent {}
-
-  /**
-   * Creator to enable deserialization of a list of TextContent.
-   *
-   * @param val the value to use
-   * @return a new instance of {@link InnerTextContents}.
-   */
-  @com.fasterxml.jackson.annotation.JsonCreator
-  @Nonnull
-  static InnerTextContents create(@Nonnull final List<TextContent> val) {
-    return new InnerTextContents(val);
   }
 }

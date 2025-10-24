@@ -38,7 +38,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
@@ -146,6 +145,25 @@ class OrchestrationTest {
     assertThat(maskedMessage)
         .describedAs("The masked input should not contain any user names")
         .doesNotContain("Alice", "Bob");
+
+    assertThat(result.getIntermediateResults().getOutputUnmasking()).isEmpty();
+  }
+
+  @Test
+  void testMaskingRegex() {
+    var response = service.maskingRegex();
+    var result = response.getOriginalResponse();
+    var llmChoice = result.getFinalResult().getChoices().get(0);
+    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
+
+    var maskingResult = result.getIntermediateResults().getInputMasking();
+    assertThat(maskingResult.getMessage()).isNotEmpty();
+    var data = (Map<String, Object>) maskingResult.getData();
+    var maskedMessage = (String) data.get("masked_template");
+    assertThat(maskedMessage)
+        .describedAs("The masked input should replace patient IDs with REDACTED_ID")
+        .doesNotContain("patient_id_123")
+        .contains("REDACTED_ID");
 
     assertThat(result.getIntermediateResults().getOutputUnmasking()).isEmpty();
   }
@@ -380,7 +398,6 @@ class OrchestrationTest {
   }
 
   @Test
-  @Disabled("This behaviour is not released to canary yet.")
   void testTemplateFromPromptRegistryById() {
     val result = service.templateFromPromptRegistryById("Cloud ERP systems").getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
@@ -388,7 +405,6 @@ class OrchestrationTest {
   }
 
   @Test
-  @Disabled("This behaviour is not released to canary yet.")
   void testTemplateFromPromptRegistryByScenario() {
     val result =
         service.templateFromPromptRegistryByScenario("Cloud ERP systems").getOriginalResponse();
@@ -447,7 +463,6 @@ class OrchestrationTest {
   }
 
   @Test
-  @Disabled("This behaviour is not released to canary yet.")
   void testTranslation() {
     val result = service.translation();
     val content = result.getContent();
@@ -461,7 +476,8 @@ class OrchestrationTest {
         result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
     assertThat(inputTranslation).isNotNull();
     assertThat(outputTranslation).isNotNull();
-    assertThat(inputTranslation.getMessage()).isEqualTo("Input to LLM is translated successfully.");
+    assertThat(inputTranslation.getMessage())
+        .isEqualTo("Translated messages with roles: ['user']. ");
     assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
   }
 

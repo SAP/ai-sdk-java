@@ -9,10 +9,12 @@ import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
+import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringEmbeddingModel;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -29,6 +31,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.embedding.EmbeddingOptionsBuilder;
 import org.springframework.ai.support.ToolCallbacks;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -262,5 +265,20 @@ public class SpringAiOrchestrationService {
         new Prompt(
             "How do I say 'AI is going to revolutionize the world' in dutch?", defaultOptions);
     return cl.prompt(prompt).call().entity(Translation.class);
+  }
+
+  /**
+   * Create an embedding for a given text using the Orchestration service.
+   *
+   * @param inputText the text to embed
+   * @return the embedding as a float array
+   */
+  @Nonnull
+  public float[] embed(@Nonnull final String inputText) {
+    val embedOptions =
+        EmbeddingOptionsBuilder.builder()
+            .withModel(OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL.name())
+            .build();
+    return new OrchestrationSpringEmbeddingModel(embedOptions).embed(inputText);
   }
 }

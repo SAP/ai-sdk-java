@@ -70,6 +70,8 @@ public class SystemMessage implements Message {
             .map(item -> (TextItem) item)
             .map(item -> TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text()))
             .toList();
-    return SystemChatMessage.create().role(SYSTEM).content(ChatMessageContent.create(texts));
+    return SystemChatMessage.create()
+        .role(SYSTEM)
+        .content(ChatMessageContent.createListOfTextContents(texts));
   }
 }
