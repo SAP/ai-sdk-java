@@ -9,15 +9,9 @@ import static org.mockito.Mockito.verify;
 import com.sap.cloud.environment.servicebinding.api.exception.ServiceBindingAccessException;
 import io.github.cdimascio.dotenv.Dotenv;
 import java.util.Map;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AiCoreServiceKeyAccessorTest {
-
-  @BeforeEach
-  void resetServiceBindings() {
-    AiCoreServiceKeyAccessor.serviceBindings = null;
-  }
 
   @Test
   void testValidDotenv() {

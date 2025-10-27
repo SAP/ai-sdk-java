@@ -71,6 +71,7 @@
     <javaparser.version>3.27.1</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.20.0</jackson.version>
+    <logback.version>1.5.20</logback.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.15.5</micrometer.version>
     <json.version>20250517</json.version>
@@ -260,7 +261,7 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.5.20</version>
+      <version>${logback.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -596,6 +597,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire.version}</version>
+        <configuration>
+          <systemPropertyVariables>
+            <logback.configurationFile>${project.rootdir}/logback.xml</logback.configurationFile>
+          </systemPropertyVariables>
+        </configuration>
       </plugin>
       <!-- phase: verify -->
       <plugin>

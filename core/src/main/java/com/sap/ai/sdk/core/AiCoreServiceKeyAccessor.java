@@ -29,8 +29,6 @@ class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
 
   private final Lazy<Dotenv> dotenv;
 
-  static List<ServiceBinding> serviceBindings;
-
   AiCoreServiceKeyAccessor() {
     this(Dotenv.configure().ignoreIfMissing().ignoreIfMalformed());
   }
@@ -42,14 +40,6 @@ class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
   @Nonnull
   @Override
   public List<ServiceBinding> getServiceBindings() throws ServiceBindingAccessException {
-    // service bindings are immutable for the lifetime of the application
-    if (serviceBindings == null) {
-      serviceBindings = fetchServiceBindings();
-    }
-    return serviceBindings;
-  }
-
-  private List<ServiceBinding> fetchServiceBindings() throws ServiceBindingAccessException {
     final String serviceKey;
     try {
       serviceKey = dotenv.get().get(ENV_VAR_KEY);
