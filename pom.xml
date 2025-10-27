@@ -258,9 +258,9 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>${slf4j.version}</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>1.5.20</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -365,7 +365,7 @@
                     <exclude>org.tinylog</exclude>
                   </excludes>
                   <includes>
-                    <include>org.slf4j:slf4j-simple:*:*:test</include>
+                    <include>ch.qos.logback:*:*:*:test</include>
                   </includes>
                 </bannedDependencies>
               </rules>
@@ -554,9 +554,7 @@
             <!--  ignore annotations that are not visible on bytecode level  -->
             <ignoredUnusedDeclaredDependency>com.google.code.findbugs:jsr305</ignoredUnusedDeclaredDependency>
             <!-- Logging API, adapters and default implementation for tests -->
-            <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-api</ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>org.slf4j:jcl-over-slf4j</ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic</ignoredUnusedDeclaredDependency>
             <!-- Lombok usage for code generation -->
             <ignoredUnusedDeclaredDependency>org.projectlombok:lombok</ignoredUnusedDeclaredDependency>
             <!-- By default, JUnit5 adapters are added to every module to ensure no tests are skipped -->
