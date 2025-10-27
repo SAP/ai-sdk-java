@@ -29,7 +29,7 @@ class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
 
   private final Lazy<Dotenv> dotenv;
 
-  private static List<ServiceBinding> serviceBindings;
+  static List<ServiceBinding> serviceBindings;
 
   AiCoreServiceKeyAccessor() {
     this(Dotenv.configure().ignoreIfMissing().ignoreIfMalformed());
