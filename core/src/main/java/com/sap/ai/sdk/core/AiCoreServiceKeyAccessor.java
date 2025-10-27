@@ -13,7 +13,6 @@ import io.github.cdimascio.dotenv.DotenvBuilder;
 import io.vavr.Lazy;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +26,10 @@ import lombok.val;
 @AllArgsConstructor
 class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
   static final String ENV_VAR_KEY = "AICORE_SERVICE_KEY";
-  private static final AtomicBoolean INFO_LOG_EMITTED = new AtomicBoolean(false);
 
   private final Lazy<Dotenv> dotenv;
+
+  private static List<ServiceBinding> serviceBindings;
 
   AiCoreServiceKeyAccessor() {
     this(Dotenv.configure().ignoreIfMissing().ignoreIfMalformed());
@@ -42,6 +42,14 @@ class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
   @Nonnull
   @Override
   public List<ServiceBinding> getServiceBindings() throws ServiceBindingAccessException {
+    // service bindings are immutable for the lifetime of the application
+    if (serviceBindings == null) {
+      serviceBindings = fetchServiceBindings();
+    }
+    return serviceBindings;
+  }
+
+  private List<ServiceBinding> fetchServiceBindings() throws ServiceBindingAccessException {
     final String serviceKey;
     try {
       serviceKey = dotenv.get().get(ENV_VAR_KEY);
@@ -52,15 +60,13 @@ class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
       log.debug("No service key found in environment variable {}", ENV_VAR_KEY);
       return List.of();
     }
-    if (INFO_LOG_EMITTED.compareAndSet(false, true)) {
-      log.info(
-          """
-                            Found a service key in environment variable {}.
-                            Using a service key is recommended for local testing only.
-                            Bind the AI Core service to the application for productive usage.
-                            """,
-          ENV_VAR_KEY);
-    }
+    log.info(
+        """
+        Found a service key in environment variable {}.
+        Using a service key is recommended for local testing only.
+        Bind the AI Core service to the application for productive usage.
+        """,
+        ENV_VAR_KEY);
 
     val binding = createServiceBinding(serviceKey);
     return List.of(binding);
