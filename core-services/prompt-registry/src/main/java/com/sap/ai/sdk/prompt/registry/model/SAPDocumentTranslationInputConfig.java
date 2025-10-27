@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -25,11 +27,14 @@ import javax.annotation.Nullable;
 
 /** Configuration for &#x60;sap_document_translation&#x60; translation provider. */
 // CHECKSTYLE:OFF
-public class SAPDocumentTranslationConfig
+public class SAPDocumentTranslationInputConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("source_language")
   private String sourceLanguage;
+
+  @JsonProperty("apply_to")
+  private List<SAPDocumentTranslationApplyToSelector> applyTo = new ArrayList<>();
 
   @JsonProperty("target_language")
   private String targetLanguage;
@@ -37,18 +42,18 @@ public class SAPDocumentTranslationConfig
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for SAPDocumentTranslationConfig. */
-  protected SAPDocumentTranslationConfig() {}
+  /** Default constructor for SAPDocumentTranslationInputConfig. */
+  protected SAPDocumentTranslationInputConfig() {}
 
   /**
-   * Set the sourceLanguage of this {@link SAPDocumentTranslationConfig} instance and return the
-   * same instance.
+   * Set the sourceLanguage of this {@link SAPDocumentTranslationInputConfig} instance and return
+   * the same instance.
    *
    * @param sourceLanguage Language of the text to be translated.
-   * @return The same instance of this {@link SAPDocumentTranslationConfig} class
+   * @return The same instance of this {@link SAPDocumentTranslationInputConfig} class
    */
   @Nonnull
-  public SAPDocumentTranslationConfig sourceLanguage(@Nullable final String sourceLanguage) {
+  public SAPDocumentTranslationInputConfig sourceLanguage(@Nullable final String sourceLanguage) {
     this.sourceLanguage = sourceLanguage;
     return this;
   }
@@ -56,7 +61,7 @@ public class SAPDocumentTranslationConfig
   /**
    * Language of the text to be translated.
    *
-   * @return sourceLanguage The sourceLanguage of this {@link SAPDocumentTranslationConfig}
+   * @return sourceLanguage The sourceLanguage of this {@link SAPDocumentTranslationInputConfig}
    *     instance.
    */
   @Nonnull
@@ -65,7 +70,7 @@ public class SAPDocumentTranslationConfig
   }
 
   /**
-   * Set the sourceLanguage of this {@link SAPDocumentTranslationConfig} instance.
+   * Set the sourceLanguage of this {@link SAPDocumentTranslationInputConfig} instance.
    *
    * @param sourceLanguage Language of the text to be translated.
    */
@@ -74,14 +79,63 @@ public class SAPDocumentTranslationConfig
   }
 
   /**
-   * Set the targetLanguage of this {@link SAPDocumentTranslationConfig} instance and return the
-   * same instance.
+   * Set the applyTo of this {@link SAPDocumentTranslationInputConfig} instance and return the same
+   * instance.
    *
-   * @param targetLanguage Language to which the text should be translated.
-   * @return The same instance of this {@link SAPDocumentTranslationConfig} class
+   * @param applyTo The applyTo of this {@link SAPDocumentTranslationInputConfig}
+   * @return The same instance of this {@link SAPDocumentTranslationInputConfig} class
    */
   @Nonnull
-  public SAPDocumentTranslationConfig targetLanguage(@Nonnull final String targetLanguage) {
+  public SAPDocumentTranslationInputConfig applyTo(
+      @Nullable final List<SAPDocumentTranslationApplyToSelector> applyTo) {
+    this.applyTo = applyTo;
+    return this;
+  }
+
+  /**
+   * Add one applyTo instance to this {@link SAPDocumentTranslationInputConfig}.
+   *
+   * @param applyToItem The applyTo that should be added
+   * @return The same instance of type {@link SAPDocumentTranslationInputConfig}
+   */
+  @Nonnull
+  public SAPDocumentTranslationInputConfig addApplyToItem(
+      @Nonnull final SAPDocumentTranslationApplyToSelector applyToItem) {
+    if (this.applyTo == null) {
+      this.applyTo = new ArrayList<>();
+    }
+    this.applyTo.add(applyToItem);
+    return this;
+  }
+
+  /**
+   * Get applyTo
+   *
+   * @return applyTo The applyTo of this {@link SAPDocumentTranslationInputConfig} instance.
+   */
+  @Nonnull
+  public List<SAPDocumentTranslationApplyToSelector> getApplyTo() {
+    return applyTo;
+  }
+
+  /**
+   * Set the applyTo of this {@link SAPDocumentTranslationInputConfig} instance.
+   *
+   * @param applyTo The applyTo of this {@link SAPDocumentTranslationInputConfig}
+   */
+  public void setApplyTo(@Nullable final List<SAPDocumentTranslationApplyToSelector> applyTo) {
+    this.applyTo = applyTo;
+  }
+
+  /**
+   * Set the targetLanguage of this {@link SAPDocumentTranslationInputConfig} instance and return
+   * the same instance.
+   *
+   * @param targetLanguage Language to which the text should be translated.
+   * @return The same instance of this {@link SAPDocumentTranslationInputConfig} class
+   */
+  @Nonnull
+  public SAPDocumentTranslationInputConfig targetLanguage(@Nonnull final String targetLanguage) {
     this.targetLanguage = targetLanguage;
     return this;
   }
@@ -89,7 +143,7 @@ public class SAPDocumentTranslationConfig
   /**
    * Language to which the text should be translated.
    *
-   * @return targetLanguage The targetLanguage of this {@link SAPDocumentTranslationConfig}
+   * @return targetLanguage The targetLanguage of this {@link SAPDocumentTranslationInputConfig}
    *     instance.
    */
   @Nonnull
@@ -98,7 +152,7 @@ public class SAPDocumentTranslationConfig
   }
 
   /**
-   * Set the targetLanguage of this {@link SAPDocumentTranslationConfig} instance.
+   * Set the targetLanguage of this {@link SAPDocumentTranslationInputConfig} instance.
    *
    * @param targetLanguage Language to which the text should be translated.
    */
@@ -107,7 +161,8 @@ public class SAPDocumentTranslationConfig
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link SAPDocumentTranslationConfig}.
+   * Get the names of the unrecognizable properties of the {@link
+   * SAPDocumentTranslationInputConfig}.
    *
    * @return The set of properties names
    */
@@ -118,7 +173,7 @@ public class SAPDocumentTranslationConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link SAPDocumentTranslationConfig}
+   * Get the value of an unrecognizable property of this {@link SAPDocumentTranslationInputConfig}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -131,14 +186,14 @@ public class SAPDocumentTranslationConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "SAPDocumentTranslationConfig has no field with name '" + name + "'.");
+          "SAPDocumentTranslationInputConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link SAPDocumentTranslationConfig} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link SAPDocumentTranslationInputConfig} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -147,13 +202,14 @@ public class SAPDocumentTranslationConfig
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (sourceLanguage != null) declaredFields.put("sourceLanguage", sourceLanguage);
+    if (applyTo != null) declaredFields.put("applyTo", applyTo);
     if (targetLanguage != null) declaredFields.put("targetLanguage", targetLanguage);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link SAPDocumentTranslationConfig} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
+   * Set an unrecognizable property of this {@link SAPDocumentTranslationInputConfig} instance. If
+   * the map previously contained a mapping for the key, the old value is replaced by the specified
    * value.
    *
    * @param customFieldName The name of the property
@@ -172,25 +228,27 @@ public class SAPDocumentTranslationConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final SAPDocumentTranslationConfig saPDocumentTranslationConfig =
-        (SAPDocumentTranslationConfig) o;
+    final SAPDocumentTranslationInputConfig saPDocumentTranslationInputConfig =
+        (SAPDocumentTranslationInputConfig) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, saPDocumentTranslationConfig.cloudSdkCustomFields)
-        && Objects.equals(this.sourceLanguage, saPDocumentTranslationConfig.sourceLanguage)
-        && Objects.equals(this.targetLanguage, saPDocumentTranslationConfig.targetLanguage);
+            this.cloudSdkCustomFields, saPDocumentTranslationInputConfig.cloudSdkCustomFields)
+        && Objects.equals(this.sourceLanguage, saPDocumentTranslationInputConfig.sourceLanguage)
+        && Objects.equals(this.applyTo, saPDocumentTranslationInputConfig.applyTo)
+        && Objects.equals(this.targetLanguage, saPDocumentTranslationInputConfig.targetLanguage);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(sourceLanguage, targetLanguage, cloudSdkCustomFields);
+    return Objects.hash(sourceLanguage, applyTo, targetLanguage, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class SAPDocumentTranslationConfig {\n");
+    sb.append("class SAPDocumentTranslationInputConfig {\n");
     sb.append("    sourceLanguage: ").append(toIndentedString(sourceLanguage)).append("\n");
+    sb.append("    applyTo: ").append(toIndentedString(applyTo)).append("\n");
     sb.append("    targetLanguage: ").append(toIndentedString(targetLanguage)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -211,20 +269,21 @@ public class SAPDocumentTranslationConfig
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * SAPDocumentTranslationConfig} instance with all required arguments.
+   * SAPDocumentTranslationInputConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (targetLanguage) -> new SAPDocumentTranslationConfig().targetLanguage(targetLanguage);
+    return (targetLanguage) ->
+        new SAPDocumentTranslationInputConfig().targetLanguage(targetLanguage);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the targetLanguage of this {@link SAPDocumentTranslationConfig} instance.
+     * Set the targetLanguage of this {@link SAPDocumentTranslationInputConfig} instance.
      *
      * @param targetLanguage Language to which the text should be translated.
-     * @return The SAPDocumentTranslationConfig instance.
+     * @return The SAPDocumentTranslationInputConfig instance.
      */
-    SAPDocumentTranslationConfig targetLanguage(@Nonnull final String targetLanguage);
+    SAPDocumentTranslationInputConfig targetLanguage(@Nonnull final String targetLanguage);
   }
 }
