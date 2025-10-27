@@ -12,12 +12,10 @@ import com.sap.ai.sdk.orchestration.ToolMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.MessageToolCall;
 import com.sap.ai.sdk.orchestration.model.MessageToolCallFunction;
-
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
-
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
@@ -37,131 +35,130 @@ import reactor.core.publisher.Flux;
  */
 @Slf4j
 public class OrchestrationChatModel implements ChatModel {
-    @Nonnull
-    private final OrchestrationClient client;
+  @Nonnull private final OrchestrationClient client;
 
-    @Nonnull
-    private final DefaultToolCallingManager toolCallingManager =
-            DefaultToolCallingManager.builder().build();
+  @Nonnull
+  private final DefaultToolCallingManager toolCallingManager =
+      DefaultToolCallingManager.builder().build();
 
-    /**
-     * Default constructor.
-     *
-     * @since 1.2.0
-     */
-    public OrchestrationChatModel() {
-        this(new OrchestrationClient());
+  /**
+   * Default constructor.
+   *
+   * @since 1.2.0
+   */
+  public OrchestrationChatModel() {
+    this(new OrchestrationClient());
+  }
+
+  /**
+   * Constructor with a custom client.
+   *
+   * @param client The custom client to use.
+   * @since 1.2.0
+   */
+  public OrchestrationChatModel(@Nonnull final OrchestrationClient client) {
+    this.client = client;
+  }
+
+  @Nonnull
+  @Override
+  public ChatResponse call(@Nonnull final Prompt prompt) {
+    if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
+
+      val orchestrationPrompt = toOrchestrationPrompt(prompt);
+      val response =
+          new OrchestrationSpringChatResponse(
+              client.chatCompletion(orchestrationPrompt, options.getConfig()));
+
+      if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
+          && response.hasToolCalls()) {
+        val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
+        // Send the tool execution result back to the model.
+        log.info("Re-invoking model with tool execution results.");
+        return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
+      }
+      return response;
     }
+    throw new IllegalArgumentException(
+        "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
+  }
 
-    /**
-     * Constructor with a custom client.
-     *
-     * @param client The custom client to use.
-     * @since 1.2.0
-     */
-    public OrchestrationChatModel(@Nonnull final OrchestrationClient client) {
-        this.client = client;
+  @Override
+  @Nonnull
+  public Flux<ChatResponse> stream(@Nonnull final Prompt prompt) {
+
+    if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
+
+      val orchestrationPrompt = toOrchestrationPrompt(prompt);
+      val request = toCompletionPostRequest(orchestrationPrompt, options.getConfig());
+      val stream = client.streamChatCompletionDeltas(request);
+
+      final Flux<OrchestrationChatCompletionDelta> flux =
+          Flux.generate(
+              stream::iterator,
+              (iterator, sink) -> {
+                if (iterator.hasNext()) {
+                  sink.next(iterator.next());
+                } else {
+                  sink.complete();
+                }
+                return iterator;
+              });
+      return flux.map(OrchestrationSpringChatDelta::new);
     }
+    throw new IllegalArgumentException(
+        "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
+  }
 
-    @Nonnull
-    @Override
-    public ChatResponse call(@Nonnull final Prompt prompt) {
-        if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
+  @Nonnull
+  private OrchestrationPrompt toOrchestrationPrompt(@Nonnull final Prompt prompt) {
+    val messages = toOrchestrationMessages(prompt.getInstructions());
+    return new OrchestrationPrompt(Map.of(), messages);
+  }
 
-            val orchestrationPrompt = toOrchestrationPrompt(prompt);
-            val response =
-                    new OrchestrationSpringChatResponse(
-                            client.chatCompletion(orchestrationPrompt, options.getConfig()));
+  @Nonnull
+  private static com.sap.ai.sdk.orchestration.Message[] toOrchestrationMessages(
+      @Nonnull final List<Message> messages) {
+    final Function<Message, List<com.sap.ai.sdk.orchestration.Message>> mapper =
+        msg ->
+            switch (msg.getMessageType()) {
+              case SYSTEM:
+                yield List.of(new SystemMessage(msg.getText()));
+              case USER:
+                yield List.of(new UserMessage(msg.getText()));
+              case ASSISTANT:
+                val assistantMessage = new AssistantMessage(msg.getText());
+                val springToolCalls =
+                    ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
+                if (springToolCalls != null && !springToolCalls.isEmpty()) {
+                  final List<MessageToolCall> sdkToolCalls =
+                      springToolCalls.stream()
+                          .map(OrchestrationChatModel::toOrchestrationToolCall)
+                          .toList();
+                  yield List.of(assistantMessage.withToolCalls(sdkToolCalls));
+                }
+                yield List.of(assistantMessage);
+              case TOOL:
+                val toolResponses = ((ToolResponseMessage) msg).getResponses();
+                yield toolResponses.stream()
+                    .map(
+                        r ->
+                            (com.sap.ai.sdk.orchestration.Message)
+                                new ToolMessage(r.id(), r.responseData()))
+                    .toList();
+            };
+    return messages.stream()
+        .map(mapper)
+        .flatMap(List::stream)
+        .toArray(com.sap.ai.sdk.orchestration.Message[]::new);
+  }
 
-            if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
-                    && response.hasToolCalls()) {
-                val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
-                // Send the tool execution result back to the model.
-                log.info("Re-invoking model with tool execution results.");
-                return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
-            }
-            return response;
-        }
-        throw new IllegalArgumentException(
-                "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
-    }
-
-    @Override
-    @Nonnull
-    public Flux<ChatResponse> stream(@Nonnull final Prompt prompt) {
-
-        if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
-
-            val orchestrationPrompt = toOrchestrationPrompt(prompt);
-            val request = toCompletionPostRequest(orchestrationPrompt, options.getConfig());
-            val stream = client.streamChatCompletionDeltas(request);
-
-            final Flux<OrchestrationChatCompletionDelta> flux =
-                    Flux.generate(
-                            stream::iterator,
-                            (iterator, sink) -> {
-                                if (iterator.hasNext()) {
-                                    sink.next(iterator.next());
-                                } else {
-                                    sink.complete();
-                                }
-                                return iterator;
-                            });
-            return flux.map(OrchestrationSpringChatDelta::new);
-        }
-        throw new IllegalArgumentException(
-                "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
-    }
-
-    @Nonnull
-    private OrchestrationPrompt toOrchestrationPrompt(@Nonnull final Prompt prompt) {
-        val messages = toOrchestrationMessages(prompt.getInstructions());
-        return new OrchestrationPrompt(Map.of(), messages);
-    }
-
-    @Nonnull
-    private static com.sap.ai.sdk.orchestration.Message[] toOrchestrationMessages(
-            @Nonnull final List<Message> messages) {
-        final Function<Message, List<com.sap.ai.sdk.orchestration.Message>> mapper =
-                msg ->
-                        switch (msg.getMessageType()) {
-                            case SYSTEM:
-                                yield List.of(new SystemMessage(msg.getText()));
-                            case USER:
-                                yield List.of(new UserMessage(msg.getText()));
-                            case ASSISTANT:
-                                val assistantMessage = new AssistantMessage(msg.getText());
-                                val springToolCalls =
-                                        ((org.springframework.ai.chat.messages.AssistantMessage) msg).getToolCalls();
-                                if (springToolCalls != null && !springToolCalls.isEmpty()) {
-                                    final List<MessageToolCall> sdkToolCalls =
-                                            springToolCalls.stream()
-                                                    .map(OrchestrationChatModel::toOrchestrationToolCall)
-                                                    .toList();
-                                    yield List.of(assistantMessage.withToolCalls(sdkToolCalls));
-                                }
-                                yield List.of(assistantMessage);
-                            case TOOL:
-                                val toolResponses = ((ToolResponseMessage) msg).getResponses();
-                                yield toolResponses.stream()
-                                        .map(
-                                                r ->
-                                                        (com.sap.ai.sdk.orchestration.Message)
-                                                                new ToolMessage(r.id(), r.responseData()))
-                                        .toList();
-                        };
-        return messages.stream()
-                .map(mapper)
-                .flatMap(List::stream)
-                .toArray(com.sap.ai.sdk.orchestration.Message[]::new);
-    }
-
-    @Nonnull
-    private static MessageToolCall toOrchestrationToolCall(@Nonnull final ToolCall toolCall) {
-        return MessageToolCall.create()
-                .id(toolCall.id())
-                .type(FUNCTION)
-                .function(
-                        MessageToolCallFunction.create().name(toolCall.name()).arguments(toolCall.arguments()));
-    }
+  @Nonnull
+  private static MessageToolCall toOrchestrationToolCall(@Nonnull final ToolCall toolCall) {
+    return MessageToolCall.create()
+        .id(toolCall.id())
+        .type(FUNCTION)
+        .function(
+            MessageToolCallFunction.create().name(toolCall.name()).arguments(toolCall.arguments()));
+  }
 }
