@@ -7,6 +7,7 @@ import com.sap.cloud.environment.servicebinding.api.ServiceBinding;
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
 import com.sap.cloud.environment.servicebinding.api.ServiceBindingMerger;
 import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
+import com.sap.cloud.environment.servicebinding.api.SimpleServiceBindingCache;
 import com.sap.cloud.environment.servicebinding.api.exception.ServiceBindingAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -33,7 +34,9 @@ class DestinationResolver {
   DestinationResolver() {
     this(
         new ServiceBindingMerger(
-            List.of(DefaultServiceBindingAccessor.getInstance(), new AiCoreServiceKeyAccessor()),
+            List.of(
+                DefaultServiceBindingAccessor.getInstance(),
+                new SimpleServiceBindingCache(new AiCoreServiceKeyAccessor())),
             ServiceBindingMerger.KEEP_EVERYTHING));
   }
 
