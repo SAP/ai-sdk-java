@@ -88,6 +88,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
             .getOrElseThrow(e -> exceptionFactory.build(message, e).setHttpResponse(response));
     try {
       final T value = objectMapper.readValue(content, successType);
+      log.info("Response content: {}", content);
       val timeHeaders = response.getHeaders("x-upstream-service-time");
       if (timeHeaders.length > 0) {
         log.info("LLM request success with duration:{}", timeHeaders[0].getValue());
