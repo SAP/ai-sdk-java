@@ -56,7 +56,7 @@ class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
       return List.of();
     }
     final String logMessage =
-        "Found a service key in environment variable {}.\nUsing a service key is recommended for local testing only.\nBind the AI Core service to the application for productive usage.";
+        "Found a service key in environment variable {}.\nUsing a service key is recommended for local testing only.\nBind the AI Core service to the application for productive usage.\n";
     log.atLevel(logLevel).log(logMessage, ENV_VAR_KEY);
 
     val binding = createServiceBinding(serviceKey);
