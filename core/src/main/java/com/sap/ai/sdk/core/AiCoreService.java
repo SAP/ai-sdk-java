@@ -43,9 +43,7 @@ public class AiCoreService {
 
   /** The default constructor. */
   public AiCoreService() {
-    val resolver = new DestinationResolver();
-    this.baseDestinationResolver = resolver::getDestination;
-    this.deploymentResolver = new DeploymentResolver(this);
+    this(new DestinationResolver()::getDestination);
   }
 
   AiCoreService(@Nonnull final Supplier<HttpDestination> baseDestinationResolver) {
