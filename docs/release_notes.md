@@ -16,7 +16,7 @@
 
 ### 📈 Improvements
 
--
+- Log message about "service key in environment variable" to `INFO` level only once.
 
 ### 🐛 Fixed Issues
 
