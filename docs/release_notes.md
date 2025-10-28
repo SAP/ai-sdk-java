@@ -16,7 +16,8 @@
 
 ### 📈 Improvements
 
--
+- [Core] If the AI Core credentials used are missing an explicit `credential-type` but `clientid` and `clientsecret` are present then `"credential-type": "binding-secret"` is inferred automatically.
+
 
 ### 🐛 Fixed Issues
 
