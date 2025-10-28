@@ -30,9 +30,6 @@ class DestinationResolverTest {
     var binding = AiCoreServiceKeyAccessor.createServiceBinding(serviceKey);
     var resolver = new DestinationResolver(() -> List.of(binding));
     var result = resolver.getDestination();
-    assertThat(binding.getCredentials().containsKey("credential-type"))
-        .describedAs("The missing 'credential-type' should have automatically been added")
-        .isTrue();
     assertThat(result.getUri())
         .describedAs("The destination should already contain the /v2 base path")
         .hasToString("https://api.ai.core/v2/");

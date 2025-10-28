@@ -81,7 +81,7 @@ class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
           new AiCoreCredentialsInvalidException("Missing clientid in service key"));
     }
 
-    if (credentials.get("clientsecret") != null && credentials.get("credentials-type") == null) {
+    if (credentials.get("clientsecret") != null && credentials.get("credential-type") == null) {
       // add missing "credential-type: binding-secret"
       credentials.put("credential-type", "binding-secret");
     }
