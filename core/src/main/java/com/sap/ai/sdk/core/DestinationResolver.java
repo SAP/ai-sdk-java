@@ -32,8 +32,8 @@ class DestinationResolver {
 
   DestinationResolver() {
     this(
-      new ServiceBindingMerger(
-          List.of(DefaultServiceBindingAccessor.getInstance(), new AiCoreServiceKeyAccessor()),
+        new ServiceBindingMerger(
+            List.of(DefaultServiceBindingAccessor.getInstance(), new AiCoreServiceKeyAccessor()),
             ServiceBindingMerger.KEEP_EVERYTHING));
   }
 
