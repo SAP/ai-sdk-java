@@ -88,7 +88,7 @@ class OrchestrationHttpExecutor {
 
       val client = getHttpClient();
       MDC.put("endpoint", path);
-      MDC.put("method", "streaming");
+      MDC.put("mode", "streaming");
       logRequestStart();
       return new ClientStreamingHandler<>(
               OrchestrationChatCompletionDelta.class, OrchestrationError.Streaming.class, FACTORY)
