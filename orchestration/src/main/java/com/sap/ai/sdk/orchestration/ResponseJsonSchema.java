@@ -56,6 +56,9 @@ public class ResponseJsonSchema {
   /**
    * Create a new instance of {@link ResponseJsonSchema} from a given class.
    *
+   * <p>⚠️ Fields of the schema class should be annotated with {@code @JsonProperty(required =
+   * true)}.
+   *
    * @param classType The class to generate the schema from
    * @return The new instance of {@link ResponseJsonSchema}
    */
