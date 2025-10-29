@@ -33,6 +33,11 @@ public class ResponseJsonSchema {
   @Nonnull Map<String, Object> schemaMap;
   @Nonnull String name;
   @Nullable String description;
+
+  /**
+   * ⚠️ Fields of the schema class should be annotated with {@code @JsonProperty(required = true)}
+   * to not fail requests if set to true.
+   */
   @Nullable Boolean strict;
 
   /**
@@ -50,6 +55,9 @@ public class ResponseJsonSchema {
 
   /**
    * Create a new instance of {@link ResponseJsonSchema} from a given class.
+   *
+   * <p>⚠️ Fields of the schema class should be annotated with {@code @JsonProperty(required =
+   * true)}.
    *
    * @param classType The class to generate the schema from
    * @return The new instance of {@link ResponseJsonSchema}
