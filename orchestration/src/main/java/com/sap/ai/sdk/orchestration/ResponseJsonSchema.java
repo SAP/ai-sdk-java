@@ -36,7 +36,7 @@ public class ResponseJsonSchema {
 
   /**
    * ⚠️ Fields of the schema class should be annotated with {@code @JsonProperty(required = true)}
-   * to not fail requests.
+   * to not fail requests if set to true.
    */
   @Nullable Boolean strict;
 
