@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -36,6 +38,9 @@ public class CompletionPostResponseStreaming
 
   @JsonProperty("final_result")
   private LLMModuleResultStreaming finalResult;
+
+  @JsonProperty("intermediate_failures")
+  private List<ErrorStreaming> intermediateFailures = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -145,6 +150,58 @@ public class CompletionPostResponseStreaming
   }
 
   /**
+   * Set the intermediateFailures of this {@link CompletionPostResponseStreaming} instance and
+   * return the same instance.
+   *
+   * @param intermediateFailures List of errors encountered during processing for unsuccessful
+   *     modules configurations
+   * @return The same instance of this {@link CompletionPostResponseStreaming} class
+   */
+  @Nonnull
+  public CompletionPostResponseStreaming intermediateFailures(
+      @Nullable final List<ErrorStreaming> intermediateFailures) {
+    this.intermediateFailures = intermediateFailures;
+    return this;
+  }
+
+  /**
+   * Add one intermediateFailures instance to this {@link CompletionPostResponseStreaming}.
+   *
+   * @param intermediateFailuresItem The intermediateFailures that should be added
+   * @return The same instance of type {@link CompletionPostResponseStreaming}
+   */
+  @Nonnull
+  public CompletionPostResponseStreaming addIntermediateFailuresItem(
+      @Nonnull final ErrorStreaming intermediateFailuresItem) {
+    if (this.intermediateFailures == null) {
+      this.intermediateFailures = new ArrayList<>();
+    }
+    this.intermediateFailures.add(intermediateFailuresItem);
+    return this;
+  }
+
+  /**
+   * List of errors encountered during processing for unsuccessful modules configurations
+   *
+   * @return intermediateFailures The intermediateFailures of this {@link
+   *     CompletionPostResponseStreaming} instance.
+   */
+  @Nonnull
+  public List<ErrorStreaming> getIntermediateFailures() {
+    return intermediateFailures;
+  }
+
+  /**
+   * Set the intermediateFailures of this {@link CompletionPostResponseStreaming} instance.
+   *
+   * @param intermediateFailures List of errors encountered during processing for unsuccessful
+   *     modules configurations
+   */
+  public void setIntermediateFailures(@Nullable final List<ErrorStreaming> intermediateFailures) {
+    this.intermediateFailures = intermediateFailures;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link CompletionPostResponseStreaming}.
    *
    * @return The set of properties names
@@ -187,6 +244,8 @@ public class CompletionPostResponseStreaming
     if (requestId != null) declaredFields.put("requestId", requestId);
     if (intermediateResults != null) declaredFields.put("intermediateResults", intermediateResults);
     if (finalResult != null) declaredFields.put("finalResult", finalResult);
+    if (intermediateFailures != null)
+      declaredFields.put("intermediateFailures", intermediateFailures);
     return declaredFields;
   }
 
@@ -218,12 +277,15 @@ public class CompletionPostResponseStreaming
         && Objects.equals(this.requestId, completionPostResponseStreaming.requestId)
         && Objects.equals(
             this.intermediateResults, completionPostResponseStreaming.intermediateResults)
-        && Objects.equals(this.finalResult, completionPostResponseStreaming.finalResult);
+        && Objects.equals(this.finalResult, completionPostResponseStreaming.finalResult)
+        && Objects.equals(
+            this.intermediateFailures, completionPostResponseStreaming.intermediateFailures);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(requestId, intermediateResults, finalResult, cloudSdkCustomFields);
+    return Objects.hash(
+        requestId, intermediateResults, finalResult, intermediateFailures, cloudSdkCustomFields);
   }
 
   @Override
@@ -236,6 +298,9 @@ public class CompletionPostResponseStreaming
         .append(toIndentedString(intermediateResults))
         .append("\n");
     sb.append("    finalResult: ").append(toIndentedString(finalResult)).append("\n");
+    sb.append("    intermediateFailures: ")
+        .append(toIndentedString(intermediateFailures))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
