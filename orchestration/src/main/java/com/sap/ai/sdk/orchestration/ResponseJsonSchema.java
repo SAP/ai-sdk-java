@@ -33,6 +33,11 @@ public class ResponseJsonSchema {
   @Nonnull Map<String, Object> schemaMap;
   @Nonnull String name;
   @Nullable String description;
+
+  /**
+   * ⚠️ Fields of the schema class should be annotated with {@code @JsonProperty(required = true)}
+   * to not fail requests.
+   */
   @Nullable Boolean strict;
 
   /**
