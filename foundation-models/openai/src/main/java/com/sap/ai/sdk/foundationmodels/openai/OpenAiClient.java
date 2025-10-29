@@ -455,7 +455,7 @@ public final class OpenAiClient {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
       MDC.put("destination", ((HttpDestination) destination).getUri().toASCIIString());
-      MDC.put("mode", "streaming");
+      MDC.put("mode", "synchronous");
       logRequestStart();
       return client.execute(
           request, new ClientResponseHandler<>(responseType, OpenAiError.class, FACTORY));
@@ -487,7 +487,7 @@ public final class OpenAiClient {
   private static void logRequestStart() {
     val reqId = UUID.randomUUID().toString().substring(0, 8);
     MDC.put("reqId", reqId);
-    MDC.put("service", "Orchestration");
+    MDC.put("service", "OpenAI");
     log.debug(
         "[reqId={}] Starting OpenAI {} request to {}, destination={}",
         reqId,

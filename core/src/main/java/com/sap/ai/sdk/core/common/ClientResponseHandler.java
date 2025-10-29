@@ -174,17 +174,17 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   }
 
   private static void logResponseSuccess(final @Nonnull ClassicHttpResponse response) {
-    val latency =
+    val duration =
         Optional.ofNullable(response.getFirstHeader("x-upstream-service-time"))
             .map(h -> h.getValue() + "ms")
             .orElseGet(() -> "unknown");
     val entityLength = response.getEntity().getContentLength();
     val sizeInfo = entityLength >= 0 ? String.format("%.1fKB", entityLength / 1024.0) : "unknown";
     log.debug(
-        "[reqId={}] {} request completed successfully with latency={}, size={}.",
+        "[reqId={}] {} request completed successfully with duration={}, size={}.",
         MDC.get("reqId"),
         MDC.get("service"),
-        latency,
+        duration,
         sizeInfo);
   }
 }
