@@ -46,6 +46,7 @@ class DeploymentResolver {
     try {
       val apiClient = new DeploymentApi(service);
       val deployments = new HashSet<>(apiClient.query(resourceGroup).getResources());
+      log.info("Found {} deployments in resource group '{}'", deployments.size(), resourceGroup);
       cache.put(resourceGroup, deployments);
     } catch (final RuntimeException e) {
       throw new DeploymentResolutionException(

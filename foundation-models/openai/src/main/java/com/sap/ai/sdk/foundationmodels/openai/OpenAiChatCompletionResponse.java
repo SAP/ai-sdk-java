@@ -7,13 +7,16 @@ import static lombok.AccessLevel.PACKAGE;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Represents the output of an OpenAI chat completion. *
@@ -23,6 +26,7 @@ import lombok.Value;
 @Value
 @RequiredArgsConstructor(access = PACKAGE)
 @Setter(value = NONE)
+@Slf4j
 public class OpenAiChatCompletionResponse {
   /** The original response from the OpenAI API. */
   @Nonnull CreateChatCompletionResponse originalResponse;
@@ -110,7 +114,12 @@ public class OpenAiChatCompletionResponse {
    */
   @Nonnull
   public List<OpenAiToolMessage> executeTools() {
-    final var tools = originalRequest.getToolsExecutable();
-    return OpenAiTool.execute(tools != null ? tools : List.of(), getMessage());
+    final var tools =
+        Optional.ofNullable(originalRequest.getToolsExecutable()).orElseGet(Collections::emptyList);
+    if (!tools.isEmpty()) {
+      final var toolNames = tools.stream().map(OpenAiTool::getName).toList();
+      log.debug("Executing {} tool call(s) - {}", toolNames.size(), toolNames);
+    }
+    return OpenAiTool.execute(tools, getMessage());
   }
 }

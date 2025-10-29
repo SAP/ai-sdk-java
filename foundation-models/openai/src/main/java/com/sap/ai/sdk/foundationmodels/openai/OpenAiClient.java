@@ -30,16 +30,19 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
+import org.slf4j.MDC;
 
 /** Client for interacting with OpenAI models. */
 @Slf4j
@@ -417,6 +420,7 @@ public final class OpenAiClient {
       @Nonnull final Class<T> responseType) {
     final var request = new HttpPost(path);
     serializeAndSetHttpEntity(request, payload, this.customHeaders);
+    MDC.put("endpoint", path);
     return executeRequest(request, responseType);
   }
 
@@ -427,6 +431,7 @@ public final class OpenAiClient {
       @Nonnull final Class<D> deltaType) {
     final var request = new HttpPost(path);
     serializeAndSetHttpEntity(request, payload, this.customHeaders);
+    MDC.put("endpoint", path);
     return streamRequest(request, deltaType);
   }
 
@@ -449,10 +454,15 @@ public final class OpenAiClient {
       final BasicClassicHttpRequest request, @Nonnull final Class<T> responseType) {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
+      MDC.put("destination", ((HttpDestination) destination).getUri().toASCIIString());
+      MDC.put("mode", "streaming");
+      logRequestStart();
       return client.execute(
           request, new ClientResponseHandler<>(responseType, OpenAiError.class, FACTORY));
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e).setHttpRequest(request);
+    } finally {
+      MDC.clear();
     }
   }
 
@@ -461,11 +471,28 @@ public final class OpenAiClient {
       final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
+      MDC.put("destination", ((HttpDestination) destination).getUri().toASCIIString());
+      MDC.put("mode", "streaming");
+      logRequestStart();
       return new ClientStreamingHandler<>(deltaType, OpenAiError.class, FACTORY)
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e).setHttpRequest(request);
+    } finally {
+      MDC.clear();
     }
+  }
+
+  private static void logRequestStart() {
+    val reqId = UUID.randomUUID().toString().substring(0, 8);
+    MDC.put("reqId", reqId);
+    MDC.put("service", "Orchestration");
+    log.debug(
+        "[reqId={}] Starting OpenAI {} request to {}, destination={}",
+        reqId,
+        MDC.get("mode"),
+        MDC.get("endpoint"),
+        MDC.get("destination"));
   }
 }

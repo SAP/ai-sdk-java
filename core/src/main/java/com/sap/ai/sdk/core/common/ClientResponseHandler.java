@@ -18,6 +18,7 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.slf4j.MDC;
 
 /**
  * Parse incoming JSON responses and handles any errors. For internal use only.
@@ -86,16 +87,10 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     val content =
         tryGetContent(responseEntity)
             .getOrElseThrow(e -> exceptionFactory.build(message, e).setHttpResponse(response));
+    logResponseSuccess(response);
+
     try {
-      final T value = objectMapper.readValue(content, successType);
-      val timeHeaders = response.getHeaders("x-upstream-service-time");
-      if (timeHeaders.length > 0) {
-        log.info("LLM request success with duration:{}", timeHeaders[0].getValue());
-      } else {
-        log.info("LLM request success");
-      }
-      log.debug("Response content:\n{}", content);
-      return value;
+      return objectMapper.readValue(content, successType);
     } catch (final JsonProcessingException e) {
       log.error("Failed to parse response to type {}", successType);
       throw exceptionFactory.build("Failed to parse response", e).setHttpResponse(response);
@@ -176,5 +171,20 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
 
     val message = Optional.ofNullable(additionalMessage).orElse("");
     return message.isEmpty() ? baseErrorMessage : "%s: %s".formatted(baseErrorMessage, message);
+  }
+
+  private static void logResponseSuccess(final @Nonnull ClassicHttpResponse response) {
+    val latency =
+        Optional.ofNullable(response.getFirstHeader("x-upstream-service-time"))
+            .map(h -> h.getValue() + "ms")
+            .orElseGet(() -> "unknown");
+    val entityLength = response.getEntity().getContentLength();
+    val sizeInfo = entityLength >= 0 ? String.format("%.1fKB", entityLength / 1024.0) : "unknown";
+    log.debug(
+        "[reqId={}] {} request completed successfully with latency={}, size={}.",
+        MDC.get("reqId"),
+        MDC.get("service"),
+        latency,
+        sizeInfo);
   }
 }

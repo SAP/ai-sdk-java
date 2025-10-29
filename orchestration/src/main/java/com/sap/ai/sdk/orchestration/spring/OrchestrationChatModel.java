@@ -72,9 +72,13 @@ public class OrchestrationChatModel implements ChatModel {
 
       if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
           && response.hasToolCalls()) {
+
+        val toolCalls =
+            response.getResult().getOutput().getToolCalls().stream().map(ToolCall::name).toList();
+        log.debug("Executing {} tool call(s) - {}", toolCalls.size(), toolCalls);
         val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
         // Send the tool execution result back to the model.
-        log.info("Re-invoking model with tool execution results.");
+        log.debug("Re-invoking LLM with tool execution results.");
         return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
       }
       return response;
