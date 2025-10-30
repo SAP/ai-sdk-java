@@ -12,12 +12,11 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] Introduced Spring AI integration for embeddings generation with the new `OrchestrationSpringAiEmbeddingModel` class.
+-
 
 ### 📈 Improvements
 
-- [Core] If the AI Core credentials used are missing an explicit `credential-type` but `clientid` and `clientsecret` are present then `"credential-type": "binding-secret"` is inferred automatically.
-- [Core] Log message about "service key in environment variable" to `INFO` level only once.
+-
 
 ### 🐛 Fixed Issues
 
