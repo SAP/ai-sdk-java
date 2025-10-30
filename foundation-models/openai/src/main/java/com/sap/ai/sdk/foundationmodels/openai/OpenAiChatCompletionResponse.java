@@ -7,7 +7,6 @@ import static lombok.AccessLevel.PACKAGE;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponseChoicesInner;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -115,9 +114,9 @@ public class OpenAiChatCompletionResponse {
   @Nonnull
   public List<OpenAiToolMessage> executeTools() {
     final var tools = Optional.ofNullable(originalRequest.getToolsExecutable()).orElse(List.of());
-    if(log.isDebugEnabled() && !tools.isEmpty()) {
-        final var toolNames = tools.stream().map(OpenAiTool::getName).toList();
-        log.debug("Executing {} tool call(s) - {}", toolNames.size(), toolNames);
+    if (log.isDebugEnabled() && !tools.isEmpty()) {
+      final var toolNames = tools.stream().map(OpenAiTool::getName).toList();
+      log.debug("Executing {} tool call(s) - {}", toolNames.size(), toolNames);
     }
     return OpenAiTool.execute(tools, getMessage());
   }
