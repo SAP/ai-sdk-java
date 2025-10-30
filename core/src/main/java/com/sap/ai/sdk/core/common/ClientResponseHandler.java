@@ -18,6 +18,7 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.slf4j.MDC;
 
 /**
  * Parse incoming JSON responses and handles any errors. For internal use only.
@@ -86,6 +87,8 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     val content =
         tryGetContent(responseEntity)
             .getOrElseThrow(e -> exceptionFactory.build(message, e).setHttpResponse(response));
+    logResponseSuccess(response);
+
     try {
       return objectMapper.readValue(content, successType);
     } catch (final JsonProcessingException e) {
@@ -168,5 +171,17 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
 
     val message = Optional.ofNullable(additionalMessage).orElse("");
     return message.isEmpty() ? baseErrorMessage : "%s: %s".formatted(baseErrorMessage, message);
+  }
+
+  private static void logResponseSuccess(final @Nonnull ClassicHttpResponse response) {
+    if (!log.isDebugEnabled()) {
+      return;
+    }
+    val headerTime = Optional.ofNullable(response.getFirstHeader("x-upstream-service-time"));
+    val duration = headerTime.map(h -> h.getValue() + "ms").orElseGet(() -> "unknown");
+    val entityLength = response.getEntity().getContentLength();
+    val sizeInfo = entityLength >= 0 ? String.format("%.1fKB", entityLength / 1024.0) : "unknown";
+    val msg = "[reqId={}] {} request completed successfully with duration={}, size={}.";
+    log.debug(msg, MDC.get("reqId"), MDC.get("service"), duration, sizeInfo);
   }
 }

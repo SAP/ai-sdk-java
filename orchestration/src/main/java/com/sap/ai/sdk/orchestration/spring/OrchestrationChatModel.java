@@ -15,6 +15,7 @@ import com.sap.ai.sdk.orchestration.model.MessageToolCallFunction;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -72,8 +73,17 @@ public class OrchestrationChatModel implements ChatModel {
 
       if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
           && response.hasToolCalls()) {
+
+        if (log.isDebugEnabled()) {
+          val tools = response.getResult().getOutput().getToolCalls();
+          val toolsStr = tools.stream().map(ToolCall::name).collect(Collectors.joining(", "));
+          log.debug("Executing {} tool call(s) - {}", tools.size(), toolsStr);
+        }
+
         val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
+
         // Send the tool execution result back to the model.
+        log.debug("Re-invoking LLM with tool execution results.");
         return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
       }
       return response;

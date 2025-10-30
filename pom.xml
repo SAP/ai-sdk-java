@@ -71,6 +71,7 @@
     <javaparser.version>3.27.1</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.20.0</jackson.version>
+    <logback.version>1.5.20</logback.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.15.5</micrometer.version>
     <json.version>20250517</json.version>
@@ -258,9 +259,9 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>${slf4j.version}</version>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -365,7 +366,7 @@
                     <exclude>org.tinylog</exclude>
                   </excludes>
                   <includes>
-                    <include>org.slf4j:slf4j-simple:*:*:test</include>
+                    <include>ch.qos.logback:*:*:*:test</include>
                   </includes>
                 </bannedDependencies>
               </rules>
@@ -554,9 +555,7 @@
             <!--  ignore annotations that are not visible on bytecode level  -->
             <ignoredUnusedDeclaredDependency>com.google.code.findbugs:jsr305</ignoredUnusedDeclaredDependency>
             <!-- Logging API, adapters and default implementation for tests -->
-            <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-api</ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>org.slf4j:jcl-over-slf4j</ignoredUnusedDeclaredDependency>
-            <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-simple</ignoredUnusedDeclaredDependency>
+            <ignoredUnusedDeclaredDependency>ch.qos.logback:logback-classic</ignoredUnusedDeclaredDependency>
             <!-- Lombok usage for code generation -->
             <ignoredUnusedDeclaredDependency>org.projectlombok:lombok</ignoredUnusedDeclaredDependency>
             <!-- By default, JUnit5 adapters are added to every module to ensure no tests are skipped -->
@@ -598,6 +597,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire.version}</version>
+        <configuration>
+          <systemPropertyVariables>
+            <logback.configurationFile>${project.rootdir}/logback.xml</logback.configurationFile>
+          </systemPropertyVariables>
+        </configuration>
       </plugin>
       <!-- phase: verify -->
       <plugin>

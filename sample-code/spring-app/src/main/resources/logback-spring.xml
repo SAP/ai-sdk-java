@@ -6,6 +6,7 @@
         <logger name="org.springframework.web" level="INFO"/>
         <logger name="org.apache.hc.client5.http.wire" level="DEBUG"/>
         <logger name="org.apache.http.wire" level="DEBUG"/>
+        <logger name="com.sap.ai.sdk" level="DEBUG"/>
     </springProfile>
 
     <springProfile name="cloud">
