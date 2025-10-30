@@ -117,11 +117,8 @@ class OrchestrationHttpExecutor {
     val reqId = UUID.randomUUID().toString().substring(0, 8);
     MDC.put("reqId", reqId);
     MDC.put("service", "Orchestration");
-    log.debug(
-        "[reqId={}] Starting Orchestration {} request to {}, destination={}",
-        reqId,
-        MDC.get("mode"),
-        MDC.get("endpoint"),
-        MDC.get("destination"));
+
+    val msg = "[reqId={}] Starting Orchestration {} request to {}, destination={}";
+    log.debug(msg, reqId, MDC.get("mode"), MDC.get("endpoint"), MDC.get("destination"));
   }
 }
