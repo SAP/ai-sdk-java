@@ -53,7 +53,7 @@ jobs:
           --batch-mode org.owasp:dependency-check-maven:check org.owasp:dependency-check-maven:aggregate
 
       - name: "Archive CVE Report"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: cve-report
           path: target/dependency-check-report.html
