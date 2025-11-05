@@ -1,34 +1,33 @@
 package com.sap.ai.sdk.core.common;
 
-import static com.sap.ai.sdk.core.common.MdcHelper.Mode.STREAMING;
-import static com.sap.ai.sdk.core.common.MdcHelper.Service.OPENAI;
+import static com.sap.ai.sdk.core.common.RequestLogContext.Mode.STREAMING;
+import static com.sap.ai.sdk.core.common.RequestLogContext.Service.OPENAI;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.core.common.MdcHelper.RequestContext;
 import org.junit.jupiter.api.Test;
 import org.slf4j.MDC;
 
-class MdcHelperTest {
+class RequestLogContextTest {
 
   @Test
-  void testRequestContextLifecycle() {
+  void testRequestLogContextLifecycle() {
     // Setup customer MDC entries (to test clear() safety)
     MDC.put("consumer-key", "consumer-value");
 
-    RequestContext.setService(OPENAI);
-    RequestContext.setMode(STREAMING);
-    RequestContext.setEndpoint("/api/endpoint");
-    RequestContext.setDestination("http://localhost:8000");
+    RequestLogContext.setService(OPENAI);
+    RequestLogContext.setMode(STREAMING);
+    RequestLogContext.setEndpoint("/api/endpoint");
+    RequestLogContext.setDestination("http://localhost:8000");
 
     assertThat(MDC.get("service")).isEqualTo("openai");
     assertThat(MDC.get("mode")).isEqualTo("streaming");
     assertThat(MDC.get("endpoint")).isEqualTo("/api/endpoint");
     assertThat(MDC.get("destination")).isEqualTo("http://localhost:8000");
 
-    RequestContext.logRequestStart();
+    RequestLogContext.logRequestStart();
     assertThat(MDC.get("reqId")).isNotNull().hasSize(8);
 
-    RequestContext.clear();
+    RequestLogContext.clear();
     assertThat(MDC.get("service")).isNull();
     assertThat(MDC.get("mode")).isNull();
     assertThat(MDC.get("endpoint")).isNull();

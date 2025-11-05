@@ -5,7 +5,6 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.core.common.MdcHelper.RequestContext;
 import io.vavr.control.Try;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -69,6 +68,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   @Override
   public T handleResponse(@Nonnull final ClassicHttpResponse response) throws E {
     if (response.getCode() >= 300) {
+
       buildAndThrowException(response);
     }
     return parseSuccess(response);
@@ -87,7 +87,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     val content =
         tryGetContent(responseEntity)
             .getOrElseThrow(e -> exceptionFactory.build(message, e).setHttpResponse(response));
-    RequestContext.logResponseSuccess(response);
+    RequestLogContext.logResponseSuccess(response);
 
     try {
       return objectMapper.readValue(content, successType);
