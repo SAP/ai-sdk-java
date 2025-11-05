@@ -1,5 +1,8 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.core.common.MdcHelper.Mode.STREAMING;
+import static com.sap.ai.sdk.core.common.MdcHelper.Mode.SYNCHRONOUS;
+import static com.sap.ai.sdk.core.common.MdcHelper.Service;
 import static com.sap.ai.sdk.orchestration.OrchestrationClientException.FACTORY;
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
@@ -8,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
+import com.sap.ai.sdk.core.common.MdcHelper.RequestContext;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -16,7 +20,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoun
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstantiationException;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -26,7 +29,6 @@ import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
-import org.slf4j.MDC;
 
 @Slf4j
 class OrchestrationHttpExecutor {
@@ -56,9 +58,10 @@ class OrchestrationHttpExecutor {
       val handler =
           new ClientResponseHandler<>(responseType, OrchestrationError.Synchronous.class, FACTORY)
               .objectMapper(JACKSON);
-      MDC.put("endpoint", path);
-      MDC.put("mode", "synchronous");
-      logRequestStart();
+      RequestContext.setEndpoint(path);
+      RequestContext.setMode(SYNCHRONOUS);
+      RequestContext.setService(Service.ORCHESTRATION);
+      RequestContext.logRequestStart();
       return client.execute(request, handler);
 
     } catch (JsonProcessingException e) {
@@ -71,7 +74,7 @@ class OrchestrationHttpExecutor {
       throw new OrchestrationClientException(
           "Request to Orchestration service failed for " + path, e);
     } finally {
-      MDC.clear();
+      RequestContext.clear();
     }
   }
 
@@ -87,9 +90,10 @@ class OrchestrationHttpExecutor {
       customHeaders.forEach(h -> request.addHeader(h.getName(), h.getValue()));
 
       val client = getHttpClient();
-      MDC.put("endpoint", path);
-      MDC.put("mode", "streaming");
-      logRequestStart();
+      RequestContext.setEndpoint(path);
+      RequestContext.setMode(STREAMING);
+      RequestContext.setService(Service.ORCHESTRATION);
+      RequestContext.logRequestStart();
       return new ClientStreamingHandler<>(
               OrchestrationChatCompletionDelta.class, OrchestrationError.Streaming.class, FACTORY)
           .objectMapper(JACKSON)
@@ -102,23 +106,14 @@ class OrchestrationHttpExecutor {
       throw new OrchestrationClientException(
           "Streaming request to the Orchestration service failed", e);
     } finally {
-      MDC.clear();
+      RequestContext.clear();
     }
   }
 
   @Nonnull
   private HttpClient getHttpClient() {
     val destination = destinationSupplier.get();
-    MDC.put("destination", destination.getUri().toASCIIString());
+    RequestContext.setDestination(destination.getUri().toString());
     return ApacheHttpClient5Accessor.getHttpClient(destination);
-  }
-
-  private static void logRequestStart() {
-    val reqId = UUID.randomUUID().toString().substring(0, 8);
-    MDC.put("reqId", reqId);
-    MDC.put("service", "Orchestration");
-
-    val msg = "[reqId={}] Starting Orchestration {} request to {}, destination={}";
-    log.debug(msg, reqId, MDC.get("mode"), MDC.get("endpoint"), MDC.get("destination"));
   }
 }
