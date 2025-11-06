@@ -85,4 +85,5 @@ public class TranslationConfig {
                   .sourceLanguage("en-US"));
     }
   }
+
 }
