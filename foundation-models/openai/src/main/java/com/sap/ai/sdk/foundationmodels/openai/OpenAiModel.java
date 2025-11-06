@@ -115,12 +115,6 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   public static final OpenAiModel TEXT_EMBEDDING_ADA_002 =
       new OpenAiModel("text-embedding-ada-002", null);
 
-  /** Perplexity AI Sonar model */
-  public static final OpenAiModel SONAR = new OpenAiModel("sonar", "perplexity-us");
-
-  /** Perplexity AI Sonar Pro model */
-  public static final OpenAiModel SONAR_PRO = new OpenAiModel("sonar-pro", "perplexity-us");
-
   /**
    * Create a new instance of OpenAiModel with the provided version.
    *
