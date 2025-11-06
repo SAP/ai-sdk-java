@@ -175,6 +175,7 @@ public class SAPDocumentTranslationInputConfig
   /**
    * Get the value of an unrecognizable property of this {@link SAPDocumentTranslationInputConfig}
    * instance.
+   *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
