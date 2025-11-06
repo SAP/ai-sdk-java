@@ -23,291 +23,293 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
+
 import java.util.List;
 import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 
 class OrchestrationModuleConfigTest {
 
-  static class TestClassForSchemaGeneration {
-    @JsonProperty(required = true)
-    private String stringField;
+    static class TestClassForSchemaGeneration {
+        @JsonProperty(required = true)
+        private String stringField;
 
-    @JsonProperty(required = true)
-    private int intField;
+        @JsonProperty(required = true)
+        private int intField;
 
-    @JsonProperty(required = true)
-    private OrchestrationConvenienceUnitTest.TestClassForSchemaGeneration.InsideTestClass
-        complexField;
+        @JsonProperty(required = true)
+        private OrchestrationConvenienceUnitTest.TestClassForSchemaGeneration.InsideTestClass
+                complexField;
 
-    static class InsideTestClass {
-      @JsonProperty(required = true)
-      private String anotherStringField;
-    }
-  }
-
-  @Test
-  void testStackingInputAndOutputFilter() {
-    final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
-
-    final var filter =
-        new AzureContentFilter()
-            .hate(ALLOW_SAFE_LOW_MEDIUM)
-            .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
-            .sexual(ALLOW_SAFE_LOW_MEDIUM)
-            .violence(ALLOW_SAFE_LOW_MEDIUM);
-
-    final var configWithInputFirst = config.withInputFiltering(filter).withOutputFiltering(filter);
-    assertThat(configWithInputFirst.getFilteringConfig()).isNotNull();
-    assertThat(configWithInputFirst.getFilteringConfig().getInput()).isNotNull();
-
-    final var configWithOutputFirst = config.withOutputFiltering(filter).withInputFiltering(filter);
-    assertThat(configWithOutputFirst.getFilteringConfig()).isNotNull();
-    assertThat(configWithOutputFirst.getFilteringConfig().getOutput()).isNotNull();
-  }
-
-  @Test
-  void testThrowOnEmptyFilterConfig() {
-
-    final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
-
-    assertThatThrownBy(() -> config.withInputFiltering(new AzureContentFilter()))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("At least one filter category must be set");
-    assertThatThrownBy(() -> config.withOutputFiltering(new AzureContentFilter()))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessage("At least one filter category must be set");
-  }
-
-  @Test
-  void testDpiMaskingConfig() {
-    var maskingConfig =
-        DpiMasking.anonymization()
-            .withEntities(DPIEntities.ADDRESS)
-            .withMaskGroundingInput(true)
-            .withAllowList(List.of("Alice"));
-    var config =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withMaskingConfig(maskingConfig);
-
-    assertThat(config.getMaskingConfig()).isNotNull();
-    assertThat(((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders())
-        .hasSize(1);
-    DPIConfig dpiConfig =
-        ((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders().get(0);
-    assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
-    assertThat(dpiConfig.getEntities()).hasSize(1);
-    assertThat(((DPIStandardEntity) dpiConfig.getEntities().get(0)).getType())
-        .isEqualTo(DPIEntities.ADDRESS);
-    assertThat(dpiConfig.getMaskGroundingInput().isEnabled()).isEqualTo(true);
-    assertThat(dpiConfig.getAllowlist()).containsExactly("Alice");
-
-    var configModified = config.withMaskingConfig(maskingConfig);
-    assertThat(configModified.getMaskingConfig()).isNotNull();
-    assertThat(((MaskingModuleConfigProviders) configModified.getMaskingConfig()).getProviders())
-        .withFailMessage("withMaskingConfig() should overwrite the existing config and not append")
-        .hasSize(1);
-  }
-
-  @Test
-  void testDpiMaskingRegex() {
-    var masking =
-        DpiMasking.anonymization()
-            .withRegex("\\d{3}-\\d{2}-\\d{4}", "***-**-****")
-            .withRegex("\\d{2}-\\d{2}-\\d{5}", "**-**-*****");
-    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withMaskingConfig(masking);
-    assertThat(config.getMaskingConfig()).isNotNull();
-    assertThat(((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders())
-        .hasSize(1);
-    DPIConfig dpiConfig =
-        ((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders().get(0);
-    assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
-    assertThat(dpiConfig.getEntities()).hasSize(2);
-    assertThat(((DPICustomEntity) dpiConfig.getEntities().get(0)).getRegex())
-        .isEqualTo("\\d{3}-\\d{2}-\\d{4}");
-    assertThat(((DPICustomEntity) dpiConfig.getEntities().get(0)).getReplacementStrategy())
-        .isEqualTo(
-            DPIMethodConstant.create()
-                .method(DPIMethodConstant.MethodEnum.CONSTANT)
-                .value("***-**-****"));
-    assertThat(((DPICustomEntity) dpiConfig.getEntities().get(1)).getRegex())
-        .isEqualTo("\\d{2}-\\d{2}-\\d{5}");
-    assertThat(((DPICustomEntity) dpiConfig.getEntities().get(1)).getReplacementStrategy())
-        .isEqualTo(
-            DPIMethodConstant.create()
-                .method(DPIMethodConstant.MethodEnum.CONSTANT)
-                .value("**-**-*****"));
-  }
-
-  @Test
-  void testTranslationConfig() {
-    var translationConfig = TranslationConfig.inputTranslation().getInputTranslationConfig();
-    var config =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(GPT_4O)
-            .withInputTranslationConfig(translationConfig);
-
-    assertThat(config.getInputTranslationConfig()).isNotNull();
-    assertThat(config.getInputTranslationConfig().getType()).isEqualTo(translationConfig.getType());
-    assertThat(config.getInputTranslationConfig().getConfig().getTargetLanguage())
-        .isEqualTo(translationConfig.getConfig().getTargetLanguage());
-
-    var translationConfig2 = TranslationConfig.inputTranslation().getInputTranslationConfig();
-    var config2 =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(GPT_4O)
-            .withInputTranslationConfig(translationConfig2);
-
-    assertThat(config2.getInputTranslationConfig()).isNotNull();
-    assertThat(config2.getInputTranslationConfig().getType())
-        .isEqualTo(translationConfig2.getType());
-    assertThat(config2.getInputTranslationConfig().getConfig().getTargetLanguage())
-        .isEqualTo(translationConfig2.getConfig().getTargetLanguage());
-  }
-
-  @Test
-  void testParams() {
-    // test withParams(Map<String, Object>)
-    {
-      var params = Map.<String, Object>of("foo", "bar", "fizz", "buzz");
-
-      var modelA = GPT_4O.withParams(params);
-      var modelB = modelA.withParams(params);
-      assertThat(modelA).isEqualTo(modelB);
-
-      var modelC = modelA.withParams(Map.of("foo", "bar"));
-      assertThat(modelA).isNotEqualTo(modelC);
-
-      var modelD = modelA.withParams(Map.of("foo", "bazz"));
-      assertThat(modelA).isNotEqualTo(modelD);
+        static class InsideTestClass {
+            @JsonProperty(required = true)
+            private String anotherStringField;
+        }
     }
 
-    // test withParam(String, Object)
-    {
-      var modelA = GPT_4O.withParam("foo", "bar");
-      var modelB = modelA.withParam("foo", "bar");
-      assertThat(modelA).isEqualTo(modelB);
+    @Test
+    void testStackingInputAndOutputFilter() {
+        final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
 
-      var modelC = modelA.withParam("foo", "bazz");
-      assertThat(modelA).isNotEqualTo(modelC);
+        final var filter =
+                new AzureContentFilter()
+                        .hate(ALLOW_SAFE_LOW_MEDIUM)
+                        .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+                        .sexual(ALLOW_SAFE_LOW_MEDIUM)
+                        .violence(ALLOW_SAFE_LOW_MEDIUM);
+
+        final var configWithInputFirst = config.withInputFiltering(filter).withOutputFiltering(filter);
+        assertThat(configWithInputFirst.getFilteringConfig()).isNotNull();
+        assertThat(configWithInputFirst.getFilteringConfig().getInput()).isNotNull();
+
+        final var configWithOutputFirst = config.withOutputFiltering(filter).withInputFiltering(filter);
+        assertThat(configWithOutputFirst.getFilteringConfig()).isNotNull();
+        assertThat(configWithOutputFirst.getFilteringConfig().getOutput()).isNotNull();
     }
 
-    // test withParam(Parameter, Object)
-    {
-      var modelA = GPT_4O.withParam(MAX_TOKENS, 10);
-      var modelB = modelA.withParam(MAX_TOKENS, 10);
-      assertThat(modelA).isEqualTo(modelB);
+    @Test
+    void testThrowOnEmptyFilterConfig() {
 
-      var modelC = modelA.withParam(MAX_TOKENS, 20);
-      assertThat(modelA).isNotEqualTo(modelC);
+        final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+
+        assertThatThrownBy(() -> config.withInputFiltering(new AzureContentFilter()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("At least one filter category must be set");
+        assertThatThrownBy(() -> config.withOutputFiltering(new AzureContentFilter()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("At least one filter category must be set");
     }
-  }
 
-  @Test
-  void testLLMConfig() {
-    Map<String, Object> params = Map.of("foo", "bar");
-    String version = "2024-05-13";
-    OrchestrationAiModel aiModel = GPT_4O.withParams(params).withVersion(version);
-    var config = new OrchestrationModuleConfig().withLlmConfig(aiModel);
+    @Test
+    void testDpiMaskingConfig() {
+        var maskingConfig =
+                DpiMasking.anonymization()
+                        .withEntities(DPIEntities.ADDRESS)
+                        .withMaskGroundingInput(true)
+                        .withAllowList(List.of("Alice"));
+        var config =
+                new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withMaskingConfig(maskingConfig);
 
-    assertThat(config.getLlmConfig()).isNotNull();
-    assertThat(config.getLlmConfig().getName()).isEqualTo(GPT_4O.getName());
-    assertThat(config.getLlmConfig().getParams()).isEqualTo(params);
-    assertThat(config.getLlmConfig().getVersion()).isEqualTo(version);
+        assertThat(config.getMaskingConfig()).isNotNull();
+        assertThat(((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders())
+                .hasSize(1);
+        DPIConfig dpiConfig =
+                ((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders().get(0);
+        assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
+        assertThat(dpiConfig.getEntities()).hasSize(1);
+        assertThat(((DPIStandardEntity) dpiConfig.getEntities().get(0)).getType())
+                .isEqualTo(DPIEntities.ADDRESS);
+        assertThat(dpiConfig.getMaskGroundingInput().isEnabled()).isEqualTo(true);
+        assertThat(dpiConfig.getAllowlist()).containsExactly("Alice");
 
-    assertThat(GPT_4O.getParams()).withFailMessage("Static models should be unchanged").isEmpty();
-    assertThat(GPT_4O.getVersion())
-        .withFailMessage("Static models should be unchanged")
-        .isEqualTo("latest");
-  }
+        var configModified = config.withMaskingConfig(maskingConfig);
+        assertThat(configModified.getMaskingConfig()).isNotNull();
+        assertThat(((MaskingModuleConfigProviders) configModified.getMaskingConfig()).getProviders())
+                .withFailMessage("withMaskingConfig() should overwrite the existing config and not append")
+                .hasSize(1);
+    }
 
-  @Test
-  void testGroundingConfig() {
-    var groundingConfig = Grounding.create();
-    var config =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGrounding(groundingConfig);
+    @Test
+    void testDpiMaskingRegex() {
+        var masking =
+                DpiMasking.anonymization()
+                        .withRegex("\\d{3}-\\d{2}-\\d{4}", "***-**-****")
+                        .withRegex("\\d{2}-\\d{2}-\\d{5}", "**-**-*****");
+        var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withMaskingConfig(masking);
+        assertThat(config.getMaskingConfig()).isNotNull();
+        assertThat(((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders())
+                .hasSize(1);
+        DPIConfig dpiConfig =
+                ((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders().get(0);
+        assertThat(dpiConfig.getMethod()).isEqualTo(DPIConfig.MethodEnum.ANONYMIZATION);
+        assertThat(dpiConfig.getEntities()).hasSize(2);
+        assertThat(((DPICustomEntity) dpiConfig.getEntities().get(0)).getRegex())
+                .isEqualTo("\\d{3}-\\d{2}-\\d{4}");
+        assertThat(((DPICustomEntity) dpiConfig.getEntities().get(0)).getReplacementStrategy())
+                .isEqualTo(
+                        DPIMethodConstant.create()
+                                .method(DPIMethodConstant.MethodEnum.CONSTANT)
+                                .value("***-**-****"));
+        assertThat(((DPICustomEntity) dpiConfig.getEntities().get(1)).getRegex())
+                .isEqualTo("\\d{2}-\\d{2}-\\d{5}");
+        assertThat(((DPICustomEntity) dpiConfig.getEntities().get(1)).getReplacementStrategy())
+                .isEqualTo(
+                        DPIMethodConstant.create()
+                                .method(DPIMethodConstant.MethodEnum.CONSTANT)
+                                .value("**-**-*****"));
+    }
 
-    assertThat(config.getGroundingConfig()).isNotNull();
-    assertThat(config.getGroundingConfig().getType()).isEqualTo(DOCUMENT_GROUNDING_SERVICE);
+    @Test
+    void testTranslationConfig() {
+        var translationConfig = TranslationConfig.inputTranslation().getInputTranslationConfig();
+        var config =
+                new OrchestrationModuleConfig()
+                        .withLlmConfig(GPT_4O)
+                        .withInputTranslationConfig(translationConfig);
 
-    GroundingModuleConfigConfig configConfig = config.getGroundingConfig().getConfig();
-    assertThat(configConfig).isNotNull();
-    assertThat(configConfig.getPlaceholders().getInput()).containsExactly("userMessage");
-    assertThat(configConfig.getPlaceholders().getOutput()).isEqualTo("groundingContext");
+        assertThat(config.getInputTranslationConfig()).isNotNull();
+        assertThat(config.getInputTranslationConfig().getType()).isEqualTo(translationConfig.getType());
+        assertThat(config.getInputTranslationConfig().getConfig().getTargetLanguage())
+                .isEqualTo(translationConfig.getConfig().getTargetLanguage());
 
-    List<GroundingModuleConfigConfigFiltersInner> filters = configConfig.getFilters();
-    assertThat(filters).hasSize(1);
-    DocumentGroundingFilter filter = (DocumentGroundingFilter) filters.get(0);
-    assertThat(filter.getId()).isNull();
-    assertThat(filter.getDataRepositoryType()).isEqualTo(VECTOR);
-  }
+        var translationConfig2 = TranslationConfig.inputTranslation().getInputTranslationConfig();
+        var config2 =
+                new OrchestrationModuleConfig()
+                        .withLlmConfig(GPT_4O)
+                        .withInputTranslationConfig(translationConfig2);
 
-  @Test
-  void testGroundingConfigWithFilters() {
-    var filter1 = DocumentGroundingFilter.create().dataRepositoryType(VECTOR).id("123");
-    var filter2 = DocumentGroundingFilter.create().dataRepositoryType(VECTOR).id("234");
-    var groundingConfig = Grounding.create().filters(filter1, filter2);
-    var config =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGrounding(groundingConfig);
+        assertThat(config2.getInputTranslationConfig()).isNotNull();
+        assertThat(config2.getInputTranslationConfig().getType())
+                .isEqualTo(translationConfig2.getType());
+        assertThat(config2.getInputTranslationConfig().getConfig().getTargetLanguage())
+                .isEqualTo(translationConfig2.getConfig().getTargetLanguage());
+    }
 
-    assertThat(config.getGroundingConfig()).isNotNull();
-    var configConfig = config.getGroundingConfig().getConfig();
-    assertThat(configConfig).isNotNull();
+    @Test
+    void testParams() {
+        // test withParams(Map<String, Object>)
+        {
+            var params = Map.<String, Object>of("foo", "bar", "fizz", "buzz");
 
-    assertThat(config.getGroundingConfig().getConfig().getFilters()).hasSize(2);
-  }
+            var modelA = GPT_4O.withParams(params);
+            var modelB = modelA.withParams(params);
+            assertThat(modelA).isEqualTo(modelB);
 
-  @Test
-  void testGroundingPrompt() {
-    var prompt = Grounding.create().createGroundingPrompt("Hello, World!");
-    assertThat(prompt.getMessages()).hasSize(1);
-    var message = prompt.getMessages().get(0);
-    assertThat(((TextItem) message.content().items().get(0)).text())
-        .isEqualTo(
-            "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}");
-  }
+            var modelC = modelA.withParams(Map.of("foo", "bar"));
+            assertThat(modelA).isNotEqualTo(modelC);
 
-  @Test
-  void testResponseFormatSchema() {
-    var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
-    var config =
-        new OrchestrationModuleConfig()
-            .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
-    assertThat(
-            ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
-                .getJsonSchema()
-                .getSchema())
-        .isEqualTo(schema.getSchemaMap());
-  }
+            var modelD = modelA.withParams(Map.of("foo", "bazz"));
+            assertThat(modelA).isNotEqualTo(modelD);
+        }
 
-  @Test
-  void testResponseFormatObject() {
-    var config =
-        new OrchestrationModuleConfig()
-            .withTemplateConfig(TemplateConfig.create().withJsonResponse());
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
-    assertThat(
-            ((ResponseFormatJsonObject)
-                ((Template) config.getTemplateConfig()).getResponseFormat()))
-        .isInstanceOf(ResponseFormatJsonObject.class);
-  }
+        // test withParam(String, Object)
+        {
+            var modelA = GPT_4O.withParam("foo", "bar");
+            var modelB = modelA.withParam("foo", "bar");
+            assertThat(modelA).isEqualTo(modelB);
 
-  @Test
-  void testResponseFormatOverwrittenByNewTemplateRef() {
-    var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
-    var config =
-        new OrchestrationModuleConfig()
-            .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
-    assertThat(
-            ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
-                .getJsonSchema()
-                .getSchema())
-        .isEqualTo(schema.getSchemaMap());
+            var modelC = modelA.withParam("foo", "bazz");
+            assertThat(modelA).isNotEqualTo(modelC);
+        }
 
-    config =
-        config.withTemplateConfig(
-            TemplateRef.create().templateRef(TemplateRefByID.create().id("123")));
-    assertThat(config.getTemplateConfig()).isInstanceOf(TemplateRef.class);
-  }
+        // test withParam(Parameter, Object)
+        {
+            var modelA = GPT_4O.withParam(MAX_TOKENS, 10);
+            var modelB = modelA.withParam(MAX_TOKENS, 10);
+            assertThat(modelA).isEqualTo(modelB);
+
+            var modelC = modelA.withParam(MAX_TOKENS, 20);
+            assertThat(modelA).isNotEqualTo(modelC);
+        }
+    }
+
+    @Test
+    void testLLMConfig() {
+        Map<String, Object> params = Map.of("foo", "bar");
+        String version = "2024-05-13";
+        OrchestrationAiModel aiModel = GPT_4O.withParams(params).withVersion(version);
+        var config = new OrchestrationModuleConfig().withLlmConfig(aiModel);
+
+        assertThat(config.getLlmConfig()).isNotNull();
+        assertThat(config.getLlmConfig().getName()).isEqualTo(GPT_4O.getName());
+        assertThat(config.getLlmConfig().getParams()).isEqualTo(params);
+        assertThat(config.getLlmConfig().getVersion()).isEqualTo(version);
+
+        assertThat(GPT_4O.getParams()).withFailMessage("Static models should be unchanged").isEmpty();
+        assertThat(GPT_4O.getVersion())
+                .withFailMessage("Static models should be unchanged")
+                .isEqualTo("latest");
+    }
+
+    @Test
+    void testGroundingConfig() {
+        var groundingConfig = Grounding.create();
+        var config =
+                new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGrounding(groundingConfig);
+
+        assertThat(config.getGroundingConfig()).isNotNull();
+        assertThat(config.getGroundingConfig().getType()).isEqualTo(DOCUMENT_GROUNDING_SERVICE);
+
+        GroundingModuleConfigConfig configConfig = config.getGroundingConfig().getConfig();
+        assertThat(configConfig).isNotNull();
+        assertThat(configConfig.getPlaceholders().getInput()).containsExactly("userMessage");
+        assertThat(configConfig.getPlaceholders().getOutput()).isEqualTo("groundingContext");
+
+        List<GroundingModuleConfigConfigFiltersInner> filters = configConfig.getFilters();
+        assertThat(filters).hasSize(1);
+        DocumentGroundingFilter filter = (DocumentGroundingFilter) filters.get(0);
+        assertThat(filter.getId()).isNull();
+        assertThat(filter.getDataRepositoryType()).isEqualTo(VECTOR);
+    }
+
+    @Test
+    void testGroundingConfigWithFilters() {
+        var filter1 = DocumentGroundingFilter.create().dataRepositoryType(VECTOR).id("123");
+        var filter2 = DocumentGroundingFilter.create().dataRepositoryType(VECTOR).id("234");
+        var groundingConfig = Grounding.create().filters(filter1, filter2);
+        var config =
+                new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGrounding(groundingConfig);
+
+        assertThat(config.getGroundingConfig()).isNotNull();
+        var configConfig = config.getGroundingConfig().getConfig();
+        assertThat(configConfig).isNotNull();
+
+        assertThat(config.getGroundingConfig().getConfig().getFilters()).hasSize(2);
+    }
+
+    @Test
+    void testGroundingPrompt() {
+        var prompt = Grounding.create().createGroundingPrompt("Hello, World!");
+        assertThat(prompt.getMessages()).hasSize(1);
+        var message = prompt.getMessages().get(0);
+        assertThat(((TextItem) message.content().items().get(0)).text())
+                .isEqualTo(
+                        "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}");
+    }
+
+    @Test
+    void testResponseFormatSchema() {
+        var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
+        var config =
+                new OrchestrationModuleConfig()
+                        .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+        assertThat(((Template) config.getTemplateConfig())).isNotNull();
+        assertThat(
+                ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
+                        .getJsonSchema()
+                        .getSchema())
+                .isEqualTo(schema.getSchemaMap());
+    }
+
+    @Test
+    void testResponseFormatObject() {
+        var config =
+                new OrchestrationModuleConfig()
+                        .withTemplateConfig(TemplateConfig.create().withJsonResponse());
+        assertThat(((Template) config.getTemplateConfig())).isNotNull();
+        assertThat(
+                ((ResponseFormatJsonObject)
+                        ((Template) config.getTemplateConfig()).getResponseFormat()))
+                .isInstanceOf(ResponseFormatJsonObject.class);
+    }
+
+    @Test
+    void testResponseFormatOverwrittenByNewTemplateRef() {
+        var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
+        var config =
+                new OrchestrationModuleConfig()
+                        .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+        assertThat(((Template) config.getTemplateConfig())).isNotNull();
+        assertThat(
+                ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
+                        .getJsonSchema()
+                        .getSchema())
+                .isEqualTo(schema.getSchemaMap());
+
+        config =
+                config.withTemplateConfig(
+                        TemplateRef.create().templateRef(TemplateRefByID.create().id("123")));
+        assertThat(config.getTemplateConfig()).isInstanceOf(TemplateRef.class);
+    }
 }
