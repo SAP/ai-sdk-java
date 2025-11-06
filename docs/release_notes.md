@@ -16,7 +16,9 @@
 
 ### 📈 Improvements
 
--
+-[Orchestration] Added new API `SAPDocumentTranslationInput#getInputTranslationConfig` to extract input config.
+
+-[Orchestration] Added new API `SAPDocumentTranslationOutput#getOutputTranslationConfig` to extract output config.
 
 ### 🐛 Fixed Issues
 
