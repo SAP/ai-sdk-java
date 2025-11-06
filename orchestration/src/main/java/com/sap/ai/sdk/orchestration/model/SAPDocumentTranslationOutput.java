@@ -179,7 +179,8 @@ public class SAPDocumentTranslationOutput
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
-   * @deprecated Use {@link #toMap()} instead.
+   * @deprecated
+   * Use {@link #toMap()} instead.
    */
   @Nullable
   @Deprecated
