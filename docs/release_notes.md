@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+-[Orchestration] Added new models for `OrchestrationAiModel`: `SONAR`,`SONAR_PRO`.
 
 ### 📈 Improvements
 
