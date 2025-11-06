@@ -212,10 +212,10 @@ public class SAPDocumentTranslationInput
    * Get the value of an unrecognizable property of this {@link SAPDocumentTranslationInput}
    * instance.
    *
+   * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
    * @return The value of the property
    * @throws NoSuchElementException If no property with the given name could be found.
-   * @deprecated Use {@link #toMap()} instead.
    */
   @Nullable
   @Deprecated
