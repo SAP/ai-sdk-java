@@ -23,14 +23,13 @@ import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
+import com.sap.ai.sdk.orchestration.TranslationConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInput;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
@@ -614,9 +613,9 @@ public class OrchestrationService {
     val configWithTranslation =
         config
             .withInputTranslationConfig(
-                SAPDocumentTranslationInput.sapDocumentTranslation().getInputTranslationConfig())
+                TranslationConfig.inputTranslation().getInputTranslationConfig())
             .withOutputTranslationConfig(
-                SAPDocumentTranslationOutput.sapDocumentTranslation()
+                TranslationConfig.outputTranslation()
                     .getOutputTranslationConfig()); // optional source language
 
     return client.chatCompletion(prompt, configWithTranslation);

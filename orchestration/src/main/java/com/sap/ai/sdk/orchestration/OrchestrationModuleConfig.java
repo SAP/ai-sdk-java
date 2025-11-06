@@ -100,8 +100,24 @@ public class OrchestrationModuleConfig {
    */
   @Nullable GroundingModuleConfig groundingConfig;
 
+  /**
+   * Configuration for translating input content before processing.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-translation">
+   *     SAP AI Core: Orchestration - Input Translation</a>
+   * @since 1.8.0
+   */
   @Nullable SAPDocumentTranslationInput inputTranslationConfig;
 
+  /**
+   * Configuration for translating output content after processing.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-output-translation">
+   *     SAP AI Core: Orchestration - Output Translation</a>
+   * @since 1.8.0
+   */
   @Nullable SAPDocumentTranslationOutput outputTranslationConfig;
 
   /** Configuration of optional streaming options for output filtering. */
@@ -119,11 +135,11 @@ public class OrchestrationModuleConfig {
   /**
    * Creates a new configuration with the given LLM configuration.
    *
+   * @param aiModel The LLM configuration to use.
+   * @return A new configuration with the given LLM configuration.
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/model-configuration">
    *     SAP AI Core: Orchestration - Model Configuration</a>
-   * @param aiModel The LLM configuration to use.
-   * @return A new configuration with the given LLM configuration.
    */
   @Tolerate
   @Nonnull
@@ -149,12 +165,12 @@ public class OrchestrationModuleConfig {
   /**
    * Creates a new configuration with the given Data Masking configuration.
    *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
-   *     Core: Orchestration - Data Masking</a>
    * @param maskingProvider The Data Masking configuration to use.
    * @param maskingProviders Additional Data Masking configurations to use.
    * @return A new configuration with the given Data Masking configuration.
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
    */
   @Tolerate
   @Nonnull
@@ -174,13 +190,13 @@ public class OrchestrationModuleConfig {
    *
    * <p>Preferred over {@link #withFilteringConfig(FilteringModuleConfig)} for adding input filters.
    *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
-   *     AI Core: Orchestration - Input Filtering</a>
    * @param contentFilter a filter to apply to the input.
    * @param contentFilters zero or more additional content filters to apply to the input.
    * @return a new {@code OrchestrationModuleConfig} instance with the specified input filters
    *     added.
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     AI Core: Orchestration - Input Filtering</a>
    */
   @Nonnull
   public OrchestrationModuleConfig withInputFiltering(
@@ -212,13 +228,13 @@ public class OrchestrationModuleConfig {
    * <p>Preferred over {@link #withFilteringConfig(FilteringModuleConfig)} for adding output
    * filters.
    *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
-   *     AI Core: Orchestration - Output Filtering</a>
    * @param contentFilter a filter to apply to the input.
    * @param contentFilters zero or more additional content filters to apply to the input.
    * @return a new {@code OrchestrationModuleConfig} instance with the specified output filters
    *     added.
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
+   *     AI Core: Orchestration - Output Filtering</a>
    */
   @Nonnull
   public OrchestrationModuleConfig withOutputFiltering(
@@ -250,11 +266,11 @@ public class OrchestrationModuleConfig {
   /**
    * Creates a new configuration with the given output filtering stream options.
    *
+   * @param outputFilteringStreamOptions The output filtering stream options to use.
+   * @return A new configuration with the given output filtering stream options.
    * @see <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming">Orchestration
    *     documentation on streaming.</a>
-   * @param outputFilteringStreamOptions The output filtering stream options to use.
-   * @return A new configuration with the given output filtering stream options.
    */
   @Nonnull
   OrchestrationModuleConfig withOutputFilteringStreamOptions(
@@ -277,10 +293,10 @@ public class OrchestrationModuleConfig {
   /**
    * Creates a new configuration with the given grounding configuration.
    *
-   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
-   *     AI Core: Orchestration - Grounding</a>
    * @param groundingProvider The grounding configuration to use.
    * @return A new configuration with the given grounding configuration.
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - Grounding</a>
    */
   @Nonnull
   public OrchestrationModuleConfig withGrounding(
@@ -291,10 +307,10 @@ public class OrchestrationModuleConfig {
   /**
    * Creates a new configuration with the given template configuration as {@link TemplateConfig}.
    *
-   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
-   *     AI Core: Orchestration - Templating</a>
    * @param templateConfig The template configuration to use.
    * @return A new configuration with the given template configuration.
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
    * @since 1.4.0
    */
   @Tolerate

@@ -24,8 +24,6 @@ import java.util.Objects;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 
 /** SAPDocumentTranslationInput */
 // CHECKSTYLE:OFF
@@ -84,12 +82,6 @@ public class SAPDocumentTranslationInput
       }
       return UNKNOWN_DEFAULT_OPEN_API;
     }
-  }
-
-  /** Create a builder for the SAP_DOCUMENT_TRANSLATION translation provider */
-  @Nonnull
-  public static Builder2 sapDocumentTranslation() {
-    return new Builder2(TypeEnum.SAP_DOCUMENT_TRANSLATION);
   }
 
   @JsonProperty("type")
@@ -341,23 +333,5 @@ public class SAPDocumentTranslationInput
      * @return The SAPDocumentTranslationInput instance.
      */
     SAPDocumentTranslationInput config(@Nonnull final SAPDocumentTranslationInputConfig config);
-  }
-
-  /** Builder helper class. */
-  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class Builder2 {
-
-    private final SAPDocumentTranslationInput.TypeEnum translationType;
-
-    /**
-     * Get the input translation config with default values.
-     *
-     * @return The SAPDocumentTranslationInput instance.
-     */
-    public SAPDocumentTranslationInput getInputTranslationConfig() {
-      return SAPDocumentTranslationInput.create()
-          .type(translationType)
-          .config(SAPDocumentTranslationInputConfig.create().targetLanguage("en-US").applyTo(null));
-    }
   }
 }
