@@ -19,7 +19,7 @@ class RequestLogContextTest {
     RequestLogContext.setEndpoint("/api/endpoint");
     RequestLogContext.setDestination("http://localhost:8000");
 
-    assertThat(MDC.get("service")).isEqualTo("openai");
+    assertThat(MDC.get("service")).isEqualTo("OpenAI");
     assertThat(MDC.get("mode")).isEqualTo("streaming");
     assertThat(MDC.get("endpoint")).isEqualTo("/api/endpoint");
     assertThat(MDC.get("destination")).isEqualTo("http://localhost:8000");

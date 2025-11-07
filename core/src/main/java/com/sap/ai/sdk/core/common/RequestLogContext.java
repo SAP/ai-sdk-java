@@ -132,9 +132,9 @@ public class RequestLogContext {
   @RequiredArgsConstructor
   public enum Service {
     /** OpenAI service */
-    OPENAI("openai"),
+    OPENAI("OpenAI"),
     /** Orchestration service */
-    ORCHESTRATION("orchestration");
+    ORCHESTRATION("Orchestration");
     @Getter private final String value;
   }
 }

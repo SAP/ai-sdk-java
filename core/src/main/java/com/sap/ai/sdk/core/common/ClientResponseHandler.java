@@ -68,7 +68,6 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   @Override
   public T handleResponse(@Nonnull final ClassicHttpResponse response) throws E {
     if (response.getCode() >= 300) {
-
       buildAndThrowException(response);
     }
     return parseSuccess(response);

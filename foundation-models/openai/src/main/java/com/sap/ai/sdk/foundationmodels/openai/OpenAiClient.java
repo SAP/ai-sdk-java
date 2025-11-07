@@ -455,7 +455,7 @@ public final class OpenAiClient {
       final BasicClassicHttpRequest request, @Nonnull final Class<T> responseType) {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      RequestLogContext.setDestination(((HttpDestination) destination).getUri().toString());
+      RequestLogContext.setDestination(destination.asHttp().getUri().toString());
       RequestLogContext.setMode(SYNCHRONOUS);
       RequestLogContext.setService(OPENAI);
       RequestLogContext.logRequestStart();
@@ -473,7 +473,7 @@ public final class OpenAiClient {
       final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
-      RequestLogContext.setDestination(((HttpDestination) destination).getUri().toASCIIString());
+      RequestLogContext.setDestination(destination.asHttp().getUri().toString());
       RequestLogContext.setMode(STREAMING);
       RequestLogContext.setService(OPENAI);
       RequestLogContext.logRequestStart();
