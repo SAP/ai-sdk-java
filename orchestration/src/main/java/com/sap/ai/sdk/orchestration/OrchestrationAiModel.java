@@ -318,6 +318,12 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel DEEPSEEK_R1 =
       new OrchestrationAiModel("deepseek-ai--deepseek-r1");
 
+  /** Perplexity AI Sonar model */
+  public static final OrchestrationAiModel SONAR = new OrchestrationAiModel("sonar");
+
+  /** Perplexity AI Sonar Pro model */
+  public static final OrchestrationAiModel SONAR_PRO = new OrchestrationAiModel("sonar-pro");
+
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");
   }
