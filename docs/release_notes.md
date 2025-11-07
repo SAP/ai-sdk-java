@@ -12,13 +12,12 @@
 
 ### ✨ New Functionality
 
--[Orchestration] Added new models for `OrchestrationAiModel`: `SONAR`,`SONAR_PRO`.
+- [Orchestration] Added new models for `OrchestrationAiModel`: `SONAR`,`SONAR_PRO`.
 
 ### 📈 Improvements
 
--[Orchestration] Added new API `TranslationConfig#getInputTranslationConfig` to extract input config.
-
--[Orchestration] Added new API `TranslationConfig#getOutputTranslationConfig` to extract output config.
+- [Orchestration] Added new API `TranslationConfig#getInputTranslationConfig` to extract input config.
+- [Orchestration] Added new API `TranslationConfig#getOutputTranslationConfig` to extract output config.
 
 ### 🐛 Fixed Issues
 
