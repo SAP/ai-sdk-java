@@ -2,42 +2,41 @@
 
 ## Status
 
-Proposed
+Accepted
 
 ## Context
 
 The AI SDK identified some challenges with debugging and problem resolution that can be addressed with better logging.
-Typically, users had to enable wire logs to access information necessary for troubleshooting which, along with helpful logs, surfaces a large volume of unrelated ones.
-Additionally, we identified the need to improve visibility into what's happening behind the scenes about application progress to the user.
+Typically, users have to enable wire logs for troubleshooting which, along with helpful logs, surfaces a large volume of unrelated ones.
+Additionally, we identified the need to improve visibility into application progress to the user.
 
-Key challenges that drove this decision:
+Key drivers for this decision include:
 
-- **Debugging difficulties**: Limited visibility into request flows and processing steps
-- **Security concerns**: Risk of accidentally logging sensitive information
-- **User experience**: Users needed better insight into long-running AI operations
-- **Trace ownership**: Reliance on external parties for troubleshooting details
+- **Debugging difficulties**: Limited visibility into request flows.
+- **Security risks**: Accidental logging of sensitive data.
+- **Poor user experience**: Lack of insight into application progress.
+- **Troubleshooting dependency**: Reliance on external parties for critical details.
 
 ## Decision
 
-Devise and follow comprehensive logging guidelines that prioritize **debugging capability** and **user visibility** while maintaining **security** and **performance**.
-The approach emphasizes descriptive, human-readable logs with structured request tracking through MDC (Mapped Diagnostic Context).
+We will implement and enforce comprehensive logging guidelines that prioritize **debugging capability** and **user visibility**.
+This approach mandates descriptive, human-readable logs with structured request tracking through Mapped Diagnostic Context (MDC).
 
 ## Guidelines
 
-### 1. Content and Security
+### 1. Log Content and Security
 
-* **Avoid sensitive information.**
-  As a general rule, avoid logging full request or response bodies.
-  Do not log any personally identifiable or confidential data such as names, IDs, tokens, or payload content.
+- **Do not log sensitive information.**
+  Never log full request or response bodies.
+  Ensure that personally identifiable or confidential data—such as names, IDs, tokens, or payload content—is always excluded from logs.
 
-* **Keep logs concise and relevant.**
-  Every log should convey meaningful information without redundancy.
-  Avoid verbose, repetitive, or cosmetic details.
+- **Write concise and relevant logs.**
+  Every log must convey meaningful information.
+  Avoid verbose, repetitive, or purely cosmetic details.
 
-* **Use descriptive, human-readable formats.**
-  Logs should read naturally and provide enough context for a developer to understand what happened without consulting the code.
-  While descriptiveness is a priority, follow the `metric=value` pattern where practical to include additional details with extensibility in mind.
-  Check out the example below.
+- **Use descriptive, human-readable formats.**
+  Logs must be clear enough for a developer to understand what happened without checking the code.
+  Use the `metric=value` pattern to include structured details with extensibility in mind.
 
   ```[reqId=e3eaa45c] OpenAI request completed successfully with duration=1628ms, size=1,2KB.```
 
@@ -56,10 +55,10 @@ The approach emphasizes descriptive, human-readable logs with structured request
   Keep per-request logs **below INFO level** (e.g., DEBUG or TRACE) to prevent cluttering normal application output.
 
 * **Application runtime logs.**
-  Prefer **INFO level** for one-time or startup/shutdown logs that occur once per application run.
+  Prefer **INFO level** only for one-time or startup/shutdown logs that occur once per application run.
 
 * **Avoid unnecessary warnings.**
-  Use the WARNING level only for actionable or genuinely concerning conditions.
+  Use the WARN level only for actionable or genuinely concerning conditions.
   Do not use it as a placeholder or for expected transient states.
 
 * **Explicit request logging.**
@@ -69,7 +68,7 @@ The approach emphasizes descriptive, human-readable logs with structured request
   This approach also avoids the need for stack-trace investigation when surface error responses are ambiguous.
 
 * **Performance-aware logging.**
-  If a log statement requires computation or inference to generate information, guard it with a log-level check (e.g., `if (log.isDebugEnabled())`) or other available context to avoid unnecessary overhead.
+  If a log statement requires expensive computation, guard it with a log-level check (e.g., `if (log.isDebugEnabled())`) to prevent performance degradation.
 
 ---
 
@@ -89,7 +88,7 @@ The approach emphasizes descriptive, human-readable logs with structured request
 
 * **Centralized MDC management.**
   Avoid using magic strings for MDC keys or values.
-  Define them in a dedicated structure or utility (e.g., `RequestlogContext` class) to ensure discoverability and prevent errors during refactoring.
+  Define them in a dedicated structure or utility (e.g., `RequestLogContext` class) to ensure discoverability and prevent errors during refactoring.
 
 * **Responsibility and ownership.**
   The component or class that sets MDC context values is also responsible for clearing them.
