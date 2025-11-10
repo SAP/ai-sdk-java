@@ -38,12 +38,13 @@ The approach emphasizes descriptive, human-readable logs with structured request
   Logs should read naturally and provide enough context for a developer to understand what happened without consulting the code.
   While descriptiveness is a priority, follow the `metric=value` pattern where practical to include additional details with extensibility in mind.
   Check out the example below.
+
   ```[reqId=e3eaa45c] OpenAI request completed successfully with duration=1628ms, size=1,2KB.```
 
-* **Correlate related logs.**
+* **Correlate logs.**
   Include a request identifier (e.g., `reqId`) in per-request logs to assist with correlation and debugging.
 
-* **Exception logging security.**
+* **Exception logging.**
   When logging exceptions, use standard logging methods (e.g., `log.error("Operation failed", exception)`) rather than serializing exception objects.
   Exception objects may contain custom fields with sensitive data that could be exposed through JSON serialization or custom `toString()` implementations.
 
@@ -61,14 +62,14 @@ The approach emphasizes descriptive, human-readable logs with structured request
   Use the WARNING level only for actionable or genuinely concerning conditions.
   Do not use it as a placeholder or for expected transient states.
 
-* **Explicit request lifecycle logging.**
+* **Explicit request logging.**
   Always log at **request start** to provide immediate visibility that an operation has begun.
   This helps users understand that their request is being processed even before a result is available.
   Do not rely solely on response-time logging — requests may fail, hang, or take long durations.
   This approach also avoids the need for stack-trace investigation when surface error responses are ambiguous.
 
 * **Performance-aware logging.**
-  If a log statement requires computation or inference to generate information, guard it with a log-level check (e.g., `if (log.isDebugEnabled())`) or other available context to avoid unnecessary overhead when that level is disabled.
+  If a log statement requires computation or inference to generate information, guard it with a log-level check (e.g., `if (log.isDebugEnabled())`) or other available context to avoid unnecessary overhead.
 
 ---
 
@@ -81,7 +82,6 @@ The approach emphasizes descriptive, human-readable logs with structured request
   Set MDC values deliberately and close to their scope of relevance.
   Per-request MDC context must be cleared when the response completes.
   Avoid setting per-request values in long-lived objects that outlive the request lifecycle, as this can result in corrupted or incomplete log context.
-  Setting per-request context outside of blocks or objects that are not invoked per-request can lead to incomplete MDC states which will corrupt logs produced.
 
 * **Granular clearing only.**
   Never clear the entire MDC context.
@@ -89,7 +89,7 @@ The approach emphasizes descriptive, human-readable logs with structured request
 
 * **Centralized MDC management.**
   Avoid using magic strings for MDC keys or values.
-  Define them in a dedicated structure or utility (e.g., `MdcKeys` class) to ensure discoverability and prevent errors during refactoring.
+  Define them in a dedicated structure or utility (e.g., `RequestlogContext` class) to ensure discoverability and prevent errors during refactoring.
 
 * **Responsibility and ownership.**
   The component or class that sets MDC context values is also responsible for clearing them.
