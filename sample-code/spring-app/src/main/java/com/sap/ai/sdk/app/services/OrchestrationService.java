@@ -113,10 +113,10 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with a template.
    *
-   * @param language the language to use in the template
-   * @return the assistant response object
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
+   * @param language the language to use in the template
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse template(@Nonnull final String language) {
@@ -153,12 +153,12 @@ public class OrchestrationService {
   /**
    * Apply input filtering for a request to orchestration.
    *
-   * @param policy the explicitness of content that should be allowed through the filter
-   * @return the assistant response object
-   * @throws OrchestrationClientException if input filter filters the prompt
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
+   * @throws OrchestrationClientException if input filter filters the prompt
+   * @param policy the explicitness of content that should be allowed through the filter
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
@@ -182,11 +182,11 @@ public class OrchestrationService {
   /**
    * Apply output filtering for a request to orchestration.
    *
-   * @param policy the explicitness of content that should be allowed through the filter
-   * @return the assistant response object
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
+   * @param policy the explicitness of content that should be allowed through the filter
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
@@ -207,12 +207,12 @@ public class OrchestrationService {
   /**
    * Apply the Llama Guard filter.
    *
-   * @param filter enable or disable the filter
-   * @return the assistant response object
-   * @throws OrchestrationClientException if input filter filters the prompt
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
+   * @throws OrchestrationClientException if input filter filters the prompt
+   * @param filter enable or disable the filter
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse llamaGuardInputFilter(final boolean filter)
@@ -249,11 +249,11 @@ public class OrchestrationService {
    * user. Anonymize any names given as they are not relevant for judging the sentiment of the
    * feedback.
    *
-   * @param entity the entity to be masked
-   * @return the assistant response object
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
+   * @param entity the entity to be masked
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse maskingAnonymization(@Nonnull final DPIEntities entity) {
@@ -263,9 +263,9 @@ public class OrchestrationService {
     val userMessage =
         Message.user(
             """
-                                I think the SDK is good, but could use some further enhancements.
-                                My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-                                """);
+    I think the SDK is good, but could use some further enhancements.
+    My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+    """);
 
     val prompt = new OrchestrationPrompt(systemMessage, userMessage);
     val maskingConfig = DpiMasking.anonymization().withEntities(entity);
@@ -277,10 +277,10 @@ public class OrchestrationService {
   /**
    * Let the LLM respond with a masked repeated phrase of patient IDs.
    *
-   * @return the assistant response object
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse maskingRegex() {
@@ -319,30 +319,30 @@ public class OrchestrationService {
    * Let the orchestration service a response to a hypothetical user who provided feedback on the AI
    * SDK. Pseudonymize the user's name and location to protect their privacy.
    *
-   * @param entity the entity to be pseudonymized
-   * @return the assistant response object
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
+   * @param entity the entity to be pseudonymized
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse maskingPseudonymization(@Nonnull final DPIEntities entity) {
     val systemMessage =
         Message.system(
             """
-                                Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
-                                Please make sure to address the user in person and end with "Best regards, the AI SDK team".
-                                """);
+                            Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
+                            Please make sure to address the user in person and end with "Best regards, the AI SDK team".
+                            """);
     val userMessage =
         Message.user(
             """
-                                Username: Mallory
-                                userEmail: mallory@sap.com
-                                Date: 2022-01-01
+                            Username: Mallory
+                            userEmail: mallory@sap.com
+                            Date: 2022-01-01
 
-                                I think the SDK is good, but could use some further enhancements.
-                                My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-                                """);
+                            I think the SDK is good, but could use some further enhancements.
+                            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+                            """);
 
     val prompt = new OrchestrationPrompt(systemMessage, userMessage);
     val maskingConfig = DpiMasking.pseudonymization().withEntities(entity, DPIEntities.EMAIL);
@@ -354,11 +354,11 @@ public class OrchestrationService {
   /**
    * Using grounding to provide additional context to the AI model.
    *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
+   *     AI Core: Orchestration - Grounding</a>
    * @param userMessage the user message to provide grounding for
    * @param maskGroundingInput whether to mask the request sent to the Grounding Service
    * @return the assistant response object
-   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
-   *     AI Core: Orchestration - Grounding</a>
    */
   @Nonnull
   public OrchestrationChatResponse grounding(
@@ -392,10 +392,10 @@ public class OrchestrationService {
   /**
    * Using grounding via a sharepoint repository to provide additional context to the AI model.
    *
-   * @param userMessage the user message to provide grounding for
-   * @return the assistant response object
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
    *     AI Core: Orchestration - Grounding</a>
+   * @param userMessage the user message to provide grounding for
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse groundingSharepoint(@Nonnull final String userMessage) {
@@ -420,10 +420,10 @@ public class OrchestrationService {
   /**
    * Using grounding via *help.sap.com* to provide additional SAP-specific context to the AI model.
    *
-   * @param userMessage the user message to provide grounding for
-   * @return the assistant response object
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
    *     AI Core: Orchestration - Grounding</a>
+   * @param userMessage the user message to provide grounding for
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse groundingHelpSapCom(@Nonnull final String userMessage) {
@@ -483,11 +483,11 @@ public class OrchestrationService {
    * Chat request to OpenAI through the Orchestration service using the response format option 'JSON
    * object'.
    *
-   * @param word the word to translate
-   * @return the assistant response object
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
+   * @param word the word to translate
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonObject(@Nonnull final String word) {
@@ -507,11 +507,11 @@ public class OrchestrationService {
    * Chat request to OpenAI through the Orchestration service using the response format option
    * 'text'.
    *
-   * @param word the word to translate
-   * @return the assistant response object
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
+   * @param word the word to translate
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatText(@Nonnull final String word) {
@@ -533,10 +533,10 @@ public class OrchestrationService {
    * Chat request to OpenAI through the Orchestration service using a template from the prompt
    * registry.
    *
-   * @param topic the topic to send to the assistant
-   * @return the assistant response object
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
+   * @param topic the topic to send to the assistant
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryById(@Nonnull final String topic) {
@@ -556,10 +556,10 @@ public class OrchestrationService {
    * Chat request to OpenAI through the Orchestration service using a template from the prompt
    * registry.
    *
-   * @param topic the topic to send to the assistant
-   * @return the assistant response object
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
+   * @param topic the topic to send to the assistant
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenario(
@@ -576,11 +576,11 @@ public class OrchestrationService {
   /**
    * Chat request to an LLM through the Orchestration service using a local template file.
    *
-   * @param promptTemplate the YAML prompt template to use
-   * @return the assistant response object
-   * @throws IOException if the YAML cannot be parsed
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
+   * @param promptTemplate the YAML prompt template to use
+   * @throws IOException if the YAML cannot be parsed
+   * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
@@ -624,10 +624,10 @@ public class OrchestrationService {
   /**
    * Create text embeddings using the Orchestration service.
    *
-   * @param texts the list of texts to embed
-   * @return the embedding response object
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/embeddings">AI
    *     Core: Orchestration - Embedding</a>
+   * @param texts the list of texts to embed
+   * @return the embedding response object
    */
   @Nonnull
   public OrchestrationEmbeddingResponse embed(@Nonnull final List<String> texts) {
