@@ -77,7 +77,7 @@ public class RequestLogContext {
     val reqId = UUID.randomUUID().toString().substring(0, 8);
     RequestLogContext.setRequestId(reqId);
 
-    val message = "[reqId={}] Starting {} {} request to {}, destination={}";
+    val message = "[reqId={}] Starting {} {} request to {}, destination={}.";
     log.debug(
         message,
         reqId,

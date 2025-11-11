@@ -193,7 +193,7 @@ public class OpenAiTool {
       if (toolCall instanceof OpenAiFunctionCall functionCall) {
         final var tool = toolMap.get(functionCall.getName());
         if (tool == null) {
-          log.warn("Tool not found for function call: {}", functionCall.getName());
+          log.warn("Tool not found for function call: {}.", functionCall.getName());
           continue;
         }
         final var toolResult = executeFunction(tool, functionCall);

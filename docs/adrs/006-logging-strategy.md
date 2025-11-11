@@ -38,10 +38,12 @@ This approach mandates descriptive, human-readable logs with structured request 
   Logs must be clear enough for a developer to understand what happened without checking the code.
   Use the `metric=value` pattern to include structured details with extensibility in mind.
 
-  ```[reqId=e3eaa45c] OpenAI request completed successfully with duration=1628ms, size=1,2KB.```
+  ```[reqId=e3eaa45c] OpenAI request completed successfully with duration=1628ms, responseSize=1.2KB.```
 
 * **Correlate logs.**
   Include a request identifier (e.g., `reqId`) in per-request logs to assist with correlation and debugging.
+  In this SDK, a "request" represents a single AI service operation (e.g., one chat completion call, one embedding generation).
+  The `reqId` is generated for each AI service call and is distinct from any HTTP request tracking in user's application framework.
 
 * **Exception logging.**
   When logging exceptions, use standard logging methods (e.g., `log.error("Operation failed", exception)`) rather than serializing exception objects.
@@ -59,7 +61,7 @@ This approach mandates descriptive, human-readable logs with structured request 
 
 * **Avoid unnecessary warnings.**
   Use the WARN level only for actionable or genuinely concerning conditions.
-  Do not use it as a placeholder or for expected transient states.
+  Expected transient states (retries, fallbacks, cache misses) should not generate a warning.
 
 * **Explicit request logging.**
   Always log at **request start** to provide immediate visibility that an operation has begun.
@@ -67,8 +69,34 @@ This approach mandates descriptive, human-readable logs with structured request 
   Do not rely solely on response-time logging — requests may fail, hang, or take long durations.
   This approach also avoids the need for stack-trace investigation when surface error responses are ambiguous.
 
+  ```[reqId=e3eaa45c] Starting OpenAI synchronous request to /v1/chat/completions, destination=<some-uri>.```
+
 * **Performance-aware logging.**
-  If a log statement requires expensive computation, guard it with a log-level check (e.g., `if (log.isDebugEnabled())`) to prevent performance degradation.
+  If a log statement requires any object creation, guard it with a log-level check to prevent performance degradation.
+
+  ``` java
+  Optional<Destination> maybeDestination;
+  Destination fallbackDestination = /* existing instance */;
+  
+  // Bad: Creates objects or invokes methods even when logging is disabled
+  log.debug("Destination: {}", maybeDestination.toString());
+  log.debug("Destination: {}", maybeDestination.orElseGet(() -> new Destination()));
+  log.debug("Destination: {}", maybeDestination.orElseGet(this::getFallback));
+  log.debug("Destination: {}", maybeDestination.orElse(getFallback()));
+  
+  // Good: No object creation or method invocation
+  log.debug("Destination: {}", maybeDestination);
+  log.debug("Destination: {}", maybeDestination.orElse(fallbackDestination));
+  
+  // Good: Guard object creation
+  if (log.isDebugEnabled()) {
+    log.debug("Destination: {}", maybeDestination.orElse(getFallback()));
+  }
+  
+  // Exception: Singletons require no guarding (no object creation)
+  Optional<List<Destination>> maybeDestinations;
+  log.debug("Destinations: {}", maybeDestinations.orElse(Collections.emptyList()));
+  ```
 
 ---
 
@@ -82,13 +110,35 @@ This approach mandates descriptive, human-readable logs with structured request 
   Per-request MDC context must be cleared when the response completes.
   Avoid setting per-request values in long-lived objects that outlive the request lifecycle, as this can result in corrupted or incomplete log context.
 
-* **Granular clearing only.**
-  Never clear the entire MDC context.
-  Instead, remove entries key-by-key to preserve unrelated context items that may remain valid for longer periods.
-
 * **Centralized MDC management.**
   Avoid using magic strings for MDC keys or values.
   Define them in a dedicated structure or utility (e.g., `RequestLogContext` class) to ensure discoverability and prevent errors during refactoring.
+  ```java
+  // Bad: Magic strings scattered in code
+  MDC.put("service", "OpenAI");
+  log.debug("Service {}", MDC.get("service"));
+  
+  // Good: Centralized in utility class
+  RequestLogContext.setService(Service.OPENAI);
+  log.debug("Service {}", RequestLogContext.get(MdcKeys.SERVICE));
+  ```
+
+* **Granular clearing only.**
+  Never clear the entire MDC context.
+  Instead, remove entries key-by-key to preserve unrelated context items that may remain valid for longer periods.
+  ```java
+  // Bad: Risk clearing useful context entries from other components
+  MDC.clear();
+
+  // Good: Clear only your own entries, centralized in utility class
+  class RequestLogContext { 
+     //...
+     static void clear(){
+      MDC.remove(MdcKeys.REQUEST_ID);
+      MDC.remove(MdcKeys.SERVICE);
+    }
+  }
+  ```
 
 * **Responsibility and ownership.**
   The component or class that sets MDC context values is also responsible for clearing them.

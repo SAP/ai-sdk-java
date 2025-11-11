@@ -77,7 +77,7 @@ public class OrchestrationChatModel implements ChatModel {
         if (log.isDebugEnabled()) {
           val tools = response.getResult().getOutput().getToolCalls();
           val toolsStr = tools.stream().map(ToolCall::name).collect(Collectors.joining(", "));
-          log.debug("Executing {} tool call(s) - {}", tools.size(), toolsStr);
+          log.debug("Executing {} tool call(s) - {}.", tools.size(), toolsStr);
         }
 
         val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
