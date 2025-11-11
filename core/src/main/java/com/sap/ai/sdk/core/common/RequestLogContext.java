@@ -23,8 +23,8 @@ import org.slf4j.MDC;
 @Beta
 public class RequestLogContext {
 
-  private static void setRequestId(@Nonnull final String requestId) {
-    MDC.put(MdcKeys.REQUEST_ID, requestId);
+  private static void setCallId(@Nonnull final String callId) {
+    MDC.put(MdcKeys.CALL_ID, callId);
   }
 
   /**
@@ -65,7 +65,7 @@ public class RequestLogContext {
 
   /** Clear all MDC request context information. */
   public static void clear() {
-    MDC.remove(MdcKeys.REQUEST_ID);
+    MDC.remove(MdcKeys.CALL_ID);
     MDC.remove(MdcKeys.ENDPOINT);
     MDC.remove(MdcKeys.DESTINATION);
     MDC.remove(MdcKeys.MODE);
@@ -74,13 +74,13 @@ public class RequestLogContext {
 
   /** Log the start of a request with generated request ID. */
   public static void logRequestStart() {
-    val reqId = UUID.randomUUID().toString().substring(0, 8);
-    RequestLogContext.setRequestId(reqId);
+    val callId = UUID.randomUUID().toString().substring(0, 8);
+    RequestLogContext.setCallId(callId);
 
-    val message = "[reqId={}] Starting {} {} request to {}, destination={}.";
+    val message = "[callId={}] Starting {} {} request to {}, destination={}.";
     log.debug(
         message,
-        reqId,
+        callId,
         MDC.get(MdcKeys.SERVICE),
         MDC.get(MdcKeys.MODE),
         MDC.get(MdcKeys.ENDPOINT),
@@ -105,13 +105,13 @@ public class RequestLogContext {
             .filter(length -> length >= 0)
             .map(length -> "%.1fKB".formatted(length / 1024.0))
             .orElse("unknown");
-    val message = "[reqId={}] {} request completed successfully with duration={}, size={}.";
-    log.debug(message, MDC.get(MdcKeys.REQUEST_ID), MDC.get(MdcKeys.SERVICE), duration, sizeInfo);
+    val message = "[callId={}] {} request completed successfully with duration={}, size={}.";
+    log.debug(message, MDC.get(MdcKeys.CALL_ID), MDC.get(MdcKeys.SERVICE), duration, sizeInfo);
   }
 
   @UtilityClass
   private static class MdcKeys {
-    private static final String REQUEST_ID = "reqId";
+    private static final String CALL_ID = "callId";
     private static final String ENDPOINT = "endpoint";
     private static final String DESTINATION = "destination";
     private static final String MODE = "mode";

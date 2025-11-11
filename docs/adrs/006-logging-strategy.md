@@ -21,33 +21,41 @@ Key drivers for this decision include:
 
 We will implement and enforce comprehensive logging guidelines that prioritize **debugging capability** and **user visibility**.
 This approach mandates descriptive, human-readable logs with structured request tracking through Mapped Diagnostic Context (MDC).
+The SDK uses SLF4J API for all logging statements.
 
 ## Guidelines
 
 ### 1. Log Content and Security
 
-- **Do not log sensitive information.**
+* **Do not log sensitive information.**
   Never log full request or response bodies.
   Ensure that personally identifiable or confidential data — such as names, IDs, tokens, or payload content — is always excluded from logs.
 
-- **Write concise and relevant logs.**
+* **Write concise and relevant logs.**
   Every log must convey meaningful information.
   Avoid verbose, repetitive, or purely cosmetic details.
 
-- **Use descriptive, human-readable formats.**
-  Logs must be clear enough for a developer to understand what happened without checking the code.
-  Use the `metric=value` pattern to include structured details with extensibility in mind.
+* **Use descriptive, human-readable and standard formats.**
+  - Logs must be clear enough for a developer to understand what happened without checking the code.
+  - Start log messages with a capital letter (exceptions include case-sensitive identifiers) and end with a period (`.`).
+  - Avoid newlines (`\n`) and emojis within log messages to prevent parsing and encoding concerns.
+  - Use the `metric=value` pattern to include structured details with extensibility in mind.
 
-  ```[reqId=e3eaa45c] OpenAI request completed successfully with duration=1628ms, responseSize=1.2KB.```
+    ```
+    [callId=e3eaa45c] OpenAI request completed successfully with duration=1628ms, responseSize=1.2KB.
+    ```
 
 * **Correlate logs.**
-  Include a request identifier (e.g., `reqId`) in per-request logs to assist with correlation and debugging.
-  In this SDK, a "request" represents a single AI service operation (e.g., one chat completion call, one embedding generation).
-  The `reqId` is generated for each AI service call and is distinct from any HTTP request tracking in user's application framework.
+  Include a call identifier (e.g., `callId`) in outgoing per-request logs to assist with correlation and debugging.
+  Throughout this document, the term 'request' refers to a single SDK operation that calls an AI service (e.g., `OrchestrationClient.chatCompletion()`, `OpenAiClient.embed()`), distinct from HTTP requests to the user's application.
 
 * **Exception logging.**
   When logging exceptions, use standard logging methods (e.g., `log.error("Operation failed", exception)`) rather than serializing exception objects.
   Exception objects may contain custom fields with sensitive data that could be exposed through JSON serialization or custom `toString()` implementations.
+
+* **Logging framework**
+  Write all logging statements against the SLF4J API.
+  The AI SDK relies on `logback-classic` as the provided runtime implementation.
 
 ---
 
@@ -69,10 +77,12 @@ This approach mandates descriptive, human-readable logs with structured request 
   Do not rely solely on response-time logging — requests may fail, hang, or take long durations.
   This approach also avoids the need for stack-trace investigation when surface error responses are ambiguous.
 
-  ```[reqId=e3eaa45c] Starting OpenAI synchronous request to /v1/chat/completions, destination=<some-uri>.```
+  ```
+  [callId=e3eaa45c] Starting OpenAI synchronous request to /v1/chat/completions, destination=<some-uri>.
+  ```
 
 * **Performance-aware logging.**
-  If a log statement requires any object creation, guard it with a log-level check to prevent performance degradation.
+  If a log statement requires computation (such as object creation or method invocation), guard it with a log-level check to prevent performance degradation.
 
   ``` java
   Optional<Destination> maybeDestination;
@@ -84,7 +94,7 @@ This approach mandates descriptive, human-readable logs with structured request 
   log.debug("Destination: {}", maybeDestination.orElseGet(this::getFallback));
   log.debug("Destination: {}", maybeDestination.orElse(getFallback()));
   
-  // Good: No object creation or method invocation
+  // Good: No additional computation
   log.debug("Destination: {}", maybeDestination);
   log.debug("Destination: {}", maybeDestination.orElse(fallbackDestination));
   
@@ -103,11 +113,11 @@ This approach mandates descriptive, human-readable logs with structured request 
 ### 3. MDC (Mapped Diagnostic Context)
 
 * **Purpose and usage.**
-  MDC is used to carry contextual information (e.g., `reqId`, `endpoint`, `service`) across execution blocks within the same thread.
+  MDC is used to carry contextual information (e.g., `callId`, `endpoint`, `service`) across execution blocks within the same thread.
 
 * **Setting and clearing context.**
   Set MDC values deliberately and close to their scope of relevance.
-  Per-request MDC context must be cleared when the response completes.
+  Per-request MDC context must be cleared appropriately when the response completes.
   Avoid setting per-request values in long-lived objects that outlive the request lifecycle, as this can result in corrupted or incomplete log context.
 
 * **Centralized MDC management.**
@@ -124,7 +134,7 @@ This approach mandates descriptive, human-readable logs with structured request 
   ```
 
 * **Granular clearing only.**
-  Never clear the entire MDC context.
+  Never clear the entire MDC context, as this will remove entries set by the application developer or other libraries.
   Instead, remove entries key-by-key to preserve unrelated context items that may remain valid for longer periods.
   ```java
   // Bad: Risk clearing useful context entries from other components
@@ -134,7 +144,7 @@ This approach mandates descriptive, human-readable logs with structured request 
   class RequestLogContext { 
      //...
      static void clear(){
-      MDC.remove(MdcKeys.REQUEST_ID);
+      MDC.remove(MdcKeys.CALL_ID);
       MDC.remove(MdcKeys.SERVICE);
     }
   }
@@ -143,6 +153,26 @@ This approach mandates descriptive, human-readable logs with structured request 
 * **Responsibility and ownership.**
   The component or class that sets MDC context values is also responsible for clearing them.
   This maintains clarity and ensures proper lifecycle management.
+
+* **Safe consumption.**
+  Since MDC uses `ThreadLocal` storage, any new thread (created implicitly or explicitly) will not have access to the parent thread's MDC context.
+  Always audit for possible thread switches that may lead to corrupted logs due to invalid MDC.
+  Below is an example contrasting safe usage (logging in the calling thread) with unsafe usage (logging in callbacks):
+
+  ```java
+  // Thread A
+  RequestLogContext.setCallId("abc123");
+  log.debug("[callId={}] Starting request", RequestLogContext.get(MdcKeys.CALL_ID)); 
+  
+  // Bad: Logging within callbacks executed in other threads
+  client.executeAsync(() -> {
+      // Thread B: RequestLogContext.get(MdcKeys.CALL_ID) is null
+      log.debug("[callId={}] Processing", RequestLogContext.get(MdcKeys.CALL_ID)); 
+  });
+  
+  // Good: Thread A's context has been restored
+  log.debug("[callId={}] Completed request", RequestLogContext.get(MdcKeys.CALL_ID));
+  ```
 
 ---
 
