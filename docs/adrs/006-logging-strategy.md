@@ -8,7 +8,7 @@ Accepted
 
 The AI SDK identified some challenges with debugging and problem resolution that can be addressed with better logging.
 Typically, users have to enable wire logs for troubleshooting which, along with helpful logs, surfaces a large volume of unrelated ones.
-Additionally, we identified the need to improve visibility into application progress to the user.
+Additionally, we identified the need to improve visibility into the application progress to the user.
 
 Key drivers for this decision include:
 
@@ -28,7 +28,7 @@ This approach mandates descriptive, human-readable logs with structured request 
 
 - **Do not log sensitive information.**
   Never log full request or response bodies.
-  Ensure that personally identifiable or confidential data—such as names, IDs, tokens, or payload content—is always excluded from logs.
+  Ensure that personally identifiable or confidential data — such as names, IDs, tokens, or payload content — is always excluded from logs.
 
 - **Write concise and relevant logs.**
   Every log must convey meaningful information.
