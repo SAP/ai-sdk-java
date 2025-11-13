@@ -11,10 +11,10 @@ Before running the application, ensure the following prerequisites are met:
 
 - Java 17 or higher
 - Maven 3.8 or higher
-- Deployments of the following models in [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core):
+- Credentials for [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) service configured
+- Deployments of the following models in the `default` resource group:
   - `gpt-4o-mini`
   - `text-embedding-3-small`
-- Credentials for [SAP AI Core](https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/what-is-sap-ai-core) service configured
 
 ### Setting Up Credentials for SAP AI Core
 
