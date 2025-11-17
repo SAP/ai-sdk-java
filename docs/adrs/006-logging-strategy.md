@@ -50,7 +50,7 @@ The SDK uses SLF4J API for all logging statements.
   Throughout this document, the term 'request' refers to a single SDK operation that calls an AI service (e.g., `OrchestrationClient.chatCompletion()`, `OpenAiClient.embed()`), distinct from HTTP requests to the user's application.
 
 * **Exception logging.**
-  When logging exceptions, use standard logging methods (e.g., `log.error("Operation failed", exception)`) rather than serializing exception objects.
+  When logging exceptions, use standard logging methods (e.g., `log.debug("Connection lost.", exception)`) rather than serializing exception objects.
   Exception objects may contain custom fields with sensitive data that could be exposed through JSON serialization or custom `toString()` implementations.
 
 * **Logging framework**
@@ -156,24 +156,33 @@ The SDK uses SLF4J API for all logging statements.
 
 * **Safe consumption.**
   Since MDC uses `ThreadLocal` storage, any new thread (created implicitly or explicitly) will not have access to the parent thread's MDC context.
-  Always audit for possible thread switches that may lead to corrupted logs due to invalid MDC.
-  Below is an example contrasting safe usage (logging in the calling thread) with unsafe usage (logging in callbacks):
+  Always audit for thread switches through async operations, resilience patterns etc., as these may lead to corrupted logs due to invalid MDC.
 
   ```java
   // Thread A
   RequestLogContext.setCallId("abc123");
   log.debug("[callId={}] Starting request", RequestLogContext.get(MdcKeys.CALL_ID)); 
   
-  // Bad: Logging within callbacks executed in other threads
+  // Problem: Async callback runs in Thread B without original MDC context
   client.executeAsync(() -> {
-      // Thread B: RequestLogContext.get(MdcKeys.CALL_ID) is null
+      // Thread B: RequestLogContext.get(MdcKeys.CALL_ID) returns null
       log.debug("[callId={}] Processing", RequestLogContext.get(MdcKeys.CALL_ID)); 
   });
-  
-  // Good: Thread A's context has been restored
-  log.debug("[callId={}] Completed request", RequestLogContext.get(MdcKeys.CALL_ID));
   ```
 
+  To maintain logging context across thread boundaries, manually propagate the MDC context:
+
+  ```java
+  // Capture parent thread's MDC context
+  Map<String, String> context = MDC.getCopyOfContextMap();
+  
+  client.executeAsync(() -> {
+    // Restore the captured context in new thread
+    MDC.setContextMap(context);
+    // Thread B: RequestLogContext.get(MdcKeys.CALL_ID) returns abc123
+    log.debug("[callId={}] Processing", RequestLogContext.get(MdcKeys.CALL_ID));
+  });
+  ```
 ---
 
 ### 4. Logging Boundaries and Generation
