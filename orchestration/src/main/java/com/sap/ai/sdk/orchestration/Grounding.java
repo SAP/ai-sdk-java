@@ -31,6 +31,8 @@ public class Grounding implements GroundingProvider {
   private List<GroundingModuleConfigConfigFiltersInner> filters =
       List.of(DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.VECTOR));
 
+  @Nonnull private List<String> metadataParams = List.of();
+
   @Setter(onMethod_ = {@Nonnull})
   private TypeEnum documentGroundingService = TypeEnum.DOCUMENT_GROUNDING_SERVICE;
 
@@ -61,6 +63,18 @@ public class Grounding implements GroundingProvider {
   }
 
   /**
+   * Set which metadataParams are used in the grounding response.
+   *
+   * @param metadataParams List of metadataParams to set.
+   * @return The modified grounding configuration.
+   */
+  @Nonnull
+  public Grounding metadataParams(@Nonnull final String... metadataParams) {
+    this.metadataParams = List.of(metadataParams);
+    return this;
+  }
+
+  /**
    * Create a prompt with grounding parameters included in the message.
    *
    * <p>It uses the inputParams {@code userMessage} for the user message and {@code
@@ -86,8 +100,10 @@ public class Grounding implements GroundingProvider {
                 GroundingModuleConfigConfigPlaceholders.create()
                     .input(List.of("userMessage"))
                     .output("groundingContext"))
-            .filters(filters);
+            .filters(filters)
+            .metadataParams(metadataParams);
 
+    // metadata_params field is not allowed for data repository type: `help.sap.com`
     if (filters.contains(
         DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM))) {
       groundingConfigConfig.setMetadataParams(null);
