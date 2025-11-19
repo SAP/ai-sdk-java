@@ -380,8 +380,12 @@ public class OrchestrationService {
             .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1))
             .addDocumentMetadataItem(documentMetadata);
 
-    val groundingConfig = Grounding.create().filters(databaseFilter);
-    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+    val groundingConfig = Grounding.create().filters(databaseFilter).metadataParams("*");
+    val prompt =
+        groundingConfig
+            .createGroundingPrompt(userMessage)
+            .messageHistory(
+                List.of(Message.system("Add in the response all metadata from grounding.")));
     val maskingConfig = // optional masking configuration
         DpiMasking.anonymization()
             .withEntities(DPIEntities.SENSITIVE_DATA)
