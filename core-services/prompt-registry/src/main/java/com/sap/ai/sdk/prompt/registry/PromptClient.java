@@ -65,7 +65,7 @@ public class PromptClient extends PromptTemplatesApi {
                             JacksonMixin.ResponseFormat.class)));
 
     rt.setRequestFactory(new BufferingClientHttpRequestFactory(httpRequestFactory));
-
+    rt.getMessageConverters().add(new FileHttpMessageConverter());
     return new ApiClient(rt).setBasePath(destination.asHttp().getUri().toString());
   }
 
