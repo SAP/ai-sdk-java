@@ -116,7 +116,7 @@ public class OpenAiChatCompletionResponse {
     final var tools = Optional.ofNullable(originalRequest.getToolsExecutable()).orElseGet(List::of);
     if (log.isDebugEnabled() && !tools.isEmpty()) {
       final var toolNames = tools.stream().map(OpenAiTool::getName).toList();
-      log.debug("Executing {} tool call(s) - {}", toolNames.size(), toolNames);
+      log.debug("Executing {} tool call(s) - {}.", toolNames.size(), toolNames);
     }
     return OpenAiTool.execute(tools, getMessage());
   }

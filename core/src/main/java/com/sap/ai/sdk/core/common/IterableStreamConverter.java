@@ -35,8 +35,8 @@ class IterableStreamConverter<T> implements Iterator<T> {
   static final int BUFFER_SIZE = 8192;
 
   private static final String ERR_CONTENT = "Failed to read response content.";
-  private static final String ERR_INTERRUPTED = "Parsing response content was interrupted";
-  private static final String ERR_CLOSE = "Could not close input stream with error: {} (ignored)";
+  private static final String ERR_INTERRUPTED = "Parsing response content was interrupted.";
+  private static final String ERR_CLOSE = "Could not close input stream with error: {} (ignored).";
 
   /** Read next entry for Stream or {@code null} when no further entry can be read. */
   private final Callable<T> readHandler;
@@ -70,7 +70,7 @@ class IterableStreamConverter<T> implements Iterator<T> {
     } catch (final Exception e) {
       isDone = true;
       stopHandler.run();
-      log.debug("Reading next element failed with error {})", e.getClass().getSimpleName());
+      log.debug("Reading next element failed with error {}.", e.getClass().getSimpleName());
       throw errorHandler.apply(e);
     }
     return !isDone;

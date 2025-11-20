@@ -106,7 +106,7 @@ class IterableStreamConverterTest {
     final var sut = IterableStreamConverter.lines(response, new TestClientExceptionFactory());
     assertThatThrownBy(sut::count)
         .isInstanceOf(TestClientException.class)
-        .hasMessage("Parsing response content was interrupted")
+        .hasMessage("Parsing response content was interrupted.")
         .cause()
         .isInstanceOf(IOException.class)
         .hasMessage("Ups!");

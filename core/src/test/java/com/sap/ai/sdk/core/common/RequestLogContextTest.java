@@ -25,14 +25,14 @@ class RequestLogContextTest {
     assertThat(MDC.get("destination")).isEqualTo("http://localhost:8000");
 
     RequestLogContext.logRequestStart();
-    assertThat(MDC.get("reqId")).isNotNull().hasSize(8);
+    assertThat(MDC.get("callId")).isNotNull().hasSize(8);
 
     RequestLogContext.clear();
     assertThat(MDC.get("service")).isNull();
     assertThat(MDC.get("mode")).isNull();
     assertThat(MDC.get("endpoint")).isNull();
     assertThat(MDC.get("destination")).isNull();
-    assertThat(MDC.get("reqId")).isNull();
+    assertThat(MDC.get("callId")).isNull();
     assertThat(MDC.get("consumer-key")).isEqualTo("consumer-value");
   }
 }
