@@ -139,6 +139,32 @@ class OrchestrationModuleConfigTest {
   }
 
   @Test
+  void testTranslationConfig() {
+    var translationConfig = TranslationConfig.inputTranslation().getInputTranslationConfig();
+    var config =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(GPT_4O)
+            .withInputTranslationConfig(translationConfig);
+
+    assertThat(config.getInputTranslationConfig()).isNotNull();
+    assertThat(config.getInputTranslationConfig().getType()).isEqualTo(translationConfig.getType());
+    assertThat(config.getInputTranslationConfig().getConfig().getTargetLanguage())
+        .isEqualTo(translationConfig.getConfig().getTargetLanguage());
+
+    var translationConfig2 = TranslationConfig.inputTranslation().getInputTranslationConfig();
+    var config2 =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(GPT_4O)
+            .withInputTranslationConfig(translationConfig2);
+
+    assertThat(config2.getInputTranslationConfig()).isNotNull();
+    assertThat(config2.getInputTranslationConfig().getType())
+        .isEqualTo(translationConfig2.getType());
+    assertThat(config2.getInputTranslationConfig().getConfig().getTargetLanguage())
+        .isEqualTo(translationConfig2.getConfig().getTargetLanguage());
+  }
+
+  @Test
   void testParams() {
     // test withParams(Map<String, Object>)
     {

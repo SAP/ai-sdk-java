@@ -100,8 +100,24 @@ public class OrchestrationModuleConfig {
    */
   @Nullable GroundingModuleConfig groundingConfig;
 
+  /**
+   * Configuration for translating input content before processing.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-translation">
+   *     SAP AI Core: Orchestration - Input Translation</a>
+   * @since 1.8.0
+   */
   @Nullable SAPDocumentTranslationInput inputTranslationConfig;
 
+  /**
+   * Configuration for translating output content after processing.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-output-translation">
+   *     SAP AI Core: Orchestration - Output Translation</a>
+   * @since 1.8.0
+   */
   @Nullable SAPDocumentTranslationOutput outputTranslationConfig;
 
   /** Configuration of optional streaming options for output filtering. */
