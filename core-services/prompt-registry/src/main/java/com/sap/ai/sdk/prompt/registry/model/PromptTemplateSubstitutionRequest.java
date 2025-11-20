@@ -45,7 +45,7 @@ public class PromptTemplateSubstitutionRequest
    * @return The same instance of this {@link PromptTemplateSubstitutionRequest} class
    */
   @Nonnull
-  public PromptTemplateSubstitutionRequest inputParams(@Nullable final Object inputParams) {
+  public PromptTemplateSubstitutionRequest inputParams(@Nonnull final Object inputParams) {
     this.inputParams = inputParams;
     return this;
   }
@@ -65,7 +65,7 @@ public class PromptTemplateSubstitutionRequest
    *
    * @param inputParams The inputParams of this {@link PromptTemplateSubstitutionRequest}
    */
-  public void setInputParams(@Nullable final Object inputParams) {
+  public void setInputParams(@Nonnull final Object inputParams) {
     this.inputParams = inputParams;
   }
 
@@ -170,8 +170,22 @@ public class PromptTemplateSubstitutionRequest
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link PromptTemplateSubstitutionRequest} instance. No arguments are required. */
-  public static PromptTemplateSubstitutionRequest create() {
-    return new PromptTemplateSubstitutionRequest();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * PromptTemplateSubstitutionRequest} instance with all required arguments.
+   */
+  public static Builder create() {
+    return (inputParams) -> new PromptTemplateSubstitutionRequest().inputParams(inputParams);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the inputParams of this {@link PromptTemplateSubstitutionRequest} instance.
+     *
+     * @param inputParams The inputParams of this {@link PromptTemplateSubstitutionRequest}
+     * @return The PromptTemplateSubstitutionRequest instance.
+     */
+    PromptTemplateSubstitutionRequest inputParams(@Nonnull final Object inputParams);
   }
 }

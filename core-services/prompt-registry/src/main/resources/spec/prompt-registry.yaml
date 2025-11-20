@@ -867,6 +867,8 @@ components:
           $ref: '#/components/schemas/PromptTemplateSpec'
     PromptTemplateSubstitutionRequest:
       type: object
+      required:
+        - inputParams
       properties:
         inputParams:
           type: object
