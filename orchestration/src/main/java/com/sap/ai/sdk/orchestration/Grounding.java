@@ -11,6 +11,7 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigPlaceholder
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.val;
@@ -31,7 +32,7 @@ public class Grounding implements GroundingProvider {
   private List<GroundingModuleConfigConfigFiltersInner> filters =
       List.of(DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.VECTOR));
 
-  @Nonnull private List<String> metadataParams = List.of();
+  @Nullable private List<String> metadataParams = null;
 
   @Setter(onMethod_ = {@Nonnull})
   private TypeEnum documentGroundingService = TypeEnum.DOCUMENT_GROUNDING_SERVICE;
@@ -67,6 +68,7 @@ public class Grounding implements GroundingProvider {
    *
    * @param metadataParams List of metadataParams to set.
    * @return The modified grounding configuration.
+   * @since 1.13.0
    */
   @Nonnull
   public Grounding metadataParams(@Nonnull final String... metadataParams) {
