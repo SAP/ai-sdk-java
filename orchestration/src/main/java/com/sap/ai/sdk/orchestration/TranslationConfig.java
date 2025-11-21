@@ -10,6 +10,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import lombok.With;
+import lombok.val;
 
 /**
  * Configuration helper for SAP Document Translation.
@@ -19,70 +21,81 @@ import lombok.Value;
  *     AI Core: Orchestration - SAP Document Translation</a>
  */
 @Value
+@With
 @Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class TranslationConfig {
-  @Nonnull SAPDocumentTranslationInput.TypeEnum translationType;
+  SAPDocumentTranslationInput inputConfig;
+  SAPDocumentTranslationOutput outputConfig;
+  String sourceLanguage;
 
   /**
-   * Create a builder for the SAP_DOCUMENT_TRANSLATION translation provider
+   * Create a new input translation configuration.
    *
-   * @return The Builder instance.
+   * @param targetLanguage The target language code
+   * @return A TranslationConfig configured for input translation
    */
   @Nonnull
-  public static Builder inputTranslation() {
-    return new TranslationConfig.Builder(
-        SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION);
+  public static TranslationConfig createInputConfig(@Nonnull final String targetLanguage) {
+    val translationType = SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION;
+    val inputConfig =
+        SAPDocumentTranslationInput.create()
+            .type(translationType)
+            .config(
+                SAPDocumentTranslationInputConfig.create()
+                    .targetLanguage(targetLanguage)
+                    .applyTo(null));
+    return new TranslationConfig(inputConfig, null, null);
   }
 
   /**
-   * Create a builder for the SAP_DOCUMENT_TRANSLATION translation provider
+   * Create a new output translation configuration.
    *
-   * @return The Builder2 instance.
+   * @param targetLanguage The target language code
+   * @return A TranslationConfig configured for output translation
    */
   @Nonnull
-  public static Builder2 outputTranslation() {
-    return new TranslationConfig.Builder2(
-        SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION);
+  public static TranslationConfig createOutputConfig(@Nonnull final String targetLanguage) {
+    val translationType = SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION;
+    val outputConfig =
+        SAPDocumentTranslationOutput.create()
+            .type(translationType)
+            .config(
+                SAPDocumentTranslationOutputConfig.create()
+                    .targetLanguage(
+                        SAPDocumentTranslationOutputTargetLanguage.create(targetLanguage))
+                    .sourceLanguage("en-US"));
+    return new TranslationConfig(null, outputConfig, null);
   }
 
-  /** Builder helper class. */
-  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class Builder {
-
-    private final SAPDocumentTranslationInput.TypeEnum translationType;
-
-    /**
-     * Get the input translation config with default values.
-     *
-     * @return The SAPDocumentTranslationInput instance.
-     */
-    @Nonnull
-    public SAPDocumentTranslationInput getInputTranslationConfig() {
-      return SAPDocumentTranslationInput.create()
-          .type(translationType)
-          .config(SAPDocumentTranslationInputConfig.create().targetLanguage("en-US").applyTo(null));
-    }
+  /**
+   * Set the source language for translation
+   *
+   * @param language The source language code
+   * @return A new TranslationConfig with the specified source language
+   */
+  @Nonnull
+  public TranslationConfig sourceLanguage(@Nonnull final String language) {
+    return this.withSourceLanguage(language);
   }
 
-  /** Sample builder class */
-  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class Builder2 {
-    private final SAPDocumentTranslationOutput.TypeEnum translationType;
+  /**
+   * Build and return the input translation configuration
+   *
+   * @return The SAPDocumentTranslationInput configuration
+   */
+  @Nonnull
+  SAPDocumentTranslationInput createSAPDocumentTranslationInput() {
+    return inputConfig;
+  }
 
-    /**
-     * Get the output translation config with default values.
-     *
-     * @return The SAPDocumentTranslationOutput instance.
-     */
-    @Nonnull
-    public SAPDocumentTranslationOutput getOutputTranslationConfig() {
-      return SAPDocumentTranslationOutput.create()
-          .type(translationType)
-          .config(
-              SAPDocumentTranslationOutputConfig.create()
-                  .targetLanguage(SAPDocumentTranslationOutputTargetLanguage.create("de-DE"))
-                  .sourceLanguage("en-US"));
-    }
+  /**
+   * Build and return the output translation configuration
+   *
+   * @return The SAPDocumentTranslationOutput configuration
+   */
+  @Nonnull
+  SAPDocumentTranslationOutput createSAPDocumentTranslationOutput() {
+    return outputConfig;
   }
 }

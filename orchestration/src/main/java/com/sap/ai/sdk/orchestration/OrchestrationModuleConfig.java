@@ -320,4 +320,30 @@ public class OrchestrationModuleConfig {
       @Nonnull final TemplateConfig templateConfig) {
     return this.withTemplateConfig(templateConfig.toLowLevel());
   }
+
+  /**
+   * Configure input translation using a high-level TranslationConfig.
+   *
+   * @param translationConfig The translation configuration
+   * @return A new OrchestrationModuleConfig with input translation configured
+   */
+  @Tolerate
+  @Nonnull
+  public OrchestrationModuleConfig withInputTranslationConfig(
+      @Nonnull final TranslationConfig translationConfig) {
+    return this.withInputTranslationConfig(translationConfig.createSAPDocumentTranslationInput());
+  }
+
+  /**
+   * Configure output translation using a high-level TranslationConfig.
+   *
+   * @param translationConfig The translation configuration
+   * @return A new OrchestrationModuleConfig with output translation configured
+   */
+  @Tolerate
+  @Nonnull
+  public OrchestrationModuleConfig withOutputTranslationConfig(
+      @Nonnull final TranslationConfig translationConfig) {
+    return this.withOutputTranslationConfig(translationConfig.createSAPDocumentTranslationOutput());
+  }
 }
