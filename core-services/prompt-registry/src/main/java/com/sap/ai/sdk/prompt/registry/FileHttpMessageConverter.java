@@ -16,8 +16,8 @@ import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.util.StreamUtils;
 
 /**
- * A custom {@link HttpMessageConverter} that enables Spring's RestTemplate to read and write {@link
- * java.io.File} objects for {@code application/octet-stream} payloads.
+ * A custom implementation {@link HttpMessageConverter} for Spring's RestTemplate to read and write
+ * {@link java.io.File} objects in {@code application/octet-stream} payloads.
  *
  * @see org.springframework.http.converter.AbstractHttpMessageConverter
  */
@@ -41,10 +41,10 @@ class FileHttpMessageConverter extends AbstractHttpMessageConverter<File> {
   }
 
   /**
-   * Reads the {@link HttpInputMessage} body into a new temporary file and returns it.
+   * Reads the {@link HttpInputMessage} body into a new file in system's temporary directory.
    *
-   * <p>A temporary file is created in the system temp directory and the response body is streamed
-   * directly into this file without buffering the entire content in memory.
+   * <p>The response body is streamed directly into this file without buffering the entire content
+   * in memory.
    *
    * <p>The caller is responsible for deleting the returned file.
    *
