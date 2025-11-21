@@ -13,6 +13,7 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -69,6 +70,7 @@ public class PromptRegistryTest {
     final var resource = new ClassPathResource("prompt-template.yaml");
     final JsonNode expectedYaml = YAML_MAPPER.readTree(resource.getContentAsString(UTF_8));
     assertThat(YAML_MAPPER.readTree(exportedTemplate)).isEqualTo(expectedYaml);
+    Files.deleteIfExists(exportedTemplate.toPath());
 
     // cleanup
     List<PromptTemplateDeleteResponse> deletedTemplate = controller.deleteTemplate();
