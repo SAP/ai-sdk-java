@@ -1,7 +1,11 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
@@ -9,10 +13,14 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
 
 public class PromptRegistryTest {
+
+  static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
 
   @Test
   void listTemplates() {
@@ -56,7 +64,13 @@ public class PromptRegistryTest {
     PromptTemplatePostResponse template = controller.importTemplate();
     assertThat(template.getMessage()).contains("successful");
 
-    // export TODO: NOT WORKING
+    // export
+    final var exportedTemplate = controller.exportTemplate();
+
+    final var resource = new ClassPathResource("prompt-template.yaml");
+    final JsonNode expectedYaml = YAML_MAPPER.readTree(resource.getContentAsString(UTF_8));
+    assertThat(YAML_MAPPER.readTree(exportedTemplate)).isEqualTo(expectedYaml);
+    Files.deleteIfExists(exportedTemplate.toPath());
 
     // cleanup
     List<PromptTemplateDeleteResponse> deletedTemplate = controller.deleteTemplate();
