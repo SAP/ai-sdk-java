@@ -208,7 +208,7 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
    */
   @Nonnull
   public SFTPPipelineMinimalResponse _configuration(
-      @Nonnull final SFTPConfigurationMinimal _configuration) {
+      @Nullable final SFTPConfigurationMinimal _configuration) {
     this._configuration = _configuration;
     return this;
   }
@@ -228,7 +228,7 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @param _configuration The _configuration of this {@link SFTPPipelineMinimalResponse}
    */
-  public void setConfiguration(@Nonnull final SFTPConfigurationMinimal _configuration) {
+  public void setConfiguration(@Nullable final SFTPConfigurationMinimal _configuration) {
     this._configuration = _configuration;
   }
 
@@ -380,14 +380,7 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
    */
   public static Builder create() {
     return (id) ->
-        (status) ->
-            (type) ->
-                (_configuration) ->
-                    new SFTPPipelineMinimalResponse()
-                        .id(id)
-                        .status(status)
-                        .type(type)
-                        ._configuration(_configuration);
+        (status) -> (type) -> new SFTPPipelineMinimalResponse().id(id).status(status).type(type);
   }
 
   /** Builder helper class. */
@@ -418,20 +411,8 @@ public class SFTPPipelineMinimalResponse implements PipelineMinimalResponse
      * Set the type of this {@link SFTPPipelineMinimalResponse} instance.
      *
      * @param type The type of this {@link SFTPPipelineMinimalResponse}
-     * @return The SFTPPipelineMinimalResponse builder.
-     */
-    Builder3 type(@Nonnull final TypeEnum type);
-  }
-
-  /** Builder helper class. */
-  public interface Builder3 {
-    /**
-     * Set the _configuration of this {@link SFTPPipelineMinimalResponse} instance.
-     *
-     * @param _configuration The _configuration of this {@link SFTPPipelineMinimalResponse}
      * @return The SFTPPipelineMinimalResponse instance.
      */
-    SFTPPipelineMinimalResponse _configuration(
-        @Nonnull final SFTPConfigurationMinimal _configuration);
+    SFTPPipelineMinimalResponse type(@Nonnull final TypeEnum type);
   }
 }
