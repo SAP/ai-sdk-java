@@ -269,6 +269,28 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void testGroundingWithConvenience() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("groundingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var dbFilters = DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.VECTOR);
+
+    var groundingConfig = Grounding.create().metadataParams("foo", "bar").filters(dbFilters);
+    var prompt = groundingConfig.createGroundingPrompt("Hello, what do you know?");
+    var configWithGrounding = config.withGrounding(groundingConfig);
+
+    final var response = client.chatCompletion(prompt, configWithGrounding);
+
+    final String request = fileLoaderStr.apply("groundingRequestMetadata.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
+  }
+
+  @Test
   void testGroundingWithHelpSapCom() throws IOException {
     stubFor(
         post(urlPathEqualTo("/v2/completion"))

@@ -52,7 +52,7 @@ class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
       throw new ServiceBindingAccessException("Failed to load service key from environment", e);
     }
     if (serviceKey == null) {
-      log.debug("No service key found in environment variable {}", ENV_VAR_KEY);
+      log.debug("No service key found in environment variable {}.", ENV_VAR_KEY);
       return List.of();
     }
     final String logMessage =

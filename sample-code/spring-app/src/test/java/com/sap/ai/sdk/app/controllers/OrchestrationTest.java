@@ -209,6 +209,9 @@ class OrchestrationTest {
     assertThat(result.getIntermediateResults().getGrounding().getData()).isNotNull();
     assertThat(result.getIntermediateResults().getGrounding().getMessage())
         .isEqualTo("grounding result");
+    var groundingData =
+        (Map<String, String>) result.getIntermediateResults().getGrounding().getData();
+    assertThat(groundingData.get("grounding_result")).contains("metadata");
 
     var maskingResult = result.getIntermediateResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();
