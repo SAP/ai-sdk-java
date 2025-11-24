@@ -12,7 +12,8 @@
 
 ### ✨ New Functionality
 
--[Orchestration] Added new models for `OrchestrationAiModel`: `SONAR`,`SONAR_PRO`.
+- [Orchestration] Added new models for `OrchestrationAiModel`: `SONAR`,`SONAR_PRO`.
+- [Orchestration] Convenience for adding the `metadata_params` option to grounding calls.
 
 ### 📈 Improvements
 

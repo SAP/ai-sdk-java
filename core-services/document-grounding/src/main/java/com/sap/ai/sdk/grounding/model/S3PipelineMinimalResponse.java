@@ -207,7 +207,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
    */
   @Nonnull
   public S3PipelineMinimalResponse _configuration(
-      @Nonnull final S3ConfigurationMinimal _configuration) {
+      @Nullable final S3ConfigurationMinimal _configuration) {
     this._configuration = _configuration;
     return this;
   }
@@ -227,7 +227,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
    *
    * @param _configuration The _configuration of this {@link S3PipelineMinimalResponse}
    */
-  public void setConfiguration(@Nonnull final S3ConfigurationMinimal _configuration) {
+  public void setConfiguration(@Nullable final S3ConfigurationMinimal _configuration) {
     this._configuration = _configuration;
   }
 
@@ -377,14 +377,7 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
    */
   public static Builder create() {
     return (id) ->
-        (status) ->
-            (type) ->
-                (_configuration) ->
-                    new S3PipelineMinimalResponse()
-                        .id(id)
-                        .status(status)
-                        .type(type)
-                        ._configuration(_configuration);
+        (status) -> (type) -> new S3PipelineMinimalResponse().id(id).status(status).type(type);
   }
 
   /** Builder helper class. */
@@ -415,19 +408,8 @@ public class S3PipelineMinimalResponse implements PipelineMinimalResponse
      * Set the type of this {@link S3PipelineMinimalResponse} instance.
      *
      * @param type The type of this {@link S3PipelineMinimalResponse}
-     * @return The S3PipelineMinimalResponse builder.
-     */
-    Builder3 type(@Nonnull final TypeEnum type);
-  }
-
-  /** Builder helper class. */
-  public interface Builder3 {
-    /**
-     * Set the _configuration of this {@link S3PipelineMinimalResponse} instance.
-     *
-     * @param _configuration The _configuration of this {@link S3PipelineMinimalResponse}
      * @return The S3PipelineMinimalResponse instance.
      */
-    S3PipelineMinimalResponse _configuration(@Nonnull final S3ConfigurationMinimal _configuration);
+    S3PipelineMinimalResponse type(@Nonnull final TypeEnum type);
   }
 }
