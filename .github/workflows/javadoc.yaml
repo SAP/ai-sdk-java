@@ -7,6 +7,7 @@ on:
         description: 'Branch/Commit/Tag for JavaDoc'
         required: true
         default: 'main'
+  push:
 
 env:
   JAVA_VERSION: 17
