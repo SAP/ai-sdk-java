@@ -56,7 +56,7 @@ jobs:
 
       - name: "Determine Major Version"
         id: determine-major-version
-        run: echo "MAJOR_VERSION=$(echo \"${{ steps.determine-versions.outputs.RELEASE_VERSION }}" | cut -d '.' -f 1)" >> $GITHUB_OUTPUT
+        run: echo "MAJOR_VERSION=$(echo "${{ steps.determine-versions.outputs.RELEASE_VERSION }}" | cut -d '.' -f 1)" >> $GITHUB_OUTPUT
 
       - run: "echo Release Version: ${{ steps.determine-versions.outputs.RELEASE_VERSION }}"
       - run: "echo Current Version: ${{ steps.determine-versions.outputs.CURRENT_SNAPSHOT }}"
