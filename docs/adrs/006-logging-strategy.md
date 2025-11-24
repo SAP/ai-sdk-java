@@ -156,7 +156,6 @@ The SDK uses SLF4J API for all logging statements.
 
 * **Safe consumption.**
   Since MDC uses `ThreadLocal` storage, any new thread (created implicitly or explicitly) will not have access to the parent thread's MDC context.
-  Always audit for thread switches through async operations, resilience patterns etc., as these may lead to corrupted logs due to invalid MDC.
 
   ```java
   // Thread A
@@ -169,20 +168,9 @@ The SDK uses SLF4J API for all logging statements.
       log.debug("[callId={}] Processing", RequestLogContext.get(MdcKeys.CALL_ID)); 
   });
   ```
+  Be vigilant about thread switches through async operations and resilience patterns, as you may have to manually propagate MDC context to maintain logging continuity.
+  Refer to the following resource for more information on [MDC handling with thread pools](https://stackoverflow.com/questions/6073019/how-to-use-mdc-with-thread-pools).
 
-  To maintain logging context across thread boundaries, manually propagate the MDC context:
-
-  ```java
-  // Capture parent thread's MDC context
-  Map<String, String> context = MDC.getCopyOfContextMap();
-  
-  client.executeAsync(() -> {
-    // Restore the captured context in new thread
-    MDC.setContextMap(context);
-    // Thread B: RequestLogContext.get(MdcKeys.CALL_ID) returns abc123
-    log.debug("[callId={}] Processing", RequestLogContext.get(MdcKeys.CALL_ID));
-  });
-  ```
 ---
 
 ### 4. Logging Boundaries and Generation
