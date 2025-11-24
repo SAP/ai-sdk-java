@@ -331,7 +331,7 @@ public class OrchestrationModuleConfig {
   @Nonnull
   public OrchestrationModuleConfig withInputTranslationConfig(
       @Nonnull final TranslationConfig translationConfig) {
-    return this.withInputTranslationConfig(translationConfig.createSAPDocumentTranslationInput());
+    return this.withInputTranslationConfig(translationConfig.getInputConfig());
   }
 
   /**
@@ -344,6 +344,6 @@ public class OrchestrationModuleConfig {
   @Nonnull
   public OrchestrationModuleConfig withOutputTranslationConfig(
       @Nonnull final TranslationConfig translationConfig) {
-    return this.withOutputTranslationConfig(translationConfig.createSAPDocumentTranslationOutput());
+    return this.withOutputTranslationConfig(translationConfig.getOutputConfig());
   }
 }

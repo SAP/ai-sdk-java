@@ -19,6 +19,7 @@ import lombok.val;
  * @link <a
  *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/sap-document-translation">SAP
  *     AI Core: Orchestration - SAP Document Translation</a>
+ * @since 1.14.0
  */
 @Value
 @With
@@ -63,8 +64,7 @@ public class TranslationConfig {
             .config(
                 SAPDocumentTranslationOutputConfig.create()
                     .targetLanguage(
-                        SAPDocumentTranslationOutputTargetLanguage.create(targetLanguage))
-                    .sourceLanguage("en-US"));
+                        SAPDocumentTranslationOutputTargetLanguage.create(targetLanguage)));
     return new TranslationConfig(null, outputConfig, null);
   }
 
@@ -77,25 +77,5 @@ public class TranslationConfig {
   @Nonnull
   public TranslationConfig sourceLanguage(@Nonnull final String language) {
     return this.withSourceLanguage(language);
-  }
-
-  /**
-   * Build and return the input translation configuration
-   *
-   * @return The SAPDocumentTranslationInput configuration
-   */
-  @Nonnull
-  SAPDocumentTranslationInput createSAPDocumentTranslationInput() {
-    return inputConfig;
-  }
-
-  /**
-   * Build and return the output translation configuration
-   *
-   * @return The SAPDocumentTranslationOutput configuration
-   */
-  @Nonnull
-  SAPDocumentTranslationOutput createSAPDocumentTranslationOutput() {
-    return outputConfig;
   }
 }
