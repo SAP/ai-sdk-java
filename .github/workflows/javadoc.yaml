@@ -1,12 +1,13 @@
 name: JavaDoc to Documentation Portal
 
 on:
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch/Commit/Tag for JavaDoc'
-        required: true
-        default: 'main'
+  push:
+#  workflow_dispatch:
+#    inputs:
+#      branch:
+#        description: 'Branch/Commit/Tag for JavaDoc'
+#        required: true
+#        default: 'main'
 
 env:
   JAVA_VERSION: 17
@@ -23,100 +24,101 @@ jobs:
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
+          echo "done"
 
-      - name: "Checkout Repository"
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-
-      - name: "Switch branch"
-        run: git checkout "${{ github.event.inputs.branch || 'main' }}"
-
-      - name: "Set up JDK 17"
-        uses: actions/setup-java@v5
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: 'maven'
-
+#      - name: "Checkout Repository"
+#        uses: actions/checkout@v5
+#        with:
+#          fetch-depth: 0
+#
+#      - name: "Switch branch"
+#        run: git checkout "${{ github.event.inputs.branch || 'main' }}"
+#
+#      - name: "Set up JDK 17"
+#        uses: actions/setup-java@v5
+#        with:
+#          java-version: '17'
+#          distribution: 'temurin'
+#          cache: 'maven'
+#
+##      - name: "Determine Versions"
+##        id: determine-version
+##        run: |
+##          echo "MAJOR_VERSION=$(jq -r '.version' latest.json | cut -d '.' -f 1)" >> $GITHUB_OUTPUT
+##          echo "CURRENT_VERSION=$(jq -r '.version' latest.json)" >> $GITHUB_OUTPUT
+#
 #      - name: "Determine Versions"
-#        id: determine-version
+#        id: determine-versions
 #        run: |
-#          echo "MAJOR_VERSION=$(jq -r '.version' latest.json | cut -d '.' -f 1)" >> $GITHUB_OUTPUT
-#          echo "CURRENT_VERSION=$(jq -r '.version' latest.json)" >> $GITHUB_OUTPUT
-
-      - name: "Determine Versions"
-        id: determine-versions
-        run: |
-          python .pipeline/scripts/get-release-versions.py
-          echo "MAJOR_VERSION=$(echo \"$RELEASE_VERSION\" | cut -d '.' -f 1)" >> $GITHUB_OUTPUT
-        env:
-          INPUT_VERSION: ${{ github.event.inputs.release-version }}
-
-      - run: "echo Release Version: ${{ steps.determine-versions.outputs.RELEASE_VERSION }}"
-      - run: "echo Current Version: ${{ steps.determine-versions.outputs.CURRENT_SNAPSHOT }}"
-      - run: "echo Major Version: ${{ steps.determine-versions.outputs.MAJOR_VERSION }}"
-
-      - name: "Install project (skip tests)"
-        run: mvn install -DskipTests --quiet
-
-      - name: "Process sources"
-        run: mvn process-sources -Drelease --fail-at-end --projects "${PROJECTS}" --quiet
-
-      - name: "Copy delombok sources"
-        run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
-
-      - name: "Generate aggregated Javadoc"
-        run: mvn clean javadoc:aggregate -Drelease -Djava.failOnWarning=false --projects "${PROJECTS}" --quiet
-
-      - name: "Checkout Docs Repository"
-        uses: actions/checkout@v5
-        with:
-          repository: ${{ env.DOCS_REPO }}
-          path: .ai-sdk-docs
-          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
-
-      - name: "Replace JavaDoc"
-        id: replace-javadoc
-        run: |
-          TARGET_DIR=./.ai-sdk-docs/static/java-api/v${{ steps.determine-version.outputs.MAJOR_VERSION }}
-
-          ls -lA target
-          rm -rf $TARGET_DIR
-          mkdir -p $TARGET_DIR
-          mv target/reports/apidocs/* $TARGET_DIR
-
-          cd ./.ai-sdk-docs
-          git add -A .
-
-          CHANGED_FILES="$(git status -s)"
-          if [[ -z "$CHANGED_FILES" ]]; then
-              echo "[DEBUG] No changes to API docs detected, skipping Pull Request creation."
-              echo "CREATE_PR=false" >> $GITHUB_OUTPUT
-              exit 0
-          fi
-
-          echo "CREATE_PR=true" >> $GITHUB_OUTPUT
-          BRANCH_NAME=java/release-docs-${{ steps.determine-version.outputs.CURRENT_VERSION }}
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
-
-          git switch --create $BRANCH_NAME
-          git commit -m "chore: Update JavaDocs for release ${{ steps.determine-version.outputs.CURRENT_VERSION }}"
-          COMMIT_SHA=$(git log -1 --pretty=format:"%H")
-          echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_OUTPUT
-
-          git push origin $BRANCH_NAME
-
-      - name: "Create JavaDoc PR"
-        id: create-javadoc-pr
-        if: ${{ steps.replace-javadoc.outputs.CREATE_PR == 'true' }}
-        working-directory: ./.ai-sdk-docs
-        run: |
-          PR_TITLE="Java: Update JavaDocs for release ${{ steps.determine-version.outputs.CURRENT_VERSION }}"
-          PR_BODY="Replace the contents of v${{ steps.determine-version.outputs.MAJOR_VERSION }} API docs with the latest release of the SDK."
-
-          PR_URL=$(gh pr create --title "$PR_TITLE" --body "$PR_BODY" --repo "${{ env.DOCS_REPO }}")
-          echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
-          echo "PR: $PR_URL" >> $GITHUB_STEP_SUMMARY
-        env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+#          python .pipeline/scripts/get-release-versions.py
+#          echo "MAJOR_VERSION=$(echo \"$RELEASE_VERSION\" | cut -d '.' -f 1)" >> $GITHUB_OUTPUT
+#        env:
+#          INPUT_VERSION: ${{ github.event.inputs.release-version }}
+#
+#      - run: "echo Release Version: ${{ steps.determine-versions.outputs.RELEASE_VERSION }}"
+#      - run: "echo Current Version: ${{ steps.determine-versions.outputs.CURRENT_SNAPSHOT }}"
+#      - run: "echo Major Version: ${{ steps.determine-versions.outputs.MAJOR_VERSION }}"
+#
+#      - name: "Install project (skip tests)"
+#        run: mvn install -DskipTests --quiet
+#
+#      - name: "Process sources"
+#        run: mvn process-sources -Drelease --fail-at-end --projects "${PROJECTS}" --quiet
+#
+#      - name: "Copy delombok sources"
+#        run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
+#
+#      - name: "Generate aggregated Javadoc"
+#        run: mvn clean javadoc:aggregate -Drelease -Djava.failOnWarning=false --projects "${PROJECTS}" --quiet
+#
+#      - name: "Checkout Docs Repository"
+#        uses: actions/checkout@v5
+#        with:
+#          repository: ${{ env.DOCS_REPO }}
+#          path: .ai-sdk-docs
+#          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+#
+#      - name: "Replace JavaDoc"
+#        id: replace-javadoc
+#        run: |
+#          TARGET_DIR=./.ai-sdk-docs/static/java-api/v${{ steps.determine-version.outputs.MAJOR_VERSION }}
+#
+#          ls -lA target
+#          rm -rf $TARGET_DIR
+#          mkdir -p $TARGET_DIR
+#          mv target/reports/apidocs/* $TARGET_DIR
+#
+#          cd ./.ai-sdk-docs
+#          git add -A .
+#
+#          CHANGED_FILES="$(git status -s)"
+#          if [[ -z "$CHANGED_FILES" ]]; then
+#              echo "[DEBUG] No changes to API docs detected, skipping Pull Request creation."
+#              echo "CREATE_PR=false" >> $GITHUB_OUTPUT
+#              exit 0
+#          fi
+#
+#          echo "CREATE_PR=true" >> $GITHUB_OUTPUT
+#          BRANCH_NAME=java/release-docs-${{ steps.determine-version.outputs.CURRENT_VERSION }}
+#          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_OUTPUT
+#
+#          git switch --create $BRANCH_NAME
+#          git commit -m "chore: Update JavaDocs for release ${{ steps.determine-version.outputs.CURRENT_VERSION }}"
+#          COMMIT_SHA=$(git log -1 --pretty=format:"%H")
+#          echo "COMMIT_SHA=$COMMIT_SHA" >> $GITHUB_OUTPUT
+#
+#          git push origin $BRANCH_NAME
+#
+#      - name: "Create JavaDoc PR"
+#        id: create-javadoc-pr
+#        if: ${{ steps.replace-javadoc.outputs.CREATE_PR == 'true' }}
+#        working-directory: ./.ai-sdk-docs
+#        run: |
+#          PR_TITLE="Java: Update JavaDocs for release ${{ steps.determine-version.outputs.CURRENT_VERSION }}"
+#          PR_BODY="Replace the contents of v${{ steps.determine-version.outputs.MAJOR_VERSION }} API docs with the latest release of the SDK."
+#
+#          PR_URL=$(gh pr create --title "$PR_TITLE" --body "$PR_BODY" --repo "${{ env.DOCS_REPO }}")
+#          echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
+#          echo "PR: $PR_URL" >> $GITHUB_STEP_SUMMARY
+#        env:
+#          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
