@@ -7,8 +7,8 @@ Accepted
 ## Context
 
 The AI SDK identified some challenges with debugging and problem resolution that can be addressed with better logging.
-Typically, users have to enable wire logs for troubleshooting which, along with helpful logs, surfaces a large volume of unrelated ones.
-Additionally, we identified the need to improve visibility into the application progress to the user.
+Typically, users have to enable wire logs for troubleshooting which, along with helpful logs, surfaces a large volume of unrelated noise.
+Additionally, we identified the need to improve visibility into the application progress for the user.
 
 Key drivers for this decision include:
 
