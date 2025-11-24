@@ -36,7 +36,7 @@ public class TranslationConfig {
    * @return A TranslationConfig configured for input translation
    */
   @Nonnull
-  public static TranslationConfig createInputConfig(@Nonnull final String targetLanguage) {
+  public static TranslationConfig createInput(@Nonnull final String targetLanguage) {
     val translationType = SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION;
     val inputConfig =
         SAPDocumentTranslationInput.create()
@@ -55,7 +55,7 @@ public class TranslationConfig {
    * @return A TranslationConfig configured for output translation
    */
   @Nonnull
-  public static TranslationConfig createOutputConfig(@Nonnull final String targetLanguage) {
+  public static TranslationConfig createOutput(@Nonnull final String targetLanguage) {
     val translationType = SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION;
     val outputConfig =
         SAPDocumentTranslationOutput.create()

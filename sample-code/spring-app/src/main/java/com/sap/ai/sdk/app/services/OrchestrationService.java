@@ -616,9 +616,9 @@ public class OrchestrationService {
     // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
     val configWithTranslation =
         config
-            .withInputTranslationConfig(TranslationConfig.createInputConfig("en-US"))
+            .withInputTranslationConfig(TranslationConfig.createInput("en-US"))
             .withOutputTranslationConfig(
-                TranslationConfig.createOutputConfig("de-DE")
+                TranslationConfig.createOutput("de-DE")
                     .sourceLanguage("en-US")); // optional source language
 
     return client.chatCompletion(prompt, configWithTranslation);
