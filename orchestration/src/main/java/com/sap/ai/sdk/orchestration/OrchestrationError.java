@@ -1,5 +1,8 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationClientException.lastError;
+import static com.sap.ai.sdk.orchestration.OrchestrationClientException.lastErrorStreaming;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientError;
@@ -27,12 +30,14 @@ public interface OrchestrationError extends ClientError {
   @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
   @Value
   class Synchronous implements OrchestrationError {
+    private static Error NOT_FOUND =
+        Error.create().requestId("").code(501).message("error not found").location("");
     ErrorResponse errorResponse;
 
     @Override
     @Nonnull
     public String getMessage() {
-      final Error e = errorResponse.getError();
+      final Error e = lastError(errorResponse.getError()).orElse(NOT_FOUND);
       final String message = e.getMessage();
       return e.getCode() == 500 ? "%s located in %s".formatted(message, e.getLocation()) : message;
     }
@@ -46,12 +51,14 @@ public interface OrchestrationError extends ClientError {
   @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
   @Value
   class Streaming implements OrchestrationError {
+    private static ErrorStreaming NOT_FOUND =
+        ErrorStreaming.create().requestId("").code(501).message("error not found").location("");
     ErrorResponseStreaming errorResponse;
 
     @Override
     @Nonnull
     public String getMessage() {
-      final ErrorStreaming e = errorResponse.getError();
+      final ErrorStreaming e = lastErrorStreaming(errorResponse.getError()).orElse(NOT_FOUND);
       final String message = e.getMessage();
       return e.getCode() == 500 ? "%s located in %s".formatted(message, e.getLocation()) : message;
     }
