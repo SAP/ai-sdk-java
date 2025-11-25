@@ -86,6 +86,8 @@ jobs:
         run: |
           TARGET_DIR=./.ai-sdk-docs/static/java-api/v${{ steps.determine-version.outputs.MAJOR_VERSION }}
 
+          find target -type d -print
+
           ls -lA target
           rm -rf $TARGET_DIR
           mkdir -p $TARGET_DIR
