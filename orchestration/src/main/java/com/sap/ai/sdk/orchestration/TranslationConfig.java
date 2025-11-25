@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationApplyToSelector;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInput;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInputConfig;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.With;
 import lombok.val;
+
+import java.util.List;
 
 /**
  * Configuration helper for SAP Document Translation.
@@ -31,7 +34,7 @@ public interface TranslationConfig {
     String sourceLanguage;
 
     @With(AccessLevel.NONE)
-    Object applyTo;
+    Object applyTo; // see backlog item SAP/ai-sdk-java-backlog#341
 
     @Nonnull
     SAPDocumentTranslationInput createSAPDocumentTranslationInput() {
