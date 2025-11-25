@@ -330,7 +330,7 @@ public class OrchestrationModuleConfig {
   @Tolerate
   @Nonnull
   public OrchestrationModuleConfig withInputTranslationConfig(
-      @Nonnull final TranslationConfig translationConfig) {
+      @Nonnull final TranslationConfig.Input translationConfig) {
     return this.withInputTranslationConfig(translationConfig.createSAPDocumentTranslationInput());
   }
 
@@ -343,7 +343,7 @@ public class OrchestrationModuleConfig {
   @Tolerate
   @Nonnull
   public OrchestrationModuleConfig withOutputTranslationConfig(
-      @Nonnull final TranslationConfig translationConfig) {
+      @Nonnull final TranslationConfig.Output translationConfig) {
     return this.withOutputTranslationConfig(translationConfig.createSAPDocumentTranslationOutput());
   }
 }
