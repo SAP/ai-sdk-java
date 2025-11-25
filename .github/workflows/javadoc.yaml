@@ -69,10 +69,12 @@ jobs:
         run: mvn process-sources -Drelease --fail-at-end --quiet
 
       - name: "Copy delombok sources"
-        run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
+        run: |
+          find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
+          find . -type d -print
 
       - name: "Generate aggregated Javadoc"
-        run: mvn clean javadoc:aggregate -Drelease -Djava.failOnWarning=false -X # --quiet
+        run: mvn clean javadoc:aggregate -Drelease -Djava.failOnWarning=false # -X --quiet
 
       - name: "Checkout Docs Repository"
         uses: actions/checkout@v5
