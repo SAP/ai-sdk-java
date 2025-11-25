@@ -85,7 +85,7 @@ public class ClientStreamingHandler<
                 }
                 return objectMapper.treeToValue(jsonNode, successType);
               } catch (final IOException e) {
-                log.error("Failed to parse delta chunk to type {}", successType);
+                log.error("Failed to parse delta chunk to type {}.", successType);
                 final String message = "Failed to parse delta chunk";
                 throw exceptionFactory.build(message, e).setHttpResponse(response);
               }
