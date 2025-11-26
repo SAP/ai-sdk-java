@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
@@ -33,9 +32,7 @@ final class ConfigToRequestTransformer {
     val configCopy = config.withTemplateConfig(template);
 
     val messageHistory =
-        prompt.getMessagesHistory().stream()
-            .map(Message::createChatMessage)
-            .toList();
+        prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
 
     val moduleConfigs = toModuleConfigs(configCopy);
 
