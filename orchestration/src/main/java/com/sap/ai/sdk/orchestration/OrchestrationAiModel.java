@@ -29,7 +29,7 @@ public class OrchestrationAiModel {
    *
    * <pre>{@code
    * Map.of(
-   *     "max_tokens", 50,
+   *     "max_completion_tokens", 50,
    *     "temperature", 0.1,
    *     "frequency_penalty", 0,
    *     "presence_penalty", 0)
@@ -375,7 +375,7 @@ public class OrchestrationAiModel {
   @FunctionalInterface
   public interface Parameter<ValueT> {
     /** The maximum number of tokens to generate. */
-    Parameter<Integer> MAX_TOKENS = () -> "max_tokens";
+    Parameter<Integer> MAX_TOKENS = () -> "max_completion_tokens";
 
     /** The sampling temperature. */
     Parameter<Number> TEMPERATURE = () -> "temperature";
