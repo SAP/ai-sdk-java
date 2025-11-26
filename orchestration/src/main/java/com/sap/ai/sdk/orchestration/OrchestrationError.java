@@ -31,7 +31,7 @@ public interface OrchestrationError extends ClientError {
   @Value
   class Synchronous implements OrchestrationError {
     private static Error NOT_FOUND =
-        Error.create().requestId("").code(501).message("error not found").location("");
+        Error.create().requestId("").code(-1).message("error not found").location("");
     ErrorResponse errorResponse;
 
     @Override
@@ -52,7 +52,7 @@ public interface OrchestrationError extends ClientError {
   @Value
   class Streaming implements OrchestrationError {
     private static ErrorStreaming NOT_FOUND =
-        ErrorStreaming.create().requestId("").code(501).message("error not found").location("");
+        ErrorStreaming.create().requestId("").code(-1).message("error not found").location("");
     ErrorResponseStreaming errorResponse;
 
     @Override
