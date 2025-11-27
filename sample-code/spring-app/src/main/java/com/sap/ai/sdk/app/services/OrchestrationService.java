@@ -619,7 +619,7 @@ public class OrchestrationService {
             .withInputTranslationConfig(TranslationConfig.createInput("en-US"))
             .withOutputTranslationConfig(
                 TranslationConfig.createOutput("de-DE")
-                    .sourceLanguage("en-US")); // optional source language
+                    .withSourceLanguage("en-US")); // optional source language
 
     return client.chatCompletion(prompt, configWithTranslation);
   }

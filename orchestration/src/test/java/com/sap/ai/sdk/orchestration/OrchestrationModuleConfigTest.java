@@ -140,8 +140,9 @@ class OrchestrationModuleConfigTest {
 
   @Test
   void testTranslationConfig() {
-    var inputTranslationConfig = TranslationConfig.createInput("en-US").sourceLanguage("de-DE");
-    var outputTranslationConfig = TranslationConfig.createOutput("de-DE").sourceLanguage("en-US");
+    var inputTranslationConfig = TranslationConfig.createInput("en-US").withSourceLanguage("de-DE");
+    var outputTranslationConfig =
+        TranslationConfig.createOutput("de-DE").withSourceLanguage("en-US");
     var config =
         new OrchestrationModuleConfig()
             .withLlmConfig(GPT_4O)
@@ -152,13 +153,25 @@ class OrchestrationModuleConfigTest {
     assertThat(config.getInputTranslationConfig().getConfig().getTargetLanguage())
         .isEqualTo("en-US");
     assertThat(config.getInputTranslationConfig().getConfig().getSourceLanguage())
-        .isEqualTo(inputTranslationConfig.getInputConfig().getConfig().getSourceLanguage());
+        .isEqualTo(
+            inputTranslationConfig
+                .createSAPDocumentTranslationInput()
+                .getConfig()
+                .getSourceLanguage());
 
     assertThat(config.getOutputTranslationConfig()).isNotNull();
     assertThat(config.getOutputTranslationConfig().getConfig().getTargetLanguage())
-        .isEqualTo(outputTranslationConfig.getOutputConfig().getConfig().getTargetLanguage());
+        .isEqualTo(
+            outputTranslationConfig
+                .createSAPDocumentTranslationOutput()
+                .getConfig()
+                .getTargetLanguage());
     assertThat(config.getOutputTranslationConfig().getConfig().getSourceLanguage())
-        .isEqualTo(outputTranslationConfig.getOutputConfig().getConfig().getSourceLanguage());
+        .isEqualTo(
+            outputTranslationConfig
+                .createSAPDocumentTranslationOutput()
+                .getConfig()
+                .getSourceLanguage());
   }
 
   @Test
