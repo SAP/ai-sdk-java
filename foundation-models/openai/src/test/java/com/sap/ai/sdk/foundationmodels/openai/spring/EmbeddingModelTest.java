@@ -12,6 +12,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate20
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import lombok.SneakyThrows;
 import lombok.val;
@@ -19,7 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.embedding.EmbeddingOptionsBuilder;
+import org.springframework.ai.embedding.EmbeddingOptions;
 import org.springframework.ai.embedding.EmbeddingRequest;
 
 class EmbeddingModelTest {
@@ -36,12 +37,14 @@ class EmbeddingModelTest {
   void testCallWithValidEmbeddingRequest() {
     val texts = List.of("Some text");
     val springAiRequest =
-        new EmbeddingRequest(texts, EmbeddingOptionsBuilder.builder().withDimensions(128).build());
+        new EmbeddingRequest(texts, EmbeddingOptions.builder().dimensions(128).build());
 
     val expectedOpenAiResponse =
         new ObjectMapper()
             .readValue(
-                getClass().getClassLoader().getResource("__files/embeddingResponse.json"),
+                Objects.requireNonNull(
+                        getClass().getClassLoader().getResource("__files/embeddingResponse.json"))
+                    .openStream(),
                 EmbeddingsCreate200Response.class);
 
     val expectedOpenAiRequest =
@@ -67,7 +70,7 @@ class EmbeddingModelTest {
   void testCallWithModelOptionSetThrows() {
     val springAiRequest =
         new EmbeddingRequest(
-            List.of("Some text"), EmbeddingOptionsBuilder.builder().withModel("model").build());
+            List.of("Some text"), EmbeddingOptions.builder().model("model").build());
 
     val model = new OpenAiSpringEmbeddingModel(client);
 
@@ -86,7 +89,9 @@ class EmbeddingModelTest {
     val expectedOpenAiResponse =
         new ObjectMapper()
             .readValue(
-                getClass().getClassLoader().getResource("__files/embeddingResponse.json"),
+                Objects.requireNonNull(
+                        getClass().getClassLoader().getResource("__files/embeddingResponse.json"))
+                    .openStream(),
                 EmbeddingsCreate200Response.class);
 
     val docs = List.of(document.getFormattedContent());

@@ -31,7 +31,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
-import org.springframework.ai.embedding.EmbeddingOptionsBuilder;
+import org.springframework.ai.embedding.EmbeddingOptions;
 import org.springframework.ai.support.ToolCallbacks;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -276,8 +276,8 @@ public class SpringAiOrchestrationService {
   @Nonnull
   public float[] embed(@Nonnull final String inputText) {
     val embedOptions =
-        EmbeddingOptionsBuilder.builder()
-            .withModel(OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL.name())
+        EmbeddingOptions.builder()
+            .model(OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL.name())
             .build();
     return new OrchestrationSpringEmbeddingModel(embedOptions).embed(inputText);
   }
