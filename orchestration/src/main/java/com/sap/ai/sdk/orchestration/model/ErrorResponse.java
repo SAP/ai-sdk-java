@@ -29,7 +29,7 @@ public class ErrorResponse
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private Error error;
+  private ErrorResponseError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -44,7 +44,7 @@ public class ErrorResponse
    * @return The same instance of this {@link ErrorResponse} class
    */
   @Nonnull
-  public ErrorResponse error(@Nonnull final Error error) {
+  public ErrorResponse error(@Nonnull final ErrorResponseError error) {
     this.error = error;
     return this;
   }
@@ -55,7 +55,7 @@ public class ErrorResponse
    * @return error The error of this {@link ErrorResponse} instance.
    */
   @Nonnull
-  public Error getError() {
+  public ErrorResponseError getError() {
     return error;
   }
 
@@ -64,7 +64,7 @@ public class ErrorResponse
    *
    * @param error The error of this {@link ErrorResponse}
    */
-  public void setError(@Nonnull final Error error) {
+  public void setError(@Nonnull final ErrorResponseError error) {
     this.error = error;
   }
 
@@ -179,6 +179,6 @@ public class ErrorResponse
      * @param error The error of this {@link ErrorResponse}
      * @return The ErrorResponse instance.
      */
-    ErrorResponse error(@Nonnull final Error error);
+    ErrorResponse error(@Nonnull final ErrorResponseError error);
   }
 }

@@ -192,6 +192,7 @@ components:
       additionalProperties: false
       required:
         - request_id
+        - final_result
       properties:
         request_id:
           type: string
@@ -530,6 +531,11 @@ components:
           $ref: "#/components/schemas/ModuleResults"
         final_result:
           $ref: "#/components/schemas/LLMModuleResult"
+        intermediate_failures:
+          type: array
+          description: List of errors encountered during processing for unsuccessful modules configurations
+          items:
+            $ref: "#/components/schemas/Error"
 
     CompletionPostResponseStreaming:
       type: object
@@ -543,6 +549,11 @@ components:
           $ref: "#/components/schemas/ModuleResultsStreaming"
         final_result:
           $ref: "#/components/schemas/LLMModuleResultStreaming"
+        intermediate_failures:
+          type: array
+          description: List of errors encountered during processing for unsuccessful modules configurations
+          items:
+            $ref: "#/components/schemas/ErrorStreaming"
     OrchestrationConfig:
       type: object
       required:
@@ -550,7 +561,9 @@ components:
       additionalProperties: false
       properties:
         modules:
-          $ref: "#/components/schemas/ModuleConfigs"
+          oneOf:
+            - $ref: "#/components/schemas/ModuleConfigs"
+            - $ref: "#/components/schemas/ModuleConfigsList"
         stream:
           $ref: "#/components/schemas/GlobalStreamOptions"
     ModuleConfigs:
@@ -569,6 +582,13 @@ components:
           $ref: "#/components/schemas/GroundingModuleConfig"
         translation:
           $ref: "#/components/schemas/TranslationModuleConfig"
+    ModuleConfigsList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ModuleConfigs"
+      minItems: 1
+      description: >
+        A list of module configurations. The first configuration in the list that succeeds will be used.
     # Abstract base class encompassing fields for both `ModuleResults` and `ModuleResultsStreaming`
     # Not to be instantiated by llm-orchestration code
     ModuleResultsBase:
@@ -855,7 +875,7 @@ components:
           description: Additional parameters for the model. Default values are used for mandatory parameters.
           additionalProperties: true
           example:
-            max_tokens: 300
+            max_completion_tokens: 300 # max_tokens param has been deprecated in Azure Open AI spec
             temperature: 0.1
             frequency_penalty: 0
             presence_penalty: 0
@@ -1218,7 +1238,7 @@ components:
           $ref: "#/components/schemas/AzureThreshold"
         prompt_shield:
           type: boolean
-          description: A flag to use prompt shield
+          description: Filter prompts for harmful content such as jailbreaks and prompt injections.
           default: false
 
     AzureContentSafetyOutput:
@@ -1234,6 +1254,10 @@ components:
           $ref: "#/components/schemas/AzureThreshold"
         violence:
           $ref: "#/components/schemas/AzureThreshold"
+        protected_material_code:
+          type: boolean
+          description: Detect protected code content from known GitHub repositories. The scan includes software libraries, source code, algorithms, and other proprietary programming content.
+          default: false
 
     AzureThreshold:
       type: integer
@@ -1771,6 +1795,17 @@ components:
           example: "LLM Module"
         intermediate_results:
           $ref: "#/components/schemas/ModuleResults"
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: "HTTP headers returned from the failed request attempt"
+
+    ErrorList:
+      type: array
+      items:
+        $ref: "#/components/schemas/Error"
+      minItems: 1
 
     ErrorStreaming:
       type: object
@@ -1795,6 +1830,17 @@ components:
           example: "LLM Module"
         intermediate_results:
           $ref: "#/components/schemas/ModuleResultsStreaming"
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: "HTTP headers returned from the failed request attempt"
+
+    ErrorStreamingList:
+      type: array
+      items:
+        $ref: "#/components/schemas/ErrorStreaming"
+      minItems: 1
 
     ErrorResponse:
       type: object
@@ -1802,7 +1848,9 @@ components:
         - error
       properties:
         error:
-          $ref: "#/components/schemas/Error"
+          oneOf:
+            - $ref: "#/components/schemas/Error"
+            - $ref: "#/components/schemas/ErrorList"
 
     ErrorResponseStreaming:
       type: object
@@ -1810,7 +1858,9 @@ components:
         - error
       properties:
         error:
-          $ref: "#/components/schemas/ErrorStreaming"
+          oneOf:
+            - $ref: "#/components/schemas/ErrorStreaming"
+            - $ref: "#/components/schemas/ErrorStreamingList"
 
     # ref : https://github.com/openai/openai-python/blob/main/src/openai/types/chat/chat_completion_token_logprob.py
     ChatCompletionTokenLogprob:

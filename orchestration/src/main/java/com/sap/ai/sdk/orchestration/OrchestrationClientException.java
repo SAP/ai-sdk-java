@@ -6,7 +6,9 @@ import com.sap.ai.sdk.core.common.ClientExceptionFactory;
 import com.sap.ai.sdk.orchestration.OrchestrationFilterException.Input;
 import com.sap.ai.sdk.orchestration.model.Error;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
+import com.sap.ai.sdk.orchestration.model.ErrorResponseError;
 import com.sap.ai.sdk.orchestration.model.ErrorResponseStreaming;
+import com.sap.ai.sdk.orchestration.model.ErrorResponseStreamingError;
 import com.sap.ai.sdk.orchestration.model.ErrorStreaming;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleResults;
@@ -17,6 +19,7 @@ import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.experimental.StandardException;
+import lombok.val;
 
 /** Exception thrown by the {@link OrchestrationClient} in case of an error. */
 @StandardException
@@ -37,6 +40,7 @@ public class OrchestrationClientException extends ClientException {
     if (error instanceof OrchestrationError.Synchronous synchronousError) {
       return Optional.of(synchronousError.getErrorResponse())
           .map(ErrorResponse::getError)
+          .flatMap(OrchestrationClientException::lastError)
           .map(Error::getIntermediateResults)
           .map(ModuleResults::getInputFiltering)
           .filter(filter -> !filter.getMessage().equals("Input Filter passed successfully."))
@@ -46,6 +50,7 @@ public class OrchestrationClientException extends ClientException {
     } else if (error instanceof OrchestrationError.Streaming streamingError) {
       return Optional.of(streamingError.getErrorResponse())
           .map(ErrorResponseStreaming::getError)
+          .flatMap(OrchestrationClientException::lastErrorStreaming)
           .map(ErrorStreaming::getIntermediateResults)
           .map(ModuleResultsStreaming::getInputFiltering)
           .filter(filter -> !filter.getMessage().equals("Input Filter passed successfully."))
@@ -55,6 +60,29 @@ public class OrchestrationClientException extends ClientException {
           .orElseGet(Collections::emptyMap);
     }
     return Collections.emptyMap();
+  }
+
+  static Optional<Error> lastError(final ErrorResponseError responseError) {
+    if (responseError instanceof ErrorResponseError.InnerError innerError) {
+      return Optional.of(innerError.value());
+    }
+    if (responseError instanceof ErrorResponseError.ListOfErrors listOfErrors) {
+      val list = listOfErrors.values();
+      return list.isEmpty() ? Optional.empty() : Optional.of(list.get(list.size() - 1));
+    }
+    return Optional.empty();
+  }
+
+  static Optional<ErrorStreaming> lastErrorStreaming(
+      final ErrorResponseStreamingError responseError) {
+    if (responseError instanceof ErrorResponseStreamingError.InnerErrorStreaming innerError) {
+      return Optional.of(innerError.value());
+    }
+    if (responseError instanceof ErrorResponseStreamingError.ListOfErrorStreamings listOfErrors) {
+      val list = listOfErrors.values();
+      return list.isEmpty() ? Optional.empty() : Optional.of(list.get(list.size() - 1));
+    }
+    return Optional.empty();
   }
 
   @Override
@@ -104,6 +132,7 @@ public class OrchestrationClientException extends ClientException {
   public Integer getStatusCode() {
     return Optional.ofNullable(getErrorResponse())
         .map(ErrorResponse::getError)
+        .flatMap(OrchestrationClientException::lastError)
         .map(Error::getCode)
         .orElse(null);
   }
