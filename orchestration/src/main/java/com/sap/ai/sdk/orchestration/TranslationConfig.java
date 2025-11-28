@@ -43,12 +43,11 @@ public interface TranslationConfig {
 
   /** Output configuration for translation. */
   @Value
-  @With
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   class Output implements TranslationConfig {
-    @With(AccessLevel.NONE)
     String targetLanguage;
 
+    @With
     String sourceLanguage;
 
     @Nonnull
