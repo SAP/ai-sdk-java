@@ -46,8 +46,7 @@ public interface TranslationConfig {
   class Output implements TranslationConfig {
     String targetLanguage;
 
-    @With
-    String sourceLanguage;
+    @With String sourceLanguage;
 
     @Nonnull
     SAPDocumentTranslationOutput createSAPDocumentTranslationOutput() {
