@@ -42,34 +42,7 @@ public abstract class TemplateConfig {
   @Nonnull
   public static ReferenceBuilder reference() {
     final var templ = TemplateRefByScenarioNameVersion.create();
-    return s ->
-        n ->
-            v ->
-                new OrchestrationTemplateReference(
-                    templ
-                        .scenario(s)
-                        .name(n)
-                        .version(v)
-                        .scope(TemplateRefByScenarioNameVersion.ScopeEnum.TENANT));
-  }
-
-  /**
-   * Build a template reference with resource group scope.
-   *
-   * @return An intermediate object to build the template reference.
-   */
-  @Nonnull
-  public static ReferenceBuilder referenceWithResourceGroupScope() {
-    final var templ = TemplateRefByScenarioNameVersion.create();
-    return s ->
-        n ->
-            v ->
-                new OrchestrationTemplateReference(
-                    templ
-                        .scenario(s)
-                        .name(n)
-                        .version(v)
-                        .scope(TemplateRefByScenarioNameVersion.ScopeEnum.RESOURCE_GROUP));
+    return s -> n -> v -> new OrchestrationTemplateReference(templ.scenario(s).name(n).version(v));
   }
 
   /** Intermediate object to build a template reference. */
@@ -83,20 +56,7 @@ public abstract class TemplateConfig {
      */
     @Nonnull
     default OrchestrationTemplateReference byId(@Nonnull final String id) {
-      return new OrchestrationTemplateReference(
-          TemplateRefByID.create().id(id).scope(TemplateRefByID.ScopeEnum.TENANT));
-    }
-
-    /**
-     * Build a template reference with the given id and resource group scope.
-     *
-     * @param id The id of the template.
-     * @return A template reference with the given id.
-     */
-    @Nonnull
-    default OrchestrationTemplateReference byIdWithResourceGroupScope(@Nonnull final String id) {
-      return new OrchestrationTemplateReference(
-          TemplateRefByID.create().id(id).scope(TemplateRefByID.ScopeEnum.RESOURCE_GROUP));
+      return new OrchestrationTemplateReference(TemplateRefByID.create().id(id));
     }
 
     /**
