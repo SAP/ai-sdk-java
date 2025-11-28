@@ -27,8 +27,7 @@ public interface TranslationConfig {
   class Input implements TranslationConfig {
     String targetLanguage;
 
-    @With
-    String sourceLanguage;
+    @With String sourceLanguage;
 
     Object ApplyTo; // Can be null
 
