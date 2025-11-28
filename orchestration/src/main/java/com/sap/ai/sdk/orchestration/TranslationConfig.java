@@ -23,15 +23,13 @@ import lombok.val;
 public interface TranslationConfig {
   /** Input configuration for translation. */
   @Value
-  @With
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   class Input implements TranslationConfig {
-    @With(AccessLevel.NONE)
     String targetLanguage;
 
+    @With
     String sourceLanguage;
 
-    @With(AccessLevel.NONE)
     Object ApplyTo; // Can be null
 
     @Nonnull
