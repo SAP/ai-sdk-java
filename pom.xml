@@ -301,6 +301,11 @@
           <artifactId>openapi-generator-maven-plugin</artifactId>
           <version>7.17.0</version>
         </plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>3.12.0</version>
+				</plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -854,28 +859,49 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                 </execution>
               </executions>
             </plugin>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-javadoc-plugin</artifactId>
-              <version>3.12.0</version>
-              <configuration>
-                <quiet>true</quiet>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<configuration>
+								<quiet>true</quiet>
 								<doclint>none</doclint>
-                <show>protected</show>
-<!--                <sourcepath>${project.basedir}/target/delombok</sourcepath>-->
-              </configuration>
-              <executions>
-                <execution>
-                  <id>javadoc-jar</id>
-                  <goals>
-                    <goal>jar</goal>
-                  </goals>
+								<show>protected</show>
+								<overview>${project.rootdir}/javadoc.overview.html</overview>
+							</configuration>
+							<executions>
+								<execution>
+									<id>javadoc-jar</id>
+									<goals>
+										<goal>jar</goal>
+									</goals>
 									<configuration>
 										<sourcepath>${project.basedir}/target/delombok</sourcepath>
 									</configuration>
-                </execution>
-              </executions>
-            </plugin>
+								</execution>
+							</executions>
+						</plugin>
+<!--            <plugin>-->
+<!--              <groupId>org.apache.maven.plugins</groupId>-->
+<!--              <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--&lt;!&ndash;              <version>3.12.0</version>&ndash;&gt;-->
+<!--              <configuration>-->
+<!--                <quiet>true</quiet>-->
+<!--								<doclint>none</doclint>-->
+<!--                <show>protected</show>-->
+<!--&lt;!&ndash;                <sourcepath>${project.basedir}/target/delombok</sourcepath>&ndash;&gt;-->
+<!--              </configuration>-->
+<!--              <executions>-->
+<!--                <execution>-->
+<!--                  <id>javadoc-jar</id>-->
+<!--                  <goals>-->
+<!--                    <goal>jar</goal>-->
+<!--                  </goals>-->
+<!--									<configuration>-->
+<!--										<sourcepath>${project.basedir}/target/delombok</sourcepath>-->
+<!--									</configuration>-->
+<!--                </execution>-->
+<!--              </executions>-->
+<!--            </plugin>-->
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-gpg-plugin</artifactId>
