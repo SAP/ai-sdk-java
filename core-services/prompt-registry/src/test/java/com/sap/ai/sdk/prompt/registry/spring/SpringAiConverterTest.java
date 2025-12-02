@@ -52,7 +52,7 @@ public class SpringAiConverterTest {
 
   @Test
   void testInvalidRoleThrowsException() {
-    final var client = new PromptClient(SERVICE);
+    var client = new PromptClient(SERVICE);
     val errorPrompt =
         client.parsePromptTemplateByNameVersion(
             "categorization",

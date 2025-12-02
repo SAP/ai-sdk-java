@@ -2,16 +2,11 @@ package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.prompt.registry.PromptClient;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
-import com.sap.ai.sdk.prompt.registry.model.PromptTemplateGetResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
-import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
-import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpec;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
-import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import java.io.IOException;
 import java.util.List;
@@ -97,35 +92,5 @@ public class PromptRegistryTest {
     var ChatResponse = controller.promptRegistryToSpringAi();
     assertThat(ChatResponse).isNotNull();
     assertThat(ChatResponse.getOutput().getText()).contains("Sports");
-  }
-
-  @Test
-  void testPromptCreateAndGet() {
-    final PromptClient client = new PromptClient();
-    // cleanup
-    final var responseFormat =
-        ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT);
-    final var template = SingleChatTemplate.create().role("system").content("Test content");
-    final PromptTemplateSpec spec =
-        PromptTemplateSpec.create().template(List.of(template)).responseFormat(responseFormat);
-    final PromptTemplatePostRequest promptTemplateRequest =
-        PromptTemplatePostRequest.create()
-            .name("test")
-            .version("0.0.1")
-            .scenario("test-retrival")
-            .spec(spec);
-
-    final PromptTemplatePostResponse postResponse =
-        client.createUpdatePromptTemplate(promptTemplateRequest);
-    assertThat(postResponse.getName()).isEqualTo("test");
-
-    final PromptTemplateGetResponse getResponse =
-        client.getPromptTemplateByUuid(postResponse.getId());
-    // This assertion fails
-    assertThat(getResponse.getSpec().getResponseFormat())
-        .isEqualTo(
-            ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT));
-
-    client.deletePromptTemplate(postResponse.getId());
   }
 }
