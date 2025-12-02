@@ -36,4 +36,6 @@ public class PromptRegistryClientTest {
     assertThat(template.isIsVersionHead()).isEqualTo(true);
     assertThat(template.getSpec()).isNull();
   }
+  
+  
 }
