@@ -70,6 +70,7 @@ jobs:
 
       - name: "Copy delombok sources"
         run: |
+          find . -type d -path "*/target/delombok" -print
           find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
           find . -type d -print
 
