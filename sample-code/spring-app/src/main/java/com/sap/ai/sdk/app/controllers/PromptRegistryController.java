@@ -13,7 +13,6 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import com.sap.ai.sdk.prompt.registry.spring.SpringAiConverter;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -82,11 +81,11 @@ class PromptRegistryController {
   @GetMapping("/importTemplate")
   PromptTemplatePostResponse importTemplate() throws IOException {
     final Resource template = new ClassPathResource("prompt-template.yaml");
-    return client.importPromptTemplate("default", null, template.getFile());
+    return client.importPromptTemplate("default", null, template);
   }
 
   @GetMapping("/exportTemplate")
-  File exportTemplate() throws IOException {
+  byte[] exportTemplate() throws IOException {
     final var template = importTemplate();
     return client.exportPromptTemplate(template.getId());
   }

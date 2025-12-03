@@ -12,7 +12,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +19,6 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -251,11 +249,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    * @param promptTemplateId (required) The value for the parameter promptTemplateId
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
-   * @return File
+   * @return byte[]
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public File exportPromptTemplate(
+  public byte[] exportPromptTemplate(
       @Nonnull final UUID promptTemplateId,
       @Nullable final String aiResourceGroup,
       @Nullable final String aiResourceGroupScope)
@@ -295,8 +293,8 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<File> localVarReturnType =
-        new ParameterizedTypeReference<File>() {};
+    final ParameterizedTypeReference<byte[]> localVarReturnType =
+        new ParameterizedTypeReference<byte[]>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -320,11 +318,11 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    * <p><b>0</b> - Common Error
    *
    * @param promptTemplateId The value for the parameter promptTemplateId
-   * @return File
+   * @return byte[]
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public File exportPromptTemplate(@Nonnull final UUID promptTemplateId)
+  public byte[] exportPromptTemplate(@Nonnull final UUID promptTemplateId)
       throws OpenApiRequestException {
     return exportPromptTemplate(promptTemplateId, null, null);
   }
@@ -442,7 +440,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   public PromptTemplatePostResponse importPromptTemplate(
       @Nullable final String aiResourceGroup,
       @Nullable final String aiResourceGroupScope,
-      @Nullable final File _file)
+      @Nullable final org.springframework.core.io.Resource _file)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -461,7 +459,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
       localVarHeaderParams.add(
           "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
 
-    if (_file != null) localVarFormParams.add("file", new FileSystemResource(_file));
+    if (_file != null) localVarFormParams.add("file", _file);
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
