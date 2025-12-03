@@ -21,4 +21,4 @@
 
 ### 🐛 Fixed Issues
 
--
+- [PromptRegistry] Fix deserialization of `response_format` in retrieved prompt templates.
