@@ -29,7 +29,7 @@ public class OrchestrationAiModel {
    *
    * <pre>{@code
    * Map.of(
-   *     "max_tokens", 50,
+   *     "max_completion_tokens", 50,
    *     "temperature", 0.1,
    *     "frequency_penalty", 0,
    *     "presence_penalty", 0)
@@ -139,6 +139,14 @@ public class OrchestrationAiModel {
   /** Anthropic Claude 4 Sonnet model */
   public static final OrchestrationAiModel CLAUDE_4_SONNET =
       new OrchestrationAiModel("anthropic--claude-4-sonnet");
+
+  /** Anthropic Claude 4.5 Sonnet model */
+  public static final OrchestrationAiModel CLAUDE_4_5_SONNET =
+      new OrchestrationAiModel("anthropic--claude-4.5-sonnet");
+
+  /** Anthropic Claude 4.5 Haiku model */
+  public static final OrchestrationAiModel CLAUDE_4_5_HAIKU =
+      new OrchestrationAiModel("anthropic--claude-4.5-haiku");
 
   /**
    * Amazon Titan Text Lite model
@@ -302,6 +310,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_2_5_FLASH =
       new OrchestrationAiModel("gemini-2.5-flash");
 
+  /** Google Cloud Platform Gemini 2.5 Flash Lite model */
+  public static final OrchestrationAiModel GEMINI_2_5_FLASH_LITE =
+      new OrchestrationAiModel("gemini-2.5-flash-lite");
+
   /** Google Cloud Platform Gemini 2.5 Pro model */
   public static final OrchestrationAiModel GEMINI_2_5_PRO =
       new OrchestrationAiModel("gemini-2.5-pro");
@@ -313,6 +325,12 @@ public class OrchestrationAiModel {
   /** DeepSeek-R1 */
   public static final OrchestrationAiModel DEEPSEEK_R1 =
       new OrchestrationAiModel("deepseek-ai--deepseek-r1");
+
+  /** Perplexity AI Sonar model */
+  public static final OrchestrationAiModel SONAR = new OrchestrationAiModel("sonar");
+
+  /** Perplexity AI Sonar Pro model */
+  public static final OrchestrationAiModel SONAR_PRO = new OrchestrationAiModel("sonar-pro");
 
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");

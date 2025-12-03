@@ -116,7 +116,7 @@ public class EmbeddingsPostResponse
    * @return The same instance of this {@link EmbeddingsPostResponse} class
    */
   @Nonnull
-  public EmbeddingsPostResponse finalResult(@Nullable final EmbeddingsResponse finalResult) {
+  public EmbeddingsPostResponse finalResult(@Nonnull final EmbeddingsResponse finalResult) {
     this.finalResult = finalResult;
     return this;
   }
@@ -136,7 +136,7 @@ public class EmbeddingsPostResponse
    *
    * @param finalResult The finalResult of this {@link EmbeddingsPostResponse}
    */
-  public void setFinalResult(@Nullable final EmbeddingsResponse finalResult) {
+  public void setFinalResult(@Nonnull final EmbeddingsResponse finalResult) {
     this.finalResult = finalResult;
   }
 
@@ -249,7 +249,8 @@ public class EmbeddingsPostResponse
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (requestId) -> new EmbeddingsPostResponse().requestId(requestId);
+    return (requestId) ->
+        (finalResult) -> new EmbeddingsPostResponse().requestId(requestId).finalResult(finalResult);
   }
 
   /** Builder helper class. */
@@ -258,8 +259,19 @@ public class EmbeddingsPostResponse
      * Set the requestId of this {@link EmbeddingsPostResponse} instance.
      *
      * @param requestId The requestId of this {@link EmbeddingsPostResponse}
+     * @return The EmbeddingsPostResponse builder.
+     */
+    Builder1 requestId(@Nonnull final String requestId);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the finalResult of this {@link EmbeddingsPostResponse} instance.
+     *
+     * @param finalResult The finalResult of this {@link EmbeddingsPostResponse}
      * @return The EmbeddingsPostResponse instance.
      */
-    EmbeddingsPostResponse requestId(@Nonnull final String requestId);
+    EmbeddingsPostResponse finalResult(@Nonnull final EmbeddingsResponse finalResult);
   }
 }

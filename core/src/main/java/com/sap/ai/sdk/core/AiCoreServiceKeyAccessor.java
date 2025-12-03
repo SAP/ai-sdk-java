@@ -17,6 +17,7 @@ import javax.annotation.Nonnull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.slf4j.event.Level;
 
 /**
  * Loads an AI Core service key from the "AICORE_SERVICE_KEY" environment variable with support for
@@ -27,10 +28,13 @@ import lombok.val;
 class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
   static final String ENV_VAR_KEY = "AICORE_SERVICE_KEY";
 
+  private static final Lazy<Dotenv> DEFAULT_DOTENV =
+      Lazy.of(() -> Dotenv.configure().ignoreIfMissing().ignoreIfMalformed().load());
+
   private final Lazy<Dotenv> dotenv;
 
   AiCoreServiceKeyAccessor() {
-    this(Dotenv.configure().ignoreIfMissing().ignoreIfMalformed());
+    this(DEFAULT_DOTENV);
   }
 
   AiCoreServiceKeyAccessor(@Nonnull final DotenvBuilder dotenvBuilder) {
@@ -41,22 +45,21 @@ class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
   @Override
   public List<ServiceBinding> getServiceBindings() throws ServiceBindingAccessException {
     final String serviceKey;
+    final Level logLevel = dotenv.isEvaluated() ? Level.TRACE : Level.INFO;
     try {
       serviceKey = dotenv.get().get(ENV_VAR_KEY);
     } catch (Exception e) {
       throw new ServiceBindingAccessException("Failed to load service key from environment", e);
     }
     if (serviceKey == null) {
-      log.debug("No service key found in environment variable {}", ENV_VAR_KEY);
+      log.debug("No service key found in environment variable {}.", ENV_VAR_KEY);
       return List.of();
     }
-    log.info(
-        """
-        Found a service key in environment variable {}.
-        Using a service key is recommended for local testing only.
-        Bind the AI Core service to the application for productive usage.
-        """,
-        ENV_VAR_KEY);
+    final String logMessage =
+        "Found a service key in environment variable {}. "
+            + "Using a service key is recommended for local testing only."
+            + "Bind the AI Core service to the application for productive usage.";
+    log.atLevel(logLevel).log(logMessage, ENV_VAR_KEY);
 
     val binding = createServiceBinding(serviceKey);
     return List.of(binding);
@@ -79,6 +82,11 @@ class AiCoreServiceKeyAccessor implements ServiceBindingAccessor {
       // loaders matched the binding
       throw new ServiceBindingAccessException(
           new AiCoreCredentialsInvalidException("Missing clientid in service key"));
+    }
+
+    if (credentials.get("clientsecret") != null && credentials.get("credential-type") == null) {
+      // add missing "credential-type: binding-secret"
+      credentials.put("credential-type", "binding-secret");
     }
 
     return new DefaultServiceBindingBuilder()

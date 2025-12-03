@@ -1,5 +1,8 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import static com.sap.ai.sdk.core.common.RequestLogContext.Mode.STREAMING;
+import static com.sap.ai.sdk.core.common.RequestLogContext.Mode.SYNCHRONOUS;
+import static com.sap.ai.sdk.core.common.RequestLogContext.Service.OPENAI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiClientException.FACTORY;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObjectMapper;
 
@@ -10,6 +13,7 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
+import com.sap.ai.sdk.core.common.RequestLogContext;
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
@@ -417,6 +421,7 @@ public final class OpenAiClient {
       @Nonnull final Class<T> responseType) {
     final var request = new HttpPost(path);
     serializeAndSetHttpEntity(request, payload, this.customHeaders);
+    RequestLogContext.setEndpoint(path);
     return executeRequest(request, responseType);
   }
 
@@ -427,6 +432,7 @@ public final class OpenAiClient {
       @Nonnull final Class<D> deltaType) {
     final var request = new HttpPost(path);
     serializeAndSetHttpEntity(request, payload, this.customHeaders);
+    RequestLogContext.setEndpoint(path);
     return streamRequest(request, deltaType);
   }
 
@@ -449,10 +455,16 @@ public final class OpenAiClient {
       final BasicClassicHttpRequest request, @Nonnull final Class<T> responseType) {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
+      RequestLogContext.setDestination(destination.asHttp().getUri().toString());
+      RequestLogContext.setMode(SYNCHRONOUS);
+      RequestLogContext.setService(OPENAI);
+      RequestLogContext.logRequestStart();
       return client.execute(
           request, new ClientResponseHandler<>(responseType, OpenAiError.class, FACTORY));
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e).setHttpRequest(request);
+    } finally {
+      RequestLogContext.clear();
     }
   }
 
@@ -461,11 +473,17 @@ public final class OpenAiClient {
       final BasicClassicHttpRequest request, @Nonnull final Class<D> deltaType) {
     try {
       final var client = ApacheHttpClient5Accessor.getHttpClient(destination);
+      RequestLogContext.setDestination(destination.asHttp().getUri().toString());
+      RequestLogContext.setMode(STREAMING);
+      RequestLogContext.setService(OPENAI);
+      RequestLogContext.logRequestStart();
       return new ClientStreamingHandler<>(deltaType, OpenAiError.class, FACTORY)
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e).setHttpRequest(request);
+    } finally {
+      RequestLogContext.clear();
     }
   }
 }

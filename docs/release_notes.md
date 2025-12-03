@@ -12,7 +12,8 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] Introduced Spring AI integration for embeddings generation with the new `OrchestrationSpringAiEmbeddingModel` class.
+- [Orchestration] Added new models for `OrchestrationAiModel`: `SONAR`,`SONAR_PRO`, `GEMINI_2_5_FLASH_LITE`, `CLAUDE_4_5_HAIKU`.
+- [Orchestration] Convenience for adding the `metadata_params` option to grounding calls.
 
 ### 📈 Improvements
 

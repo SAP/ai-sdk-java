@@ -29,7 +29,7 @@ public class ErrorResponseStreaming
 // CHECKSTYLE:ON
 {
   @JsonProperty("error")
-  private ErrorStreaming error;
+  private ErrorResponseStreamingError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -44,7 +44,7 @@ public class ErrorResponseStreaming
    * @return The same instance of this {@link ErrorResponseStreaming} class
    */
   @Nonnull
-  public ErrorResponseStreaming error(@Nonnull final ErrorStreaming error) {
+  public ErrorResponseStreaming error(@Nonnull final ErrorResponseStreamingError error) {
     this.error = error;
     return this;
   }
@@ -55,7 +55,7 @@ public class ErrorResponseStreaming
    * @return error The error of this {@link ErrorResponseStreaming} instance.
    */
   @Nonnull
-  public ErrorStreaming getError() {
+  public ErrorResponseStreamingError getError() {
     return error;
   }
 
@@ -64,7 +64,7 @@ public class ErrorResponseStreaming
    *
    * @param error The error of this {@link ErrorResponseStreaming}
    */
-  public void setError(@Nonnull final ErrorStreaming error) {
+  public void setError(@Nonnull final ErrorResponseStreamingError error) {
     this.error = error;
   }
 
@@ -180,6 +180,6 @@ public class ErrorResponseStreaming
      * @param error The error of this {@link ErrorResponseStreaming}
      * @return The ErrorResponseStreaming instance.
      */
-    ErrorResponseStreaming error(@Nonnull final ErrorStreaming error);
+    ErrorResponseStreaming error(@Nonnull final ErrorResponseStreamingError error);
   }
 }

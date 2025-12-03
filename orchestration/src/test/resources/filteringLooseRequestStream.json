@@ -55,7 +55,8 @@
                 "hate": 4,
                 "self_harm": 4,
                 "sexual": 4,
-                "violence": 4
+                "violence": 4,
+                "protected_material_code" : false
               }
             }
           ],

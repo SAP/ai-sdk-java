@@ -69,8 +69,12 @@ public class OpenAiChatModel implements ChatModel {
     val response = new ChatResponse(toGenerations(result));
 
     if (options != null && isInternalToolExecutionEnabled(options) && response.hasToolCalls()) {
+      val toolCalls =
+          response.getResult().getOutput().getToolCalls().stream().map(ToolCall::name).toList();
+      log.info("Executing {} tool call(s) - {}.", toolCalls.size(), toolCalls);
       val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
       // Send the tool execution result back to the model.
+      log.debug("Re-invoking model with tool execution results.");
       return call(new Prompt(toolExecutionResult.conversationHistory(), options));
     }
     return response;
@@ -218,7 +222,7 @@ public class OpenAiChatModel implements ChatModel {
         val tool = new ChatCompletionTool().type(toolType).function(toolFunction);
         tools.add(tool);
       } catch (JsonProcessingException e) {
-        log.warn("Failed to add tool to the chat request: {}", e.getMessage());
+        log.warn("Failed to add tool to the chat request: {}.", e.getMessage());
       }
     }
     return tools;
