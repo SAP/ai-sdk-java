@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -38,6 +39,9 @@ public class CollectionRequest
 
   @JsonProperty("metadata")
   private List<VectorKeyValueListPair> metadata = new ArrayList<>();
+
+  @JsonProperty("id")
+  private UUID id;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -157,6 +161,37 @@ public class CollectionRequest
   }
 
   /**
+   * Set the id of this {@link CollectionRequest} instance and return the same instance.
+   *
+   * @param id Unique identifier of a collection.
+   * @return The same instance of this {@link CollectionRequest} class
+   */
+  @Nonnull
+  public CollectionRequest id(@Nullable final UUID id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * Unique identifier of a collection.
+   *
+   * @return id The id of this {@link CollectionRequest} instance.
+   */
+  @Nonnull
+  public UUID getId() {
+    return id;
+  }
+
+  /**
+   * Set the id of this {@link CollectionRequest} instance.
+   *
+   * @param id Unique identifier of a collection.
+   */
+  public void setId(@Nullable final UUID id) {
+    this.id = id;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link CollectionRequest}.
    *
    * @return The set of properties names
@@ -197,6 +232,7 @@ public class CollectionRequest
     if (title != null) declaredFields.put("title", title);
     if (embeddingConfig != null) declaredFields.put("embeddingConfig", embeddingConfig);
     if (metadata != null) declaredFields.put("metadata", metadata);
+    if (id != null) declaredFields.put("id", id);
     return declaredFields;
   }
 
@@ -224,12 +260,13 @@ public class CollectionRequest
     return Objects.equals(this.cloudSdkCustomFields, collectionRequest.cloudSdkCustomFields)
         && Objects.equals(this.title, collectionRequest.title)
         && Objects.equals(this.embeddingConfig, collectionRequest.embeddingConfig)
-        && Objects.equals(this.metadata, collectionRequest.metadata);
+        && Objects.equals(this.metadata, collectionRequest.metadata)
+        && Objects.equals(this.id, collectionRequest.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(title, embeddingConfig, metadata, cloudSdkCustomFields);
+    return Objects.hash(title, embeddingConfig, metadata, id, cloudSdkCustomFields);
   }
 
   @Override
@@ -240,6 +277,7 @@ public class CollectionRequest
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    embeddingConfig: ").append(toIndentedString(embeddingConfig)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
