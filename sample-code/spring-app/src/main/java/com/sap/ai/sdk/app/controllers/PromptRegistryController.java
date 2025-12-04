@@ -3,7 +3,17 @@ package com.sap.ai.sdk.app.controllers;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatModel;
+import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
 import com.sap.ai.sdk.prompt.registry.PromptClient;
+import com.sap.ai.sdk.prompt.registry.model.ChatMessage;
+import com.sap.ai.sdk.prompt.registry.model.ChatMessageContent;
+import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
+import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigDeleteResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigListResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostRequest;
@@ -11,7 +21,11 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpec;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
+import com.sap.ai.sdk.prompt.registry.model.SystemChatMessage;
+import com.sap.ai.sdk.prompt.registry.model.Template;
 import com.sap.ai.sdk.prompt.registry.spring.SpringAiConverter;
 import java.io.File;
 import java.io.IOException;
@@ -37,23 +51,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/prompt-registry")
 class PromptRegistryController {
   static final String NAME = "java-e2e-test";
-  private static final PromptClient client = new PromptClient();
+  private static final PromptClient promptClient = new PromptClient();
+  private static final OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
 
   @GetMapping("/listTemplates")
   PromptTemplateListResponse listTemplates() {
-    return client.listPromptTemplates();
+    return promptClient.listPromptTemplates();
   }
 
   @GetMapping("/createTemplate")
   PromptTemplatePostResponse createTemplate() {
-    return client.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
+    return promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
   }
 
   @GetMapping("/updateTemplate")
   PromptTemplatePostResponse updateTemplate() {
     // create template then update
-    client.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
-    return client.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports, Politics"));
+    promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
+    return promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports, Politics"));
   }
 
   private PromptTemplatePostRequest getTemplate(final String categories) {
@@ -76,25 +91,25 @@ class PromptRegistryController {
 
   @GetMapping("/history")
   PromptTemplateListResponse history() {
-    return client.listPromptTemplateHistory("categorization", "0.0.1", NAME);
+    return promptClient.listPromptTemplateHistory("categorization", "0.0.1", NAME);
   }
 
   @GetMapping("/importTemplate")
   PromptTemplatePostResponse importTemplate() throws IOException {
     final Resource template = new ClassPathResource("prompt-template.yaml");
-    return client.importPromptTemplate("default", null, template.getFile());
+    return promptClient.importPromptTemplate("default", null, template.getFile());
   }
 
   @GetMapping("/exportTemplate")
   File exportTemplate() throws IOException {
     final var template = importTemplate();
-    return client.exportPromptTemplate(template.getId());
+    return promptClient.exportPromptTemplate(template.getId());
   }
 
   @GetMapping("/useTemplate")
   PromptTemplateSubstitutionResponse useTemplate() {
     final var template = createTemplate();
-    return client.parsePromptTemplateById(
+    return promptClient.parsePromptTemplateById(
         template.getId(),
         "default",
         null,
@@ -105,11 +120,11 @@ class PromptRegistryController {
 
   @GetMapping("/deleteTemplate")
   List<PromptTemplateDeleteResponse> deleteTemplate() {
-    final PromptTemplateListResponse templates = client.listPromptTemplates();
+    final PromptTemplateListResponse templates = promptClient.listPromptTemplates();
 
     return templates.getResources().stream()
         .filter(template -> NAME.equals(template.getName()))
-        .map(template -> client.deletePromptTemplate(template.getId()))
+        .map(template -> promptClient.deletePromptTemplate(template.getId()))
         .toList();
   }
 
@@ -137,5 +152,43 @@ class PromptRegistryController {
     val prompt = new Prompt(messages);
     val response = cl.prompt(prompt).call().chatResponse();
     return response != null ? response.getResult() : null;
+  }
+
+  OrchestrationConfigListResponse listOrchConfigs() {
+    return orchConfigClient.listOrchestrationConfigs();
+  }
+
+  OrchestrationConfigPostResponse createOrchConfig() {
+    OrchestrationConfigPostRequest postRequest =
+        OrchestrationConfigPostRequest.create()
+            .name(NAME)
+            .version("0.0.1")
+            .scenario("sdk-test-scenario")
+            .spec(buildOrchestrationConfig());
+    return orchConfigClient.createUpdateOrchestrationConfig(postRequest);
+  }
+
+  List<OrchestrationConfigDeleteResponse> deleteOrchConfig() {
+    final OrchestrationConfigListResponse configs = orchConfigClient.listOrchestrationConfigs();
+
+    return configs.getResources().stream()
+        .filter(config -> NAME.equals(config.getName()))
+        .map(config -> orchConfigClient.deleteOrchestrationConfig(config.getId()))
+        .toList();
+  }
+
+  private OrchestrationConfig buildOrchestrationConfig() {
+    return OrchestrationConfig.create()
+        .modules(
+            ModuleConfigs.create()
+                .promptTemplating(
+                    PromptTemplatingModuleConfig.create()
+                        .prompt(
+                            Template.create()
+                                .template(
+                                    SystemChatMessage.create()
+                                        .role(SystemChatMessage.RoleEnum.SYSTEM)
+                                        .content(new ChatMessageContent.InnerString("text"))))
+                        .model(LLMModelDetails.create().name("model-name"))));
   }
 }
