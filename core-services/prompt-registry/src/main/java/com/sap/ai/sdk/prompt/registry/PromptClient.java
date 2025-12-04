@@ -2,6 +2,7 @@ package com.sap.ai.sdk.prompt.registry;
 
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.Iterables;
@@ -9,6 +10,8 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpecResponseFormat;
+import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonObject;
+import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatText;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -75,8 +78,16 @@ public class PromptClient extends PromptTemplatesApi {
     @JsonDeserialize(as = SingleChatTemplate.class)
     interface TemplateMixIn {}
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-    @JsonDeserialize(as = ResponseFormatText.class)
+    @JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        visible = true)
+    @JsonSubTypes({
+      @JsonSubTypes.Type(value = ResponseFormatJsonSchema.class, name = "json_schema"),
+      @JsonSubTypes.Type(value = ResponseFormatJsonObject.class, name = "json_object"),
+      @JsonSubTypes.Type(value = ResponseFormatText.class, name = "text")
+    })
     interface ResponseFormat {}
   }
 }
