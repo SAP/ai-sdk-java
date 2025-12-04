@@ -1,0 +1,41 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v2/lm/promptTemplates/0f79fec4-ae07-4c35-96e3-df7f4a3f1df5"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": "0f79fec4-ae07-4c35-96e3-df7f4a3f1df5",
+      "name": "test",
+      "version": "0.0.1",
+      "scenario": "test-retrival",
+      "creationTimestamp": "2025-12-02T16:13:32.411000",
+      "managedBy": "imperative",
+      "isVersionHead": true,
+      "spec": {
+        "template": [
+          {
+            "role": "system",
+            "content": "Test content"
+          }
+        ],
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "description": "Test schema description",
+            "name": "TestSchema",
+            "schema": {
+              "key": "value"
+            },
+            "strict": false
+          }
+        },
+        "tools": []
+      }
+    }
+  }
+}

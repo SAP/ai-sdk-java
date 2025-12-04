@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] Added new models for `OrchestrationAiModel`: `SONAR`,`SONAR_PRO`, `GEMINI_2_5_FLASH_LITE`.
+- [Orchestration] Added new models for `OrchestrationAiModel`: `SONAR`,`SONAR_PRO`, `GEMINI_2_5_FLASH_LITE`, `CLAUDE_4_5_HAIKU`.
 - [Orchestration] Convenience for adding the `metadata_params` option to grounding calls.
 
 ### 📈 Improvements
@@ -22,4 +22,4 @@
 
 ### 🐛 Fixed Issues
 
--
+- [PromptRegistry] Fix deserialization of `response_format` in retrieved prompt templates.
