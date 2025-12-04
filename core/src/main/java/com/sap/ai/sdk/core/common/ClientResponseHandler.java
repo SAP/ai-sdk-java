@@ -91,7 +91,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
     try {
       return objectMapper.readValue(content, successType);
     } catch (final JsonProcessingException e) {
-      log.error("Failed to parse response to type {}", successType);
+      log.error("Failed to parse response to type {}.", successType);
       throw exceptionFactory.build("Failed to parse response", e).setHttpResponse(response);
     }
   }

@@ -1,9 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.OrchestrationConfigModules;
+import com.sap.ai.sdk.orchestration.model.OrchestrationConfigModules.InnerModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.Template;
@@ -31,10 +32,7 @@ final class ConfigToRequestTransformer {
     val configCopy = config.withTemplateConfig(template);
 
     val messageHistory =
-        prompt.getMessagesHistory().stream()
-            .map(Message::createChatMessage)
-            .map(ChatMessage.class::cast)
-            .toList();
+        prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
 
     val moduleConfigs = toModuleConfigs(configCopy);
 
@@ -81,13 +79,13 @@ final class ConfigToRequestTransformer {
             .responseFormat(template.getResponseFormat());
 
     for (val customFieldName : template.getCustomFieldNames()) {
-      result.setCustomField(customFieldName, template.getCustomField(customFieldName));
+      result.setCustomField(customFieldName, template.toMap().get(customFieldName));
     }
     return result;
   }
 
   @Nonnull
-  static ModuleConfigs toModuleConfigs(@Nonnull final OrchestrationModuleConfig config) {
+  static InnerModuleConfigs toModuleConfigs(@Nonnull final OrchestrationModuleConfig config) {
     val llmConfig =
         Option.of(config.getLlmConfig())
             .getOrElseThrow(() -> new IllegalStateException("LLM config is required."));
@@ -113,6 +111,6 @@ final class ConfigToRequestTransformer {
       outputTranslation.forEach(moduleConfig.getTranslation()::output);
     }
 
-    return moduleConfig;
+    return OrchestrationConfigModules.createInnerModuleConfigs(moduleConfig);
   }
 }

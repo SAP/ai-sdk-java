@@ -177,7 +177,8 @@ public class AzureContentSafetyInput
    * Set the promptShield of this {@link AzureContentSafetyInput} instance and return the same
    * instance.
    *
-   * @param promptShield A flag to use prompt shield
+   * @param promptShield Filter prompts for harmful content such as jailbreaks and prompt
+   *     injections.
    * @return The same instance of this {@link AzureContentSafetyInput} class
    */
   @Nonnull
@@ -187,7 +188,7 @@ public class AzureContentSafetyInput
   }
 
   /**
-   * A flag to use prompt shield
+   * Filter prompts for harmful content such as jailbreaks and prompt injections.
    *
    * @return promptShield The promptShield of this {@link AzureContentSafetyInput} instance.
    */
@@ -199,7 +200,8 @@ public class AzureContentSafetyInput
   /**
    * Set the promptShield of this {@link AzureContentSafetyInput} instance.
    *
-   * @param promptShield A flag to use prompt shield
+   * @param promptShield Filter prompts for harmful content such as jailbreaks and prompt
+   *     injections.
    */
   public void setPromptShield(@Nullable final Boolean promptShield) {
     this.promptShield = promptShield;

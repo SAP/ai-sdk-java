@@ -3,7 +3,7 @@ name: "Dependabot Auto-Merge"
 on:
   workflow_dispatch:
   schedule:
-    - cron: '00 04 * * Mon' # trigger every Monday at 04:00 a.m., as our dependabot is configured to raise PRs every Monday at 2:00 a.m.
+    - cron: '00 01 * * Tue' # trigger every Tuesday at 01:00 a.m., as our dependabot is configured to raise PRs every Monday at 23:00 p.m.
 
 env:
   DEPENDABOT_GROUPS: |
@@ -19,7 +19,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Approve and Merge PRs
         run: |

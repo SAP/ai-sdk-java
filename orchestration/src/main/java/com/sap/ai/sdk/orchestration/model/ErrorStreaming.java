@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -42,6 +43,9 @@ public class ErrorStreaming
 
   @JsonProperty("intermediate_results")
   private ModuleResultsStreaming intermediateResults;
+
+  @JsonProperty("headers")
+  private Map<String, String> headers = new HashMap<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -207,6 +211,54 @@ public class ErrorStreaming
   }
 
   /**
+   * Set the headers of this {@link ErrorStreaming} instance and return the same instance.
+   *
+   * @param headers HTTP headers returned from the failed request attempt
+   * @return The same instance of this {@link ErrorStreaming} class
+   */
+  @Nonnull
+  public ErrorStreaming headers(@Nullable final Map<String, String> headers) {
+    this.headers = headers;
+    return this;
+  }
+
+  /**
+   * Put one headers instance to this {@link ErrorStreaming} instance.
+   *
+   * @param key The String key of this headers instance
+   * @param headersItem The headers that should be added under the given key
+   * @return The same instance of type {@link ErrorStreaming}
+   */
+  @Nonnull
+  public ErrorStreaming putheadersItem(
+      @Nonnull final String key, @Nonnull final String headersItem) {
+    if (this.headers == null) {
+      this.headers = new HashMap<>();
+    }
+    this.headers.put(key, headersItem);
+    return this;
+  }
+
+  /**
+   * HTTP headers returned from the failed request attempt
+   *
+   * @return headers The headers of this {@link ErrorStreaming} instance.
+   */
+  @Nonnull
+  public Map<String, String> getHeaders() {
+    return headers;
+  }
+
+  /**
+   * Set the headers of this {@link ErrorStreaming} instance.
+   *
+   * @param headers HTTP headers returned from the failed request attempt
+   */
+  public void setHeaders(@Nullable final Map<String, String> headers) {
+    this.headers = headers;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link ErrorStreaming}.
    *
    * @return The set of properties names
@@ -249,6 +301,7 @@ public class ErrorStreaming
     if (message != null) declaredFields.put("message", message);
     if (location != null) declaredFields.put("location", location);
     if (intermediateResults != null) declaredFields.put("intermediateResults", intermediateResults);
+    if (headers != null) declaredFields.put("headers", headers);
     return declaredFields;
   }
 
@@ -278,13 +331,14 @@ public class ErrorStreaming
         && Objects.equals(this.code, errorStreaming.code)
         && Objects.equals(this.message, errorStreaming.message)
         && Objects.equals(this.location, errorStreaming.location)
-        && Objects.equals(this.intermediateResults, errorStreaming.intermediateResults);
+        && Objects.equals(this.intermediateResults, errorStreaming.intermediateResults)
+        && Objects.equals(this.headers, errorStreaming.headers);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        requestId, code, message, location, intermediateResults, cloudSdkCustomFields);
+        requestId, code, message, location, intermediateResults, headers, cloudSdkCustomFields);
   }
 
   @Override
@@ -299,6 +353,7 @@ public class ErrorStreaming
     sb.append("    intermediateResults: ")
         .append(toIndentedString(intermediateResults))
         .append("\n");
+    sb.append("    headers: ").append(toIndentedString(headers)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

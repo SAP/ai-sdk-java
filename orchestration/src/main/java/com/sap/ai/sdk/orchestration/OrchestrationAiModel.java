@@ -29,7 +29,7 @@ public class OrchestrationAiModel {
    *
    * <pre>{@code
    * Map.of(
-   *     "max_tokens", 50,
+   *     "max_completion_tokens", 50,
    *     "temperature", 0.1,
    *     "frequency_penalty", 0,
    *     "presence_penalty", 0)
@@ -143,6 +143,10 @@ public class OrchestrationAiModel {
   /** Anthropic Claude 4.5 Sonnet model */
   public static final OrchestrationAiModel CLAUDE_4_5_SONNET =
       new OrchestrationAiModel("anthropic--claude-4.5-sonnet");
+
+  /** Anthropic Claude 4.5 Haiku model */
+  public static final OrchestrationAiModel CLAUDE_4_5_HAIKU =
+      new OrchestrationAiModel("anthropic--claude-4.5-haiku");
 
   /**
    * Amazon Titan Text Lite model
@@ -306,6 +310,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_2_5_FLASH =
       new OrchestrationAiModel("gemini-2.5-flash");
 
+  /** Google Cloud Platform Gemini 2.5 Flash Lite model */
+  public static final OrchestrationAiModel GEMINI_2_5_FLASH_LITE =
+      new OrchestrationAiModel("gemini-2.5-flash-lite");
+
   /** Google Cloud Platform Gemini 2.5 Pro model */
   public static final OrchestrationAiModel GEMINI_2_5_PRO =
       new OrchestrationAiModel("gemini-2.5-pro");
@@ -375,7 +383,7 @@ public class OrchestrationAiModel {
   @FunctionalInterface
   public interface Parameter<ValueT> {
     /** The maximum number of tokens to generate. */
-    Parameter<Integer> MAX_TOKENS = () -> "max_tokens";
+    Parameter<Integer> MAX_TOKENS = () -> "max_completion_tokens";
 
     /** The sampling temperature. */
     Parameter<Number> TEMPERATURE = () -> "temperature";
