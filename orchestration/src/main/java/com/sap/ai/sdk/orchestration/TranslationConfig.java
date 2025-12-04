@@ -64,6 +64,9 @@ public interface TranslationConfig {
    * Create a new input translation configuration.
    *
    * @param targetLanguage The target language code
+   * @link <a
+   *     href="https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages">SAP
+   *     AI Core: Orchestration - SAP Translation Hub Table with official languages</a>
    * @return A TranslationConfig configured for input translation
    */
   @Nonnull
@@ -76,6 +79,9 @@ public interface TranslationConfig {
    * Create a new output translation configuration.
    *
    * @param targetLanguage The target language code
+   * @link <a
+   *     href="https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages">
+   *     SAP AI Core: Orchestration - SAP Translation Hub Table with official languages</a>
    * @return A TranslationConfig configured for output translation
    */
   @Nonnull
