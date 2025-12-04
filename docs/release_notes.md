@@ -17,7 +17,8 @@
 
 ### 📈 Improvements
 
--
+- [Orchestration] Added new API `TranslationConfig#createInput` to extract input config.
+- [Orchestration] Added new API `TranslationConfig#createOutput` to extract output config.
 
 ### 🐛 Fixed Issues
 
