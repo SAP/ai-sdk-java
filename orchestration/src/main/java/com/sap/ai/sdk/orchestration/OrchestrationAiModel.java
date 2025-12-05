@@ -177,6 +177,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel NOVA_MICRO =
       new OrchestrationAiModel("amazon--nova-micro");
 
+  /** Cohere Reranker Model */
+  public static final OrchestrationAiModel COHERE_RERANKER =
+      new OrchestrationAiModel("cohere-reranker");
+
   /**
    * Azure OpenAI GPT-3.5 Turbo model
    *
@@ -322,7 +326,11 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel ALEPHALPHA_PHARIA_1_7B_CONTROL =
       new OrchestrationAiModel("alephalpha-pharia-1-7b-control");
 
-  /** DeepSeek-R1 */
+  /**
+   * DeepSeek-R1
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-11-31.
+   */
   public static final OrchestrationAiModel DEEPSEEK_R1 =
       new OrchestrationAiModel("deepseek-ai--deepseek-r1");
 
