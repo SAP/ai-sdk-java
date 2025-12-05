@@ -113,7 +113,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<PipelineId> localVarReturnType =
-        new ParameterizedTypeReference<PipelineId>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.POST,
@@ -160,18 +160,16 @@ public class PipelinesApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("pipelineId", pipelineId);
     final String localVarPath =
         UriComponentsBuilder.fromPath("/pipelines/{pipelineId}")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -184,7 +182,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<Void> localVarReturnType =
-        new ParameterizedTypeReference<Void>() {};
+        new ParameterizedTypeReference<>() {};
     apiClient.invokeAPI(
         localVarPath,
         HttpMethod.DELETE,
@@ -235,11 +233,9 @@ public class PipelinesApi extends AbstractOpenApiService {
 
     final String localVarPath = UriComponentsBuilder.fromPath("/pipelines").build().toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
@@ -256,7 +252,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<GetPipelines> localVarReturnType =
-        new ParameterizedTypeReference<GetPipelines>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -322,18 +318,16 @@ public class PipelinesApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("pipelineId", pipelineId);
     final String localVarPath =
         UriComponentsBuilder.fromPath("/pipelines/{pipelineId}")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -346,7 +340,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<GetPipeline> localVarReturnType =
-        new ParameterizedTypeReference<GetPipeline>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -408,11 +402,9 @@ public class PipelinesApi extends AbstractOpenApiService {
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -425,7 +417,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<PipelineDocumentResponse> localVarReturnType =
-        new ParameterizedTypeReference<PipelineDocumentResponse>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -481,18 +473,16 @@ public class PipelinesApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("pipelineId", pipelineId);
     final String localVarPath =
         UriComponentsBuilder.fromPath("/pipelines/{pipelineId}/documents")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
@@ -509,7 +499,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<DocumentsStatusResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentsStatusResponse>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -583,7 +573,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("pipelineId", pipelineId);
     localVarPathParams.put("executionId", executionId);
     final String localVarPath =
@@ -591,11 +581,9 @@ public class PipelinesApi extends AbstractOpenApiService {
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -608,7 +596,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<GetPipelineExecutionById> localVarReturnType =
-        new ParameterizedTypeReference<GetPipelineExecutionById>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -680,11 +668,9 @@ public class PipelinesApi extends AbstractOpenApiService {
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -697,7 +683,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<PipelineDocumentResponse> localVarReturnType =
-        new ParameterizedTypeReference<PipelineDocumentResponse>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -761,7 +747,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("pipelineId", pipelineId);
     localVarPathParams.put("executionId", executionId);
     final String localVarPath =
@@ -769,11 +755,9 @@ public class PipelinesApi extends AbstractOpenApiService {
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
@@ -790,7 +774,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<DocumentsStatusResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentsStatusResponse>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -879,11 +863,9 @@ public class PipelinesApi extends AbstractOpenApiService {
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     localVarQueryParams.putAll(
         apiClient.parameterToMultiValueMap(null, "lastExecution", lastExecution));
@@ -902,7 +884,7 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<GetPipelineExecutions> localVarReturnType =
-        new ParameterizedTypeReference<GetPipelineExecutions>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -1133,11 +1115,9 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String localVarPath =
         UriComponentsBuilder.fromPath("/pipelines/search").build().toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
@@ -1146,26 +1126,12 @@ public class PipelinesApi extends AbstractOpenApiService {
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
 
-    final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {};
-
-    final ParameterizedTypeReference<SearchPipelinesResponse> localVarReturnType =
-        new ParameterizedTypeReference<SearchPipelinesResponse>() {};
-    return apiClient.invokeAPI(
+    return getResponse(
         localVarPath,
-        HttpMethod.POST,
         localVarQueryParams,
         localVarPostBody,
         localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
+        localVarFormParams);
   }
 
   /**
@@ -1208,32 +1174,36 @@ public class PipelinesApi extends AbstractOpenApiService {
       @Nonnull final String aiResourceGroup,
       @Nonnull final ManualPipelineTrigger manualPipelineTrigger)
       throws OpenApiRequestException {
-    final Object localVarPostBody = manualPipelineTrigger;
 
     // verify the required parameter 'aiResourceGroup' is set
-    if (aiResourceGroup == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling manualTriggerPipeline");
-    }
 
     // verify the required parameter 'manualPipelineTrigger' is set
-    if (manualPipelineTrigger == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'manualPipelineTrigger' when calling pipelineV1PipelineEndpointsTriggerPipeline");
-    }
 
     final String localVarPath =
         UriComponentsBuilder.fromPath("/pipelines/trigger").build().toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
 
+    return new OpenApiResponse(
+        getResponse(
+            localVarPath,
+            localVarQueryParams,
+            manualPipelineTrigger,
+            localVarHeaderParams,
+            localVarFormParams));
+  }
+
+  private <T> T getResponse(
+      String localVarPath,
+      MultiValueMap<String, String> localVarQueryParams,
+      Object body,
+      HttpHeaders localVarHeaderParams,
+      MultiValueMap<String, Object> localVarFormParams) {
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
@@ -1242,18 +1212,18 @@ public class PipelinesApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<Void> localVarReturnType =
-        new ParameterizedTypeReference<Void>() {};
-    apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.POST,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-    return new OpenApiResponse(apiClient);
+        new ParameterizedTypeReference<>() {};
+    return (T)
+        apiClient.invokeAPI(
+            localVarPath,
+            HttpMethod.POST,
+            localVarQueryParams,
+            body,
+            localVarHeaderParams,
+            localVarFormParams,
+            localVarAccept,
+            localVarContentType,
+            localVarAuthNames,
+            localVarReturnType);
   }
 }
