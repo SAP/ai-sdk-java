@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
