@@ -26,7 +26,6 @@ import org.springframework.ai.embedding.EmbeddingResponseMetadata;
  *
  * @since 1.13.0
  */
-@Beta
 @RequiredArgsConstructor
 public class OrchestrationSpringEmbeddingModel implements EmbeddingModel {
 
