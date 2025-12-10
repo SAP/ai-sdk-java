@@ -70,7 +70,7 @@ public interface TranslationConfig {
    * @return A TranslationConfig configured for input translation
    */
   @Nonnull
-  static TranslationConfig.Input createInput(@Nonnull final String targetLanguage) {
+  static TranslationConfig.Input translateInputTo(@Nonnull final String targetLanguage) {
 
     return new TranslationConfig.Input(targetLanguage, null, null);
   }
@@ -85,7 +85,7 @@ public interface TranslationConfig {
    * @return A TranslationConfig configured for output translation
    */
   @Nonnull
-  static TranslationConfig.Output createOutput(@Nonnull final String targetLanguage) {
+  static TranslationConfig.Output translateOutputTo(@Nonnull final String targetLanguage) {
 
     return new TranslationConfig.Output(targetLanguage, null);
   }

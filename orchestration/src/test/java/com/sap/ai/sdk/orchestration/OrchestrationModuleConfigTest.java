@@ -140,9 +140,10 @@ class OrchestrationModuleConfigTest {
 
   @Test
   void testTranslationConfig() {
-    var inputTranslationConfig = TranslationConfig.createInput("en-US").withSourceLanguage("de-DE");
+    var inputTranslationConfig =
+        TranslationConfig.translateInputTo("en-US").withSourceLanguage("de-DE");
     var outputTranslationConfig =
-        TranslationConfig.createOutput("de-DE").withSourceLanguage("en-US");
+        TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US");
     var config =
         new OrchestrationModuleConfig()
             .withLlmConfig(GPT_4O)
