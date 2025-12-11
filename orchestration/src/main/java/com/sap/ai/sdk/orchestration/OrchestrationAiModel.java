@@ -94,6 +94,14 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel LLAMA3_1_70B_INSTRUCT =
       new OrchestrationAiModel("meta--llama3.1-70b-instruct");
 
+  /** Nvidia Llama3.2 nv-embedqa-1b model */
+  public static final OrchestrationAiModel NV_LLAMA3_2_NV_EMBEDQA_1B =
+      new OrchestrationAiModel("nvidia--llama-3.2-nv-embedqa-1b");
+
+  /** Cohere Command a Reasoning model */
+  public static final OrchestrationAiModel COHERE_COMMAND_A_REASONING =
+      new OrchestrationAiModel("cohere--command-a-reasoning");
+
   /**
    * Anthropic Claude 3 Sonnet model
    *
@@ -166,6 +174,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel TITAN_TEXT_EXPRESS =
       new OrchestrationAiModel("amazon--titan-text-express");
 
+  /** Amazon Titan Embed Text model */
+  public static final OrchestrationAiModel TITAN_EMBED_TEXT =
+      new OrchestrationAiModel("amazon--titan-embed-text");
+
   /** Amazon Nova Pro model */
   public static final OrchestrationAiModel NOVA_PRO = new OrchestrationAiModel("amazon--nova-pro");
 
@@ -176,6 +188,10 @@ public class OrchestrationAiModel {
   /** Amazon Nova Micro model */
   public static final OrchestrationAiModel NOVA_MICRO =
       new OrchestrationAiModel("amazon--nova-micro");
+
+  /** Amazon Nova Premier model */
+  public static final OrchestrationAiModel NOVA_PREMIER =
+      new OrchestrationAiModel("amazon--nova-premier");
 
   /** Cohere Reranker Model */
   public static final OrchestrationAiModel COHERE_RERANKER =
@@ -331,6 +347,7 @@ public class OrchestrationAiModel {
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-11-31.
    */
+  @Deprecated
   public static final OrchestrationAiModel DEEPSEEK_R1 =
       new OrchestrationAiModel("deepseek-ai--deepseek-r1");
 
