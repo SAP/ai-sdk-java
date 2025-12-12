@@ -29,7 +29,7 @@ public class OrchestrationConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("modules")
-  private ModuleConfigs modules;
+  private OrchestrationConfigModules modules;
 
   @JsonProperty("stream")
   private GlobalStreamOptions stream;
@@ -47,7 +47,7 @@ public class OrchestrationConfig
    * @return The same instance of this {@link OrchestrationConfig} class
    */
   @Nonnull
-  public OrchestrationConfig modules(@Nonnull final ModuleConfigs modules) {
+  public OrchestrationConfig modules(@Nonnull final OrchestrationConfigModules modules) {
     this.modules = modules;
     return this;
   }
@@ -58,7 +58,7 @@ public class OrchestrationConfig
    * @return modules The modules of this {@link OrchestrationConfig} instance.
    */
   @Nonnull
-  public ModuleConfigs getModules() {
+  public OrchestrationConfigModules getModules() {
     return modules;
   }
 
@@ -67,7 +67,7 @@ public class OrchestrationConfig
    *
    * @param modules The modules of this {@link OrchestrationConfig}
    */
-  public void setModules(@Nonnull final ModuleConfigs modules) {
+  public void setModules(@Nonnull final OrchestrationConfigModules modules) {
     this.modules = modules;
   }
 
@@ -217,6 +217,6 @@ public class OrchestrationConfig
      * @param modules The modules of this {@link OrchestrationConfig}
      * @return The OrchestrationConfig instance.
      */
-    OrchestrationConfig modules(@Nonnull final ModuleConfigs modules);
+    OrchestrationConfig modules(@Nonnull final OrchestrationConfigModules modules);
   }
 }
