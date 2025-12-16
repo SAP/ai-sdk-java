@@ -26,6 +26,8 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.SystemChatMessage;
 import com.sap.ai.sdk.prompt.registry.model.Template;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
 import com.sap.ai.sdk.prompt.registry.spring.SpringAiConverter;
 import java.io.File;
 import java.io.IOException;
@@ -161,7 +163,7 @@ class PromptRegistryController {
   OrchestrationConfigPostResponse createOrchConfig() {
     OrchestrationConfigPostRequest postRequest =
         OrchestrationConfigPostRequest.create()
-            .name(NAME)
+            .name("test-config")
             .version("0.0.1")
             .scenario("sdk-test-scenario")
             .spec(buildOrchestrationConfig());
@@ -186,9 +188,10 @@ class PromptRegistryController {
                         .prompt(
                             Template.create()
                                 .template(
-                                    SystemChatMessage.create()
-                                        .role(SystemChatMessage.RoleEnum.SYSTEM)
-                                        .content(new ChatMessageContent.InnerString("text"))))
-                        .model(LLMModelDetails.create().name("model-name"))));
+                                    UserChatMessage.create()
+                                        .content(new UserChatMessageContent.InnerString("Create {{?number}} paraphrases of {{?phrase}}"))
+                                        .role(UserChatMessage.RoleEnum.USER))
+                                .defaults(Map.of("number", "3")))
+                        .model(LLMModelDetails.create().name("gpt-4.1-nano"))));
   }
 }

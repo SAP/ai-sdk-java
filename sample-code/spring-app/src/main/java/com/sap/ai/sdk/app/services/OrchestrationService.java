@@ -660,4 +660,8 @@ public class OrchestrationService {
             .withMasking(masking);
     return client.embed(request);
   }
+
+  public OrchestrationChatResponse executeConfigFromReference() {
+    return client.executeRequestFromReference(null, null);
+  }
 }

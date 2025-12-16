@@ -11,6 +11,8 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByIdConfigRef;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
@@ -164,6 +166,18 @@ public class OrchestrationClient {
       throws OrchestrationClientException {
     return executor.execute(
         COMPLETION_ENDPOINT, request, CompletionPostResponse.class, customHeaders);
+  }
+
+  @Beta
+  public OrchestrationChatResponse executeRequestFromReference(
+      final OrchestrationPrompt prompt, final OrchestrationConfigReference reference) {
+    String testID = "41e09fb5-6d2a-48b5-a9f6-637974732a19";
+    var testReference = OrchestrationConfigReference.fromId(testID);
+    OrchestrationPrompt testPrompt = new OrchestrationPrompt(Map.of("phrase", "Hello World"));
+    var request =
+        ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(testPrompt, testReference);
+    var response = executeRequest(request);
+    return new OrchestrationChatResponse(response);
   }
 
   /**

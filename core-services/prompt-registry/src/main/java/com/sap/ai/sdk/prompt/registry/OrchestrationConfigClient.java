@@ -26,14 +26,14 @@ import org.springframework.web.client.RestTemplate;
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 /**
- * Client for the Prompt Registry service.
+ * Client for managing Orchestration Configurations in the Prompt Registry service.
  *
- * @since 1.6.0
+ * @since 1.14.0
  */
 public class OrchestrationConfigClient extends OrchestrationConfigsApi {
 
   /**
-   * Instantiates this a client to invoke operations on the Prompt Registry service.
+   * Instantiates a client to manage Orchestration Configurations on the Prompt Registry service.
    *
    * @since 1.14.0
    */
@@ -42,7 +42,7 @@ public class OrchestrationConfigClient extends OrchestrationConfigsApi {
   }
 
   /**
-   * Instantiates this a client to invoke operations on the Prompt Registry service.
+   * Instantiates a client to manage Orchestration Configurations on the Prompt Registry service.
    *
    * @param aiCoreService The configured connectivity instance to AI Core
    * @since 1.14.0
