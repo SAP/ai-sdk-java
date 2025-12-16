@@ -507,7 +507,7 @@ class OrchestrationTest {
             () ->
                 client.chatCompletion(
                     prompt, filterConfig.withLlmConfig(GPT_5.withName("wrong-model"))))
-        .isInstanceOf(OrchestrationClientException.class)
+        .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400")
         .hasMessageContaining("Model name must be one of");
 
