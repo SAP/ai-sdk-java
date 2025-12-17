@@ -71,7 +71,7 @@
     <javaparser.version>3.27.1</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.20.1</jackson.version>
-    <logback.version>1.5.21</logback.version>
+    <logback.version>1.5.22</logback.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.0</micrometer.version>
     <json.version>20250517</json.version>
@@ -539,7 +539,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.3.1</version>
+        <version>3.4.0</version>
       </plugin>
       <!-- phase: test-compile -->
       <plugin>
@@ -815,7 +815,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-source-plugin</artifactId>
-              <version>3.3.1</version>
+              <version>3.4.0</version>
               <executions>
                 <execution>
                   <id>attach-sources</id>

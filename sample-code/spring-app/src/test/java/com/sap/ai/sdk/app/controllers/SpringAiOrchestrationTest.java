@@ -67,7 +67,7 @@ class SpringAiOrchestrationTest {
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 (Bad Request)");
   }
 
@@ -105,7 +105,7 @@ class SpringAiOrchestrationTest {
             .getIntermediateResults()
             .getOutputFiltering();
     assertThat(filterResult.getMessage())
-        .contains("Choice 0: LLM response filtered due to safety violations");
+        .contains("Choice 0: Content filtered due to safety violations.");
   }
 
   @Test
@@ -123,7 +123,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getOutputFiltering();
-    assertThat(filterResult.getMessage()).contains("Choice 0: Output Filter was skipped");
+    assertThat(filterResult.getMessage()).contains("Choice 0: Filtering was skipped.");
   }
 
   @Test
