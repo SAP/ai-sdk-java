@@ -187,7 +187,10 @@ public class OpenAiChatModel implements ChatModel {
   @Nonnull
   protected static OpenAiChatCompletionRequest extractOptions(
       @Nonnull OpenAiChatCompletionRequest request, @Nonnull final ChatOptions options) {
-    request = request.withStop(options.getStopSequences()).withMaxTokens(options.getMaxTokens());
+    request =
+        request
+            .withStop(options.getStopSequences())
+            .withMaxCompletionTokens(options.getMaxTokens());
     if (options.getTemperature() != null) {
       request = request.withTemperature(BigDecimal.valueOf(options.getTemperature()));
     }
