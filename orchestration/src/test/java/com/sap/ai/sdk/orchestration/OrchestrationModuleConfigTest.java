@@ -139,6 +139,43 @@ class OrchestrationModuleConfigTest {
   }
 
   @Test
+  void testTranslationConfig() {
+    var inputTranslationConfig =
+        TranslationConfig.translateInputTo("en-US").withSourceLanguage("de-DE");
+    var outputTranslationConfig =
+        TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US");
+    var config =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(GPT_4O)
+            .withInputTranslationConfig(inputTranslationConfig)
+            .withOutputTranslationConfig(outputTranslationConfig);
+
+    assertThat(config.getInputTranslationConfig()).isNotNull();
+    assertThat(config.getInputTranslationConfig().getConfig().getTargetLanguage())
+        .isEqualTo("en-US");
+    assertThat(config.getInputTranslationConfig().getConfig().getSourceLanguage())
+        .isEqualTo(
+            inputTranslationConfig
+                .createSAPDocumentTranslationInput()
+                .getConfig()
+                .getSourceLanguage());
+
+    assertThat(config.getOutputTranslationConfig()).isNotNull();
+    assertThat(config.getOutputTranslationConfig().getConfig().getTargetLanguage())
+        .isEqualTo(
+            outputTranslationConfig
+                .createSAPDocumentTranslationOutput()
+                .getConfig()
+                .getTargetLanguage());
+    assertThat(config.getOutputTranslationConfig().getConfig().getSourceLanguage())
+        .isEqualTo(
+            outputTranslationConfig
+                .createSAPDocumentTranslationOutput()
+                .getConfig()
+                .getSourceLanguage());
+  }
+
+  @Test
   void testParams() {
     // test withParams(Map<String, Object>)
     {
