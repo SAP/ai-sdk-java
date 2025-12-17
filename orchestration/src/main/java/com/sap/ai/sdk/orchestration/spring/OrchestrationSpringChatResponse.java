@@ -59,7 +59,12 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
                         toolCall.getFunction().getArguments()))
             .toList();
 
-    val message = new AssistantMessage(choice.getMessage().getContent(), Map.of(), toolCalls);
+    val message =
+        AssistantMessage.builder()
+            .content(choice.getMessage().getContent())
+            .properties(Map.of())
+            .toolCalls(toolCalls)
+            .build();
     return new Generation(message, metadata.build());
   }
 
