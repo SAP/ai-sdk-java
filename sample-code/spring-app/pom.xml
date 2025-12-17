@@ -115,6 +115,7 @@
     <dependency>
       <groupId>org.springframework.ai</groupId>
       <artifactId>spring-ai-autoconfigure-mcp-client</artifactId>
+      <version>1.0.3</version>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
