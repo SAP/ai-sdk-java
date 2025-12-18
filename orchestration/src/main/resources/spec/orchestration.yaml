@@ -112,7 +112,7 @@ components:
           $ref: "#/components/schemas/EmbeddingsInputText"
         type:
           type: string
-          enum: [ "text", "document", "query" ]
+          enum: ["text", "document", "query"]
     EmbeddingsInputText:
       oneOf:
         - type: string
@@ -124,9 +124,9 @@ components:
           items:
             type: string
             minLength: 1
-          example: [ "Hello", "World", "!" ]
+          example: ["Hello", "World", "!"]
       description: Text input for which embeddings need to be generated
-      example: [ "This is an input string.", "This is another input string." ]
+      example: ["This is an input string.", "This is another input string."]
     EmbeddingsModuleConfigs:
       type: object
       required:
@@ -181,7 +181,7 @@ components:
             The number of dimensions the resulting output embeddings should have.
         encoding_format:
           type: string
-          enum: [ float, base64, binary ]
+          enum: [float, base64, binary]
           description: >
             OpenAI's spec allows for 'float' and 'base64' encoding formats.
         normalize:
@@ -466,7 +466,7 @@ components:
       properties:
         type:
           type: string
-          enum: [ "text" ]
+          enum: ["text"]
         text:
           type: string
     ChatDelta:
@@ -659,7 +659,7 @@ components:
           description: List of delimiters to split the input text into chunks.Please note, this is a required parameter when `input_translation_module_config` or `output_translation_module_config` are configured.
           items:
             type: string
-          example: [ "\n", ".", "?", "!" ]
+          example: ["\n", ".", "?", "!"]
 
     GenericModuleResult:
       type: object
@@ -702,8 +702,8 @@ components:
                   type: string
               example:
                 user:
-                  [ "translated user content", "another translated user content" ]
-                system: [ "translated system message" ]
+                  ["translated user content", "another translated user content"]
+                system: ["translated system message"]
             translated_placeholders:
               type: object
               additionalProperties:
@@ -1380,7 +1380,7 @@ components:
         allowlist:
           description: List of strings that should not be masked
           type: array
-          example: [ "SAP", "Joule" ]
+          example: ["SAP", "Joule"]
           items:
             type: string
         mask_grounding_input:
@@ -1499,7 +1499,7 @@ components:
           anyOf:
             - enum:
                 - document_grounding_service
-            - { }
+            - {}
           example: document_grounding_service
         config:
           type: object

@@ -43,7 +43,7 @@ public class OrchestrationClientException extends ClientException {
           .flatMap(OrchestrationClientException::lastError)
           .map(Error::getIntermediateResults)
           .map(ModuleResults::getInputFiltering)
-          .filter(filter -> !filter.getMessage().equals("Input Filter passed successfully."))
+          .filter(filter -> !filter.getMessage().equals("Filtering passed successfully. "))
           .map(GenericModuleResult::getData)
           .map(map -> (Map<String, Object>) map)
           .orElseGet(Collections::emptyMap);
@@ -53,7 +53,7 @@ public class OrchestrationClientException extends ClientException {
           .flatMap(OrchestrationClientException::lastErrorStreaming)
           .map(ErrorStreaming::getIntermediateResults)
           .map(ModuleResultsStreaming::getInputFiltering)
-          .filter(filter -> !filter.getMessage().equals("Input Filter passed successfully."))
+          .filter(filter -> !filter.getMessage().equals("Filtering passed successfully. "))
           .map(GenericModuleResult::getData)
           .filter(Map.class::isInstance)
           .map(map -> (Map<String, Object>) map)
