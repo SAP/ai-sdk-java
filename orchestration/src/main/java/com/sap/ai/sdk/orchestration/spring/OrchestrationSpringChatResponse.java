@@ -5,7 +5,6 @@ import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -62,7 +61,6 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
     val message =
         AssistantMessage.builder()
             .content(choice.getMessage().getContent())
-            .properties(Map.of())
             .toolCalls(toolCalls)
             .build();
     return new Generation(message, metadata.build());

@@ -107,11 +107,7 @@ public class OpenAiChatModel implements ChatModel {
             });
     return flux.map(
         delta -> {
-          val assistantMessage =
-              AssistantMessage.builder()
-                  .content(delta.getDeltaContent())
-                  .properties(Map.of())
-                  .build();
+          val assistantMessage = new AssistantMessage(delta.getDeltaContent());
           val metadata =
               ChatGenerationMetadata.builder().finishReason(delta.getFinishReason()).build();
           return new ChatResponse(List.of(new Generation(assistantMessage, metadata)));
@@ -178,11 +174,7 @@ public class OpenAiChatModel implements ChatModel {
     }
 
     val assistantMessage =
-        AssistantMessage.builder()
-            .content(message.getContent())
-            .properties(Map.of())
-            .toolCalls(calls)
-            .build();
+        AssistantMessage.builder().content(message.getContent()).toolCalls(calls).build();
     return new Generation(assistantMessage, metadata.build());
   }
 
