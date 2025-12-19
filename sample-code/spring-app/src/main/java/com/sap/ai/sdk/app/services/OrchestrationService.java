@@ -17,6 +17,7 @@ import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationConfigReference;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
@@ -662,6 +663,9 @@ public class OrchestrationService {
   }
 
   public OrchestrationChatResponse executeConfigFromReference() {
-    return client.executeRequestFromReference(null, null);
+    String testID = "80299222-f576-4682-b3d9-0a5aaf9be92d";
+    var testReference = OrchestrationConfigReference.fromId(testID);
+    OrchestrationPrompt testPrompt = new OrchestrationPrompt(Map.of("phrase", "Hello World"));
+    return client.executeRequestFromReference(testPrompt, testReference);
   }
 }

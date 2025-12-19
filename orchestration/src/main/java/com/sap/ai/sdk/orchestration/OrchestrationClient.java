@@ -171,11 +171,8 @@ public class OrchestrationClient {
   @Beta
   public OrchestrationChatResponse executeRequestFromReference(
       final OrchestrationPrompt prompt, final OrchestrationConfigReference reference) {
-    String testID = "41e09fb5-6d2a-48b5-a9f6-637974732a19";
-    var testReference = OrchestrationConfigReference.fromId(testID);
-    OrchestrationPrompt testPrompt = new OrchestrationPrompt(Map.of("phrase", "Hello World"));
     var request =
-        ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(testPrompt, testReference);
+        ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(prompt, reference);
     var response = executeRequest(request);
     return new OrchestrationChatResponse(response);
   }

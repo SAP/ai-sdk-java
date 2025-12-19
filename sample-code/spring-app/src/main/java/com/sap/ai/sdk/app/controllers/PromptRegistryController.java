@@ -161,6 +161,7 @@ class PromptRegistryController {
   }
 
   OrchestrationConfigPostResponse createOrchConfig() {
+    // JONAS: this is still the version used to build the config for the Orchestration test, change back to the version of the first commit to have correct test
     OrchestrationConfigPostRequest postRequest =
         OrchestrationConfigPostRequest.create()
             .name("test-config")
