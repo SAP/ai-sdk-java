@@ -43,6 +43,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+
+import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
+import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
+import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -663,9 +672,47 @@ public class OrchestrationService {
   }
 
   public OrchestrationChatResponse executeConfigFromReference() {
-    String testID = "80299222-f576-4682-b3d9-0a5aaf9be92d";
-    var testReference = OrchestrationConfigReference.fromId(testID);
+    ensureOrchestrationConfigExists();
+    var testReference =
+        OrchestrationConfigReference.fromScenarioNameVersion(
+            "sdk-test-scenario", "test-config-for-OrchestrationTest", "0.0.1");
     OrchestrationPrompt testPrompt = new OrchestrationPrompt(Map.of("phrase", "Hello World"));
     return client.executeRequestFromReference(testPrompt, testReference);
+  }
+
+  private void ensureOrchestrationConfigExists() {
+    OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
+    if (!orchConfigExists("test-config-for-OrchestrationTest", orchConfigClient)) {
+      OrchestrationConfigPostRequest postRequest =
+          OrchestrationConfigPostRequest.create()
+              .name("test-config-for-OrchestrationTest")
+              .version("0.0.1")
+              .scenario("sdk-test-scenario")
+              .spec(buildOrchestrationConfig());
+      orchConfigClient.createUpdateOrchestrationConfig(postRequest);
+    }
+  }
+
+  private boolean orchConfigExists(String configName, OrchestrationConfigClient orchConfigClient) {
+    return orchConfigClient.listOrchestrationConfigs().getResources().stream()
+        .anyMatch(resp -> resp.getName().equals(configName));
+  }
+
+  private OrchestrationConfig buildOrchestrationConfig() {
+    return OrchestrationConfig.create()
+        .modules(
+            ModuleConfigs.create()
+                .promptTemplating(
+                    PromptTemplatingModuleConfig.create()
+                        .prompt(
+                            com.sap.ai.sdk.prompt.registry.model.Template.create()
+                                .template(
+                                    UserChatMessage.create()
+                                        .content(
+                                            new UserChatMessageContent.InnerString(
+                                                "Create {{?number}} paraphrases of {{?phrase}}"))
+                                        .role(UserChatMessage.RoleEnum.USER))
+                                .defaults(Map.of("number", "3")))
+                        .model(LLMModelDetails.create().name("gpt-4.1-nano"))));
   }
 }

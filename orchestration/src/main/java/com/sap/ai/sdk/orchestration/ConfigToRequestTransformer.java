@@ -151,6 +151,10 @@ final class ConfigToRequestTransformer {
                       .scenario(reference.getScenario())
                       .name(reference.getName())
                       .version(reference.getVersion()));
+      ((CompletionRequestConfigurationReferenceByNameScenarioVersion) request)
+          .setMessagesHistory(messageHistory);
+      ((CompletionRequestConfigurationReferenceByNameScenarioVersion) request)
+          .setPlaceholderValues(placeholders);
     }
     return request;
   }

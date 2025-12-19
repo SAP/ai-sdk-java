@@ -156,21 +156,23 @@ class PromptRegistryController {
     return response != null ? response.getResult() : null;
   }
 
+  @GetMapping("/listOrchConfigs")
   OrchestrationConfigListResponse listOrchConfigs() {
     return orchConfigClient.listOrchestrationConfigs();
   }
 
+  @GetMapping("/createOrchConfig")
   OrchestrationConfigPostResponse createOrchConfig() {
-    // JONAS: this is still the version used to build the config for the Orchestration test, change back to the version of the first commit to have correct test
     OrchestrationConfigPostRequest postRequest =
         OrchestrationConfigPostRequest.create()
-            .name("test-config")
+            .name(NAME)
             .version("0.0.1")
             .scenario("sdk-test-scenario")
             .spec(buildOrchestrationConfig());
     return orchConfigClient.createUpdateOrchestrationConfig(postRequest);
   }
 
+  @GetMapping("/deleteOrchConfig")
   List<OrchestrationConfigDeleteResponse> deleteOrchConfig() {
     final OrchestrationConfigListResponse configs = orchConfigClient.listOrchestrationConfigs();
 
@@ -190,9 +192,8 @@ class PromptRegistryController {
                             Template.create()
                                 .template(
                                     UserChatMessage.create()
-                                        .content(new UserChatMessageContent.InnerString("Create {{?number}} paraphrases of {{?phrase}}"))
-                                        .role(UserChatMessage.RoleEnum.USER))
-                                .defaults(Map.of("number", "3")))
-                        .model(LLMModelDetails.create().name("gpt-4.1-nano"))));
+                                        .content(new UserChatMessageContent.InnerString("message"))
+                                        .role(UserChatMessage.RoleEnum.USER)))
+                        .model(LLMModelDetails.create().name("model-name"))));
   }
 }
