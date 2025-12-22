@@ -349,6 +349,9 @@ public class OrchestrationAiModel {
   /** Perplexity AI Sonar Pro model */
   public static final OrchestrationAiModel SONAR_PRO = new OrchestrationAiModel("sonar-pro");
 
+  /** SAP ABAP 1 model */
+  public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
+
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");
   }
