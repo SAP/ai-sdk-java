@@ -99,8 +99,8 @@ public class UserChatMessageContentItem
   @JsonProperty("image_url")
   private ImageContentUrl imageUrl;
 
-  @JsonProperty("pdf_file")
-  private InputFile pdfFile;
+  @JsonProperty("file")
+  private InputFile _file;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -203,35 +203,34 @@ public class UserChatMessageContentItem
   }
 
   /**
-   * Set the pdfFile of this {@link UserChatMessageContentItem} instance and return the same
-   * instance.
+   * Set the _file of this {@link UserChatMessageContentItem} instance and return the same instance.
    *
-   * @param pdfFile The pdfFile of this {@link UserChatMessageContentItem}
+   * @param _file The _file of this {@link UserChatMessageContentItem}
    * @return The same instance of this {@link UserChatMessageContentItem} class
    */
   @Nonnull
-  public UserChatMessageContentItem pdfFile(@Nullable final InputFile pdfFile) {
-    this.pdfFile = pdfFile;
+  public UserChatMessageContentItem _file(@Nullable final InputFile _file) {
+    this._file = _file;
     return this;
   }
 
   /**
-   * Get pdfFile
+   * Get _file
    *
-   * @return pdfFile The pdfFile of this {@link UserChatMessageContentItem} instance.
+   * @return _file The _file of this {@link UserChatMessageContentItem} instance.
    */
   @Nonnull
-  public InputFile getPdfFile() {
-    return pdfFile;
+  public InputFile getFile() {
+    return _file;
   }
 
   /**
-   * Set the pdfFile of this {@link UserChatMessageContentItem} instance.
+   * Set the _file of this {@link UserChatMessageContentItem} instance.
    *
-   * @param pdfFile The pdfFile of this {@link UserChatMessageContentItem}
+   * @param _file The _file of this {@link UserChatMessageContentItem}
    */
-  public void setPdfFile(@Nullable final InputFile pdfFile) {
-    this.pdfFile = pdfFile;
+  public void setFile(@Nullable final InputFile _file) {
+    this._file = _file;
   }
 
   /**
@@ -277,7 +276,7 @@ public class UserChatMessageContentItem
     if (type != null) declaredFields.put("type", type);
     if (text != null) declaredFields.put("text", text);
     if (imageUrl != null) declaredFields.put("imageUrl", imageUrl);
-    if (pdfFile != null) declaredFields.put("pdfFile", pdfFile);
+    if (_file != null) declaredFields.put("_file", _file);
     return declaredFields;
   }
 
@@ -307,12 +306,12 @@ public class UserChatMessageContentItem
         && Objects.equals(this.type, userChatMessageContentItem.type)
         && Objects.equals(this.text, userChatMessageContentItem.text)
         && Objects.equals(this.imageUrl, userChatMessageContentItem.imageUrl)
-        && Objects.equals(this.pdfFile, userChatMessageContentItem.pdfFile);
+        && Objects.equals(this._file, userChatMessageContentItem._file);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, text, imageUrl, pdfFile, cloudSdkCustomFields);
+    return Objects.hash(type, text, imageUrl, _file, cloudSdkCustomFields);
   }
 
   @Override
@@ -323,7 +322,7 @@ public class UserChatMessageContentItem
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    text: ").append(toIndentedString(text)).append("\n");
     sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
-    sb.append("    pdfFile: ").append(toIndentedString(pdfFile)).append("\n");
+    sb.append("    _file: ").append(toIndentedString(_file)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
