@@ -243,7 +243,7 @@ class OrchestrationTest {
 
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .hasMessageContaining(
-            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 (Bad Request)")
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
@@ -299,7 +299,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("Choice 0: Output Filter was skipped");
+    assertThat(filterResult.getMessage()).containsPattern("Choice 0: Filtering was skipped.");
   }
 
   @Test
@@ -307,7 +307,7 @@ class OrchestrationTest {
     assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
         .isInstanceOf(OrchestrationFilterException.Input.class)
         .hasMessageContaining(
-            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 (Bad Request)")
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,

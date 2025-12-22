@@ -107,7 +107,7 @@ public class OpenAiChatModel implements ChatModel {
             });
     return flux.map(
         delta -> {
-          val assistantMessage = new AssistantMessage(delta.getDeltaContent(), Map.of());
+          val assistantMessage = new AssistantMessage(delta.getDeltaContent());
           val metadata =
               ChatGenerationMetadata.builder().finishReason(delta.getFinishReason()).build();
           return new ChatResponse(List.of(new Generation(assistantMessage, metadata)));
@@ -173,7 +173,8 @@ public class OpenAiChatModel implements ChatModel {
       }
     }
 
-    val assistantMessage = new AssistantMessage(message.getContent(), Map.of(), calls);
+    val assistantMessage =
+        AssistantMessage.builder().content(message.getContent()).toolCalls(calls).build();
     return new Generation(assistantMessage, metadata.build());
   }
 
@@ -187,7 +188,10 @@ public class OpenAiChatModel implements ChatModel {
   @Nonnull
   protected static OpenAiChatCompletionRequest extractOptions(
       @Nonnull OpenAiChatCompletionRequest request, @Nonnull final ChatOptions options) {
-    request = request.withStop(options.getStopSequences()).withMaxTokens(options.getMaxTokens());
+    request =
+        request
+            .withStop(options.getStopSequences())
+            .withMaxCompletionTokens(options.getMaxTokens());
     if (options.getTemperature() != null) {
       request = request.withTemperature(BigDecimal.valueOf(options.getTemperature()));
     }

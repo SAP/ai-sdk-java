@@ -25,17 +25,13 @@ import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
+import com.sap.ai.sdk.orchestration.TranslationConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInput;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInputConfig;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputConfig;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
@@ -630,21 +626,10 @@ public class OrchestrationService {
     // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
     val configWithTranslation =
         config
-            .withInputTranslationConfig(
-                SAPDocumentTranslationInput.create()
-                    .type(SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
-                    .config(
-                        SAPDocumentTranslationInputConfig.create()
-                            .targetLanguage("en-US")
-                            .applyTo(null)))
+            .withInputTranslationConfig(TranslationConfig.translateInputTo("en-US"))
             .withOutputTranslationConfig(
-                SAPDocumentTranslationOutput.create()
-                    .type(SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
-                    .config(
-                        SAPDocumentTranslationOutputConfig.create()
-                            .targetLanguage(
-                                SAPDocumentTranslationOutputTargetLanguage.create("de-DE"))
-                            .sourceLanguage("en-US"))); // optional source language
+                TranslationConfig.translateOutputTo("de-DE")
+                    .withSourceLanguage("en-US")); // optional source language
 
     return client.chatCompletion(prompt, configWithTranslation);
   }
