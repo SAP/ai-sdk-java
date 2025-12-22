@@ -7,7 +7,6 @@ import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBE
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
@@ -39,14 +38,7 @@ import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputConfig;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
-import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.Template;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Stream;
-import javax.annotation.Nonnull;
-
 import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
 import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
@@ -55,6 +47,11 @@ import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+import javax.annotation.Nonnull;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -674,20 +671,29 @@ public class OrchestrationService {
     return client.embed(request);
   }
 
+  /**
+   * Chat request to an LLM through the Orchestration service using a template from the prompt
+   * registry identified by a reference.
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
   public OrchestrationChatResponse executeConfigFromReference() {
     ensureOrchestrationConfigExists();
-    var testReference =
-        OrchestrationConfigReference.fromScenarioNameVersion(
-            "sdk-test-scenario", "test-config-for-OrchestrationTest", "0.0.1");
-    List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
-    OrchestrationPrompt testPrompt = new OrchestrationPrompt(Map.of("phrase", "Hello World")).messageHistory(history);
+    final var testReference =
+        OrchestrationConfigReference.fromScenario("sdk-test-scenario")
+            .name("test-config-for-OrchestrationTest")
+            .version("0.0.1");
+    final List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
+    final OrchestrationPrompt testPrompt =
+        new OrchestrationPrompt(Map.of("phrase", "Hello World")).messageHistory(history);
     return client.executeRequestFromReference(testPrompt, testReference);
   }
 
   private void ensureOrchestrationConfigExists() {
-    OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
+    final OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
     if (!orchConfigExists("test-config-for-OrchestrationTest", orchConfigClient)) {
-      OrchestrationConfigPostRequest postRequest =
+      final OrchestrationConfigPostRequest postRequest =
           OrchestrationConfigPostRequest.create()
               .name("test-config-for-OrchestrationTest")
               .version("0.0.1")
@@ -697,7 +703,8 @@ public class OrchestrationService {
     }
   }
 
-  private boolean orchConfigExists(String configName, OrchestrationConfigClient orchConfigClient) {
+  private boolean orchConfigExists(
+      final String configName, final OrchestrationConfigClient orchConfigClient) {
     return orchConfigClient.listOrchestrationConfigs().getResources().stream()
         .anyMatch(resp -> resp.getName().equals(configName));
   }

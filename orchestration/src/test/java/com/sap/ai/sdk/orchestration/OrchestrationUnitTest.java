@@ -1373,7 +1373,7 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     var reference =
-        OrchestrationConfigReference.fromScenarioNameVersion("scenario", "name", "0.0.1");
+        OrchestrationConfigReference.fromScenario("scenario").name("name").version("0.0.1");
     final var response = client.executeRequestFromReference(null, reference);
 
     final String expectedRequest = fileLoaderStr.apply("orchConfigBySNVRequest.json");
@@ -1390,7 +1390,7 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     var reference =
-        OrchestrationConfigReference.fromScenarioNameVersion("scenario", "name", "0.0.1");
+        OrchestrationConfigReference.fromScenario("scenario").name("name").version("0.0.1");
     List<Message> history = List.of(new SystemMessage("System Message"));
     var prompt = new OrchestrationPrompt(Map.of("placeholder", "value")).messageHistory(history);
     final var response = client.executeRequestFromReference(prompt, reference);

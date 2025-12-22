@@ -26,7 +26,6 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -168,12 +167,22 @@ public class OrchestrationClient {
         COMPLETION_ENDPOINT, request, CompletionPostResponse.class, customHeaders);
   }
 
+  /**
+   * Generate a completion using a referenced Orchestration config and a prompt.
+   *
+   * @param prompt The prompt to store placeholder values and the message history
+   * @param reference A reference to an Orchestration config stored in prompt registry
+   * @return The completion output
+   * @since 1.14.0
+   */
   @Beta
+  @Nonnull
   public OrchestrationChatResponse executeRequestFromReference(
-      @Nullable final OrchestrationPrompt prompt, @Nonnull final OrchestrationConfigReference reference) {
-    var request =
+      @Nullable final OrchestrationPrompt prompt,
+      @Nonnull final OrchestrationConfigReference reference) {
+    val request =
         ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(prompt, reference);
-    var response = executeRequest(request);
+    val response = executeRequest(request);
     return new OrchestrationChatResponse(response);
   }
 

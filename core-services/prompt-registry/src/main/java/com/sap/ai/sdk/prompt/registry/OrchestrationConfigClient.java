@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.prompt.registry;
 
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,8 +24,6 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.yaml.MappingJackson2YamlHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
-
-import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 /**
  * Client for managing Orchestration Configurations in the Prompt Registry service.
@@ -65,7 +65,7 @@ public class OrchestrationConfigClient extends OrchestrationConfigsApi {
                     getDefaultObjectMapper()
                         .addMixIn(OutputFilterConfig.class, JacksonMixin.OutputFilter.class)
                         .addMixIn(InputFilterConfig.class, JacksonMixin.InputFilter.class)));
-    var yamlMapper = new ObjectMapper(new YAMLFactory());
+    final var yamlMapper = new ObjectMapper(new YAMLFactory());
     yamlMapper
         .addMixIn(OutputFilterConfig.class, JacksonMixin.OutputFilter.class)
         .addMixIn(InputFilterConfig.class, JacksonMixin.InputFilter.class);

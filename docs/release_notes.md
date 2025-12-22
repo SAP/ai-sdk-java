@@ -13,7 +13,9 @@
 ### ✨ New Functionality
 
 - [Orchestration] Added new models for `OrchestrationAiModel`: `SONAR`,`SONAR_PRO`, `GEMINI_2_5_FLASH_LITE`, `CLAUDE_4_5_HAIKU`.
+- [Orchestration] Configs stored in prompt registry can now be used for Orchestration calls via reference.
 - [Orchestration] Convenience for adding the `metadata_params` option to grounding calls.
+- [Prompt Registry] Added support to manage Orchestration configs stored in Prompt Registry.
 
 ### 📈 Improvements
 

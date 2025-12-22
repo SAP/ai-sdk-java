@@ -5,8 +5,6 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatModel;
 import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
 import com.sap.ai.sdk.prompt.registry.PromptClient;
-import com.sap.ai.sdk.prompt.registry.model.ChatMessage;
-import com.sap.ai.sdk.prompt.registry.model.ChatMessageContent;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
 import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
@@ -22,9 +20,7 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpec;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
-import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
-import com.sap.ai.sdk.prompt.registry.model.SystemChatMessage;
 import com.sap.ai.sdk.prompt.registry.model.Template;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
@@ -163,7 +159,7 @@ class PromptRegistryController {
 
   @GetMapping("/createOrchConfig")
   OrchestrationConfigPostResponse createOrchConfig() {
-    OrchestrationConfigPostRequest postRequest =
+    final OrchestrationConfigPostRequest postRequest =
         OrchestrationConfigPostRequest.create()
             .name(NAME)
             .version("0.0.1")
