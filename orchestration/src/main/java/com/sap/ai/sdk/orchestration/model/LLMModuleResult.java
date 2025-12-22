@@ -52,6 +52,9 @@ public class LLMModuleResult
   @JsonProperty("usage")
   private TokenUsage usage;
 
+  @JsonProperty("citations")
+  private List<String> citations = new ArrayList<>();
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -292,6 +295,52 @@ public class LLMModuleResult
   }
 
   /**
+   * Set the citations of this {@link LLMModuleResult} instance and return the same instance.
+   *
+   * @param citations List of citations associated with the response.
+   * @return The same instance of this {@link LLMModuleResult} class
+   */
+  @Nonnull
+  public LLMModuleResult citations(@Nullable final List<String> citations) {
+    this.citations = citations;
+    return this;
+  }
+
+  /**
+   * Add one citations instance to this {@link LLMModuleResult}.
+   *
+   * @param citationsItem The citations that should be added
+   * @return The same instance of type {@link LLMModuleResult}
+   */
+  @Nonnull
+  public LLMModuleResult addCitationsItem(@Nonnull final String citationsItem) {
+    if (this.citations == null) {
+      this.citations = new ArrayList<>();
+    }
+    this.citations.add(citationsItem);
+    return this;
+  }
+
+  /**
+   * List of citations associated with the response.
+   *
+   * @return citations The citations of this {@link LLMModuleResult} instance.
+   */
+  @Nonnull
+  public List<String> getCitations() {
+    return citations;
+  }
+
+  /**
+   * Set the citations of this {@link LLMModuleResult} instance.
+   *
+   * @param citations List of citations associated with the response.
+   */
+  public void setCitations(@Nullable final List<String> citations) {
+    this.citations = citations;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link LLMModuleResult}.
    *
    * @return The set of properties names
@@ -336,6 +385,7 @@ public class LLMModuleResult
     if (systemFingerprint != null) declaredFields.put("systemFingerprint", systemFingerprint);
     if (choices != null) declaredFields.put("choices", choices);
     if (usage != null) declaredFields.put("usage", usage);
+    if (citations != null) declaredFields.put("citations", citations);
     return declaredFields;
   }
 
@@ -367,13 +417,22 @@ public class LLMModuleResult
         && Objects.equals(this.model, llMModuleResult.model)
         && Objects.equals(this.systemFingerprint, llMModuleResult.systemFingerprint)
         && Objects.equals(this.choices, llMModuleResult.choices)
-        && Objects.equals(this.usage, llMModuleResult.usage);
+        && Objects.equals(this.usage, llMModuleResult.usage)
+        && Objects.equals(this.citations, llMModuleResult.citations);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        id, _object, created, model, systemFingerprint, choices, usage, cloudSdkCustomFields);
+        id,
+        _object,
+        created,
+        model,
+        systemFingerprint,
+        choices,
+        usage,
+        citations,
+        cloudSdkCustomFields);
   }
 
   @Override
@@ -388,6 +447,7 @@ public class LLMModuleResult
     sb.append("    systemFingerprint: ").append(toIndentedString(systemFingerprint)).append("\n");
     sb.append("    choices: ").append(toIndentedString(choices)).append("\n");
     sb.append("    usage: ").append(toIndentedString(usage)).append("\n");
+    sb.append("    citations: ").append(toIndentedString(citations)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
