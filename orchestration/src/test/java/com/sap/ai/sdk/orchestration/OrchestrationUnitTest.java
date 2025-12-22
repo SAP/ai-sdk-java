@@ -1348,6 +1348,58 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void testExecuteFromReferenceById() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var reference = OrchestrationConfigReference.fromId("test-id");
+    final var response = client.executeRequestFromReference(null, reference);
+
+    final String expectedRequest = fileLoaderStr.apply("orchConfigByIdRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
+  }
+
+  @Test
+  void testExecuteFromReferenceBySNV() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var reference =
+        OrchestrationConfigReference.fromScenarioNameVersion("scenario", "name", "0.0.1");
+    final var response = client.executeRequestFromReference(null, reference);
+
+    final String expectedRequest = fileLoaderStr.apply("orchConfigBySNVRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
+  }
+
+  @Test
+  void testExecuteFromReferenceWithMessageHistoryAndInputParams() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var reference =
+        OrchestrationConfigReference.fromScenarioNameVersion("scenario", "name", "0.0.1");
+    List<Message> history = List.of(new SystemMessage("System Message"));
+    var prompt = new OrchestrationPrompt(Map.of("placeholder", "value")).messageHistory(history);
+    final var response = client.executeRequestFromReference(prompt, reference);
+
+    final String expectedRequest = fileLoaderStr.apply("orchConfigByRequestHistoryParams.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
+  }
+
+  @Test
   void testGetAllMessages() {
     stubFor(
         post(anyUrl())

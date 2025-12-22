@@ -24,9 +24,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 /** Factory to create all data objects from an orchestration configuration. */
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ConfigToRequestTransformer {
   @Nonnull
@@ -129,6 +131,10 @@ final class ConfigToRequestTransformer {
     List<ChatMessage> messageHistory = List.of();
     Map<String, String> placeholders = Map.of();
     if (prompt != null) {
+      if (!prompt.getMessages().isEmpty()) {
+        log.debug(
+            "Messages in prompts are ignored when using Orchestration configs via reference. Change the Orchestration config instead.");
+      }
       messageHistory =
           prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
       placeholders = prompt.getTemplateParameters();

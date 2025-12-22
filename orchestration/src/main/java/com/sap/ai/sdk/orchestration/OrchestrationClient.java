@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -168,7 +170,7 @@ public class OrchestrationClient {
 
   @Beta
   public OrchestrationChatResponse executeRequestFromReference(
-      final OrchestrationPrompt prompt, final OrchestrationConfigReference reference) {
+      @Nullable final OrchestrationPrompt prompt, @Nonnull final OrchestrationConfigReference reference) {
     var request =
         ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(prompt, reference);
     var response = executeRequest(request);

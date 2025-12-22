@@ -7,6 +7,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBE
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
@@ -23,6 +24,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
+import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
@@ -37,6 +39,7 @@ import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputConfig;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
+import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.Template;
 import java.io.IOException;
 import java.util.List;
@@ -676,7 +679,8 @@ public class OrchestrationService {
     var testReference =
         OrchestrationConfigReference.fromScenarioNameVersion(
             "sdk-test-scenario", "test-config-for-OrchestrationTest", "0.0.1");
-    OrchestrationPrompt testPrompt = new OrchestrationPrompt(Map.of("phrase", "Hello World"));
+    List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
+    OrchestrationPrompt testPrompt = new OrchestrationPrompt(Map.of("phrase", "Hello World")).messageHistory(history);
     return client.executeRequestFromReference(testPrompt, testReference);
   }
 
