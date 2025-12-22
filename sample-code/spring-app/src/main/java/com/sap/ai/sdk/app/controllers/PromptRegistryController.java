@@ -10,6 +10,7 @@ import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigListResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigModules;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
@@ -181,15 +182,17 @@ class PromptRegistryController {
   private OrchestrationConfig buildOrchestrationConfig() {
     return OrchestrationConfig.create()
         .modules(
-            ModuleConfigs.create()
-                .promptTemplating(
-                    PromptTemplatingModuleConfig.create()
-                        .prompt(
-                            Template.create()
-                                .template(
-                                    UserChatMessage.create()
-                                        .content(new UserChatMessageContent.InnerString("message"))
-                                        .role(UserChatMessage.RoleEnum.USER)))
-                        .model(LLMModelDetails.create().name("model-name"))));
+            OrchestrationConfigModules.createInnerModuleConfigs(
+                ModuleConfigs.create()
+                    .promptTemplating(
+                        PromptTemplatingModuleConfig.create()
+                            .prompt(
+                                Template.create()
+                                    .template(
+                                        UserChatMessage.create()
+                                            .content(
+                                                new UserChatMessageContent.InnerString("message"))
+                                            .role(UserChatMessage.RoleEnum.USER)))
+                            .model(LLMModelDetails.create().name("model-name")))));
   }
 }

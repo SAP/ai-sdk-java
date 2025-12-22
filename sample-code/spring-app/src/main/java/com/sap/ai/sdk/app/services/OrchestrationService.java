@@ -39,6 +39,7 @@ import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
 import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigModules;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
@@ -697,18 +698,19 @@ public class OrchestrationService {
   private OrchestrationConfig buildOrchestrationConfig() {
     return OrchestrationConfig.create()
         .modules(
-            ModuleConfigs.create()
-                .promptTemplating(
-                    PromptTemplatingModuleConfig.create()
-                        .prompt(
-                            com.sap.ai.sdk.prompt.registry.model.Template.create()
-                                .template(
-                                    UserChatMessage.create()
-                                        .content(
-                                            new UserChatMessageContent.InnerString(
-                                                "Create {{?number}} paraphrases of {{?phrase}}"))
-                                        .role(UserChatMessage.RoleEnum.USER))
-                                .defaults(Map.of("number", "3")))
-                        .model(LLMModelDetails.create().name("gpt-4.1-nano"))));
+            OrchestrationConfigModules.createInnerModuleConfigs(
+                ModuleConfigs.create()
+                    .promptTemplating(
+                        PromptTemplatingModuleConfig.create()
+                            .prompt(
+                                com.sap.ai.sdk.prompt.registry.model.Template.create()
+                                    .template(
+                                        UserChatMessage.create()
+                                            .content(
+                                                new UserChatMessageContent.InnerString(
+                                                    "Create {{?number}} paraphrases of {{?phrase}}"))
+                                            .role(UserChatMessage.RoleEnum.USER))
+                                    .defaults(Map.of("number", "3")))
+                            .model(LLMModelDetails.create().name("gpt-4.1-nano")))));
   }
 }
