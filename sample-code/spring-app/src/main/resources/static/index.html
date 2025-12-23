@@ -503,7 +503,7 @@
                         </details>
                         <br>
                         <details>
-                            <summary><h5 style="display:inline-block">Template reference</h5>
+                            <summary><h5 style="display:inline-block">Template and Config Reference</h5>
                             </summary>
                             <ul class="list-group">
                                 <li class="list-group-item">
@@ -544,6 +544,18 @@
                                         <div class="tooltip-content">
                                             Chat request to an LLM through the Orchestration service
                                             using a local template file.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/configFromRegistry"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/configFromRegistry</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM using an Orchestration config stored in prompt registry.
                                         </div>
                                     </div>
                                 </li>
@@ -1105,6 +1117,18 @@
                                     </button>
                                     <div class="tooltip-content">
                                         Get a SpringAI list of messages from a Prompt Registry Response.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/prompt-registry/listOrchConfigs"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/prompt-registry/listOrchConfigs</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        List all Orchestration Configs.
                                     </div>
                                 </div>
                             </li>

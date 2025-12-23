@@ -1,6 +1,12 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByIdConfigRef;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByNameScenarioVersion;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef;
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfigModules;
@@ -12,13 +18,17 @@ import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
 /** Factory to create all data objects from an orchestration configuration. */
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ConfigToRequestTransformer {
   @Nonnull
@@ -112,5 +122,46 @@ final class ConfigToRequestTransformer {
     }
 
     return OrchestrationConfigModules.createInnerModuleConfigs(moduleConfig);
+  }
+
+  @Nonnull
+  static CompletionPostRequest fromReferenceToCompletionPostRequest(
+      @Nullable final OrchestrationPrompt prompt,
+      @Nonnull final OrchestrationConfigReference reference) {
+    List<ChatMessage> messageHistory = List.of();
+    Map<String, String> placeholders = Map.of();
+    if (prompt != null) {
+      if (!prompt.getMessages().isEmpty()) {
+        log.debug(
+            "Messages in prompts are ignored when using Orchestration configs via reference. Change the Orchestration config instead.");
+      }
+      messageHistory =
+          prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
+      placeholders = prompt.getTemplateParameters();
+    }
+
+    CompletionPostRequest request;
+    if (reference.getId() != null) {
+      request =
+          CompletionRequestConfigurationReferenceById.create()
+              .configRef(
+                  CompletionRequestConfigurationReferenceByIdConfigRef.create()
+                      .id(reference.getId()));
+      ((CompletionRequestConfigurationReferenceById) request).setMessagesHistory(messageHistory);
+      ((CompletionRequestConfigurationReferenceById) request).setPlaceholderValues(placeholders);
+    } else {
+      request =
+          CompletionRequestConfigurationReferenceByNameScenarioVersion.create()
+              .configRef(
+                  CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef.create()
+                      .scenario(reference.getScenario())
+                      .name(reference.getName())
+                      .version(reference.getVersion()));
+      ((CompletionRequestConfigurationReferenceByNameScenarioVersion) request)
+          .setMessagesHistory(messageHistory);
+      ((CompletionRequestConfigurationReferenceByNameScenarioVersion) request)
+          .setPlaceholderValues(placeholders);
+    }
+    return request;
   }
 }
