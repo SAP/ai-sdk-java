@@ -16,7 +16,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.embedding.EmbeddingOptionsBuilder;
+import org.springframework.ai.embedding.EmbeddingOptions;
 import org.springframework.ai.embedding.EmbeddingRequest;
 import org.springframework.ai.embedding.EmbeddingResponse;
 import org.springframework.ai.model.tool.DefaultToolCallingChatOptions;
@@ -40,7 +40,7 @@ public class SpringAiOpenAiService {
    */
   @Nonnull
   public EmbeddingResponse embedStrings() {
-    final var options = EmbeddingOptionsBuilder.builder().withDimensions(128).build();
+    final var options = EmbeddingOptions.builder().dimensions(128).build();
     final var springAiRequest =
         new EmbeddingRequest(List.of("The quick brown fox jumps over the lazy dog."), options);
 

@@ -94,6 +94,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel LLAMA3_1_70B_INSTRUCT =
       new OrchestrationAiModel("meta--llama3.1-70b-instruct");
 
+  /** Cohere Command a Reasoning model */
+  public static final OrchestrationAiModel COHERE_COMMAND_A_REASONING =
+      new OrchestrationAiModel("cohere--command-a-reasoning");
+
   /**
    * Anthropic Claude 3 Sonnet model
    *
@@ -176,6 +180,14 @@ public class OrchestrationAiModel {
   /** Amazon Nova Micro model */
   public static final OrchestrationAiModel NOVA_MICRO =
       new OrchestrationAiModel("amazon--nova-micro");
+
+  /** Amazon Nova Premier model */
+  public static final OrchestrationAiModel NOVA_PREMIER =
+      new OrchestrationAiModel("amazon--nova-premier");
+
+  /** Cohere Reranker Model */
+  public static final OrchestrationAiModel COHERE_RERANKER =
+      new OrchestrationAiModel("cohere-reranker");
 
   /**
    * Azure OpenAI GPT-3.5 Turbo model
@@ -322,7 +334,12 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel ALEPHALPHA_PHARIA_1_7B_CONTROL =
       new OrchestrationAiModel("alephalpha-pharia-1-7b-control");
 
-  /** DeepSeek-R1 */
+  /**
+   * DeepSeek-R1
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-11-31.
+   */
+  @Deprecated
   public static final OrchestrationAiModel DEEPSEEK_R1 =
       new OrchestrationAiModel("deepseek-ai--deepseek-r1");
 
@@ -331,6 +348,9 @@ public class OrchestrationAiModel {
 
   /** Perplexity AI Sonar Pro model */
   public static final OrchestrationAiModel SONAR_PRO = new OrchestrationAiModel("sonar-pro");
+
+  /** SAP ABAP 1 model */
+  public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
 
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");

@@ -24,7 +24,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.document.MetadataMode;
 import org.springframework.ai.embedding.EmbeddingOptions;
-import org.springframework.ai.embedding.EmbeddingOptionsBuilder;
 import org.springframework.ai.embedding.EmbeddingRequest;
 
 @WireMockTest
@@ -37,7 +36,7 @@ class OrchestrationEmbeddingModelTest {
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
-    options = EmbeddingOptionsBuilder.builder().withModel("text-embedding-3-small").build();
+    options = EmbeddingOptions.builder().model("text-embedding-3-small").build();
 
     final var destination = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     final var client = new OrchestrationClient(destination);
@@ -79,7 +78,7 @@ class OrchestrationEmbeddingModelTest {
   @Description("Tests that model must name must be set and request option precedes over default")
   void testEmbeddingWithMissingModelNameThrows() {
     final var request =
-        new EmbeddingRequest(List.of("Hello World"), EmbeddingOptionsBuilder.builder().build());
+        new EmbeddingRequest(List.of("Hello World"), EmbeddingOptions.builder().build());
 
     assertThatThrownBy(() -> model.call(request))
         .isInstanceOf(NullPointerException.class)
