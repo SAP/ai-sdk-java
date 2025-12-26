@@ -53,7 +53,7 @@ public class LLMModuleResult
   private TokenUsage usage;
 
   @JsonProperty("citations")
-  private List<String> citations = new ArrayList<>();
+  private List<Citation> citations = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -301,7 +301,7 @@ public class LLMModuleResult
    * @return The same instance of this {@link LLMModuleResult} class
    */
   @Nonnull
-  public LLMModuleResult citations(@Nullable final List<String> citations) {
+  public LLMModuleResult citations(@Nullable final List<Citation> citations) {
     this.citations = citations;
     return this;
   }
@@ -313,7 +313,7 @@ public class LLMModuleResult
    * @return The same instance of type {@link LLMModuleResult}
    */
   @Nonnull
-  public LLMModuleResult addCitationsItem(@Nonnull final String citationsItem) {
+  public LLMModuleResult addCitationsItem(@Nonnull final Citation citationsItem) {
     if (this.citations == null) {
       this.citations = new ArrayList<>();
     }
@@ -327,7 +327,7 @@ public class LLMModuleResult
    * @return citations The citations of this {@link LLMModuleResult} instance.
    */
   @Nonnull
-  public List<String> getCitations() {
+  public List<Citation> getCitations() {
     return citations;
   }
 
@@ -336,7 +336,7 @@ public class LLMModuleResult
    *
    * @param citations List of citations associated with the response.
    */
-  public void setCitations(@Nullable final List<String> citations) {
+  public void setCitations(@Nullable final List<Citation> citations) {
     this.citations = citations;
   }
 
