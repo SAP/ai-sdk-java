@@ -71,7 +71,7 @@
     <javaparser.version>3.27.1</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.20.1</jackson.version>
-    <logback.version>1.5.22</logback.version>
+    <logback.version>1.5.23</logback.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.1</micrometer.version>
     <json.version>20250517</json.version>
