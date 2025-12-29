@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- (optional) Spring AI requires version `1.1.0` (or higher).
 
 ### ✨ New Functionality
 
