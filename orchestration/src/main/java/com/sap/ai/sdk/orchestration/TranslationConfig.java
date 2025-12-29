@@ -1,0 +1,92 @@
+package com.sap.ai.sdk.orchestration;
+
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInput;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInputConfig;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputConfig;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
+import javax.annotation.Nonnull;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import lombok.With;
+import lombok.val;
+
+/**
+ * Configuration helper for SAP Document Translation.
+ *
+ * @link <a
+ *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/sap-document-translation">SAP
+ *     AI Core: Orchestration - SAP Document Translation</a>
+ * @since 1.14.0
+ */
+public interface TranslationConfig {
+  /** Input configuration for translation. */
+  @Value
+  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+  class Input implements TranslationConfig {
+    String targetLanguage;
+
+    @With String sourceLanguage;
+
+    Object ApplyTo; // Can be null
+
+    @Nonnull
+    SAPDocumentTranslationInput createSAPDocumentTranslationInput() {
+      val translationType = SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION;
+      val conf =
+          SAPDocumentTranslationInputConfig.create().targetLanguage(targetLanguage).applyTo(null);
+      return SAPDocumentTranslationInput.create().type(translationType).config(conf);
+    }
+  }
+
+  /** Output configuration for translation. */
+  @Value
+  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+  class Output implements TranslationConfig {
+    String targetLanguage;
+
+    @With String sourceLanguage;
+
+    @Nonnull
+    SAPDocumentTranslationOutput createSAPDocumentTranslationOutput() {
+      val translationType = SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION;
+      val tLang = SAPDocumentTranslationOutputTargetLanguage.create(targetLanguage);
+      val conf =
+          SAPDocumentTranslationOutputConfig.create()
+              .targetLanguage(tLang)
+              .sourceLanguage(sourceLanguage);
+      return SAPDocumentTranslationOutput.create().type(translationType).config(conf);
+    }
+  }
+
+  /**
+   * Create a new input translation configuration.
+   *
+   * @param targetLanguage The target language code
+   * @link <a
+   *     href="https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages">SAP
+   *     AI Core: Orchestration - SAP Translation Hub Table with official languages</a>
+   * @return A TranslationConfig configured for input translation
+   */
+  @Nonnull
+  static TranslationConfig.Input translateInputTo(@Nonnull final String targetLanguage) {
+
+    return new TranslationConfig.Input(targetLanguage, null, null);
+  }
+
+  /**
+   * Create a new output translation configuration.
+   *
+   * @param targetLanguage The target language code
+   * @link <a
+   *     href="https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages">
+   *     SAP AI Core: Orchestration - SAP Translation Hub Table with official languages</a>
+   * @return A TranslationConfig configured for output translation
+   */
+  @Nonnull
+  static TranslationConfig.Output translateOutputTo(@Nonnull final String targetLanguage) {
+
+    return new TranslationConfig.Output(targetLanguage, null);
+  }
+}

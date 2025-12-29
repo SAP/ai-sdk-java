@@ -20,7 +20,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: "Get orchestration version"
         if: matrix.file == 'orchestration'
@@ -41,7 +41,7 @@ jobs:
         run: |
           BRANCH="main"
           if [ "${{ matrix.file }}" = "orchestration" ]; then
-            BRANCH="rel/$ORCH_VERSION"
+            BRANCH="rel-$ORCH_VERSION"
           fi
           echo "Using branch: $BRANCH"
 

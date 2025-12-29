@@ -29,7 +29,7 @@ public class OrchestrationAiModel {
    *
    * <pre>{@code
    * Map.of(
-   *     "max_tokens", 50,
+   *     "max_completion_tokens", 50,
    *     "temperature", 0.1,
    *     "frequency_penalty", 0,
    *     "presence_penalty", 0)
@@ -94,6 +94,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel LLAMA3_1_70B_INSTRUCT =
       new OrchestrationAiModel("meta--llama3.1-70b-instruct");
 
+  /** Cohere Command a Reasoning model */
+  public static final OrchestrationAiModel COHERE_COMMAND_A_REASONING =
+      new OrchestrationAiModel("cohere--command-a-reasoning");
+
   /**
    * Anthropic Claude 3 Sonnet model
    *
@@ -144,6 +148,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_4_5_SONNET =
       new OrchestrationAiModel("anthropic--claude-4.5-sonnet");
 
+  /** Anthropic Claude 4.5 Haiku model */
+  public static final OrchestrationAiModel CLAUDE_4_5_HAIKU =
+      new OrchestrationAiModel("anthropic--claude-4.5-haiku");
+
   /**
    * Amazon Titan Text Lite model
    *
@@ -172,6 +180,14 @@ public class OrchestrationAiModel {
   /** Amazon Nova Micro model */
   public static final OrchestrationAiModel NOVA_MICRO =
       new OrchestrationAiModel("amazon--nova-micro");
+
+  /** Amazon Nova Premier model */
+  public static final OrchestrationAiModel NOVA_PREMIER =
+      new OrchestrationAiModel("amazon--nova-premier");
+
+  /** Cohere Reranker Model */
+  public static final OrchestrationAiModel COHERE_RERANKER =
+      new OrchestrationAiModel("cohere-reranker");
 
   /**
    * Azure OpenAI GPT-3.5 Turbo model
@@ -306,6 +322,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_2_5_FLASH =
       new OrchestrationAiModel("gemini-2.5-flash");
 
+  /** Google Cloud Platform Gemini 2.5 Flash Lite model */
+  public static final OrchestrationAiModel GEMINI_2_5_FLASH_LITE =
+      new OrchestrationAiModel("gemini-2.5-flash-lite");
+
   /** Google Cloud Platform Gemini 2.5 Pro model */
   public static final OrchestrationAiModel GEMINI_2_5_PRO =
       new OrchestrationAiModel("gemini-2.5-pro");
@@ -314,7 +334,12 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel ALEPHALPHA_PHARIA_1_7B_CONTROL =
       new OrchestrationAiModel("alephalpha-pharia-1-7b-control");
 
-  /** DeepSeek-R1 */
+  /**
+   * DeepSeek-R1
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-11-31.
+   */
+  @Deprecated
   public static final OrchestrationAiModel DEEPSEEK_R1 =
       new OrchestrationAiModel("deepseek-ai--deepseek-r1");
 
@@ -323,6 +348,9 @@ public class OrchestrationAiModel {
 
   /** Perplexity AI Sonar Pro model */
   public static final OrchestrationAiModel SONAR_PRO = new OrchestrationAiModel("sonar-pro");
+
+  /** SAP ABAP 1 model */
+  public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
 
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");
@@ -375,7 +403,7 @@ public class OrchestrationAiModel {
   @FunctionalInterface
   public interface Parameter<ValueT> {
     /** The maximum number of tokens to generate. */
-    Parameter<Integer> MAX_TOKENS = () -> "max_tokens";
+    Parameter<Integer> MAX_TOKENS = () -> "max_completion_tokens";
 
     /** The sampling temperature. */
     Parameter<Number> TEMPERATURE = () -> "temperature";
