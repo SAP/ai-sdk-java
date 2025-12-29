@@ -35,7 +35,7 @@ class OpenAiDeprecatedTest {
   void chatCompletionImage() {
     final var completion =
         service.chatCompletionImage(
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
+            "https://content.cdn.sap.com/is/image/sap/sap-locations-walldorf-photo-anvilwindow:XL");
 
     final var message = completion.getChoices().get(0).getMessage();
     assertThat(message.getRole()).isEqualTo("assistant");
