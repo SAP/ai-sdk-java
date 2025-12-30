@@ -11,6 +11,11 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: 'chore: [DevOps] '
+    ignore:
+      - dependency-name: "org.springframework.boot:*"
+        versions: [ ">=4.0.0" ]
+      - dependency-name: "org.springframework:*"
+        versions: [ ">=7.0.0" ]
     groups:
       production-minor-patch:
         dependency-type: "production"
