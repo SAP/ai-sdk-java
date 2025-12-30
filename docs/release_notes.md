@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- [PromptRegistry] Export methods (`exportPromptTemplate`, `exportOrchestrationConfig`) now return `byte[]` instead of `File`. Import methods (`importPromptTemplate`, `importOrchestrationConfig`) now accept `org.springframework.core.io.Resource` instead of `File`.
 
 ### ✨ New Functionality
 
