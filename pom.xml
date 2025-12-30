@@ -74,7 +74,7 @@
     <logback.version>1.5.23</logback.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.1</micrometer.version>
-    <json.version>20250517</json.version>
+    <json.version>20251224</json.version>
     <snakeyaml.version>2.5</snakeyaml.version>
     <!-- Formatting -->
     <spotless.version>3.1.0</spotless.version>
