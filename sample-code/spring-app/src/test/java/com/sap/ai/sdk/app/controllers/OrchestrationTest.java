@@ -521,4 +521,12 @@ class OrchestrationTest {
         .hasMessageContaining("400")
         .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
   }
+
+  @Test
+  void testExecuteRequestFromReference() {
+    // JONAS: make sure somehow that a correct config exists
+    val result = service.executeConfigFromReference();
+    val choices = (result.getOriginalResponse().getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
 }

@@ -1,0 +1,9 @@
+{
+  "config_ref": {
+    "scenario": "scenario",
+    "name": "name",
+    "version": "0.0.1"
+  },
+  "placeholder_values": {},
+  "messages_history": []
+}
