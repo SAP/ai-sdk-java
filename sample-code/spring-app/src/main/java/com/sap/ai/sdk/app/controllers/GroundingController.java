@@ -28,7 +28,7 @@ import com.sap.ai.sdk.grounding.model.SFTPPipelineGetResponse;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunk;
 import com.sap.ai.sdk.grounding.model.VectorDocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.VectorKeyValueListPair;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
+import com.sap.cloud.sdk.services.openapi.apache.OpenApiResponse;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
@@ -158,7 +158,7 @@ class GroundingController {
     final var documents = CLIENT_VECTOR.createCollection(RESOURCE_GROUP, request);
     final Map<String, List<String>> headers = documents.getHeaders();
 
-    final var locationHeader = headers.get("Location").get(0);
+    final var locationHeader = headers.get("location").get(0);
     return locationHeader.replaceAll("^.*?/([a-f0-9-]+)/.*?$", "$1");
   }
 

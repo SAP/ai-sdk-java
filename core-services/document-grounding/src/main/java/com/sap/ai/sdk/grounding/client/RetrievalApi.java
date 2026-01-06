@@ -1,27 +1,23 @@
 package com.sap.ai.sdk.grounding.client;
 
-import com.google.common.annotations.Beta;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DataRepository;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchResults;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
+import com.sap.cloud.sdk.services.openapi.apache.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.Pair;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Grounding in version 0.1.0.
@@ -32,7 +28,11 @@ import org.springframework.web.util.UriComponentsBuilder;
  * generative AI capabilities with the ability to use real-time, precise data to improve
  * decision-making and business operations for specific AI-driven business solutions.
  */
-public class RetrievalApi extends AbstractOpenApiService {
+public class RetrievalApi extends BaseApi {
+
+  /** Instantiates this API class to invoke operations on the Grounding */
+  public RetrievalApi() {}
+
   /**
    * Instantiates this API class to invoke operations on the Grounding.
    *
@@ -48,7 +48,6 @@ public class RetrievalApi extends AbstractOpenApiService {
    *
    * @param apiClient ApiClient to invoke the API on
    */
-  @Beta
   public RetrievalApi(@Nonnull final ApiClient apiClient) {
     super(apiClient);
   }
@@ -84,44 +83,46 @@ public class RetrievalApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getDataRepositories");
+              "Missing the required parameter 'aiResourceGroup' when calling getDataRepositories")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/retrieval/dataRepositories").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/retrieval/dataRepositories";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$count", $count));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<DataRepositories> localVarReturnType =
-        new ParameterizedTypeReference<DataRepositories>() {};
+    final TypeReference<DataRepositories> localVarReturnType =
+        new TypeReference<DataRepositories>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -171,51 +172,53 @@ public class RetrievalApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getDataRepositoryById");
+              "Missing the required parameter 'aiResourceGroup' when calling getDataRepositoryById")
+          .statusCode(400);
     }
 
     // verify the required parameter 'repositoryId' is set
     if (repositoryId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'repositoryId' when calling getDataRepositoryById");
+              "Missing the required parameter 'repositoryId' when calling getDataRepositoryById")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("repositoryId", repositoryId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/retrieval/dataRepositories/{repositoryId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/retrieval/dataRepositories/{repositoryId}"
+            .replaceAll(
+                "\\{" + "repositoryId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(repositoryId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<DataRepository> localVarReturnType =
-        new ParameterizedTypeReference<DataRepository>() {};
+    final TypeReference<DataRepository> localVarReturnType = new TypeReference<DataRepository>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -245,46 +248,49 @@ public class RetrievalApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling search");
+              "Missing the required parameter 'aiResourceGroup' when calling search")
+          .statusCode(400);
     }
 
     // verify the required parameter 'retrievalSearchInput' is set
     if (retrievalSearchInput == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'retrievalSearchInput' when calling retrievalV1RetrievalEndpointsSearch");
+              "Missing the required parameter 'retrievalSearchInput' when calling retrievalV1RetrievalEndpointsSearch")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/retrieval/search").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/retrieval/search";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
-
-    final ParameterizedTypeReference<RetrievalSearchResults> localVarReturnType =
-        new ParameterizedTypeReference<RetrievalSearchResults>() {};
+    final TypeReference<RetrievalSearchResults> localVarReturnType =
+        new TypeReference<RetrievalSearchResults>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 }

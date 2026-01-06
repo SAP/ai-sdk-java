@@ -48,12 +48,8 @@
   <dependencies>
     <!-- used by generated API classes -->
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
     </dependency>
     <!-- scope "compile" -->
     <dependency>
@@ -75,10 +71,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
     </dependency>
     <!-- scope "provided" -->
     <dependency>
@@ -136,6 +128,7 @@
                   <apiPackage>com.sap.ai.sdk.grounding.client</apiPackage>
                   <modelPackage>com.sap.ai.sdk.grounding.model</modelPackage>
                   <additionalProperties>
+                    <library>apache-httpclient</library>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
                     <pojoBuildMethodName/>
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>

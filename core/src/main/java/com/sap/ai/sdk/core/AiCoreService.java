@@ -136,6 +136,20 @@ public class AiCoreService {
   }
 
   /**
+   * Get an {@link ApiClient} to execute requests based on clients generated from OpenAPI
+   * specifications.
+   *
+   * @return A new client object based on {@link #getBaseDestination()}.
+   */
+  @Nonnull
+  @Beta
+  public com.sap.cloud.sdk.services.openapi.apache.ApiClient getApacheApiClient() {
+    val destination = getBaseDestination();
+    final var apiClient = com.sap.cloud.sdk.services.openapi.apache.ApiClient.create(destination);
+    return apiClient.withObjectMapper(objectMapper);
+  }
+
+  /**
    * Helper method to build the <b>relative</b> URL path for the inference endpoint of a deployment.
    * The result of this together with the base path defined on the destination will be used for
    * inference calls towards this deployment.

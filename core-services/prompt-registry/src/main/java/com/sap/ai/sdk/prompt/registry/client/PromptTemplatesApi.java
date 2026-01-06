@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.prompt.registry.client;
 
-import com.google.common.annotations.Beta;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateGetResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
@@ -9,31 +9,30 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
+import com.sap.cloud.sdk.services.openapi.apache.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.Pair;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Prompt Registry API in version 0.0.1.
  *
  * <p>Prompt Storage service for Design time & Runtime prompt templates.
  */
-public class PromptTemplatesApi extends AbstractOpenApiService {
+public class PromptTemplatesApi extends BaseApi {
+
+  /** Instantiates this API class to invoke operations on the Prompt Registry API */
+  public PromptTemplatesApi() {}
+
   /**
    * Instantiates this API class to invoke operations on the Prompt Registry API.
    *
@@ -49,7 +48,6 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * @param apiClient ApiClient to invoke the API on
    */
-  @Beta
   public PromptTemplatesApi(@Nonnull final ApiClient apiClient) {
     super(apiClient);
   }
@@ -83,43 +81,45 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     // verify the required parameter 'promptTemplatePostRequest' is set
     if (promptTemplatePostRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'promptTemplatePostRequest' when calling createUpdatePromptTemplate");
+              "Missing the required parameter 'promptTemplatePostRequest' when calling createUpdatePromptTemplate")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/promptTemplates").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/promptTemplates";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
-      localVarHeaderParams.add(
-          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
+      localVarHeaderParams.put(
+          "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
-
-    final ParameterizedTypeReference<PromptTemplatePostResponse> localVarReturnType =
-        new ParameterizedTypeReference<PromptTemplatePostResponse>() {};
+    final TypeReference<PromptTemplatePostResponse> localVarReturnType =
+        new TypeReference<PromptTemplatePostResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -173,48 +173,50 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'promptTemplateId' when calling deletePromptTemplate");
+              "Missing the required parameter 'promptTemplateId' when calling deletePromptTemplate")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("promptTemplateId", promptTemplateId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/promptTemplates/{promptTemplateId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/promptTemplates/{promptTemplateId}"
+            .replaceAll(
+                "\\{" + "promptTemplateId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(promptTemplateId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
-      localVarHeaderParams.add(
-          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
+      localVarHeaderParams.put(
+          "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<PromptTemplateDeleteResponse> localVarReturnType =
-        new ParameterizedTypeReference<PromptTemplateDeleteResponse>() {};
+    final TypeReference<PromptTemplateDeleteResponse> localVarReturnType =
+        new TypeReference<PromptTemplateDeleteResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.DELETE,
+        "DELETE",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -265,48 +267,49 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'promptTemplateId' when calling exportPromptTemplate");
+              "Missing the required parameter 'promptTemplateId' when calling exportPromptTemplate")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("promptTemplateId", promptTemplateId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/promptTemplates/{promptTemplateId}/export")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/promptTemplates/{promptTemplateId}/export"
+            .replaceAll(
+                "\\{" + "promptTemplateId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(promptTemplateId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
-      localVarHeaderParams.add(
-          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
+      localVarHeaderParams.put(
+          "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/octet-stream", "application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<File> localVarReturnType =
-        new ParameterizedTypeReference<File>() {};
+    final TypeReference<File> localVarReturnType = new TypeReference<File>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -357,48 +360,50 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'promptTemplateId' when calling getPromptTemplateByUuid");
+              "Missing the required parameter 'promptTemplateId' when calling getPromptTemplateByUuid")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("promptTemplateId", promptTemplateId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/promptTemplates/{promptTemplateId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/promptTemplates/{promptTemplateId}"
+            .replaceAll(
+                "\\{" + "promptTemplateId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(promptTemplateId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
-      localVarHeaderParams.add(
-          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
+      localVarHeaderParams.put(
+          "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<PromptTemplateGetResponse> localVarReturnType =
-        new ParameterizedTypeReference<PromptTemplateGetResponse>() {};
+    final TypeReference<PromptTemplateGetResponse> localVarReturnType =
+        new TypeReference<PromptTemplateGetResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -446,42 +451,43 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/promptTemplates/import").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/promptTemplates/import";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
-      localVarHeaderParams.add(
-          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
+      localVarHeaderParams.put(
+          "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
 
-    if (_file != null) localVarFormParams.add("file", new FileSystemResource(_file));
+    if (_file != null) localVarFormParams.put("file", _file);
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {"multipart/form-data"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
-
-    final ParameterizedTypeReference<PromptTemplatePostResponse> localVarReturnType =
-        new ParameterizedTypeReference<PromptTemplatePostResponse>() {};
+    final TypeReference<PromptTemplatePostResponse> localVarReturnType =
+        new TypeReference<PromptTemplatePostResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -534,63 +540,69 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     // verify the required parameter 'scenario' is set
     if (scenario == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'scenario' when calling listPromptTemplateHistory");
+              "Missing the required parameter 'scenario' when calling listPromptTemplateHistory")
+          .statusCode(400);
     }
 
     // verify the required parameter 'version' is set
     if (version == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'version' when calling listPromptTemplateHistory");
+              "Missing the required parameter 'version' when calling listPromptTemplateHistory")
+          .statusCode(400);
     }
 
     // verify the required parameter 'name' is set
     if (name == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'name' when calling listPromptTemplateHistory");
+              "Missing the required parameter 'name' when calling listPromptTemplateHistory")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("scenario", scenario);
-    localVarPathParams.put("version", version);
-    localVarPathParams.put("name", name);
     final String localVarPath =
-        UriComponentsBuilder.fromPath(
-                "/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history"
+            .replaceAll(
+                "\\{" + "scenario" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(scenario)))
+            .replaceAll(
+                "\\{" + "version" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(version)))
+            .replaceAll(
+                "\\{" + "name" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(name)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
-      localVarHeaderParams.add(
-          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
+      localVarHeaderParams.put(
+          "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<PromptTemplateListResponse> localVarReturnType =
-        new ParameterizedTypeReference<PromptTemplateListResponse>() {};
+    final TypeReference<PromptTemplateListResponse> localVarReturnType =
+        new TypeReference<PromptTemplateListResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -651,47 +663,47 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/promptTemplates").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/promptTemplates";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "scenario", scenario));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "name", name));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "version", version));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "retrieve", retrieve));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "includeSpec", includeSpec));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("scenario", scenario));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("name", name));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("version", version));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("retrieve", retrieve));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("includeSpec", includeSpec));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
-      localVarHeaderParams.add(
-          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
+      localVarHeaderParams.put(
+          "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<PromptTemplateListResponse> localVarReturnType =
-        new ParameterizedTypeReference<PromptTemplateListResponse>() {};
+    final TypeReference<PromptTemplateListResponse> localVarReturnType =
+        new TypeReference<PromptTemplateListResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -747,50 +759,50 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'promptTemplateId' when calling parsePromptTemplateById");
+              "Missing the required parameter 'promptTemplateId' when calling parsePromptTemplateById")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("promptTemplateId", promptTemplateId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/promptTemplates/{promptTemplateId}/substitution")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/promptTemplates/{promptTemplateId}/substitution"
+            .replaceAll(
+                "\\{" + "promptTemplateId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(promptTemplateId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "metadata", metadata));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("metadata", metadata));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
-      localVarHeaderParams.add(
-          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
+      localVarHeaderParams.put(
+          "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
-
-    final ParameterizedTypeReference<PromptTemplateSubstitutionResponse> localVarReturnType =
-        new ParameterizedTypeReference<PromptTemplateSubstitutionResponse>() {};
+    final TypeReference<PromptTemplateSubstitutionResponse> localVarReturnType =
+        new TypeReference<PromptTemplateSubstitutionResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -852,65 +864,69 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     // verify the required parameter 'scenario' is set
     if (scenario == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'scenario' when calling parsePromptTemplateByNameVersion");
+              "Missing the required parameter 'scenario' when calling parsePromptTemplateByNameVersion")
+          .statusCode(400);
     }
 
     // verify the required parameter 'version' is set
     if (version == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'version' when calling parsePromptTemplateByNameVersion");
+              "Missing the required parameter 'version' when calling parsePromptTemplateByNameVersion")
+          .statusCode(400);
     }
 
     // verify the required parameter 'name' is set
     if (name == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'name' when calling parsePromptTemplateByNameVersion");
+              "Missing the required parameter 'name' when calling parsePromptTemplateByNameVersion")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("scenario", scenario);
-    localVarPathParams.put("version", version);
-    localVarPathParams.put("name", name);
     final String localVarPath =
-        UriComponentsBuilder.fromPath(
-                "/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/substitution")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/substitution"
+            .replaceAll(
+                "\\{" + "scenario" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(scenario)))
+            .replaceAll(
+                "\\{" + "version" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(version)))
+            .replaceAll(
+                "\\{" + "name" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(name)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "metadata", metadata));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("metadata", metadata));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
-      localVarHeaderParams.add(
-          "AI-Resource-Group-Scope", apiClient.parameterToString(aiResourceGroupScope));
+      localVarHeaderParams.put(
+          "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
-
-    final ParameterizedTypeReference<PromptTemplateSubstitutionResponse> localVarReturnType =
-        new ParameterizedTypeReference<PromptTemplateSubstitutionResponse>() {};
+    final TypeReference<PromptTemplateSubstitutionResponse> localVarReturnType =
+        new TypeReference<PromptTemplateSubstitutionResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
