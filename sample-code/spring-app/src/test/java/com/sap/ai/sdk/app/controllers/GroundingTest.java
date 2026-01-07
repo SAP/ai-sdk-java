@@ -12,7 +12,7 @@ import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.DocumentsListResponse;
 import com.sap.ai.sdk.grounding.model.GetPipelines;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchResults;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
+import com.sap.cloud.sdk.services.openapi.apache.OpenApiResponse;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.UUID;
