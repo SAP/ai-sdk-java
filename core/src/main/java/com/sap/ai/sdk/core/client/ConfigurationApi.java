@@ -1,26 +1,22 @@
 package com.sap.ai.sdk.core.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.AiConfiguration;
 import com.sap.ai.sdk.core.model.AiConfigurationBaseData;
 import com.sap.ai.sdk.core.model.AiConfigurationCreationResponse;
 import com.sap.ai.sdk.core.model.AiConfigurationList;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
+import com.sap.cloud.sdk.services.openapi.apache.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.Pair;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * AI Core in version 2.41.0.
@@ -32,7 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
-public class ConfigurationApi extends AbstractOpenApiService {
+public class ConfigurationApi extends BaseApi {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public ConfigurationApi() {
@@ -64,7 +60,7 @@ public class ConfigurationApi extends AbstractOpenApiService {
    * @param $search (optional) Generic search term to be looked for in various attributes
    * @param searchCaseInsensitive (optional, default to false) indicates whether the search should
    *     be case insensitive
-   * @param executableIds (optional Limit query to only these executable IDs
+   * @param executableIds (optional) Limit query to only these executable IDs
    * @return Integer
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -81,50 +77,48 @@ public class ConfigurationApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling count");
+              "Missing the required parameter 'aiResourceGroup' when calling count")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/configurations/$count").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/configurations/$count";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "scenarioId", scenarioId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$search", $search));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "searchCaseInsensitive", searchCaseInsensitive));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(
-            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
-            "executableIds",
-            executableIds));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("scenarioId", scenarioId));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$search", $search));
+    localVarQueryParams.addAll(
+        ApiClient.parameterToPair("searchCaseInsensitive", searchCaseInsensitive));
+    localVarCollectionQueryParams.addAll(
+        ApiClient.parameterToPairs("csv", "executableIds", executableIds));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"text/plain", "application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<Integer> localVarReturnType =
-        new ParameterizedTypeReference<Integer>() {};
+    final TypeReference<Integer> localVarReturnType = new TypeReference<Integer>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -173,46 +167,49 @@ public class ConfigurationApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling create");
+              "Missing the required parameter 'aiResourceGroup' when calling create")
+          .statusCode(400);
     }
 
     // verify the required parameter 'aiConfigurationBaseData' is set
     if (aiConfigurationBaseData == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiConfigurationBaseData' when calling create");
+              "Missing the required parameter 'aiConfigurationBaseData' when calling create")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/configurations").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/configurations";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<AiConfigurationCreationResponse> localVarReturnType =
+        new TypeReference<AiConfigurationCreationResponse>() {};
 
-    final ParameterizedTypeReference<AiConfigurationCreationResponse> localVarReturnType =
-        new ParameterizedTypeReference<AiConfigurationCreationResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -244,53 +241,55 @@ public class ConfigurationApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling get");
+              "Missing the required parameter 'aiResourceGroup' when calling get")
+          .statusCode(400);
     }
 
     // verify the required parameter 'configurationId' is set
     if (configurationId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'configurationId' when calling get");
+              "Missing the required parameter 'configurationId' when calling get")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("configurationId", configurationId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/configurations/{configurationId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/configurations/{configurationId}"
+            .replaceAll(
+                "\\{" + "configurationId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(configurationId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$expand", $expand));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$expand", $expand));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<AiConfiguration> localVarReturnType =
-        new ParameterizedTypeReference<AiConfiguration>() {};
+    final TypeReference<AiConfiguration> localVarReturnType =
+        new TypeReference<AiConfiguration>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -332,7 +331,7 @@ public class ConfigurationApi extends AbstractOpenApiService {
    * @param scenarioId (optional) Scenario identifier
    * @param $top (optional, default to 10000) Number of results to display
    * @param $skip (optional) Number of results to be skipped from the ordered list of results
-   * @param executableIds (optional Limit query to only these executable IDs
+   * @param executableIds (optional) Limit query to only these executable IDs
    * @param $search (optional) Generic search term to be looked for in various attributes
    * @param searchCaseInsensitive (optional, default to false) indicates whether the search should
    *     be case insensitive
@@ -356,53 +355,52 @@ public class ConfigurationApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling query");
+              "Missing the required parameter 'aiResourceGroup' when calling query")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/configurations").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/configurations";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "scenarioId", scenarioId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(
-            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
-            "executableIds",
-            executableIds));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$search", $search));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "searchCaseInsensitive", searchCaseInsensitive));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$expand", $expand));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("scenarioId", scenarioId));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
+    localVarCollectionQueryParams.addAll(
+        ApiClient.parameterToPairs("csv", "executableIds", executableIds));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$search", $search));
+    localVarQueryParams.addAll(
+        ApiClient.parameterToPair("searchCaseInsensitive", searchCaseInsensitive));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$expand", $expand));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<AiConfigurationList> localVarReturnType =
-        new ParameterizedTypeReference<AiConfigurationList>() {};
+    final TypeReference<AiConfigurationList> localVarReturnType =
+        new TypeReference<AiConfigurationList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 

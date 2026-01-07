@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.core.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.BckndAllArgoCDApplicationData;
 import com.sap.ai.sdk.core.model.BckndArgoCDApplicationBaseData;
@@ -10,20 +11,17 @@ import com.sap.ai.sdk.core.model.BckndArgoCDApplicationModificationResponse;
 import com.sap.ai.sdk.core.model.BckndArgoCDApplicationRefreshResponse;
 import com.sap.ai.sdk.core.model.BckndArgoCDApplicationStatus;
 import com.sap.ai.sdk.core.model.KubesubmitV4ApplicationsCreateRequest;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
+import com.sap.cloud.sdk.services.openapi.apache.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.Pair;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * AI Core in version 2.41.0.
@@ -35,7 +33,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
-public class ApplicationApi extends AbstractOpenApiService {
+public class ApplicationApi extends BaseApi {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public ApplicationApi() {
@@ -79,40 +77,42 @@ public class ApplicationApi extends AbstractOpenApiService {
     // verify the required parameter 'kubesubmitV4ApplicationsCreateRequest' is set
     if (kubesubmitV4ApplicationsCreateRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'kubesubmitV4ApplicationsCreateRequest' when calling create");
+              "Missing the required parameter 'kubesubmitV4ApplicationsCreateRequest' when calling create")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/applications").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/admin/applications";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<BckndArgoCDApplicationCreationResponse> localVarReturnType =
+        new TypeReference<BckndArgoCDApplicationCreationResponse>() {};
 
-    final ParameterizedTypeReference<BckndArgoCDApplicationCreationResponse> localVarReturnType =
-        new ParameterizedTypeReference<BckndArgoCDApplicationCreationResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -167,45 +167,47 @@ public class ApplicationApi extends AbstractOpenApiService {
     // verify the required parameter 'applicationName' is set
     if (applicationName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'applicationName' when calling delete");
+              "Missing the required parameter 'applicationName' when calling delete")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("applicationName", applicationName);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/applications/{applicationName}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/admin/applications/{applicationName}"
+            .replaceAll(
+                "\\{" + "applicationName" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(applicationName)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BckndArgoCDApplicationDeletionResponse> localVarReturnType =
-        new ParameterizedTypeReference<BckndArgoCDApplicationDeletionResponse>() {};
+    final TypeReference<BckndArgoCDApplicationDeletionResponse> localVarReturnType =
+        new TypeReference<BckndArgoCDApplicationDeletionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.DELETE,
+        "DELETE",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -259,45 +261,47 @@ public class ApplicationApi extends AbstractOpenApiService {
     // verify the required parameter 'applicationName' is set
     if (applicationName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'applicationName' when calling get");
+              "Missing the required parameter 'applicationName' when calling get")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("applicationName", applicationName);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/applications/{applicationName}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/admin/applications/{applicationName}"
+            .replaceAll(
+                "\\{" + "applicationName" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(applicationName)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BckndArgoCDApplicationData> localVarReturnType =
-        new ParameterizedTypeReference<BckndArgoCDApplicationData>() {};
+    final TypeReference<BckndArgoCDApplicationData> localVarReturnType =
+        new TypeReference<BckndArgoCDApplicationData>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -354,41 +358,42 @@ public class ApplicationApi extends AbstractOpenApiService {
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/applications").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/admin/applications";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$count", $count));
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BckndAllArgoCDApplicationData> localVarReturnType =
-        new ParameterizedTypeReference<BckndAllArgoCDApplicationData>() {};
+    final TypeReference<BckndAllArgoCDApplicationData> localVarReturnType =
+        new TypeReference<BckndAllArgoCDApplicationData>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -438,45 +443,47 @@ public class ApplicationApi extends AbstractOpenApiService {
     // verify the required parameter 'applicationName' is set
     if (applicationName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'applicationName' when calling getStatus");
+              "Missing the required parameter 'applicationName' when calling getStatus")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("applicationName", applicationName);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/applications/{applicationName}/status")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/admin/applications/{applicationName}/status"
+            .replaceAll(
+                "\\{" + "applicationName" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(applicationName)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BckndArgoCDApplicationStatus> localVarReturnType =
-        new ParameterizedTypeReference<BckndArgoCDApplicationStatus>() {};
+    final TypeReference<BckndArgoCDApplicationStatus> localVarReturnType =
+        new TypeReference<BckndArgoCDApplicationStatus>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -531,45 +538,47 @@ public class ApplicationApi extends AbstractOpenApiService {
     // verify the required parameter 'applicationName' is set
     if (applicationName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'applicationName' when calling refresh");
+              "Missing the required parameter 'applicationName' when calling refresh")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("applicationName", applicationName);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/applications/{applicationName}/refresh")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/admin/applications/{applicationName}/refresh"
+            .replaceAll(
+                "\\{" + "applicationName" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(applicationName)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BckndArgoCDApplicationRefreshResponse> localVarReturnType =
-        new ParameterizedTypeReference<BckndArgoCDApplicationRefreshResponse>() {};
+    final TypeReference<BckndArgoCDApplicationRefreshResponse> localVarReturnType =
+        new TypeReference<BckndArgoCDApplicationRefreshResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -629,52 +638,53 @@ public class ApplicationApi extends AbstractOpenApiService {
     // verify the required parameter 'applicationName' is set
     if (applicationName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'applicationName' when calling update");
+              "Missing the required parameter 'applicationName' when calling update")
+          .statusCode(400);
     }
 
     // verify the required parameter 'bckndArgoCDApplicationBaseData' is set
     if (bckndArgoCDApplicationBaseData == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'bckndArgoCDApplicationBaseData' when calling update");
+              "Missing the required parameter 'bckndArgoCDApplicationBaseData' when calling update")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("applicationName", applicationName);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/applications/{applicationName}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/admin/applications/{applicationName}"
+            .replaceAll(
+                "\\{" + "applicationName" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(applicationName)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<BckndArgoCDApplicationModificationResponse> localVarReturnType =
+        new TypeReference<BckndArgoCDApplicationModificationResponse>() {};
 
-    final ParameterizedTypeReference<BckndArgoCDApplicationModificationResponse>
-        localVarReturnType =
-            new ParameterizedTypeReference<BckndArgoCDApplicationModificationResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.PATCH,
+        "PATCH",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 

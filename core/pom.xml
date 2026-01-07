@@ -50,20 +50,8 @@
       <artifactId>openapi-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
-      <artifactId>connectivity-apache-httpclient5</artifactId>
     </dependency>
     <dependency>
       <groupId>com.sap.cloud.environment.servicebinding.api</groupId>
@@ -72,10 +60,6 @@
     <dependency>
       <groupId>com.sap.cloud.environment.servicebinding.api</groupId>
       <artifactId>java-core-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents.client5</groupId>
-      <artifactId>httpclient5</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents.core5</groupId>
@@ -188,6 +172,7 @@
                   <apiPackage>com.sap.ai.sdk.core.client</apiPackage>
                   <modelPackage>com.sap.ai.sdk.core.model</modelPackage>
                   <additionalProperties>
+                    <library>apache-httpclient</library>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
                     <pojoBuildMethodName/>
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>
