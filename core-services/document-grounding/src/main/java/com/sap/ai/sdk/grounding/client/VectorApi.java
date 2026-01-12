@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.grounding.model.Collection;
 import com.sap.ai.sdk.grounding.model.CollectionRequest;
 import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
+import com.sap.ai.sdk.grounding.model.DocumentBulkDeleteRequest;
+import com.sap.ai.sdk.grounding.model.DocumentBulkDeleteResponse;
 import com.sap.ai.sdk.grounding.model.DocumentCreateRequest;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.DocumentUpdateRequest;
@@ -218,6 +220,77 @@ public class VectorApi extends BaseApi {
         localVarFormParams,
         localVarAccept,
         localVarContentType,
+        localVarReturnType);
+  }
+
+  /**
+   * Delete list of documents across collections
+   *
+   * <p>Deletes list of documents across collections.
+   *
+   * <p><b>200</b> - Successful Response
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>404</b> - The specification of the resource was incorrect
+   *
+   * <p><b>422</b> - There are validation issues with the data.
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param documentBulkDeleteRequest The value for the parameter documentBulkDeleteRequest
+   * @return DocumentBulkDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public DocumentBulkDeleteResponse deleteAllDocuments(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final DocumentBulkDeleteRequest documentBulkDeleteRequest)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = documentBulkDeleteRequest;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling deleteAllDocuments");
+    }
+
+    // verify the required parameter 'documentBulkDeleteRequest' is set
+    if (documentBulkDeleteRequest == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'documentBulkDeleteRequest' when calling vectorV1VectorEndpointsDeleteAllDocuments");
+    }
+
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/vector/documents").build().toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<DocumentBulkDeleteResponse> localVarReturnType =
+        new ParameterizedTypeReference<DocumentBulkDeleteResponse>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.DELETE,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
         localVarReturnType);
   }
 

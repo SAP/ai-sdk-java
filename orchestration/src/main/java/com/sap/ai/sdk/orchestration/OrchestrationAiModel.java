@@ -140,6 +140,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_4_OPUS =
       new OrchestrationAiModel("anthropic--claude-4-opus");
 
+  /** Anthropic Claude 4.5 Opus model */
+  public static final OrchestrationAiModel CLAUDE_4_5_OPUS =
+      new OrchestrationAiModel("anthropic--claude-4.5-opus");
+
   /** Anthropic Claude 4 Sonnet model */
   public static final OrchestrationAiModel CLAUDE_4_SONNET =
       new OrchestrationAiModel("anthropic--claude-4-sonnet");
