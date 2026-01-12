@@ -251,46 +251,49 @@ public class VectorApi extends BaseApi {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deleteAllDocuments");
+              "Missing the required parameter 'aiResourceGroup' when calling deleteAllDocuments")
+          .statusCode(400);
     }
 
     // verify the required parameter 'documentBulkDeleteRequest' is set
     if (documentBulkDeleteRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentBulkDeleteRequest' when calling vectorV1VectorEndpointsDeleteAllDocuments");
+              "Missing the required parameter 'documentBulkDeleteRequest' when calling vectorV1VectorEndpointsDeleteAllDocuments")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/documents").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/vector/documents";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    String localVarQueryParameterBaseName;
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final TypeReference<DocumentBulkDeleteResponse> localVarReturnType =
+        new TypeReference<DocumentBulkDeleteResponse>() {};
 
-    final ParameterizedTypeReference<DocumentBulkDeleteResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentBulkDeleteResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.DELETE,
+        "DELETE",
         localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
         localVarPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 

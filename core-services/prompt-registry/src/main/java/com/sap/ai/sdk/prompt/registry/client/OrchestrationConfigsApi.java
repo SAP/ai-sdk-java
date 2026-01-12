@@ -45,7 +45,6 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * @param apiClient ApiClient to invoke the API on
    */
-  @Beta
   public OrchestrationConfigsApi(@Nonnull final ApiClient apiClient) {
     super(apiClient);
   }
