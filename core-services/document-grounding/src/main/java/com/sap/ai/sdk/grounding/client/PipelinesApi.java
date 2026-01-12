@@ -110,11 +110,11 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<PipelineId> localVarReturnType = new TypeReference<PipelineId>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -182,13 +182,13 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OpenApiResponse> localVarReturnType =
         new TypeReference<OpenApiResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -256,12 +256,12 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<GetPipelines> localVarReturnType = new TypeReference<GetPipelines>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -348,12 +348,12 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<GetPipeline> localVarReturnType = new TypeReference<GetPipeline>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -432,13 +432,13 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<PipelineDocumentResponse> localVarReturnType =
         new TypeReference<PipelineDocumentResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -518,13 +518,13 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<DocumentsStatusResponse> localVarReturnType =
         new TypeReference<DocumentsStatusResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -623,13 +623,13 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<GetPipelineExecutionById> localVarReturnType =
         new TypeReference<GetPipelineExecutionById>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -720,13 +720,13 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<PipelineDocumentResponse> localVarReturnType =
         new TypeReference<PipelineDocumentResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -818,13 +818,13 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<DocumentsStatusResponse> localVarReturnType =
         new TypeReference<DocumentsStatusResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -931,13 +931,13 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<GetPipelineExecutions> localVarReturnType =
         new TypeReference<GetPipelineExecutions>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -1025,13 +1025,13 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<GetPipelineStatus> localVarReturnType =
         new TypeReference<GetPipelineStatus>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -1109,12 +1109,12 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OpenApiResponse> localVarReturnType =
         new TypeReference<OpenApiResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",
@@ -1191,12 +1191,12 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<SearchPipelinesResponse> localVarReturnType =
         new TypeReference<SearchPipelinesResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -1282,12 +1282,12 @@ public class PipelinesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OpenApiResponse> localVarReturnType =
         new TypeReference<OpenApiResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",

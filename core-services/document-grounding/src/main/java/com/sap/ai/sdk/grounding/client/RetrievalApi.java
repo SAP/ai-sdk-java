@@ -105,13 +105,13 @@ public class RetrievalApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<DataRepositories> localVarReturnType =
         new TypeReference<DataRepositories>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -202,12 +202,12 @@ public class RetrievalApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<DataRepository> localVarReturnType = new TypeReference<DataRepository>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -274,12 +274,12 @@ public class RetrievalApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<RetrievalSearchResults> localVarReturnType =
         new TypeReference<RetrievalSearchResults>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",

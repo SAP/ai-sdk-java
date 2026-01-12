@@ -13,7 +13,6 @@ import com.sap.cloud.sdk.services.openapi.apache.ApiClient;
 import com.sap.cloud.sdk.services.openapi.apache.BaseApi;
 import com.sap.cloud.sdk.services.openapi.apache.Pair;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -103,12 +102,12 @@ public class PromptTemplatesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<PromptTemplatePostResponse> localVarReturnType =
         new TypeReference<PromptTemplatePostResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -199,13 +198,13 @@ public class PromptTemplatesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<PromptTemplateDeleteResponse> localVarReturnType =
         new TypeReference<PromptTemplateDeleteResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -253,11 +252,11 @@ public class PromptTemplatesApi extends BaseApi {
    * @param promptTemplateId (required) The value for the parameter promptTemplateId
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
-   * @return File
+   * @return byte[]
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public File exportPromptTemplate(
+  public byte[] exportPromptTemplate(
       @Nonnull final UUID promptTemplateId,
       @Nullable final String aiResourceGroup,
       @Nullable final String aiResourceGroupScope)
@@ -293,12 +292,12 @@ public class PromptTemplatesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/octet-stream", "application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final TypeReference<File> localVarReturnType = new TypeReference<File>() {};
+    final TypeReference<byte[]> localVarReturnType = new TypeReference<byte[]>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -323,11 +322,11 @@ public class PromptTemplatesApi extends BaseApi {
    * <p><b>0</b> - Common Error
    *
    * @param promptTemplateId The value for the parameter promptTemplateId
-   * @return File
+   * @return byte[]
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public File exportPromptTemplate(@Nonnull final UUID promptTemplateId)
+  public byte[] exportPromptTemplate(@Nonnull final UUID promptTemplateId)
       throws OpenApiRequestException {
     return exportPromptTemplate(promptTemplateId, null, null);
   }
@@ -386,13 +385,13 @@ public class PromptTemplatesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<PromptTemplateGetResponse> localVarReturnType =
         new TypeReference<PromptTemplateGetResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -447,7 +446,7 @@ public class PromptTemplatesApi extends BaseApi {
   public PromptTemplatePostResponse importPromptTemplate(
       @Nullable final String aiResourceGroup,
       @Nullable final String aiResourceGroupScope,
-      @Nullable final File _file)
+      @Nullable final byte[] _file)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -466,17 +465,16 @@ public class PromptTemplatesApi extends BaseApi {
     if (aiResourceGroupScope != null)
       localVarHeaderParams.put(
           "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
-
     if (_file != null) localVarFormParams.put("file", _file);
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"multipart/form-data"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<PromptTemplatePostResponse> localVarReturnType =
         new TypeReference<PromptTemplatePostResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -585,13 +583,13 @@ public class PromptTemplatesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<PromptTemplateListResponse> localVarReturnType =
         new TypeReference<PromptTemplateListResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -686,13 +684,13 @@ public class PromptTemplatesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<PromptTemplateListResponse> localVarReturnType =
         new TypeReference<PromptTemplateListResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -786,12 +784,12 @@ public class PromptTemplatesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<PromptTemplateSubstitutionResponse> localVarReturnType =
         new TypeReference<PromptTemplateSubstitutionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -910,12 +908,12 @@ public class PromptTemplatesApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<PromptTemplateSubstitutionResponse> localVarReturnType =
         new TypeReference<PromptTemplateSubstitutionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",

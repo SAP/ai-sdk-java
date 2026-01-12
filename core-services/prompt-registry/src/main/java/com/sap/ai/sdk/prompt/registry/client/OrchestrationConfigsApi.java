@@ -11,7 +11,6 @@ import com.sap.cloud.sdk.services.openapi.apache.ApiClient;
 import com.sap.cloud.sdk.services.openapi.apache.BaseApi;
 import com.sap.cloud.sdk.services.openapi.apache.Pair;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -96,12 +95,12 @@ public class OrchestrationConfigsApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OrchestrationConfigPostResponse> localVarReturnType =
         new TypeReference<OrchestrationConfigPostResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -187,13 +186,13 @@ public class OrchestrationConfigsApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OrchestrationConfigDeleteResponse> localVarReturnType =
         new TypeReference<OrchestrationConfigDeleteResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -240,11 +239,11 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * @param orchestrationConfigId (required) The value for the parameter orchestrationConfigId
    * @param aiResourceGroup (optional) Specify a resource group id to use
-   * @return File
+   * @return byte[]
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public File exportOrchestrationConfig(
+  public byte[] exportOrchestrationConfig(
       @Nonnull final UUID orchestrationConfigId, @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -275,12 +274,12 @@ public class OrchestrationConfigsApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/octet-stream", "application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final TypeReference<File> localVarReturnType = new TypeReference<File>() {};
+    final TypeReference<byte[]> localVarReturnType = new TypeReference<byte[]>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -305,11 +304,11 @@ public class OrchestrationConfigsApi extends BaseApi {
    * <p><b>0</b> - Common Error
    *
    * @param orchestrationConfigId The value for the parameter orchestrationConfigId
-   * @return File
+   * @return byte[]
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public File exportOrchestrationConfig(@Nonnull final UUID orchestrationConfigId)
+  public byte[] exportOrchestrationConfig(@Nonnull final UUID orchestrationConfigId)
       throws OpenApiRequestException {
     return exportOrchestrationConfig(orchestrationConfigId, null);
   }
@@ -368,13 +367,13 @@ public class OrchestrationConfigsApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OrchestrationConfigGetResponse> localVarReturnType =
         new TypeReference<OrchestrationConfigGetResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -426,7 +425,7 @@ public class OrchestrationConfigsApi extends BaseApi {
    */
   @Nonnull
   public OrchestrationConfigPostResponse importOrchestrationConfig(
-      @Nullable final String aiResourceGroup, @Nullable final File _file)
+      @Nullable final String aiResourceGroup, @Nullable final byte[] _file)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -442,17 +441,16 @@ public class OrchestrationConfigsApi extends BaseApi {
 
     if (aiResourceGroup != null)
       localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
-
     if (_file != null) localVarFormParams.put("file", _file);
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"multipart/form-data"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OrchestrationConfigPostResponse> localVarReturnType =
         new TypeReference<OrchestrationConfigPostResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -565,13 +563,13 @@ public class OrchestrationConfigsApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OrchestrationConfigListResponse> localVarReturnType =
         new TypeReference<OrchestrationConfigListResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -666,13 +664,13 @@ public class OrchestrationConfigsApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OrchestrationConfigListResponse> localVarReturnType =
         new TypeReference<OrchestrationConfigListResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",

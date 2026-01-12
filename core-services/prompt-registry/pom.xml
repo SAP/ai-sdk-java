@@ -136,6 +136,9 @@
                   <inputSpec>${project.basedir}/src/main/resources/spec/prompt-registry.yaml</inputSpec>
                   <apiPackage>com.sap.ai.sdk.prompt.registry.client</apiPackage>
                   <modelPackage>com.sap.ai.sdk.prompt.registry.model</modelPackage>
+                  <typeMappings>
+                    <typeMapping>File=byte[]</typeMapping>
+                  </typeMappings>
                   <additionalProperties>
                     <library>apache-httpclient</library>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>

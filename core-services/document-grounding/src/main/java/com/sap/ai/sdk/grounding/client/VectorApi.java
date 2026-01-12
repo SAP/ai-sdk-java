@@ -113,12 +113,12 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OpenApiResponse> localVarReturnType =
         new TypeReference<OpenApiResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -201,12 +201,12 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<DocumentsListResponse> localVarReturnType =
         new TypeReference<DocumentsListResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -279,13 +279,13 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OpenApiResponse> localVarReturnType =
         new TypeReference<OpenApiResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -370,13 +370,13 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OpenApiResponse> localVarReturnType =
         new TypeReference<OpenApiResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -444,13 +444,13 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<CollectionsListResponse> localVarReturnType =
         new TypeReference<CollectionsListResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -554,12 +554,12 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<Documents> localVarReturnType = new TypeReference<Documents>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -656,12 +656,12 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<Collection> localVarReturnType = new TypeReference<Collection>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -732,7 +732,6 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
@@ -740,6 +739,7 @@ public class VectorApi extends BaseApi {
     final TypeReference<VectorV1VectorEndpointsGetCollectionCreationStatus200Response>
         localVarReturnType =
             new TypeReference<VectorV1VectorEndpointsGetCollectionCreationStatus200Response>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -810,7 +810,6 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
@@ -818,6 +817,7 @@ public class VectorApi extends BaseApi {
     final TypeReference<VectorV1VectorEndpointsGetCollectionDeletionStatus200Response>
         localVarReturnType =
             new TypeReference<VectorV1VectorEndpointsGetCollectionDeletionStatus200Response>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -902,13 +902,13 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<DocumentResponse> localVarReturnType =
         new TypeReference<DocumentResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -976,12 +976,12 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<VectorSearchResults> localVarReturnType =
         new TypeReference<VectorSearchResults>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -1063,12 +1063,12 @@ public class VectorApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<DocumentsListResponse> localVarReturnType =
         new TypeReference<DocumentsListResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",

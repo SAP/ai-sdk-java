@@ -45,7 +45,7 @@ public class GroundingClient {
    */
   @Nonnull
   public PipelinesApi pipelines() {
-    return new PipelinesApi(getService().getApacheApiClient().withBasePath(getBasePath()));
+    return new PipelinesApi(getService().getApiClient().withBasePath(getBasePath()));
   }
 
   /**
@@ -55,7 +55,7 @@ public class GroundingClient {
    */
   @Nonnull
   public VectorApi vector() {
-    return new VectorApi(getService().getApacheApiClient().withBasePath(getBasePath()));
+    return new VectorApi(getService().getApiClient().withBasePath(getBasePath()));
   }
 
   /**
@@ -65,6 +65,6 @@ public class GroundingClient {
    */
   @Nonnull
   public RetrievalApi retrieval() {
-    return new RetrievalApi(getService().getApacheApiClient().withBasePath(getBasePath()));
+    return new RetrievalApi(getService().getApiClient().withBasePath(getBasePath()));
   }
 }
