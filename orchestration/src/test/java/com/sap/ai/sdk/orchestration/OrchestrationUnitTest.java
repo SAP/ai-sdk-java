@@ -1357,7 +1357,7 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     var reference = OrchestrationConfigReference.fromId("test-id");
-    final var response = client.executeRequestFromReference(null, reference);
+    final var response = client.chatCompletionUsingReference(reference);
 
     final String expectedRequest = fileLoaderStr.apply("orchConfigByIdRequest.json");
     verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
@@ -1374,7 +1374,7 @@ class OrchestrationUnitTest {
 
     var reference =
         OrchestrationConfigReference.fromScenario("scenario").name("name").version("0.0.1");
-    final var response = client.executeRequestFromReference(null, reference);
+    final var response = client.chatCompletionUsingReference(reference);
 
     final String expectedRequest = fileLoaderStr.apply("orchConfigBySNVRequest.json");
     verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
@@ -1389,11 +1389,15 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var reference =
-        OrchestrationConfigReference.fromScenario("scenario").name("name").version("0.0.1");
     List<Message> history = List.of(new SystemMessage("System Message"));
-    var prompt = new OrchestrationPrompt(Map.of("placeholder", "value")).messageHistory(history);
-    final var response = client.executeRequestFromReference(prompt, reference);
+    var params = Map.of("placeholder", "value");
+    var reference =
+        OrchestrationConfigReference.fromScenario("scenario")
+            .name("name")
+            .version("0.0.1")
+            .messageHistory(history)
+            .templateParameters(params);
+    final var response = client.chatCompletionUsingReference(reference);
 
     final String expectedRequest = fileLoaderStr.apply("orchConfigByRequestHistoryParams.json");
     verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));

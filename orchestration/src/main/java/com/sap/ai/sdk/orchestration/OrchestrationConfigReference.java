@@ -4,8 +4,12 @@ import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class representing a reference to an Orchestration config stored in prompt registry.
@@ -14,12 +18,38 @@ import lombok.Value;
  */
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter(AccessLevel.PACKAGE)
 @Beta
 public class OrchestrationConfigReference {
   String id;
   String scenario;
   String name;
   String version;
+  OrchestrationPrompt prompt = new OrchestrationPrompt(Map.of());
+
+  /**
+   * Set the chat history for this reference.
+   *
+   * @param messagesHistory The chat history to set.
+   * @return The current instance of {@link OrchestrationConfigReference} with the changed chat history.
+   */
+  @Nonnull
+  public OrchestrationConfigReference messageHistory(@Nonnull final List<Message> messagesHistory) {
+    prompt.messageHistory(messagesHistory);
+    return this;
+  }
+
+  /**
+   * Set the template parameters for this reference.
+   *
+   * @param templateParameters The template parameters to set.
+   * @return The current instance of {@link OrchestrationConfigReference} with the changed chat history.
+   */
+  @Nonnull
+  public OrchestrationConfigReference templateParameters(@Nonnull final Map<String, String> templateParameters) {
+    prompt.templateParameters(templateParameters);
+    return this;
+  }
 
   /**
    * Build a reference from an ID.

@@ -666,14 +666,15 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse executeConfigFromReference() {
     ensureOrchestrationConfigExists();
+    final List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
+    var params = Map.of("phrase", "Hello World");
     final var testReference =
         OrchestrationConfigReference.fromScenario("sdk-test-scenario")
             .name("test-config-for-OrchestrationTest")
-            .version("0.0.1");
-    final List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
-    final OrchestrationPrompt testPrompt =
-        new OrchestrationPrompt(Map.of("phrase", "Hello World")).messageHistory(history);
-    return client.executeRequestFromReference(testPrompt, testReference);
+            .version("0.0.1")
+            .messageHistory(history)
+            .templateParameters(params);
+    return client.chatCompletionUsingReference(testReference);
   }
 
   private void ensureOrchestrationConfigExists() {

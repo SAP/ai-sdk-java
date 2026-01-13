@@ -126,19 +126,10 @@ final class ConfigToRequestTransformer {
 
   @Nonnull
   static CompletionPostRequest fromReferenceToCompletionPostRequest(
-      @Nullable final OrchestrationPrompt prompt,
       @Nonnull final OrchestrationConfigReference reference) {
-    List<ChatMessage> messageHistory = List.of();
-    Map<String, String> placeholders = Map.of();
-    if (prompt != null) {
-      if (!prompt.getMessages().isEmpty()) {
-        log.debug(
-            "Messages in prompts are ignored when using Orchestration configs via reference. Change the Orchestration config instead.");
-      }
-      messageHistory =
-          prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
-      placeholders = prompt.getTemplateParameters();
-    }
+    final OrchestrationPrompt prompt = reference.getPrompt();
+    final var messageHistory = prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
+    final var placeholders = prompt.getTemplateParameters();
 
     CompletionPostRequest request;
     if (reference.getId() != null) {
