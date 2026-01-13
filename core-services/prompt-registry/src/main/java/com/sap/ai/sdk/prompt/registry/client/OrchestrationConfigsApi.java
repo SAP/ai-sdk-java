@@ -10,7 +10,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,6 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -238,11 +236,11 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    *
    * @param orchestrationConfigId (required) The value for the parameter orchestrationConfigId
    * @param aiResourceGroup (optional) Specify a resource group id to use
-   * @return File
+   * @return byte[]
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public File exportOrchestrationConfig(
+  public byte[] exportOrchestrationConfig(
       @Nonnull final UUID orchestrationConfigId, @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -278,8 +276,8 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<File> localVarReturnType =
-        new ParameterizedTypeReference<File>() {};
+    final ParameterizedTypeReference<byte[]> localVarReturnType =
+        new ParameterizedTypeReference<byte[]>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -303,11 +301,11 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * <p><b>0</b> - Common Error
    *
    * @param orchestrationConfigId The value for the parameter orchestrationConfigId
-   * @return File
+   * @return byte[]
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public File exportOrchestrationConfig(@Nonnull final UUID orchestrationConfigId)
+  public byte[] exportOrchestrationConfig(@Nonnull final UUID orchestrationConfigId)
       throws OpenApiRequestException {
     return exportOrchestrationConfig(orchestrationConfigId, null);
   }
@@ -423,7 +421,8 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    */
   @Nonnull
   public OrchestrationConfigPostResponse importOrchestrationConfig(
-      @Nullable final String aiResourceGroup, @Nullable final File _file)
+      @Nullable final String aiResourceGroup,
+      @Nullable final org.springframework.core.io.Resource _file)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -441,7 +440,7 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
 
-    if (_file != null) localVarFormParams.add("file", new FileSystemResource(_file));
+    if (_file != null) localVarFormParams.add("file", _file);
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);

@@ -38,7 +38,7 @@ jobs:
 
       - name: "Restore Dependencies"
         id: restore-dependencies
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ env.MAVEN_CACHE_KEY }}
           path: ${{ env.MAVEN_CACHE_DIR }}

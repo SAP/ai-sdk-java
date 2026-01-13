@@ -2,6 +2,8 @@ package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
@@ -13,8 +15,11 @@ import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import java.io.IOException;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
 
 public class PromptRegistryTest {
+
+  static final ObjectMapper YAML_MAPPER = new ObjectMapper(new YAMLFactory());
 
   @Test
   void listTemplates() {
@@ -55,10 +60,15 @@ public class PromptRegistryTest {
     controller.deleteTemplate();
 
     // import
-    PromptTemplatePostResponse template = controller.importTemplate();
-    assertThat(template.getMessage()).contains("successful");
+    var importResult = controller.importTemplate();
+    assertThat(importResult.getMessage()).contains("successful");
 
-    // export TODO: NOT WORKING
+    // export
+    var exportedTemplate = controller.exportTemplate();
+
+    var importedTemplate = new ClassPathResource("prompt-template.yaml");
+    var expectedYaml = YAML_MAPPER.readTree(importedTemplate.getContentAsByteArray());
+    assertThat(YAML_MAPPER.readTree(exportedTemplate)).isEqualTo(expectedYaml);
 
     // cleanup
     List<PromptTemplateDeleteResponse> deletedTemplate = controller.deleteTemplate();
