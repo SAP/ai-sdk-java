@@ -12,8 +12,8 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] Configs stored in prompt registry can now be used for Orchestration calls via reference.
-- [Prompt Registry] Added support to manage Orchestration configs stored in Prompt Registry.
+- [Orchestration] Configs stored in prompt registry can now be used for [Orchestration calls via reference]().
+- [Prompt Registry] Added support to [manage Orchestration configs stored in Prompt Registry]().
 
 ### 📈 Improvements
 

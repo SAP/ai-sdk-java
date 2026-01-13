@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
@@ -665,7 +666,10 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse executeConfigFromReference() {
-    ensureOrchestrationConfigExists();
+    // JONAS: use these names ones e2e tests work again
+    val scenario = "sdk-test-paraphrase";
+    val name = "create-3-paraphrases-of-sentence";
+    ensureOrchestrationConfigExists("sdk-test-scenario", "test-config-for-OrchestrationTest");
     final List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
     var params = Map.of("phrase", "Hello World");
     final var testReference =
@@ -677,14 +681,14 @@ public class OrchestrationService {
     return client.chatCompletionUsingReference(testReference);
   }
 
-  private void ensureOrchestrationConfigExists() {
+  private void ensureOrchestrationConfigExists(final String scenario, final String name) {
     final OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
     if (!orchConfigExists("test-config-for-OrchestrationTest", orchConfigClient)) {
       final OrchestrationConfigPostRequest postRequest =
           OrchestrationConfigPostRequest.create()
-              .name("test-config-for-OrchestrationTest")
+              .name(name)
               .version("0.0.1")
-              .scenario("sdk-test-scenario")
+              .scenario(scenario)
               .spec(buildOrchestrationConfig());
       orchConfigClient.createUpdateOrchestrationConfig(postRequest);
     }
@@ -712,6 +716,6 @@ public class OrchestrationService {
                                                     "Create {{?number}} paraphrases of {{?phrase}}"))
                                             .role(UserChatMessage.RoleEnum.USER))
                                     .defaults(Map.of("number", "3")))
-                            .model(LLMModelDetails.create().name("gpt-4.1-nano")))));
+                            .model(LLMModelDetails.create().name(GPT_41_NANO.getName())))));
   }
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.google.common.annotations.Beta;
 import com.google.common.collect.Iterables;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.prompt.registry.client.OrchestrationConfigsApi;
@@ -30,7 +31,8 @@ import org.springframework.web.client.RestTemplate;
  *
  * @since 1.14.0
  */
-public class OrchestrationConfigClient extends OrchestrationConfigsApi {
+@Beta
+public class OrchestrationConfigClient extends OrchestrationConfigsApi { // JONAS: use delegation instead of extension here?
 
   /**
    * Instantiates a client to manage Orchestration Configurations on the Prompt Registry service.
