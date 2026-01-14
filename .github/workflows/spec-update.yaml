@@ -82,11 +82,29 @@ jobs:
 
       - name: "Checkout or Create Branch"
         id: branch
-        # Checkout branch if it exists, otherwise create it
+        env:
+          BASE: ${{ steps.pr_base.outputs.BASE }}
+          CHOICE: ${{ env.CHOICE }}
+          REF: ${{ env.REF }}
         run: |
           BRANCH="spec-update/$CHOICE/$REF"
-          git fetch origin $BRANCH || true
-          git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
+          
+          # try to fetch the base and the target branch (ignore failures if missing)
+          git fetch --no-tags --depth=1 origin "$BASE" || true
+          git fetch origin "$BRANCH" || true
+          
+          # if remote target branch exists, base the local branch on it
+          if git ls-remote --heads origin "$BRANCH" | grep -q "refs/heads/$BRANCH"; then
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+          else
+            # otherwise, create the branch from origin/BASE if it exists, else from current HEAD
+            if git ls-remote --heads origin "$BASE" | grep -q "refs/heads/$BASE"; then
+              git checkout -B "$BRANCH" "origin/$BASE"
+            else
+              git checkout -B "$BRANCH"
+            fi
+          fi
+          
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: "Download specification file"
