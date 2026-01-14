@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_HAIKU;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
@@ -44,7 +45,7 @@ import reactor.core.publisher.Flux;
 public class SpringAiOrchestrationService {
   private final ChatModel client = new OrchestrationChatModel();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+      new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_5_HAIKU);
   private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);
 
   @Nullable
