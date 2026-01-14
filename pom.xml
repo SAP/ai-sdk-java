@@ -561,6 +561,10 @@
             <!-- By default, JUnit5 adapters are added to every module to ensure no tests are skipped -->
             <ignoredUnusedDeclaredDependency>org.junit.jupiter:junit-jupiter-engine</ignoredUnusedDeclaredDependency>
           </ignoredUnusedDeclaredDependencies>
+          <ignoredNonTestScopedDependencies>
+            <!-- jackson-dataformat-yaml is used both in test scope of spring-app and compile scope in prompt-registry -->
+            <ignoredNonTestScopedDependency>com.fasterxml.jackson.dataformat:jackson-dataformat-yaml</ignoredNonTestScopedDependency>
+          </ignoredNonTestScopedDependencies>
         </configuration>
         <executions>
           <execution>
