@@ -100,12 +100,12 @@ public class SecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndGenericSecretDataResponse> localVarReturnType =
         new TypeReference<BckndGenericSecretDataResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -201,13 +201,13 @@ public class SecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OpenApiResponse> localVarReturnType =
         new TypeReference<OpenApiResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -303,13 +303,13 @@ public class SecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndGenericSecretDetails> localVarReturnType =
         new TypeReference<BckndGenericSecretDetails>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -406,13 +406,13 @@ public class SecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndListGenericSecretsResponse> localVarReturnType =
         new TypeReference<BckndListGenericSecretsResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -518,12 +518,12 @@ public class SecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndGenericSecretDataResponse> localVarReturnType =
         new TypeReference<BckndGenericSecretDataResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",

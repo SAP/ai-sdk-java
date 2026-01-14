@@ -92,13 +92,13 @@ public class ServiceApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndExtendedService> localVarReturnType =
         new TypeReference<BckndExtendedService>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -171,13 +171,13 @@ public class ServiceApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndServiceList> localVarReturnType =
         new TypeReference<BckndServiceList>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",

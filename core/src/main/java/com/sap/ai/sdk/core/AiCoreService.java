@@ -8,7 +8,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.ApiClient;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;

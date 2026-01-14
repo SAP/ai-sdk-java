@@ -69,13 +69,13 @@ public class MetaApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<MetaCapabilities> localVarReturnType =
         new TypeReference<MetaCapabilities>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",

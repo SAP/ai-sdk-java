@@ -80,13 +80,13 @@ public class ResourceQuotaApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndCommonResourceQuotaResponse> localVarReturnType =
         new TypeReference<BckndCommonResourceQuotaResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -157,13 +157,13 @@ public class ResourceQuotaApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndDeploymentResourceQuotaResponse> localVarReturnType =
         new TypeReference<BckndDeploymentResourceQuotaResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -234,13 +234,13 @@ public class ResourceQuotaApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndCommonResourceQuotaResponse> localVarReturnType =
         new TypeReference<BckndCommonResourceQuotaResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -310,13 +310,13 @@ public class ResourceQuotaApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndExecutableResourceQuotaResponse> localVarReturnType =
         new TypeReference<BckndExecutableResourceQuotaResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -394,13 +394,13 @@ public class ResourceQuotaApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndCommonResourceQuotaResponse> localVarReturnType =
         new TypeReference<BckndCommonResourceQuotaResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -469,13 +469,13 @@ public class ResourceQuotaApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndCommonResourceQuotaResponse> localVarReturnType =
         new TypeReference<BckndCommonResourceQuotaResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -544,13 +544,13 @@ public class ResourceQuotaApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndCommonResourceQuotaResponse> localVarReturnType =
         new TypeReference<BckndCommonResourceQuotaResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",

@@ -103,12 +103,12 @@ public class ObjectStoreSecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndobjectStoreSecretCreationResponse> localVarReturnType =
         new TypeReference<BckndobjectStoreSecretCreationResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -206,13 +206,13 @@ public class ObjectStoreSecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndobjectStoreSecretDeletionResponse> localVarReturnType =
         new TypeReference<BckndobjectStoreSecretDeletionResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -309,13 +309,13 @@ public class ObjectStoreSecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndobjectStoreSecretStatus> localVarReturnType =
         new TypeReference<BckndobjectStoreSecretStatus>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -425,12 +425,12 @@ public class ObjectStoreSecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndobjectStoreSecretModificationResponse> localVarReturnType =
         new TypeReference<BckndobjectStoreSecretModificationResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",
@@ -532,13 +532,13 @@ public class ObjectStoreSecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndobjectStoreSecretStatusResponse> localVarReturnType =
         new TypeReference<BckndobjectStoreSecretStatusResponse>() {};
-
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
