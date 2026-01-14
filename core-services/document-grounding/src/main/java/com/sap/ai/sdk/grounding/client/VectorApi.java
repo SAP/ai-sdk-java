@@ -12,6 +12,7 @@ import com.sap.ai.sdk.grounding.model.DocumentUpdateRequest;
 import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.DocumentsListResponse;
 import com.sap.ai.sdk.grounding.model.TextSearchRequest;
+import com.sap.ai.sdk.grounding.model.VectorChunk;
 import com.sap.ai.sdk.grounding.model.VectorSearchResults;
 import com.sap.ai.sdk.grounding.model.VectorV1VectorEndpointsGetCollectionCreationStatus200Response;
 import com.sap.ai.sdk.grounding.model.VectorV1VectorEndpointsGetCollectionDeletionStatus200Response;
@@ -94,22 +95,15 @@ public class VectorApi extends AbstractOpenApiService {
     }
 
     // verify the required parameter 'collectionRequest' is set
-    if (collectionRequest == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionRequest' when calling vectorV1VectorEndpointsCreateCollection");
-    }
 
     final String localVarPath =
         UriComponentsBuilder.fromPath("/vector/collections").build().toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
-    if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+    localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
     final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
@@ -119,7 +113,7 @@ public class VectorApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<Void> localVarReturnType =
-        new ParameterizedTypeReference<Void>() {};
+        new ParameterizedTypeReference<>() {};
     apiClient.invokeAPI(
         localVarPath,
         HttpMethod.POST,
@@ -188,11 +182,9 @@ public class VectorApi extends AbstractOpenApiService {
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -205,7 +197,7 @@ public class VectorApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<DocumentsListResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentsListResponse>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.POST,
@@ -328,15 +320,14 @@ public class VectorApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("collectionId", collectionId);
     final String localVarPath =
         UriComponentsBuilder.fromPath("/vector/collections/{collectionId}")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
@@ -352,7 +343,7 @@ public class VectorApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<Void> localVarReturnType =
-        new ParameterizedTypeReference<Void>() {};
+        new ParameterizedTypeReference<>() {};
     apiClient.invokeAPI(
         localVarPath,
         HttpMethod.DELETE,
@@ -413,7 +404,7 @@ public class VectorApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("collectionId", collectionId);
     localVarPathParams.put("documentId", documentId);
     final String localVarPath =
@@ -421,8 +412,7 @@ public class VectorApi extends AbstractOpenApiService {
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
@@ -438,7 +428,7 @@ public class VectorApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<Void> localVarReturnType =
-        new ParameterizedTypeReference<Void>() {};
+        new ParameterizedTypeReference<>() {};
     apiClient.invokeAPI(
         localVarPath,
         HttpMethod.DELETE,
@@ -490,11 +480,9 @@ public class VectorApi extends AbstractOpenApiService {
     final String localVarPath =
         UriComponentsBuilder.fromPath("/vector/collections").build().toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
@@ -511,7 +499,7 @@ public class VectorApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<CollectionsListResponse> localVarReturnType =
-        new ParameterizedTypeReference<CollectionsListResponse>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -598,11 +586,9 @@ public class VectorApi extends AbstractOpenApiService {
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
@@ -619,7 +605,7 @@ public class VectorApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<Documents> localVarReturnType =
-        new ParameterizedTypeReference<Documents>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -695,18 +681,16 @@ public class VectorApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("collectionId", collectionId);
     final String localVarPath =
         UriComponentsBuilder.fromPath("/vector/collections/{collectionId}")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -719,7 +703,7 @@ public class VectorApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<Collection> localVarReturnType =
-        new ParameterizedTypeReference<Collection>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -770,18 +754,16 @@ public class VectorApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("id", id);
     final String localVarPath =
         UriComponentsBuilder.fromPath("/vector/collections/{id}/creationStatus")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -847,18 +829,16 @@ public class VectorApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("id", id);
     final String localVarPath =
         UriComponentsBuilder.fromPath("/vector/collections/{id}/deletionStatus")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -933,7 +913,7 @@ public class VectorApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("collectionId", collectionId);
     localVarPathParams.put("documentId", documentId);
     final String localVarPath =
@@ -941,11 +921,9 @@ public class VectorApi extends AbstractOpenApiService {
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -958,7 +936,7 @@ public class VectorApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<DocumentResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentResponse>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -994,7 +972,6 @@ public class VectorApi extends AbstractOpenApiService {
   public VectorSearchResults search(
       @Nonnull final String aiResourceGroup, @Nonnull final TextSearchRequest textSearchRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = textSearchRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -1011,11 +988,9 @@ public class VectorApi extends AbstractOpenApiService {
     final String localVarPath =
         UriComponentsBuilder.fromPath("/vector/search").build().toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -1028,18 +1003,49 @@ public class VectorApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<VectorSearchResults> localVarReturnType =
-        new ParameterizedTypeReference<VectorSearchResults>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.POST,
         localVarQueryParams,
-        localVarPostBody,
+        textSearchRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
         localVarAuthNames,
         localVarReturnType);
+  }
+
+  /**
+   * Search chunk by vector
+   *
+   * <p>Search chunks
+   *
+   * <p><b>200</b> - Successful Response
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>404</b> - The specification of the resource was incorrect
+   *
+   * <p><b>422</b> - There are validation issues with the data.
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param textSearchRequest The value for the parameter textSearchRequest
+   * @return List<VectorChunk>
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public List<VectorChunk> searchAndGetChunks(
+      @Nonnull final String aiResourceGroup, @Nonnull final TextSearchRequest textSearchRequest)
+      throws OpenApiRequestException {
+    VectorSearchResults searchResult = search(aiResourceGroup, textSearchRequest);
+
+    return searchResult.getResults().stream()
+        .flatMap(results -> results.getResults().stream())
+        .flatMap(documentsChunk -> documentsChunk.getDocuments().stream())
+        .flatMap(documentOutput -> documentOutput.getChunks().stream())
+        .toList();
   }
 
   /**
@@ -1088,18 +1094,16 @@ public class VectorApi extends AbstractOpenApiService {
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
+    final Map<String, Object> localVarPathParams = new HashMap<>();
     localVarPathParams.put("collectionId", collectionId);
     final String localVarPath =
         UriComponentsBuilder.fromPath("/vector/collections/{collectionId}/documents")
             .buildAndExpand(localVarPathParams)
             .toUriString();
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
+    final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<>();
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<>();
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -1112,7 +1116,7 @@ public class VectorApi extends AbstractOpenApiService {
     final String[] localVarAuthNames = new String[] {};
 
     final ParameterizedTypeReference<DocumentsListResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentsListResponse>() {};
+        new ParameterizedTypeReference<>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.PATCH,
