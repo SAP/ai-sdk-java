@@ -670,7 +670,7 @@ public class OrchestrationService {
     val name = "create-3-paraphrases-of-sentence";
     ensureOrchestrationConfigExists(scenario, name);
     final List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
-    var params = Map.of("phrase", "Hello World");
+    final var params = Map.of("phrase", "Hello World");
     final var testReference =
         OrchestrationConfigReference.fromScenario("sdk-test-scenario")
             .name("test-config-for-OrchestrationTest")

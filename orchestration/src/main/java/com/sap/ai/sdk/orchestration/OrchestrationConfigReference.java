@@ -1,20 +1,18 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.google.common.annotations.Beta;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class representing a reference to an Orchestration config stored in prompt registry.
  *
- * @since 1.14.0
+ * @since 1.15.0
  */
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -31,7 +29,8 @@ public class OrchestrationConfigReference {
    * Set the chat history for this reference.
    *
    * @param messagesHistory The chat history to set.
-   * @return The current instance of {@link OrchestrationConfigReference} with the changed chat history.
+   * @return The current instance of {@link OrchestrationConfigReference} with the changed chat
+   *     history.
    */
   @Nonnull
   public OrchestrationConfigReference messageHistory(@Nonnull final List<Message> messagesHistory) {
@@ -43,10 +42,12 @@ public class OrchestrationConfigReference {
    * Set the template parameters for this reference.
    *
    * @param templateParameters The template parameters to set.
-   * @return The current instance of {@link OrchestrationConfigReference} with the changed chat history.
+   * @return The current instance of {@link OrchestrationConfigReference} with the changed chat
+   *     history.
    */
   @Nonnull
-  public OrchestrationConfigReference templateParameters(@Nonnull final Map<String, String> templateParameters) {
+  public OrchestrationConfigReference templateParameters(
+      @Nonnull final Map<String, String> templateParameters) {
     prompt.templateParameters(templateParameters);
     return this;
   }
@@ -56,7 +57,6 @@ public class OrchestrationConfigReference {
    *
    * @param id The id of the reference
    * @return A reference object with the specified id
-   * @since 1.14.0
    */
   @Nonnull
   public static OrchestrationConfigReference fromId(@Nonnull final String id) {
@@ -68,11 +68,10 @@ public class OrchestrationConfigReference {
    *
    * @param scenario The scenario of the reference
    * @return A builder object with the specified scenario
-   * @since 1.14.0
    */
   @Nonnull
   public static Builder fromScenario(@Nonnull final String scenario) {
-    return new Builder(scenario);
+    return (name) -> (version) -> new OrchestrationConfigReference(null, scenario, name, version);
   }
 
   /**
@@ -80,21 +79,16 @@ public class OrchestrationConfigReference {
    *
    * @since 1.14.0
    */
-  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class Builder {
-    private final String scenario;
+  public interface Builder {
 
     /**
      * Build a reference from a scenario, name, and version.
      *
      * @param name The name of the reference
      * @return A builder object with the specified scenario and name
-     * @since 1.14.0
      */
     @Nonnull
-    public Builder1 name(@Nonnull final String name) {
-      return new Builder1(scenario, name);
-    }
+    Builder1 name(@Nonnull final String name);
   }
 
   /**
@@ -102,21 +96,15 @@ public class OrchestrationConfigReference {
    *
    * @since 1.14.0
    */
-  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class Builder1 {
-    private final String scenario;
-    private final String name;
+  public interface Builder1 {
 
     /**
      * Build a reference from a scenario, name, and version.
      *
      * @param version The version of the reference
      * @return A reference object with the specified scenario, name, and version
-     * @since 1.14.0
      */
     @Nonnull
-    public OrchestrationConfigReference version(@Nonnull final String version) {
-      return new OrchestrationConfigReference(null, scenario, name, version);
-    }
+    OrchestrationConfigReference version(@Nonnull final String version);
   }
 }

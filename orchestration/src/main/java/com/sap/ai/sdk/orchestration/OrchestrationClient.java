@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -176,9 +175,9 @@ public class OrchestrationClient {
    */
   @Beta
   @Nonnull
-  public OrchestrationChatResponse chatCompletionUsingReference(@Nonnull final OrchestrationConfigReference reference) {
-    val request =
-        ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(reference);
+  public OrchestrationChatResponse chatCompletionUsingReference(
+      @Nonnull final OrchestrationConfigReference reference) {
+    val request = ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(reference);
     val response = executeRequest(request);
     return new OrchestrationChatResponse(response);
   }

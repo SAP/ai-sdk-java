@@ -74,7 +74,8 @@ public class OrchestrationPrompt {
    * Set the template parameters of this prompt.
    *
    * @param templateParameters The template parameters to add.
-   * @return The current instance of {@link OrchestrationPrompt} with the changed template parameters.
+   * @return The current instance of {@link OrchestrationPrompt} with the changed template
+   *     parameters.
    */
   @Nonnull
   OrchestrationPrompt templateParameters(@Nonnull final Map<String, String> templateParameters) {

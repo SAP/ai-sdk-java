@@ -32,7 +32,7 @@ import org.springframework.web.client.RestTemplate;
  * @since 1.14.0
  */
 @Beta
-public class OrchestrationConfigClient extends OrchestrationConfigsApi { // JONAS: use delegation instead of extension here?
+public class OrchestrationConfigClient extends OrchestrationConfigsApi {
 
   /**
    * Instantiates a client to manage Orchestration Configurations on the Prompt Registry service.

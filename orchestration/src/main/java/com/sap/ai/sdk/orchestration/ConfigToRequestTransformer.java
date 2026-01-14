@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
@@ -18,8 +17,6 @@ import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -128,7 +125,8 @@ final class ConfigToRequestTransformer {
   static CompletionPostRequest fromReferenceToCompletionPostRequest(
       @Nonnull final OrchestrationConfigReference reference) {
     final OrchestrationPrompt prompt = reference.getPrompt();
-    final var messageHistory = prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
+    final var messageHistory =
+        prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
     final var placeholders = prompt.getTemplateParameters();
 
     CompletionPostRequest request;
