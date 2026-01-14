@@ -59,12 +59,12 @@ jobs:
         id: pr_base
         # If updating orchestration and orchestration-staging exists on remote, use it as PR base.
         run: |
-          TARGET_BASE=main
+          BASE=main
           if [ "${{ env.CHOICE }}" = "orchestration" ] && [ -n "$(git ls-remote --heads origin orchestration-staging)" ]; then
-            TARGET_BASE=orchestration-staging
+            BASE=orchestration-staging
           fi
-          echo "PR base: $TARGET_BASE"
-          echo "TARGET_BASE=$TARGET_BASE" >> "$GITHUB_OUTPUT"
+          echo "PR base: $BASE"
+          echo "BASE=$BASE" >> "$GITHUB_OUTPUT"
 
       - name: "Setup Java"
         uses: actions/setup-java@v5
@@ -171,7 +171,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           BRANCH: ${{ steps.branch.outputs.branch }}
-          BASE: ${{ steps.pr_base.outputs.TARGET_BASE }}
+          BASE: ${{ steps.pr_base.outputs.BASE }}
         run: |
           if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
             echo "An open PR already exists for this branch. Skipping PR creation."
@@ -202,7 +202,7 @@ jobs:
         env:
           BRANCH: ${{ steps.branch.outputs.branch }}
           PR_URL: ${{ steps.create-pr.outputs.pr_url }}
-          BASE: ${{ steps.pr_base.outputs.TARGET_BASE }}
+          BASE: ${{ steps.pr_base.outputs.BASE }}
         run: |
           DIFF_URL="https://github.com/SAP/ai-sdk-java/compare/$BASE...$BRANCH"
           echo "## Workflow Execution Summary" >> $GITHUB_STEP_SUMMARY
