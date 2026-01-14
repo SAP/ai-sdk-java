@@ -131,6 +131,7 @@ class SpringAiOrchestrationTest {
     ChatResponse response = service.toolCalling(false);
     List<ToolCall> toolCalls = response.getResult().getOutput().getToolCalls();
     assertThat(toolCalls).hasSize(2);
+
     ToolCall toolCall1 = toolCalls.get(0);
     ToolCall toolCall2 = toolCalls.get(1);
     assertThat(toolCall1.type()).isEqualTo("function");
