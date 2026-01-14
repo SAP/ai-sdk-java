@@ -29,15 +29,13 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Client for managing Orchestration Configurations in the Prompt Registry service.
  *
- * @since 1.14.0
+ * @since 1.15.0
  */
 @Beta
 public class OrchestrationConfigClient extends OrchestrationConfigsApi {
 
   /**
    * Instantiates a client to manage Orchestration Configurations on the Prompt Registry service.
-   *
-   * @since 1.14.0
    */
   public OrchestrationConfigClient() {
     this(new AiCoreService());
@@ -47,7 +45,6 @@ public class OrchestrationConfigClient extends OrchestrationConfigsApi {
    * Instantiates a client to manage Orchestration Configurations on the Prompt Registry service.
    *
    * @param aiCoreService The configured connectivity instance to AI Core
-   * @since 1.14.0
    */
   public OrchestrationConfigClient(@Nonnull final AiCoreService aiCoreService) {
     super(addMixin(aiCoreService));

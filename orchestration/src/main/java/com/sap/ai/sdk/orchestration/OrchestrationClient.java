@@ -171,7 +171,7 @@ public class OrchestrationClient {
    *
    * @param reference A reference to an Orchestration config stored in prompt registry
    * @return The completion output
-   * @since 1.14.0
+   * @since 1.15.0
    */
   @Beta
   @Nonnull
