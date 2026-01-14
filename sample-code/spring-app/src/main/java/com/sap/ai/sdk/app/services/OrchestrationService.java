@@ -666,10 +666,9 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse executeConfigFromReference() {
-    // JONAS: use these names ones e2e tests work again
     val scenario = "sdk-test-paraphrase";
     val name = "create-3-paraphrases-of-sentence";
-    ensureOrchestrationConfigExists("sdk-test-scenario", "test-config-for-OrchestrationTest");
+    ensureOrchestrationConfigExists(scenario, name);
     final List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
     var params = Map.of("phrase", "Hello World");
     final var testReference =
