@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,69 +25,102 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** A response containing documents retrieved from the server. */
+/** MetadataKeyUpdate */
 // CHECKSTYLE:OFF
-public class DocumentsListResponse
+public class MetadataKeyUpdate
 // CHECKSTYLE:ON
 {
-  @JsonProperty("documents")
-  private List<DocumentWithoutChunks> documents = new ArrayList<>();
+  @JsonProperty("key")
+  private String key;
+
+  @JsonProperty("operations")
+  private List<MetadataOperation> operations;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DocumentsListResponse. */
-  protected DocumentsListResponse() {}
+  /** Default constructor for MetadataKeyUpdate. */
+  protected MetadataKeyUpdate() {}
 
   /**
-   * Set the documents of this {@link DocumentsListResponse} instance and return the same instance.
+   * Set the key of this {@link MetadataKeyUpdate} instance and return the same instance.
    *
-   * @param documents The documents of this {@link DocumentsListResponse}
-   * @return The same instance of this {@link DocumentsListResponse} class
+   * @param key Key to update
+   * @return The same instance of this {@link MetadataKeyUpdate} class
    */
   @Nonnull
-  public DocumentsListResponse documents(@Nonnull final List<DocumentWithoutChunks> documents) {
-    this.documents = documents;
+  public MetadataKeyUpdate key(@Nonnull final String key) {
+    this.key = key;
     return this;
   }
 
   /**
-   * Add one documents instance to this {@link DocumentsListResponse}.
+   * Key to update
    *
-   * @param documentsItem The documents that should be added
-   * @return The same instance of type {@link DocumentsListResponse}
+   * @return key The key of this {@link MetadataKeyUpdate} instance.
    */
   @Nonnull
-  public DocumentsListResponse addDocumentsItem(
-      @Nonnull final DocumentWithoutChunks documentsItem) {
-    if (this.documents == null) {
-      this.documents = new ArrayList<>();
+  public String getKey() {
+    return key;
+  }
+
+  /**
+   * Set the key of this {@link MetadataKeyUpdate} instance.
+   *
+   * @param key Key to update
+   */
+  public void setKey(@Nonnull final String key) {
+    this.key = key;
+  }
+
+  /**
+   * Set the operations of this {@link MetadataKeyUpdate} instance and return the same instance.
+   *
+   * @param operations The operations of this {@link MetadataKeyUpdate}
+   * @return The same instance of this {@link MetadataKeyUpdate} class
+   */
+  @Nonnull
+  public MetadataKeyUpdate operations(@Nullable final List<MetadataOperation> operations) {
+    this.operations = operations;
+    return this;
+  }
+
+  /**
+   * Add one operations instance to this {@link MetadataKeyUpdate}.
+   *
+   * @param operationsItem The operations that should be added
+   * @return The same instance of type {@link MetadataKeyUpdate}
+   */
+  @Nonnull
+  public MetadataKeyUpdate addOperationsItem(@Nonnull final MetadataOperation operationsItem) {
+    if (this.operations == null) {
+      this.operations = new ArrayList<>();
     }
-    this.documents.add(documentsItem);
+    this.operations.add(operationsItem);
     return this;
   }
 
   /**
-   * Get documents
+   * Get operations
    *
-   * @return documents The documents of this {@link DocumentsListResponse} instance.
+   * @return operations The operations of this {@link MetadataKeyUpdate} instance.
    */
-  @Nonnull
-  public List<DocumentWithoutChunks> getDocuments() {
-    return documents;
+  @Nullable
+  public List<MetadataOperation> getOperations() {
+    return operations;
   }
 
   /**
-   * Set the documents of this {@link DocumentsListResponse} instance.
+   * Set the operations of this {@link MetadataKeyUpdate} instance.
    *
-   * @param documents The documents of this {@link DocumentsListResponse}
+   * @param operations The operations of this {@link MetadataKeyUpdate}
    */
-  public void setDocuments(@Nonnull final List<DocumentWithoutChunks> documents) {
-    this.documents = documents;
+  public void setOperations(@Nullable final List<MetadataOperation> operations) {
+    this.operations = operations;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link DocumentsListResponse}.
+   * Get the names of the unrecognizable properties of the {@link MetadataKeyUpdate}.
    *
    * @return The set of properties names
    */
@@ -99,7 +131,7 @@ public class DocumentsListResponse
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DocumentsListResponse} instance.
+   * Get the value of an unrecognizable property of this {@link MetadataKeyUpdate} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -110,14 +142,13 @@ public class DocumentsListResponse
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "DocumentsListResponse has no field with name '" + name + "'.");
+      throw new NoSuchElementException("MetadataKeyUpdate has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DocumentsListResponse} instance including
+   * Get the value of all properties of this {@link MetadataKeyUpdate} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -126,12 +157,13 @@ public class DocumentsListResponse
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (documents != null) declaredFields.put("documents", documents);
+    if (key != null) declaredFields.put("key", key);
+    if (operations != null) declaredFields.put("operations", operations);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link DocumentsListResponse} instance. If the map
+   * Set an unrecognizable property of this {@link MetadataKeyUpdate} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -150,22 +182,24 @@ public class DocumentsListResponse
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DocumentsListResponse documentsListResponse = (DocumentsListResponse) o;
-    return Objects.equals(this.cloudSdkCustomFields, documentsListResponse.cloudSdkCustomFields)
-        && Objects.equals(this.documents, documentsListResponse.documents);
+    final MetadataKeyUpdate metadataKeyUpdate = (MetadataKeyUpdate) o;
+    return Objects.equals(this.cloudSdkCustomFields, metadataKeyUpdate.cloudSdkCustomFields)
+        && Objects.equals(this.key, metadataKeyUpdate.key)
+        && Objects.equals(this.operations, metadataKeyUpdate.operations);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(documents, cloudSdkCustomFields);
+    return Objects.hash(key, operations, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DocumentsListResponse {\n");
-    sb.append("    documents: ").append(toIndentedString(documents)).append("\n");
+    sb.append("class MetadataKeyUpdate {\n");
+    sb.append("    key: ").append(toIndentedString(key)).append("\n");
+    sb.append("    operations: ").append(toIndentedString(operations)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -184,31 +218,21 @@ public class DocumentsListResponse
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link DocumentsListResponse}
+   * Create a type-safe, fluent-api builder object to construct a new {@link MetadataKeyUpdate}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (documents) -> new DocumentsListResponse().documents(documents);
+    return (key) -> new MetadataKeyUpdate().key(key);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the documents of this {@link DocumentsListResponse} instance.
+     * Set the key of this {@link MetadataKeyUpdate} instance.
      *
-     * @param documents The documents of this {@link DocumentsListResponse}
-     * @return The DocumentsListResponse instance.
+     * @param key Key to update
+     * @return The MetadataKeyUpdate instance.
      */
-    DocumentsListResponse documents(@Nonnull final List<DocumentWithoutChunks> documents);
-
-    /**
-     * Set the documents of this {@link DocumentsListResponse} instance.
-     *
-     * @param documents The documents of this {@link DocumentsListResponse}
-     * @return The DocumentsListResponse instance.
-     */
-    default DocumentsListResponse documents(@Nonnull final DocumentWithoutChunks... documents) {
-      return documents(Arrays.asList(documents));
-    }
+    MetadataKeyUpdate key(@Nonnull final String key);
   }
 }

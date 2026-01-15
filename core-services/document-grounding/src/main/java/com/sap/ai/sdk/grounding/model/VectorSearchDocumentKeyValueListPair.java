@@ -38,7 +38,7 @@ public class VectorSearchDocumentKeyValueListPair
   private List<String> value = new ArrayList<>();
 
   @JsonProperty("selectMode")
-  private List<VectorSearchSelectOptionEnum> selectMode = new ArrayList<>();
+  private List<VectorSearchSelectOptionEnum> selectMode;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -129,7 +129,7 @@ public class VectorSearchDocumentKeyValueListPair
    * Set the selectMode of this {@link VectorSearchDocumentKeyValueListPair} instance and return the
    * same instance.
    *
-   * @param selectMode Select mode for search filters
+   * @param selectMode The selectMode of this {@link VectorSearchDocumentKeyValueListPair}
    * @return The same instance of this {@link VectorSearchDocumentKeyValueListPair} class
    */
   @Nonnull
@@ -156,12 +156,12 @@ public class VectorSearchDocumentKeyValueListPair
   }
 
   /**
-   * Select mode for search filters
+   * Get selectMode
    *
    * @return selectMode The selectMode of this {@link VectorSearchDocumentKeyValueListPair}
    *     instance.
    */
-  @Nonnull
+  @Nullable
   public List<VectorSearchSelectOptionEnum> getSelectMode() {
     return selectMode;
   }
@@ -169,7 +169,7 @@ public class VectorSearchDocumentKeyValueListPair
   /**
    * Set the selectMode of this {@link VectorSearchDocumentKeyValueListPair} instance.
    *
-   * @param selectMode Select mode for search filters
+   * @param selectMode The selectMode of this {@link VectorSearchDocumentKeyValueListPair}
    */
   public void setSelectMode(@Nullable final List<VectorSearchSelectOptionEnum> selectMode) {
     this.selectMode = selectMode;

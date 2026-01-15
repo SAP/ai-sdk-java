@@ -15,15 +15,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
-/** Gets or Sets VectorSearchSelectOptionEnum */
-public enum VectorSearchSelectOptionEnum {
-  IGNORE_IF_KEY_ABSENT("ignoreIfKeyAbsent"),
+/** Gets or Sets FilterMatchModeEnum */
+public enum FilterMatchModeEnum {
+  ANY("ANY"),
+
+  ALL("ALL"),
 
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
 
-  VectorSearchSelectOptionEnum(String value) {
+  FilterMatchModeEnum(String value) {
     this.value = value;
   }
 
@@ -51,8 +53,8 @@ public enum VectorSearchSelectOptionEnum {
    * @return The enum representation of the given value.
    */
   @JsonCreator
-  public static VectorSearchSelectOptionEnum fromValue(@Nonnull final String value) {
-    for (final VectorSearchSelectOptionEnum b : VectorSearchSelectOptionEnum.values()) {
+  public static FilterMatchModeEnum fromValue(@Nonnull final String value) {
+    for (final FilterMatchModeEnum b : FilterMatchModeEnum.values()) {
       if (b.value.equals(value)) {
         return b;
       }

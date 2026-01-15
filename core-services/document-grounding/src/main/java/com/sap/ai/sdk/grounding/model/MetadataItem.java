@@ -16,79 +16,112 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** A response containing documents retrieved from the server. */
+/** MetadataItem */
 // CHECKSTYLE:OFF
-public class DocumentsListResponse
+public class MetadataItem
 // CHECKSTYLE:ON
 {
-  @JsonProperty("documents")
-  private List<DocumentWithoutChunks> documents = new ArrayList<>();
+  @JsonProperty("id")
+  private UUID id;
+
+  @JsonProperty("metadata")
+  private List<VectorKeyValueListPair> metadata;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DocumentsListResponse. */
-  protected DocumentsListResponse() {}
+  /** Default constructor for MetadataItem. */
+  protected MetadataItem() {}
 
   /**
-   * Set the documents of this {@link DocumentsListResponse} instance and return the same instance.
+   * Set the id of this {@link MetadataItem} instance and return the same instance.
    *
-   * @param documents The documents of this {@link DocumentsListResponse}
-   * @return The same instance of this {@link DocumentsListResponse} class
+   * @param id ID of collection
+   * @return The same instance of this {@link MetadataItem} class
    */
   @Nonnull
-  public DocumentsListResponse documents(@Nonnull final List<DocumentWithoutChunks> documents) {
-    this.documents = documents;
+  public MetadataItem id(@Nonnull final UUID id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Add one documents instance to this {@link DocumentsListResponse}.
+   * ID of collection
    *
-   * @param documentsItem The documents that should be added
-   * @return The same instance of type {@link DocumentsListResponse}
+   * @return id The id of this {@link MetadataItem} instance.
    */
   @Nonnull
-  public DocumentsListResponse addDocumentsItem(
-      @Nonnull final DocumentWithoutChunks documentsItem) {
-    if (this.documents == null) {
-      this.documents = new ArrayList<>();
+  public UUID getId() {
+    return id;
+  }
+
+  /**
+   * Set the id of this {@link MetadataItem} instance.
+   *
+   * @param id ID of collection
+   */
+  public void setId(@Nonnull final UUID id) {
+    this.id = id;
+  }
+
+  /**
+   * Set the metadata of this {@link MetadataItem} instance and return the same instance.
+   *
+   * @param metadata The metadata of this {@link MetadataItem}
+   * @return The same instance of this {@link MetadataItem} class
+   */
+  @Nonnull
+  public MetadataItem metadata(@Nullable final List<VectorKeyValueListPair> metadata) {
+    this.metadata = metadata;
+    return this;
+  }
+
+  /**
+   * Add one metadata instance to this {@link MetadataItem}.
+   *
+   * @param metadataItem The metadata that should be added
+   * @return The same instance of type {@link MetadataItem}
+   */
+  @Nonnull
+  public MetadataItem addMetadataItem(@Nonnull final VectorKeyValueListPair metadataItem) {
+    if (this.metadata == null) {
+      this.metadata = new ArrayList<>();
     }
-    this.documents.add(documentsItem);
+    this.metadata.add(metadataItem);
     return this;
   }
 
   /**
-   * Get documents
+   * Get metadata
    *
-   * @return documents The documents of this {@link DocumentsListResponse} instance.
+   * @return metadata The metadata of this {@link MetadataItem} instance.
    */
-  @Nonnull
-  public List<DocumentWithoutChunks> getDocuments() {
-    return documents;
+  @Nullable
+  public List<VectorKeyValueListPair> getMetadata() {
+    return metadata;
   }
 
   /**
-   * Set the documents of this {@link DocumentsListResponse} instance.
+   * Set the metadata of this {@link MetadataItem} instance.
    *
-   * @param documents The documents of this {@link DocumentsListResponse}
+   * @param metadata The metadata of this {@link MetadataItem}
    */
-  public void setDocuments(@Nonnull final List<DocumentWithoutChunks> documents) {
-    this.documents = documents;
+  public void setMetadata(@Nullable final List<VectorKeyValueListPair> metadata) {
+    this.metadata = metadata;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link DocumentsListResponse}.
+   * Get the names of the unrecognizable properties of the {@link MetadataItem}.
    *
    * @return The set of properties names
    */
@@ -99,7 +132,7 @@ public class DocumentsListResponse
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DocumentsListResponse} instance.
+   * Get the value of an unrecognizable property of this {@link MetadataItem} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -110,15 +143,14 @@ public class DocumentsListResponse
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "DocumentsListResponse has no field with name '" + name + "'.");
+      throw new NoSuchElementException("MetadataItem has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DocumentsListResponse} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link MetadataItem} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -126,13 +158,14 @@ public class DocumentsListResponse
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (documents != null) declaredFields.put("documents", documents);
+    if (id != null) declaredFields.put("id", id);
+    if (metadata != null) declaredFields.put("metadata", metadata);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link DocumentsListResponse} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link MetadataItem} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -150,22 +183,24 @@ public class DocumentsListResponse
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DocumentsListResponse documentsListResponse = (DocumentsListResponse) o;
-    return Objects.equals(this.cloudSdkCustomFields, documentsListResponse.cloudSdkCustomFields)
-        && Objects.equals(this.documents, documentsListResponse.documents);
+    final MetadataItem metadataItem = (MetadataItem) o;
+    return Objects.equals(this.cloudSdkCustomFields, metadataItem.cloudSdkCustomFields)
+        && Objects.equals(this.id, metadataItem.id)
+        && Objects.equals(this.metadata, metadataItem.metadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(documents, cloudSdkCustomFields);
+    return Objects.hash(id, metadata, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DocumentsListResponse {\n");
-    sb.append("    documents: ").append(toIndentedString(documents)).append("\n");
+    sb.append("class MetadataItem {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -184,31 +219,21 @@ public class DocumentsListResponse
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link DocumentsListResponse}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link MetadataItem} instance
+   * with all required arguments.
    */
   public static Builder create() {
-    return (documents) -> new DocumentsListResponse().documents(documents);
+    return (id) -> new MetadataItem().id(id);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the documents of this {@link DocumentsListResponse} instance.
+     * Set the id of this {@link MetadataItem} instance.
      *
-     * @param documents The documents of this {@link DocumentsListResponse}
-     * @return The DocumentsListResponse instance.
+     * @param id ID of collection
+     * @return The MetadataItem instance.
      */
-    DocumentsListResponse documents(@Nonnull final List<DocumentWithoutChunks> documents);
-
-    /**
-     * Set the documents of this {@link DocumentsListResponse} instance.
-     *
-     * @param documents The documents of this {@link DocumentsListResponse}
-     * @return The DocumentsListResponse instance.
-     */
-    default DocumentsListResponse documents(@Nonnull final DocumentWithoutChunks... documents) {
-      return documents(Arrays.asList(documents));
-    }
+    MetadataItem id(@Nonnull final UUID id);
   }
 }
