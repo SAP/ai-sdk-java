@@ -361,4 +361,14 @@ class OrchestrationController {
     }
     return response.getEmbeddingVectors();
   }
+
+  @GetMapping("/configFromRegistry")
+  @Nonnull
+  Object configFromRegistry(@RequestParam(value = "format", required = false) final String format) {
+    final var response = service.executeConfigFromReference();
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
 }

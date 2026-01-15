@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigDeleteResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
@@ -102,5 +104,29 @@ public class PromptRegistryTest {
     var ChatResponse = controller.promptRegistryToSpringAi();
     assertThat(ChatResponse).isNotNull();
     assertThat(ChatResponse.getOutput().getText()).contains("Sports");
+  }
+
+  @Test
+  void listOrchestrationConfigs() {
+    var controller = new PromptRegistryController();
+    var result = controller.listOrchConfigs();
+    assertThat(result.getCount()).isGreaterThan(0);
+  }
+
+  @Test
+  void createDeleteOrchestrationConfig() {
+    var controller = new PromptRegistryController();
+    // cleanup
+    controller.deleteOrchConfig();
+
+    // create
+    OrchestrationConfigPostResponse createdConfig = controller.createOrchConfig();
+    assertThat(createdConfig.getMessage()).contains("successful");
+    assertThat(createdConfig.getName()).contains(PromptRegistryController.NAME);
+
+    // cleanup
+    List<OrchestrationConfigDeleteResponse> deletedConfig = controller.deleteOrchConfig();
+    assertThat(deletedConfig).hasSize(1);
+    assertThat(deletedConfig.get(0).getMessage()).contains("successful");
   }
 }
