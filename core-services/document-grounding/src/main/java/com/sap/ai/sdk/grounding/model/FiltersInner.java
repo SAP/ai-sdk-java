@@ -26,9 +26,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Limit scope of search to certain DataRepositories, Documents or Chunks. */
+/** FiltersInner */
 // CHECKSTYLE:OFF
-public class RetrievalSearchFilter
+public class FiltersInner
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
@@ -55,20 +55,26 @@ public class RetrievalSearchFilter
   @JsonProperty("chunkMetadata")
   private List<RetrievalKeyValueListPair> chunkMetadata = new ArrayList<>();
 
+  @JsonProperty("filter")
+  private RetrievalVectorSearchFilterFilter filter;
+
+  @JsonProperty("scoringConfiguration")
+  private VectorScoringConfiguration scoringConfiguration;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for RetrievalSearchFilter. */
-  protected RetrievalSearchFilter() {}
+  /** Default constructor for FiltersInner. */
+  protected FiltersInner() {}
 
   /**
-   * Set the id of this {@link RetrievalSearchFilter} instance and return the same instance.
+   * Set the id of this {@link FiltersInner} instance and return the same instance.
    *
    * @param id Identifier of this RetrievalSearchFilter - unique per request.
-   * @return The same instance of this {@link RetrievalSearchFilter} class
+   * @return The same instance of this {@link FiltersInner} class
    */
   @Nonnull
-  public RetrievalSearchFilter id(@Nonnull final String id) {
+  public FiltersInner id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
@@ -76,7 +82,7 @@ public class RetrievalSearchFilter
   /**
    * Identifier of this RetrievalSearchFilter - unique per request.
    *
-   * @return id The id of this {@link RetrievalSearchFilter} instance.
+   * @return id The id of this {@link FiltersInner} instance.
    */
   @Nonnull
   public String getId() {
@@ -84,7 +90,7 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the id of this {@link RetrievalSearchFilter} instance.
+   * Set the id of this {@link FiltersInner} instance.
    *
    * @param id Identifier of this RetrievalSearchFilter - unique per request.
    */
@@ -93,14 +99,13 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the searchConfiguration of this {@link RetrievalSearchFilter} instance and return the same
-   * instance.
+   * Set the searchConfiguration of this {@link FiltersInner} instance and return the same instance.
    *
-   * @param searchConfiguration The searchConfiguration of this {@link RetrievalSearchFilter}
-   * @return The same instance of this {@link RetrievalSearchFilter} class
+   * @param searchConfiguration The searchConfiguration of this {@link FiltersInner}
+   * @return The same instance of this {@link FiltersInner} class
    */
   @Nonnull
-  public RetrievalSearchFilter searchConfiguration(
+  public FiltersInner searchConfiguration(
       @Nullable final RetrievalSearchConfiguration searchConfiguration) {
     this.searchConfiguration = searchConfiguration;
     return this;
@@ -109,18 +114,17 @@ public class RetrievalSearchFilter
   /**
    * Get searchConfiguration
    *
-   * @return searchConfiguration The searchConfiguration of this {@link RetrievalSearchFilter}
-   *     instance.
+   * @return searchConfiguration The searchConfiguration of this {@link FiltersInner} instance.
    */
-  @Nullable
+  @Nonnull
   public RetrievalSearchConfiguration getSearchConfiguration() {
     return searchConfiguration;
   }
 
   /**
-   * Set the searchConfiguration of this {@link RetrievalSearchFilter} instance.
+   * Set the searchConfiguration of this {@link FiltersInner} instance.
    *
-   * @param searchConfiguration The searchConfiguration of this {@link RetrievalSearchFilter}
+   * @param searchConfiguration The searchConfiguration of this {@link FiltersInner}
    */
   public void setSearchConfiguration(
       @Nullable final RetrievalSearchConfiguration searchConfiguration) {
@@ -128,27 +132,26 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the dataRepositories of this {@link RetrievalSearchFilter} instance and return the same
-   * instance.
+   * Set the dataRepositories of this {@link FiltersInner} instance and return the same instance.
    *
    * @param dataRepositories Specify [&#39;*&#39;] to search across all DataRepositories or give a
    *     specific list of DataRepository ids.
-   * @return The same instance of this {@link RetrievalSearchFilter} class
+   * @return The same instance of this {@link FiltersInner} class
    */
   @Nonnull
-  public RetrievalSearchFilter dataRepositories(@Nullable final List<String> dataRepositories) {
+  public FiltersInner dataRepositories(@Nullable final List<String> dataRepositories) {
     this.dataRepositories = dataRepositories;
     return this;
   }
 
   /**
-   * Add one dataRepositories instance to this {@link RetrievalSearchFilter}.
+   * Add one dataRepositories instance to this {@link FiltersInner}.
    *
    * @param dataRepositoriesItem The dataRepositories that should be added
-   * @return The same instance of type {@link RetrievalSearchFilter}
+   * @return The same instance of type {@link FiltersInner}
    */
   @Nonnull
-  public RetrievalSearchFilter addDataRepositoriesItem(@Nonnull final String dataRepositoriesItem) {
+  public FiltersInner addDataRepositoriesItem(@Nonnull final String dataRepositoriesItem) {
     if (this.dataRepositories == null) {
       this.dataRepositories = new ArrayList<>(Arrays.asList("*"));
     }
@@ -160,7 +163,7 @@ public class RetrievalSearchFilter
    * Specify [&#39;*&#39;] to search across all DataRepositories or give a specific list of
    * DataRepository ids.
    *
-   * @return dataRepositories The dataRepositories of this {@link RetrievalSearchFilter} instance.
+   * @return dataRepositories The dataRepositories of this {@link FiltersInner} instance.
    */
   @Nonnull
   public List<String> getDataRepositories() {
@@ -168,7 +171,7 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the dataRepositories of this {@link RetrievalSearchFilter} instance.
+   * Set the dataRepositories of this {@link FiltersInner} instance.
    *
    * @param dataRepositories Specify [&#39;*&#39;] to search across all DataRepositories or give a
    *     specific list of DataRepository ids.
@@ -178,15 +181,13 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the dataRepositoryType of this {@link RetrievalSearchFilter} instance and return the same
-   * instance.
+   * Set the dataRepositoryType of this {@link FiltersInner} instance and return the same instance.
    *
-   * @param dataRepositoryType The dataRepositoryType of this {@link RetrievalSearchFilter}
-   * @return The same instance of this {@link RetrievalSearchFilter} class
+   * @param dataRepositoryType The dataRepositoryType of this {@link FiltersInner}
+   * @return The same instance of this {@link FiltersInner} class
    */
   @Nonnull
-  public RetrievalSearchFilter dataRepositoryType(
-      @Nonnull final DataRepositoryType dataRepositoryType) {
+  public FiltersInner dataRepositoryType(@Nonnull final DataRepositoryType dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
     return this;
   }
@@ -194,8 +195,7 @@ public class RetrievalSearchFilter
   /**
    * Get dataRepositoryType
    *
-   * @return dataRepositoryType The dataRepositoryType of this {@link RetrievalSearchFilter}
-   *     instance.
+   * @return dataRepositoryType The dataRepositoryType of this {@link FiltersInner} instance.
    */
   @Nonnull
   public DataRepositoryType getDataRepositoryType() {
@@ -203,22 +203,22 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the dataRepositoryType of this {@link RetrievalSearchFilter} instance.
+   * Set the dataRepositoryType of this {@link FiltersInner} instance.
    *
-   * @param dataRepositoryType The dataRepositoryType of this {@link RetrievalSearchFilter}
+   * @param dataRepositoryType The dataRepositoryType of this {@link FiltersInner}
    */
   public void setDataRepositoryType(@Nonnull final DataRepositoryType dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
   }
 
   /**
-   * Set the remoteName of this {@link RetrievalSearchFilter} instance and return the same instance.
+   * Set the remoteName of this {@link FiltersInner} instance and return the same instance.
    *
-   * @param remoteName The remoteName of this {@link RetrievalSearchFilter}
-   * @return The same instance of this {@link RetrievalSearchFilter} class
+   * @param remoteName The remoteName of this {@link FiltersInner}
+   * @return The same instance of this {@link FiltersInner} class
    */
   @Nonnull
-  public RetrievalSearchFilter remoteName(@Nullable final String remoteName) {
+  public FiltersInner remoteName(@Nullable final String remoteName) {
     this.remoteName = remoteName;
     return this;
   }
@@ -226,7 +226,7 @@ public class RetrievalSearchFilter
   /**
    * Get remoteName
    *
-   * @return remoteName The remoteName of this {@link RetrievalSearchFilter} instance.
+   * @return remoteName The remoteName of this {@link FiltersInner} instance.
    */
   @Nullable
   public String getRemoteName() {
@@ -234,38 +234,38 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the remoteName of this {@link RetrievalSearchFilter} instance.
+   * Set the remoteName of this {@link FiltersInner} instance.
    *
-   * @param remoteName The remoteName of this {@link RetrievalSearchFilter}
+   * @param remoteName The remoteName of this {@link FiltersInner}
    */
   public void setRemoteName(@Nullable final String remoteName) {
     this.remoteName = remoteName;
   }
 
   /**
-   * Set the dataRepositoryMetadata of this {@link RetrievalSearchFilter} instance and return the
-   * same instance.
+   * Set the dataRepositoryMetadata of this {@link FiltersInner} instance and return the same
+   * instance.
    *
    * @param dataRepositoryMetadata Restrict DataRepositories considered during search to those
    *     annotated with the given metadata. Useful when combined with
    *     dataRepositories&#x3D;[&#39;*&#39;]
-   * @return The same instance of this {@link RetrievalSearchFilter} class
+   * @return The same instance of this {@link FiltersInner} class
    */
   @Nonnull
-  public RetrievalSearchFilter dataRepositoryMetadata(
+  public FiltersInner dataRepositoryMetadata(
       @Nullable final List<RetrievalKeyValueListPair> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
     return this;
   }
 
   /**
-   * Add one dataRepositoryMetadata instance to this {@link RetrievalSearchFilter}.
+   * Add one dataRepositoryMetadata instance to this {@link FiltersInner}.
    *
    * @param dataRepositoryMetadataItem The dataRepositoryMetadata that should be added
-   * @return The same instance of type {@link RetrievalSearchFilter}
+   * @return The same instance of type {@link FiltersInner}
    */
   @Nonnull
-  public RetrievalSearchFilter addDataRepositoryMetadataItem(
+  public FiltersInner addDataRepositoryMetadataItem(
       @Nonnull final RetrievalKeyValueListPair dataRepositoryMetadataItem) {
     if (this.dataRepositoryMetadata == null) {
       this.dataRepositoryMetadata = new ArrayList<>();
@@ -278,7 +278,7 @@ public class RetrievalSearchFilter
    * Restrict DataRepositories considered during search to those annotated with the given metadata.
    * Useful when combined with dataRepositories&#x3D;[&#39;*&#39;]
    *
-   * @return dataRepositoryMetadata The dataRepositoryMetadata of this {@link RetrievalSearchFilter}
+   * @return dataRepositoryMetadata The dataRepositoryMetadata of this {@link FiltersInner}
    *     instance.
    */
   @Nonnull
@@ -287,7 +287,7 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the dataRepositoryMetadata of this {@link RetrievalSearchFilter} instance.
+   * Set the dataRepositoryMetadata of this {@link FiltersInner} instance.
    *
    * @param dataRepositoryMetadata Restrict DataRepositories considered during search to those
    *     annotated with the given metadata. Useful when combined with
@@ -299,28 +299,27 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the documentMetadata of this {@link RetrievalSearchFilter} instance and return the same
-   * instance.
+   * Set the documentMetadata of this {@link FiltersInner} instance and return the same instance.
    *
    * @param documentMetadata Restrict documents considered during search to those annotated with the
    *     given metadata.
-   * @return The same instance of this {@link RetrievalSearchFilter} class
+   * @return The same instance of this {@link FiltersInner} class
    */
   @Nonnull
-  public RetrievalSearchFilter documentMetadata(
+  public FiltersInner documentMetadata(
       @Nullable final List<RetrievalSearchDocumentKeyValueListPair> documentMetadata) {
     this.documentMetadata = documentMetadata;
     return this;
   }
 
   /**
-   * Add one documentMetadata instance to this {@link RetrievalSearchFilter}.
+   * Add one documentMetadata instance to this {@link FiltersInner}.
    *
    * @param documentMetadataItem The documentMetadata that should be added
-   * @return The same instance of type {@link RetrievalSearchFilter}
+   * @return The same instance of type {@link FiltersInner}
    */
   @Nonnull
-  public RetrievalSearchFilter addDocumentMetadataItem(
+  public FiltersInner addDocumentMetadataItem(
       @Nonnull final RetrievalSearchDocumentKeyValueListPair documentMetadataItem) {
     if (this.documentMetadata == null) {
       this.documentMetadata = new ArrayList<>();
@@ -332,7 +331,7 @@ public class RetrievalSearchFilter
   /**
    * Restrict documents considered during search to those annotated with the given metadata.
    *
-   * @return documentMetadata The documentMetadata of this {@link RetrievalSearchFilter} instance.
+   * @return documentMetadata The documentMetadata of this {@link FiltersInner} instance.
    */
   @Nonnull
   public List<RetrievalSearchDocumentKeyValueListPair> getDocumentMetadata() {
@@ -340,7 +339,7 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the documentMetadata of this {@link RetrievalSearchFilter} instance.
+   * Set the documentMetadata of this {@link FiltersInner} instance.
    *
    * @param documentMetadata Restrict documents considered during search to those annotated with the
    *     given metadata.
@@ -351,27 +350,25 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the chunkMetadata of this {@link RetrievalSearchFilter} instance and return the same
-   * instance.
+   * Set the chunkMetadata of this {@link FiltersInner} instance and return the same instance.
    *
    * @param chunkMetadata Restrict chunks considered during search to those with the given metadata.
-   * @return The same instance of this {@link RetrievalSearchFilter} class
+   * @return The same instance of this {@link FiltersInner} class
    */
   @Nonnull
-  public RetrievalSearchFilter chunkMetadata(
-      @Nullable final List<RetrievalKeyValueListPair> chunkMetadata) {
+  public FiltersInner chunkMetadata(@Nullable final List<RetrievalKeyValueListPair> chunkMetadata) {
     this.chunkMetadata = chunkMetadata;
     return this;
   }
 
   /**
-   * Add one chunkMetadata instance to this {@link RetrievalSearchFilter}.
+   * Add one chunkMetadata instance to this {@link FiltersInner}.
    *
    * @param chunkMetadataItem The chunkMetadata that should be added
-   * @return The same instance of type {@link RetrievalSearchFilter}
+   * @return The same instance of type {@link FiltersInner}
    */
   @Nonnull
-  public RetrievalSearchFilter addChunkMetadataItem(
+  public FiltersInner addChunkMetadataItem(
       @Nonnull final RetrievalKeyValueListPair chunkMetadataItem) {
     if (this.chunkMetadata == null) {
       this.chunkMetadata = new ArrayList<>();
@@ -383,7 +380,7 @@ public class RetrievalSearchFilter
   /**
    * Restrict chunks considered during search to those with the given metadata.
    *
-   * @return chunkMetadata The chunkMetadata of this {@link RetrievalSearchFilter} instance.
+   * @return chunkMetadata The chunkMetadata of this {@link FiltersInner} instance.
    */
   @Nonnull
   public List<RetrievalKeyValueListPair> getChunkMetadata() {
@@ -391,7 +388,7 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Set the chunkMetadata of this {@link RetrievalSearchFilter} instance.
+   * Set the chunkMetadata of this {@link FiltersInner} instance.
    *
    * @param chunkMetadata Restrict chunks considered during search to those with the given metadata.
    */
@@ -400,7 +397,72 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link RetrievalSearchFilter}.
+   * Set the filter of this {@link FiltersInner} instance and return the same instance.
+   *
+   * @param filter The filter of this {@link FiltersInner}
+   * @return The same instance of this {@link FiltersInner} class
+   */
+  @Nonnull
+  public FiltersInner filter(@Nullable final RetrievalVectorSearchFilterFilter filter) {
+    this.filter = filter;
+    return this;
+  }
+
+  /**
+   * Get filter
+   *
+   * @return filter The filter of this {@link FiltersInner} instance.
+   */
+  @Nullable
+  public RetrievalVectorSearchFilterFilter getFilter() {
+    return filter;
+  }
+
+  /**
+   * Set the filter of this {@link FiltersInner} instance.
+   *
+   * @param filter The filter of this {@link FiltersInner}
+   */
+  public void setFilter(@Nullable final RetrievalVectorSearchFilterFilter filter) {
+    this.filter = filter;
+  }
+
+  /**
+   * Set the scoringConfiguration of this {@link FiltersInner} instance and return the same
+   * instance.
+   *
+   * @param scoringConfiguration The scoringConfiguration of this {@link FiltersInner}
+   * @return The same instance of this {@link FiltersInner} class
+   */
+  @Nonnull
+  public FiltersInner scoringConfiguration(
+      @Nullable final VectorScoringConfiguration scoringConfiguration) {
+    this.scoringConfiguration = scoringConfiguration;
+    return this;
+  }
+
+  /**
+   * Get scoringConfiguration
+   *
+   * @return scoringConfiguration The scoringConfiguration of this {@link FiltersInner} instance.
+   */
+  @Nonnull
+  public VectorScoringConfiguration getScoringConfiguration() {
+    return scoringConfiguration;
+  }
+
+  /**
+   * Set the scoringConfiguration of this {@link FiltersInner} instance.
+   *
+   * @param scoringConfiguration The scoringConfiguration of this {@link FiltersInner}
+   */
+  public void setScoringConfiguration(
+      @Nullable final VectorScoringConfiguration scoringConfiguration) {
+    this.scoringConfiguration = scoringConfiguration;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link FiltersInner}.
    *
    * @return The set of properties names
    */
@@ -411,7 +473,7 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link RetrievalSearchFilter} instance.
+   * Get the value of an unrecognizable property of this {@link FiltersInner} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -422,15 +484,14 @@ public class RetrievalSearchFilter
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "RetrievalSearchFilter has no field with name '" + name + "'.");
+      throw new NoSuchElementException("FiltersInner has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link RetrievalSearchFilter} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link FiltersInner} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -447,12 +508,15 @@ public class RetrievalSearchFilter
       declaredFields.put("dataRepositoryMetadata", dataRepositoryMetadata);
     if (documentMetadata != null) declaredFields.put("documentMetadata", documentMetadata);
     if (chunkMetadata != null) declaredFields.put("chunkMetadata", chunkMetadata);
+    if (filter != null) declaredFields.put("filter", filter);
+    if (scoringConfiguration != null)
+      declaredFields.put("scoringConfiguration", scoringConfiguration);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link RetrievalSearchFilter} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link FiltersInner} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -470,16 +534,18 @@ public class RetrievalSearchFilter
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final RetrievalSearchFilter retrievalSearchFilter = (RetrievalSearchFilter) o;
-    return Objects.equals(this.cloudSdkCustomFields, retrievalSearchFilter.cloudSdkCustomFields)
-        && Objects.equals(this.id, retrievalSearchFilter.id)
-        && Objects.equals(this.searchConfiguration, retrievalSearchFilter.searchConfiguration)
-        && Objects.equals(this.dataRepositories, retrievalSearchFilter.dataRepositories)
-        && Objects.equals(this.dataRepositoryType, retrievalSearchFilter.dataRepositoryType)
-        && Objects.equals(this.remoteName, retrievalSearchFilter.remoteName)
-        && Objects.equals(this.dataRepositoryMetadata, retrievalSearchFilter.dataRepositoryMetadata)
-        && Objects.equals(this.documentMetadata, retrievalSearchFilter.documentMetadata)
-        && Objects.equals(this.chunkMetadata, retrievalSearchFilter.chunkMetadata);
+    final FiltersInner filtersInner = (FiltersInner) o;
+    return Objects.equals(this.cloudSdkCustomFields, filtersInner.cloudSdkCustomFields)
+        && Objects.equals(this.id, filtersInner.id)
+        && Objects.equals(this.searchConfiguration, filtersInner.searchConfiguration)
+        && Objects.equals(this.dataRepositories, filtersInner.dataRepositories)
+        && Objects.equals(this.dataRepositoryType, filtersInner.dataRepositoryType)
+        && Objects.equals(this.remoteName, filtersInner.remoteName)
+        && Objects.equals(this.dataRepositoryMetadata, filtersInner.dataRepositoryMetadata)
+        && Objects.equals(this.documentMetadata, filtersInner.documentMetadata)
+        && Objects.equals(this.chunkMetadata, filtersInner.chunkMetadata)
+        && Objects.equals(this.filter, filtersInner.filter)
+        && Objects.equals(this.scoringConfiguration, filtersInner.scoringConfiguration);
   }
 
   @Override
@@ -493,6 +559,8 @@ public class RetrievalSearchFilter
         dataRepositoryMetadata,
         documentMetadata,
         chunkMetadata,
+        filter,
+        scoringConfiguration,
         cloudSdkCustomFields);
   }
 
@@ -500,7 +568,7 @@ public class RetrievalSearchFilter
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class RetrievalSearchFilter {\n");
+    sb.append("class FiltersInner {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    searchConfiguration: ")
         .append(toIndentedString(searchConfiguration))
@@ -513,6 +581,10 @@ public class RetrievalSearchFilter
         .append("\n");
     sb.append("    documentMetadata: ").append(toIndentedString(documentMetadata)).append("\n");
     sb.append("    chunkMetadata: ").append(toIndentedString(chunkMetadata)).append("\n");
+    sb.append("    filter: ").append(toIndentedString(filter)).append("\n");
+    sb.append("    scoringConfiguration: ")
+        .append(toIndentedString(scoringConfiguration))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -531,22 +603,21 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link RetrievalSearchFilter}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link FiltersInner} instance
+   * with all required arguments.
    */
   public static Builder create() {
     return (id) ->
-        (dataRepositoryType) ->
-            new RetrievalSearchFilter().id(id).dataRepositoryType(dataRepositoryType);
+        (dataRepositoryType) -> new FiltersInner().id(id).dataRepositoryType(dataRepositoryType);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the id of this {@link RetrievalSearchFilter} instance.
+     * Set the id of this {@link FiltersInner} instance.
      *
      * @param id Identifier of this RetrievalSearchFilter - unique per request.
-     * @return The RetrievalSearchFilter builder.
+     * @return The FiltersInner builder.
      */
     Builder1 id(@Nonnull final String id);
   }
@@ -554,11 +625,11 @@ public class RetrievalSearchFilter
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the dataRepositoryType of this {@link RetrievalSearchFilter} instance.
+     * Set the dataRepositoryType of this {@link FiltersInner} instance.
      *
-     * @param dataRepositoryType The dataRepositoryType of this {@link RetrievalSearchFilter}
-     * @return The RetrievalSearchFilter instance.
+     * @param dataRepositoryType The dataRepositoryType of this {@link FiltersInner}
+     * @return The FiltersInner instance.
      */
-    RetrievalSearchFilter dataRepositoryType(@Nonnull final DataRepositoryType dataRepositoryType);
+    FiltersInner dataRepositoryType(@Nonnull final DataRepositoryType dataRepositoryType);
   }
 }

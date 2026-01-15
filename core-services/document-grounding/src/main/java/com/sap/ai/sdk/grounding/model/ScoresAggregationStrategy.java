@@ -15,15 +15,19 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
-/** Gets or Sets RetrievalSearchSelectOptionEnum */
-public enum RetrievalSearchSelectOptionEnum {
-  IGNORE_IF_KEY_ABSENT("ignoreIfKeyAbsent"),
+/** Gets or Sets ScoresAggregationStrategy */
+public enum ScoresAggregationStrategy {
+  WEIGHTED_AVERAGE("weighted_average"),
+
+  RRF("rrf"),
+
+  WEIGHTED_RRF("weighted_rrf"),
 
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
 
-  RetrievalSearchSelectOptionEnum(String value) {
+  ScoresAggregationStrategy(String value) {
     this.value = value;
   }
 
@@ -51,8 +55,8 @@ public enum RetrievalSearchSelectOptionEnum {
    * @return The enum representation of the given value.
    */
   @JsonCreator
-  public static RetrievalSearchSelectOptionEnum fromValue(@Nonnull final String value) {
-    for (final RetrievalSearchSelectOptionEnum b : RetrievalSearchSelectOptionEnum.values()) {
+  public static ScoresAggregationStrategy fromValue(@Nonnull final String value) {
+    for (final ScoresAggregationStrategy b : ScoresAggregationStrategy.values()) {
       if (b.value.equals(value)) {
         return b;
       }

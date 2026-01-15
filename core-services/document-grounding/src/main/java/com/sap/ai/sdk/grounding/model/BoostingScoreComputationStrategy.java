@@ -15,15 +15,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
-/** Gets or Sets RetrievalSearchSelectOptionEnum */
-public enum RetrievalSearchSelectOptionEnum {
-  IGNORE_IF_KEY_ABSENT("ignoreIfKeyAbsent"),
+/** Gets or Sets BoostingScoreComputationStrategy */
+public enum BoostingScoreComputationStrategy {
+  MATCH_COUNT("match_count"),
+
+  EMBEDDING("embedding"),
 
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
 
-  RetrievalSearchSelectOptionEnum(String value) {
+  BoostingScoreComputationStrategy(String value) {
     this.value = value;
   }
 
@@ -51,8 +53,8 @@ public enum RetrievalSearchSelectOptionEnum {
    * @return The enum representation of the given value.
    */
   @JsonCreator
-  public static RetrievalSearchSelectOptionEnum fromValue(@Nonnull final String value) {
-    for (final RetrievalSearchSelectOptionEnum b : RetrievalSearchSelectOptionEnum.values()) {
+  public static BoostingScoreComputationStrategy fromValue(@Nonnull final String value) {
+    for (final BoostingScoreComputationStrategy b : BoostingScoreComputationStrategy.values()) {
       if (b.value.equals(value)) {
         return b;
       }

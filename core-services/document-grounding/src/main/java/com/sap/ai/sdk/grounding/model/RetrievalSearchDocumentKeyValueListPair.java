@@ -38,7 +38,7 @@ public class RetrievalSearchDocumentKeyValueListPair
   private List<String> value = new ArrayList<>();
 
   @JsonProperty("selectMode")
-  private List<RetrievalSearchSelectOptionEnum> selectMode = new ArrayList<>();
+  private List<RetrievalSearchSelectOptionEnum> selectMode;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -129,7 +129,7 @@ public class RetrievalSearchDocumentKeyValueListPair
    * Set the selectMode of this {@link RetrievalSearchDocumentKeyValueListPair} instance and return
    * the same instance.
    *
-   * @param selectMode Select mode for search filters
+   * @param selectMode The selectMode of this {@link RetrievalSearchDocumentKeyValueListPair}
    * @return The same instance of this {@link RetrievalSearchDocumentKeyValueListPair} class
    */
   @Nonnull
@@ -156,12 +156,12 @@ public class RetrievalSearchDocumentKeyValueListPair
   }
 
   /**
-   * Select mode for search filters
+   * Get selectMode
    *
    * @return selectMode The selectMode of this {@link RetrievalSearchDocumentKeyValueListPair}
    *     instance.
    */
-  @Nonnull
+  @Nullable
   public List<RetrievalSearchSelectOptionEnum> getSelectMode() {
     return selectMode;
   }
@@ -169,7 +169,7 @@ public class RetrievalSearchDocumentKeyValueListPair
   /**
    * Set the selectMode of this {@link RetrievalSearchDocumentKeyValueListPair} instance.
    *
-   * @param selectMode Select mode for search filters
+   * @param selectMode The selectMode of this {@link RetrievalSearchDocumentKeyValueListPair}
    */
   public void setSelectMode(@Nullable final List<RetrievalSearchSelectOptionEnum> selectMode) {
     this.selectMode = selectMode;

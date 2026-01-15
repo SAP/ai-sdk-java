@@ -15,15 +15,21 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
-/** Gets or Sets RetrievalSearchSelectOptionEnum */
-public enum RetrievalSearchSelectOptionEnum {
-  IGNORE_IF_KEY_ABSENT("ignoreIfKeyAbsent"),
+/** Gets or Sets MergeStrategyType */
+public enum MergeStrategyType {
+  RERANKER("reranker"),
+
+  SCORE_REUSE("scoreReuse"),
+
+  RECIPROCAL_RANK_FUSION("reciprocalRankFusion"),
+
+  RANDOM("random"),
 
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
 
-  RetrievalSearchSelectOptionEnum(String value) {
+  MergeStrategyType(String value) {
     this.value = value;
   }
 
@@ -51,8 +57,8 @@ public enum RetrievalSearchSelectOptionEnum {
    * @return The enum representation of the given value.
    */
   @JsonCreator
-  public static RetrievalSearchSelectOptionEnum fromValue(@Nonnull final String value) {
-    for (final RetrievalSearchSelectOptionEnum b : RetrievalSearchSelectOptionEnum.values()) {
+  public static MergeStrategyType fromValue(@Nonnull final String value) {
+    for (final MergeStrategyType b : MergeStrategyType.values()) {
       if (b.value.equals(value)) {
         return b;
       }

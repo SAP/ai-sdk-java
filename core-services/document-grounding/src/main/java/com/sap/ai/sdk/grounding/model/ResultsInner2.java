@@ -36,6 +36,9 @@ public class ResultsInner2
   @JsonProperty("results")
   private List<RetrievalDataRepositorySearchResult> results = new ArrayList<>();
 
+  @JsonProperty("remoteGroundingName")
+  private String remoteGroundingName;
+
   @JsonProperty("error")
   private RetrievalPerFilterSearchResultError error;
 
@@ -124,6 +127,38 @@ public class ResultsInner2
   }
 
   /**
+   * Set the remoteGroundingName of this {@link ResultsInner2} instance and return the same
+   * instance.
+   *
+   * @param remoteGroundingName The remoteGroundingName of this {@link ResultsInner2}
+   * @return The same instance of this {@link ResultsInner2} class
+   */
+  @Nonnull
+  public ResultsInner2 remoteGroundingName(@Nullable final String remoteGroundingName) {
+    this.remoteGroundingName = remoteGroundingName;
+    return this;
+  }
+
+  /**
+   * Get remoteGroundingName
+   *
+   * @return remoteGroundingName The remoteGroundingName of this {@link ResultsInner2} instance.
+   */
+  @Nullable
+  public String getRemoteGroundingName() {
+    return remoteGroundingName;
+  }
+
+  /**
+   * Set the remoteGroundingName of this {@link ResultsInner2} instance.
+   *
+   * @param remoteGroundingName The remoteGroundingName of this {@link ResultsInner2}
+   */
+  public void setRemoteGroundingName(@Nullable final String remoteGroundingName) {
+    this.remoteGroundingName = remoteGroundingName;
+  }
+
+  /**
    * Set the error of this {@link ResultsInner2} instance and return the same instance.
    *
    * @param error The error of this {@link ResultsInner2}
@@ -194,6 +229,7 @@ public class ResultsInner2
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (filterId != null) declaredFields.put("filterId", filterId);
     if (results != null) declaredFields.put("results", results);
+    if (remoteGroundingName != null) declaredFields.put("remoteGroundingName", remoteGroundingName);
     if (error != null) declaredFields.put("error", error);
     return declaredFields;
   }
@@ -222,12 +258,13 @@ public class ResultsInner2
     return Objects.equals(this.cloudSdkCustomFields, resultsInner2.cloudSdkCustomFields)
         && Objects.equals(this.filterId, resultsInner2.filterId)
         && Objects.equals(this.results, resultsInner2.results)
+        && Objects.equals(this.remoteGroundingName, resultsInner2.remoteGroundingName)
         && Objects.equals(this.error, resultsInner2.error);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filterId, results, error, cloudSdkCustomFields);
+    return Objects.hash(filterId, results, remoteGroundingName, error, cloudSdkCustomFields);
   }
 
   @Override
@@ -237,6 +274,9 @@ public class ResultsInner2
     sb.append("class ResultsInner2 {\n");
     sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
+    sb.append("    remoteGroundingName: ")
+        .append(toIndentedString(remoteGroundingName))
+        .append("\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
