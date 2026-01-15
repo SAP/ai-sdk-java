@@ -72,7 +72,6 @@ public class SecretApi extends BaseApi {
       @Nullable final String aiResourceGroup,
       @Nullable final Boolean aiTenantScope)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndGenericSecretPostBody;
 
     // verify the required parameter 'bckndGenericSecretPostBody' is set
     if (bckndGenericSecretPostBody == null) {
@@ -85,7 +84,6 @@ public class SecretApi extends BaseApi {
     final String localVarPath = "/admin/secrets";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -112,7 +110,7 @@ public class SecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        bckndGenericSecretPostBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -169,7 +167,6 @@ public class SecretApi extends BaseApi {
       @Nullable final String aiResourceGroup,
       @Nullable final Boolean aiTenantScope)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'secretName' is set
     if (secretName == null) {
@@ -186,7 +183,6 @@ public class SecretApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(secretName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -214,7 +210,7 @@ public class SecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -271,7 +267,6 @@ public class SecretApi extends BaseApi {
       @Nullable final String aiResourceGroup,
       @Nullable final Boolean aiTenantScope)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'secretName' is set
     if (secretName == null) {
@@ -288,7 +283,6 @@ public class SecretApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(secretName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -316,7 +310,7 @@ public class SecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -382,13 +376,11 @@ public class SecretApi extends BaseApi {
       @Nullable final String aiResourceGroup,
       @Nullable final Boolean aiTenantScope)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/admin/secrets";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -419,7 +411,7 @@ public class SecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -479,7 +471,6 @@ public class SecretApi extends BaseApi {
       @Nullable final String aiResourceGroup,
       @Nullable final Boolean aiTenantScope)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndGenericSecretPatchBody;
 
     // verify the required parameter 'secretName' is set
     if (secretName == null) {
@@ -503,7 +494,6 @@ public class SecretApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(secretName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -530,7 +520,7 @@ public class SecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        bckndGenericSecretPatchBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

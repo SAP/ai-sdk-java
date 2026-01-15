@@ -55,13 +55,11 @@ public class MetaApi extends BaseApi {
    */
   @Nonnull
   public MetaCapabilities get() throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/lm/meta";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -82,7 +80,7 @@ public class MetaApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

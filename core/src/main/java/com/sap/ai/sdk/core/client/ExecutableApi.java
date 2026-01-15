@@ -66,7 +66,6 @@ public class ExecutableApi extends BaseApi {
       @Nonnull final String executableId,
       @Nonnull final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'scenarioId' is set
     if (scenarioId == null) {
@@ -100,7 +99,6 @@ public class ExecutableApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(executableId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -123,7 +121,7 @@ public class ExecutableApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -152,7 +150,6 @@ public class ExecutableApi extends BaseApi {
       @Nonnull final String aiResourceGroup,
       @Nullable final String versionId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'scenarioId' is set
     if (scenarioId == null) {
@@ -176,7 +173,6 @@ public class ExecutableApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(scenarioId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -201,7 +197,7 @@ public class ExecutableApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

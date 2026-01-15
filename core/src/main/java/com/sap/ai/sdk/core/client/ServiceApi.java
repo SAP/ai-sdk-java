@@ -64,7 +64,6 @@ public class ServiceApi extends BaseApi {
   public BckndExtendedService get(
       @Nonnull final String serviceName, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'serviceName' is set
     if (serviceName == null) {
@@ -81,7 +80,6 @@ public class ServiceApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(serviceName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -105,7 +103,7 @@ public class ServiceApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -154,13 +152,11 @@ public class ServiceApi extends BaseApi {
   @Nonnull
   public BckndServiceList getAll(@Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/admin/services";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -184,7 +180,7 @@ public class ServiceApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

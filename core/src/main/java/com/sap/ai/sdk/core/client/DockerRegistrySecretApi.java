@@ -73,7 +73,6 @@ public class DockerRegistrySecretApi extends BaseApi {
               kubesubmitV4DockerRegistrySecretsCreateRequest,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = kubesubmitV4DockerRegistrySecretsCreateRequest;
 
     // verify the required parameter 'kubesubmitV4DockerRegistrySecretsCreateRequest' is set
     if (kubesubmitV4DockerRegistrySecretsCreateRequest == null) {
@@ -86,7 +85,6 @@ public class DockerRegistrySecretApi extends BaseApi {
     final String localVarPath = "/admin/dockerRegistrySecrets";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -109,7 +107,7 @@ public class DockerRegistrySecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        kubesubmitV4DockerRegistrySecretsCreateRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -166,7 +164,6 @@ public class DockerRegistrySecretApi extends BaseApi {
   public BcknddockerRegistrySecretDeletionResponse delete(
       @Nonnull final String dockerRegistryName, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'dockerRegistryName' is set
     if (dockerRegistryName == null) {
@@ -183,7 +180,6 @@ public class DockerRegistrySecretApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(dockerRegistryName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -207,7 +203,7 @@ public class DockerRegistrySecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -262,7 +258,6 @@ public class DockerRegistrySecretApi extends BaseApi {
   public BcknddockerRegistrySecretStatus get(
       @Nonnull final String dockerRegistryName, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'dockerRegistryName' is set
     if (dockerRegistryName == null) {
@@ -279,7 +274,6 @@ public class DockerRegistrySecretApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(dockerRegistryName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -303,7 +297,7 @@ public class DockerRegistrySecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -365,7 +359,6 @@ public class DockerRegistrySecretApi extends BaseApi {
               bcknddockerRegistrySecretWithSensitiveDataRequest,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bcknddockerRegistrySecretWithSensitiveDataRequest;
 
     // verify the required parameter 'dockerRegistryName' is set
     if (dockerRegistryName == null) {
@@ -389,7 +382,6 @@ public class DockerRegistrySecretApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(dockerRegistryName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -412,7 +404,7 @@ public class DockerRegistrySecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        bcknddockerRegistrySecretWithSensitiveDataRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -480,13 +472,11 @@ public class DockerRegistrySecretApi extends BaseApi {
       @Nullable final Boolean $count,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/admin/dockerRegistrySecrets";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -513,7 +503,7 @@ public class DockerRegistrySecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

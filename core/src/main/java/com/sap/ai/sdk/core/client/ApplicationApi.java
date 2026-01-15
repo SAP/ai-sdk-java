@@ -72,7 +72,6 @@ public class ApplicationApi extends BaseApi {
       @Nonnull final KubesubmitV4ApplicationsCreateRequest kubesubmitV4ApplicationsCreateRequest,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = kubesubmitV4ApplicationsCreateRequest;
 
     // verify the required parameter 'kubesubmitV4ApplicationsCreateRequest' is set
     if (kubesubmitV4ApplicationsCreateRequest == null) {
@@ -85,7 +84,6 @@ public class ApplicationApi extends BaseApi {
     final String localVarPath = "/admin/applications";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -108,7 +106,7 @@ public class ApplicationApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        kubesubmitV4ApplicationsCreateRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -162,7 +160,6 @@ public class ApplicationApi extends BaseApi {
   public BckndArgoCDApplicationDeletionResponse delete(
       @Nonnull final String applicationName, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'applicationName' is set
     if (applicationName == null) {
@@ -179,7 +176,6 @@ public class ApplicationApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(applicationName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -203,7 +199,7 @@ public class ApplicationApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -256,7 +252,6 @@ public class ApplicationApi extends BaseApi {
   public BckndArgoCDApplicationData get(
       @Nonnull final String applicationName, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'applicationName' is set
     if (applicationName == null) {
@@ -273,7 +268,6 @@ public class ApplicationApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(applicationName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -297,7 +291,7 @@ public class ApplicationApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -356,13 +350,11 @@ public class ApplicationApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/admin/applications";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -389,7 +381,7 @@ public class ApplicationApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -438,7 +430,6 @@ public class ApplicationApi extends BaseApi {
   public BckndArgoCDApplicationStatus getStatus(
       @Nonnull final String applicationName, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'applicationName' is set
     if (applicationName == null) {
@@ -455,7 +446,6 @@ public class ApplicationApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(applicationName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -479,7 +469,7 @@ public class ApplicationApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -533,7 +523,6 @@ public class ApplicationApi extends BaseApi {
   public BckndArgoCDApplicationRefreshResponse refresh(
       @Nonnull final String applicationName, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'applicationName' is set
     if (applicationName == null) {
@@ -550,7 +539,6 @@ public class ApplicationApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(applicationName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -574,7 +562,7 @@ public class ApplicationApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -633,7 +621,6 @@ public class ApplicationApi extends BaseApi {
       @Nonnull final BckndArgoCDApplicationBaseData bckndArgoCDApplicationBaseData,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndArgoCDApplicationBaseData;
 
     // verify the required parameter 'applicationName' is set
     if (applicationName == null) {
@@ -657,7 +644,6 @@ public class ApplicationApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(applicationName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -680,7 +666,7 @@ public class ApplicationApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        bckndArgoCDApplicationBaseData,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

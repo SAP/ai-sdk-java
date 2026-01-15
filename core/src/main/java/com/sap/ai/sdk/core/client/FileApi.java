@@ -62,7 +62,6 @@ public class FileApi extends BaseApi {
   @Nonnull
   public OpenApiResponse delete(@Nonnull final String path, @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'path' is set
     if (path == null) {
@@ -77,7 +76,6 @@ public class FileApi extends BaseApi {
                 "\\{" + "path" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(path)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -101,7 +99,7 @@ public class FileApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -148,7 +146,6 @@ public class FileApi extends BaseApi {
   @Nonnull
   public File download(@Nonnull final String path, @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'path' is set
     if (path == null) {
@@ -164,7 +161,6 @@ public class FileApi extends BaseApi {
                 "\\{" + "path" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(path)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -187,7 +183,7 @@ public class FileApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -253,7 +249,6 @@ public class FileApi extends BaseApi {
       @Nullable final Boolean overwrite,
       @Nullable final Object body)
       throws OpenApiRequestException {
-    final Object localVarPostBody = body;
 
     // verify the required parameter 'path' is set
     if (path == null) {
@@ -268,7 +263,6 @@ public class FileApi extends BaseApi {
                 "\\{" + "path" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(path)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -293,7 +287,7 @@ public class FileApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        body,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

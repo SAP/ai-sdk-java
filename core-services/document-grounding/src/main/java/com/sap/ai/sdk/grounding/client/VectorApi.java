@@ -84,7 +84,6 @@ public class VectorApi extends BaseApi {
   public OpenApiResponse createCollection(
       @Nonnull final String aiResourceGroup, @Nonnull final CollectionRequest collectionRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = collectionRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -104,7 +103,6 @@ public class VectorApi extends BaseApi {
     final String localVarPath = "/vector/collections";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -127,7 +125,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        collectionRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -161,7 +159,6 @@ public class VectorApi extends BaseApi {
       @Nonnull final UUID collectionId,
       @Nonnull final DocumentCreateRequest documentCreateRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = documentCreateRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -192,7 +189,6 @@ public class VectorApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(collectionId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -215,7 +211,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        documentCreateRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -246,7 +242,6 @@ public class VectorApi extends BaseApi {
       @Nonnull final String aiResourceGroup,
       @Nonnull final DocumentBulkDeleteRequest documentBulkDeleteRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = documentBulkDeleteRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -266,7 +261,6 @@ public class VectorApi extends BaseApi {
     final String localVarPath = "/vector/documents";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -289,7 +283,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        documentBulkDeleteRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -320,7 +314,6 @@ public class VectorApi extends BaseApi {
   public OpenApiResponse deleteCollectionById(
       @Nonnull final String aiResourceGroup, @Nonnull final String collectionId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -344,7 +337,6 @@ public class VectorApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(collectionId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -368,7 +360,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -401,7 +393,6 @@ public class VectorApi extends BaseApi {
       @Nonnull final UUID collectionId,
       @Nonnull final UUID documentId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -435,7 +426,6 @@ public class VectorApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(documentId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -459,7 +449,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -493,7 +483,6 @@ public class VectorApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -506,7 +495,6 @@ public class VectorApi extends BaseApi {
     final String localVarPath = "/vector/collections";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -533,7 +521,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -592,7 +580,6 @@ public class VectorApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -616,7 +603,6 @@ public class VectorApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(collectionId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -642,7 +628,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -697,7 +683,6 @@ public class VectorApi extends BaseApi {
   public Collection getCollectionById(
       @Nonnull final String aiResourceGroup, @Nonnull final UUID collectionId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -721,7 +706,6 @@ public class VectorApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(collectionId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -744,7 +728,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -774,7 +758,6 @@ public class VectorApi extends BaseApi {
   public VectorV1VectorEndpointsGetCollectionCreationStatus200Response getCollectionCreationStatus(
       @Nonnull final String aiResourceGroup, @Nonnull final UUID id)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -797,7 +780,6 @@ public class VectorApi extends BaseApi {
                 "\\{" + "id" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(id)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -822,7 +804,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -852,7 +834,6 @@ public class VectorApi extends BaseApi {
   public VectorV1VectorEndpointsGetCollectionDeletionStatus200Response getCollectionDeletionStatus(
       @Nonnull final String aiResourceGroup, @Nonnull final UUID id)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -875,7 +856,6 @@ public class VectorApi extends BaseApi {
                 "\\{" + "id" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(id)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -900,7 +880,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -933,7 +913,6 @@ public class VectorApi extends BaseApi {
       @Nonnull final UUID collectionId,
       @Nonnull final UUID documentId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -967,7 +946,6 @@ public class VectorApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(documentId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -991,7 +969,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -1021,7 +999,6 @@ public class VectorApi extends BaseApi {
   public VectorSearchResults search(
       @Nonnull final String aiResourceGroup, @Nonnull final TextSearchRequest textSearchRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = textSearchRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -1041,7 +1018,6 @@ public class VectorApi extends BaseApi {
     final String localVarPath = "/vector/search";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -1064,7 +1040,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        textSearchRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -1097,7 +1073,6 @@ public class VectorApi extends BaseApi {
       @Nonnull final UUID collectionId,
       @Nonnull final DocumentUpdateRequest documentUpdateRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = documentUpdateRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -1128,7 +1103,6 @@ public class VectorApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(collectionId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -1151,7 +1125,7 @@ public class VectorApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        documentUpdateRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

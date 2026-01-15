@@ -71,7 +71,6 @@ public class RepositoryApi extends BaseApi {
       @Nonnull final BckndArgoCDRepositoryData bckndArgoCDRepositoryData,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndArgoCDRepositoryData;
 
     // verify the required parameter 'bckndArgoCDRepositoryData' is set
     if (bckndArgoCDRepositoryData == null) {
@@ -84,7 +83,6 @@ public class RepositoryApi extends BaseApi {
     final String localVarPath = "/admin/repositories";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -107,7 +105,7 @@ public class RepositoryApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        bckndArgoCDRepositoryData,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -161,7 +159,6 @@ public class RepositoryApi extends BaseApi {
   public BckndArgoCDRepositoryDeletionResponse delete(
       @Nonnull final String repositoryName, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'repositoryName' is set
     if (repositoryName == null) {
@@ -178,7 +175,6 @@ public class RepositoryApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(repositoryName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -202,7 +198,7 @@ public class RepositoryApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -255,7 +251,6 @@ public class RepositoryApi extends BaseApi {
   public BckndArgoCDRepositoryDetails get(
       @Nonnull final String repositoryName, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'repositoryName' is set
     if (repositoryName == null) {
@@ -272,7 +267,6 @@ public class RepositoryApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(repositoryName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -296,7 +290,7 @@ public class RepositoryApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -355,13 +349,11 @@ public class RepositoryApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/admin/repositories";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -388,7 +380,7 @@ public class RepositoryApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -441,7 +433,6 @@ public class RepositoryApi extends BaseApi {
       @Nonnull final BckndArgoCDRepositoryCredentials bckndArgoCDRepositoryCredentials,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndArgoCDRepositoryCredentials;
 
     // verify the required parameter 'repositoryName' is set
     if (repositoryName == null) {
@@ -465,7 +456,6 @@ public class RepositoryApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(repositoryName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -488,7 +478,7 @@ public class RepositoryApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        bckndArgoCDRepositoryCredentials,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

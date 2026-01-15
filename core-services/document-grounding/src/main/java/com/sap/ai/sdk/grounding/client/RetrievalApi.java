@@ -78,7 +78,6 @@ public class RetrievalApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -91,7 +90,6 @@ public class RetrievalApi extends BaseApi {
     final String localVarPath = "/retrieval/dataRepositories";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -118,7 +116,7 @@ public class RetrievalApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -167,7 +165,6 @@ public class RetrievalApi extends BaseApi {
   public DataRepository getDataRepositoryById(
       @Nonnull final String aiResourceGroup, @Nonnull final UUID repositoryId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -191,7 +188,6 @@ public class RetrievalApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(repositoryId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -214,7 +210,7 @@ public class RetrievalApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -243,7 +239,6 @@ public class RetrievalApi extends BaseApi {
       @Nonnull final String aiResourceGroup,
       @Nonnull final RetrievalSearchInput retrievalSearchInput)
       throws OpenApiRequestException {
-    final Object localVarPostBody = retrievalSearchInput;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -263,7 +258,6 @@ public class RetrievalApi extends BaseApi {
     final String localVarPath = "/retrieval/search";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -286,7 +280,7 @@ public class RetrievalApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        retrievalSearchInput,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

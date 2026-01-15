@@ -71,7 +71,6 @@ public class OrchestrationConfigsApi extends BaseApi {
       @Nonnull final OrchestrationConfigPostRequest orchestrationConfigPostRequest,
       @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = orchestrationConfigPostRequest;
 
     // verify the required parameter 'orchestrationConfigPostRequest' is set
     if (orchestrationConfigPostRequest == null) {
@@ -84,7 +83,6 @@ public class OrchestrationConfigsApi extends BaseApi {
     final String localVarPath = "/registry/v2/orchestrationConfigs";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -107,7 +105,7 @@ public class OrchestrationConfigsApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        orchestrationConfigPostRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -158,7 +156,6 @@ public class OrchestrationConfigsApi extends BaseApi {
   public OrchestrationConfigDeleteResponse deleteOrchestrationConfig(
       @Nonnull final UUID orchestrationConfigId, @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'orchestrationConfigId' is set
     if (orchestrationConfigId == null) {
@@ -175,7 +172,6 @@ public class OrchestrationConfigsApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(orchestrationConfigId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -199,7 +195,7 @@ public class OrchestrationConfigsApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -246,7 +242,6 @@ public class OrchestrationConfigsApi extends BaseApi {
   public byte[] exportOrchestrationConfig(
       @Nonnull final UUID orchestrationConfigId, @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'orchestrationConfigId' is set
     if (orchestrationConfigId == null) {
@@ -263,7 +258,6 @@ public class OrchestrationConfigsApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(orchestrationConfigId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -286,7 +280,7 @@ public class OrchestrationConfigsApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -337,7 +331,6 @@ public class OrchestrationConfigsApi extends BaseApi {
       @Nullable final String aiResourceGroup,
       @Nullable final Boolean resolveTemplateRef)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'orchestrationConfigId' is set
     if (orchestrationConfigId == null) {
@@ -354,7 +347,6 @@ public class OrchestrationConfigsApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(orchestrationConfigId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -380,7 +372,7 @@ public class OrchestrationConfigsApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -427,13 +419,11 @@ public class OrchestrationConfigsApi extends BaseApi {
   public OrchestrationConfigPostResponse importOrchestrationConfig(
       @Nullable final String aiResourceGroup, @Nullable final byte[] _file)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/registry/v2/orchestrationConfigs/import";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -457,7 +447,7 @@ public class OrchestrationConfigsApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -513,7 +503,6 @@ public class OrchestrationConfigsApi extends BaseApi {
       @Nullable final Boolean includeSpec,
       @Nullable final Boolean resolveTemplateRef)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'scenario' is set
     if (scenario == null) {
@@ -549,7 +538,6 @@ public class OrchestrationConfigsApi extends BaseApi {
                 "\\{" + "name" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(name)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -576,7 +564,7 @@ public class OrchestrationConfigsApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -640,13 +628,11 @@ public class OrchestrationConfigsApi extends BaseApi {
       @Nullable final Boolean includeSpec,
       @Nullable final Boolean resolveTemplateRef)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/registry/v2/orchestrationConfigs";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -677,7 +663,7 @@ public class OrchestrationConfigsApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

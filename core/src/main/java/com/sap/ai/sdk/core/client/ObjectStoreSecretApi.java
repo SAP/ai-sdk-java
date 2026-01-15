@@ -76,7 +76,6 @@ public class ObjectStoreSecretApi extends BaseApi {
       @Nullable final String authorization,
       @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndobjectStoreSecretWithSensitiveDataRequestForPostCall;
 
     // verify the required parameter 'bckndobjectStoreSecretWithSensitiveDataRequestForPostCall' is
     // set
@@ -90,7 +89,6 @@ public class ObjectStoreSecretApi extends BaseApi {
     final String localVarPath = "/admin/objectStoreSecrets";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -115,7 +113,7 @@ public class ObjectStoreSecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        bckndobjectStoreSecretWithSensitiveDataRequestForPostCall,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -176,7 +174,6 @@ public class ObjectStoreSecretApi extends BaseApi {
       @Nullable final String authorization,
       @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'objectStoreName' is set
     if (objectStoreName == null) {
@@ -193,7 +190,6 @@ public class ObjectStoreSecretApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(objectStoreName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -219,7 +215,7 @@ public class ObjectStoreSecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -279,7 +275,6 @@ public class ObjectStoreSecretApi extends BaseApi {
       @Nullable final String authorization,
       @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'objectStoreName' is set
     if (objectStoreName == null) {
@@ -296,7 +291,6 @@ public class ObjectStoreSecretApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(objectStoreName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -322,7 +316,7 @@ public class ObjectStoreSecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -388,7 +382,6 @@ public class ObjectStoreSecretApi extends BaseApi {
       @Nullable final String authorization,
       @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndobjectStoreSecretWithSensitiveDataRequest;
 
     // verify the required parameter 'objectStoreName' is set
     if (objectStoreName == null) {
@@ -412,7 +405,6 @@ public class ObjectStoreSecretApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(objectStoreName)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -437,7 +429,7 @@ public class ObjectStoreSecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        bckndobjectStoreSecretWithSensitiveDataRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -510,13 +502,11 @@ public class ObjectStoreSecretApi extends BaseApi {
       @Nullable final String authorization,
       @Nullable final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/admin/objectStoreSecrets";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -545,7 +535,7 @@ public class ObjectStoreSecretApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

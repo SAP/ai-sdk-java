@@ -78,7 +78,6 @@ public class ExecutionApi extends BaseApi {
       @Nonnull final String aiResourceGroup,
       @Nonnull final AiExecutionBulkModificationRequest aiExecutionBulkModificationRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiExecutionBulkModificationRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -98,7 +97,6 @@ public class ExecutionApi extends BaseApi {
     final String localVarPath = "/lm/executions";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -121,7 +119,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        aiExecutionBulkModificationRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -157,7 +155,6 @@ public class ExecutionApi extends BaseApi {
       @Nullable final String executionScheduleId,
       @Nullable final String status)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -170,7 +167,6 @@ public class ExecutionApi extends BaseApi {
     final String localVarPath = "/lm/executions/$count";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -200,7 +196,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -249,7 +245,6 @@ public class ExecutionApi extends BaseApi {
       @Nullable final String configurationId,
       @Nullable final String status)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -262,7 +257,6 @@ public class ExecutionApi extends BaseApi {
     final String localVarPath = "/lm/executionSchedules/$count";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -287,7 +281,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -333,7 +327,6 @@ public class ExecutionApi extends BaseApi {
       @Nonnull final String aiResourceGroup,
       @Nonnull final AiEnactmentCreationRequest aiEnactmentCreationRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiEnactmentCreationRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -353,7 +346,6 @@ public class ExecutionApi extends BaseApi {
     final String localVarPath = "/lm/executions";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -376,7 +368,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        aiEnactmentCreationRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -405,7 +397,6 @@ public class ExecutionApi extends BaseApi {
       @Nonnull final String aiResourceGroup,
       @Nonnull final AiExecutionScheduleCreationData aiExecutionScheduleCreationData)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiExecutionScheduleCreationData;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -425,7 +416,6 @@ public class ExecutionApi extends BaseApi {
     final String localVarPath = "/lm/executionSchedules";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -448,7 +438,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        aiExecutionScheduleCreationData,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -478,7 +468,6 @@ public class ExecutionApi extends BaseApi {
   public AiExecutionDeletionResponse delete(
       @Nonnull final String aiResourceGroup, @Nonnull final String executionId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -502,7 +491,6 @@ public class ExecutionApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(executionId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -526,7 +514,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -554,7 +542,6 @@ public class ExecutionApi extends BaseApi {
   public AiExecutionScheduleDeletionResponse delete_0(
       @Nonnull final String aiResourceGroup, @Nonnull final String executionScheduleId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -578,7 +565,6 @@ public class ExecutionApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(executionScheduleId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -602,7 +588,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -633,7 +619,6 @@ public class ExecutionApi extends BaseApi {
       @Nonnull final String executionId,
       @Nullable final String $select)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -657,7 +642,6 @@ public class ExecutionApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(executionId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -682,7 +666,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -753,7 +737,6 @@ public class ExecutionApi extends BaseApi {
       @Nullable final OffsetDateTime end,
       @Nullable final String $order)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'executionId' is set
     if (executionId == null) {
@@ -770,7 +753,6 @@ public class ExecutionApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(executionId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -798,7 +780,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -852,7 +834,6 @@ public class ExecutionApi extends BaseApi {
   public AiExecutionSchedule get_0(
       @Nonnull final String aiResourceGroup, @Nonnull final String executionScheduleId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -876,7 +857,6 @@ public class ExecutionApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(executionScheduleId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -900,7 +880,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -934,7 +914,6 @@ public class ExecutionApi extends BaseApi {
       @Nonnull final String executionId,
       @Nonnull final AiExecutionModificationRequest aiExecutionModificationRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiExecutionModificationRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -965,7 +944,6 @@ public class ExecutionApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(executionId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -988,7 +966,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        aiExecutionModificationRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -1020,7 +998,6 @@ public class ExecutionApi extends BaseApi {
       @Nonnull final String executionScheduleId,
       @Nonnull final AiExecutionScheduleModificationRequest aiExecutionScheduleModificationRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiExecutionScheduleModificationRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -1051,7 +1028,6 @@ public class ExecutionApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(executionScheduleId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -1074,7 +1050,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        aiExecutionScheduleModificationRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -1118,7 +1094,6 @@ public class ExecutionApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final String $select)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -1131,7 +1106,6 @@ public class ExecutionApi extends BaseApi {
     final String localVarPath = "/lm/executions";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -1165,7 +1139,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -1222,7 +1196,6 @@ public class ExecutionApi extends BaseApi {
       @Nullable final Integer $top,
       @Nullable final Integer $skip)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -1235,7 +1208,6 @@ public class ExecutionApi extends BaseApi {
     final String localVarPath = "/lm/executionSchedules";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -1263,7 +1235,7 @@ public class ExecutionApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

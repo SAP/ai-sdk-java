@@ -85,7 +85,6 @@ public class ArtifactApi extends BaseApi {
       @Nullable final Boolean searchCaseInsensitive,
       @Nullable final List<String> artifactLabelSelector)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -98,7 +97,6 @@ public class ArtifactApi extends BaseApi {
     final String localVarPath = "/lm/artifacts/$count";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -130,7 +128,7 @@ public class ArtifactApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -176,7 +174,6 @@ public class ArtifactApi extends BaseApi {
   public AiArtifactCreationResponse create(
       @Nonnull final String aiResourceGroup, @Nonnull final AiArtifactPostData aiArtifactPostData)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiArtifactPostData;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -196,7 +193,6 @@ public class ArtifactApi extends BaseApi {
     final String localVarPath = "/lm/artifacts";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -219,7 +215,7 @@ public class ArtifactApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        aiArtifactPostData,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -250,7 +246,6 @@ public class ArtifactApi extends BaseApi {
       @Nonnull final String artifactId,
       @Nullable final String $expand)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -274,7 +269,6 @@ public class ArtifactApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(artifactId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -298,7 +292,7 @@ public class ArtifactApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -376,7 +370,6 @@ public class ArtifactApi extends BaseApi {
       @Nullable final Boolean searchCaseInsensitive,
       @Nullable final String $expand)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -389,7 +382,6 @@ public class ArtifactApi extends BaseApi {
     final String localVarPath = "/lm/artifacts";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -424,7 +416,7 @@ public class ArtifactApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

@@ -70,7 +70,6 @@ public class ResourceGroupApi extends BaseApi {
       @Nonnull final BckndResourceGroupsPostRequest bckndResourceGroupsPostRequest,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndResourceGroupsPostRequest;
 
     // verify the required parameter 'bckndResourceGroupsPostRequest' is set
     if (bckndResourceGroupsPostRequest == null) {
@@ -83,7 +82,6 @@ public class ResourceGroupApi extends BaseApi {
     final String localVarPath = "/admin/resourceGroups";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -106,7 +104,7 @@ public class ResourceGroupApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        bckndResourceGroupsPostRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -160,7 +158,6 @@ public class ResourceGroupApi extends BaseApi {
   public BckndResourceGroupDeletionResponse delete(
       @Nonnull final String resourceGroupId, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'resourceGroupId' is set
     if (resourceGroupId == null) {
@@ -177,7 +174,6 @@ public class ResourceGroupApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(resourceGroupId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -201,7 +197,7 @@ public class ResourceGroupApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -254,7 +250,6 @@ public class ResourceGroupApi extends BaseApi {
   public BckndResourceGroup get(
       @Nonnull final String resourceGroupId, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'resourceGroupId' is set
     if (resourceGroupId == null) {
@@ -271,7 +266,6 @@ public class ResourceGroupApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(resourceGroupId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -295,7 +289,7 @@ public class ResourceGroupApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -386,13 +380,11 @@ public class ResourceGroupApi extends BaseApi {
       @Nullable final String continueToken,
       @Nullable final List<String> labelSelector)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/admin/resourceGroups";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -423,7 +415,7 @@ public class ResourceGroupApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -474,7 +466,6 @@ public class ResourceGroupApi extends BaseApi {
       @Nonnull final BckndResourceGroupPatchRequest bckndResourceGroupPatchRequest,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndResourceGroupPatchRequest;
 
     // verify the required parameter 'resourceGroupId' is set
     if (resourceGroupId == null) {
@@ -498,7 +489,6 @@ public class ResourceGroupApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(resourceGroupId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -521,7 +511,7 @@ public class ResourceGroupApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        bckndResourceGroupPatchRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

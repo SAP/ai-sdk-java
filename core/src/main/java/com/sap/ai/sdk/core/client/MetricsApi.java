@@ -62,7 +62,6 @@ public class MetricsApi extends BaseApi {
   public TrckDeleteMetricsResponse delete(
       @Nonnull final String aiResourceGroup, @Nonnull final String executionId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -82,7 +81,6 @@ public class MetricsApi extends BaseApi {
     final String localVarPath = "/lm/metrics";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -107,7 +105,7 @@ public class MetricsApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -159,7 +157,6 @@ public class MetricsApi extends BaseApi {
       @Nullable final Integer $top,
       @Nullable final Integer $skip)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -172,7 +169,6 @@ public class MetricsApi extends BaseApi {
     final String localVarPath = "/lm/metrics";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -203,7 +199,7 @@ public class MetricsApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -256,7 +252,6 @@ public class MetricsApi extends BaseApi {
   public OpenApiResponse patch(
       @Nonnull final String aiResourceGroup, @Nonnull final TrckMetricResource trckMetricResource)
       throws OpenApiRequestException {
-    final Object localVarPostBody = trckMetricResource;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -276,7 +271,6 @@ public class MetricsApi extends BaseApi {
     final String localVarPath = "/lm/metrics";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -299,7 +293,7 @@ public class MetricsApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        trckMetricResource,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

@@ -75,7 +75,6 @@ public class PromptTemplatesApi extends BaseApi {
       @Nullable final String aiResourceGroup,
       @Nullable final String aiResourceGroupScope)
       throws OpenApiRequestException {
-    final Object localVarPostBody = promptTemplatePostRequest;
 
     // verify the required parameter 'promptTemplatePostRequest' is set
     if (promptTemplatePostRequest == null) {
@@ -88,7 +87,6 @@ public class PromptTemplatesApi extends BaseApi {
     final String localVarPath = "/lm/promptTemplates";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -114,7 +112,7 @@ public class PromptTemplatesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        promptTemplatePostRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -167,7 +165,6 @@ public class PromptTemplatesApi extends BaseApi {
       @Nullable final String aiResourceGroup,
       @Nullable final String aiResourceGroupScope)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
@@ -184,7 +181,6 @@ public class PromptTemplatesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(promptTemplateId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -211,7 +207,7 @@ public class PromptTemplatesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -261,7 +257,6 @@ public class PromptTemplatesApi extends BaseApi {
       @Nullable final String aiResourceGroup,
       @Nullable final String aiResourceGroupScope)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
@@ -278,7 +273,6 @@ public class PromptTemplatesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(promptTemplateId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -304,7 +298,7 @@ public class PromptTemplatesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -354,7 +348,6 @@ public class PromptTemplatesApi extends BaseApi {
       @Nullable final String aiResourceGroup,
       @Nullable final String aiResourceGroupScope)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
@@ -371,7 +364,6 @@ public class PromptTemplatesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(promptTemplateId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -398,7 +390,7 @@ public class PromptTemplatesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -448,13 +440,11 @@ public class PromptTemplatesApi extends BaseApi {
       @Nullable final String aiResourceGroupScope,
       @Nullable final byte[] _file)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/lm/promptTemplates/import";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -481,7 +471,7 @@ public class PromptTemplatesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -533,7 +523,6 @@ public class PromptTemplatesApi extends BaseApi {
       @Nullable final String aiResourceGroup,
       @Nullable final String aiResourceGroupScope)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'scenario' is set
     if (scenario == null) {
@@ -569,7 +558,6 @@ public class PromptTemplatesApi extends BaseApi {
                 "\\{" + "name" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(name)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -596,7 +584,7 @@ public class PromptTemplatesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -659,13 +647,11 @@ public class PromptTemplatesApi extends BaseApi {
       @Nullable final String retrieve,
       @Nullable final Boolean includeSpec)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/lm/promptTemplates";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -697,7 +683,7 @@ public class PromptTemplatesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -752,7 +738,6 @@ public class PromptTemplatesApi extends BaseApi {
       @Nullable final Boolean metadata,
       @Nullable final PromptTemplateSubstitutionRequest promptTemplateSubstitutionRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = promptTemplateSubstitutionRequest;
 
     // verify the required parameter 'promptTemplateId' is set
     if (promptTemplateId == null) {
@@ -769,7 +754,6 @@ public class PromptTemplatesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(promptTemplateId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -796,7 +780,7 @@ public class PromptTemplatesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        promptTemplateSubstitutionRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -857,7 +841,6 @@ public class PromptTemplatesApi extends BaseApi {
       @Nullable final Boolean metadata,
       @Nullable final PromptTemplateSubstitutionRequest promptTemplateSubstitutionRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = promptTemplateSubstitutionRequest;
 
     // verify the required parameter 'scenario' is set
     if (scenario == null) {
@@ -893,7 +876,6 @@ public class PromptTemplatesApi extends BaseApi {
                 "\\{" + "name" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(name)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -920,7 +902,7 @@ public class PromptTemplatesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        promptTemplateSubstitutionRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

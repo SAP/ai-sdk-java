@@ -71,7 +71,6 @@ public class DeploymentApi extends BaseApi {
       @Nonnull final String aiResourceGroup,
       @Nonnull final AiDeploymentBulkModificationRequest aiDeploymentBulkModificationRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiDeploymentBulkModificationRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -91,7 +90,6 @@ public class DeploymentApi extends BaseApi {
     final String localVarPath = "/lm/deployments";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -114,7 +112,7 @@ public class DeploymentApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        aiDeploymentBulkModificationRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -148,7 +146,6 @@ public class DeploymentApi extends BaseApi {
       @Nullable final String scenarioId,
       @Nullable final String status)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -161,7 +158,6 @@ public class DeploymentApi extends BaseApi {
     final String localVarPath = "/lm/deployments/$count";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -189,7 +185,7 @@ public class DeploymentApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -236,7 +232,6 @@ public class DeploymentApi extends BaseApi {
       @Nonnull final String aiResourceGroup,
       @Nonnull final AiDeploymentCreationRequest aiDeploymentCreationRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiDeploymentCreationRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -256,7 +251,6 @@ public class DeploymentApi extends BaseApi {
     final String localVarPath = "/lm/deployments";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -279,7 +273,7 @@ public class DeploymentApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        aiDeploymentCreationRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -309,7 +303,6 @@ public class DeploymentApi extends BaseApi {
   public AiDeploymentDeletionResponse delete(
       @Nonnull final String aiResourceGroup, @Nonnull final String deploymentId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -333,7 +326,6 @@ public class DeploymentApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(deploymentId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -357,7 +349,7 @@ public class DeploymentApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -388,7 +380,6 @@ public class DeploymentApi extends BaseApi {
       @Nonnull final String deploymentId,
       @Nullable final String $select)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -412,7 +403,6 @@ public class DeploymentApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(deploymentId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -437,7 +427,7 @@ public class DeploymentApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -508,7 +498,6 @@ public class DeploymentApi extends BaseApi {
       @Nullable final OffsetDateTime end,
       @Nullable final String $order)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'deploymentId' is set
     if (deploymentId == null) {
@@ -525,7 +514,6 @@ public class DeploymentApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(deploymentId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -553,7 +541,7 @@ public class DeploymentApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -615,7 +603,6 @@ public class DeploymentApi extends BaseApi {
       @Nonnull final String deploymentId,
       @Nonnull final AiDeploymentModificationRequest aiDeploymentModificationRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiDeploymentModificationRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -646,7 +633,6 @@ public class DeploymentApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(deploymentId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -669,7 +655,7 @@ public class DeploymentApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        aiDeploymentModificationRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -711,7 +697,6 @@ public class DeploymentApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final String $select)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -724,7 +709,6 @@ public class DeploymentApi extends BaseApi {
     final String localVarPath = "/lm/deployments";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -756,7 +740,7 @@ public class DeploymentApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

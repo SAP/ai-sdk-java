@@ -72,7 +72,6 @@ public class ConfigurationApi extends BaseApi {
       @Nullable final Boolean searchCaseInsensitive,
       @Nullable final List<String> executableIds)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -85,7 +84,6 @@ public class ConfigurationApi extends BaseApi {
     final String localVarPath = "/lm/configurations/$count";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -114,7 +112,7 @@ public class ConfigurationApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -162,7 +160,6 @@ public class ConfigurationApi extends BaseApi {
       @Nonnull final String aiResourceGroup,
       @Nonnull final AiConfigurationBaseData aiConfigurationBaseData)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiConfigurationBaseData;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -182,7 +179,6 @@ public class ConfigurationApi extends BaseApi {
     final String localVarPath = "/lm/configurations";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -205,7 +201,7 @@ public class ConfigurationApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        aiConfigurationBaseData,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -236,7 +232,6 @@ public class ConfigurationApi extends BaseApi {
       @Nonnull final String configurationId,
       @Nullable final String $expand)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -260,7 +255,6 @@ public class ConfigurationApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(configurationId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -285,7 +279,7 @@ public class ConfigurationApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -350,7 +344,6 @@ public class ConfigurationApi extends BaseApi {
       @Nullable final Boolean searchCaseInsensitive,
       @Nullable final String $expand)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -363,7 +356,6 @@ public class ConfigurationApi extends BaseApi {
     final String localVarPath = "/lm/configurations";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -396,7 +388,7 @@ public class ConfigurationApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

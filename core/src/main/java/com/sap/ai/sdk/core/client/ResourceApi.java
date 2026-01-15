@@ -62,13 +62,11 @@ public class ResourceApi extends BaseApi {
   @Nonnull
   public BckndResourceGetResponse get(@Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/admin/resources/nodes";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -92,7 +90,7 @@ public class ResourceApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -137,13 +135,11 @@ public class ResourceApi extends BaseApi {
   @Nonnull
   public BckndInstanceTypeGetResponse get_0(@Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // create path and map variables
     final String localVarPath = "/admin/resources/instanceTypes";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -167,7 +163,7 @@ public class ResourceApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -215,7 +211,6 @@ public class ResourceApi extends BaseApi {
       @Nonnull final BckndResourcePatchBody bckndResourcePatchBody,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndResourcePatchBody;
 
     // verify the required parameter 'bckndResourcePatchBody' is set
     if (bckndResourcePatchBody == null) {
@@ -228,7 +223,6 @@ public class ResourceApi extends BaseApi {
     final String localVarPath = "/admin/resources/nodes";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -251,7 +245,7 @@ public class ResourceApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        bckndResourcePatchBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

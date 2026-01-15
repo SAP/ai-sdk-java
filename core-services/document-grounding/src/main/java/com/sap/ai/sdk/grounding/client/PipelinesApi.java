@@ -79,7 +79,6 @@ public class PipelinesApi extends BaseApi {
   public PipelineId createPipeline(
       @Nonnull final String aiResourceGroup, @Nonnull final CreatePipeline createPipeline)
       throws OpenApiRequestException {
-    final Object localVarPostBody = createPipeline;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -99,7 +98,6 @@ public class PipelinesApi extends BaseApi {
     final String localVarPath = "/pipelines";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -121,7 +119,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        createPipeline,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -147,7 +145,6 @@ public class PipelinesApi extends BaseApi {
   public OpenApiResponse deletePipelineById(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -171,7 +168,6 @@ public class PipelinesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(pipelineId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -195,7 +191,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -229,7 +225,6 @@ public class PipelinesApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -242,7 +237,6 @@ public class PipelinesApi extends BaseApi {
     final String localVarPath = "/pipelines";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -268,7 +262,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -313,7 +307,6 @@ public class PipelinesApi extends BaseApi {
   public GetPipeline getPipelineById(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -337,7 +330,6 @@ public class PipelinesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(pipelineId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -360,7 +352,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -387,7 +379,6 @@ public class PipelinesApi extends BaseApi {
       @Nonnull final String pipelineId,
       @Nonnull final String documentId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -421,7 +412,6 @@ public class PipelinesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(documentId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -445,7 +435,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -480,7 +470,6 @@ public class PipelinesApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -504,7 +493,6 @@ public class PipelinesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(pipelineId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -531,7 +519,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -578,7 +566,6 @@ public class PipelinesApi extends BaseApi {
       @Nonnull final String pipelineId,
       @Nonnull final String executionId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -612,7 +599,6 @@ public class PipelinesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(executionId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -636,7 +622,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -665,7 +651,6 @@ public class PipelinesApi extends BaseApi {
       @Nonnull final String executionId,
       @Nonnull final String documentId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -709,7 +694,6 @@ public class PipelinesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(documentId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -733,7 +717,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -770,7 +754,6 @@ public class PipelinesApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -804,7 +787,6 @@ public class PipelinesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(executionId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -831,7 +813,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -892,7 +874,6 @@ public class PipelinesApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -916,7 +897,6 @@ public class PipelinesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(pipelineId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -944,7 +924,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -990,7 +970,6 @@ public class PipelinesApi extends BaseApi {
   public GetPipelineStatus getPipelineStatus(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -1014,7 +993,6 @@ public class PipelinesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(pipelineId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -1038,7 +1016,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -1067,7 +1045,6 @@ public class PipelinesApi extends BaseApi {
       @Nonnull final String pipelineId,
       @Nonnull final PatchPipeline patchPipeline)
       throws OpenApiRequestException {
-    final Object localVarPostBody = patchPipeline;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -1098,7 +1075,6 @@ public class PipelinesApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(pipelineId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -1121,7 +1097,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        patchPipeline,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -1157,7 +1133,6 @@ public class PipelinesApi extends BaseApi {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = searchPipeline;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -1177,7 +1152,6 @@ public class PipelinesApi extends BaseApi {
     final String localVarPath = "/pipelines/search";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -1203,7 +1177,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        searchPipeline,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -1251,7 +1225,6 @@ public class PipelinesApi extends BaseApi {
       @Nonnull final String aiResourceGroup,
       @Nonnull final ManualPipelineTrigger manualPipelineTrigger)
       throws OpenApiRequestException {
-    final Object localVarPostBody = manualPipelineTrigger;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -1271,7 +1244,6 @@ public class PipelinesApi extends BaseApi {
     final String localVarPath = "/pipelines/trigger";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -1294,7 +1266,7 @@ public class PipelinesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        manualPipelineTrigger,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,

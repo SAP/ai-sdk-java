@@ -63,7 +63,6 @@ public class ScenarioApi extends BaseApi {
   @Nonnull
   public AiScenario get(@Nonnull final String aiResourceGroup, @Nonnull final String scenarioId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -87,7 +86,6 @@ public class ScenarioApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(scenarioId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -110,7 +108,7 @@ public class ScenarioApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -132,7 +130,6 @@ public class ScenarioApi extends BaseApi {
   @Nonnull
   public AiScenarioList query(@Nonnull final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -145,7 +142,6 @@ public class ScenarioApi extends BaseApi {
     final String localVarPath = "/lm/scenarios";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -168,7 +164,7 @@ public class ScenarioApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -194,7 +190,6 @@ public class ScenarioApi extends BaseApi {
   public AiModelList queryModels(
       @Nonnull final String scenarioId, @Nonnull final String aiResourceGroup)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'scenarioId' is set
     if (scenarioId == null) {
@@ -218,7 +213,6 @@ public class ScenarioApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(scenarioId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -241,7 +235,7 @@ public class ScenarioApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -274,7 +268,6 @@ public class ScenarioApi extends BaseApi {
       @Nonnull final String scenarioId,
       @Nullable final List<String> labelSelector)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
@@ -298,7 +291,6 @@ public class ScenarioApi extends BaseApi {
                 ApiClient.escapeString(ApiClient.parameterToString(scenarioId)));
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    String localVarQueryParameterBaseName;
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
@@ -323,7 +315,7 @@ public class ScenarioApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        localVarPostBody,
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
