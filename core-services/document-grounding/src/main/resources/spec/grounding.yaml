@@ -1906,11 +1906,45 @@ components:
             $ref: "#/components/schemas/RetrievalKeyValueListPair"
           title: Metadata
           default: []
+        searchScores:
+          anyOf:
+            - type: object
+              $ref: "#/components/schemas/SearchScores"
+            - type: 'null'   
+        postProcessingScore:
+          anyOf:
+            - type: object
+              $ref: "#/components/schemas/Score"
+            - type: 'null'
       type: object
       required:
       - id
       - content
       title: RetrievalChunk
+    Score:
+      type: object
+      properties:
+        value:
+          type: number
+      required:
+        - value
+      title: Score
+    SearchScores:
+      properties:
+        aggregatedScore:
+          type: object
+          properties:
+            value:
+              type: number
+        denseRetrievalScore:
+          type: object
+          properties:
+            value:
+              type: number
+      required:
+        - aggregatedScore
+        - denseRetrievalScore
+      title: SearchScores
     DocumentKeyValueListPair:
       properties:
         key:
@@ -2729,6 +2763,14 @@ components:
           title: Metadata
           description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
           default: []
+        remoteGroundingName:
+          anyOf:
+            - type: string
+            - type: 'null'
+        message:
+          anyOf:
+            - type: string
+            - type: 'null'
         type:
           $ref: "#/components/schemas/DataRepositoryType"
       type: object
@@ -2748,11 +2790,10 @@ components:
       title: DataRepositorySearchResult
     DataRepositoryType:
       type: string
-      anyOf:
-        - enum:
-          - vector
-          - help.sap.com
-        - {}
+      enum:
+        - vector
+        - help.sap.com
+        - remote:dg
       title: DataRepositoryType
     DataRepositoryWithDocuments:
       properties:
@@ -2770,6 +2811,17 @@ components:
             $ref: "#/components/schemas/RetrievalKeyValueListPair"
           title: Metadata
           description: Metadata attached to DataRepository. Useful to later limit search to a subset of DataRepositories.
+          default: []
+        remoteGroundingName:
+          anyOf:
+            - type: string
+            - type: 'null'
+          description: Friendly destination Name (grounding.name) of remote instance.
+        message:
+          anyOf:
+            - type: string
+            - type: 'null'
+          description: Optional message.
         documents:
           type: array
           items:

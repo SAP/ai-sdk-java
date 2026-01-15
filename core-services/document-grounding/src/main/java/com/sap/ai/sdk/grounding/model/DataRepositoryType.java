@@ -21,6 +21,8 @@ public enum DataRepositoryType {
 
   HELP_SAP_COM("help.sap.com"),
 
+  REMOTE_DG("remote:dg"),
+
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
@@ -59,6 +61,6 @@ public enum DataRepositoryType {
         return b;
       }
     }
-    return null;
+    return UNKNOWN_DEFAULT_OPEN_API;
   }
 }

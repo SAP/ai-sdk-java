@@ -183,7 +183,7 @@ public class RetrievalSearchFilter
    */
   @Nonnull
   public RetrievalSearchFilter dataRepositoryType(
-      @Nullable final DataRepositoryType dataRepositoryType) {
+      @Nonnull final DataRepositoryType dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
     return this;
   }
@@ -194,7 +194,7 @@ public class RetrievalSearchFilter
    * @return dataRepositoryType The dataRepositoryType of this {@link RetrievalSearchFilter}
    *     instance.
    */
-  @Nullable
+  @Nonnull
   public DataRepositoryType getDataRepositoryType() {
     return dataRepositoryType;
   }
@@ -204,7 +204,7 @@ public class RetrievalSearchFilter
    *
    * @param dataRepositoryType The dataRepositoryType of this {@link RetrievalSearchFilter}
    */
-  public void setDataRepositoryType(@Nullable final DataRepositoryType dataRepositoryType) {
+  public void setDataRepositoryType(@Nonnull final DataRepositoryType dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
   }
 
@@ -521,6 +521,6 @@ public class RetrievalSearchFilter
      * @param dataRepositoryType The dataRepositoryType of this {@link RetrievalSearchFilter}
      * @return The RetrievalSearchFilter instance.
      */
-    RetrievalSearchFilter dataRepositoryType(@Nullable final DataRepositoryType dataRepositoryType);
+    RetrievalSearchFilter dataRepositoryType(@Nonnull final DataRepositoryType dataRepositoryType);
   }
 }
