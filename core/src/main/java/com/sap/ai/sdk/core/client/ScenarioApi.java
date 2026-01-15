@@ -98,12 +98,12 @@ public class ScenarioApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiScenario> localVarReturnType = new TypeReference<AiScenario>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -156,12 +156,12 @@ public class ScenarioApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiScenarioList> localVarReturnType = new TypeReference<AiScenarioList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -229,12 +229,12 @@ public class ScenarioApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiModelList> localVarReturnType = new TypeReference<AiModelList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -311,12 +311,12 @@ public class ScenarioApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiVersionList> localVarReturnType = new TypeReference<AiVersionList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",

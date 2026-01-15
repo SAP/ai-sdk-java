@@ -96,12 +96,12 @@ public class ApplicationApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndArgoCDApplicationCreationResponse> localVarReturnType =
         new TypeReference<BckndArgoCDApplicationCreationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -190,13 +190,13 @@ public class ApplicationApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndArgoCDApplicationDeletionResponse> localVarReturnType =
         new TypeReference<BckndArgoCDApplicationDeletionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -284,13 +284,13 @@ public class ApplicationApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndArgoCDApplicationData> localVarReturnType =
         new TypeReference<BckndArgoCDApplicationData>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -376,13 +376,13 @@ public class ApplicationApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndAllArgoCDApplicationData> localVarReturnType =
         new TypeReference<BckndAllArgoCDApplicationData>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -466,13 +466,13 @@ public class ApplicationApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndArgoCDApplicationStatus> localVarReturnType =
         new TypeReference<BckndArgoCDApplicationStatus>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -561,13 +561,13 @@ public class ApplicationApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndArgoCDApplicationRefreshResponse> localVarReturnType =
         new TypeReference<BckndArgoCDApplicationRefreshResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -668,12 +668,12 @@ public class ApplicationApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndArgoCDApplicationModificationResponse> localVarReturnType =
         new TypeReference<BckndArgoCDApplicationModificationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",

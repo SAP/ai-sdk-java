@@ -79,13 +79,13 @@ public class ResourceApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndResourceGetResponse> localVarReturnType =
         new TypeReference<BckndResourceGetResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -154,13 +154,13 @@ public class ResourceApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndInstanceTypeGetResponse> localVarReturnType =
         new TypeReference<BckndInstanceTypeGetResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -239,12 +239,12 @@ public class ResourceApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndResourcePatchResponse> localVarReturnType =
         new TypeReference<BckndResourcePatchResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",

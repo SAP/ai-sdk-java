@@ -118,12 +118,12 @@ public class ArtifactApi extends BaseApi {
 
     final String[] localVarAccepts = {"text/plain", "application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<Integer> localVarReturnType = new TypeReference<Integer>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -207,12 +207,12 @@ public class ArtifactApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiArtifactCreationResponse> localVarReturnType =
         new TypeReference<AiArtifactCreationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -286,12 +286,12 @@ public class ArtifactApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiArtifact> localVarReturnType = new TypeReference<AiArtifact>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -412,12 +412,12 @@ public class ArtifactApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiArtifactList> localVarReturnType = new TypeReference<AiArtifactList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",

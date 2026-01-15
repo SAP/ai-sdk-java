@@ -111,12 +111,12 @@ public class ExecutableApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutable> localVarReturnType = new TypeReference<AiExecutable>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -188,13 +188,13 @@ public class ExecutableApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutableList> localVarReturnType =
         new TypeReference<AiExecutableList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",

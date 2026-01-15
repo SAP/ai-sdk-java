@@ -158,7 +158,7 @@ class GroundingController {
     final var documents = CLIENT_VECTOR.createCollection(RESOURCE_GROUP, request);
     final Map<String, List<String>> headers = documents.getHeaders();
 
-    final var locationHeader = headers.get("location").get(0);
+    final var locationHeader = headers.get("Location").get(0);
     return locationHeader.replaceAll("^.*?/([a-f0-9-]+)/.*?$", "$1");
   }
 

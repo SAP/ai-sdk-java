@@ -97,12 +97,12 @@ public class DockerRegistrySecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BcknddockerRegistrySecretCreationResponse> localVarReturnType =
         new TypeReference<BcknddockerRegistrySecretCreationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -194,13 +194,13 @@ public class DockerRegistrySecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BcknddockerRegistrySecretDeletionResponse> localVarReturnType =
         new TypeReference<BcknddockerRegistrySecretDeletionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -290,13 +290,13 @@ public class DockerRegistrySecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BcknddockerRegistrySecretStatus> localVarReturnType =
         new TypeReference<BcknddockerRegistrySecretStatus>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -400,12 +400,12 @@ public class DockerRegistrySecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/merge-patch+json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BcknddockerRegistrySecretModificationResponse> localVarReturnType =
         new TypeReference<BcknddockerRegistrySecretModificationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",
@@ -500,13 +500,13 @@ public class DockerRegistrySecretApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BcknddockerRegistrySecretStatusResponse> localVarReturnType =
         new TypeReference<BcknddockerRegistrySecretStatusResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",

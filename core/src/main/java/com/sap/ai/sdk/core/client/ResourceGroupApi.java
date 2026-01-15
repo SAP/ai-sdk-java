@@ -94,12 +94,12 @@ public class ResourceGroupApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndResourceGroupBase> localVarReturnType =
         new TypeReference<BckndResourceGroupBase>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -188,13 +188,13 @@ public class ResourceGroupApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndResourceGroupDeletionResponse> localVarReturnType =
         new TypeReference<BckndResourceGroupDeletionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -282,13 +282,13 @@ public class ResourceGroupApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndResourceGroup> localVarReturnType =
         new TypeReference<BckndResourceGroup>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -410,13 +410,13 @@ public class ResourceGroupApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndResourceGroupList> localVarReturnType =
         new TypeReference<BckndResourceGroupList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -509,12 +509,12 @@ public class ResourceGroupApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OpenApiResponse> localVarReturnType =
         new TypeReference<OpenApiResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",

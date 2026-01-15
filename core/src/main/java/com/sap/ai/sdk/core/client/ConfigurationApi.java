@@ -102,12 +102,12 @@ public class ConfigurationApi extends BaseApi {
 
     final String[] localVarAccepts = {"text/plain", "application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<Integer> localVarReturnType = new TypeReference<Integer>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -193,12 +193,12 @@ public class ConfigurationApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiConfigurationCreationResponse> localVarReturnType =
         new TypeReference<AiConfigurationCreationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -272,13 +272,13 @@ public class ConfigurationApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiConfiguration> localVarReturnType =
         new TypeReference<AiConfiguration>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -383,13 +383,13 @@ public class ConfigurationApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiConfigurationList> localVarReturnType =
         new TypeReference<AiConfigurationList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",

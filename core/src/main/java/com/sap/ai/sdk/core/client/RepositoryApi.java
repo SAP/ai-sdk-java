@@ -95,12 +95,12 @@ public class RepositoryApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndArgoCDRepositoryCreationResponse> localVarReturnType =
         new TypeReference<BckndArgoCDRepositoryCreationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -189,13 +189,13 @@ public class RepositoryApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndArgoCDRepositoryDeletionResponse> localVarReturnType =
         new TypeReference<BckndArgoCDRepositoryDeletionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -283,13 +283,13 @@ public class RepositoryApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndArgoCDRepositoryDetails> localVarReturnType =
         new TypeReference<BckndArgoCDRepositoryDetails>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -375,13 +375,13 @@ public class RepositoryApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndArgoCDRepositoryDataResponse> localVarReturnType =
         new TypeReference<BckndArgoCDRepositoryDataResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -476,12 +476,12 @@ public class RepositoryApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<BckndArgoCDRepositoryModificationResponse> localVarReturnType =
         new TypeReference<BckndArgoCDRepositoryModificationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",

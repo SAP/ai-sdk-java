@@ -109,12 +109,12 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/merge-patch+json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutionBulkModificationResponse> localVarReturnType =
         new TypeReference<AiExecutionBulkModificationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",
@@ -188,12 +188,12 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"text/plain", "application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<Integer> localVarReturnType = new TypeReference<Integer>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -275,12 +275,12 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"text/plain", "application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<Integer> localVarReturnType = new TypeReference<Integer>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -364,12 +364,12 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutionCreationResponse> localVarReturnType =
         new TypeReference<AiExecutionCreationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -436,12 +436,12 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutionScheduleCreationResponse> localVarReturnType =
         new TypeReference<AiExecutionScheduleCreationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "POST",
@@ -513,13 +513,13 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutionDeletionResponse> localVarReturnType =
         new TypeReference<AiExecutionDeletionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -589,13 +589,13 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutionScheduleDeletionResponse> localVarReturnType =
         new TypeReference<AiExecutionScheduleDeletionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -669,13 +669,13 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutionResponseWithDetails> localVarReturnType =
         new TypeReference<AiExecutionResponseWithDetails>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -785,13 +785,13 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<RTALogCommonResponse> localVarReturnType =
         new TypeReference<RTALogCommonResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -887,13 +887,13 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutionSchedule> localVarReturnType =
         new TypeReference<AiExecutionSchedule>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -976,12 +976,12 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutionModificationResponse> localVarReturnType =
         new TypeReference<AiExecutionModificationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",
@@ -1062,12 +1062,12 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {"application/json"};
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutionScheduleModificationResponse> localVarReturnType =
         new TypeReference<AiExecutionScheduleModificationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "PATCH",
@@ -1152,13 +1152,13 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutionList> localVarReturnType =
         new TypeReference<AiExecutionList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -1250,13 +1250,13 @@ public class ExecutionApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<AiExecutionScheduleList> localVarReturnType =
         new TypeReference<AiExecutionScheduleList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",

@@ -88,13 +88,13 @@ public class FileApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<OpenApiResponse> localVarReturnType =
         new TypeReference<OpenApiResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "DELETE",
@@ -175,12 +175,12 @@ public class FileApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/octet-stream", "application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<File> localVarReturnType = new TypeReference<File>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "GET",
@@ -280,13 +280,13 @@ public class FileApi extends BaseApi {
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-
     final String[] localVarContentTypes = {};
 
     final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
     final TypeReference<DSetFileCreationResponse> localVarReturnType =
         new TypeReference<DSetFileCreationResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
         "PUT",
