@@ -55,6 +55,17 @@ jobs:
         with:
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
+      - name: "Determine PR base"
+        id: pr_base
+        # If updating orchestration and orchestration-staging exists on remote, use it as PR base.
+        run: |
+          BASE=main
+          if [ "${{ env.CHOICE }}" = "orchestration" ] && [ -n "$(git ls-remote --heads origin orchestration-staging)" ]; then
+            BASE=orchestration-staging
+          fi
+          echo "PR base: $BASE"
+          echo "BASE=$BASE" >> "$GITHUB_OUTPUT"
+
       - name: "Setup Java"
         uses: actions/setup-java@v5
         with:
@@ -64,18 +75,36 @@ jobs:
 
       - name: "Restore Dependencies"
         id: restore-dependencies
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ env.MAVEN_CACHE_KEY }}
           path: ${{ env.MAVEN_CACHE_DIR }}
 
       - name: "Checkout or Create Branch"
         id: branch
-        # Checkout branch if it exists, otherwise create it
+        env:
+          BASE: ${{ steps.pr_base.outputs.BASE }}
+          CHOICE: ${{ env.CHOICE }}
+          REF: ${{ env.REF }}
         run: |
           BRANCH="spec-update/$CHOICE/$REF"
-          git fetch origin $BRANCH || true
-          git checkout -B $BRANCH origin/$BRANCH || git checkout -b $BRANCH
+          
+          # try to fetch the base and the target branch (ignore failures if missing)
+          git fetch --no-tags --depth=1 origin "$BASE" || true
+          git fetch origin "$BRANCH" || true
+          
+          # if remote target branch exists, base the local branch on it
+          if git ls-remote --heads origin "$BRANCH" | grep -q "refs/heads/$BRANCH"; then
+            git checkout -B "$BRANCH" "origin/$BRANCH"
+          else
+            # otherwise, create the branch from origin/BASE if it exists, else from current HEAD
+            if git ls-remote --heads origin "$BASE" | grep -q "refs/heads/$BASE"; then
+              git checkout -B "$BRANCH" "origin/$BASE"
+            else
+              git checkout -B "$BRANCH"
+            fi
+          fi
+          
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: "Download specification file"
@@ -160,13 +189,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
           BRANCH: ${{ steps.branch.outputs.branch }}
+          BASE: ${{ steps.pr_base.outputs.BASE }}
         run: |
           if gh pr list --head $BRANCH --json number -q '.[].number' | grep -q .; then
             echo "An open PR already exists for this branch. Skipping PR creation."
             exit 0
           fi
           
-          PR_URL=$(gh pr create --base main --head $BRANCH --title "feat: [DevOps] Update $CHOICE specification" --body "
+          PR_URL=$(gh pr create --base $BASE --head $BRANCH --title "feat: [DevOps] Update $CHOICE specification" --body "
           ## Context
           
           Update $CHOICE specification file based on $REF.
@@ -190,8 +220,9 @@ jobs:
         env:
           BRANCH: ${{ steps.branch.outputs.branch }}
           PR_URL: ${{ steps.create-pr.outputs.pr_url }}
+          BASE: ${{ steps.pr_base.outputs.BASE }}
         run: |
-          DIFF_URL="https://github.com/SAP/ai-sdk-java/compare/main...$BRANCH"
+          DIFF_URL="https://github.com/SAP/ai-sdk-java/compare/$BASE...$BRANCH"
           echo "## Workflow Execution Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Step | Status |" >> $GITHUB_STEP_SUMMARY
