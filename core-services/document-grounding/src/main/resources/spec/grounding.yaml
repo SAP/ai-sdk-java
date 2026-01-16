@@ -1091,6 +1091,7 @@ components:
         - $ref: "#/components/schemas/SFTPPipelineCreateRequest"
         - $ref: "#/components/schemas/SDMPipelineCreateRequest"
         - $ref: "#/components/schemas/WorkZonePipelineCreateRequest"
+        - $ref: "#/components/schemas/ServiceNowPipelineCreateRequest"
       discriminator:
         propertyName: type
         mapping:
@@ -1099,6 +1100,7 @@ components:
           SFTP: "#/components/schemas/SFTPPipelineCreateRequest"
           SDM: "#/components/schemas/SDMPipelineCreateRequest"
           WorkZone: "#/components/schemas/WorkZonePipelineCreateRequest"
+          ServiceNow: "#/components/schemas/ServiceNowPipelineCreateRequest"
 
     manualPipelineTrigger:
       type: object
@@ -1180,6 +1182,67 @@ components:
         metadata:
           $ref: "#/components/schemas/MetaData"
       additionalProperties: true
+
+    ServiceNowPipelineCreateRequest:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: ["ServiceNow"]
+        metadata:
+          $ref: "#/components/schemas/MetaData"
+        configuration:
+          $ref: "#/components/schemas/ServiceNowConfigurationStruct"
+      additionalProperties: false
+
+    ServiceNowConfigurationStruct:
+      type: object
+      required:
+        - destination
+      properties:
+        destination:
+          type: string
+          example: destination-name
+        serviceNow:
+          $ref: "#/components/schemas/ServiceNowConfig"
+        metadataConfigId:
+          type: string
+          example: uuid
+        cronExpression:
+          type: string
+          description: |
+            Optional cron expression for scheduling pipeline execution.
+            Must represent an interval greater than 1 hour.
+          example: "0 */20 * * *"
+      additionalProperties: false
+
+    ServiceNowConfig:
+      type: object
+      properties:
+        includePaths:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          example:
+            - active=true
+            - sys_domain_path=/health
+      additionalProperties: false
+
+    ServiceNowConfigurationMinimal:
+      type: object
+      required:
+        - serviceNow
+      properties:
+        serviceNow:
+          type: object
+          properties:
+            includePaths:
+              $ref: "#/components/schemas/IncludePathsArray"
+          additionalProperties: false
+      additionalProperties: false
 
     MSSharePointConfiguration:
       type: object
@@ -1310,6 +1373,7 @@ components:
         - $ref: "#/components/schemas/SFTPPipelineGetResponse"
         - $ref: "#/components/schemas/SDMPipelineGetResponse"
         - $ref: "#/components/schemas/WorkZonePipelineGetResponse"
+        - $ref: "#/components/schemas/ServiceNowPipelineGetResponse"
       discriminator:
         propertyName: type
         mapping:
@@ -1318,6 +1382,7 @@ components:
           SFTP: "#/components/schemas/SFTPPipelineGetResponse"
           SDM: "#/components/schemas/SDMPipelineGetResponse"
           WorkZone: "#/components/schemas/WorkZonePipelineGetResponse"
+          ServiceNow: "#/components/schemas/ServiceNowPipelineGetResponse"
 
     MSSharePointPipelineGetResponse:
       allOf:
@@ -1383,6 +1448,19 @@ components:
               enum: [WorkZone]
             metadata:
                 $ref: "#/components/schemas/MetaData"
+
+    ServiceNowPipelineGetResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasePipelineResponse"
+        - type: object
+          required:
+            - configuration
+          properties:
+            type:
+              type: string
+              enum: ["ServiceNow"]
+            configuration:
+              $ref: "#/components/schemas/ServiceNowConfigurationMinimal"
 
     BasePipelineResponse:
       type: object
@@ -1653,6 +1731,7 @@ components:
         - $ref: "#/components/schemas/SFTPPipelineMinimalResponse"
         - $ref: "#/components/schemas/SDMPipelineMinimalResponse"
         - $ref: "#/components/schemas/WorkZonePipelineMinimalResponse"
+        - $ref: "#/components/schemas/ServiceNowPipelineMinimalResponse"
       discriminator:
         propertyName: type
         mapping:
@@ -1661,6 +1740,7 @@ components:
           SFTP: "#/components/schemas/SFTPPipelineMinimalResponse"
           SDM: "#/components/schemas/SDMPipelineMinimalResponse"
           WorkZone: "#/components/schemas/WorkZonePipelineMinimalResponse"
+          ServiceNow: "#/components/schemas/ServiceNowPipelineMinimalResponse"
 
     MSSharePointPipelineMinimalResponse:
       allOf:
@@ -1740,6 +1820,22 @@ components:
               type: string
               enum: 
                 - WorkZone
+            metadata:
+              type: boolean
+              example: true
+
+    ServiceNowPipelineMinimalResponse:
+      allOf:
+        - $ref: "#/components/schemas/BasePipelineMinimalResponse"
+        - type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum: ["ServiceNow"]
+            configuration:
+              $ref: "#/components/schemas/ServiceNowConfigurationMinimal"
             metadata:
               type: boolean
               example: true

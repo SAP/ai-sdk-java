@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @JsonSubTypes.Type(value = S3PipelineCreateRequest.class, name = "S3"),
   @JsonSubTypes.Type(value = SDMPipelineCreateRequest.class, name = "SDM"),
   @JsonSubTypes.Type(value = SFTPPipelineCreateRequest.class, name = "SFTP"),
+  @JsonSubTypes.Type(value = ServiceNowPipelineCreateRequest.class, name = "ServiceNow"),
   @JsonSubTypes.Type(value = WorkZonePipelineCreateRequest.class, name = "WorkZone"),
 })
 public interface CreatePipeline {
