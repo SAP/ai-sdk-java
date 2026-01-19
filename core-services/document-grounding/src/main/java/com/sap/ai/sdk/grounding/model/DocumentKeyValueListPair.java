@@ -141,7 +141,7 @@ public class DocumentKeyValueListPair
    *
    * @return matchMode The matchMode of this {@link DocumentKeyValueListPair} instance.
    */
-  @Nullable
+  @Nonnull
   public FilterMatchModeEnum getMatchMode() {
     return matchMode;
   }

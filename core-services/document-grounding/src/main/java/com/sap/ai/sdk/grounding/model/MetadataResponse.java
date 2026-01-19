@@ -31,7 +31,7 @@ public class MetadataResponse
 // CHECKSTYLE:ON
 {
   @JsonProperty("current_metadata")
-  private List<MetadataItem> currentMetadata;
+  private List<MetadataItem> currentMetadata = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -42,7 +42,7 @@ public class MetadataResponse
   /**
    * Set the currentMetadata of this {@link MetadataResponse} instance and return the same instance.
    *
-   * @param currentMetadata The currentMetadata of this {@link MetadataResponse}
+   * @param currentMetadata List of metadata after updates.
    * @return The same instance of this {@link MetadataResponse} class
    */
   @Nonnull
@@ -67,7 +67,7 @@ public class MetadataResponse
   }
 
   /**
-   * Get currentMetadata
+   * List of metadata after updates.
    *
    * @return currentMetadata The currentMetadata of this {@link MetadataResponse} instance.
    */
@@ -79,7 +79,7 @@ public class MetadataResponse
   /**
    * Set the currentMetadata of this {@link MetadataResponse} instance.
    *
-   * @param currentMetadata The currentMetadata of this {@link MetadataResponse}
+   * @param currentMetadata List of metadata after updates.
    */
   public void setCurrentMetadata(@Nullable final List<MetadataItem> currentMetadata) {
     this.currentMetadata = currentMetadata;

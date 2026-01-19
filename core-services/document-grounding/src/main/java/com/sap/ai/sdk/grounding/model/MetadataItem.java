@@ -35,7 +35,7 @@ public class MetadataItem
   private UUID id;
 
   @JsonProperty("metadata")
-  private List<VectorKeyValueListPair> metadata;
+  private List<VectorKeyValueListPair> metadata = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -77,7 +77,7 @@ public class MetadataItem
   /**
    * Set the metadata of this {@link MetadataItem} instance and return the same instance.
    *
-   * @param metadata The metadata of this {@link MetadataItem}
+   * @param metadata List of metadata of the collections or documents or chunks
    * @return The same instance of this {@link MetadataItem} class
    */
   @Nonnull
@@ -102,7 +102,7 @@ public class MetadataItem
   }
 
   /**
-   * Get metadata
+   * List of metadata of the collections or documents or chunks
    *
    * @return metadata The metadata of this {@link MetadataItem} instance.
    */
@@ -114,7 +114,7 @@ public class MetadataItem
   /**
    * Set the metadata of this {@link MetadataItem} instance.
    *
-   * @param metadata The metadata of this {@link MetadataItem}
+   * @param metadata List of metadata of the collections or documents or chunks
    */
   public void setMetadata(@Nullable final List<VectorKeyValueListPair> metadata) {
     this.metadata = metadata;

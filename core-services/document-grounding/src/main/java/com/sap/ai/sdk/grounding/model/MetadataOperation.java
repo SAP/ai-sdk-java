@@ -76,7 +76,7 @@ public class MetadataOperation
   /**
    * Set the values of this {@link MetadataOperation} instance and return the same instance.
    *
-   * @param values The values of this {@link MetadataOperation}
+   * @param values List of values to update.
    * @return The same instance of this {@link MetadataOperation} class
    */
   @Nonnull
@@ -101,7 +101,7 @@ public class MetadataOperation
   }
 
   /**
-   * Get values
+   * List of values to update.
    *
    * @return values The values of this {@link MetadataOperation} instance.
    */
@@ -113,7 +113,7 @@ public class MetadataOperation
   /**
    * Set the values of this {@link MetadataOperation} instance.
    *
-   * @param values The values of this {@link MetadataOperation}
+   * @param values List of values to update.
    */
   public void setValues(@Nullable final List<String> values) {
     this.values = values;

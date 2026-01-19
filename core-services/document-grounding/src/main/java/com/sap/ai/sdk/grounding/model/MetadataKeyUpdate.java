@@ -76,7 +76,7 @@ public class MetadataKeyUpdate
   /**
    * Set the operations of this {@link MetadataKeyUpdate} instance and return the same instance.
    *
-   * @param operations The operations of this {@link MetadataKeyUpdate}
+   * @param operations Update operation executed for the key
    * @return The same instance of this {@link MetadataKeyUpdate} class
    */
   @Nonnull
@@ -101,7 +101,7 @@ public class MetadataKeyUpdate
   }
 
   /**
-   * Get operations
+   * Update operation executed for the key
    *
    * @return operations The operations of this {@link MetadataKeyUpdate} instance.
    */
@@ -113,7 +113,7 @@ public class MetadataKeyUpdate
   /**
    * Set the operations of this {@link MetadataKeyUpdate} instance.
    *
-   * @param operations The operations of this {@link MetadataKeyUpdate}
+   * @param operations Update operation executed for the key
    */
   public void setOperations(@Nullable final List<MetadataOperation> operations) {
     this.operations = operations;

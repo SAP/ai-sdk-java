@@ -27,7 +27,7 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** A response containing information about a newly created, single document */
+/** A response containing information about a newly created, single document. */
 // CHECKSTYLE:OFF
 public class DocumentResponse
 // CHECKSTYLE:ON

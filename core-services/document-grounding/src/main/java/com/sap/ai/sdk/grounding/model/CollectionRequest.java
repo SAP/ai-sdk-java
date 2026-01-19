@@ -163,7 +163,7 @@ public class CollectionRequest
   /**
    * Set the id of this {@link CollectionRequest} instance and return the same instance.
    *
-   * @param id The id of this {@link CollectionRequest}
+   * @param id Unique identifier of a collection.
    * @return The same instance of this {@link CollectionRequest} class
    */
   @Nonnull
@@ -173,7 +173,7 @@ public class CollectionRequest
   }
 
   /**
-   * Get id
+   * Unique identifier of a collection.
    *
    * @return id The id of this {@link CollectionRequest} instance.
    */
@@ -185,7 +185,7 @@ public class CollectionRequest
   /**
    * Set the id of this {@link CollectionRequest} instance.
    *
-   * @param id The id of this {@link CollectionRequest}
+   * @param id Unique identifier of a collection.
    */
   public void setId(@Nullable final UUID id) {
     this.id = id;

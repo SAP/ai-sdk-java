@@ -41,10 +41,10 @@ public class VectorSearchFilter
   private VectorSearchConfiguration _configuration;
 
   @JsonProperty("collectionMetadata")
-  private List<VectorKeyValueListPair> collectionMetadata;
+  private List<VectorKeyValueListPair> collectionMetadata = new ArrayList<>();
 
   @JsonProperty("documentMetadata")
-  private List<VectorSearchDocumentKeyValueListPair> documentMetadata;
+  private List<VectorSearchDocumentKeyValueListPair> documentMetadata = new ArrayList<>();
 
   @JsonProperty("chunkMetadata")
   private List<VectorKeyValueListPair> chunkMetadata = new ArrayList<>();
@@ -172,7 +172,8 @@ public class VectorSearchFilter
    * Set the collectionMetadata of this {@link VectorSearchFilter} instance and return the same
    * instance.
    *
-   * @param collectionMetadata The collectionMetadata of this {@link VectorSearchFilter}
+   * @param collectionMetadata Restrict collections considered during search to those annotated with
+   *     the given metadata. Useful when combined with collections&#x3D;[&#39;*&#39;]
    * @return The same instance of this {@link VectorSearchFilter} class
    */
   @Nonnull
@@ -199,7 +200,8 @@ public class VectorSearchFilter
   }
 
   /**
-   * Get collectionMetadata
+   * Restrict collections considered during search to those annotated with the given metadata.
+   * Useful when combined with collections&#x3D;[&#39;*&#39;]
    *
    * @return collectionMetadata The collectionMetadata of this {@link VectorSearchFilter} instance.
    */
@@ -211,7 +213,8 @@ public class VectorSearchFilter
   /**
    * Set the collectionMetadata of this {@link VectorSearchFilter} instance.
    *
-   * @param collectionMetadata The collectionMetadata of this {@link VectorSearchFilter}
+   * @param collectionMetadata Restrict collections considered during search to those annotated with
+   *     the given metadata. Useful when combined with collections&#x3D;[&#39;*&#39;]
    */
   public void setCollectionMetadata(
       @Nullable final List<VectorKeyValueListPair> collectionMetadata) {
@@ -222,7 +225,8 @@ public class VectorSearchFilter
    * Set the documentMetadata of this {@link VectorSearchFilter} instance and return the same
    * instance.
    *
-   * @param documentMetadata The documentMetadata of this {@link VectorSearchFilter}
+   * @param documentMetadata Restrict documents considered during search to those annotated with the
+   *     given metadata.
    * @return The same instance of this {@link VectorSearchFilter} class
    */
   @Nonnull
@@ -249,7 +253,7 @@ public class VectorSearchFilter
   }
 
   /**
-   * Get documentMetadata
+   * Restrict documents considered during search to those annotated with the given metadata.
    *
    * @return documentMetadata The documentMetadata of this {@link VectorSearchFilter} instance.
    */
@@ -261,7 +265,8 @@ public class VectorSearchFilter
   /**
    * Set the documentMetadata of this {@link VectorSearchFilter} instance.
    *
-   * @param documentMetadata The documentMetadata of this {@link VectorSearchFilter}
+   * @param documentMetadata Restrict documents considered during search to those annotated with the
+   *     given metadata.
    */
   public void setDocumentMetadata(
       @Nullable final List<VectorSearchDocumentKeyValueListPair> documentMetadata) {

@@ -2,7 +2,6 @@ package com.sap.ai.sdk.grounding.client;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.grounding.model.Collection;
-import com.sap.ai.sdk.grounding.model.CollectionPendingResponse;
 import com.sap.ai.sdk.grounding.model.CollectionRequest;
 import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
 import com.sap.ai.sdk.grounding.model.DocumentBulkDeleteRequest;
@@ -81,11 +80,11 @@ public class VectorApi extends AbstractOpenApiService {
    *
    * @param aiResourceGroup Resource Group ID
    * @param collectionRequest The value for the parameter collectionRequest
-   * @return CollectionPendingResponse
+   * @return An OpenApiResponse containing the status code of the HttpResponse.
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public CollectionPendingResponse createCollection(
+  public OpenApiResponse createCollection(
       @Nonnull final String aiResourceGroup, @Nonnull final CollectionRequest collectionRequest)
       throws OpenApiRequestException {
     final Object localVarPostBody = collectionRequest;
@@ -121,9 +120,9 @@ public class VectorApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<CollectionPendingResponse> localVarReturnType =
-        new ParameterizedTypeReference<CollectionPendingResponse>() {};
-    return apiClient.invokeAPI(
+    final ParameterizedTypeReference<Void> localVarReturnType =
+        new ParameterizedTypeReference<Void>() {};
+    apiClient.invokeAPI(
         localVarPath,
         HttpMethod.POST,
         localVarQueryParams,
@@ -134,6 +133,7 @@ public class VectorApi extends AbstractOpenApiService {
         localVarContentType,
         localVarAuthNames,
         localVarReturnType);
+    return new OpenApiResponse(apiClient);
   }
 
   /**
@@ -308,11 +308,11 @@ public class VectorApi extends AbstractOpenApiService {
    *
    * @param aiResourceGroup Resource Group ID
    * @param collectionId Collection ID
-   * @return CollectionPendingResponse
+   * @return An OpenApiResponse containing the status code of the HttpResponse.
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public CollectionPendingResponse deleteCollectionById(
+  public OpenApiResponse deleteCollectionById(
       @Nonnull final String aiResourceGroup, @Nonnull final String collectionId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -353,9 +353,9 @@ public class VectorApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<CollectionPendingResponse> localVarReturnType =
-        new ParameterizedTypeReference<CollectionPendingResponse>() {};
-    return apiClient.invokeAPI(
+    final ParameterizedTypeReference<Void> localVarReturnType =
+        new ParameterizedTypeReference<Void>() {};
+    apiClient.invokeAPI(
         localVarPath,
         HttpMethod.DELETE,
         localVarQueryParams,
@@ -366,6 +366,7 @@ public class VectorApi extends AbstractOpenApiService {
         localVarContentType,
         localVarAuthNames,
         localVarReturnType);
+    return new OpenApiResponse(apiClient);
   }
 
   /**

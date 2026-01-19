@@ -46,7 +46,7 @@ public class TextSearchRequest
   /**
    * Set the query of this {@link TextSearchRequest} instance and return the same instance.
    *
-   * @param query The query of this {@link TextSearchRequest}
+   * @param query Query string
    * @return The same instance of this {@link TextSearchRequest} class
    */
   @Nonnull
@@ -56,7 +56,7 @@ public class TextSearchRequest
   }
 
   /**
-   * Get query
+   * Query string
    *
    * @return query The query of this {@link TextSearchRequest} instance.
    */
@@ -68,7 +68,7 @@ public class TextSearchRequest
   /**
    * Set the query of this {@link TextSearchRequest} instance.
    *
-   * @param query The query of this {@link TextSearchRequest}
+   * @param query Query string
    */
   public void setQuery(@Nullable final String query) {
     this.query = query;
@@ -231,7 +231,7 @@ public class TextSearchRequest
     /**
      * Set the query of this {@link TextSearchRequest} instance.
      *
-     * @param query The query of this {@link TextSearchRequest}
+     * @param query Query string
      * @return The TextSearchRequest builder.
      */
     Builder1 query(@Nullable final String query);

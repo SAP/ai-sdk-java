@@ -129,7 +129,7 @@ public class VectorSearchDocumentKeyValueListPair
    * Set the selectMode of this {@link VectorSearchDocumentKeyValueListPair} instance and return the
    * same instance.
    *
-   * @param selectMode The selectMode of this {@link VectorSearchDocumentKeyValueListPair}
+   * @param selectMode Select mode for search filters
    * @return The same instance of this {@link VectorSearchDocumentKeyValueListPair} class
    */
   @Nonnull
@@ -156,7 +156,7 @@ public class VectorSearchDocumentKeyValueListPair
   }
 
   /**
-   * Get selectMode
+   * Select mode for search filters
    *
    * @return selectMode The selectMode of this {@link VectorSearchDocumentKeyValueListPair}
    *     instance.
@@ -169,7 +169,7 @@ public class VectorSearchDocumentKeyValueListPair
   /**
    * Set the selectMode of this {@link VectorSearchDocumentKeyValueListPair} instance.
    *
-   * @param selectMode The selectMode of this {@link VectorSearchDocumentKeyValueListPair}
+   * @param selectMode Select mode for search filters
    */
   public void setSelectMode(@Nullable final List<VectorSearchSelectOptionEnum> selectMode) {
     this.selectMode = selectMode;
