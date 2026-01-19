@@ -23,33 +23,48 @@ public class OrchestrationConfigReference {
   String scenario;
   String name;
   String version;
+
+  //  @Getter(AccessLevel.PRIVATE)
   OrchestrationPrompt prompt = new OrchestrationPrompt(Map.of());
 
   /**
-   * Set the chat history for this reference.
+   * Set the chat history.
    *
    * @param messagesHistory The chat history to set.
-   * @return The current instance of {@link OrchestrationConfigReference} with the changed chat
-   *     history.
+   * @return A new instance of {@link OrchestrationConfigReference} with the specified chat history.
    */
   @Nonnull
-  public OrchestrationConfigReference messageHistory(@Nonnull final List<Message> messagesHistory) {
-    prompt.messageHistory(messagesHistory);
-    return this;
+  public OrchestrationConfigReference withMessageHistory(
+      @Nonnull final List<Message> messagesHistory) {
+    if (prompt.getMessagesHistory().equals(messagesHistory)) {
+      return this;
+    }
+    final var reference = new OrchestrationConfigReference(id, scenario, name, version);
+    reference
+        .prompt
+        .templateParameters(this.prompt.getTemplateParameters())
+        .messageHistory(messagesHistory);
+    return reference;
   }
 
   /**
-   * Set the template parameters for this reference.
+   * Set the template parameters.
    *
    * @param templateParameters The template parameters to set.
-   * @return The current instance of {@link OrchestrationConfigReference} with the changed chat
-   *     history.
+   * @return A new instance of {@link OrchestrationConfigReference} with the specified chat history.
    */
   @Nonnull
-  public OrchestrationConfigReference templateParameters(
+  public OrchestrationConfigReference withTemplateParameters(
       @Nonnull final Map<String, String> templateParameters) {
-    prompt.templateParameters(templateParameters);
-    return this;
+    if (prompt.getTemplateParameters().equals(templateParameters)) {
+      return this;
+    }
+    final var reference = new OrchestrationConfigReference(id, scenario, name, version);
+    reference
+        .prompt
+        .templateParameters(templateParameters)
+        .messageHistory(this.prompt.getMessagesHistory());
+    return reference;
   }
 
   /**

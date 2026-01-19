@@ -4,8 +4,6 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.annotations.Beta;
 import com.google.common.collect.Iterables;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -23,7 +21,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.yaml.MappingJackson2YamlHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -64,12 +61,6 @@ public class OrchestrationConfigClient extends OrchestrationConfigsApi {
                     getDefaultObjectMapper()
                         .addMixIn(OutputFilterConfig.class, JacksonMixin.OutputFilter.class)
                         .addMixIn(InputFilterConfig.class, JacksonMixin.InputFilter.class)));
-    final var yamlMapper = new ObjectMapper(new YAMLFactory());
-    yamlMapper
-        .addMixIn(OutputFilterConfig.class, JacksonMixin.OutputFilter.class)
-        .addMixIn(InputFilterConfig.class, JacksonMixin.InputFilter.class);
-    Iterables.filter(rt.getMessageConverters(), MappingJackson2YamlHttpMessageConverter.class)
-        .forEach(converter -> converter.setObjectMapper(yamlMapper));
 
     rt.setRequestFactory(new BufferingClientHttpRequestFactory(httpRequestFactory));
 

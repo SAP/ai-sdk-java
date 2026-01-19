@@ -129,28 +129,26 @@ final class ConfigToRequestTransformer {
         prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
     final var placeholders = prompt.getTemplateParameters();
 
-    CompletionPostRequest request;
     if (reference.getId() != null) {
-      request =
+      final CompletionRequestConfigurationReferenceById request =
           CompletionRequestConfigurationReferenceById.create()
               .configRef(
                   CompletionRequestConfigurationReferenceByIdConfigRef.create()
                       .id(reference.getId()));
-      ((CompletionRequestConfigurationReferenceById) request).setMessagesHistory(messageHistory);
-      ((CompletionRequestConfigurationReferenceById) request).setPlaceholderValues(placeholders);
+      request.setMessagesHistory(messageHistory);
+      request.setPlaceholderValues(placeholders);
+      return request;
     } else {
-      request =
+      final CompletionRequestConfigurationReferenceByNameScenarioVersion request =
           CompletionRequestConfigurationReferenceByNameScenarioVersion.create()
               .configRef(
                   CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef.create()
                       .scenario(reference.getScenario())
                       .name(reference.getName())
                       .version(reference.getVersion()));
-      ((CompletionRequestConfigurationReferenceByNameScenarioVersion) request)
-          .setMessagesHistory(messageHistory);
-      ((CompletionRequestConfigurationReferenceByNameScenarioVersion) request)
-          .setPlaceholderValues(placeholders);
+      request.setMessagesHistory(messageHistory);
+      request.setPlaceholderValues(placeholders);
+      return request;
     }
-    return request;
   }
 }

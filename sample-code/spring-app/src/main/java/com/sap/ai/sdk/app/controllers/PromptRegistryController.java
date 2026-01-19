@@ -159,12 +159,27 @@ class PromptRegistryController {
 
   @GetMapping("/createOrchConfig")
   OrchestrationConfigPostResponse createOrchConfig() {
+    // build OrchestrationConfig
+    final var message =
+        UserChatMessage.create()
+            .content(new UserChatMessageContent.InnerString("message"))
+            .role(UserChatMessage.RoleEnum.USER);
+    final var promptTemplating =
+        PromptTemplatingModuleConfig.create()
+            .prompt(Template.create().template(message))
+            .model(LLMModelDetails.create().name("model-name"));
+    final var orchestrationConfig =
+        OrchestrationConfig.create()
+            .modules(
+                OrchestrationConfigModules.createInnerModuleConfigs(
+                    ModuleConfigs.create().promptTemplating(promptTemplating)));
+    // use OrchestrationConfig in OrchestrationConfigClient
     final OrchestrationConfigPostRequest postRequest =
         OrchestrationConfigPostRequest.create()
             .name(NAME)
             .version("0.0.1")
             .scenario("sdk-test-scenario")
-            .spec(buildOrchestrationConfig());
+            .spec(orchestrationConfig);
     return orchConfigClient.createUpdateOrchestrationConfig(postRequest);
   }
 
@@ -176,22 +191,5 @@ class PromptRegistryController {
         .filter(config -> NAME.equals(config.getName()))
         .map(config -> orchConfigClient.deleteOrchestrationConfig(config.getId()))
         .toList();
-  }
-
-  private OrchestrationConfig buildOrchestrationConfig() {
-    return OrchestrationConfig.create()
-        .modules(
-            OrchestrationConfigModules.createInnerModuleConfigs(
-                ModuleConfigs.create()
-                    .promptTemplating(
-                        PromptTemplatingModuleConfig.create()
-                            .prompt(
-                                Template.create()
-                                    .template(
-                                        UserChatMessage.create()
-                                            .content(
-                                                new UserChatMessageContent.InnerString("message"))
-                                            .role(UserChatMessage.RoleEnum.USER)))
-                            .model(LLMModelDetails.create().name("model-name")))));
   }
 }

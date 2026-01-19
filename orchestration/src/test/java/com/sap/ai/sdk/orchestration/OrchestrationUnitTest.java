@@ -1395,8 +1395,8 @@ class OrchestrationUnitTest {
         OrchestrationConfigReference.fromScenario("scenario")
             .name("name")
             .version("0.0.1")
-            .messageHistory(history)
-            .templateParameters(params);
+            .withMessageHistory(history)
+            .withTemplateParameters(params);
     final var response = client.chatCompletionUsingReference(reference);
 
     final String expectedRequest = fileLoaderStr.apply("orchConfigByRequestHistoryParams.json");

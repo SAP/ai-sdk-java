@@ -675,8 +675,8 @@ public class OrchestrationService {
         OrchestrationConfigReference.fromScenario("sdk-test-scenario")
             .name("test-config-for-OrchestrationTest")
             .version("0.0.1")
-            .messageHistory(history)
-            .templateParameters(params);
+            .withMessageHistory(history)
+            .withTemplateParameters(params);
     return client.chatCompletionUsingReference(testReference);
   }
 
