@@ -9,6 +9,7 @@
   <suppress files="[/\\]core[/\\]client[/\\]" checks=".*"/>
   <suppress files="[/\\]core[/\\]model[/\\]" checks=".*"/>
   <suppress files="[/\\]openai[/\\]generated[/\\]model[/\\]" checks=".*"/>
+  <suppress files="[/\\]rpt[/\\]generated[/\\]" checks=".*"/>
   <suppress files="[/\\]orchestration[/\\]model[/\\]" checks=".*"/>
   <suppress files="[/\\]grounding[/\\]client[/\\]" checks=".*"/>
   <suppress files="[/\\]grounding[/\\]model[/\\]" checks=".*"/>
