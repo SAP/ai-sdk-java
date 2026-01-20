@@ -40,7 +40,7 @@ public class TabCompletionPostResponse
   private List<Map<String, PredictionResultsValue>> predictions = new ArrayList<>();
 
   @JsonProperty("metadata")
-  private Metadata metadata;
+  private TabCompletionMetadata metadata;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -167,7 +167,7 @@ public class TabCompletionPostResponse
    * @return The same instance of this {@link TabCompletionPostResponse} class
    */
   @Nonnull
-  public TabCompletionPostResponse metadata(@Nullable final Metadata metadata) {
+  public TabCompletionPostResponse metadata(@Nullable final TabCompletionMetadata metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -178,7 +178,7 @@ public class TabCompletionPostResponse
    * @return metadata The metadata of this {@link TabCompletionPostResponse} instance.
    */
   @Nonnull
-  public Metadata getMetadata() {
+  public TabCompletionMetadata getMetadata() {
     return metadata;
   }
 
@@ -187,7 +187,7 @@ public class TabCompletionPostResponse
    *
    * @param metadata The metadata of this {@link TabCompletionPostResponse}
    */
-  public void setMetadata(@Nullable final Metadata metadata) {
+  public void setMetadata(@Nullable final TabCompletionMetadata metadata) {
     this.metadata = metadata;
   }
 

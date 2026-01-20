@@ -1,3 +1,4 @@
+# Unofficial OpenAPI specification for SAP RPT API.
 openapi: 3.0.0
 
 info:
@@ -161,7 +162,7 @@ components:
           items:
             $ref: '#/components/schemas/PredictionResults'
         metadata:
-          $ref: '#/components/schemas/Metadata'
+          $ref: '#/components/schemas/TabCompletionMetadata'
     PredictionResults:
       type: object
       description: Prediction results for a query row that may contain target column predictions and optional index column.
@@ -189,9 +190,9 @@ components:
           format: float
           nullable: true
           description: The confidence score for this prediction (for classification tasks only).
-    Metadata:
+    TabCompletionMetadata:
       type: object
-      description: Metadata about the prediction request.
+      description: TabCompletionMetadata about the prediction request.
       properties:
         num_rows:
           type: integer

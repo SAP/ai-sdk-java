@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Metadata about the prediction request. */
+/** TabCompletionMetadata about the prediction request. */
 // CHECKSTYLE:OFF
-public class Metadata
+public class TabCompletionMetadata
 // CHECKSTYLE:ON
 {
   @JsonProperty("num_rows")
@@ -44,13 +44,13 @@ public class Metadata
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
-   * Set the numRows of this {@link Metadata} instance and return the same instance.
+   * Set the numRows of this {@link TabCompletionMetadata} instance and return the same instance.
    *
    * @param numRows The total number of input rows.
-   * @return The same instance of this {@link Metadata} class
+   * @return The same instance of this {@link TabCompletionMetadata} class
    */
   @Nonnull
-  public Metadata numRows(@Nullable final Integer numRows) {
+  public TabCompletionMetadata numRows(@Nullable final Integer numRows) {
     this.numRows = numRows;
     return this;
   }
@@ -58,7 +58,7 @@ public class Metadata
   /**
    * The total number of input rows.
    *
-   * @return numRows The numRows of this {@link Metadata} instance.
+   * @return numRows The numRows of this {@link TabCompletionMetadata} instance.
    */
   @Nonnull
   public Integer getNumRows() {
@@ -66,7 +66,7 @@ public class Metadata
   }
 
   /**
-   * Set the numRows of this {@link Metadata} instance.
+   * Set the numRows of this {@link TabCompletionMetadata} instance.
    *
    * @param numRows The total number of input rows.
    */
@@ -75,13 +75,13 @@ public class Metadata
   }
 
   /**
-   * Set the numColumns of this {@link Metadata} instance and return the same instance.
+   * Set the numColumns of this {@link TabCompletionMetadata} instance and return the same instance.
    *
    * @param numColumns The total number of input columns.
-   * @return The same instance of this {@link Metadata} class
+   * @return The same instance of this {@link TabCompletionMetadata} class
    */
   @Nonnull
-  public Metadata numColumns(@Nullable final Integer numColumns) {
+  public TabCompletionMetadata numColumns(@Nullable final Integer numColumns) {
     this.numColumns = numColumns;
     return this;
   }
@@ -89,7 +89,7 @@ public class Metadata
   /**
    * The total number of input columns.
    *
-   * @return numColumns The numColumns of this {@link Metadata} instance.
+   * @return numColumns The numColumns of this {@link TabCompletionMetadata} instance.
    */
   @Nonnull
   public Integer getNumColumns() {
@@ -97,7 +97,7 @@ public class Metadata
   }
 
   /**
-   * Set the numColumns of this {@link Metadata} instance.
+   * Set the numColumns of this {@link TabCompletionMetadata} instance.
    *
    * @param numColumns The total number of input columns.
    */
@@ -106,14 +106,15 @@ public class Metadata
   }
 
   /**
-   * Set the numPredictions of this {@link Metadata} instance and return the same instance.
+   * Set the numPredictions of this {@link TabCompletionMetadata} instance and return the same
+   * instance.
    *
    * @param numPredictions The number of table cells containing the specified placeholder values
    *     summed over all target columns.
-   * @return The same instance of this {@link Metadata} class
+   * @return The same instance of this {@link TabCompletionMetadata} class
    */
   @Nonnull
-  public Metadata numPredictions(@Nullable final Integer numPredictions) {
+  public TabCompletionMetadata numPredictions(@Nullable final Integer numPredictions) {
     this.numPredictions = numPredictions;
     return this;
   }
@@ -122,7 +123,7 @@ public class Metadata
    * The number of table cells containing the specified placeholder values summed over all target
    * columns.
    *
-   * @return numPredictions The numPredictions of this {@link Metadata} instance.
+   * @return numPredictions The numPredictions of this {@link TabCompletionMetadata} instance.
    */
   @Nonnull
   public Integer getNumPredictions() {
@@ -130,7 +131,7 @@ public class Metadata
   }
 
   /**
-   * Set the numPredictions of this {@link Metadata} instance.
+   * Set the numPredictions of this {@link TabCompletionMetadata} instance.
    *
    * @param numPredictions The number of table cells containing the specified placeholder values
    *     summed over all target columns.
@@ -140,13 +141,14 @@ public class Metadata
   }
 
   /**
-   * Set the numQueryRows of this {@link Metadata} instance and return the same instance.
+   * Set the numQueryRows of this {@link TabCompletionMetadata} instance and return the same
+   * instance.
    *
    * @param numQueryRows The number of query rows for which a prediction was made.
-   * @return The same instance of this {@link Metadata} class
+   * @return The same instance of this {@link TabCompletionMetadata} class
    */
   @Nonnull
-  public Metadata numQueryRows(@Nullable final Integer numQueryRows) {
+  public TabCompletionMetadata numQueryRows(@Nullable final Integer numQueryRows) {
     this.numQueryRows = numQueryRows;
     return this;
   }
@@ -154,7 +156,7 @@ public class Metadata
   /**
    * The number of query rows for which a prediction was made.
    *
-   * @return numQueryRows The numQueryRows of this {@link Metadata} instance.
+   * @return numQueryRows The numQueryRows of this {@link TabCompletionMetadata} instance.
    */
   @Nonnull
   public Integer getNumQueryRows() {
@@ -162,7 +164,7 @@ public class Metadata
   }
 
   /**
-   * Set the numQueryRows of this {@link Metadata} instance.
+   * Set the numQueryRows of this {@link TabCompletionMetadata} instance.
    *
    * @param numQueryRows The number of query rows for which a prediction was made.
    */
@@ -171,7 +173,7 @@ public class Metadata
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link Metadata}.
+   * Get the names of the unrecognizable properties of the {@link TabCompletionMetadata}.
    *
    * @return The set of properties names
    */
@@ -182,7 +184,7 @@ public class Metadata
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link Metadata} instance.
+   * Get the value of an unrecognizable property of this {@link TabCompletionMetadata} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -193,14 +195,15 @@ public class Metadata
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("Metadata has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "TabCompletionMetadata has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link Metadata} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link TabCompletionMetadata} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -216,8 +219,8 @@ public class Metadata
   }
 
   /**
-   * Set an unrecognizable property of this {@link Metadata} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link TabCompletionMetadata} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -235,12 +238,12 @@ public class Metadata
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final Metadata metadata = (Metadata) o;
-    return Objects.equals(this.cloudSdkCustomFields, metadata.cloudSdkCustomFields)
-        && Objects.equals(this.numRows, metadata.numRows)
-        && Objects.equals(this.numColumns, metadata.numColumns)
-        && Objects.equals(this.numPredictions, metadata.numPredictions)
-        && Objects.equals(this.numQueryRows, metadata.numQueryRows);
+    final TabCompletionMetadata tabCompletionMetadata = (TabCompletionMetadata) o;
+    return Objects.equals(this.cloudSdkCustomFields, tabCompletionMetadata.cloudSdkCustomFields)
+        && Objects.equals(this.numRows, tabCompletionMetadata.numRows)
+        && Objects.equals(this.numColumns, tabCompletionMetadata.numColumns)
+        && Objects.equals(this.numPredictions, tabCompletionMetadata.numPredictions)
+        && Objects.equals(this.numQueryRows, tabCompletionMetadata.numQueryRows);
   }
 
   @Override
@@ -252,7 +255,7 @@ public class Metadata
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class Metadata {\n");
+    sb.append("class TabCompletionMetadata {\n");
     sb.append("    numRows: ").append(toIndentedString(numRows)).append("\n");
     sb.append("    numColumns: ").append(toIndentedString(numColumns)).append("\n");
     sb.append("    numPredictions: ").append(toIndentedString(numPredictions)).append("\n");
@@ -274,8 +277,8 @@ public class Metadata
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link Metadata} instance. No arguments are required. */
-  public static Metadata create() {
-    return new Metadata();
+  /** Create a new {@link TabCompletionMetadata} instance. No arguments are required. */
+  public static TabCompletionMetadata create() {
+    return new TabCompletionMetadata();
   }
 }
