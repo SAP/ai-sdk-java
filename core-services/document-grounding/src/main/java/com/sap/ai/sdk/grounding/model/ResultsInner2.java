@@ -130,7 +130,8 @@ public class ResultsInner2
    * Set the remoteGroundingName of this {@link ResultsInner2} instance and return the same
    * instance.
    *
-   * @param remoteGroundingName The remoteGroundingName of this {@link ResultsInner2}
+   * @param remoteGroundingName Friendly Destination Name of remote instance (grounding.name). Only
+   *     present if dataRepositoryType &#x3D; remote:dg.
    * @return The same instance of this {@link ResultsInner2} class
    */
   @Nonnull
@@ -140,7 +141,8 @@ public class ResultsInner2
   }
 
   /**
-   * Get remoteGroundingName
+   * Friendly Destination Name of remote instance (grounding.name). Only present if
+   * dataRepositoryType &#x3D; remote:dg.
    *
    * @return remoteGroundingName The remoteGroundingName of this {@link ResultsInner2} instance.
    */
@@ -152,7 +154,8 @@ public class ResultsInner2
   /**
    * Set the remoteGroundingName of this {@link ResultsInner2} instance.
    *
-   * @param remoteGroundingName The remoteGroundingName of this {@link ResultsInner2}
+   * @param remoteGroundingName Friendly Destination Name of remote instance (grounding.name). Only
+   *     present if dataRepositoryType &#x3D; remote:dg.
    */
   public void setRemoteGroundingName(@Nullable final String remoteGroundingName) {
     this.remoteGroundingName = remoteGroundingName;

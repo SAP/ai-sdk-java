@@ -49,7 +49,7 @@ public class RetrievalSearchInput
   /**
    * Set the query of this {@link RetrievalSearchInput} instance and return the same instance.
    *
-   * @param query The query of this {@link RetrievalSearchInput}
+   * @param query Query string
    * @return The same instance of this {@link RetrievalSearchInput} class
    */
   @Nonnull
@@ -59,7 +59,7 @@ public class RetrievalSearchInput
   }
 
   /**
-   * Get query
+   * Query string
    *
    * @return query The query of this {@link RetrievalSearchInput} instance.
    */
@@ -71,7 +71,7 @@ public class RetrievalSearchInput
   /**
    * Set the query of this {@link RetrievalSearchInput} instance.
    *
-   * @param query The query of this {@link RetrievalSearchInput}
+   * @param query Query string
    */
   public void setQuery(@Nullable final String query) {
     this.query = query;
@@ -288,7 +288,7 @@ public class RetrievalSearchInput
     /**
      * Set the query of this {@link RetrievalSearchInput} instance.
      *
-     * @param query The query of this {@link RetrievalSearchInput}
+     * @param query Query string
      * @return The RetrievalSearchInput builder.
      */
     Builder1 query(@Nullable final String query);

@@ -69,7 +69,7 @@ public class VectorScoringConfiguration
    *
    * @return denseRetrieval The denseRetrieval of this {@link VectorScoringConfiguration} instance.
    */
-  @Nullable
+  @Nonnull
   public DenseRetrievalScoringConfiguration getDenseRetrieval() {
     return denseRetrieval;
   }
@@ -103,7 +103,7 @@ public class VectorScoringConfiguration
    * @return keywordRetrieval The keywordRetrieval of this {@link VectorScoringConfiguration}
    *     instance.
    */
-  @Nullable
+  @Nonnull
   public KeyWordRetrievalScoringConfiguration getKeywordRetrieval() {
     return keywordRetrieval;
   }
@@ -137,7 +137,7 @@ public class VectorScoringConfiguration
    *
    * @return boosting The boosting of this {@link VectorScoringConfiguration} instance.
    */
-  @Nullable
+  @Nonnull
   public BoostingScoringConfiguration getBoosting() {
     return boosting;
   }
@@ -155,7 +155,7 @@ public class VectorScoringConfiguration
    * Set the scoreThreshold of this {@link VectorScoringConfiguration} instance and return the same
    * instance.
    *
-   * @param scoreThreshold The scoreThreshold of this {@link VectorScoringConfiguration}
+   * @param scoreThreshold Minimum chunk score threshold.
    * @return The same instance of this {@link VectorScoringConfiguration} class
    */
   @Nonnull
@@ -165,7 +165,7 @@ public class VectorScoringConfiguration
   }
 
   /**
-   * Get scoreThreshold
+   * Minimum chunk score threshold.
    *
    * @return scoreThreshold The scoreThreshold of this {@link VectorScoringConfiguration} instance.
    */
@@ -177,7 +177,7 @@ public class VectorScoringConfiguration
   /**
    * Set the scoreThreshold of this {@link VectorScoringConfiguration} instance.
    *
-   * @param scoreThreshold The scoreThreshold of this {@link VectorScoringConfiguration}
+   * @param scoreThreshold Minimum chunk score threshold.
    */
   public void setScoreThreshold(@Nullable final BigDecimal scoreThreshold) {
     this.scoreThreshold = scoreThreshold;
@@ -203,7 +203,7 @@ public class VectorScoringConfiguration
    * @return aggregationStrategy The aggregationStrategy of this {@link VectorScoringConfiguration}
    *     instance.
    */
-  @Nullable
+  @Nonnull
   public ScoresAggregationStrategy getAggregationStrategy() {
     return aggregationStrategy;
   }

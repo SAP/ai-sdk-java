@@ -176,7 +176,7 @@ public class RetrievalChunk
    *
    * @return searchScores The searchScores of this {@link RetrievalChunk} instance.
    */
-  @Nullable
+  @Nonnull
   public SearchScores getSearchScores() {
     return searchScores;
   }
@@ -208,7 +208,7 @@ public class RetrievalChunk
    *
    * @return postProcessingScore The postProcessingScore of this {@link RetrievalChunk} instance.
    */
-  @Nullable
+  @Nonnull
   public Score getPostProcessingScore() {
     return postProcessingScore;
   }

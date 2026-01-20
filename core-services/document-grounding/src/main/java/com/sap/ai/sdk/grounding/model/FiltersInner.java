@@ -214,7 +214,7 @@ public class FiltersInner
   /**
    * Set the remoteName of this {@link FiltersInner} instance and return the same instance.
    *
-   * @param remoteName The remoteName of this {@link FiltersInner}
+   * @param remoteName Destination Name of remote instance.
    * @return The same instance of this {@link FiltersInner} class
    */
   @Nonnull
@@ -224,7 +224,7 @@ public class FiltersInner
   }
 
   /**
-   * Get remoteName
+   * Destination Name of remote instance.
    *
    * @return remoteName The remoteName of this {@link FiltersInner} instance.
    */
@@ -236,7 +236,7 @@ public class FiltersInner
   /**
    * Set the remoteName of this {@link FiltersInner} instance.
    *
-   * @param remoteName The remoteName of this {@link FiltersInner}
+   * @param remoteName Destination Name of remote instance.
    */
   public void setRemoteName(@Nullable final String remoteName) {
     this.remoteName = remoteName;

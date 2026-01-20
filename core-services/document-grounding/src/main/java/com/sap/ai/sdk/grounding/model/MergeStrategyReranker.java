@@ -39,7 +39,7 @@ public class MergeStrategyReranker
   @JsonProperty("type")
   private MergeStrategyType type;
 
-  /** Gets or Sets model */
+  /** The RerankerModel to use. */
   public enum ModelEnum {
     /** The COHERE_3_5 option of this MergeStrategyReranker */
     COHERE_3_5("cohere-3.5"),
@@ -94,13 +94,13 @@ public class MergeStrategyReranker
   }
 
   @JsonProperty("model")
-  private ModelEnum model;
+  private ModelEnum model = ModelEnum.COHERE_3_5;
 
   @JsonProperty("boosting")
   private List<MergeStrategyRerankerBoostingInner> boosting;
 
   @JsonProperty("includeAllMetaData")
-  private Boolean includeAllMetaData;
+  private Boolean includeAllMetaData = false;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -125,7 +125,7 @@ public class MergeStrategyReranker
    *
    * @return type The type of this {@link MergeStrategyReranker} instance.
    */
-  @Nullable
+  @Nonnull
   public MergeStrategyType getType() {
     return type;
   }
@@ -142,7 +142,7 @@ public class MergeStrategyReranker
   /**
    * Set the model of this {@link MergeStrategyReranker} instance and return the same instance.
    *
-   * @param model The model of this {@link MergeStrategyReranker}
+   * @param model The RerankerModel to use.
    * @return The same instance of this {@link MergeStrategyReranker} class
    */
   @Nonnull
@@ -152,7 +152,7 @@ public class MergeStrategyReranker
   }
 
   /**
-   * Get model
+   * The RerankerModel to use.
    *
    * @return model The model of this {@link MergeStrategyReranker} instance.
    */
@@ -164,7 +164,7 @@ public class MergeStrategyReranker
   /**
    * Set the model of this {@link MergeStrategyReranker} instance.
    *
-   * @param model The model of this {@link MergeStrategyReranker}
+   * @param model The RerankerModel to use.
    */
   public void setModel(@Nullable final ModelEnum model) {
     this.model = model;
@@ -173,7 +173,8 @@ public class MergeStrategyReranker
   /**
    * Set the boosting of this {@link MergeStrategyReranker} instance and return the same instance.
    *
-   * @param boosting The boosting of this {@link MergeStrategyReranker}
+   * @param boosting Key-value pairs to be included in the ranking process, to boost related chunks
+   *     according to chunk content and metadata, if includeMetaData is true.
    * @return The same instance of this {@link MergeStrategyReranker} class
    */
   @Nonnull
@@ -200,7 +201,8 @@ public class MergeStrategyReranker
   }
 
   /**
-   * Get boosting
+   * Key-value pairs to be included in the ranking process, to boost related chunks according to
+   * chunk content and metadata, if includeMetaData is true.
    *
    * @return boosting The boosting of this {@link MergeStrategyReranker} instance.
    */
@@ -212,7 +214,8 @@ public class MergeStrategyReranker
   /**
    * Set the boosting of this {@link MergeStrategyReranker} instance.
    *
-   * @param boosting The boosting of this {@link MergeStrategyReranker}
+   * @param boosting Key-value pairs to be included in the ranking process, to boost related chunks
+   *     according to chunk content and metadata, if includeMetaData is true.
    */
   public void setBoosting(@Nullable final List<MergeStrategyRerankerBoostingInner> boosting) {
     this.boosting = boosting;
@@ -222,7 +225,8 @@ public class MergeStrategyReranker
    * Set the includeAllMetaData of this {@link MergeStrategyReranker} instance and return the same
    * instance.
    *
-   * @param includeAllMetaData The includeAllMetaData of this {@link MergeStrategyReranker}
+   * @param includeAllMetaData If true, document and chunk metadata are sent to the reranker LLM
+   *     along with the text content of the chunk.
    * @return The same instance of this {@link MergeStrategyReranker} class
    */
   @Nonnull
@@ -232,7 +236,8 @@ public class MergeStrategyReranker
   }
 
   /**
-   * Get includeAllMetaData
+   * If true, document and chunk metadata are sent to the reranker LLM along with the text content
+   * of the chunk.
    *
    * @return includeAllMetaData The includeAllMetaData of this {@link MergeStrategyReranker}
    *     instance.
@@ -245,7 +250,8 @@ public class MergeStrategyReranker
   /**
    * Set the includeAllMetaData of this {@link MergeStrategyReranker} instance.
    *
-   * @param includeAllMetaData The includeAllMetaData of this {@link MergeStrategyReranker}
+   * @param includeAllMetaData If true, document and chunk metadata are sent to the reranker LLM
+   *     along with the text content of the chunk.
    */
   public void setIncludeAllMetaData(@Nullable final Boolean includeAllMetaData) {
     this.includeAllMetaData = includeAllMetaData;

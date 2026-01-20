@@ -29,13 +29,13 @@ public class KeyWordRetrievalScoringConfiguration
 // CHECKSTYLE:ON
 {
   @JsonProperty("enabled")
-  private Boolean enabled;
+  private Boolean enabled = true;
 
   @JsonProperty("weight")
-  private Integer weight;
+  private Integer weight = 1;
 
   @JsonProperty("extractKeyWordsFromQuery")
-  private Boolean extractKeyWordsFromQuery;
+  private Boolean extractKeyWordsFromQuery = false;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -47,7 +47,7 @@ public class KeyWordRetrievalScoringConfiguration
    * Set the enabled of this {@link KeyWordRetrievalScoringConfiguration} instance and return the
    * same instance.
    *
-   * @param enabled The enabled of this {@link KeyWordRetrievalScoringConfiguration}
+   * @param enabled Enable dense retrieval.
    * @return The same instance of this {@link KeyWordRetrievalScoringConfiguration} class
    */
   @Nonnull
@@ -57,7 +57,7 @@ public class KeyWordRetrievalScoringConfiguration
   }
 
   /**
-   * Get enabled
+   * Enable dense retrieval.
    *
    * @return enabled The enabled of this {@link KeyWordRetrievalScoringConfiguration} instance.
    */
@@ -69,7 +69,7 @@ public class KeyWordRetrievalScoringConfiguration
   /**
    * Set the enabled of this {@link KeyWordRetrievalScoringConfiguration} instance.
    *
-   * @param enabled The enabled of this {@link KeyWordRetrievalScoringConfiguration}
+   * @param enabled Enable dense retrieval.
    */
   public void setEnabled(@Nullable final Boolean enabled) {
     this.enabled = enabled;
@@ -79,7 +79,7 @@ public class KeyWordRetrievalScoringConfiguration
    * Set the weight of this {@link KeyWordRetrievalScoringConfiguration} instance and return the
    * same instance.
    *
-   * @param weight The weight of this {@link KeyWordRetrievalScoringConfiguration}
+   * @param weight Contribution to final score.
    * @return The same instance of this {@link KeyWordRetrievalScoringConfiguration} class
    */
   @Nonnull
@@ -89,7 +89,7 @@ public class KeyWordRetrievalScoringConfiguration
   }
 
   /**
-   * Get weight
+   * Contribution to final score.
    *
    * @return weight The weight of this {@link KeyWordRetrievalScoringConfiguration} instance.
    */
@@ -101,7 +101,7 @@ public class KeyWordRetrievalScoringConfiguration
   /**
    * Set the weight of this {@link KeyWordRetrievalScoringConfiguration} instance.
    *
-   * @param weight The weight of this {@link KeyWordRetrievalScoringConfiguration}
+   * @param weight Contribution to final score.
    */
   public void setWeight(@Nullable final Integer weight) {
     this.weight = weight;
@@ -111,8 +111,7 @@ public class KeyWordRetrievalScoringConfiguration
    * Set the extractKeyWordsFromQuery of this {@link KeyWordRetrievalScoringConfiguration} instance
    * and return the same instance.
    *
-   * @param extractKeyWordsFromQuery The extractKeyWordsFromQuery of this {@link
-   *     KeyWordRetrievalScoringConfiguration}
+   * @param extractKeyWordsFromQuery Extract Keywords from Query.
    * @return The same instance of this {@link KeyWordRetrievalScoringConfiguration} class
    */
   @Nonnull
@@ -123,7 +122,7 @@ public class KeyWordRetrievalScoringConfiguration
   }
 
   /**
-   * Get extractKeyWordsFromQuery
+   * Extract Keywords from Query.
    *
    * @return extractKeyWordsFromQuery The extractKeyWordsFromQuery of this {@link
    *     KeyWordRetrievalScoringConfiguration} instance.
@@ -136,8 +135,7 @@ public class KeyWordRetrievalScoringConfiguration
   /**
    * Set the extractKeyWordsFromQuery of this {@link KeyWordRetrievalScoringConfiguration} instance.
    *
-   * @param extractKeyWordsFromQuery The extractKeyWordsFromQuery of this {@link
-   *     KeyWordRetrievalScoringConfiguration}
+   * @param extractKeyWordsFromQuery Extract Keywords from Query.
    */
   public void setExtractKeyWordsFromQuery(@Nullable final Boolean extractKeyWordsFromQuery) {
     this.extractKeyWordsFromQuery = extractKeyWordsFromQuery;

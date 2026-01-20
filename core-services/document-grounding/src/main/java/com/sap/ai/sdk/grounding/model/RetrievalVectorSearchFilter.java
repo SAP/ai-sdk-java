@@ -118,7 +118,7 @@ public class RetrievalVectorSearchFilter
    * @return searchConfiguration The searchConfiguration of this {@link RetrievalVectorSearchFilter}
    *     instance.
    */
-  @Nullable
+  @Nonnull
   public RetrievalSearchConfiguration getSearchConfiguration() {
     return searchConfiguration;
   }
@@ -206,7 +206,7 @@ public class RetrievalVectorSearchFilter
    * @return dataRepositoryType The dataRepositoryType of this {@link RetrievalVectorSearchFilter}
    *     instance.
    */
-  @Nullable
+  @Nonnull
   public DataRepositoryType getDataRepositoryType() {
     return dataRepositoryType;
   }
@@ -224,7 +224,7 @@ public class RetrievalVectorSearchFilter
    * Set the remoteName of this {@link RetrievalVectorSearchFilter} instance and return the same
    * instance.
    *
-   * @param remoteName The remoteName of this {@link RetrievalVectorSearchFilter}
+   * @param remoteName Destination Name of remote instance.
    * @return The same instance of this {@link RetrievalVectorSearchFilter} class
    */
   @Nonnull
@@ -234,7 +234,7 @@ public class RetrievalVectorSearchFilter
   }
 
   /**
-   * Get remoteName
+   * Destination Name of remote instance.
    *
    * @return remoteName The remoteName of this {@link RetrievalVectorSearchFilter} instance.
    */
@@ -246,7 +246,7 @@ public class RetrievalVectorSearchFilter
   /**
    * Set the remoteName of this {@link RetrievalVectorSearchFilter} instance.
    *
-   * @param remoteName The remoteName of this {@link RetrievalVectorSearchFilter}
+   * @param remoteName Destination Name of remote instance.
    */
   public void setRemoteName(@Nullable final String remoteName) {
     this.remoteName = remoteName;
@@ -464,7 +464,7 @@ public class RetrievalVectorSearchFilter
    * @return scoringConfiguration The scoringConfiguration of this {@link
    *     RetrievalVectorSearchFilter} instance.
    */
-  @Nullable
+  @Nonnull
   public VectorScoringConfiguration getScoringConfiguration() {
     return scoringConfiguration;
   }

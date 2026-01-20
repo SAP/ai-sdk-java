@@ -129,7 +129,7 @@ public class RetrievalSearchDocumentKeyValueListPair
    * Set the selectMode of this {@link RetrievalSearchDocumentKeyValueListPair} instance and return
    * the same instance.
    *
-   * @param selectMode The selectMode of this {@link RetrievalSearchDocumentKeyValueListPair}
+   * @param selectMode Select mode for search filters
    * @return The same instance of this {@link RetrievalSearchDocumentKeyValueListPair} class
    */
   @Nonnull
@@ -156,7 +156,7 @@ public class RetrievalSearchDocumentKeyValueListPair
   }
 
   /**
-   * Get selectMode
+   * Select mode for search filters
    *
    * @return selectMode The selectMode of this {@link RetrievalSearchDocumentKeyValueListPair}
    *     instance.
@@ -169,7 +169,7 @@ public class RetrievalSearchDocumentKeyValueListPair
   /**
    * Set the selectMode of this {@link RetrievalSearchDocumentKeyValueListPair} instance.
    *
-   * @param selectMode The selectMode of this {@link RetrievalSearchDocumentKeyValueListPair}
+   * @param selectMode Select mode for search filters
    */
   public void setSelectMode(@Nullable final List<RetrievalSearchSelectOptionEnum> selectMode) {
     this.selectMode = selectMode;

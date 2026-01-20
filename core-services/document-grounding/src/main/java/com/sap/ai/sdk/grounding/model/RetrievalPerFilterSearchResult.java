@@ -130,8 +130,8 @@ public class RetrievalPerFilterSearchResult
    * Set the remoteGroundingName of this {@link RetrievalPerFilterSearchResult} instance and return
    * the same instance.
    *
-   * @param remoteGroundingName The remoteGroundingName of this {@link
-   *     RetrievalPerFilterSearchResult}
+   * @param remoteGroundingName Friendly Destination Name of remote instance (grounding.name). Only
+   *     present if dataRepositoryType &#x3D; remote:dg.
    * @return The same instance of this {@link RetrievalPerFilterSearchResult} class
    */
   @Nonnull
@@ -142,7 +142,8 @@ public class RetrievalPerFilterSearchResult
   }
 
   /**
-   * Get remoteGroundingName
+   * Friendly Destination Name of remote instance (grounding.name). Only present if
+   * dataRepositoryType &#x3D; remote:dg.
    *
    * @return remoteGroundingName The remoteGroundingName of this {@link
    *     RetrievalPerFilterSearchResult} instance.
@@ -155,8 +156,8 @@ public class RetrievalPerFilterSearchResult
   /**
    * Set the remoteGroundingName of this {@link RetrievalPerFilterSearchResult} instance.
    *
-   * @param remoteGroundingName The remoteGroundingName of this {@link
-   *     RetrievalPerFilterSearchResult}
+   * @param remoteGroundingName Friendly Destination Name of remote instance (grounding.name). Only
+   *     present if dataRepositoryType &#x3D; remote:dg.
    */
   public void setRemoteGroundingName(@Nullable final String remoteGroundingName) {
     this.remoteGroundingName = remoteGroundingName;

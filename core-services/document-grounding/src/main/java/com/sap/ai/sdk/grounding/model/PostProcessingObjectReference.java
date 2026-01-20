@@ -30,7 +30,7 @@ public class PostProcessingObjectReference
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
-  private String id;
+  private String id = "6d3eeafd-f3db-4e8e-949a-0e40e50eab64";
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -41,7 +41,7 @@ public class PostProcessingObjectReference
   /**
    * Set the id of this {@link PostProcessingObjectReference} instance and return the same instance.
    *
-   * @param id The id of this {@link PostProcessingObjectReference}
+   * @param id PerFilterSearchResult ID or PostProcessingOperation ID.
    * @return The same instance of this {@link PostProcessingObjectReference} class
    */
   @Nonnull
@@ -51,7 +51,7 @@ public class PostProcessingObjectReference
   }
 
   /**
-   * Get id
+   * PerFilterSearchResult ID or PostProcessingOperation ID.
    *
    * @return id The id of this {@link PostProcessingObjectReference} instance.
    */
@@ -63,7 +63,7 @@ public class PostProcessingObjectReference
   /**
    * Set the id of this {@link PostProcessingObjectReference} instance.
    *
-   * @param id The id of this {@link PostProcessingObjectReference}
+   * @param id PerFilterSearchResult ID or PostProcessingOperation ID.
    */
   public void setId(@Nullable final String id) {
     this.id = id;

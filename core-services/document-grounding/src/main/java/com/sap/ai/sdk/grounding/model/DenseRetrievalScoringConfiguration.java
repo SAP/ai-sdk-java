@@ -29,10 +29,10 @@ public class DenseRetrievalScoringConfiguration
 // CHECKSTYLE:ON
 {
   @JsonProperty("enabled")
-  private Boolean enabled;
+  private Boolean enabled = true;
 
   @JsonProperty("weight")
-  private Integer weight;
+  private Integer weight = 1;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -44,7 +44,7 @@ public class DenseRetrievalScoringConfiguration
    * Set the enabled of this {@link DenseRetrievalScoringConfiguration} instance and return the same
    * instance.
    *
-   * @param enabled The enabled of this {@link DenseRetrievalScoringConfiguration}
+   * @param enabled Enable dense retrieval.
    * @return The same instance of this {@link DenseRetrievalScoringConfiguration} class
    */
   @Nonnull
@@ -54,7 +54,7 @@ public class DenseRetrievalScoringConfiguration
   }
 
   /**
-   * Get enabled
+   * Enable dense retrieval.
    *
    * @return enabled The enabled of this {@link DenseRetrievalScoringConfiguration} instance.
    */
@@ -66,7 +66,7 @@ public class DenseRetrievalScoringConfiguration
   /**
    * Set the enabled of this {@link DenseRetrievalScoringConfiguration} instance.
    *
-   * @param enabled The enabled of this {@link DenseRetrievalScoringConfiguration}
+   * @param enabled Enable dense retrieval.
    */
   public void setEnabled(@Nullable final Boolean enabled) {
     this.enabled = enabled;
@@ -76,7 +76,7 @@ public class DenseRetrievalScoringConfiguration
    * Set the weight of this {@link DenseRetrievalScoringConfiguration} instance and return the same
    * instance.
    *
-   * @param weight The weight of this {@link DenseRetrievalScoringConfiguration}
+   * @param weight Contribution to final score.
    * @return The same instance of this {@link DenseRetrievalScoringConfiguration} class
    */
   @Nonnull
@@ -86,7 +86,7 @@ public class DenseRetrievalScoringConfiguration
   }
 
   /**
-   * Get weight
+   * Contribution to final score.
    *
    * @return weight The weight of this {@link DenseRetrievalScoringConfiguration} instance.
    */
@@ -98,7 +98,7 @@ public class DenseRetrievalScoringConfiguration
   /**
    * Set the weight of this {@link DenseRetrievalScoringConfiguration} instance.
    *
-   * @param weight The weight of this {@link DenseRetrievalScoringConfiguration}
+   * @param weight Contribution to final score.
    */
   public void setWeight(@Nullable final Integer weight) {
     this.weight = weight;

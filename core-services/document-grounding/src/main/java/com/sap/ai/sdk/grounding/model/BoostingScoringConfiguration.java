@@ -31,13 +31,13 @@ public class BoostingScoringConfiguration
 // CHECKSTYLE:ON
 {
   @JsonProperty("enabled")
-  private Boolean enabled;
+  private Boolean enabled = true;
 
   @JsonProperty("metadata")
-  private List<BoostingScoringConfigurationMetadataInner> metadata;
+  private List<BoostingScoringConfigurationMetadataInner> metadata = new ArrayList<>();
 
   @JsonProperty("weight")
-  private Integer weight;
+  private Integer weight = 1;
 
   @JsonProperty("scoreComputationStrategy")
   private BoostingScoreComputationStrategy scoreComputationStrategy;
@@ -52,7 +52,7 @@ public class BoostingScoringConfiguration
    * Set the enabled of this {@link BoostingScoringConfiguration} instance and return the same
    * instance.
    *
-   * @param enabled The enabled of this {@link BoostingScoringConfiguration}
+   * @param enabled Enable metadata-based boosting.
    * @return The same instance of this {@link BoostingScoringConfiguration} class
    */
   @Nonnull
@@ -62,7 +62,7 @@ public class BoostingScoringConfiguration
   }
 
   /**
-   * Get enabled
+   * Enable metadata-based boosting.
    *
    * @return enabled The enabled of this {@link BoostingScoringConfiguration} instance.
    */
@@ -74,7 +74,7 @@ public class BoostingScoringConfiguration
   /**
    * Set the enabled of this {@link BoostingScoringConfiguration} instance.
    *
-   * @param enabled The enabled of this {@link BoostingScoringConfiguration}
+   * @param enabled Enable metadata-based boosting.
    */
   public void setEnabled(@Nullable final Boolean enabled) {
     this.enabled = enabled;
@@ -134,7 +134,7 @@ public class BoostingScoringConfiguration
    * Set the weight of this {@link BoostingScoringConfiguration} instance and return the same
    * instance.
    *
-   * @param weight The weight of this {@link BoostingScoringConfiguration}
+   * @param weight Contribution to final score.
    * @return The same instance of this {@link BoostingScoringConfiguration} class
    */
   @Nonnull
@@ -144,7 +144,7 @@ public class BoostingScoringConfiguration
   }
 
   /**
-   * Get weight
+   * Contribution to final score.
    *
    * @return weight The weight of this {@link BoostingScoringConfiguration} instance.
    */
@@ -156,7 +156,7 @@ public class BoostingScoringConfiguration
   /**
    * Set the weight of this {@link BoostingScoringConfiguration} instance.
    *
-   * @param weight The weight of this {@link BoostingScoringConfiguration}
+   * @param weight Contribution to final score.
    */
   public void setWeight(@Nullable final Integer weight) {
     this.weight = weight;
@@ -183,7 +183,7 @@ public class BoostingScoringConfiguration
    * @return scoreComputationStrategy The scoreComputationStrategy of this {@link
    *     BoostingScoringConfiguration} instance.
    */
-  @Nullable
+  @Nonnull
   public BoostingScoreComputationStrategy getScoreComputationStrategy() {
     return scoreComputationStrategy;
   }

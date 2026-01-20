@@ -112,7 +112,7 @@ public class RetrievalSearchFilter
    * @return searchConfiguration The searchConfiguration of this {@link RetrievalSearchFilter}
    *     instance.
    */
-  @Nullable
+  @Nonnull
   public RetrievalSearchConfiguration getSearchConfiguration() {
     return searchConfiguration;
   }
@@ -214,7 +214,7 @@ public class RetrievalSearchFilter
   /**
    * Set the remoteName of this {@link RetrievalSearchFilter} instance and return the same instance.
    *
-   * @param remoteName The remoteName of this {@link RetrievalSearchFilter}
+   * @param remoteName Destination Name of remote instance.
    * @return The same instance of this {@link RetrievalSearchFilter} class
    */
   @Nonnull
@@ -224,7 +224,7 @@ public class RetrievalSearchFilter
   }
 
   /**
-   * Get remoteName
+   * Destination Name of remote instance.
    *
    * @return remoteName The remoteName of this {@link RetrievalSearchFilter} instance.
    */
@@ -236,7 +236,7 @@ public class RetrievalSearchFilter
   /**
    * Set the remoteName of this {@link RetrievalSearchFilter} instance.
    *
-   * @param remoteName The remoteName of this {@link RetrievalSearchFilter}
+   * @param remoteName Destination Name of remote instance.
    */
   public void setRemoteName(@Nullable final String remoteName) {
     this.remoteName = remoteName;

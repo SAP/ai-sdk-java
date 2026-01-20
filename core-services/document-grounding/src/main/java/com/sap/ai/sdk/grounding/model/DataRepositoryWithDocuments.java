@@ -175,7 +175,7 @@ public class DataRepositoryWithDocuments
    * Set the remoteGroundingName of this {@link DataRepositoryWithDocuments} instance and return the
    * same instance.
    *
-   * @param remoteGroundingName The remoteGroundingName of this {@link DataRepositoryWithDocuments}
+   * @param remoteGroundingName Friendly destination Name (grounding.name) of remote instance.
    * @return The same instance of this {@link DataRepositoryWithDocuments} class
    */
   @Nonnull
@@ -186,7 +186,7 @@ public class DataRepositoryWithDocuments
   }
 
   /**
-   * Get remoteGroundingName
+   * Friendly destination Name (grounding.name) of remote instance.
    *
    * @return remoteGroundingName The remoteGroundingName of this {@link DataRepositoryWithDocuments}
    *     instance.
@@ -199,7 +199,7 @@ public class DataRepositoryWithDocuments
   /**
    * Set the remoteGroundingName of this {@link DataRepositoryWithDocuments} instance.
    *
-   * @param remoteGroundingName The remoteGroundingName of this {@link DataRepositoryWithDocuments}
+   * @param remoteGroundingName Friendly destination Name (grounding.name) of remote instance.
    */
   public void setRemoteGroundingName(@Nullable final String remoteGroundingName) {
     this.remoteGroundingName = remoteGroundingName;
@@ -209,7 +209,7 @@ public class DataRepositoryWithDocuments
    * Set the message of this {@link DataRepositoryWithDocuments} instance and return the same
    * instance.
    *
-   * @param message The message of this {@link DataRepositoryWithDocuments}
+   * @param message Optional message.
    * @return The same instance of this {@link DataRepositoryWithDocuments} class
    */
   @Nonnull
@@ -219,7 +219,7 @@ public class DataRepositoryWithDocuments
   }
 
   /**
-   * Get message
+   * Optional message.
    *
    * @return message The message of this {@link DataRepositoryWithDocuments} instance.
    */
@@ -231,7 +231,7 @@ public class DataRepositoryWithDocuments
   /**
    * Set the message of this {@link DataRepositoryWithDocuments} instance.
    *
-   * @param message The message of this {@link DataRepositoryWithDocuments}
+   * @param message Optional message.
    */
   public void setMessage(@Nullable final String message) {
     this.message = message;

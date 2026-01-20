@@ -32,10 +32,10 @@ public class RetrievalSearchInputPostProcessingInner
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
-  private String id;
+  private String id = "ae9eee48-4671-4321-a3e5-640adaaf26ae";
 
   @JsonProperty("maxChunkCount")
-  private Integer maxChunkCount;
+  private Integer maxChunkCount = 5;
 
   @JsonProperty("strategy")
   private RetrievalSearchInputPostProcessingInnerStrategy strategy;
@@ -53,7 +53,7 @@ public class RetrievalSearchInputPostProcessingInner
    * Set the id of this {@link RetrievalSearchInputPostProcessingInner} instance and return the same
    * instance.
    *
-   * @param id The id of this {@link RetrievalSearchInputPostProcessingInner}
+   * @param id New ID for each PostProcessingOperation.
    * @return The same instance of this {@link RetrievalSearchInputPostProcessingInner} class
    */
   @Nonnull
@@ -63,7 +63,7 @@ public class RetrievalSearchInputPostProcessingInner
   }
 
   /**
-   * Get id
+   * New ID for each PostProcessingOperation.
    *
    * @return id The id of this {@link RetrievalSearchInputPostProcessingInner} instance.
    */
@@ -75,7 +75,7 @@ public class RetrievalSearchInputPostProcessingInner
   /**
    * Set the id of this {@link RetrievalSearchInputPostProcessingInner} instance.
    *
-   * @param id The id of this {@link RetrievalSearchInputPostProcessingInner}
+   * @param id New ID for each PostProcessingOperation.
    */
   public void setId(@Nullable final String id) {
     this.id = id;
@@ -85,7 +85,7 @@ public class RetrievalSearchInputPostProcessingInner
    * Set the maxChunkCount of this {@link RetrievalSearchInputPostProcessingInner} instance and
    * return the same instance.
    *
-   * @param maxChunkCount The maxChunkCount of this {@link RetrievalSearchInputPostProcessingInner}
+   * @param maxChunkCount Maximum number of chunks to be retained in final PerSearchFilterResult.
    *     Minimum: 0 Maximum: 10000000
    * @return The same instance of this {@link RetrievalSearchInputPostProcessingInner} class
    */
@@ -97,7 +97,8 @@ public class RetrievalSearchInputPostProcessingInner
   }
 
   /**
-   * Get maxChunkCount minimum: 0 maximum: 10000000
+   * Maximum number of chunks to be retained in final PerSearchFilterResult. minimum: 0 maximum:
+   * 10000000
    *
    * @return maxChunkCount The maxChunkCount of this {@link RetrievalSearchInputPostProcessingInner}
    *     instance.
@@ -110,7 +111,7 @@ public class RetrievalSearchInputPostProcessingInner
   /**
    * Set the maxChunkCount of this {@link RetrievalSearchInputPostProcessingInner} instance.
    *
-   * @param maxChunkCount The maxChunkCount of this {@link RetrievalSearchInputPostProcessingInner}
+   * @param maxChunkCount Maximum number of chunks to be retained in final PerSearchFilterResult.
    *     Minimum: 0 Maximum: 10000000
    */
   public void setMaxChunkCount(@Nullable final Integer maxChunkCount) {

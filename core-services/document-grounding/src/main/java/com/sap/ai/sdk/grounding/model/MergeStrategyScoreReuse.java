@@ -59,7 +59,7 @@ public class MergeStrategyScoreReuse
    *
    * @return type The type of this {@link MergeStrategyScoreReuse} instance.
    */
-  @Nullable
+  @Nonnull
   public MergeStrategyType getType() {
     return type;
   }
