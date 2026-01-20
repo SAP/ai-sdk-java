@@ -7,18 +7,12 @@ info:
   version: 0.0.1-SNAPSHOT
 
 paths:
-  /deployments/{deployment-id}/completions:
+  /predict:
     post:
+      tags:
+        - Predict
       summary: Predict targets using SAP RPT model with structured data.
       operationId: Completions_Create
-      parameters:
-        - name: deployment-id
-          in: path
-          required: true
-          schema:
-            type: string
-            example: davinci
-            description: Deployment id of the model which was deployed.
       requestBody:
         required: true
         content:
@@ -155,7 +149,7 @@ components:
           description: The generated UUID4 for this request (useful for logging).
           example: "c334f854-0d70-4c79-bd73-9ac581fd8cda"
         status:
-          $ref: '#/components/schemas/ErrorStatus'
+          $ref: '#/components/schemas/TabCompletionStatus'
         predictions:
           type: array
           description: Array of prediction results sequence-aligned with the order of the query rows in the request.
@@ -213,7 +207,7 @@ components:
       properties:
         status:
           allOf:
-            - $ref: '#/components/schemas/ErrorStatus'
+            - $ref: '#/components/schemas/TabCompletionStatus'
             - properties:
                 code:
                   enum: [ 2 ]
@@ -253,9 +247,9 @@ components:
         type:
           type: string
           description: Error type.
-    ErrorStatus:
+    TabCompletionStatus:
       type: object
-      description: ErrorStatus object indicating the result of the request.
+      description: TabCompletionStatus object indicating the result of the request.
       properties:
         code:
           type: integer

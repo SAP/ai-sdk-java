@@ -34,7 +34,7 @@ public class TabCompletionPostResponse
   private String id;
 
   @JsonProperty("status")
-  private ErrorStatus status;
+  private TabCompletionStatus status;
 
   @JsonProperty("predictions")
   private List<Map<String, PredictionResultsValue>> predictions = new ArrayList<>();
@@ -83,7 +83,7 @@ public class TabCompletionPostResponse
    * @return The same instance of this {@link TabCompletionPostResponse} class
    */
   @Nonnull
-  public TabCompletionPostResponse status(@Nullable final ErrorStatus status) {
+  public TabCompletionPostResponse status(@Nullable final TabCompletionStatus status) {
     this.status = status;
     return this;
   }
@@ -94,7 +94,7 @@ public class TabCompletionPostResponse
    * @return status The status of this {@link TabCompletionPostResponse} instance.
    */
   @Nonnull
-  public ErrorStatus getStatus() {
+  public TabCompletionStatus getStatus() {
     return status;
   }
 
@@ -103,7 +103,7 @@ public class TabCompletionPostResponse
    *
    * @param status The status of this {@link TabCompletionPostResponse}
    */
-  public void setStatus(@Nullable final ErrorStatus status) {
+  public void setStatus(@Nullable final TabCompletionStatus status) {
     this.status = status;
   }
 

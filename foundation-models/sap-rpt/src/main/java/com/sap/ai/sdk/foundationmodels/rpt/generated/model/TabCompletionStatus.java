@@ -25,26 +25,26 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ErrorStatus object indicating the result of the request. */
+/** TabCompletionStatus object indicating the result of the request. */
 // CHECKSTYLE:OFF
-public class ErrorStatus
+public class TabCompletionStatus
 // CHECKSTYLE:ON
 {
   /** The numeric status code. */
   public enum CodeEnum {
-    /** The NUMBER_0 option of this ErrorStatus */
+    /** The NUMBER_0 option of this TabCompletionStatus */
     NUMBER_0(0),
 
-    /** The NUMBER_1 option of this ErrorStatus */
+    /** The NUMBER_1 option of this TabCompletionStatus */
     NUMBER_1(1),
 
-    /** The NUMBER_2 option of this ErrorStatus */
+    /** The NUMBER_2 option of this TabCompletionStatus */
     NUMBER_2(2),
 
-    /** The NUMBER_3 option of this ErrorStatus */
+    /** The NUMBER_3 option of this TabCompletionStatus */
     NUMBER_3(3),
 
-    /** The NUMBER_unknown_default_open_api option of this ErrorStatus */
+    /** The NUMBER_unknown_default_open_api option of this TabCompletionStatus */
     NUMBER_unknown_default_open_api(11184809);
 
     private Integer value;
@@ -79,7 +79,7 @@ public class ErrorStatus
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ErrorStatus
+     * @return The enum value of type TabCompletionStatus
      */
     @JsonCreator
     @Nonnull
@@ -103,13 +103,13 @@ public class ErrorStatus
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
-   * Set the code of this {@link ErrorStatus} instance and return the same instance.
+   * Set the code of this {@link TabCompletionStatus} instance and return the same instance.
    *
    * @param code The numeric status code.
-   * @return The same instance of this {@link ErrorStatus} class
+   * @return The same instance of this {@link TabCompletionStatus} class
    */
   @Nonnull
-  public ErrorStatus code(@Nullable final CodeEnum code) {
+  public TabCompletionStatus code(@Nullable final CodeEnum code) {
     this.code = code;
     return this;
   }
@@ -117,7 +117,7 @@ public class ErrorStatus
   /**
    * The numeric status code.
    *
-   * @return code The code of this {@link ErrorStatus} instance.
+   * @return code The code of this {@link TabCompletionStatus} instance.
    */
   @Nonnull
   public CodeEnum getCode() {
@@ -125,7 +125,7 @@ public class ErrorStatus
   }
 
   /**
-   * Set the code of this {@link ErrorStatus} instance.
+   * Set the code of this {@link TabCompletionStatus} instance.
    *
    * @param code The numeric status code.
    */
@@ -134,13 +134,13 @@ public class ErrorStatus
   }
 
   /**
-   * Set the message of this {@link ErrorStatus} instance and return the same instance.
+   * Set the message of this {@link TabCompletionStatus} instance and return the same instance.
    *
    * @param message The status message text.
-   * @return The same instance of this {@link ErrorStatus} class
+   * @return The same instance of this {@link TabCompletionStatus} class
    */
   @Nonnull
-  public ErrorStatus message(@Nullable final String message) {
+  public TabCompletionStatus message(@Nullable final String message) {
     this.message = message;
     return this;
   }
@@ -148,7 +148,7 @@ public class ErrorStatus
   /**
    * The status message text.
    *
-   * @return message The message of this {@link ErrorStatus} instance.
+   * @return message The message of this {@link TabCompletionStatus} instance.
    */
   @Nonnull
   public String getMessage() {
@@ -156,7 +156,7 @@ public class ErrorStatus
   }
 
   /**
-   * Set the message of this {@link ErrorStatus} instance.
+   * Set the message of this {@link TabCompletionStatus} instance.
    *
    * @param message The status message text.
    */
@@ -165,7 +165,7 @@ public class ErrorStatus
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ErrorStatus}.
+   * Get the names of the unrecognizable properties of the {@link TabCompletionStatus}.
    *
    * @return The set of properties names
    */
@@ -176,7 +176,7 @@ public class ErrorStatus
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ErrorStatus} instance.
+   * Get the value of an unrecognizable property of this {@link TabCompletionStatus} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -187,14 +187,15 @@ public class ErrorStatus
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ErrorStatus has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "TabCompletionStatus has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ErrorStatus} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link TabCompletionStatus} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -208,8 +209,8 @@ public class ErrorStatus
   }
 
   /**
-   * Set an unrecognizable property of this {@link ErrorStatus} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link TabCompletionStatus} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -227,10 +228,10 @@ public class ErrorStatus
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ErrorStatus errorStatus = (ErrorStatus) o;
-    return Objects.equals(this.cloudSdkCustomFields, errorStatus.cloudSdkCustomFields)
-        && Objects.equals(this.code, errorStatus.code)
-        && Objects.equals(this.message, errorStatus.message);
+    final TabCompletionStatus tabCompletionStatus = (TabCompletionStatus) o;
+    return Objects.equals(this.cloudSdkCustomFields, tabCompletionStatus.cloudSdkCustomFields)
+        && Objects.equals(this.code, tabCompletionStatus.code)
+        && Objects.equals(this.message, tabCompletionStatus.message);
   }
 
   @Override
@@ -242,7 +243,7 @@ public class ErrorStatus
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ErrorStatus {\n");
+    sb.append("class TabCompletionStatus {\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -262,8 +263,8 @@ public class ErrorStatus
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link ErrorStatus} instance. No arguments are required. */
-  public static ErrorStatus create() {
-    return new ErrorStatus();
+  /** Create a new {@link TabCompletionStatus} instance. No arguments are required. */
+  public static TabCompletionStatus create() {
+    return new TabCompletionStatus();
   }
 }
