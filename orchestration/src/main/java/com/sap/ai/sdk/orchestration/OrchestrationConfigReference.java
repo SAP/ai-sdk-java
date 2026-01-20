@@ -24,7 +24,6 @@ public class OrchestrationConfigReference {
   String name;
   String version;
 
-  //  @Getter(AccessLevel.PRIVATE)
   OrchestrationPrompt prompt = new OrchestrationPrompt(Map.of());
 
   /**
