@@ -1,0 +1,201 @@
+openapi: 3.0.0
+
+info:
+  title: SAP RPT API
+  description: SAP RPT API for predictive insights using in-context learning on structured business data.
+  version: 0.0.1-SNAPSHOT
+
+paths:
+  /deployments/{deployment-id}/completions:
+    post:
+      summary: Predict targets using SAP RPT model with structured data.
+      operationId: Completions_Create
+      parameters:
+        - name: deployment-id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: davinci
+            description: Deployment id of the model which was deployed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  description: Structured table data containing context rows and query rows.
+                  properties:
+                    context:
+                      type: array
+                      description: Context rows used for in-context learning.
+                      items:
+                        type: object
+                        additionalProperties: true
+                    query:
+                      type: array
+                      description: Query rows for which predictions should be made.
+                      items:
+                        type: object
+                        additionalProperties: true
+                prediction_config:
+                  type: object
+                  description: Configuration for prediction targets.
+                  properties:
+                    target_columns:
+                      type: array
+                      description: List of target columns to predict.
+                      items:
+                        type: object
+                        properties:
+                          column_name:
+                            type: string
+                            description: Name of the target column.
+                          prediction_placeholder:
+                            type: string
+                            description: Placeholder value indicating which cells to predict.
+                        required:
+                          - prediction_placeholder
+                index_column:
+                  type: string
+                  description: Optional column name to use as index in the response.
+      responses:
+        '200':
+          description: Successful response with predictive insights.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The generated UUID4 for this request (useful for logging).
+                    example: "c334f854-0d70-4c79-bd73-9ac581fd8cda"
+                  status:
+                    $ref: '#/components/schemas/Status'
+                  predictions:
+                    type: array
+                    description: Array of prediction objects sequence-aligned with the order of the query rows in the request.
+                    items:
+                      type: object
+                      description: Prediction object that may contain target column predictions and optional index column.
+                      additionalProperties:
+                        oneOf:
+                          - type: string
+                            description: Index column value (when index_column parameter is specified).
+                          - type: array
+                            description: Array of predictions for a target column.
+                            items:
+                              type: object
+                              properties:
+                                prediction:
+                                  oneOf:
+                                    - type: string
+                                      description: Predicted value for classification tasks.
+                                    - type: number
+                                      format: float
+                                      description: Predicted value for regression tasks.
+                                confidence:
+                                  type: number
+                                  format: float
+                                  nullable: true
+                                  description: The confidence score for this prediction (for classification tasks only).
+                  metadata:
+                    type: object
+                    description: Metadata about the prediction request.
+                    properties:
+                      num_rows:
+                        type: integer
+                        description: The total number of input rows.
+                      num_columns:
+                        type: integer
+                        description: The total number of input columns.
+                      num_predictions:
+                        type: integer
+                        description: The number of table cells containing the specified placeholder values summed over all target columns.
+                      num_query_rows:
+                        type: integer
+                        description: The number of query rows for which a prediction was made.
+        '400':
+          description: Bad Request - Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Unprocessable Content - Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerErrorResponse'
+
+components:
+  schemas:
+    Status:
+      type: object
+      description: Status object indicating the result of the request.
+      properties:
+        code:
+          type: integer
+          description: The numeric status code.
+          enum: [ 0, 1, 2, 3 ]
+        message:
+          type: string
+          description: The status message text.
+
+    ErrorDetail:
+      type: object
+      description: Validation error detail in pydantic format.
+      properties:
+        loc:
+          type: array
+          description: Location of the error in the request structure.
+          items:
+            oneOf:
+              - type: string
+              - type: integer
+        msg:
+          type: string
+          description: Error message.
+        type:
+          type: string
+          description: Error type.
+
+    ErrorResponse:
+      type: object
+      description: Error response with status and validation details.
+      properties:
+        status:
+          allOf:
+            - $ref: '#/components/schemas/Status'
+            - properties:
+                code:
+                  enum: [ 2 ]
+                  example: 2
+                message:
+                  example: "Invalid input"
+        detail:
+          type: array
+          description: Array of validation errors in pydantic format.
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+
+    InternalServerErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          enum: [ 3 ]
+          example: 3
+        message:
+          type: string
+          example: "Internal server error"
