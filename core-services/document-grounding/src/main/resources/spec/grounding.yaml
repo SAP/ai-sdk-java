@@ -1917,30 +1917,6 @@ components:
       - id
       - content
       title: RetrievalChunk
-    Score:
-      type: object
-      properties:
-        value:
-          type: number
-      required:
-      - value
-      title: Score
-    SearchScores:
-      properties:
-        aggregatedScore:
-          type: object
-          properties:
-            value:
-              type: number
-        denseRetrievalScore:
-          type: object
-          properties:
-            value:
-              type: number
-      required:
-        - aggregatedScore
-        - denseRetrievalScore
-      title: SearchScores
     DocumentKeyValueListPair:
       properties:
         key:
@@ -2011,15 +1987,15 @@ components:
           title: Value
         matchMode:
           title: MatchMode
+          nullable: true
           description: Default match mode for search filters
           $ref: '#/components/schemas/FilterMatchModeEnum'
-          nullable: true
           default: ANY
       type: object  
       required:
       - key
-      - value   
-      title: DocumentKeyValueListPair
+      - value
+      title: RetrievalDocumentKeyValueListPair
     HTTPValidationError:
       properties:
         detail:
@@ -2199,19 +2175,19 @@ components:
     RetrievalSearchConfiguration:
       properties:
         maxChunkCount:
-          type: integer
-          exclusiveMinimum: true
-          minimum: 0
-          maximum: 10000000
           nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          maximum: 10000000
           title: Maxchunkcount
           description: Maximum number of chunks to be returned. Cannot be used with 'maxDocumentCount'.
         maxDocumentCount:
-          type: integer
-          exclusiveMinimum: true
-          minimum: 0
-          maximum: 10000000
           nullable: true
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          maximum: 10000000
           title: Maxdocumentcount
           description: "[Only supports 'vector' dataRepositoryType] - Maximum number of documents to be returned. Cannot be used with 'maxChunkCount'. If maxDocumentCount is given, then only one chunk per document is returned."
       type: object
@@ -2897,8 +2873,8 @@ components:
           title: Id
           description: Identifier of this RetrievalSearchFilter - unique per request.
         searchConfiguration:
-          $ref: "#/components/schemas/RetrievalSearchConfiguration"
           nullable: true
+          $ref: "#/components/schemas/RetrievalSearchConfiguration"
           default: {}
         dataRepositories:
           type: array
@@ -2995,6 +2971,36 @@ components:
       - query
       - filters
       title: RetrievalSearchInput
+    Score:
+      type: object
+      properties:
+        value:
+          type: number
+      required:
+      - value
+      title: Score
+    SearchScores:
+      properties:
+        aggregatedScore:
+          type: object
+          properties:
+            value:
+              type: number
+        denseRetrievalScore:
+          type: object
+          properties:
+            value:
+              type: number
+      required:
+        - aggregatedScore
+        - denseRetrievalScore
+      title: SearchScores
+    FilterMatchModeEnum:
+      type: string
+      enum:
+        - ANY
+        - ALL
+      title: FilterMatchModeEnum
     RetrievalVectorSearchFilter:
       properties:
         id:
@@ -3352,6 +3358,7 @@ components:
         - weighted_rrf
       type: string
       title: ScoresAggregationStrategy
+
     RetrievalDataRepositorySearchResult:
       properties:
         dataRepository:
@@ -3379,7 +3386,7 @@ components:
             Only present if dataRepositoryType = remote:dg.
       type: object
       required:
-      - filterId
+        - filterId
       title: RetrievalPerFilterSearchResult
     RetrievalPerFilterSearchResultWithError:
       properties:
@@ -3401,8 +3408,8 @@ components:
           type: array
           items:
             anyOf:
-              - $ref: "#/components/schemas/RetrievalPerFilterSearchResult"
-              - $ref: "#/components/schemas/RetrievalPerFilterSearchResultWithError"
+            - $ref: "#/components/schemas/RetrievalPerFilterSearchResult"
+            - $ref: "#/components/schemas/RetrievalPerFilterSearchResultWithError"
           title: Results
           description: List of returned results.
       type: object

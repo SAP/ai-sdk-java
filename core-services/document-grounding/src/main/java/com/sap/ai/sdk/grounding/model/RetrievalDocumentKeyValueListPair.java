@@ -38,7 +38,7 @@ public class RetrievalDocumentKeyValueListPair
   private List<String> value = new ArrayList<>();
 
   @JsonProperty("matchMode")
-  private FilterMatchModeEnum matchMode = null;
+  private FilterMatchModeEnum matchMode;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
