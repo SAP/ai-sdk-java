@@ -68,57 +68,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The generated UUID4 for this request (useful for logging).
-                    example: "c334f854-0d70-4c79-bd73-9ac581fd8cda"
-                  status:
-                    $ref: '#/components/schemas/Status'
-                  predictions:
-                    type: array
-                    description: Array of prediction objects sequence-aligned with the order of the query rows in the request.
-                    items:
-                      type: object
-                      description: Prediction object that may contain target column predictions and optional index column.
-                      additionalProperties:
-                        oneOf:
-                          - type: string
-                            description: Index column value (when index_column parameter is specified).
-                          - type: array
-                            description: Array of predictions for a target column.
-                            items:
-                              type: object
-                              properties:
-                                prediction:
-                                  oneOf:
-                                    - type: string
-                                      description: Predicted value for classification tasks.
-                                    - type: number
-                                      format: float
-                                      description: Predicted value for regression tasks.
-                                confidence:
-                                  type: number
-                                  format: float
-                                  nullable: true
-                                  description: The confidence score for this prediction (for classification tasks only).
-                  metadata:
-                    type: object
-                    description: Metadata about the prediction request.
-                    properties:
-                      num_rows:
-                        type: integer
-                        description: The total number of input rows.
-                      num_columns:
-                        type: integer
-                        description: The total number of input columns.
-                      num_predictions:
-                        type: integer
-                        description: The number of table cells containing the specified placeholder values summed over all target columns.
-                      num_query_rows:
-                        type: integer
-                        description: The number of query rows for which a prediction was made.
+                $ref: '#/components/schemas/TabCompletionResponse'
         '400':
           description: Bad Request - Invalid input.
           content:
@@ -140,35 +90,66 @@ paths:
 
 components:
   schemas:
-    Status:
+    TabCompletionResponse:
       type: object
-      description: Status object indicating the result of the request.
+      description: Successful tabular prediction response.
       properties:
-        code:
-          type: integer
-          description: The numeric status code.
-          enum: [ 0, 1, 2, 3 ]
-        message:
+        id:
           type: string
-          description: The status message text.
-
-    ErrorDetail:
-      type: object
-      description: Validation error detail in pydantic format.
-      properties:
-        loc:
+          description: The generated UUID4 for this request (useful for logging).
+          example: "c334f854-0d70-4c79-bd73-9ac581fd8cda"
+        status:
+          $ref: '#/components/schemas/Status'
+        predictions:
           type: array
-          description: Location of the error in the request structure.
+          description: Array of prediction results sequence-aligned with the order of the query rows in the request.
           items:
-            oneOf:
-              - type: string
-              - type: integer
-        msg:
-          type: string
-          description: Error message.
-        type:
-          type: string
-          description: Error type.
+            $ref: '#/components/schemas/PredictionResults'
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+    PredictionResults:
+      type: object
+      description: Prediction results for a query row that may contain target column predictions and optional index column.
+      additionalProperties:
+        oneOf:
+          - type: string
+            description: Index column value (when index_column parameter is specified).
+          - type: array
+            description: Array of predictions for a target column.
+            items:
+              $ref: '#/components/schemas/Prediction'
+    Prediction:
+      type: object
+      description: Individual prediction result for a cell.
+      properties:
+        prediction:
+          oneOf:
+            - type: string
+              description: Predicted value for classification tasks.
+            - type: number
+              format: float
+              description: Predicted value for regression tasks.
+        confidence:
+          type: number
+          format: float
+          nullable: true
+          description: The confidence score for this prediction (for classification tasks only).
+    Metadata:
+      type: object
+      description: Metadata about the prediction request.
+      properties:
+        num_rows:
+          type: integer
+          description: The total number of input rows.
+        num_columns:
+          type: integer
+          description: The total number of input columns.
+        num_predictions:
+          type: integer
+          description: The number of table cells containing the specified placeholder values summed over all target columns.
+        num_query_rows:
+          type: integer
+          description: The number of query rows for which a prediction was made.
 
     ErrorResponse:
       type: object
@@ -188,9 +169,9 @@ components:
           description: Array of validation errors in pydantic format.
           items:
             $ref: '#/components/schemas/ErrorDetail'
-
     InternalServerErrorResponse:
       type: object
+      description: Internal server error response.
       properties:
         status:
           type: integer
@@ -199,3 +180,31 @@ components:
         message:
           type: string
           example: "Internal server error"
+    ErrorDetail:
+      type: object
+      description: Validation error detail in pydantic format.
+      properties:
+        loc:
+          type: array
+          description: Location of the error in the request structure.
+          items:
+            oneOf:
+              - type: string
+              - type: integer
+        msg:
+          type: string
+          description: Error message.
+        type:
+          type: string
+          description: Error type.
+    Status:
+      type: object
+      description: Status object indicating the result of the request.
+      properties:
+        code:
+          type: integer
+          description: The numeric status code.
+          enum: [ 0, 1, 2, 3 ]
+        message:
+          type: string
+          description: The status message text.
