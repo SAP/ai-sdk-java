@@ -42,13 +42,11 @@ public abstract class TemplateConfig {
   @Nonnull
   public static ReferenceBuilder reference() {
     final var templ = TemplateRefByScenarioNameVersion.create();
-    final var scope = TemplateRefByScenarioNameVersion.ScopeEnum.TENANT;
+    final var sc = TemplateRefByScenarioNameVersion.ScopeEnum.TENANT;
 
     return s ->
         n ->
-            v ->
-                new OrchestrationTemplateReference(
-                    templ.scenario(s).name(n).version(v).scope(scope));
+            v -> new OrchestrationTemplateReference(templ.scenario(s).name(n).version(v).scope(sc));
   }
 
   /**

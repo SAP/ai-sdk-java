@@ -1296,7 +1296,7 @@ class OrchestrationUnitTest {
 
       var template =
           TemplateConfig.referenceResourceGroup()
-              .byIdResourceGroup("2cd4aea1-dffb-4d5d-b96d-96e29b595025");
+              .byIdResourceGroup("8bf72116-11ab-41bb-8933-8be56f59cb67");
       var configWithTemplate = config.withLlmConfig(GPT_4O_MINI).withTemplateConfig(template);
 
       var inputParams =

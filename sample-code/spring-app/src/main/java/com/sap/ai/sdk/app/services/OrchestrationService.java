@@ -585,12 +585,12 @@ public class OrchestrationService {
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
     final var destination =
-        new AiCoreService().getInferenceDestination("i749902").forScenario("orchestration");
+        new AiCoreService().getInferenceDestination("ai-sdk-java-e2e").forScenario("orchestration");
     final var clientWithResourceGroup = new OrchestrationClient(destination);
 
     val template =
         TemplateConfig.referenceResourceGroup()
-            .byIdResourceGroup("2cd4aea1-dffb-4d5d-b96d-96e29b595025");
+            .byIdResourceGroup("8bf72116-11ab-41bb-8933-8be56f59cb67");
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
 
     val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
@@ -633,7 +633,7 @@ public class OrchestrationService {
   public OrchestrationChatResponse templateFromPromptRegistryByScenarioResourceGroup(
       @Nonnull final String inputExample) {
     final var destination =
-        new AiCoreService().getInferenceDestination("i749902").forScenario("orchestration");
+        new AiCoreService().getInferenceDestination("ai-sdk-java-e2e").forScenario("orchestration");
     final var clientWithResourceGroup = new OrchestrationClient(destination);
 
     val template =
