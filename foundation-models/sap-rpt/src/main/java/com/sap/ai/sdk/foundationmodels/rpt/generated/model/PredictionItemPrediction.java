@@ -13,11 +13,11 @@ package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
 
 import javax.annotation.Nonnull;
 
-/** PredictionPrediction */
-public interface PredictionPrediction {
-  /** Helper class to create {@code Float } that implements {@link PredictionPrediction}. */
+/** PredictionItemPrediction */
+public interface PredictionItemPrediction {
+  /** Helper class to create {@code Float } that implements {@link PredictionItemPrediction}. */
   record InnerFloat(@com.fasterxml.jackson.annotation.JsonValue @Nonnull Float value)
-      implements PredictionPrediction {}
+      implements PredictionItemPrediction {}
 
   /**
    * Creator to enable deserialization of {@code Float }.
@@ -31,9 +31,9 @@ public interface PredictionPrediction {
     return new InnerFloat(val);
   }
 
-  /** Helper class to create {@code String } that implements {@link PredictionPrediction}. */
+  /** Helper class to create {@code String } that implements {@link PredictionItemPrediction}. */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
-      implements PredictionPrediction {}
+      implements PredictionItemPrediction {}
 
   /**
    * Creator to enable deserialization of {@code String }.

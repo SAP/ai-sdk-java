@@ -5,6 +5,7 @@ import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.client.PredictApi;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.TabCompletionPostRequest;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.TabCompletionPostResponse;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,16 @@ public class RptClient {
   public static RptClient forModel(@Nonnull final RptModel foundationModel)
       throws DeploymentResolutionException {
     final var destination = new AiCoreService().getInferenceDestination().forModel(foundationModel);
+    return forDestination(destination);
+  }
+
+  /**
+   * Creates a new RptClient for the specified destination.
+   *
+   * @param destination The destination to use.
+   * @return A new instance of RptClient.
+   */
+  static RptClient forDestination(@Nonnull final Destination destination) {
     return new RptClient(new PredictApi(destination));
   }
 

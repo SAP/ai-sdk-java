@@ -17,23 +17,24 @@ import javax.annotation.Nonnull;
 /** PredictionResultsValue */
 public interface PredictionResultsValue {
   /**
-   * Helper class to create {@code List<Prediction> } that implements {@link
+   * Helper class to create {@code List<PredictionItem> } that implements {@link
    * PredictionResultsValue}.
    */
-  record ListOfPredictions(
-      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<Prediction> values)
+  record ListOfPredictionItems(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<PredictionItem> values)
       implements PredictionResultsValue {}
 
   /**
-   * Creator to enable deserialization of {@code List<Prediction> }.
+   * Creator to enable deserialization of {@code List<PredictionItem> }.
    *
    * @param val the value to use
-   * @return a new instance of {@link ListOfPredictions}.
+   * @return a new instance of {@link ListOfPredictionItems}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static ListOfPredictions createListOfPredictions(@Nonnull final List<Prediction> val) {
-    return new ListOfPredictions(val);
+  static ListOfPredictionItems createListOfPredictionItems(
+      @Nonnull final List<PredictionItem> val) {
+    return new ListOfPredictionItems(val);
   }
 
   /** Helper class to create {@code String } that implements {@link PredictionResultsValue}. */

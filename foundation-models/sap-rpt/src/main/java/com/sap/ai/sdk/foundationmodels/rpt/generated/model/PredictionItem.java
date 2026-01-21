@@ -25,11 +25,11 @@ import javax.annotation.Nullable;
 
 /** Individual prediction result for a cell. */
 // CHECKSTYLE:OFF
-public class Prediction
+public class PredictionItem
 // CHECKSTYLE:ON
 {
   @JsonProperty("prediction")
-  private PredictionPrediction prediction;
+  private PredictionItemPrediction prediction;
 
   @JsonProperty("confidence")
   private Float confidence;
@@ -38,13 +38,13 @@ public class Prediction
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
-   * Set the prediction of this {@link Prediction} instance and return the same instance.
+   * Set the prediction of this {@link PredictionItem} instance and return the same instance.
    *
-   * @param prediction The prediction of this {@link Prediction}
-   * @return The same instance of this {@link Prediction} class
+   * @param prediction The prediction of this {@link PredictionItem}
+   * @return The same instance of this {@link PredictionItem} class
    */
   @Nonnull
-  public Prediction prediction(@Nullable final PredictionPrediction prediction) {
+  public PredictionItem prediction(@Nullable final PredictionItemPrediction prediction) {
     this.prediction = prediction;
     return this;
   }
@@ -52,30 +52,30 @@ public class Prediction
   /**
    * Get prediction
    *
-   * @return prediction The prediction of this {@link Prediction} instance.
+   * @return prediction The prediction of this {@link PredictionItem} instance.
    */
   @Nonnull
-  public PredictionPrediction getPrediction() {
+  public PredictionItemPrediction getPrediction() {
     return prediction;
   }
 
   /**
-   * Set the prediction of this {@link Prediction} instance.
+   * Set the prediction of this {@link PredictionItem} instance.
    *
-   * @param prediction The prediction of this {@link Prediction}
+   * @param prediction The prediction of this {@link PredictionItem}
    */
-  public void setPrediction(@Nullable final PredictionPrediction prediction) {
+  public void setPrediction(@Nullable final PredictionItemPrediction prediction) {
     this.prediction = prediction;
   }
 
   /**
-   * Set the confidence of this {@link Prediction} instance and return the same instance.
+   * Set the confidence of this {@link PredictionItem} instance and return the same instance.
    *
    * @param confidence The confidence score for this prediction (for classification tasks only).
-   * @return The same instance of this {@link Prediction} class
+   * @return The same instance of this {@link PredictionItem} class
    */
   @Nonnull
-  public Prediction confidence(@Nullable final Float confidence) {
+  public PredictionItem confidence(@Nullable final Float confidence) {
     this.confidence = confidence;
     return this;
   }
@@ -83,7 +83,7 @@ public class Prediction
   /**
    * The confidence score for this prediction (for classification tasks only).
    *
-   * @return confidence The confidence of this {@link Prediction} instance.
+   * @return confidence The confidence of this {@link PredictionItem} instance.
    */
   @Nullable
   public Float getConfidence() {
@@ -91,7 +91,7 @@ public class Prediction
   }
 
   /**
-   * Set the confidence of this {@link Prediction} instance.
+   * Set the confidence of this {@link PredictionItem} instance.
    *
    * @param confidence The confidence score for this prediction (for classification tasks only).
    */
@@ -100,7 +100,7 @@ public class Prediction
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link Prediction}.
+   * Get the names of the unrecognizable properties of the {@link PredictionItem}.
    *
    * @return The set of properties names
    */
@@ -111,7 +111,7 @@ public class Prediction
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link Prediction} instance.
+   * Get the value of an unrecognizable property of this {@link PredictionItem} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -122,13 +122,13 @@ public class Prediction
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("Prediction has no field with name '" + name + "'.");
+      throw new NoSuchElementException("PredictionItem has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link Prediction} instance including unrecognized
+   * Get the value of all properties of this {@link PredictionItem} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -143,7 +143,7 @@ public class Prediction
   }
 
   /**
-   * Set an unrecognizable property of this {@link Prediction} instance. If the map previously
+   * Set an unrecognizable property of this {@link PredictionItem} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -162,10 +162,10 @@ public class Prediction
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final Prediction prediction = (Prediction) o;
-    return Objects.equals(this.cloudSdkCustomFields, prediction.cloudSdkCustomFields)
-        && Objects.equals(this.prediction, prediction.prediction)
-        && Objects.equals(this.confidence, prediction.confidence);
+    final PredictionItem predictionItem = (PredictionItem) o;
+    return Objects.equals(this.cloudSdkCustomFields, predictionItem.cloudSdkCustomFields)
+        && Objects.equals(this.prediction, predictionItem.prediction)
+        && Objects.equals(this.confidence, predictionItem.confidence);
   }
 
   @Override
@@ -177,7 +177,7 @@ public class Prediction
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class Prediction {\n");
+    sb.append("class PredictionItem {\n");
     sb.append("    prediction: ").append(toIndentedString(prediction)).append("\n");
     sb.append("    confidence: ").append(toIndentedString(confidence)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -197,8 +197,8 @@ public class Prediction
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link Prediction} instance. No arguments are required. */
-  public static Prediction create() {
-    return new Prediction();
+  /** Create a new {@link PredictionItem} instance. No arguments are required. */
+  public static PredictionItem create() {
+    return new PredictionItem();
   }
 }

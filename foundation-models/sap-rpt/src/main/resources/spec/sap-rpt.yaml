@@ -159,7 +159,7 @@ components:
           $ref: '#/components/schemas/TabCompletionMetadata'
     PredictionResults:
       type: object
-      description: Prediction results for a query row that may contain target column predictions and optional index column.
+      description: PredictionResults for a query row that may contain target column predictions and optional index column.
       additionalProperties:
         oneOf:
           - type: string
@@ -167,8 +167,8 @@ components:
           - type: array
             description: Array of predictions for a target column.
             items:
-              $ref: '#/components/schemas/Prediction'
-    Prediction:
+              $ref: '#/components/schemas/PredictionItem'
+    PredictionItem:
       type: object
       description: Individual prediction result for a cell.
       properties:
