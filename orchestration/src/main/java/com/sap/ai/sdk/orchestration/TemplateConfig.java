@@ -35,28 +35,64 @@ public abstract class TemplateConfig {
   }
 
   /**
-   * Build a template reference.
+   * Build a template reference with tenant level scope.
    *
    * @return An intermediate object to build the template reference.
    */
   @Nonnull
-  public static ReferenceBuilder reference() {
+  public static ReferenceBuilder referenceTenant() {
     final var templ = TemplateRefByScenarioNameVersion.create();
-    return s -> n -> v -> new OrchestrationTemplateReference(templ.scenario(s).name(n).version(v));
+    final var scope = TemplateRefByScenarioNameVersion.ScopeEnum.TENANT;
+
+    return s ->
+        n ->
+            v ->
+                new OrchestrationTemplateReference(
+                    templ.scenario(s).name(n).version(v).scope(scope));
   }
 
-  /** Intermediate object to build a template reference. */
+  /**
+   * Build a template reference with resource group scope.
+   *
+   * @return An intermediate object to build the template reference.
+   */
+  @Nonnull
+  public static ReferenceBuilder referenceResourceGroup() {
+    final var templ = TemplateRefByScenarioNameVersion.create();
+    final var scope = TemplateRefByScenarioNameVersion.ScopeEnum.RESOURCE_GROUP;
+
+    return s ->
+        n ->
+            v ->
+                new OrchestrationTemplateReference(
+                    templ.scenario(s).name(n).version(v).scope(scope));
+  }
+
+  /** Intermediate object to build a template referenceTenant. */
   @FunctionalInterface
   public interface ReferenceBuilder {
     /**
-     * Build a template reference with the given id.
+     * Build a template reference with the given id for tenant scope.
      *
      * @param id The id of the template.
      * @return A template reference with the given id.
      */
     @Nonnull
-    default OrchestrationTemplateReference byId(@Nonnull final String id) {
-      return new OrchestrationTemplateReference(TemplateRefByID.create().id(id));
+    default OrchestrationTemplateReference byIdTenant(@Nonnull final String id) {
+      final var scope = TemplateRefByID.ScopeEnum.TENANT;
+      return new OrchestrationTemplateReference(TemplateRefByID.create().id(id).scope(scope));
+    }
+
+    /**
+     * Build a template reference with the given id for resource group scope.
+     *
+     * @param id The id of the template.
+     * @return A template reference with the given id.
+     */
+    @Nonnull
+    default OrchestrationTemplateReference byIdResourceGroup(@Nonnull final String id) {
+      final var scope = TemplateRefByID.ScopeEnum.RESOURCE_GROUP;
+      return new OrchestrationTemplateReference(TemplateRefByID.create().id(id).scope(scope));
     }
 
     /**

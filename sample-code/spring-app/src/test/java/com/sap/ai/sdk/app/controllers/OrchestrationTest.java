@@ -401,16 +401,41 @@ class OrchestrationTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryById() {
-    val result = service.templateFromPromptRegistryById("Cloud ERP systems").getOriginalResponse();
+  void testTemplateFromPromptRegistryByIdTenant() {
+    val result =
+        service.templateFromPromptRegistryByIdTenant("Cloud ERP systems").getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
-  void testTemplateFromPromptRegistryByScenario() {
+  void testTemplateFromPromptRegistryByIdResourceGroup() {
     val result =
-        service.templateFromPromptRegistryByScenario("Cloud ERP systems").getOriginalResponse();
+        service
+            .templateFromPromptRegistryByIdResourceGroup(
+                "What's the latest news on the stock market?")
+            .getOriginalResponse();
+    val choices = (result.getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioTenant() {
+    val result =
+        service
+            .templateFromPromptRegistryByScenarioTenant("Cloud ERP systems")
+            .getOriginalResponse();
+    val choices = (result.getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioResourceGroup() {
+    val result =
+        service
+            .templateFromPromptRegistryByScenarioResourceGroup(
+                "What's the latest news on the stock market?")
+            .getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }

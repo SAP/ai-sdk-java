@@ -1,0 +1,79 @@
+{
+  "request_id": "176cbc1e-7451-9b78-bb3e-278abd576a66",
+  "intermediate_results": {
+    "templating": [
+      {
+        "role": "system",
+        "content": "You classify input text into the two following categories: Finance, Tech, Sports"
+      },
+      {
+        "content": "What's the latest news on the stock market?",
+        "role": "user"
+      }
+    ],
+    "llm": {
+      "id": "chatcmpl-D09WL0JIzGaEF1RwbaTKitAspDKhO",
+      "object": "chat.completion",
+      "created": 1768928969,
+      "model": "gpt-4o-mini-2024-07-18",
+      "system_fingerprint": "fp_f97eff32c5",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Finance"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 2,
+        "prompt_tokens": 35,
+        "total_tokens": 37,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "accepted_prediction_tokens": 0,
+          "audio_tokens": 0,
+          "reasoning_tokens": 0,
+          "rejected_prediction_tokens": 0
+        }
+      }
+    }
+  },
+  "final_result": {
+    "id": "chatcmpl-D09WL0JIzGaEF1RwbaTKitAspDKhO",
+    "object": "chat.completion",
+    "created": 1768928969,
+    "model": "gpt-4o-mini-2024-07-18",
+    "system_fingerprint": "fp_f97eff32c5",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Finance"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 2,
+      "prompt_tokens": 35,
+      "total_tokens": 37,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 0,
+        "rejected_prediction_tokens": 0
+      }
+    }
+  }
+}

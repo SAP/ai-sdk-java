@@ -543,11 +543,13 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse templateFromPromptRegistryById(@Nonnull final String topic) {
+  public OrchestrationChatResponse templateFromPromptRegistryByIdTenant(
+      @Nonnull final String topic) {
     final var llmWithImageSupportConfig =
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-    val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+    val template =
+        TemplateConfig.referenceTenant().byIdTenant("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
 
     val inputParams = Map.of("language", "Italian", "input", topic);
@@ -562,19 +564,79 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
+   * @param inputExample the example to send to the assistant
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse templateFromPromptRegistryByIdResourceGroup(
+      @Nonnull final String inputExample) {
+    final var llmWithImageSupportConfig =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+
+    final var destination =
+        new AiCoreService().getInferenceDestination("i749902").forScenario("orchestration");
+    final var clientWithResourceGroup = new OrchestrationClient(destination);
+
+    val template =
+        TemplateConfig.referenceResourceGroup()
+            .byIdResourceGroup("2cd4aea1-dffb-4d5d-b96d-96e29b595025");
+    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
+
+    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
+    val prompt = new OrchestrationPrompt(inputParams);
+
+    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service using a template from the prompt
+   * registry.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
    * @param topic the topic to send to the assistant
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse templateFromPromptRegistryByScenario(
+  public OrchestrationChatResponse templateFromPromptRegistryByScenarioTenant(
       @Nonnull final String topic) {
-    val template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
+    val template =
+        TemplateConfig.referenceTenant().byScenario("test").name("test").version("0.0.1");
     val configWithTemplate = config.withTemplateConfig(template);
 
     val inputParams = Map.of("language", "Italian", "input", topic);
     val prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service using a template from the prompt
+   * registry.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @param inputExample the example to send to the assistant
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse templateFromPromptRegistryByScenarioResourceGroup(
+      @Nonnull final String inputExample) {
+    final var destination =
+        new AiCoreService().getInferenceDestination("i749902").forScenario("orchestration");
+    final var clientWithResourceGroup = new OrchestrationClient(destination);
+
+    val template =
+        TemplateConfig.referenceResourceGroup()
+            .byScenario("categorization")
+            .name("example-prompt-template")
+            .version("0.0.1");
+    val configWithTemplate = config.withTemplateConfig(template);
+
+    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
+    val prompt = new OrchestrationPrompt(inputParams);
+
+    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
   }
 
   /**

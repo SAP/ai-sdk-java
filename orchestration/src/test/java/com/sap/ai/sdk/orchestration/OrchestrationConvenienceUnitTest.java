@@ -158,7 +158,7 @@ public class OrchestrationConvenienceUnitTest {
 
   @Test
   void testTemplateReferenceConstruction() {
-    var templateReferenceId = TemplateConfig.reference().byId("id");
+    var templateReferenceId = TemplateConfig.referenceTenant().byIdTenant("id");
     var expectedTemplateReferenceId =
         new OrchestrationTemplateReference(TemplateRefByID.create().id("id"));
     var templateReferenceIdLowLevel =
@@ -166,8 +166,17 @@ public class OrchestrationConvenienceUnitTest {
     assertThat(templateReferenceId).isEqualTo(expectedTemplateReferenceId);
     assertThat(templateReferenceId.toLowLevel()).isEqualTo(templateReferenceIdLowLevel);
 
+    templateReferenceId = TemplateConfig.referenceResourceGroup().byIdResourceGroup("id");
+    var scope = TemplateRefByID.ScopeEnum.RESOURCE_GROUP;
+    expectedTemplateReferenceId =
+        new OrchestrationTemplateReference(TemplateRefByID.create().id("id").scope(scope));
+    templateReferenceIdLowLevel =
+        TemplateRef.create().templateRef(TemplateRefByID.create().id("id").scope(scope));
+    assertThat(templateReferenceId).isEqualTo(expectedTemplateReferenceId);
+    assertThat(templateReferenceId.toLowLevel()).isEqualTo(templateReferenceIdLowLevel);
+
     var templateReferenceScenarioNameVersion =
-        TemplateConfig.reference().byScenario("scenario").name("name").version("version");
+        TemplateConfig.referenceTenant().byScenario("scenario").name("name").version("version");
     var expectedTemplateReferenceScenarioNameVersion =
         new OrchestrationTemplateReference(
             TemplateRefByScenarioNameVersion.create()
@@ -181,6 +190,32 @@ public class OrchestrationConvenienceUnitTest {
                     .scenario("scenario")
                     .name("name")
                     .version("version"));
+    assertThat(templateReferenceScenarioNameVersion)
+        .isEqualTo(expectedTemplateReferenceScenarioNameVersion);
+    assertThat(templateReferenceScenarioNameVersion.toLowLevel())
+        .isEqualTo(templateReferenceScenarioNameVersionLowLevel);
+
+    templateReferenceScenarioNameVersion =
+        TemplateConfig.referenceResourceGroup()
+            .byScenario("scenario")
+            .name("name")
+            .version("version");
+    var scopeScenario = TemplateRefByScenarioNameVersion.ScopeEnum.RESOURCE_GROUP;
+    expectedTemplateReferenceScenarioNameVersion =
+        new OrchestrationTemplateReference(
+            TemplateRefByScenarioNameVersion.create()
+                .scenario("scenario")
+                .name("name")
+                .version("version")
+                .scope(scopeScenario));
+    templateReferenceScenarioNameVersionLowLevel =
+        TemplateRef.create()
+            .templateRef(
+                TemplateRefByScenarioNameVersion.create()
+                    .scenario("scenario")
+                    .name("name")
+                    .version("version")
+                    .scope(scopeScenario));
     assertThat(templateReferenceScenarioNameVersion)
         .isEqualTo(expectedTemplateReferenceScenarioNameVersion);
     assertThat(templateReferenceScenarioNameVersion.toLowLevel())

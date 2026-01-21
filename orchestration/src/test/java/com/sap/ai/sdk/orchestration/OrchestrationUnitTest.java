@@ -1259,7 +1259,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryById() throws IOException {
+  void testTemplateFromPromptRegistryByIdTenant() throws IOException {
     {
       stubFor(
           post(anyUrl())
@@ -1268,7 +1268,8 @@ class OrchestrationUnitTest {
                       .withBodyFile("templateReferenceResponse.json")
                       .withHeader("Content-Type", "application/json")));
 
-      var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+      var template =
+          TemplateConfig.referenceTenant().byIdTenant("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
       var configWithTemplate = config.withTemplateConfig(template);
 
       var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
@@ -1285,7 +1286,40 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryByScenario() throws IOException {
+  void testTemplateFromPromptRegistryByIdResourceGroup() throws IOException {
+    {
+      stubFor(
+          post(anyUrl())
+              .willReturn(
+                  aResponse()
+                      .withBodyFile("templateReferenceResourceGroupResponse.json")
+                      .withHeader("Content-Type", "application/json")));
+
+      var template =
+          TemplateConfig.referenceResourceGroup()
+              .byIdResourceGroup("2cd4aea1-dffb-4d5d-b96d-96e29b595025");
+      var configWithTemplate = config.withLlmConfig(GPT_4O_MINI).withTemplateConfig(template);
+
+      var inputParams =
+          Map.of(
+              "categories",
+              "Finance, Tech, Sports",
+              "inputExample",
+              "What's the latest news on the stock market?");
+      var prompt = new OrchestrationPrompt(inputParams);
+
+      final var response = client.chatCompletion(prompt, configWithTemplate);
+      assertThat(response.getContent()).startsWith("Finance");
+      assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating())
+          .hasSize(2);
+
+      final String request = fileLoaderStr.apply("templateReferenceResourceGroupByIdRequest.json");
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioTenant() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -1293,7 +1327,8 @@ class OrchestrationUnitTest {
                     .withBodyFile("templateReferenceResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
+    var template =
+        TemplateConfig.referenceTenant().byScenario("test").name("test").version("0.0.1");
     var configWithTemplate = config.withTemplateConfig(template);
 
     var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
@@ -1304,6 +1339,39 @@ class OrchestrationUnitTest {
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
     final String request = fileLoaderStr.apply("templateReferenceByScenarioRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioResourceGroup() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templateReferenceResourceGroupResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var template =
+        TemplateConfig.referenceResourceGroup()
+            .byScenario("categorization")
+            .name("example-prompt-template")
+            .version("0.0.1");
+    var configWithTemplate = config.withLlmConfig(GPT_4O_MINI).withTemplateConfig(template);
+
+    var inputParams =
+        Map.of(
+            "categories",
+            "Finance, Tech, Sports",
+            "inputExample",
+            "What's the latest news on the stock market?");
+    var prompt = new OrchestrationPrompt(inputParams);
+
+    final var response = client.chatCompletion(prompt, configWithTemplate);
+    assertThat(response.getContent()).startsWith("Finance");
+    assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
+
+    final String request =
+        fileLoaderStr.apply("templateReferenceResourceGroupByScenarioRequest.json");
     verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
   }
 

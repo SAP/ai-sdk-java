@@ -1,0 +1,26 @@
+{
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "prompt": {
+          "template_ref": {
+            "id": "2cd4aea1-dffb-4d5d-b96d-96e29b595025",
+            "scope": "resource_group"
+          }
+        },
+        "model": {
+          "name": "gpt-4o-mini",
+          "version": "latest",
+          "params": {},
+          "timeout": 600,
+          "max_retries": 2
+        }
+      }
+    }
+  },
+  "placeholder_values": {
+    "categories": "Finance, Tech, Sports",
+    "inputExample": "What's the latest news on the stock market?"
+  },
+  "messages_history": []
+}
