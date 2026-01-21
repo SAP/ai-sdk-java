@@ -9,7 +9,7 @@ on:
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
   MVN_SKIP_CI_PLUGINS: -DskipFormatting -Denforcer.skip -Djacoco.skip -Dmdep.analyze.skip
-  JAVA_VERSION: 21
+  JAVA_VERSION: 25
   # keep the following two variables in sync with our 'cache-maven-dependencies.yaml' workflow
   MAVEN_CACHE_KEY: maven-dependencies
   MAVEN_CACHE_DIR: ~/.m2

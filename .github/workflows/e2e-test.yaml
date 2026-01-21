@@ -6,7 +6,7 @@ on:
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
-  JAVA_VERSION: 17
+  JAVA_VERSION: 25
 
 jobs:
   end-to-end-tests:
