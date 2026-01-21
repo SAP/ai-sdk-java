@@ -6,7 +6,7 @@ on:
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
-  JAVA_VERSION: 25
+  JAVA_VERSION: 21
   CVE_CACHE_KEY: cve-db
   CVE_CACHE_DIR: ~/.m2/repository/org/owasp/dependency-check-data
   CVE_CACHE_REF: refs/heads/main

@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: "sapmachine"
-          java-version: 25
+          java-version: 21
 
       - name: "Download Dependencies"
         run: mvn -B dependency:go-offline
