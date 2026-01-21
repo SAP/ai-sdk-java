@@ -158,7 +158,7 @@ public class OrchestrationConvenienceUnitTest {
 
   @Test
   void testTemplateReferenceConstruction() {
-    var templateReferenceId = TemplateConfig.referenceTenant().byIdTenant("id");
+    var templateReferenceId = TemplateConfig.reference().byId("id");
     var expectedTemplateReferenceId =
         new OrchestrationTemplateReference(TemplateRefByID.create().id("id"));
     var templateReferenceIdLowLevel =
@@ -176,7 +176,7 @@ public class OrchestrationConvenienceUnitTest {
     assertThat(templateReferenceId.toLowLevel()).isEqualTo(templateReferenceIdLowLevel);
 
     var templateReferenceScenarioNameVersion =
-        TemplateConfig.referenceTenant().byScenario("scenario").name("name").version("version");
+        TemplateConfig.reference().byScenario("scenario").name("name").version("version");
     var expectedTemplateReferenceScenarioNameVersion =
         new OrchestrationTemplateReference(
             TemplateRefByScenarioNameVersion.create()

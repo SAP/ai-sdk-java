@@ -40,7 +40,7 @@ public abstract class TemplateConfig {
    * @return An intermediate object to build the template reference.
    */
   @Nonnull
-  public static ReferenceBuilder referenceTenant() {
+  public static ReferenceBuilder reference() {
     final var templ = TemplateRefByScenarioNameVersion.create();
     final var scope = TemplateRefByScenarioNameVersion.ScopeEnum.TENANT;
 
@@ -68,7 +68,7 @@ public abstract class TemplateConfig {
                     templ.scenario(s).name(n).version(v).scope(scope));
   }
 
-  /** Intermediate object to build a template referenceTenant. */
+  /** Intermediate object to build a template reference. */
   @FunctionalInterface
   public interface ReferenceBuilder {
     /**
@@ -78,7 +78,7 @@ public abstract class TemplateConfig {
      * @return A template reference with the given id.
      */
     @Nonnull
-    default OrchestrationTemplateReference byIdTenant(@Nonnull final String id) {
+    default OrchestrationTemplateReference byId(@Nonnull final String id) {
       final var scope = TemplateRefByID.ScopeEnum.TENANT;
       return new OrchestrationTemplateReference(TemplateRefByID.create().id(id).scope(scope));
     }
