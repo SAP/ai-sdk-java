@@ -23,54 +23,89 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** EmbeddingsOrchestrationConfig */
+/** Details of the prompt tokens. */
 // CHECKSTYLE:OFF
-public class EmbeddingsOrchestrationConfig
+public class TokenUsagePromptTokensDetails
 // CHECKSTYLE:ON
 {
-  @JsonProperty("modules")
-  private EmbeddingsModuleConfigs modules;
+  @JsonProperty("audio_tokens")
+  private Integer audioTokens;
+
+  @JsonProperty("cached_tokens")
+  private Integer cachedTokens;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for EmbeddingsOrchestrationConfig. */
-  protected EmbeddingsOrchestrationConfig() {}
+  /** Default constructor for TokenUsagePromptTokensDetails. */
+  protected TokenUsagePromptTokensDetails() {}
 
   /**
-   * Set the modules of this {@link EmbeddingsOrchestrationConfig} instance and return the same
+   * Set the audioTokens of this {@link TokenUsagePromptTokensDetails} instance and return the same
    * instance.
    *
-   * @param modules The modules of this {@link EmbeddingsOrchestrationConfig}
-   * @return The same instance of this {@link EmbeddingsOrchestrationConfig} class
+   * @param audioTokens Audio input tokens present in the prompt.
+   * @return The same instance of this {@link TokenUsagePromptTokensDetails} class
    */
   @Nonnull
-  public EmbeddingsOrchestrationConfig modules(@Nonnull final EmbeddingsModuleConfigs modules) {
-    this.modules = modules;
+  public TokenUsagePromptTokensDetails audioTokens(@Nullable final Integer audioTokens) {
+    this.audioTokens = audioTokens;
     return this;
   }
 
   /**
-   * Get modules
+   * Audio input tokens present in the prompt.
    *
-   * @return modules The modules of this {@link EmbeddingsOrchestrationConfig} instance.
+   * @return audioTokens The audioTokens of this {@link TokenUsagePromptTokensDetails} instance.
    */
   @Nonnull
-  public EmbeddingsModuleConfigs getModules() {
-    return modules;
+  public Integer getAudioTokens() {
+    return audioTokens;
   }
 
   /**
-   * Set the modules of this {@link EmbeddingsOrchestrationConfig} instance.
+   * Set the audioTokens of this {@link TokenUsagePromptTokensDetails} instance.
    *
-   * @param modules The modules of this {@link EmbeddingsOrchestrationConfig}
+   * @param audioTokens Audio input tokens present in the prompt.
    */
-  public void setModules(@Nonnull final EmbeddingsModuleConfigs modules) {
-    this.modules = modules;
+  public void setAudioTokens(@Nullable final Integer audioTokens) {
+    this.audioTokens = audioTokens;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link EmbeddingsOrchestrationConfig}.
+   * Set the cachedTokens of this {@link TokenUsagePromptTokensDetails} instance and return the same
+   * instance.
+   *
+   * @param cachedTokens Cached tokens present in the prompt.
+   * @return The same instance of this {@link TokenUsagePromptTokensDetails} class
+   */
+  @Nonnull
+  public TokenUsagePromptTokensDetails cachedTokens(@Nullable final Integer cachedTokens) {
+    this.cachedTokens = cachedTokens;
+    return this;
+  }
+
+  /**
+   * Cached tokens present in the prompt.
+   *
+   * @return cachedTokens The cachedTokens of this {@link TokenUsagePromptTokensDetails} instance.
+   */
+  @Nonnull
+  public Integer getCachedTokens() {
+    return cachedTokens;
+  }
+
+  /**
+   * Set the cachedTokens of this {@link TokenUsagePromptTokensDetails} instance.
+   *
+   * @param cachedTokens Cached tokens present in the prompt.
+   */
+  public void setCachedTokens(@Nullable final Integer cachedTokens) {
+    this.cachedTokens = cachedTokens;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link TokenUsagePromptTokensDetails}.
    *
    * @return The set of properties names
    */
@@ -81,7 +116,7 @@ public class EmbeddingsOrchestrationConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link EmbeddingsOrchestrationConfig}
+   * Get the value of an unrecognizable property of this {@link TokenUsagePromptTokensDetails}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -94,13 +129,13 @@ public class EmbeddingsOrchestrationConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "EmbeddingsOrchestrationConfig has no field with name '" + name + "'.");
+          "TokenUsagePromptTokensDetails has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link EmbeddingsOrchestrationConfig} instance
+   * Get the value of all properties of this {@link TokenUsagePromptTokensDetails} instance
    * including unrecognized properties.
    *
    * @return The map of all properties
@@ -109,12 +144,13 @@ public class EmbeddingsOrchestrationConfig
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (modules != null) declaredFields.put("modules", modules);
+    if (audioTokens != null) declaredFields.put("audioTokens", audioTokens);
+    if (cachedTokens != null) declaredFields.put("cachedTokens", cachedTokens);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link EmbeddingsOrchestrationConfig} instance. If the
+   * Set an unrecognizable property of this {@link TokenUsagePromptTokensDetails} instance. If the
    * map previously contained a mapping for the key, the old value is replaced by the specified
    * value.
    *
@@ -134,24 +170,26 @@ public class EmbeddingsOrchestrationConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final EmbeddingsOrchestrationConfig embeddingsOrchestrationConfig =
-        (EmbeddingsOrchestrationConfig) o;
+    final TokenUsagePromptTokensDetails tokenUsagePromptTokensDetails =
+        (TokenUsagePromptTokensDetails) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, embeddingsOrchestrationConfig.cloudSdkCustomFields)
-        && Objects.equals(this.modules, embeddingsOrchestrationConfig.modules);
+            this.cloudSdkCustomFields, tokenUsagePromptTokensDetails.cloudSdkCustomFields)
+        && Objects.equals(this.audioTokens, tokenUsagePromptTokensDetails.audioTokens)
+        && Objects.equals(this.cachedTokens, tokenUsagePromptTokensDetails.cachedTokens);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(modules, cloudSdkCustomFields);
+    return Objects.hash(audioTokens, cachedTokens, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class EmbeddingsOrchestrationConfig {\n");
-    sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
+    sb.append("class TokenUsagePromptTokensDetails {\n");
+    sb.append("    audioTokens: ").append(toIndentedString(audioTokens)).append("\n");
+    sb.append("    cachedTokens: ").append(toIndentedString(cachedTokens)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -169,22 +207,8 @@ public class EmbeddingsOrchestrationConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * EmbeddingsOrchestrationConfig} instance with all required arguments.
-   */
-  public static Builder create() {
-    return (modules) -> new EmbeddingsOrchestrationConfig().modules(modules);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the modules of this {@link EmbeddingsOrchestrationConfig} instance.
-     *
-     * @param modules The modules of this {@link EmbeddingsOrchestrationConfig}
-     * @return The EmbeddingsOrchestrationConfig instance.
-     */
-    EmbeddingsOrchestrationConfig modules(@Nonnull final EmbeddingsModuleConfigs modules);
+  /** Create a new {@link TokenUsagePromptTokensDetails} instance. No arguments are required. */
+  public static TokenUsagePromptTokensDetails create() {
+    return new TokenUsagePromptTokensDetails();
   }
 }
