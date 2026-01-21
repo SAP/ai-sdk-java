@@ -1,0 +1,35 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v2/registry/v2/orchestrationConfigs"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "count": 2,
+      "resources": [
+        {
+          "id": "62e8638a-ae87-4bd5-9027-a0bc67db1609",
+          "name": "test-config-for-OrchestrationTest",
+          "version": "0.0.1",
+          "scenario": "sdk-test-scenario",
+          "creation_timestamp": "2025-12-19T16:24:27.442000",
+          "managed_by": "imperative",
+          "is_version_head": true
+        },
+        {
+          "id": "f9f2875a-4c92-471b-a403-51a50e70fe52",
+          "name": "test-config",
+          "version": "0.0.1",
+          "scenario": "sdk-test-scenario",
+          "creation_timestamp": "2025-12-19T16:33:05.607000",
+          "managed_by": "imperative",
+          "is_version_head": true
+        }
+      ]
+    }
+  }
+}

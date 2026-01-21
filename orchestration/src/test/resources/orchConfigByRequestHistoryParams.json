@@ -1,0 +1,14 @@
+{
+  "config_ref" : {
+    "scenario" : "scenario",
+    "name" : "name",
+    "version" : "0.0.1"
+  },
+  "placeholder_values" : {
+    "placeholder" : "value"
+  },
+  "messages_history" : [ {
+    "role" : "system",
+    "content" : "System Message"
+  } ]
+}

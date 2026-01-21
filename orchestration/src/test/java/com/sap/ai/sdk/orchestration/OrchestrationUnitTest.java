@@ -1416,6 +1416,62 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void testExecuteFromReferenceById() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var reference = OrchestrationConfigReference.fromId("test-id");
+    final var response = client.chatCompletionUsingReference(reference);
+
+    final String expectedRequest = fileLoaderStr.apply("orchConfigByIdRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
+  }
+
+  @Test
+  void testExecuteFromReferenceBySNV() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var reference =
+        OrchestrationConfigReference.fromScenario("scenario").name("name").version("0.0.1");
+    final var response = client.chatCompletionUsingReference(reference);
+
+    final String expectedRequest = fileLoaderStr.apply("orchConfigBySNVRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
+  }
+
+  @Test
+  void testExecuteFromReferenceWithMessageHistoryAndInputParams() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    List<Message> history = List.of(new SystemMessage("System Message"));
+    var params = Map.of("placeholder", "value");
+    var reference =
+        OrchestrationConfigReference.fromScenario("scenario")
+            .name("name")
+            .version("0.0.1")
+            .withMessageHistory(history)
+            .withTemplateParameters(params);
+    final var response = client.chatCompletionUsingReference(reference);
+
+    final String expectedRequest = fileLoaderStr.apply("orchConfigByRequestHistoryParams.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
+  }
+
+  @Test
   void testGetAllMessages() {
     stubFor(
         post(anyUrl())
