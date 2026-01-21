@@ -536,7 +536,6 @@ public class OrchestrationService {
         Template.create()
             .template(List.of(template.createChatMessage()))
             .responseFormat(ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT));
-
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val prompt =
