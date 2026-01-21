@@ -1268,8 +1268,7 @@ class OrchestrationUnitTest {
                       .withBodyFile("templateReferenceResponse.json")
                       .withHeader("Content-Type", "application/json")));
 
-      var template =
-          TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+      var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
       var configWithTemplate = config.withTemplateConfig(template);
 
       var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
@@ -1327,8 +1326,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("templateReferenceResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var template =
-        TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
+    var template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
     var configWithTemplate = config.withTemplateConfig(template);
 
     var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");

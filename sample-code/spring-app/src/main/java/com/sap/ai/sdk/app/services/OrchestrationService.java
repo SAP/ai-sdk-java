@@ -560,8 +560,7 @@ public class OrchestrationService {
     final var llmWithImageSupportConfig =
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
-    val template =
-        TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+    val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
 
     val inputParams = Map.of("language", "Italian", "input", topic);
@@ -612,8 +611,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenarioTenant(
       @Nonnull final String topic) {
-    val template =
-        TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
+    val template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
     val configWithTemplate = config.withTemplateConfig(template);
 
     val inputParams = Map.of("language", "Italian", "input", topic);
