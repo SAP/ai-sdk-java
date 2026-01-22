@@ -109,7 +109,6 @@ jobs:
 
       - name: "Download specification file"
         id: download
-        continue-on-error: true # Caught by step "Fail if download failed"
         env:
           GH_ENTERPRISE_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
@@ -239,12 +238,6 @@ jobs:
             echo "| Pull Request Creation | ${{ env.CREATE_PR == 'false' && '⏩ skipped' || '' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' || '' }}" >> $GITHUB_STEP_SUMMARY
           fi
 
-      - name: "Fail if download failed"
-        if: steps.download.outcome == 'failure'
-        run: |
-          echo "Specification file download failed. Please check the Download step logs for details."
-          exit 1
-
       - name: "Fail if generation failed"
         if: steps.generate.outputs.generation_result == 'failure'
         run: |
@@ -252,7 +245,7 @@ jobs:
           exit 1
 
       - name: "Slack Notification"
-        if: ${{ failure() && github.event.inputs.create-pr == true }}
+        if: ( steps.download.outcome == 'failure' || failure() ) && github.event.inputs.create-pr == 'true'
         uses: slackapi/slack-github-action@v2.1.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
