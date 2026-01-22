@@ -1,13 +1,13 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.TENANT;
+
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
-
-import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.TENANT;
 
 /**
  * Template configuration for the {@link OrchestrationModuleConfig}.
@@ -63,8 +63,7 @@ public abstract class TemplateConfig {
      */
     @Nonnull
     default OrchestrationTemplateReference byId(@Nonnull final String id) {
-      return new OrchestrationTemplateReference(
-          TemplateRefByID.create().id(id), TENANT);
+      return new OrchestrationTemplateReference(TemplateRefByID.create().id(id), TENANT);
     }
 
     /**

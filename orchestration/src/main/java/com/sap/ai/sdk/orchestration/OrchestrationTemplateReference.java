@@ -49,8 +49,11 @@ public class OrchestrationTemplateReference extends TemplateConfig {
     }
   }
 
+  /** The scope of the template reference. */
   public enum ScopeEnum {
+    /** Template is resolved within the current tenant scope. */
     TENANT,
+    /** Template is resolved within the configured resource group scope. */
     RESOURCE_GROUP
   }
 }
