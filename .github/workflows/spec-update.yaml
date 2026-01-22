@@ -245,7 +245,7 @@ jobs:
           exit 1
 
       - name: "Slack Notification"
-        if: ( steps.download.outcome == 'failure' || failure() ) && github.event.inputs.create-pr == 'true'
+        if: failure() && github.event.inputs.create-pr == 'true'
         uses: slackapi/slack-github-action@v2.1.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
