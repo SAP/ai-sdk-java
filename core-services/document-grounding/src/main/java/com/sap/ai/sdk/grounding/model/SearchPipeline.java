@@ -31,7 +31,8 @@ public class SearchPipeline
 // CHECKSTYLE:ON
 {
   @JsonProperty("dataRepositoryMetadata")
-  private List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata = new ArrayList<>();
+  private List<SearchPipelineDataRepositoryMetadataInner> dataRepositoryMetadata =
+      new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -49,7 +50,7 @@ public class SearchPipeline
    */
   @Nonnull
   public SearchPipeline dataRepositoryMetadata(
-      @Nullable final List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata) {
+      @Nullable final List<SearchPipelineDataRepositoryMetadataInner> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
     return this;
   }
@@ -62,7 +63,7 @@ public class SearchPipeline
    */
   @Nonnull
   public SearchPipeline addDataRepositoryMetadataItem(
-      @Nonnull final MetaDataDataRepositoryMetadataInner dataRepositoryMetadataItem) {
+      @Nonnull final SearchPipelineDataRepositoryMetadataInner dataRepositoryMetadataItem) {
     if (this.dataRepositoryMetadata == null) {
       this.dataRepositoryMetadata = new ArrayList<>();
     }
@@ -78,7 +79,7 @@ public class SearchPipeline
    *     instance.
    */
   @Nonnull
-  public List<MetaDataDataRepositoryMetadataInner> getDataRepositoryMetadata() {
+  public List<SearchPipelineDataRepositoryMetadataInner> getDataRepositoryMetadata() {
     return dataRepositoryMetadata;
   }
 
@@ -89,7 +90,7 @@ public class SearchPipeline
    *     search criteria will be returned.
    */
   public void setDataRepositoryMetadata(
-      @Nullable final List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata) {
+      @Nullable final List<SearchPipelineDataRepositoryMetadataInner> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
   }
 

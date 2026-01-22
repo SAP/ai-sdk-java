@@ -15,9 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -25,69 +23,55 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** SFTPConfigurationSftp */
+/** GoogleDriveConfigurationMinimal */
 // CHECKSTYLE:OFF
-public class SFTPConfigurationSftp
+public class GoogleDriveConfigurationMinimal
 // CHECKSTYLE:ON
 {
-  @JsonProperty("includePaths")
-  private List<String> includePaths = new ArrayList<>();
+  @JsonProperty("googleDrive")
+  private GoogleDriveFolderDetail googleDrive;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for SFTPConfigurationSftp. */
-  protected SFTPConfigurationSftp() {}
+  /** Default constructor for GoogleDriveConfigurationMinimal. */
+  protected GoogleDriveConfigurationMinimal() {}
 
   /**
-   * Set the includePaths of this {@link SFTPConfigurationSftp} instance and return the same
-   * instance.
+   * Set the googleDrive of this {@link GoogleDriveConfigurationMinimal} instance and return the
+   * same instance.
    *
-   * @param includePaths The includePaths of this {@link SFTPConfigurationSftp}
-   * @return The same instance of this {@link SFTPConfigurationSftp} class
+   * @param googleDrive The googleDrive of this {@link GoogleDriveConfigurationMinimal}
+   * @return The same instance of this {@link GoogleDriveConfigurationMinimal} class
    */
   @Nonnull
-  public SFTPConfigurationSftp includePaths(@Nullable final List<String> includePaths) {
-    this.includePaths = includePaths;
+  public GoogleDriveConfigurationMinimal googleDrive(
+      @Nonnull final GoogleDriveFolderDetail googleDrive) {
+    this.googleDrive = googleDrive;
     return this;
   }
 
   /**
-   * Add one includePaths instance to this {@link SFTPConfigurationSftp}.
+   * Get googleDrive
    *
-   * @param includePathsItem The includePaths that should be added
-   * @return The same instance of type {@link SFTPConfigurationSftp}
+   * @return googleDrive The googleDrive of this {@link GoogleDriveConfigurationMinimal} instance.
    */
   @Nonnull
-  public SFTPConfigurationSftp addIncludePathsItem(@Nonnull final String includePathsItem) {
-    if (this.includePaths == null) {
-      this.includePaths = new ArrayList<>();
-    }
-    this.includePaths.add(includePathsItem);
-    return this;
+  public GoogleDriveFolderDetail getGoogleDrive() {
+    return googleDrive;
   }
 
   /**
-   * Get includePaths
+   * Set the googleDrive of this {@link GoogleDriveConfigurationMinimal} instance.
    *
-   * @return includePaths The includePaths of this {@link SFTPConfigurationSftp} instance.
+   * @param googleDrive The googleDrive of this {@link GoogleDriveConfigurationMinimal}
    */
-  @Nonnull
-  public List<String> getIncludePaths() {
-    return includePaths;
+  public void setGoogleDrive(@Nonnull final GoogleDriveFolderDetail googleDrive) {
+    this.googleDrive = googleDrive;
   }
 
   /**
-   * Set the includePaths of this {@link SFTPConfigurationSftp} instance.
-   *
-   * @param includePaths The includePaths of this {@link SFTPConfigurationSftp}
-   */
-  public void setIncludePaths(@Nullable final List<String> includePaths) {
-    this.includePaths = includePaths;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link SFTPConfigurationSftp}.
+   * Get the names of the unrecognizable properties of the {@link GoogleDriveConfigurationMinimal}.
    *
    * @return The set of properties names
    */
@@ -98,7 +82,8 @@ public class SFTPConfigurationSftp
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link SFTPConfigurationSftp} instance.
+   * Get the value of an unrecognizable property of this {@link GoogleDriveConfigurationMinimal}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -110,14 +95,14 @@ public class SFTPConfigurationSftp
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "SFTPConfigurationSftp has no field with name '" + name + "'.");
+          "GoogleDriveConfigurationMinimal has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link SFTPConfigurationSftp} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link GoogleDriveConfigurationMinimal} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -125,13 +110,14 @@ public class SFTPConfigurationSftp
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (includePaths != null) declaredFields.put("includePaths", includePaths);
+    if (googleDrive != null) declaredFields.put("googleDrive", googleDrive);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link SFTPConfigurationSftp} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link GoogleDriveConfigurationMinimal} instance. If the
+   * map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -149,22 +135,24 @@ public class SFTPConfigurationSftp
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final SFTPConfigurationSftp sfTPConfigurationSftp = (SFTPConfigurationSftp) o;
-    return Objects.equals(this.cloudSdkCustomFields, sfTPConfigurationSftp.cloudSdkCustomFields)
-        && Objects.equals(this.includePaths, sfTPConfigurationSftp.includePaths);
+    final GoogleDriveConfigurationMinimal googleDriveConfigurationMinimal =
+        (GoogleDriveConfigurationMinimal) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, googleDriveConfigurationMinimal.cloudSdkCustomFields)
+        && Objects.equals(this.googleDrive, googleDriveConfigurationMinimal.googleDrive);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(includePaths, cloudSdkCustomFields);
+    return Objects.hash(googleDrive, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class SFTPConfigurationSftp {\n");
-    sb.append("    includePaths: ").append(toIndentedString(includePaths)).append("\n");
+    sb.append("class GoogleDriveConfigurationMinimal {\n");
+    sb.append("    googleDrive: ").append(toIndentedString(googleDrive)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -182,8 +170,22 @@ public class SFTPConfigurationSftp
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link SFTPConfigurationSftp} instance. No arguments are required. */
-  public static SFTPConfigurationSftp create() {
-    return new SFTPConfigurationSftp();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * GoogleDriveConfigurationMinimal} instance with all required arguments.
+   */
+  public static Builder create() {
+    return (googleDrive) -> new GoogleDriveConfigurationMinimal().googleDrive(googleDrive);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the googleDrive of this {@link GoogleDriveConfigurationMinimal} instance.
+     *
+     * @param googleDrive The googleDrive of this {@link GoogleDriveConfigurationMinimal}
+     * @return The GoogleDriveConfigurationMinimal instance.
+     */
+    GoogleDriveConfigurationMinimal googleDrive(@Nonnull final GoogleDriveFolderDetail googleDrive);
   }
 }

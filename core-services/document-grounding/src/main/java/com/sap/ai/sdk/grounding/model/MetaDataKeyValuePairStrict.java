@@ -26,9 +26,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** MetaDataDataRepositoryMetadataInner */
+/** MetaDataKeyValuePairStrict */
 // CHECKSTYLE:OFF
-public class MetaDataDataRepositoryMetadataInner
+public class MetaDataKeyValuePairStrict
 // CHECKSTYLE:ON
 {
   @JsonProperty("key")
@@ -40,18 +40,17 @@ public class MetaDataDataRepositoryMetadataInner
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for MetaDataDataRepositoryMetadataInner. */
-  protected MetaDataDataRepositoryMetadataInner() {}
+  /** Default constructor for MetaDataKeyValuePairStrict. */
+  protected MetaDataKeyValuePairStrict() {}
 
   /**
-   * Set the key of this {@link MetaDataDataRepositoryMetadataInner} instance and return the same
-   * instance.
+   * Set the key of this {@link MetaDataKeyValuePairStrict} instance and return the same instance.
    *
-   * @param key The key of this {@link MetaDataDataRepositoryMetadataInner}
-   * @return The same instance of this {@link MetaDataDataRepositoryMetadataInner} class
+   * @param key The key of this {@link MetaDataKeyValuePairStrict}
+   * @return The same instance of this {@link MetaDataKeyValuePairStrict} class
    */
   @Nonnull
-  public MetaDataDataRepositoryMetadataInner key(@Nonnull final String key) {
+  public MetaDataKeyValuePairStrict key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
@@ -59,7 +58,7 @@ public class MetaDataDataRepositoryMetadataInner
   /**
    * Get key
    *
-   * @return key The key of this {@link MetaDataDataRepositoryMetadataInner} instance.
+   * @return key The key of this {@link MetaDataKeyValuePairStrict} instance.
    */
   @Nonnull
   public String getKey() {
@@ -67,35 +66,34 @@ public class MetaDataDataRepositoryMetadataInner
   }
 
   /**
-   * Set the key of this {@link MetaDataDataRepositoryMetadataInner} instance.
+   * Set the key of this {@link MetaDataKeyValuePairStrict} instance.
    *
-   * @param key The key of this {@link MetaDataDataRepositoryMetadataInner}
+   * @param key The key of this {@link MetaDataKeyValuePairStrict}
    */
   public void setKey(@Nonnull final String key) {
     this.key = key;
   }
 
   /**
-   * Set the value of this {@link MetaDataDataRepositoryMetadataInner} instance and return the same
-   * instance.
+   * Set the value of this {@link MetaDataKeyValuePairStrict} instance and return the same instance.
    *
-   * @param value The value of this {@link MetaDataDataRepositoryMetadataInner}
-   * @return The same instance of this {@link MetaDataDataRepositoryMetadataInner} class
+   * @param value The value of this {@link MetaDataKeyValuePairStrict}
+   * @return The same instance of this {@link MetaDataKeyValuePairStrict} class
    */
   @Nonnull
-  public MetaDataDataRepositoryMetadataInner value(@Nonnull final List<String> value) {
+  public MetaDataKeyValuePairStrict value(@Nonnull final List<String> value) {
     this.value = value;
     return this;
   }
 
   /**
-   * Add one value instance to this {@link MetaDataDataRepositoryMetadataInner}.
+   * Add one value instance to this {@link MetaDataKeyValuePairStrict}.
    *
    * @param valueItem The value that should be added
-   * @return The same instance of type {@link MetaDataDataRepositoryMetadataInner}
+   * @return The same instance of type {@link MetaDataKeyValuePairStrict}
    */
   @Nonnull
-  public MetaDataDataRepositoryMetadataInner addValueItem(@Nonnull final String valueItem) {
+  public MetaDataKeyValuePairStrict addValueItem(@Nonnull final String valueItem) {
     if (this.value == null) {
       this.value = new ArrayList<>();
     }
@@ -106,7 +104,7 @@ public class MetaDataDataRepositoryMetadataInner
   /**
    * Get value
    *
-   * @return value The value of this {@link MetaDataDataRepositoryMetadataInner} instance.
+   * @return value The value of this {@link MetaDataKeyValuePairStrict} instance.
    */
   @Nonnull
   public List<String> getValue() {
@@ -114,17 +112,16 @@ public class MetaDataDataRepositoryMetadataInner
   }
 
   /**
-   * Set the value of this {@link MetaDataDataRepositoryMetadataInner} instance.
+   * Set the value of this {@link MetaDataKeyValuePairStrict} instance.
    *
-   * @param value The value of this {@link MetaDataDataRepositoryMetadataInner}
+   * @param value The value of this {@link MetaDataKeyValuePairStrict}
    */
   public void setValue(@Nonnull final List<String> value) {
     this.value = value;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link
-   * MetaDataDataRepositoryMetadataInner}.
+   * Get the names of the unrecognizable properties of the {@link MetaDataKeyValuePairStrict}.
    *
    * @return The set of properties names
    */
@@ -135,7 +132,7 @@ public class MetaDataDataRepositoryMetadataInner
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link MetaDataDataRepositoryMetadataInner}
+   * Get the value of an unrecognizable property of this {@link MetaDataKeyValuePairStrict}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -148,14 +145,14 @@ public class MetaDataDataRepositoryMetadataInner
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "MetaDataDataRepositoryMetadataInner has no field with name '" + name + "'.");
+          "MetaDataKeyValuePairStrict has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link MetaDataDataRepositoryMetadataInner} instance
-   * including unrecognized properties.
+   * Get the value of all properties of this {@link MetaDataKeyValuePairStrict} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -169,9 +166,8 @@ public class MetaDataDataRepositoryMetadataInner
   }
 
   /**
-   * Set an unrecognizable property of this {@link MetaDataDataRepositoryMetadataInner} instance. If
-   * the map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
+   * Set an unrecognizable property of this {@link MetaDataKeyValuePairStrict} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -189,12 +185,11 @@ public class MetaDataDataRepositoryMetadataInner
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final MetaDataDataRepositoryMetadataInner metaDataDataRepositoryMetadataInner =
-        (MetaDataDataRepositoryMetadataInner) o;
+    final MetaDataKeyValuePairStrict metaDataKeyValuePairStrict = (MetaDataKeyValuePairStrict) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, metaDataDataRepositoryMetadataInner.cloudSdkCustomFields)
-        && Objects.equals(this.key, metaDataDataRepositoryMetadataInner.key)
-        && Objects.equals(this.value, metaDataDataRepositoryMetadataInner.value);
+            this.cloudSdkCustomFields, metaDataKeyValuePairStrict.cloudSdkCustomFields)
+        && Objects.equals(this.key, metaDataKeyValuePairStrict.key)
+        && Objects.equals(this.value, metaDataKeyValuePairStrict.value);
   }
 
   @Override
@@ -206,7 +201,7 @@ public class MetaDataDataRepositoryMetadataInner
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class MetaDataDataRepositoryMetadataInner {\n");
+    sb.append("class MetaDataKeyValuePairStrict {\n");
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -228,19 +223,19 @@ public class MetaDataDataRepositoryMetadataInner
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * MetaDataDataRepositoryMetadataInner} instance with all required arguments.
+   * MetaDataKeyValuePairStrict} instance with all required arguments.
    */
   public static Builder create() {
-    return (key) -> (value) -> new MetaDataDataRepositoryMetadataInner().key(key).value(value);
+    return (key) -> (value) -> new MetaDataKeyValuePairStrict().key(key).value(value);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the key of this {@link MetaDataDataRepositoryMetadataInner} instance.
+     * Set the key of this {@link MetaDataKeyValuePairStrict} instance.
      *
-     * @param key The key of this {@link MetaDataDataRepositoryMetadataInner}
-     * @return The MetaDataDataRepositoryMetadataInner builder.
+     * @param key The key of this {@link MetaDataKeyValuePairStrict}
+     * @return The MetaDataKeyValuePairStrict builder.
      */
     Builder1 key(@Nonnull final String key);
   }
@@ -248,20 +243,20 @@ public class MetaDataDataRepositoryMetadataInner
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the value of this {@link MetaDataDataRepositoryMetadataInner} instance.
+     * Set the value of this {@link MetaDataKeyValuePairStrict} instance.
      *
-     * @param value The value of this {@link MetaDataDataRepositoryMetadataInner}
-     * @return The MetaDataDataRepositoryMetadataInner instance.
+     * @param value The value of this {@link MetaDataKeyValuePairStrict}
+     * @return The MetaDataKeyValuePairStrict instance.
      */
-    MetaDataDataRepositoryMetadataInner value(@Nonnull final List<String> value);
+    MetaDataKeyValuePairStrict value(@Nonnull final List<String> value);
 
     /**
-     * Set the value of this {@link MetaDataDataRepositoryMetadataInner} instance.
+     * Set the value of this {@link MetaDataKeyValuePairStrict} instance.
      *
-     * @param value The value of this {@link MetaDataDataRepositoryMetadataInner}
-     * @return The MetaDataDataRepositoryMetadataInner instance.
+     * @param value The value of this {@link MetaDataKeyValuePairStrict}
+     * @return The MetaDataKeyValuePairStrict instance.
      */
-    default MetaDataDataRepositoryMetadataInner value(@Nonnull final String... value) {
+    default MetaDataKeyValuePairStrict value(@Nonnull final String... value) {
       return value(Arrays.asList(value));
     }
   }

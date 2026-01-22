@@ -23,54 +23,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Error message if any. */
+/** GoogleDriveConfig */
 // CHECKSTYLE:OFF
-public class PerFilterSearchResultError
+public class GoogleDriveConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("message")
-  private String message = "Unknown Error Occurred";
+  @JsonProperty("folder")
+  private GoogleDriveFolder folder;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for PerFilterSearchResultError. */
-  protected PerFilterSearchResultError() {}
+  /** Default constructor for GoogleDriveConfig. */
+  protected GoogleDriveConfig() {}
 
   /**
-   * Set the message of this {@link PerFilterSearchResultError} instance and return the same
-   * instance.
+   * Set the folder of this {@link GoogleDriveConfig} instance and return the same instance.
    *
-   * @param message The message of this {@link PerFilterSearchResultError}
-   * @return The same instance of this {@link PerFilterSearchResultError} class
+   * @param folder The folder of this {@link GoogleDriveConfig}
+   * @return The same instance of this {@link GoogleDriveConfig} class
    */
   @Nonnull
-  public PerFilterSearchResultError message(@Nonnull final String message) {
-    this.message = message;
+  public GoogleDriveConfig folder(@Nonnull final GoogleDriveFolder folder) {
+    this.folder = folder;
     return this;
   }
 
   /**
-   * Get message
+   * Get folder
    *
-   * @return message The message of this {@link PerFilterSearchResultError} instance.
+   * @return folder The folder of this {@link GoogleDriveConfig} instance.
    */
   @Nonnull
-  public String getMessage() {
-    return message;
+  public GoogleDriveFolder getFolder() {
+    return folder;
   }
 
   /**
-   * Set the message of this {@link PerFilterSearchResultError} instance.
+   * Set the folder of this {@link GoogleDriveConfig} instance.
    *
-   * @param message The message of this {@link PerFilterSearchResultError}
+   * @param folder The folder of this {@link GoogleDriveConfig}
    */
-  public void setMessage(@Nonnull final String message) {
-    this.message = message;
+  public void setFolder(@Nonnull final GoogleDriveFolder folder) {
+    this.folder = folder;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link PerFilterSearchResultError}.
+   * Get the names of the unrecognizable properties of the {@link GoogleDriveConfig}.
    *
    * @return The set of properties names
    */
@@ -81,8 +80,7 @@ public class PerFilterSearchResultError
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link PerFilterSearchResultError}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link GoogleDriveConfig} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -93,14 +91,13 @@ public class PerFilterSearchResultError
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "PerFilterSearchResultError has no field with name '" + name + "'.");
+      throw new NoSuchElementException("GoogleDriveConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link PerFilterSearchResultError} instance including
+   * Get the value of all properties of this {@link GoogleDriveConfig} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -109,12 +106,12 @@ public class PerFilterSearchResultError
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (message != null) declaredFields.put("message", message);
+    if (folder != null) declaredFields.put("folder", folder);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link PerFilterSearchResultError} instance. If the map
+   * Set an unrecognizable property of this {@link GoogleDriveConfig} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -133,23 +130,22 @@ public class PerFilterSearchResultError
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final PerFilterSearchResultError perFilterSearchResultError = (PerFilterSearchResultError) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, perFilterSearchResultError.cloudSdkCustomFields)
-        && Objects.equals(this.message, perFilterSearchResultError.message);
+    final GoogleDriveConfig googleDriveConfig = (GoogleDriveConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, googleDriveConfig.cloudSdkCustomFields)
+        && Objects.equals(this.folder, googleDriveConfig.folder);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(message, cloudSdkCustomFields);
+    return Objects.hash(folder, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class PerFilterSearchResultError {\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("class GoogleDriveConfig {\n");
+    sb.append("    folder: ").append(toIndentedString(folder)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -168,21 +164,21 @@ public class PerFilterSearchResultError
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * PerFilterSearchResultError} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link GoogleDriveConfig}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (message) -> new PerFilterSearchResultError().message(message);
+    return (folder) -> new GoogleDriveConfig().folder(folder);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the message of this {@link PerFilterSearchResultError} instance.
+     * Set the folder of this {@link GoogleDriveConfig} instance.
      *
-     * @param message The message of this {@link PerFilterSearchResultError}
-     * @return The PerFilterSearchResultError instance.
+     * @param folder The folder of this {@link GoogleDriveConfig}
+     * @return The GoogleDriveConfig instance.
      */
-    PerFilterSearchResultError message(@Nonnull final String message);
+    GoogleDriveConfig folder(@Nonnull final GoogleDriveFolder folder);
   }
 }

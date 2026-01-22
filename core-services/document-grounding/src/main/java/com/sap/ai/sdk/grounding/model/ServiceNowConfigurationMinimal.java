@@ -28,6 +28,9 @@ import javax.annotation.Nullable;
 public class ServiceNowConfigurationMinimal
 // CHECKSTYLE:ON
 {
+  @JsonProperty("destination")
+  private String destination;
+
   @JsonProperty("serviceNow")
   private ServiceNowConfigurationMinimalServiceNow serviceNow;
 
@@ -38,6 +41,38 @@ public class ServiceNowConfigurationMinimal
   protected ServiceNowConfigurationMinimal() {}
 
   /**
+   * Set the destination of this {@link ServiceNowConfigurationMinimal} instance and return the same
+   * instance.
+   *
+   * @param destination The destination of this {@link ServiceNowConfigurationMinimal}
+   * @return The same instance of this {@link ServiceNowConfigurationMinimal} class
+   */
+  @Nonnull
+  public ServiceNowConfigurationMinimal destination(@Nonnull final String destination) {
+    this.destination = destination;
+    return this;
+  }
+
+  /**
+   * Get destination
+   *
+   * @return destination The destination of this {@link ServiceNowConfigurationMinimal} instance.
+   */
+  @Nonnull
+  public String getDestination() {
+    return destination;
+  }
+
+  /**
+   * Set the destination of this {@link ServiceNowConfigurationMinimal} instance.
+   *
+   * @param destination The destination of this {@link ServiceNowConfigurationMinimal}
+   */
+  public void setDestination(@Nonnull final String destination) {
+    this.destination = destination;
+  }
+
+  /**
    * Set the serviceNow of this {@link ServiceNowConfigurationMinimal} instance and return the same
    * instance.
    *
@@ -46,7 +81,7 @@ public class ServiceNowConfigurationMinimal
    */
   @Nonnull
   public ServiceNowConfigurationMinimal serviceNow(
-      @Nonnull final ServiceNowConfigurationMinimalServiceNow serviceNow) {
+      @Nullable final ServiceNowConfigurationMinimalServiceNow serviceNow) {
     this.serviceNow = serviceNow;
     return this;
   }
@@ -66,7 +101,7 @@ public class ServiceNowConfigurationMinimal
    *
    * @param serviceNow The serviceNow of this {@link ServiceNowConfigurationMinimal}
    */
-  public void setServiceNow(@Nonnull final ServiceNowConfigurationMinimalServiceNow serviceNow) {
+  public void setServiceNow(@Nullable final ServiceNowConfigurationMinimalServiceNow serviceNow) {
     this.serviceNow = serviceNow;
   }
 
@@ -110,6 +145,7 @@ public class ServiceNowConfigurationMinimal
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (destination != null) declaredFields.put("destination", destination);
     if (serviceNow != null) declaredFields.put("serviceNow", serviceNow);
     return declaredFields;
   }
@@ -139,12 +175,13 @@ public class ServiceNowConfigurationMinimal
         (ServiceNowConfigurationMinimal) o;
     return Objects.equals(
             this.cloudSdkCustomFields, serviceNowConfigurationMinimal.cloudSdkCustomFields)
+        && Objects.equals(this.destination, serviceNowConfigurationMinimal.destination)
         && Objects.equals(this.serviceNow, serviceNowConfigurationMinimal.serviceNow);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(serviceNow, cloudSdkCustomFields);
+    return Objects.hash(destination, serviceNow, cloudSdkCustomFields);
   }
 
   @Override
@@ -152,6 +189,7 @@ public class ServiceNowConfigurationMinimal
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class ServiceNowConfigurationMinimal {\n");
+    sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
     sb.append("    serviceNow: ").append(toIndentedString(serviceNow)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -175,18 +213,17 @@ public class ServiceNowConfigurationMinimal
    * ServiceNowConfigurationMinimal} instance with all required arguments.
    */
   public static Builder create() {
-    return (serviceNow) -> new ServiceNowConfigurationMinimal().serviceNow(serviceNow);
+    return (destination) -> new ServiceNowConfigurationMinimal().destination(destination);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the serviceNow of this {@link ServiceNowConfigurationMinimal} instance.
+     * Set the destination of this {@link ServiceNowConfigurationMinimal} instance.
      *
-     * @param serviceNow The serviceNow of this {@link ServiceNowConfigurationMinimal}
+     * @param destination The destination of this {@link ServiceNowConfigurationMinimal}
      * @return The ServiceNowConfigurationMinimal instance.
      */
-    ServiceNowConfigurationMinimal serviceNow(
-        @Nonnull final ServiceNowConfigurationMinimalServiceNow serviceNow);
+    ServiceNowConfigurationMinimal destination(@Nonnull final String destination);
   }
 }

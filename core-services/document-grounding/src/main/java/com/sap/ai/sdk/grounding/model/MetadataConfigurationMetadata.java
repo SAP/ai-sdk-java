@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,75 +26,43 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** MetaData */
+/** MetadataConfigurationMetadata */
 // CHECKSTYLE:OFF
-public class MetaData
+public class MetadataConfigurationMetadata
 // CHECKSTYLE:ON
 {
-  @JsonProperty("destination")
-  private String destination;
-
   @JsonProperty("dataRepositoryMetadata")
   private List<MetaDataKeyValuePairStrict> dataRepositoryMetadata = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for MetaData. */
-  protected MetaData() {}
+  /** Default constructor for MetadataConfigurationMetadata. */
+  protected MetadataConfigurationMetadata() {}
 
   /**
-   * Set the destination of this {@link MetaData} instance and return the same instance.
+   * Set the dataRepositoryMetadata of this {@link MetadataConfigurationMetadata} instance and
+   * return the same instance.
    *
-   * @param destination The destination of this {@link MetaData}
-   * @return The same instance of this {@link MetaData} class
+   * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link
+   *     MetadataConfigurationMetadata}
+   * @return The same instance of this {@link MetadataConfigurationMetadata} class
    */
   @Nonnull
-  public MetaData destination(@Nullable final String destination) {
-    this.destination = destination;
-    return this;
-  }
-
-  /**
-   * Get destination
-   *
-   * @return destination The destination of this {@link MetaData} instance.
-   */
-  @Nonnull
-  public String getDestination() {
-    return destination;
-  }
-
-  /**
-   * Set the destination of this {@link MetaData} instance.
-   *
-   * @param destination The destination of this {@link MetaData}
-   */
-  public void setDestination(@Nullable final String destination) {
-    this.destination = destination;
-  }
-
-  /**
-   * Set the dataRepositoryMetadata of this {@link MetaData} instance and return the same instance.
-   *
-   * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link MetaData}
-   * @return The same instance of this {@link MetaData} class
-   */
-  @Nonnull
-  public MetaData dataRepositoryMetadata(
-      @Nullable final List<MetaDataKeyValuePairStrict> dataRepositoryMetadata) {
+  public MetadataConfigurationMetadata dataRepositoryMetadata(
+      @Nonnull final List<MetaDataKeyValuePairStrict> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
     return this;
   }
 
   /**
-   * Add one dataRepositoryMetadata instance to this {@link MetaData}.
+   * Add one dataRepositoryMetadata instance to this {@link MetadataConfigurationMetadata}.
    *
    * @param dataRepositoryMetadataItem The dataRepositoryMetadata that should be added
-   * @return The same instance of type {@link MetaData}
+   * @return The same instance of type {@link MetadataConfigurationMetadata}
    */
   @Nonnull
-  public MetaData addDataRepositoryMetadataItem(
+  public MetadataConfigurationMetadata addDataRepositoryMetadataItem(
       @Nonnull final MetaDataKeyValuePairStrict dataRepositoryMetadataItem) {
     if (this.dataRepositoryMetadata == null) {
       this.dataRepositoryMetadata = new ArrayList<>();
@@ -105,7 +74,8 @@ public class MetaData
   /**
    * Get dataRepositoryMetadata
    *
-   * @return dataRepositoryMetadata The dataRepositoryMetadata of this {@link MetaData} instance.
+   * @return dataRepositoryMetadata The dataRepositoryMetadata of this {@link
+   *     MetadataConfigurationMetadata} instance.
    */
   @Nonnull
   public List<MetaDataKeyValuePairStrict> getDataRepositoryMetadata() {
@@ -113,17 +83,18 @@ public class MetaData
   }
 
   /**
-   * Set the dataRepositoryMetadata of this {@link MetaData} instance.
+   * Set the dataRepositoryMetadata of this {@link MetadataConfigurationMetadata} instance.
    *
-   * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link MetaData}
+   * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link
+   *     MetadataConfigurationMetadata}
    */
   public void setDataRepositoryMetadata(
-      @Nullable final List<MetaDataKeyValuePairStrict> dataRepositoryMetadata) {
+      @Nonnull final List<MetaDataKeyValuePairStrict> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link MetaData}.
+   * Get the names of the unrecognizable properties of the {@link MetadataConfigurationMetadata}.
    *
    * @return The set of properties names
    */
@@ -134,7 +105,8 @@ public class MetaData
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link MetaData} instance.
+   * Get the value of an unrecognizable property of this {@link MetadataConfigurationMetadata}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -145,14 +117,15 @@ public class MetaData
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("MetaData has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "MetadataConfigurationMetadata has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link MetaData} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link MetadataConfigurationMetadata} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -160,15 +133,15 @@ public class MetaData
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (destination != null) declaredFields.put("destination", destination);
     if (dataRepositoryMetadata != null)
       declaredFields.put("dataRepositoryMetadata", dataRepositoryMetadata);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link MetaData} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link MetadataConfigurationMetadata} instance. If the
+   * map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -186,23 +159,24 @@ public class MetaData
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final MetaData metaData = (MetaData) o;
-    return Objects.equals(this.cloudSdkCustomFields, metaData.cloudSdkCustomFields)
-        && Objects.equals(this.destination, metaData.destination)
-        && Objects.equals(this.dataRepositoryMetadata, metaData.dataRepositoryMetadata);
+    final MetadataConfigurationMetadata metadataConfigurationMetadata =
+        (MetadataConfigurationMetadata) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, metadataConfigurationMetadata.cloudSdkCustomFields)
+        && Objects.equals(
+            this.dataRepositoryMetadata, metadataConfigurationMetadata.dataRepositoryMetadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(destination, dataRepositoryMetadata, cloudSdkCustomFields);
+    return Objects.hash(dataRepositoryMetadata, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class MetaData {\n");
-    sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
+    sb.append("class MetadataConfigurationMetadata {\n");
     sb.append("    dataRepositoryMetadata: ")
         .append(toIndentedString(dataRepositoryMetadata))
         .append("\n");
@@ -223,8 +197,37 @@ public class MetaData
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link MetaData} instance. No arguments are required. */
-  public static MetaData create() {
-    return new MetaData();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * MetadataConfigurationMetadata} instance with all required arguments.
+   */
+  public static Builder create() {
+    return (dataRepositoryMetadata) ->
+        new MetadataConfigurationMetadata().dataRepositoryMetadata(dataRepositoryMetadata);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the dataRepositoryMetadata of this {@link MetadataConfigurationMetadata} instance.
+     *
+     * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link
+     *     MetadataConfigurationMetadata}
+     * @return The MetadataConfigurationMetadata instance.
+     */
+    MetadataConfigurationMetadata dataRepositoryMetadata(
+        @Nonnull final List<MetaDataKeyValuePairStrict> dataRepositoryMetadata);
+
+    /**
+     * Set the dataRepositoryMetadata of this {@link MetadataConfigurationMetadata} instance.
+     *
+     * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link
+     *     MetadataConfigurationMetadata}
+     * @return The MetadataConfigurationMetadata instance.
+     */
+    default MetadataConfigurationMetadata dataRepositoryMetadata(
+        @Nonnull final MetaDataKeyValuePairStrict... dataRepositoryMetadata) {
+      return dataRepositoryMetadata(Arrays.asList(dataRepositoryMetadata));
+    }
   }
 }

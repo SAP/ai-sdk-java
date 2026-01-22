@@ -31,7 +31,8 @@ public class PatchPipelineMetadata
 // CHECKSTYLE:ON
 {
   @JsonProperty("dataRepositoryMetadata")
-  private List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata = new ArrayList<>();
+  private List<SearchPipelineDataRepositoryMetadataInner> dataRepositoryMetadata =
+      new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -49,7 +50,7 @@ public class PatchPipelineMetadata
    */
   @Nonnull
   public PatchPipelineMetadata dataRepositoryMetadata(
-      @Nullable final List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata) {
+      @Nullable final List<SearchPipelineDataRepositoryMetadataInner> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
     return this;
   }
@@ -62,7 +63,7 @@ public class PatchPipelineMetadata
    */
   @Nonnull
   public PatchPipelineMetadata addDataRepositoryMetadataItem(
-      @Nonnull final MetaDataDataRepositoryMetadataInner dataRepositoryMetadataItem) {
+      @Nonnull final SearchPipelineDataRepositoryMetadataInner dataRepositoryMetadataItem) {
     if (this.dataRepositoryMetadata == null) {
       this.dataRepositoryMetadata = new ArrayList<>();
     }
@@ -77,7 +78,7 @@ public class PatchPipelineMetadata
    *     instance.
    */
   @Nonnull
-  public List<MetaDataDataRepositoryMetadataInner> getDataRepositoryMetadata() {
+  public List<SearchPipelineDataRepositoryMetadataInner> getDataRepositoryMetadata() {
     return dataRepositoryMetadata;
   }
 
@@ -88,7 +89,7 @@ public class PatchPipelineMetadata
    *     key would be inserted/replaced.
    */
   public void setDataRepositoryMetadata(
-      @Nullable final List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata) {
+      @Nullable final List<SearchPipelineDataRepositoryMetadataInner> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
   }
 

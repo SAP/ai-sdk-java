@@ -25,9 +25,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ServiceNowPipelineMinimalResponse */
+/** GoogleDrivePipelineMinimalResponse */
 // CHECKSTYLE:OFF
-public class ServiceNowPipelineMinimalResponse implements PipelineMinimalResponse
+public class GoogleDrivePipelineMinimalResponse implements PipelineMinimalResponse
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")
@@ -38,10 +38,10 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
 
   /** Gets or Sets type */
   public enum TypeEnum {
-    /** The SERVICE_NOW option of this ServiceNowPipelineMinimalResponse */
-    SERVICE_NOW("ServiceNow"),
+    /** The GOOGLE_DRIVE option of this GoogleDrivePipelineMinimalResponse */
+    GOOGLE_DRIVE("GoogleDrive"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ServiceNowPipelineMinimalResponse */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this GoogleDrivePipelineMinimalResponse */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -76,7 +76,7 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ServiceNowPipelineMinimalResponse
+     * @return The enum value of type GoogleDrivePipelineMinimalResponse
      */
     @JsonCreator
     @Nonnull
@@ -93,24 +93,27 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   @JsonProperty("type")
   private TypeEnum type;
 
+  @JsonProperty("configuration")
+  private GoogleDriveConfigurationMinimal _configuration;
+
   @JsonProperty("metadata")
   private Boolean metadata;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ServiceNowPipelineMinimalResponse. */
-  protected ServiceNowPipelineMinimalResponse() {}
+  /** Default constructor for GoogleDrivePipelineMinimalResponse. */
+  protected GoogleDrivePipelineMinimalResponse() {}
 
   /**
-   * Set the id of this {@link ServiceNowPipelineMinimalResponse} instance and return the same
+   * Set the id of this {@link GoogleDrivePipelineMinimalResponse} instance and return the same
    * instance.
    *
-   * @param id The id of this {@link ServiceNowPipelineMinimalResponse}
-   * @return The same instance of this {@link ServiceNowPipelineMinimalResponse} class
+   * @param id The id of this {@link GoogleDrivePipelineMinimalResponse}
+   * @return The same instance of this {@link GoogleDrivePipelineMinimalResponse} class
    */
   @Nonnull
-  public ServiceNowPipelineMinimalResponse id(@Nonnull final String id) {
+  public GoogleDrivePipelineMinimalResponse id(@Nonnull final String id) {
     this.id = id;
     return this;
   }
@@ -118,7 +121,7 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   /**
    * Get id
    *
-   * @return id The id of this {@link ServiceNowPipelineMinimalResponse} instance.
+   * @return id The id of this {@link GoogleDrivePipelineMinimalResponse} instance.
    */
   @Nonnull
   public String getId() {
@@ -126,23 +129,23 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   }
 
   /**
-   * Set the id of this {@link ServiceNowPipelineMinimalResponse} instance.
+   * Set the id of this {@link GoogleDrivePipelineMinimalResponse} instance.
    *
-   * @param id The id of this {@link ServiceNowPipelineMinimalResponse}
+   * @param id The id of this {@link GoogleDrivePipelineMinimalResponse}
    */
   public void setId(@Nonnull final String id) {
     this.id = id;
   }
 
   /**
-   * Set the status of this {@link ServiceNowPipelineMinimalResponse} instance and return the same
+   * Set the status of this {@link GoogleDrivePipelineMinimalResponse} instance and return the same
    * instance.
    *
-   * @param status The status of this {@link ServiceNowPipelineMinimalResponse}
-   * @return The same instance of this {@link ServiceNowPipelineMinimalResponse} class
+   * @param status The status of this {@link GoogleDrivePipelineMinimalResponse}
+   * @return The same instance of this {@link GoogleDrivePipelineMinimalResponse} class
    */
   @Nonnull
-  public ServiceNowPipelineMinimalResponse status(@Nullable final PipelineExecutionStatus status) {
+  public GoogleDrivePipelineMinimalResponse status(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
     return this;
   }
@@ -150,7 +153,7 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   /**
    * Get status
    *
-   * @return status The status of this {@link ServiceNowPipelineMinimalResponse} instance.
+   * @return status The status of this {@link GoogleDrivePipelineMinimalResponse} instance.
    */
   @Nullable
   public PipelineExecutionStatus getStatus() {
@@ -158,23 +161,23 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   }
 
   /**
-   * Set the status of this {@link ServiceNowPipelineMinimalResponse} instance.
+   * Set the status of this {@link GoogleDrivePipelineMinimalResponse} instance.
    *
-   * @param status The status of this {@link ServiceNowPipelineMinimalResponse}
+   * @param status The status of this {@link GoogleDrivePipelineMinimalResponse}
    */
   public void setStatus(@Nullable final PipelineExecutionStatus status) {
     this.status = status;
   }
 
   /**
-   * Set the type of this {@link ServiceNowPipelineMinimalResponse} instance and return the same
+   * Set the type of this {@link GoogleDrivePipelineMinimalResponse} instance and return the same
    * instance.
    *
-   * @param type The type of this {@link ServiceNowPipelineMinimalResponse}
-   * @return The same instance of this {@link ServiceNowPipelineMinimalResponse} class
+   * @param type The type of this {@link GoogleDrivePipelineMinimalResponse}
+   * @return The same instance of this {@link GoogleDrivePipelineMinimalResponse} class
    */
   @Nonnull
-  public ServiceNowPipelineMinimalResponse type(@Nonnull final TypeEnum type) {
+  public GoogleDrivePipelineMinimalResponse type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -182,7 +185,7 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   /**
    * Get type
    *
-   * @return type The type of this {@link ServiceNowPipelineMinimalResponse} instance.
+   * @return type The type of this {@link GoogleDrivePipelineMinimalResponse} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -190,23 +193,57 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   }
 
   /**
-   * Set the type of this {@link ServiceNowPipelineMinimalResponse} instance.
+   * Set the type of this {@link GoogleDrivePipelineMinimalResponse} instance.
    *
-   * @param type The type of this {@link ServiceNowPipelineMinimalResponse}
+   * @param type The type of this {@link GoogleDrivePipelineMinimalResponse}
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the metadata of this {@link ServiceNowPipelineMinimalResponse} instance and return the same
-   * instance.
+   * Set the _configuration of this {@link GoogleDrivePipelineMinimalResponse} instance and return
+   * the same instance.
    *
-   * @param metadata The metadata of this {@link ServiceNowPipelineMinimalResponse}
-   * @return The same instance of this {@link ServiceNowPipelineMinimalResponse} class
+   * @param _configuration The _configuration of this {@link GoogleDrivePipelineMinimalResponse}
+   * @return The same instance of this {@link GoogleDrivePipelineMinimalResponse} class
    */
   @Nonnull
-  public ServiceNowPipelineMinimalResponse metadata(@Nullable final Boolean metadata) {
+  public GoogleDrivePipelineMinimalResponse _configuration(
+      @Nullable final GoogleDriveConfigurationMinimal _configuration) {
+    this._configuration = _configuration;
+    return this;
+  }
+
+  /**
+   * Get _configuration
+   *
+   * @return _configuration The _configuration of this {@link GoogleDrivePipelineMinimalResponse}
+   *     instance.
+   */
+  @Nonnull
+  public GoogleDriveConfigurationMinimal getConfiguration() {
+    return _configuration;
+  }
+
+  /**
+   * Set the _configuration of this {@link GoogleDrivePipelineMinimalResponse} instance.
+   *
+   * @param _configuration The _configuration of this {@link GoogleDrivePipelineMinimalResponse}
+   */
+  public void setConfiguration(@Nullable final GoogleDriveConfigurationMinimal _configuration) {
+    this._configuration = _configuration;
+  }
+
+  /**
+   * Set the metadata of this {@link GoogleDrivePipelineMinimalResponse} instance and return the
+   * same instance.
+   *
+   * @param metadata The metadata of this {@link GoogleDrivePipelineMinimalResponse}
+   * @return The same instance of this {@link GoogleDrivePipelineMinimalResponse} class
+   */
+  @Nonnull
+  public GoogleDrivePipelineMinimalResponse metadata(@Nullable final Boolean metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -214,7 +251,7 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   /**
    * Get metadata
    *
-   * @return metadata The metadata of this {@link ServiceNowPipelineMinimalResponse} instance.
+   * @return metadata The metadata of this {@link GoogleDrivePipelineMinimalResponse} instance.
    */
   @Nonnull
   public Boolean isMetadata() {
@@ -222,9 +259,9 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   }
 
   /**
-   * Set the metadata of this {@link ServiceNowPipelineMinimalResponse} instance.
+   * Set the metadata of this {@link GoogleDrivePipelineMinimalResponse} instance.
    *
-   * @param metadata The metadata of this {@link ServiceNowPipelineMinimalResponse}
+   * @param metadata The metadata of this {@link GoogleDrivePipelineMinimalResponse}
    */
   public void setMetadata(@Nullable final Boolean metadata) {
     this.metadata = metadata;
@@ -232,7 +269,7 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
 
   /**
    * Get the names of the unrecognizable properties of the {@link
-   * ServiceNowPipelineMinimalResponse}.
+   * GoogleDrivePipelineMinimalResponse}.
    *
    * @return The set of properties names
    */
@@ -243,7 +280,7 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ServiceNowPipelineMinimalResponse}
+   * Get the value of an unrecognizable property of this {@link GoogleDrivePipelineMinimalResponse}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -256,13 +293,13 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ServiceNowPipelineMinimalResponse has no field with name '" + name + "'.");
+          "GoogleDrivePipelineMinimalResponse has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ServiceNowPipelineMinimalResponse} instance
+   * Get the value of all properties of this {@link GoogleDrivePipelineMinimalResponse} instance
    * including unrecognized properties.
    *
    * @return The map of all properties
@@ -274,12 +311,13 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
     if (id != null) declaredFields.put("id", id);
     if (status != null) declaredFields.put("status", status);
     if (type != null) declaredFields.put("type", type);
+    if (_configuration != null) declaredFields.put("_configuration", _configuration);
     if (metadata != null) declaredFields.put("metadata", metadata);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ServiceNowPipelineMinimalResponse} instance. If
+   * Set an unrecognizable property of this {@link GoogleDrivePipelineMinimalResponse} instance. If
    * the map previously contained a mapping for the key, the old value is replaced by the specified
    * value.
    *
@@ -299,29 +337,31 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ServiceNowPipelineMinimalResponse serviceNowPipelineMinimalResponse =
-        (ServiceNowPipelineMinimalResponse) o;
+    final GoogleDrivePipelineMinimalResponse googleDrivePipelineMinimalResponse =
+        (GoogleDrivePipelineMinimalResponse) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, serviceNowPipelineMinimalResponse.cloudSdkCustomFields)
-        && Objects.equals(this.id, serviceNowPipelineMinimalResponse.id)
-        && Objects.equals(this.status, serviceNowPipelineMinimalResponse.status)
-        && Objects.equals(this.type, serviceNowPipelineMinimalResponse.type)
-        && Objects.equals(this.metadata, serviceNowPipelineMinimalResponse.metadata);
+            this.cloudSdkCustomFields, googleDrivePipelineMinimalResponse.cloudSdkCustomFields)
+        && Objects.equals(this.id, googleDrivePipelineMinimalResponse.id)
+        && Objects.equals(this.status, googleDrivePipelineMinimalResponse.status)
+        && Objects.equals(this.type, googleDrivePipelineMinimalResponse.type)
+        && Objects.equals(this._configuration, googleDrivePipelineMinimalResponse._configuration)
+        && Objects.equals(this.metadata, googleDrivePipelineMinimalResponse.metadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, status, type, metadata, cloudSdkCustomFields);
+    return Objects.hash(id, status, type, _configuration, metadata, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ServiceNowPipelineMinimalResponse {\n");
+    sb.append("class GoogleDrivePipelineMinimalResponse {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    _configuration: ").append(toIndentedString(_configuration)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -342,21 +382,21 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * ServiceNowPipelineMinimalResponse} instance with all required arguments.
+   * GoogleDrivePipelineMinimalResponse} instance with all required arguments.
    */
   public static Builder create() {
     return (id) ->
         (status) ->
-            (type) -> new ServiceNowPipelineMinimalResponse().id(id).status(status).type(type);
+            (type) -> new GoogleDrivePipelineMinimalResponse().id(id).status(status).type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the id of this {@link ServiceNowPipelineMinimalResponse} instance.
+     * Set the id of this {@link GoogleDrivePipelineMinimalResponse} instance.
      *
-     * @param id The id of this {@link ServiceNowPipelineMinimalResponse}
-     * @return The ServiceNowPipelineMinimalResponse builder.
+     * @param id The id of this {@link GoogleDrivePipelineMinimalResponse}
+     * @return The GoogleDrivePipelineMinimalResponse builder.
      */
     Builder1 id(@Nonnull final String id);
   }
@@ -364,10 +404,10 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the status of this {@link ServiceNowPipelineMinimalResponse} instance.
+     * Set the status of this {@link GoogleDrivePipelineMinimalResponse} instance.
      *
-     * @param status The status of this {@link ServiceNowPipelineMinimalResponse}
-     * @return The ServiceNowPipelineMinimalResponse builder.
+     * @param status The status of this {@link GoogleDrivePipelineMinimalResponse}
+     * @return The GoogleDrivePipelineMinimalResponse builder.
      */
     Builder2 status(@Nullable final PipelineExecutionStatus status);
   }
@@ -375,11 +415,11 @@ public class ServiceNowPipelineMinimalResponse implements PipelineMinimalRespons
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the type of this {@link ServiceNowPipelineMinimalResponse} instance.
+     * Set the type of this {@link GoogleDrivePipelineMinimalResponse} instance.
      *
-     * @param type The type of this {@link ServiceNowPipelineMinimalResponse}
-     * @return The ServiceNowPipelineMinimalResponse instance.
+     * @param type The type of this {@link GoogleDrivePipelineMinimalResponse}
+     * @return The GoogleDrivePipelineMinimalResponse instance.
      */
-    ServiceNowPipelineMinimalResponse type(@Nonnull final TypeEnum type);
+    GoogleDrivePipelineMinimalResponse type(@Nonnull final TypeEnum type);
   }
 }
