@@ -10,8 +10,7 @@
               {
                 "name": "COSTCENTER",
                 "prediction_placeholder": "[PREDICT]",
-                "task_type": "classification",
-                "top_k": null
+                "task_type": "classification"
               }
             ]
           },

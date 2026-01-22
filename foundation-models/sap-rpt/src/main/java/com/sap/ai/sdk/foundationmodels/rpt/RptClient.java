@@ -1,14 +1,24 @@
 package com.sap.ai.sdk.foundationmodels.rpt;
 
+import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+
+import com.google.common.collect.Iterables;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.client.DefaultApi;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayload;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayload;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 /** Client for interacting with SAP RPT foundation models. */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -36,15 +46,16 @@ public class RptClient {
    * @return A new instance of RptClient.
    */
   static RptClient forDestination(@Nonnull final Destination destination) {
-    // final var rt = new RestTemplate();
-    // Iterables.filter(rt.getMessageConverters(), MappingJackson2HttpMessageConverter.class)
-    //    .forEach(converter -> converter.setObjectMapper(getDefaultObjectMapper()));
-    //
-    // final var apiClient =
-    //    new ApiClient(rt)
-    //        .setBasePath(destination.asHttp().getUri().toString())
-    //        .addDefaultHeader("AI-Resource-Group", "default");
-    return new RptClient(new DefaultApi(destination));
+    // This is a workaround to override the object mapper to ignore null on serialization
+    val httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+    httpRequestFactory.setHttpClient(ApacheHttpClient5Accessor.getHttpClient(destination));
+    final var rt = new RestTemplate();
+    Iterables.filter(rt.getMessageConverters(), MappingJackson2HttpMessageConverter.class)
+        .forEach(converter -> converter.setObjectMapper(getDefaultObjectMapper()));
+    rt.setRequestFactory(new BufferingClientHttpRequestFactory(httpRequestFactory));
+
+    final var apiClient = new ApiClient(rt).setBasePath(destination.asHttp().getUri().toString());
+    return new RptClient(new DefaultApi(apiClient));
   }
 
   /**

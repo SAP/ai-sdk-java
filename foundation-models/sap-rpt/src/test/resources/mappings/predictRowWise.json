@@ -10,8 +10,7 @@
               {
                 "name": "COSTCENTER",
                 "prediction_placeholder": "[PREDICT]",
-                "task_type": "classification",
-                "top_k": null
+                "task_type": "classification"
               }
             ]
           },
@@ -38,7 +37,6 @@
               "COSTCENTER": "Data Infrastructure"
             }
           ],
-          "columns": null,
           "index_column": "ID",
           "parse_data_types": true,
           "data_schema": {

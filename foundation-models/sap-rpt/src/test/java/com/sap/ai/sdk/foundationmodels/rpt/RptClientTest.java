@@ -63,7 +63,6 @@ class RptClientTest {
 
   @Test
   void testTabCompletionWithRowsFormat() {
-
     final List<Map<String, PredictRequestPayloadRowsInnerValue>> rows =
         List.of(
             Map.of(
