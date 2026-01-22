@@ -5,6 +5,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
+import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -23,6 +24,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.OrchestrationTemplateReference;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
@@ -589,8 +591,9 @@ public class OrchestrationService {
     final var clientWithResourceGroup = new OrchestrationClient(destination);
 
     val template =
-        TemplateConfig.referenceResourceGroup()
-            .byIdResourceGroup("8bf72116-11ab-41bb-8933-8be56f59cb67");
+        TemplateConfig.reference()
+            .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
+            .withScope(RESOURCE_GROUP);
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
 
     val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
@@ -637,10 +640,11 @@ public class OrchestrationService {
     final var clientWithResourceGroup = new OrchestrationClient(destination);
 
     val template =
-        TemplateConfig.referenceResourceGroup()
+        TemplateConfig.reference()
             .byScenario("categorization")
             .name("example-prompt-template")
-            .version("0.0.1");
+            .version("0.0.1")
+            .withScope(RESOURCE_GROUP);
     val configWithTemplate = config.withTemplateConfig(template);
 
     val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);

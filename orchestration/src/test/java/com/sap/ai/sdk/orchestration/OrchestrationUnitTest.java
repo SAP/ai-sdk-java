@@ -20,6 +20,7 @@ import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_M
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
+import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_4;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_6;
@@ -1295,8 +1296,7 @@ class OrchestrationUnitTest {
                       .withHeader("Content-Type", "application/json")));
 
       var template =
-          TemplateConfig.referenceResourceGroup()
-              .byIdResourceGroup("8bf72116-11ab-41bb-8933-8be56f59cb67");
+          TemplateConfig.reference().byId("8bf72116-11ab-41bb-8933-8be56f59cb67").withScope(RESOURCE_GROUP);
       var configWithTemplate = config.withLlmConfig(GPT_4O_MINI).withTemplateConfig(template);
 
       var inputParams =
@@ -1350,10 +1350,11 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     var template =
-        TemplateConfig.referenceResourceGroup()
+        TemplateConfig.reference()
             .byScenario("categorization")
             .name("example-prompt-template")
-            .version("0.0.1");
+            .version("0.0.1")
+            .withScope(RESOURCE_GROUP);
     var configWithTemplate = config.withLlmConfig(GPT_4O_MINI).withTemplateConfig(template);
 
     var inputParams =
