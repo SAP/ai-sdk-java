@@ -1296,7 +1296,9 @@ class OrchestrationUnitTest {
                       .withHeader("Content-Type", "application/json")));
 
       var template =
-          TemplateConfig.reference().byId("8bf72116-11ab-41bb-8933-8be56f59cb67").withScope(RESOURCE_GROUP);
+          TemplateConfig.reference()
+              .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
+              .withScope(RESOURCE_GROUP);
       var configWithTemplate = config.withLlmConfig(GPT_4O_MINI).withTemplateConfig(template);
 
       var inputParams =

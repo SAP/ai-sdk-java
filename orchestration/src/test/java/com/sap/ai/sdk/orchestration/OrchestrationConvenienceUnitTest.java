@@ -172,19 +172,25 @@ public class OrchestrationConvenienceUnitTest {
     expectedTemplateReferenceId =
         new OrchestrationTemplateReference(TemplateRefByID.create().id("id"), RESOURCE_GROUP);
     templateReferenceIdLowLevel =
-        TemplateRef.create().templateRef(TemplateRefByID.create().id("id").scope(
-            TemplateRefByID.ScopeEnum.RESOURCE_GROUP));
+        TemplateRef.create()
+            .templateRef(
+                TemplateRefByID.create().id("id").scope(TemplateRefByID.ScopeEnum.RESOURCE_GROUP));
     assertThat(templateReferenceId).isEqualTo(expectedTemplateReferenceId);
     assertThat(templateReferenceId.toLowLevel()).isEqualTo(templateReferenceIdLowLevel);
 
     var templateReferenceScenarioNameVersion =
-        TemplateConfig.reference().byScenario("scenario").name("name").version("version").withScope(TENANT);
+        TemplateConfig.reference()
+            .byScenario("scenario")
+            .name("name")
+            .version("version")
+            .withScope(TENANT);
     var expectedTemplateReferenceScenarioNameVersion =
         new OrchestrationTemplateReference(
             TemplateRefByScenarioNameVersion.create()
                 .scenario("scenario")
                 .name("name")
-                .version("version"), TENANT);
+                .version("version"),
+            TENANT);
     var templateReferenceScenarioNameVersionLowLevel =
         TemplateRef.create()
             .templateRef(
@@ -201,14 +207,16 @@ public class OrchestrationConvenienceUnitTest {
         TemplateConfig.reference()
             .byScenario("scenario")
             .name("name")
-            .version("version").withScope(RESOURCE_GROUP);
+            .version("version")
+            .withScope(RESOURCE_GROUP);
     var scopeScenario = TemplateRefByScenarioNameVersion.ScopeEnum.RESOURCE_GROUP;
     expectedTemplateReferenceScenarioNameVersion =
         new OrchestrationTemplateReference(
             TemplateRefByScenarioNameVersion.create()
                 .scenario("scenario")
                 .name("name")
-                .version("version"), RESOURCE_GROUP);
+                .version("version"),
+            RESOURCE_GROUP);
     templateReferenceScenarioNameVersionLowLevel =
         TemplateRef.create()
             .templateRef(
