@@ -109,6 +109,7 @@ jobs:
 
       - name: "Download specification file"
         id: download
+        continue-on-error: true # Caught by step "Fail if download failed"
         env:
           GH_ENTERPRISE_TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
         run: |
@@ -215,7 +216,7 @@ jobs:
           - [ ] Release notes updated
           ") && echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
 
-      - name: Generate Job Summary
+      - name: "Generate Job Summary"
         if: ${{ always() }}
         env:
           BRANCH: ${{ steps.branch.outputs.branch }}
@@ -237,6 +238,12 @@ jobs:
             echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Pull Request Creation | ${{ env.CREATE_PR == 'false' && '⏩ skipped' || '' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' || '' }}" >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: "Fail if download failed"
+        if: steps.download.outcome == 'failure'
+        run: |
+          echo "Specification file download failed. Please check the Download step logs for details."
+          exit 1
 
       - name: "Fail if generation failed"
         if: steps.generate.outputs.generation_result == 'failure'
