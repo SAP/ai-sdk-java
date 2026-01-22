@@ -2,9 +2,9 @@ package com.sap.ai.sdk.foundationmodels.rpt;
 
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.client.PredictApi;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.TabCompletionPostRequest;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.TabCompletionPostResponse;
+import com.sap.ai.sdk.foundationmodels.rpt.generated.client.DefaultApi;
+import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayload;
+import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayload;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 /** Client for interacting with SAP RPT foundation models. */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class RptClient {
-  @Nonnull private final PredictApi api;
+  @Nonnull private final DefaultApi api;
 
   /**
    * Creates a new RptClient for the specified foundation model.
@@ -36,7 +36,15 @@ public class RptClient {
    * @return A new instance of RptClient.
    */
   static RptClient forDestination(@Nonnull final Destination destination) {
-    return new RptClient(new PredictApi(destination));
+    // final var rt = new RestTemplate();
+    // Iterables.filter(rt.getMessageConverters(), MappingJackson2HttpMessageConverter.class)
+    //    .forEach(converter -> converter.setObjectMapper(getDefaultObjectMapper()));
+    //
+    // final var apiClient =
+    //    new ApiClient(rt)
+    //        .setBasePath(destination.asHttp().getUri().toString())
+    //        .addDefaultHeader("AI-Resource-Group", "default");
+    return new RptClient(new DefaultApi(destination));
   }
 
   /**
@@ -56,8 +64,7 @@ public class RptClient {
    * @return TabCompletionPostResponse
    */
   @Nonnull
-  public TabCompletionPostResponse tabCompletion(
-      @Nonnull final TabCompletionPostRequest requestBody) {
-    return api.completionsCreate(requestBody);
+  public PredictResponsePayload tabCompletion(@Nonnull final PredictRequestPayload requestBody) {
+    return api.predict(requestBody);
   }
 }

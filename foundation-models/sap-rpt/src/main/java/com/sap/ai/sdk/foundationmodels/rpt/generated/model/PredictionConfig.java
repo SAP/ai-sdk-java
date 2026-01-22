@@ -1,6 +1,6 @@
 /*
- * SAP RPT API
- * SAP RPT API for predictive insights using in-context learning on structured business data.
+ * SAP-RPT-1 Tabular AI
+ * A REST API for in-context learning with the SAP-RPT-1 model.
  *
  *
  *
@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,13 +26,13 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Configuration specifying which columns to predict. */
+/** Configuration of the prediction model. */
 // CHECKSTYLE:OFF
 public class PredictionConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("target_columns")
-  private List<TargetColumn> targetColumns = new ArrayList<>();
+  private List<TargetColumnConfig> targetColumns = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -39,11 +40,11 @@ public class PredictionConfig
   /**
    * Set the targetColumns of this {@link PredictionConfig} instance and return the same instance.
    *
-   * @param targetColumns Array of target column configurations for prediction.
+   * @param targetColumns The targetColumns of this {@link PredictionConfig}
    * @return The same instance of this {@link PredictionConfig} class
    */
   @Nonnull
-  public PredictionConfig targetColumns(@Nullable final List<TargetColumn> targetColumns) {
+  public PredictionConfig targetColumns(@Nonnull final List<TargetColumnConfig> targetColumns) {
     this.targetColumns = targetColumns;
     return this;
   }
@@ -55,7 +56,8 @@ public class PredictionConfig
    * @return The same instance of type {@link PredictionConfig}
    */
   @Nonnull
-  public PredictionConfig addTargetColumnsItem(@Nonnull final TargetColumn targetColumnsItem) {
+  public PredictionConfig addTargetColumnsItem(
+      @Nonnull final TargetColumnConfig targetColumnsItem) {
     if (this.targetColumns == null) {
       this.targetColumns = new ArrayList<>();
     }
@@ -64,21 +66,21 @@ public class PredictionConfig
   }
 
   /**
-   * Array of target column configurations for prediction.
+   * Get targetColumns
    *
    * @return targetColumns The targetColumns of this {@link PredictionConfig} instance.
    */
   @Nonnull
-  public List<TargetColumn> getTargetColumns() {
+  public List<TargetColumnConfig> getTargetColumns() {
     return targetColumns;
   }
 
   /**
    * Set the targetColumns of this {@link PredictionConfig} instance.
    *
-   * @param targetColumns Array of target column configurations for prediction.
+   * @param targetColumns The targetColumns of this {@link PredictionConfig}
    */
-  public void setTargetColumns(@Nullable final List<TargetColumn> targetColumns) {
+  public void setTargetColumns(@Nonnull final List<TargetColumnConfig> targetColumns) {
     this.targetColumns = targetColumns;
   }
 
@@ -177,8 +179,32 @@ public class PredictionConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link PredictionConfig} instance. No arguments are required. */
-  public static PredictionConfig create() {
-    return new PredictionConfig();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link PredictionConfig}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (targetColumns) -> new PredictionConfig().targetColumns(targetColumns);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the targetColumns of this {@link PredictionConfig} instance.
+     *
+     * @param targetColumns The targetColumns of this {@link PredictionConfig}
+     * @return The PredictionConfig instance.
+     */
+    PredictionConfig targetColumns(@Nonnull final List<TargetColumnConfig> targetColumns);
+
+    /**
+     * Set the targetColumns of this {@link PredictionConfig} instance.
+     *
+     * @param targetColumns The targetColumns of this {@link PredictionConfig}
+     * @return The PredictionConfig instance.
+     */
+    default PredictionConfig targetColumns(@Nonnull final TargetColumnConfig... targetColumns) {
+      return targetColumns(Arrays.asList(targetColumns));
+    }
   }
 }

@@ -1,6 +1,6 @@
 /*
- * SAP RPT API
- * SAP RPT API for predictive insights using in-context learning on structured business data.
+ * SAP-RPT-1 Tabular AI
+ * A REST API for in-context learning with the SAP-RPT-1 model.
  *
  *
  *
@@ -13,10 +13,8 @@ package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -25,110 +23,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Data type specification for a column. */
+/** Configuration for a single field in the input data schema. */
 // CHECKSTYLE:OFF
-public class ColumnDataType
+public class SchemaFieldConfig
 // CHECKSTYLE:ON
 {
-  /** Data type for the column. */
-  public enum DtypeEnum {
-    /** The STRING option of this ColumnDataType */
-    STRING("string"),
-
-    /** The NUMERIC option of this ColumnDataType */
-    NUMERIC("numeric"),
-
-    /** The DATE option of this ColumnDataType */
-    DATE("date"),
-
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ColumnDataType */
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
-
-    private String value;
-
-    DtypeEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type ColumnDataType
-     */
-    @JsonCreator
-    @Nonnull
-    public static DtypeEnum fromValue(@Nonnull final String value) {
-      for (DtypeEnum b : DtypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      return UNKNOWN_DEFAULT_OPEN_API;
-    }
-  }
-
   @JsonProperty("dtype")
-  private DtypeEnum dtype;
+  private ColumnType dtype;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
-   * Set the dtype of this {@link ColumnDataType} instance and return the same instance.
+   * Set the dtype of this {@link SchemaFieldConfig} instance and return the same instance.
    *
-   * @param dtype Data type for the column.
-   * @return The same instance of this {@link ColumnDataType} class
+   * @param dtype The data type of the target column. Supported types are [&#39;string&#39;,
+   *     &#39;numeric&#39;, &#39;date&#39;].
+   * @return The same instance of this {@link SchemaFieldConfig} class
    */
   @Nonnull
-  public ColumnDataType dtype(@Nullable final DtypeEnum dtype) {
+  public SchemaFieldConfig dtype(@Nonnull final ColumnType dtype) {
     this.dtype = dtype;
     return this;
   }
 
   /**
-   * Data type for the column.
+   * The data type of the target column. Supported types are [&#39;string&#39;, &#39;numeric&#39;,
+   * &#39;date&#39;].
    *
-   * @return dtype The dtype of this {@link ColumnDataType} instance.
+   * @return dtype The dtype of this {@link SchemaFieldConfig} instance.
    */
   @Nonnull
-  public DtypeEnum getDtype() {
+  public ColumnType getDtype() {
     return dtype;
   }
 
   /**
-   * Set the dtype of this {@link ColumnDataType} instance.
+   * Set the dtype of this {@link SchemaFieldConfig} instance.
    *
-   * @param dtype Data type for the column.
+   * @param dtype The data type of the target column. Supported types are [&#39;string&#39;,
+   *     &#39;numeric&#39;, &#39;date&#39;].
    */
-  public void setDtype(@Nullable final DtypeEnum dtype) {
+  public void setDtype(@Nonnull final ColumnType dtype) {
     this.dtype = dtype;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ColumnDataType}.
+   * Get the names of the unrecognizable properties of the {@link SchemaFieldConfig}.
    *
    * @return The set of properties names
    */
@@ -139,7 +80,7 @@ public class ColumnDataType
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ColumnDataType} instance.
+   * Get the value of an unrecognizable property of this {@link SchemaFieldConfig} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -150,14 +91,14 @@ public class ColumnDataType
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ColumnDataType has no field with name '" + name + "'.");
+      throw new NoSuchElementException("SchemaFieldConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ColumnDataType} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link SchemaFieldConfig} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -170,8 +111,8 @@ public class ColumnDataType
   }
 
   /**
-   * Set an unrecognizable property of this {@link ColumnDataType} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link SchemaFieldConfig} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -189,9 +130,9 @@ public class ColumnDataType
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ColumnDataType columnDataType = (ColumnDataType) o;
-    return Objects.equals(this.cloudSdkCustomFields, columnDataType.cloudSdkCustomFields)
-        && Objects.equals(this.dtype, columnDataType.dtype);
+    final SchemaFieldConfig schemaFieldConfig = (SchemaFieldConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, schemaFieldConfig.cloudSdkCustomFields)
+        && Objects.equals(this.dtype, schemaFieldConfig.dtype);
   }
 
   @Override
@@ -203,7 +144,7 @@ public class ColumnDataType
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ColumnDataType {\n");
+    sb.append("class SchemaFieldConfig {\n");
     sb.append("    dtype: ").append(toIndentedString(dtype)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -222,8 +163,23 @@ public class ColumnDataType
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link ColumnDataType} instance. No arguments are required. */
-  public static ColumnDataType create() {
-    return new ColumnDataType();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link SchemaFieldConfig}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (dtype) -> new SchemaFieldConfig().dtype(dtype);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the dtype of this {@link SchemaFieldConfig} instance.
+     *
+     * @param dtype The data type of the target column. Supported types are [&#39;string&#39;,
+     *     &#39;numeric&#39;, &#39;date&#39;].
+     * @return The SchemaFieldConfig instance.
+     */
+    SchemaFieldConfig dtype(@Nonnull final ColumnType dtype);
   }
 }

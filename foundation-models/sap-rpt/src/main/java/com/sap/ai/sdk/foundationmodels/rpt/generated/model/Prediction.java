@@ -1,6 +1,6 @@
 /*
- * SAP RPT API
- * SAP RPT API for predictive insights using in-context learning on structured business data.
+ * SAP-RPT-1 Tabular AI
+ * A REST API for in-context learning with the SAP-RPT-1 model.
  *
  *
  *
@@ -11,13 +11,14 @@
 
 package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
 
+import java.math.BigDecimal;
 import javax.annotation.Nonnull;
 
-/** ErrorDetailLocInner */
-public interface ErrorDetailLocInner {
-  /** Helper class to create {@code String } that implements {@link ErrorDetailLocInner}. */
+/** The predicted value for the column. */
+public interface Prediction {
+  /** Helper class to create {@code String } that implements {@link Prediction}. */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
-      implements ErrorDetailLocInner {}
+      implements Prediction {}
 
   /**
    * Creator to enable deserialization of {@code String }.
@@ -31,19 +32,19 @@ public interface ErrorDetailLocInner {
     return new InnerString(val);
   }
 
-  /** Helper class to create {@code Integer } that implements {@link ErrorDetailLocInner}. */
-  record InnerInteger(@com.fasterxml.jackson.annotation.JsonValue @Nonnull Integer value)
-      implements ErrorDetailLocInner {}
+  /** Helper class to create {@code BigDecimal } that implements {@link Prediction}. */
+  record InnerBigDecimal(@com.fasterxml.jackson.annotation.JsonValue @Nonnull BigDecimal value)
+      implements Prediction {}
 
   /**
-   * Creator to enable deserialization of {@code Integer }.
+   * Creator to enable deserialization of {@code BigDecimal }.
    *
    * @param val the value to use
-   * @return a new instance of {@link InnerInteger}.
+   * @return a new instance of {@link InnerBigDecimal}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static InnerInteger create(@Nonnull final Integer val) {
-    return new InnerInteger(val);
+  static InnerBigDecimal create(@Nonnull final BigDecimal val) {
+    return new InnerBigDecimal(val);
   }
 }

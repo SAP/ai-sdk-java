@@ -10,32 +10,32 @@
               {
                 "name": "COSTCENTER",
                 "prediction_placeholder": "[PREDICT]",
-                "task_type": "classification"
+                "task_type": "classification",
+                "top_k": null
               }
             ]
           },
-          "index_column": "ID",
           "rows": [],
           "columns": {
-            "COSTCENTER": [
-              "[PREDICT]",
-              "Office Furniture",
-              "Data Infrastructure"
-            ],
-            "PRODUCT": [
-              "Couch",
-              "Office Chair",
-              "Server Rack"
+            "PRICE": [
+              999.99,
+              150.8,
+              2200.0
             ],
             "ID": [
               "35",
               "44",
               "104"
             ],
-            "PRICE": [
-              999.99,
-              150.8,
-              2200.0
+            "PRODUCT": [
+              "Couch",
+              "Office Chair",
+              "Server Rack"
+            ],
+            "COSTCENTER": [
+              "[PREDICT]",
+              "Office Furniture",
+              "Data Infrastructure"
             ],
             "ORDERDATE": [
               "28-11-2025",
@@ -43,24 +43,25 @@
               "01-11-2025"
             ]
           },
+          "index_column": "ID",
+          "parse_data_types": true,
           "data_schema": {
-            "COSTCENTER": {
-              "dtype": "string"
-            },
-            "PRODUCT": {
+            "PRICE": {
               "dtype": "string"
             },
             "ID": {
               "dtype": "string"
             },
-            "PRICE": {
-              "dtype": "numeric"
+            "PRODUCT": {
+              "dtype": "string"
+            },
+            "COSTCENTER": {
+              "dtype": "string"
             },
             "ORDERDATE": {
               "dtype": "date"
             }
-          },
-          "parse_data_types": true
+          }
         }
       }
     ]

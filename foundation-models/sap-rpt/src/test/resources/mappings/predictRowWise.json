@@ -10,53 +10,54 @@
               {
                 "name": "COSTCENTER",
                 "prediction_placeholder": "[PREDICT]",
-                "task_type": "classification"
+                "task_type": "classification",
+                "top_k": null
               }
             ]
           },
-          "index_column": "ID",
           "rows": [
             {
               "ORDERDATE": "28-11-2025",
-              "COSTCENTER": "[PREDICT]",
-              "PRODUCT": "Couch",
+              "PRICE": 999.99,
               "ID": "35",
-              "PRICE": 999.99
+              "PRODUCT": "Couch",
+              "COSTCENTER": "[PREDICT]"
             },
             {
               "ORDERDATE": "02-11-2025",
-              "COSTCENTER": "Office Furniture",
-              "PRODUCT": "Office Chair",
+              "PRICE": 150.8,
               "ID": "44",
-              "PRICE": 150.8
+              "PRODUCT": "Office Chair",
+              "COSTCENTER": "Office Furniture"
             },
             {
               "ORDERDATE": "01-11-2025",
-              "COSTCENTER": "Data Infrastructure",
-              "PRODUCT": "Server Rack",
+              "PRICE": 2200.0,
               "ID": "104",
-              "PRICE": 2200.0
+              "PRODUCT": "Server Rack",
+              "COSTCENTER": "Data Infrastructure"
             }
           ],
-          "columns": {},
+          "columns": null,
+          "index_column": "ID",
+          "parse_data_types": true,
           "data_schema": {
             "ORDERDATE": {
               "dtype": "date"
             },
-            "COSTCENTER": {
-              "dtype": "string"
-            },
-            "PRODUCT": {
+            "PRICE": {
               "dtype": "string"
             },
             "ID": {
               "dtype": "string"
             },
-            "PRICE": {
-              "dtype": "numeric"
+            "PRODUCT": {
+              "dtype": "string"
+            },
+            "COSTCENTER": {
+              "dtype": "string"
             }
-          },
-          "parse_data_types": true
+          }
         }
       }
     ]

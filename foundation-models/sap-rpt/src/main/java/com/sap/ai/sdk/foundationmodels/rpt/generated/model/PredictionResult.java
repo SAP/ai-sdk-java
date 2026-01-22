@@ -1,6 +1,6 @@
 /*
- * SAP RPT API
- * SAP RPT API for predictive insights using in-context learning on structured business data.
+ * SAP-RPT-1 Tabular AI
+ * A REST API for in-context learning with the SAP-RPT-1 model.
  *
  *
  *
@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -23,28 +24,28 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Individual prediction result for a cell. */
+/** A single prediction result for a single column in a single row. */
 // CHECKSTYLE:OFF
-public class PredictionItem
+public class PredictionResult
 // CHECKSTYLE:ON
 {
   @JsonProperty("prediction")
-  private PredictionItemPrediction prediction;
+  private Prediction prediction;
 
   @JsonProperty("confidence")
-  private Float confidence;
+  private BigDecimal confidence;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
   /**
-   * Set the prediction of this {@link PredictionItem} instance and return the same instance.
+   * Set the prediction of this {@link PredictionResult} instance and return the same instance.
    *
-   * @param prediction The prediction of this {@link PredictionItem}
-   * @return The same instance of this {@link PredictionItem} class
+   * @param prediction The prediction of this {@link PredictionResult}
+   * @return The same instance of this {@link PredictionResult} class
    */
   @Nonnull
-  public PredictionItem prediction(@Nullable final PredictionItemPrediction prediction) {
+  public PredictionResult prediction(@Nonnull final Prediction prediction) {
     this.prediction = prediction;
     return this;
   }
@@ -52,55 +53,55 @@ public class PredictionItem
   /**
    * Get prediction
    *
-   * @return prediction The prediction of this {@link PredictionItem} instance.
+   * @return prediction The prediction of this {@link PredictionResult} instance.
    */
   @Nonnull
-  public PredictionItemPrediction getPrediction() {
+  public Prediction getPrediction() {
     return prediction;
   }
 
   /**
-   * Set the prediction of this {@link PredictionItem} instance.
+   * Set the prediction of this {@link PredictionResult} instance.
    *
-   * @param prediction The prediction of this {@link PredictionItem}
+   * @param prediction The prediction of this {@link PredictionResult}
    */
-  public void setPrediction(@Nullable final PredictionItemPrediction prediction) {
+  public void setPrediction(@Nonnull final Prediction prediction) {
     this.prediction = prediction;
   }
 
   /**
-   * Set the confidence of this {@link PredictionItem} instance and return the same instance.
+   * Set the confidence of this {@link PredictionResult} instance and return the same instance.
    *
-   * @param confidence The confidence score for this prediction (for classification tasks only).
-   * @return The same instance of this {@link PredictionItem} class
+   * @param confidence The confidence of this {@link PredictionResult}
+   * @return The same instance of this {@link PredictionResult} class
    */
   @Nonnull
-  public PredictionItem confidence(@Nullable final Float confidence) {
+  public PredictionResult confidence(@Nullable final BigDecimal confidence) {
     this.confidence = confidence;
     return this;
   }
 
   /**
-   * The confidence score for this prediction (for classification tasks only).
+   * Get confidence
    *
-   * @return confidence The confidence of this {@link PredictionItem} instance.
+   * @return confidence The confidence of this {@link PredictionResult} instance.
    */
   @Nullable
-  public Float getConfidence() {
+  public BigDecimal getConfidence() {
     return confidence;
   }
 
   /**
-   * Set the confidence of this {@link PredictionItem} instance.
+   * Set the confidence of this {@link PredictionResult} instance.
    *
-   * @param confidence The confidence score for this prediction (for classification tasks only).
+   * @param confidence The confidence of this {@link PredictionResult}
    */
-  public void setConfidence(@Nullable final Float confidence) {
+  public void setConfidence(@Nullable final BigDecimal confidence) {
     this.confidence = confidence;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link PredictionItem}.
+   * Get the names of the unrecognizable properties of the {@link PredictionResult}.
    *
    * @return The set of properties names
    */
@@ -111,7 +112,7 @@ public class PredictionItem
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link PredictionItem} instance.
+   * Get the value of an unrecognizable property of this {@link PredictionResult} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -122,14 +123,14 @@ public class PredictionItem
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("PredictionItem has no field with name '" + name + "'.");
+      throw new NoSuchElementException("PredictionResult has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link PredictionItem} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link PredictionResult} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -143,7 +144,7 @@ public class PredictionItem
   }
 
   /**
-   * Set an unrecognizable property of this {@link PredictionItem} instance. If the map previously
+   * Set an unrecognizable property of this {@link PredictionResult} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -162,10 +163,10 @@ public class PredictionItem
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final PredictionItem predictionItem = (PredictionItem) o;
-    return Objects.equals(this.cloudSdkCustomFields, predictionItem.cloudSdkCustomFields)
-        && Objects.equals(this.prediction, predictionItem.prediction)
-        && Objects.equals(this.confidence, predictionItem.confidence);
+    final PredictionResult predictionResult = (PredictionResult) o;
+    return Objects.equals(this.cloudSdkCustomFields, predictionResult.cloudSdkCustomFields)
+        && Objects.equals(this.prediction, predictionResult.prediction)
+        && Objects.equals(this.confidence, predictionResult.confidence);
   }
 
   @Override
@@ -177,7 +178,7 @@ public class PredictionItem
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class PredictionItem {\n");
+    sb.append("class PredictionResult {\n");
     sb.append("    prediction: ").append(toIndentedString(prediction)).append("\n");
     sb.append("    confidence: ").append(toIndentedString(confidence)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -197,8 +198,22 @@ public class PredictionItem
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link PredictionItem} instance. No arguments are required. */
-  public static PredictionItem create() {
-    return new PredictionItem();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link PredictionResult}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (prediction) -> new PredictionResult().prediction(prediction);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the prediction of this {@link PredictionResult} instance.
+     *
+     * @param prediction The prediction of this {@link PredictionResult}
+     * @return The PredictionResult instance.
+     */
+    PredictionResult prediction(@Nonnull final Prediction prediction);
   }
 }

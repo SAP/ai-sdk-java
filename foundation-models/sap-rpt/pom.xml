@@ -37,6 +37,11 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
+    <coverage.complexity>83%</coverage.complexity>
+    <coverage.line>75%</coverage.line>
+    <coverage.instruction>80%</coverage.instruction>
+    <coverage.branch>100%</coverage.branch>
+    <coverage.method>83%</coverage.method>
   </properties>
 
   <dependencies>
@@ -92,6 +97,7 @@
     <dependency>
       <groupId>org.wiremock</groupId>
       <artifactId>wiremock</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
@@ -127,7 +133,7 @@
                 </goals>
                 <phase>generate-sources</phase>
                 <configuration>
-                  <inputSpec>${project.basedir}/src/main/resources/spec/sap-rpt.yaml</inputSpec>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/sap-rpt-1_openapi.json</inputSpec>
                   <modelPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.model</modelPackage>
                   <apiPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.client</apiPackage>
                   <generateApis>true</generateApis>
