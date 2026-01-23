@@ -252,6 +252,11 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+        <artifactId>sap-rpt</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.sap.ai.sdk.app</groupId>
         <artifactId>spring-app</artifactId>
         <version>${project.version}</version>
