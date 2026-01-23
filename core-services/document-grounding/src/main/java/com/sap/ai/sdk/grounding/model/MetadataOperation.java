@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,69 +25,102 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** A response containing documents retrieved from the server. */
+/** MetadataOperation */
 // CHECKSTYLE:OFF
-public class DocumentsListResponse
+public class MetadataOperation
 // CHECKSTYLE:ON
 {
-  @JsonProperty("documents")
-  private List<DocumentWithoutChunks> documents = new ArrayList<>();
+  @JsonProperty("op")
+  private MetadataOperationEnum op;
+
+  @JsonProperty("values")
+  private List<String> values;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for DocumentsListResponse. */
-  protected DocumentsListResponse() {}
+  /** Default constructor for MetadataOperation. */
+  protected MetadataOperation() {}
 
   /**
-   * Set the documents of this {@link DocumentsListResponse} instance and return the same instance.
+   * Set the op of this {@link MetadataOperation} instance and return the same instance.
    *
-   * @param documents The documents of this {@link DocumentsListResponse}
-   * @return The same instance of this {@link DocumentsListResponse} class
+   * @param op The op of this {@link MetadataOperation}
+   * @return The same instance of this {@link MetadataOperation} class
    */
   @Nonnull
-  public DocumentsListResponse documents(@Nonnull final List<DocumentWithoutChunks> documents) {
-    this.documents = documents;
+  public MetadataOperation op(@Nonnull final MetadataOperationEnum op) {
+    this.op = op;
     return this;
   }
 
   /**
-   * Add one documents instance to this {@link DocumentsListResponse}.
+   * Get op
    *
-   * @param documentsItem The documents that should be added
-   * @return The same instance of type {@link DocumentsListResponse}
+   * @return op The op of this {@link MetadataOperation} instance.
    */
   @Nonnull
-  public DocumentsListResponse addDocumentsItem(
-      @Nonnull final DocumentWithoutChunks documentsItem) {
-    if (this.documents == null) {
-      this.documents = new ArrayList<>();
+  public MetadataOperationEnum getOp() {
+    return op;
+  }
+
+  /**
+   * Set the op of this {@link MetadataOperation} instance.
+   *
+   * @param op The op of this {@link MetadataOperation}
+   */
+  public void setOp(@Nonnull final MetadataOperationEnum op) {
+    this.op = op;
+  }
+
+  /**
+   * Set the values of this {@link MetadataOperation} instance and return the same instance.
+   *
+   * @param values List of values to update.
+   * @return The same instance of this {@link MetadataOperation} class
+   */
+  @Nonnull
+  public MetadataOperation values(@Nullable final List<String> values) {
+    this.values = values;
+    return this;
+  }
+
+  /**
+   * Add one values instance to this {@link MetadataOperation}.
+   *
+   * @param valuesItem The values that should be added
+   * @return The same instance of type {@link MetadataOperation}
+   */
+  @Nonnull
+  public MetadataOperation addValuesItem(@Nonnull final String valuesItem) {
+    if (this.values == null) {
+      this.values = new ArrayList<>();
     }
-    this.documents.add(documentsItem);
+    this.values.add(valuesItem);
     return this;
   }
 
   /**
-   * Get documents
+   * List of values to update.
    *
-   * @return documents The documents of this {@link DocumentsListResponse} instance.
+   * @return values The values of this {@link MetadataOperation} instance.
    */
-  @Nonnull
-  public List<DocumentWithoutChunks> getDocuments() {
-    return documents;
+  @Nullable
+  public List<String> getValues() {
+    return values;
   }
 
   /**
-   * Set the documents of this {@link DocumentsListResponse} instance.
+   * Set the values of this {@link MetadataOperation} instance.
    *
-   * @param documents The documents of this {@link DocumentsListResponse}
+   * @param values List of values to update.
    */
-  public void setDocuments(@Nonnull final List<DocumentWithoutChunks> documents) {
-    this.documents = documents;
+  public void setValues(@Nullable final List<String> values) {
+    this.values = values;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link DocumentsListResponse}.
+   * Get the names of the unrecognizable properties of the {@link MetadataOperation}.
    *
    * @return The set of properties names
    */
@@ -99,7 +131,7 @@ public class DocumentsListResponse
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link DocumentsListResponse} instance.
+   * Get the value of an unrecognizable property of this {@link MetadataOperation} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -110,14 +142,13 @@ public class DocumentsListResponse
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "DocumentsListResponse has no field with name '" + name + "'.");
+      throw new NoSuchElementException("MetadataOperation has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link DocumentsListResponse} instance including
+   * Get the value of all properties of this {@link MetadataOperation} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -126,12 +157,13 @@ public class DocumentsListResponse
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (documents != null) declaredFields.put("documents", documents);
+    if (op != null) declaredFields.put("op", op);
+    if (values != null) declaredFields.put("values", values);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link DocumentsListResponse} instance. If the map
+   * Set an unrecognizable property of this {@link MetadataOperation} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -150,22 +182,24 @@ public class DocumentsListResponse
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final DocumentsListResponse documentsListResponse = (DocumentsListResponse) o;
-    return Objects.equals(this.cloudSdkCustomFields, documentsListResponse.cloudSdkCustomFields)
-        && Objects.equals(this.documents, documentsListResponse.documents);
+    final MetadataOperation metadataOperation = (MetadataOperation) o;
+    return Objects.equals(this.cloudSdkCustomFields, metadataOperation.cloudSdkCustomFields)
+        && Objects.equals(this.op, metadataOperation.op)
+        && Objects.equals(this.values, metadataOperation.values);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(documents, cloudSdkCustomFields);
+    return Objects.hash(op, values, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class DocumentsListResponse {\n");
-    sb.append("    documents: ").append(toIndentedString(documents)).append("\n");
+    sb.append("class MetadataOperation {\n");
+    sb.append("    op: ").append(toIndentedString(op)).append("\n");
+    sb.append("    values: ").append(toIndentedString(values)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -184,31 +218,21 @@ public class DocumentsListResponse
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link DocumentsListResponse}
+   * Create a type-safe, fluent-api builder object to construct a new {@link MetadataOperation}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (documents) -> new DocumentsListResponse().documents(documents);
+    return (op) -> new MetadataOperation().op(op);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the documents of this {@link DocumentsListResponse} instance.
+     * Set the op of this {@link MetadataOperation} instance.
      *
-     * @param documents The documents of this {@link DocumentsListResponse}
-     * @return The DocumentsListResponse instance.
+     * @param op The op of this {@link MetadataOperation}
+     * @return The MetadataOperation instance.
      */
-    DocumentsListResponse documents(@Nonnull final List<DocumentWithoutChunks> documents);
-
-    /**
-     * Set the documents of this {@link DocumentsListResponse} instance.
-     *
-     * @param documents The documents of this {@link DocumentsListResponse}
-     * @return The DocumentsListResponse instance.
-     */
-    default DocumentsListResponse documents(@Nonnull final DocumentWithoutChunks... documents) {
-      return documents(Arrays.asList(documents));
-    }
+    MetadataOperation op(@Nonnull final MetadataOperationEnum op);
   }
 }

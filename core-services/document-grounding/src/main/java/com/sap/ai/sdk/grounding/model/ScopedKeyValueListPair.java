@@ -39,10 +39,10 @@ public class ScopedKeyValueListPair
   @JsonProperty("value")
   private List<String> value = new ArrayList<>();
 
-  /** Gets or Sets scope */
+  /** Scope of the metadata filter (e.g., collection, document, chunk) */
   public enum ScopeEnum {
-    /** The REPOSITORY option of this ScopedKeyValueListPair */
-    REPOSITORY("repository"),
+    /** The COLLECTION option of this ScopedKeyValueListPair */
+    COLLECTION("collection"),
 
     /** The DOCUMENT option of this ScopedKeyValueListPair */
     DOCUMENT("document"),
@@ -188,17 +188,17 @@ public class ScopedKeyValueListPair
   /**
    * Set the scope of this {@link ScopedKeyValueListPair} instance and return the same instance.
    *
-   * @param scope The scope of this {@link ScopedKeyValueListPair}
+   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
    * @return The same instance of this {@link ScopedKeyValueListPair} class
    */
   @Nonnull
-  public ScopedKeyValueListPair scope(@Nullable final ScopeEnum scope) {
+  public ScopedKeyValueListPair scope(@Nonnull final ScopeEnum scope) {
     this.scope = scope;
     return this;
   }
 
   /**
-   * Get scope
+   * Scope of the metadata filter (e.g., collection, document, chunk)
    *
    * @return scope The scope of this {@link ScopedKeyValueListPair} instance.
    */
@@ -210,9 +210,9 @@ public class ScopedKeyValueListPair
   /**
    * Set the scope of this {@link ScopedKeyValueListPair} instance.
    *
-   * @param scope The scope of this {@link ScopedKeyValueListPair}
+   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
    */
-  public void setScope(@Nullable final ScopeEnum scope) {
+  public void setScope(@Nonnull final ScopeEnum scope) {
     this.scope = scope;
   }
 
@@ -323,7 +323,8 @@ public class ScopedKeyValueListPair
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (key) -> (value) -> new ScopedKeyValueListPair().key(key).value(value);
+    return (key) ->
+        (value) -> (scope) -> new ScopedKeyValueListPair().key(key).value(value).scope(scope);
   }
 
   /** Builder helper class. */
@@ -343,18 +344,29 @@ public class ScopedKeyValueListPair
      * Set the value of this {@link ScopedKeyValueListPair} instance.
      *
      * @param value The value of this {@link ScopedKeyValueListPair}
-     * @return The ScopedKeyValueListPair instance.
+     * @return The ScopedKeyValueListPair builder.
      */
-    ScopedKeyValueListPair value(@Nonnull final List<String> value);
+    Builder2 value(@Nonnull final List<String> value);
 
     /**
      * Set the value of this {@link ScopedKeyValueListPair} instance.
      *
      * @param value The value of this {@link ScopedKeyValueListPair}
-     * @return The ScopedKeyValueListPair instance.
+     * @return The ScopedKeyValueListPair builder.
      */
-    default ScopedKeyValueListPair value(@Nonnull final String... value) {
+    default Builder2 value(@Nonnull final String... value) {
       return value(Arrays.asList(value));
     }
+  }
+
+  /** Builder helper class. */
+  public interface Builder2 {
+    /**
+     * Set the scope of this {@link ScopedKeyValueListPair} instance.
+     *
+     * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
+     * @return The ScopedKeyValueListPair instance.
+     */
+    ScopedKeyValueListPair scope(@Nonnull final ScopeEnum scope);
   }
 }

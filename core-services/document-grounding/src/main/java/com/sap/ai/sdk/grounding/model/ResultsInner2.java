@@ -34,13 +34,10 @@ public class ResultsInner2
   private String filterId;
 
   @JsonProperty("results")
-  private List<RetrievalDataRepositorySearchResult> results = new ArrayList<>();
-
-  @JsonProperty("remoteGroundingName")
-  private String remoteGroundingName;
+  private List<DataRepositorySearchResult> results = new ArrayList<>();
 
   @JsonProperty("error")
-  private RetrievalPerFilterSearchResultError error;
+  private PerFilterSearchResultError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -86,7 +83,7 @@ public class ResultsInner2
    * @return The same instance of this {@link ResultsInner2} class
    */
   @Nonnull
-  public ResultsInner2 results(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
+  public ResultsInner2 results(@Nullable final List<DataRepositorySearchResult> results) {
     this.results = results;
     return this;
   }
@@ -98,8 +95,7 @@ public class ResultsInner2
    * @return The same instance of type {@link ResultsInner2}
    */
   @Nonnull
-  public ResultsInner2 addResultsItem(
-      @Nonnull final RetrievalDataRepositorySearchResult resultsItem) {
+  public ResultsInner2 addResultsItem(@Nonnull final DataRepositorySearchResult resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -113,7 +109,7 @@ public class ResultsInner2
    * @return results The results of this {@link ResultsInner2} instance.
    */
   @Nonnull
-  public List<RetrievalDataRepositorySearchResult> getResults() {
+  public List<DataRepositorySearchResult> getResults() {
     return results;
   }
 
@@ -122,43 +118,8 @@ public class ResultsInner2
    *
    * @param results List of returned results.
    */
-  public void setResults(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
+  public void setResults(@Nullable final List<DataRepositorySearchResult> results) {
     this.results = results;
-  }
-
-  /**
-   * Set the remoteGroundingName of this {@link ResultsInner2} instance and return the same
-   * instance.
-   *
-   * @param remoteGroundingName Friendly Destination Name of remote instance (grounding.name). Only
-   *     present if dataRepositoryType &#x3D; remote:dg.
-   * @return The same instance of this {@link ResultsInner2} class
-   */
-  @Nonnull
-  public ResultsInner2 remoteGroundingName(@Nullable final String remoteGroundingName) {
-    this.remoteGroundingName = remoteGroundingName;
-    return this;
-  }
-
-  /**
-   * Friendly Destination Name of remote instance (grounding.name). Only present if
-   * dataRepositoryType &#x3D; remote:dg.
-   *
-   * @return remoteGroundingName The remoteGroundingName of this {@link ResultsInner2} instance.
-   */
-  @Nullable
-  public String getRemoteGroundingName() {
-    return remoteGroundingName;
-  }
-
-  /**
-   * Set the remoteGroundingName of this {@link ResultsInner2} instance.
-   *
-   * @param remoteGroundingName Friendly Destination Name of remote instance (grounding.name). Only
-   *     present if dataRepositoryType &#x3D; remote:dg.
-   */
-  public void setRemoteGroundingName(@Nullable final String remoteGroundingName) {
-    this.remoteGroundingName = remoteGroundingName;
   }
 
   /**
@@ -168,7 +129,7 @@ public class ResultsInner2
    * @return The same instance of this {@link ResultsInner2} class
    */
   @Nonnull
-  public ResultsInner2 error(@Nullable final RetrievalPerFilterSearchResultError error) {
+  public ResultsInner2 error(@Nullable final PerFilterSearchResultError error) {
     this.error = error;
     return this;
   }
@@ -179,7 +140,7 @@ public class ResultsInner2
    * @return error The error of this {@link ResultsInner2} instance.
    */
   @Nonnull
-  public RetrievalPerFilterSearchResultError getError() {
+  public PerFilterSearchResultError getError() {
     return error;
   }
 
@@ -188,7 +149,7 @@ public class ResultsInner2
    *
    * @param error The error of this {@link ResultsInner2}
    */
-  public void setError(@Nullable final RetrievalPerFilterSearchResultError error) {
+  public void setError(@Nullable final PerFilterSearchResultError error) {
     this.error = error;
   }
 
@@ -232,7 +193,6 @@ public class ResultsInner2
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (filterId != null) declaredFields.put("filterId", filterId);
     if (results != null) declaredFields.put("results", results);
-    if (remoteGroundingName != null) declaredFields.put("remoteGroundingName", remoteGroundingName);
     if (error != null) declaredFields.put("error", error);
     return declaredFields;
   }
@@ -261,13 +221,12 @@ public class ResultsInner2
     return Objects.equals(this.cloudSdkCustomFields, resultsInner2.cloudSdkCustomFields)
         && Objects.equals(this.filterId, resultsInner2.filterId)
         && Objects.equals(this.results, resultsInner2.results)
-        && Objects.equals(this.remoteGroundingName, resultsInner2.remoteGroundingName)
         && Objects.equals(this.error, resultsInner2.error);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filterId, results, remoteGroundingName, error, cloudSdkCustomFields);
+    return Objects.hash(filterId, results, error, cloudSdkCustomFields);
   }
 
   @Override
@@ -277,9 +236,6 @@ public class ResultsInner2
     sb.append("class ResultsInner2 {\n");
     sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
-    sb.append("    remoteGroundingName: ")
-        .append(toIndentedString(remoteGroundingName))
-        .append("\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->

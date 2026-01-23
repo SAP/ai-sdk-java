@@ -28,20 +28,20 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Left operand of the boolean expression */
+/** Advanced filter expression for combining metadata filters with boolean logic */
 // CHECKSTYLE:OFF
-public class Left
+public class Filter
 // CHECKSTYLE:ON
 {
   /** Boolean operator for combining filter conditions */
   public enum OperatorEnum {
-    /** The AND option of this Left */
+    /** The AND option of this Filter */
     AND("and"),
 
-    /** The OR option of this Left */
+    /** The OR option of this Filter */
     OR("or"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this Left */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this Filter */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -76,7 +76,7 @@ public class Left
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type Left
+     * @return The enum value of type Filter
      */
     @JsonCreator
     @Nonnull
@@ -107,16 +107,16 @@ public class Left
 
   /** Scope of the metadata filter (e.g., collection, document, chunk) */
   public enum ScopeEnum {
-    /** The COLLECTION option of this Left */
+    /** The COLLECTION option of this Filter */
     COLLECTION("collection"),
 
-    /** The DOCUMENT option of this Left */
+    /** The DOCUMENT option of this Filter */
     DOCUMENT("document"),
 
-    /** The CHUNK option of this Left */
+    /** The CHUNK option of this Filter */
     CHUNK("chunk"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this Left */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this Filter */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -151,7 +151,7 @@ public class Left
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type Left
+     * @return The enum value of type Filter
      */
     @JsonCreator
     @Nonnull
@@ -171,17 +171,17 @@ public class Left
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for Left. */
-  protected Left() {}
+  /** Default constructor for Filter. */
+  protected Filter() {}
 
   /**
-   * Set the operator of this {@link Left} instance and return the same instance.
+   * Set the operator of this {@link Filter} instance and return the same instance.
    *
    * @param operator Boolean operator for combining filter conditions
-   * @return The same instance of this {@link Left} class
+   * @return The same instance of this {@link Filter} class
    */
   @Nonnull
-  public Left operator(@Nonnull final OperatorEnum operator) {
+  public Filter operator(@Nonnull final OperatorEnum operator) {
     this.operator = operator;
     return this;
   }
@@ -189,7 +189,7 @@ public class Left
   /**
    * Boolean operator for combining filter conditions
    *
-   * @return operator The operator of this {@link Left} instance.
+   * @return operator The operator of this {@link Filter} instance.
    */
   @Nonnull
   public OperatorEnum getOperator() {
@@ -197,7 +197,7 @@ public class Left
   }
 
   /**
-   * Set the operator of this {@link Left} instance.
+   * Set the operator of this {@link Filter} instance.
    *
    * @param operator Boolean operator for combining filter conditions
    */
@@ -206,13 +206,13 @@ public class Left
   }
 
   /**
-   * Set the left of this {@link Left} instance and return the same instance.
+   * Set the left of this {@link Filter} instance and return the same instance.
    *
-   * @param left The left of this {@link Left}
-   * @return The same instance of this {@link Left} class
+   * @param left The left of this {@link Filter}
+   * @return The same instance of this {@link Filter} class
    */
   @Nonnull
-  public Left left(@Nonnull final Left left) {
+  public Filter left(@Nonnull final Left left) {
     this.left = left;
     return this;
   }
@@ -220,7 +220,7 @@ public class Left
   /**
    * Get left
    *
-   * @return left The left of this {@link Left} instance.
+   * @return left The left of this {@link Filter} instance.
    */
   @Nonnull
   public Left getLeft() {
@@ -228,22 +228,22 @@ public class Left
   }
 
   /**
-   * Set the left of this {@link Left} instance.
+   * Set the left of this {@link Filter} instance.
    *
-   * @param left The left of this {@link Left}
+   * @param left The left of this {@link Filter}
    */
   public void setLeft(@Nonnull final Left left) {
     this.left = left;
   }
 
   /**
-   * Set the right of this {@link Left} instance and return the same instance.
+   * Set the right of this {@link Filter} instance and return the same instance.
    *
-   * @param right The right of this {@link Left}
-   * @return The same instance of this {@link Left} class
+   * @param right The right of this {@link Filter}
+   * @return The same instance of this {@link Filter} class
    */
   @Nonnull
-  public Left right(@Nonnull final Right right) {
+  public Filter right(@Nonnull final Right right) {
     this.right = right;
     return this;
   }
@@ -251,7 +251,7 @@ public class Left
   /**
    * Get right
    *
-   * @return right The right of this {@link Left} instance.
+   * @return right The right of this {@link Filter} instance.
    */
   @Nonnull
   public Right getRight() {
@@ -259,22 +259,22 @@ public class Left
   }
 
   /**
-   * Set the right of this {@link Left} instance.
+   * Set the right of this {@link Filter} instance.
    *
-   * @param right The right of this {@link Left}
+   * @param right The right of this {@link Filter}
    */
   public void setRight(@Nonnull final Right right) {
     this.right = right;
   }
 
   /**
-   * Set the key of this {@link Left} instance and return the same instance.
+   * Set the key of this {@link Filter} instance and return the same instance.
    *
-   * @param key The key of this {@link Left}
-   * @return The same instance of this {@link Left} class
+   * @param key The key of this {@link Filter}
+   * @return The same instance of this {@link Filter} class
    */
   @Nonnull
-  public Left key(@Nonnull final String key) {
+  public Filter key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
@@ -282,7 +282,7 @@ public class Left
   /**
    * Get key
    *
-   * @return key The key of this {@link Left} instance.
+   * @return key The key of this {@link Filter} instance.
    */
   @Nonnull
   public String getKey() {
@@ -290,34 +290,34 @@ public class Left
   }
 
   /**
-   * Set the key of this {@link Left} instance.
+   * Set the key of this {@link Filter} instance.
    *
-   * @param key The key of this {@link Left}
+   * @param key The key of this {@link Filter}
    */
   public void setKey(@Nonnull final String key) {
     this.key = key;
   }
 
   /**
-   * Set the value of this {@link Left} instance and return the same instance.
+   * Set the value of this {@link Filter} instance and return the same instance.
    *
-   * @param value The value of this {@link Left}
-   * @return The same instance of this {@link Left} class
+   * @param value The value of this {@link Filter}
+   * @return The same instance of this {@link Filter} class
    */
   @Nonnull
-  public Left value(@Nonnull final List<String> value) {
+  public Filter value(@Nonnull final List<String> value) {
     this.value = value;
     return this;
   }
 
   /**
-   * Add one value instance to this {@link Left}.
+   * Add one value instance to this {@link Filter}.
    *
    * @param valueItem The value that should be added
-   * @return The same instance of type {@link Left}
+   * @return The same instance of type {@link Filter}
    */
   @Nonnull
-  public Left addValueItem(@Nonnull final String valueItem) {
+  public Filter addValueItem(@Nonnull final String valueItem) {
     if (this.value == null) {
       this.value = new ArrayList<>();
     }
@@ -328,7 +328,7 @@ public class Left
   /**
    * Get value
    *
-   * @return value The value of this {@link Left} instance.
+   * @return value The value of this {@link Filter} instance.
    */
   @Nonnull
   public List<String> getValue() {
@@ -336,22 +336,22 @@ public class Left
   }
 
   /**
-   * Set the value of this {@link Left} instance.
+   * Set the value of this {@link Filter} instance.
    *
-   * @param value The value of this {@link Left}
+   * @param value The value of this {@link Filter}
    */
   public void setValue(@Nonnull final List<String> value) {
     this.value = value;
   }
 
   /**
-   * Set the scope of this {@link Left} instance and return the same instance.
+   * Set the scope of this {@link Filter} instance and return the same instance.
    *
    * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
-   * @return The same instance of this {@link Left} class
+   * @return The same instance of this {@link Filter} class
    */
   @Nonnull
-  public Left scope(@Nonnull final ScopeEnum scope) {
+  public Filter scope(@Nonnull final ScopeEnum scope) {
     this.scope = scope;
     return this;
   }
@@ -359,7 +359,7 @@ public class Left
   /**
    * Scope of the metadata filter (e.g., collection, document, chunk)
    *
-   * @return scope The scope of this {@link Left} instance.
+   * @return scope The scope of this {@link Filter} instance.
    */
   @Nonnull
   public ScopeEnum getScope() {
@@ -367,7 +367,7 @@ public class Left
   }
 
   /**
-   * Set the scope of this {@link Left} instance.
+   * Set the scope of this {@link Filter} instance.
    *
    * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
    */
@@ -376,7 +376,7 @@ public class Left
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link Left}.
+   * Get the names of the unrecognizable properties of the {@link Filter}.
    *
    * @return The set of properties names
    */
@@ -387,7 +387,7 @@ public class Left
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link Left} instance.
+   * Get the value of an unrecognizable property of this {@link Filter} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -398,13 +398,13 @@ public class Left
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("Left has no field with name '" + name + "'.");
+      throw new NoSuchElementException("Filter has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link Left} instance including unrecognized
+   * Get the value of all properties of this {@link Filter} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -423,8 +423,8 @@ public class Left
   }
 
   /**
-   * Set an unrecognizable property of this {@link Left} instance. If the map previously contained a
-   * mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link Filter} instance. If the map previously contained
+   * a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -442,14 +442,14 @@ public class Left
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final Left left = (Left) o;
-    return Objects.equals(this.cloudSdkCustomFields, left.cloudSdkCustomFields)
-        && Objects.equals(this.operator, left.operator)
-        && Objects.equals(this.left, left.left)
-        && Objects.equals(this.right, left.right)
-        && Objects.equals(this.key, left.key)
-        && Objects.equals(this.value, left.value)
-        && Objects.equals(this.scope, left.scope);
+    final Filter filter = (Filter) o;
+    return Objects.equals(this.cloudSdkCustomFields, filter.cloudSdkCustomFields)
+        && Objects.equals(this.operator, filter.operator)
+        && Objects.equals(this.left, filter.left)
+        && Objects.equals(this.right, filter.right)
+        && Objects.equals(this.key, filter.key)
+        && Objects.equals(this.value, filter.value)
+        && Objects.equals(this.scope, filter.scope);
   }
 
   @Override
@@ -461,7 +461,7 @@ public class Left
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class Left {\n");
+    sb.append("class Filter {\n");
     sb.append("    operator: ").append(toIndentedString(operator)).append("\n");
     sb.append("    left: ").append(toIndentedString(left)).append("\n");
     sb.append("    right: ").append(toIndentedString(right)).append("\n");
@@ -486,8 +486,8 @@ public class Left
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link Left} instance with all
-   * required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link Filter} instance with
+   * all required arguments.
    */
   public static Builder create() {
     return (operator) ->
@@ -496,7 +496,7 @@ public class Left
                 (key) ->
                     (value) ->
                         (scope) ->
-                            new Left()
+                            new Filter()
                                 .operator(operator)
                                 .left(left)
                                 .right(right)
@@ -508,10 +508,10 @@ public class Left
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the operator of this {@link Left} instance.
+     * Set the operator of this {@link Filter} instance.
      *
      * @param operator Boolean operator for combining filter conditions
-     * @return The Left builder.
+     * @return The Filter builder.
      */
     Builder1 operator(@Nonnull final OperatorEnum operator);
   }
@@ -519,10 +519,10 @@ public class Left
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the left of this {@link Left} instance.
+     * Set the left of this {@link Filter} instance.
      *
-     * @param left The left of this {@link Left}
-     * @return The Left builder.
+     * @param left The left of this {@link Filter}
+     * @return The Filter builder.
      */
     Builder2 left(@Nonnull final Left left);
   }
@@ -530,10 +530,10 @@ public class Left
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the right of this {@link Left} instance.
+     * Set the right of this {@link Filter} instance.
      *
-     * @param right The right of this {@link Left}
-     * @return The Left builder.
+     * @param right The right of this {@link Filter}
+     * @return The Filter builder.
      */
     Builder3 right(@Nonnull final Right right);
   }
@@ -541,10 +541,10 @@ public class Left
   /** Builder helper class. */
   public interface Builder3 {
     /**
-     * Set the key of this {@link Left} instance.
+     * Set the key of this {@link Filter} instance.
      *
-     * @param key The key of this {@link Left}
-     * @return The Left builder.
+     * @param key The key of this {@link Filter}
+     * @return The Filter builder.
      */
     Builder4 key(@Nonnull final String key);
   }
@@ -552,18 +552,18 @@ public class Left
   /** Builder helper class. */
   public interface Builder4 {
     /**
-     * Set the value of this {@link Left} instance.
+     * Set the value of this {@link Filter} instance.
      *
-     * @param value The value of this {@link Left}
-     * @return The Left builder.
+     * @param value The value of this {@link Filter}
+     * @return The Filter builder.
      */
     Builder5 value(@Nonnull final List<String> value);
 
     /**
-     * Set the value of this {@link Left} instance.
+     * Set the value of this {@link Filter} instance.
      *
-     * @param value The value of this {@link Left}
-     * @return The Left builder.
+     * @param value The value of this {@link Filter}
+     * @return The Filter builder.
      */
     default Builder5 value(@Nonnull final String... value) {
       return value(Arrays.asList(value));
@@ -573,11 +573,11 @@ public class Left
   /** Builder helper class. */
   public interface Builder5 {
     /**
-     * Set the scope of this {@link Left} instance.
+     * Set the scope of this {@link Filter} instance.
      *
      * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
-     * @return The Left instance.
+     * @return The Filter instance.
      */
-    Left scope(@Nonnull final ScopeEnum scope);
+    Filter scope(@Nonnull final ScopeEnum scope);
   }
 }

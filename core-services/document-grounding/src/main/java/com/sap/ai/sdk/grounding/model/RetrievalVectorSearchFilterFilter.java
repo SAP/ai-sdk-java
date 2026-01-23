@@ -36,7 +36,7 @@ import javax.annotation.Nullable;
 public class RetrievalVectorSearchFilterFilter
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets operator */
+  /** Boolean operator for combining filter conditions */
   public enum OperatorEnum {
     /** The AND option of this RetrievalVectorSearchFilterFilter */
     AND("and"),
@@ -108,10 +108,10 @@ public class RetrievalVectorSearchFilterFilter
   @JsonProperty("value")
   private List<String> value = new ArrayList<>();
 
-  /** Gets or Sets scope */
+  /** Scope of the metadata filter (e.g., collection, document, chunk) */
   public enum ScopeEnum {
-    /** The REPOSITORY option of this RetrievalVectorSearchFilterFilter */
-    REPOSITORY("repository"),
+    /** The COLLECTION option of this RetrievalVectorSearchFilterFilter */
+    COLLECTION("collection"),
 
     /** The DOCUMENT option of this RetrievalVectorSearchFilterFilter */
     DOCUMENT("document"),
@@ -181,7 +181,7 @@ public class RetrievalVectorSearchFilterFilter
    * Set the operator of this {@link RetrievalVectorSearchFilterFilter} instance and return the same
    * instance.
    *
-   * @param operator The operator of this {@link RetrievalVectorSearchFilterFilter}
+   * @param operator Boolean operator for combining filter conditions
    * @return The same instance of this {@link RetrievalVectorSearchFilterFilter} class
    */
   @Nonnull
@@ -191,7 +191,7 @@ public class RetrievalVectorSearchFilterFilter
   }
 
   /**
-   * Get operator
+   * Boolean operator for combining filter conditions
    *
    * @return operator The operator of this {@link RetrievalVectorSearchFilterFilter} instance.
    */
@@ -203,7 +203,7 @@ public class RetrievalVectorSearchFilterFilter
   /**
    * Set the operator of this {@link RetrievalVectorSearchFilterFilter} instance.
    *
-   * @param operator The operator of this {@link RetrievalVectorSearchFilterFilter}
+   * @param operator Boolean operator for combining filter conditions
    */
   public void setOperator(@Nonnull final OperatorEnum operator) {
     this.operator = operator;
@@ -356,17 +356,17 @@ public class RetrievalVectorSearchFilterFilter
    * Set the scope of this {@link RetrievalVectorSearchFilterFilter} instance and return the same
    * instance.
    *
-   * @param scope The scope of this {@link RetrievalVectorSearchFilterFilter}
+   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
    * @return The same instance of this {@link RetrievalVectorSearchFilterFilter} class
    */
   @Nonnull
-  public RetrievalVectorSearchFilterFilter scope(@Nullable final ScopeEnum scope) {
+  public RetrievalVectorSearchFilterFilter scope(@Nonnull final ScopeEnum scope) {
     this.scope = scope;
     return this;
   }
 
   /**
-   * Get scope
+   * Scope of the metadata filter (e.g., collection, document, chunk)
    *
    * @return scope The scope of this {@link RetrievalVectorSearchFilterFilter} instance.
    */
@@ -378,9 +378,9 @@ public class RetrievalVectorSearchFilterFilter
   /**
    * Set the scope of this {@link RetrievalVectorSearchFilterFilter} instance.
    *
-   * @param scope The scope of this {@link RetrievalVectorSearchFilterFilter}
+   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
    */
-  public void setScope(@Nullable final ScopeEnum scope) {
+  public void setScope(@Nonnull final ScopeEnum scope) {
     this.scope = scope;
   }
 
@@ -510,12 +510,14 @@ public class RetrievalVectorSearchFilterFilter
             (right) ->
                 (key) ->
                     (value) ->
-                        new RetrievalVectorSearchFilterFilter()
-                            .operator(operator)
-                            .left(left)
-                            .right(right)
-                            .key(key)
-                            .value(value);
+                        (scope) ->
+                            new RetrievalVectorSearchFilterFilter()
+                                .operator(operator)
+                                .left(left)
+                                .right(right)
+                                .key(key)
+                                .value(value)
+                                .scope(scope);
   }
 
   /** Builder helper class. */
@@ -523,7 +525,7 @@ public class RetrievalVectorSearchFilterFilter
     /**
      * Set the operator of this {@link RetrievalVectorSearchFilterFilter} instance.
      *
-     * @param operator The operator of this {@link RetrievalVectorSearchFilterFilter}
+     * @param operator Boolean operator for combining filter conditions
      * @return The RetrievalVectorSearchFilterFilter builder.
      */
     Builder1 operator(@Nonnull final OperatorEnum operator);
@@ -568,18 +570,29 @@ public class RetrievalVectorSearchFilterFilter
      * Set the value of this {@link RetrievalVectorSearchFilterFilter} instance.
      *
      * @param value The value of this {@link RetrievalVectorSearchFilterFilter}
-     * @return The RetrievalVectorSearchFilterFilter instance.
+     * @return The RetrievalVectorSearchFilterFilter builder.
      */
-    RetrievalVectorSearchFilterFilter value(@Nonnull final List<String> value);
+    Builder5 value(@Nonnull final List<String> value);
 
     /**
      * Set the value of this {@link RetrievalVectorSearchFilterFilter} instance.
      *
      * @param value The value of this {@link RetrievalVectorSearchFilterFilter}
-     * @return The RetrievalVectorSearchFilterFilter instance.
+     * @return The RetrievalVectorSearchFilterFilter builder.
      */
-    default RetrievalVectorSearchFilterFilter value(@Nonnull final String... value) {
+    default Builder5 value(@Nonnull final String... value) {
       return value(Arrays.asList(value));
     }
+  }
+
+  /** Builder helper class. */
+  public interface Builder5 {
+    /**
+     * Set the scope of this {@link RetrievalVectorSearchFilterFilter} instance.
+     *
+     * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
+     * @return The RetrievalVectorSearchFilterFilter instance.
+     */
+    RetrievalVectorSearchFilterFilter scope(@Nonnull final ScopeEnum scope);
   }
 }

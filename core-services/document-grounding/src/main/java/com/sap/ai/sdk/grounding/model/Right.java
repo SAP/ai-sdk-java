@@ -28,12 +28,12 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Right */
+/** Right operand of the boolean expression */
 // CHECKSTYLE:OFF
 public class Right
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets operator */
+  /** Boolean operator for combining filter conditions */
   public enum OperatorEnum {
     /** The AND option of this Right */
     AND("and"),
@@ -105,10 +105,10 @@ public class Right
   @JsonProperty("value")
   private List<String> value = new ArrayList<>();
 
-  /** Gets or Sets scope */
+  /** Scope of the metadata filter (e.g., collection, document, chunk) */
   public enum ScopeEnum {
-    /** The REPOSITORY option of this Right */
-    REPOSITORY("repository"),
+    /** The COLLECTION option of this Right */
+    COLLECTION("collection"),
 
     /** The DOCUMENT option of this Right */
     DOCUMENT("document"),
@@ -177,7 +177,7 @@ public class Right
   /**
    * Set the operator of this {@link Right} instance and return the same instance.
    *
-   * @param operator The operator of this {@link Right}
+   * @param operator Boolean operator for combining filter conditions
    * @return The same instance of this {@link Right} class
    */
   @Nonnull
@@ -187,7 +187,7 @@ public class Right
   }
 
   /**
-   * Get operator
+   * Boolean operator for combining filter conditions
    *
    * @return operator The operator of this {@link Right} instance.
    */
@@ -199,7 +199,7 @@ public class Right
   /**
    * Set the operator of this {@link Right} instance.
    *
-   * @param operator The operator of this {@link Right}
+   * @param operator Boolean operator for combining filter conditions
    */
   public void setOperator(@Nonnull final OperatorEnum operator) {
     this.operator = operator;
@@ -347,17 +347,17 @@ public class Right
   /**
    * Set the scope of this {@link Right} instance and return the same instance.
    *
-   * @param scope The scope of this {@link Right}
+   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
    * @return The same instance of this {@link Right} class
    */
   @Nonnull
-  public Right scope(@Nullable final ScopeEnum scope) {
+  public Right scope(@Nonnull final ScopeEnum scope) {
     this.scope = scope;
     return this;
   }
 
   /**
-   * Get scope
+   * Scope of the metadata filter (e.g., collection, document, chunk)
    *
    * @return scope The scope of this {@link Right} instance.
    */
@@ -369,9 +369,9 @@ public class Right
   /**
    * Set the scope of this {@link Right} instance.
    *
-   * @param scope The scope of this {@link Right}
+   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
    */
-  public void setScope(@Nullable final ScopeEnum scope) {
+  public void setScope(@Nonnull final ScopeEnum scope) {
     this.scope = scope;
   }
 
@@ -495,12 +495,14 @@ public class Right
             (right) ->
                 (key) ->
                     (value) ->
-                        new Right()
-                            .operator(operator)
-                            .left(left)
-                            .right(right)
-                            .key(key)
-                            .value(value);
+                        (scope) ->
+                            new Right()
+                                .operator(operator)
+                                .left(left)
+                                .right(right)
+                                .key(key)
+                                .value(value)
+                                .scope(scope);
   }
 
   /** Builder helper class. */
@@ -508,7 +510,7 @@ public class Right
     /**
      * Set the operator of this {@link Right} instance.
      *
-     * @param operator The operator of this {@link Right}
+     * @param operator Boolean operator for combining filter conditions
      * @return The Right builder.
      */
     Builder1 operator(@Nonnull final OperatorEnum operator);
@@ -553,18 +555,29 @@ public class Right
      * Set the value of this {@link Right} instance.
      *
      * @param value The value of this {@link Right}
-     * @return The Right instance.
+     * @return The Right builder.
      */
-    Right value(@Nonnull final List<String> value);
+    Builder5 value(@Nonnull final List<String> value);
 
     /**
      * Set the value of this {@link Right} instance.
      *
      * @param value The value of this {@link Right}
-     * @return The Right instance.
+     * @return The Right builder.
      */
-    default Right value(@Nonnull final String... value) {
+    default Builder5 value(@Nonnull final String... value) {
       return value(Arrays.asList(value));
     }
+  }
+
+  /** Builder helper class. */
+  public interface Builder5 {
+    /**
+     * Set the scope of this {@link Right} instance.
+     *
+     * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
+     * @return The Right instance.
+     */
+    Right scope(@Nonnull final ScopeEnum scope);
   }
 }

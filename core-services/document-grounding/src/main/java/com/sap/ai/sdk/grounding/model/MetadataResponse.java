@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -23,56 +25,68 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** CollectionPendingResponse */
+/** MetadataResponse */
 // CHECKSTYLE:OFF
-public class CollectionPendingResponse
-    implements VectorV1VectorEndpointsGetCollectionCreationStatus200Response,
-        VectorV1VectorEndpointsGetCollectionDeletionStatus200Response
+public class MetadataResponse
 // CHECKSTYLE:ON
 {
-  @JsonProperty("monitorURL")
-  private String monitorURL;
+  @JsonProperty("current_metadata")
+  private List<MetadataItem> currentMetadata = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for CollectionPendingResponse. */
-  protected CollectionPendingResponse() {}
+  /** Default constructor for MetadataResponse. */
+  protected MetadataResponse() {}
 
   /**
-   * Set the monitorURL of this {@link CollectionPendingResponse} instance and return the same
-   * instance.
+   * Set the currentMetadata of this {@link MetadataResponse} instance and return the same instance.
    *
-   * @param monitorURL The monitorURL of this {@link CollectionPendingResponse}
-   * @return The same instance of this {@link CollectionPendingResponse} class
+   * @param currentMetadata List of metadata after updates.
+   * @return The same instance of this {@link MetadataResponse} class
    */
   @Nonnull
-  public CollectionPendingResponse monitorURL(@Nonnull final String monitorURL) {
-    this.monitorURL = monitorURL;
+  public MetadataResponse currentMetadata(@Nullable final List<MetadataItem> currentMetadata) {
+    this.currentMetadata = currentMetadata;
     return this;
   }
 
   /**
-   * Get monitorURL
+   * Add one currentMetadata instance to this {@link MetadataResponse}.
    *
-   * @return monitorURL The monitorURL of this {@link CollectionPendingResponse} instance.
+   * @param currentMetadataItem The currentMetadata that should be added
+   * @return The same instance of type {@link MetadataResponse}
    */
   @Nonnull
-  public String getMonitorURL() {
-    return monitorURL;
+  public MetadataResponse addCurrentMetadataItem(@Nonnull final MetadataItem currentMetadataItem) {
+    if (this.currentMetadata == null) {
+      this.currentMetadata = new ArrayList<>();
+    }
+    this.currentMetadata.add(currentMetadataItem);
+    return this;
   }
 
   /**
-   * Set the monitorURL of this {@link CollectionPendingResponse} instance.
+   * List of metadata after updates.
    *
-   * @param monitorURL The monitorURL of this {@link CollectionPendingResponse}
+   * @return currentMetadata The currentMetadata of this {@link MetadataResponse} instance.
    */
-  public void setMonitorURL(@Nonnull final String monitorURL) {
-    this.monitorURL = monitorURL;
+  @Nullable
+  public List<MetadataItem> getCurrentMetadata() {
+    return currentMetadata;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link CollectionPendingResponse}.
+   * Set the currentMetadata of this {@link MetadataResponse} instance.
+   *
+   * @param currentMetadata List of metadata after updates.
+   */
+  public void setCurrentMetadata(@Nullable final List<MetadataItem> currentMetadata) {
+    this.currentMetadata = currentMetadata;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link MetadataResponse}.
    *
    * @return The set of properties names
    */
@@ -83,7 +97,7 @@ public class CollectionPendingResponse
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link CollectionPendingResponse} instance.
+   * Get the value of an unrecognizable property of this {@link MetadataResponse} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -94,14 +108,13 @@ public class CollectionPendingResponse
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "CollectionPendingResponse has no field with name '" + name + "'.");
+      throw new NoSuchElementException("MetadataResponse has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link CollectionPendingResponse} instance including
+   * Get the value of all properties of this {@link MetadataResponse} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -110,13 +123,13 @@ public class CollectionPendingResponse
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (monitorURL != null) declaredFields.put("monitorURL", monitorURL);
+    if (currentMetadata != null) declaredFields.put("currentMetadata", currentMetadata);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link CollectionPendingResponse} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link MetadataResponse} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -134,22 +147,22 @@ public class CollectionPendingResponse
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final CollectionPendingResponse collectionPendingResponse = (CollectionPendingResponse) o;
-    return Objects.equals(this.cloudSdkCustomFields, collectionPendingResponse.cloudSdkCustomFields)
-        && Objects.equals(this.monitorURL, collectionPendingResponse.monitorURL);
+    final MetadataResponse metadataResponse = (MetadataResponse) o;
+    return Objects.equals(this.cloudSdkCustomFields, metadataResponse.cloudSdkCustomFields)
+        && Objects.equals(this.currentMetadata, metadataResponse.currentMetadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(monitorURL, cloudSdkCustomFields);
+    return Objects.hash(currentMetadata, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class CollectionPendingResponse {\n");
-    sb.append("    monitorURL: ").append(toIndentedString(monitorURL)).append("\n");
+    sb.append("class MetadataResponse {\n");
+    sb.append("    currentMetadata: ").append(toIndentedString(currentMetadata)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -167,22 +180,8 @@ public class CollectionPendingResponse
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * CollectionPendingResponse} instance with all required arguments.
-   */
-  public static Builder create() {
-    return (monitorURL) -> new CollectionPendingResponse().monitorURL(monitorURL);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the monitorURL of this {@link CollectionPendingResponse} instance.
-     *
-     * @param monitorURL The monitorURL of this {@link CollectionPendingResponse}
-     * @return The CollectionPendingResponse instance.
-     */
-    CollectionPendingResponse monitorURL(@Nonnull final String monitorURL);
+  /** Create a new {@link MetadataResponse} instance. No arguments are required. */
+  public static MetadataResponse create() {
+    return new MetadataResponse();
   }
 }

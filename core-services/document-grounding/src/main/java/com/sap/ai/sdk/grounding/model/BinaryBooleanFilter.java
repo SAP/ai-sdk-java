@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 public class BinaryBooleanFilter
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets operator */
+  /** Boolean operator for combining filter conditions */
   public enum OperatorEnum {
     /** The AND option of this BinaryBooleanFilter */
     AND("and"),
@@ -105,7 +105,7 @@ public class BinaryBooleanFilter
   /**
    * Set the operator of this {@link BinaryBooleanFilter} instance and return the same instance.
    *
-   * @param operator The operator of this {@link BinaryBooleanFilter}
+   * @param operator Boolean operator for combining filter conditions
    * @return The same instance of this {@link BinaryBooleanFilter} class
    */
   @Nonnull
@@ -115,7 +115,7 @@ public class BinaryBooleanFilter
   }
 
   /**
-   * Get operator
+   * Boolean operator for combining filter conditions
    *
    * @return operator The operator of this {@link BinaryBooleanFilter} instance.
    */
@@ -127,7 +127,7 @@ public class BinaryBooleanFilter
   /**
    * Set the operator of this {@link BinaryBooleanFilter} instance.
    *
-   * @param operator The operator of this {@link BinaryBooleanFilter}
+   * @param operator Boolean operator for combining filter conditions
    */
   public void setOperator(@Nonnull final OperatorEnum operator) {
     this.operator = operator;
@@ -311,7 +311,7 @@ public class BinaryBooleanFilter
     /**
      * Set the operator of this {@link BinaryBooleanFilter} instance.
      *
-     * @param operator The operator of this {@link BinaryBooleanFilter}
+     * @param operator Boolean operator for combining filter conditions
      * @return The BinaryBooleanFilter builder.
      */
     Builder1 operator(@Nonnull final OperatorEnum operator);

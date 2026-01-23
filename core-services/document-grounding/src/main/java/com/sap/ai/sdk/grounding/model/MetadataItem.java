@@ -16,99 +16,84 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Base class for documents, document requests and responses. */
+/** MetadataItem */
 // CHECKSTYLE:OFF
-public class BaseDocument
+public class MetadataItem
 // CHECKSTYLE:ON
 {
-  @JsonProperty("chunks")
-  private List<TextOnlyBaseChunkCreate> chunks = new ArrayList<>();
+  @JsonProperty("id")
+  private UUID id;
 
   @JsonProperty("metadata")
-  private List<VectorDocumentKeyValueListPair> metadata = new ArrayList<>();
+  private List<VectorKeyValueListPair> metadata = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for BaseDocument. */
-  protected BaseDocument() {}
+  /** Default constructor for MetadataItem. */
+  protected MetadataItem() {}
 
   /**
-   * Set the chunks of this {@link BaseDocument} instance and return the same instance.
+   * Set the id of this {@link MetadataItem} instance and return the same instance.
    *
-   * @param chunks The chunks of this {@link BaseDocument}
-   * @return The same instance of this {@link BaseDocument} class
+   * @param id ID of collection
+   * @return The same instance of this {@link MetadataItem} class
    */
   @Nonnull
-  public BaseDocument chunks(@Nonnull final List<TextOnlyBaseChunkCreate> chunks) {
-    this.chunks = chunks;
+  public MetadataItem id(@Nonnull final UUID id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Add one chunks instance to this {@link BaseDocument}.
+   * ID of collection
    *
-   * @param chunksItem The chunks that should be added
-   * @return The same instance of type {@link BaseDocument}
+   * @return id The id of this {@link MetadataItem} instance.
    */
   @Nonnull
-  public BaseDocument addChunksItem(@Nonnull final TextOnlyBaseChunkCreate chunksItem) {
-    if (this.chunks == null) {
-      this.chunks = new ArrayList<>();
-    }
-    this.chunks.add(chunksItem);
-    return this;
+  public UUID getId() {
+    return id;
   }
 
   /**
-   * Get chunks
+   * Set the id of this {@link MetadataItem} instance.
    *
-   * @return chunks The chunks of this {@link BaseDocument} instance.
+   * @param id ID of collection
    */
-  @Nonnull
-  public List<TextOnlyBaseChunkCreate> getChunks() {
-    return chunks;
+  public void setId(@Nonnull final UUID id) {
+    this.id = id;
   }
 
   /**
-   * Set the chunks of this {@link BaseDocument} instance.
+   * Set the metadata of this {@link MetadataItem} instance and return the same instance.
    *
-   * @param chunks The chunks of this {@link BaseDocument}
-   */
-  public void setChunks(@Nonnull final List<TextOnlyBaseChunkCreate> chunks) {
-    this.chunks = chunks;
-  }
-
-  /**
-   * Set the metadata of this {@link BaseDocument} instance and return the same instance.
-   *
-   * @param metadata The metadata of this {@link BaseDocument}
-   * @return The same instance of this {@link BaseDocument} class
+   * @param metadata List of metadata of the collections or documents or chunks
+   * @return The same instance of this {@link MetadataItem} class
    */
   @Nonnull
-  public BaseDocument metadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
+  public MetadataItem metadata(@Nullable final List<VectorKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
 
   /**
-   * Add one metadata instance to this {@link BaseDocument}.
+   * Add one metadata instance to this {@link MetadataItem}.
    *
    * @param metadataItem The metadata that should be added
-   * @return The same instance of type {@link BaseDocument}
+   * @return The same instance of type {@link MetadataItem}
    */
   @Nonnull
-  public BaseDocument addMetadataItem(@Nonnull final VectorDocumentKeyValueListPair metadataItem) {
+  public MetadataItem addMetadataItem(@Nonnull final VectorKeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -117,26 +102,26 @@ public class BaseDocument
   }
 
   /**
-   * Get metadata
+   * List of metadata of the collections or documents or chunks
    *
-   * @return metadata The metadata of this {@link BaseDocument} instance.
+   * @return metadata The metadata of this {@link MetadataItem} instance.
    */
-  @Nonnull
-  public List<VectorDocumentKeyValueListPair> getMetadata() {
+  @Nullable
+  public List<VectorKeyValueListPair> getMetadata() {
     return metadata;
   }
 
   /**
-   * Set the metadata of this {@link BaseDocument} instance.
+   * Set the metadata of this {@link MetadataItem} instance.
    *
-   * @param metadata The metadata of this {@link BaseDocument}
+   * @param metadata List of metadata of the collections or documents or chunks
    */
-  public void setMetadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
+  public void setMetadata(@Nullable final List<VectorKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link BaseDocument}.
+   * Get the names of the unrecognizable properties of the {@link MetadataItem}.
    *
    * @return The set of properties names
    */
@@ -147,7 +132,7 @@ public class BaseDocument
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link BaseDocument} instance.
+   * Get the value of an unrecognizable property of this {@link MetadataItem} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -158,13 +143,13 @@ public class BaseDocument
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("BaseDocument has no field with name '" + name + "'.");
+      throw new NoSuchElementException("MetadataItem has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link BaseDocument} instance including unrecognized
+   * Get the value of all properties of this {@link MetadataItem} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -173,13 +158,13 @@ public class BaseDocument
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (chunks != null) declaredFields.put("chunks", chunks);
+    if (id != null) declaredFields.put("id", id);
     if (metadata != null) declaredFields.put("metadata", metadata);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link BaseDocument} instance. If the map previously
+   * Set an unrecognizable property of this {@link MetadataItem} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -198,23 +183,23 @@ public class BaseDocument
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final BaseDocument baseDocument = (BaseDocument) o;
-    return Objects.equals(this.cloudSdkCustomFields, baseDocument.cloudSdkCustomFields)
-        && Objects.equals(this.chunks, baseDocument.chunks)
-        && Objects.equals(this.metadata, baseDocument.metadata);
+    final MetadataItem metadataItem = (MetadataItem) o;
+    return Objects.equals(this.cloudSdkCustomFields, metadataItem.cloudSdkCustomFields)
+        && Objects.equals(this.id, metadataItem.id)
+        && Objects.equals(this.metadata, metadataItem.metadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(chunks, metadata, cloudSdkCustomFields);
+    return Objects.hash(id, metadata, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class BaseDocument {\n");
-    sb.append("    chunks: ").append(toIndentedString(chunks)).append("\n");
+    sb.append("class MetadataItem {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -234,31 +219,21 @@ public class BaseDocument
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link BaseDocument} instance
+   * Create a type-safe, fluent-api builder object to construct a new {@link MetadataItem} instance
    * with all required arguments.
    */
   public static Builder create() {
-    return (chunks) -> new BaseDocument().chunks(chunks);
+    return (id) -> new MetadataItem().id(id);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the chunks of this {@link BaseDocument} instance.
+     * Set the id of this {@link MetadataItem} instance.
      *
-     * @param chunks The chunks of this {@link BaseDocument}
-     * @return The BaseDocument instance.
+     * @param id ID of collection
+     * @return The MetadataItem instance.
      */
-    BaseDocument chunks(@Nonnull final List<TextOnlyBaseChunkCreate> chunks);
-
-    /**
-     * Set the chunks of this {@link BaseDocument} instance.
-     *
-     * @param chunks The chunks of this {@link BaseDocument}
-     * @return The BaseDocument instance.
-     */
-    default BaseDocument chunks(@Nonnull final TextOnlyBaseChunkCreate... chunks) {
-      return chunks(Arrays.asList(chunks));
-    }
+    MetadataItem id(@Nonnull final UUID id);
   }
 }

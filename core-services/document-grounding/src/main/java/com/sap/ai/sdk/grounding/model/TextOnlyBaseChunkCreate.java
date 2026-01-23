@@ -22,13 +22,12 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** Schema for a text-only chunk. */
 // CHECKSTYLE:OFF
-public class TextOnlyBaseChunk
+public class TextOnlyBaseChunkCreate
 // CHECKSTYLE:ON
 {
   @JsonProperty("content")
@@ -37,23 +36,20 @@ public class TextOnlyBaseChunk
   @JsonProperty("metadata")
   private List<VectorKeyValueListPair> metadata = new ArrayList<>();
 
-  @JsonProperty("id")
-  private UUID id;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TextOnlyBaseChunk. */
-  protected TextOnlyBaseChunk() {}
+  /** Default constructor for TextOnlyBaseChunkCreate. */
+  protected TextOnlyBaseChunkCreate() {}
 
   /**
-   * Set the content of this {@link TextOnlyBaseChunk} instance and return the same instance.
+   * Set the content of this {@link TextOnlyBaseChunkCreate} instance and return the same instance.
    *
-   * @param content The content of this {@link TextOnlyBaseChunk}
-   * @return The same instance of this {@link TextOnlyBaseChunk} class
+   * @param content The content of this {@link TextOnlyBaseChunkCreate}
+   * @return The same instance of this {@link TextOnlyBaseChunkCreate} class
    */
   @Nonnull
-  public TextOnlyBaseChunk content(@Nonnull final String content) {
+  public TextOnlyBaseChunkCreate content(@Nonnull final String content) {
     this.content = content;
     return this;
   }
@@ -61,7 +57,7 @@ public class TextOnlyBaseChunk
   /**
    * Get content
    *
-   * @return content The content of this {@link TextOnlyBaseChunk} instance.
+   * @return content The content of this {@link TextOnlyBaseChunkCreate} instance.
    */
   @Nonnull
   public String getContent() {
@@ -69,34 +65,35 @@ public class TextOnlyBaseChunk
   }
 
   /**
-   * Set the content of this {@link TextOnlyBaseChunk} instance.
+   * Set the content of this {@link TextOnlyBaseChunkCreate} instance.
    *
-   * @param content The content of this {@link TextOnlyBaseChunk}
+   * @param content The content of this {@link TextOnlyBaseChunkCreate}
    */
   public void setContent(@Nonnull final String content) {
     this.content = content;
   }
 
   /**
-   * Set the metadata of this {@link TextOnlyBaseChunk} instance and return the same instance.
+   * Set the metadata of this {@link TextOnlyBaseChunkCreate} instance and return the same instance.
    *
-   * @param metadata The metadata of this {@link TextOnlyBaseChunk}
-   * @return The same instance of this {@link TextOnlyBaseChunk} class
+   * @param metadata The metadata of this {@link TextOnlyBaseChunkCreate}
+   * @return The same instance of this {@link TextOnlyBaseChunkCreate} class
    */
   @Nonnull
-  public TextOnlyBaseChunk metadata(@Nullable final List<VectorKeyValueListPair> metadata) {
+  public TextOnlyBaseChunkCreate metadata(@Nullable final List<VectorKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
 
   /**
-   * Add one metadata instance to this {@link TextOnlyBaseChunk}.
+   * Add one metadata instance to this {@link TextOnlyBaseChunkCreate}.
    *
    * @param metadataItem The metadata that should be added
-   * @return The same instance of type {@link TextOnlyBaseChunk}
+   * @return The same instance of type {@link TextOnlyBaseChunkCreate}
    */
   @Nonnull
-  public TextOnlyBaseChunk addMetadataItem(@Nonnull final VectorKeyValueListPair metadataItem) {
+  public TextOnlyBaseChunkCreate addMetadataItem(
+      @Nonnull final VectorKeyValueListPair metadataItem) {
     if (this.metadata == null) {
       this.metadata = new ArrayList<>();
     }
@@ -107,7 +104,7 @@ public class TextOnlyBaseChunk
   /**
    * Get metadata
    *
-   * @return metadata The metadata of this {@link TextOnlyBaseChunk} instance.
+   * @return metadata The metadata of this {@link TextOnlyBaseChunkCreate} instance.
    */
   @Nonnull
   public List<VectorKeyValueListPair> getMetadata() {
@@ -115,47 +112,16 @@ public class TextOnlyBaseChunk
   }
 
   /**
-   * Set the metadata of this {@link TextOnlyBaseChunk} instance.
+   * Set the metadata of this {@link TextOnlyBaseChunkCreate} instance.
    *
-   * @param metadata The metadata of this {@link TextOnlyBaseChunk}
+   * @param metadata The metadata of this {@link TextOnlyBaseChunkCreate}
    */
   public void setMetadata(@Nullable final List<VectorKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
   /**
-   * Set the id of this {@link TextOnlyBaseChunk} instance and return the same instance.
-   *
-   * @param id Unique identifier of a chuk.
-   * @return The same instance of this {@link TextOnlyBaseChunk} class
-   */
-  @Nonnull
-  public TextOnlyBaseChunk id(@Nonnull final UUID id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * Unique identifier of a chuk.
-   *
-   * @return id The id of this {@link TextOnlyBaseChunk} instance.
-   */
-  @Nonnull
-  public UUID getId() {
-    return id;
-  }
-
-  /**
-   * Set the id of this {@link TextOnlyBaseChunk} instance.
-   *
-   * @param id Unique identifier of a chuk.
-   */
-  public void setId(@Nonnull final UUID id) {
-    this.id = id;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link TextOnlyBaseChunk}.
+   * Get the names of the unrecognizable properties of the {@link TextOnlyBaseChunkCreate}.
    *
    * @return The set of properties names
    */
@@ -166,7 +132,7 @@ public class TextOnlyBaseChunk
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TextOnlyBaseChunk} instance.
+   * Get the value of an unrecognizable property of this {@link TextOnlyBaseChunkCreate} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -177,13 +143,14 @@ public class TextOnlyBaseChunk
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("TextOnlyBaseChunk has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "TextOnlyBaseChunkCreate has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TextOnlyBaseChunk} instance including
+   * Get the value of all properties of this {@link TextOnlyBaseChunkCreate} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -194,12 +161,11 @@ public class TextOnlyBaseChunk
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (content != null) declaredFields.put("content", content);
     if (metadata != null) declaredFields.put("metadata", metadata);
-    if (id != null) declaredFields.put("id", id);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link TextOnlyBaseChunk} instance. If the map
+   * Set an unrecognizable property of this {@link TextOnlyBaseChunkCreate} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -218,26 +184,24 @@ public class TextOnlyBaseChunk
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TextOnlyBaseChunk textOnlyBaseChunk = (TextOnlyBaseChunk) o;
-    return Objects.equals(this.cloudSdkCustomFields, textOnlyBaseChunk.cloudSdkCustomFields)
-        && Objects.equals(this.content, textOnlyBaseChunk.content)
-        && Objects.equals(this.metadata, textOnlyBaseChunk.metadata)
-        && Objects.equals(this.id, textOnlyBaseChunk.id);
+    final TextOnlyBaseChunkCreate textOnlyBaseChunkCreate = (TextOnlyBaseChunkCreate) o;
+    return Objects.equals(this.cloudSdkCustomFields, textOnlyBaseChunkCreate.cloudSdkCustomFields)
+        && Objects.equals(this.content, textOnlyBaseChunkCreate.content)
+        && Objects.equals(this.metadata, textOnlyBaseChunkCreate.metadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(content, metadata, id, cloudSdkCustomFields);
+    return Objects.hash(content, metadata, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TextOnlyBaseChunk {\n");
+    sb.append("class TextOnlyBaseChunkCreate {\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -256,32 +220,21 @@ public class TextOnlyBaseChunk
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link TextOnlyBaseChunk}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * TextOnlyBaseChunkCreate} instance with all required arguments.
    */
   public static Builder create() {
-    return (content) -> (id) -> new TextOnlyBaseChunk().content(content).id(id);
+    return (content) -> new TextOnlyBaseChunkCreate().content(content);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the content of this {@link TextOnlyBaseChunk} instance.
+     * Set the content of this {@link TextOnlyBaseChunkCreate} instance.
      *
-     * @param content The content of this {@link TextOnlyBaseChunk}
-     * @return The TextOnlyBaseChunk builder.
+     * @param content The content of this {@link TextOnlyBaseChunkCreate}
+     * @return The TextOnlyBaseChunkCreate instance.
      */
-    Builder1 content(@Nonnull final String content);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the id of this {@link TextOnlyBaseChunk} instance.
-     *
-     * @param id Unique identifier of a chuk.
-     * @return The TextOnlyBaseChunk instance.
-     */
-    TextOnlyBaseChunk id(@Nonnull final UUID id);
+    TextOnlyBaseChunkCreate content(@Nonnull final String content);
   }
 }
