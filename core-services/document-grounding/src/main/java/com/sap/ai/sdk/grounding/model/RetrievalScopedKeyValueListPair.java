@@ -28,9 +28,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ScopedKeyValueListPair */
+/** RetrievalScopedKeyValueListPair */
 // CHECKSTYLE:OFF
-public class ScopedKeyValueListPair
+public class RetrievalScopedKeyValueListPair
 // CHECKSTYLE:ON
 {
   @JsonProperty("key")
@@ -39,18 +39,18 @@ public class ScopedKeyValueListPair
   @JsonProperty("value")
   private List<String> value = new ArrayList<>();
 
-  /** Scope of the metadata filter (e.g., collection, document, chunk) */
+  /** Gets or Sets scope */
   public enum ScopeEnum {
-    /** The COLLECTION option of this ScopedKeyValueListPair */
-    COLLECTION("collection"),
+    /** The REPOSITORY option of this RetrievalScopedKeyValueListPair */
+    REPOSITORY("repository"),
 
-    /** The DOCUMENT option of this ScopedKeyValueListPair */
+    /** The DOCUMENT option of this RetrievalScopedKeyValueListPair */
     DOCUMENT("document"),
 
-    /** The CHUNK option of this ScopedKeyValueListPair */
+    /** The CHUNK option of this RetrievalScopedKeyValueListPair */
     CHUNK("chunk"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ScopedKeyValueListPair */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this RetrievalScopedKeyValueListPair */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -85,7 +85,7 @@ public class ScopedKeyValueListPair
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ScopedKeyValueListPair
+     * @return The enum value of type RetrievalScopedKeyValueListPair
      */
     @JsonCreator
     @Nonnull
@@ -105,17 +105,18 @@ public class ScopedKeyValueListPair
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ScopedKeyValueListPair. */
-  protected ScopedKeyValueListPair() {}
+  /** Default constructor for RetrievalScopedKeyValueListPair. */
+  protected RetrievalScopedKeyValueListPair() {}
 
   /**
-   * Set the key of this {@link ScopedKeyValueListPair} instance and return the same instance.
+   * Set the key of this {@link RetrievalScopedKeyValueListPair} instance and return the same
+   * instance.
    *
-   * @param key The key of this {@link ScopedKeyValueListPair}
-   * @return The same instance of this {@link ScopedKeyValueListPair} class
+   * @param key The key of this {@link RetrievalScopedKeyValueListPair}
+   * @return The same instance of this {@link RetrievalScopedKeyValueListPair} class
    */
   @Nonnull
-  public ScopedKeyValueListPair key(@Nonnull final String key) {
+  public RetrievalScopedKeyValueListPair key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
@@ -123,7 +124,7 @@ public class ScopedKeyValueListPair
   /**
    * Get key
    *
-   * @return key The key of this {@link ScopedKeyValueListPair} instance.
+   * @return key The key of this {@link RetrievalScopedKeyValueListPair} instance.
    */
   @Nonnull
   public String getKey() {
@@ -131,34 +132,35 @@ public class ScopedKeyValueListPair
   }
 
   /**
-   * Set the key of this {@link ScopedKeyValueListPair} instance.
+   * Set the key of this {@link RetrievalScopedKeyValueListPair} instance.
    *
-   * @param key The key of this {@link ScopedKeyValueListPair}
+   * @param key The key of this {@link RetrievalScopedKeyValueListPair}
    */
   public void setKey(@Nonnull final String key) {
     this.key = key;
   }
 
   /**
-   * Set the value of this {@link ScopedKeyValueListPair} instance and return the same instance.
+   * Set the value of this {@link RetrievalScopedKeyValueListPair} instance and return the same
+   * instance.
    *
-   * @param value The value of this {@link ScopedKeyValueListPair}
-   * @return The same instance of this {@link ScopedKeyValueListPair} class
+   * @param value The value of this {@link RetrievalScopedKeyValueListPair}
+   * @return The same instance of this {@link RetrievalScopedKeyValueListPair} class
    */
   @Nonnull
-  public ScopedKeyValueListPair value(@Nonnull final List<String> value) {
+  public RetrievalScopedKeyValueListPair value(@Nonnull final List<String> value) {
     this.value = value;
     return this;
   }
 
   /**
-   * Add one value instance to this {@link ScopedKeyValueListPair}.
+   * Add one value instance to this {@link RetrievalScopedKeyValueListPair}.
    *
    * @param valueItem The value that should be added
-   * @return The same instance of type {@link ScopedKeyValueListPair}
+   * @return The same instance of type {@link RetrievalScopedKeyValueListPair}
    */
   @Nonnull
-  public ScopedKeyValueListPair addValueItem(@Nonnull final String valueItem) {
+  public RetrievalScopedKeyValueListPair addValueItem(@Nonnull final String valueItem) {
     if (this.value == null) {
       this.value = new ArrayList<>();
     }
@@ -169,7 +171,7 @@ public class ScopedKeyValueListPair
   /**
    * Get value
    *
-   * @return value The value of this {@link ScopedKeyValueListPair} instance.
+   * @return value The value of this {@link RetrievalScopedKeyValueListPair} instance.
    */
   @Nonnull
   public List<String> getValue() {
@@ -177,30 +179,31 @@ public class ScopedKeyValueListPair
   }
 
   /**
-   * Set the value of this {@link ScopedKeyValueListPair} instance.
+   * Set the value of this {@link RetrievalScopedKeyValueListPair} instance.
    *
-   * @param value The value of this {@link ScopedKeyValueListPair}
+   * @param value The value of this {@link RetrievalScopedKeyValueListPair}
    */
   public void setValue(@Nonnull final List<String> value) {
     this.value = value;
   }
 
   /**
-   * Set the scope of this {@link ScopedKeyValueListPair} instance and return the same instance.
+   * Set the scope of this {@link RetrievalScopedKeyValueListPair} instance and return the same
+   * instance.
    *
-   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
-   * @return The same instance of this {@link ScopedKeyValueListPair} class
+   * @param scope The scope of this {@link RetrievalScopedKeyValueListPair}
+   * @return The same instance of this {@link RetrievalScopedKeyValueListPair} class
    */
   @Nonnull
-  public ScopedKeyValueListPair scope(@Nullable final ScopeEnum scope) {
+  public RetrievalScopedKeyValueListPair scope(@Nullable final ScopeEnum scope) {
     this.scope = scope;
     return this;
   }
 
   /**
-   * Scope of the metadata filter (e.g., collection, document, chunk)
+   * Get scope
    *
-   * @return scope The scope of this {@link ScopedKeyValueListPair} instance.
+   * @return scope The scope of this {@link RetrievalScopedKeyValueListPair} instance.
    */
   @Nonnull
   public ScopeEnum getScope() {
@@ -208,16 +211,16 @@ public class ScopedKeyValueListPair
   }
 
   /**
-   * Set the scope of this {@link ScopedKeyValueListPair} instance.
+   * Set the scope of this {@link RetrievalScopedKeyValueListPair} instance.
    *
-   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
+   * @param scope The scope of this {@link RetrievalScopedKeyValueListPair}
    */
   public void setScope(@Nullable final ScopeEnum scope) {
     this.scope = scope;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ScopedKeyValueListPair}.
+   * Get the names of the unrecognizable properties of the {@link RetrievalScopedKeyValueListPair}.
    *
    * @return The set of properties names
    */
@@ -228,7 +231,8 @@ public class ScopedKeyValueListPair
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ScopedKeyValueListPair} instance.
+   * Get the value of an unrecognizable property of this {@link RetrievalScopedKeyValueListPair}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -240,14 +244,14 @@ public class ScopedKeyValueListPair
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "ScopedKeyValueListPair has no field with name '" + name + "'.");
+          "RetrievalScopedKeyValueListPair has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ScopedKeyValueListPair} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link RetrievalScopedKeyValueListPair} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -262,8 +266,9 @@ public class ScopedKeyValueListPair
   }
 
   /**
-   * Set an unrecognizable property of this {@link ScopedKeyValueListPair} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link RetrievalScopedKeyValueListPair} instance. If the
+   * map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -281,11 +286,13 @@ public class ScopedKeyValueListPair
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ScopedKeyValueListPair scopedKeyValueListPair = (ScopedKeyValueListPair) o;
-    return Objects.equals(this.cloudSdkCustomFields, scopedKeyValueListPair.cloudSdkCustomFields)
-        && Objects.equals(this.key, scopedKeyValueListPair.key)
-        && Objects.equals(this.value, scopedKeyValueListPair.value)
-        && Objects.equals(this.scope, scopedKeyValueListPair.scope);
+    final RetrievalScopedKeyValueListPair retrievalScopedKeyValueListPair =
+        (RetrievalScopedKeyValueListPair) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, retrievalScopedKeyValueListPair.cloudSdkCustomFields)
+        && Objects.equals(this.key, retrievalScopedKeyValueListPair.key)
+        && Objects.equals(this.value, retrievalScopedKeyValueListPair.value)
+        && Objects.equals(this.scope, retrievalScopedKeyValueListPair.scope);
   }
 
   @Override
@@ -297,7 +304,7 @@ public class ScopedKeyValueListPair
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ScopedKeyValueListPair {\n");
+    sb.append("class RetrievalScopedKeyValueListPair {\n");
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    scope: ").append(toIndentedString(scope)).append("\n");
@@ -319,20 +326,20 @@ public class ScopedKeyValueListPair
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ScopedKeyValueListPair}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * RetrievalScopedKeyValueListPair} instance with all required arguments.
    */
   public static Builder create() {
-    return (key) -> (value) -> new ScopedKeyValueListPair().key(key).value(value);
+    return (key) -> (value) -> new RetrievalScopedKeyValueListPair().key(key).value(value);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the key of this {@link ScopedKeyValueListPair} instance.
+     * Set the key of this {@link RetrievalScopedKeyValueListPair} instance.
      *
-     * @param key The key of this {@link ScopedKeyValueListPair}
-     * @return The ScopedKeyValueListPair builder.
+     * @param key The key of this {@link RetrievalScopedKeyValueListPair}
+     * @return The RetrievalScopedKeyValueListPair builder.
      */
     Builder1 key(@Nonnull final String key);
   }
@@ -340,20 +347,20 @@ public class ScopedKeyValueListPair
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the value of this {@link ScopedKeyValueListPair} instance.
+     * Set the value of this {@link RetrievalScopedKeyValueListPair} instance.
      *
-     * @param value The value of this {@link ScopedKeyValueListPair}
-     * @return The ScopedKeyValueListPair instance.
+     * @param value The value of this {@link RetrievalScopedKeyValueListPair}
+     * @return The RetrievalScopedKeyValueListPair instance.
      */
-    ScopedKeyValueListPair value(@Nonnull final List<String> value);
+    RetrievalScopedKeyValueListPair value(@Nonnull final List<String> value);
 
     /**
-     * Set the value of this {@link ScopedKeyValueListPair} instance.
+     * Set the value of this {@link RetrievalScopedKeyValueListPair} instance.
      *
-     * @param value The value of this {@link ScopedKeyValueListPair}
-     * @return The ScopedKeyValueListPair instance.
+     * @param value The value of this {@link RetrievalScopedKeyValueListPair}
+     * @return The RetrievalScopedKeyValueListPair instance.
      */
-    default ScopedKeyValueListPair value(@Nonnull final String... value) {
+    default RetrievalScopedKeyValueListPair value(@Nonnull final String... value) {
       return value(Arrays.asList(value));
     }
   }

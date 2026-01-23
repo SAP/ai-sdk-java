@@ -3127,12 +3127,6 @@ components:
         - aggregatedScore
         - denseRetrievalScore
       title: SearchScores
-    FilterMatchModeEnum:
-      type: string
-      enum:
-        - ANY
-        - ALL
-      title: FilterMatchModeEnum
     RetrievalVectorSearchFilter:
       properties:
         id:
@@ -3182,8 +3176,8 @@ components:
           default: []
         filter:
           anyOf:
-            - $ref: '#/components/schemas/BinaryBooleanFilter'
-            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+            - $ref: '#/components/schemas/RetrievalBinaryBooleanFilter'
+            - $ref: '#/components/schemas/RetrievalScopedKeyValueListPair'
           nullable: true
           description: Filter to apply on the search results. This cannot be used together with 'documentMetadata'. The depth of the filter must not exceed 5 levels.
         scoringConfiguration:
@@ -3208,7 +3202,7 @@ components:
       required:
       - id
       title: RetrievalVectorSearchFilter
-    BinaryBooleanFilter:
+    RetrievalBinaryBooleanFilter:
       properties:
         operator:
           type: string
@@ -3219,20 +3213,20 @@ components:
         left:
           title: Left
           anyOf:
-            - $ref: '#/components/schemas/BinaryBooleanFilter'
-            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+            - $ref: '#/components/schemas/RetrievalBinaryBooleanFilter'
+            - $ref: '#/components/schemas/RetrievalScopedKeyValueListPair'
         right:
           title: Right
           anyOf:
-            - $ref: '#/components/schemas/BinaryBooleanFilter'
-            - $ref: '#/components/schemas/ScopedKeyValueListPair'
+            - $ref: '#/components/schemas/RetrievalBinaryBooleanFilter'
+            - $ref: '#/components/schemas/RetrievalScopedKeyValueListPair'
       type: object
       required:
       - operator
       - left
       - right
-      title: BinaryBooleanFilter
-    ScopedKeyValueListPair:
+      title: RetrievalBinaryBooleanFilter
+    RetrievalScopedKeyValueListPair:
       properties:
         key:
           type: string
@@ -3256,7 +3250,7 @@ components:
       required:
       - key
       - value
-      title: ScopedKeyValueListPair
+      title: RetrievalScopedKeyValueListPair
     MergeStrategyScoreReuse:
       properties:
         type:
@@ -3650,7 +3644,6 @@ components:
       required:
         - key
         - value
-        - scope
       properties:
         key:
           type: string

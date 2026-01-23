@@ -28,20 +28,20 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Left */
+/** Left operand of the boolean expression */
 // CHECKSTYLE:OFF
-public class Left
+public class Left1
 // CHECKSTYLE:ON
 {
-  /** Gets or Sets operator */
+  /** Boolean operator for combining filter conditions */
   public enum OperatorEnum {
-    /** The AND option of this Left */
+    /** The AND option of this Left1 */
     AND("and"),
 
-    /** The OR option of this Left */
+    /** The OR option of this Left1 */
     OR("or"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this Left */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this Left1 */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -76,7 +76,7 @@ public class Left
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type Left
+     * @return The enum value of type Left1
      */
     @JsonCreator
     @Nonnull
@@ -94,10 +94,10 @@ public class Left
   private OperatorEnum operator;
 
   @JsonProperty("left")
-  private Left left;
+  private Left1 left;
 
   @JsonProperty("right")
-  private Right right;
+  private Right1 right;
 
   @JsonProperty("key")
   private String key;
@@ -105,18 +105,18 @@ public class Left
   @JsonProperty("value")
   private List<String> value = new ArrayList<>();
 
-  /** Gets or Sets scope */
+  /** Scope of the metadata filter (e.g., collection, document, chunk) */
   public enum ScopeEnum {
-    /** The REPOSITORY option of this Left */
-    REPOSITORY("repository"),
+    /** The COLLECTION option of this Left1 */
+    COLLECTION("collection"),
 
-    /** The DOCUMENT option of this Left */
+    /** The DOCUMENT option of this Left1 */
     DOCUMENT("document"),
 
-    /** The CHUNK option of this Left */
+    /** The CHUNK option of this Left1 */
     CHUNK("chunk"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this Left */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this Left1 */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -151,7 +151,7 @@ public class Left
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type Left
+     * @return The enum value of type Left1
      */
     @JsonCreator
     @Nonnull
@@ -171,25 +171,25 @@ public class Left
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for Left. */
-  protected Left() {}
+  /** Default constructor for Left1. */
+  protected Left1() {}
 
   /**
-   * Set the operator of this {@link Left} instance and return the same instance.
+   * Set the operator of this {@link Left1} instance and return the same instance.
    *
-   * @param operator The operator of this {@link Left}
-   * @return The same instance of this {@link Left} class
+   * @param operator Boolean operator for combining filter conditions
+   * @return The same instance of this {@link Left1} class
    */
   @Nonnull
-  public Left operator(@Nonnull final OperatorEnum operator) {
+  public Left1 operator(@Nonnull final OperatorEnum operator) {
     this.operator = operator;
     return this;
   }
 
   /**
-   * Get operator
+   * Boolean operator for combining filter conditions
    *
-   * @return operator The operator of this {@link Left} instance.
+   * @return operator The operator of this {@link Left1} instance.
    */
   @Nonnull
   public OperatorEnum getOperator() {
@@ -197,22 +197,22 @@ public class Left
   }
 
   /**
-   * Set the operator of this {@link Left} instance.
+   * Set the operator of this {@link Left1} instance.
    *
-   * @param operator The operator of this {@link Left}
+   * @param operator Boolean operator for combining filter conditions
    */
   public void setOperator(@Nonnull final OperatorEnum operator) {
     this.operator = operator;
   }
 
   /**
-   * Set the left of this {@link Left} instance and return the same instance.
+   * Set the left of this {@link Left1} instance and return the same instance.
    *
-   * @param left The left of this {@link Left}
-   * @return The same instance of this {@link Left} class
+   * @param left The left of this {@link Left1}
+   * @return The same instance of this {@link Left1} class
    */
   @Nonnull
-  public Left left(@Nonnull final Left left) {
+  public Left1 left(@Nonnull final Left1 left) {
     this.left = left;
     return this;
   }
@@ -220,30 +220,30 @@ public class Left
   /**
    * Get left
    *
-   * @return left The left of this {@link Left} instance.
+   * @return left The left of this {@link Left1} instance.
    */
   @Nonnull
-  public Left getLeft() {
+  public Left1 getLeft() {
     return left;
   }
 
   /**
-   * Set the left of this {@link Left} instance.
+   * Set the left of this {@link Left1} instance.
    *
-   * @param left The left of this {@link Left}
+   * @param left The left of this {@link Left1}
    */
-  public void setLeft(@Nonnull final Left left) {
+  public void setLeft(@Nonnull final Left1 left) {
     this.left = left;
   }
 
   /**
-   * Set the right of this {@link Left} instance and return the same instance.
+   * Set the right of this {@link Left1} instance and return the same instance.
    *
-   * @param right The right of this {@link Left}
-   * @return The same instance of this {@link Left} class
+   * @param right The right of this {@link Left1}
+   * @return The same instance of this {@link Left1} class
    */
   @Nonnull
-  public Left right(@Nonnull final Right right) {
+  public Left1 right(@Nonnull final Right1 right) {
     this.right = right;
     return this;
   }
@@ -251,30 +251,30 @@ public class Left
   /**
    * Get right
    *
-   * @return right The right of this {@link Left} instance.
+   * @return right The right of this {@link Left1} instance.
    */
   @Nonnull
-  public Right getRight() {
+  public Right1 getRight() {
     return right;
   }
 
   /**
-   * Set the right of this {@link Left} instance.
+   * Set the right of this {@link Left1} instance.
    *
-   * @param right The right of this {@link Left}
+   * @param right The right of this {@link Left1}
    */
-  public void setRight(@Nonnull final Right right) {
+  public void setRight(@Nonnull final Right1 right) {
     this.right = right;
   }
 
   /**
-   * Set the key of this {@link Left} instance and return the same instance.
+   * Set the key of this {@link Left1} instance and return the same instance.
    *
-   * @param key The key of this {@link Left}
-   * @return The same instance of this {@link Left} class
+   * @param key The key of this {@link Left1}
+   * @return The same instance of this {@link Left1} class
    */
   @Nonnull
-  public Left key(@Nonnull final String key) {
+  public Left1 key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
@@ -282,7 +282,7 @@ public class Left
   /**
    * Get key
    *
-   * @return key The key of this {@link Left} instance.
+   * @return key The key of this {@link Left1} instance.
    */
   @Nonnull
   public String getKey() {
@@ -290,34 +290,34 @@ public class Left
   }
 
   /**
-   * Set the key of this {@link Left} instance.
+   * Set the key of this {@link Left1} instance.
    *
-   * @param key The key of this {@link Left}
+   * @param key The key of this {@link Left1}
    */
   public void setKey(@Nonnull final String key) {
     this.key = key;
   }
 
   /**
-   * Set the value of this {@link Left} instance and return the same instance.
+   * Set the value of this {@link Left1} instance and return the same instance.
    *
-   * @param value The value of this {@link Left}
-   * @return The same instance of this {@link Left} class
+   * @param value The value of this {@link Left1}
+   * @return The same instance of this {@link Left1} class
    */
   @Nonnull
-  public Left value(@Nonnull final List<String> value) {
+  public Left1 value(@Nonnull final List<String> value) {
     this.value = value;
     return this;
   }
 
   /**
-   * Add one value instance to this {@link Left}.
+   * Add one value instance to this {@link Left1}.
    *
    * @param valueItem The value that should be added
-   * @return The same instance of type {@link Left}
+   * @return The same instance of type {@link Left1}
    */
   @Nonnull
-  public Left addValueItem(@Nonnull final String valueItem) {
+  public Left1 addValueItem(@Nonnull final String valueItem) {
     if (this.value == null) {
       this.value = new ArrayList<>();
     }
@@ -328,7 +328,7 @@ public class Left
   /**
    * Get value
    *
-   * @return value The value of this {@link Left} instance.
+   * @return value The value of this {@link Left1} instance.
    */
   @Nonnull
   public List<String> getValue() {
@@ -336,30 +336,30 @@ public class Left
   }
 
   /**
-   * Set the value of this {@link Left} instance.
+   * Set the value of this {@link Left1} instance.
    *
-   * @param value The value of this {@link Left}
+   * @param value The value of this {@link Left1}
    */
   public void setValue(@Nonnull final List<String> value) {
     this.value = value;
   }
 
   /**
-   * Set the scope of this {@link Left} instance and return the same instance.
+   * Set the scope of this {@link Left1} instance and return the same instance.
    *
-   * @param scope The scope of this {@link Left}
-   * @return The same instance of this {@link Left} class
+   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
+   * @return The same instance of this {@link Left1} class
    */
   @Nonnull
-  public Left scope(@Nullable final ScopeEnum scope) {
+  public Left1 scope(@Nullable final ScopeEnum scope) {
     this.scope = scope;
     return this;
   }
 
   /**
-   * Get scope
+   * Scope of the metadata filter (e.g., collection, document, chunk)
    *
-   * @return scope The scope of this {@link Left} instance.
+   * @return scope The scope of this {@link Left1} instance.
    */
   @Nonnull
   public ScopeEnum getScope() {
@@ -367,16 +367,16 @@ public class Left
   }
 
   /**
-   * Set the scope of this {@link Left} instance.
+   * Set the scope of this {@link Left1} instance.
    *
-   * @param scope The scope of this {@link Left}
+   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
    */
   public void setScope(@Nullable final ScopeEnum scope) {
     this.scope = scope;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link Left}.
+   * Get the names of the unrecognizable properties of the {@link Left1}.
    *
    * @return The set of properties names
    */
@@ -387,7 +387,7 @@ public class Left
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link Left} instance.
+   * Get the value of an unrecognizable property of this {@link Left1} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -398,13 +398,13 @@ public class Left
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("Left has no field with name '" + name + "'.");
+      throw new NoSuchElementException("Left1 has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link Left} instance including unrecognized
+   * Get the value of all properties of this {@link Left1} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -423,8 +423,8 @@ public class Left
   }
 
   /**
-   * Set an unrecognizable property of this {@link Left} instance. If the map previously contained a
-   * mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link Left1} instance. If the map previously contained
+   * a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -442,14 +442,14 @@ public class Left
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final Left left = (Left) o;
-    return Objects.equals(this.cloudSdkCustomFields, left.cloudSdkCustomFields)
-        && Objects.equals(this.operator, left.operator)
-        && Objects.equals(this.left, left.left)
-        && Objects.equals(this.right, left.right)
-        && Objects.equals(this.key, left.key)
-        && Objects.equals(this.value, left.value)
-        && Objects.equals(this.scope, left.scope);
+    final Left1 left1 = (Left1) o;
+    return Objects.equals(this.cloudSdkCustomFields, left1.cloudSdkCustomFields)
+        && Objects.equals(this.operator, left1.operator)
+        && Objects.equals(this.left, left1.left)
+        && Objects.equals(this.right, left1.right)
+        && Objects.equals(this.key, left1.key)
+        && Objects.equals(this.value, left1.value)
+        && Objects.equals(this.scope, left1.scope);
   }
 
   @Override
@@ -461,7 +461,7 @@ public class Left
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class Left {\n");
+    sb.append("class Left1 {\n");
     sb.append("    operator: ").append(toIndentedString(operator)).append("\n");
     sb.append("    left: ").append(toIndentedString(left)).append("\n");
     sb.append("    right: ").append(toIndentedString(right)).append("\n");
@@ -486,8 +486,8 @@ public class Left
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link Left} instance with all
-   * required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link Left1} instance with
+   * all required arguments.
    */
   public static Builder create() {
     return (operator) ->
@@ -495,16 +495,21 @@ public class Left
             (right) ->
                 (key) ->
                     (value) ->
-                        new Left().operator(operator).left(left).right(right).key(key).value(value);
+                        new Left1()
+                            .operator(operator)
+                            .left(left)
+                            .right(right)
+                            .key(key)
+                            .value(value);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the operator of this {@link Left} instance.
+     * Set the operator of this {@link Left1} instance.
      *
-     * @param operator The operator of this {@link Left}
-     * @return The Left builder.
+     * @param operator Boolean operator for combining filter conditions
+     * @return The Left1 builder.
      */
     Builder1 operator(@Nonnull final OperatorEnum operator);
   }
@@ -512,32 +517,32 @@ public class Left
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the left of this {@link Left} instance.
+     * Set the left of this {@link Left1} instance.
      *
-     * @param left The left of this {@link Left}
-     * @return The Left builder.
+     * @param left The left of this {@link Left1}
+     * @return The Left1 builder.
      */
-    Builder2 left(@Nonnull final Left left);
+    Builder2 left(@Nonnull final Left1 left);
   }
 
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the right of this {@link Left} instance.
+     * Set the right of this {@link Left1} instance.
      *
-     * @param right The right of this {@link Left}
-     * @return The Left builder.
+     * @param right The right of this {@link Left1}
+     * @return The Left1 builder.
      */
-    Builder3 right(@Nonnull final Right right);
+    Builder3 right(@Nonnull final Right1 right);
   }
 
   /** Builder helper class. */
   public interface Builder3 {
     /**
-     * Set the key of this {@link Left} instance.
+     * Set the key of this {@link Left1} instance.
      *
-     * @param key The key of this {@link Left}
-     * @return The Left builder.
+     * @param key The key of this {@link Left1}
+     * @return The Left1 builder.
      */
     Builder4 key(@Nonnull final String key);
   }
@@ -545,20 +550,20 @@ public class Left
   /** Builder helper class. */
   public interface Builder4 {
     /**
-     * Set the value of this {@link Left} instance.
+     * Set the value of this {@link Left1} instance.
      *
-     * @param value The value of this {@link Left}
-     * @return The Left instance.
+     * @param value The value of this {@link Left1}
+     * @return The Left1 instance.
      */
-    Left value(@Nonnull final List<String> value);
+    Left1 value(@Nonnull final List<String> value);
 
     /**
-     * Set the value of this {@link Left} instance.
+     * Set the value of this {@link Left1} instance.
      *
-     * @param value The value of this {@link Left}
-     * @return The Left instance.
+     * @param value The value of this {@link Left1}
+     * @return The Left1 instance.
      */
-    default Left value(@Nonnull final String... value) {
+    default Left1 value(@Nonnull final String... value) {
       return value(Arrays.asList(value));
     }
   }

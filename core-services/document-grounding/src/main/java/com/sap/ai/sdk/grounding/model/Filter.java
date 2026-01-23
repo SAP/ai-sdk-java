@@ -94,10 +94,10 @@ public class Filter
   private OperatorEnum operator;
 
   @JsonProperty("left")
-  private Left left;
+  private Left1 left;
 
   @JsonProperty("right")
-  private Right right;
+  private Right1 right;
 
   @JsonProperty("key")
   private String key;
@@ -212,7 +212,7 @@ public class Filter
    * @return The same instance of this {@link Filter} class
    */
   @Nonnull
-  public Filter left(@Nonnull final Left left) {
+  public Filter left(@Nonnull final Left1 left) {
     this.left = left;
     return this;
   }
@@ -223,7 +223,7 @@ public class Filter
    * @return left The left of this {@link Filter} instance.
    */
   @Nonnull
-  public Left getLeft() {
+  public Left1 getLeft() {
     return left;
   }
 
@@ -232,7 +232,7 @@ public class Filter
    *
    * @param left The left of this {@link Filter}
    */
-  public void setLeft(@Nonnull final Left left) {
+  public void setLeft(@Nonnull final Left1 left) {
     this.left = left;
   }
 
@@ -243,7 +243,7 @@ public class Filter
    * @return The same instance of this {@link Filter} class
    */
   @Nonnull
-  public Filter right(@Nonnull final Right right) {
+  public Filter right(@Nonnull final Right1 right) {
     this.right = right;
     return this;
   }
@@ -254,7 +254,7 @@ public class Filter
    * @return right The right of this {@link Filter} instance.
    */
   @Nonnull
-  public Right getRight() {
+  public Right1 getRight() {
     return right;
   }
 
@@ -263,7 +263,7 @@ public class Filter
    *
    * @param right The right of this {@link Filter}
    */
-  public void setRight(@Nonnull final Right right) {
+  public void setRight(@Nonnull final Right1 right) {
     this.right = right;
   }
 
@@ -351,7 +351,7 @@ public class Filter
    * @return The same instance of this {@link Filter} class
    */
   @Nonnull
-  public Filter scope(@Nonnull final ScopeEnum scope) {
+  public Filter scope(@Nullable final ScopeEnum scope) {
     this.scope = scope;
     return this;
   }
@@ -371,7 +371,7 @@ public class Filter
    *
    * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
    */
-  public void setScope(@Nonnull final ScopeEnum scope) {
+  public void setScope(@Nullable final ScopeEnum scope) {
     this.scope = scope;
   }
 
@@ -495,14 +495,12 @@ public class Filter
             (right) ->
                 (key) ->
                     (value) ->
-                        (scope) ->
-                            new Filter()
-                                .operator(operator)
-                                .left(left)
-                                .right(right)
-                                .key(key)
-                                .value(value)
-                                .scope(scope);
+                        new Filter()
+                            .operator(operator)
+                            .left(left)
+                            .right(right)
+                            .key(key)
+                            .value(value);
   }
 
   /** Builder helper class. */
@@ -524,7 +522,7 @@ public class Filter
      * @param left The left of this {@link Filter}
      * @return The Filter builder.
      */
-    Builder2 left(@Nonnull final Left left);
+    Builder2 left(@Nonnull final Left1 left);
   }
 
   /** Builder helper class. */
@@ -535,7 +533,7 @@ public class Filter
      * @param right The right of this {@link Filter}
      * @return The Filter builder.
      */
-    Builder3 right(@Nonnull final Right right);
+    Builder3 right(@Nonnull final Right1 right);
   }
 
   /** Builder helper class. */
@@ -555,29 +553,18 @@ public class Filter
      * Set the value of this {@link Filter} instance.
      *
      * @param value The value of this {@link Filter}
-     * @return The Filter builder.
+     * @return The Filter instance.
      */
-    Builder5 value(@Nonnull final List<String> value);
+    Filter value(@Nonnull final List<String> value);
 
     /**
      * Set the value of this {@link Filter} instance.
      *
      * @param value The value of this {@link Filter}
-     * @return The Filter builder.
-     */
-    default Builder5 value(@Nonnull final String... value) {
-      return value(Arrays.asList(value));
-    }
-  }
-
-  /** Builder helper class. */
-  public interface Builder5 {
-    /**
-     * Set the scope of this {@link Filter} instance.
-     *
-     * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
      * @return The Filter instance.
      */
-    Filter scope(@Nonnull final ScopeEnum scope);
+    default Filter value(@Nonnull final String... value) {
+      return value(Arrays.asList(value));
+    }
   }
 }

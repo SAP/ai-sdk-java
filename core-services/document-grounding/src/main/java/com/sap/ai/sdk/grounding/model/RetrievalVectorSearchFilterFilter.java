@@ -36,7 +36,7 @@ import javax.annotation.Nullable;
 public class RetrievalVectorSearchFilterFilter
 // CHECKSTYLE:ON
 {
-  /** Boolean operator for combining filter conditions */
+  /** Gets or Sets operator */
   public enum OperatorEnum {
     /** The AND option of this RetrievalVectorSearchFilterFilter */
     AND("and"),
@@ -108,10 +108,10 @@ public class RetrievalVectorSearchFilterFilter
   @JsonProperty("value")
   private List<String> value = new ArrayList<>();
 
-  /** Scope of the metadata filter (e.g., collection, document, chunk) */
+  /** Gets or Sets scope */
   public enum ScopeEnum {
-    /** The COLLECTION option of this RetrievalVectorSearchFilterFilter */
-    COLLECTION("collection"),
+    /** The REPOSITORY option of this RetrievalVectorSearchFilterFilter */
+    REPOSITORY("repository"),
 
     /** The DOCUMENT option of this RetrievalVectorSearchFilterFilter */
     DOCUMENT("document"),
@@ -181,7 +181,7 @@ public class RetrievalVectorSearchFilterFilter
    * Set the operator of this {@link RetrievalVectorSearchFilterFilter} instance and return the same
    * instance.
    *
-   * @param operator Boolean operator for combining filter conditions
+   * @param operator The operator of this {@link RetrievalVectorSearchFilterFilter}
    * @return The same instance of this {@link RetrievalVectorSearchFilterFilter} class
    */
   @Nonnull
@@ -191,7 +191,7 @@ public class RetrievalVectorSearchFilterFilter
   }
 
   /**
-   * Boolean operator for combining filter conditions
+   * Get operator
    *
    * @return operator The operator of this {@link RetrievalVectorSearchFilterFilter} instance.
    */
@@ -203,7 +203,7 @@ public class RetrievalVectorSearchFilterFilter
   /**
    * Set the operator of this {@link RetrievalVectorSearchFilterFilter} instance.
    *
-   * @param operator Boolean operator for combining filter conditions
+   * @param operator The operator of this {@link RetrievalVectorSearchFilterFilter}
    */
   public void setOperator(@Nonnull final OperatorEnum operator) {
     this.operator = operator;
@@ -356,17 +356,17 @@ public class RetrievalVectorSearchFilterFilter
    * Set the scope of this {@link RetrievalVectorSearchFilterFilter} instance and return the same
    * instance.
    *
-   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
+   * @param scope The scope of this {@link RetrievalVectorSearchFilterFilter}
    * @return The same instance of this {@link RetrievalVectorSearchFilterFilter} class
    */
   @Nonnull
-  public RetrievalVectorSearchFilterFilter scope(@Nonnull final ScopeEnum scope) {
+  public RetrievalVectorSearchFilterFilter scope(@Nullable final ScopeEnum scope) {
     this.scope = scope;
     return this;
   }
 
   /**
-   * Scope of the metadata filter (e.g., collection, document, chunk)
+   * Get scope
    *
    * @return scope The scope of this {@link RetrievalVectorSearchFilterFilter} instance.
    */
@@ -378,9 +378,9 @@ public class RetrievalVectorSearchFilterFilter
   /**
    * Set the scope of this {@link RetrievalVectorSearchFilterFilter} instance.
    *
-   * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
+   * @param scope The scope of this {@link RetrievalVectorSearchFilterFilter}
    */
-  public void setScope(@Nonnull final ScopeEnum scope) {
+  public void setScope(@Nullable final ScopeEnum scope) {
     this.scope = scope;
   }
 
@@ -510,14 +510,12 @@ public class RetrievalVectorSearchFilterFilter
             (right) ->
                 (key) ->
                     (value) ->
-                        (scope) ->
-                            new RetrievalVectorSearchFilterFilter()
-                                .operator(operator)
-                                .left(left)
-                                .right(right)
-                                .key(key)
-                                .value(value)
-                                .scope(scope);
+                        new RetrievalVectorSearchFilterFilter()
+                            .operator(operator)
+                            .left(left)
+                            .right(right)
+                            .key(key)
+                            .value(value);
   }
 
   /** Builder helper class. */
@@ -525,7 +523,7 @@ public class RetrievalVectorSearchFilterFilter
     /**
      * Set the operator of this {@link RetrievalVectorSearchFilterFilter} instance.
      *
-     * @param operator Boolean operator for combining filter conditions
+     * @param operator The operator of this {@link RetrievalVectorSearchFilterFilter}
      * @return The RetrievalVectorSearchFilterFilter builder.
      */
     Builder1 operator(@Nonnull final OperatorEnum operator);
@@ -570,29 +568,18 @@ public class RetrievalVectorSearchFilterFilter
      * Set the value of this {@link RetrievalVectorSearchFilterFilter} instance.
      *
      * @param value The value of this {@link RetrievalVectorSearchFilterFilter}
-     * @return The RetrievalVectorSearchFilterFilter builder.
+     * @return The RetrievalVectorSearchFilterFilter instance.
      */
-    Builder5 value(@Nonnull final List<String> value);
+    RetrievalVectorSearchFilterFilter value(@Nonnull final List<String> value);
 
     /**
      * Set the value of this {@link RetrievalVectorSearchFilterFilter} instance.
      *
      * @param value The value of this {@link RetrievalVectorSearchFilterFilter}
-     * @return The RetrievalVectorSearchFilterFilter builder.
-     */
-    default Builder5 value(@Nonnull final String... value) {
-      return value(Arrays.asList(value));
-    }
-  }
-
-  /** Builder helper class. */
-  public interface Builder5 {
-    /**
-     * Set the scope of this {@link RetrievalVectorSearchFilterFilter} instance.
-     *
-     * @param scope Scope of the metadata filter (e.g., collection, document, chunk)
      * @return The RetrievalVectorSearchFilterFilter instance.
      */
-    RetrievalVectorSearchFilterFilter scope(@Nonnull final ScopeEnum scope);
+    default RetrievalVectorSearchFilterFilter value(@Nonnull final String... value) {
+      return value(Arrays.asList(value));
+    }
   }
 }

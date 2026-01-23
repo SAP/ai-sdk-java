@@ -25,20 +25,20 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** BinaryBooleanFilter */
+/** RetrievalBinaryBooleanFilter */
 // CHECKSTYLE:OFF
-public class BinaryBooleanFilter
+public class RetrievalBinaryBooleanFilter
 // CHECKSTYLE:ON
 {
-  /** Boolean operator for combining filter conditions */
+  /** Gets or Sets operator */
   public enum OperatorEnum {
-    /** The AND option of this BinaryBooleanFilter */
+    /** The AND option of this RetrievalBinaryBooleanFilter */
     AND("and"),
 
-    /** The OR option of this BinaryBooleanFilter */
+    /** The OR option of this RetrievalBinaryBooleanFilter */
     OR("or"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this BinaryBooleanFilter */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this RetrievalBinaryBooleanFilter */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -73,7 +73,7 @@ public class BinaryBooleanFilter
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type BinaryBooleanFilter
+     * @return The enum value of type RetrievalBinaryBooleanFilter
      */
     @JsonCreator
     @Nonnull
@@ -91,33 +91,34 @@ public class BinaryBooleanFilter
   private OperatorEnum operator;
 
   @JsonProperty("left")
-  private Left1 left;
+  private Left left;
 
   @JsonProperty("right")
-  private Right1 right;
+  private Right right;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for BinaryBooleanFilter. */
-  protected BinaryBooleanFilter() {}
+  /** Default constructor for RetrievalBinaryBooleanFilter. */
+  protected RetrievalBinaryBooleanFilter() {}
 
   /**
-   * Set the operator of this {@link BinaryBooleanFilter} instance and return the same instance.
+   * Set the operator of this {@link RetrievalBinaryBooleanFilter} instance and return the same
+   * instance.
    *
-   * @param operator Boolean operator for combining filter conditions
-   * @return The same instance of this {@link BinaryBooleanFilter} class
+   * @param operator The operator of this {@link RetrievalBinaryBooleanFilter}
+   * @return The same instance of this {@link RetrievalBinaryBooleanFilter} class
    */
   @Nonnull
-  public BinaryBooleanFilter operator(@Nonnull final OperatorEnum operator) {
+  public RetrievalBinaryBooleanFilter operator(@Nonnull final OperatorEnum operator) {
     this.operator = operator;
     return this;
   }
 
   /**
-   * Boolean operator for combining filter conditions
+   * Get operator
    *
-   * @return operator The operator of this {@link BinaryBooleanFilter} instance.
+   * @return operator The operator of this {@link RetrievalBinaryBooleanFilter} instance.
    */
   @Nonnull
   public OperatorEnum getOperator() {
@@ -125,22 +126,23 @@ public class BinaryBooleanFilter
   }
 
   /**
-   * Set the operator of this {@link BinaryBooleanFilter} instance.
+   * Set the operator of this {@link RetrievalBinaryBooleanFilter} instance.
    *
-   * @param operator Boolean operator for combining filter conditions
+   * @param operator The operator of this {@link RetrievalBinaryBooleanFilter}
    */
   public void setOperator(@Nonnull final OperatorEnum operator) {
     this.operator = operator;
   }
 
   /**
-   * Set the left of this {@link BinaryBooleanFilter} instance and return the same instance.
+   * Set the left of this {@link RetrievalBinaryBooleanFilter} instance and return the same
+   * instance.
    *
-   * @param left The left of this {@link BinaryBooleanFilter}
-   * @return The same instance of this {@link BinaryBooleanFilter} class
+   * @param left The left of this {@link RetrievalBinaryBooleanFilter}
+   * @return The same instance of this {@link RetrievalBinaryBooleanFilter} class
    */
   @Nonnull
-  public BinaryBooleanFilter left(@Nonnull final Left1 left) {
+  public RetrievalBinaryBooleanFilter left(@Nonnull final Left left) {
     this.left = left;
     return this;
   }
@@ -148,30 +150,31 @@ public class BinaryBooleanFilter
   /**
    * Get left
    *
-   * @return left The left of this {@link BinaryBooleanFilter} instance.
+   * @return left The left of this {@link RetrievalBinaryBooleanFilter} instance.
    */
   @Nonnull
-  public Left1 getLeft() {
+  public Left getLeft() {
     return left;
   }
 
   /**
-   * Set the left of this {@link BinaryBooleanFilter} instance.
+   * Set the left of this {@link RetrievalBinaryBooleanFilter} instance.
    *
-   * @param left The left of this {@link BinaryBooleanFilter}
+   * @param left The left of this {@link RetrievalBinaryBooleanFilter}
    */
-  public void setLeft(@Nonnull final Left1 left) {
+  public void setLeft(@Nonnull final Left left) {
     this.left = left;
   }
 
   /**
-   * Set the right of this {@link BinaryBooleanFilter} instance and return the same instance.
+   * Set the right of this {@link RetrievalBinaryBooleanFilter} instance and return the same
+   * instance.
    *
-   * @param right The right of this {@link BinaryBooleanFilter}
-   * @return The same instance of this {@link BinaryBooleanFilter} class
+   * @param right The right of this {@link RetrievalBinaryBooleanFilter}
+   * @return The same instance of this {@link RetrievalBinaryBooleanFilter} class
    */
   @Nonnull
-  public BinaryBooleanFilter right(@Nonnull final Right1 right) {
+  public RetrievalBinaryBooleanFilter right(@Nonnull final Right right) {
     this.right = right;
     return this;
   }
@@ -179,24 +182,24 @@ public class BinaryBooleanFilter
   /**
    * Get right
    *
-   * @return right The right of this {@link BinaryBooleanFilter} instance.
+   * @return right The right of this {@link RetrievalBinaryBooleanFilter} instance.
    */
   @Nonnull
-  public Right1 getRight() {
+  public Right getRight() {
     return right;
   }
 
   /**
-   * Set the right of this {@link BinaryBooleanFilter} instance.
+   * Set the right of this {@link RetrievalBinaryBooleanFilter} instance.
    *
-   * @param right The right of this {@link BinaryBooleanFilter}
+   * @param right The right of this {@link RetrievalBinaryBooleanFilter}
    */
-  public void setRight(@Nonnull final Right1 right) {
+  public void setRight(@Nonnull final Right right) {
     this.right = right;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link BinaryBooleanFilter}.
+   * Get the names of the unrecognizable properties of the {@link RetrievalBinaryBooleanFilter}.
    *
    * @return The set of properties names
    */
@@ -207,7 +210,8 @@ public class BinaryBooleanFilter
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link BinaryBooleanFilter} instance.
+   * Get the value of an unrecognizable property of this {@link RetrievalBinaryBooleanFilter}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -219,13 +223,13 @@ public class BinaryBooleanFilter
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "BinaryBooleanFilter has no field with name '" + name + "'.");
+          "RetrievalBinaryBooleanFilter has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link BinaryBooleanFilter} instance including
+   * Get the value of all properties of this {@link RetrievalBinaryBooleanFilter} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -241,8 +245,9 @@ public class BinaryBooleanFilter
   }
 
   /**
-   * Set an unrecognizable property of this {@link BinaryBooleanFilter} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link RetrievalBinaryBooleanFilter} instance. If the
+   * map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -260,11 +265,13 @@ public class BinaryBooleanFilter
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final BinaryBooleanFilter binaryBooleanFilter = (BinaryBooleanFilter) o;
-    return Objects.equals(this.cloudSdkCustomFields, binaryBooleanFilter.cloudSdkCustomFields)
-        && Objects.equals(this.operator, binaryBooleanFilter.operator)
-        && Objects.equals(this.left, binaryBooleanFilter.left)
-        && Objects.equals(this.right, binaryBooleanFilter.right);
+    final RetrievalBinaryBooleanFilter retrievalBinaryBooleanFilter =
+        (RetrievalBinaryBooleanFilter) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, retrievalBinaryBooleanFilter.cloudSdkCustomFields)
+        && Objects.equals(this.operator, retrievalBinaryBooleanFilter.operator)
+        && Objects.equals(this.left, retrievalBinaryBooleanFilter.left)
+        && Objects.equals(this.right, retrievalBinaryBooleanFilter.right);
   }
 
   @Override
@@ -276,7 +283,7 @@ public class BinaryBooleanFilter
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class BinaryBooleanFilter {\n");
+    sb.append("class RetrievalBinaryBooleanFilter {\n");
     sb.append("    operator: ").append(toIndentedString(operator)).append("\n");
     sb.append("    left: ").append(toIndentedString(left)).append("\n");
     sb.append("    right: ").append(toIndentedString(right)).append("\n");
@@ -298,21 +305,23 @@ public class BinaryBooleanFilter
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link BinaryBooleanFilter}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * RetrievalBinaryBooleanFilter} instance with all required arguments.
    */
   public static Builder create() {
     return (operator) ->
-        (left) -> (right) -> new BinaryBooleanFilter().operator(operator).left(left).right(right);
+        (left) ->
+            (right) ->
+                new RetrievalBinaryBooleanFilter().operator(operator).left(left).right(right);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the operator of this {@link BinaryBooleanFilter} instance.
+     * Set the operator of this {@link RetrievalBinaryBooleanFilter} instance.
      *
-     * @param operator Boolean operator for combining filter conditions
-     * @return The BinaryBooleanFilter builder.
+     * @param operator The operator of this {@link RetrievalBinaryBooleanFilter}
+     * @return The RetrievalBinaryBooleanFilter builder.
      */
     Builder1 operator(@Nonnull final OperatorEnum operator);
   }
@@ -320,22 +329,22 @@ public class BinaryBooleanFilter
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the left of this {@link BinaryBooleanFilter} instance.
+     * Set the left of this {@link RetrievalBinaryBooleanFilter} instance.
      *
-     * @param left The left of this {@link BinaryBooleanFilter}
-     * @return The BinaryBooleanFilter builder.
+     * @param left The left of this {@link RetrievalBinaryBooleanFilter}
+     * @return The RetrievalBinaryBooleanFilter builder.
      */
-    Builder2 left(@Nonnull final Left1 left);
+    Builder2 left(@Nonnull final Left left);
   }
 
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the right of this {@link BinaryBooleanFilter} instance.
+     * Set the right of this {@link RetrievalBinaryBooleanFilter} instance.
      *
-     * @param right The right of this {@link BinaryBooleanFilter}
-     * @return The BinaryBooleanFilter instance.
+     * @param right The right of this {@link RetrievalBinaryBooleanFilter}
+     * @return The RetrievalBinaryBooleanFilter instance.
      */
-    BinaryBooleanFilter right(@Nonnull final Right1 right);
+    RetrievalBinaryBooleanFilter right(@Nonnull final Right right);
   }
 }
