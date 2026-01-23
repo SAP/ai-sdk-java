@@ -13,11 +13,19 @@ import com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nonnull;
 
+/** Service to interact with the RPT model for predictions. */
 public class RptService {
 
   static final RptClient rptClient = RptClient.forModel(RptModel.SAP_RPT_1_SMALL);
 
+  /**
+   * Makes a prediction request to the RPT model. *
+   *
+   * @return the prediction response payload from the RPT model
+   */
+  @Nonnull
   public PredictResponsePayload predict() {
     final var dataSchema =
         Map.of(
