@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
-/** Gets or Sets DataRepositoryType */
+/** Only include DataRepositories with the given type. */
 public enum DataRepositoryType {
   VECTOR("vector"),
 

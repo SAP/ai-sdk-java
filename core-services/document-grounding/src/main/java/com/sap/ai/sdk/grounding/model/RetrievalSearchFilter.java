@@ -35,7 +35,7 @@ public class RetrievalSearchFilter
   private String id;
 
   @JsonProperty("searchConfiguration")
-  private RetrievalSearchConfiguration searchConfiguration;
+  private RetrievalSearchConfiguration searchConfiguration = new RetrievalSearchConfiguration();
 
   @JsonProperty("dataRepositories")
   private List<String> dataRepositories = new ArrayList<>(Arrays.asList("*"));
@@ -112,7 +112,7 @@ public class RetrievalSearchFilter
    * @return searchConfiguration The searchConfiguration of this {@link RetrievalSearchFilter}
    *     instance.
    */
-  @Nonnull
+  @Nullable
   public RetrievalSearchConfiguration getSearchConfiguration() {
     return searchConfiguration;
   }

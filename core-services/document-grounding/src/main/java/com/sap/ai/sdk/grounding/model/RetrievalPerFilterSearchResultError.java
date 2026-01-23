@@ -23,13 +23,13 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** RetrievalPerFilterSearchResultError */
+/** Error message if any. */
 // CHECKSTYLE:OFF
 public class RetrievalPerFilterSearchResultError
 // CHECKSTYLE:ON
 {
   @JsonProperty("message")
-  private String message;
+  private String message = "Unknown Error Occurred";
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
