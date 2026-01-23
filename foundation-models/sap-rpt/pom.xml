@@ -150,6 +150,7 @@
                     <useOneOfInterfaces>true</useOneOfInterfaces>
                     <useOneOfCreators>true</useOneOfCreators>
                     <useFloatArrays>true</useFloatArrays>
+                    <excludePaths>/predict_parquet</excludePaths>
                   </additionalProperties>
                 </configuration>
               </execution>
