@@ -32,7 +32,7 @@ public class ValidationError
 // CHECKSTYLE:ON
 {
   @JsonProperty("loc")
-  private List<String> loc = new ArrayList<>();
+  private List<LocationInner> loc = new ArrayList<>();
 
   @JsonProperty("msg")
   private String msg;
@@ -53,7 +53,7 @@ public class ValidationError
    * @return The same instance of this {@link ValidationError} class
    */
   @Nonnull
-  public ValidationError loc(@Nonnull final List<String> loc) {
+  public ValidationError loc(@Nonnull final List<LocationInner> loc) {
     this.loc = loc;
     return this;
   }
@@ -65,7 +65,7 @@ public class ValidationError
    * @return The same instance of type {@link ValidationError}
    */
   @Nonnull
-  public ValidationError addLocItem(@Nonnull final String locItem) {
+  public ValidationError addLocItem(@Nonnull final LocationInner locItem) {
     if (this.loc == null) {
       this.loc = new ArrayList<>();
     }
@@ -79,7 +79,7 @@ public class ValidationError
    * @return loc The loc of this {@link ValidationError} instance.
    */
   @Nonnull
-  public List<String> getLoc() {
+  public List<LocationInner> getLoc() {
     return loc;
   }
 
@@ -88,7 +88,7 @@ public class ValidationError
    *
    * @param loc The loc of this {@link ValidationError}
    */
-  public void setLoc(@Nonnull final List<String> loc) {
+  public void setLoc(@Nonnull final List<LocationInner> loc) {
     this.loc = loc;
   }
 
@@ -271,7 +271,7 @@ public class ValidationError
      * @param loc The loc of this {@link ValidationError}
      * @return The ValidationError builder.
      */
-    Builder1 loc(@Nonnull final List<String> loc);
+    Builder1 loc(@Nonnull final List<LocationInner> loc);
 
     /**
      * Set the loc of this {@link ValidationError} instance.
@@ -279,7 +279,7 @@ public class ValidationError
      * @param loc The loc of this {@link ValidationError}
      * @return The ValidationError builder.
      */
-    default Builder1 loc(@Nonnull final String... loc) {
+    default Builder1 loc(@Nonnull final LocationInner... loc) {
       return loc(Arrays.asList(loc));
     }
   }

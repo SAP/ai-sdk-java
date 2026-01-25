@@ -36,6 +36,9 @@ public class RetrievalPerFilterSearchResult
   @JsonProperty("results")
   private List<RetrievalDataRepositorySearchResult> results = new ArrayList<>();
 
+  @JsonProperty("remoteGroundingName")
+  private String remoteGroundingName;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -124,6 +127,43 @@ public class RetrievalPerFilterSearchResult
   }
 
   /**
+   * Set the remoteGroundingName of this {@link RetrievalPerFilterSearchResult} instance and return
+   * the same instance.
+   *
+   * @param remoteGroundingName Friendly Destination Name of remote instance (grounding.name). Only
+   *     present if dataRepositoryType &#x3D; remote:dg.
+   * @return The same instance of this {@link RetrievalPerFilterSearchResult} class
+   */
+  @Nonnull
+  public RetrievalPerFilterSearchResult remoteGroundingName(
+      @Nullable final String remoteGroundingName) {
+    this.remoteGroundingName = remoteGroundingName;
+    return this;
+  }
+
+  /**
+   * Friendly Destination Name of remote instance (grounding.name). Only present if
+   * dataRepositoryType &#x3D; remote:dg.
+   *
+   * @return remoteGroundingName The remoteGroundingName of this {@link
+   *     RetrievalPerFilterSearchResult} instance.
+   */
+  @Nullable
+  public String getRemoteGroundingName() {
+    return remoteGroundingName;
+  }
+
+  /**
+   * Set the remoteGroundingName of this {@link RetrievalPerFilterSearchResult} instance.
+   *
+   * @param remoteGroundingName Friendly Destination Name of remote instance (grounding.name). Only
+   *     present if dataRepositoryType &#x3D; remote:dg.
+   */
+  public void setRemoteGroundingName(@Nullable final String remoteGroundingName) {
+    this.remoteGroundingName = remoteGroundingName;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link RetrievalPerFilterSearchResult}.
    *
    * @return The set of properties names
@@ -165,6 +205,7 @@ public class RetrievalPerFilterSearchResult
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (filterId != null) declaredFields.put("filterId", filterId);
     if (results != null) declaredFields.put("results", results);
+    if (remoteGroundingName != null) declaredFields.put("remoteGroundingName", remoteGroundingName);
     return declaredFields;
   }
 
@@ -194,12 +235,14 @@ public class RetrievalPerFilterSearchResult
     return Objects.equals(
             this.cloudSdkCustomFields, retrievalPerFilterSearchResult.cloudSdkCustomFields)
         && Objects.equals(this.filterId, retrievalPerFilterSearchResult.filterId)
-        && Objects.equals(this.results, retrievalPerFilterSearchResult.results);
+        && Objects.equals(this.results, retrievalPerFilterSearchResult.results)
+        && Objects.equals(
+            this.remoteGroundingName, retrievalPerFilterSearchResult.remoteGroundingName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filterId, results, cloudSdkCustomFields);
+    return Objects.hash(filterId, results, remoteGroundingName, cloudSdkCustomFields);
   }
 
   @Override
@@ -209,6 +252,9 @@ public class RetrievalPerFilterSearchResult
     sb.append("class RetrievalPerFilterSearchResult {\n");
     sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
+    sb.append("    remoteGroundingName: ")
+        .append(toIndentedString(remoteGroundingName))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

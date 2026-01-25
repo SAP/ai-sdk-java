@@ -100,7 +100,7 @@ public class DocumentResponse
    * @return The same instance of this {@link DocumentResponse} class
    */
   @Nonnull
-  public DocumentResponse metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
+  public DocumentResponse metadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -136,7 +136,7 @@ public class DocumentResponse
    *
    * @param metadata The metadata of this {@link DocumentResponse}
    */
-  public void setMetadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
+  public void setMetadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
@@ -277,8 +277,7 @@ public class DocumentResponse
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (chunks) ->
-        (metadata) -> (id) -> new DocumentResponse().chunks(chunks).metadata(metadata).id(id);
+    return (chunks) -> (id) -> new DocumentResponse().chunks(chunks).id(id);
   }
 
   /** Builder helper class. */
@@ -304,27 +303,6 @@ public class DocumentResponse
 
   /** Builder helper class. */
   public interface Builder1 {
-    /**
-     * Set the metadata of this {@link DocumentResponse} instance.
-     *
-     * @param metadata The metadata of this {@link DocumentResponse}
-     * @return The DocumentResponse builder.
-     */
-    Builder2 metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata);
-
-    /**
-     * Set the metadata of this {@link DocumentResponse} instance.
-     *
-     * @param metadata The metadata of this {@link DocumentResponse}
-     * @return The DocumentResponse builder.
-     */
-    default Builder2 metadata(@Nonnull final VectorDocumentKeyValueListPair... metadata) {
-      return metadata(Arrays.asList(metadata));
-    }
-  }
-
-  /** Builder helper class. */
-  public interface Builder2 {
     /**
      * Set the id of this {@link DocumentResponse} instance.
      *
