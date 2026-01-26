@@ -16,7 +16,7 @@
 
 ### 📈 Improvements
 
--
+-[Orchestration] Added new API OrchestrationTemplateReference#withScope to support RG-scoped prompt templates.
 
 ### 🐛 Fixed Issues
 
