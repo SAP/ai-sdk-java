@@ -7,10 +7,9 @@ import javax.annotation.Nullable;
 /**
  * Represents an SAP RPT foundation model.
  *
- * <p>Example models:
- *
  * @param name The name of the model.
  * @param version The version of the model (optional).
+ * @since 1.16.0
  */
 public record RptModel(@Nonnull String name, @Nullable String version) implements AiModel {
 

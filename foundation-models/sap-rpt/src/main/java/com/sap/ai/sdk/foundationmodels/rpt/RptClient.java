@@ -20,7 +20,11 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-/** Client for interacting with SAP RPT foundation models. */
+/**
+ * Client for interacting with SAP RPT foundation models.
+ *
+ * @since 1.16.0
+ */
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class RptClient {
   @Nonnull private final DefaultApi api;
@@ -59,9 +63,7 @@ public class RptClient {
   }
 
   /**
-   * Predict targets using SAP RPT model with structured data.
-   *
-   * <p>
+   * Predict targets using SAP RPT model with structured data. *
    *
    * <p><b>200</b> - Successful response with predictive insights.
    *
@@ -71,8 +73,8 @@ public class RptClient {
    *
    * <p><b>500</b> - Internal Server Error.
    *
-   * @param requestBody The value for the parameter tabCompletionPostRequest
-   * @return TabCompletionPostResponse
+   * @param requestBody The prediction request
+   * @return prediction response from the RPT model
    */
   @Nonnull
   public PredictResponsePayload tabCompletion(@Nonnull final PredictRequestPayload requestBody) {
