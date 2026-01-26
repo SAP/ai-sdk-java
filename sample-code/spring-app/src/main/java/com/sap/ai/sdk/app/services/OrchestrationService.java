@@ -178,7 +178,7 @@ public class OrchestrationService {
       throws OrchestrationClientException {
     val prompt =
         new OrchestrationPrompt(
-            "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operator in-charge.");
+            "Please rephrase the following sentence for me: 'We shall destroy them all tonight', said the operator in-charge.");
     val filterConfig =
         new AzureContentFilter()
             .hate(policy)
