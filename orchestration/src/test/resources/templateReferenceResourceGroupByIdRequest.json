@@ -9,9 +9,11 @@
           }
         },
         "model": {
-          "name": "gpt-4o-mini",
+          "name": "gemini-2.5-flash",
           "version": "latest",
-          "params": {},
+          "params": {
+            "temperature": 0.0
+          },
           "timeout": 600,
           "max_retries": 2
         }

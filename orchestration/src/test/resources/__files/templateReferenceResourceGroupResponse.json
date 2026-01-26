@@ -1,5 +1,5 @@
 {
-  "request_id": "3e1e6d3f-efa8-942a-8106-6442e42f0f6c",
+  "request_id": "921f38b7-3434-9171-85df-27be1b7fca3c",
   "intermediate_results": {
     "templating": [
       {
@@ -12,11 +12,10 @@
       }
     ],
     "llm": {
-      "id": "chatcmpl-D0VWJHDekyp5CMGNyrOjAFLgdaktE",
+      "id": "",
       "object": "chat.completion",
-      "created": 1769013535,
-      "model": "gpt-4o-mini-2024-07-18",
-      "system_fingerprint": "fp_f97eff32c5",
+      "created": 1769424215,
+      "model": "gemini-2.5-flash",
       "choices": [
         {
           "index": 0,
@@ -28,28 +27,23 @@
         }
       ],
       "usage": {
-        "completion_tokens": 2,
-        "prompt_tokens": 35,
-        "total_tokens": 37,
+        "completion_tokens": 154,
+        "prompt_tokens": 26,
+        "total_tokens": 180,
         "prompt_tokens_details": {
-          "audio_tokens": 0,
           "cached_tokens": 0
         },
         "completion_tokens_details": {
-          "accepted_prediction_tokens": 0,
-          "audio_tokens": 0,
-          "reasoning_tokens": 0,
-          "rejected_prediction_tokens": 0
+          "reasoning_tokens": 153
         }
       }
     }
   },
   "final_result": {
-    "id": "chatcmpl-D0VWJHDekyp5CMGNyrOjAFLgdaktE",
+    "id": "",
     "object": "chat.completion",
-    "created": 1769013535,
-    "model": "gpt-4o-mini-2024-07-18",
-    "system_fingerprint": "fp_f97eff32c5",
+    "created": 1769424215,
+    "model": "gemini-2.5-flash",
     "choices": [
       {
         "index": 0,
@@ -61,18 +55,14 @@
       }
     ],
     "usage": {
-      "completion_tokens": 2,
-      "prompt_tokens": 35,
-      "total_tokens": 37,
+      "completion_tokens": 154,
+      "prompt_tokens": 26,
+      "total_tokens": 180,
       "prompt_tokens_details": {
-        "audio_tokens": 0,
         "cached_tokens": 0
       },
       "completion_tokens_details": {
-        "accepted_prediction_tokens": 0,
-        "audio_tokens": 0,
-        "reasoning_tokens": 0,
-        "rejected_prediction_tokens": 0
+        "reasoning_tokens": 153
       }
     }
   }

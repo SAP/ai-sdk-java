@@ -17,6 +17,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
@@ -1299,7 +1300,10 @@ class OrchestrationUnitTest {
           TemplateConfig.reference()
               .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
               .withScope(RESOURCE_GROUP);
-      var configWithTemplate = config.withLlmConfig(GPT_4O_MINI).withTemplateConfig(template);
+      var config =
+          new OrchestrationModuleConfig()
+              .withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      var configWithTemplate = config.withTemplateConfig(template);
 
       var inputParams =
           Map.of(
@@ -1357,7 +1361,9 @@ class OrchestrationUnitTest {
             .name("example-prompt-template")
             .version("0.0.1")
             .withScope(RESOURCE_GROUP);
-    var configWithTemplate = config.withLlmConfig(GPT_4O_MINI).withTemplateConfig(template);
+    var config =
+        new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+    var configWithTemplate = config.withTemplateConfig(template);
 
     var inputParams =
         Map.of(
