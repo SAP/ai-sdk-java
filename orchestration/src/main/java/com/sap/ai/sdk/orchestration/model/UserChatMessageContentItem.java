@@ -1,5 +1,5 @@
 /*
- * Internal Orchestration Service API
+ * Orchestration v2
  * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
@@ -38,8 +38,8 @@ public class UserChatMessageContentItem
     /** The IMAGE_URL option of this UserChatMessageContentItem */
     IMAGE_URL("image_url"),
 
-    /** The PDF_FILE option of this UserChatMessageContentItem */
-    PDF_FILE("pdf_file"),
+    /** The FILE option of this UserChatMessageContentItem */
+    FILE("file"),
 
     /** The UNKNOWN_DEFAULT_OPEN_API option of this UserChatMessageContentItem */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
@@ -100,7 +100,7 @@ public class UserChatMessageContentItem
   private ImageContentUrl imageUrl;
 
   @JsonProperty("file")
-  private InputFile _file;
+  private FileContent _file;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -209,7 +209,7 @@ public class UserChatMessageContentItem
    * @return The same instance of this {@link UserChatMessageContentItem} class
    */
   @Nonnull
-  public UserChatMessageContentItem _file(@Nullable final InputFile _file) {
+  public UserChatMessageContentItem _file(@Nullable final FileContent _file) {
     this._file = _file;
     return this;
   }
@@ -220,7 +220,7 @@ public class UserChatMessageContentItem
    * @return _file The _file of this {@link UserChatMessageContentItem} instance.
    */
   @Nonnull
-  public InputFile getFile() {
+  public FileContent getFile() {
     return _file;
   }
 
@@ -229,7 +229,7 @@ public class UserChatMessageContentItem
    *
    * @param _file The _file of this {@link UserChatMessageContentItem}
    */
-  public void setFile(@Nullable final InputFile _file) {
+  public void setFile(@Nullable final FileContent _file) {
     this._file = _file;
   }
 

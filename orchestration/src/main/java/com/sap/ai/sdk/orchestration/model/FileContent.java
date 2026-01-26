@@ -1,5 +1,5 @@
 /*
- * Internal Orchestration Service API
+ * Orchestration v2
  * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -24,13 +23,13 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** InputFile */
+/** FileContent */
 // CHECKSTYLE:OFF
-public class InputFile
+public class FileContent
 // CHECKSTYLE:ON
 {
   @JsonProperty("file_data")
-  private byte[] fileData;
+  private String fileData;
 
   @JsonProperty("filename")
   private String filename;
@@ -38,48 +37,48 @@ public class InputFile
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for InputFile. */
-  protected InputFile() {}
+  /** Default constructor for FileContent. */
+  protected FileContent() {}
 
   /**
-   * Set the fileData of this {@link InputFile} instance and return the same instance.
+   * Set the fileData of this {@link FileContent} instance and return the same instance.
    *
-   * @param fileData Base64 encoded PDF content
-   * @return The same instance of this {@link InputFile} class
+   * @param fileData Base64 encoded file content or file URL
+   * @return The same instance of this {@link FileContent} class
    */
   @Nonnull
-  public InputFile fileData(@Nonnull final byte[] fileData) {
-    this.fileData = fileData.clone();
+  public FileContent fileData(@Nonnull final String fileData) {
+    this.fileData = fileData;
     return this;
   }
 
   /**
-   * Base64 encoded PDF content
+   * Base64 encoded file content or file URL
    *
-   * @return fileData The fileData of this {@link InputFile} instance.
+   * @return fileData The fileData of this {@link FileContent} instance.
    */
   @Nonnull
-  public byte[] getFileData() {
-    return fileData.clone();
+  public String getFileData() {
+    return fileData;
   }
 
   /**
-   * Set the fileData of this {@link InputFile} instance.
+   * Set the fileData of this {@link FileContent} instance.
    *
-   * @param fileData Base64 encoded PDF content
+   * @param fileData Base64 encoded file content or file URL
    */
-  public void setFileData(@Nonnull final byte[] fileData) {
+  public void setFileData(@Nonnull final String fileData) {
     this.fileData = fileData;
   }
 
   /**
-   * Set the filename of this {@link InputFile} instance and return the same instance.
+   * Set the filename of this {@link FileContent} instance and return the same instance.
    *
    * @param filename Name of the file
-   * @return The same instance of this {@link InputFile} class
+   * @return The same instance of this {@link FileContent} class
    */
   @Nonnull
-  public InputFile filename(@Nullable final String filename) {
+  public FileContent filename(@Nullable final String filename) {
     this.filename = filename;
     return this;
   }
@@ -87,7 +86,7 @@ public class InputFile
   /**
    * Name of the file
    *
-   * @return filename The filename of this {@link InputFile} instance.
+   * @return filename The filename of this {@link FileContent} instance.
    */
   @Nonnull
   public String getFilename() {
@@ -95,7 +94,7 @@ public class InputFile
   }
 
   /**
-   * Set the filename of this {@link InputFile} instance.
+   * Set the filename of this {@link FileContent} instance.
    *
    * @param filename Name of the file
    */
@@ -104,7 +103,7 @@ public class InputFile
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link InputFile}.
+   * Get the names of the unrecognizable properties of the {@link FileContent}.
    *
    * @return The set of properties names
    */
@@ -115,7 +114,7 @@ public class InputFile
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link InputFile} instance.
+   * Get the value of an unrecognizable property of this {@link FileContent} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -126,13 +125,13 @@ public class InputFile
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("InputFile has no field with name '" + name + "'.");
+      throw new NoSuchElementException("FileContent has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link InputFile} instance including unrecognized
+   * Get the value of all properties of this {@link FileContent} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -147,7 +146,7 @@ public class InputFile
   }
 
   /**
-   * Set an unrecognizable property of this {@link InputFile} instance. If the map previously
+   * Set an unrecognizable property of this {@link FileContent} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -166,22 +165,22 @@ public class InputFile
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final InputFile inputFile = (InputFile) o;
-    return Objects.equals(this.cloudSdkCustomFields, inputFile.cloudSdkCustomFields)
-        && Arrays.equals(this.fileData, inputFile.fileData)
-        && Objects.equals(this.filename, inputFile.filename);
+    final FileContent fileContent = (FileContent) o;
+    return Objects.equals(this.cloudSdkCustomFields, fileContent.cloudSdkCustomFields)
+        && Objects.equals(this.fileData, fileContent.fileData)
+        && Objects.equals(this.filename, fileContent.filename);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(Arrays.hashCode(fileData), filename, cloudSdkCustomFields);
+    return Objects.hash(fileData, filename, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class InputFile {\n");
+    sb.append("class FileContent {\n");
     sb.append("    fileData: ").append(toIndentedString(fileData)).append("\n");
     sb.append("    filename: ").append(toIndentedString(filename)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -202,21 +201,21 @@ public class InputFile
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link InputFile} instance
+   * Create a type-safe, fluent-api builder object to construct a new {@link FileContent} instance
    * with all required arguments.
    */
   public static Builder create() {
-    return (fileData) -> new InputFile().fileData(fileData);
+    return (fileData) -> new FileContent().fileData(fileData);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the fileData of this {@link InputFile} instance.
+     * Set the fileData of this {@link FileContent} instance.
      *
-     * @param fileData Base64 encoded PDF content
-     * @return The InputFile instance.
+     * @param fileData Base64 encoded file content or file URL
+     * @return The FileContent instance.
      */
-    InputFile fileData(@Nonnull final byte[] fileData);
+    FileContent fileData(@Nonnull final String fileData);
   }
 }

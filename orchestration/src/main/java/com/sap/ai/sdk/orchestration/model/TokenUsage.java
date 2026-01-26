@@ -1,5 +1,5 @@
 /*
- * Internal Orchestration Service API
+ * Orchestration v2
  * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
@@ -28,11 +28,11 @@ import javax.annotation.Nullable;
 public class TokenUsage
 // CHECKSTYLE:ON
 {
-  @JsonProperty("prompt_tokens")
-  private Integer promptTokens;
-
   @JsonProperty("completion_tokens")
   private Integer completionTokens;
+
+  @JsonProperty("prompt_tokens")
+  private Integer promptTokens;
 
   @JsonProperty("total_tokens")
   private Integer totalTokens;
@@ -48,37 +48,6 @@ public class TokenUsage
 
   /** Default constructor for TokenUsage. */
   protected TokenUsage() {}
-
-  /**
-   * Set the promptTokens of this {@link TokenUsage} instance and return the same instance.
-   *
-   * @param promptTokens Number of tokens in the prompt.
-   * @return The same instance of this {@link TokenUsage} class
-   */
-  @Nonnull
-  public TokenUsage promptTokens(@Nonnull final Integer promptTokens) {
-    this.promptTokens = promptTokens;
-    return this;
-  }
-
-  /**
-   * Number of tokens in the prompt.
-   *
-   * @return promptTokens The promptTokens of this {@link TokenUsage} instance.
-   */
-  @Nonnull
-  public Integer getPromptTokens() {
-    return promptTokens;
-  }
-
-  /**
-   * Set the promptTokens of this {@link TokenUsage} instance.
-   *
-   * @param promptTokens Number of tokens in the prompt.
-   */
-  public void setPromptTokens(@Nonnull final Integer promptTokens) {
-    this.promptTokens = promptTokens;
-  }
 
   /**
    * Set the completionTokens of this {@link TokenUsage} instance and return the same instance.
@@ -109,6 +78,37 @@ public class TokenUsage
    */
   public void setCompletionTokens(@Nonnull final Integer completionTokens) {
     this.completionTokens = completionTokens;
+  }
+
+  /**
+   * Set the promptTokens of this {@link TokenUsage} instance and return the same instance.
+   *
+   * @param promptTokens Number of tokens in the prompt.
+   * @return The same instance of this {@link TokenUsage} class
+   */
+  @Nonnull
+  public TokenUsage promptTokens(@Nonnull final Integer promptTokens) {
+    this.promptTokens = promptTokens;
+    return this;
+  }
+
+  /**
+   * Number of tokens in the prompt.
+   *
+   * @return promptTokens The promptTokens of this {@link TokenUsage} instance.
+   */
+  @Nonnull
+  public Integer getPromptTokens() {
+    return promptTokens;
+  }
+
+  /**
+   * Set the promptTokens of this {@link TokenUsage} instance.
+   *
+   * @param promptTokens Number of tokens in the prompt.
+   */
+  public void setPromptTokens(@Nonnull final Integer promptTokens) {
+    this.promptTokens = promptTokens;
   }
 
   /**
@@ -248,8 +248,8 @@ public class TokenUsage
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (promptTokens != null) declaredFields.put("promptTokens", promptTokens);
     if (completionTokens != null) declaredFields.put("completionTokens", completionTokens);
+    if (promptTokens != null) declaredFields.put("promptTokens", promptTokens);
     if (totalTokens != null) declaredFields.put("totalTokens", totalTokens);
     if (promptTokensDetails != null) declaredFields.put("promptTokensDetails", promptTokensDetails);
     if (completionTokensDetails != null)
@@ -279,8 +279,8 @@ public class TokenUsage
     }
     final TokenUsage tokenUsage = (TokenUsage) o;
     return Objects.equals(this.cloudSdkCustomFields, tokenUsage.cloudSdkCustomFields)
-        && Objects.equals(this.promptTokens, tokenUsage.promptTokens)
         && Objects.equals(this.completionTokens, tokenUsage.completionTokens)
+        && Objects.equals(this.promptTokens, tokenUsage.promptTokens)
         && Objects.equals(this.totalTokens, tokenUsage.totalTokens)
         && Objects.equals(this.promptTokensDetails, tokenUsage.promptTokensDetails)
         && Objects.equals(this.completionTokensDetails, tokenUsage.completionTokensDetails);
@@ -289,8 +289,8 @@ public class TokenUsage
   @Override
   public int hashCode() {
     return Objects.hash(
-        promptTokens,
         completionTokens,
+        promptTokens,
         totalTokens,
         promptTokensDetails,
         completionTokensDetails,
@@ -302,8 +302,8 @@ public class TokenUsage
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class TokenUsage {\n");
-    sb.append("    promptTokens: ").append(toIndentedString(promptTokens)).append("\n");
     sb.append("    completionTokens: ").append(toIndentedString(completionTokens)).append("\n");
+    sb.append("    promptTokens: ").append(toIndentedString(promptTokens)).append("\n");
     sb.append("    totalTokens: ").append(toIndentedString(totalTokens)).append("\n");
     sb.append("    promptTokensDetails: ")
         .append(toIndentedString(promptTokensDetails))
@@ -333,35 +333,35 @@ public class TokenUsage
    * with all required arguments.
    */
   public static Builder create() {
-    return (promptTokens) ->
-        (completionTokens) ->
+    return (completionTokens) ->
+        (promptTokens) ->
             (totalTokens) ->
                 new TokenUsage()
-                    .promptTokens(promptTokens)
                     .completionTokens(completionTokens)
+                    .promptTokens(promptTokens)
                     .totalTokens(totalTokens);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the promptTokens of this {@link TokenUsage} instance.
-     *
-     * @param promptTokens Number of tokens in the prompt.
-     * @return The TokenUsage builder.
-     */
-    Builder1 promptTokens(@Nonnull final Integer promptTokens);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
      * Set the completionTokens of this {@link TokenUsage} instance.
      *
      * @param completionTokens Number of tokens in the generated completion.
      * @return The TokenUsage builder.
      */
-    Builder2 completionTokens(@Nonnull final Integer completionTokens);
+    Builder1 completionTokens(@Nonnull final Integer completionTokens);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the promptTokens of this {@link TokenUsage} instance.
+     *
+     * @param promptTokens Number of tokens in the prompt.
+     * @return The TokenUsage builder.
+     */
+    Builder2 promptTokens(@Nonnull final Integer promptTokens);
   }
 
   /** Builder helper class. */
