@@ -159,7 +159,7 @@ public class DPIConfig
   @JsonProperty("mask_grounding_input")
   private DPIConfigMaskGroundingInput maskGroundingInput;
 
-  /** Type of masking method to be used for file inputs. Must be set if file inputs are provided. */
+  /** Type of masking method to be used for file inputs. Required if file inputs are provided. */
   public enum MaskFileInputMethodEnum {
     /** The ANONYMIZATION option of this DPIConfig */
     ANONYMIZATION("anonymization"),
@@ -415,8 +415,8 @@ public class DPIConfig
   /**
    * Set the maskFileInputMethod of this {@link DPIConfig} instance and return the same instance.
    *
-   * @param maskFileInputMethod Type of masking method to be used for file inputs. Must be set if
-   *     file inputs are provided.
+   * @param maskFileInputMethod Type of masking method to be used for file inputs. Required if file
+   *     inputs are provided.
    * @return The same instance of this {@link DPIConfig} class
    */
   @Nonnull
@@ -427,7 +427,7 @@ public class DPIConfig
   }
 
   /**
-   * Type of masking method to be used for file inputs. Must be set if file inputs are provided.
+   * Type of masking method to be used for file inputs. Required if file inputs are provided.
    *
    * @return maskFileInputMethod The maskFileInputMethod of this {@link DPIConfig} instance.
    */
@@ -439,8 +439,8 @@ public class DPIConfig
   /**
    * Set the maskFileInputMethod of this {@link DPIConfig} instance.
    *
-   * @param maskFileInputMethod Type of masking method to be used for file inputs. Must be set if
-   *     file inputs are provided.
+   * @param maskFileInputMethod Type of masking method to be used for file inputs. Required if file
+   *     inputs are provided.
    */
   public void setMaskFileInputMethod(@Nullable final MaskFileInputMethodEnum maskFileInputMethod) {
     this.maskFileInputMethod = maskFileInputMethod;
