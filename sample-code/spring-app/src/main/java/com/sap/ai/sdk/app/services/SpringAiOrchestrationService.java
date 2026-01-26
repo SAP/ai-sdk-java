@@ -137,7 +137,7 @@ public class SpringAiOrchestrationService {
 
     val prompt =
         new Prompt(
-            "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operator in-charge.",
+            "Please rephrase the following sentence for me: 'We shall destroy them all tonight', said the operator in-charge.",
             opts);
 
     return client.call(prompt);
