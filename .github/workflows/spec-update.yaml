@@ -215,7 +215,7 @@ jobs:
           - [ ] Release notes updated
           ") && echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
 
-      - name: Generate Job Summary
+      - name: "Generate Job Summary"
         if: ${{ always() }}
         env:
           BRANCH: ${{ steps.branch.outputs.branch }}
@@ -245,7 +245,7 @@ jobs:
           exit 1
 
       - name: "Slack Notification"
-        if: failure() && github.event.inputs.create-pr == true
+        if: failure() && github.event.inputs.create-pr == 'true'
         uses: slackapi/slack-github-action@v2.1.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
