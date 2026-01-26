@@ -467,8 +467,8 @@ class OrchestrationTest {
 
   @Test
   void testStreamingErrorHandlingInputFilter() {
-    val prompt = new OrchestrationPrompt("Create 5 paraphrases of 'I hate you'.");
-    val filterConfig = new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE);
+    val prompt = new OrchestrationPrompt("Create 5 paraphrases of 'I want to destroy them all'.");
+    val filterConfig = new AzureContentFilter().violence(AzureFilterThreshold.ALLOW_SAFE);
     val configWithFilter = config.withInputFiltering(filterConfig);
 
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithFilter))
