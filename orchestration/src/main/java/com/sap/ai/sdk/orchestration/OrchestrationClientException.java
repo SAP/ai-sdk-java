@@ -32,7 +32,7 @@ public class OrchestrationClientException extends ClientException {
           if (message.equals(
               "Request failed with status 404 (Not Found): 404 - Templating Module: No Prompt Template found in the Prompt Registry.")) {
             message +=
-                "\n Please verify that the provided resource group id is correct and matches provided template reference details if the template is on resource-group level, otherwise use tenant scope with no resource group id header.";
+                "\n Please verify that the provided resource group id is correct and matches the provided template reference details if the template is referenced from a resource-group scope, otherwise use the tenant scope without resource group id header.";
           }
           return new OrchestrationClientException(message, cause).setClientError(clientError);
         }
