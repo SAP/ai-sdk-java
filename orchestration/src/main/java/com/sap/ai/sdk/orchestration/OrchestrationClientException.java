@@ -31,7 +31,7 @@ public class OrchestrationClientException extends ClientException {
         if (details.isEmpty()) {
           if (message.contains("No Prompt Template found in the Prompt Registry.")) {
             message +=
-                "\n Please verify that the provided resource group id is correct and matches the provided template reference details if the template is referenced from a resource-group scope, otherwise use the tenant scope without resource group id header.";
+                "\n Please make sure to provide a resource group id and verify that it matches the provided template reference details if the template is referenced from a resource-group scope, otherwise use the tenant scope without providing resource group id.";
           }
           return new OrchestrationClientException(message, cause).setClientError(clientError);
         }
