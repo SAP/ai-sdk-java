@@ -14,15 +14,15 @@ package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-/** PredictResponsePayloadPredictionsInnerValue */
-public interface PredictResponsePayloadPredictionsInnerValue {
+/** PredictionsInnerValue */
+public interface PredictionsInnerValue {
   /**
    * Helper class to create {@code List<PredictionResult> } that implements {@link
-   * PredictResponsePayloadPredictionsInnerValue}.
+   * PredictionsInnerValue}.
    */
   record ListOfPredictionResults(
       @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<PredictionResult> values)
-      implements PredictResponsePayloadPredictionsInnerValue {}
+      implements PredictionsInnerValue {}
 
   /**
    * Creator to enable deserialization of {@code List<PredictionResult> }.
@@ -37,12 +37,9 @@ public interface PredictResponsePayloadPredictionsInnerValue {
     return new ListOfPredictionResults(val);
   }
 
-  /**
-   * Helper class to create {@code String } that implements {@link
-   * PredictResponsePayloadPredictionsInnerValue}.
-   */
+  /** Helper class to create {@code String } that implements {@link PredictionsInnerValue}. */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
-      implements PredictResponsePayloadPredictionsInnerValue {}
+      implements PredictionsInnerValue {}
 
   /**
    * Creator to enable deserialization of {@code String }.
@@ -56,12 +53,9 @@ public interface PredictResponsePayloadPredictionsInnerValue {
     return new InnerString(val);
   }
 
-  /**
-   * Helper class to create {@code Integer } that implements {@link
-   * PredictResponsePayloadPredictionsInnerValue}.
-   */
+  /** Helper class to create {@code Integer } that implements {@link PredictionsInnerValue}. */
   record InnerInteger(@com.fasterxml.jackson.annotation.JsonValue @Nonnull Integer value)
-      implements PredictResponsePayloadPredictionsInnerValue {}
+      implements PredictionsInnerValue {}
 
   /**
    * Creator to enable deserialization of {@code Integer }.

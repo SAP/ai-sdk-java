@@ -63,26 +63,26 @@ class RptClientTest {
 
   @Test
   void testTabCompletionWithRowsFormat() {
-    final List<Map<String, PredictRequestPayloadRowsInnerValue>> rows =
+    final List<Map<String, RowsInnerValue>> rows =
         List.of(
             Map.of(
-                "PRODUCT", PredictRequestPayloadRowsInnerValue.create("Couch"),
-                "PRICE", PredictRequestPayloadRowsInnerValue.create(BigDecimal.valueOf(999.99)),
-                "ORDERDATE", PredictRequestPayloadRowsInnerValue.create("28-11-2025"),
-                "ID", PredictRequestPayloadRowsInnerValue.create("35"),
-                "COSTCENTER", PredictRequestPayloadRowsInnerValue.create("[PREDICT]")),
+                "PRODUCT", RowsInnerValue.create("Couch"),
+                "PRICE", RowsInnerValue.create(BigDecimal.valueOf(999.99)),
+                "ORDERDATE", RowsInnerValue.create("28-11-2025"),
+                "ID", RowsInnerValue.create("35"),
+                "COSTCENTER", RowsInnerValue.create("[PREDICT]")),
             Map.of(
-                "PRODUCT", PredictRequestPayloadRowsInnerValue.create("Office Chair"),
-                "PRICE", PredictRequestPayloadRowsInnerValue.create(BigDecimal.valueOf(150.8)),
-                "ORDERDATE", PredictRequestPayloadRowsInnerValue.create("02-11-2025"),
-                "ID", PredictRequestPayloadRowsInnerValue.create("44"),
-                "COSTCENTER", PredictRequestPayloadRowsInnerValue.create("Office Furniture")),
+                "PRODUCT", RowsInnerValue.create("Office Chair"),
+                "PRICE", RowsInnerValue.create(BigDecimal.valueOf(150.8)),
+                "ORDERDATE", RowsInnerValue.create("02-11-2025"),
+                "ID", RowsInnerValue.create("44"),
+                "COSTCENTER", RowsInnerValue.create("Office Furniture")),
             Map.of(
-                "PRODUCT", PredictRequestPayloadRowsInnerValue.create("Server Rack"),
-                "PRICE", PredictRequestPayloadRowsInnerValue.create(BigDecimal.valueOf(2200.00)),
-                "ORDERDATE", PredictRequestPayloadRowsInnerValue.create("01-11-2025"),
-                "ID", PredictRequestPayloadRowsInnerValue.create("104"),
-                "COSTCENTER", PredictRequestPayloadRowsInnerValue.create("Data Infrastructure")));
+                "PRODUCT", RowsInnerValue.create("Server Rack"),
+                "PRICE", RowsInnerValue.create(BigDecimal.valueOf(2200.00)),
+                "ORDERDATE", RowsInnerValue.create("01-11-2025"),
+                "ID", RowsInnerValue.create("104"),
+                "COSTCENTER", RowsInnerValue.create("Data Infrastructure")));
     final var request = createBaseRequest().rows(rows);
 
     final var response = client.tabCompletion(request);
@@ -97,13 +97,12 @@ class RptClientTest {
     assertThat(response.getStatus().getMessage()).isEqualTo("ok");
     assertThat(response.getPredictions()).hasSize(1);
 
-    final Map<String, PredictResponsePayloadPredictionsInnerValue> prediction =
-        response.getPredictions().get(0);
+    final Map<String, PredictionsInnerValue> prediction = response.getPredictions().get(0);
     assertThat(prediction)
-        .containsEntry("ID", PredictResponsePayloadPredictionsInnerValue.create("35"))
+        .containsEntry("ID", PredictionsInnerValue.create("35"))
         .containsEntry(
             "COSTCENTER",
-            PredictResponsePayloadPredictionsInnerValue.createListOfPredictionResults(
+            PredictionsInnerValue.createListOfPredictionResults(
                 List.of(
                     PredictionResult.create()
                         .prediction(Prediction.create("Office Furniture"))
@@ -112,33 +111,33 @@ class RptClientTest {
 
   @Test
   void testTabCompletionWithColumnsFormat() {
-    final Map<String, List<PredictRequestPayloadRowsInnerValue>> columns =
+    final Map<String, List<RowsInnerValue>> columns =
         Map.of(
             "PRODUCT",
                 List.of(
-                    PredictRequestPayloadRowsInnerValue.create("Couch"),
-                    PredictRequestPayloadRowsInnerValue.create("Office Chair"),
-                    PredictRequestPayloadRowsInnerValue.create("Server Rack")),
+                    RowsInnerValue.create("Couch"),
+                    RowsInnerValue.create("Office Chair"),
+                    RowsInnerValue.create("Server Rack")),
             "PRICE",
                 List.of(
-                    PredictRequestPayloadRowsInnerValue.create(BigDecimal.valueOf(999.99)),
-                    PredictRequestPayloadRowsInnerValue.create(BigDecimal.valueOf(150.8)),
-                    PredictRequestPayloadRowsInnerValue.create(BigDecimal.valueOf(2200.00))),
+                    RowsInnerValue.create(BigDecimal.valueOf(999.99)),
+                    RowsInnerValue.create(BigDecimal.valueOf(150.8)),
+                    RowsInnerValue.create(BigDecimal.valueOf(2200.00))),
             "ORDERDATE",
                 List.of(
-                    PredictRequestPayloadRowsInnerValue.create("28-11-2025"),
-                    PredictRequestPayloadRowsInnerValue.create("02-11-2025"),
-                    PredictRequestPayloadRowsInnerValue.create("01-11-2025")),
+                    RowsInnerValue.create("28-11-2025"),
+                    RowsInnerValue.create("02-11-2025"),
+                    RowsInnerValue.create("01-11-2025")),
             "ID",
                 List.of(
-                    PredictRequestPayloadRowsInnerValue.create("35"),
-                    PredictRequestPayloadRowsInnerValue.create("44"),
-                    PredictRequestPayloadRowsInnerValue.create("104")),
+                    RowsInnerValue.create("35"),
+                    RowsInnerValue.create("44"),
+                    RowsInnerValue.create("104")),
             "COSTCENTER",
                 List.of(
-                    PredictRequestPayloadRowsInnerValue.create("[PREDICT]"),
-                    PredictRequestPayloadRowsInnerValue.create("Office Furniture"),
-                    PredictRequestPayloadRowsInnerValue.create("Data Infrastructure")));
+                    RowsInnerValue.create("[PREDICT]"),
+                    RowsInnerValue.create("Office Furniture"),
+                    RowsInnerValue.create("Data Infrastructure")));
     final var request = createBaseRequest().columns(columns);
 
     final var response = client.tabCompletion(request);
@@ -154,13 +153,12 @@ class RptClientTest {
     assertThat(response.getStatus().getMessage()).isEqualTo("ok");
     assertThat(response.getPredictions()).hasSize(1);
 
-    final Map<String, PredictResponsePayloadPredictionsInnerValue> prediction =
-        response.getPredictions().get(0);
+    final Map<String, PredictionsInnerValue> prediction = response.getPredictions().get(0);
     assertThat(prediction)
-        .containsEntry("ID", PredictResponsePayloadPredictionsInnerValue.create("35"))
+        .containsEntry("ID", PredictionsInnerValue.create("35"))
         .containsEntry(
             "COSTCENTER",
-            PredictResponsePayloadPredictionsInnerValue.createListOfPredictionResults(
+            PredictionsInnerValue.createListOfPredictionResults(
                 List.of(
                     PredictionResult.create()
                         .prediction(Prediction.create("Office Furniture"))

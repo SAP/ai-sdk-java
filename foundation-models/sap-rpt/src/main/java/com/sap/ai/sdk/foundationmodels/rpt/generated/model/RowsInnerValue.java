@@ -14,14 +14,11 @@ package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
 import java.math.BigDecimal;
 import javax.annotation.Nonnull;
 
-/** PredictRequestPayloadRowsInnerValue */
-public interface PredictRequestPayloadRowsInnerValue {
-  /**
-   * Helper class to create {@code String } that implements {@link
-   * PredictRequestPayloadRowsInnerValue}.
-   */
+/** RowsInnerValue */
+public interface RowsInnerValue {
+  /** Helper class to create {@code String } that implements {@link RowsInnerValue}. */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
-      implements PredictRequestPayloadRowsInnerValue {}
+      implements RowsInnerValue {}
 
   /**
    * Creator to enable deserialization of {@code String }.
@@ -35,12 +32,9 @@ public interface PredictRequestPayloadRowsInnerValue {
     return new InnerString(val);
   }
 
-  /**
-   * Helper class to create {@code Integer } that implements {@link
-   * PredictRequestPayloadRowsInnerValue}.
-   */
+  /** Helper class to create {@code Integer } that implements {@link RowsInnerValue}. */
   record InnerInteger(@com.fasterxml.jackson.annotation.JsonValue @Nonnull Integer value)
-      implements PredictRequestPayloadRowsInnerValue {}
+      implements RowsInnerValue {}
 
   /**
    * Creator to enable deserialization of {@code Integer }.
@@ -54,12 +48,9 @@ public interface PredictRequestPayloadRowsInnerValue {
     return new InnerInteger(val);
   }
 
-  /**
-   * Helper class to create {@code BigDecimal } that implements {@link
-   * PredictRequestPayloadRowsInnerValue}.
-   */
+  /** Helper class to create {@code BigDecimal } that implements {@link RowsInnerValue}. */
   record InnerBigDecimal(@com.fasterxml.jackson.annotation.JsonValue @Nonnull BigDecimal value)
-      implements PredictRequestPayloadRowsInnerValue {}
+      implements RowsInnerValue {}
 
   /**
    * Creator to enable deserialization of {@code BigDecimal }.

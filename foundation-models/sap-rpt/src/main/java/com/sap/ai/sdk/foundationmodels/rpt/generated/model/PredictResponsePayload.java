@@ -38,8 +38,7 @@ public class PredictResponsePayload
   private PredictResponseStatus status;
 
   @JsonProperty("predictions")
-  private List<Map<String, PredictResponsePayloadPredictionsInnerValue>> predictions =
-      new ArrayList<>();
+  private List<Map<String, PredictionsInnerValue>> predictions = new ArrayList<>();
 
   @JsonProperty("metadata")
   private PredictResponseMetadata metadata;
@@ -118,7 +117,7 @@ public class PredictResponsePayload
    */
   @Nonnull
   public PredictResponsePayload predictions(
-      @Nonnull final List<Map<String, PredictResponsePayloadPredictionsInnerValue>> predictions) {
+      @Nonnull final List<Map<String, PredictionsInnerValue>> predictions) {
     this.predictions = predictions;
     return this;
   }
@@ -131,7 +130,7 @@ public class PredictResponsePayload
    */
   @Nonnull
   public PredictResponsePayload addPredictionsItem(
-      @Nonnull final Map<String, PredictResponsePayloadPredictionsInnerValue> predictionsItem) {
+      @Nonnull final Map<String, PredictionsInnerValue> predictionsItem) {
     if (this.predictions == null) {
       this.predictions = new ArrayList<>();
     }
@@ -145,7 +144,7 @@ public class PredictResponsePayload
    * @return predictions The predictions of this {@link PredictResponsePayload} instance.
    */
   @Nonnull
-  public List<Map<String, PredictResponsePayloadPredictionsInnerValue>> getPredictions() {
+  public List<Map<String, PredictionsInnerValue>> getPredictions() {
     return predictions;
   }
 
@@ -154,8 +153,7 @@ public class PredictResponsePayload
    *
    * @param predictions Mapping of column names to their list of prediction results or index column.
    */
-  public void setPredictions(
-      @Nonnull final List<Map<String, PredictResponsePayloadPredictionsInnerValue>> predictions) {
+  public void setPredictions(@Nonnull final List<Map<String, PredictionsInnerValue>> predictions) {
     this.predictions = predictions;
   }
 
@@ -342,8 +340,7 @@ public class PredictResponsePayload
      *     column.
      * @return The PredictResponsePayload builder.
      */
-    Builder3 predictions(
-        @Nonnull final List<Map<String, PredictResponsePayloadPredictionsInnerValue>> predictions);
+    Builder3 predictions(@Nonnull final List<Map<String, PredictionsInnerValue>> predictions);
 
     /**
      * Set the predictions of this {@link PredictResponsePayload} instance.
@@ -352,8 +349,7 @@ public class PredictResponsePayload
      *     column.
      * @return The PredictResponsePayload builder.
      */
-    default Builder3 predictions(
-        @Nonnull final Map<String, PredictResponsePayloadPredictionsInnerValue>... predictions) {
+    default Builder3 predictions(@Nonnull final Map<String, PredictionsInnerValue>... predictions) {
       return predictions(Arrays.asList(predictions));
     }
   }

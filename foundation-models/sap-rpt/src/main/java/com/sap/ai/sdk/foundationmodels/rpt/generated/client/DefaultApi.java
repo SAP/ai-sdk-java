@@ -1,28 +1,30 @@
 package com.sap.ai.sdk.foundationmodels.rpt.generated.client;
 
-import com.google.common.annotations.Beta;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayload;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayload;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
+import com.sap.cloud.sdk.services.openapi.apache.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.Pair;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 import javax.annotation.Nonnull;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * SAP-RPT-1 Tabular AI in version 0.1.0.
  *
  * <p>A REST API for in-context learning with the SAP-RPT-1 model.
  */
-public class DefaultApi extends AbstractOpenApiService {
+public class DefaultApi extends BaseApi {
+
+  /** Instantiates this API class to invoke operations on the SAP-RPT-1 Tabular AI */
+  public DefaultApi() {}
+
   /**
    * Instantiates this API class to invoke operations on the SAP-RPT-1 Tabular AI.
    *
@@ -38,7 +40,6 @@ public class DefaultApi extends AbstractOpenApiService {
    *
    * @param apiClient ApiClient to invoke the API on
    */
-  @Beta
   public DefaultApi(@Nonnull final ApiClient apiClient) {
     super(apiClient);
   }
@@ -69,41 +70,42 @@ public class DefaultApi extends AbstractOpenApiService {
   @Nonnull
   public PredictResponsePayload predict(@Nonnull final PredictRequestPayload predictRequestPayload)
       throws OpenApiRequestException {
-    final Object localVarPostBody = predictRequestPayload;
 
     // verify the required parameter 'predictRequestPayload' is set
     if (predictRequestPayload == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'predictRequestPayload' when calling predict");
+              "Missing the required parameter 'predictRequestPayload' when calling predict")
+          .statusCode(400);
     }
 
-    final String localVarPath = UriComponentsBuilder.fromPath("/predict").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/predict";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final TypeReference<PredictResponsePayload> localVarReturnType =
+        new TypeReference<PredictResponsePayload>() {};
 
-    final ParameterizedTypeReference<PredictResponsePayload> localVarReturnType =
-        new ParameterizedTypeReference<PredictResponsePayload>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        predictRequestPayload,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 }

@@ -40,10 +40,10 @@ public class PredictRequestPayload
   private PredictionConfig predictionConfig;
 
   @JsonProperty("rows")
-  private List<Map<String, PredictRequestPayloadRowsInnerValue>> rows = new ArrayList<>();
+  private List<Map<String, RowsInnerValue>> rows = new ArrayList<>();
 
   @JsonProperty("columns")
-  private Map<String, List<PredictRequestPayloadRowsInnerValue>> columns;
+  private Map<String, List<RowsInnerValue>> columns;
 
   @JsonProperty("index_column")
   private String indexColumn;
@@ -97,8 +97,7 @@ public class PredictRequestPayload
    * @return The same instance of this {@link PredictRequestPayload} class
    */
   @Nonnull
-  public PredictRequestPayload rows(
-      @Nullable final List<Map<String, PredictRequestPayloadRowsInnerValue>> rows) {
+  public PredictRequestPayload rows(@Nullable final List<Map<String, RowsInnerValue>> rows) {
     this.rows = rows;
     return this;
   }
@@ -110,8 +109,7 @@ public class PredictRequestPayload
    * @return The same instance of type {@link PredictRequestPayload}
    */
   @Nonnull
-  public PredictRequestPayload addRowsItem(
-      @Nonnull final Map<String, PredictRequestPayloadRowsInnerValue> rowsItem) {
+  public PredictRequestPayload addRowsItem(@Nonnull final Map<String, RowsInnerValue> rowsItem) {
     if (this.rows == null) {
       this.rows = new ArrayList<>();
     }
@@ -126,7 +124,7 @@ public class PredictRequestPayload
    * @return rows The rows of this {@link PredictRequestPayload} instance.
    */
   @Nonnull
-  public List<Map<String, PredictRequestPayloadRowsInnerValue>> getRows() {
+  public List<Map<String, RowsInnerValue>> getRows() {
     return rows;
   }
 
@@ -136,7 +134,7 @@ public class PredictRequestPayload
    * @param rows Table rows, i.e. list of objects where each object is a mapping of column names to
    *     values. Either \&quot;rows\&quot; or \&quot;columns\&quot; must be provided.
    */
-  public void setRows(@Nullable final List<Map<String, PredictRequestPayloadRowsInnerValue>> rows) {
+  public void setRows(@Nullable final List<Map<String, RowsInnerValue>> rows) {
     this.rows = rows;
   }
 
@@ -147,8 +145,7 @@ public class PredictRequestPayload
    * @return The same instance of this {@link PredictRequestPayload} class
    */
   @Nonnull
-  public PredictRequestPayload columns(
-      @Nullable final Map<String, List<PredictRequestPayloadRowsInnerValue>> columns) {
+  public PredictRequestPayload columns(@Nullable final Map<String, List<RowsInnerValue>> columns) {
     this.columns = columns;
     return this;
   }
@@ -162,8 +159,7 @@ public class PredictRequestPayload
    */
   @Nonnull
   public PredictRequestPayload putcolumnsItem(
-      @Nonnull final String key,
-      @Nonnull final List<PredictRequestPayloadRowsInnerValue> columnsItem) {
+      @Nonnull final String key, @Nonnull final List<RowsInnerValue> columnsItem) {
     if (this.columns == null) {
       this.columns = new HashMap<>();
     }
@@ -177,7 +173,7 @@ public class PredictRequestPayload
    * @return columns The columns of this {@link PredictRequestPayload} instance.
    */
   @Nullable
-  public Map<String, List<PredictRequestPayloadRowsInnerValue>> getColumns() {
+  public Map<String, List<RowsInnerValue>> getColumns() {
     return columns;
   }
 
@@ -186,8 +182,7 @@ public class PredictRequestPayload
    *
    * @param columns The columns of this {@link PredictRequestPayload}
    */
-  public void setColumns(
-      @Nullable final Map<String, List<PredictRequestPayloadRowsInnerValue>> columns) {
+  public void setColumns(@Nullable final Map<String, List<RowsInnerValue>> columns) {
     this.columns = columns;
   }
 
