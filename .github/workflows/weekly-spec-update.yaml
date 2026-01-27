@@ -3,6 +3,7 @@ name: "Weekly Spec Update"
 on:
   schedule:
     - cron: '0 0 * * SUN' # Every Sunday at midnight UTC
+  workflow_dispatch:
 
 jobs:
   update-all-specs:
@@ -41,6 +42,8 @@ jobs:
         run: |
           BRANCH="main"
           if [ "${{ matrix.file }}" = "orchestration" ]; then
+            # remove hotfix suffix 0.110.13-2 -> 0.110.13
+            ORCH_VERSION=$(echo "$ORCH_VERSION" | sed 's/-.*//')
             BRANCH="rel-$ORCH_VERSION"
           fi
           echo "Using branch: $BRANCH"
