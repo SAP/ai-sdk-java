@@ -25,6 +25,7 @@ import lombok.With;
 public class OrchestrationTemplateReference extends TemplateConfig {
   @Nonnull TemplateRefTemplateRef reference;
 
+  /** The scope of the template reference. */
   @With @Nonnull ScopeEnum scope;
 
   /**
@@ -49,7 +50,7 @@ public class OrchestrationTemplateReference extends TemplateConfig {
     }
   }
 
-  /** The scope of the template reference. */
+  /** Enum representing the scope of the template reference. */
   public enum ScopeEnum {
     /** Template is resolved within the current tenant scope. */
     TENANT,
