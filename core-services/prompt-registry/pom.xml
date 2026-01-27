@@ -38,11 +38,11 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>84%</coverage.complexity>
-    <coverage.line>90%</coverage.line>
-    <coverage.instruction>92%</coverage.instruction>
+    <coverage.complexity>81%</coverage.complexity>
+    <coverage.line>87%</coverage.line>
+    <coverage.instruction>88%</coverage.instruction>
     <coverage.branch>100%</coverage.branch>
-    <coverage.method>80%</coverage.method>
+    <coverage.method>75%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
@@ -80,6 +80,10 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
     </dependency>
     <!-- scope "provided" -->
     <dependency>

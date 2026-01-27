@@ -118,7 +118,7 @@ public class AiCoreService {
   @Beta
   public com.sap.cloud.sdk.services.openapi.apache.ApiClient getApiClient() {
     val destination = getBaseDestination();
-    final var apiClient = com.sap.cloud.sdk.services.openapi.apache.ApiClient.create(destination);
+    final var apiClient = ApiClient.create(destination);
     return apiClient.withObjectMapper(objectMapper);
   }
 
