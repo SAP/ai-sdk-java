@@ -14,7 +14,7 @@ on:
 env:
   CI_BUILD_WORKFLOW: "continuous-integration.yaml" # Name of the workflow that should be triggered for CI build
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
-  JAVA_VERSION: 17
+  JAVA_VERSION: 21
   DOCS_REPO: SAP/ai-sdk
 
 jobs:

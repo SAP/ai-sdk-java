@@ -442,8 +442,10 @@ class OrchestrationTest {
 
   @Test
   void testStreamingErrorHandlingInputFilter() {
-    val prompt = new OrchestrationPrompt("Create 5 paraphrases of 'I hate you'.");
-    val filterConfig = new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE);
+    val msg =
+        "Please rephrase the following sentence for me: 'We shall destroy them all tonight', said the operator in-charge.";
+    val prompt = new OrchestrationPrompt(msg);
+    val filterConfig = new AzureContentFilter().violence(AzureFilterThreshold.ALLOW_SAFE);
     val configWithFilter = config.withInputFiltering(filterConfig);
 
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithFilter))
@@ -520,5 +522,12 @@ class OrchestrationTest {
         .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400")
         .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
+  }
+
+  @Test
+  void testExecuteRequestFromReference() {
+    val result = service.executeConfigFromReference();
+    val choices = (result.getOriginalResponse().getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 }

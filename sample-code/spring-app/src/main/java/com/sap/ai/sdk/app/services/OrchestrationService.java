@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
@@ -17,11 +18,13 @@ import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationConfigReference;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
+import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TranslationConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
@@ -33,6 +36,15 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
+import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
+import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigModules;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -165,7 +177,7 @@ public class OrchestrationService {
       throws OrchestrationClientException {
     val prompt =
         new OrchestrationPrompt(
-            "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operator in-charge.");
+            "Please rephrase the following sentence for me: 'We shall destroy them all tonight', said the operator in-charge.");
     val filterConfig =
         new AzureContentFilter()
             .hate(policy)
@@ -644,5 +656,65 @@ public class OrchestrationService {
             .forInputs(texts)
             .withMasking(masking);
     return client.embed(request);
+  }
+
+  /**
+   * Chat request to an LLM through the Orchestration service using a template from the prompt
+   * registry identified by a reference.
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse executeConfigFromReference() {
+    val scenario = "sdk-test-paraphrase";
+    val name = "create-3-paraphrases-of-sentence";
+    ensureOrchestrationConfigExists(scenario, name);
+    final List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
+    final var params = Map.of("phrase", "Hello World");
+    final var testReference =
+        OrchestrationConfigReference.fromScenario("sdk-test-scenario")
+            .name("test-config-for-OrchestrationTest")
+            .version("0.0.1")
+            .withMessageHistory(history)
+            .withTemplateParameters(params);
+    return client.chatCompletionUsingReference(testReference);
+  }
+
+  private void ensureOrchestrationConfigExists(final String scenario, final String name) {
+    final OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
+    if (!orchConfigExists("test-config-for-OrchestrationTest", orchConfigClient)) {
+      final OrchestrationConfigPostRequest postRequest =
+          OrchestrationConfigPostRequest.create()
+              .name(name)
+              .version("0.0.1")
+              .scenario(scenario)
+              .spec(buildOrchestrationConfig());
+      orchConfigClient.createUpdateOrchestrationConfig(postRequest);
+    }
+  }
+
+  private boolean orchConfigExists(
+      final String configName, final OrchestrationConfigClient orchConfigClient) {
+    return orchConfigClient.listOrchestrationConfigs().getResources().stream()
+        .anyMatch(resp -> resp.getName().equals(configName));
+  }
+
+  private OrchestrationConfig buildOrchestrationConfig() {
+    return OrchestrationConfig.create()
+        .modules(
+            OrchestrationConfigModules.createInnerModuleConfigs(
+                ModuleConfigs.create()
+                    .promptTemplating(
+                        PromptTemplatingModuleConfig.create()
+                            .prompt(
+                                com.sap.ai.sdk.prompt.registry.model.Template.create()
+                                    .template(
+                                        UserChatMessage.create()
+                                            .content(
+                                                new UserChatMessageContent.InnerString(
+                                                    "Create {{?number}} paraphrases of {{?phrase}}"))
+                                            .role(UserChatMessage.RoleEnum.USER))
+                                    .defaults(Map.of("number", "3")))
+                            .model(LLMModelDetails.create().name(GPT_41_NANO.getName())))));
   }
 }

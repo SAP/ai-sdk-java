@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: "sapmachine"
-          java-version: "17"
+          java-version: "21"
           server-id: artifactory-snapshots
           server-username: DEPLOYMENT_USER
           server-password: DEPLOYMENT_PASS
