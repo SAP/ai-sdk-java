@@ -509,12 +509,12 @@
                                 <li class="list-group-item">
                                     <div class="info-tooltip">
                                         <button type="submit"
-                                                formaction="/orchestration/templateFromPromptRegistryById"
+                                                formaction="/orchestration/templateFromPromptRegistryByIdTenant"
                                                 class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/templateFromPromptRegistryById</code>
+                                            <code>/orchestration/templateFromPromptRegistryByIdTenant</code>
                                         </button>
                                         <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
+                                            Chat request to an LLM through the Orchestration service in tenant scope
                                             using a template from the prompt registry identified by
                                             ID.
                                         </div>
@@ -523,12 +523,42 @@
                                 <li class="list-group-item">
                                     <div class="info-tooltip">
                                         <button type="submit"
-                                                formaction="/orchestration/templateFromPromptRegistryByScenario"
+                                                formaction="/orchestration/templateFromPromptRegistryByIdResourceGroup"
                                                 class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/templateFromPromptRegistryByScenario</code>
+                                            <code>/orchestration/templateFromPromptRegistryByIdResourceGroup</code>
                                         </button>
                                         <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
+                                            Chat request to an LLM through the Orchestration service in resource group
+                                            scope
+                                            using a template from the prompt registry identified by
+                                            ID.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/templateFromPromptRegistryByScenarioTenant"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/templateFromPromptRegistryByScenarioTenant</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service in tenant scope
+                                            using a template from the prompt registry identified by
+                                            Scenario, name, and version.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/templateFromPromptRegistryByScenarioResourceGroup"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/templateFromPromptRegistryByScenarioResourceGroup</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service in resource group
+                                            scope
                                             using a template from the prompt registry identified by
                                             Scenario, name, and version.
                                         </div>

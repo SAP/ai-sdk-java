@@ -17,9 +17,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
+import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_4;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_6;
@@ -1259,7 +1261,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryById() throws IOException {
+  void testTemplateFromPromptRegistryByIdTenant() throws IOException {
     {
       stubFor(
           post(anyUrl())
@@ -1285,7 +1287,44 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryByScenario() throws IOException {
+  void testTemplateFromPromptRegistryByIdResourceGroup() throws IOException {
+    {
+      stubFor(
+          post(anyUrl())
+              .willReturn(
+                  aResponse()
+                      .withBodyFile("templateReferenceResourceGroupResponse.json")
+                      .withHeader("Content-Type", "application/json")));
+
+      var template =
+          TemplateConfig.reference()
+              .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
+              .withScope(RESOURCE_GROUP);
+      var config =
+          new OrchestrationModuleConfig()
+              .withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      var configWithTemplate = config.withTemplateConfig(template);
+
+      var inputParams =
+          Map.of(
+              "categories",
+              "Finance, Tech, Sports",
+              "inputExample",
+              "What's the latest news on the stock market?");
+      var prompt = new OrchestrationPrompt(inputParams);
+
+      final var response = client.chatCompletion(prompt, configWithTemplate);
+      assertThat(response.getContent()).startsWith("Finance");
+      assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating())
+          .hasSize(2);
+
+      final String request = fileLoaderStr.apply("templateReferenceResourceGroupByIdRequest.json");
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioTenant() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -1304,6 +1343,42 @@ class OrchestrationUnitTest {
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
     final String request = fileLoaderStr.apply("templateReferenceByScenarioRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioResourceGroup() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templateReferenceResourceGroupResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var template =
+        TemplateConfig.reference()
+            .byScenario("categorization")
+            .name("example-prompt-template")
+            .version("0.0.1")
+            .withScope(RESOURCE_GROUP);
+    var config =
+        new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+    var configWithTemplate = config.withTemplateConfig(template);
+
+    var inputParams =
+        Map.of(
+            "categories",
+            "Finance, Tech, Sports",
+            "inputExample",
+            "What's the latest news on the stock market?");
+    var prompt = new OrchestrationPrompt(inputParams);
+
+    final var response = client.chatCompletion(prompt, configWithTemplate);
+    assertThat(response.getContent()).startsWith("Finance");
+    assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
+
+    final String request =
+        fileLoaderStr.apply("templateReferenceResourceGroupByScenarioRequest.json");
     verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
   }
 
