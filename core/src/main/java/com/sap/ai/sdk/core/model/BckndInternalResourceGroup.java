@@ -114,6 +114,9 @@ public class BckndInternalResourceGroup
   @JsonProperty("statusMessage")
   private String statusMessage;
 
+  @JsonProperty("servicePlan")
+  private String servicePlan;
+
   @JsonProperty("annotations")
   private List<BckndInternalResourceGroupAnnotation> annotations = new ArrayList<>();
 
@@ -366,6 +369,38 @@ public class BckndInternalResourceGroup
   }
 
   /**
+   * Set the servicePlan of this {@link BckndInternalResourceGroup} instance and return the same
+   * instance.
+   *
+   * @param servicePlan service plan
+   * @return The same instance of this {@link BckndInternalResourceGroup} class
+   */
+  @Nonnull
+  public BckndInternalResourceGroup servicePlan(@Nullable final String servicePlan) {
+    this.servicePlan = servicePlan;
+    return this;
+  }
+
+  /**
+   * service plan
+   *
+   * @return servicePlan The servicePlan of this {@link BckndInternalResourceGroup} instance.
+   */
+  @Nonnull
+  public String getServicePlan() {
+    return servicePlan;
+  }
+
+  /**
+   * Set the servicePlan of this {@link BckndInternalResourceGroup} instance.
+   *
+   * @param servicePlan service plan
+   */
+  public void setServicePlan(@Nullable final String servicePlan) {
+    this.servicePlan = servicePlan;
+  }
+
+  /**
    * Set the annotations of this {@link BckndInternalResourceGroup} instance and return the same
    * instance.
    *
@@ -462,6 +497,7 @@ public class BckndInternalResourceGroup
     if (labels != null) declaredFields.put("labels", labels);
     if (status != null) declaredFields.put("status", status);
     if (statusMessage != null) declaredFields.put("statusMessage", statusMessage);
+    if (servicePlan != null) declaredFields.put("servicePlan", servicePlan);
     if (annotations != null) declaredFields.put("annotations", annotations);
     return declaredFields;
   }
@@ -496,6 +532,7 @@ public class BckndInternalResourceGroup
         && Objects.equals(this.labels, bckndInternalResourceGroup.labels)
         && Objects.equals(this.status, bckndInternalResourceGroup.status)
         && Objects.equals(this.statusMessage, bckndInternalResourceGroup.statusMessage)
+        && Objects.equals(this.servicePlan, bckndInternalResourceGroup.servicePlan)
         && Objects.equals(this.annotations, bckndInternalResourceGroup.annotations);
   }
 
@@ -509,6 +546,7 @@ public class BckndInternalResourceGroup
         labels,
         status,
         statusMessage,
+        servicePlan,
         annotations,
         cloudSdkCustomFields);
   }
@@ -525,6 +563,7 @@ public class BckndInternalResourceGroup
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    statusMessage: ").append(toIndentedString(statusMessage)).append("\n");
+    sb.append("    servicePlan: ").append(toIndentedString(servicePlan)).append("\n");
     sb.append("    annotations: ").append(toIndentedString(annotations)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
