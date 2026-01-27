@@ -29,8 +29,8 @@ public class OrchestrationClientException extends ClientException {
       (message, clientError, cause) -> {
         final var details = extractInputFilterDetails(clientError);
         if (details.isEmpty()) {
-          if (message.equals(
-              "Request failed with status 404 (Not Found): 404 - Templating Module: No Prompt Template found in the Prompt Registry.")) {
+          if (message.contains(
+              "No Prompt Template found in the Prompt Registry.")) {
             message +=
                 "\n Please verify that the provided resource group id is correct and matches the provided template reference details if the template is referenced from a resource-group scope, otherwise use the tenant scope without resource group id header.";
           }
