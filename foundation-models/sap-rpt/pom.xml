@@ -132,10 +132,10 @@
                   <inputSpec>${project.basedir}/src/main/resources/spec/sap-rpt-1_openapi.json</inputSpec>
                   <modelPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.model</modelPackage>
                   <apiPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.client</apiPackage>
-                  <generateApis>true</generateApis>
                   <additionalProperties>
                     <library>apache-httpclient</library>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
+                    <pojoConstructorVisibility>protected</pojoConstructorVisibility>
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
                     <useOneOfCreators>true</useOneOfCreators>

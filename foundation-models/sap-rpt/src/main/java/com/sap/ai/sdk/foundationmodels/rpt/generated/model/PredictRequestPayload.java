@@ -57,6 +57,9 @@ public class PredictRequestPayload
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for PredictRequestPayload. */
+  protected PredictRequestPayload() {}
+
   /**
    * Set the predictionConfig of this {@link PredictRequestPayload} instance and return the same
    * instance.

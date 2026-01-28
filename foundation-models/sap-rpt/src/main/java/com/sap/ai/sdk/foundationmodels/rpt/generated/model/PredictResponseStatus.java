@@ -37,6 +37,9 @@ public class PredictResponseStatus
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for PredictResponseStatus. */
+  protected PredictResponseStatus() {}
+
   /**
    * Set the code of this {@link PredictResponseStatus} instance and return the same instance.
    *

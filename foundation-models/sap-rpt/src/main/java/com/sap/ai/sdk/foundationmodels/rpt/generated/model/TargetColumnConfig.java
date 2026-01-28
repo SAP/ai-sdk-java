@@ -102,6 +102,9 @@ public class TargetColumnConfig
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for TargetColumnConfig. */
+  protected TargetColumnConfig() {}
+
   /**
    * Set the name of this {@link TargetColumnConfig} instance and return the same instance.
    *

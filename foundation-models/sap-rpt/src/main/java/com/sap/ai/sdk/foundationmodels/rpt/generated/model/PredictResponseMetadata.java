@@ -43,6 +43,9 @@ public class PredictResponseMetadata
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for PredictResponseMetadata. */
+  protected PredictResponseMetadata() {}
+
   /**
    * Set the numColumns of this {@link PredictResponseMetadata} instance and return the same
    * instance.

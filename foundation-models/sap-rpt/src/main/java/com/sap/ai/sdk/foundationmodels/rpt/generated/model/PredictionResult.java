@@ -38,6 +38,9 @@ public class PredictionResult
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for PredictionResult. */
+  protected PredictionResult() {}
+
   /**
    * Set the prediction of this {@link PredictionResult} instance and return the same instance.
    *

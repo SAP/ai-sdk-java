@@ -34,6 +34,9 @@ public class SchemaFieldConfig
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
+  /** Default constructor for SchemaFieldConfig. */
+  protected SchemaFieldConfig() {}
+
   /**
    * Set the dtype of this {@link SchemaFieldConfig} instance and return the same instance.
    *
