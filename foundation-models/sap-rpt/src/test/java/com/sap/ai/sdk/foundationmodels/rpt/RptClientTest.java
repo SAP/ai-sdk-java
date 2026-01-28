@@ -62,7 +62,7 @@ class RptClientTest {
   }
 
   @Test
-  void testTabCompletionWithRowsFormat() {
+  void testTableCompletionWithRowsFormat() {
     final List<Map<String, RowsInnerValue>> rows =
         List.of(
             Map.of(
@@ -85,7 +85,7 @@ class RptClientTest {
                 "COSTCENTER", RowsInnerValue.create("Data Infrastructure")));
     final var request = createBaseRequest().rows(rows);
 
-    final var response = client.tabCompletion(request);
+    final var response = client.tableCompletion(request);
     assertThat(response).isNotNull();
     assertThat(response.getId()).isEqualTo("0381c575-9ee5-46f1-9223-4f9caf039e48");
     assertThat(response.getMetadata().getNumColumns()).isEqualTo(5);
@@ -110,7 +110,7 @@ class RptClientTest {
   }
 
   @Test
-  void testTabCompletionWithColumnsFormat() {
+  void testTableCompletionWithColumnsFormat() {
     final Map<String, List<RowsInnerValue>> columns =
         Map.of(
             "PRODUCT",
@@ -140,7 +140,7 @@ class RptClientTest {
                     RowsInnerValue.create("Data Infrastructure")));
     final var request = createBaseRequest().columns(columns);
 
-    final var response = client.tabCompletion(request);
+    final var response = client.tableCompletion(request);
 
     assertThat(response).isNotNull();
     assertThat(response.getId()).isEqualTo("f89fb682-8d6b-4ef5-97f4-bd3c9aab8c49");

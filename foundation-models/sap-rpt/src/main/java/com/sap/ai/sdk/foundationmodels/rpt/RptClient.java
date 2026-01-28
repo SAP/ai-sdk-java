@@ -62,7 +62,7 @@ public class RptClient {
    * @return prediction response from the RPT model
    */
   @Nonnull
-  public PredictResponsePayload tabCompletion(@Nonnull final PredictRequestPayload requestBody) {
+  public PredictResponsePayload tableCompletion(@Nonnull final PredictRequestPayload requestBody) {
     return api.predict(requestBody);
   }
 }

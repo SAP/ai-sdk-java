@@ -68,6 +68,6 @@ public class RptService {
             .dataSchema(dataSchema)
             .parseDataTypes(true)
             .rows(rows);
-    return rptClient.tabCompletion(request);
+    return rptClient.tableCompletion(request);
   }
 }
