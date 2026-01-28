@@ -49,6 +49,9 @@ public class VectorSearchFilter
   @JsonProperty("chunkMetadata")
   private List<VectorKeyValueListPair> chunkMetadata = new ArrayList<>();
 
+  @JsonProperty("filter")
+  private Filter filter;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -202,7 +205,7 @@ public class VectorSearchFilter
    *
    * @return collectionMetadata The collectionMetadata of this {@link VectorSearchFilter} instance.
    */
-  @Nonnull
+  @Nullable
   public List<VectorKeyValueListPair> getCollectionMetadata() {
     return collectionMetadata;
   }
@@ -254,7 +257,7 @@ public class VectorSearchFilter
    *
    * @return documentMetadata The documentMetadata of this {@link VectorSearchFilter} instance.
    */
-  @Nonnull
+  @Nullable
   public List<VectorSearchDocumentKeyValueListPair> getDocumentMetadata() {
     return documentMetadata;
   }
@@ -319,6 +322,37 @@ public class VectorSearchFilter
   }
 
   /**
+   * Set the filter of this {@link VectorSearchFilter} instance and return the same instance.
+   *
+   * @param filter The filter of this {@link VectorSearchFilter}
+   * @return The same instance of this {@link VectorSearchFilter} class
+   */
+  @Nonnull
+  public VectorSearchFilter filter(@Nullable final Filter filter) {
+    this.filter = filter;
+    return this;
+  }
+
+  /**
+   * Get filter
+   *
+   * @return filter The filter of this {@link VectorSearchFilter} instance.
+   */
+  @Nullable
+  public Filter getFilter() {
+    return filter;
+  }
+
+  /**
+   * Set the filter of this {@link VectorSearchFilter} instance.
+   *
+   * @param filter The filter of this {@link VectorSearchFilter}
+   */
+  public void setFilter(@Nullable final Filter filter) {
+    this.filter = filter;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link VectorSearchFilter}.
    *
    * @return The set of properties names
@@ -362,6 +396,7 @@ public class VectorSearchFilter
     if (collectionMetadata != null) declaredFields.put("collectionMetadata", collectionMetadata);
     if (documentMetadata != null) declaredFields.put("documentMetadata", documentMetadata);
     if (chunkMetadata != null) declaredFields.put("chunkMetadata", chunkMetadata);
+    if (filter != null) declaredFields.put("filter", filter);
     return declaredFields;
   }
 
@@ -392,7 +427,8 @@ public class VectorSearchFilter
         && Objects.equals(this._configuration, vectorSearchFilter._configuration)
         && Objects.equals(this.collectionMetadata, vectorSearchFilter.collectionMetadata)
         && Objects.equals(this.documentMetadata, vectorSearchFilter.documentMetadata)
-        && Objects.equals(this.chunkMetadata, vectorSearchFilter.chunkMetadata);
+        && Objects.equals(this.chunkMetadata, vectorSearchFilter.chunkMetadata)
+        && Objects.equals(this.filter, vectorSearchFilter.filter);
   }
 
   @Override
@@ -404,6 +440,7 @@ public class VectorSearchFilter
         collectionMetadata,
         documentMetadata,
         chunkMetadata,
+        filter,
         cloudSdkCustomFields);
   }
 
@@ -418,6 +455,7 @@ public class VectorSearchFilter
     sb.append("    collectionMetadata: ").append(toIndentedString(collectionMetadata)).append("\n");
     sb.append("    documentMetadata: ").append(toIndentedString(documentMetadata)).append("\n");
     sb.append("    chunkMetadata: ").append(toIndentedString(chunkMetadata)).append("\n");
+    sb.append("    filter: ").append(toIndentedString(filter)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
