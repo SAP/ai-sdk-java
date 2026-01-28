@@ -1,0 +1,98 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/predict",
+    "bodyPatterns": [
+      {
+        "equalToJson": {
+          "prediction_config": {
+            "target_columns": [
+              {
+                "name": "COSTCENTER",
+                "prediction_placeholder": "[PREDICT]",
+                "task_type": "classification"
+              }
+            ]
+          },
+          "rows": [],
+          "columns": {
+            "PRICE": [
+              999.99,
+              150.8,
+              2200.0
+            ],
+            "ID": [
+              "35",
+              "44",
+              "104"
+            ],
+            "PRODUCT": [
+              "Couch",
+              "Office Chair",
+              "Server Rack"
+            ],
+            "COSTCENTER": [
+              "[PREDICT]",
+              "Office Furniture",
+              "Data Infrastructure"
+            ],
+            "ORDERDATE": [
+              "28-11-2025",
+              "02-11-2025",
+              "01-11-2025"
+            ]
+          },
+          "index_column": "ID",
+          "parse_data_types": true,
+          "data_schema": {
+            "PRICE": {
+              "dtype": "string"
+            },
+            "ID": {
+              "dtype": "string"
+            },
+            "PRODUCT": {
+              "dtype": "string"
+            },
+            "COSTCENTER": {
+              "dtype": "string"
+            },
+            "ORDERDATE": {
+              "dtype": "date"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": "f89fb682-8d6b-4ef5-97f4-bd3c9aab8c49",
+      "metadata": {
+        "num_columns": 5,
+        "num_predictions": 1,
+        "num_query_rows": 1,
+        "num_rows": 2
+      },
+      "predictions": [
+        {
+          "COSTCENTER": [
+            {
+              "confidence": 0.97,
+              "prediction": "Office Furniture"
+            }
+          ],
+          "ID": "35"
+        }
+      ],
+      "status": {
+        "code": 0,
+        "message": "ok"
+      }
+    }
+  }
+}

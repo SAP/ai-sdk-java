@@ -18,6 +18,7 @@ jobs:
           - document-grounding
           - prompt-registry
           - orchestration
+          - sap-rpt
 
     steps:
       - name: "Checkout repository"
