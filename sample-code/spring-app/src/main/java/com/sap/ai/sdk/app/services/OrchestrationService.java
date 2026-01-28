@@ -16,6 +16,7 @@ import com.sap.ai.sdk.orchestration.Grounding;
 import com.sap.ai.sdk.orchestration.ImageItem;
 import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
 import com.sap.ai.sdk.orchestration.Message;
+import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
@@ -76,6 +77,25 @@ public class OrchestrationService {
   public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
     return client.chatCompletion(prompt, config);
+  }
+
+  @Nonnull
+  public OrchestrationChatResponse completionWithFallback(@Nonnull final String famousPhrase) {
+    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0.0));
+    val brokenConfig = new OrchestrationModuleConfig().withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    OrchestrationModuleConfig[] configs =  new OrchestrationModuleConfig[] { brokenConfig, config,  workingConfig };
+    return client.chatCompletion(prompt, configs);
+    // JONAS: or return client.chatCompletion(prompt, brokenConfig, config,  workingConfig);
+  }
+
+  @Nonnull
+  public OrchestrationChatResponse completionWithFallbackAllFail(@Nonnull final String famousPhrase) {
+    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val brokenConfig = new OrchestrationModuleConfig().withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    val alsoBrokenConfig = new OrchestrationModuleConfig().withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
+    OrchestrationModuleConfig[] configs =  new OrchestrationModuleConfig[] { brokenConfig, alsoBrokenConfig };
+    return client.chatCompletion(prompt, configs);
   }
 
   /**

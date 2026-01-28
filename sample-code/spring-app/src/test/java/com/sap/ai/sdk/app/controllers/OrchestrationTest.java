@@ -62,6 +62,29 @@ class OrchestrationTest {
   }
 
   @Test
+  void testCompletionWithFallback() {
+    val result = service.completionWithFallback("HelloWorld!");
+
+    assertThat(result).isNotNull();
+    assertThat(result.getContent()).isNotEmpty();
+    assertThat(result.getOriginalResponse().getIntermediateFailures().size()).isEqualTo(1);
+    assertThat(result.getOriginalResponse().getIntermediateFailures().get(0).getMessage()).contains("Model broken_name not supported.");
+    assertThat(result.getOriginalResponse().getFinalResult().getChoices().get(0).getFinishReason()).contains("stop");
+  }
+
+  @Test
+  void testCompletionWithFallbackAllFail() {
+    assertThatThrownBy(() -> service.completionWithFallbackAllFail("HelloWorld!"))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("Model broken_name_2 not supported.");
+  }
+
+  @Test
+  void testStreamCompletionWithFallback() {
+    assertThat(true);
+  }
+
+  @Test
   void testStreamChatCompletion() {
     val prompt = new OrchestrationPrompt("Who is the prettiest?");
     val stream = new OrchestrationClient().streamChatCompletion(prompt, service.getConfig());

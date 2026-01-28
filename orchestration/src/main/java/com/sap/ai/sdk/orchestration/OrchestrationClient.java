@@ -73,29 +73,33 @@ public class OrchestrationClient {
    * allows for further customization before sending the request.
    *
    * @param prompt The {@link OrchestrationPrompt} to generate a completion for.
-   * @param config The {@link OrchestrationConfig } configuration to use for the completion.
+   * @param configs The {@link OrchestrationConfig } configuration to use for the completion.
    * @return The low-level request data object to send to orchestration.
    */
   @Nonnull
   public static CompletionRequestConfiguration toCompletionPostRequest(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
-    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config);
+      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final OrchestrationModuleConfig... configs) {
+    return configs.length == 1
+        ? ConfigToRequestTransformer.toCompletionPostRequest(prompt, configs[0])
+        : ConfigToRequestTransformer.toCompletionPostRequestWithFallbacks(prompt, configs);
   }
 
   /**
    * Generate a completion for the given prompt.
    *
    * @param prompt The {@link OrchestrationPrompt} to send to orchestration.
-   * @param config The {@link ModuleConfigs} configuration to use for the completion.
+   * @param configs The {@link ModuleConfigs} configuration to use for the completion.
    * @return the completion output
    * @throws OrchestrationClientException if the request fails.
    */
   @Nonnull
   public OrchestrationChatResponse chatCompletion(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config)
+      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final OrchestrationModuleConfig... configs)
       throws OrchestrationClientException {
 
-    val request = toCompletionPostRequest(prompt, config);
+    val request = toCompletionPostRequest(prompt, configs);
     val response = executeRequest(request);
     return new OrchestrationChatResponse(response);
   }
