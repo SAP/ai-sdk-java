@@ -32,7 +32,7 @@ public class RetrievalSearchResults
 // CHECKSTYLE:ON
 {
   @JsonProperty("results")
-  private List<ResultsInner2> results = new ArrayList<>();
+  private List<ResultsInner1> results = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -47,7 +47,7 @@ public class RetrievalSearchResults
    * @return The same instance of this {@link RetrievalSearchResults} class
    */
   @Nonnull
-  public RetrievalSearchResults results(@Nonnull final List<ResultsInner2> results) {
+  public RetrievalSearchResults results(@Nonnull final List<ResultsInner1> results) {
     this.results = results;
     return this;
   }
@@ -59,7 +59,7 @@ public class RetrievalSearchResults
    * @return The same instance of type {@link RetrievalSearchResults}
    */
   @Nonnull
-  public RetrievalSearchResults addResultsItem(@Nonnull final ResultsInner2 resultsItem) {
+  public RetrievalSearchResults addResultsItem(@Nonnull final ResultsInner1 resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -73,7 +73,7 @@ public class RetrievalSearchResults
    * @return results The results of this {@link RetrievalSearchResults} instance.
    */
   @Nonnull
-  public List<ResultsInner2> getResults() {
+  public List<ResultsInner1> getResults() {
     return results;
   }
 
@@ -82,7 +82,7 @@ public class RetrievalSearchResults
    *
    * @param results List of returned results.
    */
-  public void setResults(@Nonnull final List<ResultsInner2> results) {
+  public void setResults(@Nonnull final List<ResultsInner1> results) {
     this.results = results;
   }
 
@@ -198,7 +198,7 @@ public class RetrievalSearchResults
      * @param results List of returned results.
      * @return The RetrievalSearchResults instance.
      */
-    RetrievalSearchResults results(@Nonnull final List<ResultsInner2> results);
+    RetrievalSearchResults results(@Nonnull final List<ResultsInner1> results);
 
     /**
      * Set the results of this {@link RetrievalSearchResults} instance.
@@ -206,7 +206,7 @@ public class RetrievalSearchResults
      * @param results List of returned results.
      * @return The RetrievalSearchResults instance.
      */
-    default RetrievalSearchResults results(@Nonnull final ResultsInner2... results) {
+    default RetrievalSearchResults results(@Nonnull final ResultsInner1... results) {
       return results(Arrays.asList(results));
     }
   }

@@ -26,7 +26,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** VectorKeyValueListPair */
+/** Collection metadata during ingestion */
 // CHECKSTYLE:OFF
 public class VectorKeyValueListPair
 // CHECKSTYLE:ON
