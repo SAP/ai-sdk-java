@@ -14,8 +14,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
+import org.springframework.stereotype.Service;
 
 /** Service to interact with the RPT model for predictions. */
+@Service
 public class RptService {
 
   static final RptClient rptClient = RptClient.forModel(RptModel.SAP_RPT_1_SMALL);

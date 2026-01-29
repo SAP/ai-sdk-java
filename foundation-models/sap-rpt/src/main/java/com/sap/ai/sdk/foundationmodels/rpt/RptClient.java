@@ -2,6 +2,7 @@ package com.sap.ai.sdk.foundationmodels.rpt;
 
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.client.DefaultApi;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
  *
  * @since 1.16.0
  */
+@Beta
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class RptClient {
   @Nonnull private final DefaultApi api;
