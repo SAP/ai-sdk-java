@@ -1504,4 +1504,40 @@ class OrchestrationUnitTest {
     assertThat(messageListTools.get(1)).isInstanceOf(AssistantMessage.class);
     assertThat(messageListTools.get(2)).isInstanceOf(ToolMessage.class);
   }
+
+  @Test
+  void testFallbackModules() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("fallbackResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var prompt = new OrchestrationPrompt("HelloWorld! Why is this phrase so famous?");
+    final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
+    val groundingConfig = Grounding.create().filters(DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.HELP_SAP_COM));
+
+    final var workingConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0.0))
+            .withInputFiltering(llamaFilter)
+            .withGrounding(groundingConfig);
+    final var brokenConfig = workingConfig.withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+
+    OrchestrationModuleConfig[] configs =  new OrchestrationModuleConfig[] { brokenConfig, workingConfig };
+
+    final var response = client.chatCompletion(prompt, configs);
+
+    var intermediateFailure = response.getOriginalResponse().getIntermediateFailures().get(0);
+    assertThat(intermediateFailure.getCode()).isEqualTo(400);
+    assertThat(intermediateFailure.getLocation()).isEqualTo("Request Body");
+    assertThat(intermediateFailure.getRequestId()).isEqualTo("a562703b-7fe5-97ba-b417-e8140a25fb7c");
+    assertThat(intermediateFailure.getMessage()).isEqualTo("400 - Request Body: Model broken_name not supported.");
+    assertThat(intermediateFailure.getHeaders().get("Content-Type")).isEqualTo("application/json");
+
+    final String request = fileLoaderStr.apply("fallbackRequest.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
+  }
 }

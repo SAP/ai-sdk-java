@@ -74,6 +74,16 @@ class OrchestrationController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
+  @GetMapping("/completionWithFallback")
+  Object completionWithFallback(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.completionWithFallback("HelloWorld!");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
   @GetMapping("/template")
   Object template(@Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.template("German");

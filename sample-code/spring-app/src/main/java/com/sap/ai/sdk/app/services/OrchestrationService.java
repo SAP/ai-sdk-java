@@ -93,8 +93,8 @@ public class OrchestrationService {
   public OrchestrationChatResponse completionWithFallbackAllFail(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
     val brokenConfig = new OrchestrationModuleConfig().withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    val alsoBrokenConfig = new OrchestrationModuleConfig().withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
-    OrchestrationModuleConfig[] configs =  new OrchestrationModuleConfig[] { brokenConfig, alsoBrokenConfig };
+    val secondBrokenConfig = new OrchestrationModuleConfig().withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
+    OrchestrationModuleConfig[] configs =  new OrchestrationModuleConfig[] { brokenConfig, secondBrokenConfig };
     return client.chatCompletion(prompt, configs);
   }
 
