@@ -71,13 +71,13 @@
     <javaparser.version>3.28.0</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.20.1</jackson.version>
-    <logback.version>1.5.25</logback.version>
+    <logback.version>1.5.26</logback.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.2</micrometer.version>
     <json.version>20251224</json.version>
     <snakeyaml.version>2.5</snakeyaml.version>
     <!-- Formatting -->
-    <spotless.version>3.2.0</spotless.version>
+    <spotless.version>3.2.1</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
