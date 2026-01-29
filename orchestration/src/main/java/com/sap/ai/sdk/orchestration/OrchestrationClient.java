@@ -82,7 +82,7 @@ public class OrchestrationClient {
       @Nonnull final OrchestrationModuleConfig... configs) {
     return configs.length == 1
         ? ConfigToRequestTransformer.toCompletionPostRequest(prompt, configs[0])
-        : ConfigToRequestTransformer.toCompletionPostRequestWithFallbacks(prompt, configs);
+        : ConfigToRequestTransformer.toCompletionPostRequest(prompt, configs);
   }
 
   /**
