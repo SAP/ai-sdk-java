@@ -96,12 +96,12 @@ public class OrchestrationService {
             .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
     val configs = new OrchestrationModuleConfig[] {brokenConfig, config, workingConfig};
     return client.chatCompletion(prompt, configs);
-    // JONAS: or return client.chatCompletion(prompt, brokenConfig, config,  workingConfig);
   }
 
   /**
-   * Asynchronous stream of chat request to OpenAI through the Orchestration service with a list of modules. If the first
-   * request fails (which will happen here), the next module is used as a fallback.
+   * Asynchronous stream of chat request to OpenAI through the Orchestration service with a list of
+   * modules. If the first request fails (which will happen here), the next module is used as a
+   * fallback.
    *
    * @param famousPhrase the phrase to send to the assistant
    * @return a stream of assistant message responses
@@ -116,7 +116,6 @@ public class OrchestrationService {
             .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
     val configs = new OrchestrationModuleConfig[] {brokenConfig, config, workingConfig};
     return client.streamChatCompletion(prompt, configs);
-    // JONAS: or return client.chatCompletion(prompt, brokenConfig, config,  workingConfig);
   }
 
   /**

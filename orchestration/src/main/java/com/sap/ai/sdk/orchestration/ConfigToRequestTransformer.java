@@ -56,8 +56,6 @@ final class ConfigToRequestTransformer {
             ? toModuleConfigs(configsCopy.get(0))
             : toListOfModuleConfigs(configsCopy);
 
-    // JONAS: I am just using the stream options of the first config here. So I assume they don't
-    // change between the configs.
     val requestConfig =
         OrchestrationConfig.create().modules(moduleConfigs).stream(
             configs[0].getGlobalStreamOptions());

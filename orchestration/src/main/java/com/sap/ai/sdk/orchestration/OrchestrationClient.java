@@ -116,7 +116,8 @@ public class OrchestrationClient {
    */
   @Nonnull
   public Stream<String> streamChatCompletion(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig... configs)
+      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final OrchestrationModuleConfig... configs)
       throws OrchestrationClientException {
 
     val request = toCompletionPostRequest(prompt, configs);

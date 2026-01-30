@@ -16,7 +16,8 @@
 
 ### 📈 Improvements
 
--[Orchestration] Added new API `OrchestrationTemplateReference#withScope` to support prompt templates with resource-group scope.
+- [Orchestration] Added new API `OrchestrationTemplateReference#withScope` to support prompt templates with resource-group scope.
+- [Orchestration] Chat completion calls now can have multiple module configs to support fallback modules.
 
 ### 🐛 Fixed Issues
 
