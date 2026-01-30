@@ -1530,10 +1530,7 @@ class OrchestrationUnitTest {
     final var brokenConfig =
         workingConfig.withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
 
-    OrchestrationModuleConfig[] configs =
-        new OrchestrationModuleConfig[] {brokenConfig, workingConfig};
-
-    final var response = client.chatCompletion(prompt, configs);
+    final var response = client.chatCompletion(prompt, brokenConfig, workingConfig);
 
     var intermediateFailure = response.getOriginalResponse().getIntermediateFailures().get(0);
     assertThat(intermediateFailure.getCode()).isEqualTo(400);

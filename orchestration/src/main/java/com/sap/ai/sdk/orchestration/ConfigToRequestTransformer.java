@@ -34,19 +34,25 @@ final class ConfigToRequestTransformer {
   @Nonnull
   static CompletionRequestConfiguration toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt,
-      @Nonnull final OrchestrationModuleConfig... configs) {
+      @Nonnull final OrchestrationModuleConfig config,
+      @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
 
+    final List<OrchestrationModuleConfig> configList = new ArrayList<>();
+    configList.add(config);
+    if (fallbackConfigs.length > 0) {
+      configList.addAll(Arrays.asList(fallbackConfigs));
+    }
     val templates =
-        Arrays.stream(configs)
-            .map(config -> toTemplateModuleConfig(prompt, config.getTemplateConfig()))
+        configList.stream()
+            .map(conf -> toTemplateModuleConfig(prompt, conf.getTemplateConfig()))
             .toList();
 
     // note that the config is immutable and implicitly copied here
     // copying is required here, to not alter the original config object, which might be reused for
     // subsequent requests
     val configsCopy =
-        IntStream.range(0, configs.length)
-            .mapToObj(i -> configs[i].withTemplateConfig(templates.get(i)))
+        IntStream.range(0, configList.size())
+            .mapToObj(i -> configList.get(i).withTemplateConfig(templates.get(i)))
             .toList();
 
     val messageHistory =
@@ -58,8 +64,7 @@ final class ConfigToRequestTransformer {
             : toListOfModuleConfigs(configsCopy);
 
     val requestConfig =
-        OrchestrationConfig.create().modules(moduleConfigs).stream(
-            configs[0].getGlobalStreamOptions());
+        OrchestrationConfig.create().modules(moduleConfigs).stream(config.getGlobalStreamOptions());
 
     return CompletionRequestConfiguration.create()
         .config(requestConfig)
