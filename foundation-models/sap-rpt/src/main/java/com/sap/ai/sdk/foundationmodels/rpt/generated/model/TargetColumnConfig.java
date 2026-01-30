@@ -96,9 +96,6 @@ public class TargetColumnConfig
   @JsonProperty("task_type")
   private TaskTypeEnum taskType;
 
-  @JsonProperty("top_k")
-  private Integer topK;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -202,37 +199,6 @@ public class TargetColumnConfig
   }
 
   /**
-   * Set the topK of this {@link TargetColumnConfig} instance and return the same instance.
-   *
-   * @param topK The topK of this {@link TargetColumnConfig}
-   * @return The same instance of this {@link TargetColumnConfig} class
-   */
-  @Nonnull
-  public TargetColumnConfig topK(@Nullable final Integer topK) {
-    this.topK = topK;
-    return this;
-  }
-
-  /**
-   * Get topK
-   *
-   * @return topK The topK of this {@link TargetColumnConfig} instance.
-   */
-  @Nullable
-  public Integer getTopK() {
-    return topK;
-  }
-
-  /**
-   * Set the topK of this {@link TargetColumnConfig} instance.
-   *
-   * @param topK The topK of this {@link TargetColumnConfig}
-   */
-  public void setTopK(@Nullable final Integer topK) {
-    this.topK = topK;
-  }
-
-  /**
    * Get the names of the unrecognizable properties of the {@link TargetColumnConfig}.
    *
    * @return The set of properties names
@@ -274,7 +240,6 @@ public class TargetColumnConfig
     if (predictionPlaceholder != null)
       declaredFields.put("predictionPlaceholder", predictionPlaceholder);
     if (taskType != null) declaredFields.put("taskType", taskType);
-    if (topK != null) declaredFields.put("topK", topK);
     return declaredFields;
   }
 
@@ -302,13 +267,12 @@ public class TargetColumnConfig
     return Objects.equals(this.cloudSdkCustomFields, targetColumnConfig.cloudSdkCustomFields)
         && Objects.equals(this.name, targetColumnConfig.name)
         && Objects.equals(this.predictionPlaceholder, targetColumnConfig.predictionPlaceholder)
-        && Objects.equals(this.taskType, targetColumnConfig.taskType)
-        && Objects.equals(this.topK, targetColumnConfig.topK);
+        && Objects.equals(this.taskType, targetColumnConfig.taskType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, predictionPlaceholder, taskType, topK, cloudSdkCustomFields);
+    return Objects.hash(name, predictionPlaceholder, taskType, cloudSdkCustomFields);
   }
 
   @Override
@@ -321,7 +285,6 @@ public class TargetColumnConfig
         .append(toIndentedString(predictionPlaceholder))
         .append("\n");
     sb.append("    taskType: ").append(toIndentedString(taskType)).append("\n");
-    sb.append("    topK: ").append(toIndentedString(topK)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

@@ -155,6 +155,7 @@
                     <useOneOfCreators>true</useOneOfCreators>
                     <useFloatArrays>true</useFloatArrays>
                     <excludePaths>/predict_parquet</excludePaths>
+                    <excludeProperties>TargetColumnConfig.top_k</excludeProperties>
                   </additionalProperties>
                 </configuration>
               </execution>
