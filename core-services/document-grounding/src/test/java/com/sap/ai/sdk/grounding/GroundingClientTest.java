@@ -13,6 +13,7 @@ import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DataRepositoryType;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
+import com.sap.ai.sdk.grounding.model.FilterMatchModeEnum;
 import com.sap.ai.sdk.grounding.model.GetPipelines;
 import com.sap.ai.sdk.grounding.model.RetrievalKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.VectorDocumentKeyValueListPair;
@@ -69,7 +70,7 @@ class GroundingClientTest {
         VectorDocumentKeyValueListPair.create()
             .key("url")
             .value("http://hello.com", "123")
-            .matchMode(VectorDocumentKeyValueListPair.MatchModeEnum.ANY);
+            .matchMode(FilterMatchModeEnum.ANY);
     assertThat(documents.getResources())
         .isNotNull()
         .hasSize(1)
