@@ -795,7 +795,7 @@ public class OrchestrationService {
     val brokenConfig =
         new OrchestrationModuleConfig()
             .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    val configs = new OrchestrationModuleConfig[] {brokenConfig, config, workingConfig};
+    val configs = new OrchestrationModuleConfig[] {brokenConfig, workingConfig};
     return client.chatCompletion(prompt, configs);
   }
 
@@ -815,7 +815,7 @@ public class OrchestrationService {
     val brokenConfig =
         new OrchestrationModuleConfig()
             .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    val configs = new OrchestrationModuleConfig[] {brokenConfig, config, workingConfig};
+    val configs = new OrchestrationModuleConfig[] {brokenConfig, workingConfig};
     return client.streamChatCompletion(prompt, configs);
   }
 

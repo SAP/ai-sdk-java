@@ -80,9 +80,7 @@ public class OrchestrationClient {
   public static CompletionRequestConfiguration toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt,
       @Nonnull final OrchestrationModuleConfig... configs) {
-    return configs.length == 1
-        ? ConfigToRequestTransformer.toCompletionPostRequest(prompt, configs[0])
-        : ConfigToRequestTransformer.toCompletionPostRequest(prompt, configs);
+    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, configs);
   }
 
   /**

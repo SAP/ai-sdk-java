@@ -31,6 +31,7 @@ import lombok.val;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ConfigToRequestTransformer {
+  @Nonnull
   static CompletionRequestConfiguration toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt,
       @Nonnull final OrchestrationModuleConfig... configs) {
