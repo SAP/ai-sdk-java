@@ -77,15 +77,25 @@ class OrchestrationTest {
   }
 
   @Test
+  void testCompletionWithFallbackStreaming() {
+    final var stream = service.streamCompletionWithFallback("HelloWorld!");
+    val filledDeltaCount = new AtomicInteger(0);
+    stream
+        .forEach(
+            delta -> {
+              log.info("delta: {}", delta);
+              if (!delta.isEmpty()) {
+                filledDeltaCount.incrementAndGet();
+              }
+            });
+    assertThat(filledDeltaCount.get()).isGreaterThan(0);
+  }
+
+  @Test
   void testCompletionWithFallbackAllFail() {
     assertThatThrownBy(() -> service.completionWithFallbackAllFail("HelloWorld!"))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("Model broken_name_2 not supported.");
-  }
-
-  @Test
-  void testStreamCompletionWithFallback() {
-    assertThat(true);
   }
 
   @Test

@@ -108,7 +108,7 @@ public class OrchestrationClient {
    * Generate a completion for the given prompt.
    *
    * @param prompt a text message.
-   * @param config the configuration to use
+   * @param configs the configuration to use
    * @return a stream of message deltas
    * @throws OrchestrationClientException if the request fails or if the finish reason is
    *     content_filter
@@ -116,10 +116,10 @@ public class OrchestrationClient {
    */
   @Nonnull
   public Stream<String> streamChatCompletion(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config)
+      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig... configs)
       throws OrchestrationClientException {
 
-    val request = toCompletionPostRequest(prompt, config);
+    val request = toCompletionPostRequest(prompt, configs);
     return streamChatCompletionDeltas(request)
         .peek(OrchestrationClient::throwOnContentFilter)
         .map(OrchestrationChatCompletionDelta::getDeltaContent);
