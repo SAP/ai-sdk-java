@@ -1,0 +1,97 @@
+{
+  "config" : {
+    "modules" : [ {
+      "prompt_templating" : {
+        "prompt" : {
+          "template" : [ {
+            "content" : "HelloWorld! Why is this phrase so famous?",
+            "role" : "user"
+          } ],
+          "defaults" : { },
+          "tools" : [ ]
+        },
+        "model" : {
+          "name" : "broken_name",
+          "version" : "latest",
+          "params" : { },
+          "timeout" : 600,
+          "max_retries" : 2
+        }
+      },
+      "filtering" : {
+        "input" : {
+          "filters" : [ {
+            "type" : "llama_guard_3_8b",
+            "config" : {
+              "self_harm" : true
+            }
+          } ]
+        }
+      },
+      "grounding" : {
+        "type" : "document_grounding_service",
+        "config" : {
+          "filters" : [ {
+            "data_repositories" : [ "*" ],
+            "data_repository_type" : "help.sap.com",
+            "data_repository_metadata" : [ ],
+            "document_metadata" : [ ],
+            "chunk_metadata" : [ ]
+          } ],
+          "placeholders" : {
+            "input" : [ "userMessage" ],
+            "output" : "groundingContext"
+          }
+        }
+      }
+    }, {
+      "prompt_templating" : {
+        "prompt" : {
+          "template" : [ {
+            "content" : "HelloWorld! Why is this phrase so famous?",
+            "role" : "user"
+          } ],
+          "defaults" : { },
+          "tools" : [ ]
+        },
+        "model" : {
+          "name" : "gpt-4o-mini",
+          "version" : "latest",
+          "params" : {
+            "temperature" : 0.0
+          },
+          "timeout" : 600,
+          "max_retries" : 2
+        }
+      },
+      "filtering" : {
+        "input" : {
+          "filters" : [ {
+            "type" : "llama_guard_3_8b",
+            "config" : {
+              "self_harm" : true
+            }
+          } ]
+        }
+      },
+      "grounding" : {
+        "type" : "document_grounding_service",
+        "config" : {
+          "filters" : [ {
+            "data_repositories" : [ "*" ],
+            "data_repository_type" : "help.sap.com",
+            "data_repository_metadata" : [ ],
+            "document_metadata" : [ ],
+            "chunk_metadata" : [ ]
+          } ],
+          "placeholders" : {
+            "input" : [ "userMessage" ],
+            "output" : "groundingContext"
+          }
+        }
+      }
+    } ]
+  },
+  "placeholder_values" : { },
+  "messages_history" : [ ]
+}

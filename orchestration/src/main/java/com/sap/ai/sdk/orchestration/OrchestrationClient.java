@@ -14,7 +14,6 @@ import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
-import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -74,28 +73,33 @@ public class OrchestrationClient {
    *
    * @param prompt The {@link OrchestrationPrompt} to generate a completion for.
    * @param config The {@link OrchestrationConfig } configuration to use for the completion.
+   * @param fallbackConfigs Fallback configurations to use.
    * @return The low-level request data object to send to orchestration.
    */
   @Nonnull
   public static CompletionRequestConfiguration toCompletionPostRequest(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
-    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config);
+      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final OrchestrationModuleConfig config,
+      @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
+    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config, fallbackConfigs);
   }
 
   /**
    * Generate a completion for the given prompt.
    *
    * @param prompt The {@link OrchestrationPrompt} to send to orchestration.
-   * @param config The {@link ModuleConfigs} configuration to use for the completion.
+   * @param config the configuration to use
+   * @param fallbackConfigs fallback configurations
    * @return the completion output
    * @throws OrchestrationClientException if the request fails.
    */
   @Nonnull
   public OrchestrationChatResponse chatCompletion(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config)
+      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final OrchestrationModuleConfig config,
+      @Nonnull final OrchestrationModuleConfig... fallbackConfigs)
       throws OrchestrationClientException {
-
-    val request = toCompletionPostRequest(prompt, config);
+    val request = toCompletionPostRequest(prompt, config, fallbackConfigs);
     val response = executeRequest(request);
     return new OrchestrationChatResponse(response);
   }
@@ -105,6 +109,7 @@ public class OrchestrationClient {
    *
    * @param prompt a text message.
    * @param config the configuration to use
+   * @param fallbackConfigs fallback configurations
    * @return a stream of message deltas
    * @throws OrchestrationClientException if the request fails or if the finish reason is
    *     content_filter
@@ -112,10 +117,12 @@ public class OrchestrationClient {
    */
   @Nonnull
   public Stream<String> streamChatCompletion(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config)
+      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final OrchestrationModuleConfig config,
+      @Nonnull final OrchestrationModuleConfig... fallbackConfigs)
       throws OrchestrationClientException {
 
-    val request = toCompletionPostRequest(prompt, config);
+    val request = toCompletionPostRequest(prompt, config, fallbackConfigs);
     return streamChatCompletionDeltas(request)
         .peek(OrchestrationClient::throwOnContentFilter)
         .map(OrchestrationChatCompletionDelta::getDeltaContent);

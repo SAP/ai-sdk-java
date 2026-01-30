@@ -555,4 +555,40 @@ class OrchestrationTest {
     val choices = (result.getOriginalResponse().getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
+
+  @Test
+  void testCompletionWithFallback() {
+    val result = service.completionWithFallback("HelloWorld!");
+
+    assertThat(result).isNotNull();
+    assertThat(result.getContent()).isNotEmpty();
+    assertThat(result.getOriginalResponse().getIntermediateFailures().size()).isEqualTo(2);
+    assertThat(result.getOriginalResponse().getIntermediateFailures().get(0).getMessage())
+        .contains("Model broken_name not supported.");
+    assertThat(result.getOriginalResponse().getIntermediateFailures().get(0).getCode())
+        .isEqualTo(400);
+    assertThat(result.getOriginalResponse().getFinalResult().getChoices().get(0).getFinishReason())
+        .contains("stop");
+  }
+
+  @Test
+  void testCompletionWithFallbackStreaming() {
+    final var stream = service.streamCompletionWithFallback("HelloWorld!");
+    val filledDeltaCount = new AtomicInteger(0);
+    stream.forEach(
+        delta -> {
+          log.info("delta: {}", delta);
+          if (!delta.isEmpty()) {
+            filledDeltaCount.incrementAndGet();
+          }
+        });
+    assertThat(filledDeltaCount.get()).isGreaterThan(0);
+  }
+
+  @Test
+  void testCompletionWithFallbackAllFail() {
+    assertThatThrownBy(() -> service.completionWithFallbackAllFail("HelloWorld!"))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("Model broken_name_2 not supported.");
+  }
 }

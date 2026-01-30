@@ -397,4 +397,14 @@ class OrchestrationController {
     }
     return response.getContent();
   }
+
+  @GetMapping("/completionWithFallback")
+  Object completionWithFallback(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.completionWithFallback("HelloWorld!");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
 }
