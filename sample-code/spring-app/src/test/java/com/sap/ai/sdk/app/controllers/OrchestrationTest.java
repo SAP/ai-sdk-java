@@ -68,9 +68,12 @@ class OrchestrationTest {
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotEmpty();
     assertThat(result.getOriginalResponse().getIntermediateFailures().size()).isEqualTo(1);
-    assertThat(result.getOriginalResponse().getIntermediateFailures().get(0).getMessage()).contains("Model broken_name not supported.");
-    assertThat(result.getOriginalResponse().getIntermediateFailures().get(0).getCode()).isEqualTo(400);
-    assertThat(result.getOriginalResponse().getFinalResult().getChoices().get(0).getFinishReason()).contains("stop");
+    assertThat(result.getOriginalResponse().getIntermediateFailures().get(0).getMessage())
+        .contains("Model broken_name not supported.");
+    assertThat(result.getOriginalResponse().getIntermediateFailures().get(0).getCode())
+        .isEqualTo(400);
+    assertThat(result.getOriginalResponse().getFinalResult().getChoices().get(0).getFinishReason())
+        .contains("stop");
   }
 
   @Test

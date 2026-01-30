@@ -79,22 +79,44 @@ public class OrchestrationService {
     return client.chatCompletion(prompt, config);
   }
 
+  /**
+   * Chat request to OpenAI through the Orchestration service with a list of modules. If the first
+   * request fails (which will happen here), the next module is used as a fallback.
+   *
+   * @param famousPhrase the phrase to send to the assistant
+   * @return the assistant response object
+   */
   @Nonnull
   public OrchestrationChatResponse completionWithFallback(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0.0));
-    val brokenConfig = new OrchestrationModuleConfig().withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    OrchestrationModuleConfig[] configs =  new OrchestrationModuleConfig[] { brokenConfig, config,  workingConfig };
+    val workingConfig =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0.0));
+    val brokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    val configs = new OrchestrationModuleConfig[] {brokenConfig, config, workingConfig};
     return client.chatCompletion(prompt, configs);
     // JONAS: or return client.chatCompletion(prompt, brokenConfig, config,  workingConfig);
   }
 
+  /**
+   * Chat request to OpenAI through the Orchestration service with a list of modules. Here, both the
+   * original and the fallback request fail.
+   *
+   * @param famousPhrase the phrase to send to the assistant
+   * @return the assistant response object
+   */
   @Nonnull
-  public OrchestrationChatResponse completionWithFallbackAllFail(@Nonnull final String famousPhrase) {
+  public OrchestrationChatResponse completionWithFallbackAllFail(
+      @Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    val brokenConfig = new OrchestrationModuleConfig().withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    val secondBrokenConfig = new OrchestrationModuleConfig().withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
-    OrchestrationModuleConfig[] configs =  new OrchestrationModuleConfig[] { brokenConfig, secondBrokenConfig };
+    val brokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    val secondBrokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
+    val configs = new OrchestrationModuleConfig[] {brokenConfig, secondBrokenConfig};
     return client.chatCompletion(prompt, configs);
   }
 
