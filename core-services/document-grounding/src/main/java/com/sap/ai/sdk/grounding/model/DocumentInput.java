@@ -100,7 +100,7 @@ public class DocumentInput
    * @return The same instance of this {@link DocumentInput} class
    */
   @Nonnull
-  public DocumentInput metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
+  public DocumentInput metadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -135,7 +135,7 @@ public class DocumentInput
    *
    * @param metadata The metadata of this {@link DocumentInput}
    */
-  public void setMetadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
+  public void setMetadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
@@ -276,8 +276,7 @@ public class DocumentInput
    * with all required arguments.
    */
   public static Builder create() {
-    return (chunks) ->
-        (metadata) -> (id) -> new DocumentInput().chunks(chunks).metadata(metadata).id(id);
+    return (chunks) -> (id) -> new DocumentInput().chunks(chunks).id(id);
   }
 
   /** Builder helper class. */
@@ -303,27 +302,6 @@ public class DocumentInput
 
   /** Builder helper class. */
   public interface Builder1 {
-    /**
-     * Set the metadata of this {@link DocumentInput} instance.
-     *
-     * @param metadata The metadata of this {@link DocumentInput}
-     * @return The DocumentInput builder.
-     */
-    Builder2 metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata);
-
-    /**
-     * Set the metadata of this {@link DocumentInput} instance.
-     *
-     * @param metadata The metadata of this {@link DocumentInput}
-     * @return The DocumentInput builder.
-     */
-    default Builder2 metadata(@Nonnull final VectorDocumentKeyValueListPair... metadata) {
-      return metadata(Arrays.asList(metadata));
-    }
-  }
-
-  /** Builder helper class. */
-  public interface Builder2 {
     /**
      * Set the id of this {@link DocumentInput} instance.
      *

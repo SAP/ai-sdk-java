@@ -26,7 +26,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** A response containing documents created or updated, retrieved from the server. */
+/** A response containing documents retrieved from the server. */
 // CHECKSTYLE:OFF
 public class DocumentsListResponse
 // CHECKSTYLE:ON
