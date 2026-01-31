@@ -114,6 +114,9 @@ public class BckndResourceGroup
   @JsonProperty("statusMessage")
   private String statusMessage;
 
+  @JsonProperty("servicePlan")
+  private String servicePlan;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -354,6 +357,37 @@ public class BckndResourceGroup
   }
 
   /**
+   * Set the servicePlan of this {@link BckndResourceGroup} instance and return the same instance.
+   *
+   * @param servicePlan service plan
+   * @return The same instance of this {@link BckndResourceGroup} class
+   */
+  @Nonnull
+  public BckndResourceGroup servicePlan(@Nullable final String servicePlan) {
+    this.servicePlan = servicePlan;
+    return this;
+  }
+
+  /**
+   * service plan
+   *
+   * @return servicePlan The servicePlan of this {@link BckndResourceGroup} instance.
+   */
+  @Nonnull
+  public String getServicePlan() {
+    return servicePlan;
+  }
+
+  /**
+   * Set the servicePlan of this {@link BckndResourceGroup} instance.
+   *
+   * @param servicePlan service plan
+   */
+  public void setServicePlan(@Nullable final String servicePlan) {
+    this.servicePlan = servicePlan;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link BckndResourceGroup}.
    *
    * @return The set of properties names
@@ -398,6 +432,7 @@ public class BckndResourceGroup
     if (labels != null) declaredFields.put("labels", labels);
     if (status != null) declaredFields.put("status", status);
     if (statusMessage != null) declaredFields.put("statusMessage", statusMessage);
+    if (servicePlan != null) declaredFields.put("servicePlan", servicePlan);
     return declaredFields;
   }
 
@@ -429,7 +464,8 @@ public class BckndResourceGroup
         && Objects.equals(this.createdAt, bckndResourceGroup.createdAt)
         && Objects.equals(this.labels, bckndResourceGroup.labels)
         && Objects.equals(this.status, bckndResourceGroup.status)
-        && Objects.equals(this.statusMessage, bckndResourceGroup.statusMessage);
+        && Objects.equals(this.statusMessage, bckndResourceGroup.statusMessage)
+        && Objects.equals(this.servicePlan, bckndResourceGroup.servicePlan);
   }
 
   @Override
@@ -442,6 +478,7 @@ public class BckndResourceGroup
         labels,
         status,
         statusMessage,
+        servicePlan,
         cloudSdkCustomFields);
   }
 
@@ -457,6 +494,7 @@ public class BckndResourceGroup
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    statusMessage: ").append(toIndentedString(statusMessage)).append("\n");
+    sb.append("    servicePlan: ").append(toIndentedString(servicePlan)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
