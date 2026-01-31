@@ -30,11 +30,8 @@ public class CollectionPendingResponse
         VectorV1VectorEndpointsGetCollectionDeletionStatus200Response
 // CHECKSTYLE:ON
 {
-  @JsonProperty("Location")
-  private String location;
-
-  @JsonProperty("status")
-  private String status;
+  @JsonProperty("monitorURL")
+  private String monitorURL;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -43,66 +40,35 @@ public class CollectionPendingResponse
   protected CollectionPendingResponse() {}
 
   /**
-   * Set the location of this {@link CollectionPendingResponse} instance and return the same
+   * Set the monitorURL of this {@link CollectionPendingResponse} instance and return the same
    * instance.
    *
-   * @param location The location of this {@link CollectionPendingResponse}
+   * @param monitorURL The monitorURL of this {@link CollectionPendingResponse}
    * @return The same instance of this {@link CollectionPendingResponse} class
    */
   @Nonnull
-  public CollectionPendingResponse location(@Nonnull final String location) {
-    this.location = location;
+  public CollectionPendingResponse monitorURL(@Nonnull final String monitorURL) {
+    this.monitorURL = monitorURL;
     return this;
   }
 
   /**
-   * Get location
+   * Get monitorURL
    *
-   * @return location The location of this {@link CollectionPendingResponse} instance.
+   * @return monitorURL The monitorURL of this {@link CollectionPendingResponse} instance.
    */
   @Nonnull
-  public String getLocation() {
-    return location;
+  public String getMonitorURL() {
+    return monitorURL;
   }
 
   /**
-   * Set the location of this {@link CollectionPendingResponse} instance.
+   * Set the monitorURL of this {@link CollectionPendingResponse} instance.
    *
-   * @param location The location of this {@link CollectionPendingResponse}
+   * @param monitorURL The monitorURL of this {@link CollectionPendingResponse}
    */
-  public void setLocation(@Nonnull final String location) {
-    this.location = location;
-  }
-
-  /**
-   * Set the status of this {@link CollectionPendingResponse} instance and return the same instance.
-   *
-   * @param status The status of this {@link CollectionPendingResponse}
-   * @return The same instance of this {@link CollectionPendingResponse} class
-   */
-  @Nonnull
-  public CollectionPendingResponse status(@Nonnull final String status) {
-    this.status = status;
-    return this;
-  }
-
-  /**
-   * Get status
-   *
-   * @return status The status of this {@link CollectionPendingResponse} instance.
-   */
-  @Nonnull
-  public String getStatus() {
-    return status;
-  }
-
-  /**
-   * Set the status of this {@link CollectionPendingResponse} instance.
-   *
-   * @param status The status of this {@link CollectionPendingResponse}
-   */
-  public void setStatus(@Nonnull final String status) {
-    this.status = status;
+  public void setMonitorURL(@Nonnull final String monitorURL) {
+    this.monitorURL = monitorURL;
   }
 
   /**
@@ -144,8 +110,7 @@ public class CollectionPendingResponse
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (location != null) declaredFields.put("location", location);
-    if (status != null) declaredFields.put("status", status);
+    if (monitorURL != null) declaredFields.put("monitorURL", monitorURL);
     return declaredFields;
   }
 
@@ -171,13 +136,12 @@ public class CollectionPendingResponse
     }
     final CollectionPendingResponse collectionPendingResponse = (CollectionPendingResponse) o;
     return Objects.equals(this.cloudSdkCustomFields, collectionPendingResponse.cloudSdkCustomFields)
-        && Objects.equals(this.location, collectionPendingResponse.location)
-        && Objects.equals(this.status, collectionPendingResponse.status);
+        && Objects.equals(this.monitorURL, collectionPendingResponse.monitorURL);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(location, status, cloudSdkCustomFields);
+    return Objects.hash(monitorURL, cloudSdkCustomFields);
   }
 
   @Override
@@ -185,8 +149,7 @@ public class CollectionPendingResponse
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class CollectionPendingResponse {\n");
-    sb.append("    location: ").append(toIndentedString(location)).append("\n");
-    sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    monitorURL: ").append(toIndentedString(monitorURL)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -209,29 +172,17 @@ public class CollectionPendingResponse
    * CollectionPendingResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (location) ->
-        (status) -> new CollectionPendingResponse().location(location).status(status);
+    return (monitorURL) -> new CollectionPendingResponse().monitorURL(monitorURL);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the location of this {@link CollectionPendingResponse} instance.
+     * Set the monitorURL of this {@link CollectionPendingResponse} instance.
      *
-     * @param location The location of this {@link CollectionPendingResponse}
-     * @return The CollectionPendingResponse builder.
-     */
-    Builder1 location(@Nonnull final String location);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the status of this {@link CollectionPendingResponse} instance.
-     *
-     * @param status The status of this {@link CollectionPendingResponse}
+     * @param monitorURL The monitorURL of this {@link CollectionPendingResponse}
      * @return The CollectionPendingResponse instance.
      */
-    CollectionPendingResponse status(@Nonnull final String status);
+    CollectionPendingResponse monitorURL(@Nonnull final String monitorURL);
   }
 }
