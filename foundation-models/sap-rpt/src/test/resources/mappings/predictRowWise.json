@@ -1,0 +1,93 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/predict",
+    "bodyPatterns": [
+      {
+        "equalToJson": {
+          "prediction_config": {
+            "target_columns": [
+              {
+                "name": "COSTCENTER",
+                "prediction_placeholder": "[PREDICT]",
+                "task_type": "classification"
+              }
+            ]
+          },
+          "rows": [
+            {
+              "ORDERDATE": "28-11-2025",
+              "PRICE": 999.99,
+              "ID": "35",
+              "PRODUCT": "Couch",
+              "COSTCENTER": "[PREDICT]"
+            },
+            {
+              "ORDERDATE": "02-11-2025",
+              "PRICE": 150.8,
+              "ID": "44",
+              "PRODUCT": "Office Chair",
+              "COSTCENTER": "Office Furniture"
+            },
+            {
+              "ORDERDATE": "01-11-2025",
+              "PRICE": 2200.0,
+              "ID": "104",
+              "PRODUCT": "Server Rack",
+              "COSTCENTER": "Data Infrastructure"
+            }
+          ],
+          "index_column": "ID",
+          "parse_data_types": true,
+          "data_schema": {
+            "ORDERDATE": {
+              "dtype": "date"
+            },
+            "PRICE": {
+              "dtype": "string"
+            },
+            "ID": {
+              "dtype": "string"
+            },
+            "PRODUCT": {
+              "dtype": "string"
+            },
+            "COSTCENTER": {
+              "dtype": "string"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": "0381c575-9ee5-46f1-9223-4f9caf039e48",
+      "metadata": {
+        "num_columns": 5,
+        "num_predictions": 1,
+        "num_query_rows": 1,
+        "num_rows": 2
+      },
+      "predictions": [
+        {
+          "COSTCENTER": [
+            {
+              "confidence": 0.97,
+              "prediction": "Office Furniture"
+            }
+          ],
+          "ID": "35"
+        }
+      ],
+      "status": {
+        "code": 0,
+        "message": "ok"
+      }
+    }
+  }
+}

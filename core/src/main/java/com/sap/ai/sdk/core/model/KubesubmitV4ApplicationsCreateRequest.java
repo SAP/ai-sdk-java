@@ -150,7 +150,7 @@ public class KubesubmitV4ApplicationsCreateRequest
    * Set the applicationName of this {@link KubesubmitV4ApplicationsCreateRequest} instance and
    * return the same instance.
    *
-   * @param applicationName ArgoCD application name
+   * @param applicationName ArgoCD application name in the request body
    * @return The same instance of this {@link KubesubmitV4ApplicationsCreateRequest} class
    */
   @Nonnull
@@ -161,7 +161,7 @@ public class KubesubmitV4ApplicationsCreateRequest
   }
 
   /**
-   * ArgoCD application name
+   * ArgoCD application name in the request body
    *
    * @return applicationName The applicationName of this {@link
    *     KubesubmitV4ApplicationsCreateRequest} instance.
@@ -174,7 +174,7 @@ public class KubesubmitV4ApplicationsCreateRequest
   /**
    * Set the applicationName of this {@link KubesubmitV4ApplicationsCreateRequest} instance.
    *
-   * @param applicationName ArgoCD application name
+   * @param applicationName ArgoCD application name in the request body
    */
   public void setApplicationName(@Nullable final String applicationName) {
     this.applicationName = applicationName;

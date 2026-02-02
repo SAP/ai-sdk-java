@@ -147,7 +147,7 @@ public class BckndArgoCDApplicationDataRepoName
    * Set the applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance and return
    * the same instance.
    *
-   * @param applicationName ArgoCD application name
+   * @param applicationName ArgoCD application name in the request body
    * @return The same instance of this {@link BckndArgoCDApplicationDataRepoName} class
    */
   @Nonnull
@@ -158,7 +158,7 @@ public class BckndArgoCDApplicationDataRepoName
   }
 
   /**
-   * ArgoCD application name
+   * ArgoCD application name in the request body
    *
    * @return applicationName The applicationName of this {@link BckndArgoCDApplicationDataRepoName}
    *     instance.
@@ -171,7 +171,7 @@ public class BckndArgoCDApplicationDataRepoName
   /**
    * Set the applicationName of this {@link BckndArgoCDApplicationDataRepoName} instance.
    *
-   * @param applicationName ArgoCD application name
+   * @param applicationName ArgoCD application name in the request body
    */
   public void setApplicationName(@Nullable final String applicationName) {
     this.applicationName = applicationName;

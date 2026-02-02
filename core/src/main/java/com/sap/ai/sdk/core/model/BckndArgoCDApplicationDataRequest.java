@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** BckndArgoCDApplicationData */
+/** BckndArgoCDApplicationDataRequest */
 // CHECKSTYLE:OFF
-public class BckndArgoCDApplicationData
+public class BckndArgoCDApplicationDataRequest
 // CHECKSTYLE:ON
 {
   @JsonProperty("repositoryUrl")
@@ -43,18 +43,18 @@ public class BckndArgoCDApplicationData
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for BckndArgoCDApplicationData. */
-  protected BckndArgoCDApplicationData() {}
+  /** Default constructor for BckndArgoCDApplicationDataRequest. */
+  protected BckndArgoCDApplicationDataRequest() {}
 
   /**
-   * Set the repositoryUrl of this {@link BckndArgoCDApplicationData} instance and return the same
-   * instance.
+   * Set the repositoryUrl of this {@link BckndArgoCDApplicationDataRequest} instance and return the
+   * same instance.
    *
    * @param repositoryUrl URL of the repository to synchronise
-   * @return The same instance of this {@link BckndArgoCDApplicationData} class
+   * @return The same instance of this {@link BckndArgoCDApplicationDataRequest} class
    */
   @Nonnull
-  public BckndArgoCDApplicationData repositoryUrl(@Nonnull final String repositoryUrl) {
+  public BckndArgoCDApplicationDataRequest repositoryUrl(@Nonnull final String repositoryUrl) {
     this.repositoryUrl = repositoryUrl;
     return this;
   }
@@ -62,7 +62,8 @@ public class BckndArgoCDApplicationData
   /**
    * URL of the repository to synchronise
    *
-   * @return repositoryUrl The repositoryUrl of this {@link BckndArgoCDApplicationData} instance.
+   * @return repositoryUrl The repositoryUrl of this {@link BckndArgoCDApplicationDataRequest}
+   *     instance.
    */
   @Nonnull
   public String getRepositoryUrl() {
@@ -70,7 +71,7 @@ public class BckndArgoCDApplicationData
   }
 
   /**
-   * Set the repositoryUrl of this {@link BckndArgoCDApplicationData} instance.
+   * Set the repositoryUrl of this {@link BckndArgoCDApplicationDataRequest} instance.
    *
    * @param repositoryUrl URL of the repository to synchronise
    */
@@ -79,14 +80,14 @@ public class BckndArgoCDApplicationData
   }
 
   /**
-   * Set the revision of this {@link BckndArgoCDApplicationData} instance and return the same
+   * Set the revision of this {@link BckndArgoCDApplicationDataRequest} instance and return the same
    * instance.
    *
    * @param revision revision to synchronise
-   * @return The same instance of this {@link BckndArgoCDApplicationData} class
+   * @return The same instance of this {@link BckndArgoCDApplicationDataRequest} class
    */
   @Nonnull
-  public BckndArgoCDApplicationData revision(@Nonnull final String revision) {
+  public BckndArgoCDApplicationDataRequest revision(@Nonnull final String revision) {
     this.revision = revision;
     return this;
   }
@@ -94,7 +95,7 @@ public class BckndArgoCDApplicationData
   /**
    * revision to synchronise
    *
-   * @return revision The revision of this {@link BckndArgoCDApplicationData} instance.
+   * @return revision The revision of this {@link BckndArgoCDApplicationDataRequest} instance.
    */
   @Nonnull
   public String getRevision() {
@@ -102,7 +103,7 @@ public class BckndArgoCDApplicationData
   }
 
   /**
-   * Set the revision of this {@link BckndArgoCDApplicationData} instance.
+   * Set the revision of this {@link BckndArgoCDApplicationDataRequest} instance.
    *
    * @param revision revision to synchronise
    */
@@ -111,13 +112,14 @@ public class BckndArgoCDApplicationData
   }
 
   /**
-   * Set the path of this {@link BckndArgoCDApplicationData} instance and return the same instance.
+   * Set the path of this {@link BckndArgoCDApplicationDataRequest} instance and return the same
+   * instance.
    *
    * @param path path within the repository to synchronise
-   * @return The same instance of this {@link BckndArgoCDApplicationData} class
+   * @return The same instance of this {@link BckndArgoCDApplicationDataRequest} class
    */
   @Nonnull
-  public BckndArgoCDApplicationData path(@Nonnull final String path) {
+  public BckndArgoCDApplicationDataRequest path(@Nonnull final String path) {
     this.path = path;
     return this;
   }
@@ -125,7 +127,7 @@ public class BckndArgoCDApplicationData
   /**
    * path within the repository to synchronise
    *
-   * @return path The path of this {@link BckndArgoCDApplicationData} instance.
+   * @return path The path of this {@link BckndArgoCDApplicationDataRequest} instance.
    */
   @Nonnull
   public String getPath() {
@@ -133,7 +135,7 @@ public class BckndArgoCDApplicationData
   }
 
   /**
-   * Set the path of this {@link BckndArgoCDApplicationData} instance.
+   * Set the path of this {@link BckndArgoCDApplicationDataRequest} instance.
    *
    * @param path path within the repository to synchronise
    */
@@ -142,22 +144,22 @@ public class BckndArgoCDApplicationData
   }
 
   /**
-   * Set the applicationName of this {@link BckndArgoCDApplicationData} instance and return the same
-   * instance.
+   * Set the applicationName of this {@link BckndArgoCDApplicationDataRequest} instance and return
+   * the same instance.
    *
-   * @param applicationName ArgoCD application name
-   * @return The same instance of this {@link BckndArgoCDApplicationData} class
+   * @param applicationName ArgoCD application name in the request body
+   * @return The same instance of this {@link BckndArgoCDApplicationDataRequest} class
    */
   @Nonnull
-  public BckndArgoCDApplicationData applicationName(@Nullable final String applicationName) {
+  public BckndArgoCDApplicationDataRequest applicationName(@Nullable final String applicationName) {
     this.applicationName = applicationName;
     return this;
   }
 
   /**
-   * ArgoCD application name
+   * ArgoCD application name in the request body
    *
-   * @return applicationName The applicationName of this {@link BckndArgoCDApplicationData}
+   * @return applicationName The applicationName of this {@link BckndArgoCDApplicationDataRequest}
    *     instance.
    */
   @Nonnull
@@ -166,16 +168,17 @@ public class BckndArgoCDApplicationData
   }
 
   /**
-   * Set the applicationName of this {@link BckndArgoCDApplicationData} instance.
+   * Set the applicationName of this {@link BckndArgoCDApplicationDataRequest} instance.
    *
-   * @param applicationName ArgoCD application name
+   * @param applicationName ArgoCD application name in the request body
    */
   public void setApplicationName(@Nullable final String applicationName) {
     this.applicationName = applicationName;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link BckndArgoCDApplicationData}.
+   * Get the names of the unrecognizable properties of the {@link
+   * BckndArgoCDApplicationDataRequest}.
    *
    * @return The set of properties names
    */
@@ -186,7 +189,7 @@ public class BckndArgoCDApplicationData
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link BckndArgoCDApplicationData}
+   * Get the value of an unrecognizable property of this {@link BckndArgoCDApplicationDataRequest}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -199,14 +202,14 @@ public class BckndArgoCDApplicationData
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "BckndArgoCDApplicationData has no field with name '" + name + "'.");
+          "BckndArgoCDApplicationDataRequest has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link BckndArgoCDApplicationData} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link BckndArgoCDApplicationDataRequest} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -222,8 +225,9 @@ public class BckndArgoCDApplicationData
   }
 
   /**
-   * Set an unrecognizable property of this {@link BckndArgoCDApplicationData} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link BckndArgoCDApplicationDataRequest} instance. If
+   * the map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -241,13 +245,14 @@ public class BckndArgoCDApplicationData
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final BckndArgoCDApplicationData bckndArgoCDApplicationData = (BckndArgoCDApplicationData) o;
+    final BckndArgoCDApplicationDataRequest bckndArgoCDApplicationDataRequest =
+        (BckndArgoCDApplicationDataRequest) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, bckndArgoCDApplicationData.cloudSdkCustomFields)
-        && Objects.equals(this.repositoryUrl, bckndArgoCDApplicationData.repositoryUrl)
-        && Objects.equals(this.revision, bckndArgoCDApplicationData.revision)
-        && Objects.equals(this.path, bckndArgoCDApplicationData.path)
-        && Objects.equals(this.applicationName, bckndArgoCDApplicationData.applicationName);
+            this.cloudSdkCustomFields, bckndArgoCDApplicationDataRequest.cloudSdkCustomFields)
+        && Objects.equals(this.repositoryUrl, bckndArgoCDApplicationDataRequest.repositoryUrl)
+        && Objects.equals(this.revision, bckndArgoCDApplicationDataRequest.revision)
+        && Objects.equals(this.path, bckndArgoCDApplicationDataRequest.path)
+        && Objects.equals(this.applicationName, bckndArgoCDApplicationDataRequest.applicationName);
   }
 
   @Override
@@ -259,7 +264,7 @@ public class BckndArgoCDApplicationData
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class BckndArgoCDApplicationData {\n");
+    sb.append("class BckndArgoCDApplicationDataRequest {\n");
     sb.append("    repositoryUrl: ").append(toIndentedString(repositoryUrl)).append("\n");
     sb.append("    revision: ").append(toIndentedString(revision)).append("\n");
     sb.append("    path: ").append(toIndentedString(path)).append("\n");
@@ -283,13 +288,13 @@ public class BckndArgoCDApplicationData
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * BckndArgoCDApplicationData} instance with all required arguments.
+   * BckndArgoCDApplicationDataRequest} instance with all required arguments.
    */
   public static Builder create() {
     return (repositoryUrl) ->
         (revision) ->
             (path) ->
-                new BckndArgoCDApplicationData()
+                new BckndArgoCDApplicationDataRequest()
                     .repositoryUrl(repositoryUrl)
                     .revision(revision)
                     .path(path);
@@ -298,10 +303,10 @@ public class BckndArgoCDApplicationData
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the repositoryUrl of this {@link BckndArgoCDApplicationData} instance.
+     * Set the repositoryUrl of this {@link BckndArgoCDApplicationDataRequest} instance.
      *
      * @param repositoryUrl URL of the repository to synchronise
-     * @return The BckndArgoCDApplicationData builder.
+     * @return The BckndArgoCDApplicationDataRequest builder.
      */
     Builder1 repositoryUrl(@Nonnull final String repositoryUrl);
   }
@@ -309,10 +314,10 @@ public class BckndArgoCDApplicationData
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the revision of this {@link BckndArgoCDApplicationData} instance.
+     * Set the revision of this {@link BckndArgoCDApplicationDataRequest} instance.
      *
      * @param revision revision to synchronise
-     * @return The BckndArgoCDApplicationData builder.
+     * @return The BckndArgoCDApplicationDataRequest builder.
      */
     Builder2 revision(@Nonnull final String revision);
   }
@@ -320,11 +325,11 @@ public class BckndArgoCDApplicationData
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the path of this {@link BckndArgoCDApplicationData} instance.
+     * Set the path of this {@link BckndArgoCDApplicationDataRequest} instance.
      *
      * @param path path within the repository to synchronise
-     * @return The BckndArgoCDApplicationData instance.
+     * @return The BckndArgoCDApplicationDataRequest instance.
      */
-    BckndArgoCDApplicationData path(@Nonnull final String path);
+    BckndArgoCDApplicationDataRequest path(@Nonnull final String path);
   }
 }

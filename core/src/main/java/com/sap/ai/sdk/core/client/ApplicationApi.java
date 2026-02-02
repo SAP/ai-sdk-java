@@ -4,7 +4,7 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.BckndAllArgoCDApplicationData;
 import com.sap.ai.sdk.core.model.BckndArgoCDApplicationBaseData;
 import com.sap.ai.sdk.core.model.BckndArgoCDApplicationCreationResponse;
-import com.sap.ai.sdk.core.model.BckndArgoCDApplicationData;
+import com.sap.ai.sdk.core.model.BckndArgoCDApplicationDataResponse;
 import com.sap.ai.sdk.core.model.BckndArgoCDApplicationDeletionResponse;
 import com.sap.ai.sdk.core.model.BckndArgoCDApplicationModificationResponse;
 import com.sap.ai.sdk.core.model.BckndArgoCDApplicationRefreshResponse;
@@ -26,7 +26,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.41.0.
+ * AI Core in version 2.42.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -247,11 +247,11 @@ public class ApplicationApi extends AbstractOpenApiService {
    *
    * @param applicationName (required) Name of the ArgoCD application
    * @param authorization (optional) Authorization bearer token containing a JWT token.
-   * @return BckndArgoCDApplicationData
+   * @return BckndArgoCDApplicationDataResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndArgoCDApplicationData get(
+  public BckndArgoCDApplicationDataResponse get(
       @Nonnull final String applicationName, @Nullable final String authorization)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -286,8 +286,8 @@ public class ApplicationApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {"Oauth2"};
 
-    final ParameterizedTypeReference<BckndArgoCDApplicationData> localVarReturnType =
-        new ParameterizedTypeReference<BckndArgoCDApplicationData>() {};
+    final ParameterizedTypeReference<BckndArgoCDApplicationDataResponse> localVarReturnType =
+        new ParameterizedTypeReference<BckndArgoCDApplicationDataResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -315,11 +315,11 @@ public class ApplicationApi extends AbstractOpenApiService {
    * <p><b>0</b> - HTTP status codes 401, 403 or 500. Response body contains further details.
    *
    * @param applicationName Name of the ArgoCD application
-   * @return BckndArgoCDApplicationData
+   * @return BckndArgoCDApplicationDataResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BckndArgoCDApplicationData get(@Nonnull final String applicationName)
+  public BckndArgoCDApplicationDataResponse get(@Nonnull final String applicationName)
       throws OpenApiRequestException {
     return get(applicationName, null);
   }
