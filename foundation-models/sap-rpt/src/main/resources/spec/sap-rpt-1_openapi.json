@@ -41,24 +41,14 @@
                       ]
                     },
                     "columns": {
-                      "id": [
-                        1,
-                        2,
-                        3,
-                        4
-                      ],
+                      "id": [1, 2, 3, 4],
                       "product": [
                         "Laptop",
                         "Mouse",
                         "Keyboard",
                         "Monitor"
                       ],
-                      "price": [
-                        899,
-                        25,
-                        75,
-                        350
-                      ],
+                      "price": [899, 25, 75, 350],
                       "category": [
                         "Electronics",
                         "Accessories",
@@ -119,8 +109,7 @@
                       ],
                       "PRICE": [
                         "[?]",
-                        150.8,
-                        "210.0",
+                        150.8, "210.0",
                         "[?]"
                       ],
                       "ORDERDATE": [
