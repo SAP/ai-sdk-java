@@ -16,6 +16,7 @@ import com.sap.ai.sdk.orchestration.Grounding;
 import com.sap.ai.sdk.orchestration.ImageItem;
 import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
 import com.sap.ai.sdk.orchestration.Message;
+import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
@@ -777,5 +778,65 @@ public class OrchestrationService {
                                             .role(UserChatMessage.RoleEnum.USER))
                                     .defaults(Map.of("number", "3")))
                             .model(LLMModelDetails.create().name(GPT_41_NANO.getName())))));
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with a list of modules. If the first
+   * request fails (which will happen here), the next module is used as a fallback.
+   *
+   * @param famousPhrase the phrase to send to the assistant
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse completionWithFallback(@Nonnull final String famousPhrase) {
+    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val workingConfig =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0.0));
+    val brokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    val secondBrokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
+    return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig, workingConfig);
+  }
+
+  /**
+   * Asynchronous stream of chat request to OpenAI through the Orchestration service with a list of
+   * modules. If the first request fails (which will happen here), the next module is used as a
+   * fallback.
+   *
+   * @param famousPhrase the phrase to send to the assistant
+   * @return a stream of assistant message responses
+   */
+  @Nonnull
+  public Stream<String> streamCompletionWithFallback(@Nonnull final String famousPhrase) {
+    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val workingConfig =
+        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0.0));
+    val brokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    return client.streamChatCompletion(prompt, brokenConfig, workingConfig);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with a list of modules. Here, both the
+   * original and the fallback request fail.
+   *
+   * @param famousPhrase the phrase to send to the assistant
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse completionWithFallbackAllFail(
+      @Nonnull final String famousPhrase) {
+    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val brokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    val secondBrokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
+    return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig);
   }
 }
