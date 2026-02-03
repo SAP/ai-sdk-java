@@ -281,7 +281,7 @@ components:
           $ref: "#/components/schemas/Embedding"
         index:
           type: integer
-          description: The index of the embedding in the list of embeddings.
+          description: The index of the embedding in the list of embeddings. testestest
     Embedding:
       oneOf:
         - type: array

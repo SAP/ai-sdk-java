@@ -164,7 +164,7 @@ public class EmbeddingResult
   /**
    * Set the index of this {@link EmbeddingResult} instance and return the same instance.
    *
-   * @param index The index of the embedding in the list of embeddings.
+   * @param index The index of the embedding in the list of embeddings. testestest
    * @return The same instance of this {@link EmbeddingResult} class
    */
   @Nonnull
@@ -174,7 +174,7 @@ public class EmbeddingResult
   }
 
   /**
-   * The index of the embedding in the list of embeddings.
+   * The index of the embedding in the list of embeddings. testestest
    *
    * @return index The index of this {@link EmbeddingResult} instance.
    */
@@ -186,7 +186,7 @@ public class EmbeddingResult
   /**
    * Set the index of this {@link EmbeddingResult} instance.
    *
-   * @param index The index of the embedding in the list of embeddings.
+   * @param index The index of the embedding in the list of embeddings. testestest
    */
   public void setIndex(@Nonnull final Integer index) {
     this.index = index;
@@ -330,7 +330,7 @@ public class EmbeddingResult
     /**
      * Set the index of this {@link EmbeddingResult} instance.
      *
-     * @param index The index of the embedding in the list of embeddings.
+     * @param index The index of the embedding in the list of embeddings. testestest
      * @return The EmbeddingResult instance.
      */
     EmbeddingResult index(@Nonnull final Integer index);
