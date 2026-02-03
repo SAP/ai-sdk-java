@@ -251,6 +251,11 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+        <artifactId>sap-rpt</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.sap.ai.sdk.app</groupId>
         <artifactId>spring-app</artifactId>
         <version>${project.version}</version>
@@ -656,6 +661,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/core/client/*</exclude>
             <exclude>com/sap/ai/sdk/core/model/*</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/openai/generated/model/*</exclude>
+            <exclude>com/sap/ai/sdk/foundationmodels/rpt/generated/**</exclude>
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/client/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/model/*</exclude>
@@ -683,6 +689,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/core/model/*</exclude>
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/openai/generated/model/*</exclude>
+            <exclude>com/sap/ai/sdk/foundationmodels/rpt/generated/**</exclude>
             <exclude>com/sap/ai/sdk/grounding/client/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/model/*</exclude>
             <exclude>com/sap/ai/sdk/prompt/registry/model/*</exclude>
@@ -803,6 +810,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       </activation>
       <modules>
         <module>sample-code/spring-app</module>
+        <module>foundation-models/sap-rpt</module>
       </modules>
     </profile>
     <profile>

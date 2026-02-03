@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [RPT] Introducing `RptClient` for Tabular AI backed by SAP RPT models `SAP_RPT_1_SMALL` and `SAP_RPT_1_LARGE`.
 
 ### 📈 Improvements
 

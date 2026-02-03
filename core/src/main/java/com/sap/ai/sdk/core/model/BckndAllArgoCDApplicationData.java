@@ -35,7 +35,7 @@ public class BckndAllArgoCDApplicationData
   private Integer count;
 
   @JsonProperty("resources")
-  private List<BckndArgoCDApplicationData> resources = new ArrayList<>();
+  private List<BckndArgoCDApplicationDataResponse> resources = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -84,7 +84,7 @@ public class BckndAllArgoCDApplicationData
    */
   @Nonnull
   public BckndAllArgoCDApplicationData resources(
-      @Nonnull final List<BckndArgoCDApplicationData> resources) {
+      @Nonnull final List<BckndArgoCDApplicationDataResponse> resources) {
     this.resources = resources;
     return this;
   }
@@ -97,7 +97,7 @@ public class BckndAllArgoCDApplicationData
    */
   @Nonnull
   public BckndAllArgoCDApplicationData addResourcesItem(
-      @Nonnull final BckndArgoCDApplicationData resourcesItem) {
+      @Nonnull final BckndArgoCDApplicationDataResponse resourcesItem) {
     if (this.resources == null) {
       this.resources = new ArrayList<>();
     }
@@ -111,7 +111,7 @@ public class BckndAllArgoCDApplicationData
    * @return resources The resources of this {@link BckndAllArgoCDApplicationData} instance.
    */
   @Nonnull
-  public List<BckndArgoCDApplicationData> getResources() {
+  public List<BckndArgoCDApplicationDataResponse> getResources() {
     return resources;
   }
 
@@ -120,7 +120,7 @@ public class BckndAllArgoCDApplicationData
    *
    * @param resources The resources of this {@link BckndAllArgoCDApplicationData}
    */
-  public void setResources(@Nonnull final List<BckndArgoCDApplicationData> resources) {
+  public void setResources(@Nonnull final List<BckndArgoCDApplicationDataResponse> resources) {
     this.resources = resources;
   }
 
@@ -256,7 +256,7 @@ public class BckndAllArgoCDApplicationData
      * @return The BckndAllArgoCDApplicationData instance.
      */
     BckndAllArgoCDApplicationData resources(
-        @Nonnull final List<BckndArgoCDApplicationData> resources);
+        @Nonnull final List<BckndArgoCDApplicationDataResponse> resources);
 
     /**
      * Set the resources of this {@link BckndAllArgoCDApplicationData} instance.
@@ -265,7 +265,7 @@ public class BckndAllArgoCDApplicationData
      * @return The BckndAllArgoCDApplicationData instance.
      */
     default BckndAllArgoCDApplicationData resources(
-        @Nonnull final BckndArgoCDApplicationData... resources) {
+        @Nonnull final BckndArgoCDApplicationDataResponse... resources) {
       return resources(Arrays.asList(resources));
     }
   }
