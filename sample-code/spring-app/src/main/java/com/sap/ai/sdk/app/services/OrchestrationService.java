@@ -798,8 +798,7 @@ public class OrchestrationService {
     val secondBrokenConfig =
         new OrchestrationModuleConfig()
             .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
-    final OrchestrationModuleConfig[] fallbacks = {secondBrokenConfig, workingConfig};
-    return client.chatCompletion(prompt, brokenConfig, fallbacks);
+    return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig, workingConfig);
   }
 
   /**
