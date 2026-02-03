@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.collect.Lists;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
@@ -17,9 +18,8 @@ import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.function.UnaryOperator;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -37,23 +37,10 @@ final class ConfigToRequestTransformer {
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
 
-    final List<OrchestrationModuleConfig> configList = new ArrayList<>();
-    configList.add(config);
-    if (fallbackConfigs.length > 0) {
-      configList.addAll(Arrays.asList(fallbackConfigs));
-    }
-    val templates =
-        configList.stream()
-            .map(conf -> toTemplateModuleConfig(prompt, conf.getTemplateConfig()))
-            .toList();
-
-    // note that the config is immutable and implicitly copied here
-    // copying is required here, to not alter the original config object, which might be reused for
-    // subsequent requests
-    val configsCopy =
-        IntStream.range(0, configList.size())
-            .mapToObj(i -> configList.get(i).withTemplateConfig(templates.get(i)))
-            .toList();
+    final UnaryOperator<OrchestrationModuleConfig> copyWithImmutableTemplateConfig =
+        c -> c.withTemplateConfig(toTemplateModuleConfig(prompt, c.getTemplateConfig()));
+    val configList = Lists.asList(config, fallbackConfigs);
+    val configsCopy = Lists.transform(configList, copyWithImmutableTemplateConfig::apply);
 
     val messageHistory =
         prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
