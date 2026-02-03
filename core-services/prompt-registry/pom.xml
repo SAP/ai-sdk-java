@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.12.0-SNAPSHOT</version>
+    <version>1.16.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>prompt-registry</artifactId>
@@ -38,11 +38,11 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>73%</coverage.complexity>
-    <coverage.line>87%</coverage.line>
-    <coverage.instruction>89%</coverage.instruction>
-    <coverage.branch>75%</coverage.branch>
-    <coverage.method>75%</coverage.method>
+    <coverage.complexity>84%</coverage.complexity>
+    <coverage.line>90%</coverage.line>
+    <coverage.instruction>92%</coverage.instruction>
+    <coverage.branch>100%</coverage.branch>
+    <coverage.method>80%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
@@ -152,7 +152,11 @@
                   <inputSpec>${project.basedir}/src/main/resources/spec/prompt-registry.yaml</inputSpec>
                   <apiPackage>com.sap.ai.sdk.prompt.registry.client</apiPackage>
                   <modelPackage>com.sap.ai.sdk.prompt.registry.model</modelPackage>
+                  <typeMappings>
+                    <typeMapping>File=byte[]</typeMapping>
+                  </typeMappings>
                   <additionalProperties>
+                    <useAbstractionForFiles>true</useAbstractionForFiles>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
                     <pojoBuildMethodName/>
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>

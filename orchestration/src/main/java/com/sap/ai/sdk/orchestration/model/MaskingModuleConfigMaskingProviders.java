@@ -1,5 +1,5 @@
 /*
- * Internal Orchestration Service API
+ * Orchestration v2
  * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
@@ -44,8 +44,8 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
    * Set the maskingProviders of this {@link MaskingModuleConfigMaskingProviders} instance and
    * return the same instance.
    *
-   * @param maskingProviders This field is **DEPRECATED** and will be removed on August 05, 2026.
-   *     Use &#x60;providers&#x60; property instead. List of masking service providers.
+   * @param maskingProviders List of masking service providers. **DEPRECATED**: will be removed Sept
+   *     15, 2026. Use &#x60;providers&#x60; property instead.
    * @return The same instance of this {@link MaskingModuleConfigMaskingProviders} class
    */
   @Nonnull
@@ -72,8 +72,8 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
   }
 
   /**
-   * This field is **DEPRECATED** and will be removed on August 05, 2026. Use &#x60;providers&#x60;
-   * property instead. List of masking service providers.
+   * List of masking service providers. **DEPRECATED**: will be removed Sept 15, 2026. Use
+   * &#x60;providers&#x60; property instead.
    *
    * @return maskingProviders The maskingProviders of this {@link
    *     MaskingModuleConfigMaskingProviders} instance.
@@ -88,8 +88,8 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
   /**
    * Set the maskingProviders of this {@link MaskingModuleConfigMaskingProviders} instance.
    *
-   * @param maskingProviders This field is **DEPRECATED** and will be removed on August 05, 2026.
-   *     Use &#x60;providers&#x60; property instead. List of masking service providers.
+   * @param maskingProviders List of masking service providers. **DEPRECATED**: will be removed Sept
+   *     15, 2026. Use &#x60;providers&#x60; property instead.
    */
   public void setMaskingProviders(@Nonnull final List<DPIConfig> maskingProviders) {
     this.maskingProviders = maskingProviders;
@@ -211,8 +211,8 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
     /**
      * Set the maskingProviders of this {@link MaskingModuleConfigMaskingProviders} instance.
      *
-     * @param maskingProviders This field is **DEPRECATED** and will be removed on August 05, 2026.
-     *     Use &#x60;providers&#x60; property instead. List of masking service providers.
+     * @param maskingProviders List of masking service providers. **DEPRECATED**: will be removed
+     *     Sept 15, 2026. Use &#x60;providers&#x60; property instead.
      * @return The MaskingModuleConfigMaskingProviders instance.
      */
     MaskingModuleConfigMaskingProviders maskingProviders(
@@ -221,8 +221,8 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
     /**
      * Set the maskingProviders of this {@link MaskingModuleConfigMaskingProviders} instance.
      *
-     * @param maskingProviders This field is **DEPRECATED** and will be removed on August 05, 2026.
-     *     Use &#x60;providers&#x60; property instead. List of masking service providers.
+     * @param maskingProviders List of masking service providers. **DEPRECATED**: will be removed
+     *     Sept 15, 2026. Use &#x60;providers&#x60; property instead.
      * @return The MaskingModuleConfigMaskingProviders instance.
      */
     default MaskingModuleConfigMaskingProviders maskingProviders(

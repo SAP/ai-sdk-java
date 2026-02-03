@@ -1,0 +1,30 @@
+{
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "prompt": {
+          "template_ref": {
+            "scenario": "categorization",
+            "name": "example-prompt-template",
+            "version": "0.0.1",
+            "scope": "resource_group"
+          }
+        },
+        "model": {
+          "name": "gemini-2.5-flash",
+          "version": "latest",
+          "params": {
+            "temperature": 0.0
+          },
+          "timeout": 600,
+          "max_retries": 2
+        }
+      }
+    }
+  },
+  "placeholder_values": {
+    "categories": "Finance, Tech, Sports",
+    "inputExample": "What's the latest news on the stock market?"
+  },
+  "messages_history": []
+}

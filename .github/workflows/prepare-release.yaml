@@ -14,7 +14,7 @@ on:
 env:
   CI_BUILD_WORKFLOW: "continuous-integration.yaml" # Name of the workflow that should be triggered for CI build
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
-  JAVA_VERSION: 17
+  JAVA_VERSION: 21
   DOCS_REPO: SAP/ai-sdk
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
       contents: write
     steps:
       - name: "Checkout Repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.inputs.branch }}
 
@@ -85,7 +85,7 @@ jobs:
       statuses: write # needed to update the commit status
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ needs.bump-version.outputs.release-branch }}
 
@@ -115,7 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ needs.bump-version.outputs.release-branch }}
 
@@ -162,12 +162,12 @@ jobs:
       pull-requests: write
     steps:
       - name: "Checkout Code Repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ needs.bump-version.outputs.release-branch }}
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
       - name: "Checkout Docs Repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: ${{ env.DOCS_REPO }}
           path: .ai-sdk-docs
@@ -201,12 +201,12 @@ jobs:
         run: |
           PR_TITLE="Java: Add release notes for release ${{ needs.bump-version.outputs.release-version }}"
 
-          # if the minor version is a multiple of 15, then change the PR_BODY to "# ⚠️Update the `docs-java/release-notes/index.jsx` file⚠️"
+          # if the minor version is a multiple of 15, then change the PR_BODY to "# ⚠️Update the `docs-java/release-notes.mdx` file⚠️"
           # else the PR_BODY will be "Add the SAP Cloud SDK ${{ needs.bump-version.outputs.release-version }} release notes"
 
           minor_version=$(echo ${{ needs.bump-version.outputs.release-version }} | cut -d '.' -f 2)
           if [[ $((minor_version % 15)) -eq 0 ]]; then
-            PR_BODY="# ⚠️Update the \`docs-java/release-notes/index.jsx\` file⚠️"
+            PR_BODY="# ⚠️Update the \`docs-java/release-notes.mdx\` file⚠️"
           else
             PR_BODY="Add the SAP Cloud SDK ${{ needs.bump-version.outputs.release-version }} release notes"
           fi
@@ -243,7 +243,7 @@ jobs:
       pull-requests: write
     steps:
       - name: "Checkout Repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ needs.bump-version.outputs.release-branch }}
           token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} # this is needed so that the same token is used when pushing our changes later. Otherwise, our on: push workflows (i.e. our continuous integration) won't be triggered.
@@ -282,7 +282,7 @@ jobs:
     if: ${{ failure() }}
     steps:
       - name: "Checkout Repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.inputs.branch }}
 

@@ -1,5 +1,5 @@
 /*
- * Internal Orchestration Service API
+ * Orchestration v2
  * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
@@ -39,6 +39,9 @@ public class AzureContentSafetyOutput
 
   @JsonProperty("violence")
   private AzureThreshold violence;
+
+  @JsonProperty("protected_material_code")
+  private Boolean protectedMaterialCode = false;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -173,6 +176,45 @@ public class AzureContentSafetyOutput
   }
 
   /**
+   * Set the protectedMaterialCode of this {@link AzureContentSafetyOutput} instance and return the
+   * same instance.
+   *
+   * @param protectedMaterialCode Detect protected code content from known GitHub repositories. The
+   *     scan includes software libraries, source code, algorithms, and other proprietary
+   *     programming content.
+   * @return The same instance of this {@link AzureContentSafetyOutput} class
+   */
+  @Nonnull
+  public AzureContentSafetyOutput protectedMaterialCode(
+      @Nullable final Boolean protectedMaterialCode) {
+    this.protectedMaterialCode = protectedMaterialCode;
+    return this;
+  }
+
+  /**
+   * Detect protected code content from known GitHub repositories. The scan includes software
+   * libraries, source code, algorithms, and other proprietary programming content.
+   *
+   * @return protectedMaterialCode The protectedMaterialCode of this {@link
+   *     AzureContentSafetyOutput} instance.
+   */
+  @Nonnull
+  public Boolean isProtectedMaterialCode() {
+    return protectedMaterialCode;
+  }
+
+  /**
+   * Set the protectedMaterialCode of this {@link AzureContentSafetyOutput} instance.
+   *
+   * @param protectedMaterialCode Detect protected code content from known GitHub repositories. The
+   *     scan includes software libraries, source code, algorithms, and other proprietary
+   *     programming content.
+   */
+  public void setProtectedMaterialCode(@Nullable final Boolean protectedMaterialCode) {
+    this.protectedMaterialCode = protectedMaterialCode;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link AzureContentSafetyOutput}.
    *
    * @return The set of properties names
@@ -215,6 +257,8 @@ public class AzureContentSafetyOutput
     if (selfHarm != null) declaredFields.put("selfHarm", selfHarm);
     if (sexual != null) declaredFields.put("sexual", sexual);
     if (violence != null) declaredFields.put("violence", violence);
+    if (protectedMaterialCode != null)
+      declaredFields.put("protectedMaterialCode", protectedMaterialCode);
     return declaredFields;
   }
 
@@ -243,12 +287,15 @@ public class AzureContentSafetyOutput
         && Objects.equals(this.hate, azureContentSafetyOutput.hate)
         && Objects.equals(this.selfHarm, azureContentSafetyOutput.selfHarm)
         && Objects.equals(this.sexual, azureContentSafetyOutput.sexual)
-        && Objects.equals(this.violence, azureContentSafetyOutput.violence);
+        && Objects.equals(this.violence, azureContentSafetyOutput.violence)
+        && Objects.equals(
+            this.protectedMaterialCode, azureContentSafetyOutput.protectedMaterialCode);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hate, selfHarm, sexual, violence, cloudSdkCustomFields);
+    return Objects.hash(
+        hate, selfHarm, sexual, violence, protectedMaterialCode, cloudSdkCustomFields);
   }
 
   @Override
@@ -260,6 +307,9 @@ public class AzureContentSafetyOutput
     sb.append("    selfHarm: ").append(toIndentedString(selfHarm)).append("\n");
     sb.append("    sexual: ").append(toIndentedString(sexual)).append("\n");
     sb.append("    violence: ").append(toIndentedString(violence)).append("\n");
+    sb.append("    protectedMaterialCode: ")
+        .append(toIndentedString(protectedMaterialCode))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

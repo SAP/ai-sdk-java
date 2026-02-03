@@ -177,6 +177,22 @@ public class OrchestrationClient {
   }
 
   /**
+   * Generate a completion using a referenced Orchestration config.
+   *
+   * @param reference A reference to an Orchestration config stored in prompt registry
+   * @return The completion output
+   * @since 1.15.0
+   */
+  @Beta
+  @Nonnull
+  public OrchestrationChatResponse chatCompletionUsingReference(
+      @Nonnull final OrchestrationConfigReference reference) {
+    val request = ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(reference);
+    val response = executeRequest(request);
+    return new OrchestrationChatResponse(response);
+  }
+
+  /**
    * Perform a request to the orchestration service using a module configuration provided as JSON
    * string. This can be useful when building a configuration in the AI Launchpad UI and exporting
    * it as JSON. Furthermore, this allows for using features that are not yet supported natively by

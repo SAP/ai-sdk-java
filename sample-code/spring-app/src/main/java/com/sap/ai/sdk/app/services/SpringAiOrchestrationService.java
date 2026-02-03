@@ -1,18 +1,20 @@
 package com.sap.ai.sdk.app.services;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_HAIKU;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatOptions;
+import com.sap.ai.sdk.orchestration.spring.OrchestrationSpringEmbeddingModel;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -29,6 +31,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.embedding.EmbeddingOptions;
 import org.springframework.ai.support.ToolCallbacks;
 import org.springframework.ai.tool.ToolCallbackProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +44,7 @@ import reactor.core.publisher.Flux;
 public class SpringAiOrchestrationService {
   private final ChatModel client = new OrchestrationChatModel();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+      new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_5_HAIKU);
   private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);
 
   @Nullable
@@ -134,7 +137,7 @@ public class SpringAiOrchestrationService {
 
     val prompt =
         new Prompt(
-            "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operator in-charge.",
+            "Please rephrase the following sentence for me: 'We shall destroy them all tonight', said the operator in-charge.",
             opts);
 
     return client.call(prompt);
@@ -262,5 +265,20 @@ public class SpringAiOrchestrationService {
         new Prompt(
             "How do I say 'AI is going to revolutionize the world' in dutch?", defaultOptions);
     return cl.prompt(prompt).call().entity(Translation.class);
+  }
+
+  /**
+   * Create an embedding for a given text using the Orchestration service.
+   *
+   * @param inputText the text to embed
+   * @return the embedding as a float array
+   */
+  @Nonnull
+  public float[] embed(@Nonnull final String inputText) {
+    val embedOptions =
+        EmbeddingOptions.builder()
+            .model(OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL.name())
+            .build();
+    return new OrchestrationSpringEmbeddingModel(embedOptions).embed(inputText);
   }
 }

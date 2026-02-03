@@ -1,5 +1,5 @@
 /*
- * Internal Orchestration Service API
+ * Orchestration v2
  * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -42,6 +43,9 @@ public class Error
 
   @JsonProperty("intermediate_results")
   private ModuleResults intermediateResults;
+
+  @JsonProperty("headers")
+  private Map<String, String> headers = new HashMap<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -205,6 +209,53 @@ public class Error
   }
 
   /**
+   * Set the headers of this {@link Error} instance and return the same instance.
+   *
+   * @param headers HTTP headers returned from the failed request attempt
+   * @return The same instance of this {@link Error} class
+   */
+  @Nonnull
+  public Error headers(@Nullable final Map<String, String> headers) {
+    this.headers = headers;
+    return this;
+  }
+
+  /**
+   * Put one headers instance to this {@link Error} instance.
+   *
+   * @param key The String key of this headers instance
+   * @param headersItem The headers that should be added under the given key
+   * @return The same instance of type {@link Error}
+   */
+  @Nonnull
+  public Error putheadersItem(@Nonnull final String key, @Nonnull final String headersItem) {
+    if (this.headers == null) {
+      this.headers = new HashMap<>();
+    }
+    this.headers.put(key, headersItem);
+    return this;
+  }
+
+  /**
+   * HTTP headers returned from the failed request attempt
+   *
+   * @return headers The headers of this {@link Error} instance.
+   */
+  @Nonnull
+  public Map<String, String> getHeaders() {
+    return headers;
+  }
+
+  /**
+   * Set the headers of this {@link Error} instance.
+   *
+   * @param headers HTTP headers returned from the failed request attempt
+   */
+  public void setHeaders(@Nullable final Map<String, String> headers) {
+    this.headers = headers;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link Error}.
    *
    * @return The set of properties names
@@ -247,6 +298,7 @@ public class Error
     if (message != null) declaredFields.put("message", message);
     if (location != null) declaredFields.put("location", location);
     if (intermediateResults != null) declaredFields.put("intermediateResults", intermediateResults);
+    if (headers != null) declaredFields.put("headers", headers);
     return declaredFields;
   }
 
@@ -276,13 +328,14 @@ public class Error
         && Objects.equals(this.code, error.code)
         && Objects.equals(this.message, error.message)
         && Objects.equals(this.location, error.location)
-        && Objects.equals(this.intermediateResults, error.intermediateResults);
+        && Objects.equals(this.intermediateResults, error.intermediateResults)
+        && Objects.equals(this.headers, error.headers);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        requestId, code, message, location, intermediateResults, cloudSdkCustomFields);
+        requestId, code, message, location, intermediateResults, headers, cloudSdkCustomFields);
   }
 
   @Override
@@ -297,6 +350,7 @@ public class Error
     sb.append("    intermediateResults: ")
         .append(toIndentedString(intermediateResults))
         .append("\n");
+    sb.append("    headers: ").append(toIndentedString(headers)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

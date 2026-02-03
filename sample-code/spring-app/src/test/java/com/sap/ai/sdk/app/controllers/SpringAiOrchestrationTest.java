@@ -67,7 +67,7 @@ class SpringAiOrchestrationTest {
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 (Bad Request)");
   }
 
@@ -104,7 +104,8 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("1 of 1 choices failed");
+    assertThat(filterResult.getMessage())
+        .contains("Choice 0: Content filtered due to safety violations.");
   }
 
   @Test
@@ -122,7 +123,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("0 of \\d+ choices failed");
+    assertThat(filterResult.getMessage()).contains("Choice 0: Filtering was skipped.");
   }
 
   @Test
@@ -130,6 +131,7 @@ class SpringAiOrchestrationTest {
     ChatResponse response = service.toolCalling(false);
     List<ToolCall> toolCalls = response.getResult().getOutput().getToolCalls();
     assertThat(toolCalls).hasSize(2);
+
     ToolCall toolCall1 = toolCalls.get(0);
     ToolCall toolCall2 = toolCalls.get(1);
     assertThat(toolCall1.type()).isEqualTo("function");
@@ -165,5 +167,12 @@ class SpringAiOrchestrationTest {
     assertThat(translation).isNotNull();
     assertThat(translation.translation()).isNotEmpty();
     assertThat(translation.language()).containsIgnoringCase("dutch");
+  }
+
+  @Test
+  void testEmbedding() {
+    final var embeddings = service.embed("Hello World!");
+    assertThat(embeddings).isInstanceOf(float[].class);
+    assertThat(embeddings.length).isGreaterThan(0);
   }
 }

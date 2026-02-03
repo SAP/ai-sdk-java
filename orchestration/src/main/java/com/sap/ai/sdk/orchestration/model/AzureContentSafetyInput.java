@@ -1,5 +1,5 @@
 /*
- * Internal Orchestration Service API
+ * Orchestration v2
  * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
@@ -177,7 +177,8 @@ public class AzureContentSafetyInput
    * Set the promptShield of this {@link AzureContentSafetyInput} instance and return the same
    * instance.
    *
-   * @param promptShield A flag to use prompt shield
+   * @param promptShield Filter prompts for harmful content such as jailbreaks and prompt
+   *     injections.
    * @return The same instance of this {@link AzureContentSafetyInput} class
    */
   @Nonnull
@@ -187,7 +188,7 @@ public class AzureContentSafetyInput
   }
 
   /**
-   * A flag to use prompt shield
+   * Filter prompts for harmful content such as jailbreaks and prompt injections.
    *
    * @return promptShield The promptShield of this {@link AzureContentSafetyInput} instance.
    */
@@ -199,7 +200,8 @@ public class AzureContentSafetyInput
   /**
    * Set the promptShield of this {@link AzureContentSafetyInput} instance.
    *
-   * @param promptShield A flag to use prompt shield
+   * @param promptShield Filter prompts for harmful content such as jailbreaks and prompt
+   *     injections.
    */
   public void setPromptShield(@Nullable final Boolean promptShield) {
     this.promptShield = promptShield;

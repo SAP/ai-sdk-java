@@ -383,6 +383,18 @@
                                 <li class="list-group-item">
                                     <div class="info-tooltip">
                                         <button type="submit"
+                                                formaction="/orchestration/maskingRegex"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/maskingRegex</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Let the LLM respond with a masked repeated phrase of patient IDs.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
                                                 formaction="/orchestration/maskingPseudonymization"
                                                 class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                             <code>/orchestration/maskingPseudonymization</code>
@@ -491,18 +503,18 @@
                         </details>
                         <br>
                         <details>
-                            <summary><h5 style="display:inline-block">Template reference</h5>
+                            <summary><h5 style="display:inline-block">Template and Config Reference</h5>
                             </summary>
                             <ul class="list-group">
                                 <li class="list-group-item">
                                     <div class="info-tooltip">
                                         <button type="submit"
-                                                formaction="/orchestration/templateFromPromptRegistryById"
+                                                formaction="/orchestration/templateFromPromptRegistryByIdTenant"
                                                 class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/templateFromPromptRegistryById</code>
+                                            <code>/orchestration/templateFromPromptRegistryByIdTenant</code>
                                         </button>
                                         <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
+                                            Chat request to an LLM through the Orchestration service in tenant scope
                                             using a template from the prompt registry identified by
                                             ID.
                                         </div>
@@ -511,12 +523,42 @@
                                 <li class="list-group-item">
                                     <div class="info-tooltip">
                                         <button type="submit"
-                                                formaction="/orchestration/templateFromPromptRegistryByScenario"
+                                                formaction="/orchestration/templateFromPromptRegistryByIdResourceGroup"
                                                 class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/templateFromPromptRegistryByScenario</code>
+                                            <code>/orchestration/templateFromPromptRegistryByIdResourceGroup</code>
                                         </button>
                                         <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
+                                            Chat request to an LLM through the Orchestration service in resource group
+                                            scope
+                                            using a template from the prompt registry identified by
+                                            ID.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/templateFromPromptRegistryByScenarioTenant"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/templateFromPromptRegistryByScenarioTenant</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service in tenant scope
+                                            using a template from the prompt registry identified by
+                                            Scenario, name, and version.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/templateFromPromptRegistryByScenarioResourceGroup"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/templateFromPromptRegistryByScenarioResourceGroup</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM through the Orchestration service in resource group
+                                            scope
                                             using a template from the prompt registry identified by
                                             Scenario, name, and version.
                                         </div>
@@ -532,6 +574,18 @@
                                         <div class="tooltip-content">
                                             Chat request to an LLM through the Orchestration service
                                             using a local template file.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/configFromRegistry"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/configFromRegistry</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to an LLM using an Orchestration config stored in prompt registry.
                                         </div>
                                     </div>
                                 </li>
@@ -680,6 +734,25 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <img src="SAP.svg" alt="SAP Logo" width="35" class="me-1 mb-1">
+                            <h5 class="mb-1">SAP RPT</h5>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/tableCompletion"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/tableCompletion</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Predict request to SAP RPT.
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -702,6 +775,19 @@
                             <h5 class="mb-1">Orchestration Integration</h5>
                         </div>
                         <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/spring-ai-orchestration/embed/string"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/spring-ai-orchestration/embed/string</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Embedding request to an embedding model through the Orchestration service
+                                        with a simple prompt.
+                                    </div>
+                                </div>
+                            </li>
                             <li class="list-group-item">
                                 <div class="info-tooltip">
                                     <button type="submit"
@@ -1080,6 +1166,18 @@
                                     </button>
                                     <div class="tooltip-content">
                                         Get a SpringAI list of messages from a Prompt Registry Response.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/prompt-registry/listOrchConfigs"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/prompt-registry/listOrchConfigs</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        List all Orchestration Configs.
                                     </div>
                                 </div>
                             </li>

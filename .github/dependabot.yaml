@@ -6,11 +6,16 @@ updates:
     directory: '/'
     schedule:
       interval: weekly
-      time: '02:00'
+      time: '23:00'
       timezone: 'Europe/Berlin'
     open-pull-requests-limit: 5
     commit-message:
       prefix: 'chore: [DevOps] '
+    ignore:
+      - dependency-name: "org.springframework.boot:*"
+        versions: [ ">=4.0.0" ]
+      - dependency-name: "org.springframework:*"
+        versions: [ ">=7.0.0" ]
     groups:
       production-minor-patch:
         dependency-type: "production"

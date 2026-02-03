@@ -1,5 +1,5 @@
 /*
- * Internal Orchestration Service API
+ * Orchestration v2
  * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
@@ -16,36 +16,14 @@ import javax.annotation.Nonnull;
 /** SAPDocumentTranslationOutputTargetLanguage */
 public interface SAPDocumentTranslationOutputTargetLanguage {
   /**
-   * Helper class to create a SAPDocumentTranslationApplyToSelector that implements {@link
-   * SAPDocumentTranslationOutputTargetLanguage}.
-   */
-  record InnerSAPDocumentTranslationApplyToSelector(
-      @com.fasterxml.jackson.annotation.JsonValue @Nonnull
-          SAPDocumentTranslationApplyToSelector value)
-      implements SAPDocumentTranslationOutputTargetLanguage {}
-
-  /**
-   * Creator to enable deserialization of a SAPDocumentTranslationApplyToSelector.
-   *
-   * @param val the value to use
-   * @return a new instance of {@link InnerSAPDocumentTranslationApplyToSelector}.
-   */
-  @com.fasterxml.jackson.annotation.JsonCreator
-  @Nonnull
-  static InnerSAPDocumentTranslationApplyToSelector create(
-      @Nonnull final SAPDocumentTranslationApplyToSelector val) {
-    return new InnerSAPDocumentTranslationApplyToSelector(val);
-  }
-
-  /**
-   * Helper class to create a String that implements {@link
+   * Helper class to create {@code String } that implements {@link
    * SAPDocumentTranslationOutputTargetLanguage}.
    */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
       implements SAPDocumentTranslationOutputTargetLanguage {}
 
   /**
-   * Creator to enable deserialization of a String.
+   * Creator to enable deserialization of {@code String }.
    *
    * @param val the value to use
    * @return a new instance of {@link InnerString}.
@@ -54,5 +32,28 @@ public interface SAPDocumentTranslationOutputTargetLanguage {
   @Nonnull
   static InnerString create(@Nonnull final String val) {
     return new InnerString(val);
+  }
+
+  /**
+   * Helper class to create {@code SAPDocumentTranslationApplyToSelector } that implements {@link
+   * SAPDocumentTranslationOutputTargetLanguage}.
+   */
+  record InnerSAPDocumentTranslationApplyToSelector(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull
+          SAPDocumentTranslationApplyToSelector value)
+      implements SAPDocumentTranslationOutputTargetLanguage {}
+
+  /**
+   * Creator to enable deserialization of {@code SAPDocumentTranslationApplyToSelector }.
+   *
+   * @param val the value to use
+   * @return a new instance of {@link InnerSAPDocumentTranslationApplyToSelector}.
+   */
+  @com.fasterxml.jackson.annotation.JsonCreator
+  @Nonnull
+  static InnerSAPDocumentTranslationApplyToSelector
+      createInnerSAPDocumentTranslationApplyToSelector(
+          @Nonnull final SAPDocumentTranslationApplyToSelector val) {
+    return new InnerSAPDocumentTranslationApplyToSelector(val);
   }
 }

@@ -55,4 +55,32 @@ class AiCoreServiceKeyAccessorTest {
     assertThatThrownBy(accessor::getServiceBindings)
         .isInstanceOf(ServiceBindingAccessException.class);
   }
+
+  @Test
+  void testServiceBindingCreation() {
+    var serviceKeyWithoutCredentialType =
+        """
+        {
+          "clientid": "",
+          "clientsecret": ""
+        }
+        """;
+    var binding1 = AiCoreServiceKeyAccessor.createServiceBinding(serviceKeyWithoutCredentialType);
+    assertThat(binding1.getCredentials().containsKey("credential-type"))
+        .describedAs("The missing 'credential-type' should have automatically been added")
+        .isTrue();
+    var serviceKeyWithCredentialType =
+        """
+        {
+          "clientid": "",
+          "clientsecret": "",
+          "credential-type": "foo"
+          }
+        }
+        """;
+    var binding2 = AiCoreServiceKeyAccessor.createServiceBinding(serviceKeyWithCredentialType);
+    assertThat(binding2.getCredentials().get("credential-type"))
+        .describedAs("The 'credential-type' field should not get overwritten")
+        .isEqualTo("foo");
+  }
 }

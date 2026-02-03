@@ -5,6 +5,7 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate20
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequestInput;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.IntStream;
 import javax.annotation.Nonnull;
 import org.springframework.ai.chat.metadata.DefaultUsage;
@@ -12,6 +13,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.document.MetadataMode;
 import org.springframework.ai.embedding.Embedding;
 import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.ai.embedding.EmbeddingOptions;
 import org.springframework.ai.embedding.EmbeddingRequest;
 import org.springframework.ai.embedding.EmbeddingResponse;
 import org.springframework.ai.embedding.EmbeddingResponseMetadata;
@@ -26,8 +28,8 @@ import org.springframework.ai.embedding.EmbeddingResponseMetadata;
  */
 public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
 
-  private final OpenAiClient client;
-  private final MetadataMode metadataMode;
+  @Nonnull private final OpenAiClient client;
+  @Nonnull private final MetadataMode metadataMode;
 
   /**
    * Constructs an {@code OpenAiSpringEmbeddingModel} with the specified {@link OpenAiClient} of
@@ -65,12 +67,6 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
   @Nonnull
   public EmbeddingResponse call(@Nonnull final EmbeddingRequest request)
       throws IllegalArgumentException {
-
-    if (request.getOptions().getModel() != null) {
-      throw new IllegalArgumentException(
-          "Do not set a model in EmbeddingOptions, as the OpenAiClient already defines the model.");
-    }
-
     final var openAiRequest = createEmbeddingsCreateRequest(request);
     final var openAiResponse = client.embedding(openAiRequest);
 
@@ -88,9 +84,16 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
 
   private EmbeddingsCreateRequest createEmbeddingsCreateRequest(
       @Nonnull final EmbeddingRequest request) {
+
+    final var options = Optional.ofNullable(request.getOptions());
+    if (options.map(EmbeddingOptions::getModel).isPresent()) {
+      throw new IllegalArgumentException(
+          "Do not set a model in EmbeddingOptions, as the OpenAiClient already defines the model.");
+    }
+
     return new EmbeddingsCreateRequest()
-        .dimensions(request.getOptions().getDimensions())
-        .input(EmbeddingsCreateRequestInput.create(request.getInstructions()));
+        .dimensions(options.map(EmbeddingOptions::getDimensions).orElse(null))
+        .input(EmbeddingsCreateRequestInput.createListOfStrings(request.getInstructions()));
   }
 
   private EmbeddingResponse createSpringAiEmbeddingResponse(

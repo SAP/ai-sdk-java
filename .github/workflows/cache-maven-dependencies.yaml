@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ env.MAVEN_CACHE_REF }}
 
@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: "sapmachine"
-          java-version: 17
+          java-version: 21
 
       - name: "Download Dependencies"
         run: mvn -B dependency:go-offline
@@ -41,7 +41,7 @@ jobs:
           GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
 
       - name: "Cache Dependencies"
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ env.MAVEN_CACHE_DIR }}
           key: ${{ env.MAVEN_CACHE_KEY }}

@@ -100,8 +100,24 @@ public class OrchestrationModuleConfig {
    */
   @Nullable GroundingModuleConfig groundingConfig;
 
+  /**
+   * Configuration for translating input content before processing.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-translation">
+   *     SAP AI Core: Orchestration - Input Translation</a>
+   * @since 1.8.0
+   */
   @Nullable SAPDocumentTranslationInput inputTranslationConfig;
 
+  /**
+   * Configuration for translating output content after processing.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-output-translation">
+   *     SAP AI Core: Orchestration - Output Translation</a>
+   * @since 1.8.0
+   */
   @Nullable SAPDocumentTranslationOutput outputTranslationConfig;
 
   /** Configuration of optional streaming options for output filtering. */
@@ -136,7 +152,9 @@ public class OrchestrationModuleConfig {
    *
    * @param config The stream configuration to use.
    * @return A new configuration with the given stream configuration.
+   * @since 1.12.0
    */
+  @Beta
   @Nonnull
   public OrchestrationModuleConfig withStreamConfig(
       @Nonnull final OrchestrationStreamConfig config) {
@@ -301,5 +319,31 @@ public class OrchestrationModuleConfig {
   public OrchestrationModuleConfig withTemplateConfig(
       @Nonnull final TemplateConfig templateConfig) {
     return this.withTemplateConfig(templateConfig.toLowLevel());
+  }
+
+  /**
+   * Configure input translation using a high-level TranslationConfig.
+   *
+   * @param translationConfig The translation configuration
+   * @return A new OrchestrationModuleConfig with input translation configured
+   */
+  @Tolerate
+  @Nonnull
+  public OrchestrationModuleConfig withInputTranslationConfig(
+      @Nonnull final TranslationConfig.Input translationConfig) {
+    return this.withInputTranslationConfig(translationConfig.createSAPDocumentTranslationInput());
+  }
+
+  /**
+   * Configure output translation using a high-level TranslationConfig.
+   *
+   * @param translationConfig The translation configuration
+   * @return A new OrchestrationModuleConfig with output translation configured
+   */
+  @Tolerate
+  @Nonnull
+  public OrchestrationModuleConfig withOutputTranslationConfig(
+      @Nonnull final TranslationConfig.Output translationConfig) {
+    return this.withOutputTranslationConfig(translationConfig.createSAPDocumentTranslationOutput());
   }
 }

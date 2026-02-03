@@ -69,4 +69,18 @@ public class OrchestrationPrompt {
     this.messagesHistory.addAll(messagesHistory);
     return this;
   }
+
+  /**
+   * Set the template parameters of this prompt.
+   *
+   * @param templateParameters The template parameters to add.
+   * @return The current instance of {@link OrchestrationPrompt} with the changed template
+   *     parameters.
+   */
+  @Nonnull
+  OrchestrationPrompt templateParameters(@Nonnull final Map<String, String> templateParameters) {
+    this.templateParameters.clear();
+    this.templateParameters.putAll(templateParameters);
+    return this;
+  }
 }

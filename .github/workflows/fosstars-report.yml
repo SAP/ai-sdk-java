@@ -6,7 +6,7 @@ on:
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
-  JAVA_VERSION: 17
+  JAVA_VERSION: 21
   CVE_CACHE_KEY: cve-db
   CVE_CACHE_DIR: ~/.m2/repository/org/owasp/dependency-check-data
   CVE_CACHE_REF: refs/heads/main
@@ -20,7 +20,7 @@ jobs:
       actions: write
     steps:
       - name: "Checkout repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: "Setup java"
         uses: actions/setup-java@v5
@@ -30,7 +30,7 @@ jobs:
           cache: 'maven'
 
       - name: "Restore CVE Database"
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ${{ env.CVE_CACHE_DIR }}
           key: ${{ env.CVE_CACHE_KEY }}
@@ -53,7 +53,7 @@ jobs:
           --batch-mode org.owasp:dependency-check-maven:check org.owasp:dependency-check-maven:aggregate
 
       - name: "Archive CVE Report"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: cve-report
           path: target/dependency-check-report.html
@@ -70,7 +70,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Create Updated CVE Cache"
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: ${{ env.CVE_CACHE_DIR }}
           key: ${{ env.CVE_CACHE_KEY }}

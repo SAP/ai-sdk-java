@@ -9,7 +9,7 @@ on:
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
   MVN_SKIP_CI_PLUGINS: -DskipFormatting -Denforcer.skip -Djacoco.skip -Dmdep.analyze.skip
-  JAVA_VERSION: 17
+  JAVA_VERSION: 21
   # keep the following two variables in sync with our 'cache-maven-dependencies.yaml' workflow
   MAVEN_CACHE_KEY: maven-dependencies
   MAVEN_CACHE_DIR: ~/.m2
@@ -23,7 +23,7 @@ jobs:
     steps:
 
       - name: "Checkout repository"
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.ref }}
@@ -38,13 +38,13 @@ jobs:
 
       - name: "Restore Dependencies"
         id: restore-dependencies
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           key: ${{ env.MAVEN_CACHE_KEY }}
           path: ${{ env.MAVEN_CACHE_DIR }}
 
       - name: "REUSE Compliance Check"
-        uses: fsfe/reuse-action@v5
+        uses: fsfe/reuse-action@v6
 
       - name: "Format code"
         run: |

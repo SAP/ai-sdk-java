@@ -1,9 +1,11 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
+import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -17,26 +19,33 @@ import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationConfigReference;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
+import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
+import com.sap.ai.sdk.orchestration.TranslationConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInput;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInputConfig;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputConfig;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
+import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
+import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigModules;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -169,7 +178,7 @@ public class OrchestrationService {
       throws OrchestrationClientException {
     val prompt =
         new OrchestrationPrompt(
-            "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operator in-charge.");
+            "Please rephrase the following sentence for me: 'We shall destroy them all tonight', said the operator in-charge.");
     val filterConfig =
         new AzureContentFilter()
             .hate(policy)
@@ -267,12 +276,34 @@ public class OrchestrationService {
     val userMessage =
         Message.user(
             """
-                            I think the SDK is good, but could use some further enhancements.
-                            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-                            """);
+    I think the SDK is good, but could use some further enhancements.
+    My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+    """);
 
     val prompt = new OrchestrationPrompt(systemMessage, userMessage);
     val maskingConfig = DpiMasking.anonymization().withEntities(entity);
+    val configWithMasking = config.withMaskingConfig(maskingConfig);
+
+    return client.chatCompletion(prompt, configWithMasking);
+  }
+
+  /**
+   * Let the LLM respond with a masked repeated phrase of patient IDs.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+   *     Core: Orchestration - Data Masking</a>
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse maskingRegex() {
+    val systemMessage = Message.system("Repeat following messages");
+    val userMessage = Message.user("The patient id is patient_id_123.");
+
+    val prompt = new OrchestrationPrompt(systemMessage, userMessage);
+    val regex = "patient_id_[0-9]+";
+    val replacement = "REDACTED_ID";
+    val maskingConfig = DpiMasking.anonymization().withRegex(regex, replacement);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
     return client.chatCompletion(prompt, configWithMasking);
@@ -358,8 +389,12 @@ public class OrchestrationService {
             .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1))
             .addDocumentMetadataItem(documentMetadata);
 
-    val groundingConfig = Grounding.create().filters(databaseFilter);
-    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+    val groundingConfig = Grounding.create().filters(databaseFilter).metadataParams("*");
+    val prompt =
+        groundingConfig
+            .createGroundingPrompt(userMessage)
+            .messageHistory(
+                List.of(Message.system("Add in the response all metadata from grounding.")));
     val maskingConfig = // optional masking configuration
         DpiMasking.anonymization()
             .withEntities(DPIEntities.SENSITIVE_DATA)
@@ -443,12 +478,15 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(
       @Nonnull final String word, @Nonnull final Class<?> targetType) {
+    // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
+    // release 2510b. See https://jira.tools.sap/browse/AI-125770
+    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
     val schema =
         ResponseJsonSchema.fromType(targetType)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
     val configWithResponseSchema =
-        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+        configWithGpt4.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
     val prompt =
         new OrchestrationPrompt(
@@ -518,7 +556,8 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse templateFromPromptRegistryById(@Nonnull final String topic) {
+  public OrchestrationChatResponse templateFromPromptRegistryByIdTenant(
+      @Nonnull final String topic) {
     final var llmWithImageSupportConfig =
         new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
 
@@ -537,11 +576,40 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
+   * @param inputExample the example to send to the assistant
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse templateFromPromptRegistryByIdResourceGroup(
+      @Nonnull final String inputExample) {
+
+    final var destination =
+        new AiCoreService().getInferenceDestination("ai-sdk-java-e2e").forScenario("orchestration");
+    final var clientWithResourceGroup = new OrchestrationClient(destination);
+
+    val template =
+        TemplateConfig.reference()
+            .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
+            .withScope(RESOURCE_GROUP);
+    val configWithTemplate = config.withTemplateConfig(template);
+
+    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
+    val prompt = new OrchestrationPrompt(inputParams);
+
+    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service using a template from the prompt
+   * registry.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
    * @param topic the topic to send to the assistant
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse templateFromPromptRegistryByScenario(
+  public OrchestrationChatResponse templateFromPromptRegistryByScenarioTenant(
       @Nonnull final String topic) {
     val template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
     val configWithTemplate = config.withTemplateConfig(template);
@@ -550,6 +618,36 @@ public class OrchestrationService {
     val prompt = new OrchestrationPrompt(inputParams);
 
     return client.chatCompletion(prompt, configWithTemplate);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service using a template from the prompt
+   * registry.
+   *
+   * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+   *     AI Core: Orchestration - Templating</a>
+   * @param inputExample the example to send to the assistant
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse templateFromPromptRegistryByScenarioResourceGroup(
+      @Nonnull final String inputExample) {
+    final var destination =
+        new AiCoreService().getInferenceDestination("ai-sdk-java-e2e").forScenario("orchestration");
+    final var clientWithResourceGroup = new OrchestrationClient(destination);
+
+    val template =
+        TemplateConfig.reference()
+            .byScenario("categorization")
+            .name("example-prompt-template")
+            .version("0.0.1")
+            .withScope(RESOURCE_GROUP);
+    val configWithTemplate = config.withTemplateConfig(template);
+
+    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
+    val prompt = new OrchestrationPrompt(inputParams);
+
+    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
   }
 
   /**
@@ -564,8 +662,12 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
       throws IOException {
+    // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
+    // release 2510b. See https://jira.tools.sap/browse/AI-125770
+    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
     val template = TemplateConfig.create().fromYaml(promptTemplate);
-    val configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
+    val configWithTemplate =
+        template != null ? configWithGpt4.withTemplateConfig(template) : configWithGpt4;
 
     val inputParams = Map.of("language", "German");
     val prompt = new OrchestrationPrompt(inputParams);
@@ -587,18 +689,10 @@ public class OrchestrationService {
     // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
     val configWithTranslation =
         config
-            .withInputTranslationConfig(
-                SAPDocumentTranslationInput.create()
-                    .type(SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
-                    .config(SAPDocumentTranslationInputConfig.create().targetLanguage("en-US")))
+            .withInputTranslationConfig(TranslationConfig.translateInputTo("en-US"))
             .withOutputTranslationConfig(
-                SAPDocumentTranslationOutput.create()
-                    .type(SAPDocumentTranslationOutput.TypeEnum.SAP_DOCUMENT_TRANSLATION)
-                    .config(
-                        SAPDocumentTranslationOutputConfig.create()
-                            .targetLanguage(
-                                SAPDocumentTranslationOutputTargetLanguage.create("de-DE"))
-                            .sourceLanguage("en-US"))); // optional source language
+                TranslationConfig.translateOutputTo("de-DE")
+                    .withSourceLanguage("en-US")); // optional source language
 
     return client.chatCompletion(prompt, configWithTranslation);
   }
@@ -623,5 +717,65 @@ public class OrchestrationService {
             .forInputs(texts)
             .withMasking(masking);
     return client.embed(request);
+  }
+
+  /**
+   * Chat request to an LLM through the Orchestration service using a template from the prompt
+   * registry identified by a reference.
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse executeConfigFromReference() {
+    val scenario = "sdk-test-paraphrase";
+    val name = "create-3-paraphrases-of-sentence";
+    ensureOrchestrationConfigExists(scenario, name);
+    final List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
+    final var params = Map.of("phrase", "Hello World");
+    final var testReference =
+        OrchestrationConfigReference.fromScenario("sdk-test-scenario")
+            .name("test-config-for-OrchestrationTest")
+            .version("0.0.1")
+            .withMessageHistory(history)
+            .withTemplateParameters(params);
+    return client.chatCompletionUsingReference(testReference);
+  }
+
+  private void ensureOrchestrationConfigExists(final String scenario, final String name) {
+    final OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
+    if (!orchConfigExists("test-config-for-OrchestrationTest", orchConfigClient)) {
+      final OrchestrationConfigPostRequest postRequest =
+          OrchestrationConfigPostRequest.create()
+              .name(name)
+              .version("0.0.1")
+              .scenario(scenario)
+              .spec(buildOrchestrationConfig());
+      orchConfigClient.createUpdateOrchestrationConfig(postRequest);
+    }
+  }
+
+  private boolean orchConfigExists(
+      final String configName, final OrchestrationConfigClient orchConfigClient) {
+    return orchConfigClient.listOrchestrationConfigs().getResources().stream()
+        .anyMatch(resp -> resp.getName().equals(configName));
+  }
+
+  private OrchestrationConfig buildOrchestrationConfig() {
+    return OrchestrationConfig.create()
+        .modules(
+            OrchestrationConfigModules.createInnerModuleConfigs(
+                ModuleConfigs.create()
+                    .promptTemplating(
+                        PromptTemplatingModuleConfig.create()
+                            .prompt(
+                                com.sap.ai.sdk.prompt.registry.model.Template.create()
+                                    .template(
+                                        UserChatMessage.create()
+                                            .content(
+                                                new UserChatMessageContent.InnerString(
+                                                    "Create {{?number}} paraphrases of {{?phrase}}"))
+                                            .role(UserChatMessage.RoleEnum.USER))
+                                    .defaults(Map.of("number", "3")))
+                            .model(LLMModelDetails.create().name(GPT_41_NANO.getName())))));
   }
 }

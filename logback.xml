@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="LOG_PATTERN" value="%d{HH:mm:ss.SSS} %-5level [%thread] %logger{36} : %msg%n"/>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>${LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<root level="INFO">
+		<appender-ref ref="CONSOLE"/>
+	</root>
+
+	<!--  <logger name="org.apache.hc.client5.http.wire" level="DEBUG"/>-->
+	<!--  <logger name="org.apache.http.wire" level="DEBUG"/>-->
+	<logger name="com.sap.ai.sdk" level="DEBUG"/>
+	<!-- Disable org.eclipse.jetty logging -->
+	<logger name="org.eclipse.jetty" level="OFF"/>
+</configuration>

@@ -944,6 +944,40 @@ paths:
           $ref: '#/components/responses/NotFound'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
+  "/vector/documents":
+    delete:
+      tags:
+        - Vector
+      summary: Delete list of documents across collections
+      description: Deletes list of documents across collections.
+      operationId: vector.v1.vector_endpoints.delete_all_documents
+      x-sap-cloud-sdk-operation-name: deleteAllDocuments
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentBulkDeleteRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentBulkDeleteResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
   "/retrieval/dataRepositories":
     get:
       parameters:
@@ -1246,8 +1280,8 @@ components:
                 nullable: false
                 minItems: 1
             required:
-            - key
-            - value
+              - key
+              - value
           example:
             - key: purpose
               value:
@@ -1403,17 +1437,6 @@ components:
           type: string
           example: uuid
 
-    PipelineExecutionStatus:
-      type: string
-      enum:
-        - NEW
-        - UNKNOWN
-        - INPROGRESS
-        - FINISHED
-        - FINISHEDWITHERRORS
-        - TIMEOUT
-      example: 'INPROGRESS'
-
     PipelineExecutionData:
       type: object
       properties:
@@ -1452,6 +1475,18 @@ components:
           nullable: true
         status:
           $ref: '#/components/schemas/PipelineExecutionStatus'
+
+    PipelineExecutionStatus:      
+          type: string
+          anyOf:
+            - enum:
+              - NEW
+              - UNKNOWN
+              - INPROGRESS
+              - FINISHED
+              - FINISHEDWITHERRORS
+              - TIMEOUT
+            - {}
     
     getPipelineExecutions:
       type: object
@@ -1481,14 +1516,16 @@ components:
 
     DocumentStatus:
       type: string
-      enum:
-        - TO_BE_PROCESSED
-        - INDEXED
-        - REINDEXED
-        - DEINDEXED
-        - FAILED
-        - FAILED_TO_BE_RETRIED
-        - TO_BE_SCHEDULED
+      anyOf:
+        - enum:
+          - TO_BE_PROCESSED
+          - INDEXED
+          - REINDEXED
+          - DEINDEXED
+          - FAILED
+          - FAILED_TO_BE_RETRIED
+          - TO_BE_SCHEDULED
+        - {}
       example: 'INDEXED'
 
     DocumentsStatusResponse:
@@ -1585,6 +1622,9 @@ components:
                     nullable: false
                   nullable: false
                   minItems: 1
+              required:
+                - key
+                - value
             example:
               - key: purpose
                 value:
@@ -1607,20 +1647,20 @@ components:
             $ref: "#/components/schemas/PipelineMinimalResponse"
 
     PipelineMinimalResponse:
-       oneOf:
-         - $ref: "#/components/schemas/MSSharePointPipelineMinimalResponse"
-         - $ref: "#/components/schemas/S3PipelineMinimalResponse"
-         - $ref: "#/components/schemas/SFTPPipelineMinimalResponse"
-         - $ref: "#/components/schemas/SDMPipelineMinimalResponse"
-         - $ref: "#/components/schemas/WorkZonePipelineMinimalResponse"
-       discriminator:
-         propertyName: type
-         mapping:
-           MSSharePoint: "#/components/schemas/MSSharePointPipelineMinimalResponse"
-           S3: "#/components/schemas/S3PipelineMinimalResponse"
-           SFTP: "#/components/schemas/SFTPPipelineMinimalResponse"
-           SDM: "#/components/schemas/SDMPipelineMinimalResponse"
-           WorkZone: "#/components/schemas/WorkZonePipelineMinimalResponse"
+      oneOf:
+        - $ref: "#/components/schemas/MSSharePointPipelineMinimalResponse"
+        - $ref: "#/components/schemas/S3PipelineMinimalResponse"
+        - $ref: "#/components/schemas/SFTPPipelineMinimalResponse"
+        - $ref: "#/components/schemas/SDMPipelineMinimalResponse"
+        - $ref: "#/components/schemas/WorkZonePipelineMinimalResponse"
+      discriminator:
+        propertyName: type
+        mapping:
+          MSSharePoint: "#/components/schemas/MSSharePointPipelineMinimalResponse"
+          S3: "#/components/schemas/S3PipelineMinimalResponse"
+          SFTP: "#/components/schemas/SFTPPipelineMinimalResponse"
+          SDM: "#/components/schemas/SDMPipelineMinimalResponse"
+          WorkZone: "#/components/schemas/WorkZonePipelineMinimalResponse"
 
     MSSharePointPipelineMinimalResponse:
       allOf:
@@ -1646,7 +1686,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1664,7 +1703,6 @@ components:
         - type: object
           required:
             - type
-            - configuration
           properties:
             type:
               type: string
@@ -1690,7 +1728,7 @@ components:
             metadata:
               type: boolean
               example: true
-
+      
     WorkZonePipelineMinimalResponse:
       allOf:
         - $ref: "#/components/schemas/BasePipelineMinimalResponse"
@@ -1771,7 +1809,7 @@ components:
       example:
         - /testFolder1
         - /testFolder2
-                  
+
     patchPipeline:
       type: object
       properties:
@@ -1798,6 +1836,9 @@ components:
                       nullable: false
                     nullable: false
                     minItems: 1
+                required:
+                  - key
+                  - value
               example:
                 - key: purpose
                   value:
@@ -2276,6 +2317,11 @@ components:
             Metadata attached to collection. Useful to restrict search to a
             subset of collections.
           default: []
+        id:
+          type: string
+          format: uuid
+          title: Id
+          description: Unique identifier of a collection.
       type: object
       required:
         - embeddingConfig
@@ -2959,6 +3005,44 @@ components:
       - msg
       - type
       title: ValidationError
+    DocumentBulkDeleteRequest:
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 100
+          title: Ids
+          description: List of document IDs to delete
+      type: object
+      required:
+        - ids
+      title: DocumentBulkDeleteRequest
+      description: A request to delete documents by their IDs.
+    DocumentBulkDeleteResponse:
+      properties:
+        deleted:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: Deleted
+          description: List of successfully deleted document IDs
+        notFound:
+          type: array
+          items:
+            type: string
+            format: uuid
+          title: NotFound
+          description: List of document IDs that were not found
+      type: object
+      required:
+        - deleted
+        - notFound
+      title: DocumentBulkDeleteResponse
+      description: Response after deleting documents in bulk.
 
     ### ###  ########################  ### ###
     ### ###  ###       Error      ###  ### ###

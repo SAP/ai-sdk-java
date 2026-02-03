@@ -17,9 +17,11 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
+import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_4;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_6;
@@ -46,6 +48,7 @@ import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
+import com.sap.ai.sdk.orchestration.model.ErrorResponseError;
 import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
@@ -269,6 +272,28 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void testGroundingWithConvenience() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("groundingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var dbFilters = DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.VECTOR);
+
+    var groundingConfig = Grounding.create().metadataParams("foo", "bar").filters(dbFilters);
+    var prompt = groundingConfig.createGroundingPrompt("Hello, what do you know?");
+    var configWithGrounding = config.withGrounding(groundingConfig);
+
+    final var response = client.chatCompletion(prompt, configWithGrounding);
+
+    final String request = fileLoaderStr.apply("groundingRequestMetadata.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
+  }
+
+  @Test
   void testGroundingWithHelpSapCom() throws IOException {
     stubFor(
         post(urlPathEqualTo("/v2/completion"))
@@ -396,13 +421,11 @@ class OrchestrationUnitTest {
                       "Request failed with status 400 (Bad Request): Missing required parameters: ['input']");
               assertThat(e.getErrorResponseStreaming()).isNull();
               assertThat(e.getErrorResponse()).isNotNull();
-              assertThat(e.getErrorResponse().getError().getMessage())
-                  .isEqualTo("Missing required parameters: ['input']");
-              assertThat(e.getErrorResponse().getError().getCode()).isEqualTo(SC_BAD_REQUEST);
-              assertThat(e.getErrorResponse().getError().getRequestId())
-                  .isEqualTo("51043a32-01f5-429a-b0e7-3a99432e43a4");
-              assertThat(e.getErrorResponse().getError().getLocation())
-                  .isEqualTo("Module: Templating");
+              val error = ((ErrorResponseError.InnerError) e.getErrorResponse().getError()).value();
+              assertThat(error.getMessage()).isEqualTo("Missing required parameters: ['input']");
+              assertThat(error.getCode()).isEqualTo(SC_BAD_REQUEST);
+              assertThat(error.getRequestId()).isEqualTo("51043a32-01f5-429a-b0e7-3a99432e43a4");
+              assertThat(error.getLocation()).isEqualTo("Module: Templating");
             });
   }
 
@@ -531,8 +554,9 @@ class OrchestrationUnitTest {
               final var errorResponse = e.getErrorResponse();
               assertThat(errorResponse).isNotNull();
               assertThat(errorResponse).isInstanceOf(ErrorResponse.class);
-              assertThat(errorResponse.getError().getCode()).isEqualTo(SC_BAD_REQUEST);
-              assertThat(errorResponse.getError().getMessage())
+              val error = ((ErrorResponseError.InnerError) errorResponse.getError()).value();
+              assertThat(error.getCode()).isEqualTo(SC_BAD_REQUEST);
+              assertThat(error.getMessage())
                   .isEqualTo(
                       "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
 
@@ -1237,7 +1261,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryById() throws IOException {
+  void testTemplateFromPromptRegistryByIdTenant() throws IOException {
     {
       stubFor(
           post(anyUrl())
@@ -1263,7 +1287,44 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryByScenario() throws IOException {
+  void testTemplateFromPromptRegistryByIdResourceGroup() throws IOException {
+    {
+      stubFor(
+          post(anyUrl())
+              .willReturn(
+                  aResponse()
+                      .withBodyFile("templateReferenceResourceGroupResponse.json")
+                      .withHeader("Content-Type", "application/json")));
+
+      var template =
+          TemplateConfig.reference()
+              .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
+              .withScope(RESOURCE_GROUP);
+      var config =
+          new OrchestrationModuleConfig()
+              .withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      var configWithTemplate = config.withTemplateConfig(template);
+
+      var inputParams =
+          Map.of(
+              "categories",
+              "Finance, Tech, Sports",
+              "inputExample",
+              "What's the latest news on the stock market?");
+      var prompt = new OrchestrationPrompt(inputParams);
+
+      final var response = client.chatCompletion(prompt, configWithTemplate);
+      assertThat(response.getContent()).startsWith("Finance");
+      assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating())
+          .hasSize(2);
+
+      final String request = fileLoaderStr.apply("templateReferenceResourceGroupByIdRequest.json");
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioTenant() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -1282,6 +1343,42 @@ class OrchestrationUnitTest {
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
     final String request = fileLoaderStr.apply("templateReferenceByScenarioRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioResourceGroup() throws IOException {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templateReferenceResourceGroupResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var template =
+        TemplateConfig.reference()
+            .byScenario("categorization")
+            .name("example-prompt-template")
+            .version("0.0.1")
+            .withScope(RESOURCE_GROUP);
+    var config =
+        new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+    var configWithTemplate = config.withTemplateConfig(template);
+
+    var inputParams =
+        Map.of(
+            "categories",
+            "Finance, Tech, Sports",
+            "inputExample",
+            "What's the latest news on the stock market?");
+    var prompt = new OrchestrationPrompt(inputParams);
+
+    final var response = client.chatCompletion(prompt, configWithTemplate);
+    assertThat(response.getContent()).startsWith("Finance");
+    assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
+
+    final String request =
+        fileLoaderStr.apply("templateReferenceResourceGroupByScenarioRequest.json");
     verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
   }
 
@@ -1323,6 +1420,62 @@ class OrchestrationUnitTest {
                         "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to deserialize");
+  }
+
+  @Test
+  void testExecuteFromReferenceById() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var reference = OrchestrationConfigReference.fromId("test-id");
+    final var response = client.chatCompletionUsingReference(reference);
+
+    final String expectedRequest = fileLoaderStr.apply("orchConfigByIdRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
+  }
+
+  @Test
+  void testExecuteFromReferenceBySNV() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    var reference =
+        OrchestrationConfigReference.fromScenario("scenario").name("name").version("0.0.1");
+    final var response = client.chatCompletionUsingReference(reference);
+
+    final String expectedRequest = fileLoaderStr.apply("orchConfigBySNVRequest.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
+  }
+
+  @Test
+  void testExecuteFromReferenceWithMessageHistoryAndInputParams() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    List<Message> history = List.of(new SystemMessage("System Message"));
+    var params = Map.of("placeholder", "value");
+    var reference =
+        OrchestrationConfigReference.fromScenario("scenario")
+            .name("name")
+            .version("0.0.1")
+            .withMessageHistory(history)
+            .withTemplateParameters(params);
+    final var response = client.chatCompletionUsingReference(reference);
+
+    final String expectedRequest = fileLoaderStr.apply("orchConfigByRequestHistoryParams.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
   }
 
   @Test

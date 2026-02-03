@@ -216,6 +216,17 @@ class OrchestrationController {
     return response.getContent();
   }
 
+  @GetMapping("/maskingRegex")
+  @Nonnull
+  Object maskingRegex(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.maskingRegex();
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
   @GetMapping("/completion/{resourceGroup}")
   @Nonnull
   Object completionWithResourceGroup(
@@ -296,22 +307,48 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  @GetMapping("/templateFromPromptRegistryById")
+  @GetMapping("/templateFromPromptRegistryByIdTenant")
   @Nonnull
-  Object templateFromPromptRegistryById(
+  Object templateFromPromptRegistryByIdTenant(
       @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.templateFromPromptRegistryById("cloud ERP systems");
+    final var response = service.templateFromPromptRegistryByIdTenant("cloud ERP systems");
     if ("json".equals(format)) {
       return response;
     }
     return response.getContent();
   }
 
-  @GetMapping("/templateFromPromptRegistryByScenario")
+  @GetMapping("/templateFromPromptRegistryByIdResourceGroup")
   @Nonnull
-  Object templateFromPromptRegistryByScenario(
+  Object templateFromPromptRegistryByIdResourceGroup(
       @RequestParam(value = "format", required = false) final String format) {
-    final var response = service.templateFromPromptRegistryByScenario("cloud ERP systems");
+    final var response =
+        service.templateFromPromptRegistryByIdResourceGroup(
+            "What's the latest news on the stock market?");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/templateFromPromptRegistryByScenarioTenant")
+  @Nonnull
+  Object templateFromPromptRegistryByScenarioTenant(
+      @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.templateFromPromptRegistryByScenarioTenant("cloud ERP systems");
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/templateFromPromptRegistryByScenarioResourceGroup")
+  @Nonnull
+  Object templateFromPromptRegistryByScenarioResourceGroup(
+      @RequestParam(value = "format", required = false) final String format) {
+    final var response =
+        service.templateFromPromptRegistryByScenarioResourceGroup(
+            "What's the latest news on the stock market?");
     if ("json".equals(format)) {
       return response;
     }
@@ -349,5 +386,15 @@ class OrchestrationController {
       return response;
     }
     return response.getEmbeddingVectors();
+  }
+
+  @GetMapping("/configFromRegistry")
+  @Nonnull
+  Object configFromRegistry(@RequestParam(value = "format", required = false) final String format) {
+    final var response = service.executeConfigFromReference();
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
   }
 }

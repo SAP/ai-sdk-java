@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.12.0-SNAPSHOT</version>
+    <version>1.16.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.foundationmodels</groupId>
@@ -41,7 +41,7 @@
     <coverage.complexity>81%</coverage.complexity>
     <coverage.line>91%</coverage.line>
     <coverage.instruction>88%</coverage.instruction>
-    <coverage.branch>79%</coverage.branch>
+    <coverage.branch>78%</coverage.branch>
     <coverage.method>90%</coverage.method>
     <coverage.class>92%</coverage.class>
   </properties>

@@ -1,5 +1,5 @@
 /*
- * Internal Orchestration Service API
+ * Orchestration v2
  * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -36,6 +38,9 @@ public class CompletionPostResponse
 
   @JsonProperty("final_result")
   private LLMModuleResult finalResult;
+
+  @JsonProperty("intermediate_failures")
+  private List<Error> intermediateFailures = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -141,6 +146,58 @@ public class CompletionPostResponse
   }
 
   /**
+   * Set the intermediateFailures of this {@link CompletionPostResponse} instance and return the
+   * same instance.
+   *
+   * @param intermediateFailures List of errors encountered during processing for unsuccessful
+   *     modules configurations
+   * @return The same instance of this {@link CompletionPostResponse} class
+   */
+  @Nonnull
+  public CompletionPostResponse intermediateFailures(
+      @Nullable final List<Error> intermediateFailures) {
+    this.intermediateFailures = intermediateFailures;
+    return this;
+  }
+
+  /**
+   * Add one intermediateFailures instance to this {@link CompletionPostResponse}.
+   *
+   * @param intermediateFailuresItem The intermediateFailures that should be added
+   * @return The same instance of type {@link CompletionPostResponse}
+   */
+  @Nonnull
+  public CompletionPostResponse addIntermediateFailuresItem(
+      @Nonnull final Error intermediateFailuresItem) {
+    if (this.intermediateFailures == null) {
+      this.intermediateFailures = new ArrayList<>();
+    }
+    this.intermediateFailures.add(intermediateFailuresItem);
+    return this;
+  }
+
+  /**
+   * List of errors encountered during processing for unsuccessful modules configurations
+   *
+   * @return intermediateFailures The intermediateFailures of this {@link CompletionPostResponse}
+   *     instance.
+   */
+  @Nonnull
+  public List<Error> getIntermediateFailures() {
+    return intermediateFailures;
+  }
+
+  /**
+   * Set the intermediateFailures of this {@link CompletionPostResponse} instance.
+   *
+   * @param intermediateFailures List of errors encountered during processing for unsuccessful
+   *     modules configurations
+   */
+  public void setIntermediateFailures(@Nullable final List<Error> intermediateFailures) {
+    this.intermediateFailures = intermediateFailures;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link CompletionPostResponse}.
    *
    * @return The set of properties names
@@ -182,6 +239,8 @@ public class CompletionPostResponse
     if (requestId != null) declaredFields.put("requestId", requestId);
     if (intermediateResults != null) declaredFields.put("intermediateResults", intermediateResults);
     if (finalResult != null) declaredFields.put("finalResult", finalResult);
+    if (intermediateFailures != null)
+      declaredFields.put("intermediateFailures", intermediateFailures);
     return declaredFields;
   }
 
@@ -209,12 +268,14 @@ public class CompletionPostResponse
     return Objects.equals(this.cloudSdkCustomFields, completionPostResponse.cloudSdkCustomFields)
         && Objects.equals(this.requestId, completionPostResponse.requestId)
         && Objects.equals(this.intermediateResults, completionPostResponse.intermediateResults)
-        && Objects.equals(this.finalResult, completionPostResponse.finalResult);
+        && Objects.equals(this.finalResult, completionPostResponse.finalResult)
+        && Objects.equals(this.intermediateFailures, completionPostResponse.intermediateFailures);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(requestId, intermediateResults, finalResult, cloudSdkCustomFields);
+    return Objects.hash(
+        requestId, intermediateResults, finalResult, intermediateFailures, cloudSdkCustomFields);
   }
 
   @Override
@@ -227,6 +288,9 @@ public class CompletionPostResponse
         .append(toIndentedString(intermediateResults))
         .append("\n");
     sb.append("    finalResult: ").append(toIndentedString(finalResult)).append("\n");
+    sb.append("    intermediateFailures: ")
+        .append(toIndentedString(intermediateFailures))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

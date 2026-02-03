@@ -38,7 +38,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
@@ -150,6 +149,25 @@ class OrchestrationTest {
     assertThat(result.getIntermediateResults().getOutputUnmasking()).isEmpty();
   }
 
+  @Test
+  void testMaskingRegex() {
+    var response = service.maskingRegex();
+    var result = response.getOriginalResponse();
+    var llmChoice = result.getFinalResult().getChoices().get(0);
+    assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
+
+    var maskingResult = result.getIntermediateResults().getInputMasking();
+    assertThat(maskingResult.getMessage()).isNotEmpty();
+    var data = (Map<String, Object>) maskingResult.getData();
+    var maskedMessage = (String) data.get("masked_template");
+    assertThat(maskedMessage)
+        .describedAs("The masked input should replace patient IDs with REDACTED_ID")
+        .doesNotContain("patient_id_123")
+        .contains("REDACTED_ID");
+
+    assertThat(result.getIntermediateResults().getOutputUnmasking()).isEmpty();
+  }
+
   @SuppressWarnings("unchecked")
   @Test
   void testMaskingPseudonymization() {
@@ -191,6 +209,9 @@ class OrchestrationTest {
     assertThat(result.getIntermediateResults().getGrounding().getData()).isNotNull();
     assertThat(result.getIntermediateResults().getGrounding().getMessage())
         .isEqualTo("grounding result");
+    var groundingData =
+        (Map<String, String>) result.getIntermediateResults().getGrounding().getData();
+    assertThat(groundingData.get("grounding_result")).contains("metadata");
 
     var maskingResult = result.getIntermediateResults().getInputMasking();
     assertThat(maskingResult.getMessage()).isNotEmpty();
@@ -222,7 +243,7 @@ class OrchestrationTest {
 
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .hasMessageContaining(
-            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 (Bad Request)")
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
@@ -278,7 +299,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("0 of \\d+ choices failed");
+    assertThat(filterResult.getMessage()).containsPattern("Choice 0: Filtering was skipped.");
   }
 
   @Test
@@ -286,7 +307,7 @@ class OrchestrationTest {
     assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
         .isInstanceOf(OrchestrationFilterException.Input.class)
         .hasMessageContaining(
-            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 (Bad Request)")
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
@@ -316,7 +337,7 @@ class OrchestrationTest {
     val result =
         service
             .imageInput(
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png")
+                "https://content.cdn.sap.com/is/image/sap/sap-locations-walldorf-photo-anvilwindow:XL")
             .getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
@@ -380,18 +401,41 @@ class OrchestrationTest {
   }
 
   @Test
-  @Disabled("This behaviour is not released to canary yet.")
-  void testTemplateFromPromptRegistryById() {
-    val result = service.templateFromPromptRegistryById("Cloud ERP systems").getOriginalResponse();
+  void testTemplateFromPromptRegistryByIdTenant() {
+    val result =
+        service.templateFromPromptRegistryByIdTenant("Cloud ERP systems").getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
-  @Disabled("This behaviour is not released to canary yet.")
-  void testTemplateFromPromptRegistryByScenario() {
+  void testTemplateFromPromptRegistryByIdResourceGroup() {
     val result =
-        service.templateFromPromptRegistryByScenario("Cloud ERP systems").getOriginalResponse();
+        service
+            .templateFromPromptRegistryByIdResourceGroup(
+                "What's the latest news on the stock market?")
+            .getOriginalResponse();
+    val choices = (result.getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioTenant() {
+    val result =
+        service
+            .templateFromPromptRegistryByScenarioTenant("Cloud ERP systems")
+            .getOriginalResponse();
+    val choices = (result.getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioResourceGroup() {
+    val result =
+        service
+            .templateFromPromptRegistryByScenarioResourceGroup(
+                "What's the latest news on the stock market?")
+            .getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
@@ -423,8 +467,10 @@ class OrchestrationTest {
 
   @Test
   void testStreamingErrorHandlingInputFilter() {
-    val prompt = new OrchestrationPrompt("Create 5 paraphrases of 'I hate you'.");
-    val filterConfig = new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE);
+    val msg =
+        "Please rephrase the following sentence for me: 'We shall destroy them all tonight', said the operator in-charge.";
+    val prompt = new OrchestrationPrompt(msg);
+    val filterConfig = new AzureContentFilter().violence(AzureFilterThreshold.ALLOW_SAFE);
     val configWithFilter = config.withInputFiltering(filterConfig);
 
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithFilter))
@@ -447,7 +493,6 @@ class OrchestrationTest {
   }
 
   @Test
-  @Disabled("This behaviour is not released to canary yet.")
   void testTranslation() {
     val result = service.translation();
     val content = result.getContent();
@@ -461,7 +506,8 @@ class OrchestrationTest {
         result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
     assertThat(inputTranslation).isNotNull();
     assertThat(outputTranslation).isNotNull();
-    assertThat(inputTranslation.getMessage()).isEqualTo("Input to LLM is translated successfully.");
+    assertThat(inputTranslation.getMessage())
+        .isEqualTo("Translated messages with roles: ['user']. ");
     assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
   }
 
@@ -501,5 +547,12 @@ class OrchestrationTest {
         .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400")
         .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
+  }
+
+  @Test
+  void testExecuteRequestFromReference() {
+    val result = service.executeConfigFromReference();
+    val choices = (result.getOriginalResponse().getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 }

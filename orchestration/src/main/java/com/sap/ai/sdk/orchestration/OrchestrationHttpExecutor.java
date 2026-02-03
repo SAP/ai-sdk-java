@@ -1,5 +1,8 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.core.common.RequestLogContext.Mode.STREAMING;
+import static com.sap.ai.sdk.core.common.RequestLogContext.Mode.SYNCHRONOUS;
+import static com.sap.ai.sdk.core.common.RequestLogContext.Service.ORCHESTRATION;
 import static com.sap.ai.sdk.orchestration.OrchestrationClientException.FACTORY;
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
@@ -8,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
+import com.sap.ai.sdk.core.common.RequestLogContext;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -45,7 +49,6 @@ class OrchestrationHttpExecutor {
       @Nonnull final List<Header> customHeaders) {
     try {
       val json = JACKSON.writeValueAsString(payload);
-      log.debug("Successfully serialized request into JSON payload");
       val request = new HttpPost(path);
       request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
       customHeaders.forEach(h -> request.addHeader(h.getName(), h.getValue()));
@@ -55,6 +58,10 @@ class OrchestrationHttpExecutor {
       val handler =
           new ClientResponseHandler<>(responseType, OrchestrationError.Synchronous.class, FACTORY)
               .objectMapper(JACKSON);
+      RequestLogContext.setEndpoint(path);
+      RequestLogContext.setMode(SYNCHRONOUS);
+      RequestLogContext.setService(ORCHESTRATION);
+      RequestLogContext.logRequestStart();
       return client.execute(request, handler);
 
     } catch (JsonProcessingException e) {
@@ -66,6 +73,8 @@ class OrchestrationHttpExecutor {
         | IOException e) {
       throw new OrchestrationClientException(
           "Request to Orchestration service failed for " + path, e);
+    } finally {
+      RequestLogContext.clear();
     }
   }
 
@@ -81,7 +90,10 @@ class OrchestrationHttpExecutor {
       customHeaders.forEach(h -> request.addHeader(h.getName(), h.getValue()));
 
       val client = getHttpClient();
-
+      RequestLogContext.setEndpoint(path);
+      RequestLogContext.setMode(STREAMING);
+      RequestLogContext.setService(ORCHESTRATION);
+      RequestLogContext.logRequestStart();
       return new ClientStreamingHandler<>(
               OrchestrationChatCompletionDelta.class, OrchestrationError.Streaming.class, FACTORY)
           .objectMapper(JACKSON)
@@ -93,13 +105,15 @@ class OrchestrationHttpExecutor {
     } catch (IOException e) {
       throw new OrchestrationClientException(
           "Streaming request to the Orchestration service failed", e);
+    } finally {
+      RequestLogContext.clear();
     }
   }
 
   @Nonnull
   private HttpClient getHttpClient() {
     val destination = destinationSupplier.get();
-    log.debug("Using destination {} to connect to orchestration service", destination);
+    RequestLogContext.setDestination(destination.getUri().toString());
     return ApacheHttpClient5Accessor.getHttpClient(destination);
   }
 }

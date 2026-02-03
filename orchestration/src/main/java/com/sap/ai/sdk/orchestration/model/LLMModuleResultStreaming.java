@@ -1,5 +1,5 @@
 /*
- * Internal Orchestration Service API
+ * Orchestration v2
  * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
@@ -51,6 +51,9 @@ public class LLMModuleResultStreaming
 
   @JsonProperty("usage")
   private TokenUsage usage;
+
+  @JsonProperty("citations")
+  private List<Citation> citations = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -293,6 +296,53 @@ public class LLMModuleResultStreaming
   }
 
   /**
+   * Set the citations of this {@link LLMModuleResultStreaming} instance and return the same
+   * instance.
+   *
+   * @param citations List of citations associated with the response.
+   * @return The same instance of this {@link LLMModuleResultStreaming} class
+   */
+  @Nonnull
+  public LLMModuleResultStreaming citations(@Nullable final List<Citation> citations) {
+    this.citations = citations;
+    return this;
+  }
+
+  /**
+   * Add one citations instance to this {@link LLMModuleResultStreaming}.
+   *
+   * @param citationsItem The citations that should be added
+   * @return The same instance of type {@link LLMModuleResultStreaming}
+   */
+  @Nonnull
+  public LLMModuleResultStreaming addCitationsItem(@Nonnull final Citation citationsItem) {
+    if (this.citations == null) {
+      this.citations = new ArrayList<>();
+    }
+    this.citations.add(citationsItem);
+    return this;
+  }
+
+  /**
+   * List of citations associated with the response.
+   *
+   * @return citations The citations of this {@link LLMModuleResultStreaming} instance.
+   */
+  @Nonnull
+  public List<Citation> getCitations() {
+    return citations;
+  }
+
+  /**
+   * Set the citations of this {@link LLMModuleResultStreaming} instance.
+   *
+   * @param citations List of citations associated with the response.
+   */
+  public void setCitations(@Nullable final List<Citation> citations) {
+    this.citations = citations;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link LLMModuleResultStreaming}.
    *
    * @return The set of properties names
@@ -338,6 +388,7 @@ public class LLMModuleResultStreaming
     if (systemFingerprint != null) declaredFields.put("systemFingerprint", systemFingerprint);
     if (choices != null) declaredFields.put("choices", choices);
     if (usage != null) declaredFields.put("usage", usage);
+    if (citations != null) declaredFields.put("citations", citations);
     return declaredFields;
   }
 
@@ -369,13 +420,22 @@ public class LLMModuleResultStreaming
         && Objects.equals(this.model, llMModuleResultStreaming.model)
         && Objects.equals(this.systemFingerprint, llMModuleResultStreaming.systemFingerprint)
         && Objects.equals(this.choices, llMModuleResultStreaming.choices)
-        && Objects.equals(this.usage, llMModuleResultStreaming.usage);
+        && Objects.equals(this.usage, llMModuleResultStreaming.usage)
+        && Objects.equals(this.citations, llMModuleResultStreaming.citations);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        id, _object, created, model, systemFingerprint, choices, usage, cloudSdkCustomFields);
+        id,
+        _object,
+        created,
+        model,
+        systemFingerprint,
+        choices,
+        usage,
+        citations,
+        cloudSdkCustomFields);
   }
 
   @Override
@@ -390,6 +450,7 @@ public class LLMModuleResultStreaming
     sb.append("    systemFingerprint: ").append(toIndentedString(systemFingerprint)).append("\n");
     sb.append("    choices: ").append(toIndentedString(choices)).append("\n");
     sb.append("    usage: ").append(toIndentedString(usage)).append("\n");
+    sb.append("    citations: ").append(toIndentedString(citations)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

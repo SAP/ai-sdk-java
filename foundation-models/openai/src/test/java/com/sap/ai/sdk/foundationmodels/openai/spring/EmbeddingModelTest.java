@@ -19,7 +19,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.embedding.EmbeddingOptionsBuilder;
+import org.springframework.ai.embedding.EmbeddingOptions;
 import org.springframework.ai.embedding.EmbeddingRequest;
 
 class EmbeddingModelTest {
@@ -36,7 +36,7 @@ class EmbeddingModelTest {
   void testCallWithValidEmbeddingRequest() {
     val texts = List.of("Some text");
     val springAiRequest =
-        new EmbeddingRequest(texts, EmbeddingOptionsBuilder.builder().withDimensions(128).build());
+        new EmbeddingRequest(texts, EmbeddingOptions.builder().dimensions(128).build());
 
     val expectedOpenAiResponse =
         new ObjectMapper()
@@ -46,7 +46,7 @@ class EmbeddingModelTest {
 
     val expectedOpenAiRequest =
         new EmbeddingsCreateRequest()
-            .input(EmbeddingsCreateRequestInput.create(texts))
+            .input(EmbeddingsCreateRequestInput.createListOfStrings(texts))
             .dimensions(128);
 
     when(client.embedding(assertArg(assertRecursiveEquals(expectedOpenAiRequest))))
@@ -67,7 +67,7 @@ class EmbeddingModelTest {
   void testCallWithModelOptionSetThrows() {
     val springAiRequest =
         new EmbeddingRequest(
-            List.of("Some text"), EmbeddingOptionsBuilder.builder().withModel("model").build());
+            List.of("Some text"), EmbeddingOptions.builder().model("model").build());
 
     val model = new OpenAiSpringEmbeddingModel(client);
 
@@ -89,9 +89,9 @@ class EmbeddingModelTest {
                 getClass().getClassLoader().getResource("__files/embeddingResponse.json"),
                 EmbeddingsCreate200Response.class);
 
+    val docs = List.of(document.getFormattedContent());
     val expectedOpenAiRequest =
-        new EmbeddingsCreateRequest()
-            .input(EmbeddingsCreateRequestInput.create(List.of(document.getFormattedContent())));
+        new EmbeddingsCreateRequest().input(EmbeddingsCreateRequestInput.createListOfStrings(docs));
 
     when(client.embedding(assertArg(assertRecursiveEquals(expectedOpenAiRequest))))
         .thenReturn(expectedOpenAiResponse);
