@@ -438,18 +438,21 @@ class OrchestrationUnitTest {
                     .withBodyFile("filteringLooseResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var azureFilter =
+    final var azureInputFilter =
         new AzureContentFilter()
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
             .violence(ALLOW_SAFE_LOW_MEDIUM);
+    final var azureOutputFilter = azureInputFilter.protectedMaterialCode(true);
 
     final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
 
     client.chatCompletion(
         prompt,
-        config.withInputFiltering(azureFilter, llamaFilter).withOutputFiltering(azureFilter));
+        config
+            .withInputFiltering(azureInputFilter, llamaFilter)
+            .withOutputFiltering(azureOutputFilter));
     // the result is asserted in the verify step below
 
     // verify that null fields are absent from the sent request
@@ -464,19 +467,20 @@ class OrchestrationUnitTest {
         post(anyUrl())
             .willReturn(aResponse().withBody(res).withHeader("Content-Type", "application/json")));
 
-    final var azureFilter =
+    final var azureInputFilter =
         new AzureContentFilter()
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
             .violence(ALLOW_SAFE_LOW_MEDIUM);
+    final var azureOutputFilter = azureInputFilter.protectedMaterialCode(true);
 
     final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
 
     OrchestrationModuleConfig myConfig =
         config
-            .withInputFiltering(azureFilter, llamaFilter)
-            .withOutputFiltering(azureFilter)
+            .withInputFiltering(azureInputFilter, llamaFilter)
+            .withOutputFiltering(azureOutputFilter)
             .withOutputFilteringStreamOptions(FilteringStreamOptions.create().overlap(1_000));
 
     Stream<String> result = client.streamChatCompletion(prompt, myConfig);
@@ -580,7 +584,8 @@ class OrchestrationUnitTest {
             .hate(ALLOW_SAFE)
             .selfHarm(ALLOW_SAFE)
             .sexual(ALLOW_SAFE)
-            .violence(ALLOW_SAFE);
+            .violence(ALLOW_SAFE)
+            .protectedMaterialCode(true);
 
     final var llamaFilter =
         new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
@@ -601,7 +606,8 @@ class OrchestrationUnitTest {
                               "Hate", 6,
                               "SelfHarm", 0,
                               "Sexual", 0,
-                              "Violence", 6),
+                              "Violence", 6,
+                              "protectedMaterialCode", false),
                           "llama_guard_3_8b",
                           Map.of("violent_crimes", true)));
               assertThat(e.getErrorResponse()).isNull();
@@ -612,6 +618,7 @@ class OrchestrationUnitTest {
               assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
               assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
               assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput().isProtectedMaterialCode()).isFalse();
 
               assertThat(e.getLlamaGuard38b()).isNotNull();
               assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
