@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.rpt;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiModel;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -11,6 +12,7 @@ import javax.annotation.Nullable;
  * @param version The version of the model (optional).
  * @since 1.16.0
  */
+@Beta
 public record RptModel(@Nonnull String name, @Nullable String version) implements AiModel {
 
   /** SAP RPT 1 Small model. */
