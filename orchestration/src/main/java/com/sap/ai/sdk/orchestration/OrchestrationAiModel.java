@@ -334,7 +334,13 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_2_5_PRO =
       new OrchestrationAiModel("gemini-2.5-pro");
 
-  /** Alephalpha-pharia-1-7b-control model */
+  /**
+   * Alephalpha-pharia-1-7b-control model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-10-31.The
+   *     suggested replacement model is {@link OrchestrationAiModel#MISTRAL_SMALL_INSTRUCT}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel ALEPHALPHA_PHARIA_1_7B_CONTROL =
       new OrchestrationAiModel("alephalpha-pharia-1-7b-control");
 
