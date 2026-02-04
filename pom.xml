@@ -34,6 +34,7 @@
     <module>core-services/document-grounding</module>
     <module>core-services/prompt-registry</module>
     <module>foundation-models/openai</module>
+    <module>foundation-models/sap-rpt</module>
   </modules>
   <scm>
     <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
@@ -810,7 +811,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       </activation>
       <modules>
         <module>sample-code/spring-app</module>
-        <module>foundation-models/sap-rpt</module>
       </modules>
     </profile>
     <profile>
