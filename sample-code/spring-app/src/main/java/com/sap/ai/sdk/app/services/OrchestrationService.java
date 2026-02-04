@@ -203,7 +203,9 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
+  public OrchestrationChatResponse outputFiltering(
+      @Nonnull final AzureFilterThreshold policy) {
+    val isProtected = true; // enforce protected material code filtering
 
     val systemMessage = Message.system("Give three paraphrases for the following sentence");
     // Reliably triggering the content filter of models fine-tuned for ethical compliance
@@ -212,7 +214,12 @@ public class OrchestrationService {
         new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.")
             .messageHistory(List.of(systemMessage));
     val filterConfig =
-        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+        new AzureContentFilter()
+            .hate(policy)
+            .selfHarm(policy)
+            .sexual(policy)
+            .violence(policy)
+            .protectedMaterialCode(isProtected);
 
     val configWithFilter = config.withOutputFiltering(filterConfig);
     return client.chatCompletion(prompt, configWithFilter);
