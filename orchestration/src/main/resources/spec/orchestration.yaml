@@ -291,7 +291,7 @@ components:
         - type: string
           description: "A single base64 string representing the embedding."
 
-    # Chat Completion Schemas 123
+    # Chat Completion Schemas 123456
     ChatMessages:
       type: array
       items:
