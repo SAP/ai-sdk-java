@@ -165,7 +165,7 @@ jobs:
             --workflow "${{ github.workflow }}" \
             --branch improve-spec-update-workflow \
             --limit 2 \
-            --json databaseId,status,conclusion,display_name \
+            --json databaseId,status,conclusion,displayTitle \
             --jq "map(select(.databaseId != ${CURRENT_RUN} and (.displayTitle == \"${RUN_TOKEN}\"))) | .[0]")
             # todo: change branch above to main
             
