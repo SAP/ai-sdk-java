@@ -143,7 +143,7 @@ jobs:
       - name: Print spec contents for debugging
         run: |
           echo "=== Contents of $FILE_PATH ==="
-          cat -n "$FILE_PATH"
+          cat -n "orchestration/src/main/resources/spec/orchestration.yaml"
           echo "=== End of file ==="
 
       - name: "Exit if there are no changes"
