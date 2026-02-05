@@ -291,7 +291,7 @@ components:
         - type: string
           description: "A single base64 string representing the embedding."
 
-    # Chat Completion Schemas
+    # Chat Completion Schemas 12345
     ChatMessages:
       type: array
       items:
@@ -323,7 +323,7 @@ components:
         - content
     ChatMessageContent:
       oneOf:
-        - type: integer
+        - type: string
         - type: array
           items:
             $ref: "#/components/schemas/TextContent"
