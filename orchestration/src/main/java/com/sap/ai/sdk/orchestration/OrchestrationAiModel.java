@@ -259,7 +259,13 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-4o model */
   public static final OrchestrationAiModel GPT_4O = new OrchestrationAiModel("gpt-4o");
 
-  /** Azure OpenAI GPT-4o-mini model */
+  /**
+   * Azure OpenAI GPT-4o-mini model
+   *
+   * @deprecated This model is deprecated on AI Core.The suggested replacement model is {@link
+   *     OrchestrationAiModel#GPT_5_MINI}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GPT_4O_MINI = new OrchestrationAiModel("gpt-4o-mini");
 
   /** Azure OpenAI o1 model */
