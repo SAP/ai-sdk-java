@@ -1,4 +1,5 @@
-name: "Spec File Update Workflow: ${{ github.event.inputs.file }}-${{ github.event.inputs.file-ref }}"
+name: "Spec File Update Workflow"
+run-name: "Spec File Update Workflow: ${{ github.event.inputs.file }}-${{ github.event.inputs.file-ref }}"
 
 on:
   workflow_dispatch:
@@ -156,7 +157,7 @@ jobs:
             # The current run of this workflow
             CURRENT_RUN=${{ github.run_id }}
           
-            # name must match the workflow name pattern above
+            # name must match the workflow run-name pattern above
             RUN_NAME="Spec File Update Workflow: $CHOICE-$REF"
             
             # Get the most recent completed run of this workflow on the current branch
@@ -164,8 +165,8 @@ jobs:
             --workflow "${{ github.workflow }}" \
             --branch improve-spec-update-workflow \
             --limit 2 \
-            --json databaseId,status,conclusion \
-            --jq "map(select(.databaseId != ${CURRENT_RUN} and (.name | contains(\"${RUN_TOKEN}\")))) | .[0]")
+            --json databaseId,status,conclusion,display_name \
+            --jq "map(select(.databaseId != ${CURRENT_RUN} and (.display_name == \"${RUN_TOKEN}\"))) | .[0]")
             # todo: change branch above to main
             
             if [ -n "$PREVIOUS_RUN" ] && [ "$PREVIOUS_RUN" != "null" ]; then
