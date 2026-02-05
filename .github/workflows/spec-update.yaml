@@ -140,13 +140,43 @@ jobs:
           
           gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
 
-      - name: "Exit if there are no changes"
+      - name: "Exit if there are no spec changes"
         id: spec_diff
         run: |
+          # if there are no spec changes in this commit, check if previous run on this branch is red. If it is red, exit 1; if it is green, exit 0.
           if [[ `git status --porcelain` ]]; then
+            echo "Spec changes detected, continuing with generation."
             echo "spec_diff=true" >> "$GITHUB_OUTPUT"
           else
+            echo "No spec changes detected. Checking status of previous run."
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
+          
+            # The current run of this workflow
+            CURRENT_RUN=${{ github.run_id }}
+            
+            # Get the most recent completed run of this workflow on the current branch
+            PREVIOUS_RUN=$(gh run list \
+            --workflow "${{ github.workflow }}" \
+            --branch "${{ steps.branch.outputs.branch }}" \
+            --limit 2 \
+            --json databaseId,status,conclusion \
+            --jq "map(select(.databaseId != ${CURRENT_RUN})) | .[0]")
+            
+            if [ -n "$PREVIOUS_RUN" ] && [ "$PREVIOUS_RUN" != "null" ]; then
+              CONCLUSION=$(echo "$PREVIOUS_RUN" | jq -r '.conclusion')
+              echo "Previous run conclusion: $CONCLUSION"
+            
+              if [ "$CONCLUSION" = "failure" ]; then
+                echo "Previous run failed and there were no spec changes since, thus failing this run as well."
+                echo "prev_run_success=false" >> "$GITHUB_OUTPUT"
+              else
+                echo "Previous run succeeded and there were no spec changes since, thus the current run succeeds as well."
+                echo "prev_run_success=true" >> "$GITHUB_OUTPUT"
+              fi
+            else
+              echo "There was no previous run, thus the current run succeeds."
+              echo "prev_run_success=true" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       - name: "Generate"
@@ -234,6 +264,10 @@ jobs:
           echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
           echo "| File Download | ${{ steps.download.outcome == 'success' && '✅' || '❌' }} ${{ steps.download.outcome }}" >> $GITHUB_STEP_SUMMARY
           echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}" >> $GITHUB_STEP_SUMMARY
+          
+          if ${{ steps.spec_diff.outputs.spec_diff == 'false' }}; then
+            echo "| Outcome Previous Run | ${{ steps.spec_diff.outputs.prev_run_success == 'true' && '✅: Current run succeeds as a result.' || '❌: Current run fails as a result.' }}" >> $GITHUB_STEP_SUMMARY
+          fi
           
           if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
             echo "| Client Generation | ${{ steps.generate.outputs.generation_result == 'success' && '✅' || '❌' }} ${{ steps.generate.outputs.generation_result }}" >> $GITHUB_STEP_SUMMARY
