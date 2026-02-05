@@ -323,7 +323,7 @@ components:
         - content
     ChatMessageContent:
       oneOf:
-        - type: string
+        - type: integer
         - type: array
           items:
             $ref: "#/components/schemas/TextContent"
