@@ -140,6 +140,12 @@ jobs:
           
           gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
 
+      - name: Print spec contents for debugging
+        run: |
+          echo "=== Contents of $FILE_PATH ==="
+          cat -n "$FILE_PATH"
+          echo "=== End of file ==="
+
       - name: "Exit if there are no changes"
         id: spec_diff
         run: |
