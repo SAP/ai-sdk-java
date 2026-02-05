@@ -167,7 +167,7 @@ jobs:
             --branch improve-spec-update-workflow \
             --limit 2 \
             --json databaseId,status,conclusion,displayTitle \
-            --jq "map(select(.databaseId != ${CURRENT_RUN} and (.displayTitle | contains(\"${RUN_NAME}\")) | .[0]")
+            --jq "map(select(.databaseId != ${CURRENT_RUN} and (.displayTitle | contains(\"${RUN_NAME}\")))) | .[0]")
             # todo: change branch above to main
             # and (.displayTitle == \"${RUN_TOKEN}\")
           
