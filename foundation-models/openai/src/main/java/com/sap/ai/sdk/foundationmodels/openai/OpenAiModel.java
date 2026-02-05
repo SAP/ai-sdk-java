@@ -16,8 +16,12 @@ import javax.annotation.Nullable;
  */
 public record OpenAiModel(@Nonnull String name, @Nullable String version) implements AiModel {
 
-  /** internal [Azure OpenAI dall-e-3 model] */
-  public static final OpenAiModel DALL_E_3 = new OpenAiModel("dall-e-3", null);
+  /**
+   * internal [Azure OpenAI dall-e-3 model]
+   *
+   * @deprecated This model is deprecated on AI Core.
+   */
+  @Deprecated public static final OpenAiModel DALL_E_3 = new OpenAiModel("dall-e-3", null);
 
   /**
    * Azure OpenAI GPT-3.5 Turbo model

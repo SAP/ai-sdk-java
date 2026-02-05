@@ -132,7 +132,12 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_3_5_SONNET =
       new OrchestrationAiModel("anthropic--claude-3.5-sonnet");
 
-  /** Anthropic Claude 3.7 Sonnet model */
+  /**
+   * Anthropic Claude 3.7 Sonnet model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-04-28.
+   */
+  @Deprecated
   public static final OrchestrationAiModel CLAUDE_3_7_SONNET =
       new OrchestrationAiModel("anthropic--claude-3.7-sonnet");
 
@@ -320,11 +325,21 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_1_5_FLASH =
       new OrchestrationAiModel("gemini-1.5-flash");
 
-  /** Google Cloud Platform Gemini 2.0 Flash model */
+  /**
+   * Google Cloud Platform Gemini 2.0 Flash model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2026-02-05.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GEMINI_2_0_FLASH =
       new OrchestrationAiModel("gemini-2.0-flash");
 
-  /** Google Cloud Platform Gemini 2.0 Flash-Lite model */
+  /**
+   * Google Cloud Platform Gemini 2.0 Flash-Lite model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2026-02-25.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GEMINI_2_0_FLASH_LITE =
       new OrchestrationAiModel("gemini-2.0-flash-lite");
 
