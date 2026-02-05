@@ -35,19 +35,19 @@ public interface ChatMessageContent {
     return new ListOfTextContents(val);
   }
 
-  /** Helper class to create {@code Integer } that implements {@link ChatMessageContent}. */
-  record InnerInteger(@com.fasterxml.jackson.annotation.JsonValue @Nonnull Integer value)
+  /** Helper class to create {@code String } that implements {@link ChatMessageContent}. */
+  record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
       implements ChatMessageContent {}
 
   /**
-   * Creator to enable deserialization of {@code Integer }.
+   * Creator to enable deserialization of {@code String }.
    *
    * @param val the value to use
-   * @return a new instance of {@link InnerInteger}.
+   * @return a new instance of {@link InnerString}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static InnerInteger create(@Nonnull final Integer val) {
-    return new InnerInteger(val);
+  static InnerString create(@Nonnull final String val) {
+    return new InnerString(val);
   }
 }
