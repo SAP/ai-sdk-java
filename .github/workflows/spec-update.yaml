@@ -142,6 +142,8 @@ jobs:
 
       - name: "Exit if there are no spec changes"
         id: spec_diff
+        env:
+          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
         run: |
           # if there are no spec changes in this commit, check if previous run on this branch is red. If it is red, exit 1; if it is green, exit 0.
           if [[ `git status --porcelain` ]]; then
