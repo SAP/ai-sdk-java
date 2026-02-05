@@ -31,7 +31,7 @@ public class SpringAiOpenAiService {
   private final OpenAiSpringEmbeddingModel embeddingClient =
       new OpenAiSpringEmbeddingModel(OpenAiClient.forModel(OpenAiModel.TEXT_EMBEDDING_3_SMALL));
   private final ChatModel chatClient =
-      new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI));
+      new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.GPT_5_MINI));
 
   /**
    * Embeds a list of strings using the OpenAI embedding model.

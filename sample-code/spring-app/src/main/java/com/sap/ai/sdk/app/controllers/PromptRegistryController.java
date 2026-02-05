@@ -128,7 +128,7 @@ class PromptRegistryController {
 
   @GetMapping("/promptRegistryToSpringAi")
   Generation promptRegistryToSpringAi() {
-    val openAiClient = new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI));
+    val openAiClient = new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.GPT_5_MINI));
     val repository = new InMemoryChatMemoryRepository();
     val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
