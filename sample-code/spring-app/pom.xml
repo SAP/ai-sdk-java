@@ -34,7 +34,7 @@
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
     <spring-boot.version>3.5.10</spring-boot.version>
-    <logback.version>1.5.26</logback.version>
+    <logback.version>1.5.27</logback.version>
     <cf-logging.version>4.1.0</cf-logging.version>
     <apache-tomcat-embed.version>11.0.18</apache-tomcat-embed.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
