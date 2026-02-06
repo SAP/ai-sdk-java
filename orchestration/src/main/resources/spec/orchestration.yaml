@@ -359,7 +359,7 @@ components:
         - role
     UserChatMessageContent:
       oneOf:
-        - type: boolean
+        - type: string
         - type: array
           items:
             $ref: "#/components/schemas/UserChatMessageContentItem"
