@@ -607,7 +607,7 @@ class OrchestrationUnitTest {
                               "SelfHarm", 0,
                               "Sexual", 0,
                               "Violence", 6,
-                              "protectedMaterialCode", false),
+                              "ProtectedMaterialCode", false),
                           "llama_guard_3_8b",
                           Map.of("violent_crimes", true)));
               assertThat(e.getErrorResponse()).isNull();

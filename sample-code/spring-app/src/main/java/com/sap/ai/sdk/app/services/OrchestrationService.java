@@ -203,8 +203,7 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse outputFiltering(
-      @Nonnull final AzureFilterThreshold policy) {
+  public OrchestrationChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
     val isProtected = true; // enforce protected material code filtering
 
     val systemMessage = Message.system("Give three paraphrases for the following sentence");

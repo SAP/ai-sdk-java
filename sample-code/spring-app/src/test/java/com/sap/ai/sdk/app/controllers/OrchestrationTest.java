@@ -300,7 +300,8 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("Choice 0: Filtering passed successfully.");
+    assertThat(filterResult.getMessage())
+        .containsPattern("Choice 0: Filtering passed successfully.");
   }
 
   @Test
