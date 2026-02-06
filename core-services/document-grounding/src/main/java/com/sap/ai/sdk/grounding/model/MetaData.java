@@ -34,7 +34,7 @@ public class MetaData
   private String destination;
 
   @JsonProperty("dataRepositoryMetadata")
-  private List<MetaDataKeyValuePairStrict> dataRepositoryMetadata = new ArrayList<>();
+  private List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -81,7 +81,7 @@ public class MetaData
    */
   @Nonnull
   public MetaData dataRepositoryMetadata(
-      @Nullable final List<MetaDataKeyValuePairStrict> dataRepositoryMetadata) {
+      @Nullable final List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
     return this;
   }
@@ -94,7 +94,7 @@ public class MetaData
    */
   @Nonnull
   public MetaData addDataRepositoryMetadataItem(
-      @Nonnull final MetaDataKeyValuePairStrict dataRepositoryMetadataItem) {
+      @Nonnull final MetaDataDataRepositoryMetadataInner dataRepositoryMetadataItem) {
     if (this.dataRepositoryMetadata == null) {
       this.dataRepositoryMetadata = new ArrayList<>();
     }
@@ -108,7 +108,7 @@ public class MetaData
    * @return dataRepositoryMetadata The dataRepositoryMetadata of this {@link MetaData} instance.
    */
   @Nonnull
-  public List<MetaDataKeyValuePairStrict> getDataRepositoryMetadata() {
+  public List<MetaDataDataRepositoryMetadataInner> getDataRepositoryMetadata() {
     return dataRepositoryMetadata;
   }
 
@@ -118,7 +118,7 @@ public class MetaData
    * @param dataRepositoryMetadata The dataRepositoryMetadata of this {@link MetaData}
    */
   public void setDataRepositoryMetadata(
-      @Nullable final List<MetaDataKeyValuePairStrict> dataRepositoryMetadata) {
+      @Nullable final List<MetaDataDataRepositoryMetadataInner> dataRepositoryMetadata) {
     this.dataRepositoryMetadata = dataRepositoryMetadata;
   }
 

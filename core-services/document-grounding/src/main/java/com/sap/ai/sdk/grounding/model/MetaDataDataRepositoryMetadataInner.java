@@ -26,9 +26,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** SearchPipelineDataRepositoryMetadataInner */
+/** MetaDataDataRepositoryMetadataInner */
 // CHECKSTYLE:OFF
-public class SearchPipelineDataRepositoryMetadataInner
+public class MetaDataDataRepositoryMetadataInner
 // CHECKSTYLE:ON
 {
   @JsonProperty("key")
@@ -40,18 +40,18 @@ public class SearchPipelineDataRepositoryMetadataInner
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for SearchPipelineDataRepositoryMetadataInner. */
-  protected SearchPipelineDataRepositoryMetadataInner() {}
+  /** Default constructor for MetaDataDataRepositoryMetadataInner. */
+  protected MetaDataDataRepositoryMetadataInner() {}
 
   /**
-   * Set the key of this {@link SearchPipelineDataRepositoryMetadataInner} instance and return the
-   * same instance.
+   * Set the key of this {@link MetaDataDataRepositoryMetadataInner} instance and return the same
+   * instance.
    *
-   * @param key The key of this {@link SearchPipelineDataRepositoryMetadataInner}
-   * @return The same instance of this {@link SearchPipelineDataRepositoryMetadataInner} class
+   * @param key The key of this {@link MetaDataDataRepositoryMetadataInner}
+   * @return The same instance of this {@link MetaDataDataRepositoryMetadataInner} class
    */
   @Nonnull
-  public SearchPipelineDataRepositoryMetadataInner key(@Nonnull final String key) {
+  public MetaDataDataRepositoryMetadataInner key(@Nonnull final String key) {
     this.key = key;
     return this;
   }
@@ -59,7 +59,7 @@ public class SearchPipelineDataRepositoryMetadataInner
   /**
    * Get key
    *
-   * @return key The key of this {@link SearchPipelineDataRepositoryMetadataInner} instance.
+   * @return key The key of this {@link MetaDataDataRepositoryMetadataInner} instance.
    */
   @Nonnull
   public String getKey() {
@@ -67,35 +67,35 @@ public class SearchPipelineDataRepositoryMetadataInner
   }
 
   /**
-   * Set the key of this {@link SearchPipelineDataRepositoryMetadataInner} instance.
+   * Set the key of this {@link MetaDataDataRepositoryMetadataInner} instance.
    *
-   * @param key The key of this {@link SearchPipelineDataRepositoryMetadataInner}
+   * @param key The key of this {@link MetaDataDataRepositoryMetadataInner}
    */
   public void setKey(@Nonnull final String key) {
     this.key = key;
   }
 
   /**
-   * Set the value of this {@link SearchPipelineDataRepositoryMetadataInner} instance and return the
-   * same instance.
+   * Set the value of this {@link MetaDataDataRepositoryMetadataInner} instance and return the same
+   * instance.
    *
-   * @param value The value of this {@link SearchPipelineDataRepositoryMetadataInner}
-   * @return The same instance of this {@link SearchPipelineDataRepositoryMetadataInner} class
+   * @param value The value of this {@link MetaDataDataRepositoryMetadataInner}
+   * @return The same instance of this {@link MetaDataDataRepositoryMetadataInner} class
    */
   @Nonnull
-  public SearchPipelineDataRepositoryMetadataInner value(@Nonnull final List<String> value) {
+  public MetaDataDataRepositoryMetadataInner value(@Nonnull final List<String> value) {
     this.value = value;
     return this;
   }
 
   /**
-   * Add one value instance to this {@link SearchPipelineDataRepositoryMetadataInner}.
+   * Add one value instance to this {@link MetaDataDataRepositoryMetadataInner}.
    *
    * @param valueItem The value that should be added
-   * @return The same instance of type {@link SearchPipelineDataRepositoryMetadataInner}
+   * @return The same instance of type {@link MetaDataDataRepositoryMetadataInner}
    */
   @Nonnull
-  public SearchPipelineDataRepositoryMetadataInner addValueItem(@Nonnull final String valueItem) {
+  public MetaDataDataRepositoryMetadataInner addValueItem(@Nonnull final String valueItem) {
     if (this.value == null) {
       this.value = new ArrayList<>();
     }
@@ -106,7 +106,7 @@ public class SearchPipelineDataRepositoryMetadataInner
   /**
    * Get value
    *
-   * @return value The value of this {@link SearchPipelineDataRepositoryMetadataInner} instance.
+   * @return value The value of this {@link MetaDataDataRepositoryMetadataInner} instance.
    */
   @Nonnull
   public List<String> getValue() {
@@ -114,9 +114,9 @@ public class SearchPipelineDataRepositoryMetadataInner
   }
 
   /**
-   * Set the value of this {@link SearchPipelineDataRepositoryMetadataInner} instance.
+   * Set the value of this {@link MetaDataDataRepositoryMetadataInner} instance.
    *
-   * @param value The value of this {@link SearchPipelineDataRepositoryMetadataInner}
+   * @param value The value of this {@link MetaDataDataRepositoryMetadataInner}
    */
   public void setValue(@Nonnull final List<String> value) {
     this.value = value;
@@ -124,7 +124,7 @@ public class SearchPipelineDataRepositoryMetadataInner
 
   /**
    * Get the names of the unrecognizable properties of the {@link
-   * SearchPipelineDataRepositoryMetadataInner}.
+   * MetaDataDataRepositoryMetadataInner}.
    *
    * @return The set of properties names
    */
@@ -135,8 +135,8 @@ public class SearchPipelineDataRepositoryMetadataInner
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link
-   * SearchPipelineDataRepositoryMetadataInner} instance.
+   * Get the value of an unrecognizable property of this {@link MetaDataDataRepositoryMetadataInner}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -148,14 +148,14 @@ public class SearchPipelineDataRepositoryMetadataInner
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "SearchPipelineDataRepositoryMetadataInner has no field with name '" + name + "'.");
+          "MetaDataDataRepositoryMetadataInner has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link SearchPipelineDataRepositoryMetadataInner}
-   * instance including unrecognized properties.
+   * Get the value of all properties of this {@link MetaDataDataRepositoryMetadataInner} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -169,9 +169,9 @@ public class SearchPipelineDataRepositoryMetadataInner
   }
 
   /**
-   * Set an unrecognizable property of this {@link SearchPipelineDataRepositoryMetadataInner}
-   * instance. If the map previously contained a mapping for the key, the old value is replaced by
-   * the specified value.
+   * Set an unrecognizable property of this {@link MetaDataDataRepositoryMetadataInner} instance. If
+   * the map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -189,13 +189,12 @@ public class SearchPipelineDataRepositoryMetadataInner
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final SearchPipelineDataRepositoryMetadataInner searchPipelineDataRepositoryMetadataInner =
-        (SearchPipelineDataRepositoryMetadataInner) o;
+    final MetaDataDataRepositoryMetadataInner metaDataDataRepositoryMetadataInner =
+        (MetaDataDataRepositoryMetadataInner) o;
     return Objects.equals(
-            this.cloudSdkCustomFields,
-            searchPipelineDataRepositoryMetadataInner.cloudSdkCustomFields)
-        && Objects.equals(this.key, searchPipelineDataRepositoryMetadataInner.key)
-        && Objects.equals(this.value, searchPipelineDataRepositoryMetadataInner.value);
+            this.cloudSdkCustomFields, metaDataDataRepositoryMetadataInner.cloudSdkCustomFields)
+        && Objects.equals(this.key, metaDataDataRepositoryMetadataInner.key)
+        && Objects.equals(this.value, metaDataDataRepositoryMetadataInner.value);
   }
 
   @Override
@@ -207,7 +206,7 @@ public class SearchPipelineDataRepositoryMetadataInner
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class SearchPipelineDataRepositoryMetadataInner {\n");
+    sb.append("class MetaDataDataRepositoryMetadataInner {\n");
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -229,20 +228,19 @@ public class SearchPipelineDataRepositoryMetadataInner
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * SearchPipelineDataRepositoryMetadataInner} instance with all required arguments.
+   * MetaDataDataRepositoryMetadataInner} instance with all required arguments.
    */
   public static Builder create() {
-    return (key) ->
-        (value) -> new SearchPipelineDataRepositoryMetadataInner().key(key).value(value);
+    return (key) -> (value) -> new MetaDataDataRepositoryMetadataInner().key(key).value(value);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the key of this {@link SearchPipelineDataRepositoryMetadataInner} instance.
+     * Set the key of this {@link MetaDataDataRepositoryMetadataInner} instance.
      *
-     * @param key The key of this {@link SearchPipelineDataRepositoryMetadataInner}
-     * @return The SearchPipelineDataRepositoryMetadataInner builder.
+     * @param key The key of this {@link MetaDataDataRepositoryMetadataInner}
+     * @return The MetaDataDataRepositoryMetadataInner builder.
      */
     Builder1 key(@Nonnull final String key);
   }
@@ -250,20 +248,20 @@ public class SearchPipelineDataRepositoryMetadataInner
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the value of this {@link SearchPipelineDataRepositoryMetadataInner} instance.
+     * Set the value of this {@link MetaDataDataRepositoryMetadataInner} instance.
      *
-     * @param value The value of this {@link SearchPipelineDataRepositoryMetadataInner}
-     * @return The SearchPipelineDataRepositoryMetadataInner instance.
+     * @param value The value of this {@link MetaDataDataRepositoryMetadataInner}
+     * @return The MetaDataDataRepositoryMetadataInner instance.
      */
-    SearchPipelineDataRepositoryMetadataInner value(@Nonnull final List<String> value);
+    MetaDataDataRepositoryMetadataInner value(@Nonnull final List<String> value);
 
     /**
-     * Set the value of this {@link SearchPipelineDataRepositoryMetadataInner} instance.
+     * Set the value of this {@link MetaDataDataRepositoryMetadataInner} instance.
      *
-     * @param value The value of this {@link SearchPipelineDataRepositoryMetadataInner}
-     * @return The SearchPipelineDataRepositoryMetadataInner instance.
+     * @param value The value of this {@link MetaDataDataRepositoryMetadataInner}
+     * @return The MetaDataDataRepositoryMetadataInner instance.
      */
-    default SearchPipelineDataRepositoryMetadataInner value(@Nonnull final String... value) {
+    default MetaDataDataRepositoryMetadataInner value(@Nonnull final String... value) {
       return value(Arrays.asList(value));
     }
   }
