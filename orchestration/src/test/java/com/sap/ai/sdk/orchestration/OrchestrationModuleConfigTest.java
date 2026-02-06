@@ -58,11 +58,13 @@ class OrchestrationModuleConfigTest {
             .violence(ALLOW_SAFE_LOW_MEDIUM);
     final var outputFilter = inputFilter.protectedMaterialCode(true);
 
-    final var configWithInputFirst = config.withInputFiltering(inputFilter).withOutputFiltering(outputFilter);
+    final var configWithInputFirst =
+        config.withInputFiltering(inputFilter).withOutputFiltering(outputFilter);
     assertThat(configWithInputFirst.getFilteringConfig()).isNotNull();
     assertThat(configWithInputFirst.getFilteringConfig().getInput()).isNotNull();
 
-    final var configWithOutputFirst = config.withOutputFiltering(outputFilter).withInputFiltering(inputFilter);
+    final var configWithOutputFirst =
+        config.withOutputFiltering(outputFilter).withInputFiltering(inputFilter);
     assertThat(configWithOutputFirst.getFilteringConfig()).isNotNull();
     assertThat(configWithOutputFirst.getFilteringConfig().getOutput()).isNotNull();
   }
