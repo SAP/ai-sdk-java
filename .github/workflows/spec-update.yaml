@@ -161,7 +161,7 @@ jobs:
             RUN_NAME="Spec File Update Workflow: $CHOICE-$REF"
             echo "Run name used for search: $RUN_NAME"
           
-            # Get the most recent completed run of this workflow on the current branch
+            # Get the most recent completed run of this workflow with respect to the same feature branch
             PREVIOUS_RUN=$(gh run list \
             --workflow "${{ github.workflow }}" \
             --branch main \
