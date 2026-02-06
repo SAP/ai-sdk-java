@@ -286,6 +286,7 @@ class OrchestrationTest {
               assertThat(actualAzureContentSafety.getSelfHarm()).isEqualTo(NUMBER_0);
               assertThat(actualAzureContentSafety.getSexual()).isEqualTo(NUMBER_0);
               assertThat(actualAzureContentSafety.getHate()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.isProtectedMaterialCode()).isFalse();
             });
   }
 
@@ -299,7 +300,8 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("Choice 0: Filtering was skipped.");
+    assertThat(filterResult.getMessage())
+        .containsPattern("Choice 0: Filtering passed successfully.");
   }
 
   @Test

@@ -48,6 +48,9 @@ public class AzureContentFilter implements ContentFilter {
   /** The filter category for violence content. */
   @Nullable AzureFilterThreshold violence;
 
+  /** The filter category for protected material content. */
+  boolean protectedMaterialCode;
+
   /**
    * A flag to set prompt shield on input filer.
    *
@@ -90,7 +93,11 @@ public class AzureContentFilter implements ContentFilter {
   @Override
   @Nonnull
   public AzureContentSafetyOutputFilterConfig createOutputFilterConfig() {
-    if (hate == null && selfHarm == null && sexual == null && violence == null) {
+    if (hate == null
+        && selfHarm == null
+        && sexual == null
+        && violence == null
+        && !protectedMaterialCode) {
       throw new IllegalArgumentException("At least one filter category must be set");
     }
 
@@ -101,6 +108,7 @@ public class AzureContentFilter implements ContentFilter {
                 .hate(hate != null ? hate.getAzureThreshold() : null)
                 .selfHarm(selfHarm != null ? selfHarm.getAzureThreshold() : null)
                 .sexual(sexual != null ? sexual.getAzureThreshold() : null)
-                .violence(violence != null ? violence.getAzureThreshold() : null));
+                .violence(violence != null ? violence.getAzureThreshold() : null)
+                .protectedMaterialCode(true));
   }
 }
