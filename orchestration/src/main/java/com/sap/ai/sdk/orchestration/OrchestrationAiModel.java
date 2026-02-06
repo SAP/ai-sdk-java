@@ -358,7 +358,7 @@ public class OrchestrationAiModel {
   /**
    * Alephalpha-pharia-1-7b-control model
    *
-   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-10-31.The
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-10-31. The
    *     suggested replacement model is {@link OrchestrationAiModel#MISTRAL_SMALL_INSTRUCT}.
    */
   @Deprecated
