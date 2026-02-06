@@ -16,6 +16,22 @@ import javax.annotation.Nonnull;
 
 /** UserChatMessageContent */
 public interface UserChatMessageContent {
+  /** Helper class to create {@code Boolean } that implements {@link UserChatMessageContent}. */
+  record InnerBoolean(@com.fasterxml.jackson.annotation.JsonValue @Nonnull Boolean value)
+      implements UserChatMessageContent {}
+
+  /**
+   * Creator to enable deserialization of {@code Boolean }.
+   *
+   * @param val the value to use
+   * @return a new instance of {@link InnerBoolean}.
+   */
+  @com.fasterxml.jackson.annotation.JsonCreator
+  @Nonnull
+  static InnerBoolean create(@Nonnull final Boolean val) {
+    return new InnerBoolean(val);
+  }
+
   /**
    * Helper class to create {@code List<UserChatMessageContentItem> } that implements {@link
    * UserChatMessageContent}.
@@ -35,21 +51,5 @@ public interface UserChatMessageContent {
   static ListOfUserChatMessageContentItems createListOfUserChatMessageContentItems(
       @Nonnull final List<UserChatMessageContentItem> val) {
     return new ListOfUserChatMessageContentItems(val);
-  }
-
-  /** Helper class to create {@code String } that implements {@link UserChatMessageContent}. */
-  record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
-      implements UserChatMessageContent {}
-
-  /**
-   * Creator to enable deserialization of {@code String }.
-   *
-   * @param val the value to use
-   * @return a new instance of {@link InnerString}.
-   */
-  @com.fasterxml.jackson.annotation.JsonCreator
-  @Nonnull
-  static InnerString create(@Nonnull final String val) {
-    return new InnerString(val);
   }
 }
