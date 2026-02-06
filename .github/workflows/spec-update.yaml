@@ -141,12 +141,6 @@ jobs:
           
           gh api $API_URL -H "Accept: application/vnd.github.raw" > $FILE_PATH
 
-      - name: "Print spec contents for debugging"
-        run: |
-          echo "=== Contents of orchestration.yaml ==="
-          cat -n "orchestration/src/main/resources/spec/orchestration.yaml"
-          echo "=== End of file ==="
-
       - name: "Exit if there are no spec changes"
         id: spec_diff
         env:
@@ -170,11 +164,9 @@ jobs:
             # Get the most recent completed run of this workflow on the current branch
             PREVIOUS_RUN=$(gh run list \
             --workflow "${{ github.workflow }}" \
-            --branch improve-spec-update-workflow \
+            --branch main \
             --json databaseId,status,conclusion,displayTitle \
             --jq "map(select(.databaseId != ${CURRENT_RUN} and (.displayTitle | contains(\"${RUN_NAME}\")))) | .[0]")
-            # todo: change branch above to main
-            # and (.displayTitle == \"${RUN_TOKEN}\")
           
             echo "Previous run: $PREVIOUS_RUN"
           
