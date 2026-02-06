@@ -171,7 +171,6 @@ jobs:
             PREVIOUS_RUN=$(gh run list \
             --workflow "${{ github.workflow }}" \
             --branch improve-spec-update-workflow \
-            --limit 2 \
             --json databaseId,status,conclusion,displayTitle \
             --jq "map(select(.databaseId != ${CURRENT_RUN} and (.displayTitle | contains(\"${RUN_NAME}\")))) | .[0]")
             # todo: change branch above to main
