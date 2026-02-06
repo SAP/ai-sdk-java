@@ -70,7 +70,7 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   /**
    * Azure OpenAI GPT-4o Mini model
    *
-   * @deprecated This model is deprecated on AI Core.The suggested replacement model is {@link
+   * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
    *     OpenAiModel#GPT_5_MINI}.
    */
   @Deprecated public static final OpenAiModel GPT_4O_MINI = new OpenAiModel("gpt-4o-mini", null);
