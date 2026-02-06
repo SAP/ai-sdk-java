@@ -143,7 +143,7 @@ jobs:
 
       - name: "Print spec contents for debugging"
         run: |
-          echo "=== Contents of $FILE_PATH ==="
+          echo "=== Contents of orchestration.yaml ==="
           cat -n "orchestration/src/main/resources/spec/orchestration.yaml"
           echo "=== End of file ==="
 
@@ -283,7 +283,7 @@ jobs:
           echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}" >> $GITHUB_STEP_SUMMARY
           
           if ${{ steps.spec_diff.outputs.spec_diff == 'false' }}; then
-            echo "| Outcome Previous Run | ${{ steps.spec_diff.outputs.prev_run_success == 'true' && '✅: Current run succeeds as a result.' || '❌: Current run fails as a result.' }}" >> $GITHUB_STEP_SUMMARY
+            echo "| Outcome Previous Run | ${{ steps.spec_diff.outputs.prev_run_success == 'true' && '✅ (Current run succeeds as a result.)' || '❌ (Current run fails as a result.)' }}" >> $GITHUB_STEP_SUMMARY
           fi
           
           if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
