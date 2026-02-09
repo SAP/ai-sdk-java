@@ -788,8 +788,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse completionWithFallback(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    val workingConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
     val brokenConfig =
         new OrchestrationModuleConfig()
             .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
@@ -810,8 +809,7 @@ public class OrchestrationService {
   @Nonnull
   public Stream<String> streamCompletionWithFallback(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    val workingConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
     val brokenConfig =
         new OrchestrationModuleConfig()
             .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
