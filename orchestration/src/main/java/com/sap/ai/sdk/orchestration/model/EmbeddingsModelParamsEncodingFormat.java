@@ -19,7 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -30,28 +30,28 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * UserChatMessageContent
+ * The format to return the embeddings in. Can be a single format or an array of formats. OpenAI&#39;s spec allows for &#39;float&#39; and &#39;base64&#39; encoding formats. 
  */
-public interface UserChatMessageContent  {
+public interface EmbeddingsModelParamsEncodingFormat  {
     /**
-     * Helper class to create {@code List<UserChatMessageContentItem> } that implements {@link UserChatMessageContent}.
+     * Helper class to create {@code List<String> } that implements {@link EmbeddingsModelParamsEncodingFormat}.
      */
-    record ListOfUserChatMessageContentItems(@com.fasterxml.jackson.annotation.JsonValue @Nonnull List<UserChatMessageContentItem> values) implements UserChatMessageContent {}
+    record ListOfStrings(@com.fasterxml.jackson.annotation.JsonValue @Nonnull List<String> values) implements EmbeddingsModelParamsEncodingFormat {}
 
     /**
-     * Creator to enable deserialization of {@code List<UserChatMessageContentItem> }.
+     * Creator to enable deserialization of {@code List<String> }.
      *
      * @param val the value to use
-     * @return a new instance of {@link ListOfUserChatMessageContentItems}.
+     * @return a new instance of {@link ListOfStrings}.
      */
     @com.fasterxml.jackson.annotation.JsonCreator
     @Nonnull
-    static ListOfUserChatMessageContentItems createListOfUserChatMessageContentItems( @Nonnull final List<UserChatMessageContentItem> val) { return new ListOfUserChatMessageContentItems(val); }
+    static ListOfStrings createListOfStrings( @Nonnull final List<String> val) { return new ListOfStrings(val); }
 
     /**
-     * Helper class to create {@code String } that implements {@link UserChatMessageContent}.
+     * Helper class to create {@code String } that implements {@link EmbeddingsModelParamsEncodingFormat}.
      */
-    record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value) implements UserChatMessageContent {}
+    record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value) implements EmbeddingsModelParamsEncodingFormat {}
 
     /**
      * Creator to enable deserialization of {@code String }.
