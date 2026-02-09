@@ -15,6 +15,10 @@ class DeploymentTest {
 
   /**
    * Manual execution to create a new config for a new model when the current model gets deprecated.
+   *
+   * <p>1) Run the below method with a non-deprecated model.
+   *
+   * <p>2) Copy the printed ID into CONFIG_ID above.
    */
   // @Test
   void createConfiguration() {
