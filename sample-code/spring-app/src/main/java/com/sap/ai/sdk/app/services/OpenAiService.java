@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 
 import com.sap.ai.sdk.core.AiCoreService;
@@ -34,7 +34,7 @@ public class OpenAiService {
    */
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletion(@Nonnull final String prompt) {
-    return OpenAiClient.forModel(GPT_4O_MINI)
+    return OpenAiClient.forModel(GPT_5_MINI)
         .chatCompletion(new OpenAiChatCompletionRequest(prompt));
   }
 
@@ -50,13 +50,13 @@ public class OpenAiService {
     messagesList.add(OpenAiMessage.user(previousMessage));
 
     final OpenAiChatCompletionResponse result =
-        OpenAiClient.forModel(GPT_4O_MINI)
+        OpenAiClient.forModel(GPT_5_MINI)
             .chatCompletion(new OpenAiChatCompletionRequest(messagesList));
 
     messagesList.add(result.getMessage());
     messagesList.add(OpenAiMessage.user("What is the typical food there?"));
 
-    return OpenAiClient.forModel(GPT_4O_MINI)
+    return OpenAiClient.forModel(GPT_5_MINI)
         .chatCompletion(new OpenAiChatCompletionRequest(messagesList));
   }
 
@@ -71,7 +71,7 @@ public class OpenAiService {
       @Nonnull final String message) {
     final var request = new OpenAiChatCompletionRequest(OpenAiMessage.user(message));
 
-    return OpenAiClient.forModel(GPT_4O_MINI).streamChatCompletionDeltas(request);
+    return OpenAiClient.forModel(GPT_5_MINI).streamChatCompletionDeltas(request);
   }
 
   /**
@@ -82,7 +82,7 @@ public class OpenAiService {
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String message) {
-    return OpenAiClient.forModel(GPT_4O_MINI)
+    return OpenAiClient.forModel(GPT_5_MINI)
         .withSystemPrompt("Be a good, honest AI and answer the following question:")
         .streamChatCompletion(message);
   }
@@ -115,7 +115,7 @@ public class OpenAiService {
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
-    final OpenAiClient client = OpenAiClient.forModel(GPT_4O_MINI);
+    final OpenAiClient client = OpenAiClient.forModel(GPT_5_MINI);
 
     final var messages = new ArrayList<OpenAiMessage>();
     messages.add(OpenAiMessage.user("What's the weather in %s in %s?".formatted(location, unit)));

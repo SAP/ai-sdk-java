@@ -13,6 +13,11 @@
 ### ✨ New Functionality
 
 - [RPT] Introducing `RptClient` for Tabular AI backed by SAP RPT models `SAP_RPT_1_SMALL` and `SAP_RPT_1_LARGE`.
+- [Orchestration] Deprecated `ALEPHALPHA_PHARIA_1_7B_CONTROL` model from `OrchestrationAiModel` with replacement model `MISTRAL_SMALL_INSTRUCT`.
+- [Orchestration] Deprecated `GPT_4O_MINI` model from `OrchestrationAiModel` with replacement model `GPT_5_MINI`.
+- [Orchestration] Deprecated `GPT_4O_MINI` model from `OpenAiModel` with replacement model `GPT_5_MINI`.
+- [Orchestration] Deprecated models `GEMINI_2_0_FLASH`, `GEMINI_2_0_FLASH_LITE` and `CLAUDE_3_7_SONNET` from `OrchestrationAiModel`.
+- [Orchestration] Deprecated `DALL_E_3` model from `OpenAiModel`.
 
 ### 📈 Improvements
 

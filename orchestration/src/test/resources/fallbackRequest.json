@@ -55,7 +55,7 @@
           "tools" : [ ]
         },
         "model" : {
-          "name" : "gpt-4o-mini",
+          "name" : "gpt-5-mini",
           "version" : "latest",
           "params" : {
             "temperature" : 0.0
