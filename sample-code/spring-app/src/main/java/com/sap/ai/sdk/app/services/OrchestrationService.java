@@ -2,7 +2,7 @@ package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
@@ -88,7 +88,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
     final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+        new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
     final var multiMessage =
         Message.user("What is in this image?").withImage(pathToImage, ImageItem.DetailLevel.LOW);
@@ -481,7 +481,7 @@ public class OrchestrationService {
       @Nonnull final String word, @Nonnull final Class<?> targetType) {
     // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
     // release 2510b. See https://jira.tools.sap/browse/AI-125770
-    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
     val schema =
         ResponseJsonSchema.fromType(targetType)
             .withDescription("Output schema for language translation.")
@@ -560,7 +560,7 @@ public class OrchestrationService {
   public OrchestrationChatResponse templateFromPromptRegistryByIdTenant(
       @Nonnull final String topic) {
     final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+        new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
     val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
@@ -665,7 +665,7 @@ public class OrchestrationService {
       throws IOException {
     // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
     // release 2510b. See https://jira.tools.sap/browse/AI-125770
-    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
     val template = TemplateConfig.create().fromYaml(promptTemplate);
     val configWithTemplate =
         template != null ? configWithGpt4.withTemplateConfig(template) : configWithGpt4;
@@ -791,7 +791,7 @@ public class OrchestrationService {
   public OrchestrationChatResponse completionWithFallback(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
     val workingConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0.0));
+        new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI.withParam(TEMPERATURE, 0.0));
     val brokenConfig =
         new OrchestrationModuleConfig()
             .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
@@ -813,7 +813,7 @@ public class OrchestrationService {
   public Stream<String> streamCompletionWithFallback(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
     val workingConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI.withParam(TEMPERATURE, 0.0));
+        new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI.withParam(TEMPERATURE, 0.0));
     val brokenConfig =
         new OrchestrationModuleConfig()
             .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
