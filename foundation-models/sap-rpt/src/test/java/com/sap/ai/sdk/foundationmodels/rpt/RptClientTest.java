@@ -8,7 +8,11 @@ import com.sap.ai.sdk.foundationmodels.rpt.generated.model.*;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
@@ -148,6 +152,46 @@ class RptClientTest {
     assertThat(response.getMetadata().getNumPredictions()).isEqualTo(1);
     assertThat(response.getMetadata().getNumQueryRows()).isEqualTo(1);
     assertThat(response.getMetadata().getNumRows()).isEqualTo(2);
+
+    assertThat(response.getStatus().getCode()).isEqualTo(0);
+    assertThat(response.getStatus().getMessage()).isEqualTo("ok");
+    assertThat(response.getPredictions()).hasSize(1);
+
+    final Map<String, PredictionsInnerValue> prediction = response.getPredictions().get(0);
+    assertThat(prediction)
+        .containsEntry("ID", PredictionsInnerValue.create("35"))
+        .containsEntry(
+            "COSTCENTER",
+            PredictionsInnerValue.createListOfPredictionResults(
+                List.of(
+                    PredictionResult.create()
+                        .prediction(Prediction.create("Office Furniture"))
+                        .confidence(BigDecimal.valueOf(0.97)))));
+  }
+
+  @Test
+  void testTableCompletionWithParquetFile() throws IOException {
+    final var resourceStream = getClass().getResourceAsStream("/test-data.parquet");
+    assertThat(resourceStream).isNotNull();
+    final byte[] parquetData = resourceStream.readAllBytes();
+    resourceStream.close();
+
+    final var targetConfig =
+        TargetColumnConfig.create()
+            .name("COSTCENTER")
+            .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
+            .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION);
+
+    final var predictionConfig = PredictionConfig.create().targetColumns(List.of(targetConfig));
+
+    final var response = client.tableCompletion(parquetData, predictionConfig);
+
+    assertThat(response).isNotNull();
+    assertThat(response.getId()).isEqualTo("a1b2c3d4-e5f6-47g8-h9i0-j1k2l3m4n5o6");
+    assertThat(response.getMetadata().getNumColumns()).isEqualTo(5);
+    assertThat(response.getMetadata().getNumPredictions()).isEqualTo(1);
+    assertThat(response.getMetadata().getNumQueryRows()).isEqualTo(1);
+    assertThat(response.getMetadata().getNumRows()).isEqualTo(3);
 
     assertThat(response.getStatus().getCode()).isEqualTo(0);
     assertThat(response.getStatus().getMessage()).isEqualTo("ok");

@@ -146,6 +146,9 @@
                   <inputSpec>${project.basedir}/src/main/resources/spec/sap-rpt-1_openapi.json</inputSpec>
                   <modelPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.model</modelPackage>
                   <apiPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.client</apiPackage>
+                  <typeMappings>
+                    <typeMapping>File=byte[]</typeMapping>
+                  </typeMappings>
                   <additionalProperties>
                     <library>apache-httpclient</library>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
@@ -154,7 +157,6 @@
                     <useOneOfInterfaces>true</useOneOfInterfaces>
                     <useOneOfCreators>true</useOneOfCreators>
                     <useFloatArrays>true</useFloatArrays>
-                    <excludePaths>/predict_parquet</excludePaths>
                     <excludeProperties>TargetColumnConfig.top_k</excludeProperties>
                   </additionalProperties>
                 </configuration>
