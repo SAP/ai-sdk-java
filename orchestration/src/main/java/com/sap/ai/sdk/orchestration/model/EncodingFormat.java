@@ -15,15 +15,25 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
-/** Gets or Sets SearchSelectOptionEnum */
-public enum SearchSelectOptionEnum {
-  IGNORE_IF_KEY_ABSENT("ignoreIfKeyAbsent"),
+/** Gets or Sets EncodingFormat */
+public enum EncodingFormat {
+  FLOAT("float"),
+
+  BASE64("base64"),
+
+  BINARY("binary"),
+
+  INT8("int8"),
+
+  UINT8("uint8"),
+
+  UBINARY("ubinary"),
 
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
   private final String value;
 
-  SearchSelectOptionEnum(String value) {
+  EncodingFormat(String value) {
     this.value = value;
   }
 
@@ -51,8 +61,8 @@ public enum SearchSelectOptionEnum {
    * @return The enum representation of the given value.
    */
   @JsonCreator
-  public static SearchSelectOptionEnum fromValue(@Nonnull final String value) {
-    for (final SearchSelectOptionEnum b : SearchSelectOptionEnum.values()) {
+  public static EncodingFormat fromValue(@Nonnull final String value) {
+    for (final EncodingFormat b : EncodingFormat.values()) {
       if (b.value.equals(value)) {
         return b;
       }

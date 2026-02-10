@@ -317,19 +317,16 @@ components:
             The number of dimensions the resulting output embeddings should have.
         encoding_format:
           oneOf:
-            - type: string
-              enum: [float, base64, binary, int8, uint8, ubinary]
+            - $ref: "#/components/schemas/EncodingFormat"
             - type: array
               items:
-                type: string
-                enum: [float, base64, binary, int8, uint8, ubinary]
+                $ref: "#/components/schemas/EncodingFormat"
               minItems: 1
-          description: >
-            The format to return the embeddings in. Can be a single format or an array of formats.
-            OpenAI's spec allows for 'float' and 'base64' encoding formats.
         normalize:
           type: boolean
-
+    EncodingFormat:
+      type: string
+      enum: [float, base64, binary, int8, uint8, ubinary]
     EmbeddingsPostResponse:
       type: object
       additionalProperties: false
@@ -399,6 +396,7 @@ components:
             - embedding
         embedding:
           $ref: "#/components/schemas/Embedding"
+
         index:
           type: integer
           description: The index of the embedding in the list of embeddings.
@@ -410,9 +408,6 @@ components:
           description: "An array of numbers representing the embedding."
         - type: string
           description: "A single base64 string representing the embedding."
-        - type: object
-          additionalProperties: true
-          description: "A dictionary mapping encoding format names to their embeddings (arrays or base64 strings). Used when multiple encoding formats are requested (Cohere-specific)."
 
     # Chat Completion Schemas
     ChatMessages:
