@@ -202,7 +202,8 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy, @Nonnull final Boolean isProtected) {
+  public OrchestrationChatResponse outputFiltering(
+      @Nonnull final AzureFilterThreshold policy, @Nonnull final Boolean isProtected) {
 
     val systemMessage = Message.system("Give three paraphrases for the following sentence");
     // Reliably triggering the content filter of models fine-tuned for ethical compliance
