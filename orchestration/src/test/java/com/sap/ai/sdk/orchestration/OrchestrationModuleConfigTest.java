@@ -50,21 +50,19 @@ class OrchestrationModuleConfigTest {
   void testStackingInputAndOutputFilter() {
     final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
 
-    final var inputFilter =
+    final var filter =
         new AzureContentFilter()
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
-            .violence(ALLOW_SAFE_LOW_MEDIUM);
-    final var outputFilter = inputFilter.protectedMaterialCode(true);
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(true);
 
-    final var configWithInputFirst =
-        config.withInputFiltering(inputFilter).withOutputFiltering(outputFilter);
+    final var configWithInputFirst = config.withInputFiltering(filter).withOutputFiltering(filter);
     assertThat(configWithInputFirst.getFilteringConfig()).isNotNull();
     assertThat(configWithInputFirst.getFilteringConfig().getInput()).isNotNull();
 
-    final var configWithOutputFirst =
-        config.withOutputFiltering(outputFilter).withInputFiltering(inputFilter);
+    final var configWithOutputFirst = config.withOutputFiltering(filter).withInputFiltering(filter);
     assertThat(configWithOutputFirst.getFilteringConfig()).isNotNull();
     assertThat(configWithOutputFirst.getFilteringConfig().getOutput()).isNotNull();
   }

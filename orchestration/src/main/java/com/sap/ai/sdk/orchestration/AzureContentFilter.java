@@ -109,6 +109,6 @@ public class AzureContentFilter implements ContentFilter {
                 .selfHarm(selfHarm != null ? selfHarm.getAzureThreshold() : null)
                 .sexual(sexual != null ? sexual.getAzureThreshold() : null)
                 .violence(violence != null ? violence.getAzureThreshold() : null)
-                .protectedMaterialCode(true));
+                .protectedMaterialCode(protectedMaterialCode));
   }
 }

@@ -273,7 +273,7 @@ class OrchestrationTest {
   @Test
   void testOutputFilteringStrict() {
     var policy = AzureFilterThreshold.ALLOW_SAFE;
-    var response = service.outputFiltering(policy);
+    var response = service.outputFiltering(policy, true);
 
     assertThatThrownBy(response::getContent)
         .hasMessageContaining("Content filter filtered the output.")
@@ -294,14 +294,14 @@ class OrchestrationTest {
   void testOutputFilteringLenient() {
     var policy = AzureFilterThreshold.ALLOW_ALL;
 
-    var response = service.outputFiltering(policy);
+    var response = service.outputFiltering(policy, false);
 
     assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getOutputFiltering();
     assertThat(filterResult.getMessage())
-        .containsPattern("Choice 0: Filtering passed successfully.");
+        .containsPattern("Choice 0: Filtering was skipped.");
   }
 
   @Test

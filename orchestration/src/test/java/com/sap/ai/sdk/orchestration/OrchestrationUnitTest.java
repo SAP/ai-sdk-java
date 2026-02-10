@@ -438,21 +438,19 @@ class OrchestrationUnitTest {
                     .withBodyFile("filteringLooseResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var azureInputFilter =
+    final var azureFilter =
         new AzureContentFilter()
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
-            .violence(ALLOW_SAFE_LOW_MEDIUM);
-    final var azureOutputFilter = azureInputFilter.protectedMaterialCode(true);
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(false);
 
     final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
 
     client.chatCompletion(
         prompt,
-        config
-            .withInputFiltering(azureInputFilter, llamaFilter)
-            .withOutputFiltering(azureOutputFilter));
+        config.withInputFiltering(azureFilter, llamaFilter).withOutputFiltering(azureFilter));
     // the result is asserted in the verify step below
 
     // verify that null fields are absent from the sent request
@@ -467,20 +465,20 @@ class OrchestrationUnitTest {
         post(anyUrl())
             .willReturn(aResponse().withBody(res).withHeader("Content-Type", "application/json")));
 
-    final var azureInputFilter =
+    final var azureFilter =
         new AzureContentFilter()
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
-            .violence(ALLOW_SAFE_LOW_MEDIUM);
-    final var azureOutputFilter = azureInputFilter.protectedMaterialCode(true);
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(false);
 
     final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
 
     OrchestrationModuleConfig myConfig =
         config
-            .withInputFiltering(azureInputFilter, llamaFilter)
-            .withOutputFiltering(azureOutputFilter)
+            .withInputFiltering(azureFilter, llamaFilter)
+            .withOutputFiltering(azureFilter)
             .withOutputFilteringStreamOptions(FilteringStreamOptions.create().overlap(1_000));
 
     Stream<String> result = client.streamChatCompletion(prompt, myConfig);
