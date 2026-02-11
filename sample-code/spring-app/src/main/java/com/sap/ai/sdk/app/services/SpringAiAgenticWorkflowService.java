@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_HAIKU;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
