@@ -13,8 +13,8 @@
             "n": 1
           },
           "version": "latest",
-          "timeout" : 600,
-          "max_retries" : 2
+          "timeout": 600,
+          "max_retries": 2
         },
         "prompt": {
           "template": [
@@ -55,7 +55,8 @@
                 "hate": 4,
                 "self_harm": 4,
                 "sexual": 4,
-                "violence": 4
+                "violence": 4,
+                "protected_material_code": false
               }
             }
           ]
