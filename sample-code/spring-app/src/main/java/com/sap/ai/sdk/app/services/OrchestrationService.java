@@ -199,6 +199,7 @@ public class OrchestrationService {
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
    * @param policy the explicitness of content that should be allowed through the filter
+   * @param isProtected activates the protected material code filtering module when set to true
    * @return the assistant response object
    */
   @Nonnull
