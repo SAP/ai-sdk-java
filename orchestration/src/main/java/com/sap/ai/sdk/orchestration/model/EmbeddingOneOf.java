@@ -47,10 +47,10 @@ public class EmbeddingOneOf
   private String base64;
 
   @JsonProperty("binary")
-  private Integer binary;
+  private List<Integer> binary = new ArrayList<>();
 
   @JsonProperty("ubinary")
-  private Integer ubinary;
+  private List<Integer> ubinary = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -215,62 +215,92 @@ public class EmbeddingOneOf
   /**
    * Set the binary of this {@link EmbeddingOneOf} instance and return the same instance.
    *
-   * @param binary Binary encoding format - as integers
+   * @param binary Binary encoding format - array of integers
    * @return The same instance of this {@link EmbeddingOneOf} class
    */
   @Nonnull
-  public EmbeddingOneOf binary(@Nullable final Integer binary) {
+  public EmbeddingOneOf binary(@Nullable final List<Integer> binary) {
     this.binary = binary;
     return this;
   }
 
   /**
-   * Binary encoding format - as integers
+   * Add one binary instance to this {@link EmbeddingOneOf}.
+   *
+   * @param binaryItem The binary that should be added
+   * @return The same instance of type {@link EmbeddingOneOf}
+   */
+  @Nonnull
+  public EmbeddingOneOf addBinaryItem(@Nonnull final Integer binaryItem) {
+    if (this.binary == null) {
+      this.binary = new ArrayList<>();
+    }
+    this.binary.add(binaryItem);
+    return this;
+  }
+
+  /**
+   * Binary encoding format - array of integers
    *
    * @return binary The binary of this {@link EmbeddingOneOf} instance.
    */
   @Nonnull
-  public Integer getBinary() {
+  public List<Integer> getBinary() {
     return binary;
   }
 
   /**
    * Set the binary of this {@link EmbeddingOneOf} instance.
    *
-   * @param binary Binary encoding format - as integers
+   * @param binary Binary encoding format - array of integers
    */
-  public void setBinary(@Nullable final Integer binary) {
+  public void setBinary(@Nullable final List<Integer> binary) {
     this.binary = binary;
   }
 
   /**
    * Set the ubinary of this {@link EmbeddingOneOf} instance and return the same instance.
    *
-   * @param ubinary Ubinary encoding format - as unsigned integers
+   * @param ubinary Ubinary encoding format - array of unsigned integers
    * @return The same instance of this {@link EmbeddingOneOf} class
    */
   @Nonnull
-  public EmbeddingOneOf ubinary(@Nullable final Integer ubinary) {
+  public EmbeddingOneOf ubinary(@Nullable final List<Integer> ubinary) {
     this.ubinary = ubinary;
     return this;
   }
 
   /**
-   * Ubinary encoding format - as unsigned integers
+   * Add one ubinary instance to this {@link EmbeddingOneOf}.
+   *
+   * @param ubinaryItem The ubinary that should be added
+   * @return The same instance of type {@link EmbeddingOneOf}
+   */
+  @Nonnull
+  public EmbeddingOneOf addUbinaryItem(@Nonnull final Integer ubinaryItem) {
+    if (this.ubinary == null) {
+      this.ubinary = new ArrayList<>();
+    }
+    this.ubinary.add(ubinaryItem);
+    return this;
+  }
+
+  /**
+   * Ubinary encoding format - array of unsigned integers
    *
    * @return ubinary The ubinary of this {@link EmbeddingOneOf} instance.
    */
   @Nonnull
-  public Integer getUbinary() {
+  public List<Integer> getUbinary() {
     return ubinary;
   }
 
   /**
    * Set the ubinary of this {@link EmbeddingOneOf} instance.
    *
-   * @param ubinary Ubinary encoding format - as unsigned integers
+   * @param ubinary Ubinary encoding format - array of unsigned integers
    */
-  public void setUbinary(@Nullable final Integer ubinary) {
+  public void setUbinary(@Nullable final List<Integer> ubinary) {
     this.ubinary = ubinary;
   }
 
