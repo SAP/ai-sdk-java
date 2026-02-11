@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -90,6 +91,9 @@ public class EmbeddingResult
   @JsonProperty("embedding")
   private Embedding embedding;
 
+  @JsonProperty("embedding_format")
+  private Map<String, Embedding> embeddingFormat = new HashMap<>();
+
   @JsonProperty("index")
   private Integer index;
 
@@ -159,6 +163,54 @@ public class EmbeddingResult
    */
   public void setEmbedding(@Nonnull final Embedding embedding) {
     this.embedding = embedding;
+  }
+
+  /**
+   * Set the embeddingFormat of this {@link EmbeddingResult} instance and return the same instance.
+   *
+   * @param embeddingFormat The embeddingFormat of this {@link EmbeddingResult}
+   * @return The same instance of this {@link EmbeddingResult} class
+   */
+  @Nonnull
+  public EmbeddingResult embeddingFormat(@Nullable final Map<String, Embedding> embeddingFormat) {
+    this.embeddingFormat = embeddingFormat;
+    return this;
+  }
+
+  /**
+   * Put one embeddingFormat instance to this {@link EmbeddingResult} instance.
+   *
+   * @param key The String key of this embeddingFormat instance
+   * @param embeddingFormatItem The embeddingFormat that should be added under the given key
+   * @return The same instance of type {@link EmbeddingResult}
+   */
+  @Nonnull
+  public EmbeddingResult putembeddingFormatItem(
+      @Nonnull final String key, @Nonnull final Embedding embeddingFormatItem) {
+    if (this.embeddingFormat == null) {
+      this.embeddingFormat = new HashMap<>();
+    }
+    this.embeddingFormat.put(key, embeddingFormatItem);
+    return this;
+  }
+
+  /**
+   * Get embeddingFormat
+   *
+   * @return embeddingFormat The embeddingFormat of this {@link EmbeddingResult} instance.
+   */
+  @Nonnull
+  public Map<String, Embedding> getEmbeddingFormat() {
+    return embeddingFormat;
+  }
+
+  /**
+   * Set the embeddingFormat of this {@link EmbeddingResult} instance.
+   *
+   * @param embeddingFormat The embeddingFormat of this {@link EmbeddingResult}
+   */
+  public void setEmbeddingFormat(@Nullable final Map<String, Embedding> embeddingFormat) {
+    this.embeddingFormat = embeddingFormat;
   }
 
   /**
@@ -232,6 +284,7 @@ public class EmbeddingResult
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (_object != null) declaredFields.put("_object", _object);
     if (embedding != null) declaredFields.put("embedding", embedding);
+    if (embeddingFormat != null) declaredFields.put("embeddingFormat", embeddingFormat);
     if (index != null) declaredFields.put("index", index);
     return declaredFields;
   }
@@ -260,12 +313,13 @@ public class EmbeddingResult
     return Objects.equals(this.cloudSdkCustomFields, embeddingResult.cloudSdkCustomFields)
         && Objects.equals(this._object, embeddingResult._object)
         && Objects.equals(this.embedding, embeddingResult.embedding)
+        && Objects.equals(this.embeddingFormat, embeddingResult.embeddingFormat)
         && Objects.equals(this.index, embeddingResult.index);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(_object, embedding, index, cloudSdkCustomFields);
+    return Objects.hash(_object, embedding, embeddingFormat, index, cloudSdkCustomFields);
   }
 
   @Override
@@ -275,6 +329,7 @@ public class EmbeddingResult
     sb.append("class EmbeddingResult {\n");
     sb.append("    _object: ").append(toIndentedString(_object)).append("\n");
     sb.append("    embedding: ").append(toIndentedString(embedding)).append("\n");
+    sb.append("    embeddingFormat: ").append(toIndentedString(embeddingFormat)).append("\n");
     sb.append("    index: ").append(toIndentedString(index)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->

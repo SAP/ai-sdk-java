@@ -396,7 +396,10 @@ components:
             - embedding
         embedding:
           $ref: "#/components/schemas/Embedding"
-
+        embedding_format:
+          type: object
+          additionalProperties:
+            $ref:  "#/components/schemas/Embedding"
         index:
           type: integer
           description: The index of the embedding in the list of embeddings.
