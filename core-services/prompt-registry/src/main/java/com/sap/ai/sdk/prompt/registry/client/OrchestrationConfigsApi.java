@@ -323,8 +323,10 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    *
    * @param orchestrationConfigId (required) The value for the parameter orchestrationConfigId
    * @param aiResourceGroup (optional) Specify a resource group id to use
-   * @param resolveTemplateRef (optional, default to false) The value for the parameter
-   *     resolveTemplateRef
+   * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
+   *     instead
+   * @param resolveTemplateRef2 (optional, default to false) The value for the parameter
+   *     resolveTemplateRef2
    * @return OrchestrationConfigGetResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -332,7 +334,8 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
   public OrchestrationConfigGetResponse getOrchestrationConfigByUuid(
       @Nonnull final UUID orchestrationConfigId,
       @Nullable final String aiResourceGroup,
-      @Nullable final Boolean resolveTemplateRef)
+      @Nullable final Boolean resolveTemplateRef,
+      @Nullable final Boolean resolveTemplateRef2)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -358,6 +361,8 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
 
     localVarQueryParams.putAll(
         apiClient.parameterToMultiValueMap(null, "resolve_template_ref", resolveTemplateRef));
+    localVarQueryParams.putAll(
+        apiClient.parameterToMultiValueMap(null, "resolveTemplateRef", resolveTemplateRef2));
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -402,7 +407,7 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
   @Nonnull
   public OrchestrationConfigGetResponse getOrchestrationConfigByUuid(
       @Nonnull final UUID orchestrationConfigId) throws OpenApiRequestException {
-    return getOrchestrationConfigByUuid(orchestrationConfigId, null, null);
+    return getOrchestrationConfigByUuid(orchestrationConfigId, null, null, null);
   }
 
   /**
@@ -497,9 +502,12 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * @param version (required) The value for the parameter version
    * @param name (required) The value for the parameter name
    * @param aiResourceGroup (optional) Specify a resource group id to use
-   * @param includeSpec (optional, default to false) The value for the parameter includeSpec
-   * @param resolveTemplateRef (optional, default to false) The value for the parameter
-   *     resolveTemplateRef
+   * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead
+   * @param includeSpec2 (optional, default to false) The value for the parameter includeSpec2
+   * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
+   *     instead
+   * @param resolveTemplateRef2 (optional, default to false) The value for the parameter
+   *     resolveTemplateRef2
    * @return OrchestrationConfigListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -510,7 +518,9 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
       @Nonnull final String name,
       @Nullable final String aiResourceGroup,
       @Nullable final Boolean includeSpec,
-      @Nullable final Boolean resolveTemplateRef)
+      @Nullable final Boolean includeSpec2,
+      @Nullable final Boolean resolveTemplateRef,
+      @Nullable final Boolean resolveTemplateRef2)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -552,7 +562,11 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
     localVarQueryParams.putAll(
         apiClient.parameterToMultiValueMap(null, "include_spec", includeSpec));
     localVarQueryParams.putAll(
+        apiClient.parameterToMultiValueMap(null, "includeSpec", includeSpec2));
+    localVarQueryParams.putAll(
         apiClient.parameterToMultiValueMap(null, "resolve_template_ref", resolveTemplateRef));
+    localVarQueryParams.putAll(
+        apiClient.parameterToMultiValueMap(null, "resolveTemplateRef", resolveTemplateRef2));
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -600,7 +614,7 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
   public OrchestrationConfigListResponse listOrchestrationConfigHistory(
       @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
       throws OpenApiRequestException {
-    return listOrchestrationConfigHistory(scenario, version, name, null, null, null);
+    return listOrchestrationConfigHistory(scenario, version, name, null, null, null, null, null);
   }
 
   /**
@@ -619,9 +633,12 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * @param name (optional) The value for the parameter name
    * @param version (optional) The value for the parameter version
    * @param retrieve (optional, default to both) The value for the parameter retrieve
-   * @param includeSpec (optional, default to false) The value for the parameter includeSpec
-   * @param resolveTemplateRef (optional, default to false) The value for the parameter
-   *     resolveTemplateRef
+   * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead
+   * @param includeSpec2 (optional, default to false) The value for the parameter includeSpec2
+   * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
+   *     instead
+   * @param resolveTemplateRef2 (optional, default to false) The value for the parameter
+   *     resolveTemplateRef2
    * @return OrchestrationConfigListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -633,7 +650,9 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
       @Nullable final String version,
       @Nullable final String retrieve,
       @Nullable final Boolean includeSpec,
-      @Nullable final Boolean resolveTemplateRef)
+      @Nullable final Boolean includeSpec2,
+      @Nullable final Boolean resolveTemplateRef,
+      @Nullable final Boolean resolveTemplateRef2)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -653,7 +672,11 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
     localVarQueryParams.putAll(
         apiClient.parameterToMultiValueMap(null, "include_spec", includeSpec));
     localVarQueryParams.putAll(
+        apiClient.parameterToMultiValueMap(null, "includeSpec", includeSpec2));
+    localVarQueryParams.putAll(
         apiClient.parameterToMultiValueMap(null, "resolve_template_ref", resolveTemplateRef));
+    localVarQueryParams.putAll(
+        apiClient.parameterToMultiValueMap(null, "resolveTemplateRef", resolveTemplateRef2));
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -696,6 +719,6 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    */
   @Nonnull
   public OrchestrationConfigListResponse listOrchestrationConfigs() throws OpenApiRequestException {
-    return listOrchestrationConfigs(null, null, null, null, null, null, null);
+    return listOrchestrationConfigs(null, null, null, null, null, null, null, null, null);
   }
 }
