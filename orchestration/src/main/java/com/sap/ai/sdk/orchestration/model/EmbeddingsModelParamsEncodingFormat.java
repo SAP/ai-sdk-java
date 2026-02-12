@@ -20,40 +20,43 @@ import javax.annotation.Nonnull;
  */
 public interface EmbeddingsModelParamsEncodingFormat {
   /**
-   * Helper class to create {@code List<String> } that implements {@link
+   * Helper class to create {@code List<EncodingFormat> } that implements {@link
    * EmbeddingsModelParamsEncodingFormat}.
    */
-  record ListOfStrings(@com.fasterxml.jackson.annotation.JsonValue @Nonnull List<String> values)
+  record ListOfEncodingFormats(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<EncodingFormat> values)
       implements EmbeddingsModelParamsEncodingFormat {}
 
   /**
-   * Creator to enable deserialization of {@code List<String> }.
+   * Creator to enable deserialization of {@code List<EncodingFormat> }.
    *
    * @param val the value to use
-   * @return a new instance of {@link ListOfStrings}.
+   * @return a new instance of {@link ListOfEncodingFormats}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static ListOfStrings createListOfStrings(@Nonnull final List<String> val) {
-    return new ListOfStrings(val);
+  static ListOfEncodingFormats createListOfEncodingFormats(
+      @Nonnull final List<EncodingFormat> val) {
+    return new ListOfEncodingFormats(val);
   }
 
   /**
-   * Helper class to create {@code String } that implements {@link
+   * Helper class to create {@code EncodingFormat } that implements {@link
    * EmbeddingsModelParamsEncodingFormat}.
    */
-  record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
+  record InnerEncodingFormat(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull EncodingFormat value)
       implements EmbeddingsModelParamsEncodingFormat {}
 
   /**
-   * Creator to enable deserialization of {@code String }.
+   * Creator to enable deserialization of {@code EncodingFormat }.
    *
    * @param val the value to use
-   * @return a new instance of {@link InnerString}.
+   * @return a new instance of {@link InnerEncodingFormat}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static InnerString create(@Nonnull final String val) {
-    return new InnerString(val);
+  static InnerEncodingFormat createInnerEncodingFormat(@Nonnull final EncodingFormat val) {
+    return new InnerEncodingFormat(val);
   }
 }

@@ -15,23 +15,6 @@ import javax.annotation.Nonnull;
 
 /** Embedding */
 public interface Embedding {
-  /** Helper class to create {@code EmbeddingOneOf } that implements {@link Embedding}. */
-  record InnerEmbeddingOneOf(
-      @com.fasterxml.jackson.annotation.JsonValue @Nonnull EmbeddingOneOf value)
-      implements Embedding {}
-
-  /**
-   * Creator to enable deserialization of {@code EmbeddingOneOf }.
-   *
-   * @param val the value to use
-   * @return a new instance of {@link InnerEmbeddingOneOf}.
-   */
-  @com.fasterxml.jackson.annotation.JsonCreator
-  @Nonnull
-  static InnerEmbeddingOneOf createInnerEmbeddingOneOf(@Nonnull final EmbeddingOneOf val) {
-    return new InnerEmbeddingOneOf(val);
-  }
-
   /** Helper class to create {@code float[] } that implements {@link Embedding}. */
   record ArrayOfFloats(@com.fasterxml.jackson.annotation.JsonValue @Nonnull float[] values)
       implements Embedding {}
@@ -62,5 +45,23 @@ public interface Embedding {
   @Nonnull
   static InnerString create(@Nonnull final String val) {
     return new InnerString(val);
+  }
+
+  /** Helper class to create {@code EmbeddingMultiFormat } that implements {@link Embedding}. */
+  record InnerEmbeddingMultiFormat(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull EmbeddingMultiFormat value)
+      implements Embedding {}
+
+  /**
+   * Creator to enable deserialization of {@code EmbeddingMultiFormat }.
+   *
+   * @param val the value to use
+   * @return a new instance of {@link InnerEmbeddingMultiFormat}.
+   */
+  @com.fasterxml.jackson.annotation.JsonCreator
+  @Nonnull
+  static InnerEmbeddingMultiFormat createInnerEmbeddingMultiFormat(
+      @Nonnull final EmbeddingMultiFormat val) {
+    return new InnerEmbeddingMultiFormat(val);
   }
 }

@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
  * formats are requested (Cohere-specific).
  */
 // CHECKSTYLE:OFF
-public class EmbeddingOneOf
+public class EmbeddingMultiFormat
 // CHECKSTYLE:ON
 {
   @JsonProperty("float")
@@ -55,17 +55,17 @@ public class EmbeddingOneOf
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for EmbeddingOneOf. */
-  protected EmbeddingOneOf() {}
+  /** Default constructor for EmbeddingMultiFormat. */
+  protected EmbeddingMultiFormat() {}
 
   /**
-   * Set the _float of this {@link EmbeddingOneOf} instance and return the same instance.
+   * Set the _float of this {@link EmbeddingMultiFormat} instance and return the same instance.
    *
    * @param _float Float encoding format - array of floating point numbers
-   * @return The same instance of this {@link EmbeddingOneOf} class
+   * @return The same instance of this {@link EmbeddingMultiFormat} class
    */
   @Nonnull
-  public EmbeddingOneOf _float(@Nullable final float[] _float) {
+  public EmbeddingMultiFormat _float(@Nullable final float[] _float) {
     this._float = _float;
     return this;
   }
@@ -73,7 +73,7 @@ public class EmbeddingOneOf
   /**
    * Float encoding format - array of floating point numbers
    *
-   * @return _float The _float of this {@link EmbeddingOneOf} instance.
+   * @return _float The _float of this {@link EmbeddingMultiFormat} instance.
    */
   @Nonnull
   public float[] getFloat() {
@@ -81,7 +81,7 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set the _float of this {@link EmbeddingOneOf} instance.
+   * Set the _float of this {@link EmbeddingMultiFormat} instance.
    *
    * @param _float Float encoding format - array of floating point numbers
    */
@@ -90,25 +90,25 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set the int8 of this {@link EmbeddingOneOf} instance and return the same instance.
+   * Set the int8 of this {@link EmbeddingMultiFormat} instance and return the same instance.
    *
    * @param int8 Int8 encoding format - array of 8-bit integers
-   * @return The same instance of this {@link EmbeddingOneOf} class
+   * @return The same instance of this {@link EmbeddingMultiFormat} class
    */
   @Nonnull
-  public EmbeddingOneOf int8(@Nullable final List<Integer> int8) {
+  public EmbeddingMultiFormat int8(@Nullable final List<Integer> int8) {
     this.int8 = int8;
     return this;
   }
 
   /**
-   * Add one int8 instance to this {@link EmbeddingOneOf}.
+   * Add one int8 instance to this {@link EmbeddingMultiFormat}.
    *
    * @param int8Item The int8 that should be added
-   * @return The same instance of type {@link EmbeddingOneOf}
+   * @return The same instance of type {@link EmbeddingMultiFormat}
    */
   @Nonnull
-  public EmbeddingOneOf addInt8Item(@Nonnull final Integer int8Item) {
+  public EmbeddingMultiFormat addInt8Item(@Nonnull final Integer int8Item) {
     if (this.int8 == null) {
       this.int8 = new ArrayList<>();
     }
@@ -119,7 +119,7 @@ public class EmbeddingOneOf
   /**
    * Int8 encoding format - array of 8-bit integers
    *
-   * @return int8 The int8 of this {@link EmbeddingOneOf} instance.
+   * @return int8 The int8 of this {@link EmbeddingMultiFormat} instance.
    */
   @Nonnull
   public List<Integer> getInt8() {
@@ -127,7 +127,7 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set the int8 of this {@link EmbeddingOneOf} instance.
+   * Set the int8 of this {@link EmbeddingMultiFormat} instance.
    *
    * @param int8 Int8 encoding format - array of 8-bit integers
    */
@@ -136,25 +136,25 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set the uint8 of this {@link EmbeddingOneOf} instance and return the same instance.
+   * Set the uint8 of this {@link EmbeddingMultiFormat} instance and return the same instance.
    *
    * @param uint8 Uint8 encoding format - array of unsigned 8-bit integers
-   * @return The same instance of this {@link EmbeddingOneOf} class
+   * @return The same instance of this {@link EmbeddingMultiFormat} class
    */
   @Nonnull
-  public EmbeddingOneOf uint8(@Nullable final List<Integer> uint8) {
+  public EmbeddingMultiFormat uint8(@Nullable final List<Integer> uint8) {
     this.uint8 = uint8;
     return this;
   }
 
   /**
-   * Add one uint8 instance to this {@link EmbeddingOneOf}.
+   * Add one uint8 instance to this {@link EmbeddingMultiFormat}.
    *
    * @param uint8Item The uint8 that should be added
-   * @return The same instance of type {@link EmbeddingOneOf}
+   * @return The same instance of type {@link EmbeddingMultiFormat}
    */
   @Nonnull
-  public EmbeddingOneOf addUint8Item(@Nonnull final Integer uint8Item) {
+  public EmbeddingMultiFormat addUint8Item(@Nonnull final Integer uint8Item) {
     if (this.uint8 == null) {
       this.uint8 = new ArrayList<>();
     }
@@ -165,7 +165,7 @@ public class EmbeddingOneOf
   /**
    * Uint8 encoding format - array of unsigned 8-bit integers
    *
-   * @return uint8 The uint8 of this {@link EmbeddingOneOf} instance.
+   * @return uint8 The uint8 of this {@link EmbeddingMultiFormat} instance.
    */
   @Nonnull
   public List<Integer> getUint8() {
@@ -173,7 +173,7 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set the uint8 of this {@link EmbeddingOneOf} instance.
+   * Set the uint8 of this {@link EmbeddingMultiFormat} instance.
    *
    * @param uint8 Uint8 encoding format - array of unsigned 8-bit integers
    */
@@ -182,13 +182,13 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set the base64 of this {@link EmbeddingOneOf} instance and return the same instance.
+   * Set the base64 of this {@link EmbeddingMultiFormat} instance and return the same instance.
    *
    * @param base64 Base64 encoding format - base64 encoded string
-   * @return The same instance of this {@link EmbeddingOneOf} class
+   * @return The same instance of this {@link EmbeddingMultiFormat} class
    */
   @Nonnull
-  public EmbeddingOneOf base64(@Nullable final String base64) {
+  public EmbeddingMultiFormat base64(@Nullable final String base64) {
     this.base64 = base64;
     return this;
   }
@@ -196,7 +196,7 @@ public class EmbeddingOneOf
   /**
    * Base64 encoding format - base64 encoded string
    *
-   * @return base64 The base64 of this {@link EmbeddingOneOf} instance.
+   * @return base64 The base64 of this {@link EmbeddingMultiFormat} instance.
    */
   @Nonnull
   public String getBase64() {
@@ -204,7 +204,7 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set the base64 of this {@link EmbeddingOneOf} instance.
+   * Set the base64 of this {@link EmbeddingMultiFormat} instance.
    *
    * @param base64 Base64 encoding format - base64 encoded string
    */
@@ -213,25 +213,25 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set the binary of this {@link EmbeddingOneOf} instance and return the same instance.
+   * Set the binary of this {@link EmbeddingMultiFormat} instance and return the same instance.
    *
    * @param binary Binary encoding format - array of integers
-   * @return The same instance of this {@link EmbeddingOneOf} class
+   * @return The same instance of this {@link EmbeddingMultiFormat} class
    */
   @Nonnull
-  public EmbeddingOneOf binary(@Nullable final List<Integer> binary) {
+  public EmbeddingMultiFormat binary(@Nullable final List<Integer> binary) {
     this.binary = binary;
     return this;
   }
 
   /**
-   * Add one binary instance to this {@link EmbeddingOneOf}.
+   * Add one binary instance to this {@link EmbeddingMultiFormat}.
    *
    * @param binaryItem The binary that should be added
-   * @return The same instance of type {@link EmbeddingOneOf}
+   * @return The same instance of type {@link EmbeddingMultiFormat}
    */
   @Nonnull
-  public EmbeddingOneOf addBinaryItem(@Nonnull final Integer binaryItem) {
+  public EmbeddingMultiFormat addBinaryItem(@Nonnull final Integer binaryItem) {
     if (this.binary == null) {
       this.binary = new ArrayList<>();
     }
@@ -242,7 +242,7 @@ public class EmbeddingOneOf
   /**
    * Binary encoding format - array of integers
    *
-   * @return binary The binary of this {@link EmbeddingOneOf} instance.
+   * @return binary The binary of this {@link EmbeddingMultiFormat} instance.
    */
   @Nonnull
   public List<Integer> getBinary() {
@@ -250,7 +250,7 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set the binary of this {@link EmbeddingOneOf} instance.
+   * Set the binary of this {@link EmbeddingMultiFormat} instance.
    *
    * @param binary Binary encoding format - array of integers
    */
@@ -259,25 +259,25 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set the ubinary of this {@link EmbeddingOneOf} instance and return the same instance.
+   * Set the ubinary of this {@link EmbeddingMultiFormat} instance and return the same instance.
    *
    * @param ubinary Ubinary encoding format - array of unsigned integers
-   * @return The same instance of this {@link EmbeddingOneOf} class
+   * @return The same instance of this {@link EmbeddingMultiFormat} class
    */
   @Nonnull
-  public EmbeddingOneOf ubinary(@Nullable final List<Integer> ubinary) {
+  public EmbeddingMultiFormat ubinary(@Nullable final List<Integer> ubinary) {
     this.ubinary = ubinary;
     return this;
   }
 
   /**
-   * Add one ubinary instance to this {@link EmbeddingOneOf}.
+   * Add one ubinary instance to this {@link EmbeddingMultiFormat}.
    *
    * @param ubinaryItem The ubinary that should be added
-   * @return The same instance of type {@link EmbeddingOneOf}
+   * @return The same instance of type {@link EmbeddingMultiFormat}
    */
   @Nonnull
-  public EmbeddingOneOf addUbinaryItem(@Nonnull final Integer ubinaryItem) {
+  public EmbeddingMultiFormat addUbinaryItem(@Nonnull final Integer ubinaryItem) {
     if (this.ubinary == null) {
       this.ubinary = new ArrayList<>();
     }
@@ -288,7 +288,7 @@ public class EmbeddingOneOf
   /**
    * Ubinary encoding format - array of unsigned integers
    *
-   * @return ubinary The ubinary of this {@link EmbeddingOneOf} instance.
+   * @return ubinary The ubinary of this {@link EmbeddingMultiFormat} instance.
    */
   @Nonnull
   public List<Integer> getUbinary() {
@@ -296,7 +296,7 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set the ubinary of this {@link EmbeddingOneOf} instance.
+   * Set the ubinary of this {@link EmbeddingMultiFormat} instance.
    *
    * @param ubinary Ubinary encoding format - array of unsigned integers
    */
@@ -305,7 +305,7 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link EmbeddingOneOf}.
+   * Get the names of the unrecognizable properties of the {@link EmbeddingMultiFormat}.
    *
    * @return The set of properties names
    */
@@ -316,7 +316,7 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link EmbeddingOneOf} instance.
+   * Get the value of an unrecognizable property of this {@link EmbeddingMultiFormat} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -327,14 +327,15 @@ public class EmbeddingOneOf
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("EmbeddingOneOf has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "EmbeddingMultiFormat has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link EmbeddingOneOf} instance including unrecognized
-   * properties.
+   * Get the value of all properties of this {@link EmbeddingMultiFormat} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -352,8 +353,8 @@ public class EmbeddingOneOf
   }
 
   /**
-   * Set an unrecognizable property of this {@link EmbeddingOneOf} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link EmbeddingMultiFormat} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -371,14 +372,14 @@ public class EmbeddingOneOf
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final EmbeddingOneOf embeddingOneOf = (EmbeddingOneOf) o;
-    return Objects.equals(this.cloudSdkCustomFields, embeddingOneOf.cloudSdkCustomFields)
-        && Arrays.equals(this._float, embeddingOneOf._float)
-        && Objects.equals(this.int8, embeddingOneOf.int8)
-        && Objects.equals(this.uint8, embeddingOneOf.uint8)
-        && Objects.equals(this.base64, embeddingOneOf.base64)
-        && Objects.equals(this.binary, embeddingOneOf.binary)
-        && Objects.equals(this.ubinary, embeddingOneOf.ubinary);
+    final EmbeddingMultiFormat embeddingMultiFormat = (EmbeddingMultiFormat) o;
+    return Objects.equals(this.cloudSdkCustomFields, embeddingMultiFormat.cloudSdkCustomFields)
+        && Arrays.equals(this._float, embeddingMultiFormat._float)
+        && Objects.equals(this.int8, embeddingMultiFormat.int8)
+        && Objects.equals(this.uint8, embeddingMultiFormat.uint8)
+        && Objects.equals(this.base64, embeddingMultiFormat.base64)
+        && Objects.equals(this.binary, embeddingMultiFormat.binary)
+        && Objects.equals(this.ubinary, embeddingMultiFormat.ubinary);
   }
 
   @Override
@@ -391,7 +392,7 @@ public class EmbeddingOneOf
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class EmbeddingOneOf {\n");
+    sb.append("class EmbeddingMultiFormat {\n");
     sb.append("    _float: ").append(toIndentedString(_float)).append("\n");
     sb.append("    int8: ").append(toIndentedString(int8)).append("\n");
     sb.append("    uint8: ").append(toIndentedString(uint8)).append("\n");
@@ -415,8 +416,8 @@ public class EmbeddingOneOf
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link EmbeddingOneOf} instance. No arguments are required. */
-  public static EmbeddingOneOf create() {
-    return new EmbeddingOneOf();
+  /** Create a new {@link EmbeddingMultiFormat} instance. No arguments are required. */
+  public static EmbeddingMultiFormat create() {
+    return new EmbeddingMultiFormat();
   }
 }
