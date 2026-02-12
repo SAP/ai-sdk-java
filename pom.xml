@@ -72,7 +72,7 @@
     <javaparser.version>3.28.0</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.21.0</jackson.version>
-    <logback.version>1.5.27</logback.version>
+    <logback.version>1.5.29</logback.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.2</micrometer.version>
     <json.version>20251224</json.version>
@@ -551,7 +551,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.9.0</version>
+        <version>3.10.0</version>
         <configuration>
           <failOnWarning>true</failOnWarning>
           <failBuild>true</failBuild>
