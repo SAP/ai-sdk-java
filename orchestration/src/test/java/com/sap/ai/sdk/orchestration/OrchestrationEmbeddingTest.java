@@ -20,7 +20,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParams.EncodingFormatEnum;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParamsEncodingFormat;
+import com.sap.ai.sdk.orchestration.model.EncodingFormat;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -65,7 +66,9 @@ class OrchestrationEmbeddingTest {
     assertThat(lowLevelModel1.getVersion()).isEqualTo("v1");
     assertThat(lowLevelModel1.getParams().getDimensions()).isEqualTo(1536);
     assertThat(lowLevelModel1.getParams().isNormalize()).isTrue();
-    assertThat(lowLevelModel1.getParams().getEncodingFormat()).isEqualTo(EncodingFormatEnum.FLOAT);
+    assertThat(lowLevelModel1.getParams().getEncodingFormat())
+        .isEqualTo(
+            EmbeddingsModelParamsEncodingFormat.createInnerEncodingFormat(EncodingFormat.FLOAT));
 
     final var model2 = new OrchestrationEmbeddingModel("custom-model");
     final var lowLevelModel2 = model2.createEmbeddingsModelDetails();
