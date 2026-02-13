@@ -8,6 +8,7 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.Embedding;
 import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -39,12 +40,14 @@ public class OrchestrationJacksonConfiguration {
             .addDeserializer(
                 TemplateResponseFormat.class,
                 PolymorphicFallbackDeserializer.fromJsonSubTypes(TemplateResponseFormat.class))
+            .addDeserializer(Embedding.class, new EmbeddingDeserializer())
             .setMixInAnnotation(
                 TemplateResponseFormat.class, JacksonMixins.ResponseFormatSubTypesMixin.class)
             .setMixInAnnotation(
                 AzureContentSafetyOutput.class, JacksonMixins.AzureContentSafetyCaseAgnostic.class)
             .setMixInAnnotation(
-                AzureContentSafetyInput.class, JacksonMixins.AzureContentSafetyCaseAgnostic.class);
+                AzureContentSafetyInput.class, JacksonMixins.AzureContentSafetyCaseAgnostic.class)
+            .setMixInAnnotation(Embedding.class, JacksonMixins.EmbeddingMixin.class);
 
     return getDefaultObjectMapper()
         .rebuild()
