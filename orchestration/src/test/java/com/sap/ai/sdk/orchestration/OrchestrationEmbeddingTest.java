@@ -18,8 +18,12 @@ import static com.sap.ai.sdk.orchestration.model.EmbeddingsInput.TypeEnum.TEXT;
 import static com.sap.ai.sdk.orchestration.model.EmbeddingsResponse.ObjectEnum.LIST;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.sap.ai.sdk.orchestration.model.Embedding;
+import com.sap.ai.sdk.orchestration.model.EmbeddingMultiFormat;
+import com.sap.ai.sdk.orchestration.model.EmbeddingResult;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParamsEncodingFormat;
 import com.sap.ai.sdk.orchestration.model.EncodingFormat;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -37,6 +41,7 @@ import org.junit.jupiter.api.Test;
 
 @WireMockTest
 class OrchestrationEmbeddingTest {
+  private static final ObjectMapper JACKSON = new ObjectMapper();
   private static OrchestrationClient client;
 
   private final Function<String, InputStream> fileLoader =
@@ -156,5 +161,102 @@ class OrchestrationEmbeddingTest {
       verify(
           postRequestedFor(urlEqualTo("/v2/embeddings")).withRequestBody(equalToJson(requestJson)));
     }
+  }
+
+  @Test
+  @SneakyThrows
+  void testDeserializeFloatArrayEmbedding() {
+    // Test the most common format: float array
+    final String json =
+        """
+        {
+          "object": "embedding",
+          "embedding": [0.015282119, 0.013516456, 0.002541946, -0.010837519],
+          "index": 0
+        }
+        """;
+
+    final EmbeddingResult result = JACKSON.readValue(json, EmbeddingResult.class);
+
+    assertThat(result).isNotNull();
+    assertThat(result.getObject()).isEqualTo(EmbeddingResult.ObjectEnum.EMBEDDING);
+    assertThat(result.getIndex()).isEqualTo(0);
+
+    // Verify the embedding is deserialized as ArrayOfFloats
+    final Embedding embedding = result.getEmbedding();
+    assertThat(embedding).isInstanceOf(Embedding.ArrayOfFloats.class);
+
+    final Embedding.ArrayOfFloats arrayOfFloats = (Embedding.ArrayOfFloats) embedding;
+    assertThat(arrayOfFloats.values()).hasSize(4);
+    assertThat(arrayOfFloats.values())
+        .isEqualTo(new float[] {0.015282119f, 0.013516456f, 0.002541946f, -0.010837519f});
+  }
+
+  @Test
+  @SneakyThrows
+  void testDeserializeBase64StringEmbedding() {
+    // Test base64 string format
+    final String json =
+        """
+        {
+          "object": "embedding",
+          "embedding": "2mF6PCB0XTzHliY72Y8xvOalM6uLmZjLyu7ze9==",
+          "index": 0
+        }
+        """;
+
+    final EmbeddingResult result = JACKSON.readValue(json, EmbeddingResult.class);
+
+    assertThat(result).isNotNull();
+    assertThat(result.getObject()).isEqualTo(EmbeddingResult.ObjectEnum.EMBEDDING);
+    assertThat(result.getIndex()).isEqualTo(0);
+
+    // Verify the embedding is deserialized as InnerString
+    final Embedding embedding = result.getEmbedding();
+    assertThat(embedding).isInstanceOf(Embedding.InnerString.class);
+
+    final Embedding.InnerString innerString = (Embedding.InnerString) embedding;
+    assertThat(innerString.value()).isEqualTo("2mF6PCB0XTzHliY72Y8xvOalM6uLmZjLyu7ze9==");
+  }
+
+  @Test
+  @SneakyThrows
+  void testDeserializeMultiFormatEmbedding() {
+    // Test multi-format (Cohere-specific) with float and uint8 arrays
+    final String json =
+        """
+        {
+          "object": "embedding",
+          "embedding": {
+            "float": [0.015282119, 0.013516456, 0.002541946, -0.010837519],
+            "uint8": [142, 137, 124, 106],
+            "base64": "8nB7QDB1YUzImiZ82Z9ywPbmN7vMnajMzv8zf+=="
+          },
+          "index": 0
+        }
+        """;
+
+    final EmbeddingResult result = JACKSON.readValue(json, EmbeddingResult.class);
+
+    assertThat(result).isNotNull();
+    assertThat(result.getObject()).isEqualTo(EmbeddingResult.ObjectEnum.EMBEDDING);
+    assertThat(result.getIndex()).isEqualTo(0);
+
+    // Verify the embedding is deserialized as InnerEmbeddingMultiFormat
+    final Embedding embedding = result.getEmbedding();
+    assertThat(embedding).isInstanceOf(Embedding.InnerEmbeddingMultiFormat.class);
+
+    final Embedding.InnerEmbeddingMultiFormat innerMultiFormat =
+        (Embedding.InnerEmbeddingMultiFormat) embedding;
+    final EmbeddingMultiFormat multiFormat = innerMultiFormat.value();
+
+    assertThat(multiFormat).isNotNull();
+
+    // Verify float array
+    assertThat(multiFormat.getFloat()).hasSize(4);
+    assertThat(multiFormat.getFloat())
+        .isEqualTo(new float[] {0.015282119f, 0.013516456f, 0.002541946f, -0.010837519f});
+    assertThat(multiFormat.getUint8()).isEqualTo(List.of(142, 137, 124, 106));
+    assertThat(multiFormat.getBase64()).isEqualTo("8nB7QDB1YUzImiZ82Z9ywPbmN7vMnajMzv8zf+==");
   }
 }
