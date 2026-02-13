@@ -241,6 +241,12 @@
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.security</groupId>
+      <artifactId>java-security-test</artifactId>
+      <version>3.6.6</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
