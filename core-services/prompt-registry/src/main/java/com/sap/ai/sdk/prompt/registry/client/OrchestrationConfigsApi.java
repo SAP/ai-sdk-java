@@ -325,8 +325,7 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
    *     instead
-   * @param resolveTemplateRef2 (optional, default to false) The value for the parameter
-   *     resolveTemplateRef2
+   * @param resolveTemplateRef2 (optional) The value for the parameter resolveTemplateRef2
    * @return OrchestrationConfigGetResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -503,11 +502,10 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * @param name (required) The value for the parameter name
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead
-   * @param includeSpec2 (optional, default to false) The value for the parameter includeSpec2
+   * @param includeSpec2 (optional) The value for the parameter includeSpec2
    * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
    *     instead
-   * @param resolveTemplateRef2 (optional, default to false) The value for the parameter
-   *     resolveTemplateRef2
+   * @param resolveTemplateRef2 (optional) The value for the parameter resolveTemplateRef2
    * @return OrchestrationConfigListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -634,11 +632,10 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * @param version (optional) The value for the parameter version
    * @param retrieve (optional, default to both) The value for the parameter retrieve
    * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead
-   * @param includeSpec2 (optional, default to false) The value for the parameter includeSpec2
+   * @param includeSpec2 (optional) The value for the parameter includeSpec2
    * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
    *     instead
-   * @param resolveTemplateRef2 (optional, default to false) The value for the parameter
-   *     resolveTemplateRef2
+   * @param resolveTemplateRef2 (optional) The value for the parameter resolveTemplateRef2
    * @return OrchestrationConfigListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
