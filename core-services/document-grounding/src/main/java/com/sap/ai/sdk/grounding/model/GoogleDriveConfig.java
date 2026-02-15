@@ -23,53 +23,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** S3ConfigurationMinimal */
+/** GoogleDriveConfig */
 // CHECKSTYLE:OFF
-public class S3ConfigurationMinimal
+public class GoogleDriveConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("s3")
-  private ServiceNowConfigurationMinimalServiceNow s3;
+  @JsonProperty("folder")
+  private GoogleDriveFolder folder;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for S3ConfigurationMinimal. */
-  protected S3ConfigurationMinimal() {}
+  /** Default constructor for GoogleDriveConfig. */
+  protected GoogleDriveConfig() {}
 
   /**
-   * Set the s3 of this {@link S3ConfigurationMinimal} instance and return the same instance.
+   * Set the folder of this {@link GoogleDriveConfig} instance and return the same instance.
    *
-   * @param s3 The s3 of this {@link S3ConfigurationMinimal}
-   * @return The same instance of this {@link S3ConfigurationMinimal} class
+   * @param folder The folder of this {@link GoogleDriveConfig}
+   * @return The same instance of this {@link GoogleDriveConfig} class
    */
   @Nonnull
-  public S3ConfigurationMinimal s3(@Nonnull final ServiceNowConfigurationMinimalServiceNow s3) {
-    this.s3 = s3;
+  public GoogleDriveConfig folder(@Nonnull final GoogleDriveFolder folder) {
+    this.folder = folder;
     return this;
   }
 
   /**
-   * Get s3
+   * Get folder
    *
-   * @return s3 The s3 of this {@link S3ConfigurationMinimal} instance.
+   * @return folder The folder of this {@link GoogleDriveConfig} instance.
    */
   @Nonnull
-  public ServiceNowConfigurationMinimalServiceNow getS3() {
-    return s3;
+  public GoogleDriveFolder getFolder() {
+    return folder;
   }
 
   /**
-   * Set the s3 of this {@link S3ConfigurationMinimal} instance.
+   * Set the folder of this {@link GoogleDriveConfig} instance.
    *
-   * @param s3 The s3 of this {@link S3ConfigurationMinimal}
+   * @param folder The folder of this {@link GoogleDriveConfig}
    */
-  public void setS3(@Nonnull final ServiceNowConfigurationMinimalServiceNow s3) {
-    this.s3 = s3;
+  public void setFolder(@Nonnull final GoogleDriveFolder folder) {
+    this.folder = folder;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link S3ConfigurationMinimal}.
+   * Get the names of the unrecognizable properties of the {@link GoogleDriveConfig}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class S3ConfigurationMinimal
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link S3ConfigurationMinimal} instance.
+   * Get the value of an unrecognizable property of this {@link GoogleDriveConfig} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,14 +91,13 @@ public class S3ConfigurationMinimal
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "S3ConfigurationMinimal has no field with name '" + name + "'.");
+      throw new NoSuchElementException("GoogleDriveConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link S3ConfigurationMinimal} instance including
+   * Get the value of all properties of this {@link GoogleDriveConfig} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -107,12 +106,12 @@ public class S3ConfigurationMinimal
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (s3 != null) declaredFields.put("s3", s3);
+    if (folder != null) declaredFields.put("folder", folder);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link S3ConfigurationMinimal} instance. If the map
+   * Set an unrecognizable property of this {@link GoogleDriveConfig} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -131,22 +130,22 @@ public class S3ConfigurationMinimal
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final S3ConfigurationMinimal s3ConfigurationMinimal = (S3ConfigurationMinimal) o;
-    return Objects.equals(this.cloudSdkCustomFields, s3ConfigurationMinimal.cloudSdkCustomFields)
-        && Objects.equals(this.s3, s3ConfigurationMinimal.s3);
+    final GoogleDriveConfig googleDriveConfig = (GoogleDriveConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, googleDriveConfig.cloudSdkCustomFields)
+        && Objects.equals(this.folder, googleDriveConfig.folder);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(s3, cloudSdkCustomFields);
+    return Objects.hash(folder, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class S3ConfigurationMinimal {\n");
-    sb.append("    s3: ").append(toIndentedString(s3)).append("\n");
+    sb.append("class GoogleDriveConfig {\n");
+    sb.append("    folder: ").append(toIndentedString(folder)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -165,21 +164,21 @@ public class S3ConfigurationMinimal
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link S3ConfigurationMinimal}
+   * Create a type-safe, fluent-api builder object to construct a new {@link GoogleDriveConfig}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (s3) -> new S3ConfigurationMinimal().s3(s3);
+    return (folder) -> new GoogleDriveConfig().folder(folder);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the s3 of this {@link S3ConfigurationMinimal} instance.
+     * Set the folder of this {@link GoogleDriveConfig} instance.
      *
-     * @param s3 The s3 of this {@link S3ConfigurationMinimal}
-     * @return The S3ConfigurationMinimal instance.
+     * @param folder The folder of this {@link GoogleDriveConfig}
+     * @return The GoogleDriveConfig instance.
      */
-    S3ConfigurationMinimal s3(@Nonnull final ServiceNowConfigurationMinimalServiceNow s3);
+    GoogleDriveConfig folder(@Nonnull final GoogleDriveFolder folder);
   }
 }
