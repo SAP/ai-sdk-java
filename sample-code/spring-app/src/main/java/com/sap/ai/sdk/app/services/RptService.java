@@ -12,6 +12,7 @@ import com.sap.ai.sdk.foundationmodels.rpt.generated.model.SchemaFieldConfig;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig;
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -81,15 +82,20 @@ public class RptService {
    */
   @Nonnull
   public PredictResponsePayload predictParquet() {
-    final var parquetData = new File("src/main/resources/sample.parquet");
-    final var targetColumns =
-        List.of(
-            TargetColumnConfig.create()
-                .name("COSTCENTER")
-                .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
-                .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION));
+    try {
+      final File parquetData =
+          new File(getClass().getResource("/sample.parquet").toURI());
+      final var targetColumns =
+          List.of(
+              TargetColumnConfig.create()
+                  .name("COSTCENTER")
+                  .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
+                  .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION));
 
-    return rptClient.tableCompletion(
-        parquetData, PredictionConfig.create().targetColumns(targetColumns));
+      return rptClient.tableCompletion(
+          parquetData, PredictionConfig.create().targetColumns(targetColumns));
+    } catch (final URISyntaxException e) {
+      throw new RuntimeException("Failed to load Parquet file for prediction", e);
+    }
   }
 }
