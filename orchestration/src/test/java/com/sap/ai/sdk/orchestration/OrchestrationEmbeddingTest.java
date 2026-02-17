@@ -41,7 +41,8 @@ import org.junit.jupiter.api.Test;
 
 @WireMockTest
 class OrchestrationEmbeddingTest {
-  private static final ObjectMapper JACKSON = new ObjectMapper();
+  private static final ObjectMapper JACKSON =
+      OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
   private static OrchestrationClient client;
 
   private final Function<String, InputStream> fileLoader =
