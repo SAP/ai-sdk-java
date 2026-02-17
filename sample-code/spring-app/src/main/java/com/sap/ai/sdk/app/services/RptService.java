@@ -83,8 +83,7 @@ public class RptService {
   @Nonnull
   public PredictResponsePayload predictParquet() {
     try {
-      final File parquetData =
-          new File(getClass().getResource("/sample.parquet").toURI());
+      final File parquetData = new File(getClass().getResource("/sample.parquet").toURI());
       final var targetColumns =
           List.of(
               TargetColumnConfig.create()
