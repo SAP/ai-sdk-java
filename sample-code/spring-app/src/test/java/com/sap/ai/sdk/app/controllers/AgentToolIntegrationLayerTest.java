@@ -1,9 +1,11 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.cloud.environment.servicebinding.api.ServiceIdentifier.IDENTITY_AUTHENTICATION;
+import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
+
 import com.auth0.jwt.JWT;
 import com.sap.cloud.environment.servicebinding.SapVcapServicesServiceBindingAccessor;
 import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingAccessor;
-import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.BtpServiceOptions.AuthenticationServiceOptions;
 import com.sap.cloud.sdk.cloudplatform.connectivity.BtpServiceOptions.IasOptions;
@@ -17,7 +19,6 @@ import java.util.Collections;
 import lombok.SneakyThrows;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.BasicHttpClientResponseHandler;
-import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,9 +54,6 @@ class AgentToolIntegrationLayerTest {
 """;
 
   String payload =
-      "{\"message\": {\"role\": \"user\",\"parts\": [{  \"kind\": \"data\",  \"data\": {  \"userQuery\": \"Plan a travel itinerary for me for Berlin\"  }}],\"kind\": \"message\"}}";
-
-  String payloadBig =
 """
 {
     "message": {
@@ -86,7 +84,7 @@ class AgentToolIntegrationLayerTest {
   @SneakyThrows
   void testAgentToolIntegrationLayer() {
     var options =
-        ServiceBindingDestinationOptions.forService(ServiceIdentifier.IDENTITY_AUTHENTICATION)
+        ServiceBindingDestinationOptions.forService(IDENTITY_AUTHENTICATION)
             .withOption(
                 AuthenticationServiceOptions.withTargetUri(
                     "https://gen-ai-hub-sdk-8pengs8d.eu12.sapdas.cloud.sap"))
@@ -97,9 +95,9 @@ class AgentToolIntegrationLayerTest {
     var destination = ServiceBindingDestinationLoader.defaultLoaderChain().getDestination(options);
 
     String atilUrl =
-        "https://gen-ai-hub-sdk-8pengs8d.eu12.sapdas.cloud.sap/api/content/v1/capabilities/com.sap.ai.sdk/my_assistant_capability/scenarios/plan_travel/v1/message:send?assistant=my_assistant_i563080";
+        "/api/content/v1/capabilities/com.sap.ai.sdk/my_assistant_capability/scenarios/plan_travel/v1/message:send?assistant=my_assistant_i563080";
     var httpPost = new HttpPost(atilUrl);
-    httpPost.setEntity(new StringEntity(payload, ContentType.APPLICATION_JSON));
+    httpPost.setEntity(new StringEntity(payload, APPLICATION_JSON.withCharset((String) null)));
     httpPost.setHeader(
         "x-callback-target", "https://echo-server.cfapps.eu12-001.hana.ondemand.com");
     httpPost.setHeader("x-global-user-id", "01361f5a-9ca7-4593-9c54-2425a127edff");
