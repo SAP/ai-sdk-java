@@ -10,6 +10,7 @@ import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionPlaceholder
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.RowsInnerValue;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.SchemaFieldConfig;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig;
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -71,5 +72,24 @@ public class RptService {
             .parseDataTypes(true)
             .rows(rows);
     return rptClient.tableCompletion(request);
+  }
+
+  /**
+   * Makes a prediction request to the RPT model using a Parquet file as input.
+   *
+   * @return the prediction response payload from the RPT model
+   */
+  @Nonnull
+  public PredictResponsePayload predictParquet() {
+    final var parquetData = new File("src/main/resources/sample.parquet");
+    final var targetColumns =
+        List.of(
+            TargetColumnConfig.create()
+                .name("COSTCENTER")
+                .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
+                .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION));
+
+    return rptClient.tableCompletion(
+        parquetData, PredictionConfig.create().targetColumns(targetColumns));
   }
 }

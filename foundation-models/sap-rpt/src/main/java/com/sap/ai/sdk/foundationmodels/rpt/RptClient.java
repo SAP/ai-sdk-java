@@ -13,6 +13,7 @@ import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayloa
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apache.ApiClient;
+import java.io.File;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,6 @@ import lombok.RequiredArgsConstructor;
  *
  * @since 1.16.0
  */
-@Beta
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class RptClient {
   @Nonnull private final DefaultApi api;
@@ -53,7 +53,10 @@ public class RptClient {
   }
 
   /**
-   * Predict targets using SAP RPT model with structured data. *
+   * Predict targets using SAP RPT model with structured data.
+   *
+   * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
+   * public signature.
    *
    * <p><b>200</b> - Successful Prediction
    *
@@ -68,6 +71,7 @@ public class RptClient {
    * @param requestBody The prediction request
    * @return prediction response from the RPT model
    */
+  @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(@Nonnull final PredictRequestPayload requestBody) {
     return api.predict(requestBody);
@@ -76,6 +80,9 @@ public class RptClient {
   /**
    * Make in-context predictions for specified target columns based on provided table data Parquet
    * file.
+   *
+   * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
+   * public signature.
    *
    * <p><b>200</b> - Successful Prediction
    *
@@ -87,17 +94,19 @@ public class RptClient {
    *
    * <p><b>500</b> - Internal Server Error
    *
-   * @param parquetData Binary Parquet file data
+   * @param parquetFile Parquet file
    * @param predictionConfig The prediction configuration
    * @return prediction response from the RPT model
+   * @since 1.16.0
    */
+  @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(
-      @Nonnull final byte[] parquetData, @Nonnull final PredictionConfig predictionConfig) {
+      @Nonnull final File parquetFile, @Nonnull final PredictionConfig predictionConfig) {
     try {
       final var config =
           JacksonConfiguration.getDefaultObjectMapper().writeValueAsString(predictionConfig);
-      return api.predictParquet(parquetData, config);
+      return api.predictParquet(parquetFile, config);
     } catch (JsonProcessingException e) {
       throw new IllegalArgumentException("Failed to serialize PredictionConfig to JSON", e);
     }
