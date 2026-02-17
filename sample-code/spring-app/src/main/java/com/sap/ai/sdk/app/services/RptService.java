@@ -94,7 +94,7 @@ public class RptService {
       return rptClient.tableCompletion(
           parquetData, PredictionConfig.create().targetColumns(targetColumns));
     } catch (final URISyntaxException e) {
-      throw new RuntimeException("Failed to load Parquet file for prediction", e);
+      throw new IllegalArgumentException("Failed to load Parquet file for prediction", e);
     }
   }
 }
