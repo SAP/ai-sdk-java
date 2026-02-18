@@ -8,7 +8,6 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObject
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
@@ -81,7 +80,6 @@ public final class OpenAiClient {
    * @param apiVersion the API version to target.
    * @return a new client.
    */
-  @Beta
   @Nonnull
   public OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
     final var newDestination =
@@ -143,7 +141,6 @@ public final class OpenAiClient {
    * @return a new client.
    * @since 1.11.0
    */
-  @Beta
   @Nonnull
   public OpenAiClient withHeader(@Nonnull final String key, @Nonnull final String value) {
     final var newClient = new OpenAiClient(this.destination);

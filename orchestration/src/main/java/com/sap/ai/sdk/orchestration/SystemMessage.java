@@ -2,7 +2,6 @@ package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.model.SystemChatMessage.RoleEnum.SYSTEM;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
@@ -29,7 +28,7 @@ public class SystemMessage implements Message {
 
   /** The content of the message. */
   @Nonnull
-  @Getter(onMethod_ = @Beta)
+  @Getter
   MessageContent content;
 
   /**

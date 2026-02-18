@@ -121,7 +121,6 @@ public class AiCoreService {
    * @return A new client object based on {@link #getBaseDestination()}.
    */
   @Nonnull
-  @Beta
   public ApiClient getApiClient() {
     val destination = getBaseDestination();
     val httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
@@ -144,7 +143,6 @@ public class AiCoreService {
    * @return The path to the deployment.
    */
   @Nonnull
-  @Beta
   protected String buildDeploymentPath(@Nonnull final String deploymentId) {
     return "inference/deployments/%s/".formatted(deploymentId);
   }
@@ -156,7 +154,6 @@ public class AiCoreService {
    *
    * @param resourceGroup the resource group of the deleted deployment, usually "default".
    */
-  @Beta
   public void reloadCachedDeployments(@Nonnull final String resourceGroup) {
     deploymentResolver.reloadDeployments(resourceGroup);
   }

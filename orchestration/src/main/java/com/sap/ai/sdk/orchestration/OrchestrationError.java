@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.orchestration.OrchestrationClientException.lastErro
 import static com.sap.ai.sdk.orchestration.OrchestrationClientException.lastErrorStreaming;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientError;
 import com.sap.ai.sdk.orchestration.model.Error;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
@@ -20,7 +19,6 @@ import lombok.Value;
  *
  * @since 1.1.0
  */
-@Beta
 public interface OrchestrationError extends ClientError {
   /**
    * Orchestration error response for synchronous requests.

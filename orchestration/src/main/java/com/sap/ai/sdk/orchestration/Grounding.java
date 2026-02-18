@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
@@ -24,7 +23,6 @@ import lombok.val;
  * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP AI
  *     Core: Orchestration - Grounding</a>
  */
-@Beta
 @Accessors(fluent = true)
 public class Grounding implements GroundingProvider {
 
