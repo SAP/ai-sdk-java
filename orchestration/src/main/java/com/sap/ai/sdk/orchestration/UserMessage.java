@@ -29,9 +29,7 @@ public class UserMessage implements Message {
   @Nonnull String role = "user";
 
   /** The content of the message. */
-  @Nonnull
-  @Getter
-  MessageContent content;
+  @Nonnull @Getter MessageContent content;
 
   /**
    * Creates a new user message from a string.

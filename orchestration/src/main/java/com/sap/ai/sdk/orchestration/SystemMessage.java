@@ -27,9 +27,7 @@ public class SystemMessage implements Message {
   @Nonnull String role = "system";
 
   /** The content of the message. */
-  @Nonnull
-  @Getter
-  MessageContent content;
+  @Nonnull @Getter MessageContent content;
 
   /**
    * Creates a new system message from a string.
