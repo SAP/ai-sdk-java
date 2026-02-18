@@ -26,9 +26,7 @@ public class AssistantMessage implements Message {
   @Nonnull String role = "assistant";
 
   /** The content of the message. */
-  @Nonnull
-  @Getter
-  MessageContent content;
+  @Nonnull @Getter MessageContent content;
 
   /** Tool call if there is any. */
   @Nullable List<MessageToolCall> toolCalls;
