@@ -122,7 +122,7 @@
       <artifactId>connectivity-apache-httpclient5</artifactId>
       <scope>test</scope>
     </dependency>
-
+    <!-- Test dependencies for Parquet file generation -->
     <dependency>
       <groupId>org.apache.parquet</groupId>
       <artifactId>parquet-avro</artifactId>
