@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
@@ -16,6 +17,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.StandardException;
 
 /** Base exception for errors occurring during orchestration filtering. */
+@Beta
 @StandardException(access = AccessLevel.PRIVATE)
 public class OrchestrationFilterException extends OrchestrationClientException {
 

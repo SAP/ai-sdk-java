@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
@@ -32,7 +33,7 @@ public class Grounding implements GroundingProvider {
 
   @Nullable private List<String> metadataParams = null;
 
-  @Setter(onMethod_ = {@Nonnull})
+  @Setter(onMethod_ = {@Nonnull, @Beta})
   private TypeEnum documentGroundingService = TypeEnum.DOCUMENT_GROUNDING_SERVICE;
 
   /**

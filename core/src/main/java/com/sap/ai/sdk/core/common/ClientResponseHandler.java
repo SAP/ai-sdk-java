@@ -50,6 +50,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
    * @param jackson The {@link ObjectMapper} to use
    * @return the current instance of {@link ClientResponseHandler} with the changed object mapper
    */
+  @Beta
   @Nonnull
   public ClientResponseHandler<T, R, E> objectMapper(@Nonnull final ObjectMapper jackson) {
     objectMapper = jackson;
