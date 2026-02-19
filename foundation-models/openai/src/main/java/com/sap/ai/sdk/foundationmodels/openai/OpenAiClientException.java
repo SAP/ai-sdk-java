@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientException;
 import com.sap.ai.sdk.core.common.ClientExceptionFactory;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ErrorResponse;
