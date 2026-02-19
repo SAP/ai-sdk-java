@@ -2,14 +2,18 @@ package com.sap.ai.sdk.foundationmodels.rpt;
 
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
+import com.sap.ai.sdk.core.JacksonConfiguration;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.client.DefaultApi;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayload;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayload;
+import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apache.ApiClient;
+import java.io.File;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +23,6 @@ import lombok.RequiredArgsConstructor;
  *
  * @since 1.16.0
  */
-@Beta
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class RptClient {
   @Nonnull private final DefaultApi api;
@@ -50,21 +53,62 @@ public class RptClient {
   }
 
   /**
-   * Predict targets using SAP RPT model with structured data. *
+   * Predict targets using SAP RPT model with structured data.
    *
-   * <p><b>200</b> - Successful response with predictive insights.
+   * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
+   * public signature.
    *
-   * <p><b>400</b> - Bad Request - Invalid input.
+   * <p><b>200</b> - Successful Prediction
    *
-   * <p><b>422</b> - Unprocessable Content - Invalid input.
+   * <p><b>400</b> - Bad Request - Invalid input data
    *
-   * <p><b>500</b> - Internal Server Error.
+   * <p><b>413</b> - Payload Too Large
+   *
+   * <p><b>422</b> - Validation Error
+   *
+   * <p><b>500</b> - Internal Server Error
    *
    * @param requestBody The prediction request
    * @return prediction response from the RPT model
    */
+  @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(@Nonnull final PredictRequestPayload requestBody) {
     return api.predict(requestBody);
+  }
+
+  /**
+   * Make in-context predictions for specified target columns based on provided table data Parquet
+   * file.
+   *
+   * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
+   * public signature.
+   *
+   * <p><b>200</b> - Successful Prediction
+   *
+   * <p><b>400</b> - Bad Request - Invalid input data
+   *
+   * <p><b>413</b> - Payload Too Large
+   *
+   * <p><b>422</b> - Validation Error
+   *
+   * <p><b>500</b> - Internal Server Error
+   *
+   * @param parquetFile Parquet file
+   * @param predictionConfig The prediction configuration
+   * @return prediction response from the RPT model
+   * @since 1.16.0
+   */
+  @Beta
+  @Nonnull
+  public PredictResponsePayload tableCompletion(
+      @Nonnull final File parquetFile, @Nonnull final PredictionConfig predictionConfig) {
+    try {
+      final var config =
+          JacksonConfiguration.getDefaultObjectMapper().writeValueAsString(predictionConfig);
+      return api.predictParquet(parquetFile, config);
+    } catch (JsonProcessingException e) {
+      throw new IllegalArgumentException("Failed to serialize PredictionConfig to JSON", e);
+    }
   }
 }
