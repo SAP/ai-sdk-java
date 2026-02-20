@@ -19,6 +19,12 @@ import javax.annotation.Nonnull;
 public enum PipelineExecutionStatus {
   NEW("NEW"),
 
+  CREATING("CREATING"),
+
+  CREATED("CREATED"),
+
+  CREATION_FAILED("CREATION_FAILED"),
+
   UNKNOWN("UNKNOWN"),
 
   INPROGRESS("INPROGRESS"),
@@ -28,12 +34,6 @@ public enum PipelineExecutionStatus {
   FINISHEDWITHERRORS("FINISHEDWITHERRORS"),
 
   TIMEOUT("TIMEOUT"),
-
-  CREATING("CREATING"),
-
-  CREATED("CREATED"),
-
-  CREATION_FAILED("CREATION_FAILED"),
 
   DELETION_INPROGRESS("DELETION_INPROGRESS"),
 
