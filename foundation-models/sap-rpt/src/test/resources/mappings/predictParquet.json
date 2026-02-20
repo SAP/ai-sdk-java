@@ -1,0 +1,35 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/predict_parquet"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": "3a4ed523-b834-4685-8538-92f94b3cfa1d",
+      "metadata": {
+        "num_columns": 5,
+        "num_predictions": 1,
+        "num_query_rows": 1,
+        "num_rows": 2
+      },
+      "predictions": [
+        {
+          "COSTCENTER": [
+            {
+              "confidence": 0.95,
+              "prediction": "Office Furniture"
+            }
+          ]
+        }
+      ],
+      "status": {
+        "code": 0,
+        "message": "ok"
+      }
+    }
+  }
+}

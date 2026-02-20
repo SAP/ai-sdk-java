@@ -8,12 +8,14 @@ import com.sap.cloud.sdk.services.openapi.apache.ApiClient;
 import com.sap.cloud.sdk.services.openapi.apache.BaseApi;
 import com.sap.cloud.sdk.services.openapi.apache.Pair;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * SAP-RPT-1 Tabular AI in version 0.1.0.
@@ -107,5 +109,116 @@ public class DefaultApi extends BaseApi {
         localVarAccept,
         localVarContentType,
         localVarReturnType);
+  }
+
+  /**
+   * Make in-context predictions for specified target columns based on provided table data Parquet
+   * file.
+   *
+   * <p>Make in-context predictions for specified target columns based on provided table data
+   * Parquet file.
+   *
+   * <p><b>200</b> - Successful Prediction
+   *
+   * <p><b>400</b> - Bad Request - Invalid input data
+   *
+   * <p><b>413</b> - Payload Too Large
+   *
+   * <p><b>422</b> - Validation Error
+   *
+   * <p><b>500</b> - Internal Server Error
+   *
+   * @param _file (required) Parquet file containing the data
+   * @param predictionConfig (required) JSON string for prediction_config
+   * @param indexColumn (optional) Optional index column name
+   * @param parseDataTypes (optional, default to true) Whether to parse data types
+   * @return PredictResponsePayload
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PredictResponsePayload predictParquet(
+      @Nonnull final File _file,
+      @Nonnull final String predictionConfig,
+      @Nullable final String indexColumn,
+      @Nullable final Boolean parseDataTypes)
+      throws OpenApiRequestException {
+
+    // verify the required parameter '_file' is set
+    if (_file == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter '_file' when calling predictParquet")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'predictionConfig' is set
+    if (predictionConfig == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'predictionConfig' when calling predictParquet")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath = "/predict_parquet";
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (_file != null) localVarFormParams.put("file", _file);
+    if (predictionConfig != null) localVarFormParams.put("prediction_config", predictionConfig);
+    if (indexColumn != null) localVarFormParams.put("index_column", indexColumn);
+    if (parseDataTypes != null) localVarFormParams.put("parse_data_types", parseDataTypes);
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"multipart/form-data"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<PredictResponsePayload> localVarReturnType =
+        new TypeReference<PredictResponsePayload>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "POST",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarReturnType);
+  }
+
+  /**
+   * Make in-context predictions for specified target columns based on provided table data Parquet
+   * file.
+   *
+   * <p>Make in-context predictions for specified target columns based on provided table data
+   * Parquet file.
+   *
+   * <p><b>200</b> - Successful Prediction
+   *
+   * <p><b>400</b> - Bad Request - Invalid input data
+   *
+   * <p><b>413</b> - Payload Too Large
+   *
+   * <p><b>422</b> - Validation Error
+   *
+   * <p><b>500</b> - Internal Server Error
+   *
+   * @param _file Parquet file containing the data
+   * @param predictionConfig JSON string for prediction_config
+   * @return PredictResponsePayload
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PredictResponsePayload predictParquet(
+      @Nonnull final File _file, @Nonnull final String predictionConfig)
+      throws OpenApiRequestException {
+    return predictParquet(_file, predictionConfig, null, null);
   }
 }
