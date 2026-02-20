@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -23,53 +25,68 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** S3ConfigurationMinimal */
+/** ServiceNowConfig */
 // CHECKSTYLE:OFF
-public class S3ConfigurationMinimal
+public class ServiceNowConfig
 // CHECKSTYLE:ON
 {
-  @JsonProperty("s3")
-  private ServiceNowConfigurationMinimalServiceNow s3;
+  @JsonProperty("includePaths")
+  private List<String> includePaths = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for S3ConfigurationMinimal. */
-  protected S3ConfigurationMinimal() {}
+  /** Default constructor for ServiceNowConfig. */
+  protected ServiceNowConfig() {}
 
   /**
-   * Set the s3 of this {@link S3ConfigurationMinimal} instance and return the same instance.
+   * Set the includePaths of this {@link ServiceNowConfig} instance and return the same instance.
    *
-   * @param s3 The s3 of this {@link S3ConfigurationMinimal}
-   * @return The same instance of this {@link S3ConfigurationMinimal} class
+   * @param includePaths The includePaths of this {@link ServiceNowConfig}
+   * @return The same instance of this {@link ServiceNowConfig} class
    */
   @Nonnull
-  public S3ConfigurationMinimal s3(@Nonnull final ServiceNowConfigurationMinimalServiceNow s3) {
-    this.s3 = s3;
+  public ServiceNowConfig includePaths(@Nullable final List<String> includePaths) {
+    this.includePaths = includePaths;
     return this;
   }
 
   /**
-   * Get s3
+   * Add one includePaths instance to this {@link ServiceNowConfig}.
    *
-   * @return s3 The s3 of this {@link S3ConfigurationMinimal} instance.
+   * @param includePathsItem The includePaths that should be added
+   * @return The same instance of type {@link ServiceNowConfig}
    */
   @Nonnull
-  public ServiceNowConfigurationMinimalServiceNow getS3() {
-    return s3;
+  public ServiceNowConfig addIncludePathsItem(@Nonnull final String includePathsItem) {
+    if (this.includePaths == null) {
+      this.includePaths = new ArrayList<>();
+    }
+    this.includePaths.add(includePathsItem);
+    return this;
   }
 
   /**
-   * Set the s3 of this {@link S3ConfigurationMinimal} instance.
+   * Get includePaths
    *
-   * @param s3 The s3 of this {@link S3ConfigurationMinimal}
+   * @return includePaths The includePaths of this {@link ServiceNowConfig} instance.
    */
-  public void setS3(@Nonnull final ServiceNowConfigurationMinimalServiceNow s3) {
-    this.s3 = s3;
+  @Nonnull
+  public List<String> getIncludePaths() {
+    return includePaths;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link S3ConfigurationMinimal}.
+   * Set the includePaths of this {@link ServiceNowConfig} instance.
+   *
+   * @param includePaths The includePaths of this {@link ServiceNowConfig}
+   */
+  public void setIncludePaths(@Nullable final List<String> includePaths) {
+    this.includePaths = includePaths;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link ServiceNowConfig}.
    *
    * @return The set of properties names
    */
@@ -80,7 +97,7 @@ public class S3ConfigurationMinimal
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link S3ConfigurationMinimal} instance.
+   * Get the value of an unrecognizable property of this {@link ServiceNowConfig} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,14 +108,13 @@ public class S3ConfigurationMinimal
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "S3ConfigurationMinimal has no field with name '" + name + "'.");
+      throw new NoSuchElementException("ServiceNowConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link S3ConfigurationMinimal} instance including
+   * Get the value of all properties of this {@link ServiceNowConfig} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -107,13 +123,13 @@ public class S3ConfigurationMinimal
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (s3 != null) declaredFields.put("s3", s3);
+    if (includePaths != null) declaredFields.put("includePaths", includePaths);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link S3ConfigurationMinimal} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ServiceNowConfig} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -131,22 +147,22 @@ public class S3ConfigurationMinimal
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final S3ConfigurationMinimal s3ConfigurationMinimal = (S3ConfigurationMinimal) o;
-    return Objects.equals(this.cloudSdkCustomFields, s3ConfigurationMinimal.cloudSdkCustomFields)
-        && Objects.equals(this.s3, s3ConfigurationMinimal.s3);
+    final ServiceNowConfig serviceNowConfig = (ServiceNowConfig) o;
+    return Objects.equals(this.cloudSdkCustomFields, serviceNowConfig.cloudSdkCustomFields)
+        && Objects.equals(this.includePaths, serviceNowConfig.includePaths);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(s3, cloudSdkCustomFields);
+    return Objects.hash(includePaths, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class S3ConfigurationMinimal {\n");
-    sb.append("    s3: ").append(toIndentedString(s3)).append("\n");
+    sb.append("class ServiceNowConfig {\n");
+    sb.append("    includePaths: ").append(toIndentedString(includePaths)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -164,22 +180,8 @@ public class S3ConfigurationMinimal
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link S3ConfigurationMinimal}
-   * instance with all required arguments.
-   */
-  public static Builder create() {
-    return (s3) -> new S3ConfigurationMinimal().s3(s3);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the s3 of this {@link S3ConfigurationMinimal} instance.
-     *
-     * @param s3 The s3 of this {@link S3ConfigurationMinimal}
-     * @return The S3ConfigurationMinimal instance.
-     */
-    S3ConfigurationMinimal s3(@Nonnull final ServiceNowConfigurationMinimalServiceNow s3);
+  /** Create a new {@link ServiceNowConfig} instance. No arguments are required. */
+  public static ServiceNowConfig create() {
+    return new ServiceNowConfig();
   }
 }

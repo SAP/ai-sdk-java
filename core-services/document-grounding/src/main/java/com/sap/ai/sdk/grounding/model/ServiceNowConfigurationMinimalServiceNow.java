@@ -25,9 +25,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** SFTPConfigurationSftp */
+/** ServiceNowConfigurationMinimalServiceNow */
 // CHECKSTYLE:OFF
-public class SFTPConfigurationSftp
+public class ServiceNowConfigurationMinimalServiceNow
 // CHECKSTYLE:ON
 {
   @JsonProperty("includePaths")
@@ -36,30 +36,32 @@ public class SFTPConfigurationSftp
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for SFTPConfigurationSftp. */
-  protected SFTPConfigurationSftp() {}
+  /** Default constructor for ServiceNowConfigurationMinimalServiceNow. */
+  protected ServiceNowConfigurationMinimalServiceNow() {}
 
   /**
-   * Set the includePaths of this {@link SFTPConfigurationSftp} instance and return the same
-   * instance.
+   * Set the includePaths of this {@link ServiceNowConfigurationMinimalServiceNow} instance and
+   * return the same instance.
    *
-   * @param includePaths The includePaths of this {@link SFTPConfigurationSftp}
-   * @return The same instance of this {@link SFTPConfigurationSftp} class
+   * @param includePaths The includePaths of this {@link ServiceNowConfigurationMinimalServiceNow}
+   * @return The same instance of this {@link ServiceNowConfigurationMinimalServiceNow} class
    */
   @Nonnull
-  public SFTPConfigurationSftp includePaths(@Nullable final List<String> includePaths) {
+  public ServiceNowConfigurationMinimalServiceNow includePaths(
+      @Nullable final List<String> includePaths) {
     this.includePaths = includePaths;
     return this;
   }
 
   /**
-   * Add one includePaths instance to this {@link SFTPConfigurationSftp}.
+   * Add one includePaths instance to this {@link ServiceNowConfigurationMinimalServiceNow}.
    *
    * @param includePathsItem The includePaths that should be added
-   * @return The same instance of type {@link SFTPConfigurationSftp}
+   * @return The same instance of type {@link ServiceNowConfigurationMinimalServiceNow}
    */
   @Nonnull
-  public SFTPConfigurationSftp addIncludePathsItem(@Nonnull final String includePathsItem) {
+  public ServiceNowConfigurationMinimalServiceNow addIncludePathsItem(
+      @Nonnull final String includePathsItem) {
     if (this.includePaths == null) {
       this.includePaths = new ArrayList<>();
     }
@@ -70,7 +72,8 @@ public class SFTPConfigurationSftp
   /**
    * Get includePaths
    *
-   * @return includePaths The includePaths of this {@link SFTPConfigurationSftp} instance.
+   * @return includePaths The includePaths of this {@link ServiceNowConfigurationMinimalServiceNow}
+   *     instance.
    */
   @Nonnull
   public List<String> getIncludePaths() {
@@ -78,16 +81,17 @@ public class SFTPConfigurationSftp
   }
 
   /**
-   * Set the includePaths of this {@link SFTPConfigurationSftp} instance.
+   * Set the includePaths of this {@link ServiceNowConfigurationMinimalServiceNow} instance.
    *
-   * @param includePaths The includePaths of this {@link SFTPConfigurationSftp}
+   * @param includePaths The includePaths of this {@link ServiceNowConfigurationMinimalServiceNow}
    */
   public void setIncludePaths(@Nullable final List<String> includePaths) {
     this.includePaths = includePaths;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link SFTPConfigurationSftp}.
+   * Get the names of the unrecognizable properties of the {@link
+   * ServiceNowConfigurationMinimalServiceNow}.
    *
    * @return The set of properties names
    */
@@ -98,7 +102,8 @@ public class SFTPConfigurationSftp
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link SFTPConfigurationSftp} instance.
+   * Get the value of an unrecognizable property of this {@link
+   * ServiceNowConfigurationMinimalServiceNow} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -110,14 +115,14 @@ public class SFTPConfigurationSftp
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "SFTPConfigurationSftp has no field with name '" + name + "'.");
+          "ServiceNowConfigurationMinimalServiceNow has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link SFTPConfigurationSftp} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link ServiceNowConfigurationMinimalServiceNow}
+   * instance including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -130,8 +135,9 @@ public class SFTPConfigurationSftp
   }
 
   /**
-   * Set an unrecognizable property of this {@link SFTPConfigurationSftp} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ServiceNowConfigurationMinimalServiceNow}
+   * instance. If the map previously contained a mapping for the key, the old value is replaced by
+   * the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -149,9 +155,12 @@ public class SFTPConfigurationSftp
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final SFTPConfigurationSftp sfTPConfigurationSftp = (SFTPConfigurationSftp) o;
-    return Objects.equals(this.cloudSdkCustomFields, sfTPConfigurationSftp.cloudSdkCustomFields)
-        && Objects.equals(this.includePaths, sfTPConfigurationSftp.includePaths);
+    final ServiceNowConfigurationMinimalServiceNow serviceNowConfigurationMinimalServiceNow =
+        (ServiceNowConfigurationMinimalServiceNow) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields,
+            serviceNowConfigurationMinimalServiceNow.cloudSdkCustomFields)
+        && Objects.equals(this.includePaths, serviceNowConfigurationMinimalServiceNow.includePaths);
   }
 
   @Override
@@ -163,7 +172,7 @@ public class SFTPConfigurationSftp
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class SFTPConfigurationSftp {\n");
+    sb.append("class ServiceNowConfigurationMinimalServiceNow {\n");
     sb.append("    includePaths: ").append(toIndentedString(includePaths)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -182,8 +191,11 @@ public class SFTPConfigurationSftp
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link SFTPConfigurationSftp} instance. No arguments are required. */
-  public static SFTPConfigurationSftp create() {
-    return new SFTPConfigurationSftp();
+  /**
+   * Create a new {@link ServiceNowConfigurationMinimalServiceNow} instance. No arguments are
+   * required.
+   */
+  public static ServiceNowConfigurationMinimalServiceNow create() {
+    return new ServiceNowConfigurationMinimalServiceNow();
   }
 }
