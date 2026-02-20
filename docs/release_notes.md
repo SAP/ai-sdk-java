@@ -21,6 +21,7 @@
 - [Orchestration] Deprecated `GPT_4O_MINI` model from `OpenAiModel` with replacement model `GPT_5_MINI`.
 - [Orchestration] Deprecated models `GEMINI_2_0_FLASH`, `GEMINI_2_0_FLASH_LITE` and `CLAUDE_3_7_SONNET` from `OrchestrationAiModel`.
 - [Orchestration] Deprecated `DALL_E_3` model from `OpenAiModel`.
+- [Orchestration] Added new models `CLAUDE_4_6_SONNET` and `CLAUDE_4_6_OPUS` in `OrchestrationAiModel`.
 
 ### 📈 Improvements
 
