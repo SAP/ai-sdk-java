@@ -1,12 +1,14 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sap.ai.sdk.orchestration.model.AzureThreshold;
+import com.sap.ai.sdk.orchestration.model.Embedding;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -80,5 +82,30 @@ final class JacksonMixins {
     @JsonProperty("violence")
     @JsonAlias("Violence")
     private AzureThreshold violence;
+  }
+
+  /**
+   * Mixin to disable conflicting {@code @JsonCreator} annotations on the {@link Embedding}
+   * interface. The custom deserializer {@link EmbeddingDeserializer} will handle the
+   * deserialization logic instead.
+   */
+  interface EmbeddingMixin {
+    @JsonIgnore
+    static com.sap.ai.sdk.orchestration.model.Embedding.ArrayOfFloats createArrayOfFloats(
+        float[] val) {
+      throw new UnsupportedOperationException();
+    }
+
+    @JsonIgnore
+    static com.sap.ai.sdk.orchestration.model.Embedding.InnerString create(String val) {
+      throw new UnsupportedOperationException();
+    }
+
+    @JsonIgnore
+    static com.sap.ai.sdk.orchestration.model.Embedding.InnerEmbeddingMultiFormat
+        createInnerEmbeddingMultiFormat(
+            com.sap.ai.sdk.orchestration.model.EmbeddingMultiFormat val) {
+      throw new UnsupportedOperationException();
+    }
   }
 }
