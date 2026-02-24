@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Grounding] Added `GroundingClient.withHeader()`.
 
 ### 📈 Improvements
 
