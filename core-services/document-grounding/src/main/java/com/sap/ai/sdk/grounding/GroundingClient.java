@@ -92,8 +92,7 @@ public class GroundingClient {
   }
 
   @Nonnull
-  private ApiClient getClient()
-  {
+  private ApiClient getClient() {
     ApiClient apiClient = getService().getApiClient().setBasePath(getBasePath());
     for (Header header : customHeaders) {
       if (header.getValue() != null) {
