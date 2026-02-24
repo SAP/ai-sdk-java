@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Tolerate;
+import lombok.val;
 
 /**
  * Service class for the Document Grounding APIs.
@@ -93,8 +94,8 @@ public class GroundingClient {
 
   @Nonnull
   private ApiClient getClient() {
-    ApiClient apiClient = getService().getApiClient().setBasePath(getBasePath());
-    for (Header header : customHeaders) {
+    val apiClient = getService().getApiClient().setBasePath(getBasePath());
+    for (val header : customHeaders) {
       if (header.getValue() != null) {
         apiClient.addDefaultHeader(header.getName(), header.getValue());
       }
