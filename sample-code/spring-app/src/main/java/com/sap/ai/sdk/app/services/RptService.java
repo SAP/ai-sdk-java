@@ -10,7 +10,9 @@ import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionPlaceholder
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.RowsInnerValue;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.SchemaFieldConfig;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig;
+import java.io.File;
 import java.math.BigDecimal;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -71,5 +73,28 @@ public class RptService {
             .parseDataTypes(true)
             .rows(rows);
     return rptClient.tableCompletion(request);
+  }
+
+  /**
+   * Makes a prediction request to the RPT model using a Parquet file as input.
+   *
+   * @return the prediction response payload from the RPT model
+   */
+  @Nonnull
+  public PredictResponsePayload predictParquet() {
+    try {
+      final File parquetData = new File(getClass().getResource("/sample.parquet").toURI());
+      final var targetColumns =
+          List.of(
+              TargetColumnConfig.create()
+                  .name("COSTCENTER")
+                  .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
+                  .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION));
+
+      return rptClient.tableCompletion(
+          parquetData, PredictionConfig.create().targetColumns(targetColumns));
+    } catch (final URISyntaxException e) {
+      throw new IllegalArgumentException("Failed to load Parquet file for prediction", e);
+    }
   }
 }

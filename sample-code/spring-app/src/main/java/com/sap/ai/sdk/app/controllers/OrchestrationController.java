@@ -148,13 +148,14 @@ class OrchestrationController {
     return response.getContent();
   }
 
-  @GetMapping("/outputFiltering/{policy}")
+  @GetMapping("/outputFiltering/{policy}/{isProtected}")
   @Nonnull
   Object outputFiltering(
       @Nullable @RequestParam(value = "format", required = false) final String format,
-      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy) {
+      @Nonnull @PathVariable("policy") final AzureFilterThreshold policy,
+      @Nonnull @PathVariable("isProtected") final Boolean isProtected) {
 
-    final var response = service.outputFiltering(policy);
+    final var response = service.outputFiltering(policy, isProtected);
 
     final String content;
     try {

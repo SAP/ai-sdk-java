@@ -33,4 +33,23 @@ public class RptController {
             rptService.predict().getPredictions().get(0).get("COSTCENTER");
     return prediction.values().get(0).getPrediction();
   }
+
+  /**
+   * Endpoint to get table completion predictions from the RPT model with Parquet file input.
+   *
+   * @param format optional query parameter to specify the response format (e.g., "json")
+   * @return the prediction result in the specified format
+   */
+  @Nonnull
+  @GetMapping("/tableCompletionWithParquet")
+  public Object tableCompletionWithParquet(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    if ("json".equals(format)) {
+      return rptService.predictParquet();
+    }
+    final var prediction =
+        (PredictionsInnerValue.ListOfPredictionResults)
+            rptService.predict().getPredictions().get(0).get("COSTCENTER");
+    return prediction.values().get(0).getPrediction();
+  }
 }

@@ -200,10 +200,12 @@ public class OrchestrationService {
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
    * @param policy the explicitness of content that should be allowed through the filter
+   * @param isProtected activates the protected material code filtering module when set to true
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
+  public OrchestrationChatResponse outputFiltering(
+      @Nonnull final AzureFilterThreshold policy, @Nonnull final Boolean isProtected) {
 
     val systemMessage = Message.system("Give three paraphrases for the following sentence");
     // Reliably triggering the content filter of models fine-tuned for ethical compliance
@@ -212,7 +214,12 @@ public class OrchestrationService {
         new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.")
             .messageHistory(List.of(systemMessage));
     val filterConfig =
-        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+        new AzureContentFilter()
+            .hate(policy)
+            .selfHarm(policy)
+            .sexual(policy)
+            .violence(policy)
+            .protectedMaterialCode(isProtected);
 
     val configWithFilter = config.withOutputFiltering(filterConfig);
     return client.chatCompletion(prompt, configWithFilter);

@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_HAIKU;
 
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.spring.OrchestrationChatModel;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 public class SpringAiAgenticWorkflowService {
   private final ChatModel client = new OrchestrationChatModel();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+      new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_5_HAIKU);
 
   /**
    * Simple agentic workflow using chain-like structure. The agent is generating a travel itinerary

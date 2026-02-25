@@ -1,14 +1,20 @@
 package com.sap.ai.sdk.grounding;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.grounding.client.PipelinesApi;
 import com.sap.ai.sdk.grounding.client.RetrievalApi;
 import com.sap.ai.sdk.grounding.client.VectorApi;
+import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
+import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Tolerate;
+import lombok.val;
 
 /**
  * Service class for the Document Grounding APIs.
@@ -20,6 +26,7 @@ import lombok.experimental.Tolerate;
 public class GroundingClient {
   @Nonnull private final AiCoreService service;
   @Nonnull private final String basePath;
+  @Nonnull private final List<Header> customHeaders = new ArrayList<>();
 
   static final String DEFAULT_BASE_PATH = "lm/document-grounding/";
 
@@ -45,7 +52,7 @@ public class GroundingClient {
    */
   @Nonnull
   public PipelinesApi pipelines() {
-    return new PipelinesApi(getService().getApiClient().setBasePath(getBasePath()));
+    return new PipelinesApi(getClient());
   }
 
   /**
@@ -55,7 +62,7 @@ public class GroundingClient {
    */
   @Nonnull
   public VectorApi vector() {
-    return new VectorApi(getService().getApiClient().setBasePath(getBasePath()));
+    return new VectorApi(getClient());
   }
 
   /**
@@ -65,6 +72,34 @@ public class GroundingClient {
    */
   @Nonnull
   public RetrievalApi retrieval() {
-    return new RetrievalApi(getService().getApiClient().setBasePath(getBasePath()));
+    return new RetrievalApi(getClient());
+  }
+
+  /**
+   * Create a new OpenAI client with a custom header added to every call made with this client
+   *
+   * @param key the key of the custom header to add
+   * @param value the value of the custom header to add
+   * @return a new client.
+   * @since 1.17.0
+   */
+  @Beta
+  @Nonnull
+  public GroundingClient withHeader(@Nonnull final String key, @Nonnull final String value) {
+    final var newClient = new GroundingClient(this.service, this.basePath);
+    newClient.customHeaders.addAll(this.customHeaders);
+    newClient.customHeaders.add(new Header(key, value));
+    return newClient;
+  }
+
+  @Nonnull
+  private ApiClient getClient() {
+    val apiClient = getService().getApiClient().setBasePath(getBasePath());
+    for (val header : customHeaders) {
+      if (header.getValue() != null) {
+        apiClient.addDefaultHeader(header.getName(), header.getValue());
+      }
+    }
+    return apiClient;
   }
 }

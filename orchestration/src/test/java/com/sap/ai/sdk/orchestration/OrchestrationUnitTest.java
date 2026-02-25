@@ -443,7 +443,8 @@ class OrchestrationUnitTest {
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
-            .violence(ALLOW_SAFE_LOW_MEDIUM);
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(false);
 
     final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
 
@@ -469,7 +470,8 @@ class OrchestrationUnitTest {
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
-            .violence(ALLOW_SAFE_LOW_MEDIUM);
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(false);
 
     final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
 
@@ -580,7 +582,8 @@ class OrchestrationUnitTest {
             .hate(ALLOW_SAFE)
             .selfHarm(ALLOW_SAFE)
             .sexual(ALLOW_SAFE)
-            .violence(ALLOW_SAFE);
+            .violence(ALLOW_SAFE)
+            .protectedMaterialCode(true);
 
     final var llamaFilter =
         new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
@@ -601,7 +604,8 @@ class OrchestrationUnitTest {
                               "Hate", 6,
                               "SelfHarm", 0,
                               "Sexual", 0,
-                              "Violence", 6),
+                              "Violence", 6,
+                              "ProtectedMaterialCode", false),
                           "llama_guard_3_8b",
                           Map.of("violent_crimes", true)));
               assertThat(e.getErrorResponse()).isNull();
@@ -612,6 +616,7 @@ class OrchestrationUnitTest {
               assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
               assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
               assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput().isProtectedMaterialCode()).isFalse();
 
               assertThat(e.getLlamaGuard38b()).isNotNull();
               assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();

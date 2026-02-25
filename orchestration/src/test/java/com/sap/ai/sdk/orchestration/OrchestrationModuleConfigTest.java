@@ -55,7 +55,8 @@ class OrchestrationModuleConfigTest {
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
-            .violence(ALLOW_SAFE_LOW_MEDIUM);
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(true);
 
     final var configWithInputFirst = config.withInputFiltering(filter).withOutputFiltering(filter);
     assertThat(configWithInputFirst.getFilteringConfig()).isNotNull();

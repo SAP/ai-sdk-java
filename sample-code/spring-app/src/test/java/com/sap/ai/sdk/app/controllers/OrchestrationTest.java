@@ -272,7 +272,7 @@ class OrchestrationTest {
   @Test
   void testOutputFilteringStrict() {
     var policy = AzureFilterThreshold.ALLOW_SAFE;
-    var response = service.outputFiltering(policy);
+    var response = service.outputFiltering(policy, true);
 
     assertThatThrownBy(response::getContent)
         .hasMessageContaining("Content filter filtered the output.")
@@ -285,6 +285,7 @@ class OrchestrationTest {
               assertThat(actualAzureContentSafety.getSelfHarm()).isEqualTo(NUMBER_0);
               assertThat(actualAzureContentSafety.getSexual()).isEqualTo(NUMBER_0);
               assertThat(actualAzureContentSafety.getHate()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.isProtectedMaterialCode()).isFalse();
             });
   }
 
@@ -292,7 +293,7 @@ class OrchestrationTest {
   void testOutputFilteringLenient() {
     var policy = AzureFilterThreshold.ALLOW_ALL;
 
-    var response = service.outputFiltering(policy);
+    var response = service.outputFiltering(policy, false);
 
     assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
     assertThat(response.getContent()).isNotEmpty();
