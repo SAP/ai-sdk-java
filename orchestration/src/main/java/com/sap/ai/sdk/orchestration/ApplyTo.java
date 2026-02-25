@@ -4,12 +4,11 @@ import static com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationApplyToSe
 import static com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationApplyToSelector.CategoryEnum.TEMPLATE_ROLES;
 
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationApplyToSelector;
-import lombok.Getter;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import lombok.Getter;
 
 /**
  * Convenience builder for {@link SAPDocumentTranslationApplyToSelector}.
