@@ -701,6 +701,8 @@ public class OrchestrationService {
     val templatingConfig = TemplateConfig.create().withMessages(systemMessage, userMessage);
 
     val prompt = new OrchestrationPrompt(inputParams);
+    // list of supported language pairs
+    // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
 
     val configWithTranslation =
         config
