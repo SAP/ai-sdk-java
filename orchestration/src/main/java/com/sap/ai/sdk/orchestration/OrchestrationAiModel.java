@@ -161,6 +161,14 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_4_5_HAIKU =
       new OrchestrationAiModel("anthropic--claude-4.5-haiku");
 
+  /** Anthropic Claude 4.6 Opus model */
+  public static final OrchestrationAiModel CLAUDE_4_6_OPUS =
+      new OrchestrationAiModel("anthropic--claude-4.6-opus");
+
+  /** Anthropic Claude 4.6 Sonnet model */
+  public static final OrchestrationAiModel CLAUDE_4_6_SONNET =
+      new OrchestrationAiModel("anthropic--claude-4.6-sonnet");
+
   /**
    * Amazon Titan Text Lite model
    *
