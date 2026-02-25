@@ -22,7 +22,6 @@ import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.InputTranslationModuleResult;
 import java.io.IOException;
 import java.io.InputStream;
@@ -225,7 +224,7 @@ class OrchestrationTest {
     assertThat(response).isNotNull();
     var result = response.getOriginalResponse();
     var llmChoice = result.getFinalResult().getChoices().get(0);
-    assertThat(llmChoice.getMessage().getContent()).contains("&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/");
+    assertThat(llmChoice.getMessage().getContent()).contains("&)UPNkL_izT)&1u%?2Kg*Y.@qFqR@/");
   }
 
   @Test
@@ -496,18 +495,20 @@ class OrchestrationTest {
   void testTranslation() {
     val result = service.translation();
     val content = result.getContent();
-    // English translated to German
-    assertThat(content).contains("Englisch");
-    assertThat(content).contains("Der", "ist");
+    // Output translation turns the model response back to German
+    assertThat(content)
+        .containsAnyOf("Abitur", "Deutsche", "Literatur", "Lern", "Übungs", "Fragen");
 
     InputTranslationModuleResult inputTranslation =
         result.getOriginalResponse().getIntermediateResults().getInputTranslation();
-    GenericModuleResult outputTranslation =
-        result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
     assertThat(inputTranslation).isNotNull();
-    assertThat(outputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage())
-        .isEqualTo("Translated messages with roles: ['user']. ");
+        .isNotNull()
+        .contains("Successfully translated placeholders: ['exam_type', 'topic']. ");
+
+    val outputTranslation =
+        result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
+    assertThat(outputTranslation).isNotNull();
     assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
   }
 

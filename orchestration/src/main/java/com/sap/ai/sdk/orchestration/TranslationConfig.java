@@ -1,10 +1,12 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationApplyToSelector;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInput;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInputConfig;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputConfig;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
+import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +31,21 @@ public interface TranslationConfig {
 
     @With String sourceLanguage;
 
-    Object ApplyTo; // Can be null
+    /**
+     * Optional selection(s) to translate. If empty or null, translation is applied to the whole
+     * user input.
+     */
+    @With List<SAPDocumentTranslationApplyToSelector> applyTo;
 
     @Nonnull
     SAPDocumentTranslationInput createSAPDocumentTranslationInput() {
       val translationType = SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION;
-      val conf =
-          SAPDocumentTranslationInputConfig.create().targetLanguage(targetLanguage).applyTo(null);
+      final var conf = SAPDocumentTranslationInputConfig.create().targetLanguage(targetLanguage);
+
+      if (applyTo != null && !applyTo.isEmpty()) {
+        conf.applyTo(applyTo);
+      }
+
       return SAPDocumentTranslationInput.create().type(translationType).config(conf);
     }
   }
@@ -71,7 +81,6 @@ public interface TranslationConfig {
    */
   @Nonnull
   static TranslationConfig.Input translateInputTo(@Nonnull final String targetLanguage) {
-
     return new TranslationConfig.Input(targetLanguage, null, null);
   }
 
@@ -86,7 +95,6 @@ public interface TranslationConfig {
    */
   @Nonnull
   static TranslationConfig.Output translateOutputTo(@Nonnull final String targetLanguage) {
-
     return new TranslationConfig.Output(targetLanguage, null);
   }
 }

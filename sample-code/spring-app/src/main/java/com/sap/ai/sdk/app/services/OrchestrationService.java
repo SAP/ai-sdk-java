@@ -28,6 +28,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
+import com.sap.ai.sdk.orchestration.TranslationApplyToSelector;
 import com.sap.ai.sdk.orchestration.TranslationConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
@@ -681,17 +682,31 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse translation() {
-    val prompt =
-        new OrchestrationPrompt(
-            "Quelle est la couleur de la tour Eiffel? Et en quelle langue tu me parles maintenant?");
-    // list of supported language pairs
-    // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
+    val inputParams =
+        Map.of("exam_type", "Abitur", "topic", "Deutsche Literatur", "num_questions", "5");
+
+    val systemMessage =
+        Message.system(
+            "You are an expert study coach creating clear, concise exam notes and practice questions.");
+    val userMessage =
+        Message.user(
+            "Generate a study guide for the {{?exam_type}} exam on {{?topic}}.\n\nInclude {{?num_questions}} practice questions.");
+    val templatingConfig = TemplateConfig.create().withMessages(systemMessage, userMessage);
+
+    val prompt = new OrchestrationPrompt(inputParams);
+
     val configWithTranslation =
         config
-            .withInputTranslationConfig(TranslationConfig.translateInputTo("en-US"))
+            .withTemplateConfig(templatingConfig)
+            .withInputTranslationConfig(
+                TranslationConfig.translateInputTo("en-US")
+                    .withApplyTo(
+                        List.of(
+                            // Translate only selected placeholder values from German to English
+                            TranslationApplyToSelector.placeholders(List.of("exam_type", "topic"))
+                                .sourceLanguage("de-DE"))))
             .withOutputTranslationConfig(
-                TranslationConfig.translateOutputTo("de-DE")
-                    .withSourceLanguage("en-US")); // optional source language
+                TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
 
     return client.chatCompletion(prompt, configWithTranslation);
   }

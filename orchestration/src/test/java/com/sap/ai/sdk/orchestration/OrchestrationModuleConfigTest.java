@@ -176,6 +176,46 @@ class OrchestrationModuleConfigTest {
   }
 
   @Test
+  void testTranslationConfigApplyToSelectors() {
+    var selector =
+        TranslationApplyToSelector.placeholders("exam_type", "topic").sourceLanguage("de-DE");
+
+    final var inputTranslationConfig =
+        TranslationConfig.translateInputTo("en-US").withApplyTo(List.of(selector));
+
+    final var sapInput = inputTranslationConfig.createSAPDocumentTranslationInput();
+    assertThat(sapInput.getConfig().getTargetLanguage()).isEqualTo("en-US");
+    assertThat(sapInput.getConfig().getApplyTo()).hasSize(1);
+    assertThat(sapInput.getConfig().getApplyTo().get(0).getCategory().getValue())
+        .isEqualTo("placeholders");
+    assertThat(sapInput.getConfig().getApplyTo().get(0).getItems())
+        .containsExactly("exam_type", "topic");
+
+    final var inputNull = TranslationConfig.translateInputTo("en-US");
+    final var sapNull = inputNull.createSAPDocumentTranslationInput();
+    assertThat(sapNull.getConfig().getApplyTo()).isEmpty();
+
+    // applyTo == empty list
+    final var inputEmpty = TranslationConfig.translateInputTo("en-US").withApplyTo(List.of());
+    final var sapEmpty = inputEmpty.createSAPDocumentTranslationInput();
+    assertThat(sapEmpty.getConfig().getApplyTo()).isEmpty();
+
+    selector =
+        TranslationApplyToSelector.templateRoles(
+                TranslationApplyToSelector.TemplateRole.USER,
+                TranslationApplyToSelector.TemplateRole.SYSTEM,
+                TranslationApplyToSelector.TemplateRole.ASSISTANT,
+                TranslationApplyToSelector.TemplateRole.DEVELOPER,
+                TranslationApplyToSelector.TemplateRole.TOOL)
+            .sourceLanguage("de-DE");
+
+    assertThat(selector.getCategory().getValue()).isEqualTo("template_roles");
+    assertThat(selector.getItems())
+        .containsExactly("user", "system", "assistant", "developer", "tool");
+    assertThat(selector.getSourceLanguage()).isEqualTo("de-DE");
+  }
+
+  @Test
   void testParams() {
     // test withParams(Map<String, Object>)
     {
