@@ -505,7 +505,9 @@ class OrchestrationTest {
     assertThat(inputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage())
         .isNotNull()
-        .contains("Successfully translated placeholders: ['exam_type', 'topic']. ");
+        .contains("Successfully translated placeholders:")
+        .contains("exam_type")
+        .contains("topic");
 
     val outputTranslation =
         result.getOriginalResponse().getIntermediateResults().getOutputTranslation();

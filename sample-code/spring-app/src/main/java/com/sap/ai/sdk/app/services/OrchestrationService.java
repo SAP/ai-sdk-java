@@ -712,7 +712,7 @@ public class OrchestrationService {
                     .withApplyTo(
                         List.of(
                             // Translate only selected placeholder values from German to English
-                            ApplyTo.placeholders(List.of("exam_type", "topic"))))
+                            ApplyTo.placeholders("exam_type", "topic")))
                     .withSourceLanguage("de-DE"))
             .withOutputTranslationConfig(
                 TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
