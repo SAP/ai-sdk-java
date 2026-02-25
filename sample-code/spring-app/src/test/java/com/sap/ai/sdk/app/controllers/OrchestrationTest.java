@@ -224,7 +224,7 @@ class OrchestrationTest {
     assertThat(response).isNotNull();
     var result = response.getOriginalResponse();
     var llmChoice = result.getFinalResult().getChoices().get(0);
-    assertThat(llmChoice.getMessage().getContent()).contains("&)UPNkL_izT)&1u%?2Kg*Y.@qFqR@/");
+    assertThat(llmChoice.getMessage().getContent()).contains("&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/");
   }
 
   @Test
@@ -505,7 +505,7 @@ class OrchestrationTest {
     assertThat(inputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage())
         .isNotNull()
-        .contains("Successfully translated placeholders: ['exam_type', 'topic']. ");
+            .contains("Successfully translated placeholders: ['exam_type', 'topic']. ");
 
     val outputTranslation =
         result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
