@@ -28,7 +28,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
-import com.sap.ai.sdk.orchestration.TranslationApplyToSelector;
+import com.sap.ai.sdk.orchestration.ApplyTo;
 import com.sap.ai.sdk.orchestration.TranslationConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
@@ -710,7 +710,7 @@ public class OrchestrationService {
                     .withApplyTo(
                         List.of(
                             // Translate only selected placeholder values from German to English
-                            TranslationApplyToSelector.placeholders(List.of("exam_type", "topic"))))
+                            ApplyTo.placeholders(List.of("exam_type", "topic"))))
                     .withSourceLanguage("de-DE"))
             .withOutputTranslationConfig(
                 TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));

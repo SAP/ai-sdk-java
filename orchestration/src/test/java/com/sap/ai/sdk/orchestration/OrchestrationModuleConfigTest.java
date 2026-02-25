@@ -179,7 +179,7 @@ class OrchestrationModuleConfigTest {
   @Test
   void testTranslationConfigApplyToSelectors() {
     var selector =
-        TranslationApplyToSelector.placeholders("exam_type", "topic").sourceLanguage("de-DE");
+        ApplyTo.placeholders("exam_type", "topic").sourceLanguage("de-DE");
 
     final var inputTranslationConfig =
         TranslationConfig.translateInputTo("en-US").withApplyTo(List.of(selector));
@@ -202,12 +202,12 @@ class OrchestrationModuleConfigTest {
     assertThat(sapEmpty.getConfig().getApplyTo()).isEmpty();
 
     selector =
-        TranslationApplyToSelector.templateRoles(
-                TranslationApplyToSelector.TemplateRole.USER,
-                TranslationApplyToSelector.TemplateRole.SYSTEM,
-                TranslationApplyToSelector.TemplateRole.ASSISTANT,
-                TranslationApplyToSelector.TemplateRole.DEVELOPER,
-                TranslationApplyToSelector.TemplateRole.TOOL)
+        ApplyTo.templateRoles(
+                ApplyTo.TemplateRole.USER,
+                ApplyTo.TemplateRole.SYSTEM,
+                ApplyTo.TemplateRole.ASSISTANT,
+                ApplyTo.TemplateRole.DEVELOPER,
+                ApplyTo.TemplateRole.TOOL)
             .sourceLanguage("de-DE");
 
     assertThat(selector.getCategory().getValue()).isEqualTo("template_roles");

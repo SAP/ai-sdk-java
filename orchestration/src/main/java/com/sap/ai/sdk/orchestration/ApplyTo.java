@@ -14,8 +14,8 @@ import javax.annotation.Nonnull;
  *
  * <p>This avoids passing raw strings for template roles and keeps sample-code readable.
  */
-public final class TranslationApplyToSelector {
-  private TranslationApplyToSelector() {}
+public final class ApplyTo {
+  private ApplyTo() {}
 
   /**
    * Supported values for {@code items[]} when {@code category=template_roles}.
