@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientException;
 import com.sap.ai.sdk.core.common.ClientExceptionFactory;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ErrorResponse;
@@ -18,6 +19,7 @@ public class OpenAiClientException extends ClientException {
    *
    * @return The {@link ErrorResponse} object, or {@code null} if not available.
    */
+  @Beta
   @Nullable
   public ErrorResponse getErrorResponse() {
     final var clientError = super.getClientError();
