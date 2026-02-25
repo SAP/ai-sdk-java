@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Convenience builder for {@link SAPDocumentTranslationApplyToSelector}.
@@ -17,13 +18,12 @@ import lombok.Getter;
  * <p>This avoids passing raw strings for template roles and keeps sample-code readable.
  */
 public final class ApplyTo {
-  private ApplyTo() {}
-
   /**
    * Supported values for {@code items[]} when {@code category=template_roles}.
    *
    * <p>These map to the roles used in prompt templates.
    */
+  @RequiredArgsConstructor
   public enum TemplateRole {
     /** Template role for user messages. */
     USER("user"),
@@ -41,10 +41,6 @@ public final class ApplyTo {
     TOOL("tool");
 
     @Getter private final String value;
-
-    TemplateRole(@Nonnull final String value) {
-      this.value = value;
-    }
   }
 
   /**
