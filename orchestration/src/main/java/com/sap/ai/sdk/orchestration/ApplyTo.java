@@ -9,6 +9,7 @@ import lombok.Getter;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
 /**
@@ -67,20 +68,8 @@ public final class ApplyTo {
   @Nonnull
   public static SAPDocumentTranslationApplyToSelector templateRoles(
       @Nonnull final TemplateRole... roles) {
-    return templateRoles(List.of(roles));
-  }
-
-  /**
-   * Start an {@code apply_to} selector for prompt template message roles.
-   *
-   * @param roles The template roles to translate.
-   * @return A selector with {@code category=template_roles} and the given items.
-   */
-  @Nonnull
-  public static SAPDocumentTranslationApplyToSelector templateRoles(
-      @Nonnull final Collection<TemplateRole> roles) {
     final var roleStrings =
-        roles.stream().filter(Objects::nonNull).map(TemplateRole::getValue).toList();
+        Stream.of(roles).filter(Objects::nonNull).map(TemplateRole::getValue).toList();
 
     return SAPDocumentTranslationApplyToSelector.create()
         .category(TEMPLATE_ROLES)

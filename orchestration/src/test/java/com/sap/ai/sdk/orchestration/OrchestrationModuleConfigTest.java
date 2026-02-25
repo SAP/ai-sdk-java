@@ -1,5 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.ASSISTANT;
+import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.DEVELOPER;
+import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.SYSTEM;
+import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.TOOL;
+import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.USER;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
@@ -201,13 +206,7 @@ class OrchestrationModuleConfigTest {
     assertThat(sapEmpty.getConfig().getApplyTo()).isEmpty();
 
     selector =
-        ApplyTo.templateRoles(
-                ApplyTo.TemplateRole.USER,
-                ApplyTo.TemplateRole.SYSTEM,
-                ApplyTo.TemplateRole.ASSISTANT,
-                ApplyTo.TemplateRole.DEVELOPER,
-                ApplyTo.TemplateRole.TOOL)
-            .sourceLanguage("de-DE");
+        ApplyTo.templateRoles(USER, SYSTEM, ASSISTANT, DEVELOPER, TOOL).sourceLanguage("de-DE");
 
     assertThat(selector.getCategory().getValue()).isEqualTo("template_roles");
     assertThat(selector.getItems())
