@@ -178,8 +178,7 @@ class OrchestrationModuleConfigTest {
 
   @Test
   void testTranslationConfigApplyToSelectors() {
-    var selector =
-        ApplyTo.placeholders("exam_type", "topic").sourceLanguage("de-DE");
+    var selector = ApplyTo.placeholders("exam_type", "topic").sourceLanguage("de-DE");
 
     final var inputTranslationConfig =
         TranslationConfig.translateInputTo("en-US").withApplyTo(List.of(selector));

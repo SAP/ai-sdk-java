@@ -9,6 +9,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeE
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.orchestration.ApplyTo;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
@@ -28,7 +29,6 @@ import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
-import com.sap.ai.sdk.orchestration.ApplyTo;
 import com.sap.ai.sdk.orchestration.TranslationConfig;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
