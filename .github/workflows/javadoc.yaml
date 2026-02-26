@@ -36,19 +36,24 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: "Install project (skip tests)"
-        run: mvn -P release clean install -DskipTests -Dgpg.skip=true --quiet
+      - name: Build (skip tests)
+        run: mvn -B -ntp -DskipTests clean install
 
-      - name: "Determine Versions"
-        id: determine-version
+      - name: Delombok
+        run: mvn -B -ntp -Drelease process-sources
+
+      - name: Overlay delombok into sources (CI only)
         run: |
-          CURRENT_VERSION=$(mvn -B -ntp -Drelease help:evaluate -Dexpression=project.version -q -DforceStdout | cut -d '-' -f 1)
-          MAJOR_VERSION=$(echo "$CURRENT_VERSION" | cut -d '.' -f 1)
-          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_OUTPUT
-          echo "MAJOR_VERSION=$MAJOR_VERSION" >> $GITHUB_OUTPUT
+          set -euo pipefail
+          find . -type d -path "*/target/delombok" -print0 | while IFS= read -r -d '' d; do
+            mod="$(dirname "$(dirname "$d")")"
+            rm -rf "$mod/src/main/java"
+            mkdir -p "$mod/src/main/java"
+            cp -R "$d/"* "$mod/src/main/java/"
+          done
 
-      - name: "Generate aggregated Javadoc"
-        run: mvn -P release clean compile javadoc:aggregate-no-fork -Dsourcepath=$(find . -name "delombok" -type d | tr '\n' ':') -Djava.failOnWarning=false
+      - name: Aggregate Javadoc (no fork)
+        run: mvn -B -ntp -Drelease javadoc:aggregate-no-fork -Djava.failOnWarning=false
 
       - name: "Checkout Docs Repository"
         uses: actions/checkout@v6
