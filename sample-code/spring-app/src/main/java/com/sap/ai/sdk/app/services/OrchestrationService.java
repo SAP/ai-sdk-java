@@ -2,7 +2,7 @@ package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
@@ -16,6 +16,7 @@ import com.sap.ai.sdk.orchestration.Grounding;
 import com.sap.ai.sdk.orchestration.ImageItem;
 import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
 import com.sap.ai.sdk.orchestration.Message;
+import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
@@ -86,8 +87,7 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
-    final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    final var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
     final var multiMessage =
         Message.user("What is in this image?").withImage(pathToImage, ImageItem.DetailLevel.LOW);
@@ -199,10 +199,12 @@ public class OrchestrationService {
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
    * @param policy the explicitness of content that should be allowed through the filter
+   * @param isProtected activates the protected material code filtering module when set to true
    * @return the assistant response object
    */
   @Nonnull
-  public OrchestrationChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
+  public OrchestrationChatResponse outputFiltering(
+      @Nonnull final AzureFilterThreshold policy, @Nonnull final Boolean isProtected) {
 
     val systemMessage = Message.system("Give three paraphrases for the following sentence");
     // Reliably triggering the content filter of models fine-tuned for ethical compliance
@@ -211,7 +213,12 @@ public class OrchestrationService {
         new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.")
             .messageHistory(List.of(systemMessage));
     val filterConfig =
-        new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
+        new AzureContentFilter()
+            .hate(policy)
+            .selfHarm(policy)
+            .sexual(policy)
+            .violence(policy)
+            .protectedMaterialCode(isProtected);
 
     val configWithFilter = config.withOutputFiltering(filterConfig);
     return client.chatCompletion(prompt, configWithFilter);
@@ -480,7 +487,7 @@ public class OrchestrationService {
       @Nonnull final String word, @Nonnull final Class<?> targetType) {
     // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
     // release 2510b. See https://jira.tools.sap/browse/AI-125770
-    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
     val schema =
         ResponseJsonSchema.fromType(targetType)
             .withDescription("Output schema for language translation.")
@@ -558,8 +565,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByIdTenant(
       @Nonnull final String topic) {
-    final var llmWithImageSupportConfig =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    final var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
     val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
@@ -664,7 +670,7 @@ public class OrchestrationService {
       throws IOException {
     // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
     // release 2510b. See https://jira.tools.sap/browse/AI-125770
-    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
     val template = TemplateConfig.create().fromYaml(promptTemplate);
     val configWithTemplate =
         template != null ? configWithGpt4.withTemplateConfig(template) : configWithGpt4;
@@ -777,5 +783,63 @@ public class OrchestrationService {
                                             .role(UserChatMessage.RoleEnum.USER))
                                     .defaults(Map.of("number", "3")))
                             .model(LLMModelDetails.create().name(GPT_41_NANO.getName())))));
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with a list of modules. If the first
+   * request fails (which will happen here), the next module is used as a fallback.
+   *
+   * @param famousPhrase the phrase to send to the assistant
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse completionWithFallback(@Nonnull final String famousPhrase) {
+    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val brokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    val secondBrokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
+    return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig, workingConfig);
+  }
+
+  /**
+   * Asynchronous stream of chat request to OpenAI through the Orchestration service with a list of
+   * modules. If the first request fails (which will happen here), the next module is used as a
+   * fallback.
+   *
+   * @param famousPhrase the phrase to send to the assistant
+   * @return a stream of assistant message responses
+   */
+  @Nonnull
+  public Stream<String> streamCompletionWithFallback(@Nonnull final String famousPhrase) {
+    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val brokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    return client.streamChatCompletion(prompt, brokenConfig, workingConfig);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with a list of modules. Here, both the
+   * original and the fallback request fail.
+   *
+   * @param famousPhrase the phrase to send to the assistant
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse completionWithFallbackAllFail(
+      @Nonnull final String famousPhrase) {
+    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val brokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    val secondBrokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
+    return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig);
   }
 }

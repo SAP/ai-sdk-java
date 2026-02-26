@@ -19,7 +19,7 @@ import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
 import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
@@ -443,7 +443,8 @@ class OrchestrationUnitTest {
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
-            .violence(ALLOW_SAFE_LOW_MEDIUM);
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(false);
 
     final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
 
@@ -469,7 +470,8 @@ class OrchestrationUnitTest {
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
-            .violence(ALLOW_SAFE_LOW_MEDIUM);
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(false);
 
     final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
 
@@ -580,7 +582,8 @@ class OrchestrationUnitTest {
             .hate(ALLOW_SAFE)
             .selfHarm(ALLOW_SAFE)
             .sexual(ALLOW_SAFE)
-            .violence(ALLOW_SAFE);
+            .violence(ALLOW_SAFE)
+            .protectedMaterialCode(true);
 
     final var llamaFilter =
         new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
@@ -601,7 +604,8 @@ class OrchestrationUnitTest {
                               "Hate", 6,
                               "SelfHarm", 0,
                               "Sexual", 0,
-                              "Violence", 6),
+                              "Violence", 6,
+                              "ProtectedMaterialCode", false),
                           "llama_guard_3_8b",
                           Map.of("violent_crimes", true)));
               assertThat(e.getErrorResponse()).isNull();
@@ -612,6 +616,7 @@ class OrchestrationUnitTest {
               assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
               assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
               assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput().isProtectedMaterialCode()).isFalse();
 
               assertThat(e.getLlamaGuard38b()).isNotNull();
               assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
@@ -909,7 +914,7 @@ class OrchestrationUnitTest {
 
       val wrongConfig =
           new OrchestrationModuleConfig()
-              .withLlmConfig(GPT_4O_MINI.withVersion("wrong-version"))
+              .withLlmConfig(GPT_5_MINI.withVersion("wrong-version"))
               .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
       val prompt = new OrchestrationPrompt("HelloWorld!");
 
@@ -1033,7 +1038,7 @@ class OrchestrationUnitTest {
         post("/v2/completion")
             .willReturn(aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
 
-    var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
     var messageWithTwoTexts =
         Message.system("Please answer in exactly two sentences.")
@@ -1125,7 +1130,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonSchemaResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
     val schema =
         ResponseJsonSchema.fromType(Translation.class)
@@ -1211,7 +1216,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonObjectResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
     val configWithJsonResponse =
         config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
@@ -1238,7 +1243,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("responseFormatTextResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    val llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O_MINI);
+    val llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
     val template = Message.user("What is 'apple' in German?");
     val templatingConfig =
@@ -1503,5 +1508,46 @@ class OrchestrationUnitTest {
     assertThat(messageListTools.get(0)).isInstanceOf(UserMessage.class);
     assertThat(messageListTools.get(1)).isInstanceOf(AssistantMessage.class);
     assertThat(messageListTools.get(2)).isInstanceOf(ToolMessage.class);
+  }
+
+  @Test
+  void testFallbackModules() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("fallbackResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var prompt = new OrchestrationPrompt("HelloWorld! Why is this phrase so famous?");
+    final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
+    val groundingConfig =
+        Grounding.create()
+            .filters(
+                DocumentGroundingFilter.create()
+                    .dataRepositoryType(DataRepositoryType.HELP_SAP_COM));
+
+    final var workingConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(GPT_5_MINI.withParam(TEMPERATURE, 0.0))
+            .withInputFiltering(llamaFilter)
+            .withGrounding(groundingConfig);
+    final var brokenConfig =
+        workingConfig.withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+
+    final var response = client.chatCompletion(prompt, brokenConfig, workingConfig);
+
+    var intermediateFailure = response.getOriginalResponse().getIntermediateFailures().get(0);
+    assertThat(intermediateFailure.getCode()).isEqualTo(400);
+    assertThat(intermediateFailure.getLocation()).isEqualTo("Request Body");
+    assertThat(intermediateFailure.getRequestId())
+        .isEqualTo("a562703b-7fe5-97ba-b417-e8140a25fb7c");
+    assertThat(intermediateFailure.getMessage())
+        .isEqualTo("400 - Request Body: Model broken_name not supported.");
+    assertThat(intermediateFailure.getHeaders().get("Content-Type")).isEqualTo("application/json");
+
+    final String request = fileLoaderStr.apply("fallbackRequest.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
   }
 }

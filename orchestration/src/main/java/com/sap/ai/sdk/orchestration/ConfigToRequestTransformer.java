@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.google.common.collect.Lists;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
@@ -17,6 +18,8 @@ import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.function.UnaryOperator;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -30,24 +33,28 @@ import lombok.val;
 final class ConfigToRequestTransformer {
   @Nonnull
   static CompletionRequestConfiguration toCompletionPostRequest(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final OrchestrationModuleConfig config) {
-    val template = toTemplateModuleConfig(prompt, config.getTemplateConfig());
+      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final OrchestrationModuleConfig config,
+      @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
 
-    // note that the config is immutable and implicitly copied here
-    // copying is required here, to not alter the original config object, which might be reused for
-    // subsequent requests
-    val configCopy = config.withTemplateConfig(template);
+    final UnaryOperator<OrchestrationModuleConfig> copyWithImmutableTemplateConfig =
+        c -> c.withTemplateConfig(toTemplateModuleConfig(prompt, c.getTemplateConfig()));
+    val configList = Lists.asList(config, fallbackConfigs);
+    val configsCopy = Lists.transform(configList, copyWithImmutableTemplateConfig::apply);
 
     val messageHistory =
         prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
 
-    val moduleConfigs = toModuleConfigs(configCopy);
+    final OrchestrationConfigModules moduleConfigs =
+        configsCopy.size() == 1
+            ? toModuleConfigs(configsCopy.get(0))
+            : toListOfModuleConfigs(configsCopy);
 
-    val reqConfig =
+    val requestConfig =
         OrchestrationConfig.create().modules(moduleConfigs).stream(config.getGlobalStreamOptions());
 
     return CompletionRequestConfiguration.create()
-        .config(reqConfig)
+        .config(requestConfig)
         .placeholderValues(prompt.getTemplateParameters())
         .messagesHistory(messageHistory);
   }
@@ -93,6 +100,18 @@ final class ConfigToRequestTransformer {
 
   @Nonnull
   static InnerModuleConfigs toModuleConfigs(@Nonnull final OrchestrationModuleConfig config) {
+    return OrchestrationConfigModules.createInnerModuleConfigs(setupModuleConfigs(config));
+  }
+
+  @Nonnull
+  static OrchestrationConfigModules.ListOfModuleConfigss toListOfModuleConfigs(
+      @Nonnull final List<OrchestrationModuleConfig> configs) {
+    return OrchestrationConfigModules.createListOfModuleConfigss(
+        configs.stream().map(ConfigToRequestTransformer::setupModuleConfigs).toList());
+  }
+
+  @Nonnull
+  private static ModuleConfigs setupModuleConfigs(@Nonnull final OrchestrationModuleConfig config) {
     val llmConfig =
         Option.of(config.getLlmConfig())
             .getOrElseThrow(() -> new IllegalStateException("LLM config is required."));
@@ -117,8 +136,7 @@ final class ConfigToRequestTransformer {
       inputTranslation.forEach(moduleConfig.getTranslation()::input);
       outputTranslation.forEach(moduleConfig.getTranslation()::output);
     }
-
-    return OrchestrationConfigModules.createInnerModuleConfigs(moduleConfig);
+    return moduleConfig;
   }
 
   @Nonnull

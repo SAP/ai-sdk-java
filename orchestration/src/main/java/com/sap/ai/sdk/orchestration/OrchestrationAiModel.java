@@ -132,7 +132,12 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_3_5_SONNET =
       new OrchestrationAiModel("anthropic--claude-3.5-sonnet");
 
-  /** Anthropic Claude 3.7 Sonnet model */
+  /**
+   * Anthropic Claude 3.7 Sonnet model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-04-28.
+   */
+  @Deprecated
   public static final OrchestrationAiModel CLAUDE_3_7_SONNET =
       new OrchestrationAiModel("anthropic--claude-3.7-sonnet");
 
@@ -155,6 +160,14 @@ public class OrchestrationAiModel {
   /** Anthropic Claude 4.5 Haiku model */
   public static final OrchestrationAiModel CLAUDE_4_5_HAIKU =
       new OrchestrationAiModel("anthropic--claude-4.5-haiku");
+
+  /** Anthropic Claude 4.6 Opus model */
+  public static final OrchestrationAiModel CLAUDE_4_6_OPUS =
+      new OrchestrationAiModel("anthropic--claude-4.6-opus");
+
+  /** Anthropic Claude 4.6 Sonnet model */
+  public static final OrchestrationAiModel CLAUDE_4_6_SONNET =
+      new OrchestrationAiModel("anthropic--claude-4.6-sonnet");
 
   /**
    * Amazon Titan Text Lite model
@@ -259,7 +272,13 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-4o model */
   public static final OrchestrationAiModel GPT_4O = new OrchestrationAiModel("gpt-4o");
 
-  /** Azure OpenAI GPT-4o-mini model */
+  /**
+   * Azure OpenAI GPT-4o-mini model
+   *
+   * @deprecated This model is deprecated on AI Core.The suggested replacement model is {@link
+   *     OrchestrationAiModel#GPT_5_MINI}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GPT_4O_MINI = new OrchestrationAiModel("gpt-4o-mini");
 
   /** Azure OpenAI o1 model */
@@ -314,11 +333,21 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_1_5_FLASH =
       new OrchestrationAiModel("gemini-1.5-flash");
 
-  /** Google Cloud Platform Gemini 2.0 Flash model */
+  /**
+   * Google Cloud Platform Gemini 2.0 Flash model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2026-02-05.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GEMINI_2_0_FLASH =
       new OrchestrationAiModel("gemini-2.0-flash");
 
-  /** Google Cloud Platform Gemini 2.0 Flash-Lite model */
+  /**
+   * Google Cloud Platform Gemini 2.0 Flash-Lite model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2026-02-25.
+   */
+  @Deprecated
   public static final OrchestrationAiModel GEMINI_2_0_FLASH_LITE =
       new OrchestrationAiModel("gemini-2.0-flash-lite");
 
@@ -334,7 +363,13 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_2_5_PRO =
       new OrchestrationAiModel("gemini-2.5-pro");
 
-  /** Alephalpha-pharia-1-7b-control model */
+  /**
+   * Alephalpha-pharia-1-7b-control model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-10-31. The
+   *     suggested replacement model is {@link OrchestrationAiModel#MISTRAL_SMALL_INSTRUCT}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel ALEPHALPHA_PHARIA_1_7B_CONTROL =
       new OrchestrationAiModel("alephalpha-pharia-1-7b-control");
 

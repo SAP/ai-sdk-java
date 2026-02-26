@@ -12,11 +12,11 @@
 
 ### ✨ New Functionality
 
-- [RPT] Introducing `RptClient` for Tabular AI backed by SAP RPT models `SAP_RPT_1_SMALL` and `SAP_RPT_1_LARGE`.
+- [Grounding] Added `GroundingClient.withHeader()`.
 
 ### 📈 Improvements
 
--[Orchestration] Added new API `OrchestrationTemplateReference#withScope` to support prompt templates with resource-group scope.
+-
 
 ### 🐛 Fixed Issues
 
