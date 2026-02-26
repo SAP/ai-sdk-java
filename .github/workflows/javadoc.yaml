@@ -56,6 +56,14 @@ jobs:
       - name: "Generate aggregated Javadoc"
         run: mvn clean javadoc:aggregate -Drelease -Djava.failOnWarning=false
 
+      - name: "Debug: Find JavaDoc output"
+        run: |
+          echo "Looking for apidocs..."
+          find . -type d -name "apidocs"
+          echo ""
+          echo "Root target contents:"
+          ls -la target/ 2>/dev/null || echo "No target/"
+
       - name: "Checkout Docs Repository"
         uses: actions/checkout@v6
         with:
