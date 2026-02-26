@@ -890,6 +890,21 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                     <sourcepath>${project.build.directory}/delombok</sourcepath>
                   </configuration>
                 </execution>
+                <execution>
+                  <id>aggregate-javadoc</id>
+                  <goals>
+                    <goal>aggregate-no-fork</goal>
+                  </goals>
+                  <phase>package</phase>
+                  <inherited>false</inherited>
+                  <configuration>
+                    <sourcepath>${project.build.directory}/delombok</sourcepath>
+                    <quiet>true</quiet>
+                    <doclint>none</doclint>
+                    <show>protected</show>
+                    <overview>${project.rootdir}/docs/javadoc.overview.html</overview>
+                  </configuration>
+                </execution>
               </executions>
             </plugin>
             <plugin>

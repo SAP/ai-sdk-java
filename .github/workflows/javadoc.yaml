@@ -37,7 +37,7 @@ jobs:
           cache: 'maven'
 
       - name: "Install project (skip tests)"
-        run: mvn -B -ntp -Drelease -DskipTests -Dgpg.skip=true clean install
+        run: mvn -P release clean install -DskipTests -Dgpg.skip=true --quiet
 
       - name: "Determine Versions"
         id: determine-version
@@ -47,60 +47,8 @@ jobs:
           echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           echo "MAJOR_VERSION=$MAJOR_VERSION" >> $GITHUB_OUTPUT
 
-      - name: "Copy delombok sources"
-        shell: bash
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-
-          echo "== delombok dirs =="
-          find . -type d -path "*/target/delombok" -print || true
-
-          find . -type d -path "*/target/delombok" -print0 | while IFS= read -r -d '' d; do
-            module_dir="$(dirname "$(dirname "$d")")"
-            dest="$module_dir/src/main/java"
-            mkdir -p "$dest"
-
-            files=("$d"/*)
-            if [ ${#files[@]} -gt 0 ]; then
-              echo "[INFO] Copying $d -> $dest"
-              cp -r "$d"/* "$dest"/
-            else
-              echo "[INFO] delombok empty: $d"
-            fi
-          done
-      - name: "Debug: javadoc skip flags"
-        run: |
-          echo "maven.javadoc.skip=$(mvn -q -DforceStdout help:evaluate -Dexpression=maven.javadoc.skip || true)"
-          echo "javadoc.skip=$(mvn -q -DforceStdout help:evaluate -Dexpression=javadoc.skip || true)"
-
       - name: "Generate aggregated Javadoc"
-        run: mvn -B -ntp -Drelease -Dgpg.skip=true javadoc:aggregate -Djava.failOnWarning=false -Dmaven.javadoc.skip=false -Djavadoc.skip=false
-
-      - name: "Debug: Environment & JavaDoc"
-        run: |
-          echo "=== Maven Version ==="
-          mvn --version
-
-          echo ""
-          echo "=== Java Version ==="
-          java -version
-
-          echo ""
-          echo "=== Active Profiles ==="
-          mvn help:active-profiles -Drelease
-
-          echo ""
-          echo "=== Looking for apidocs ==="
-          find . -type d -name "apidocs" 2>/dev/null || echo "No apidocs found"
-
-          echo ""
-          echo "=== Root target contents ==="
-          ls -la target/ 2>/dev/null || echo "No target/"
-
-          echo ""
-          echo "=== Check for site directory ==="
-          ls -la target/site/ 2>/dev/null || echo "No target/site/"
+        run: mvn -P release clean compile javadoc:aggregate-no-fork -Dsourcepath=$(find . -name "delombok" -type d | tr '\n' ':') -Djava.failOnWarning=false
 
       - name: "Checkout Docs Repository"
         uses: actions/checkout@v6
