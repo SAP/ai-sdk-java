@@ -17,16 +17,15 @@ import com.sap.ai.sdk.grounding.model.DataRepositoryType;
 import com.sap.ai.sdk.grounding.model.DocumentCreateRequest;
 import com.sap.ai.sdk.grounding.model.DocumentWithoutChunks;
 import com.sap.ai.sdk.grounding.model.EmbeddingConfig;
-import com.sap.ai.sdk.grounding.model.FiltersInner;
 import com.sap.ai.sdk.grounding.model.GetPipeline;
 import com.sap.ai.sdk.grounding.model.MSSharePointPipelineGetResponse;
 import com.sap.ai.sdk.grounding.model.RetrievalChunk;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchConfiguration;
+import com.sap.ai.sdk.grounding.model.RetrievalSearchFilter;
 import com.sap.ai.sdk.grounding.model.RetrievalSearchInput;
 import com.sap.ai.sdk.grounding.model.S3PipelineGetResponse;
 import com.sap.ai.sdk.grounding.model.SFTPPipelineGetResponse;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunk;
-import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunkCreate;
 import com.sap.ai.sdk.grounding.model.VectorDocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.VectorKeyValueListPair;
 import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
@@ -102,7 +101,7 @@ class GroundingController {
   Object searchInDocuments(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var filter =
-        FiltersInner.create()
+        RetrievalSearchFilter.create()
             .id("question")
             .dataRepositoryType(DataRepositoryType.VECTOR)
             .dataRepositories(List.of("*"))
@@ -172,10 +171,9 @@ class GroundingController {
     final var documentContent = "Last upload on " + dayOfWeek;
 
     final var chunkMeta = VectorKeyValueListPair.create().key("context").value("day-of-week");
-    final var chunk =
-        TextOnlyBaseChunkCreate.create().content(documentContent).addMetadataItem(chunkMeta);
+    final var chunk = TextOnlyBaseChunk.create().content(documentContent).metadata(chunkMeta);
     final var docMeta = VectorDocumentKeyValueListPair.create().key("purpose").value("testing");
-    final var doc = BaseDocument.create().chunks(chunk).addMetadataItem(docMeta);
+    final var doc = BaseDocument.create().chunks(chunk).metadata(docMeta);
     final var request = DocumentCreateRequest.create().documents(doc);
     final var response = CLIENT_VECTOR.createDocuments(RESOURCE_GROUP, collectionId, request);
 
@@ -194,11 +192,9 @@ class GroundingController {
     final var dayOfWeek = now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
     final var chunkMeta = VectorKeyValueListPair.create().key("context").value("day-of-week");
     final var chunk =
-        TextOnlyBaseChunkCreate.create()
-            .content("Today is " + dayOfWeek)
-            .addMetadataItem(chunkMeta);
+        TextOnlyBaseChunk.create().content("Today is " + dayOfWeek).metadata(chunkMeta);
     final var docMeta = VectorDocumentKeyValueListPair.create().key("purpose").value("testing");
-    final var doc = BaseDocument.create().chunks(chunk).addMetadataItem(docMeta);
+    final var doc = BaseDocument.create().chunks(chunk).metadata(docMeta);
     final var request = DocumentCreateRequest.create().documents(doc);
 
     final var documents = CLIENT_VECTOR.getAllDocuments(RESOURCE_GROUP, collectionId);

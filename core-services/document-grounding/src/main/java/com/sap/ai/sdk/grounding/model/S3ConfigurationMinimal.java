@@ -29,7 +29,7 @@ public class S3ConfigurationMinimal
 // CHECKSTYLE:ON
 {
   @JsonProperty("s3")
-  private ServiceNowConfigurationMinimalServiceNow s3;
+  private SFTPConfigurationSftp s3;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -44,7 +44,7 @@ public class S3ConfigurationMinimal
    * @return The same instance of this {@link S3ConfigurationMinimal} class
    */
   @Nonnull
-  public S3ConfigurationMinimal s3(@Nonnull final ServiceNowConfigurationMinimalServiceNow s3) {
+  public S3ConfigurationMinimal s3(@Nonnull final SFTPConfigurationSftp s3) {
     this.s3 = s3;
     return this;
   }
@@ -55,7 +55,7 @@ public class S3ConfigurationMinimal
    * @return s3 The s3 of this {@link S3ConfigurationMinimal} instance.
    */
   @Nonnull
-  public ServiceNowConfigurationMinimalServiceNow getS3() {
+  public SFTPConfigurationSftp getS3() {
     return s3;
   }
 
@@ -64,7 +64,7 @@ public class S3ConfigurationMinimal
    *
    * @param s3 The s3 of this {@link S3ConfigurationMinimal}
    */
-  public void setS3(@Nonnull final ServiceNowConfigurationMinimalServiceNow s3) {
+  public void setS3(@Nonnull final SFTPConfigurationSftp s3) {
     this.s3 = s3;
   }
 
@@ -180,6 +180,6 @@ public class S3ConfigurationMinimal
      * @param s3 The s3 of this {@link S3ConfigurationMinimal}
      * @return The S3ConfigurationMinimal instance.
      */
-    S3ConfigurationMinimal s3(@Nonnull final ServiceNowConfigurationMinimalServiceNow s3);
+    S3ConfigurationMinimal s3(@Nonnull final SFTPConfigurationSftp s3);
   }
 }

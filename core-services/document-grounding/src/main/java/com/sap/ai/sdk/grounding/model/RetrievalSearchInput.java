@@ -35,10 +35,7 @@ public class RetrievalSearchInput
   private String query;
 
   @JsonProperty("filters")
-  private List<FiltersInner> filters = new ArrayList<>();
-
-  @JsonProperty("postProcessing")
-  private List<RetrievalSearchInputPostProcessingInner> postProcessing = new ArrayList<>();
+  private List<RetrievalSearchFilter> filters = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -53,7 +50,7 @@ public class RetrievalSearchInput
    * @return The same instance of this {@link RetrievalSearchInput} class
    */
   @Nonnull
-  public RetrievalSearchInput query(@Nullable final String query) {
+  public RetrievalSearchInput query(@Nonnull final String query) {
     this.query = query;
     return this;
   }
@@ -63,7 +60,7 @@ public class RetrievalSearchInput
    *
    * @return query The query of this {@link RetrievalSearchInput} instance.
    */
-  @Nullable
+  @Nonnull
   public String getQuery() {
     return query;
   }
@@ -73,7 +70,7 @@ public class RetrievalSearchInput
    *
    * @param query Query string
    */
-  public void setQuery(@Nullable final String query) {
+  public void setQuery(@Nonnull final String query) {
     this.query = query;
   }
 
@@ -84,7 +81,7 @@ public class RetrievalSearchInput
    * @return The same instance of this {@link RetrievalSearchInput} class
    */
   @Nonnull
-  public RetrievalSearchInput filters(@Nonnull final List<FiltersInner> filters) {
+  public RetrievalSearchInput filters(@Nonnull final List<RetrievalSearchFilter> filters) {
     this.filters = filters;
     return this;
   }
@@ -96,7 +93,7 @@ public class RetrievalSearchInput
    * @return The same instance of type {@link RetrievalSearchInput}
    */
   @Nonnull
-  public RetrievalSearchInput addFiltersItem(@Nonnull final FiltersInner filtersItem) {
+  public RetrievalSearchInput addFiltersItem(@Nonnull final RetrievalSearchFilter filtersItem) {
     if (this.filters == null) {
       this.filters = new ArrayList<>();
     }
@@ -110,7 +107,7 @@ public class RetrievalSearchInput
    * @return filters The filters of this {@link RetrievalSearchInput} instance.
    */
   @Nonnull
-  public List<FiltersInner> getFilters() {
+  public List<RetrievalSearchFilter> getFilters() {
     return filters;
   }
 
@@ -119,58 +116,8 @@ public class RetrievalSearchInput
    *
    * @param filters The filters of this {@link RetrievalSearchInput}
    */
-  public void setFilters(@Nonnull final List<FiltersInner> filters) {
+  public void setFilters(@Nonnull final List<RetrievalSearchFilter> filters) {
     this.filters = filters;
-  }
-
-  /**
-   * Set the postProcessing of this {@link RetrievalSearchInput} instance and return the same
-   * instance.
-   *
-   * @param postProcessing List of operations to be performed across PerFilterSearchResults.
-   * @return The same instance of this {@link RetrievalSearchInput} class
-   */
-  @Nonnull
-  public RetrievalSearchInput postProcessing(
-      @Nullable final List<RetrievalSearchInputPostProcessingInner> postProcessing) {
-    this.postProcessing = postProcessing;
-    return this;
-  }
-
-  /**
-   * Add one postProcessing instance to this {@link RetrievalSearchInput}.
-   *
-   * @param postProcessingItem The postProcessing that should be added
-   * @return The same instance of type {@link RetrievalSearchInput}
-   */
-  @Nonnull
-  public RetrievalSearchInput addPostProcessingItem(
-      @Nonnull final RetrievalSearchInputPostProcessingInner postProcessingItem) {
-    if (this.postProcessing == null) {
-      this.postProcessing = new ArrayList<>();
-    }
-    this.postProcessing.add(postProcessingItem);
-    return this;
-  }
-
-  /**
-   * List of operations to be performed across PerFilterSearchResults.
-   *
-   * @return postProcessing The postProcessing of this {@link RetrievalSearchInput} instance.
-   */
-  @Nonnull
-  public List<RetrievalSearchInputPostProcessingInner> getPostProcessing() {
-    return postProcessing;
-  }
-
-  /**
-   * Set the postProcessing of this {@link RetrievalSearchInput} instance.
-   *
-   * @param postProcessing List of operations to be performed across PerFilterSearchResults.
-   */
-  public void setPostProcessing(
-      @Nullable final List<RetrievalSearchInputPostProcessingInner> postProcessing) {
-    this.postProcessing = postProcessing;
   }
 
   /**
@@ -214,7 +161,6 @@ public class RetrievalSearchInput
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (query != null) declaredFields.put("query", query);
     if (filters != null) declaredFields.put("filters", filters);
-    if (postProcessing != null) declaredFields.put("postProcessing", postProcessing);
     return declaredFields;
   }
 
@@ -241,13 +187,12 @@ public class RetrievalSearchInput
     final RetrievalSearchInput retrievalSearchInput = (RetrievalSearchInput) o;
     return Objects.equals(this.cloudSdkCustomFields, retrievalSearchInput.cloudSdkCustomFields)
         && Objects.equals(this.query, retrievalSearchInput.query)
-        && Objects.equals(this.filters, retrievalSearchInput.filters)
-        && Objects.equals(this.postProcessing, retrievalSearchInput.postProcessing);
+        && Objects.equals(this.filters, retrievalSearchInput.filters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(query, filters, postProcessing, cloudSdkCustomFields);
+    return Objects.hash(query, filters, cloudSdkCustomFields);
   }
 
   @Override
@@ -257,7 +202,6 @@ public class RetrievalSearchInput
     sb.append("class RetrievalSearchInput {\n");
     sb.append("    query: ").append(toIndentedString(query)).append("\n");
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
-    sb.append("    postProcessing: ").append(toIndentedString(postProcessing)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -291,7 +235,7 @@ public class RetrievalSearchInput
      * @param query Query string
      * @return The RetrievalSearchInput builder.
      */
-    Builder1 query(@Nullable final String query);
+    Builder1 query(@Nonnull final String query);
   }
 
   /** Builder helper class. */
@@ -302,7 +246,7 @@ public class RetrievalSearchInput
      * @param filters The filters of this {@link RetrievalSearchInput}
      * @return The RetrievalSearchInput instance.
      */
-    RetrievalSearchInput filters(@Nonnull final List<FiltersInner> filters);
+    RetrievalSearchInput filters(@Nonnull final List<RetrievalSearchFilter> filters);
 
     /**
      * Set the filters of this {@link RetrievalSearchInput} instance.
@@ -310,7 +254,7 @@ public class RetrievalSearchInput
      * @param filters The filters of this {@link RetrievalSearchInput}
      * @return The RetrievalSearchInput instance.
      */
-    default RetrievalSearchInput filters(@Nonnull final FiltersInner... filters) {
+    default RetrievalSearchInput filters(@Nonnull final RetrievalSearchFilter... filters) {
       return filters(Arrays.asList(filters));
     }
   }
