@@ -872,9 +872,8 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
               <version>3.12.0</version>
               <configuration>
                 <quiet>true</quiet>
-                <additionalOptions>-Xdoclint:none</additionalOptions>
+                <doclint>none</doclint>
                 <show>protected</show>
-                <sourcepath>${project.basedir}/target/delombok</sourcepath>
               </configuration>
               <executions>
                 <execution>
@@ -882,6 +881,9 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                   <goals>
                     <goal>jar</goal>
                   </goals>
+                  <configuration>
+                    <sourcepath>${project.build.directory}/delombok</sourcepath>
+                  </configuration>
                 </execution>
               </executions>
             </plugin>
