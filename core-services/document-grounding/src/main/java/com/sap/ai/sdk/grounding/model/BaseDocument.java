@@ -32,7 +32,7 @@ public class BaseDocument
 // CHECKSTYLE:ON
 {
   @JsonProperty("chunks")
-  private List<TextOnlyBaseChunk> chunks = new ArrayList<>();
+  private List<TextOnlyBaseChunkCreate> chunks = new ArrayList<>();
 
   @JsonProperty("metadata")
   private List<VectorDocumentKeyValueListPair> metadata = new ArrayList<>();
@@ -50,7 +50,7 @@ public class BaseDocument
    * @return The same instance of this {@link BaseDocument} class
    */
   @Nonnull
-  public BaseDocument chunks(@Nonnull final List<TextOnlyBaseChunk> chunks) {
+  public BaseDocument chunks(@Nonnull final List<TextOnlyBaseChunkCreate> chunks) {
     this.chunks = chunks;
     return this;
   }
@@ -62,7 +62,7 @@ public class BaseDocument
    * @return The same instance of type {@link BaseDocument}
    */
   @Nonnull
-  public BaseDocument addChunksItem(@Nonnull final TextOnlyBaseChunk chunksItem) {
+  public BaseDocument addChunksItem(@Nonnull final TextOnlyBaseChunkCreate chunksItem) {
     if (this.chunks == null) {
       this.chunks = new ArrayList<>();
     }
@@ -76,7 +76,7 @@ public class BaseDocument
    * @return chunks The chunks of this {@link BaseDocument} instance.
    */
   @Nonnull
-  public List<TextOnlyBaseChunk> getChunks() {
+  public List<TextOnlyBaseChunkCreate> getChunks() {
     return chunks;
   }
 
@@ -85,7 +85,7 @@ public class BaseDocument
    *
    * @param chunks The chunks of this {@link BaseDocument}
    */
-  public void setChunks(@Nonnull final List<TextOnlyBaseChunk> chunks) {
+  public void setChunks(@Nonnull final List<TextOnlyBaseChunkCreate> chunks) {
     this.chunks = chunks;
   }
 
@@ -96,7 +96,7 @@ public class BaseDocument
    * @return The same instance of this {@link BaseDocument} class
    */
   @Nonnull
-  public BaseDocument metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
+  public BaseDocument metadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -131,7 +131,7 @@ public class BaseDocument
    *
    * @param metadata The metadata of this {@link BaseDocument}
    */
-  public void setMetadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
+  public void setMetadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
@@ -238,7 +238,7 @@ public class BaseDocument
    * with all required arguments.
    */
   public static Builder create() {
-    return (chunks) -> (metadata) -> new BaseDocument().chunks(chunks).metadata(metadata);
+    return (chunks) -> new BaseDocument().chunks(chunks);
   }
 
   /** Builder helper class. */
@@ -247,39 +247,18 @@ public class BaseDocument
      * Set the chunks of this {@link BaseDocument} instance.
      *
      * @param chunks The chunks of this {@link BaseDocument}
-     * @return The BaseDocument builder.
+     * @return The BaseDocument instance.
      */
-    Builder1 chunks(@Nonnull final List<TextOnlyBaseChunk> chunks);
+    BaseDocument chunks(@Nonnull final List<TextOnlyBaseChunkCreate> chunks);
 
     /**
      * Set the chunks of this {@link BaseDocument} instance.
      *
      * @param chunks The chunks of this {@link BaseDocument}
-     * @return The BaseDocument builder.
+     * @return The BaseDocument instance.
      */
-    default Builder1 chunks(@Nonnull final TextOnlyBaseChunk... chunks) {
+    default BaseDocument chunks(@Nonnull final TextOnlyBaseChunkCreate... chunks) {
       return chunks(Arrays.asList(chunks));
-    }
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the metadata of this {@link BaseDocument} instance.
-     *
-     * @param metadata The metadata of this {@link BaseDocument}
-     * @return The BaseDocument instance.
-     */
-    BaseDocument metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata);
-
-    /**
-     * Set the metadata of this {@link BaseDocument} instance.
-     *
-     * @param metadata The metadata of this {@link BaseDocument}
-     * @return The BaseDocument instance.
-     */
-    default BaseDocument metadata(@Nonnull final VectorDocumentKeyValueListPair... metadata) {
-      return metadata(Arrays.asList(metadata));
     }
   }
 }

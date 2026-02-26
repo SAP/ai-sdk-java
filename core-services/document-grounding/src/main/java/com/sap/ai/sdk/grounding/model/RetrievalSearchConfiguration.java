@@ -45,7 +45,7 @@ public class RetrievalSearchConfiguration
    * instance.
    *
    * @param maxChunkCount Maximum number of chunks to be returned. Cannot be used with
-   *     &#39;maxDocumentCount&#39;. Minimum: 0
+   *     &#39;maxDocumentCount&#39;. Minimum: 0 Maximum: 10000000
    * @return The same instance of this {@link RetrievalSearchConfiguration} class
    */
   @Nonnull
@@ -56,7 +56,7 @@ public class RetrievalSearchConfiguration
 
   /**
    * Maximum number of chunks to be returned. Cannot be used with &#39;maxDocumentCount&#39;.
-   * minimum: 0
+   * minimum: 0 maximum: 10000000
    *
    * @return maxChunkCount The maxChunkCount of this {@link RetrievalSearchConfiguration} instance.
    */
@@ -69,7 +69,7 @@ public class RetrievalSearchConfiguration
    * Set the maxChunkCount of this {@link RetrievalSearchConfiguration} instance.
    *
    * @param maxChunkCount Maximum number of chunks to be returned. Cannot be used with
-   *     &#39;maxDocumentCount&#39;. Minimum: 0
+   *     &#39;maxDocumentCount&#39;. Minimum: 0 Maximum: 10000000
    */
   public void setMaxChunkCount(@Nullable final Integer maxChunkCount) {
     this.maxChunkCount = maxChunkCount;
@@ -81,7 +81,7 @@ public class RetrievalSearchConfiguration
    *
    * @param maxDocumentCount [Only supports &#39;vector&#39; dataRepositoryType] - Maximum number of
    *     documents to be returned. Cannot be used with &#39;maxChunkCount&#39;. If maxDocumentCount
-   *     is given, then only one chunk per document is returned. Minimum: 0
+   *     is given, then only one chunk per document is returned. Minimum: 0 Maximum: 10000000
    * @return The same instance of this {@link RetrievalSearchConfiguration} class
    */
   @Nonnull
@@ -93,7 +93,7 @@ public class RetrievalSearchConfiguration
   /**
    * [Only supports &#39;vector&#39; dataRepositoryType] - Maximum number of documents to be
    * returned. Cannot be used with &#39;maxChunkCount&#39;. If maxDocumentCount is given, then only
-   * one chunk per document is returned. minimum: 0
+   * one chunk per document is returned. minimum: 0 maximum: 10000000
    *
    * @return maxDocumentCount The maxDocumentCount of this {@link RetrievalSearchConfiguration}
    *     instance.
@@ -108,7 +108,7 @@ public class RetrievalSearchConfiguration
    *
    * @param maxDocumentCount [Only supports &#39;vector&#39; dataRepositoryType] - Maximum number of
    *     documents to be returned. Cannot be used with &#39;maxChunkCount&#39;. If maxDocumentCount
-   *     is given, then only one chunk per document is returned. Minimum: 0
+   *     is given, then only one chunk per document is returned. Minimum: 0 Maximum: 10000000
    */
   public void setMaxDocumentCount(@Nullable final Integer maxDocumentCount) {
     this.maxDocumentCount = maxDocumentCount;
