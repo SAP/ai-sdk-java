@@ -54,15 +54,32 @@ jobs:
         run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
 
       - name: "Generate aggregated Javadoc"
-        run: mvn clean javadoc:aggregate -Drelease -Djava.failOnWarning=false
+        run: mvn site -Drelease -Djava.failOnWarning=false
 
-      - name: "Debug: Find JavaDoc output"
+      - name: "Debug: Environment & JavaDoc"
         run: |
-          echo "Looking for apidocs..."
-          find . -type d -name "apidocs"
+          echo "=== Maven Version ==="
+          mvn --version
+
           echo ""
-          echo "Root target contents:"
+          echo "=== Java Version ==="
+          java -version
+
+          echo ""
+          echo "=== Active Profiles ==="
+          mvn help:active-profiles -Drelease
+
+          echo ""
+          echo "=== Looking for apidocs ==="
+          find . -type d -name "apidocs" 2>/dev/null || echo "No apidocs found"
+
+          echo ""
+          echo "=== Root target contents ==="
           ls -la target/ 2>/dev/null || echo "No target/"
+
+          echo ""
+          echo "=== Check for site directory ==="
+          ls -la target/site/ 2>/dev/null || echo "No target/site/"
 
       - name: "Checkout Docs Repository"
         uses: actions/checkout@v6
@@ -79,7 +96,7 @@ jobs:
           ls -lA target
           rm -rf $TARGET_DIR
           mkdir -p $TARGET_DIR
-          mv target/reports/apidocs/* $TARGET_DIR
+          mv target/site/apidocs/* $TARGET_DIR
 
           cd ./.ai-sdk-docs
           git add -A .
