@@ -69,9 +69,13 @@ jobs:
               echo "[INFO] delombok empty: $d"
             fi
           done
+      - name: "Debug: javadoc skip flags"
+        run: |
+          echo "maven.javadoc.skip=$(mvn -q -DforceStdout help:evaluate -Dexpression=maven.javadoc.skip || true)"
+          echo "javadoc.skip=$(mvn -q -DforceStdout help:evaluate -Dexpression=javadoc.skip || true)"
 
       - name: "Generate aggregated Javadoc"
-        run: mvn -B -ntp -Drelease -Dgpg.skip=true javadoc:aggregate -Djava.failOnWarning=false
+        run: mvn -B -ntp -Drelease -Dgpg.skip=true javadoc:aggregate -Djava.failOnWarning=false -Dmaven.javadoc.skip=false -Djavadoc.skip=false
 
       - name: "Debug: Environment & JavaDoc"
         run: |
