@@ -54,7 +54,7 @@ jobs:
         run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
 
       - name: "Generate aggregated Javadoc"
-        run: mvn site -Drelease -Djava.failOnWarning=false
+        run: mvn javadoc:aggregate-no-fork -Drelease -Djava.failOnWarning=false
 
       - name: "Debug: Environment & JavaDoc"
         run: |
@@ -96,7 +96,7 @@ jobs:
           ls -lA target
           rm -rf $TARGET_DIR
           mkdir -p $TARGET_DIR
-          mv target/site/apidocs/* $TARGET_DIR
+          mv target/reports/apidocs/* $TARGET_DIR
 
           cd ./.ai-sdk-docs
           git add -A .

@@ -1006,28 +1006,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           </plugin>
         </plugins>
       </build>
-      <reporting>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>3.12.0</version>
-            <configuration>
-              <quiet>false</quiet>
-              <doclint>none</doclint>
-              <show>protected</show>
-            </configuration>
-            <reportSets>
-              <reportSet>
-                <id>aggregate</id>
-                <reports>
-                  <report>aggregate</report>
-                </reports>
-              </reportSet>
-            </reportSets>
-          </plugin>
-        </plugins>
-      </reporting>
     </profile>
   </profiles>
 </project>
