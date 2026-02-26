@@ -71,7 +71,7 @@ jobs:
           done
 
       - name: "Generate aggregated Javadoc"
-        run: mvn -B -ntp -Drelease -Dgpg.skip=true javadoc:aggregate-no-fork -Djava.failOnWarning=false
+        run: mvn -B -ntp -Drelease -Dgpg.skip=true javadoc:aggregate -Djava.failOnWarning=false
 
       - name: "Debug: Environment & JavaDoc"
         run: |
