@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
@@ -26,7 +25,6 @@ import org.springframework.ai.embedding.EmbeddingResponseMetadata;
  *
  * @since 1.13.0
  */
-@Beta
 @RequiredArgsConstructor
 public class OrchestrationSpringEmbeddingModel implements EmbeddingModel {
 

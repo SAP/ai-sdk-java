@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
@@ -40,7 +39,6 @@ import lombok.val;
 @With
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-@Beta
 public class OrchestrationTemplate extends TemplateConfig {
 
   /** Please use {@link #withMessages(Message...)} instead. */

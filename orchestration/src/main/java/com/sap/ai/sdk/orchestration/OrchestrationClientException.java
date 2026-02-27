@@ -131,7 +131,6 @@ public class OrchestrationClientException extends ClientException {
    * @return the HTTP status code, or {@code null} if not available
    * @since 1.10.0
    */
-  @Beta
   @Nullable
   public Integer getStatusCode() {
     return Optional.ofNullable(getErrorResponse())

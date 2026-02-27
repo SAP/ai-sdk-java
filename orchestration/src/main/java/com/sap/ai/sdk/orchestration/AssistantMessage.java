@@ -2,7 +2,6 @@ package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.model.AssistantChatMessage.RoleEnum.ASSISTANT;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
@@ -27,9 +26,7 @@ public class AssistantMessage implements Message {
   @Nonnull String role = "assistant";
 
   /** The content of the message. */
-  @Nonnull
-  @Getter(onMethod_ = @Beta)
-  MessageContent content;
+  @Nonnull @Getter MessageContent content;
 
   /** Tool call if there is any. */
   @Nullable List<MessageToolCall> toolCalls;

@@ -143,7 +143,6 @@ public final class OpenAiClient {
    * @return a new client.
    * @since 1.11.0
    */
-  @Beta
   @Nonnull
   public OpenAiClient withHeader(@Nonnull final String key, @Nonnull final String value) {
     final var newClient = new OpenAiClient(this.destination);

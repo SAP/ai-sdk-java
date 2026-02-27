@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.IMAGE_URL;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.TEXT;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ImageContentUrl;
 import com.sap.ai.sdk.orchestration.model.UserChatMessage;
@@ -30,9 +29,7 @@ public class UserMessage implements Message {
   @Nonnull String role = "user";
 
   /** The content of the message. */
-  @Nonnull
-  @Getter(onMethod_ = @Beta)
-  MessageContent content;
+  @Nonnull @Getter MessageContent content;
 
   /**
    * Creates a new user message from a string.
