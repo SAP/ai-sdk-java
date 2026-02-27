@@ -877,7 +877,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-javadoc-plugin</artifactId>
               <configuration>
-                <quiet>true</quiet>
+                <quiet>false</quiet>
                 <doclint>none</doclint>
                 <show>protected</show>
                 <overview>${project.rootdir}/docs/javadoc.overview.html</overview>
@@ -890,6 +890,16 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                   </goals>
                   <configuration>
                     <sourcepath>${project.build.directory}/delombok</sourcepath>
+                  </configuration>
+                </execution>
+                <execution>
+                  <id>aggregate-javadocs</id>
+                  <phase>package</phase>
+                  <goals>
+                    <goal>aggregate-no-fork</goal>
+                  </goals>
+                  <configuration>
+                    <outputDirectory>${project.build.directory}/reports/apidocs</outputDirectory>
                   </configuration>
                 </execution>
               </executions>
