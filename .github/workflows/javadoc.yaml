@@ -39,8 +39,30 @@ jobs:
       - name: "Copy delombok sources"
         run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
 
+
       - name: Aggregate Javadoc (no fork)
-        run: mvn -X -B -ntp -Drelease -DskipTests -Dgpg.skip=true -Dspotless.apply.skip=true -Dspotless.check.skip=true -Djava.failOnWarning=false javadoc:aggregate
+        run: mvn -X -B -ntp -Drelease -DskipTests -Dgpg.skip=true -Dspotless.apply.skip=true -Dspotless.check.skip=true -Djava.failOnWarning=false javadoc:aggregate-no-fork
+
+      - name: List all "apidocs" folders
+        run: |
+          echo "=== Current working directory ==="
+          pwd
+
+          echo ""
+          echo "=== List root target ==="
+          ls -la target || true
+
+          echo ""
+          echo "=== Find any directory named apidocs ==="
+          find . -type d -name apidocs -print || true
+
+          echo ""
+          echo "=== Find anything containing 'apidoc' in name ==="
+          find . -type d -iname "*apidoc*" -print || true
+
+          echo ""
+          echo "=== Show structure under target (max depth 4) ==="
+          find target -maxdepth 4 -type d -print 2>/dev/null || true
 
       - name: "Checkout Docs Repository"
         uses: actions/checkout@v6
