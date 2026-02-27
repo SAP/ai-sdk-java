@@ -9,14 +9,13 @@ on:
         default: 'main'
 
 env:
-  JAVA_VERSION: 22
+  JAVA_VERSION: 21
   DOCS_REPO: SAP/ai-sdk
-  PROJECTS: ":sdk-parent,:core,:orchestration,:document-grounding,:prompt-registry,:openai,:sap-rpt"
 
 jobs:
   build:
     name: "JavaDoc to Documentation Portal"
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: "Prepare git"
@@ -46,16 +45,16 @@ jobs:
           echo "MAJOR_VERSION=$MAJOR_VERSION" >> $GITHUB_OUTPUT
 
       - name: "Install project (skip tests)"
-        run: mvn clean install -DskipTests --quiet
+        run: mvn install -DskipTests --quiet
 
       - name: "Process sources"
-        run: mvn process-sources -Drelease --fail-at-end --projects "${PROJECTS}" --quiet
+        run: mvn process-sources -Drelease --fail-at-end --quiet
 
       - name: "Copy delombok sources"
         run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
 
       - name: "Generate aggregated Javadoc"
-        run: mvn javadoc:aggregate-no-fork -Drelease -Djava.failOnWarning=false
+        run: mvn clean javadoc:aggregate -Drelease -Djava.failOnWarning=false
 
       - name: List all "apidocs" folders
         run: |
