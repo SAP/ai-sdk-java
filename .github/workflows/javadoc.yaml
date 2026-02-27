@@ -77,6 +77,20 @@ jobs:
           echo "=== Show structure under target (max depth 4) ==="
           find target -maxdepth 4 -type d -print 2>/dev/null || true
 
+      - name: "Debug reactor"
+        run: |
+          pwd
+          echo "Modules in root pom:"
+          sed -n '/<modules>/,/<\/modules>/p' pom.xml || true
+
+          echo ""
+          echo "Active profiles:"
+          mvn -q help:active-profiles -Drelease
+
+          echo ""
+          echo "Reactor projects:"
+          mvn -q -Drelease help:evaluate -Dexpression=reactorProjects -DforceStdout
+
       - name: "Checkout Docs Repository"
         uses: actions/checkout@v6
         with:
