@@ -15,7 +15,8 @@ env:
 jobs:
   build:
     name: "JavaDoc to Documentation Portal"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    container: maven:3.9.9-eclipse-temurin-21
 
     steps:
       - name: "Prepare git"
@@ -29,28 +30,14 @@ jobs:
           ref: ${{ github.event.inputs.branch || 'main' }}
           fetch-depth: 0
 
-      - name: "Set up JDK 21"
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: 'maven'
-
       - name: Build (skip tests)
         run: mvn -B -ntp -DskipTests clean install
 
       - name: Delombok
         run: mvn -B -ntp -Drelease process-sources
 
-      - name: Overlay delombok into sources (CI only)
-        run: |
-          set -euo pipefail
-          find . -type d -path "*/target/delombok" -print0 | while IFS= read -r -d '' d; do
-            mod="$(dirname "$(dirname "$d")")"
-            rm -rf "$mod/src/main/java"
-            mkdir -p "$mod/src/main/java"
-            cp -R "$d/"* "$mod/src/main/java/"
-          done
+      - name: "Copy delombok sources"
+        run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
 
       - name: Aggregate Javadoc (no fork)
         run: mvn -B -ntp -Drelease -DskipTests -Dgpg.skip=true site
