@@ -15,8 +15,8 @@ env:
 jobs:
   build:
     name: "JavaDoc to Documentation Portal"
-    runs-on: ubuntu-22.04
-    container: maven:3.9.9-eclipse-temurin-21
+    runs-on: ubuntu-latest
+    container: 3.9.12-sapmachine-21
 
     steps:
       - name: "Prepare git"
@@ -31,17 +31,17 @@ jobs:
           fetch-depth: 0
 
       - name: Build (skip tests)
-        run: mvn -B -ntp -DskipTests clean install
+        run: mvn -B -ntp -DskipTests clean install --quiet
 
       - name: Delombok
-        run: mvn -B -ntp -Drelease process-sources
+        run: mvn -B -ntp -Drelease process-sources --quiet
 
       - name: "Copy delombok sources"
         run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
 
 
       - name: Aggregate Javadoc (no fork)
-        run: mvn -X -B -ntp -Drelease -DskipTests -Dgpg.skip=true -Dspotless.apply.skip=true -Dspotless.check.skip=true -Djava.failOnWarning=false javadoc:aggregate-no-fork
+        run: mvn -X -B -ntp -Drelease -Dgpg.skip=true  -Djava.failOnWarning=false site
 
       - name: List all "apidocs" folders
         run: |
