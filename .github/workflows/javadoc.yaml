@@ -11,7 +11,7 @@ on:
 env:
   JAVA_VERSION: 22
   DOCS_REPO: SAP/ai-sdk
-  PROJECTS: "!:spring-app"
+  PROJECTS: ":core,:orchestration,:document-grounding,:prompt-registry,:openai,:sap-rpt"
 
 jobs:
   build:
@@ -46,7 +46,7 @@ jobs:
           echo "MAJOR_VERSION=$MAJOR_VERSION" >> $GITHUB_OUTPUT
 
       - name: "Install project (skip tests)"
-        run: mvn install -DskipTests --quiet
+        run: mvn clean install -DskipTests --quiet
 
       - name: "Process sources"
         run: mvn process-sources -Drelease --fail-at-end --projects "${PROJECTS}" --quiet
