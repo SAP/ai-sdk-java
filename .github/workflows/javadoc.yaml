@@ -16,7 +16,7 @@ jobs:
   build:
     name: "JavaDoc to Documentation Portal"
     runs-on: ubuntu-latest
-    container: 3.9.12-sapmachine-21
+    container: maven:3.9-sapmachine-21
 
     steps:
       - name: "Prepare git"
