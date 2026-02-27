@@ -1011,31 +1011,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           </plugin>
         </plugins>
       </build>
-      <reporting>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <inherited>false</inherited>
-            <reportSets>
-              <reportSet>
-                <id>aggregate-api</id>
-                <reports>
-                  <report>aggregate-no-fork</report>
-                </reports>
-                <!-- Optional config (applies to the report) -->
-                <configuration>
-                  <quiet>false</quiet>
-                  <doclint>none</doclint>
-                  <show>protected</show>
-                  <!-- Your overview if you have one -->
-                  <overview>${project.basedir}/docs/javadoc.overview.html</overview>
-                </configuration>
-              </reportSet>
-            </reportSets>
-          </plugin>
-        </plugins>
-      </reporting>
     </profile>
   </profiles>
 </project>

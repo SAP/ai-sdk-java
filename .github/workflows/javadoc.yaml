@@ -9,14 +9,14 @@ on:
         default: 'main'
 
 env:
-  JAVA_VERSION: 21
+  JAVA_VERSION: 22
   DOCS_REPO: SAP/ai-sdk
+  PROJECTS: "!:spring-app"
 
 jobs:
   build:
     name: "JavaDoc to Documentation Portal"
     runs-on: ubuntu-latest
-    container: maven:3.9-sapmachine-21
 
     steps:
       - name: "Prepare git"
@@ -30,18 +30,32 @@ jobs:
           ref: ${{ github.event.inputs.branch || 'main' }}
           fetch-depth: 0
 
-      - name: Build (skip tests)
-        run: mvn -B -ntp -DskipTests clean install --quiet
+      - name: "Set up JDK ${{ env.JAVA_VERSION }}"
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
 
-      - name: Delombok
-        run: mvn -B -ntp -Drelease process-sources --quiet
+      - name: "Determine Versions"
+        id: determine-version
+        run: |
+          CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | cut -d '-' -f 1)
+          MAJOR_VERSION=$(echo $CURRENT_VERSION | cut -d '.' -f 1)
+          echo "CURRENT_VERSION=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "MAJOR_VERSION=$MAJOR_VERSION" >> $GITHUB_OUTPUT
+
+      - name: "Install project (skip tests)"
+        run: mvn install -DskipTests --quiet
+
+      - name: "Process sources"
+        run: mvn process-sources -Drelease --fail-at-end --projects "${PROJECTS}" --quiet
 
       - name: "Copy delombok sources"
         run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
 
-
-      - name: Aggregate Javadoc (no fork)
-        run: mvn -X -B -ntp -Drelease -Dgpg.skip=true  -Djava.failOnWarning=false site
+      - name: "Generate aggregated Javadoc"
+        run: mvn clean javadoc:aggregate -X -Drelease -Djava.failOnWarning=false --projects "${PROJECTS}"
 
       - name: List all "apidocs" folders
         run: |
