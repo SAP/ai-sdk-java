@@ -40,7 +40,7 @@ jobs:
         run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
 
       - name: Aggregate Javadoc (no fork)
-        run: mvn -B -ntp -Drelease -DskipTests -Dgpg.skip=true site
+        run: mvn -B -ntp -Drelease -DskipTests -Dgpg.skip=true  -Djava.failOnWarning=false javadoc:aggregate
 
       - name: "Checkout Docs Repository"
         uses: actions/checkout@v6
