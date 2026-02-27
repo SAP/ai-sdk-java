@@ -439,8 +439,7 @@
               <rules>
                 <bannedDependencies>
                   <message>Do not use JUnit 4.X, instead exclusively use Junit Jupiter. JUnit 4 tests will (silently)
-                    simply not be executed.
-                  </message>
+                    simply not be executed.</message>
                   <excludes>
                     <exclude>junit:junit</exclude>
                   </excludes>
@@ -530,8 +529,7 @@
           <licenseMerges>
             <licenseMerge>Apache Software License - Version 2.0|Apache License Version 2.0|Apache 2.0|
               The Apache License, Version 2.0|Apache License, Version 2.0|Apache-2.0|
-              The Apache Software License, Version 2.0|Apache License 2.0
-            </licenseMerge>
+              The Apache Software License, Version 2.0|Apache License 2.0</licenseMerge>
             <licenseMerge>The MIT License|MIT License|The MIT License (MIT)|MIT|MIT-0</licenseMerge>
             <licenseMerge>The BSD 3-Clause License|BSD License 3|The BSD License|BSD-3-Clause|BSD-2-Clause|BSD licence</licenseMerge>
             <licenseMerge>Eclipse Distribution License - v 1.0|EDL 1.0</licenseMerge>
@@ -954,13 +952,17 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>flatten-maven-plugin</artifactId>
               <version>1.7.3</version>
+              <configuration>
+                <!-- pre-defined config for open source projects -->
+                <flattenMode>oss</flattenMode>
+              </configuration>
               <executions>
                 <execution>
                   <id>flatten</id>
-                  <phase>process-resources</phase>
                   <goals>
                     <goal>flatten</goal>
                   </goals>
+                  <phase>process-resources</phase>
                 </execution>
                 <execution>
                   <id>flatten.clean</id>
@@ -969,10 +971,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                   </goals>
                 </execution>
               </executions>
-              <configuration>
-                <!-- pre-defined config for open source projects -->
-                <flattenMode>oss</flattenMode>
-              </configuration>
             </plugin>
           </plugins>
         </pluginManagement>

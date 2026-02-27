@@ -54,7 +54,7 @@ jobs:
         run: find . -type d -path "*/target/delombok" -exec sh -c 'cp -r "$1"/* "$(dirname $(dirname "$1"))/src/main/java/"' _ {} \;
 
       - name: "Generate aggregated Javadoc"
-        run: mvn clean javadoc:aggregate -Drelease -Djava.failOnWarning=false
+        run: mvn javadoc:aggregate-no-fork -Drelease -Djava.failOnWarning=false
 
       - name: List all "apidocs" folders
         run: |
