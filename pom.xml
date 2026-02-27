@@ -890,21 +890,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                     <sourcepath>${project.build.directory}/delombok</sourcepath>
                   </configuration>
                 </execution>
-                <execution>
-                  <id>aggregate-javadoc</id>
-                  <goals>
-                    <goal>aggregate-no-fork</goal>
-                  </goals>
-                  <phase>package</phase>
-                  <inherited>false</inherited>
-                  <configuration>
-                    <sourcepath>${project.build.directory}/delombok</sourcepath>
-                    <quiet>true</quiet>
-                    <doclint>none</doclint>
-                    <show>protected</show>
-                    <overview>${project.rootdir}/docs/javadoc.overview.html</overview>
-                  </configuration>
-                </execution>
               </executions>
             </plugin>
             <plugin>
@@ -1026,6 +1011,31 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           </plugin>
         </plugins>
       </build>
+      <reporting>
+        <outputDirectory>${project.build.directory}/site</outputDirectory>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <!-- This configuration applies to the report (aggregate) -->
+            <configuration>
+              <quiet>true</quiet>
+              <doclint>none</doclint>
+              <show>protected</show>
+              <overview>${project.rootdir}/docs/javadoc.overview.html</overview>
+            </configuration>
+            <reportSets>
+              <reportSet>
+                <id>aggregate-javadoc</id>
+                <reports>
+                  <!-- Prefer no-fork to avoid re-running compile -->
+                  <report>aggregate-no-fork</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+          </plugin>
+        </plugins>
+      </reporting>
     </profile>
   </profiles>
 </project>

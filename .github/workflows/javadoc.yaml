@@ -53,7 +53,7 @@ jobs:
           done
 
       - name: Aggregate Javadoc (no fork)
-        run: mvn -B -ntp -Drelease javadoc:aggregate-no-fork -Djava.failOnWarning=false
+        run: mvn -B -ntp -Drelease -DskipTests -Dgpg.skip=true site
 
       - name: "Checkout Docs Repository"
         uses: actions/checkout@v6
@@ -70,7 +70,7 @@ jobs:
           ls -lA target
           rm -rf $TARGET_DIR
           mkdir -p $TARGET_DIR
-          mv target/reports/apidocs/* $TARGET_DIR
+          mv target/site/apidocs/* $TARGET_DIR
 
           cd ./.ai-sdk-docs
           git add -A .
