@@ -57,7 +57,7 @@ jobs:
           ls -lA target
           rm -rf $TARGET_DIR
           mkdir -p $TARGET_DIR
-          mv target/site/apidocs/* $TARGET_DIR
+          mv target/target/apidocs/* $TARGET_DIR
 
           cd ./.ai-sdk-docs
           git add -A .
