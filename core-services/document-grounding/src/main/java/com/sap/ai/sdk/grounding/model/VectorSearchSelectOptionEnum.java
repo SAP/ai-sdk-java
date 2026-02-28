@@ -57,6 +57,6 @@ public enum VectorSearchSelectOptionEnum {
         return b;
       }
     }
-    return UNKNOWN_DEFAULT_OPEN_API;
+    return null;
   }
 }

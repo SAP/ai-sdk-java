@@ -35,16 +35,13 @@ public class RetrievalSearchFilter
   private String id;
 
   @JsonProperty("searchConfiguration")
-  private RetrievalSearchConfiguration searchConfiguration = new RetrievalSearchConfiguration();
+  private RetrievalSearchConfiguration searchConfiguration;
 
   @JsonProperty("dataRepositories")
   private List<String> dataRepositories = new ArrayList<>(Arrays.asList("*"));
 
   @JsonProperty("dataRepositoryType")
   private DataRepositoryType dataRepositoryType;
-
-  @JsonProperty("remoteName")
-  private String remoteName;
 
   @JsonProperty("dataRepositoryMetadata")
   private List<RetrievalKeyValueListPair> dataRepositoryMetadata = new ArrayList<>();
@@ -112,7 +109,7 @@ public class RetrievalSearchFilter
    * @return searchConfiguration The searchConfiguration of this {@link RetrievalSearchFilter}
    *     instance.
    */
-  @Nullable
+  @Nonnull
   public RetrievalSearchConfiguration getSearchConfiguration() {
     return searchConfiguration;
   }
@@ -186,7 +183,7 @@ public class RetrievalSearchFilter
    */
   @Nonnull
   public RetrievalSearchFilter dataRepositoryType(
-      @Nonnull final DataRepositoryType dataRepositoryType) {
+      @Nullable final DataRepositoryType dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
     return this;
   }
@@ -197,7 +194,7 @@ public class RetrievalSearchFilter
    * @return dataRepositoryType The dataRepositoryType of this {@link RetrievalSearchFilter}
    *     instance.
    */
-  @Nonnull
+  @Nullable
   public DataRepositoryType getDataRepositoryType() {
     return dataRepositoryType;
   }
@@ -207,39 +204,8 @@ public class RetrievalSearchFilter
    *
    * @param dataRepositoryType The dataRepositoryType of this {@link RetrievalSearchFilter}
    */
-  public void setDataRepositoryType(@Nonnull final DataRepositoryType dataRepositoryType) {
+  public void setDataRepositoryType(@Nullable final DataRepositoryType dataRepositoryType) {
     this.dataRepositoryType = dataRepositoryType;
-  }
-
-  /**
-   * Set the remoteName of this {@link RetrievalSearchFilter} instance and return the same instance.
-   *
-   * @param remoteName Destination Name of remote instance.
-   * @return The same instance of this {@link RetrievalSearchFilter} class
-   */
-  @Nonnull
-  public RetrievalSearchFilter remoteName(@Nullable final String remoteName) {
-    this.remoteName = remoteName;
-    return this;
-  }
-
-  /**
-   * Destination Name of remote instance.
-   *
-   * @return remoteName The remoteName of this {@link RetrievalSearchFilter} instance.
-   */
-  @Nullable
-  public String getRemoteName() {
-    return remoteName;
-  }
-
-  /**
-   * Set the remoteName of this {@link RetrievalSearchFilter} instance.
-   *
-   * @param remoteName Destination Name of remote instance.
-   */
-  public void setRemoteName(@Nullable final String remoteName) {
-    this.remoteName = remoteName;
   }
 
   /**
@@ -442,7 +408,6 @@ public class RetrievalSearchFilter
     if (searchConfiguration != null) declaredFields.put("searchConfiguration", searchConfiguration);
     if (dataRepositories != null) declaredFields.put("dataRepositories", dataRepositories);
     if (dataRepositoryType != null) declaredFields.put("dataRepositoryType", dataRepositoryType);
-    if (remoteName != null) declaredFields.put("remoteName", remoteName);
     if (dataRepositoryMetadata != null)
       declaredFields.put("dataRepositoryMetadata", dataRepositoryMetadata);
     if (documentMetadata != null) declaredFields.put("documentMetadata", documentMetadata);
@@ -476,7 +441,6 @@ public class RetrievalSearchFilter
         && Objects.equals(this.searchConfiguration, retrievalSearchFilter.searchConfiguration)
         && Objects.equals(this.dataRepositories, retrievalSearchFilter.dataRepositories)
         && Objects.equals(this.dataRepositoryType, retrievalSearchFilter.dataRepositoryType)
-        && Objects.equals(this.remoteName, retrievalSearchFilter.remoteName)
         && Objects.equals(this.dataRepositoryMetadata, retrievalSearchFilter.dataRepositoryMetadata)
         && Objects.equals(this.documentMetadata, retrievalSearchFilter.documentMetadata)
         && Objects.equals(this.chunkMetadata, retrievalSearchFilter.chunkMetadata);
@@ -489,7 +453,6 @@ public class RetrievalSearchFilter
         searchConfiguration,
         dataRepositories,
         dataRepositoryType,
-        remoteName,
         dataRepositoryMetadata,
         documentMetadata,
         chunkMetadata,
@@ -507,7 +470,6 @@ public class RetrievalSearchFilter
         .append("\n");
     sb.append("    dataRepositories: ").append(toIndentedString(dataRepositories)).append("\n");
     sb.append("    dataRepositoryType: ").append(toIndentedString(dataRepositoryType)).append("\n");
-    sb.append("    remoteName: ").append(toIndentedString(remoteName)).append("\n");
     sb.append("    dataRepositoryMetadata: ")
         .append(toIndentedString(dataRepositoryMetadata))
         .append("\n");
@@ -559,6 +521,6 @@ public class RetrievalSearchFilter
      * @param dataRepositoryType The dataRepositoryType of this {@link RetrievalSearchFilter}
      * @return The RetrievalSearchFilter instance.
      */
-    RetrievalSearchFilter dataRepositoryType(@Nonnull final DataRepositoryType dataRepositoryType);
+    RetrievalSearchFilter dataRepositoryType(@Nullable final DataRepositoryType dataRepositoryType);
   }
 }

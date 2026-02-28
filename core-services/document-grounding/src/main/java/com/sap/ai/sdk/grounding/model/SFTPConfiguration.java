@@ -32,7 +32,7 @@ public class SFTPConfiguration
   private String destination;
 
   @JsonProperty("sftp")
-  private ServiceNowConfigurationMinimalServiceNow sftp;
+  private SFTPConfigurationSftp sftp;
 
   @JsonProperty("cronExpression")
   private String cronExpression;
@@ -81,7 +81,7 @@ public class SFTPConfiguration
    * @return The same instance of this {@link SFTPConfiguration} class
    */
   @Nonnull
-  public SFTPConfiguration sftp(@Nullable final ServiceNowConfigurationMinimalServiceNow sftp) {
+  public SFTPConfiguration sftp(@Nullable final SFTPConfigurationSftp sftp) {
     this.sftp = sftp;
     return this;
   }
@@ -92,7 +92,7 @@ public class SFTPConfiguration
    * @return sftp The sftp of this {@link SFTPConfiguration} instance.
    */
   @Nonnull
-  public ServiceNowConfigurationMinimalServiceNow getSftp() {
+  public SFTPConfigurationSftp getSftp() {
     return sftp;
   }
 
@@ -101,7 +101,7 @@ public class SFTPConfiguration
    *
    * @param sftp The sftp of this {@link SFTPConfiguration}
    */
-  public void setSftp(@Nullable final ServiceNowConfigurationMinimalServiceNow sftp) {
+  public void setSftp(@Nullable final SFTPConfigurationSftp sftp) {
     this.sftp = sftp;
   }
 

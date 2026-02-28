@@ -33,7 +33,7 @@ public class DocumentInput
 // CHECKSTYLE:ON
 {
   @JsonProperty("chunks")
-  private List<TextOnlyBaseChunkCreate> chunks = new ArrayList<>();
+  private List<TextOnlyBaseChunk> chunks = new ArrayList<>();
 
   @JsonProperty("metadata")
   private List<VectorDocumentKeyValueListPair> metadata = new ArrayList<>();
@@ -54,7 +54,7 @@ public class DocumentInput
    * @return The same instance of this {@link DocumentInput} class
    */
   @Nonnull
-  public DocumentInput chunks(@Nonnull final List<TextOnlyBaseChunkCreate> chunks) {
+  public DocumentInput chunks(@Nonnull final List<TextOnlyBaseChunk> chunks) {
     this.chunks = chunks;
     return this;
   }
@@ -66,7 +66,7 @@ public class DocumentInput
    * @return The same instance of type {@link DocumentInput}
    */
   @Nonnull
-  public DocumentInput addChunksItem(@Nonnull final TextOnlyBaseChunkCreate chunksItem) {
+  public DocumentInput addChunksItem(@Nonnull final TextOnlyBaseChunk chunksItem) {
     if (this.chunks == null) {
       this.chunks = new ArrayList<>();
     }
@@ -80,7 +80,7 @@ public class DocumentInput
    * @return chunks The chunks of this {@link DocumentInput} instance.
    */
   @Nonnull
-  public List<TextOnlyBaseChunkCreate> getChunks() {
+  public List<TextOnlyBaseChunk> getChunks() {
     return chunks;
   }
 
@@ -89,7 +89,7 @@ public class DocumentInput
    *
    * @param chunks The chunks of this {@link DocumentInput}
    */
-  public void setChunks(@Nonnull final List<TextOnlyBaseChunkCreate> chunks) {
+  public void setChunks(@Nonnull final List<TextOnlyBaseChunk> chunks) {
     this.chunks = chunks;
   }
 
@@ -100,7 +100,7 @@ public class DocumentInput
    * @return The same instance of this {@link DocumentInput} class
    */
   @Nonnull
-  public DocumentInput metadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
+  public DocumentInput metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -135,7 +135,7 @@ public class DocumentInput
    *
    * @param metadata The metadata of this {@link DocumentInput}
    */
-  public void setMetadata(@Nullable final List<VectorDocumentKeyValueListPair> metadata) {
+  public void setMetadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata) {
     this.metadata = metadata;
   }
 
@@ -276,7 +276,8 @@ public class DocumentInput
    * with all required arguments.
    */
   public static Builder create() {
-    return (chunks) -> (id) -> new DocumentInput().chunks(chunks).id(id);
+    return (chunks) ->
+        (metadata) -> (id) -> new DocumentInput().chunks(chunks).metadata(metadata).id(id);
   }
 
   /** Builder helper class. */
@@ -287,7 +288,7 @@ public class DocumentInput
      * @param chunks The chunks of this {@link DocumentInput}
      * @return The DocumentInput builder.
      */
-    Builder1 chunks(@Nonnull final List<TextOnlyBaseChunkCreate> chunks);
+    Builder1 chunks(@Nonnull final List<TextOnlyBaseChunk> chunks);
 
     /**
      * Set the chunks of this {@link DocumentInput} instance.
@@ -295,13 +296,34 @@ public class DocumentInput
      * @param chunks The chunks of this {@link DocumentInput}
      * @return The DocumentInput builder.
      */
-    default Builder1 chunks(@Nonnull final TextOnlyBaseChunkCreate... chunks) {
+    default Builder1 chunks(@Nonnull final TextOnlyBaseChunk... chunks) {
       return chunks(Arrays.asList(chunks));
     }
   }
 
   /** Builder helper class. */
   public interface Builder1 {
+    /**
+     * Set the metadata of this {@link DocumentInput} instance.
+     *
+     * @param metadata The metadata of this {@link DocumentInput}
+     * @return The DocumentInput builder.
+     */
+    Builder2 metadata(@Nonnull final List<VectorDocumentKeyValueListPair> metadata);
+
+    /**
+     * Set the metadata of this {@link DocumentInput} instance.
+     *
+     * @param metadata The metadata of this {@link DocumentInput}
+     * @return The DocumentInput builder.
+     */
+    default Builder2 metadata(@Nonnull final VectorDocumentKeyValueListPair... metadata) {
+      return metadata(Arrays.asList(metadata));
+    }
+  }
+
+  /** Builder helper class. */
+  public interface Builder2 {
     /**
      * Set the id of this {@link DocumentInput} instance.
      *

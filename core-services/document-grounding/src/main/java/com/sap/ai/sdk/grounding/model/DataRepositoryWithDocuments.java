@@ -41,12 +41,6 @@ public class DataRepositoryWithDocuments
   @JsonProperty("metadata")
   private List<RetrievalKeyValueListPair> metadata = new ArrayList<>();
 
-  @JsonProperty("remoteGroundingName")
-  private String remoteGroundingName;
-
-  @JsonProperty("message")
-  private String message;
-
   @JsonProperty("documents")
   private List<Document> documents = new ArrayList<>();
 
@@ -172,72 +166,6 @@ public class DataRepositoryWithDocuments
   }
 
   /**
-   * Set the remoteGroundingName of this {@link DataRepositoryWithDocuments} instance and return the
-   * same instance.
-   *
-   * @param remoteGroundingName Friendly destination Name (grounding.name) of remote instance.
-   * @return The same instance of this {@link DataRepositoryWithDocuments} class
-   */
-  @Nonnull
-  public DataRepositoryWithDocuments remoteGroundingName(
-      @Nullable final String remoteGroundingName) {
-    this.remoteGroundingName = remoteGroundingName;
-    return this;
-  }
-
-  /**
-   * Friendly destination Name (grounding.name) of remote instance.
-   *
-   * @return remoteGroundingName The remoteGroundingName of this {@link DataRepositoryWithDocuments}
-   *     instance.
-   */
-  @Nullable
-  public String getRemoteGroundingName() {
-    return remoteGroundingName;
-  }
-
-  /**
-   * Set the remoteGroundingName of this {@link DataRepositoryWithDocuments} instance.
-   *
-   * @param remoteGroundingName Friendly destination Name (grounding.name) of remote instance.
-   */
-  public void setRemoteGroundingName(@Nullable final String remoteGroundingName) {
-    this.remoteGroundingName = remoteGroundingName;
-  }
-
-  /**
-   * Set the message of this {@link DataRepositoryWithDocuments} instance and return the same
-   * instance.
-   *
-   * @param message Optional message.
-   * @return The same instance of this {@link DataRepositoryWithDocuments} class
-   */
-  @Nonnull
-  public DataRepositoryWithDocuments message(@Nullable final String message) {
-    this.message = message;
-    return this;
-  }
-
-  /**
-   * Optional message.
-   *
-   * @return message The message of this {@link DataRepositoryWithDocuments} instance.
-   */
-  @Nullable
-  public String getMessage() {
-    return message;
-  }
-
-  /**
-   * Set the message of this {@link DataRepositoryWithDocuments} instance.
-   *
-   * @param message Optional message.
-   */
-  public void setMessage(@Nullable final String message) {
-    this.message = message;
-  }
-
-  /**
    * Set the documents of this {@link DataRepositoryWithDocuments} instance and return the same
    * instance.
    *
@@ -327,8 +255,6 @@ public class DataRepositoryWithDocuments
     if (id != null) declaredFields.put("id", id);
     if (title != null) declaredFields.put("title", title);
     if (metadata != null) declaredFields.put("metadata", metadata);
-    if (remoteGroundingName != null) declaredFields.put("remoteGroundingName", remoteGroundingName);
-    if (message != null) declaredFields.put("message", message);
     if (documents != null) declaredFields.put("documents", documents);
     return declaredFields;
   }
@@ -359,15 +285,12 @@ public class DataRepositoryWithDocuments
         && Objects.equals(this.id, dataRepositoryWithDocuments.id)
         && Objects.equals(this.title, dataRepositoryWithDocuments.title)
         && Objects.equals(this.metadata, dataRepositoryWithDocuments.metadata)
-        && Objects.equals(this.remoteGroundingName, dataRepositoryWithDocuments.remoteGroundingName)
-        && Objects.equals(this.message, dataRepositoryWithDocuments.message)
         && Objects.equals(this.documents, dataRepositoryWithDocuments.documents);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        id, title, metadata, remoteGroundingName, message, documents, cloudSdkCustomFields);
+    return Objects.hash(id, title, metadata, documents, cloudSdkCustomFields);
   }
 
   @Override
@@ -378,10 +301,6 @@ public class DataRepositoryWithDocuments
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("    remoteGroundingName: ")
-        .append(toIndentedString(remoteGroundingName))
-        .append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    documents: ").append(toIndentedString(documents)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
