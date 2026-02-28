@@ -66,6 +66,18 @@
     <dependency>
       <groupId>com.sap.ai.sdk</groupId>
       <artifactId>core</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+          <artifactId>connectivity-oauth</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>connectivity-oauth</artifactId>
+      <version>5.27.0-SNAPSHOT</version>
+      <!-- Oauth2Service:234 - additionalParameters.put("token_format", "jwt"); -->
     </dependency>
     <dependency>
       <groupId>com.sap.ai.sdk.foundationmodels</groupId>
@@ -240,6 +252,52 @@
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
+    </dependency>
+    <!-- Agent Tool Integration Layer dependencies -->
+    <dependency>
+      <groupId>com.sap.cloud.environment.servicebinding.api</groupId>
+      <artifactId>java-access-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.environment.servicebinding.api</groupId>
+      <artifactId>java-core-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>connectivity-apache-httpclient5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.environment.servicebinding</groupId>
+      <artifactId>java-sap-vcap-services</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.vavr</groupId>
+      <artifactId>vavr</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>security</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents.core5</groupId>
+      <artifactId>httpcore5</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents.client5</groupId>
+      <artifactId>httpclient5</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
