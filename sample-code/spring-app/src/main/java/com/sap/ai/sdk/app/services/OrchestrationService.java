@@ -9,6 +9,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeE
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.orchestration.ApplyTo;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
@@ -688,17 +689,33 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse translation() {
-    val prompt =
-        new OrchestrationPrompt(
-            "Quelle est la couleur de la tour Eiffel? Et en quelle langue tu me parles maintenant?");
+    val inputParams =
+        Map.of("exam_type", "Abitur", "topic", "Deutsche Literatur", "num_questions", "5");
+
+    val systemMessage =
+        Message.system(
+            "You are an expert study coach creating clear, concise exam notes and practice questions.");
+    val userMessage =
+        Message.user(
+            "Generate a study guide for the {{?exam_type}} exam on {{?topic}}.\n\nInclude {{?num_questions}} practice questions.");
+    val templatingConfig = TemplateConfig.create().withMessages(systemMessage, userMessage);
+
+    val prompt = new OrchestrationPrompt(inputParams);
     // list of supported language pairs
     // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
+
     val configWithTranslation =
         config
-            .withInputTranslationConfig(TranslationConfig.translateInputTo("en-US"))
+            .withTemplateConfig(templatingConfig)
+            .withInputTranslationConfig(
+                TranslationConfig.translateInputTo("en-US")
+                    .withApplyTo(
+                        List.of(
+                            // Translate only selected placeholder values from German to English
+                            ApplyTo.placeholders("exam_type", "topic")))
+                    .withSourceLanguage("de-DE"))
             .withOutputTranslationConfig(
-                TranslationConfig.translateOutputTo("de-DE")
-                    .withSourceLanguage("en-US")); // optional source language
+                TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
 
     return client.chatCompletion(prompt, configWithTranslation);
   }

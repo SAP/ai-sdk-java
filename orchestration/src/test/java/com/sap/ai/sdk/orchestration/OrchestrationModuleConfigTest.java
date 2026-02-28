@@ -1,5 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.ASSISTANT;
+import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.DEVELOPER;
+import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.SYSTEM;
+import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.TOOL;
+import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.USER;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
@@ -174,6 +179,39 @@ class OrchestrationModuleConfigTest {
                 .createSAPDocumentTranslationOutput()
                 .getConfig()
                 .getSourceLanguage());
+  }
+
+  @Test
+  void testTranslationConfigApplyToSelectors() {
+    var selector = ApplyTo.placeholders("exam_type", "topic").sourceLanguage("de-DE");
+
+    final var inputTranslationConfig =
+        TranslationConfig.translateInputTo("en-US").withApplyTo(List.of(selector));
+
+    final var sapInput = inputTranslationConfig.createSAPDocumentTranslationInput();
+    assertThat(sapInput.getConfig().getTargetLanguage()).isEqualTo("en-US");
+    assertThat(sapInput.getConfig().getApplyTo()).hasSize(1);
+    assertThat(sapInput.getConfig().getApplyTo().get(0).getCategory().getValue())
+        .isEqualTo("placeholders");
+    assertThat(sapInput.getConfig().getApplyTo().get(0).getItems())
+        .containsExactly("exam_type", "topic");
+
+    final var inputNull = TranslationConfig.translateInputTo("en-US");
+    final var sapNull = inputNull.createSAPDocumentTranslationInput();
+    assertThat(sapNull.getConfig().getApplyTo()).isEmpty();
+
+    // applyTo == empty list
+    final var inputEmpty = TranslationConfig.translateInputTo("en-US").withApplyTo(List.of());
+    final var sapEmpty = inputEmpty.createSAPDocumentTranslationInput();
+    assertThat(sapEmpty.getConfig().getApplyTo()).isEmpty();
+
+    selector =
+        ApplyTo.templateRoles(USER, SYSTEM, ASSISTANT, DEVELOPER, TOOL).sourceLanguage("de-DE");
+
+    assertThat(selector.getCategory().getValue()).isEqualTo("template_roles");
+    assertThat(selector.getItems())
+        .containsExactly("user", "system", "assistant", "developer", "tool");
+    assertThat(selector.getSourceLanguage()).isEqualTo("de-DE");
   }
 
   @Test

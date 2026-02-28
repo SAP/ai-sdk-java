@@ -26,7 +26,7 @@
 
 ### 📈 Improvements
 
--
+- [Orchestration] Added new API `TranslationConfig#withApplyTo` to support partial translation for user's input.
 
 ### 🐛 Fixed Issues
 
