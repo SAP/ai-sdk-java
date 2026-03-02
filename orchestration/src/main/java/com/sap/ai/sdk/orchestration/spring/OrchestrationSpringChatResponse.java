@@ -24,6 +24,7 @@ import org.springframework.ai.chat.model.Generation;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
+@SuppressWarnings("PMD.PublicClassExtendsModelType")
 public class OrchestrationSpringChatResponse extends ChatResponse {
 
   OrchestrationChatResponse orchestrationResponse;

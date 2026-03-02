@@ -75,6 +75,7 @@ public class DpiMasking implements MaskingProvider {
      * @see DPIEntities
      */
     @Nonnull
+    @SuppressWarnings("PMD.PublicApiExposesModelType")
     public DpiMasking withEntities(
         @Nonnull final DPIEntities entity, @Nonnull final DPIEntities... entities) {
       val entitiesConfig =

@@ -79,6 +79,7 @@ public class AssistantMessage implements Message {
    * @param toolCalls the list of tool calls to add.
    * @return a new AssistantMessage instance with the combined tool calls.
    */
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
   public AssistantMessage withToolCalls(@Nonnull final List<MessageToolCall> toolCalls) {
     val newToolcalls = new ArrayList<>(this.toolCalls != null ? this.toolCalls : List.of());

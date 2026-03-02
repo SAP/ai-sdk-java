@@ -25,7 +25,9 @@ import lombok.Value;
 public class OpenAiEmbeddingResponse {
 
   /** The original response from the OpenAI Embedding API. */
-  @Nonnull EmbeddingsCreate200Response originalResponse;
+  @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
+  @Nonnull
+  EmbeddingsCreate200Response originalResponse;
 
   /**
    * Read the embeddings from the response as a list of float arrays.

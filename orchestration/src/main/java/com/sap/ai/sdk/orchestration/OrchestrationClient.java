@@ -166,6 +166,7 @@ public class OrchestrationClient {
    * @return The response data object from orchestration.
    * @throws OrchestrationClientException If the request fails.
    */
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
   public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
@@ -240,6 +241,7 @@ public class OrchestrationClient {
    * @throws OrchestrationClientException if the request fails
    * @since 1.1.0
    */
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CompletionRequestConfiguration request) throws OrchestrationClientException {
@@ -281,6 +283,7 @@ public class OrchestrationClient {
    * @since 1.12.0
    * @see #embed(OrchestrationEmbeddingRequest)
    */
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
   public EmbeddingsPostResponse embed(@Nonnull final EmbeddingsPostRequest request)
       throws OrchestrationClientException {
