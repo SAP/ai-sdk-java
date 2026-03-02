@@ -22,10 +22,10 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInne
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfigProviders;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
-import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -181,7 +181,8 @@ class OrchestrationModuleConfigTest {
         .containsExactly("exam_type", "topic");
 
     // applyTo == empty list
-    final var inputEmpty = TranslationConfig.translateInputTo("en-US").applyToPlaceholders().applyToTemplateRoles();
+    final var inputEmpty =
+        TranslationConfig.translateInputTo("en-US").applyToPlaceholders().applyToTemplateRoles();
     final var sapEmpty = inputEmpty.createSAPDocumentTranslationInput();
     assertThat(sapEmpty.getConfig().getApplyTo()).isEmpty();
 
@@ -202,7 +203,8 @@ class OrchestrationModuleConfigTest {
         .containsExactly("user", "assistant");
 
     // applyTo != null but empty list (should be treated like unset)
-    final var inputExplicitEmptyList = TranslationConfig.translateInputTo("en-US").withApplyTo(List.of());
+    final var inputExplicitEmptyList =
+        TranslationConfig.translateInputTo("en-US").withApplyTo(List.of());
     final var sapExplicitEmptyList = inputExplicitEmptyList.createSAPDocumentTranslationInput();
     assertThat(sapExplicitEmptyList.getConfig().getApplyTo()).isEmpty();
   }
