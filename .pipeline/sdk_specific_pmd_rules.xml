@@ -544,8 +544,8 @@
                         //FieldDeclaration[
                             (ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'With' or @SimpleName = 'Value']) and
                             not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Beta']) and
-                            not(./ModifierList/Annotation[@SimpleName = 'With']/AnnotationMemberList//FieldAccess[@Name = 'PRIVATE' or @Name = 'NONE']) and
-                            not(./ModifierList/Annotation[@SimpleName = 'With']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')])
+                            not(./ModifierList/Annotation[@SimpleName = 'With']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
+                            not(./ModifierList/Annotation[@SimpleName = 'With']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')])
                         ]
                         [
                             ./ClassType
@@ -604,10 +604,10 @@
                                 ./ModifierList/Annotation[@SimpleName = 'Getter' or @SimpleName = 'Setter']
                             ) and
                             not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Beta']) and
-                            not(./ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//FieldAccess[@Name = 'PRIVATE' or @Name = 'NONE']) and
-                            not(./ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//FieldAccess[@Name = 'PRIVATE' or @Name = 'NONE']) and
-                            not(./ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')]) and
-                            not(./ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')])
+                            not(./ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
+                            not(./ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
+                            not(./ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')]) and
+                            not(./ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')])
                         ]
                         [
                             ./ClassType
