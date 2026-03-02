@@ -71,7 +71,10 @@ public interface TranslationConfig {
     @Nonnull
     SAPDocumentTranslationInput createSAPDocumentTranslationInput() {
       val translationType = SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION;
-      final var conf = SAPDocumentTranslationInputConfig.create().targetLanguage(targetLanguage).sourceLanguage(sourceLanguage);
+      final var conf =
+          SAPDocumentTranslationInputConfig.create()
+              .targetLanguage(targetLanguage)
+              .sourceLanguage(sourceLanguage);
 
       if (applyTo != null && !applyTo.isEmpty()) {
         conf.applyTo(applyTo);
