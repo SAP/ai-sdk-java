@@ -170,15 +170,21 @@ class OrchestrationModuleConfigTest {
   @Test
   void testTranslationConfigApplyToSelectors() {
     var inputTranslationConfig =
-        TranslationConfig.translateInputTo("en-US").applyToPlaceholders("exam_type", "topic");
+        TranslationConfig.translateInputTo("en-US")
+            .applyToPlaceholders("exam_type", "topic")
+            .applyToTemplateRoles(USER, ASSISTANT);
 
     var sapInput = inputTranslationConfig.createSAPDocumentTranslationInput();
     assertThat(sapInput.getConfig().getTargetLanguage()).isEqualTo("en-US");
-    assertThat(sapInput.getConfig().getApplyTo()).hasSize(1);
+    assertThat(sapInput.getConfig().getApplyTo()).hasSize(2);
     assertThat(sapInput.getConfig().getApplyTo().get(0).getCategory().getValue())
         .isEqualTo("placeholders");
     assertThat(sapInput.getConfig().getApplyTo().get(0).getItems())
         .containsExactly("exam_type", "topic");
+    assertThat(sapInput.getConfig().getApplyTo().get(1).getCategory().getValue())
+        .isEqualTo("template_roles");
+    assertThat(sapInput.getConfig().getApplyTo().get(1).getItems())
+        .containsExactly("user", "assistant");
 
     // applyTo == empty list
     final var inputEmpty =
@@ -191,22 +197,36 @@ class OrchestrationModuleConfigTest {
     final var sapNull = inputNull.createSAPDocumentTranslationInput();
     assertThat(sapNull.getConfig().getApplyTo()).isEmpty();
 
-    inputTranslationConfig =
-        TranslationConfig.translateInputTo("en-US").applyToTemplateRoles(USER, ASSISTANT);
-
-    sapInput = inputTranslationConfig.createSAPDocumentTranslationInput();
-    assertThat(sapInput.getConfig().getTargetLanguage()).isEqualTo("en-US");
-    assertThat(sapInput.getConfig().getApplyTo()).hasSize(1);
-    assertThat(sapInput.getConfig().getApplyTo().get(0).getCategory().getValue())
-        .isEqualTo("template_roles");
-    assertThat(sapInput.getConfig().getApplyTo().get(0).getItems())
-        .containsExactly("user", "assistant");
-
-    // applyTo != null but empty list (should be treated like unset)
+    // applyTo != null but empty list
     final var inputExplicitEmptyList =
         TranslationConfig.translateInputTo("en-US").withApplyTo(List.of());
     final var sapExplicitEmptyList = inputExplicitEmptyList.createSAPDocumentTranslationInput();
     assertThat(sapExplicitEmptyList.getConfig().getApplyTo()).isEmpty();
+  }
+
+  @Test
+  void testTranslationConfigViaModuleConfig() {
+    final var inputTranslation =
+        TranslationConfig.translateInputTo("en-US").withSourceLanguage("de-DE");
+    final var outputTranslation =
+        TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US");
+
+    final var config =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(GPT_4O)
+            .withInputTranslationConfig(inputTranslation)
+            .withOutputTranslationConfig(outputTranslation);
+
+    assertThat(config.getInputTranslationConfig()).isNotNull();
+    assertThat(config.getInputTranslationConfig().getConfig().getTargetLanguage())
+        .isEqualTo("en-US");
+
+    assertThat(config.getOutputTranslationConfig()).isNotNull();
+    assertThat(
+            ((SAPDocumentTranslationOutputTargetLanguage.InnerString)
+                    config.getOutputTranslationConfig().getConfig().getTargetLanguage())
+                .value())
+        .isEqualTo("de-DE");
   }
 
   @Test

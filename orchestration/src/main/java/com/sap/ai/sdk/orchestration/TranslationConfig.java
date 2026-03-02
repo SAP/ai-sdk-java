@@ -125,7 +125,6 @@ public interface TranslationConfig {
 
     private Input addApplyToSelector(
         @Nonnull final SAPDocumentTranslationApplyToSelector selector) {
-      Objects.requireNonNull(selector, "selector must not be null");
       final var appended = new java.util.ArrayList<SAPDocumentTranslationApplyToSelector>();
       if (applyTo != null && !applyTo.isEmpty()) {
         appended.addAll(applyTo);
