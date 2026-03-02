@@ -413,7 +413,7 @@
           message="Public API method exposes internal model type from .model package. Consider using @Beta annotation or creating a wrapper type"
           class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
         <description>
-            Public methods in the orchestration module should not expose types from the .model package
+            Public methods should not expose types from the .model package
             in their signatures (return types or parameters) unless marked with @Beta annotation.
             The .model package contains generated/internal types that may change without notice.
             
