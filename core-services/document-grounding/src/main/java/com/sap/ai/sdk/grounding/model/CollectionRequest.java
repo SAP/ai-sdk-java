@@ -177,7 +177,7 @@ public class CollectionRequest
    *
    * @return id The id of this {@link CollectionRequest} instance.
    */
-  @Nonnull
+  @Nullable
   public UUID getId() {
     return id;
   }

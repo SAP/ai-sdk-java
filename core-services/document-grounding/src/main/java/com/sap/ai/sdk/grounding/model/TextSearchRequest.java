@@ -50,7 +50,7 @@ public class TextSearchRequest
    * @return The same instance of this {@link TextSearchRequest} class
    */
   @Nonnull
-  public TextSearchRequest query(@Nonnull final String query) {
+  public TextSearchRequest query(@Nullable final String query) {
     this.query = query;
     return this;
   }
@@ -60,7 +60,7 @@ public class TextSearchRequest
    *
    * @return query The query of this {@link TextSearchRequest} instance.
    */
-  @Nonnull
+  @Nullable
   public String getQuery() {
     return query;
   }
@@ -70,7 +70,7 @@ public class TextSearchRequest
    *
    * @param query Query string
    */
-  public void setQuery(@Nonnull final String query) {
+  public void setQuery(@Nullable final String query) {
     this.query = query;
   }
 
@@ -234,7 +234,7 @@ public class TextSearchRequest
      * @param query Query string
      * @return The TextSearchRequest builder.
      */
-    Builder1 query(@Nonnull final String query);
+    Builder1 query(@Nullable final String query);
   }
 
   /** Builder helper class. */

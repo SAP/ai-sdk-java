@@ -157,14 +157,17 @@ public class RetrievalApi extends AbstractOpenApiService {
    *
    * <p><b>404</b> - The specification of the resource was incorrect
    *
-   * @param aiResourceGroup Resource Group ID
-   * @param repositoryId Repository ID
+   * @param aiResourceGroup (required) Resource Group ID
+   * @param repositoryId (required) Repository ID
+   * @param remoteName (optional) Remote name if DataRepository is from remote DG.
    * @return DataRepository
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
   public DataRepository getDataRepositoryById(
-      @Nonnull final String aiResourceGroup, @Nonnull final UUID repositoryId)
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final UUID repositoryId,
+      @Nullable final String remoteName)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -194,6 +197,8 @@ public class RetrievalApi extends AbstractOpenApiService {
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
 
+    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "remoteName", remoteName));
+
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
 
@@ -217,6 +222,31 @@ public class RetrievalApi extends AbstractOpenApiService {
         localVarContentType,
         localVarAuthNames,
         localVarReturnType);
+  }
+
+  /**
+   * List single DataRepository object.
+   *
+   * <p>List data repository by id
+   *
+   * <p><b>200</b> - Successful Response
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>422</b> - There are validation issues with the data.
+   *
+   * <p><b>404</b> - The specification of the resource was incorrect
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param repositoryId Repository ID
+   * @return DataRepository
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public DataRepository getDataRepositoryById(
+      @Nonnull final String aiResourceGroup, @Nonnull final UUID repositoryId)
+      throws OpenApiRequestException {
+    return getDataRepositoryById(aiResourceGroup, repositoryId, null);
   }
 
   /**

@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
@@ -154,7 +153,6 @@ public class OrchestrationModuleConfig {
    * @return A new configuration with the given stream configuration.
    * @since 1.12.0
    */
-  @Beta
   @Nonnull
   public OrchestrationModuleConfig withStreamConfig(
       @Nonnull final OrchestrationStreamConfig config) {
@@ -315,7 +313,6 @@ public class OrchestrationModuleConfig {
    */
   @Tolerate
   @Nonnull
-  @Beta
   public OrchestrationModuleConfig withTemplateConfig(
       @Nonnull final TemplateConfig templateConfig) {
     return this.withTemplateConfig(templateConfig.toLowLevel());

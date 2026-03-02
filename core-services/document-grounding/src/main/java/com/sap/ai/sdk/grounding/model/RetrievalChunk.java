@@ -39,6 +39,12 @@ public class RetrievalChunk
   @JsonProperty("metadata")
   private List<RetrievalKeyValueListPair> metadata = new ArrayList<>();
 
+  @JsonProperty("searchScores")
+  private SearchScores searchScores;
+
+  @JsonProperty("postProcessingScore")
+  private Score postProcessingScore;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -154,6 +160,69 @@ public class RetrievalChunk
   }
 
   /**
+   * Set the searchScores of this {@link RetrievalChunk} instance and return the same instance.
+   *
+   * @param searchScores The searchScores of this {@link RetrievalChunk}
+   * @return The same instance of this {@link RetrievalChunk} class
+   */
+  @Nonnull
+  public RetrievalChunk searchScores(@Nullable final SearchScores searchScores) {
+    this.searchScores = searchScores;
+    return this;
+  }
+
+  /**
+   * Get searchScores
+   *
+   * @return searchScores The searchScores of this {@link RetrievalChunk} instance.
+   */
+  @Nonnull
+  public SearchScores getSearchScores() {
+    return searchScores;
+  }
+
+  /**
+   * Set the searchScores of this {@link RetrievalChunk} instance.
+   *
+   * @param searchScores The searchScores of this {@link RetrievalChunk}
+   */
+  public void setSearchScores(@Nullable final SearchScores searchScores) {
+    this.searchScores = searchScores;
+  }
+
+  /**
+   * Set the postProcessingScore of this {@link RetrievalChunk} instance and return the same
+   * instance.
+   *
+   * @param postProcessingScore The postProcessingScore of this {@link RetrievalChunk}
+   * @return The same instance of this {@link RetrievalChunk} class
+   */
+  @Nonnull
+  public RetrievalChunk postProcessingScore(@Nullable final Score postProcessingScore) {
+    this.postProcessingScore = postProcessingScore;
+    return this;
+  }
+
+  /**
+   * Get postProcessingScore
+   *
+   * @return postProcessingScore The postProcessingScore of this {@link RetrievalChunk} instance.
+   */
+  @Nonnull
+  public Score getPostProcessingScore() {
+    return postProcessingScore;
+  }
+
+  /**
+   * Set the postProcessingScore of this {@link RetrievalChunk} instance.
+   *
+   * @param postProcessingScore The postProcessingScore of this {@link RetrievalChunk}
+   */
+  public void setPostProcessingScore(@Nullable final Score postProcessingScore) {
+    this.postProcessingScore = postProcessingScore;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link RetrievalChunk}.
    *
    * @return The set of properties names
@@ -194,6 +263,8 @@ public class RetrievalChunk
     if (id != null) declaredFields.put("id", id);
     if (content != null) declaredFields.put("content", content);
     if (metadata != null) declaredFields.put("metadata", metadata);
+    if (searchScores != null) declaredFields.put("searchScores", searchScores);
+    if (postProcessingScore != null) declaredFields.put("postProcessingScore", postProcessingScore);
     return declaredFields;
   }
 
@@ -221,12 +292,15 @@ public class RetrievalChunk
     return Objects.equals(this.cloudSdkCustomFields, retrievalChunk.cloudSdkCustomFields)
         && Objects.equals(this.id, retrievalChunk.id)
         && Objects.equals(this.content, retrievalChunk.content)
-        && Objects.equals(this.metadata, retrievalChunk.metadata);
+        && Objects.equals(this.metadata, retrievalChunk.metadata)
+        && Objects.equals(this.searchScores, retrievalChunk.searchScores)
+        && Objects.equals(this.postProcessingScore, retrievalChunk.postProcessingScore);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, content, metadata, cloudSdkCustomFields);
+    return Objects.hash(
+        id, content, metadata, searchScores, postProcessingScore, cloudSdkCustomFields);
   }
 
   @Override
@@ -237,6 +311,10 @@ public class RetrievalChunk
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    searchScores: ").append(toIndentedString(searchScores)).append("\n");
+    sb.append("    postProcessingScore: ")
+        .append(toIndentedString(postProcessingScore))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

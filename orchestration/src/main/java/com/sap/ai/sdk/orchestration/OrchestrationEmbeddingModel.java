@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsModelDetails;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParams;
@@ -18,7 +17,6 @@ import lombok.experimental.Accessors;
  *
  * @since 1.12.0
  */
-@Beta
 @With
 @Value
 @Accessors(fluent = true)

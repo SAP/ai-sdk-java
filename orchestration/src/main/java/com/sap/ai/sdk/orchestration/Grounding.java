@@ -24,7 +24,6 @@ import lombok.val;
  * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP AI
  *     Core: Orchestration - Grounding</a>
  */
-@Beta
 @Accessors(fluent = true)
 public class Grounding implements GroundingProvider {
 
@@ -34,7 +33,7 @@ public class Grounding implements GroundingProvider {
 
   @Nullable private List<String> metadataParams = null;
 
-  @Setter(onMethod_ = {@Nonnull})
+  @Setter(onMethod_ = {@Nonnull, @Beta})
   private TypeEnum documentGroundingService = TypeEnum.DOCUMENT_GROUNDING_SERVICE;
 
   /**

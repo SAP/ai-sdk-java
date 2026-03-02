@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.core.common;
 
-import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -14,7 +13,6 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
  *
  * @since 1.1.0
  */
-@Beta
 @StandardException
 public class ClientException extends RuntimeException {
 
@@ -25,7 +23,7 @@ public class ClientException extends RuntimeException {
    * @since 1.10.0
    */
   @Nullable
-  @Getter(onMethod_ = @Beta, value = AccessLevel.PUBLIC)
+  @Getter(value = AccessLevel.PUBLIC)
   private ClientError clientError;
 
   /**
@@ -34,7 +32,7 @@ public class ClientException extends RuntimeException {
    * @since 1.10.0
    */
   @Nullable
-  @Getter(onMethod_ = @Beta, value = AccessLevel.PUBLIC)
+  @Getter(value = AccessLevel.PUBLIC)
   private ClassicHttpResponse httpResponse;
 
   /**
@@ -43,7 +41,7 @@ public class ClientException extends RuntimeException {
    * @since 1.10.0
    */
   @Nullable
-  @Getter(onMethod_ = @Beta, value = AccessLevel.PUBLIC)
+  @Getter(value = AccessLevel.PUBLIC)
   private ClassicHttpRequest httpRequest;
 
   /**

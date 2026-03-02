@@ -2,7 +2,6 @@ package com.sap.ai.sdk.orchestration;
 
 import static lombok.AccessLevel.PACKAGE;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.Embedding.ArrayOfFloats;
 import com.sap.ai.sdk.orchestration.model.EmbeddingResult;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
@@ -18,7 +17,6 @@ import lombok.Value;
  *
  * @since 1.12.0
  */
-@Beta
 @Value
 @AllArgsConstructor(access = PACKAGE)
 public class OrchestrationEmbeddingResponse {
