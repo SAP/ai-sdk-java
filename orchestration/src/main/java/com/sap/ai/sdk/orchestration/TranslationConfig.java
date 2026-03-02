@@ -9,6 +9,7 @@ import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInputConfig;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputConfig;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -64,7 +65,7 @@ public interface TranslationConfig {
 
     /**
      * Optional selection(s) to translate. If empty or null, translation is applied to the whole
-     * user input.
+     * message.
      */
     @With List<SAPDocumentTranslationApplyToSelector> applyTo;
 
@@ -125,13 +126,13 @@ public interface TranslationConfig {
 
     private Input addApplyToSelector(
         @Nonnull final SAPDocumentTranslationApplyToSelector selector) {
-      final var appended = new java.util.ArrayList<SAPDocumentTranslationApplyToSelector>();
+      final var appended = new ArrayList<SAPDocumentTranslationApplyToSelector>();
       if (applyTo != null && !applyTo.isEmpty()) {
         appended.addAll(applyTo);
       }
       appended.add(selector);
 
-      return withApplyTo(List.copyOf(appended));
+      return withApplyTo(appended);
     }
   }
 

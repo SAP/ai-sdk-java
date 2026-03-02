@@ -220,6 +220,8 @@ class OrchestrationModuleConfigTest {
     assertThat(config.getInputTranslationConfig()).isNotNull();
     assertThat(config.getInputTranslationConfig().getConfig().getTargetLanguage())
         .isEqualTo("en-US");
+    assertThat(config.getInputTranslationConfig().getConfig().getSourceLanguage())
+        .isEqualTo("de-DE");
 
     assertThat(config.getOutputTranslationConfig()).isNotNull();
     assertThat(
@@ -227,6 +229,8 @@ class OrchestrationModuleConfigTest {
                     config.getOutputTranslationConfig().getConfig().getTargetLanguage())
                 .value())
         .isEqualTo("de-DE");
+    assertThat(config.getOutputTranslationConfig().getConfig().getSourceLanguage())
+        .isEqualTo("en-US");
   }
 
   @Test
