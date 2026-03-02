@@ -1,6 +1,6 @@
 ![build](https://github.com/SAP/ai-sdk-java/actions/workflows/continuous-integration.yaml/badge.svg?branch=main)
 ![CodeQL](https://github.com/SAP/ai-sdk-java/actions/workflows/github-code-scanning/codeql/badge.svg)
-[![REUSE status](https://api.reuse.software/badge/git.fsfe.org/reuse/api)](https://api.reuse.software/info/git.fsfe.org/reuse/api)
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP/ai-sdk-java)](https://api.reuse.software/info/github.com/SAP/ai-sdk-java)
 [![Fosstars security rating](https://github.com/SAP/ai-sdk-java/actions/workflows/fosstars-report.yml/badge.svg?branch=main)](https://github.com/SAP/ai-sdk-java/blob/fosstars-report/fosstars_report.md)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/SAP/ai-sdk-java)
 

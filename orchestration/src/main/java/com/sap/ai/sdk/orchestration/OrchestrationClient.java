@@ -62,7 +62,6 @@ public class OrchestrationClient {
    * @param destination The specific {@link HttpDestination} to use.
    * @see AiCoreService#getInferenceDestination(String)
    */
-  @Beta
   public OrchestrationClient(@Nonnull final HttpDestination destination) {
     this.executor = new OrchestrationHttpExecutor(() -> destination);
   }
