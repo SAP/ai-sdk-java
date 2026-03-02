@@ -410,7 +410,7 @@
 
     <!-- Custom rule to detect non-beta public methods that return or accept types from .model package -->
     <rule name="PublicApiExposesModelType" language="java"
-          message="Public API method exposes internal model type from .model package. Consider using @Beta annotation or creating a wrapper type."
+          message="Public API method exposes internal model type from .model package. Consider using @Beta annotation or creating a wrapper type"
           class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
         <description>
             Public methods in the orchestration module should not expose types from the .model package
@@ -479,7 +479,7 @@
 
     <!-- Custom rule to detect non-beta public classes extending model types -->
     <rule name="PublicClassExtendsModelType" language="java"
-          message="Public class extends internal model type from .model package. Consider using @Beta annotation or composition instead of inheritance."
+          message="Public class extends internal model type from .model package. Consider using @Beta annotation or composition instead of inheritance"
           class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
         <description>
             Public classes in the orchestration module should not extend types from the .model package
@@ -528,7 +528,7 @@
 
     <!-- Custom rule to detect non-beta public Lombok @With annotations on fields with model types -->
     <rule name="LombokWithExposesModelType" language="java"
-          message="Lombok @With annotation on field with model type will generate public method exposing internal type. Consider using @With(AccessLevel.PACKAGE/PRIVATE/NONE) or @Beta annotation."
+          message="Lombok @With annotation on field with model type will generate public method exposing internal type. Consider using @With(AccessLevel.PACKAGE/PRIVATE/NONE) or @Beta annotation"
           class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
         <description>
             Fields with Lombok's @With annotation (or class-level @With) that have model types
@@ -578,7 +578,7 @@
 
     <!-- Custom rule to detect non-beta public Lombok @Getter/@Setter on fields with model types -->
     <rule name="LombokGetterSetterExposesModelType" language="java"
-          message="Lombok @Getter/@Setter (or class-level @Getter/@Setter/@Data/@Value) on field with model type will generate public accessor exposing internal type. Consider using AccessLevel.PACKAGE/PRIVATE/NONE or @Beta annotation."
+          message="Lombok @Getter/@Setter (or class-level @Getter/@Setter/@Data/@Value) on field with model type will generate public accessor exposing internal type. Consider using AccessLevel.PACKAGE/PRIVATE/NONE or @Beta annotation"
           class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
         <description>
             Fields with Lombok's @Getter/@Setter (or class-level @Getter/@Setter/@Data) that have model types

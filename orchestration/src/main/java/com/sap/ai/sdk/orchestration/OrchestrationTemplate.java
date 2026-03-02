@@ -54,6 +54,7 @@ public class OrchestrationTemplate extends TemplateConfig {
   @JsonProperty("response_format")
   @With(AccessLevel.PRIVATE)
   @Nullable
+  @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
   TemplateResponseFormat responseFormat;
 
   @JsonProperty("tools")

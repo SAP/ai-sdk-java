@@ -28,8 +28,11 @@ public interface OrchestrationError extends ClientError {
   @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
   @Value
   class Synchronous implements OrchestrationError {
+    @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
     private static Error NOT_FOUND =
         Error.create().requestId("").code(-1).message("Error not found.").location("");
+
+    @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
     ErrorResponse errorResponse;
 
     @Override
@@ -49,8 +52,11 @@ public interface OrchestrationError extends ClientError {
   @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
   @Value
   class Streaming implements OrchestrationError {
+    @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
     private static ErrorStreaming NOT_FOUND =
         ErrorStreaming.create().requestId("").code(-1).message("Error not found.").location("");
+
+    @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
     ErrorResponseStreaming errorResponse;
 
     @Override
