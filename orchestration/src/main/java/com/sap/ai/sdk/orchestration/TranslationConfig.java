@@ -1,5 +1,8 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationApplyToSelector.CategoryEnum.PLACEHOLDERS;
+import static com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationApplyToSelector.CategoryEnum.TEMPLATE_ROLES;
+
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationApplyToSelector;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInput;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInputConfig;
@@ -7,8 +10,11 @@ import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputConfig;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.With;
@@ -23,13 +29,38 @@ import lombok.val;
  * @since 1.14.0
  */
 public interface TranslationConfig {
+  /**
+   * Supported values for {@code items[]} when {@code category=template_roles}.
+   *
+   * <p>These map to the roles used in prompt templates.
+   */
+  @RequiredArgsConstructor
+  enum TemplateRole {
+    /** Template role for user messages. */
+    USER("user"),
+
+    /** Template role for system messages. */
+    SYSTEM("system"),
+
+    /** Template role for assistant messages. */
+    ASSISTANT("assistant"),
+
+    /** Template role for developer messages. */
+    DEVELOPER("developer"),
+
+    /** Template role for tool messages. */
+    TOOL("tool");
+
+    @Getter private final String value;
+  }
+
   /** Input configuration for translation. */
   @Value
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   class Input implements TranslationConfig {
     String targetLanguage;
 
-    @With String sourceLanguage;
+    @Getter @With String sourceLanguage;
 
     /**
      * Optional selection(s) to translate. If empty or null, translation is applied to the whole
@@ -40,13 +71,66 @@ public interface TranslationConfig {
     @Nonnull
     SAPDocumentTranslationInput createSAPDocumentTranslationInput() {
       val translationType = SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION;
-      final var conf = SAPDocumentTranslationInputConfig.create().targetLanguage(targetLanguage);
+      final var conf = SAPDocumentTranslationInputConfig.create().targetLanguage(targetLanguage).sourceLanguage(sourceLanguage);
 
       if (applyTo != null && !applyTo.isEmpty()) {
         conf.applyTo(applyTo);
       }
 
       return SAPDocumentTranslationInput.create().type(translationType).config(conf);
+    }
+
+    /**
+     * Start an {@code apply_to} selector for placeholder names in {@code placeholder_values}.
+     *
+     * @param names The placeholder keys to translate.
+     * @return A selector with {@code category=placeholders} and the given items.
+     */
+    @Nonnull
+    public Input applyToPlaceholders(@Nonnull final String... names) {
+      if (names.length == 0) {
+        return this;
+      }
+      final var selector =
+          SAPDocumentTranslationApplyToSelector.create().category(PLACEHOLDERS).items(names);
+      return addApplyToSelector(selector);
+    }
+
+    /**
+     * Start an {@code apply_to} selector for prompt template message roles.
+     *
+     * @param roles The template roles to translate.
+     * @return A selector with {@code category=template_roles} and the given items.
+     */
+    @Nonnull
+    public Input applyToTemplateRoles(@Nonnull final TranslationConfig.TemplateRole... roles) {
+      final var roleStrings =
+          Stream.of(roles)
+              .filter(Objects::nonNull)
+              .map(TranslationConfig.TemplateRole::getValue)
+              .toList();
+
+      if (roleStrings.isEmpty()) {
+        return this;
+      }
+
+      final var selector =
+          SAPDocumentTranslationApplyToSelector.create()
+              .category(TEMPLATE_ROLES)
+              .items(roleStrings);
+      return addApplyToSelector(selector);
+    }
+
+    private Input addApplyToSelector(
+        @Nonnull final SAPDocumentTranslationApplyToSelector selector) {
+      Objects.requireNonNull(selector, "selector must not be null");
+      final var appended = new java.util.ArrayList<SAPDocumentTranslationApplyToSelector>();
+      if (applyTo != null && !applyTo.isEmpty()) {
+        appended.addAll(applyTo);
+      }
+      appended.add(selector);
+
+      return withApplyTo(List.copyOf(appended));
     }
   }
 
@@ -56,7 +140,7 @@ public interface TranslationConfig {
   class Output implements TranslationConfig {
     String targetLanguage;
 
-    @With String sourceLanguage;
+    @Getter @With String sourceLanguage;
 
     @Nonnull
     SAPDocumentTranslationOutput createSAPDocumentTranslationOutput() {

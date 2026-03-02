@@ -9,7 +9,6 @@ import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeE
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.ApplyTo;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
@@ -709,10 +708,7 @@ public class OrchestrationService {
             .withTemplateConfig(templatingConfig)
             .withInputTranslationConfig(
                 TranslationConfig.translateInputTo("en-US")
-                    .withApplyTo(
-                        List.of(
-                            // Translate only selected placeholder values from German to English
-                            ApplyTo.placeholders("exam_type", "topic")))
+                    .applyToPlaceholders("exam_type", "topic")
                     .withSourceLanguage("de-DE"))
             .withOutputTranslationConfig(
                 TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));

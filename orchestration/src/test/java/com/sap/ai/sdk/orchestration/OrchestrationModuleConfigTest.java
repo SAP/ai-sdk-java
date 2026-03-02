@@ -1,13 +1,10 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.ASSISTANT;
-import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.DEVELOPER;
-import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.SYSTEM;
-import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.TOOL;
-import static com.sap.ai.sdk.orchestration.ApplyTo.TemplateRole.USER;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
+import static com.sap.ai.sdk.orchestration.TranslationConfig.TemplateRole.ASSISTANT;
+import static com.sap.ai.sdk.orchestration.TranslationConfig.TemplateRole.USER;
 import static com.sap.ai.sdk.orchestration.model.DataRepositoryType.VECTOR;
 import static com.sap.ai.sdk.orchestration.model.GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +25,7 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -150,45 +148,31 @@ class OrchestrationModuleConfigTest {
         TranslationConfig.translateInputTo("en-US").withSourceLanguage("de-DE");
     var outputTranslationConfig =
         TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US");
-    var config =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(GPT_4O)
-            .withInputTranslationConfig(inputTranslationConfig)
-            .withOutputTranslationConfig(outputTranslationConfig);
 
-    assertThat(config.getInputTranslationConfig()).isNotNull();
-    assertThat(config.getInputTranslationConfig().getConfig().getTargetLanguage())
-        .isEqualTo("en-US");
-    assertThat(config.getInputTranslationConfig().getConfig().getSourceLanguage())
-        .isEqualTo(
-            inputTranslationConfig
-                .createSAPDocumentTranslationInput()
-                .getConfig()
-                .getSourceLanguage());
+    var sapInput = inputTranslationConfig.createSAPDocumentTranslationInput();
+    var sapOutput = outputTranslationConfig.createSAPDocumentTranslationOutput();
 
-    assertThat(config.getOutputTranslationConfig()).isNotNull();
-    assertThat(config.getOutputTranslationConfig().getConfig().getTargetLanguage())
-        .isEqualTo(
-            outputTranslationConfig
-                .createSAPDocumentTranslationOutput()
-                .getConfig()
-                .getTargetLanguage());
-    assertThat(config.getOutputTranslationConfig().getConfig().getSourceLanguage())
-        .isEqualTo(
-            outputTranslationConfig
-                .createSAPDocumentTranslationOutput()
-                .getConfig()
-                .getSourceLanguage());
+    assertThat(sapInput.getConfig()).isNotNull();
+    assertThat(sapInput.getConfig().getTargetLanguage()).isEqualTo("en-US");
+    assertThat(sapInput.getConfig().getSourceLanguage())
+        .isEqualTo(inputTranslationConfig.getSourceLanguage());
+
+    assertThat(sapOutput.getConfig()).isNotNull();
+    assertThat(
+            ((SAPDocumentTranslationOutputTargetLanguage.InnerString)
+                    sapOutput.getConfig().getTargetLanguage())
+                .value())
+        .isEqualTo("de-DE");
+    assertThat(sapOutput.getConfig().getSourceLanguage())
+        .isEqualTo(outputTranslationConfig.getSourceLanguage());
   }
 
   @Test
   void testTranslationConfigApplyToSelectors() {
-    var selector = ApplyTo.placeholders("exam_type", "topic").sourceLanguage("de-DE");
+    var inputTranslationConfig =
+        TranslationConfig.translateInputTo("en-US").applyToPlaceholders("exam_type", "topic");
 
-    final var inputTranslationConfig =
-        TranslationConfig.translateInputTo("en-US").withApplyTo(List.of(selector));
-
-    final var sapInput = inputTranslationConfig.createSAPDocumentTranslationInput();
+    var sapInput = inputTranslationConfig.createSAPDocumentTranslationInput();
     assertThat(sapInput.getConfig().getTargetLanguage()).isEqualTo("en-US");
     assertThat(sapInput.getConfig().getApplyTo()).hasSize(1);
     assertThat(sapInput.getConfig().getApplyTo().get(0).getCategory().getValue())
@@ -196,22 +180,31 @@ class OrchestrationModuleConfigTest {
     assertThat(sapInput.getConfig().getApplyTo().get(0).getItems())
         .containsExactly("exam_type", "topic");
 
+    // applyTo == empty list
+    final var inputEmpty = TranslationConfig.translateInputTo("en-US").applyToPlaceholders().applyToTemplateRoles();
+    final var sapEmpty = inputEmpty.createSAPDocumentTranslationInput();
+    assertThat(sapEmpty.getConfig().getApplyTo()).isEmpty();
+
+    // applyTo == null list
     final var inputNull = TranslationConfig.translateInputTo("en-US");
     final var sapNull = inputNull.createSAPDocumentTranslationInput();
     assertThat(sapNull.getConfig().getApplyTo()).isEmpty();
 
-    // applyTo == empty list
-    final var inputEmpty = TranslationConfig.translateInputTo("en-US").withApplyTo(List.of());
-    final var sapEmpty = inputEmpty.createSAPDocumentTranslationInput();
-    assertThat(sapEmpty.getConfig().getApplyTo()).isEmpty();
+    inputTranslationConfig =
+        TranslationConfig.translateInputTo("en-US").applyToTemplateRoles(USER, ASSISTANT);
 
-    selector =
-        ApplyTo.templateRoles(USER, SYSTEM, ASSISTANT, DEVELOPER, TOOL).sourceLanguage("de-DE");
+    sapInput = inputTranslationConfig.createSAPDocumentTranslationInput();
+    assertThat(sapInput.getConfig().getTargetLanguage()).isEqualTo("en-US");
+    assertThat(sapInput.getConfig().getApplyTo()).hasSize(1);
+    assertThat(sapInput.getConfig().getApplyTo().get(0).getCategory().getValue())
+        .isEqualTo("template_roles");
+    assertThat(sapInput.getConfig().getApplyTo().get(0).getItems())
+        .containsExactly("user", "assistant");
 
-    assertThat(selector.getCategory().getValue()).isEqualTo("template_roles");
-    assertThat(selector.getItems())
-        .containsExactly("user", "system", "assistant", "developer", "tool");
-    assertThat(selector.getSourceLanguage()).isEqualTo("de-DE");
+    // applyTo != null but empty list (should be treated like unset)
+    final var inputExplicitEmptyList = TranslationConfig.translateInputTo("en-US").withApplyTo(List.of());
+    final var sapExplicitEmptyList = inputExplicitEmptyList.createSAPDocumentTranslationInput();
+    assertThat(sapExplicitEmptyList.getConfig().getApplyTo()).isEmpty();
   }
 
   @Test
