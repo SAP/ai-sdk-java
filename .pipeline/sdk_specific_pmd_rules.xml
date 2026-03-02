@@ -531,7 +531,7 @@
           message="Lombok @With annotation on field with model type will generate public method exposing internal type. Consider using @With(AccessLevel.PRIVATE) or @Beta annotation."
           class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
         <description>
-            Fields with Lombok's @With annotation (or class-level @With/@Value) that have model types
+            Fields with Lombok's @With annotation (or class-level @With) that have model types
             will generate public withXxx() methods exposing internal types. These should be marked
             with @Beta or use @With(AccessLevel.PRIVATE) to prevent public exposure.
         </description>
@@ -540,9 +540,9 @@
             <property name="xpath">
                 <value>
                     <![CDATA[
-                        (: Find fields in classes with @With or @Value, where class is not @Beta :)
+                        (: Find fields in classes with @With, where class is not @Beta :)
                         //FieldDeclaration[
-                            (ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'With' or @SimpleName = 'Value']) and
+                            (ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'With']) and
                             not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Beta']) and
                             not(./ModifierList/Annotation[@SimpleName = 'With']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
                             not(./ModifierList/Annotation[@SimpleName = 'With']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')])
@@ -557,13 +557,6 @@
         </properties>
         <example>
             <![CDATA[
-            // BAD: @Value class with model type field generates public withLlmConfig()
-            @Value
-            @With
-            public class OrchestrationModuleConfig {
-                LLMModelDetails llmConfig;  // Generates public withLlmConfig(LLMModelDetails)
-            }
-            
             // GOOD: Field has restricted @With access
             @Value
             @With
@@ -600,13 +593,21 @@
                         (: Find fields in classes with Lombok accessor-generating annotations, where class is not @Beta :)
                         //FieldDeclaration[
                             (
-                                ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Getter' or @SimpleName = 'Setter' or @SimpleName = 'Data'] or
+                                ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Getter' or @SimpleName = 'Setter' or @SimpleName = 'Data' or @SimpleName = 'Value'] or
                                 ./ModifierList/Annotation[@SimpleName = 'Getter' or @SimpleName = 'Setter']
                             ) and
                             not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Beta']) and
+                            (: Exclude if class-level @Getter has restricted access level :)
+                            not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
+                            not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')]) and
+                            (: Exclude if class-level @Setter has restricted access level :)
+                            not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
+                            not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')]) and
+                            (: Exclude if field-level @Getter has restricted access level :)
                             not(./ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
-                            not(./ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
                             not(./ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')]) and
+                            (: Exclude if field-level @Setter has restricted access level :)
+                            not(./ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
                             not(./ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')])
                         ]
                         [
