@@ -528,12 +528,12 @@
 
     <!-- Custom rule to detect non-beta public Lombok @With annotations on fields with model types -->
     <rule name="LombokWithExposesModelType" language="java"
-          message="Lombok @With annotation on field with model type will generate public method exposing internal type. Consider using @With(AccessLevel.PRIVATE) or @Beta annotation."
+          message="Lombok @With annotation on field with model type will generate public method exposing internal type. Consider using @With(AccessLevel.PACKAGE/PRIVATE/NONE) or @Beta annotation."
           class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
         <description>
             Fields with Lombok's @With annotation (or class-level @With) that have model types
             will generate public withXxx() methods exposing internal types. These should be marked
-            with @Beta or use @With(AccessLevel.PRIVATE) to prevent public exposure.
+            with @Beta or use @With(AccessLevel.PACKAGE/PRIVATE/NONE) to prevent public exposure.
         </description>
         <priority>2</priority>
         <properties>
@@ -578,12 +578,12 @@
 
     <!-- Custom rule to detect non-beta public Lombok @Getter/@Setter on fields with model types -->
     <rule name="LombokGetterSetterExposesModelType" language="java"
-          message="Lombok @Getter/@Setter (or class-level @Getter/@Setter/@Data/@Value) on field with model type will generate public accessor exposing internal type. Consider using AccessLevel.PRIVATE or @Beta annotation."
+          message="Lombok @Getter/@Setter (or class-level @Getter/@Setter/@Data/@Value) on field with model type will generate public accessor exposing internal type. Consider using AccessLevel.PACKAGE/PRIVATE/NONE or @Beta annotation."
           class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
         <description>
             Fields with Lombok's @Getter/@Setter (or class-level @Getter/@Setter/@Data) that have model types
             will generate public getter/setter methods exposing internal types. These should be marked
-            with @Beta or use @Getter/@Setter(AccessLevel.PRIVATE) to prevent public exposure.
+            with @Beta or use @Getter/@Setter(AccessLevel.PACKAGE/PRIVATE/NONE) to prevent public exposure.
         </description>
         <priority>2</priority>
         <properties>
