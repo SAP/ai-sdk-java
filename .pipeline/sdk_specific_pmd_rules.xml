@@ -482,7 +482,7 @@
           message="Public class extends internal model type from .model package. Consider using @Beta annotation or composition instead of inheritance"
           class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
         <description>
-            Public classes in the orchestration module should not extend types from the .model package
+            Public classes should not extend types from a .model package
             unless marked with @Beta annotation. Extending model types exposes all inherited public
             methods to consumers, which may change without notice.
         </description>
