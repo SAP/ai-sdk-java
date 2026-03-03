@@ -13,8 +13,10 @@ package com.sap.ai.sdk.grounding.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -37,8 +39,65 @@ public class RetrievalDocumentKeyValueListPair
   @JsonProperty("value")
   private List<String> value = new ArrayList<>();
 
+  /** Gets or Sets matchMode */
+  public enum MatchModeEnum {
+    /** The ANY option of this RetrievalDocumentKeyValueListPair */
+    ANY("ANY"),
+
+    /** The ALL option of this RetrievalDocumentKeyValueListPair */
+    ALL("ALL"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this RetrievalDocumentKeyValueListPair */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    MatchModeEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type RetrievalDocumentKeyValueListPair
+     */
+    @JsonCreator
+    @Nullable
+    public static MatchModeEnum fromValue(@Nonnull final String value) {
+      for (MatchModeEnum b : MatchModeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+
   @JsonProperty("matchMode")
-  private FilterMatchModeEnum matchMode;
+  private MatchModeEnum matchMode;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -133,8 +192,7 @@ public class RetrievalDocumentKeyValueListPair
    * @return The same instance of this {@link RetrievalDocumentKeyValueListPair} class
    */
   @Nonnull
-  public RetrievalDocumentKeyValueListPair matchMode(
-      @Nullable final FilterMatchModeEnum matchMode) {
+  public RetrievalDocumentKeyValueListPair matchMode(@Nullable final MatchModeEnum matchMode) {
     this.matchMode = matchMode;
     return this;
   }
@@ -144,8 +202,8 @@ public class RetrievalDocumentKeyValueListPair
    *
    * @return matchMode The matchMode of this {@link RetrievalDocumentKeyValueListPair} instance.
    */
-  @Nonnull
-  public FilterMatchModeEnum getMatchMode() {
+  @Nullable
+  public MatchModeEnum getMatchMode() {
     return matchMode;
   }
 
@@ -154,7 +212,7 @@ public class RetrievalDocumentKeyValueListPair
    *
    * @param matchMode The matchMode of this {@link RetrievalDocumentKeyValueListPair}
    */
-  public void setMatchMode(@Nullable final FilterMatchModeEnum matchMode) {
+  public void setMatchMode(@Nullable final MatchModeEnum matchMode) {
     this.matchMode = matchMode;
   }
 
