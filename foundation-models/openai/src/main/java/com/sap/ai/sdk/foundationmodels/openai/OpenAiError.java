@@ -17,6 +17,7 @@ import lombok.Value;
 @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
 public class OpenAiError implements ClientError {
   /** The original error response from the OpenAI API. */
+  @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
   ErrorResponse errorResponse;
 
   /**

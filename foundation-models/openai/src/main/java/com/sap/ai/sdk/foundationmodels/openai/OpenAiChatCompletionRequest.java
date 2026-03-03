@@ -116,10 +116,14 @@ public class OpenAiChatCompletionRequest {
   @Nullable Integer seed;
 
   /** Options for streaming the completion response. */
-  @Nullable ChatCompletionStreamOptions streamOptions;
+  @SuppressWarnings("PMD.LombokWithExposesModelType")
+  @Nullable
+  ChatCompletionStreamOptions streamOptions;
 
   /** Response format for the completion. */
-  @Nullable CreateChatCompletionRequestAllOfResponseFormat responseFormat;
+  @SuppressWarnings("PMD.LombokWithExposesModelType")
+  @Nullable
+  CreateChatCompletionRequestAllOfResponseFormat responseFormat;
 
   /**
    * Tools the model may invoke during chat completion (metadata only).

@@ -21,7 +21,9 @@ import lombok.With;
 @Value
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrchestrationTemplateReference extends TemplateConfig {
-  @Nonnull TemplateRefTemplateRef reference;
+  @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
+  @Nonnull
+  TemplateRefTemplateRef reference;
 
   /** The scope of the template reference. */
   @With @Nonnull ScopeEnum scope;
