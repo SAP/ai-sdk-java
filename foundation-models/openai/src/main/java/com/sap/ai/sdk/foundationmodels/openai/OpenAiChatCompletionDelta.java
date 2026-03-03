@@ -27,7 +27,9 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class OpenAiChatCompletionDelta implements StreamedDelta {
   /** The original response from the chat completion stream. */
-  @Nonnull private final CreateChatCompletionStreamResponse originalResponse;
+  @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
+  @Nonnull
+  private final CreateChatCompletionStreamResponse originalResponse;
 
   @Nonnull
   @Override

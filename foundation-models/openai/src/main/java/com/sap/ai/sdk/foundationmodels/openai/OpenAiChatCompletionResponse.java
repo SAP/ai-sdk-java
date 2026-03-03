@@ -28,7 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OpenAiChatCompletionResponse {
   /** The original response from the OpenAI API. */
-  @Nonnull CreateChatCompletionResponse originalResponse;
+  @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
+  @Nonnull
+  CreateChatCompletionResponse originalResponse;
 
   /** The original request that was sent to the OpenAI API. */
   @Getter(NONE)

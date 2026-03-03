@@ -276,6 +276,7 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   public OrchestrationChatResponse maskingAnonymization(@Nonnull final DPIEntities entity) {
     val systemMessage =
         Message.system(
@@ -346,6 +347,7 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   public OrchestrationChatResponse maskingPseudonymization(@Nonnull final DPIEntities entity) {
     val systemMessage =
         Message.system(

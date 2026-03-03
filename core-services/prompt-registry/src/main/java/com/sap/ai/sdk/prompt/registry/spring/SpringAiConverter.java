@@ -25,6 +25,7 @@ public class SpringAiConverter {
    * @return list of SpringAI messages.
    */
   @Nonnull
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   public static List<Message> promptTemplateToMessages(
       @Nonnull final PromptTemplateSubstitutionResponse promptResponse) {
 

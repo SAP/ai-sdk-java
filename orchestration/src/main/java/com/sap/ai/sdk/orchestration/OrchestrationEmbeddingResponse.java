@@ -22,7 +22,9 @@ import lombok.Value;
 public class OrchestrationEmbeddingResponse {
 
   /** The original embedding response from the orchestration API. */
-  @Nonnull EmbeddingsPostResponse originalResponse;
+  @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
+  @Nonnull
+  EmbeddingsPostResponse originalResponse;
 
   /**
    * Extracts embedding vectors as float arrays.

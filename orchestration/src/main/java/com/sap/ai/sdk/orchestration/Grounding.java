@@ -55,6 +55,7 @@ public class Grounding implements GroundingProvider {
    * @return The modified grounding configuration.
    */
   @Nonnull
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   public Grounding filters(@Nonnull final GroundingModuleConfigConfigFiltersInner... filters) {
     if (filters.length != 0) {
       this.filters = List.of(filters);

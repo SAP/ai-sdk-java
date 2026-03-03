@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import lombok.val;
 
 /** Orchestration chat completion output delta for streaming. */
+@SuppressWarnings("PMD.PublicClassExtendsModelType")
 public class OrchestrationChatCompletionDelta extends CompletionPostResponseStreaming
     implements StreamedDelta {
 

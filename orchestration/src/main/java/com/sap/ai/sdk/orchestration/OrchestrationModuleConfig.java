@@ -58,7 +58,9 @@ public class OrchestrationModuleConfig {
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/model-configuration">
    *     SAP AI Core: Orchestration - Model Configuration</a>
    */
-  @Nullable LLMModelDetails llmConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  LLMModelDetails llmConfig;
 
   /**
    * A template to be populated with input parameters. Upon request execution, this template will be
@@ -67,7 +69,9 @@ public class OrchestrationModuleConfig {
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
    */
-  @Nullable PromptTemplatingModuleConfigPrompt templateConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  PromptTemplatingModuleConfigPrompt templateConfig;
 
   /**
    * A masking configuration to pseudonymous or anonymize sensitive data in the input.
@@ -76,7 +80,9 @@ public class OrchestrationModuleConfig {
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
    */
-  @Nullable MaskingModuleConfig maskingConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  MaskingModuleConfig maskingConfig;
 
   /**
    * A content filter to filter the prompt.
@@ -88,7 +94,9 @@ public class OrchestrationModuleConfig {
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
    */
-  @Nullable FilteringModuleConfig filteringConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  FilteringModuleConfig filteringConfig;
 
   /**
    * A grounding configuration to provide additional context to the AI model.
@@ -97,7 +105,9 @@ public class OrchestrationModuleConfig {
    *     AI Core: Orchestration - </a>
    * @since 1.1.0
    */
-  @Nullable GroundingModuleConfig groundingConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  GroundingModuleConfig groundingConfig;
 
   /**
    * Configuration for translating input content before processing.
@@ -107,7 +117,9 @@ public class OrchestrationModuleConfig {
    *     SAP AI Core: Orchestration - Input Translation</a>
    * @since 1.8.0
    */
-  @Nullable SAPDocumentTranslationInput inputTranslationConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  SAPDocumentTranslationInput inputTranslationConfig;
 
   /**
    * Configuration for translating output content after processing.
@@ -117,7 +129,9 @@ public class OrchestrationModuleConfig {
    *     SAP AI Core: Orchestration - Output Translation</a>
    * @since 1.8.0
    */
-  @Nullable SAPDocumentTranslationOutput outputTranslationConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  SAPDocumentTranslationOutput outputTranslationConfig;
 
   /** Configuration of optional streaming options for output filtering. */
   @With(AccessLevel.NONE) // may be exposed to public in the future
