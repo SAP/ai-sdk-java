@@ -68,7 +68,7 @@ public interface TranslationConfig {
      * Optional selection(s) to translate. If empty or null, translation is applied to the whole
      * message.
      */
-    @With @Nullable List<SAPDocumentTranslationApplyToSelector> applyTo;
+    @Nullable List<SAPDocumentTranslationApplyToSelector> applyTo;
 
     @Nonnull
     SAPDocumentTranslationInput createSAPDocumentTranslationInput() {
@@ -124,6 +124,10 @@ public interface TranslationConfig {
               .category(TEMPLATE_ROLES)
               .items(roleStrings);
       return addApplyToSelector(selector);
+    }
+
+    private Input withApplyTo(@Nullable final List<SAPDocumentTranslationApplyToSelector> applyTo) {
+      return new TranslationConfig.Input(targetLanguage, sourceLanguage, applyTo);
     }
 
     private Input addApplyToSelector(
