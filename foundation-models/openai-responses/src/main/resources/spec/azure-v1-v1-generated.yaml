@@ -1,4 +1,4 @@
-openapi: 3.2.0
+openapi: 3.1.0
 info:
   title: Azure AI Foundry Models Service
   license:
@@ -12626,7 +12626,6 @@ components:
           items:
             anyOf:
               - $ref: '#/components/schemas/OpenAI.ComparisonFilter'
-              - {}
           description: Array of filters to combine. Items can be `ComparisonFilter` or `CompoundFilter`.
       description: Combine multiple filters using `and` or `or`.
       title: Compound Filter
