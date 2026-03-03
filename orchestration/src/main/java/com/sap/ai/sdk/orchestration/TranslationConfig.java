@@ -92,10 +92,7 @@ public interface TranslationConfig {
      * @return A selector with {@code category=placeholders} and the given items.
      */
     @Nonnull
-    public Input applyToPlaceholders(@Nonnull final String... names) {
-      if (names.length == 0) {
-        return this;
-      }
+    public Input applyToPlaceholders(@Nonnull final String name, @Nonnull final String... additionalNames) {
       final var selector =
           SAPDocumentTranslationApplyToSelector.create().category(PLACEHOLDERS).items(names);
       return addApplyToSelector(selector);
