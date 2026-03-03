@@ -11,7 +11,6 @@ import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputConfig;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,11 +61,11 @@ public interface TranslationConfig {
   class Input implements TranslationConfig {
     String targetLanguage;
 
-    @Getter @With String sourceLanguage;
+    @Getter String sourceLanguage;
 
     /**
      * Optional selection(s) to translate. If empty or null, translation is applied to the whole
-     * message.
+     * message. If used, source language will be applied per selector.
      */
     @Nullable List<SAPDocumentTranslationApplyToSelector> applyTo;
 
@@ -88,33 +87,37 @@ public interface TranslationConfig {
     /**
      * Start an {@code apply_to} selector for placeholder names in {@code placeholder_values}.
      *
-     * @param names The placeholder keys to translate.
+     * @param name The first placeholder name to translate.
+     * @param additionalNames Additional placeholder names to translate.
      * @return A selector with {@code category=placeholders} and the given items.
      */
     @Nonnull
     public Input applyToPlaceholders(
         @Nonnull final String name, @Nonnull final String... additionalNames) {
       final var selector =
-          SAPDocumentTranslationApplyToSelector.create().category(PLACEHOLDERS).items(names);
+          SAPDocumentTranslationApplyToSelector.create()
+              .category(PLACEHOLDERS)
+              .items(Stream.concat(Stream.of(name), Stream.of(additionalNames)).toList());
       return addApplyToSelector(selector);
     }
 
     /**
      * Start an {@code apply_to} selector for prompt template message roles.
      *
+     * @param role The first template role to translate.
      * @param roles The template roles to translate.
      * @return A selector with {@code category=template_roles} and the given items.
      */
     @Nonnull
-    public Input applyToTemplateRoles(@Nonnull final TranslationConfig.TemplateRole... roles) {
-      final var roleStrings =
-          Stream.of(roles)
-              .filter(Objects::nonNull)
-              .map(TranslationConfig.TemplateRole::getValue)
-              .toList();
-
-      if (roleStrings.isEmpty()) {
-        return this;
+    public Input applyToTemplateRoles(
+        @Nonnull final TranslationConfig.TemplateRole role,
+        @Nonnull final TranslationConfig.TemplateRole... roles) {
+      final var roleStrings = new ArrayList<String>(1 + roles.length);
+      roleStrings.add(role.getValue());
+      for (final var r : roles) {
+        if (r != null) {
+          roleStrings.add(r.getValue());
+        }
       }
 
       final var selector =
@@ -124,8 +127,19 @@ public interface TranslationConfig {
       return addApplyToSelector(selector);
     }
 
-    private Input withApplyTo(@Nullable final List<SAPDocumentTranslationApplyToSelector> applyTo) {
-      return new TranslationConfig.Input(targetLanguage, sourceLanguage, applyTo);
+    /**
+     * Set the source language for this translation. If no selectors are used, this applies to the
+     * whole message. If selectors are used, this applies to the most recently added selector.
+     *
+     * @param sourceLanguage The source language code
+     * @return A new Input with the given source language applied.
+     */
+    @Nonnull
+    public Input withSourceLanguage(@Nonnull final String sourceLanguage) {
+      if (applyTo != null) {
+        applyTo.get(applyTo.size() - 1).sourceLanguage(sourceLanguage);
+      }
+      return new Input(targetLanguage, sourceLanguage, applyTo);
     }
 
     private Input addApplyToSelector(
@@ -136,7 +150,7 @@ public interface TranslationConfig {
       }
       appended.add(selector);
 
-      return withApplyTo(appended);
+      return new TranslationConfig.Input(targetLanguage, sourceLanguage, appended);
     }
   }
 
