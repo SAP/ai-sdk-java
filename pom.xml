@@ -35,6 +35,7 @@
     <module>core-services/prompt-registry</module>
     <module>foundation-models/openai</module>
     <module>foundation-models/sap-rpt</module>
+    <module>foundation-models/openai-responses</module>
   </modules>
   <scm>
     <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
@@ -249,6 +250,11 @@
       <dependency>
         <groupId>com.sap.ai.sdk.foundationmodels</groupId>
         <artifactId>openai</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+        <artifactId>openai-responses</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -662,6 +668,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/core/client/*</exclude>
             <exclude>com/sap/ai/sdk/core/model/*</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/openai/generated/model/*</exclude>
+            <exclude>com/sap/ai/sdk/foundationmodels/openai-responses/generated/**</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/rpt/generated/**</exclude>
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/client/*</exclude>
@@ -690,6 +697,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/core/model/*</exclude>
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/openai/generated/model/*</exclude>
+            <exclude>com/sap/ai/sdk/foundationmodels/openai-responses/generated/**</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/rpt/generated/**</exclude>
             <exclude>com/sap/ai/sdk/grounding/client/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/model/*</exclude>
