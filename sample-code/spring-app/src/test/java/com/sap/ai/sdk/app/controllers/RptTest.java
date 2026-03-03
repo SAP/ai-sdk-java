@@ -13,7 +13,7 @@ class RptTest {
     final var response = service.predict();
 
     assertThat(response).isNotNull();
-    assertThat(response.getMetadata().getNumRows()).isEqualTo(2);
+    assertThat(response.getMetadata().getNumRows()).isEqualTo(3);
     assertThat(response.getMetadata().getNumColumns()).isEqualTo(5);
     assertThat(response.getMetadata().getNumQueryRows()).isEqualTo(1);
     assertThat(response.getMetadata().getNumPredictions()).isEqualTo(1);
@@ -25,7 +25,7 @@ class RptTest {
     final var response = service.predictParquet();
 
     assertThat(response).isNotNull();
-    assertThat(response.getMetadata().getNumRows()).isEqualTo(2);
+    assertThat(response.getMetadata().getNumRows()).isEqualTo(3);
     assertThat(response.getMetadata().getNumColumns()).isEqualTo(5);
     assertThat(response.getMetadata().getNumQueryRows()).isEqualTo(1);
     assertThat(response.getMetadata().getNumPredictions()).isEqualTo(1);
