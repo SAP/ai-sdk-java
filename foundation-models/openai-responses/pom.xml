@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.sap.ai.sdk</groupId>
+    <artifactId>sdk-parent</artifactId>
+    <version>1.17.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+  <artifactId>openai-responses</artifactId>
+  <name>OpenAI Responses API Client</name>
+  <description>
+    <!--    TODO -->
+  </description>
+  <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
+  <organization>
+    <name>SAP SE</name>
+    <url>https://www.sap.com</url>
+  </organization>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <name>SAP</name>
+      <email>cloudsdk@sap.com</email>
+      <organization>SAP SE</organization>
+      <organizationUrl>https://www.sap.com</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
+    <developerConnection>scm:git:ssh://github.com:SAP/ai-sdk-java.git</developerConnection>
+    <url>https://github.com/SAP/ai-sdk-java/tree/main</url>
+  </scm>
+  <properties>
+    <project.rootdir>${project.basedir}/../../</project.rootdir>
+    <coverage.complexity>100%</coverage.complexity>
+    <coverage.line>100%</coverage.line>
+    <coverage.instruction>100%</coverage.instruction>
+    <coverage.branch>100%</coverage.branch>
+    <coverage.method>100%</coverage.method>
+    <coverage.class>100%</coverage.class>
+  </properties>
+  <dependencies>
+    <!--    TODO -->
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
+  </dependencies>
+  <profiles>
+    <profile>
+      <id>generate</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>generate</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.sap.cloud.sdk.datamodel</groupId>
+            <artifactId>openapi-generator-maven-plugin</artifactId>
+            <configuration>
+              <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+              <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
+              <compileScope>COMPILE</compileScope>
+              <deleteOutputDirectory>true</deleteOutputDirectory>
+            </configuration>
+            <executions>
+              <execution>
+                <id>openai</id>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/azure-v1-v1-generated.json</inputSpec>
+                  <modelPackage>com.sap.ai.sdk.foundationmodels.openai.responses.generated.model</modelPackage>
+                  <apiPackage>com.sap.ai.sdk.foundationmodels.openai.responses.generated.client</apiPackage>
+                  <additionalProperties>
+                    <library>apache-httpclient</library>
+                    <pojoBuilderMethodName>create</pojoBuilderMethodName>
+                    <pojoConstructorVisibility>protected</pojoConstructorVisibility>
+                    <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                    <useOneOfInterfaces>true</useOneOfInterfaces>
+                    <useOneOfCreators>true</useOneOfCreators>
+                    <useFloatArrays>true</useFloatArrays>
+
+                    <!-- new exclude paths -->
+                    <excludePaths>
+                      <excludePath>/batches/**</excludePath>
+                      <excludePath>/chat/completions</excludePath>
+                      <excludePath>/completions</excludePath>
+                      <excludePath>/containers/**</excludePath>
+                      <excludePath>/conversations/**</excludePath>
+                      <excludePath>/embeddings</excludePath>
+                      <excludePath>/evals/**</excludePath>
+                      <excludePath>/files/**</excludePath>
+                      <excludePath>/fine_tuning/**</excludePath>
+                      <excludePath>/models/**</excludePath>
+                      <excludePath>/realtime/**</excludePath>
+                      <excludePath>/threads/**</excludePath>
+                      <excludePath>/vector_stores/**</excludePath>
+                    </excludePaths>
+
+                    <!-- new exclude properties -->
+                    <!-- new: remove unassigned components -->
+                    <removeUnusedComponents>true</removeUnusedComponents>
+                  </additionalProperties>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
