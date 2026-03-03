@@ -16,7 +16,7 @@
 
 ### 📈 Improvements
 
-- [Orchestration] Added new API `TranslationConfig#withApplyTo` to support partial translation for a user's input.
+- [Orchestration] Added new API `TranslationConfig#applyToPlaceholders` and `TranslationConfig#applyToTemplateRoles` to support partial translation for a message.
 
 ### 🐛 Fixed Issues
 
