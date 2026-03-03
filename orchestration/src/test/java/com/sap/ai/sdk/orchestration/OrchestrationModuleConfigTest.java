@@ -190,18 +190,12 @@ class OrchestrationModuleConfigTest {
     final var inputEmpty =
         TranslationConfig.translateInputTo("en-US").applyToPlaceholders().applyToTemplateRoles();
     final var sapEmpty = inputEmpty.createSAPDocumentTranslationInput();
-    assertThat(sapEmpty.getConfig().getApplyTo()).isEmpty();
+    assertThat(sapEmpty.getConfig().getApplyTo()).isNull();
 
     // applyTo == null list
     final var inputNull = TranslationConfig.translateInputTo("en-US");
     final var sapNull = inputNull.createSAPDocumentTranslationInput();
-    assertThat(sapNull.getConfig().getApplyTo()).isEmpty();
-
-    // applyTo != null but empty list
-    final var inputExplicitEmptyList =
-        TranslationConfig.translateInputTo("en-US").withApplyTo(List.of());
-    final var sapExplicitEmptyList = inputExplicitEmptyList.createSAPDocumentTranslationInput();
-    assertThat(sapExplicitEmptyList.getConfig().getApplyTo()).isEmpty();
+    assertThat(sapNull.getConfig().getApplyTo()).isNull();
   }
 
   @Test

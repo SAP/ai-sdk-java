@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -67,16 +68,17 @@ public interface TranslationConfig {
      * Optional selection(s) to translate. If empty or null, translation is applied to the whole
      * message.
      */
-    @With List<SAPDocumentTranslationApplyToSelector> applyTo;
+    @With @Nullable List<SAPDocumentTranslationApplyToSelector> applyTo;
 
     @Nonnull
     SAPDocumentTranslationInput createSAPDocumentTranslationInput() {
       val translationType = SAPDocumentTranslationInput.TypeEnum.SAP_DOCUMENT_TRANSLATION;
-      final var conf = SAPDocumentTranslationInputConfig.create().targetLanguage(targetLanguage);
+      final var conf =
+          SAPDocumentTranslationInputConfig.create()
+              .targetLanguage(targetLanguage)
+              .applyTo(applyTo);
 
-      if (applyTo != null && !applyTo.isEmpty()) {
-        conf.applyTo(applyTo);
-      } else {
+      if (applyTo == null || applyTo.isEmpty()) {
         conf.sourceLanguage(sourceLanguage);
       }
 
