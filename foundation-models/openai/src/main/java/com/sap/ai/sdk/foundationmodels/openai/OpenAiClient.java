@@ -196,6 +196,7 @@ public final class OpenAiClient {
    * @since 1.4.0
    */
   @Nonnull
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   public CreateChatCompletionResponse chatCompletion(
       @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
     return execute("/chat/completions", request, CreateChatCompletionResponse.class);
@@ -211,6 +212,7 @@ public final class OpenAiClient {
    */
   @Nonnull
   @Deprecated
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   public OpenAiChatCompletionOutput chatCompletion(
       @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
     warnIfUnsupportedUsage();
@@ -311,6 +313,7 @@ public final class OpenAiClient {
    * @see #streamChatCompletionDeltas(OpenAiChatCompletionRequest) for a higher-level API
    * @since 1.4.0
    */
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
@@ -349,6 +352,7 @@ public final class OpenAiClient {
    */
   @Nonnull
   @Deprecated
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   public Stream<com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta>
       streamChatCompletionDeltas(@Nonnull final OpenAiChatCompletionParameters parameters)
           throws OpenAiClientException {
@@ -393,6 +397,7 @@ public final class OpenAiClient {
    * @since 1.4.0
    */
   @Nonnull
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   public EmbeddingsCreate200Response embedding(@Nonnull final EmbeddingsCreateRequest request)
       throws OpenAiClientException {
     return execute("/embeddings", request, EmbeddingsCreate200Response.class);
@@ -408,6 +413,7 @@ public final class OpenAiClient {
    */
   @Nonnull
   @Deprecated
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   public OpenAiEmbeddingOutput embedding(@Nonnull final OpenAiEmbeddingParameters parameters)
       throws OpenAiClientException {
     return execute("/embeddings", parameters, OpenAiEmbeddingOutput.class);

@@ -36,6 +36,7 @@ import lombok.experimental.Accessors;
 @Setter
 public class LlamaGuardFilter implements ContentFilter {
 
+  @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
   private LlamaGuard38b config = LlamaGuard38b.create();
 
   @Nonnull
