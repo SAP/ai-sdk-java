@@ -2,15 +2,17 @@ package com.sap.ai.sdk.grounding.client;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.grounding.model.CreatePipeline;
-import com.sap.ai.sdk.grounding.model.DocumentsStatusResponse;
 import com.sap.ai.sdk.grounding.model.GetPipeline;
+import com.sap.ai.sdk.grounding.model.GetPipelineDocumentById;
+import com.sap.ai.sdk.grounding.model.GetPipelineDocuments;
 import com.sap.ai.sdk.grounding.model.GetPipelineExecutionById;
+import com.sap.ai.sdk.grounding.model.GetPipelineExecutionDocumentById;
+import com.sap.ai.sdk.grounding.model.GetPipelineExecutionDocuments;
 import com.sap.ai.sdk.grounding.model.GetPipelineExecutions;
 import com.sap.ai.sdk.grounding.model.GetPipelineStatus;
 import com.sap.ai.sdk.grounding.model.GetPipelines;
 import com.sap.ai.sdk.grounding.model.ManualPipelineTrigger;
 import com.sap.ai.sdk.grounding.model.PatchPipeline;
-import com.sap.ai.sdk.grounding.model.PipelineDocumentResponse;
 import com.sap.ai.sdk.grounding.model.PipelineId;
 import com.sap.ai.sdk.grounding.model.SearchPipeline;
 import com.sap.ai.sdk.grounding.model.SearchPipelinesResponse;
@@ -209,6 +211,7 @@ public class PipelinesApi extends AbstractOpenApiService {
    * <p><b>400</b> - The specification of the resource was incorrect
    *
    * @param aiResourceGroup (required) Resource Group ID
+   * @param metadataConfigId (optional) Filter pipelines by metadataConfigId
    * @param $top (optional) Number of results to display
    * @param $skip (optional) Number of results to be skipped from the ordered list of results
    * @param $count (optional) When the $count field is set to false, the response contains a count
@@ -221,6 +224,7 @@ public class PipelinesApi extends AbstractOpenApiService {
   @Nonnull
   public GetPipelines getAllPipelines(
       @Nonnull final String aiResourceGroup,
+      @Nullable final String metadataConfigId,
       @Nullable final Integer $top,
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
@@ -241,6 +245,8 @@ public class PipelinesApi extends AbstractOpenApiService {
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
 
+    localVarQueryParams.putAll(
+        apiClient.parameterToMultiValueMap(null, "metadataConfigId", metadataConfigId));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
@@ -286,7 +292,7 @@ public class PipelinesApi extends AbstractOpenApiService {
   @Nonnull
   public GetPipelines getAllPipelines(@Nonnull final String aiResourceGroup)
       throws OpenApiRequestException {
-    return getAllPipelines(aiResourceGroup, null, null, null);
+    return getAllPipelines(aiResourceGroup, null, null, null, null);
   }
 
   /**
@@ -370,11 +376,11 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @param aiResourceGroup Resource Group ID
    * @param pipelineId The ID of the pipeline to get.
    * @param documentId The ID of the document to get.
-   * @return PipelineDocumentResponse
+   * @return GetPipelineDocumentById
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PipelineDocumentResponse getDocumentByIdForPipeline(
+  public GetPipelineDocumentById getDocumentByIdForPipeline(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nonnull final String documentId)
@@ -424,8 +430,8 @@ public class PipelinesApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<PipelineDocumentResponse> localVarReturnType =
-        new ParameterizedTypeReference<PipelineDocumentResponse>() {};
+    final ParameterizedTypeReference<GetPipelineDocumentById> localVarReturnType =
+        new ParameterizedTypeReference<GetPipelineDocumentById>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -455,11 +461,11 @@ public class PipelinesApi extends AbstractOpenApiService {
    *     of the items present in the response. When the $count field is set to true, the response
    *     contains a count of all the items present on the server, and not just the ones in the
    *     response. When the $count field is not passed, it is false by default.
-   * @return DocumentsStatusResponse
+   * @return GetPipelineDocuments
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DocumentsStatusResponse getAllDocumentsForPipeline(
+  public GetPipelineDocuments getAllDocumentsForPipeline(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nullable final Integer $top,
@@ -508,8 +514,8 @@ public class PipelinesApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<DocumentsStatusResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentsStatusResponse>() {};
+    final ParameterizedTypeReference<GetPipelineDocuments> localVarReturnType =
+        new ParameterizedTypeReference<GetPipelineDocuments>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -533,11 +539,11 @@ public class PipelinesApi extends AbstractOpenApiService {
    *
    * @param aiResourceGroup Resource Group ID
    * @param pipelineId The ID of the pipeline to get.
-   * @return DocumentsStatusResponse
+   * @return GetPipelineDocuments
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DocumentsStatusResponse getAllDocumentsForPipeline(
+  public GetPipelineDocuments getAllDocumentsForPipeline(
       @Nonnull final String aiResourceGroup, @Nonnull final String pipelineId)
       throws OpenApiRequestException {
     return getAllDocumentsForPipeline(aiResourceGroup, pipelineId, null, null, null);
@@ -633,11 +639,11 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @param pipelineId The ID of the pipeline
    * @param executionId The ID of the execution
    * @param documentId The ID of the document to get.
-   * @return PipelineDocumentResponse
+   * @return GetPipelineExecutionDocumentById
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PipelineDocumentResponse getDocumentByIdForPipelineExecution(
+  public GetPipelineExecutionDocumentById getDocumentByIdForPipelineExecution(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nonnull final String executionId,
@@ -696,8 +702,8 @@ public class PipelinesApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<PipelineDocumentResponse> localVarReturnType =
-        new ParameterizedTypeReference<PipelineDocumentResponse>() {};
+    final ParameterizedTypeReference<GetPipelineExecutionDocumentById> localVarReturnType =
+        new ParameterizedTypeReference<GetPipelineExecutionDocumentById>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -728,11 +734,11 @@ public class PipelinesApi extends AbstractOpenApiService {
    *     of the items present in the response. When the $count field is set to true, the response
    *     contains a count of all the items present on the server, and not just the ones in the
    *     response. When the $count field is not passed, it is false by default.
-   * @return DocumentsStatusResponse
+   * @return GetPipelineExecutionDocuments
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DocumentsStatusResponse getDocumentsForPipelineExecution(
+  public GetPipelineExecutionDocuments getDocumentsForPipelineExecution(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nonnull final String executionId,
@@ -789,8 +795,8 @@ public class PipelinesApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<DocumentsStatusResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentsStatusResponse>() {};
+    final ParameterizedTypeReference<GetPipelineExecutionDocuments> localVarReturnType =
+        new ParameterizedTypeReference<GetPipelineExecutionDocuments>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.GET,
@@ -815,11 +821,11 @@ public class PipelinesApi extends AbstractOpenApiService {
    * @param aiResourceGroup Resource Group ID
    * @param pipelineId The ID of the pipeline
    * @param executionId The ID of the execution
-   * @return DocumentsStatusResponse
+   * @return GetPipelineExecutionDocuments
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public DocumentsStatusResponse getDocumentsForPipelineExecution(
+  public GetPipelineExecutionDocuments getDocumentsForPipelineExecution(
       @Nonnull final String aiResourceGroup,
       @Nonnull final String pipelineId,
       @Nonnull final String executionId)

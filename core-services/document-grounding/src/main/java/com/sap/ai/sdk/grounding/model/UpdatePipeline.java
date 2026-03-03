@@ -15,9 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -25,69 +23,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** SFTPConfigurationSftp */
+/** UpdatePipeline */
 // CHECKSTYLE:OFF
-public class SFTPConfigurationSftp
+public class UpdatePipeline
 // CHECKSTYLE:ON
 {
-  @JsonProperty("includePaths")
-  private List<String> includePaths = new ArrayList<>();
+  @JsonProperty("configuration")
+  private UpdatePipelineConfiguration _configuration;
+
+  @JsonProperty("metadata")
+  private UpdatePipelineMetadata metadata;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for SFTPConfigurationSftp. */
-  protected SFTPConfigurationSftp() {}
+  /** Default constructor for UpdatePipeline. */
+  protected UpdatePipeline() {}
 
   /**
-   * Set the includePaths of this {@link SFTPConfigurationSftp} instance and return the same
-   * instance.
+   * Set the _configuration of this {@link UpdatePipeline} instance and return the same instance.
    *
-   * @param includePaths The includePaths of this {@link SFTPConfigurationSftp}
-   * @return The same instance of this {@link SFTPConfigurationSftp} class
+   * @param _configuration The _configuration of this {@link UpdatePipeline}
+   * @return The same instance of this {@link UpdatePipeline} class
    */
   @Nonnull
-  public SFTPConfigurationSftp includePaths(@Nullable final List<String> includePaths) {
-    this.includePaths = includePaths;
+  public UpdatePipeline _configuration(@Nullable final UpdatePipelineConfiguration _configuration) {
+    this._configuration = _configuration;
     return this;
   }
 
   /**
-   * Add one includePaths instance to this {@link SFTPConfigurationSftp}.
+   * Get _configuration
    *
-   * @param includePathsItem The includePaths that should be added
-   * @return The same instance of type {@link SFTPConfigurationSftp}
+   * @return _configuration The _configuration of this {@link UpdatePipeline} instance.
    */
   @Nonnull
-  public SFTPConfigurationSftp addIncludePathsItem(@Nonnull final String includePathsItem) {
-    if (this.includePaths == null) {
-      this.includePaths = new ArrayList<>();
-    }
-    this.includePaths.add(includePathsItem);
+  public UpdatePipelineConfiguration getConfiguration() {
+    return _configuration;
+  }
+
+  /**
+   * Set the _configuration of this {@link UpdatePipeline} instance.
+   *
+   * @param _configuration The _configuration of this {@link UpdatePipeline}
+   */
+  public void setConfiguration(@Nullable final UpdatePipelineConfiguration _configuration) {
+    this._configuration = _configuration;
+  }
+
+  /**
+   * Set the metadata of this {@link UpdatePipeline} instance and return the same instance.
+   *
+   * @param metadata The metadata of this {@link UpdatePipeline}
+   * @return The same instance of this {@link UpdatePipeline} class
+   */
+  @Nonnull
+  public UpdatePipeline metadata(@Nullable final UpdatePipelineMetadata metadata) {
+    this.metadata = metadata;
     return this;
   }
 
   /**
-   * Get includePaths
+   * Get metadata
    *
-   * @return includePaths The includePaths of this {@link SFTPConfigurationSftp} instance.
+   * @return metadata The metadata of this {@link UpdatePipeline} instance.
    */
   @Nonnull
-  public List<String> getIncludePaths() {
-    return includePaths;
+  public UpdatePipelineMetadata getMetadata() {
+    return metadata;
   }
 
   /**
-   * Set the includePaths of this {@link SFTPConfigurationSftp} instance.
+   * Set the metadata of this {@link UpdatePipeline} instance.
    *
-   * @param includePaths The includePaths of this {@link SFTPConfigurationSftp}
+   * @param metadata The metadata of this {@link UpdatePipeline}
    */
-  public void setIncludePaths(@Nullable final List<String> includePaths) {
-    this.includePaths = includePaths;
+  public void setMetadata(@Nullable final UpdatePipelineMetadata metadata) {
+    this.metadata = metadata;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link SFTPConfigurationSftp}.
+   * Get the names of the unrecognizable properties of the {@link UpdatePipeline}.
    *
    * @return The set of properties names
    */
@@ -98,7 +114,7 @@ public class SFTPConfigurationSftp
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link SFTPConfigurationSftp} instance.
+   * Get the value of an unrecognizable property of this {@link UpdatePipeline} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -109,15 +125,14 @@ public class SFTPConfigurationSftp
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "SFTPConfigurationSftp has no field with name '" + name + "'.");
+      throw new NoSuchElementException("UpdatePipeline has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link SFTPConfigurationSftp} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link UpdatePipeline} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -125,13 +140,14 @@ public class SFTPConfigurationSftp
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (includePaths != null) declaredFields.put("includePaths", includePaths);
+    if (_configuration != null) declaredFields.put("_configuration", _configuration);
+    if (metadata != null) declaredFields.put("metadata", metadata);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link SFTPConfigurationSftp} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link UpdatePipeline} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -149,22 +165,24 @@ public class SFTPConfigurationSftp
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final SFTPConfigurationSftp sfTPConfigurationSftp = (SFTPConfigurationSftp) o;
-    return Objects.equals(this.cloudSdkCustomFields, sfTPConfigurationSftp.cloudSdkCustomFields)
-        && Objects.equals(this.includePaths, sfTPConfigurationSftp.includePaths);
+    final UpdatePipeline updatePipeline = (UpdatePipeline) o;
+    return Objects.equals(this.cloudSdkCustomFields, updatePipeline.cloudSdkCustomFields)
+        && Objects.equals(this._configuration, updatePipeline._configuration)
+        && Objects.equals(this.metadata, updatePipeline.metadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(includePaths, cloudSdkCustomFields);
+    return Objects.hash(_configuration, metadata, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class SFTPConfigurationSftp {\n");
-    sb.append("    includePaths: ").append(toIndentedString(includePaths)).append("\n");
+    sb.append("class UpdatePipeline {\n");
+    sb.append("    _configuration: ").append(toIndentedString(_configuration)).append("\n");
+    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -182,8 +200,8 @@ public class SFTPConfigurationSftp
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link SFTPConfigurationSftp} instance. No arguments are required. */
-  public static SFTPConfigurationSftp create() {
-    return new SFTPConfigurationSftp();
+  /** Create a new {@link UpdatePipeline} instance. No arguments are required. */
+  public static UpdatePipeline create() {
+    return new UpdatePipeline();
   }
 }
