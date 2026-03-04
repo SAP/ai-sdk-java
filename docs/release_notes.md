@@ -16,7 +16,7 @@
 
 ### 📈 Improvements
 
-- [RPT] `RptClient.tableCompletion()` GZIP compresses the request body.
+- [RPT] `RptClient.tableCompletion()` GZIP compresses the request payload.
 
 ### 🐛 Fixed Issues
 
