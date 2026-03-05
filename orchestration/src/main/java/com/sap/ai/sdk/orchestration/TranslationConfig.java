@@ -128,10 +128,9 @@ public interface TranslationConfig {
     }
 
     /**
-     * Set the source language for this translation. 
-     * <br>
-     * <strong>Important Note:</strong> If no selectors are used, this applies to the
-     * whole message. If selectors are used, this applies to the most recently added selector.
+     * Set the source language for this translation. <br>
+     * <strong>Important Note:</strong> If no selectors are used, this applies to the whole message.
+     * If selectors are used, this applies to the most recently added selector.
      *
      * @param sourceLanguage The source language code
      * @return A new Input with the given source language applied.
