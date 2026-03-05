@@ -61,7 +61,7 @@ public interface TranslationConfig {
   class Input implements TranslationConfig {
     String targetLanguage;
 
-    @Getter String sourceLanguage;
+    String sourceLanguage;
 
     /**
      * Optional selection(s) to translate. If empty or null, translation is applied to the whole
@@ -160,7 +160,7 @@ public interface TranslationConfig {
   class Output implements TranslationConfig {
     String targetLanguage;
 
-    @Getter @With String sourceLanguage;
+    @With String sourceLanguage;
 
     @Nonnull
     SAPDocumentTranslationOutput createSAPDocumentTranslationOutput() {
