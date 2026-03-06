@@ -1076,9 +1076,6 @@ paths:
               required:
                 - messages
                 - model
-      x-ms-examples:
-        Create a chat completion:
-          $ref: ./examples/chat_completions.yaml
   /completions:
     post:
       operationId: createCompletion
@@ -1321,9 +1318,6 @@ paths:
                   default: <|endoftext|>
               required:
                 - model
-      x-ms-examples:
-        Create a chat completion:
-          $ref: ./examples/completions.yaml
   /containers:
     get:
       operationId: listContainers
@@ -2660,9 +2654,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/OpenAI.CreateEmbeddingRequest'
-      x-ms-examples:
-        Create an embedding request:
-          $ref: ./examples/embeddings.yaml
   /evals:
     get:
       operationId: listEvals
@@ -3783,9 +3774,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/OpenAI.CreateFileRequest'
-      x-ms-examples:
-        Create a file request:
-          $ref: ./examples/files.yaml
     get:
       operationId: listFiles
       parameters:
@@ -6527,9 +6515,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/OpenAI.CreateResponse'
-      x-ms-examples:
-        Create a response request:
-          $ref: ./examples/responses.yaml
   /responses/{response_id}:
     get:
       operationId: getResponse
@@ -8665,9 +8650,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/OpenAI.CreateVectorStoreRequest'
-      x-ms-examples:
-        Create a vector store request:
-          $ref: ./examples/vector_stores.yaml
   /vector_stores/{vector_store_id}:
     get:
       operationId: getVectorStore
