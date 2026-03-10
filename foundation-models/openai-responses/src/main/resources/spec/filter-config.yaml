@@ -6,3 +6,7 @@ inverseOperationIds:
   - listInputItems
 unusedComponents:
   - schemas
+
+#  npx openapi-format foundation-models/openai-responses/src/main/resources/spec/azure-v1-v1-generated.yaml --no-sort \
+#  -o foundation-models/openai-responses/src/main/resources/spec/azure-responses-only.yaml \
+#  --filterFile foundation-models/openai-responses/src/main/resources/spec/filter-config.yaml
