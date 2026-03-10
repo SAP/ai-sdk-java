@@ -1,0 +1,8 @@
+# Filter to keep only /responses/** paths
+inverseOperationIds:
+  - createResponse
+  - getResponse
+  - cancelResponse
+  - listInputItems
+unusedComponents:
+  - schemas

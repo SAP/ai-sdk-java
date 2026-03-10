@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** CreateBatchDefaultResponse */
+/** GetResponseDefaultResponse */
 // CHECKSTYLE:OFF
-public class CreateBatchDefaultResponse
+public class GetResponseDefaultResponse
 // CHECKSTYLE:ON
 {
   @JsonProperty("code")
@@ -40,23 +40,20 @@ public class CreateBatchDefaultResponse
   @JsonProperty("type")
   private String type;
 
-  @JsonProperty("inner_error")
-  private Object innerError = null;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for CreateBatchDefaultResponse. */
-  protected CreateBatchDefaultResponse() {}
+  /** Default constructor for GetResponseDefaultResponse. */
+  protected GetResponseDefaultResponse() {}
 
   /**
-   * Set the code of this {@link CreateBatchDefaultResponse} instance and return the same instance.
+   * Set the code of this {@link GetResponseDefaultResponse} instance and return the same instance.
    *
-   * @param code The code of this {@link CreateBatchDefaultResponse}
-   * @return The same instance of this {@link CreateBatchDefaultResponse} class
+   * @param code The code of this {@link GetResponseDefaultResponse}
+   * @return The same instance of this {@link GetResponseDefaultResponse} class
    */
   @Nonnull
-  public CreateBatchDefaultResponse code(@Nullable final String code) {
+  public GetResponseDefaultResponse code(@Nullable final String code) {
     this.code = code;
     return this;
   }
@@ -64,7 +61,7 @@ public class CreateBatchDefaultResponse
   /**
    * Get code
    *
-   * @return code The code of this {@link CreateBatchDefaultResponse} instance.
+   * @return code The code of this {@link GetResponseDefaultResponse} instance.
    */
   @Nullable
   public String getCode() {
@@ -72,23 +69,23 @@ public class CreateBatchDefaultResponse
   }
 
   /**
-   * Set the code of this {@link CreateBatchDefaultResponse} instance.
+   * Set the code of this {@link GetResponseDefaultResponse} instance.
    *
-   * @param code The code of this {@link CreateBatchDefaultResponse}
+   * @param code The code of this {@link GetResponseDefaultResponse}
    */
   public void setCode(@Nullable final String code) {
     this.code = code;
   }
 
   /**
-   * Set the message of this {@link CreateBatchDefaultResponse} instance and return the same
+   * Set the message of this {@link GetResponseDefaultResponse} instance and return the same
    * instance.
    *
-   * @param message The message of this {@link CreateBatchDefaultResponse}
-   * @return The same instance of this {@link CreateBatchDefaultResponse} class
+   * @param message The message of this {@link GetResponseDefaultResponse}
+   * @return The same instance of this {@link GetResponseDefaultResponse} class
    */
   @Nonnull
-  public CreateBatchDefaultResponse message(@Nonnull final String message) {
+  public GetResponseDefaultResponse message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
@@ -96,7 +93,7 @@ public class CreateBatchDefaultResponse
   /**
    * Get message
    *
-   * @return message The message of this {@link CreateBatchDefaultResponse} instance.
+   * @return message The message of this {@link GetResponseDefaultResponse} instance.
    */
   @Nonnull
   public String getMessage() {
@@ -104,22 +101,22 @@ public class CreateBatchDefaultResponse
   }
 
   /**
-   * Set the message of this {@link CreateBatchDefaultResponse} instance.
+   * Set the message of this {@link GetResponseDefaultResponse} instance.
    *
-   * @param message The message of this {@link CreateBatchDefaultResponse}
+   * @param message The message of this {@link GetResponseDefaultResponse}
    */
   public void setMessage(@Nonnull final String message) {
     this.message = message;
   }
 
   /**
-   * Set the param of this {@link CreateBatchDefaultResponse} instance and return the same instance.
+   * Set the param of this {@link GetResponseDefaultResponse} instance and return the same instance.
    *
-   * @param param The param of this {@link CreateBatchDefaultResponse}
-   * @return The same instance of this {@link CreateBatchDefaultResponse} class
+   * @param param The param of this {@link GetResponseDefaultResponse}
+   * @return The same instance of this {@link GetResponseDefaultResponse} class
    */
   @Nonnull
-  public CreateBatchDefaultResponse param(@Nullable final String param) {
+  public GetResponseDefaultResponse param(@Nullable final String param) {
     this.param = param;
     return this;
   }
@@ -127,7 +124,7 @@ public class CreateBatchDefaultResponse
   /**
    * Get param
    *
-   * @return param The param of this {@link CreateBatchDefaultResponse} instance.
+   * @return param The param of this {@link GetResponseDefaultResponse} instance.
    */
   @Nullable
   public String getParam() {
@@ -135,22 +132,22 @@ public class CreateBatchDefaultResponse
   }
 
   /**
-   * Set the param of this {@link CreateBatchDefaultResponse} instance.
+   * Set the param of this {@link GetResponseDefaultResponse} instance.
    *
-   * @param param The param of this {@link CreateBatchDefaultResponse}
+   * @param param The param of this {@link GetResponseDefaultResponse}
    */
   public void setParam(@Nullable final String param) {
     this.param = param;
   }
 
   /**
-   * Set the type of this {@link CreateBatchDefaultResponse} instance and return the same instance.
+   * Set the type of this {@link GetResponseDefaultResponse} instance and return the same instance.
    *
-   * @param type The type of this {@link CreateBatchDefaultResponse}
-   * @return The same instance of this {@link CreateBatchDefaultResponse} class
+   * @param type The type of this {@link GetResponseDefaultResponse}
+   * @return The same instance of this {@link GetResponseDefaultResponse} class
    */
   @Nonnull
-  public CreateBatchDefaultResponse type(@Nonnull final String type) {
+  public GetResponseDefaultResponse type(@Nonnull final String type) {
     this.type = type;
     return this;
   }
@@ -158,7 +155,7 @@ public class CreateBatchDefaultResponse
   /**
    * Get type
    *
-   * @return type The type of this {@link CreateBatchDefaultResponse} instance.
+   * @return type The type of this {@link GetResponseDefaultResponse} instance.
    */
   @Nonnull
   public String getType() {
@@ -166,48 +163,16 @@ public class CreateBatchDefaultResponse
   }
 
   /**
-   * Set the type of this {@link CreateBatchDefaultResponse} instance.
+   * Set the type of this {@link GetResponseDefaultResponse} instance.
    *
-   * @param type The type of this {@link CreateBatchDefaultResponse}
+   * @param type The type of this {@link GetResponseDefaultResponse}
    */
   public void setType(@Nonnull final String type) {
     this.type = type;
   }
 
   /**
-   * Set the innerError of this {@link CreateBatchDefaultResponse} instance and return the same
-   * instance.
-   *
-   * @param innerError The innerError of this {@link CreateBatchDefaultResponse}
-   * @return The same instance of this {@link CreateBatchDefaultResponse} class
-   */
-  @Nonnull
-  public CreateBatchDefaultResponse innerError(@Nullable final Object innerError) {
-    this.innerError = innerError;
-    return this;
-  }
-
-  /**
-   * Get innerError
-   *
-   * @return innerError The innerError of this {@link CreateBatchDefaultResponse} instance.
-   */
-  @Nullable
-  public Object getInnerError() {
-    return innerError;
-  }
-
-  /**
-   * Set the innerError of this {@link CreateBatchDefaultResponse} instance.
-   *
-   * @param innerError The innerError of this {@link CreateBatchDefaultResponse}
-   */
-  public void setInnerError(@Nullable final Object innerError) {
-    this.innerError = innerError;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link CreateBatchDefaultResponse}.
+   * Get the names of the unrecognizable properties of the {@link GetResponseDefaultResponse}.
    *
    * @return The set of properties names
    */
@@ -218,7 +183,7 @@ public class CreateBatchDefaultResponse
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link CreateBatchDefaultResponse}
+   * Get the value of an unrecognizable property of this {@link GetResponseDefaultResponse}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -231,13 +196,13 @@ public class CreateBatchDefaultResponse
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "CreateBatchDefaultResponse has no field with name '" + name + "'.");
+          "GetResponseDefaultResponse has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link CreateBatchDefaultResponse} instance including
+   * Get the value of all properties of this {@link GetResponseDefaultResponse} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -250,12 +215,11 @@ public class CreateBatchDefaultResponse
     if (message != null) declaredFields.put("message", message);
     if (param != null) declaredFields.put("param", param);
     if (type != null) declaredFields.put("type", type);
-    if (innerError != null) declaredFields.put("innerError", innerError);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link CreateBatchDefaultResponse} instance. If the map
+   * Set an unrecognizable property of this {@link GetResponseDefaultResponse} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -274,31 +238,29 @@ public class CreateBatchDefaultResponse
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final CreateBatchDefaultResponse createBatchDefaultResponse = (CreateBatchDefaultResponse) o;
+    final GetResponseDefaultResponse getResponseDefaultResponse = (GetResponseDefaultResponse) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, createBatchDefaultResponse.cloudSdkCustomFields)
-        && Objects.equals(this.code, createBatchDefaultResponse.code)
-        && Objects.equals(this.message, createBatchDefaultResponse.message)
-        && Objects.equals(this.param, createBatchDefaultResponse.param)
-        && Objects.equals(this.type, createBatchDefaultResponse.type)
-        && Objects.equals(this.innerError, createBatchDefaultResponse.innerError);
+            this.cloudSdkCustomFields, getResponseDefaultResponse.cloudSdkCustomFields)
+        && Objects.equals(this.code, getResponseDefaultResponse.code)
+        && Objects.equals(this.message, getResponseDefaultResponse.message)
+        && Objects.equals(this.param, getResponseDefaultResponse.param)
+        && Objects.equals(this.type, getResponseDefaultResponse.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, message, param, type, innerError, cloudSdkCustomFields);
+    return Objects.hash(code, message, param, type, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class CreateBatchDefaultResponse {\n");
+    sb.append("class GetResponseDefaultResponse {\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    param: ").append(toIndentedString(param)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    innerError: ").append(toIndentedString(innerError)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -318,14 +280,14 @@ public class CreateBatchDefaultResponse
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * CreateBatchDefaultResponse} instance with all required arguments.
+   * GetResponseDefaultResponse} instance with all required arguments.
    */
   public static Builder create() {
     return (code) ->
         (message) ->
             (param) ->
                 (type) ->
-                    new CreateBatchDefaultResponse()
+                    new GetResponseDefaultResponse()
                         .code(code)
                         .message(message)
                         .param(param)
@@ -335,10 +297,10 @@ public class CreateBatchDefaultResponse
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the code of this {@link CreateBatchDefaultResponse} instance.
+     * Set the code of this {@link GetResponseDefaultResponse} instance.
      *
-     * @param code The code of this {@link CreateBatchDefaultResponse}
-     * @return The CreateBatchDefaultResponse builder.
+     * @param code The code of this {@link GetResponseDefaultResponse}
+     * @return The GetResponseDefaultResponse builder.
      */
     Builder1 code(@Nullable final String code);
   }
@@ -346,10 +308,10 @@ public class CreateBatchDefaultResponse
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the message of this {@link CreateBatchDefaultResponse} instance.
+     * Set the message of this {@link GetResponseDefaultResponse} instance.
      *
-     * @param message The message of this {@link CreateBatchDefaultResponse}
-     * @return The CreateBatchDefaultResponse builder.
+     * @param message The message of this {@link GetResponseDefaultResponse}
+     * @return The GetResponseDefaultResponse builder.
      */
     Builder2 message(@Nonnull final String message);
   }
@@ -357,10 +319,10 @@ public class CreateBatchDefaultResponse
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the param of this {@link CreateBatchDefaultResponse} instance.
+     * Set the param of this {@link GetResponseDefaultResponse} instance.
      *
-     * @param param The param of this {@link CreateBatchDefaultResponse}
-     * @return The CreateBatchDefaultResponse builder.
+     * @param param The param of this {@link GetResponseDefaultResponse}
+     * @return The GetResponseDefaultResponse builder.
      */
     Builder3 param(@Nullable final String param);
   }
@@ -368,11 +330,11 @@ public class CreateBatchDefaultResponse
   /** Builder helper class. */
   public interface Builder3 {
     /**
-     * Set the type of this {@link CreateBatchDefaultResponse} instance.
+     * Set the type of this {@link GetResponseDefaultResponse} instance.
      *
-     * @param type The type of this {@link CreateBatchDefaultResponse}
-     * @return The CreateBatchDefaultResponse instance.
+     * @param type The type of this {@link GetResponseDefaultResponse}
+     * @return The GetResponseDefaultResponse instance.
      */
-    CreateBatchDefaultResponse type(@Nonnull final String type);
+    GetResponseDefaultResponse type(@Nonnull final String type);
   }
 }

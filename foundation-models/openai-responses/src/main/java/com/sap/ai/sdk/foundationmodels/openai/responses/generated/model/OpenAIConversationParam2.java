@@ -23,59 +23,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** OpenAIResponseUsageOutputTokensDetails */
+/** The conversation that this response belongs to. */
 // CHECKSTYLE:OFF
-public class OpenAIResponseUsageOutputTokensDetails
+public class OpenAIConversationParam2
 // CHECKSTYLE:ON
 {
-  @JsonProperty("reasoning_tokens")
-  private Integer reasoningTokens;
+  @JsonProperty("id")
+  private String id;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for OpenAIResponseUsageOutputTokensDetails. */
-  protected OpenAIResponseUsageOutputTokensDetails() {}
+  /** Default constructor for OpenAIConversationParam2. */
+  protected OpenAIConversationParam2() {}
 
   /**
-   * Set the reasoningTokens of this {@link OpenAIResponseUsageOutputTokensDetails} instance and
-   * return the same instance.
+   * Set the id of this {@link OpenAIConversationParam2} instance and return the same instance.
    *
-   * @param reasoningTokens The reasoningTokens of this {@link
-   *     OpenAIResponseUsageOutputTokensDetails}
-   * @return The same instance of this {@link OpenAIResponseUsageOutputTokensDetails} class
+   * @param id The unique ID of the conversation.
+   * @return The same instance of this {@link OpenAIConversationParam2} class
    */
   @Nonnull
-  public OpenAIResponseUsageOutputTokensDetails reasoningTokens(
-      @Nonnull final Integer reasoningTokens) {
-    this.reasoningTokens = reasoningTokens;
+  public OpenAIConversationParam2 id(@Nonnull final String id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Get reasoningTokens
+   * The unique ID of the conversation.
    *
-   * @return reasoningTokens The reasoningTokens of this {@link
-   *     OpenAIResponseUsageOutputTokensDetails} instance.
+   * @return id The id of this {@link OpenAIConversationParam2} instance.
    */
   @Nonnull
-  public Integer getReasoningTokens() {
-    return reasoningTokens;
+  public String getId() {
+    return id;
   }
 
   /**
-   * Set the reasoningTokens of this {@link OpenAIResponseUsageOutputTokensDetails} instance.
+   * Set the id of this {@link OpenAIConversationParam2} instance.
    *
-   * @param reasoningTokens The reasoningTokens of this {@link
-   *     OpenAIResponseUsageOutputTokensDetails}
+   * @param id The unique ID of the conversation.
    */
-  public void setReasoningTokens(@Nonnull final Integer reasoningTokens) {
-    this.reasoningTokens = reasoningTokens;
+  public void setId(@Nonnull final String id) {
+    this.id = id;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link
-   * OpenAIResponseUsageOutputTokensDetails}.
+   * Get the names of the unrecognizable properties of the {@link OpenAIConversationParam2}.
    *
    * @return The set of properties names
    */
@@ -86,8 +80,7 @@ public class OpenAIResponseUsageOutputTokensDetails
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link
-   * OpenAIResponseUsageOutputTokensDetails} instance.
+   * Get the value of an unrecognizable property of this {@link OpenAIConversationParam2} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -99,14 +92,14 @@ public class OpenAIResponseUsageOutputTokensDetails
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "OpenAIResponseUsageOutputTokensDetails has no field with name '" + name + "'.");
+          "OpenAIConversationParam2 has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link OpenAIResponseUsageOutputTokensDetails} instance
-   * including unrecognized properties.
+   * Get the value of all properties of this {@link OpenAIConversationParam2} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -114,14 +107,13 @@ public class OpenAIResponseUsageOutputTokensDetails
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (reasoningTokens != null) declaredFields.put("reasoningTokens", reasoningTokens);
+    if (id != null) declaredFields.put("id", id);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link OpenAIResponseUsageOutputTokensDetails} instance.
-   * If the map previously contained a mapping for the key, the old value is replaced by the
-   * specified value.
+   * Set an unrecognizable property of this {@link OpenAIConversationParam2} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -139,25 +131,22 @@ public class OpenAIResponseUsageOutputTokensDetails
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final OpenAIResponseUsageOutputTokensDetails openAIResponseUsageOutputTokensDetails =
-        (OpenAIResponseUsageOutputTokensDetails) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, openAIResponseUsageOutputTokensDetails.cloudSdkCustomFields)
-        && Objects.equals(
-            this.reasoningTokens, openAIResponseUsageOutputTokensDetails.reasoningTokens);
+    final OpenAIConversationParam2 openAIConversationParam2 = (OpenAIConversationParam2) o;
+    return Objects.equals(this.cloudSdkCustomFields, openAIConversationParam2.cloudSdkCustomFields)
+        && Objects.equals(this.id, openAIConversationParam2.id);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(reasoningTokens, cloudSdkCustomFields);
+    return Objects.hash(id, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class OpenAIResponseUsageOutputTokensDetails {\n");
-    sb.append("    reasoningTokens: ").append(toIndentedString(reasoningTokens)).append("\n");
+    sb.append("class OpenAIConversationParam2 {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -177,22 +166,20 @@ public class OpenAIResponseUsageOutputTokensDetails
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * OpenAIResponseUsageOutputTokensDetails} instance with all required arguments.
+   * OpenAIConversationParam2} instance with all required arguments.
    */
   public static Builder create() {
-    return (reasoningTokens) ->
-        new OpenAIResponseUsageOutputTokensDetails().reasoningTokens(reasoningTokens);
+    return (id) -> new OpenAIConversationParam2().id(id);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the reasoningTokens of this {@link OpenAIResponseUsageOutputTokensDetails} instance.
+     * Set the id of this {@link OpenAIConversationParam2} instance.
      *
-     * @param reasoningTokens The reasoningTokens of this {@link
-     *     OpenAIResponseUsageOutputTokensDetails}
-     * @return The OpenAIResponseUsageOutputTokensDetails instance.
+     * @param id The unique ID of the conversation.
+     * @return The OpenAIConversationParam2 instance.
      */
-    OpenAIResponseUsageOutputTokensDetails reasoningTokens(@Nonnull final Integer reasoningTokens);
+    OpenAIConversationParam2 id(@Nonnull final String id);
   }
 }

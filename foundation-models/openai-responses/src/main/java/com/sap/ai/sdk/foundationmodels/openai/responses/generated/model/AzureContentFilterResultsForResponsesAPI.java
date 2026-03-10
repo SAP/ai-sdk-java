@@ -50,7 +50,7 @@ public class AzureContentFilterResultsForResponsesAPI
   private AzureContentFilterCustomTopicResult customTopics;
 
   @JsonProperty("error")
-  private AzureContentFilterResultForChoiceError error;
+  private AzureContentFilterResultsForResponsesAPIError error;
 
   @JsonProperty("jailbreak")
   private AzureContentFilterDetectionResult jailbreak;
@@ -62,7 +62,7 @@ public class AzureContentFilterResultsForResponsesAPI
   private AzureContentFilterDetectionResult protectedMaterialText;
 
   @JsonProperty("protected_material_code")
-  private AzureContentFilterResultForChoiceProtectedMaterialCode protectedMaterialCode;
+  private AzureContentFilterResultsForResponsesAPIProtectedMaterialCode protectedMaterialCode;
 
   @JsonProperty("ungrounded_material")
   private AzureContentFilterCompletionTextSpanDetectionResult ungroundedMaterial;
@@ -361,7 +361,7 @@ public class AzureContentFilterResultsForResponsesAPI
    */
   @Nonnull
   public AzureContentFilterResultsForResponsesAPI error(
-      @Nullable final AzureContentFilterResultForChoiceError error) {
+      @Nullable final AzureContentFilterResultsForResponsesAPIError error) {
     this.error = error;
     return this;
   }
@@ -372,7 +372,7 @@ public class AzureContentFilterResultsForResponsesAPI
    * @return error The error of this {@link AzureContentFilterResultsForResponsesAPI} instance.
    */
   @Nonnull
-  public AzureContentFilterResultForChoiceError getError() {
+  public AzureContentFilterResultsForResponsesAPIError getError() {
     return error;
   }
 
@@ -381,7 +381,7 @@ public class AzureContentFilterResultsForResponsesAPI
    *
    * @param error The error of this {@link AzureContentFilterResultsForResponsesAPI}
    */
-  public void setError(@Nullable final AzureContentFilterResultForChoiceError error) {
+  public void setError(@Nullable final AzureContentFilterResultsForResponsesAPIError error) {
     this.error = error;
   }
 
@@ -513,7 +513,8 @@ public class AzureContentFilterResultsForResponsesAPI
   @Nonnull
   public AzureContentFilterResultsForResponsesAPI protectedMaterialCode(
       @Nullable
-          final AzureContentFilterResultForChoiceProtectedMaterialCode protectedMaterialCode) {
+          final AzureContentFilterResultsForResponsesAPIProtectedMaterialCode
+              protectedMaterialCode) {
     this.protectedMaterialCode = protectedMaterialCode;
     return this;
   }
@@ -525,7 +526,7 @@ public class AzureContentFilterResultsForResponsesAPI
    *     AzureContentFilterResultsForResponsesAPI} instance.
    */
   @Nonnull
-  public AzureContentFilterResultForChoiceProtectedMaterialCode getProtectedMaterialCode() {
+  public AzureContentFilterResultsForResponsesAPIProtectedMaterialCode getProtectedMaterialCode() {
     return protectedMaterialCode;
   }
 
@@ -538,7 +539,8 @@ public class AzureContentFilterResultsForResponsesAPI
    */
   public void setProtectedMaterialCode(
       @Nullable
-          final AzureContentFilterResultForChoiceProtectedMaterialCode protectedMaterialCode) {
+          final AzureContentFilterResultsForResponsesAPIProtectedMaterialCode
+              protectedMaterialCode) {
     this.protectedMaterialCode = protectedMaterialCode;
   }
 
