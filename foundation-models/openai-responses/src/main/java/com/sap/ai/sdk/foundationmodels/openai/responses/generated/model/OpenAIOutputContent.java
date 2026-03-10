@@ -15,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -23,56 +25,55 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** OpenAIResponseUsageInputTokensDetails */
+/** OpenAIOutputContent */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
+@JsonSubTypes({})
 // CHECKSTYLE:OFF
-public class OpenAIResponseUsageInputTokensDetails
+public class OpenAIOutputContent
 // CHECKSTYLE:ON
 {
-  @JsonProperty("cached_tokens")
-  private Integer cachedTokens;
+  @JsonProperty("type")
+  private OpenAIOutputContentType type;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for OpenAIResponseUsageInputTokensDetails. */
-  protected OpenAIResponseUsageInputTokensDetails() {}
+  /** Default constructor for OpenAIOutputContent. */
+  protected OpenAIOutputContent() {}
 
   /**
-   * Set the cachedTokens of this {@link OpenAIResponseUsageInputTokensDetails} instance and return
-   * the same instance.
+   * Set the type of this {@link OpenAIOutputContent} instance and return the same instance.
    *
-   * @param cachedTokens The cachedTokens of this {@link OpenAIResponseUsageInputTokensDetails}
-   * @return The same instance of this {@link OpenAIResponseUsageInputTokensDetails} class
+   * @param type The type of this {@link OpenAIOutputContent}
+   * @return The same instance of this {@link OpenAIOutputContent} class
    */
   @Nonnull
-  public OpenAIResponseUsageInputTokensDetails cachedTokens(@Nonnull final Integer cachedTokens) {
-    this.cachedTokens = cachedTokens;
+  public OpenAIOutputContent type(@Nonnull final OpenAIOutputContentType type) {
+    this.type = type;
     return this;
   }
 
   /**
-   * Get cachedTokens
+   * Get type
    *
-   * @return cachedTokens The cachedTokens of this {@link OpenAIResponseUsageInputTokensDetails}
-   *     instance.
+   * @return type The type of this {@link OpenAIOutputContent} instance.
    */
   @Nonnull
-  public Integer getCachedTokens() {
-    return cachedTokens;
+  public OpenAIOutputContentType getType() {
+    return type;
   }
 
   /**
-   * Set the cachedTokens of this {@link OpenAIResponseUsageInputTokensDetails} instance.
+   * Set the type of this {@link OpenAIOutputContent} instance.
    *
-   * @param cachedTokens The cachedTokens of this {@link OpenAIResponseUsageInputTokensDetails}
+   * @param type The type of this {@link OpenAIOutputContent}
    */
-  public void setCachedTokens(@Nonnull final Integer cachedTokens) {
-    this.cachedTokens = cachedTokens;
+  public void setType(@Nonnull final OpenAIOutputContentType type) {
+    this.type = type;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link
-   * OpenAIResponseUsageInputTokensDetails}.
+   * Get the names of the unrecognizable properties of the {@link OpenAIOutputContent}.
    *
    * @return The set of properties names
    */
@@ -83,8 +84,7 @@ public class OpenAIResponseUsageInputTokensDetails
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link
-   * OpenAIResponseUsageInputTokensDetails} instance.
+   * Get the value of an unrecognizable property of this {@link OpenAIOutputContent} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -96,14 +96,14 @@ public class OpenAIResponseUsageInputTokensDetails
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "OpenAIResponseUsageInputTokensDetails has no field with name '" + name + "'.");
+          "OpenAIOutputContent has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link OpenAIResponseUsageInputTokensDetails} instance
-   * including unrecognized properties.
+   * Get the value of all properties of this {@link OpenAIOutputContent} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -111,14 +111,13 @@ public class OpenAIResponseUsageInputTokensDetails
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (cachedTokens != null) declaredFields.put("cachedTokens", cachedTokens);
+    if (type != null) declaredFields.put("type", type);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link OpenAIResponseUsageInputTokensDetails} instance.
-   * If the map previously contained a mapping for the key, the old value is replaced by the
-   * specified value.
+   * Set an unrecognizable property of this {@link OpenAIOutputContent} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -136,24 +135,22 @@ public class OpenAIResponseUsageInputTokensDetails
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final OpenAIResponseUsageInputTokensDetails openAIResponseUsageInputTokensDetails =
-        (OpenAIResponseUsageInputTokensDetails) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, openAIResponseUsageInputTokensDetails.cloudSdkCustomFields)
-        && Objects.equals(this.cachedTokens, openAIResponseUsageInputTokensDetails.cachedTokens);
+    final OpenAIOutputContent openAIOutputContent = (OpenAIOutputContent) o;
+    return Objects.equals(this.cloudSdkCustomFields, openAIOutputContent.cloudSdkCustomFields)
+        && Objects.equals(this.type, openAIOutputContent.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(cachedTokens, cloudSdkCustomFields);
+    return Objects.hash(type, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class OpenAIResponseUsageInputTokensDetails {\n");
-    sb.append("    cachedTokens: ").append(toIndentedString(cachedTokens)).append("\n");
+    sb.append("class OpenAIOutputContent {\n");
+    sb.append("    type: ").append(toIndentedString(type)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -172,21 +169,21 @@ public class OpenAIResponseUsageInputTokensDetails
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * OpenAIResponseUsageInputTokensDetails} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link OpenAIOutputContent}
+   * instance with all required arguments.
    */
   public static Builder create() {
-    return (cachedTokens) -> new OpenAIResponseUsageInputTokensDetails().cachedTokens(cachedTokens);
+    return (type) -> new OpenAIOutputContent().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the cachedTokens of this {@link OpenAIResponseUsageInputTokensDetails} instance.
+     * Set the type of this {@link OpenAIOutputContent} instance.
      *
-     * @param cachedTokens The cachedTokens of this {@link OpenAIResponseUsageInputTokensDetails}
-     * @return The OpenAIResponseUsageInputTokensDetails instance.
+     * @param type The type of this {@link OpenAIOutputContent}
+     * @return The OpenAIOutputContent instance.
      */
-    OpenAIResponseUsageInputTokensDetails cachedTokens(@Nonnull final Integer cachedTokens);
+    OpenAIOutputContent type(@Nonnull final OpenAIOutputContentType type);
   }
 }
