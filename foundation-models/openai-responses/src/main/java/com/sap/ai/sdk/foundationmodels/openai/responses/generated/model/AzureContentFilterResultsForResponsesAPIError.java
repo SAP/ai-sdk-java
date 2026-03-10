@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
  * evaluation.
  */
 // CHECKSTYLE:OFF
-public class AzureContentFilterResultForChoiceError
+public class AzureContentFilterResultsForResponsesAPIError
 // CHECKSTYLE:ON
 {
   @JsonProperty("code")
@@ -40,18 +40,18 @@ public class AzureContentFilterResultForChoiceError
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for AzureContentFilterResultForChoiceError. */
-  protected AzureContentFilterResultForChoiceError() {}
+  /** Default constructor for AzureContentFilterResultsForResponsesAPIError. */
+  protected AzureContentFilterResultsForResponsesAPIError() {}
 
   /**
-   * Set the code of this {@link AzureContentFilterResultForChoiceError} instance and return the
-   * same instance.
+   * Set the code of this {@link AzureContentFilterResultsForResponsesAPIError} instance and return
+   * the same instance.
    *
    * @param code A distinct, machine-readable code associated with the error.
-   * @return The same instance of this {@link AzureContentFilterResultForChoiceError} class
+   * @return The same instance of this {@link AzureContentFilterResultsForResponsesAPIError} class
    */
   @Nonnull
-  public AzureContentFilterResultForChoiceError code(@Nonnull final Integer code) {
+  public AzureContentFilterResultsForResponsesAPIError code(@Nonnull final Integer code) {
     this.code = code;
     return this;
   }
@@ -59,7 +59,7 @@ public class AzureContentFilterResultForChoiceError
   /**
    * A distinct, machine-readable code associated with the error.
    *
-   * @return code The code of this {@link AzureContentFilterResultForChoiceError} instance.
+   * @return code The code of this {@link AzureContentFilterResultsForResponsesAPIError} instance.
    */
   @Nonnull
   public Integer getCode() {
@@ -67,7 +67,7 @@ public class AzureContentFilterResultForChoiceError
   }
 
   /**
-   * Set the code of this {@link AzureContentFilterResultForChoiceError} instance.
+   * Set the code of this {@link AzureContentFilterResultsForResponsesAPIError} instance.
    *
    * @param code A distinct, machine-readable code associated with the error.
    */
@@ -76,14 +76,14 @@ public class AzureContentFilterResultForChoiceError
   }
 
   /**
-   * Set the message of this {@link AzureContentFilterResultForChoiceError} instance and return the
-   * same instance.
+   * Set the message of this {@link AzureContentFilterResultsForResponsesAPIError} instance and
+   * return the same instance.
    *
    * @param message A human-readable message associated with the error.
-   * @return The same instance of this {@link AzureContentFilterResultForChoiceError} class
+   * @return The same instance of this {@link AzureContentFilterResultsForResponsesAPIError} class
    */
   @Nonnull
-  public AzureContentFilterResultForChoiceError message(@Nonnull final String message) {
+  public AzureContentFilterResultsForResponsesAPIError message(@Nonnull final String message) {
     this.message = message;
     return this;
   }
@@ -91,7 +91,8 @@ public class AzureContentFilterResultForChoiceError
   /**
    * A human-readable message associated with the error.
    *
-   * @return message The message of this {@link AzureContentFilterResultForChoiceError} instance.
+   * @return message The message of this {@link AzureContentFilterResultsForResponsesAPIError}
+   *     instance.
    */
   @Nonnull
   public String getMessage() {
@@ -99,7 +100,7 @@ public class AzureContentFilterResultForChoiceError
   }
 
   /**
-   * Set the message of this {@link AzureContentFilterResultForChoiceError} instance.
+   * Set the message of this {@link AzureContentFilterResultsForResponsesAPIError} instance.
    *
    * @param message A human-readable message associated with the error.
    */
@@ -109,7 +110,7 @@ public class AzureContentFilterResultForChoiceError
 
   /**
    * Get the names of the unrecognizable properties of the {@link
-   * AzureContentFilterResultForChoiceError}.
+   * AzureContentFilterResultsForResponsesAPIError}.
    *
    * @return The set of properties names
    */
@@ -121,7 +122,7 @@ public class AzureContentFilterResultForChoiceError
 
   /**
    * Get the value of an unrecognizable property of this {@link
-   * AzureContentFilterResultForChoiceError} instance.
+   * AzureContentFilterResultsForResponsesAPIError} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -133,14 +134,14 @@ public class AzureContentFilterResultForChoiceError
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "AzureContentFilterResultForChoiceError has no field with name '" + name + "'.");
+          "AzureContentFilterResultsForResponsesAPIError has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link AzureContentFilterResultForChoiceError} instance
-   * including unrecognized properties.
+   * Get the value of all properties of this {@link AzureContentFilterResultsForResponsesAPIError}
+   * instance including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -154,9 +155,9 @@ public class AzureContentFilterResultForChoiceError
   }
 
   /**
-   * Set an unrecognizable property of this {@link AzureContentFilterResultForChoiceError} instance.
-   * If the map previously contained a mapping for the key, the old value is replaced by the
-   * specified value.
+   * Set an unrecognizable property of this {@link AzureContentFilterResultsForResponsesAPIError}
+   * instance. If the map previously contained a mapping for the key, the old value is replaced by
+   * the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -174,12 +175,14 @@ public class AzureContentFilterResultForChoiceError
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final AzureContentFilterResultForChoiceError azureContentFilterResultForChoiceError =
-        (AzureContentFilterResultForChoiceError) o;
+    final AzureContentFilterResultsForResponsesAPIError
+        azureContentFilterResultsForResponsesAPIError =
+            (AzureContentFilterResultsForResponsesAPIError) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, azureContentFilterResultForChoiceError.cloudSdkCustomFields)
-        && Objects.equals(this.code, azureContentFilterResultForChoiceError.code)
-        && Objects.equals(this.message, azureContentFilterResultForChoiceError.message);
+            this.cloudSdkCustomFields,
+            azureContentFilterResultsForResponsesAPIError.cloudSdkCustomFields)
+        && Objects.equals(this.code, azureContentFilterResultsForResponsesAPIError.code)
+        && Objects.equals(this.message, azureContentFilterResultsForResponsesAPIError.message);
   }
 
   @Override
@@ -191,7 +194,7 @@ public class AzureContentFilterResultForChoiceError
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class AzureContentFilterResultForChoiceError {\n");
+    sb.append("class AzureContentFilterResultsForResponsesAPIError {\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -213,20 +216,21 @@ public class AzureContentFilterResultForChoiceError
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * AzureContentFilterResultForChoiceError} instance with all required arguments.
+   * AzureContentFilterResultsForResponsesAPIError} instance with all required arguments.
    */
   public static Builder create() {
     return (code) ->
-        (message) -> new AzureContentFilterResultForChoiceError().code(code).message(message);
+        (message) ->
+            new AzureContentFilterResultsForResponsesAPIError().code(code).message(message);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the code of this {@link AzureContentFilterResultForChoiceError} instance.
+     * Set the code of this {@link AzureContentFilterResultsForResponsesAPIError} instance.
      *
      * @param code A distinct, machine-readable code associated with the error.
-     * @return The AzureContentFilterResultForChoiceError builder.
+     * @return The AzureContentFilterResultsForResponsesAPIError builder.
      */
     Builder1 code(@Nonnull final Integer code);
   }
@@ -234,11 +238,11 @@ public class AzureContentFilterResultForChoiceError
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the message of this {@link AzureContentFilterResultForChoiceError} instance.
+     * Set the message of this {@link AzureContentFilterResultsForResponsesAPIError} instance.
      *
      * @param message A human-readable message associated with the error.
-     * @return The AzureContentFilterResultForChoiceError instance.
+     * @return The AzureContentFilterResultsForResponsesAPIError instance.
      */
-    AzureContentFilterResultForChoiceError message(@Nonnull final String message);
+    AzureContentFilterResultsForResponsesAPIError message(@Nonnull final String message);
   }
 }

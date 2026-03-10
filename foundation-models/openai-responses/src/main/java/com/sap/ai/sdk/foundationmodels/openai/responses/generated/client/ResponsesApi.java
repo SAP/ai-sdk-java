@@ -3,7 +3,6 @@ package com.sap.ai.sdk.foundationmodels.openai.responses.generated.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.foundationmodels.openai.responses.generated.model.AzureAIFoundryModelsApiVersion;
 import com.sap.ai.sdk.foundationmodels.openai.responses.generated.model.CreateResponse200Response;
-import com.sap.ai.sdk.foundationmodels.openai.responses.generated.model.DeleteResponse200Response;
 import com.sap.ai.sdk.foundationmodels.openai.responses.generated.model.OpenAICreateResponse;
 import com.sap.ai.sdk.foundationmodels.openai.responses.generated.model.OpenAIIncludeEnum;
 import com.sap.ai.sdk.foundationmodels.openai.responses.generated.model.OpenAIResponseItemList;
@@ -139,7 +138,7 @@ public class ResponsesApi extends BaseApi {
    *
    * <p><b>0</b> - An unexpected error response.
    *
-   * @param body (required) The value for the parameter body
+   * @param openAICreateResponse (required) The value for the parameter openAICreateResponse
    * @param apiVersion (optional, default to v1) The explicit Azure AI Foundry Models API version to
    *     use for this request. &#x60;v1&#x60; if not otherwise specified.
    * @return CreateResponse200Response
@@ -147,14 +146,14 @@ public class ResponsesApi extends BaseApi {
    */
   @Nonnull
   public CreateResponse200Response createResponse(
-      @Nonnull final OpenAICreateResponse body,
+      @Nonnull final OpenAICreateResponse openAICreateResponse,
       @Nullable final AzureAIFoundryModelsApiVersion apiVersion)
       throws OpenApiRequestException {
 
-    // verify the required parameter 'body' is set
-    if (body == null) {
+    // verify the required parameter 'openAICreateResponse' is set
+    if (openAICreateResponse == null) {
       throw new OpenApiRequestException(
-              "Missing the required parameter 'body' when calling createResponse")
+              "Missing the required parameter 'openAICreateResponse' when calling createResponse")
           .statusCode(400);
     }
 
@@ -183,7 +182,7 @@ public class ResponsesApi extends BaseApi {
         localVarQueryParams,
         localVarCollectionQueryParams,
         localVarQueryStringJoiner.toString(),
-        body,
+        openAICreateResponse,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
@@ -198,94 +197,14 @@ public class ResponsesApi extends BaseApi {
    *
    * <p><b>0</b> - An unexpected error response.
    *
-   * @param body The value for the parameter body
+   * @param openAICreateResponse The value for the parameter openAICreateResponse
    * @return CreateResponse200Response
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public CreateResponse200Response createResponse(@Nonnull final OpenAICreateResponse body)
-      throws OpenApiRequestException {
-    return createResponse(body, null);
-  }
-
-  /**
-   * Deletes a response by ID.
-   *
-   * <p><b>200</b> - The request has succeeded.
-   *
-   * <p><b>0</b> - An unexpected error response.
-   *
-   * @param responseId (required) The value for the parameter responseId
-   * @param apiVersion (optional, default to v1) The explicit Azure AI Foundry Models API version to
-   *     use for this request. &#x60;v1&#x60; if not otherwise specified.
-   * @return DeleteResponse200Response
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public DeleteResponse200Response deleteResponse(
-      @Nonnull final String responseId, @Nullable final AzureAIFoundryModelsApiVersion apiVersion)
-      throws OpenApiRequestException {
-
-    // verify the required parameter 'responseId' is set
-    if (responseId == null) {
-      throw new OpenApiRequestException(
-              "Missing the required parameter 'responseId' when calling deleteResponse")
-          .statusCode(400);
-    }
-
-    // create path and map variables
-    final String localVarPath =
-        "/responses/{response_id}"
-            .replaceAll(
-                "\\{" + "response_id" + "\\}",
-                ApiClient.escapeString(ApiClient.parameterToString(responseId)));
-
-    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
-    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-    localVarQueryParams.addAll(ApiClient.parameterToPair("api-version", apiVersion));
-
-    final String[] localVarAccepts = {"application/json"};
-    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {};
-
-    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
-
-    final TypeReference<DeleteResponse200Response> localVarReturnType =
-        new TypeReference<DeleteResponse200Response>() {};
-
-    return apiClient.invokeAPI(
-        localVarPath,
-        "DELETE",
-        localVarQueryParams,
-        localVarCollectionQueryParams,
-        localVarQueryStringJoiner.toString(),
-        null,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarReturnType);
-  }
-
-  /**
-   * Deletes a response by ID.
-   *
-   * <p><b>200</b> - The request has succeeded.
-   *
-   * <p><b>0</b> - An unexpected error response.
-   *
-   * @param responseId The value for the parameter responseId
-   * @return DeleteResponse200Response
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public DeleteResponse200Response deleteResponse(@Nonnull final String responseId)
-      throws OpenApiRequestException {
-    return deleteResponse(responseId, null);
+  public CreateResponse200Response createResponse(
+      @Nonnull final OpenAICreateResponse openAICreateResponse) throws OpenApiRequestException {
+    return createResponse(openAICreateResponse, null);
   }
 
   /**

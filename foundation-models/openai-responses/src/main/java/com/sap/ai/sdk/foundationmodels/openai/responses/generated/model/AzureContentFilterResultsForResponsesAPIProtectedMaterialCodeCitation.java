@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 
 /** If available, the citation details describing the associated license and its location. */
 // CHECKSTYLE:OFF
-public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
+public class AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation
 // CHECKSTYLE:ON
 {
   @JsonProperty("license")
@@ -38,19 +38,22 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for AzureContentFilterResultForChoiceProtectedMaterialCodeCitation. */
-  protected AzureContentFilterResultForChoiceProtectedMaterialCodeCitation() {}
+  /**
+   * Default constructor for AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation.
+   */
+  protected AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation() {}
 
   /**
-   * Set the license of this {@link AzureContentFilterResultForChoiceProtectedMaterialCodeCitation}
-   * instance and return the same instance.
+   * Set the license of this {@link
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation} instance and return the
+   * same instance.
    *
    * @param license The name or identifier of the license associated with the detection.
    * @return The same instance of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCodeCitation} class
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation} class
    */
   @Nonnull
-  public AzureContentFilterResultForChoiceProtectedMaterialCodeCitation license(
+  public AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation license(
       @Nullable final String license) {
     this.license = license;
     return this;
@@ -60,7 +63,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
    * The name or identifier of the license associated with the detection.
    *
    * @return license The license of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCodeCitation} instance.
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation} instance.
    */
   @Nonnull
   public String getLicense() {
@@ -68,8 +71,8 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
   }
 
   /**
-   * Set the license of this {@link AzureContentFilterResultForChoiceProtectedMaterialCodeCitation}
-   * instance.
+   * Set the license of this {@link
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation} instance.
    *
    * @param license The name or identifier of the license associated with the detection.
    */
@@ -78,15 +81,16 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
   }
 
   /**
-   * Set the URL of this {@link AzureContentFilterResultForChoiceProtectedMaterialCodeCitation}
-   * instance and return the same instance.
+   * Set the URL of this {@link
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation} instance and return the
+   * same instance.
    *
    * @param URL The URL associated with the license.
    * @return The same instance of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCodeCitation} class
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation} class
    */
   @Nonnull
-  public AzureContentFilterResultForChoiceProtectedMaterialCodeCitation URL(
+  public AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation URL(
       @Nullable final URI URL) {
     this.URL = URL;
     return this;
@@ -96,7 +100,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
    * The URL associated with the license.
    *
    * @return URL The URL of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCodeCitation} instance.
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation} instance.
    */
   @Nonnull
   public URI getURL() {
@@ -104,8 +108,8 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
   }
 
   /**
-   * Set the URL of this {@link AzureContentFilterResultForChoiceProtectedMaterialCodeCitation}
-   * instance.
+   * Set the URL of this {@link
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation} instance.
    *
    * @param URL The URL associated with the license.
    */
@@ -115,7 +119,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
 
   /**
    * Get the names of the unrecognizable properties of the {@link
-   * AzureContentFilterResultForChoiceProtectedMaterialCodeCitation}.
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation}.
    *
    * @return The set of properties names
    */
@@ -127,7 +131,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
 
   /**
    * Get the value of an unrecognizable property of this {@link
-   * AzureContentFilterResultForChoiceProtectedMaterialCodeCitation} instance.
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -139,7 +143,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "AzureContentFilterResultForChoiceProtectedMaterialCodeCitation has no field with name '"
+          "AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation has no field with name '"
               + name
               + "'.");
     }
@@ -148,8 +152,8 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
 
   /**
    * Get the value of all properties of this {@link
-   * AzureContentFilterResultForChoiceProtectedMaterialCodeCitation} instance including unrecognized
-   * properties.
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation} instance including
+   * unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -164,8 +168,8 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
 
   /**
    * Set an unrecognizable property of this {@link
-   * AzureContentFilterResultForChoiceProtectedMaterialCodeCitation} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -183,16 +187,18 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
-        azureContentFilterResultForChoiceProtectedMaterialCodeCitation =
-            (AzureContentFilterResultForChoiceProtectedMaterialCodeCitation) o;
+    final AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation
+        azureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation =
+            (AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation) o;
     return Objects.equals(
             this.cloudSdkCustomFields,
-            azureContentFilterResultForChoiceProtectedMaterialCodeCitation.cloudSdkCustomFields)
+            azureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation
+                .cloudSdkCustomFields)
         && Objects.equals(
-            this.license, azureContentFilterResultForChoiceProtectedMaterialCodeCitation.license)
+            this.license,
+            azureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation.license)
         && Objects.equals(
-            this.URL, azureContentFilterResultForChoiceProtectedMaterialCodeCitation.URL);
+            this.URL, azureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation.URL);
   }
 
   @Override
@@ -204,7 +210,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation {\n");
+    sb.append("class AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation {\n");
     sb.append("    license: ").append(toIndentedString(license)).append("\n");
     sb.append("    URL: ").append(toIndentedString(URL)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -225,10 +231,10 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCodeCitation
   }
 
   /**
-   * Create a new {@link AzureContentFilterResultForChoiceProtectedMaterialCodeCitation} instance.
-   * No arguments are required.
+   * Create a new {@link AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation}
+   * instance. No arguments are required.
    */
-  public static AzureContentFilterResultForChoiceProtectedMaterialCodeCitation create() {
-    return new AzureContentFilterResultForChoiceProtectedMaterialCodeCitation();
+  public static AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation create() {
+    return new AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation();
   }
 }

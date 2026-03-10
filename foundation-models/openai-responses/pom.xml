@@ -81,9 +81,10 @@
                 </goals>
                 <phase>generate-sources</phase>
                 <configuration>
-                  <inputSpec>${project.basedir}/src/main/resources/spec/azure-v1-v1-generated.yaml</inputSpec>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/azure-responses-only.yaml</inputSpec>
                   <modelPackage>com.sap.ai.sdk.foundationmodels.openai.responses.generated.model</modelPackage>
                   <apiPackage>com.sap.ai.sdk.foundationmodels.openai.responses.generated.client</apiPackage>
+                  <generateApis>true</generateApis>
                   <additionalProperties>
                     <library>apache-httpclient</library>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
@@ -92,76 +93,6 @@
                     <useOneOfInterfaces>true</useOneOfInterfaces>
                     <useOneOfCreators>true</useOneOfCreators>
                     <useFloatArrays>true</useFloatArrays>
-
-                    <!-- new exclude paths -->
-                    <excludePaths>/batches
-                      /batches/{batch_id}
-                      /batches/{batch_id}/cancel
-                      /chat/completions
-                      /completions
-                      /containers
-                      /containers/{container_id}
-                      /containers/{container_id}/files
-                      /containers/{container_id}/files/{file_id}
-                      /containers/{container_id}/files/{file_id}/content
-                      /conversations
-                      /conversations/{conversation_id}
-                      /conversations/{conversation_id}/items
-                      /conversations/{conversation_id}/items/{item_id}
-                      /embeddings
-                      /evals
-                      /evals/{eval_id}
-                      /evals/{eval_id}/runs
-                      /evals/{eval_id}/runs/{run_id}
-                      /evals/{eval_id}/runs/{run_id}/output_items
-                      /evals/{eval_id}/runs/{run_id}/output_items/{output_item_id}
-                      /files
-                      /files/{file_id}
-                      /files/{file_id}/content
-                      /fine_tuning/alpha/graders/run
-                      /fine_tuning/alpha/graders/validate
-                      /fine_tuning/checkpoints/{fine_tuned_model_checkpoint}/permissions
-                      /fine_tuning/checkpoints/{fine_tuned_model_checkpoint}/permissions/{permission_id}
-                      /fine_tuning/jobs
-                      /fine_tuning/jobs/{fine_tuning_job_id}
-                      /fine_tuning/jobs/{fine_tuning_job_id}/cancel
-                      /fine_tuning/jobs/{fine_tuning_job_id}/checkpoints
-                      /fine_tuning/jobs/{fine_tuning_job_id}/checkpoints/{fine_tuning_checkpoint_id}/copy
-                      /fine_tuning/jobs/{fine_tuning_job_id}/events
-                      /fine_tuning/jobs/{fine_tuning_job_id}/pause
-                      /fine_tuning/jobs/{fine_tuning_job_id}/resume
-                      /models
-                      /models/{model}
-                      /realtime/calls
-                      /realtime/calls/{call_id}/accept
-                      /realtime/calls/{call_id}/hangup
-                      /realtime/calls/{call_id}/refer
-                      /realtime/calls/{call_id}/reject
-                      /realtime/client_secrets
-                      /realtime/sessions
-                      /realtime/transcription_sessions
-                      /threads
-                      /threads/runs
-                      /threads/{thread_id}
-                      /threads/{thread_id}/messages
-                      /threads/{thread_id}/messages/{message_id}
-                      /threads/{thread_id}/runs
-                      /threads/{thread_id}/runs/{run_id}
-                      /threads/{thread_id}/runs/{run_id}/cancel
-                      /threads/{thread_id}/runs/{run_id}/steps
-                      /threads/{thread_id}/runs/{run_id}/steps/{step_id}
-                      /threads/{thread_id}/runs/{run_id}/submit_tool_outputs
-                      /vector_stores
-                      /vector_stores/{vector_store_id}
-                      /vector_stores/{vector_store_id}/file_batches
-                      /vector_stores/{vector_store_id}/file_batches/{batch_id}
-                      /vector_stores/{vector_store_id}/file_batches/{batch_id}/cancel
-                      /vector_stores/{vector_store_id}/file_batches/{batch_id}/files
-                      /vector_stores/{vector_store_id}/files
-                      /vector_stores/{vector_store_id}/files/{file_id}
-                      /vector_stores/{vector_store_id}/files/{file_id}/content
-                      /vector_stores/{vector_store_id}/search</excludePaths>
-                    <removeUnusedComponents>true</removeUnusedComponents>
                   </additionalProperties>
                 </configuration>
               </execution>

@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
  * material.
  */
 // CHECKSTYLE:OFF
-public class AzureContentFilterResultForChoiceProtectedMaterialCode
+public class AzureContentFilterResultsForResponsesAPIProtectedMaterialCode
 // CHECKSTYLE:ON
 {
   @JsonProperty("filtered")
@@ -38,24 +38,24 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
   private Boolean detected;
 
   @JsonProperty("citation")
-  private AzureContentFilterResultForChoiceProtectedMaterialCodeCitation citation;
+  private AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation citation;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for AzureContentFilterResultForChoiceProtectedMaterialCode. */
-  protected AzureContentFilterResultForChoiceProtectedMaterialCode() {}
+  /** Default constructor for AzureContentFilterResultsForResponsesAPIProtectedMaterialCode. */
+  protected AzureContentFilterResultsForResponsesAPIProtectedMaterialCode() {}
 
   /**
-   * Set the filtered of this {@link AzureContentFilterResultForChoiceProtectedMaterialCode}
+   * Set the filtered of this {@link AzureContentFilterResultsForResponsesAPIProtectedMaterialCode}
    * instance and return the same instance.
    *
    * @param filtered Whether the content detection resulted in a content filtering action.
    * @return The same instance of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCode} class
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} class
    */
   @Nonnull
-  public AzureContentFilterResultForChoiceProtectedMaterialCode filtered(
+  public AzureContentFilterResultsForResponsesAPIProtectedMaterialCode filtered(
       @Nonnull final Boolean filtered) {
     this.filtered = filtered;
     return this;
@@ -65,7 +65,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
    * Whether the content detection resulted in a content filtering action.
    *
    * @return filtered The filtered of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCode} instance.
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} instance.
    */
   @Nonnull
   public Boolean isFiltered() {
@@ -73,7 +73,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
   }
 
   /**
-   * Set the filtered of this {@link AzureContentFilterResultForChoiceProtectedMaterialCode}
+   * Set the filtered of this {@link AzureContentFilterResultsForResponsesAPIProtectedMaterialCode}
    * instance.
    *
    * @param filtered Whether the content detection resulted in a content filtering action.
@@ -83,15 +83,15 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
   }
 
   /**
-   * Set the detected of this {@link AzureContentFilterResultForChoiceProtectedMaterialCode}
+   * Set the detected of this {@link AzureContentFilterResultsForResponsesAPIProtectedMaterialCode}
    * instance and return the same instance.
    *
    * @param detected Whether the labeled content category was detected in the content.
    * @return The same instance of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCode} class
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} class
    */
   @Nonnull
-  public AzureContentFilterResultForChoiceProtectedMaterialCode detected(
+  public AzureContentFilterResultsForResponsesAPIProtectedMaterialCode detected(
       @Nonnull final Boolean detected) {
     this.detected = detected;
     return this;
@@ -101,7 +101,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
    * Whether the labeled content category was detected in the content.
    *
    * @return detected The detected of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCode} instance.
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} instance.
    */
   @Nonnull
   public Boolean isDetected() {
@@ -109,7 +109,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
   }
 
   /**
-   * Set the detected of this {@link AzureContentFilterResultForChoiceProtectedMaterialCode}
+   * Set the detected of this {@link AzureContentFilterResultsForResponsesAPIProtectedMaterialCode}
    * instance.
    *
    * @param detected Whether the labeled content category was detected in the content.
@@ -119,17 +119,18 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
   }
 
   /**
-   * Set the citation of this {@link AzureContentFilterResultForChoiceProtectedMaterialCode}
+   * Set the citation of this {@link AzureContentFilterResultsForResponsesAPIProtectedMaterialCode}
    * instance and return the same instance.
    *
    * @param citation The citation of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCode}
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCode}
    * @return The same instance of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCode} class
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} class
    */
   @Nonnull
-  public AzureContentFilterResultForChoiceProtectedMaterialCode citation(
-      @Nullable final AzureContentFilterResultForChoiceProtectedMaterialCodeCitation citation) {
+  public AzureContentFilterResultsForResponsesAPIProtectedMaterialCode citation(
+      @Nullable
+          final AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation citation) {
     this.citation = citation;
     return this;
   }
@@ -138,28 +139,29 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
    * Get citation
    *
    * @return citation The citation of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCode} instance.
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} instance.
    */
   @Nonnull
-  public AzureContentFilterResultForChoiceProtectedMaterialCodeCitation getCitation() {
+  public AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation getCitation() {
     return citation;
   }
 
   /**
-   * Set the citation of this {@link AzureContentFilterResultForChoiceProtectedMaterialCode}
+   * Set the citation of this {@link AzureContentFilterResultsForResponsesAPIProtectedMaterialCode}
    * instance.
    *
    * @param citation The citation of this {@link
-   *     AzureContentFilterResultForChoiceProtectedMaterialCode}
+   *     AzureContentFilterResultsForResponsesAPIProtectedMaterialCode}
    */
   public void setCitation(
-      @Nullable final AzureContentFilterResultForChoiceProtectedMaterialCodeCitation citation) {
+      @Nullable
+          final AzureContentFilterResultsForResponsesAPIProtectedMaterialCodeCitation citation) {
     this.citation = citation;
   }
 
   /**
    * Get the names of the unrecognizable properties of the {@link
-   * AzureContentFilterResultForChoiceProtectedMaterialCode}.
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCode}.
    *
    * @return The set of properties names
    */
@@ -171,7 +173,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
 
   /**
    * Get the value of an unrecognizable property of this {@link
-   * AzureContentFilterResultForChoiceProtectedMaterialCode} instance.
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -183,7 +185,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "AzureContentFilterResultForChoiceProtectedMaterialCode has no field with name '"
+          "AzureContentFilterResultsForResponsesAPIProtectedMaterialCode has no field with name '"
               + name
               + "'.");
     }
@@ -192,7 +194,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
 
   /**
    * Get the value of all properties of this {@link
-   * AzureContentFilterResultForChoiceProtectedMaterialCode} instance including unrecognized
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -209,7 +211,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
 
   /**
    * Set an unrecognizable property of this {@link
-   * AzureContentFilterResultForChoiceProtectedMaterialCode} instance. If the map previously
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -228,18 +230,18 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final AzureContentFilterResultForChoiceProtectedMaterialCode
-        azureContentFilterResultForChoiceProtectedMaterialCode =
-            (AzureContentFilterResultForChoiceProtectedMaterialCode) o;
+    final AzureContentFilterResultsForResponsesAPIProtectedMaterialCode
+        azureContentFilterResultsForResponsesAPIProtectedMaterialCode =
+            (AzureContentFilterResultsForResponsesAPIProtectedMaterialCode) o;
     return Objects.equals(
             this.cloudSdkCustomFields,
-            azureContentFilterResultForChoiceProtectedMaterialCode.cloudSdkCustomFields)
+            azureContentFilterResultsForResponsesAPIProtectedMaterialCode.cloudSdkCustomFields)
         && Objects.equals(
-            this.filtered, azureContentFilterResultForChoiceProtectedMaterialCode.filtered)
+            this.filtered, azureContentFilterResultsForResponsesAPIProtectedMaterialCode.filtered)
         && Objects.equals(
-            this.detected, azureContentFilterResultForChoiceProtectedMaterialCode.detected)
+            this.detected, azureContentFilterResultsForResponsesAPIProtectedMaterialCode.detected)
         && Objects.equals(
-            this.citation, azureContentFilterResultForChoiceProtectedMaterialCode.citation);
+            this.citation, azureContentFilterResultsForResponsesAPIProtectedMaterialCode.citation);
   }
 
   @Override
@@ -251,7 +253,7 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class AzureContentFilterResultForChoiceProtectedMaterialCode {\n");
+    sb.append("class AzureContentFilterResultsForResponsesAPIProtectedMaterialCode {\n");
     sb.append("    filtered: ").append(toIndentedString(filtered)).append("\n");
     sb.append("    detected: ").append(toIndentedString(detected)).append("\n");
     sb.append("    citation: ").append(toIndentedString(citation)).append("\n");
@@ -274,12 +276,13 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * AzureContentFilterResultForChoiceProtectedMaterialCode} instance with all required arguments.
+   * AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} instance with all required
+   * arguments.
    */
   public static Builder create() {
     return (filtered) ->
         (detected) ->
-            new AzureContentFilterResultForChoiceProtectedMaterialCode()
+            new AzureContentFilterResultsForResponsesAPIProtectedMaterialCode()
                 .filtered(filtered)
                 .detected(detected);
   }
@@ -287,11 +290,11 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the filtered of this {@link AzureContentFilterResultForChoiceProtectedMaterialCode}
-     * instance.
+     * Set the filtered of this {@link
+     * AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} instance.
      *
      * @param filtered Whether the content detection resulted in a content filtering action.
-     * @return The AzureContentFilterResultForChoiceProtectedMaterialCode builder.
+     * @return The AzureContentFilterResultsForResponsesAPIProtectedMaterialCode builder.
      */
     Builder1 filtered(@Nonnull final Boolean filtered);
   }
@@ -299,13 +302,13 @@ public class AzureContentFilterResultForChoiceProtectedMaterialCode
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the detected of this {@link AzureContentFilterResultForChoiceProtectedMaterialCode}
-     * instance.
+     * Set the detected of this {@link
+     * AzureContentFilterResultsForResponsesAPIProtectedMaterialCode} instance.
      *
      * @param detected Whether the labeled content category was detected in the content.
-     * @return The AzureContentFilterResultForChoiceProtectedMaterialCode instance.
+     * @return The AzureContentFilterResultsForResponsesAPIProtectedMaterialCode instance.
      */
-    AzureContentFilterResultForChoiceProtectedMaterialCode detected(
+    AzureContentFilterResultsForResponsesAPIProtectedMaterialCode detected(
         @Nonnull final Boolean detected);
   }
 }
