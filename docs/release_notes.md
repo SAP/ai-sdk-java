@@ -16,6 +16,7 @@
 
 ### 📈 Improvements
 
+- [Orchestration] Added new API `TranslationConfig#applyToPlaceholders` and `TranslationConfig#applyToTemplateRoles` to support partial translation for a message.
 - [RPT] `RptClient.tableCompletion()` GZIP compresses the request payload.
 
 ### 🐛 Fixed Issues
