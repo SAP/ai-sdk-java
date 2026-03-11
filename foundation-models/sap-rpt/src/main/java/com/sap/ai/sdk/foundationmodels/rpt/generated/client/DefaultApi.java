@@ -65,12 +65,16 @@ public class DefaultApi extends BaseApi {
    *
    * <p><b>500</b> - Internal Server Error
    *
-   * @param predictRequestPayload The value for the parameter predictRequestPayload
+   * @param predictRequestPayload (required) The value for the parameter predictRequestPayload
+   * @param contentEncoding (optional) Content encoding of the request body. Use &#39;gzip&#39; for
+   *     gzip-compressed payloads.
    * @return PredictResponsePayload
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PredictResponsePayload predict(@Nonnull final PredictRequestPayload predictRequestPayload)
+  public PredictResponsePayload predict(
+      @Nonnull final PredictRequestPayload predictRequestPayload,
+      @Nullable final String contentEncoding)
       throws OpenApiRequestException {
 
     // verify the required parameter 'predictRequestPayload' is set
@@ -88,6 +92,9 @@ public class DefaultApi extends BaseApi {
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (contentEncoding != null)
+      localVarHeaderParams.put("Content-Encoding", ApiClient.parameterToString(contentEncoding));
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
@@ -109,6 +116,35 @@ public class DefaultApi extends BaseApi {
         localVarAccept,
         localVarContentType,
         localVarReturnType);
+  }
+
+  /**
+   * Make in-context predictions for specified target columns based on provided table data JSON
+   * (optionally gzip-compressed).
+   *
+   * <p>Make in-context predictions for specified target columns. Either \&quot;rows\&quot; or
+   * \&quot;columns\&quot; must be provided and must contain both context and query rows. You can
+   * optionally send gzip-compressed JSON payloads and set a \&quot;Content-Encoding: gzip\&quot;
+   * header.
+   *
+   * <p><b>200</b> - Successful Prediction
+   *
+   * <p><b>400</b> - Bad Request - Invalid input data
+   *
+   * <p><b>413</b> - Payload Too Large
+   *
+   * <p><b>422</b> - Validation Error
+   *
+   * <p><b>500</b> - Internal Server Error
+   *
+   * @param predictRequestPayload The value for the parameter predictRequestPayload
+   * @return PredictResponsePayload
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PredictResponsePayload predict(@Nonnull final PredictRequestPayload predictRequestPayload)
+      throws OpenApiRequestException {
+    return predict(predictRequestPayload, null);
   }
 
   /**
