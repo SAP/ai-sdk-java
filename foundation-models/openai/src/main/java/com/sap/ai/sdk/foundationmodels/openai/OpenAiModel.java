@@ -116,6 +116,9 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   /** Azure OpenAI GPT-5-nano model */
   public static final OpenAiModel GPT_REALTIME = new OpenAiModel("gpt-realtime", null);
 
+  /** Azure OpenAI GPT-5.2 model */
+  public static final OpenAiModel GPT_52 = new OpenAiModel("gpt-5.2", null);
+
   /**
    * Azure OpenAI Text Embedding ADA 002 model
    *
