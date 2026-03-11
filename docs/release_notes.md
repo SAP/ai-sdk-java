@@ -13,6 +13,8 @@
 ### ✨ New Functionality
 
 - [Grounding] Added `GroundingClient.withHeader()`.
+- [Orchestration] Added `GPT_52` model for `OrchestrationAiModel`.
+- [OpenAi] Added `GPT_52` model from `OpenAiModel`.
 
 ### 📈 Improvements
 
