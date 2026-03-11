@@ -27,13 +27,18 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * Prompt Registry API in version 0.0.1.
+ * Prompt Registry in version 0.3.26.
  *
- * <p>Prompt Storage service for Design time & Runtime prompt templates.
+ * <p>The Prompt Registry simplifies the lifecycle management of prompt templates across design and
+ * runtime environments. It comes with an imperative and declarative interface. This API
+ * specification describes the imperative API for managing prompt templates and also allows the
+ * retrieval of declarative managed prompt templates. A prompt template consists of chat messages
+ * where placeholders can be defined together with default values. Additional information such as
+ * metadata tags can be added to the resource as well.
  */
 public class PromptTemplatesApi extends AbstractOpenApiService {
   /**
-   * Instantiates this API class to invoke operations on the Prompt Registry API.
+   * Instantiates this API class to invoke operations on the Prompt Registry.
    *
    * @param httpDestination The destination that API should be used with
    */
@@ -42,8 +47,8 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Instantiates this API class to invoke operations on the Prompt Registry API based on a given
-   * {@link ApiClient}.
+   * Instantiates this API class to invoke operations on the Prompt Registry based on a given {@link
+   * ApiClient}.
    *
    * @param apiClient ApiClient to invoke the API on
    */
@@ -53,7 +58,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Create or update a prompt template
+   * Prompt template create
+   *
+   * <p>Create or update a prompt template
    *
    * <p><b>200</b> - Successful response
    *
@@ -104,7 +111,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final String[] localVarContentTypes = {"application/json"};
     final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
 
     final ParameterizedTypeReference<PromptTemplatePostResponse> localVarReturnType =
         new ParameterizedTypeReference<PromptTemplatePostResponse>() {};
@@ -122,7 +129,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Create or update a prompt template
+   * Prompt template create
+   *
+   * <p>Create or update a prompt template
    *
    * <p><b>200</b> - Successful response
    *
@@ -144,7 +153,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Delete prompt template
+   * Prompt template delete
+   *
+   * <p>Delete an imperatively managed prompt template
    *
    * <p><b>200</b> - Successful response
    *
@@ -154,7 +165,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplateId (required) The value for the parameter promptTemplateId
+   * @param promptTemplateId (required) UUID of the prompt template.
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @return PromptTemplateDeleteResponse
@@ -199,7 +210,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final String[] localVarContentTypes = {};
     final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
 
     final ParameterizedTypeReference<PromptTemplateDeleteResponse> localVarReturnType =
         new ParameterizedTypeReference<PromptTemplateDeleteResponse>() {};
@@ -217,7 +228,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Delete prompt template
+   * Prompt template delete
+   *
+   * <p>Delete an imperatively managed prompt template
    *
    * <p><b>200</b> - Successful response
    *
@@ -227,7 +240,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplateId The value for the parameter promptTemplateId
+   * @param promptTemplateId UUID of the prompt template.
    * @return PromptTemplateDeleteResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -238,7 +251,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Export prompt template
+   * Prompt template export
+   *
+   * <p>Download a prompt template as a file
    *
    * <p><b>200</b> - Successful response
    *
@@ -246,7 +261,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplateId (required) The value for the parameter promptTemplateId
+   * @param promptTemplateId (required) UUID of the prompt template.
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @return byte[]
@@ -291,7 +306,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final String[] localVarContentTypes = {};
     final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
 
     final ParameterizedTypeReference<byte[]> localVarReturnType =
         new ParameterizedTypeReference<byte[]>() {};
@@ -309,7 +324,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Export prompt template
+   * Prompt template export
+   *
+   * <p>Download a prompt template as a file
    *
    * <p><b>200</b> - Successful response
    *
@@ -317,7 +334,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplateId The value for the parameter promptTemplateId
+   * @param promptTemplateId UUID of the prompt template.
    * @return byte[]
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -328,7 +345,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Get prompt template by UUID
+   * Prompt template get
+   *
+   * <p>Get prompt template by UUID
    *
    * <p><b>200</b> - Successful response
    *
@@ -338,7 +357,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplateId (required) The value for the parameter promptTemplateId
+   * @param promptTemplateId (required) UUID of the prompt template.
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @return PromptTemplateGetResponse
@@ -383,7 +402,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final String[] localVarContentTypes = {};
     final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
 
     final ParameterizedTypeReference<PromptTemplateGetResponse> localVarReturnType =
         new ParameterizedTypeReference<PromptTemplateGetResponse>() {};
@@ -401,7 +420,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Get prompt template by UUID
+   * Prompt template get
+   *
+   * <p>Get prompt template by UUID
    *
    * <p><b>200</b> - Successful response
    *
@@ -411,7 +432,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplateId The value for the parameter promptTemplateId
+   * @param promptTemplateId UUID of the prompt template.
    * @return PromptTemplateGetResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -422,7 +443,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Import prompt template
+   * Prompt template create
+   *
+   * <p>Create an imperatively managed prompt template from a file
    *
    * <p><b>200</b> - Successful response
    *
@@ -466,7 +489,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final String[] localVarContentTypes = {"multipart/form-data"};
     final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
 
     final ParameterizedTypeReference<PromptTemplatePostResponse> localVarReturnType =
         new ParameterizedTypeReference<PromptTemplatePostResponse>() {};
@@ -484,7 +507,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Import prompt template
+   * Prompt template create
+   *
+   * <p>Create an imperatively managed prompt template from a file
    *
    * <p><b>200</b> - Successful response
    *
@@ -501,7 +526,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * List prompt template history
+   * Prompt template history
+   *
+   * <p>List prompt template history
    *
    * <p><b>200</b> - Successful response
    *
@@ -511,9 +538,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param scenario (required) The value for the parameter scenario
-   * @param version (required) The value for the parameter version
-   * @param name (required) The value for the parameter name
+   * @param scenario (required) Scenario field of the resource.
+   * @param version (required) Version field of the resource.
+   * @param name (required) Name field of the resource.
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
    * @return PromptTemplateListResponse
@@ -575,7 +602,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final String[] localVarContentTypes = {};
     final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
 
     final ParameterizedTypeReference<PromptTemplateListResponse> localVarReturnType =
         new ParameterizedTypeReference<PromptTemplateListResponse>() {};
@@ -593,7 +620,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * List prompt template history
+   * Prompt template history
+   *
+   * <p>List prompt template history
    *
    * <p><b>200</b> - Successful response
    *
@@ -603,9 +632,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param scenario The value for the parameter scenario
-   * @param version The value for the parameter version
-   * @param name The value for the parameter name
+   * @param scenario Scenario field of the resource.
+   * @param version Version field of the resource.
+   * @param name Name field of the resource.
    * @return PromptTemplateListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -617,7 +646,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * List prompt templates
+   * Prompt template list
+   *
+   * <p>List prompt templates
    *
    * <p><b>200</b> - Successful response
    *
@@ -629,11 +660,12 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
-   * @param scenario (optional) The value for the parameter scenario
-   * @param name (optional) The value for the parameter name
-   * @param version (optional) The value for the parameter version
-   * @param retrieve (optional, default to both) The value for the parameter retrieve
-   * @param includeSpec (optional, default to false) The value for the parameter includeSpec
+   * @param scenario (optional) Scenario field of the resource.
+   * @param name (optional) Name field of the resource.
+   * @param version (optional) Version field of the resource.
+   * @param retrieve (optional, default to both) Whether to retrieve &#39;imperative&#39;,
+   *     &#39;declarative&#39;, or &#39;both&#39;.
+   * @param includeSpec (optional, default to false) Whether include the spec section or not.
    * @return PromptTemplateListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -676,7 +708,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final String[] localVarContentTypes = {};
     final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
 
     final ParameterizedTypeReference<PromptTemplateListResponse> localVarReturnType =
         new ParameterizedTypeReference<PromptTemplateListResponse>() {};
@@ -694,7 +726,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * List prompt templates
+   * Prompt template list
+   *
+   * <p>List prompt templates
    *
    * <p><b>200</b> - Successful response
    *
@@ -713,7 +747,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Parse prompt template by ID
+   * Prompt template fill
+   *
+   * <p>Fill the placeholders of a prompt template that is identified by its UUID
    *
    * <p><b>200</b> - Successful response
    *
@@ -723,10 +759,10 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplateId (required) The value for the parameter promptTemplateId
+   * @param promptTemplateId (required) UUID of the prompt template.
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
-   * @param metadata (optional, default to false) The value for the parameter metadata
+   * @param metadata (optional, default to false) Whether to not include metadata in the response.
    * @param promptTemplateSubstitutionRequest (optional) The value for the parameter
    *     promptTemplateSubstitutionRequest
    * @return PromptTemplateSubstitutionResponse
@@ -775,7 +811,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final String[] localVarContentTypes = {"application/json"};
     final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
 
     final ParameterizedTypeReference<PromptTemplateSubstitutionResponse> localVarReturnType =
         new ParameterizedTypeReference<PromptTemplateSubstitutionResponse>() {};
@@ -793,7 +829,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Parse prompt template by ID
+   * Prompt template fill
+   *
+   * <p>Fill the placeholders of a prompt template that is identified by its UUID
    *
    * <p><b>200</b> - Successful response
    *
@@ -803,7 +841,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param promptTemplateId The value for the parameter promptTemplateId
+   * @param promptTemplateId UUID of the prompt template.
    * @return PromptTemplateSubstitutionResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -814,7 +852,10 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Parse prompt template by name and version
+   * Prompt template fill
+   *
+   * <p>Fill the placeholders of a prompt template that is identified by its scenario, name and
+   * version
    *
    * <p><b>200</b> - Successful response
    *
@@ -824,12 +865,12 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param scenario (required) The value for the parameter scenario
-   * @param version (required) The value for the parameter version
-   * @param name (required) The value for the parameter name
+   * @param scenario (required) Scenario field of the resource.
+   * @param version (required) Version field of the resource.
+   * @param name (required) Name field of the resource.
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
-   * @param metadata (optional, default to false) The value for the parameter metadata
+   * @param metadata (optional, default to false) Whether to not include metadata in the response.
    * @param promptTemplateSubstitutionRequest (optional) The value for the parameter
    *     promptTemplateSubstitutionRequest
    * @return PromptTemplateSubstitutionResponse
@@ -895,7 +936,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final String[] localVarContentTypes = {"application/json"};
     final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String[] localVarAuthNames = new String[] {"Oauth2"};
 
     final ParameterizedTypeReference<PromptTemplateSubstitutionResponse> localVarReturnType =
         new ParameterizedTypeReference<PromptTemplateSubstitutionResponse>() {};
@@ -913,7 +954,10 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   }
 
   /**
-   * Parse prompt template by name and version
+   * Prompt template fill
+   *
+   * <p>Fill the placeholders of a prompt template that is identified by its scenario, name and
+   * version
    *
    * <p><b>200</b> - Successful response
    *
@@ -923,9 +967,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param scenario The value for the parameter scenario
-   * @param version The value for the parameter version
-   * @param name The value for the parameter name
+   * @param scenario Scenario field of the resource.
+   * @param version Version field of the resource.
+   * @param name Name field of the resource.
    * @return PromptTemplateSubstitutionResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */

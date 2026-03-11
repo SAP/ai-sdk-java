@@ -23,87 +23,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** OrchestrationConfig */
+/** FileContent */
 // CHECKSTYLE:OFF
-public class OrchestrationConfig
+public class FileContent
 // CHECKSTYLE:ON
 {
-  @JsonProperty("modules")
-  private OrchestrationConfigModules modules;
+  @JsonProperty("file_data")
+  private String fileData;
 
-  @JsonProperty("stream")
-  private GlobalStreamOptions stream;
+  @JsonProperty("filename")
+  private String filename;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for OrchestrationConfig. */
-  protected OrchestrationConfig() {}
+  /** Default constructor for FileContent. */
+  protected FileContent() {}
 
   /**
-   * Set the modules of this {@link OrchestrationConfig} instance and return the same instance.
+   * Set the fileData of this {@link FileContent} instance and return the same instance.
    *
-   * @param modules The modules of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
+   * @param fileData Base64 encoded file content or file URL
+   * @return The same instance of this {@link FileContent} class
    */
   @Nonnull
-  public OrchestrationConfig modules(@Nonnull final OrchestrationConfigModules modules) {
-    this.modules = modules;
+  public FileContent fileData(@Nonnull final String fileData) {
+    this.fileData = fileData;
     return this;
   }
 
   /**
-   * Get modules
+   * Base64 encoded file content or file URL
    *
-   * @return modules The modules of this {@link OrchestrationConfig} instance.
+   * @return fileData The fileData of this {@link FileContent} instance.
    */
   @Nonnull
-  public OrchestrationConfigModules getModules() {
-    return modules;
+  public String getFileData() {
+    return fileData;
   }
 
   /**
-   * Set the modules of this {@link OrchestrationConfig} instance.
+   * Set the fileData of this {@link FileContent} instance.
    *
-   * @param modules The modules of this {@link OrchestrationConfig}
+   * @param fileData Base64 encoded file content or file URL
    */
-  public void setModules(@Nonnull final OrchestrationConfigModules modules) {
-    this.modules = modules;
+  public void setFileData(@Nonnull final String fileData) {
+    this.fileData = fileData;
   }
 
   /**
-   * Set the stream of this {@link OrchestrationConfig} instance and return the same instance.
+   * Set the filename of this {@link FileContent} instance and return the same instance.
    *
-   * @param stream The stream of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
+   * @param filename Name of the file
+   * @return The same instance of this {@link FileContent} class
    */
   @Nonnull
-  public OrchestrationConfig stream(@Nullable final GlobalStreamOptions stream) {
-    this.stream = stream;
+  public FileContent filename(@Nullable final String filename) {
+    this.filename = filename;
     return this;
   }
 
   /**
-   * Get stream
+   * Name of the file
    *
-   * @return stream The stream of this {@link OrchestrationConfig} instance.
+   * @return filename The filename of this {@link FileContent} instance.
    */
   @Nonnull
-  public GlobalStreamOptions getStream() {
-    return stream;
+  public String getFilename() {
+    return filename;
   }
 
   /**
-   * Set the stream of this {@link OrchestrationConfig} instance.
+   * Set the filename of this {@link FileContent} instance.
    *
-   * @param stream The stream of this {@link OrchestrationConfig}
+   * @param filename Name of the file
    */
-  public void setStream(@Nullable final GlobalStreamOptions stream) {
-    this.stream = stream;
+  public void setFilename(@Nullable final String filename) {
+    this.filename = filename;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link OrchestrationConfig}.
+   * Get the names of the unrecognizable properties of the {@link FileContent}.
    *
    * @return The set of properties names
    */
@@ -114,7 +114,7 @@ public class OrchestrationConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link OrchestrationConfig} instance.
+   * Get the value of an unrecognizable property of this {@link FileContent} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -125,15 +125,14 @@ public class OrchestrationConfig
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "OrchestrationConfig has no field with name '" + name + "'.");
+      throw new NoSuchElementException("FileContent has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link OrchestrationConfig} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link FileContent} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -141,14 +140,14 @@ public class OrchestrationConfig
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (modules != null) declaredFields.put("modules", modules);
-    if (stream != null) declaredFields.put("stream", stream);
+    if (fileData != null) declaredFields.put("fileData", fileData);
+    if (filename != null) declaredFields.put("filename", filename);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link OrchestrationConfig} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link FileContent} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -166,24 +165,24 @@ public class OrchestrationConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final OrchestrationConfig orchestrationConfig = (OrchestrationConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, orchestrationConfig.cloudSdkCustomFields)
-        && Objects.equals(this.modules, orchestrationConfig.modules)
-        && Objects.equals(this.stream, orchestrationConfig.stream);
+    final FileContent fileContent = (FileContent) o;
+    return Objects.equals(this.cloudSdkCustomFields, fileContent.cloudSdkCustomFields)
+        && Objects.equals(this.fileData, fileContent.fileData)
+        && Objects.equals(this.filename, fileContent.filename);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(modules, stream, cloudSdkCustomFields);
+    return Objects.hash(fileData, filename, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class OrchestrationConfig {\n");
-    sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
-    sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
+    sb.append("class FileContent {\n");
+    sb.append("    fileData: ").append(toIndentedString(fileData)).append("\n");
+    sb.append("    filename: ").append(toIndentedString(filename)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -202,21 +201,21 @@ public class OrchestrationConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link OrchestrationConfig}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link FileContent} instance
+   * with all required arguments.
    */
   public static Builder create() {
-    return (modules) -> new OrchestrationConfig().modules(modules);
+    return (fileData) -> new FileContent().fileData(fileData);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the modules of this {@link OrchestrationConfig} instance.
+     * Set the fileData of this {@link FileContent} instance.
      *
-     * @param modules The modules of this {@link OrchestrationConfig}
-     * @return The OrchestrationConfig instance.
+     * @param fileData Base64 encoded file content or file URL
+     * @return The FileContent instance.
      */
-    OrchestrationConfig modules(@Nonnull final OrchestrationConfigModules modules);
+    FileContent fileData(@Nonnull final String fileData);
   }
 }
