@@ -50,6 +50,10 @@ public class OrchestrationEmbeddingModel implements AiModel {
   public static final OrchestrationEmbeddingModel NVIDIA_LLAMA_32_NV_EMBEDQA_1B =
       new OrchestrationEmbeddingModel("nvidia--llama-3.2-nv-embedqa-1b");
 
+  /** Google Cloud Platform Gemini Embedding model */
+  public static final OrchestrationEmbeddingModel GEMINI_EMBEDDING =
+      new OrchestrationEmbeddingModel("gemini-embedding");
+
   /**
    * Creates a new embedding model configuration with the specified name.
    *
