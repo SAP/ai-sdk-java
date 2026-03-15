@@ -16,7 +16,6 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +34,13 @@ public class ResultsInner1
   private String filterId;
 
   @JsonProperty("results")
-  private List<DocumentsChunk> results = new ArrayList<>();
+  private List<RetrievalDataRepositorySearchResult> results = new ArrayList<>();
+
+  @JsonProperty("remoteGroundingName")
+  private String remoteGroundingName;
+
+  @JsonProperty("error")
+  private RetrievalPerFilterSearchResultError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -77,11 +82,11 @@ public class ResultsInner1
   /**
    * Set the results of this {@link ResultsInner1} instance and return the same instance.
    *
-   * @param results The results of this {@link ResultsInner1}
+   * @param results List of returned results.
    * @return The same instance of this {@link ResultsInner1} class
    */
   @Nonnull
-  public ResultsInner1 results(@Nonnull final List<DocumentsChunk> results) {
+  public ResultsInner1 results(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
     this.results = results;
     return this;
   }
@@ -93,7 +98,8 @@ public class ResultsInner1
    * @return The same instance of type {@link ResultsInner1}
    */
   @Nonnull
-  public ResultsInner1 addResultsItem(@Nonnull final DocumentsChunk resultsItem) {
+  public ResultsInner1 addResultsItem(
+      @Nonnull final RetrievalDataRepositorySearchResult resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -102,22 +108,88 @@ public class ResultsInner1
   }
 
   /**
-   * Get results
+   * List of returned results.
    *
    * @return results The results of this {@link ResultsInner1} instance.
    */
   @Nonnull
-  public List<DocumentsChunk> getResults() {
+  public List<RetrievalDataRepositorySearchResult> getResults() {
     return results;
   }
 
   /**
    * Set the results of this {@link ResultsInner1} instance.
    *
-   * @param results The results of this {@link ResultsInner1}
+   * @param results List of returned results.
    */
-  public void setResults(@Nonnull final List<DocumentsChunk> results) {
+  public void setResults(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
     this.results = results;
+  }
+
+  /**
+   * Set the remoteGroundingName of this {@link ResultsInner1} instance and return the same
+   * instance.
+   *
+   * @param remoteGroundingName Friendly Destination Name of remote instance (grounding.name). Only
+   *     present if dataRepositoryType &#x3D; remote:dg.
+   * @return The same instance of this {@link ResultsInner1} class
+   */
+  @Nonnull
+  public ResultsInner1 remoteGroundingName(@Nullable final String remoteGroundingName) {
+    this.remoteGroundingName = remoteGroundingName;
+    return this;
+  }
+
+  /**
+   * Friendly Destination Name of remote instance (grounding.name). Only present if
+   * dataRepositoryType &#x3D; remote:dg.
+   *
+   * @return remoteGroundingName The remoteGroundingName of this {@link ResultsInner1} instance.
+   */
+  @Nullable
+  public String getRemoteGroundingName() {
+    return remoteGroundingName;
+  }
+
+  /**
+   * Set the remoteGroundingName of this {@link ResultsInner1} instance.
+   *
+   * @param remoteGroundingName Friendly Destination Name of remote instance (grounding.name). Only
+   *     present if dataRepositoryType &#x3D; remote:dg.
+   */
+  public void setRemoteGroundingName(@Nullable final String remoteGroundingName) {
+    this.remoteGroundingName = remoteGroundingName;
+  }
+
+  /**
+   * Set the error of this {@link ResultsInner1} instance and return the same instance.
+   *
+   * @param error The error of this {@link ResultsInner1}
+   * @return The same instance of this {@link ResultsInner1} class
+   */
+  @Nonnull
+  public ResultsInner1 error(@Nullable final RetrievalPerFilterSearchResultError error) {
+    this.error = error;
+    return this;
+  }
+
+  /**
+   * Get error
+   *
+   * @return error The error of this {@link ResultsInner1} instance.
+   */
+  @Nonnull
+  public RetrievalPerFilterSearchResultError getError() {
+    return error;
+  }
+
+  /**
+   * Set the error of this {@link ResultsInner1} instance.
+   *
+   * @param error The error of this {@link ResultsInner1}
+   */
+  public void setError(@Nullable final RetrievalPerFilterSearchResultError error) {
+    this.error = error;
   }
 
   /**
@@ -160,6 +232,8 @@ public class ResultsInner1
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (filterId != null) declaredFields.put("filterId", filterId);
     if (results != null) declaredFields.put("results", results);
+    if (remoteGroundingName != null) declaredFields.put("remoteGroundingName", remoteGroundingName);
+    if (error != null) declaredFields.put("error", error);
     return declaredFields;
   }
 
@@ -186,12 +260,14 @@ public class ResultsInner1
     final ResultsInner1 resultsInner1 = (ResultsInner1) o;
     return Objects.equals(this.cloudSdkCustomFields, resultsInner1.cloudSdkCustomFields)
         && Objects.equals(this.filterId, resultsInner1.filterId)
-        && Objects.equals(this.results, resultsInner1.results);
+        && Objects.equals(this.results, resultsInner1.results)
+        && Objects.equals(this.remoteGroundingName, resultsInner1.remoteGroundingName)
+        && Objects.equals(this.error, resultsInner1.error);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(filterId, results, cloudSdkCustomFields);
+    return Objects.hash(filterId, results, remoteGroundingName, error, cloudSdkCustomFields);
   }
 
   @Override
@@ -201,6 +277,10 @@ public class ResultsInner1
     sb.append("class ResultsInner1 {\n");
     sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
+    sb.append("    remoteGroundingName: ")
+        .append(toIndentedString(remoteGroundingName))
+        .append("\n");
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -223,7 +303,7 @@ public class ResultsInner1
    * with all required arguments.
    */
   public static Builder create() {
-    return (filterId) -> (results) -> new ResultsInner1().filterId(filterId).results(results);
+    return (filterId) -> new ResultsInner1().filterId(filterId);
   }
 
   /** Builder helper class. */
@@ -232,29 +312,8 @@ public class ResultsInner1
      * Set the filterId of this {@link ResultsInner1} instance.
      *
      * @param filterId The filterId of this {@link ResultsInner1}
-     * @return The ResultsInner1 builder.
-     */
-    Builder1 filterId(@Nonnull final String filterId);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the results of this {@link ResultsInner1} instance.
-     *
-     * @param results The results of this {@link ResultsInner1}
      * @return The ResultsInner1 instance.
      */
-    ResultsInner1 results(@Nonnull final List<DocumentsChunk> results);
-
-    /**
-     * Set the results of this {@link ResultsInner1} instance.
-     *
-     * @param results The results of this {@link ResultsInner1}
-     * @return The ResultsInner1 instance.
-     */
-    default ResultsInner1 results(@Nonnull final DocumentsChunk... results) {
-      return results(Arrays.asList(results));
-    }
+    ResultsInner1 filterId(@Nonnull final String filterId);
   }
 }

@@ -32,7 +32,7 @@ public class VectorSearchResults
 // CHECKSTYLE:ON
 {
   @JsonProperty("results")
-  private List<ResultsInner1> results = new ArrayList<>();
+  private List<VectorPerFilterSearchResult> results = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -47,7 +47,7 @@ public class VectorSearchResults
    * @return The same instance of this {@link VectorSearchResults} class
    */
   @Nonnull
-  public VectorSearchResults results(@Nonnull final List<ResultsInner1> results) {
+  public VectorSearchResults results(@Nonnull final List<VectorPerFilterSearchResult> results) {
     this.results = results;
     return this;
   }
@@ -59,7 +59,8 @@ public class VectorSearchResults
    * @return The same instance of type {@link VectorSearchResults}
    */
   @Nonnull
-  public VectorSearchResults addResultsItem(@Nonnull final ResultsInner1 resultsItem) {
+  public VectorSearchResults addResultsItem(
+      @Nonnull final VectorPerFilterSearchResult resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -73,7 +74,7 @@ public class VectorSearchResults
    * @return results The results of this {@link VectorSearchResults} instance.
    */
   @Nonnull
-  public List<ResultsInner1> getResults() {
+  public List<VectorPerFilterSearchResult> getResults() {
     return results;
   }
 
@@ -82,7 +83,7 @@ public class VectorSearchResults
    *
    * @param results List of returned results.
    */
-  public void setResults(@Nonnull final List<ResultsInner1> results) {
+  public void setResults(@Nonnull final List<VectorPerFilterSearchResult> results) {
     this.results = results;
   }
 
@@ -198,7 +199,7 @@ public class VectorSearchResults
      * @param results List of returned results.
      * @return The VectorSearchResults instance.
      */
-    VectorSearchResults results(@Nonnull final List<ResultsInner1> results);
+    VectorSearchResults results(@Nonnull final List<VectorPerFilterSearchResult> results);
 
     /**
      * Set the results of this {@link VectorSearchResults} instance.
@@ -206,7 +207,7 @@ public class VectorSearchResults
      * @param results List of returned results.
      * @return The VectorSearchResults instance.
      */
-    default VectorSearchResults results(@Nonnull final ResultsInner1... results) {
+    default VectorSearchResults results(@Nonnull final VectorPerFilterSearchResult... results) {
       return results(Arrays.asList(results));
     }
   }
