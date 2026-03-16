@@ -302,6 +302,9 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-5-nano model */
   public static final OrchestrationAiModel GPT_5_NANO = new OrchestrationAiModel("gpt-5-nano");
 
+  /** Azure OpenAI GPT-5.2 model */
+  public static final OrchestrationAiModel GPT_52 = new OrchestrationAiModel("gpt-5.2");
+
   /**
    * Google Cloud Platform Gemini 1.0 Pro model
    *
