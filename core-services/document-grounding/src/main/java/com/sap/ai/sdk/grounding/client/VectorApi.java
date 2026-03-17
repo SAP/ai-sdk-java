@@ -11,6 +11,8 @@ import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.DocumentUpdateRequest;
 import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.DocumentsListResponse;
+import com.sap.ai.sdk.grounding.model.MetadataResponse;
+import com.sap.ai.sdk.grounding.model.MetadataUpdates;
 import com.sap.ai.sdk.grounding.model.TextSearchRequest;
 import com.sap.ai.sdk.grounding.model.VectorSearchResults;
 import com.sap.ai.sdk.grounding.model.VectorV1VectorEndpointsGetCollectionCreationStatus200Response;
@@ -1043,6 +1045,146 @@ public class VectorApi extends AbstractOpenApiService {
   }
 
   /**
+   * Patch chunks metadata
+   *
+   * <p>Allows to add, remove and modify the chunks metadata.
+   *
+   * <p><b>200</b> - Successful Response
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>404</b> - The specification of the resource was incorrect
+   *
+   * <p><b>422</b> - There are validation issues with the data.
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param metadataUpdates The value for the parameter metadataUpdates
+   * @return MetadataResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public MetadataResponse updateChunksMetadata(
+      @Nonnull final String aiResourceGroup, @Nonnull final MetadataUpdates metadataUpdates)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = metadataUpdates;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling updateChunksMetadata");
+    }
+
+    // verify the required parameter 'metadataUpdates' is set
+    if (metadataUpdates == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'metadataUpdates' when calling vectorV1VectorEndpointsUpdateChunksMetadata");
+    }
+
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/vector/chunks/metadata").build().toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<MetadataResponse> localVarReturnType =
+        new ParameterizedTypeReference<MetadataResponse>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.PATCH,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Patch collections metadata
+   *
+   * <p>Allows to add, remove and modify the collections metadata.
+   *
+   * <p><b>200</b> - Successful Response
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>404</b> - The specification of the resource was incorrect
+   *
+   * <p><b>422</b> - There are validation issues with the data.
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param metadataUpdates The value for the parameter metadataUpdates
+   * @return MetadataResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public MetadataResponse updateCollectionsMetadata(
+      @Nonnull final String aiResourceGroup, @Nonnull final MetadataUpdates metadataUpdates)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = metadataUpdates;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling updateCollectionsMetadata");
+    }
+
+    // verify the required parameter 'metadataUpdates' is set
+    if (metadataUpdates == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'metadataUpdates' when calling vectorV1VectorEndpointsUpdateCollectionsMetadata");
+    }
+
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/vector/collections/metadata").build().toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<MetadataResponse> localVarReturnType =
+        new ParameterizedTypeReference<MetadataResponse>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.PATCH,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
    * Upsert documents in collection
    *
    * <p>Upserts the data of multiple documents into a collection.
@@ -1113,6 +1255,76 @@ public class VectorApi extends AbstractOpenApiService {
 
     final ParameterizedTypeReference<DocumentsListResponse> localVarReturnType =
         new ParameterizedTypeReference<DocumentsListResponse>() {};
+    return apiClient.invokeAPI(
+        localVarPath,
+        HttpMethod.PATCH,
+        localVarQueryParams,
+        localVarPostBody,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Patch documents metadata
+   *
+   * <p>Allows to add, remove and modify the documents metadata.
+   *
+   * <p><b>200</b> - Successful Response
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>404</b> - The specification of the resource was incorrect
+   *
+   * <p><b>422</b> - There are validation issues with the data.
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param metadataUpdates The value for the parameter metadataUpdates
+   * @return MetadataResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public MetadataResponse updateDocumentsMetadata(
+      @Nonnull final String aiResourceGroup, @Nonnull final MetadataUpdates metadataUpdates)
+      throws OpenApiRequestException {
+    final Object localVarPostBody = metadataUpdates;
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'aiResourceGroup' when calling updateDocumentsMetadata");
+    }
+
+    // verify the required parameter 'metadataUpdates' is set
+    if (metadataUpdates == null) {
+      throw new OpenApiRequestException(
+          "Missing the required parameter 'metadataUpdates' when calling vectorV1VectorEndpointsUpdateDocumentsMetadata");
+    }
+
+    final String localVarPath =
+        UriComponentsBuilder.fromPath("/vector/documents/metadata").build().toUriString();
+
+    final MultiValueMap<String, String> localVarQueryParams =
+        new LinkedMultiValueMap<String, String>();
+    final HttpHeaders localVarHeaderParams = new HttpHeaders();
+    final MultiValueMap<String, Object> localVarFormParams =
+        new LinkedMultiValueMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+    final String[] localVarAuthNames = new String[] {};
+
+    final ParameterizedTypeReference<MetadataResponse> localVarReturnType =
+        new ParameterizedTypeReference<MetadataResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.PATCH,

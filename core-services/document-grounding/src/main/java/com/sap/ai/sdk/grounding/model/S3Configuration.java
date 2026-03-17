@@ -32,7 +32,7 @@ public class S3Configuration
   private String destination;
 
   @JsonProperty("s3")
-  private SFTPConfigurationSftp s3;
+  private ServiceNowConfigurationMinimalServiceNow s3;
 
   @JsonProperty("cronExpression")
   private String cronExpression;
@@ -81,7 +81,7 @@ public class S3Configuration
    * @return The same instance of this {@link S3Configuration} class
    */
   @Nonnull
-  public S3Configuration s3(@Nullable final SFTPConfigurationSftp s3) {
+  public S3Configuration s3(@Nullable final ServiceNowConfigurationMinimalServiceNow s3) {
     this.s3 = s3;
     return this;
   }
@@ -92,7 +92,7 @@ public class S3Configuration
    * @return s3 The s3 of this {@link S3Configuration} instance.
    */
   @Nonnull
-  public SFTPConfigurationSftp getS3() {
+  public ServiceNowConfigurationMinimalServiceNow getS3() {
     return s3;
   }
 
@@ -101,7 +101,7 @@ public class S3Configuration
    *
    * @param s3 The s3 of this {@link S3Configuration}
    */
-  public void setS3(@Nullable final SFTPConfigurationSftp s3) {
+  public void setS3(@Nullable final ServiceNowConfigurationMinimalServiceNow s3) {
     this.s3 = s3;
   }
 
