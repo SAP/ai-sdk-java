@@ -34,10 +34,10 @@ public class ResultsInner2
   private String filterId;
 
   @JsonProperty("results")
-  private List<RetrievalDataRepositorySearchResult> results = new ArrayList<>();
+  private List<DataRepositorySearchResult> results = new ArrayList<>();
 
   @JsonProperty("error")
-  private RetrievalPerFilterSearchResultError error;
+  private PerFilterSearchResultError error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -83,7 +83,7 @@ public class ResultsInner2
    * @return The same instance of this {@link ResultsInner2} class
    */
   @Nonnull
-  public ResultsInner2 results(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
+  public ResultsInner2 results(@Nullable final List<DataRepositorySearchResult> results) {
     this.results = results;
     return this;
   }
@@ -95,8 +95,7 @@ public class ResultsInner2
    * @return The same instance of type {@link ResultsInner2}
    */
   @Nonnull
-  public ResultsInner2 addResultsItem(
-      @Nonnull final RetrievalDataRepositorySearchResult resultsItem) {
+  public ResultsInner2 addResultsItem(@Nonnull final DataRepositorySearchResult resultsItem) {
     if (this.results == null) {
       this.results = new ArrayList<>();
     }
@@ -110,7 +109,7 @@ public class ResultsInner2
    * @return results The results of this {@link ResultsInner2} instance.
    */
   @Nonnull
-  public List<RetrievalDataRepositorySearchResult> getResults() {
+  public List<DataRepositorySearchResult> getResults() {
     return results;
   }
 
@@ -119,7 +118,7 @@ public class ResultsInner2
    *
    * @param results List of returned results.
    */
-  public void setResults(@Nullable final List<RetrievalDataRepositorySearchResult> results) {
+  public void setResults(@Nullable final List<DataRepositorySearchResult> results) {
     this.results = results;
   }
 
@@ -130,7 +129,7 @@ public class ResultsInner2
    * @return The same instance of this {@link ResultsInner2} class
    */
   @Nonnull
-  public ResultsInner2 error(@Nullable final RetrievalPerFilterSearchResultError error) {
+  public ResultsInner2 error(@Nullable final PerFilterSearchResultError error) {
     this.error = error;
     return this;
   }
@@ -141,7 +140,7 @@ public class ResultsInner2
    * @return error The error of this {@link ResultsInner2} instance.
    */
   @Nonnull
-  public RetrievalPerFilterSearchResultError getError() {
+  public PerFilterSearchResultError getError() {
     return error;
   }
 
@@ -150,7 +149,7 @@ public class ResultsInner2
    *
    * @param error The error of this {@link ResultsInner2}
    */
-  public void setError(@Nullable final RetrievalPerFilterSearchResultError error) {
+  public void setError(@Nullable final PerFilterSearchResultError error) {
     this.error = error;
   }
 
