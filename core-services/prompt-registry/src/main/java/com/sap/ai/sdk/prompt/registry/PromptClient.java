@@ -4,10 +4,17 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.google.common.collect.Iterables;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
+import com.sap.ai.sdk.prompt.registry.model.MultiChatContent;
+import com.sap.ai.sdk.prompt.registry.model.MultiChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpecResponseFormat;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonObject;
@@ -16,6 +23,8 @@ import com.sap.ai.sdk.prompt.registry.model.ResponseFormatText;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import java.io.IOException;
+import java.util.ArrayList;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -75,7 +84,7 @@ public class PromptClient extends PromptTemplatesApi {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   private static class JacksonMixin {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
-    @JsonDeserialize(as = SingleChatTemplate.class)
+    @JsonDeserialize(using = PromptTemplateDeserializer.class)
     interface TemplateMixIn {}
 
     @JsonTypeInfo(
@@ -89,5 +98,41 @@ public class PromptClient extends PromptTemplatesApi {
       @JsonSubTypes.Type(value = ResponseFormatText.class, name = "text")
     })
     interface ResponseFormat {}
+  }
+
+  private static class PromptTemplateDeserializer extends JsonDeserializer<PromptTemplate> {
+
+    @Override
+    public PromptTemplate deserialize(
+        @Nonnull final JsonParser jsonParser,
+        @Nonnull final DeserializationContext deserializationContext)
+        throws IOException {
+
+      final JsonNode root = jsonParser.readValueAsTree();
+      final JsonNode roleNode = root.path("role");
+      final String role = roleNode.asText();
+      final JsonNode content = root.path("content");
+
+      if (!roleNode.isTextual()) {
+        throw JsonMappingException.from(
+            jsonParser, "PromptTemplate requires textual 'role' property.");
+      }
+
+      if (content.isTextual()) {
+        return SingleChatTemplate.create().role(role).content(content.asText());
+      }
+      if (content.isArray()) {
+        final var contentList = new ArrayList<MultiChatContent>();
+        for (final JsonNode item : content) {
+          contentList.add(jsonParser.getCodec().treeToValue(item, MultiChatContent.class));
+        }
+        return MultiChatTemplate.create().role(role).content(contentList);
+      }
+
+      throw JsonMappingException.from(
+          jsonParser,
+          "PromptTemplate content must be either a string or an array, but found: "
+              + content.getNodeType());
+    }
   }
 }

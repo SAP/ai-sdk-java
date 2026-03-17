@@ -2,13 +2,17 @@ package com.sap.ai.sdk.prompt.registry;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.prompt.registry.model.MultiChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateGetResponse;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatText;
+import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
+import com.sap.ai.sdk.prompt.registry.model.TextContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.util.UUID;
@@ -94,5 +98,42 @@ class PromptRegistryClientTest {
     assertThat(format.getJsonSchema().getDescription()).isEqualTo("Test schema description");
     assertThat(format.getJsonSchema().isStrict()).isFalse();
     assertThat(format.getJsonSchema().getSchema()).isNotNull();
+  }
+
+  @Test
+  void testGetTemplateWithMultiChatTemplate() {
+    final var uuid = UUID.fromString("8f79fec4-ae07-4c35-96e3-df7f4a3f1df5");
+    final var response = client.getPromptTemplateByUuid(uuid);
+
+    assertThat(response.getSpec()).isNotNull();
+    assertThat(response.getSpec().getTemplate()).hasSize(2);
+    assertThat(response.getSpec().getTemplate().get(0)).isInstanceOf(SingleChatTemplate.class);
+    assertThat(response.getSpec().getTemplate().get(1)).isInstanceOf(MultiChatTemplate.class);
+
+    final var multiTemplate = (MultiChatTemplate) response.getSpec().getTemplate().get(1);
+    assertThat(multiTemplate.getRole()).isEqualTo("user");
+    assertThat(multiTemplate.getContent()).hasSize(2);
+    assertThat(multiTemplate.getContent().get(0)).isInstanceOf(TextContent.class);
+    assertThat(((TextContent) multiTemplate.getContent().get(0)).getText())
+        .isEqualTo("First content line");
+    assertThat(((TextContent) multiTemplate.getContent().get(1)).getText())
+        .isEqualTo("Second content line");
+  }
+
+  @Test
+  void testGetTemplateWithInvalidRoleType() {
+    final var uuid = UUID.fromString("45cb1358-0bf1-4f43-870b-00f14d0f9f16");
+
+    assertThatThrownBy(() -> client.getPromptTemplateByUuid(uuid))
+        .hasStackTraceContaining("PromptTemplate requires textual 'role' property.");
+  }
+
+  @Test
+  void testGetTemplateWithInvalidContentType() {
+    final var uuid = UUID.fromString("55cb1358-0bf1-4f43-870b-00f14d0f9f16");
+
+    assertThatThrownBy(() -> client.getPromptTemplateByUuid(uuid))
+        .hasStackTraceContaining(
+            "PromptTemplate content must be either a string or an array, but found: BOOLEAN");
   }
 }
