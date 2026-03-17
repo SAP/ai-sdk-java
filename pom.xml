@@ -66,15 +66,15 @@
     <surefire.version>3.5.5</surefire.version>
     <springframework.version>6.2.16</springframework.version>
     <spring-ai.version>1.1.2</spring-ai.version>
-    <reactor-core.version>3.8.3</reactor-core.version>
+    <reactor-core.version>3.8.4</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
-    <mockito.version>5.22.0</mockito.version>
+    <mockito.version>5.23.0</mockito.version>
     <javaparser.version>3.28.0</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.21.1</jackson.version>
     <logback.version>1.5.32</logback.version>
     <!-- conflicts resolution -->
-    <micrometer.version>1.16.3</micrometer.version>
+    <micrometer.version>1.16.4</micrometer.version>
     <json.version>20251224</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <!-- Formatting -->
@@ -849,7 +849,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                 <dependency>
                   <groupId>org.projectlombok</groupId>
                   <artifactId>lombok</artifactId>
-                  <version>1.18.42</version>
+                  <version>1.18.44</version>
                 </dependency>
               </dependencies>
               <executions>
