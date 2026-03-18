@@ -8,6 +8,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.prompt.registry.model.MultiChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateGetResponse;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatText;
@@ -15,6 +16,7 @@ import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.TextContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -135,5 +137,30 @@ class PromptRegistryClientTest {
     assertThatThrownBy(() -> client.getPromptTemplateByUuid(uuid))
         .hasStackTraceContaining(
             "PromptTemplate content must be either a string or an array, but found: BOOLEAN");
+  }
+
+  @Test
+  void testParsePromptTemplateHotPath() {
+    final var request =
+        PromptTemplateSubstitutionRequest.create()
+            .inputParams(Map.of("inputExample", "I love football"));
+
+    final var response =
+        client.parsePromptTemplateByNameVersion(
+            "categorization", "0.0.1", "hotpath-serde", "default", null, false, request);
+
+    assertThat(response.getParsedPrompt()).hasSize(2);
+    assertThat(response.getParsedPrompt().get(0)).isInstanceOf(SingleChatTemplate.class);
+    assertThat(response.getParsedPrompt().get(1)).isInstanceOf(SingleChatTemplate.class);
+
+    final var systemTemplate = (SingleChatTemplate) response.getParsedPrompt().get(0);
+    assertThat(systemTemplate.getRole()).isEqualTo("system");
+    assertThat(systemTemplate.getContent())
+        .isEqualTo(
+            "You classify input text into the two following categories: Finance, Tech, Sports");
+
+    final var userTemplate = (SingleChatTemplate) response.getParsedPrompt().get(1);
+    assertThat(userTemplate.getRole()).isEqualTo("user");
+    assertThat(userTemplate.getContent()).isEqualTo("I love football");
   }
 }
