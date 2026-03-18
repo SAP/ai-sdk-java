@@ -4,6 +4,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.SONAR;
 import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
 
@@ -856,5 +857,17 @@ public class OrchestrationService {
         new OrchestrationModuleConfig()
             .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
     return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig);
+  }
+
+  /**
+   * Chat request using the SONAR model which provides citations.
+   *
+   * @return the assistant response object with citations
+   */
+  @Nonnull
+  public OrchestrationChatResponse citations() {
+    val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
+    val sonarConfig = new OrchestrationModuleConfig().withLlmConfig(SONAR);
+    return client.chatCompletion(prompt, sonarConfig);
   }
 }
