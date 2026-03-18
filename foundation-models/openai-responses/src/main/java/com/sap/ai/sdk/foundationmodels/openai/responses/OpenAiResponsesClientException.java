@@ -2,6 +2,7 @@ package com.sap.ai.sdk.foundationmodels.openai.responses;
 
 import com.google.common.annotations.Beta;
 import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseError;
 import com.sap.ai.sdk.core.common.ClientException;
 import com.sap.ai.sdk.core.common.ClientExceptionFactory;
 import javax.annotation.Nullable;

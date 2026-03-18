@@ -85,55 +85,55 @@
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
-</dependencies>
-<profiles>
-<profile>
-  <id>generate</id>
-  <activation>
-    <activeByDefault>false</activeByDefault>
-    <property>
-      <name>generate</name>
-    </property>
-  </activation>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.sap.cloud.sdk.datamodel</groupId>
-        <artifactId>openapi-generator-maven-plugin</artifactId>
-        <configuration>
-          <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-          <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
-          <compileScope>COMPILE</compileScope>
-          <deleteOutputDirectory>true</deleteOutputDirectory>
-        </configuration>
-        <executions>
-          <execution>
-            <id>openai</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <phase>generate-sources</phase>
+  </dependencies>
+  <profiles>
+    <profile>
+      <id>generate</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>generate</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.sap.cloud.sdk.datamodel</groupId>
+            <artifactId>openapi-generator-maven-plugin</artifactId>
             <configuration>
-              <inputSpec>${project.basedir}/src/main/resources/spec/azure-responses-only.yaml</inputSpec>
-              <modelPackage>com.sap.ai.sdk.foundationmodels.openai.responses.generated.model</modelPackage>
-              <apiPackage>com.sap.ai.sdk.foundationmodels.openai.responses.generated.client</apiPackage>
-              <generateApis>true</generateApis>
-              <additionalProperties>
-                <library>apache-httpclient</library>
-                <pojoBuilderMethodName>create</pojoBuilderMethodName>
-                <pojoConstructorVisibility>protected</pojoConstructorVisibility>
-                <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
-                <useOneOfInterfaces>true</useOneOfInterfaces>
-                <useOneOfCreators>true</useOneOfCreators>
-                <useFloatArrays>true</useFloatArrays>
-              </additionalProperties>
+              <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+              <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
+              <compileScope>COMPILE</compileScope>
+              <deleteOutputDirectory>true</deleteOutputDirectory>
             </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-</profile>
-</profiles>
+            <executions>
+              <execution>
+                <id>openai</id>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/azure-responses-only.yaml</inputSpec>
+                  <modelPackage>com.sap.ai.sdk.foundationmodels.openai.responses.generated.model</modelPackage>
+                  <apiPackage>com.sap.ai.sdk.foundationmodels.openai.responses.generated.client</apiPackage>
+                  <generateApis>true</generateApis>
+                  <additionalProperties>
+                    <library>apache-httpclient</library>
+                    <pojoBuilderMethodName>create</pojoBuilderMethodName>
+                    <pojoConstructorVisibility>protected</pojoConstructorVisibility>
+                    <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                    <useOneOfInterfaces>true</useOneOfInterfaces>
+                    <useOneOfCreators>true</useOneOfCreators>
+                    <useFloatArrays>true</useFloatArrays>
+                  </additionalProperties>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
-    </project>
+</project>
