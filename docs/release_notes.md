@@ -26,6 +26,7 @@
 - [Orchestration] Added `GPT_52` model for `OrchestrationAiModel`.
 - [OpenAi] Added `GPT_52` model from `OpenAiModel`.
 - [Orchestration] Added `GEMINI_EMBEDDING` model for `OrchestrationEmbeddingModel`.
+- [Orchestration] Added citations for Perplexity `SONAR` model in `client.chatCompletion().getOriginalResponse().getFinalResult().getCitations()`
 
 ### 📈 Improvements
 

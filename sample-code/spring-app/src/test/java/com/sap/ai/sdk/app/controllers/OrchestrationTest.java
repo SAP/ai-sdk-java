@@ -595,4 +595,10 @@ class OrchestrationTest {
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("Model broken_name_2 not supported.");
   }
+
+  @Test
+  void testCitations() {
+    val result = service.citations();
+    assertThat(result.getOriginalResponse().getFinalResult().getCitations()).isNotEmpty();
+  }
 }
