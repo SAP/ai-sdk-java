@@ -45,23 +45,7 @@
     <coverage.branch>50%</coverage.branch>
     <coverage.method>75%</coverage.method>
     <coverage.class>100%</coverage.class>
-    <openai-java.version>4.29.0</openai-java.version>
-    <kotlin-stdlib-jdk8.version>1.9.10</kotlin-stdlib-jdk8.version>
   </properties>
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-stdlib-jdk8</artifactId>
-        <version>${kotlin-stdlib-jdk8.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-stdlib</artifactId>
-        <version>${kotlin-stdlib-jdk8.version}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
   <dependencies>
     <!-- scope "compile" -->
     <dependency>
@@ -75,12 +59,10 @@
     <dependency>
       <groupId>com.openai</groupId>
       <artifactId>openai-java-client-okhttp</artifactId>
-      <version>${openai-java.version}</version>
     </dependency>
     <dependency>
       <groupId>com.openai</groupId>
       <artifactId>openai-java-core</artifactId>
-      <version>${openai-java.version}</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -110,6 +92,16 @@
     <dependency>
       <groupId>com.sap.ai.sdk.foundationmodels</groupId>
       <artifactId>openai</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.wiremock</groupId>
+      <artifactId>wiremock</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>connectivity-apache-httpclient5</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
