@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class OpenAiClientFactory {
+public final class OpenAiV1Client {
 
   private static final String AUTHORIZATION_HEADER = "Authorization";
   private static final String DEFAULT_RESOURCE_GROUP = "default";
