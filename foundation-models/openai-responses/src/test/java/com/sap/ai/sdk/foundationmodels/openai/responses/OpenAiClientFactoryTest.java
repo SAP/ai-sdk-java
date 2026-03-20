@@ -13,7 +13,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-/** Unit tests for {@link OpenAiClientFactory}. */
+/** Unit tests for {@link OpenAiV1Client}. */
 class OpenAiClientFactoryTest {
 
   private static final String BASE_URL = "http://localhost:8080";
@@ -22,7 +22,7 @@ class OpenAiClientFactoryTest {
   @Test
   @Disabled("Integration test that requires a running SAP AI Core deployment")
   void testCreateOpenAiClientFromAiModel() {
-    final OpenAIClient client = OpenAiClientFactory.forModel(OpenAiModel.GPT_5);
+    final OpenAIClient client = OpenAiV1Client.forModel(OpenAiModel.GPT_5);
 
     final ResponseCreateParams request =
         ResponseCreateParams.builder()
@@ -42,7 +42,7 @@ class OpenAiClientFactoryTest {
   void testFromDestinationWithoutAuthorizationHeader() {
     final HttpDestination destination = DefaultHttpDestination.builder(BASE_URL).build();
 
-    assertThatThrownBy(() -> OpenAiClientFactory.fromDestination(destination))
+    assertThatThrownBy(() -> OpenAiV1Client.fromDestination(destination))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("No Authorization header found");
   }
@@ -54,7 +54,7 @@ class OpenAiClientFactoryTest {
             .header("Authorization", "Bearer " + AUTH_TOKEN)
             .build();
 
-    final OpenAIClient client = OpenAiClientFactory.fromDestination(destination);
+    final OpenAIClient client = OpenAiV1Client.fromDestination(destination);
 
     assertThat(client).isNotNull();
   }
