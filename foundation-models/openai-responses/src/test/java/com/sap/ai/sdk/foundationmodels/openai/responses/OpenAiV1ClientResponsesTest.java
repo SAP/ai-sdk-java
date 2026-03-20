@@ -83,7 +83,5 @@ class OpenAiV1ClientResponsesTest {
     assertThat(usage.inputTokens()).isEqualTo(13);
     assertThat(usage.outputTokens()).isEqualTo(59);
     assertThat(usage.totalTokens()).isEqualTo(72);
-    
-    
   }
 }

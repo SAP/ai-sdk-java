@@ -90,11 +90,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.sap.ai.sdk.foundationmodels</groupId>
-      <artifactId>openai</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.wiremock</groupId>
       <artifactId>wiremock</artifactId>
       <scope>test</scope>
