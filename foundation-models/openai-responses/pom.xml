@@ -45,39 +45,61 @@
     <coverage.branch>100%</coverage.branch>
     <coverage.method>100%</coverage.method>
     <coverage.class>100%</coverage.class>
+    <openai-java.version>4.29.0</openai-java.version>
+    <kotlin-stdlib-jdk8.version>1.9.10</kotlin-stdlib-jdk8.version>
   </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-jdk8</artifactId>
+        <version>${kotlin-stdlib-jdk8.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
+        <version>${kotlin-stdlib-jdk8.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <dependencies>
-    <!--    TODO -->
+    <!-- scope "compile" -->
     <dependency>
       <groupId>com.sap.ai.sdk</groupId>
       <artifactId>core</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>cloudplatform-connectivity</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.openai</groupId>
-      <artifactId>openai-java</artifactId>
-      <version>4.28.0</version>
+      <artifactId>openai-java-client-okhttp</artifactId>
+      <version>${openai-java.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.openai</groupId>
+      <artifactId>openai-java-core</artifactId>
+      <version>${openai-java.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-annotations</artifactId>
-    </dependency>
+    <!-- scope "provided" -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <scope>provided</scope>
     </dependency>
+    <!-- scope "test" -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -85,55 +107,10 @@
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+      <artifactId>openai</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
-  <profiles>
-    <profile>
-      <id>generate</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-        <property>
-          <name>generate</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.sap.cloud.sdk.datamodel</groupId>
-            <artifactId>openapi-generator-maven-plugin</artifactId>
-            <configuration>
-              <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-              <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
-              <compileScope>COMPILE</compileScope>
-              <deleteOutputDirectory>true</deleteOutputDirectory>
-            </configuration>
-            <executions>
-              <execution>
-                <id>openai</id>
-                <goals>
-                  <goal>generate</goal>
-                </goals>
-                <phase>generate-sources</phase>
-                <configuration>
-                  <inputSpec>${project.basedir}/src/main/resources/spec/azure-responses-only.yaml</inputSpec>
-                  <modelPackage>com.sap.ai.sdk.foundationmodels.openai.responses.generated.model</modelPackage>
-                  <apiPackage>com.sap.ai.sdk.foundationmodels.openai.responses.generated.client</apiPackage>
-                  <generateApis>true</generateApis>
-                  <additionalProperties>
-                    <library>apache-httpclient</library>
-                    <pojoBuilderMethodName>create</pojoBuilderMethodName>
-                    <pojoConstructorVisibility>protected</pojoConstructorVisibility>
-                    <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
-                    <useOneOfInterfaces>true</useOneOfInterfaces>
-                    <useOneOfCreators>true</useOneOfCreators>
-                    <useFloatArrays>true</useFloatArrays>
-                  </additionalProperties>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
 </project>
