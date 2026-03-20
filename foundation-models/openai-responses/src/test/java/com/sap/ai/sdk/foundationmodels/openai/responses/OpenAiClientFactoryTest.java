@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 class OpenAiClientFactoryTest {
 
   private static final String BASE_URL = "http://localhost:8080";
+  private static final String AUTH_TOKEN = "test-token-123";
 
   @Test
   @Disabled("Integration test that requires a running SAP AI Core deployment")
@@ -44,5 +45,17 @@ class OpenAiClientFactoryTest {
     assertThatThrownBy(() -> OpenAiClientFactory.fromDestination(destination))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining("No Authorization header found");
+  }
+
+  @Test
+  void testFromDestinationWithValidAuthorizationHeader() {
+    final HttpDestination destination =
+        DefaultHttpDestination.builder(BASE_URL)
+            .header("Authorization", "Bearer " + AUTH_TOKEN)
+            .build();
+
+    final OpenAIClient client = OpenAiClientFactory.fromDestination(destination);
+
+    assertThat(client).isNotNull();
   }
 }
