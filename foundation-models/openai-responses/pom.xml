@@ -57,12 +57,17 @@
       <artifactId>cloudplatform-connectivity</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.openai</groupId>
-      <artifactId>openai-java-client-okhttp</artifactId>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>connectivity-apache-httpclient5</artifactId>
     </dependency>
     <dependency>
       <groupId>com.openai</groupId>
       <artifactId>openai-java-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.openai</groupId>
+      <artifactId>openai-java</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -92,11 +97,6 @@
     <dependency>
       <groupId>org.wiremock</groupId>
       <artifactId>wiremock</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
-      <artifactId>connectivity-apache-httpclient5</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
