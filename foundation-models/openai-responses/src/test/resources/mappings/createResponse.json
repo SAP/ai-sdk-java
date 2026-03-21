@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "POST",
-    "urlPattern": "/v2/inference/deployments/.*/responses",
+    "urlPattern": "/responses",
     "bodyPatterns": [
       {
         "equalToJson": {
