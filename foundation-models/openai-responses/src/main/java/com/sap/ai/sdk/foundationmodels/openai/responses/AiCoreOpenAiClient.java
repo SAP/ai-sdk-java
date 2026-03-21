@@ -9,6 +9,7 @@ import com.openai.core.http.HttpClient;
 import com.openai.core.http.HttpRequest;
 import com.openai.core.http.HttpRequestBody;
 import com.openai.core.http.HttpResponse;
+import com.openai.errors.OpenAIIoException;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -117,8 +119,9 @@ public final class AiCoreOpenAiClient {
     final HttpClient httpClient = new AiCoreHttpClientImpl(destination);
 
     // Build ClientOptions with our custom HttpClient
+    // Note: apiKey is required by SDK but unused since we handle auth via destination headers
     final ClientOptions clientOptions =
-        ClientOptions.builder().baseUrl(baseUrl).httpClient(httpClient).build();
+        ClientOptions.builder().baseUrl(baseUrl).httpClient(httpClient).apiKey("unused").build();
 
     return new OpenAIClientImpl(clientOptions);
   }
@@ -137,44 +140,48 @@ public final class AiCoreOpenAiClient {
   @Slf4j
   static final class AiCoreHttpClientImpl implements HttpClient {
 
-    private final org.apache.hc.client5.http.classic.HttpClient apacheClient;
+    private final HttpDestination destination;
 
     AiCoreHttpClientImpl(@Nonnull final HttpDestination destination) {
-      // Get Apache HttpClient from Cloud SDK
-      // This client is wrapped by ApacheHttpClient5Wrapper which handles:
-      // - OAuth token refresh on each request via destination.getHeaders()
-      // - Custom headers from destination
-      // - URI path merging
-      this.apacheClient = ApacheHttpClient5Accessor.getHttpClient(destination);
-
-      log.debug("Created HTTP client for destination: {}", destination.getUri());
+      this.destination = destination;
+      log.debug("Created HTTP client wrapper for destination: {}", destination.getUri());
     }
 
     @Override
+    @Nonnull
     public HttpResponse execute(
         @Nonnull final HttpRequest request, @Nonnull final RequestOptions requestOptions) {
+      final org.apache.hc.client5.http.classic.HttpClient apacheClient =
+          ApacheHttpClient5Accessor.getHttpClient(destination);
+
       final BasicClassicHttpRequest apacheRequest = toApacheRequest(request);
 
       try {
-        // Execute request - OAuth token automatically refreshed by ApacheHttpClient5Wrapper
         return apacheClient.execute(apacheRequest, this::toOpenAiResponse);
       } catch (final IOException e) {
-        // Wrap IOException as the interface doesn't declare checked exceptions
-        throw new RuntimeException("HTTP request execution failed", e);
+        throw new OpenAIIoException("HTTP request execution failed", e);
+      } finally {
+        Optional.ofNullable(request.body()).ifPresent(HttpRequestBody::close);
       }
     }
 
     @Override
+    @Nonnull
     public CompletableFuture<HttpResponse> executeAsync(
         @Nonnull final HttpRequest request, @Nonnull final RequestOptions requestOptions) {
-      return CompletableFuture.supplyAsync(() -> execute(request, requestOptions));
+      return CompletableFuture.supplyAsync(() -> execute(request, requestOptions))
+          .whenComplete(
+              (response, error) ->
+                  Optional.ofNullable(request.body()).ifPresent(HttpRequestBody::close));
     }
 
     @Override
     public void close() {
-      // Apache HttpClient from Cloud SDK is managed externally
-      // No cleanup needed here
-      log.debug("HttpClient close() called - no-op as client is managed by Cloud SDK");
+      // No-op: Apache HttpClient lifecycle is managed by Cloud SDK's ApacheHttpClient5Cache
+      // The cache maintains shared instances with automatic cleanup on expiration (default 1h TTL)
+      // We fetch the client on each request, so we don't hold any resources to clean up
+      log.debug(
+          "HttpClient close() called - no action needed, lifecycle managed by Cloud SDK cache");
     }
 
     @Nonnull
@@ -182,34 +189,29 @@ public final class AiCoreOpenAiClient {
       // Build full URL from baseUrl + pathSegments + queryParams
       final String fullUrl = request.url();
 
-      // Create Apache request with appropriate HTTP method
+      // Create request with appropriate HTTP method
       final BasicClassicHttpRequest apacheRequest =
           createRequestByMethod(request.method().toString(), fullUrl);
 
-      // Add headers from OpenAI SDK
-      // Note: Destination headers (OAuth, AI-Resource-Group, etc.) are added automatically
-      // by ApacheHttpClient5Wrapper.wrapRequest() on each request execution
-      request.headers()
-          .names()
-          .forEach(
-              name -> {
-                request
-                    .headers()
-                    .values(name)
-                    .forEach(value -> apacheRequest.addHeader(name, value));
-              });
+      // Add headers from OpenAI SDK request
+      final Headers headers = request.headers();
+      for (final String name : headers.names()) {
+        for (final String value : headers.values(name)) {
+          apacheRequest.addHeader(name, value);
+        }
+      }
 
       // Add request body if present
-      final HttpRequestBody body = request.body();
-      if (body != null) {
-        try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-          body.writeTo(baos);
-          final byte[] bodyBytes = baos.toByteArray();
+      final HttpRequestBody requestBody = request.body();
+      if (requestBody != null) {
+        try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+          requestBody.writeTo(outputStream);
+          final byte[] bodyBytes = outputStream.toByteArray();
           final String contentType =
-              body.contentType() != null ? body.contentType() : "application/json";
+              requestBody.contentType() != null ? requestBody.contentType() : "application/json";
           apacheRequest.setEntity(new ByteArrayEntity(bodyBytes, ContentType.parse(contentType)));
         } catch (final IOException e) {
-          throw new RuntimeException("Failed to read request body", e);
+          throw new OpenAIIoException("Failed to read request body", e);
         }
       }
 
@@ -251,7 +253,7 @@ public final class AiCoreOpenAiClient {
 
       // Build Headers object from map
       final Headers.Builder headersBuilder = Headers.builder();
-      headers.forEach((name, values) -> headersBuilder.put(name, values));
+      headers.forEach(headersBuilder::put);
       final Headers responseHeaders = headersBuilder.build();
 
       // Return anonymous implementation of HttpResponse interface
@@ -261,11 +263,13 @@ public final class AiCoreOpenAiClient {
           return statusCode;
         }
 
+        @Nonnull
         @Override
         public Headers headers() {
           return responseHeaders;
         }
 
+        @Nonnull
         @Override
         public InputStream body() {
           return new ByteArrayInputStream(body);
