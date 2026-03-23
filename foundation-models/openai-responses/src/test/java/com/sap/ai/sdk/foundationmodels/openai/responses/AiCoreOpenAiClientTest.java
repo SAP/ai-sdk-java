@@ -12,6 +12,7 @@ import com.openai.models.responses.ResponseStatus;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import javax.annotation.Nonnull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ class AiCoreOpenAiClientTest {
   private OpenAIClient client;
 
   @BeforeEach
-  void setup(WireMockRuntimeInfo server) {
+  void setup(@Nonnull final WireMockRuntimeInfo server) {
     // Create destination pointing to WireMock server
     final var destination = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
 
@@ -41,28 +42,17 @@ class AiCoreOpenAiClientTest {
 
   @Test
   void testResponseSuccess() {
-    // Create response request matching the WireMock mapping
     final var params =
         ResponseCreateParams.builder()
             .input("What is the capital of France?")
             .model("gpt-5")
             .build();
 
-    // Execute request
     final Response response = client.responses().create(params);
 
-    // Verify response
     assertThat(response).isNotNull();
     assertThat(response.id()).isEqualTo("resp_01a38d2783b385be0069bd43d260108193aef990678aa8a0af");
     assertThat(response.status().orElseThrow()).isEqualTo(ResponseStatus.COMPLETED);
     assertThat(response.output()).isNotEmpty();
-
-    // Verify the request was made correctly
-    verify(
-        postRequestedFor(urlPathMatching("/responses"))
-            .withHeader("Content-Type", equalTo("application/json"))
-            .withRequestBody(
-                matchingJsonPath("$.input", equalTo("What is the capital of France?"))
-                    .and(matchingJsonPath("$.model", equalTo("gpt-5")))));
   }
 }

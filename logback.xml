@@ -17,6 +17,4 @@
 	<logger name="com.sap.ai.sdk" level="DEBUG"/>
 	<!-- Disable org.eclipse.jetty logging -->
 	<logger name="org.eclipse.jetty" level="OFF"/>
-	<logger name="okhttp3" level="DEBUG"/>
-	<logger name="com.openai" level="DEBUG"/>
 </configuration>
