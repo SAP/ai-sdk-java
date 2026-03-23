@@ -196,6 +196,9 @@ public final class AiCoreOpenAiClient {
       // Add headers from OpenAI SDK request
       final Headers headers = request.headers();
       for (final String name : headers.names()) {
+        if (name.equals("Authorization")) {
+          continue;
+        }
         for (final String value : headers.values(name)) {
           apacheRequest.addHeader(name, value);
         }
