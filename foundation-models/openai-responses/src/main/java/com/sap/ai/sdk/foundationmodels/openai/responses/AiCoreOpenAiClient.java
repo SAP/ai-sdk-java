@@ -6,7 +6,6 @@ import com.openai.core.ClientOptions;
 import com.openai.core.RequestOptions;
 import com.openai.core.http.Headers;
 import com.openai.core.http.HttpClient;
-import com.openai.core.http.HttpMethod;
 import com.openai.core.http.HttpRequest;
 import com.openai.core.http.HttpRequestBody;
 import com.openai.core.http.HttpResponse;
@@ -20,25 +19,25 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.hc.client5.http.classic.methods.HttpDelete;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpHead;
-import org.apache.hc.client5.http.classic.methods.HttpOptions;
-import org.apache.hc.client5.http.classic.methods.HttpPatch;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.classic.methods.HttpPut;
+import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
+import org.apache.hc.core5.net.URIBuilder;
 
 /**
  * Factory for creating OpenAI SDK clients configured for SAP AI Core deployments.
@@ -111,9 +110,10 @@ public final class AiCoreOpenAiClient {
    * @return A configured OpenAI client instance.
    */
   @Nonnull
+  @SuppressWarnings("PMD.CloseResource")
   static OpenAIClient fromDestination(@Nonnull final HttpDestination destination) {
-    final String baseUrl = destination.getUri().toString();
-    final HttpClient httpClient = new AiCoreHttpClientImpl(destination);
+    final var baseUrl = destination.getUri().toString();
+    final var httpClient = new AiCoreHttpClientImpl(destination);
 
     // Build ClientOptions with our custom HttpClient
     // Note: apiKey is required by SDK but unused since we handle auth via destination headers
@@ -135,31 +135,30 @@ public final class AiCoreOpenAiClient {
    * <p>Package-private for testing purposes.
    */
   @Slf4j
+  @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
   static final class AiCoreHttpClientImpl implements HttpClient {
-
     private final HttpDestination destination;
 
-    AiCoreHttpClientImpl(@Nonnull final HttpDestination destination) {
-      this.destination = destination;
-      log.debug("Created HTTP client wrapper for destination: {}", destination.getUri());
-    }
+    private static final Pattern STREAM_PATTERN = Pattern.compile("\"stream\"\\s*:\\s*true");
 
     @Override
     @Nonnull
+    @SuppressWarnings("PMD.CloseResource")
     public HttpResponse execute(
         @Nonnull final HttpRequest request, @Nonnull final RequestOptions requestOptions) {
       final var apacheClient = ApacheHttpClient5Accessor.getHttpClient(destination);
-      final var apacheRequest = toApacheRequest(request);
-      final var isStreaming = isStreamingRequest(request);
+      final var preparedRequest = prepareRequest(request);
+      final boolean isStreaming =
+          isStreamingBody(preparedRequest.bodyBytes()) || isStreamingQuery(request);
 
       try {
         if (isStreaming) {
-          // For streaming, use executeOpen to keep connection open until explicitly closed
-          final var apacheResponse = apacheClient.executeOpen(null, apacheRequest, null);
+          final var apacheResponse =
+              apacheClient.executeOpen(null, preparedRequest.apacheRequest(), null);
           return createStreamingResponse(apacheResponse);
         } else {
-          // For non-streaming, use response handler which auto-closes the response
-          return apacheClient.execute(apacheRequest, this::createBufferedResponse);
+          return apacheClient.execute(
+              preparedRequest.apacheRequest(), this::createBufferedResponse);
         }
       } catch (final IOException e) {
         throw new OpenAIIoException("HTTP request execution failed", e);
@@ -172,10 +171,7 @@ public final class AiCoreOpenAiClient {
     @Nonnull
     public CompletableFuture<HttpResponse> executeAsync(
         @Nonnull final HttpRequest request, @Nonnull final RequestOptions requestOptions) {
-      return CompletableFuture.supplyAsync(() -> execute(request, requestOptions))
-          .whenComplete(
-              (response, error) ->
-                  Optional.ofNullable(request.body()).ifPresent(HttpRequestBody::close));
+      return CompletableFuture.supplyAsync(() -> execute(request, requestOptions));
     }
 
     @Override
@@ -184,79 +180,80 @@ public final class AiCoreOpenAiClient {
     }
 
     @Nonnull
-    private BasicClassicHttpRequest toApacheRequest(@Nonnull final HttpRequest request) {
-      final var fullUrl = request.url();
-      final var httpMethod = request.method();
-      final var apacheRequest = createRequestByMethod(httpMethod, fullUrl);
+    @SuppressWarnings("PMD.CloseResource")
+    private PreparedRequest prepareRequest(@Nonnull final HttpRequest request) {
+      final var fullUri = buildUrlWithQueryParams(request);
+      final var method = request.method();
+      final var apacheRequest = new BasicClassicHttpRequest(method.name(), fullUri.toString());
+      applyRequestHeaders(request, apacheRequest);
 
+      final var requestBody = request.body();
+      if (requestBody != null) {
+        try (var outputStream = new ByteArrayOutputStream()) {
+          requestBody.writeTo(outputStream);
+          final var bodyBytes = outputStream.toByteArray();
+
+          final var apacheContentType =
+              Optional.ofNullable(requestBody.contentType())
+                  .map(ContentType::parse)
+                  .orElse(ContentType.APPLICATION_JSON);
+
+          apacheRequest.setEntity(new ByteArrayEntity(bodyBytes, apacheContentType));
+          return new PreparedRequest(apacheRequest, bodyBytes);
+        } catch (final IOException e) {
+          throw new OpenAIIoException("Failed to read request body", e);
+        }
+      }
+
+      return new PreparedRequest(apacheRequest, null);
+    }
+
+    private static URI buildUrlWithQueryParams(@Nonnull final HttpRequest request) {
+      try {
+        final var uriBuilder = new URIBuilder(request.url());
+        final var queryParams = request.queryParams();
+
+        for (final var key : queryParams.keys()) {
+          for (final var value : queryParams.values(key)) {
+            uriBuilder.addParameter(key, value);
+          }
+        }
+
+        return uriBuilder.build();
+      } catch (URISyntaxException e) {
+        throw new OpenAIIoException("Failed to build URI with query parameters", e);
+      }
+    }
+
+    private static void applyRequestHeaders(
+        @Nonnull final HttpRequest request, @Nonnull final BasicClassicHttpRequest apacheRequest) {
       final var headers = request.headers();
       for (final var name : headers.names()) {
-        if (name.equals("Authorization")) {
+        if ("Authorization".equalsIgnoreCase(name)) {
           continue;
         }
         for (final var value : headers.values(name)) {
           apacheRequest.addHeader(name, value);
         }
       }
+    }
 
-      // Add request body if present
-      final var body = request.body();
-      if (body != null) {
-        try (final var outputStream = new ByteArrayOutputStream()) {
-          body.writeTo(outputStream);
-          final var bodyBytes = outputStream.toByteArray();
-          final var contentType =
-              Optional.ofNullable(ContentType.parse(body.contentType()))
-                  .orElse(ContentType.APPLICATION_JSON);
-          apacheRequest.setEntity(new ByteArrayEntity(bodyBytes, contentType));
-        } catch (final IOException e) {
-          throw new OpenAIIoException("Failed to read request body", e);
-        }
+    private static boolean isStreamingBody(@Nullable final byte[] bodyBytes) {
+      if (bodyBytes == null || bodyBytes.length == 0) {
+        return false;
       }
+      final var bodyContent = new String(bodyBytes, StandardCharsets.UTF_8);
+      return STREAM_PATTERN.matcher(bodyContent).find();
+    }
 
-      return apacheRequest;
+    private static boolean isStreamingQuery(@Nonnull final HttpRequest request) {
+      return request.queryParams().values("stream").stream()
+          .anyMatch(value -> "true".equalsIgnoreCase(value));
     }
 
     @Nonnull
-    private BasicClassicHttpRequest createRequestByMethod(
-        @Nonnull final HttpMethod method, @Nonnull final String url) {
-      return switch (method.toString().toUpperCase()) {
-        case "GET" -> new HttpGet(url);
-        case "POST" -> new HttpPost(url);
-        case "PUT" -> new HttpPut(url);
-        case "DELETE" -> new HttpDelete(url);
-        case "PATCH" -> new HttpPatch(url);
-        case "HEAD" -> new HttpHead(url);
-        case "OPTIONS" -> new HttpOptions(url);
-        default -> throw new IllegalArgumentException("Unsupported HTTP method: " + method);
-      };
-    }
-
-    /**
-     * Detects if the current request is a streaming request by checking for the stream parameter.
-     *
-     * @param request The HTTP request to check
-     * @return true if this is a streaming request, false otherwise
-     */
-    private boolean isStreamingRequest(@Nonnull final HttpRequest request) {
-      final HttpRequestBody requestBody = request.body();
-      if (requestBody != null) {
-        try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-          requestBody.writeTo(outputStream);
-          final String bodyContent = outputStream.toString(StandardCharsets.UTF_8);
-          // Check for "stream":true or "stream": true in JSON body
-          return bodyContent.contains("\"stream\":true")
-              || bodyContent.contains("\"stream\": true");
-        } catch (final IOException e) {
-          log.warn("Failed to read request body for streaming detection", e);
-          return false;
-        }
-      }
-      return false;
-    }
-
-    @Nonnull
-    private Headers extractResponseHeaders(@Nonnull final ClassicHttpResponse apacheResponse) {
+    private static Headers extractResponseHeaders(
+        @Nonnull final ClassicHttpResponse apacheResponse) {
       final var builder = Headers.builder();
       for (final var header : apacheResponse.getHeaders()) {
         builder.put(header.getName(), header.getValue());
@@ -279,42 +276,13 @@ public final class AiCoreOpenAiClient {
       final var statusCode = apacheResponse.getCode();
       final var headers = extractResponseHeaders(apacheResponse);
 
-      // Get live stream - do NOT buffer for streaming responses
-      final InputStream liveStream =
+      final var liveStream =
           apacheResponse.getEntity() != null
               ? apacheResponse.getEntity().getContent()
               : InputStream.nullInputStream();
 
       // Return response that keeps connection open until stream is closed
-      return new HttpResponse() {
-        @Override
-        public int statusCode() {
-          return statusCode;
-        }
-
-        @Nonnull
-        @Override
-        public Headers headers() {
-          return headers;
-        }
-
-        @Nonnull
-        @Override
-        public InputStream body() {
-          return liveStream;
-        }
-
-        @Override
-        public void close() {
-          try {
-            liveStream.close();
-            apacheResponse.close();
-            log.debug("Closed streaming response connection");
-          } catch (final IOException e) {
-            log.warn("Failed to close streaming response", e);
-          }
-        }
-      };
+      return new StreamingHttpResponse(statusCode, headers, liveStream, apacheResponse);
     }
 
     /**
@@ -327,40 +295,59 @@ public final class AiCoreOpenAiClient {
     @Nonnull
     private HttpResponse createBufferedResponse(@Nonnull final ClassicHttpResponse apacheResponse)
         throws IOException {
-
       final int statusCode = apacheResponse.getCode();
       final Headers headers = extractResponseHeaders(apacheResponse);
 
-      // Buffer response body for non-streaming requests
       final byte[] body =
           apacheResponse.getEntity() != null
               ? EntityUtils.toByteArray(apacheResponse.getEntity())
               : new byte[0];
 
-      // Return response with buffered body
-      return new HttpResponse() {
-        @Override
-        public int statusCode() {
-          return statusCode;
-        }
+      return new BufferedHttpResponse(statusCode, headers, body);
+    }
 
-        @Nonnull
-        @Override
-        public Headers headers() {
-          return headers;
-        }
+    record PreparedRequest(@Nonnull ClassicHttpRequest apacheRequest, @Nullable byte[] bodyBytes) {}
 
-        @Nonnull
-        @Override
-        public InputStream body() {
-          return new ByteArrayInputStream(body);
-        }
+    /**
+     * HTTP response for streaming requests. Keeps the connection open and provides a live stream.
+     * The stream must be closed by calling {@link #close()}.
+     */
+    record StreamingHttpResponse(
+        int statusCode,
+        @Nonnull Headers headers,
+        @Nonnull InputStream body,
+        @Nonnull ClassicHttpResponse apacheResponse)
+        implements HttpResponse {
 
-        @Override
-        public void close() {
-          // Body already consumed and stored in byte array, nothing to close
+      @Override
+      public void close() {
+        try {
+          body.close();
+          apacheResponse.close();
+          log.debug("Closed streaming response connection");
+        } catch (final IOException e) {
+          log.warn("Failed to close streaming response", e);
         }
-      };
+      }
+    }
+
+    /**
+     * HTTP response for buffered requests. The entire response body is loaded into memory. No
+     * resources need to be closed.
+     */
+    record BufferedHttpResponse(int statusCode, @Nonnull Headers headers, @Nonnull byte[] bodyBytes)
+        implements HttpResponse {
+
+      @Nonnull
+      @Override
+      public InputStream body() {
+        return new ByteArrayInputStream(bodyBytes);
+      }
+
+      @Override
+      public void close() {
+        // Body already consumed and buffered, nothing to close
+      }
     }
   }
 }
