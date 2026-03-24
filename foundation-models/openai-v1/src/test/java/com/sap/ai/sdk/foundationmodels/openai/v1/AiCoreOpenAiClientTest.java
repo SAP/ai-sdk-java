@@ -1,6 +1,5 @@
-package com.sap.ai.sdk.foundationmodels.openai.responses;
+package com.sap.ai.sdk.foundationmodels.openai.v1;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;

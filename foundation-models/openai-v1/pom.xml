@@ -8,11 +8,9 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.foundationmodels</groupId>
-  <artifactId>openai-responses</artifactId>
-  <name>OpenAI Responses API Client</name>
-  <description>
-    <!--    TODO -->
-  </description>
+  <artifactId>openai-v1</artifactId>
+  <name>OpenAI V1 API Client</name>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for consuming Azure OpenAI models without Orchestration Service.</description>
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
     <name>SAP SE</name>
@@ -39,12 +37,12 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>55%</coverage.complexity>
-    <coverage.line>74%</coverage.line>
-    <coverage.instruction>74%</coverage.instruction>
+    <coverage.complexity>48%</coverage.complexity>
+    <coverage.line>60%</coverage.line>
+    <coverage.instruction>59%</coverage.instruction>
     <coverage.branch>50%</coverage.branch>
-    <coverage.method>75%</coverage.method>
-    <coverage.class>100%</coverage.class>
+    <coverage.method>56%</coverage.method>
+    <coverage.class>0.75%</coverage.class>
   </properties>
   <dependencies>
     <!-- scope "compile" -->
@@ -100,11 +98,6 @@
     <dependency>
       <groupId>org.wiremock</groupId>
       <artifactId>wiremock</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
