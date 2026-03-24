@@ -3,6 +3,7 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.app.services.OpenAiV1Service;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,5 +23,50 @@ class OpenAiV1Test {
     assertThat(response).isNotNull();
     assertThat(response.output()).isNotNull();
     assertThat(response.output()).isNotEmpty();
+  }
+
+  @Test
+  void testCreateStreamingResponse() {
+    try (final var streamResponse =
+        service.createStreamingResponse("What is the capital of France?")) {
+      final var events = streamResponse.stream().collect(Collectors.toList());
+
+      assertThat(events).isNotNull();
+      assertThat(events).isNotEmpty();
+
+      // Verify we got text deltas
+      final var hasTextDeltas =
+          events.stream().anyMatch(event -> event.outputTextDelta().isPresent());
+      assertThat(hasTextDeltas).isTrue();
+    }
+  }
+
+  @Test
+  void testCreateChatCompletion() {
+    final var response = service.createChatCompletion("What is the capital of France?");
+    assertThat(response).isNotNull();
+    assertThat(response.choices()).isNotEmpty();
+    assertThat(response.choices().get(0).message().content()).isPresent();
+    assertThat(response.choices().get(0).message().content().get()).isNotEmpty();
+  }
+
+  @Test
+  void testCreateStreamingChatCompletion() {
+    try (final var streamResponse =
+        service.createStreamingChatCompletion("What is the capital of France?")) {
+      final var events = streamResponse.stream().collect(Collectors.toList());
+
+      assertThat(events).isNotNull();
+      assertThat(events).isNotEmpty();
+
+      // Verify we got content deltas
+      final var hasContentDeltas =
+          events.stream()
+              .anyMatch(
+                  event ->
+                      !event.choices().isEmpty()
+                          && event.choices().get(0).delta().content().isPresent());
+      assertThat(hasContentDeltas).isTrue();
+    }
   }
 }

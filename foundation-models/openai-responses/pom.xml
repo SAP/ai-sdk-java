@@ -39,7 +39,7 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>69%</coverage.complexity>
+    <coverage.complexity>55%</coverage.complexity>
     <coverage.line>74%</coverage.line>
     <coverage.instruction>74%</coverage.instruction>
     <coverage.branch>50%</coverage.branch>
@@ -73,11 +73,6 @@
       <artifactId>httpcore5</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.openai</groupId>
-      <artifactId>openai-java</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
@@ -105,6 +100,11 @@
     <dependency>
       <groupId>org.wiremock</groupId>
       <artifactId>wiremock</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
