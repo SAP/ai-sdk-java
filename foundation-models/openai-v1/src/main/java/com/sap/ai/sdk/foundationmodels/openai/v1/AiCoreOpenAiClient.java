@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.foundationmodels.openai.responses;
+package com.sap.ai.sdk.foundationmodels.openai.v1;
 
 import com.openai.client.OpenAIClient;
 import com.openai.client.OpenAIClientImpl;
@@ -265,22 +265,23 @@ public final class AiCoreOpenAiClient {
               ? apacheResponse.getEntity().getContent()
               : InputStream.nullInputStream();
 
-      // Return response that keeps connection open until stream is closed
       return new StreamingHttpResponse(statusCode, headers, liveStream, apacheResponse);
     }
 
     @Nonnull
     private HttpResponse createBufferedResponse(@Nonnull final ClassicHttpResponse apacheResponse)
         throws IOException {
-      final int statusCode = apacheResponse.getCode();
-      final Headers headers = extractResponseHeaders(apacheResponse);
+      try (apacheResponse) {
+        final int statusCode = apacheResponse.getCode();
+        final Headers headers = extractResponseHeaders(apacheResponse);
 
-      final byte[] body =
-          apacheResponse.getEntity() != null
-              ? EntityUtils.toByteArray(apacheResponse.getEntity())
-              : new byte[0];
+        final byte[] body =
+            apacheResponse.getEntity() != null
+                ? EntityUtils.toByteArray(apacheResponse.getEntity())
+                : new byte[0];
 
-      return new BufferedHttpResponse(statusCode, headers, body);
+        return new BufferedHttpResponse(statusCode, headers, body);
+      }
     }
 
     /**
