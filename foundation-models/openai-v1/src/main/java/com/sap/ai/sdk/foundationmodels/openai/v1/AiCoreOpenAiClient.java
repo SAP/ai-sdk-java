@@ -43,24 +43,6 @@ import org.apache.hc.core5.net.URIBuilder;
  *
  * <p>This class provides factory methods that return fully configured OpenAI SDK clients using SAP
  * Cloud SDK's Apache HttpClient with automatic OAuth token refresh.
- *
- * <p>The returned clients are long-lived and thread-safe. OAuth tokens are automatically refreshed
- * on each request via the Cloud SDK's {@link ApacheHttpClient5Accessor}.
- *
- * <p>Example usage:
- *
- * <pre>{@code
- * OpenAIClient client = AiCoreOpenAiClient.forModel(OpenAiModel.GPT_4);
- *
- * ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
- *     .addMessage(ChatCompletionUserMessageParam.builder()
- *         .content(ChatCompletionUserMessageParam.Content.ofTextContent("Hello!"))
- *         .build())
- *     .model("gpt-4")
- *     .build();
- *
- * ChatCompletion response = client.chat().completions().create(params);
- * }</pre>
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -102,9 +84,6 @@ public final class AiCoreOpenAiClient {
   /**
    * Create an OpenAI client from a pre-resolved destination.
    *
-   * <p>The destination should point to an OpenAI-compatible deployment. This method is useful for
-   * advanced scenarios where you need custom destination configuration.
-   *
    * @param destination The destination to use.
    * @return A configured OpenAI client instance.
    */
@@ -115,7 +94,6 @@ public final class AiCoreOpenAiClient {
     final var httpClient = new AiCoreHttpClientImpl(destination);
 
     // Build ClientOptions with our custom HttpClient
-    // Note: apiKey is required by SDK but unused since we handle auth via destination headers
     final ClientOptions clientOptions =
         ClientOptions.builder().baseUrl(baseUrl).httpClient(httpClient).apiKey("unused").build();
 
@@ -125,13 +103,6 @@ public final class AiCoreOpenAiClient {
   /**
    * Internal implementation of OpenAI SDK's HttpClient interface using Apache HttpClient from SAP
    * Cloud SDK.
-   *
-   * <p>This client leverages Cloud SDK's {@link ApacheHttpClient5Accessor} which provides: -
-   * Automatic OAuth token refresh via {@code ApacheHttpClient5Wrapper} - Connection pooling and
-   * lifecycle management - Custom headers from destination (including AI-Resource-Group) -
-   * Thread-safe request execution
-   *
-   * <p>Package-private for testing purposes.
    */
   @Slf4j
   @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
