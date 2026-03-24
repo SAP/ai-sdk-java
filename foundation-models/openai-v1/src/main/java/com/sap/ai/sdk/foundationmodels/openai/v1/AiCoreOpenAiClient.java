@@ -94,7 +94,6 @@ public final class AiCoreOpenAiClient {
     final var baseUrl = destination.getUri().toString();
     final var httpClient = new AiCoreHttpClientImpl(destination);
 
-    // Build ClientOptions with our custom HttpClient
     final ClientOptions clientOptions =
         ClientOptions.builder().baseUrl(baseUrl).httpClient(httpClient).apiKey("unused").build();
 
