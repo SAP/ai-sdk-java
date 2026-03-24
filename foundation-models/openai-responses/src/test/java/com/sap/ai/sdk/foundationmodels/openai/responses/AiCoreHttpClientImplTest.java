@@ -84,10 +84,10 @@ class AiCoreHttpClientImplTest {
 
   @Test
   void testStreamingRequest() throws IOException {
-    // Setup: Create a streaming request (with "stream":true in body)
+    // Setup: Create a streaming request (with Accept: text/event-stream header)
     final String requestBodyContent = "{\"model\":\"gpt-4\",\"messages\":[],\"stream\":true}";
 
-    final HttpRequest request = mockHttpRequest(requestBodyContent, false);
+    final HttpRequest request = mockHttpRequest(requestBodyContent, true);
     final HttpClient mockApacheClient = mock(HttpClient.class);
     final ClassicHttpResponse mockResponse = mockStreamingResponse();
 
@@ -125,7 +125,7 @@ class AiCoreHttpClientImplTest {
 
   @Test
   void testStreamingRequestViaQueryParam() throws IOException {
-    // Setup: Create a streaming request (with "stream=true" in query params)
+    // Setup: Create a streaming request (with Accept: text/event-stream header)
     final String requestBodyContent = "{\"model\":\"gpt-4\",\"messages\":[]}";
 
     final HttpRequest request = mockHttpRequest(requestBodyContent, true);
@@ -192,29 +192,30 @@ class AiCoreHttpClientImplTest {
 
   // Helper methods
 
-  private HttpRequest mockHttpRequest(String bodyContent, boolean addStreamQueryParam)
-      throws IOException {
+  private HttpRequest mockHttpRequest(String bodyContent, boolean isStreaming) {
     final HttpRequest request = mock(HttpRequest.class);
     final HttpRequestBody requestBody = mock(HttpRequestBody.class);
 
     when(request.url()).thenReturn(TEST_URL);
     when(request.method()).thenReturn(HttpMethod.POST);
-    when(request.headers())
-        .thenReturn(Headers.builder().put("Content-Type", "application/json").build());
+
+    // Build headers based on streaming flag
+    final Headers.Builder headersBuilder =
+        Headers.builder().put("Content-Type", "application/json");
+
+    if (isStreaming) {
+      headersBuilder.put("Accept", "text/event-stream");
+    }
+
+    when(request.headers()).thenReturn(headersBuilder.build());
     when(request.body()).thenReturn(requestBody);
     when(requestBody.contentType()).thenReturn("application/json");
 
-    // Mock queryParams - return a mock QueryParams object
+    // Mock queryParams
     final com.openai.core.http.QueryParams queryParams =
         mock(com.openai.core.http.QueryParams.class);
     when(request.queryParams()).thenReturn(queryParams);
-
-    // Mock values() method for streaming detection
-    if (addStreamQueryParam) {
-      when(queryParams.values("stream")).thenReturn(java.util.Collections.singletonList("true"));
-    } else {
-      when(queryParams.values("stream")).thenReturn(java.util.Collections.emptyList());
-    }
+    when(queryParams.keys()).thenReturn(java.util.Collections.emptySet());
 
     // Mock the writeTo method to write body content
     doAnswer(

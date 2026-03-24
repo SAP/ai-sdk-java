@@ -21,12 +21,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -139,7 +138,7 @@ public final class AiCoreOpenAiClient {
   static final class AiCoreHttpClientImpl implements HttpClient {
     private final HttpDestination destination;
 
-    private static final Pattern STREAM_PATTERN = Pattern.compile("\"stream\"\\s*:\\s*true");
+    private static final String SSE_MEDIA_TYPE = "text/event-stream";
 
     @Override
     @Nonnull
@@ -147,18 +146,18 @@ public final class AiCoreOpenAiClient {
     public HttpResponse execute(
         @Nonnull final HttpRequest request, @Nonnull final RequestOptions requestOptions) {
       final var apacheClient = ApacheHttpClient5Accessor.getHttpClient(destination);
-      final var preparedRequest = prepareRequest(request);
-      final boolean isStreaming =
-          isStreamingBody(preparedRequest.bodyBytes()) || isStreamingQuery(request);
+      final var apacheRequest = toApacheRequest(request);
 
       try {
-        if (isStreaming) {
-          final var apacheResponse =
-              apacheClient.executeOpen(null, preparedRequest.apacheRequest(), null);
-          return createStreamingResponse(apacheResponse);
+        if (isStreaming(request)) {
+          final var apacheResponse = apacheClient.executeOpen(null, apacheRequest, null);
+          final int statusCode = apacheResponse.getCode();
+          if (statusCode >= 200 && statusCode < 300) {
+            return createStreamingResponse(apacheResponse);
+          }
+          return createBufferedResponse(apacheResponse);
         } else {
-          return apacheClient.execute(
-              preparedRequest.apacheRequest(), this::createBufferedResponse);
+          return apacheClient.execute(apacheRequest, this::createBufferedResponse);
         }
       } catch (final IOException e) {
         throw new OpenAIIoException("HTTP request execution failed", e);
@@ -181,7 +180,7 @@ public final class AiCoreOpenAiClient {
 
     @Nonnull
     @SuppressWarnings("PMD.CloseResource")
-    private PreparedRequest prepareRequest(@Nonnull final HttpRequest request) {
+    private ClassicHttpRequest toApacheRequest(@Nonnull final HttpRequest request) {
       final var fullUri = buildUrlWithQueryParams(request);
       final var method = request.method();
       final var apacheRequest = new BasicClassicHttpRequest(method.name(), fullUri.toString());
@@ -199,13 +198,13 @@ public final class AiCoreOpenAiClient {
                   .orElse(ContentType.APPLICATION_JSON);
 
           apacheRequest.setEntity(new ByteArrayEntity(bodyBytes, apacheContentType));
-          return new PreparedRequest(apacheRequest, bodyBytes);
+          return apacheRequest;
         } catch (final IOException e) {
           throw new OpenAIIoException("Failed to read request body", e);
         }
       }
 
-      return new PreparedRequest(apacheRequest, null);
+      return apacheRequest;
     }
 
     private static URI buildUrlWithQueryParams(@Nonnull final HttpRequest request) {
@@ -238,17 +237,10 @@ public final class AiCoreOpenAiClient {
       }
     }
 
-    private static boolean isStreamingBody(@Nullable final byte[] bodyBytes) {
-      if (bodyBytes == null || bodyBytes.length == 0) {
-        return false;
-      }
-      final var bodyContent = new String(bodyBytes, StandardCharsets.UTF_8);
-      return STREAM_PATTERN.matcher(bodyContent).find();
-    }
-
-    private static boolean isStreamingQuery(@Nonnull final HttpRequest request) {
-      return request.queryParams().values("stream").stream()
-          .anyMatch(value -> "true".equalsIgnoreCase(value));
+    private static boolean isStreaming(@Nonnull final HttpRequest request) {
+      return request.headers().values("Accept").stream()
+          .map(value -> Objects.toString(value, "").toLowerCase(Locale.ROOT))
+          .anyMatch(value -> value.contains(SSE_MEDIA_TYPE));
     }
 
     @Nonnull
@@ -261,14 +253,6 @@ public final class AiCoreOpenAiClient {
       return builder.build();
     }
 
-    /**
-     * Creates a streaming HttpResponse that keeps the connection open and provides a live
-     * InputStream.
-     *
-     * @param apacheResponse Apache HTTP response (must be kept open)
-     * @return HttpResponse with live stream
-     * @throws IOException if getting the stream fails
-     */
     @Nonnull
     private HttpResponse createStreamingResponse(@Nonnull final ClassicHttpResponse apacheResponse)
         throws IOException {
@@ -285,13 +269,6 @@ public final class AiCoreOpenAiClient {
       return new StreamingHttpResponse(statusCode, headers, liveStream, apacheResponse);
     }
 
-    /**
-     * Creates a buffered HttpResponse with the entire response body loaded into memory.
-     *
-     * @param apacheResponse Apache HTTP response (will be consumed and closed)
-     * @return HttpResponse with buffered body
-     * @throws IOException if reading the response body fails
-     */
     @Nonnull
     private HttpResponse createBufferedResponse(@Nonnull final ClassicHttpResponse apacheResponse)
         throws IOException {
@@ -305,8 +282,6 @@ public final class AiCoreOpenAiClient {
 
       return new BufferedHttpResponse(statusCode, headers, body);
     }
-
-    record PreparedRequest(@Nonnull ClassicHttpRequest apacheRequest, @Nullable byte[] bodyBytes) {}
 
     /**
      * HTTP response for streaming requests. Keeps the connection open and provides a live stream.
