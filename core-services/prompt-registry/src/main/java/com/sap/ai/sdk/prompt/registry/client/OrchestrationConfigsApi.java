@@ -343,8 +343,8 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * @param orchestrationConfigId (required) UUID of the resource.
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
-   *     instead
-   * @param resolveTemplateRef2 (optional) The value for the parameter resolveTemplateRef2
+   *     instead.
+   * @param resolveTemplateRef2 (optional) Whether a template reference should be resolved
    * @return OrchestrationConfigGetResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -528,11 +528,11 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * @param version (required) Version field of the resource.
    * @param name (required) Name field of the resource.
    * @param aiResourceGroup (optional) Specify a resource group id to use
-   * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead
-   * @param includeSpec2 (optional) The value for the parameter includeSpec2
+   * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead.
+   * @param includeSpec2 (optional) Whether include the spec section or not.
    * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
-   *     instead
-   * @param resolveTemplateRef2 (optional) The value for the parameter resolveTemplateRef2
+   *     instead.
+   * @param resolveTemplateRef2 (optional) Whether a template reference should be resolved
    * @return OrchestrationConfigListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -663,11 +663,11 @@ public class OrchestrationConfigsApi extends AbstractOpenApiService {
    * @param version (optional) Version field of the resource.
    * @param retrieve (optional, default to both) Whether to retrieve &#39;imperative&#39;,
    *     &#39;declarative&#39;, or &#39;both&#39;.
-   * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead
-   * @param includeSpec2 (optional) The value for the parameter includeSpec2
+   * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead.
+   * @param includeSpec2 (optional) Whether the spec should be included in the response.
    * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
-   *     instead
-   * @param resolveTemplateRef2 (optional) The value for the parameter resolveTemplateRef2
+   *     instead.
+   * @param resolveTemplateRef2 (optional) Whether a template reference should be resolved
    * @return OrchestrationConfigListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */

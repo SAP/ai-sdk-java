@@ -543,7 +543,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    * @param name (required) Name field of the resource.
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
-   * @param includeSpec (optional, default to false) The value for the parameter includeSpec
+   * @param includeSpec (optional, default to false) Whether include the spec section or not.
    * @return PromptTemplateListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
