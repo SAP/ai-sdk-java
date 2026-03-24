@@ -24,6 +24,7 @@ import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -110,12 +111,14 @@ public final class AiCoreOpenAiClient {
     private final HttpDestination destination;
 
     private static final String SSE_MEDIA_TYPE = "text/event-stream";
+    private static final Set<String> ALLOWED_PATHS = Set.of("/responses");
 
     @Override
     @Nonnull
     @SuppressWarnings("PMD.CloseResource")
     public HttpResponse execute(
         @Nonnull final HttpRequest request, @Nonnull final RequestOptions requestOptions) {
+      validateAllowedEndpoint(request);
       final var apacheClient = ApacheHttpClient5Accessor.getHttpClient(destination);
       final var apacheRequest = toApacheRequest(request);
 
@@ -147,6 +150,14 @@ public final class AiCoreOpenAiClient {
     @Override
     public void close() {
       // Apache HttpClient lifecycle is managed by Cloud SDK's ApacheHttpClient5Cache
+    }
+
+    private static void validateAllowedEndpoint(@Nonnull final HttpRequest request) {
+      if (ALLOWED_PATHS.stream().noneMatch(request.url()::endsWith)) {
+        throw new UnsupportedOperationException(
+            String.format(
+                "Only requests to the following endpoints are allowed: %s.", ALLOWED_PATHS));
+      }
     }
 
     @Nonnull
