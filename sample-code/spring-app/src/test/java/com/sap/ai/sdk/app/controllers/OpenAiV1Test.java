@@ -27,7 +27,7 @@ class OpenAiV1Test {
   }
 
   @Test
-  @Disabled("Assumes not yet enables and leads to Internal Server Error (500)")
+  @Disabled("Not yet enables and leads to Internal Server Error (500)")
   void testCreateStreamingResponse() {
     try (final var streamResponse =
         service.createStreamingResponse("What is the capital of France?")) {
@@ -44,6 +44,7 @@ class OpenAiV1Test {
   }
 
   @Test
+  @Disabled("/chat/completions endpoint is not in allowed path")
   void testCreateStreamingChatCompletion() {
     try (final var streamResponse =
         service.createStreamingChatCompletion("What is the capital of France?")) {
