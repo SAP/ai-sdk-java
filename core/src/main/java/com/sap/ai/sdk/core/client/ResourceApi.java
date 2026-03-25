@@ -1,22 +1,22 @@
 package com.sap.ai.sdk.core.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.BckndInstanceTypeGetResponse;
 import com.sap.ai.sdk.core.model.BckndResourceGetResponse;
 import com.sap.ai.sdk.core.model.BckndResourcePatchBody;
 import com.sap.ai.sdk.core.model.BckndResourcePatchResponse;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.Pair;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * AI Core in version 2.42.0.
@@ -28,7 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
-public class ResourceApi extends AbstractOpenApiService {
+public class ResourceApi extends BaseApi {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public ResourceApi() {
@@ -62,39 +62,39 @@ public class ResourceApi extends AbstractOpenApiService {
   @Nonnull
   public BckndResourceGetResponse get(@Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/resources/nodes").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/admin/resources/nodes";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BckndResourceGetResponse> localVarReturnType =
-        new ParameterizedTypeReference<BckndResourceGetResponse>() {};
+    final TypeReference<BckndResourceGetResponse> localVarReturnType =
+        new TypeReference<BckndResourceGetResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -135,39 +135,39 @@ public class ResourceApi extends AbstractOpenApiService {
   @Nonnull
   public BckndInstanceTypeGetResponse get_0(@Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/resources/instanceTypes").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/admin/resources/instanceTypes";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BckndInstanceTypeGetResponse> localVarReturnType =
-        new ParameterizedTypeReference<BckndInstanceTypeGetResponse>() {};
+    final TypeReference<BckndInstanceTypeGetResponse> localVarReturnType =
+        new TypeReference<BckndInstanceTypeGetResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -211,45 +211,45 @@ public class ResourceApi extends AbstractOpenApiService {
       @Nonnull final BckndResourcePatchBody bckndResourcePatchBody,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndResourcePatchBody;
 
     // verify the required parameter 'bckndResourcePatchBody' is set
     if (bckndResourcePatchBody == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'bckndResourcePatchBody' when calling patch");
+              "Missing the required parameter 'bckndResourcePatchBody' when calling patch")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/resources/nodes").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/admin/resources/nodes";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<BckndResourcePatchResponse> localVarReturnType =
+        new TypeReference<BckndResourcePatchResponse>() {};
 
-    final ParameterizedTypeReference<BckndResourcePatchResponse> localVarReturnType =
-        new ParameterizedTypeReference<BckndResourcePatchResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.PATCH,
+        "PATCH",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        bckndResourcePatchBody,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 

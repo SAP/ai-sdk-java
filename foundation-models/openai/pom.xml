@@ -195,6 +195,7 @@
                   <modelPackage>com.sap.ai.sdk.foundationmodels.openai.generated.model</modelPackage>
                   <generateApis>false</generateApis>
                   <additionalProperties>
+                    <library>apache-httpclient</library>
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
                     <useOneOfCreators>true</useOneOfCreators>
