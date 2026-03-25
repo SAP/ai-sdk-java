@@ -8,7 +8,7 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.foundationmodels</groupId>
-  <artifactId>openai-responses</artifactId>
+  <artifactId>openai-v1</artifactId>
   <name>OpenAI Responses API Client</name>
   <description>
     <!--    TODO -->

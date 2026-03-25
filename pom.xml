@@ -35,7 +35,7 @@
     <module>core-services/prompt-registry</module>
     <module>foundation-models/openai</module>
     <module>foundation-models/sap-rpt</module>
-    <module>foundation-models/openai-responses</module>
+    <module>foundation-models/openai-v1</module>
   </modules>
   <scm>
     <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
@@ -256,7 +256,7 @@
       </dependency>
       <dependency>
         <groupId>com.sap.ai.sdk.foundationmodels</groupId>
-        <artifactId>openai-responses</artifactId>
+        <artifactId>openai-v1</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -463,8 +463,7 @@
               <rules>
                 <bannedDependencies>
                   <message>Do not use JUnit 4.X, instead exclusively use Junit Jupiter. JUnit 4 tests will (silently)
-                    simply not be executed.
-                  </message>
+                    simply not be executed.</message>
                   <excludes>
                     <exclude>junit:junit</exclude>
                   </excludes>
@@ -554,8 +553,7 @@
           <licenseMerges>
             <licenseMerge>Apache Software License - Version 2.0|Apache License Version 2.0|Apache 2.0|
               The Apache License, Version 2.0|Apache License, Version 2.0|Apache-2.0|
-              The Apache Software License, Version 2.0|Apache License 2.0
-            </licenseMerge>
+              The Apache Software License, Version 2.0|Apache License 2.0</licenseMerge>
             <licenseMerge>The MIT License|MIT License|The MIT License (MIT)|MIT|MIT-0</licenseMerge>
             <licenseMerge>The BSD 3-Clause License|BSD License 3|The BSD License|BSD-3-Clause|BSD-2-Clause|BSD licence</licenseMerge>
             <licenseMerge>Eclipse Distribution License - v 1.0|EDL 1.0</licenseMerge>
@@ -693,7 +691,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/core/client/*</exclude>
             <exclude>com/sap/ai/sdk/core/model/*</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/openai/generated/model/*</exclude>
-            <exclude>com/sap/ai/sdk/foundationmodels/openai-responses/generated/**</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/rpt/generated/**</exclude>
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/client/*</exclude>
@@ -722,7 +719,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/core/model/*</exclude>
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/openai/generated/model/*</exclude>
-            <exclude>com/sap/ai/sdk/foundationmodels/openai-responses/generated/**</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/rpt/generated/**</exclude>
             <exclude>com/sap/ai/sdk/grounding/client/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/model/*</exclude>
