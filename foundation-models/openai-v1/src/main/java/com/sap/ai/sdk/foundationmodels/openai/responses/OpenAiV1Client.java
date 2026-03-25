@@ -16,15 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Provides factory methods for creating OpenAI SDK clients configured for SAP AI Core deployments.
- *
- * <p>This class handles deployment URL resolution, authentication credential extraction, and
- * automatic OAuth token refresh required for SAP AI Core integration.
- *
- * <p>Example usage:
- *
- * <pre>{@code
- * OpenAIClient client = OpenAiClientFactory.forModel(OpenAiModel.GPT_4);
- * }</pre>
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -67,9 +58,6 @@ public final class OpenAiV1Client {
 
   /**
    * Create an OpenAI client from an HttpDestination.
-   *
-   * <p>The client uses a token supplier for automatic OAuth token refresh and includes custom
-   * headers from the destination for SAP AI Core routing.
    *
    * @param destination The destination to use for the OpenAI client.
    * @return A configured OpenAI client instance.
