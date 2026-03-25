@@ -1854,11 +1854,16 @@ components:
           anyOf:
             - enum:
               - NEW
+              - CREATING
+              - CREATED
+              - CREATION_FAILED
               - UNKNOWN
               - INPROGRESS
               - FINISHED
               - FINISHEDWITHERRORS
               - TIMEOUT
+              - DELETION_INPROGRESS
+              - DELETION_FAILED
             - {}
     
     getPipelineExecutions:
