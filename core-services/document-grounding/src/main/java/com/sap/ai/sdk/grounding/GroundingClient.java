@@ -5,6 +5,7 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.grounding.client.PipelinesApi;
 import com.sap.ai.sdk.grounding.client.RetrievalApi;
 import com.sap.ai.sdk.grounding.client.VectorApi;
+import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import java.util.ArrayList;
@@ -94,12 +95,10 @@ public class GroundingClient {
 
   @Nonnull
   private ApiClient getClient() {
-    val apiClient = getService().getApiClient().withBasePath(getBasePath());
-    for (val header : customHeaders) {
-      if (header.getValue() != null) {
-        apiClient.addDefaultHeader(header.getName(), header.getValue());
-      }
-    }
-    return apiClient;
+    val destination =
+        DefaultHttpDestination.fromDestination(getService().getBaseDestination())
+            .headers(customHeaders)
+            .build();
+    return ApiClient.create(destination).withBasePath(getBasePath());
   }
 }
