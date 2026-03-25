@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Citation */
+/** Furz */
 // CHECKSTYLE:OFF
-public class Citation
+public class Furz
 // CHECKSTYLE:ON
 {
   @JsonProperty("ref_id")
@@ -46,17 +46,17 @@ public class Citation
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for Citation. */
-  protected Citation() {}
+  /** Default constructor for Furz. */
+  protected Furz() {}
 
   /**
-   * Set the refId of this {@link Citation} instance and return the same instance.
+   * Set the refId of this {@link Furz} instance and return the same instance.
    *
    * @param refId Unique identifier for inline citation
-   * @return The same instance of this {@link Citation} class
+   * @return The same instance of this {@link Furz} class
    */
   @Nonnull
-  public Citation refId(@Nullable final Integer refId) {
+  public Furz refId(@Nullable final Integer refId) {
     this.refId = refId;
     return this;
   }
@@ -64,7 +64,7 @@ public class Citation
   /**
    * Unique identifier for inline citation
    *
-   * @return refId The refId of this {@link Citation} instance.
+   * @return refId The refId of this {@link Furz} instance.
    */
   @Nonnull
   public Integer getRefId() {
@@ -72,7 +72,7 @@ public class Citation
   }
 
   /**
-   * Set the refId of this {@link Citation} instance.
+   * Set the refId of this {@link Furz} instance.
    *
    * @param refId Unique identifier for inline citation
    */
@@ -81,13 +81,13 @@ public class Citation
   }
 
   /**
-   * Set the title of this {@link Citation} instance and return the same instance.
+   * Set the title of this {@link Furz} instance and return the same instance.
    *
    * @param title Title of the citation
-   * @return The same instance of this {@link Citation} class
+   * @return The same instance of this {@link Furz} class
    */
   @Nonnull
-  public Citation title(@Nonnull final String title) {
+  public Furz title(@Nonnull final String title) {
     this.title = title;
     return this;
   }
@@ -95,7 +95,7 @@ public class Citation
   /**
    * Title of the citation
    *
-   * @return title The title of this {@link Citation} instance.
+   * @return title The title of this {@link Furz} instance.
    */
   @Nonnull
   public String getTitle() {
@@ -103,7 +103,7 @@ public class Citation
   }
 
   /**
-   * Set the title of this {@link Citation} instance.
+   * Set the title of this {@link Furz} instance.
    *
    * @param title Title of the citation
    */
@@ -112,13 +112,13 @@ public class Citation
   }
 
   /**
-   * Set the url of this {@link Citation} instance and return the same instance.
+   * Set the url of this {@link Furz} instance and return the same instance.
    *
    * @param url URL of the citation
-   * @return The same instance of this {@link Citation} class
+   * @return The same instance of this {@link Furz} class
    */
   @Nonnull
-  public Citation url(@Nonnull final String url) {
+  public Furz url(@Nonnull final String url) {
     this.url = url;
     return this;
   }
@@ -126,7 +126,7 @@ public class Citation
   /**
    * URL of the citation
    *
-   * @return url The url of this {@link Citation} instance.
+   * @return url The url of this {@link Furz} instance.
    */
   @Nonnull
   public String getUrl() {
@@ -134,7 +134,7 @@ public class Citation
   }
 
   /**
-   * Set the url of this {@link Citation} instance.
+   * Set the url of this {@link Furz} instance.
    *
    * @param url URL of the citation
    */
@@ -143,13 +143,13 @@ public class Citation
   }
 
   /**
-   * Set the startIndex of this {@link Citation} instance and return the same instance.
+   * Set the startIndex of this {@link Furz} instance and return the same instance.
    *
    * @param startIndex Start index of the citation in the response text
-   * @return The same instance of this {@link Citation} class
+   * @return The same instance of this {@link Furz} class
    */
   @Nonnull
-  public Citation startIndex(@Nullable final Integer startIndex) {
+  public Furz startIndex(@Nullable final Integer startIndex) {
     this.startIndex = startIndex;
     return this;
   }
@@ -157,7 +157,7 @@ public class Citation
   /**
    * Start index of the citation in the response text
    *
-   * @return startIndex The startIndex of this {@link Citation} instance.
+   * @return startIndex The startIndex of this {@link Furz} instance.
    */
   @Nonnull
   public Integer getStartIndex() {
@@ -165,7 +165,7 @@ public class Citation
   }
 
   /**
-   * Set the startIndex of this {@link Citation} instance.
+   * Set the startIndex of this {@link Furz} instance.
    *
    * @param startIndex Start index of the citation in the response text
    */
@@ -174,13 +174,13 @@ public class Citation
   }
 
   /**
-   * Set the endIndex of this {@link Citation} instance and return the same instance.
+   * Set the endIndex of this {@link Furz} instance and return the same instance.
    *
    * @param endIndex End index of the citation in the response text
-   * @return The same instance of this {@link Citation} class
+   * @return The same instance of this {@link Furz} class
    */
   @Nonnull
-  public Citation endIndex(@Nullable final Integer endIndex) {
+  public Furz endIndex(@Nullable final Integer endIndex) {
     this.endIndex = endIndex;
     return this;
   }
@@ -188,7 +188,7 @@ public class Citation
   /**
    * End index of the citation in the response text
    *
-   * @return endIndex The endIndex of this {@link Citation} instance.
+   * @return endIndex The endIndex of this {@link Furz} instance.
    */
   @Nonnull
   public Integer getEndIndex() {
@@ -196,7 +196,7 @@ public class Citation
   }
 
   /**
-   * Set the endIndex of this {@link Citation} instance.
+   * Set the endIndex of this {@link Furz} instance.
    *
    * @param endIndex End index of the citation in the response text
    */
@@ -205,7 +205,7 @@ public class Citation
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link Citation}.
+   * Get the names of the unrecognizable properties of the {@link Furz}.
    *
    * @return The set of properties names
    */
@@ -216,7 +216,7 @@ public class Citation
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link Citation} instance.
+   * Get the value of an unrecognizable property of this {@link Furz} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -227,13 +227,13 @@ public class Citation
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("Citation has no field with name '" + name + "'.");
+      throw new NoSuchElementException("Furz has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link Citation} instance including unrecognized
+   * Get the value of all properties of this {@link Furz} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -251,8 +251,8 @@ public class Citation
   }
 
   /**
-   * Set an unrecognizable property of this {@link Citation} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link Furz} instance. If the map previously contained a
+   * mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -270,13 +270,13 @@ public class Citation
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final Citation citation = (Citation) o;
-    return Objects.equals(this.cloudSdkCustomFields, citation.cloudSdkCustomFields)
-        && Objects.equals(this.refId, citation.refId)
-        && Objects.equals(this.title, citation.title)
-        && Objects.equals(this.url, citation.url)
-        && Objects.equals(this.startIndex, citation.startIndex)
-        && Objects.equals(this.endIndex, citation.endIndex);
+    final Furz furz = (Furz) o;
+    return Objects.equals(this.cloudSdkCustomFields, furz.cloudSdkCustomFields)
+        && Objects.equals(this.refId, furz.refId)
+        && Objects.equals(this.title, furz.title)
+        && Objects.equals(this.url, furz.url)
+        && Objects.equals(this.startIndex, furz.startIndex)
+        && Objects.equals(this.endIndex, furz.endIndex);
   }
 
   @Override
@@ -288,7 +288,7 @@ public class Citation
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class Citation {\n");
+    sb.append("class Furz {\n");
     sb.append("    refId: ").append(toIndentedString(refId)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
@@ -312,20 +312,20 @@ public class Citation
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link Citation} instance with
-   * all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link Furz} instance with all
+   * required arguments.
    */
   public static Builder create() {
-    return (title) -> (url) -> new Citation().title(title).url(url);
+    return (title) -> (url) -> new Furz().title(title).url(url);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the title of this {@link Citation} instance.
+     * Set the title of this {@link Furz} instance.
      *
      * @param title Title of the citation
-     * @return The Citation builder.
+     * @return The Furz builder.
      */
     Builder1 title(@Nonnull final String title);
   }
@@ -333,11 +333,11 @@ public class Citation
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the url of this {@link Citation} instance.
+     * Set the url of this {@link Furz} instance.
      *
      * @param url URL of the citation
-     * @return The Citation instance.
+     * @return The Furz instance.
      */
-    Citation url(@Nonnull final String url);
+    Furz url(@Nonnull final String url);
   }
 }
