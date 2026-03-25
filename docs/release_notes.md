@@ -20,13 +20,14 @@
   + BaseDocument.create().chunks(chunk).addMetadataItem(docMeta);
   ```
 - Migrated generated API clients from `Spring` to `Apache`:
-  - `[...]Api`classes now extend `BaseApi` instead of `AbstractOpenApiService`.
-  - `OpenApiResponse` is now `com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse` instead of `com.sap.cloud.sdk.services.openapi.core.OpenApiResponse`.
-  - `AiCoreService.getApiClient()` now returns `com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient` instead of `com.sap.cloud.sdk.services.openapi.apiclient.ApiClient`.
-  - `.PromptTemplatesApi.importPromptTemplate()` requires `byte[]` instead of `Resource` as input.
-    - Migrate by calling `Resource.getContentAsByteArray()`.
-  - Removed all `org.springframework` dependencies, you may need to add the following dependencies in your `dependencyManagement` to resolve convergence errors:
-    - `spring-core`, `spring-web`, `spring-beans`, `spring-context`
+
+| Aspect | Before | After | Migration |
+|--------|--------|-------|-----------|
+| **API Class Base** | `[...]Api` extends `AbstractOpenApiService` | `[...]Api` extends `BaseApi` | Update inheritance in generated classes |
+| **Response Object** | `com.sap.cloud.sdk.services.openapi.core.OpenApiResponse` | `com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse` | Update import statements |
+| **API Client** | `AiCoreService.getApiClient()` returns `com.sap.cloud.sdk.services.openapi.apiclient.ApiClient` | `AiCoreService.getApiClient()` returns `com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient` | Update import statements |
+| **importPromptTemplate() Input** | `Resource` parameter | `byte[]` parameter | Call `Resource.getContentAsByteArray()` |
+| **Dependencies** | Includes `org.springframework` | Removed | May need to add to `dependencyManagement`: `spring-core`, `spring-web`, `spring-beans`, `spring-context` |
 
 ### ✨ New Functionality
 
