@@ -4574,6 +4574,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DetailsErrorResponse'
+    
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Error occurred during metadata configuration deletion
 
     DetailsErrorResponse:
       type: object
