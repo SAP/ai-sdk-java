@@ -35,7 +35,6 @@
     <module>core-services/prompt-registry</module>
     <module>foundation-models/openai</module>
     <module>foundation-models/sap-rpt</module>
-    <module>foundation-models/openai-v1</module>
   </modules>
   <scm>
     <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
@@ -252,11 +251,6 @@
       <dependency>
         <groupId>com.sap.ai.sdk.foundationmodels</groupId>
         <artifactId>openai</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
-        <artifactId>openai-v1</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

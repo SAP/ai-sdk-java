@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.foundationmodels.openai.v1;
+package com.sap.ai.sdk.foundationmodels.openai;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
