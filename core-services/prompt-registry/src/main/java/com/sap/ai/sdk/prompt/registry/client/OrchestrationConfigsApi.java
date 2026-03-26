@@ -356,6 +356,8 @@ public class OrchestrationConfigsApi extends BaseApi {
 
     localVarQueryParams.addAll(
         ApiClient.parameterToPair("resolve_template_ref", resolveTemplateRef));
+    localVarQueryParams.addAll(
+        ApiClient.parameterToPair("resolveTemplateRef", resolveTemplateRef2));
     if (aiResourceGroup != null)
       localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
@@ -550,8 +552,11 @@ public class OrchestrationConfigsApi extends BaseApi {
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     localVarQueryParams.addAll(ApiClient.parameterToPair("include_spec", includeSpec));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("includeSpec", includeSpec2));
     localVarQueryParams.addAll(
         ApiClient.parameterToPair("resolve_template_ref", resolveTemplateRef));
+    localVarQueryParams.addAll(
+        ApiClient.parameterToPair("resolveTemplateRef", resolveTemplateRef2));
     if (aiResourceGroup != null)
       localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
@@ -653,8 +658,11 @@ public class OrchestrationConfigsApi extends BaseApi {
     localVarQueryParams.addAll(ApiClient.parameterToPair("version", version));
     localVarQueryParams.addAll(ApiClient.parameterToPair("retrieve", retrieve));
     localVarQueryParams.addAll(ApiClient.parameterToPair("include_spec", includeSpec));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("includeSpec", includeSpec2));
     localVarQueryParams.addAll(
         ApiClient.parameterToPair("resolve_template_ref", resolveTemplateRef));
+    localVarQueryParams.addAll(
+        ApiClient.parameterToPair("resolveTemplateRef", resolveTemplateRef2));
     if (aiResourceGroup != null)
       localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 

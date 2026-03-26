@@ -565,9 +565,7 @@ public class PromptTemplatesApi extends BaseApi {
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "includeSpec", includeSpec));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("includeSpec", includeSpec));
     if (aiResourceGroup != null)
       localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
