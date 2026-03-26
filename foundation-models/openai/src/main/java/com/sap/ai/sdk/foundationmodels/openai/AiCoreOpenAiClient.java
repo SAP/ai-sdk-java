@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import com.google.common.annotations.Beta;
 import com.openai.client.OpenAIClient;
 import com.openai.client.OpenAIClientImpl;
 import com.openai.core.ClientOptions;
@@ -44,9 +45,12 @@ import org.apache.hc.core5.net.URIBuilder;
  *
  * <p>This class provides factory methods that return fully configured OpenAI SDK clients using SAP
  * Cloud SDK's Apache HttpClient with automatic OAuth token refresh.
+ *
+ * @since 1.18.0
  */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Beta
 public final class AiCoreOpenAiClient {
 
   private static final String DEFAULT_RESOURCE_GROUP = "default";

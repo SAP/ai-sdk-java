@@ -78,7 +78,7 @@ public class AiCoreOpenAiService {
         ChatCompletionCreateParams.builder()
             .addUserMessage(input)
             .model(ChatModel.GPT_5)
-            .additionalQueryParams(QueryParams.builder().put("api-version", "2023-05-15").build())
+            .additionalQueryParams(QueryParams.builder().put("api-version", "2024-02-01").build())
             .build();
     return CLIENT.chat().completions().create(params);
   }
@@ -96,7 +96,7 @@ public class AiCoreOpenAiService {
         ChatCompletionCreateParams.builder()
             .addUserMessage(input)
             .model(ChatModel.GPT_5)
-            .additionalQueryParams(QueryParams.builder().put("api-version", "2023-05-15").build())
+            .additionalQueryParams(QueryParams.builder().put("api-version", "2024-02-01").build())
             .build();
     return CLIENT.chat().completions().createStreaming(params);
   }
