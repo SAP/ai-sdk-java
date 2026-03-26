@@ -23,7 +23,7 @@
   - BaseDocument.create().chunks(chunk).metadata(docMeta);
   + BaseDocument.create().chunks(chunk).addMetadataItem(docMeta);
   ```
-- Migrated generated API clients from `Spring` to `Apache`:
+- Remove Spring dependency, by migrating generated API clients from `RestTemplate` (Spring) to `Apache`:
 
 | Aspect | Before | After | Migration |
 |--------|--------|-------|-----------|
