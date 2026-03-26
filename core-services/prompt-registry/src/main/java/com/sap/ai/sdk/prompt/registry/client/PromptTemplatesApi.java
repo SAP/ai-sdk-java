@@ -516,6 +516,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
    * @param name (required) The value for the parameter name
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
+   * @param includeSpec (optional, default to false) The value for the parameter includeSpec
    * @return PromptTemplateListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -525,7 +526,8 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
       @Nonnull final String version,
       @Nonnull final String name,
       @Nullable final String aiResourceGroup,
-      @Nullable final String aiResourceGroupScope)
+      @Nullable final String aiResourceGroupScope,
+      @Nullable final Boolean includeSpec)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
@@ -563,6 +565,9 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
     final HttpHeaders localVarHeaderParams = new HttpHeaders();
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
+
+    localVarQueryParams.putAll(
+        apiClient.parameterToMultiValueMap(null, "includeSpec", includeSpec));
 
     if (aiResourceGroup != null)
       localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
@@ -613,7 +618,7 @@ public class PromptTemplatesApi extends AbstractOpenApiService {
   public PromptTemplateListResponse listPromptTemplateHistory(
       @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
       throws OpenApiRequestException {
-    return listPromptTemplateHistory(scenario, version, name, null, null);
+    return listPromptTemplateHistory(scenario, version, name, null, null, null);
   }
 
   /**
