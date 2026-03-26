@@ -29,7 +29,7 @@ public class GoogleDriveConfigurationMinimal
 // CHECKSTYLE:ON
 {
   @JsonProperty("googleDrive")
-  private GoogleDriveFolderDetail googleDrive;
+  private GoogleDriveResourceDetail googleDrive;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -46,7 +46,7 @@ public class GoogleDriveConfigurationMinimal
    */
   @Nonnull
   public GoogleDriveConfigurationMinimal googleDrive(
-      @Nonnull final GoogleDriveFolderDetail googleDrive) {
+      @Nonnull final GoogleDriveResourceDetail googleDrive) {
     this.googleDrive = googleDrive;
     return this;
   }
@@ -57,7 +57,7 @@ public class GoogleDriveConfigurationMinimal
    * @return googleDrive The googleDrive of this {@link GoogleDriveConfigurationMinimal} instance.
    */
   @Nonnull
-  public GoogleDriveFolderDetail getGoogleDrive() {
+  public GoogleDriveResourceDetail getGoogleDrive() {
     return googleDrive;
   }
 
@@ -66,7 +66,7 @@ public class GoogleDriveConfigurationMinimal
    *
    * @param googleDrive The googleDrive of this {@link GoogleDriveConfigurationMinimal}
    */
-  public void setGoogleDrive(@Nonnull final GoogleDriveFolderDetail googleDrive) {
+  public void setGoogleDrive(@Nonnull final GoogleDriveResourceDetail googleDrive) {
     this.googleDrive = googleDrive;
   }
 
@@ -186,6 +186,7 @@ public class GoogleDriveConfigurationMinimal
      * @param googleDrive The googleDrive of this {@link GoogleDriveConfigurationMinimal}
      * @return The GoogleDriveConfigurationMinimal instance.
      */
-    GoogleDriveConfigurationMinimal googleDrive(@Nonnull final GoogleDriveFolderDetail googleDrive);
+    GoogleDriveConfigurationMinimal googleDrive(
+        @Nonnull final GoogleDriveResourceDetail googleDrive);
   }
 }
