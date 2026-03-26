@@ -71,17 +71,16 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public List<BatchUpdateDocumentsResponseInner>
-      metadataManagementV1MetadataEndpointsBatchUpdateDocumentsMetadata(
-          @Nonnull final String metadataConfigId,
-          @Nonnull final DocumentMetadataBatchRequest documentMetadataBatchRequest)
-          throws OpenApiRequestException {
+  public List<BatchUpdateDocumentsResponseInner> batchUpdateDocumentsMetadata(
+      @Nonnull final String metadataConfigId,
+      @Nonnull final DocumentMetadataBatchRequest documentMetadataBatchRequest)
+      throws OpenApiRequestException {
     final Object localVarPostBody = documentMetadataBatchRequest;
 
     // verify the required parameter 'metadataConfigId' is set
     if (metadataConfigId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'metadataConfigId' when calling metadataManagementV1MetadataEndpointsBatchUpdateDocumentsMetadata");
+          "Missing the required parameter 'metadataConfigId' when calling batchUpdateDocumentsMetadata");
     }
 
     // verify the required parameter 'documentMetadataBatchRequest' is set
@@ -141,7 +140,7 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public OpenApiResponse metadataManagementV1MetadataEndpointsCreateMetadataConfiguration(
+  public OpenApiResponse createMetadataConfiguration(
       @Nonnull final MetadataConfigurationRequest metadataConfigurationRequest)
       throws OpenApiRequestException {
     final Object localVarPostBody = metadataConfigurationRequest;
@@ -203,14 +202,14 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public OpenApiResponse metadataManagementV1MetadataEndpointsDeleteMetadataConfigurationById(
-      @Nonnull final String metadataConfigId) throws OpenApiRequestException {
+  public OpenApiResponse deleteMetadataConfigurationById(@Nonnull final String metadataConfigId)
+      throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
     // verify the required parameter 'metadataConfigId' is set
     if (metadataConfigId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'metadataConfigId' when calling metadataManagementV1MetadataEndpointsDeleteMetadataConfigurationById");
+          "Missing the required parameter 'metadataConfigId' when calling deleteMetadataConfigurationById");
     }
 
     // create path and map variables
@@ -267,7 +266,7 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public ConfigurationDocument metadataManagementV1MetadataEndpointsGetDocumentDetails(
+  public ConfigurationDocument getDocumentDetailsById(
       @Nonnull final String metadataConfigId, @Nonnull final String documentId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -275,13 +274,13 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
     // verify the required parameter 'metadataConfigId' is set
     if (metadataConfigId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'metadataConfigId' when calling metadataManagementV1MetadataEndpointsGetDocumentDetails");
+          "Missing the required parameter 'metadataConfigId' when calling getDocumentDetailsById");
     }
 
     // verify the required parameter 'documentId' is set
     if (documentId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentId' when calling metadataManagementV1MetadataEndpointsGetDocumentDetails");
+          "Missing the required parameter 'documentId' when calling getDocumentDetailsById");
     }
 
     // create path and map variables
@@ -338,15 +337,14 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public MetadataConfigurationResponse
-      metadataManagementV1MetadataEndpointsGetMetadataConfigurationById(
-          @Nonnull final String metadataConfigId) throws OpenApiRequestException {
+  public MetadataConfigurationResponse getMetadataConfigurationById(
+      @Nonnull final String metadataConfigId) throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
     // verify the required parameter 'metadataConfigId' is set
     if (metadataConfigId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'metadataConfigId' when calling metadataManagementV1MetadataEndpointsGetMetadataConfigurationById");
+          "Missing the required parameter 'metadataConfigId' when calling getMetadataConfigurationById");
     }
 
     // create path and map variables
@@ -405,20 +403,19 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public ListConfigurationDocuments
-      metadataManagementV1MetadataEndpointsListMetadataConfigurationDocuments(
-          @Nonnull final String metadataConfigId,
-          @Nullable final String absolutePath,
-          @Nullable final Integer $top,
-          @Nullable final Integer $skip,
-          @Nullable final Boolean $count)
-          throws OpenApiRequestException {
+  public ListConfigurationDocuments listMetadataConfigurationDocuments(
+      @Nonnull final String metadataConfigId,
+      @Nullable final String absolutePath,
+      @Nullable final Integer $top,
+      @Nullable final Integer $skip,
+      @Nullable final Boolean $count)
+      throws OpenApiRequestException {
     final Object localVarPostBody = null;
 
     // verify the required parameter 'metadataConfigId' is set
     if (metadataConfigId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'metadataConfigId' when calling metadataManagementV1MetadataEndpointsListMetadataConfigurationDocuments");
+          "Missing the required parameter 'metadataConfigId' when calling listMetadataConfigurationDocuments");
     }
 
     // create path and map variables
@@ -476,11 +473,9 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public ListConfigurationDocuments
-      metadataManagementV1MetadataEndpointsListMetadataConfigurationDocuments(
-          @Nonnull final String metadataConfigId) throws OpenApiRequestException {
-    return metadataManagementV1MetadataEndpointsListMetadataConfigurationDocuments(
-        metadataConfigId, null, null, null, null);
+  public ListConfigurationDocuments listMetadataConfigurationDocuments(
+      @Nonnull final String metadataConfigId) throws OpenApiRequestException {
+    return listMetadataConfigurationDocuments(metadataConfigId, null, null, null, null);
   }
 
   /**
@@ -502,7 +497,7 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public ListMetadataConfigurations metadataManagementV1MetadataEndpointsListMetadataConfigurations(
+  public ListMetadataConfigurations listMetadataConfigurations(
       @Nullable final Integer $top, @Nullable final Integer $skip, @Nullable final Boolean $count)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -555,9 +550,7 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public ListMetadataConfigurations
-      metadataManagementV1MetadataEndpointsListMetadataConfigurations()
-          throws OpenApiRequestException {
-    return metadataManagementV1MetadataEndpointsListMetadataConfigurations(null, null, null);
+  public ListMetadataConfigurations listMetadataConfigurations() throws OpenApiRequestException {
+    return listMetadataConfigurations(null, null, null);
   }
 }

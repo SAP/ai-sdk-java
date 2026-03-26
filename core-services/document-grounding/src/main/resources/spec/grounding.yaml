@@ -510,6 +510,7 @@ paths:
       summary: Create a metadata configuration
       description: Creates a new metadata configuration.
       operationId: metadata_management.v1.metadata_endpoints.create_metadata_configuration
+      x-sap-cloud-sdk-operation-name: createMetadataConfiguration
       requestBody:
         required: true
         x-body-name: config_payload
@@ -534,6 +535,7 @@ paths:
       summary: List metadata configurations
       description: List all metadata configurations
       operationId: metadata_management.v1.metadata_endpoints.list_metadata_configurations
+      x-sap-cloud-sdk-operation-name: listMetadataConfigurations
       parameters:
         - $ref: "#/components/parameters/top"
         - $ref: "#/components/parameters/skip"
@@ -554,6 +556,7 @@ paths:
       summary: Get a configuration by ID
       description: Get the details of a configuration by ID
       operationId: metadata_management.v1.metadata_endpoints.get_metadata_configuration_by_id
+      x-sap-cloud-sdk-operation-name: getMetadataConfigurationById
       parameters:
         - name: metadataConfigId
           in: path
@@ -578,6 +581,7 @@ paths:
       summary: Delete a configuration by ID
       description: Delete a metadata configuration by ID
       operationId: metadata_management.v1.metadata_endpoints.delete_metadata_configuration_by_id
+      x-sap-cloud-sdk-operation-name: deleteMetadataConfigurationById
       parameters:
         - name: metadataConfigId
           in: path
@@ -613,6 +617,7 @@ paths:
       summary: List documents of a configuration
       description: List the documents for a configuration
       operationId: metadata_management.v1.metadata_endpoints.list_metadata_configuration_documents
+      x-sap-cloud-sdk-operation-name: listMetadataConfigurationDocuments
       parameters:
         - name: metadataConfigId
           in: path
@@ -642,6 +647,7 @@ paths:
       summary: Batch update metadata for multiple documents
       description: Patch the documents of a configuration in batch
       operationId: metadata_management.v1.metadata_endpoints.batch_update_documents_metadata
+      x-sap-cloud-sdk-operation-name: batchUpdateDocumentsMetadata
       parameters:
         - name: metadataConfigId
           in: path
@@ -672,6 +678,7 @@ paths:
       summary: Get document details
       description: Get the details of a document by document id
       operationId: metadata_management.v1.metadata_endpoints.get_document_details
+      x-sap-cloud-sdk-operation-name: getDocumentDetailsById
       parameters:
         - name: metadataConfigId
           in: path
