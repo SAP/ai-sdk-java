@@ -124,6 +124,7 @@
     <dependency>
       <groupId>com.openai</groupId>
       <artifactId>openai-java-core</artifactId>
+      <optional>true</optional>
     </dependency>
     <!-- scope "provided" -->
     <dependency>
