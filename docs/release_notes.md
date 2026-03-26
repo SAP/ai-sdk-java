@@ -8,6 +8,9 @@
 
 ### 🔧 Compatibility Notes
 
+- Some changes to existing generated API in the _Prompt Registry_ module.
+  Some methods now take additional (nullable) arguments.
+  See full changelog for all details.
 - Minor changes to generated API of _SAP Grounding Service_.
   ```diff
     var chunkMeta;
