@@ -7,7 +7,6 @@ import com.openai.core.RequestOptions;
 import com.openai.core.http.Headers;
 import com.openai.core.http.HttpClient;
 import com.openai.core.http.HttpRequest;
-import com.openai.core.http.HttpRequestBody;
 import com.openai.core.http.HttpResponse;
 import com.openai.errors.OpenAIIoException;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -15,6 +14,7 @@ import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -110,11 +110,16 @@ public final class AiCoreOpenAiClient {
     private final HttpDestination destination;
 
     private static final String SSE_MEDIA_TYPE = "text/event-stream";
-    private static final Set<String> ALLOWED_PATHS = Set.of("/responses");
+    private static final Set<String> ALLOWED_PATHS =
+        Set.of(
+            "/chat/completions",
+            "/responses",
+            "/responses/[^/]+",
+            "/responses/[^/]+/input_items",
+            "/responses/[^/]+/cancel");
 
     @Override
     @Nonnull
-    @SuppressWarnings("PMD.CloseResource")
     public HttpResponse execute(
         @Nonnull final HttpRequest request, @Nonnull final RequestOptions requestOptions) {
       validateAllowedEndpoint(request);
@@ -134,8 +139,6 @@ public final class AiCoreOpenAiClient {
         }
       } catch (final IOException e) {
         throw new OpenAIIoException("HTTP request execution failed", e);
-      } finally {
-        Optional.ofNullable(request.body()).ifPresent(HttpRequestBody::close);
       }
     }
 
@@ -143,7 +146,8 @@ public final class AiCoreOpenAiClient {
     @Nonnull
     public CompletableFuture<HttpResponse> executeAsync(
         @Nonnull final HttpRequest request, @Nonnull final RequestOptions requestOptions) {
-      return CompletableFuture.supplyAsync(() -> execute(request, requestOptions));
+      return CompletableFuture.supplyAsync(
+          () -> execute(request, requestOptions), ThreadContextExecutors.getExecutor());
     }
 
     @Override
@@ -152,7 +156,8 @@ public final class AiCoreOpenAiClient {
     }
 
     private static void validateAllowedEndpoint(@Nonnull final HttpRequest request) {
-      if (ALLOWED_PATHS.stream().noneMatch(request.url()::endsWith)) {
+      final var endpoint = "/" + String.join("/", request.pathSegments());
+      if (ALLOWED_PATHS.stream().noneMatch(endpoint::matches)) {
         throw new UnsupportedOperationException(
             String.format(
                 "Only requests to the following endpoints are allowed: %s.", ALLOWED_PATHS));
@@ -160,28 +165,28 @@ public final class AiCoreOpenAiClient {
     }
 
     @Nonnull
-    @SuppressWarnings("PMD.CloseResource")
     private ClassicHttpRequest toApacheRequest(@Nonnull final HttpRequest request) {
       final var fullUri = buildUrlWithQueryParams(request);
       final var method = request.method();
       final var apacheRequest = new BasicClassicHttpRequest(method.name(), fullUri.toString());
       applyRequestHeaders(request, apacheRequest);
 
-      final var requestBody = request.body();
-      if (requestBody != null) {
-        try (var outputStream = new ByteArrayOutputStream()) {
-          requestBody.writeTo(outputStream);
-          final var bodyBytes = outputStream.toByteArray();
+      try (var requestBody = request.body()) {
+        if (requestBody != null) {
+          try (var outputStream = new ByteArrayOutputStream()) {
+            requestBody.writeTo(outputStream);
+            final var bodyBytes = outputStream.toByteArray();
 
-          final var apacheContentType =
-              Optional.ofNullable(requestBody.contentType())
-                  .map(ContentType::parse)
-                  .orElse(ContentType.APPLICATION_JSON);
+            final var apacheContentType =
+                Optional.ofNullable(requestBody.contentType())
+                    .map(ContentType::parse)
+                    .orElse(ContentType.APPLICATION_JSON);
 
-          apacheRequest.setEntity(new ByteArrayEntity(bodyBytes, apacheContentType));
-          return apacheRequest;
-        } catch (final IOException e) {
-          throw new OpenAIIoException("Failed to read request body", e);
+            apacheRequest.setEntity(new ByteArrayEntity(bodyBytes, apacheContentType));
+            return apacheRequest;
+          } catch (final IOException e) {
+            throw new OpenAIIoException("Failed to read request body", e);
+          }
         }
       }
 
