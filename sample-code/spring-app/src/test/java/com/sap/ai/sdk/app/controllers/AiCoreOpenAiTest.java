@@ -28,6 +28,16 @@ class AiCoreOpenAiTest {
   }
 
   @Test
+  @Disabled("Flaky test")
+  void testGetResponse() {
+    final var response = service.retrieveResponse("What is the capital of France?");
+    assertThat(response).isNotNull();
+    assertThat(response.output()).isNotNull();
+    assertThat(response.output().get(1).message().get().content().get(0).asOutputText().text())
+        .contains("Paris");
+  }
+
+  @Test
   @Disabled("Not yet enables and leads to Internal Server Error (500)")
   void testCreateStreamingResponse() {
     try (final var streamResponse =
@@ -36,7 +46,6 @@ class AiCoreOpenAiTest {
 
       assertThat(events).isNotEmpty();
 
-      // Verify we got text deltas
       final var hasTextDeltas =
           events.stream().anyMatch(event -> event.outputTextDelta().isPresent());
       assertThat(hasTextDeltas).isTrue();
@@ -44,7 +53,12 @@ class AiCoreOpenAiTest {
   }
 
   @Test
-  @Disabled("/chat/completions endpoint is not in allowed path")
+  void testCreateChatCompletion() {
+    final var response = service.createChatCompletion("What is the capital of France?");
+    assertThat(response).isNotNull();
+  }
+
+  @Test
   void testCreateStreamingChatCompletion() {
     try (final var streamResponse =
         service.createStreamingChatCompletion("What is the capital of France?")) {
@@ -52,7 +66,6 @@ class AiCoreOpenAiTest {
 
       assertThat(events).isNotEmpty();
 
-      // Verify we got content deltas
       final var hasContentDeltas =
           events.stream()
               .anyMatch(

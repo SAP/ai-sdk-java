@@ -6,6 +6,7 @@ import com.openai.client.OpenAIClient;
 import com.openai.core.http.QueryParams;
 import com.openai.core.http.StreamResponse;
 import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionChunk;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.responses.Response;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AiCoreOpenAiService {
 
-  private static final OpenAIClient client = AiCoreOpenAiClient.forModel(GPT_5, "ai-sdk-java-e2e");
+  private static final OpenAIClient CLIENT = AiCoreOpenAiClient.forModel(GPT_5, "ai-sdk-java-e2e");
 
   /**
    * Create a simple response using the Responses API
@@ -34,7 +35,21 @@ public class AiCoreOpenAiService {
   public Response createResponse(@Nonnull final String input) {
     val params =
         ResponseCreateParams.builder().input(input).model(ChatModel.GPT_5).store(false).build();
-    return client.responses().create(params);
+    return CLIENT.responses().create(params);
+  }
+
+  /**
+   * Create a response and immediately retrieve it using the Responses API. This demonstrates the
+   * two-step process of creating and then fetching a response.
+   *
+   * @param input the input text to send to the model
+   * @return the retrieved response object from the Responses API
+   */
+  @Nonnull
+  public Response retrieveResponse(@Nonnull final String input) {
+    val params = ResponseCreateParams.builder().input(input).model(ChatModel.GPT_5).build();
+    val createResponse = CLIENT.responses().create(params);
+    return CLIENT.responses().retrieve(createResponse.id());
   }
 
   /**
@@ -47,7 +62,25 @@ public class AiCoreOpenAiService {
   public StreamResponse<ResponseStreamEvent> createStreamingResponse(@Nonnull final String input) {
     val params =
         ResponseCreateParams.builder().input(input).model(ChatModel.GPT_5).store(false).build();
-    return client.responses().createStreaming(params);
+    return CLIENT.responses().createStreaming(params);
+  }
+
+  /**
+   * Create a chat completion using the Chat Completions API. Note: This uses the legacy API version
+   * format via query parameters.
+   *
+   * @param input the input text to send to the model
+   * @return the chat completion response from the Chat Completions API
+   */
+  @Nonnull
+  public ChatCompletion createChatCompletion(@Nonnull final String input) {
+    val params =
+        ChatCompletionCreateParams.builder()
+            .addUserMessage(input)
+            .model(ChatModel.GPT_5)
+            .additionalQueryParams(QueryParams.builder().put("api-version", "2023-05-15").build())
+            .build();
+    return CLIENT.chat().completions().create(params);
   }
 
   /**
@@ -61,10 +94,10 @@ public class AiCoreOpenAiService {
       @Nonnull final String input) {
     val params =
         ChatCompletionCreateParams.builder()
-            .addUserMessage("Say this is a test")
+            .addUserMessage(input)
             .model(ChatModel.GPT_5)
             .additionalQueryParams(QueryParams.builder().put("api-version", "2023-05-15").build())
             .build();
-    return client.chat().completions().createStreaming(params);
+    return CLIENT.chat().completions().createStreaming(params);
   }
 }
