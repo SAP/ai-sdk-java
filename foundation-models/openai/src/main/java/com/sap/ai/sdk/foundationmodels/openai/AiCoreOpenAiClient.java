@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.foundationmodels.openai.v1;
+package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.openai.client.OpenAIClient;
 import com.openai.client.OpenAIClientImpl;

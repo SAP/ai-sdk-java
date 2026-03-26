@@ -78,10 +78,6 @@
       <artifactId>openai</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.sap.ai.sdk.foundationmodels</groupId>
-      <artifactId>openai-v1</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.openai</groupId>
       <artifactId>openai-java-core</artifactId>
     </dependency>

@@ -2,7 +2,7 @@ package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.sap.ai.sdk.app.services.OpenAiV1Service;
+import com.sap.ai.sdk.app.services.AiCoreOpenAiService;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,12 +10,12 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-class OpenAiV1Test {
-  OpenAiV1Service service;
+class AiCoreOpenAiTest {
+  AiCoreOpenAiService service;
 
   @BeforeEach
   void setUp() {
-    service = new OpenAiV1Service();
+    service = new AiCoreOpenAiService();
   }
 
   @Test
@@ -23,7 +23,8 @@ class OpenAiV1Test {
     final var response = service.createResponse("What is the capital of France?");
     assertThat(response).isNotNull();
     assertThat(response.output()).isNotNull();
-    assertThat(response.output()).isNotEmpty();
+    assertThat(response.output().get(1).message().get().content().get(0).asOutputText().text())
+        .contains("Paris");
   }
 
   @Test
@@ -33,7 +34,6 @@ class OpenAiV1Test {
         service.createStreamingResponse("What is the capital of France?")) {
       final var events = streamResponse.stream().collect(Collectors.toList());
 
-      assertThat(events).isNotNull();
       assertThat(events).isNotEmpty();
 
       // Verify we got text deltas
@@ -50,7 +50,6 @@ class OpenAiV1Test {
         service.createStreamingChatCompletion("What is the capital of France?")) {
       final var events = streamResponse.stream().collect(Collectors.toList());
 
-      assertThat(events).isNotNull();
       assertThat(events).isNotEmpty();
 
       // Verify we got content deltas

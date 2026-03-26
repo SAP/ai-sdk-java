@@ -38,12 +38,12 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>81%</coverage.complexity>
-    <coverage.line>91%</coverage.line>
-    <coverage.instruction>88%</coverage.instruction>
-    <coverage.branch>78%</coverage.branch>
-    <coverage.method>90%</coverage.method>
-    <coverage.class>92%</coverage.class>
+    <coverage.complexity>77%</coverage.complexity>
+    <coverage.line>87%</coverage.line>
+    <coverage.instruction>85%</coverage.instruction>
+    <coverage.branch>75%</coverage.branch>
+    <coverage.method>87%</coverage.method>
+    <coverage.class>91%</coverage.class>
   </properties>
   <dependencies>
     <dependency>
@@ -116,6 +116,10 @@
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.openai</groupId>
+      <artifactId>openai-java-core</artifactId>
     </dependency>
     <!-- scope "provided" -->
     <dependency>

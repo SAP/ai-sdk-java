@@ -11,7 +11,7 @@ import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
-import com.sap.ai.sdk.foundationmodels.openai.v1.AiCoreOpenAiClient;
+import com.sap.ai.sdk.foundationmodels.openai.AiCoreOpenAiClient;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 /** Service class for the OpenAI Responses API */
 @Service
 @Slf4j
-public class OpenAiV1Service {
+public class AiCoreOpenAiService {
 
   private static final OpenAIClient client = AiCoreOpenAiClient.forModel(GPT_5, "ai-sdk-java-e2e");
 
