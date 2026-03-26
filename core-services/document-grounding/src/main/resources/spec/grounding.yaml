@@ -1784,11 +1784,17 @@ components:
           example: Some unexpected error occurred.
 
     BatchUpdateDocumentsResponse:
-      type: array
-      items:
-        oneOf:
-          - $ref: "#/components/schemas/DocumentMetadataUpdate"
-          - $ref: "#/components/schemas/DocumentMetadataUpdateError"
+      type: object
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          items:
+            oneOf:
+              - $ref: "#/components/schemas/DocumentMetadataUpdate"
+              - $ref: "#/components/schemas/DocumentMetadataUpdateError"
+          description: List of document metadata update results (success or error)
 
     MetadataConfiguration:
       type: object

@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.grounding.client;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.grounding.model.BatchUpdateDocumentsResponseInner;
+import com.sap.ai.sdk.grounding.model.BatchUpdateDocumentsResponse;
 import com.sap.ai.sdk.grounding.model.ConfigurationDocument;
 import com.sap.ai.sdk.grounding.model.DocumentMetadataBatchRequest;
 import com.sap.ai.sdk.grounding.model.ListConfigurationDocuments;
@@ -67,11 +67,11 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    *
    * @param metadataConfigId Metadata Configuration ID
    * @param documentMetadataBatchRequest The value for the parameter documentMetadataBatchRequest
-   * @return List&lt;BatchUpdateDocumentsResponseInner&gt;
+   * @return BatchUpdateDocumentsResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public List<BatchUpdateDocumentsResponseInner> batchUpdateDocumentsMetadata(
+  public BatchUpdateDocumentsResponse batchUpdateDocumentsMetadata(
       @Nonnull final String metadataConfigId,
       @Nonnull final DocumentMetadataBatchRequest documentMetadataBatchRequest)
       throws OpenApiRequestException {
@@ -111,8 +111,8 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<List<BatchUpdateDocumentsResponseInner>> localVarReturnType =
-        new ParameterizedTypeReference<List<BatchUpdateDocumentsResponseInner>>() {};
+    final ParameterizedTypeReference<BatchUpdateDocumentsResponse> localVarReturnType =
+        new ParameterizedTypeReference<BatchUpdateDocumentsResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.PATCH,

@@ -14,10 +14,10 @@ package com.sap.ai.sdk.grounding.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** BatchUpdateDocumentsResponseInner */
+/** BatchUpdateDocumentsResponseResultsInner */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
   @JsonSubTypes.Type(value = DocumentMetadataUpdate.class),
   @JsonSubTypes.Type(value = DocumentMetadataUpdateError.class),
 })
-public interface BatchUpdateDocumentsResponseInner {}
+public interface BatchUpdateDocumentsResponseResultsInner {}
