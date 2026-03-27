@@ -39,7 +39,7 @@ public class DocumentMetadata
   @JsonProperty("value")
   private List<String> value;
 
-  /** Match mode for the metadata key (ANY or ALL). */
+  /** Gets or Sets matchMode */
   public enum MatchModeEnum {
     /** The ANY option of this DocumentMetadata */
     ANY("ANY"),
@@ -85,14 +85,14 @@ public class DocumentMetadata
      * @return The enum value of type DocumentMetadata
      */
     @JsonCreator
-    @Nonnull
+    @Nullable
     public static MatchModeEnum fromValue(@Nonnull final String value) {
       for (MatchModeEnum b : MatchModeEnum.values()) {
         if (b.value.equals(value)) {
           return b;
         }
       }
-      return UNKNOWN_DEFAULT_OPEN_API;
+      return null;
     }
   }
 
@@ -190,7 +190,7 @@ public class DocumentMetadata
   /**
    * Set the matchMode of this {@link DocumentMetadata} instance and return the same instance.
    *
-   * @param matchMode Match mode for the metadata key (ANY or ALL).
+   * @param matchMode The matchMode of this {@link DocumentMetadata}
    * @return The same instance of this {@link DocumentMetadata} class
    */
   @Nonnull
@@ -200,11 +200,11 @@ public class DocumentMetadata
   }
 
   /**
-   * Match mode for the metadata key (ANY or ALL).
+   * Get matchMode
    *
    * @return matchMode The matchMode of this {@link DocumentMetadata} instance.
    */
-  @Nonnull
+  @Nullable
   public MatchModeEnum getMatchMode() {
     return matchMode;
   }
@@ -212,7 +212,7 @@ public class DocumentMetadata
   /**
    * Set the matchMode of this {@link DocumentMetadata} instance.
    *
-   * @param matchMode Match mode for the metadata key (ANY or ALL).
+   * @param matchMode The matchMode of this {@link DocumentMetadata}
    */
   public void setMatchMode(@Nullable final MatchModeEnum matchMode) {
     this.matchMode = matchMode;

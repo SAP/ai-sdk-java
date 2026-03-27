@@ -110,7 +110,7 @@ public class MetadataConfigurationResponse
   @JsonProperty("labels")
   private List<MetadataConfigurationRequestLabelsInner> labels = new ArrayList<>();
 
-  /** Status of metadata enumeration for the configuration. */
+  /** Gets or Sets enumerationStatus */
   public enum EnumerationStatusEnum {
     /** The NEW option of this MetadataConfigurationResponse */
     NEW("NEW"),
@@ -162,14 +162,14 @@ public class MetadataConfigurationResponse
      * @return The enum value of type MetadataConfigurationResponse
      */
     @JsonCreator
-    @Nonnull
+    @Nullable
     public static EnumerationStatusEnum fromValue(@Nonnull final String value) {
       for (EnumerationStatusEnum b : EnumerationStatusEnum.values()) {
         if (b.value.equals(value)) {
           return b;
         }
       }
-      return UNKNOWN_DEFAULT_OPEN_API;
+      return null;
     }
   }
 
@@ -416,7 +416,7 @@ public class MetadataConfigurationResponse
    * Set the enumerationStatus of this {@link MetadataConfigurationResponse} instance and return the
    * same instance.
    *
-   * @param enumerationStatus Status of metadata enumeration for the configuration.
+   * @param enumerationStatus The enumerationStatus of this {@link MetadataConfigurationResponse}
    * @return The same instance of this {@link MetadataConfigurationResponse} class
    */
   @Nonnull
@@ -427,12 +427,12 @@ public class MetadataConfigurationResponse
   }
 
   /**
-   * Status of metadata enumeration for the configuration.
+   * Get enumerationStatus
    *
    * @return enumerationStatus The enumerationStatus of this {@link MetadataConfigurationResponse}
    *     instance.
    */
-  @Nonnull
+  @Nullable
   public EnumerationStatusEnum getEnumerationStatus() {
     return enumerationStatus;
   }
@@ -440,7 +440,7 @@ public class MetadataConfigurationResponse
   /**
    * Set the enumerationStatus of this {@link MetadataConfigurationResponse} instance.
    *
-   * @param enumerationStatus Status of metadata enumeration for the configuration.
+   * @param enumerationStatus The enumerationStatus of this {@link MetadataConfigurationResponse}
    */
   public void setEnumerationStatus(@Nullable final EnumerationStatusEnum enumerationStatus) {
     this.enumerationStatus = enumerationStatus;

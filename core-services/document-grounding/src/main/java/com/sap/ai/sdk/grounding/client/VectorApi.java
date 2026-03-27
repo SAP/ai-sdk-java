@@ -993,7 +993,7 @@ public class VectorApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public VectorSearchResults search(
+  public VectorSearchResults vectorSearch(
       @Nonnull final String aiResourceGroup, @Nonnull final TextSearchRequest textSearchRequest)
       throws OpenApiRequestException {
     final Object localVarPostBody = textSearchRequest;
@@ -1001,7 +1001,7 @@ public class VectorApi extends AbstractOpenApiService {
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling search");
+          "Missing the required parameter 'aiResourceGroup' when calling vectorSearch");
     }
 
     // verify the required parameter 'textSearchRequest' is set

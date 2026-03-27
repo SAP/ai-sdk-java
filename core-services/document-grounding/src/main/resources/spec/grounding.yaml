@@ -1054,7 +1054,7 @@ paths:
       summary: Search chunk by vector
       description: Search chunks
       operationId: vector.v1.vector_endpoints.search_chunk
-      x-sap-cloud-sdk-operation-name: search
+      x-sap-cloud-sdk-operation-name: vectorSearch
       requestBody:
         content:
           application/json:
@@ -1575,8 +1575,9 @@ components:
         - type: object
           properties:
             enumerationStatus:
-              type: string
-              enum: [NEW, IN_PROGRESS, COMPLETED, ERROR]
+              anyOf:
+                  - enum: [NEW, IN_PROGRESS, COMPLETED, ERROR]
+                  - {}
               example: "IN_PROGRESS"
               description: Status of metadata enumeration for the configuration.
 
@@ -1627,8 +1628,9 @@ components:
           description: UTC timestamp when the document was created (RFC 3339 format, e.g., 2025-08-28T06:15:30Z)
           example: "2025-08-28T06:15:30Z"
         type:
-          type: string
-          enum: [FOLDER, DOCUMENT]
+          anyOf:
+            - enum: [FOLDER, DOCUMENT]
+            - {}
           example: "FOLDER"
           description: Type of the resource. Can be FOLDER, DOCUMENT.
         metadata:
@@ -1712,8 +1714,9 @@ components:
           nullable: true
           description: An array of string values associated with the metadata key. If the key already exists, its values will be overwritten. Setting the value to null will delete the metadata key-value pair.
         matchMode:
-          type: string
-          enum: [ANY, ALL]
+          anyOf:
+            - enum: [ANY, ALL]
+            - {}
           example: ANY
           description: Match mode for the metadata key (ANY or ALL).
 
@@ -3434,8 +3437,10 @@ components:
         document.
     SearchSelectOptionEnum:
       type: string
-      enum:
-        - ignoreIfKeyAbsent
+      anyOf:
+        - enum:
+          - ignoreIfKeyAbsent
+        - {}
       default: ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
     VectorSearchSelectOptionEnum:
