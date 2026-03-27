@@ -1575,9 +1575,8 @@ components:
         - type: object
           properties:
             enumerationStatus:
-              anyOf:
-                - enum: [NEW, IN_PROGRESS, COMPLETED, ERROR]
-                - {}
+              type: string
+              enum: [NEW, IN_PROGRESS, COMPLETED, ERROR]
               example: "IN_PROGRESS"
               description: Status of metadata enumeration for the configuration.
 
@@ -1628,9 +1627,8 @@ components:
           description: UTC timestamp when the document was created (RFC 3339 format, e.g., 2025-08-28T06:15:30Z)
           example: "2025-08-28T06:15:30Z"
         type:
-          anyOf:
-            - enum: [FOLDER, DOCUMENT]
-            - {}
+          type: string
+          enum: [FOLDER, DOCUMENT]
           example: "FOLDER"
           description: Type of the resource. Can be FOLDER, DOCUMENT.
         metadata:
@@ -1714,9 +1712,8 @@ components:
           nullable: true
           description: An array of string values associated with the metadata key. If the key already exists, its values will be overwritten. Setting the value to null will delete the metadata key-value pair.
         matchMode:
-          anyOf:
-            - enum: [ANY, ALL]
-            - {}
+          type: string
+          enum: [ANY, ALL]
           example: ANY
           description: Match mode for the metadata key (ANY or ALL).
 
@@ -3437,10 +3434,8 @@ components:
         document.
     SearchSelectOptionEnum:
       type: string
-      anyOf:
-        - enum:
-          - ignoreIfKeyAbsent
-        - {}
+      enum:
+        - ignoreIfKeyAbsent
       default: ignoreIfKeyAbsent
       title: SearchSelectOptionEnum
     VectorSearchSelectOptionEnum:
