@@ -19,18 +19,6 @@
         "summary": "Make in-context predictions for specified target columns based on provided table data JSON (optionally gzip-compressed).",
         "description": "Make in-context predictions for specified target columns.\nEither \"rows\" or \"columns\" must be provided and must contain both context and query rows.\nYou can optionally send gzip-compressed JSON payloads and set a \"Content-Encoding: gzip\" header.",
         "operationId": "predict",
-        "parameters": [
-          {
-            "name": "Content-Encoding",
-            "in": "header",
-            "description": "Content encoding of the request body. Use 'gzip' for gzip-compressed payloads.",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": ["gzip"]
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
