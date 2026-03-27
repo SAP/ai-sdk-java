@@ -30,9 +30,6 @@ import javax.annotation.Nullable;
  */
 public class RetrievalApi extends BaseApi {
 
-  /** Instantiates this API class to invoke operations on the Grounding */
-  public RetrievalApi() {}
-
   /**
    * Instantiates this API class to invoke operations on the Grounding.
    *

@@ -39,9 +39,6 @@ import javax.annotation.Nullable;
  */
 public class PipelinesApi extends BaseApi {
 
-  /** Instantiates this API class to invoke operations on the Grounding */
-  public PipelinesApi() {}
-
   /**
    * Instantiates this API class to invoke operations on the Grounding.
    *

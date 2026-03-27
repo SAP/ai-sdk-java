@@ -43,9 +43,6 @@ import javax.annotation.Nullable;
  */
 public class VectorApi extends BaseApi {
 
-  /** Instantiates this API class to invoke operations on the Grounding */
-  public VectorApi() {}
-
   /**
    * Instantiates this API class to invoke operations on the Grounding.
    *

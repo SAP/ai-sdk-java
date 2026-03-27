@@ -29,9 +29,6 @@ import javax.annotation.Nullable;
  */
 public class PromptTemplatesApi extends BaseApi {
 
-  /** Instantiates this API class to invoke operations on the Prompt Registry API */
-  public PromptTemplatesApi() {}
-
   /**
    * Instantiates this API class to invoke operations on the Prompt Registry API.
    *

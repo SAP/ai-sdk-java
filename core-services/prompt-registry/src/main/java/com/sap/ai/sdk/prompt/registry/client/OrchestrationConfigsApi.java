@@ -27,9 +27,6 @@ import javax.annotation.Nullable;
  */
 public class OrchestrationConfigsApi extends BaseApi {
 
-  /** Instantiates this API class to invoke operations on the Prompt Registry API */
-  public OrchestrationConfigsApi() {}
-
   /**
    * Instantiates this API class to invoke operations on the Prompt Registry API.
    *
