@@ -4503,7 +4503,7 @@ components:
 
     DocumentMetadata:
       type: object
-      required: [key, value]
+      required: [key]
       properties:
         key:
           type: string
