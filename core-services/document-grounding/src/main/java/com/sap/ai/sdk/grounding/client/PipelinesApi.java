@@ -209,7 +209,6 @@ public class PipelinesApi extends AbstractOpenApiService {
    * <p><b>400</b> - The specification of the resource was incorrect
    *
    * @param aiResourceGroup (required) Resource Group ID
-   * @param metadataConfigId (optional) Filter pipelines by metadataConfigId
    * @param $top (optional) Number of results to display
    * @param $skip (optional) Number of results to be skipped from the ordered list of results
    * @param $count (optional) When the $count field is set to false, the response contains a count
@@ -222,7 +221,6 @@ public class PipelinesApi extends AbstractOpenApiService {
   @Nonnull
   public GetPipelines getAllPipelines(
       @Nonnull final String aiResourceGroup,
-      @Nullable final String metadataConfigId,
       @Nullable final Integer $top,
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
@@ -243,8 +241,6 @@ public class PipelinesApi extends AbstractOpenApiService {
     final MultiValueMap<String, Object> localVarFormParams =
         new LinkedMultiValueMap<String, Object>();
 
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "metadataConfigId", metadataConfigId));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
     localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
@@ -290,7 +286,7 @@ public class PipelinesApi extends AbstractOpenApiService {
   @Nonnull
   public GetPipelines getAllPipelines(@Nonnull final String aiResourceGroup)
       throws OpenApiRequestException {
-    return getAllPipelines(aiResourceGroup, null, null, null, null);
+    return getAllPipelines(aiResourceGroup, null, null, null);
   }
 
   /**
