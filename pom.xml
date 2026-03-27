@@ -73,6 +73,7 @@
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.21.2</jackson.version>
     <logback.version>1.5.32</logback.version>
+    <commons-codec.version>1.21.0</commons-codec.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.4</micrometer.version>
     <json.version>20251224</json.version>
@@ -260,6 +261,11 @@
         <groupId>com.sap.ai.sdk.app</groupId>
         <artifactId>spring-app</artifactId>
         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>${commons-codec.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
