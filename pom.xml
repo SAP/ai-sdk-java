@@ -73,6 +73,8 @@
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.21.2</jackson.version>
     <logback.version>1.5.32</logback.version>
+    <kotlin-stdlib-jdk8.version>1.9.10</kotlin-stdlib-jdk8.version>
+    <openai-java.version>4.29.0</openai-java.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.4</micrometer.version>
     <json.version>20251224</json.version>
@@ -260,6 +262,32 @@
         <groupId>com.sap.ai.sdk.app</groupId>
         <artifactId>spring-app</artifactId>
         <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.openai</groupId>
+        <artifactId>openai-java-client-okhttp</artifactId>
+        <version>${openai-java.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.openai</groupId>
+        <artifactId>openai-java-core</artifactId>
+        <version>${openai-java.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.openai</groupId>
+        <artifactId>openai-java</artifactId>
+        <version>${openai-java.version}</version>
+      </dependency>
+      <!-- Fix dependency convergence for kotlin-stdlib -->
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-jdk8</artifactId>
+        <version>${kotlin-stdlib-jdk8.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
+        <version>${kotlin-stdlib-jdk8.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

@@ -58,6 +58,12 @@
         <artifactId>tomcat-embed-websocket</artifactId>
         <version>${apache-tomcat-embed.version}</version>
       </dependency>
+      <!-- Fix dependency convergence for jackson-datatype-jdk8 - use Spring Boot version -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jdk8</artifactId>
+        <version>2.19.4</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -70,6 +76,10 @@
     <dependency>
       <groupId>com.sap.ai.sdk.foundationmodels</groupId>
       <artifactId>openai</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.openai</groupId>
+      <artifactId>openai-java-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.sap.ai.sdk</groupId>
