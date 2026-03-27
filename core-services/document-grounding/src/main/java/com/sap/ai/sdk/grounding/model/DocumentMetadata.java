@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -323,7 +324,7 @@ public class DocumentMetadata
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (key) -> new DocumentMetadata().key(key);
+    return (key) -> (value) -> new DocumentMetadata().key(key).value(value);
   }
 
   /** Builder helper class. */
@@ -332,8 +333,33 @@ public class DocumentMetadata
      * Set the key of this {@link DocumentMetadata} instance.
      *
      * @param key Metadata key name.
+     * @return The DocumentMetadata builder.
+     */
+    Builder1 key(@Nonnull final String key);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the value of this {@link DocumentMetadata} instance.
+     *
+     * @param value An array of string values associated with the metadata key. If the key already
+     *     exists, its values will be overwritten. Setting the value to null will delete the
+     *     metadata key-value pair.
      * @return The DocumentMetadata instance.
      */
-    DocumentMetadata key(@Nonnull final String key);
+    DocumentMetadata value(@Nullable final List<String> value);
+
+    /**
+     * Set the value of this {@link DocumentMetadata} instance.
+     *
+     * @param value An array of string values associated with the metadata key. If the key already
+     *     exists, its values will be overwritten. Setting the value to null will delete the
+     *     metadata key-value pair.
+     * @return The DocumentMetadata instance.
+     */
+    default DocumentMetadata value(@Nonnull final String... value) {
+      return value(Arrays.asList(value));
+    }
   }
 }
