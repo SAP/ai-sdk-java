@@ -21,7 +21,7 @@ jobs:
           STALE=()
 
           while IFS= read -r BRANCH; do
-            COMMITTED_AT=$(gh api "repos/SAP/ai-sdk-js/branches/$BRANCH" \
+            COMMITTED_AT=$(gh api "repos/SAP/ai-sdk-java/branches/$BRANCH" \
               --jq '.commit.commit.committer.date' 2>/dev/null)
 
             if [ -z "$COMMITTED_AT" ]; then
