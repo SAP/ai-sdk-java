@@ -16,7 +16,7 @@
 
 ### 📈 Improvements
 
--
+- `OrchestrationSpringEmbeddingModel` is no longer marked `@Beta` and considered stable.
 
 ### 🐛 Fixed Issues
 
