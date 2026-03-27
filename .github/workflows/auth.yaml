@@ -12,7 +12,7 @@ jobs:
       - name: 'Check permission'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ACTOR: ${{ github.actor }}
+          ACTOR: ${{ github.triggering_actor }}
           REPO: ${{ github.repository }}
         run: |
           PERMISSION=$(gh api "repos/$REPO/collaborators/$ACTOR/permission" --jq '.permission')
