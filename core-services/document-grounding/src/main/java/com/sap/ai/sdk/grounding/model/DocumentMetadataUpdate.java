@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 
 /** DocumentMetadataUpdate */
 // CHECKSTYLE:OFF
-public class DocumentMetadataUpdate implements BatchUpdateDocumentsResponseResultsInner
+public class DocumentMetadataUpdate implements BatchUpdateDocumentsResponseInner
 // CHECKSTYLE:ON
 {
   @JsonProperty("id")

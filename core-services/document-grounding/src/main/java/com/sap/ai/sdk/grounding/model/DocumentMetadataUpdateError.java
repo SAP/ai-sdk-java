@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 /** DocumentMetadataUpdateError */
 // CHECKSTYLE:OFF
-public class DocumentMetadataUpdateError implements BatchUpdateDocumentsResponseResultsInner
+public class DocumentMetadataUpdateError implements BatchUpdateDocumentsResponseInner
 // CHECKSTYLE:ON
 {
   @JsonProperty("target")

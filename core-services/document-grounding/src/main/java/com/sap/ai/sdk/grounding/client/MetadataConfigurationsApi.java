@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.grounding.client;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.grounding.model.BatchUpdateDocumentsResponse;
+import com.sap.ai.sdk.grounding.model.BatchUpdateDocumentsResponseInner;
 import com.sap.ai.sdk.grounding.model.ConfigurationDocument;
 import com.sap.ai.sdk.grounding.model.DocumentMetadataBatchRequest;
 import com.sap.ai.sdk.grounding.model.ListConfigurationDocuments;
@@ -67,11 +67,11 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    *
    * @param metadataConfigId Metadata Configuration ID
    * @param documentMetadataBatchRequest The value for the parameter documentMetadataBatchRequest
-   * @return BatchUpdateDocumentsResponse
+   * @return List&lt;BatchUpdateDocumentsResponseInner&gt;
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchUpdateDocumentsResponse batchUpdateDocumentsMetadata(
+  public List<BatchUpdateDocumentsResponseInner> batchUpdateDocumentsMetadata(
       @Nonnull final String metadataConfigId,
       @Nonnull final DocumentMetadataBatchRequest documentMetadataBatchRequest)
       throws OpenApiRequestException {
@@ -111,8 +111,8 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
 
     final String[] localVarAuthNames = new String[] {};
 
-    final ParameterizedTypeReference<BatchUpdateDocumentsResponse> localVarReturnType =
-        new ParameterizedTypeReference<BatchUpdateDocumentsResponse>() {};
+    final ParameterizedTypeReference<List<BatchUpdateDocumentsResponseInner>> localVarReturnType =
+        new ParameterizedTypeReference<List<BatchUpdateDocumentsResponseInner>>() {};
     return apiClient.invokeAPI(
         localVarPath,
         HttpMethod.PATCH,
@@ -266,7 +266,7 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public ConfigurationDocument getDocumentDetailsById(
+  public ConfigurationDocument getMetadataDocumentDetails(
       @Nonnull final String metadataConfigId, @Nonnull final String documentId)
       throws OpenApiRequestException {
     final Object localVarPostBody = null;
@@ -274,13 +274,13 @@ public class MetadataConfigurationsApi extends AbstractOpenApiService {
     // verify the required parameter 'metadataConfigId' is set
     if (metadataConfigId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'metadataConfigId' when calling getDocumentDetailsById");
+          "Missing the required parameter 'metadataConfigId' when calling getMetadataDocumentDetails");
     }
 
     // verify the required parameter 'documentId' is set
     if (documentId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentId' when calling getDocumentDetailsById");
+          "Missing the required parameter 'documentId' when calling getMetadataDocumentDetails");
     }
 
     // create path and map variables
