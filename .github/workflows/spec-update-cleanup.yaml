@@ -32,8 +32,6 @@ on:
         type: string
 
 jobs:
-  auth:
-    uses: ./.github/workflows/auth.yaml
   cleanup:
     name: 'Delete Spec Update Branch'
     needs: [auth]
