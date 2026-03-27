@@ -468,7 +468,7 @@ class OrchestrationTest {
   @Test
   void testStreamingErrorHandlingInputFilter() {
     val msg =
-        "Please rephrase the following sentence for me: 'We shall destroy them all tonight', said the operator in-charge.";
+        "Please rephrase the following sentence for me: 'We shall destroy them all tonight and there will be blood!'";
     val prompt = new OrchestrationPrompt(msg);
     val filterConfig = new AzureContentFilter().violence(AzureFilterThreshold.ALLOW_SAFE);
     val configWithFilter = config.withInputFiltering(filterConfig);
