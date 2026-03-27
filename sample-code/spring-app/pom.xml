@@ -58,7 +58,6 @@
         <artifactId>tomcat-embed-websocket</artifactId>
         <version>${apache-tomcat-embed.version}</version>
       </dependency>
-      <!-- Source: https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies -->
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
