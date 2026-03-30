@@ -105,7 +105,7 @@ public final class AiCoreOpenAiClient {
     final var chatModel =
         Optional.ofNullable(model.version())
             .map(version -> model.name() + "-" + version)
-            .orElse(model.name());
+            .orElseGet(model::name);
     return new OpenAIClientImplWrapper(
         new OpenAIClientImpl(clientOptions), ChatModel.of(chatModel));
   }
