@@ -158,7 +158,7 @@ jobs:
             CURRENT_RUN=${{ github.run_id }}
           
             # name must match the workflow run-name pattern above
-            RUN_NAME="Spec File Update Workflow: $CHOICE-$REF"
+            RUN_NAME="Spec File Update Workflow (old): $CHOICE-$REF"
             echo "Run name used for search: $RUN_NAME"
           
             # Get the most recent completed run of this workflow with respect to the same feature branch
