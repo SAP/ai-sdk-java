@@ -1,5 +1,5 @@
 name: "Spec File Update Workflow"
-run-name: "Spec File Update Workflow: ${{ github.event.inputs.file }}-${{ github.event.inputs.file-ref }}"
+run-name: "Spec File Update Workflow (old): ${{ github.event.inputs.file }}-${{ github.event.inputs.file-ref }}"
 
 on:
   workflow_dispatch:
