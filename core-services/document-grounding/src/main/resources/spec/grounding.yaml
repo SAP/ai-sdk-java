@@ -71,6 +71,12 @@ paths:
       tags:
         - Pipelines
       parameters:
+        - name: metadataConfigId
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter pipelines by metadataConfigId
         - in: header
           name: AI-Resource-Group
           required: true
