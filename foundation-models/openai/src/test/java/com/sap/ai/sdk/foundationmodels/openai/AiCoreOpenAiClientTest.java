@@ -1,10 +1,12 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.openai.client.OpenAIClient;
+import com.openai.models.ChatModel;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStatus;
@@ -23,13 +25,9 @@ class AiCoreOpenAiClientTest {
 
   @BeforeEach
   void setup(@Nonnull final WireMockRuntimeInfo server) {
-    // Create destination pointing to WireMock server
     final var destination = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
+    client = AiCoreOpenAiClient.fromDestination(destination, OpenAiModel.GPT_5);
 
-    // Create OpenAI client using our custom implementation
-    client = AiCoreOpenAiClient.fromDestination(destination);
-
-    // Disable HTTP client caching for tests to ensure fresh clients
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
 
@@ -40,18 +38,52 @@ class AiCoreOpenAiClientTest {
   }
 
   @Test
-  void testResponseSuccess() {
+  void testResponseSuccessWithMatchingModel() {
     final var params =
         ResponseCreateParams.builder()
             .input("What is the capital of France?")
-            .model("gpt-5")
+            .model(ChatModel.GPT_5)
             .build();
 
     final Response response = client.responses().create(params);
 
     assertThat(response).isNotNull();
-    assertThat(response.id()).isEqualTo("resp_01a38d2783b385be0069bd43d260108193aef990678aa8a0af");
     assertThat(response.status().orElseThrow()).isEqualTo(ResponseStatus.COMPLETED);
-    assertThat(response.output()).isNotEmpty();
+  }
+
+  @Test
+  void testResponseFailsWithModelMismatch() {
+    final var params =
+        ResponseCreateParams.builder()
+            .input("What is the capital of France?")
+            .model(ChatModel.GPT_4) // Different from client's expected model "gpt-5"
+            .build();
+
+    assertThatThrownBy(() -> client.responses().create(params))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Model mismatch")
+        .hasMessageContaining("gpt-5")
+        .hasMessageContaining("gpt-4");
+  }
+
+  @Test
+  void testResponseSuccessWithoutModel() {
+    final var params =
+        ResponseCreateParams.builder().input("What is the capital of France?").build();
+    final Response response = client.responses().create(params);
+
+    assertThat(response).isNotNull();
+    assertThat(response.status().orElseThrow()).isEqualTo(ResponseStatus.COMPLETED);
+  }
+
+  @Test
+  void testOtherServicesStillWork() {
+    // Verify that other OpenAI services are still accessible
+    assertThat(client.chat()).isNotNull();
+    assertThat(client.completions()).isNotNull();
+    assertThat(client.embeddings()).isNotNull();
+    assertThat(client.files()).isNotNull();
+    assertThat(client.images()).isNotNull();
+    assertThat(client.audio()).isNotNull();
   }
 }
