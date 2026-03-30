@@ -65,7 +65,7 @@ public class PipelinesApi extends AbstractOpenApiService {
   /**
    * Pipeline Creation
    *
-   * <p>Create a pipeline
+   * <p>Create a pipeline DUMMY CHANGE
    *
    * <p><b>201</b> - Returns pipelineId on successful creation.
    *
