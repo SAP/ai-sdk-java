@@ -1,4 +1,4 @@
-name: "Weekly Spec Update"
+name: 'Weekly Spec Update'
 
 on:
   schedule:
@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        file:
+        service:
           - core
           - document-grounding
           - prompt-registry
@@ -21,11 +21,11 @@ jobs:
           - sap-rpt
 
     steps:
-      - name: "Checkout repository"
+      - name: 'Checkout repository'
         uses: actions/checkout@v6
 
-      - name: "Get orchestration version"
-        if: matrix.file == 'orchestration'
+      - name: 'Get orchestration version'
+        if: matrix.service == 'orchestration'
         run: |
           ORCH_VERSION=$(curl --silent --request GET --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github.v3.raw" | grep 'version:' | awk '{print $2}')
 
@@ -38,11 +38,10 @@ jobs:
         env:
           TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
 
-
-      - name: "Trigger spec update"
+      - name: 'Trigger spec update'
         run: |
           BRANCH="main"
-          if [ "${{ matrix.file }}" = "orchestration" ]; then
+          if [ "${{ matrix.service }}" = "orchestration" ]; then
             # remove hotfix suffix 0.110.13-2 -> 0.110.13
             ORCH_VERSION=$(echo "$ORCH_VERSION" | sed 's/-.*//')
             BRANCH="rel-$ORCH_VERSION"
@@ -50,13 +49,13 @@ jobs:
           echo "Using branch: $BRANCH"
 
           gh workflow run spec-update.yaml \
-            --field file=${{ matrix.file }} \
-            --field file-ref=$BRANCH \
+            --field service=${{ matrix.service }} \
+            --field ref=$BRANCH \
             --field create-pr=true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Slack Notification"
+      - name: 'Slack Notification'
         if: failure()
         uses: slackapi/slack-github-action@v2.1.1
         with:
