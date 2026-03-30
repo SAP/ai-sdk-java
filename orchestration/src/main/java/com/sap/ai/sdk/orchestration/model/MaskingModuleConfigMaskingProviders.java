@@ -44,8 +44,8 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
    * Set the maskingProviders of this {@link MaskingModuleConfigMaskingProviders} instance and
    * return the same instance.
    *
-   * @param maskingProviders List of masking service providers. **DEPRECATED**: will be removed Sept
-   *     15, 2026. Use &#x60;providers&#x60; property instead.
+   * @param maskingProviders List of masking service providers. **DEPRECATED**: will be removed
+   *     March 20, 2027. Use &#x60;providers&#x60; property instead.
    * @return The same instance of this {@link MaskingModuleConfigMaskingProviders} class
    */
   @Nonnull
@@ -72,7 +72,7 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
   }
 
   /**
-   * List of masking service providers. **DEPRECATED**: will be removed Sept 15, 2026. Use
+   * List of masking service providers. **DEPRECATED**: will be removed March 20, 2027. Use
    * &#x60;providers&#x60; property instead.
    *
    * @return maskingProviders The maskingProviders of this {@link
@@ -88,8 +88,8 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
   /**
    * Set the maskingProviders of this {@link MaskingModuleConfigMaskingProviders} instance.
    *
-   * @param maskingProviders List of masking service providers. **DEPRECATED**: will be removed Sept
-   *     15, 2026. Use &#x60;providers&#x60; property instead.
+   * @param maskingProviders List of masking service providers. **DEPRECATED**: will be removed
+   *     March 20, 2027. Use &#x60;providers&#x60; property instead.
    */
   public void setMaskingProviders(@Nonnull final List<DPIConfig> maskingProviders) {
     this.maskingProviders = maskingProviders;
@@ -212,7 +212,7 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
      * Set the maskingProviders of this {@link MaskingModuleConfigMaskingProviders} instance.
      *
      * @param maskingProviders List of masking service providers. **DEPRECATED**: will be removed
-     *     Sept 15, 2026. Use &#x60;providers&#x60; property instead.
+     *     March 20, 2027. Use &#x60;providers&#x60; property instead.
      * @return The MaskingModuleConfigMaskingProviders instance.
      */
     MaskingModuleConfigMaskingProviders maskingProviders(
@@ -222,7 +222,7 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
      * Set the maskingProviders of this {@link MaskingModuleConfigMaskingProviders} instance.
      *
      * @param maskingProviders List of masking service providers. **DEPRECATED**: will be removed
-     *     Sept 15, 2026. Use &#x60;providers&#x60; property instead.
+     *     March 20, 2027. Use &#x60;providers&#x60; property instead.
      * @return The MaskingModuleConfigMaskingProviders instance.
      */
     default MaskingModuleConfigMaskingProviders maskingProviders(

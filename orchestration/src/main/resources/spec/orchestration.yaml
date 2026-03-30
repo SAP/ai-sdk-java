@@ -5,24 +5,24 @@ info:
   version: 0.110.12
 x-sap-shortText: Enhance content generation with additional capabilities for business AI scenarios.
 servers:
-- url: https://api.ai.{region}.ml.hana.ondemand.com/v2/inference/deployments/{orchestration_deployment_id}/v2
-  description: Production endpoint for SAP AI Core
-  variables:
-    region:
-      enum:
-      - prod.eu-central-1.aws
-      - prodeuonly.eu-central-1.aws
-      - prod.us-east-1.aws
-      - prod.ap-northeast-1.aws
-      - prod.ap-southeast-2.aws
-      - prod-eu20.westeurope.azure
-      - prod-us21.eastus.azure
-      - prod-eu30.europe-west3.gcp
-      - prod-us30.us-central1.gcp
-      default: prod.eu-central-1.aws
-    orchestration_deployment_id:
-      description: The deployment ID of the orchestration service. To be obtained from the SAP AI Core service using the deployments endpoint.
-      default: x111111
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2/inference/deployments/{orchestration_deployment_id}/v2
+    description: Production endpoint for SAP AI Core
+    variables:
+      region:
+        enum:
+          - prod.eu-central-1.aws
+          - prodeuonly.eu-central-1.aws
+          - prod.us-east-1.aws
+          - prod.ap-northeast-1.aws
+          - prod.ap-southeast-2.aws
+          - prod-eu20.westeurope.azure
+          - prod-us21.eastus.azure
+          - prod-eu30.europe-west3.gcp
+          - prod-us30.us-central1.gcp
+        default: prod.eu-central-1.aws
+      orchestration_deployment_id:
+        description: The deployment ID of the orchestration service. To be obtained from the SAP AI Core service using the deployments endpoint.
+        default: x111111
 externalDocs:
   description: Documentation for SAP AI Core - Orchestration
   url: https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration
@@ -38,7 +38,7 @@ paths:
       tags:
         - Orchestrated Completion
       summary: orchestrated completion inference
-      description: Run an orchestrated completion inference request
+      description: Run an orchestrated completion inference request DUMMY CHANGE
       operationId: orchestration.v2.endpoints.create
       parameters:
         - $ref: "#/components/parameters/AIResourceGroup"
@@ -203,7 +203,6 @@ paths:
         default:
           $ref: "#/components/responses/CommonError"
 
-
 components:
   parameters:
     AIResourceGroup:
@@ -229,7 +228,8 @@ components:
   securitySchemes:
     Oauth2:
       type: oauth2
-      description: OAuth client credentials (client ID and secret) are required. These
+      description:
+        OAuth client credentials (client ID and secret) are required. These
         can be requested from SAP BTP cloud cockpit.
       flows:
         clientCredentials:
@@ -272,7 +272,17 @@ components:
           $ref: "#/components/schemas/EmbeddingsInputText"
         type:
           type: string
-          enum: ["text", "document", "query", "search_document", "search_query", "classification", "clustering", "image"]
+          enum:
+            [
+              "text",
+              "document",
+              "query",
+              "search_document",
+              "search_query",
+              "classification",
+              "clustering",
+              "image"
+            ]
     EmbeddingsInputText:
       oneOf:
         - type: string
@@ -284,7 +294,7 @@ components:
           items:
             type: string
             minLength: 1
-          example: ['Hello', 'World', '!']
+          example: ["Hello", "World", "!"]
       description: Text input for which embeddings need to be generated
       example: ["This is an input string.", "This is another input string."]
     EmbeddingsModuleConfigs:
@@ -323,7 +333,7 @@ components:
           type: integer
           default: 600
           minimum: 1
-          maximum: 600
+          maximum: 1200
         max_retries:
           description: Maximum number of retries for the Embeddings request. This parameter is currently ignored for Vertex AI models.
           type: integer
@@ -1173,7 +1183,7 @@ components:
           type: integer
           default: 600
           minimum: 1
-          maximum: 600
+          maximum: 1200
         max_retries:
           description: Maximum number of retries for the LLM request. This parameter is currently ignored for Vertex AI models.
           type: integer
@@ -1625,7 +1635,7 @@ components:
           properties:
             masking_providers:
               deprecated: true
-              description: "List of masking service providers. **DEPRECATED**:  will be removed Sept 15, 2026. Use `providers` property instead."
+              description: "List of masking service providers. **DEPRECATED**:  will be removed March 20, 2027. Use `providers` property instead."
               type: array
               minItems: 1
               items:
