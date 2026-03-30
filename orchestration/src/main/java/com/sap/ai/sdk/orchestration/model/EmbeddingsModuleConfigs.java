@@ -29,7 +29,7 @@ public class EmbeddingsModuleConfigs
 // CHECKSTYLE:ON
 {
   @JsonProperty("embeddings")
-  private EmbeddingsModelConfig embeddings;
+  private EmbeddingsModelConfig embeddings = null;
 
   @JsonProperty("masking")
   private MaskingModuleConfig masking;

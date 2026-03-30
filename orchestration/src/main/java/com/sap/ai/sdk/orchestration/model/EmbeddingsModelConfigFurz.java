@@ -23,9 +23,9 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** EmbeddingsModelConfig */
+/** EmbeddingsModelConfigFurz */
 // CHECKSTYLE:OFF
-public class EmbeddingsModelConfig
+public class EmbeddingsModelConfigFurz
 // CHECKSTYLE:ON
 {
   @JsonProperty("model")
@@ -34,17 +34,17 @@ public class EmbeddingsModelConfig
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for EmbeddingsModelConfig. */
-  protected EmbeddingsModelConfig() {}
+  /** Default constructor for EmbeddingsModelConfigFurz. */
+  protected EmbeddingsModelConfigFurz() {}
 
   /**
-   * Set the model of this {@link EmbeddingsModelConfig} instance and return the same instance.
+   * Set the model of this {@link EmbeddingsModelConfigFurz} instance and return the same instance.
    *
-   * @param model The model of this {@link EmbeddingsModelConfig}
-   * @return The same instance of this {@link EmbeddingsModelConfig} class
+   * @param model The model of this {@link EmbeddingsModelConfigFurz}
+   * @return The same instance of this {@link EmbeddingsModelConfigFurz} class
    */
   @Nonnull
-  public EmbeddingsModelConfig model(@Nonnull final EmbeddingsModelDetails model) {
+  public EmbeddingsModelConfigFurz model(@Nonnull final EmbeddingsModelDetails model) {
     this.model = model;
     return this;
   }
@@ -52,7 +52,7 @@ public class EmbeddingsModelConfig
   /**
    * Get model
    *
-   * @return model The model of this {@link EmbeddingsModelConfig} instance.
+   * @return model The model of this {@link EmbeddingsModelConfigFurz} instance.
    */
   @Nonnull
   public EmbeddingsModelDetails getModel() {
@@ -60,16 +60,16 @@ public class EmbeddingsModelConfig
   }
 
   /**
-   * Set the model of this {@link EmbeddingsModelConfig} instance.
+   * Set the model of this {@link EmbeddingsModelConfigFurz} instance.
    *
-   * @param model The model of this {@link EmbeddingsModelConfig}
+   * @param model The model of this {@link EmbeddingsModelConfigFurz}
    */
   public void setModel(@Nonnull final EmbeddingsModelDetails model) {
     this.model = model;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link EmbeddingsModelConfig}.
+   * Get the names of the unrecognizable properties of the {@link EmbeddingsModelConfigFurz}.
    *
    * @return The set of properties names
    */
@@ -80,7 +80,7 @@ public class EmbeddingsModelConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link EmbeddingsModelConfig} instance.
+   * Get the value of an unrecognizable property of this {@link EmbeddingsModelConfigFurz} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -92,13 +92,13 @@ public class EmbeddingsModelConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "EmbeddingsModelConfig has no field with name '" + name + "'.");
+          "EmbeddingsModelConfigFurz has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link EmbeddingsModelConfig} instance including
+   * Get the value of all properties of this {@link EmbeddingsModelConfigFurz} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -112,7 +112,7 @@ public class EmbeddingsModelConfig
   }
 
   /**
-   * Set an unrecognizable property of this {@link EmbeddingsModelConfig} instance. If the map
+   * Set an unrecognizable property of this {@link EmbeddingsModelConfigFurz} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -131,9 +131,9 @@ public class EmbeddingsModelConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final EmbeddingsModelConfig embeddingsModelConfig = (EmbeddingsModelConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, embeddingsModelConfig.cloudSdkCustomFields)
-        && Objects.equals(this.model, embeddingsModelConfig.model);
+    final EmbeddingsModelConfigFurz embeddingsModelConfigFurz = (EmbeddingsModelConfigFurz) o;
+    return Objects.equals(this.cloudSdkCustomFields, embeddingsModelConfigFurz.cloudSdkCustomFields)
+        && Objects.equals(this.model, embeddingsModelConfigFurz.model);
   }
 
   @Override
@@ -145,7 +145,7 @@ public class EmbeddingsModelConfig
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class EmbeddingsModelConfig {\n");
+    sb.append("class EmbeddingsModelConfigFurz {\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -165,21 +165,21 @@ public class EmbeddingsModelConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link EmbeddingsModelConfig}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * EmbeddingsModelConfigFurz} instance with all required arguments.
    */
   public static Builder create() {
-    return (model) -> new EmbeddingsModelConfig().model(model);
+    return (model) -> new EmbeddingsModelConfigFurz().model(model);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the model of this {@link EmbeddingsModelConfig} instance.
+     * Set the model of this {@link EmbeddingsModelConfigFurz} instance.
      *
-     * @param model The model of this {@link EmbeddingsModelConfig}
-     * @return The EmbeddingsModelConfig instance.
+     * @param model The model of this {@link EmbeddingsModelConfigFurz}
+     * @return The EmbeddingsModelConfigFurz instance.
      */
-    EmbeddingsModelConfig model(@Nonnull final EmbeddingsModelDetails model);
+    EmbeddingsModelConfigFurz model(@Nonnull final EmbeddingsModelDetails model);
   }
 }
