@@ -34,6 +34,12 @@ public class TokenUsagePromptTokensDetails
   @JsonProperty("cached_tokens")
   private Integer cachedTokens;
 
+  @JsonProperty("cache_creation_tokens")
+  private Integer cacheCreationTokens;
+
+  @JsonProperty("cache_creation_token_details")
+  private CacheCreationTokenDetails cacheCreationTokenDetails;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -105,6 +111,77 @@ public class TokenUsagePromptTokensDetails
   }
 
   /**
+   * Set the cacheCreationTokens of this {@link TokenUsagePromptTokensDetails} instance and return
+   * the same instance.
+   *
+   * @param cacheCreationTokens Number of tokens written to the cache (Anthropic only).
+   * @return The same instance of this {@link TokenUsagePromptTokensDetails} class
+   */
+  @Nonnull
+  public TokenUsagePromptTokensDetails cacheCreationTokens(
+      @Nullable final Integer cacheCreationTokens) {
+    this.cacheCreationTokens = cacheCreationTokens;
+    return this;
+  }
+
+  /**
+   * Number of tokens written to the cache (Anthropic only).
+   *
+   * @return cacheCreationTokens The cacheCreationTokens of this {@link
+   *     TokenUsagePromptTokensDetails} instance.
+   */
+  @Nonnull
+  public Integer getCacheCreationTokens() {
+    return cacheCreationTokens;
+  }
+
+  /**
+   * Set the cacheCreationTokens of this {@link TokenUsagePromptTokensDetails} instance.
+   *
+   * @param cacheCreationTokens Number of tokens written to the cache (Anthropic only).
+   */
+  public void setCacheCreationTokens(@Nullable final Integer cacheCreationTokens) {
+    this.cacheCreationTokens = cacheCreationTokens;
+  }
+
+  /**
+   * Set the cacheCreationTokenDetails of this {@link TokenUsagePromptTokensDetails} instance and
+   * return the same instance.
+   *
+   * @param cacheCreationTokenDetails The cacheCreationTokenDetails of this {@link
+   *     TokenUsagePromptTokensDetails}
+   * @return The same instance of this {@link TokenUsagePromptTokensDetails} class
+   */
+  @Nonnull
+  public TokenUsagePromptTokensDetails cacheCreationTokenDetails(
+      @Nullable final CacheCreationTokenDetails cacheCreationTokenDetails) {
+    this.cacheCreationTokenDetails = cacheCreationTokenDetails;
+    return this;
+  }
+
+  /**
+   * Get cacheCreationTokenDetails
+   *
+   * @return cacheCreationTokenDetails The cacheCreationTokenDetails of this {@link
+   *     TokenUsagePromptTokensDetails} instance.
+   */
+  @Nonnull
+  public CacheCreationTokenDetails getCacheCreationTokenDetails() {
+    return cacheCreationTokenDetails;
+  }
+
+  /**
+   * Set the cacheCreationTokenDetails of this {@link TokenUsagePromptTokensDetails} instance.
+   *
+   * @param cacheCreationTokenDetails The cacheCreationTokenDetails of this {@link
+   *     TokenUsagePromptTokensDetails}
+   */
+  public void setCacheCreationTokenDetails(
+      @Nullable final CacheCreationTokenDetails cacheCreationTokenDetails) {
+    this.cacheCreationTokenDetails = cacheCreationTokenDetails;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link TokenUsagePromptTokensDetails}.
    *
    * @return The set of properties names
@@ -146,6 +223,9 @@ public class TokenUsagePromptTokensDetails
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (audioTokens != null) declaredFields.put("audioTokens", audioTokens);
     if (cachedTokens != null) declaredFields.put("cachedTokens", cachedTokens);
+    if (cacheCreationTokens != null) declaredFields.put("cacheCreationTokens", cacheCreationTokens);
+    if (cacheCreationTokenDetails != null)
+      declaredFields.put("cacheCreationTokenDetails", cacheCreationTokenDetails);
     return declaredFields;
   }
 
@@ -175,12 +255,22 @@ public class TokenUsagePromptTokensDetails
     return Objects.equals(
             this.cloudSdkCustomFields, tokenUsagePromptTokensDetails.cloudSdkCustomFields)
         && Objects.equals(this.audioTokens, tokenUsagePromptTokensDetails.audioTokens)
-        && Objects.equals(this.cachedTokens, tokenUsagePromptTokensDetails.cachedTokens);
+        && Objects.equals(this.cachedTokens, tokenUsagePromptTokensDetails.cachedTokens)
+        && Objects.equals(
+            this.cacheCreationTokens, tokenUsagePromptTokensDetails.cacheCreationTokens)
+        && Objects.equals(
+            this.cacheCreationTokenDetails,
+            tokenUsagePromptTokensDetails.cacheCreationTokenDetails);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(audioTokens, cachedTokens, cloudSdkCustomFields);
+    return Objects.hash(
+        audioTokens,
+        cachedTokens,
+        cacheCreationTokens,
+        cacheCreationTokenDetails,
+        cloudSdkCustomFields);
   }
 
   @Override
@@ -190,6 +280,12 @@ public class TokenUsagePromptTokensDetails
     sb.append("class TokenUsagePromptTokensDetails {\n");
     sb.append("    audioTokens: ").append(toIndentedString(audioTokens)).append("\n");
     sb.append("    cachedTokens: ").append(toIndentedString(cachedTokens)).append("\n");
+    sb.append("    cacheCreationTokens: ")
+        .append(toIndentedString(cacheCreationTokens))
+        .append("\n");
+    sb.append("    cacheCreationTokenDetails: ")
+        .append(toIndentedString(cacheCreationTokenDetails))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

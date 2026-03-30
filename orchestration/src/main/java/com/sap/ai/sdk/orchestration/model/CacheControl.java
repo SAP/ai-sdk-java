@@ -25,17 +25,20 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TextContent */
+/**
+ * Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models.
+ * When set, marks the content block as a cache breakpoint.
+ */
 // CHECKSTYLE:OFF
-public class TextContent
+public class CacheControl
 // CHECKSTYLE:ON
 {
   /** Gets or Sets type */
   public enum TypeEnum {
-    /** The TEXT option of this TextContent */
-    TEXT("text"),
+    /** The EPHEMERAL option of this CacheControl */
+    EPHEMERAL("ephemeral"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this TextContent */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this CacheControl */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -70,7 +73,7 @@ public class TextContent
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type TextContent
+     * @return The enum value of type CacheControl
      */
     @JsonCreator
     @Nonnull
@@ -87,26 +90,83 @@ public class TextContent
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("text")
-  private String text;
+  /**
+   * Time-to-live for the cache entry. Default is \&quot;5m\&quot; (5 minutes). \&quot;1h\&quot; (1
+   * hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).
+   */
+  public enum TtlEnum {
+    /** The _5M option of this CacheControl */
+    _5M("5m"),
 
-  @JsonProperty("cache_control")
-  private CacheControl cacheControl;
+    /** The _1H option of this CacheControl */
+    _1H("1h"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this CacheControl */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    TtlEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type CacheControl
+     */
+    @JsonCreator
+    @Nonnull
+    public static TtlEnum fromValue(@Nonnull final String value) {
+      for (TtlEnum b : TtlEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+  }
+
+  @JsonProperty("ttl")
+  private TtlEnum ttl;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TextContent. */
-  protected TextContent() {}
+  /** Default constructor for CacheControl. */
+  protected CacheControl() {}
 
   /**
-   * Set the type of this {@link TextContent} instance and return the same instance.
+   * Set the type of this {@link CacheControl} instance and return the same instance.
    *
-   * @param type The type of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
+   * @param type The type of this {@link CacheControl}
+   * @return The same instance of this {@link CacheControl} class
    */
   @Nonnull
-  public TextContent type(@Nonnull final TypeEnum type) {
+  public CacheControl type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -114,7 +174,7 @@ public class TextContent
   /**
    * Get type
    *
-   * @return type The type of this {@link TextContent} instance.
+   * @return type The type of this {@link CacheControl} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -122,78 +182,52 @@ public class TextContent
   }
 
   /**
-   * Set the type of this {@link TextContent} instance.
+   * Set the type of this {@link CacheControl} instance.
    *
-   * @param type The type of this {@link TextContent}
+   * @param type The type of this {@link CacheControl}
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the text of this {@link TextContent} instance and return the same instance.
+   * Set the ttl of this {@link CacheControl} instance and return the same instance.
    *
-   * @param text The text of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
+   * @param ttl Time-to-live for the cache entry. Default is \&quot;5m\&quot; (5 minutes).
+   *     \&quot;1h\&quot; (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5,
+   *     Sonnet 4.5).
+   * @return The same instance of this {@link CacheControl} class
    */
   @Nonnull
-  public TextContent text(@Nonnull final String text) {
-    this.text = text;
+  public CacheControl ttl(@Nullable final TtlEnum ttl) {
+    this.ttl = ttl;
     return this;
   }
 
   /**
-   * Get text
+   * Time-to-live for the cache entry. Default is \&quot;5m\&quot; (5 minutes). \&quot;1h\&quot; (1
+   * hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5, Sonnet 4.5).
    *
-   * @return text The text of this {@link TextContent} instance.
+   * @return ttl The ttl of this {@link CacheControl} instance.
    */
   @Nonnull
-  public String getText() {
-    return text;
+  public TtlEnum getTtl() {
+    return ttl;
   }
 
   /**
-   * Set the text of this {@link TextContent} instance.
+   * Set the ttl of this {@link CacheControl} instance.
    *
-   * @param text The text of this {@link TextContent}
+   * @param ttl Time-to-live for the cache entry. Default is \&quot;5m\&quot; (5 minutes).
+   *     \&quot;1h\&quot; (1 hour) is supported on select models (e.g. Claude Opus 4.5, Haiku 4.5,
+   *     Sonnet 4.5).
    */
-  public void setText(@Nonnull final String text) {
-    this.text = text;
+  public void setTtl(@Nullable final TtlEnum ttl) {
+    this.ttl = ttl;
   }
 
   /**
-   * Set the cacheControl of this {@link TextContent} instance and return the same instance.
-   *
-   * @param cacheControl The cacheControl of this {@link TextContent}
-   * @return The same instance of this {@link TextContent} class
-   */
-  @Nonnull
-  public TextContent cacheControl(@Nullable final CacheControl cacheControl) {
-    this.cacheControl = cacheControl;
-    return this;
-  }
-
-  /**
-   * Get cacheControl
-   *
-   * @return cacheControl The cacheControl of this {@link TextContent} instance.
-   */
-  @Nonnull
-  public CacheControl getCacheControl() {
-    return cacheControl;
-  }
-
-  /**
-   * Set the cacheControl of this {@link TextContent} instance.
-   *
-   * @param cacheControl The cacheControl of this {@link TextContent}
-   */
-  public void setCacheControl(@Nullable final CacheControl cacheControl) {
-    this.cacheControl = cacheControl;
-  }
-
-  /**
-   * Get the names of the unrecognizable properties of the {@link TextContent}.
+   * Get the names of the unrecognizable properties of the {@link CacheControl}.
    *
    * @return The set of properties names
    */
@@ -204,7 +238,7 @@ public class TextContent
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TextContent} instance.
+   * Get the value of an unrecognizable property of this {@link CacheControl} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -215,13 +249,13 @@ public class TextContent
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("TextContent has no field with name '" + name + "'.");
+      throw new NoSuchElementException("CacheControl has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TextContent} instance including unrecognized
+   * Get the value of all properties of this {@link CacheControl} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -231,13 +265,12 @@ public class TextContent
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
-    if (text != null) declaredFields.put("text", text);
-    if (cacheControl != null) declaredFields.put("cacheControl", cacheControl);
+    if (ttl != null) declaredFields.put("ttl", ttl);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link TextContent} instance. If the map previously
+   * Set an unrecognizable property of this {@link CacheControl} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -256,26 +289,24 @@ public class TextContent
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TextContent textContent = (TextContent) o;
-    return Objects.equals(this.cloudSdkCustomFields, textContent.cloudSdkCustomFields)
-        && Objects.equals(this.type, textContent.type)
-        && Objects.equals(this.text, textContent.text)
-        && Objects.equals(this.cacheControl, textContent.cacheControl);
+    final CacheControl cacheControl = (CacheControl) o;
+    return Objects.equals(this.cloudSdkCustomFields, cacheControl.cloudSdkCustomFields)
+        && Objects.equals(this.type, cacheControl.type)
+        && Objects.equals(this.ttl, cacheControl.ttl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, text, cacheControl, cloudSdkCustomFields);
+    return Objects.hash(type, ttl, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TextContent {\n");
+    sb.append("class CacheControl {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    text: ").append(toIndentedString(text)).append("\n");
-    sb.append("    cacheControl: ").append(toIndentedString(cacheControl)).append("\n");
+    sb.append("    ttl: ").append(toIndentedString(ttl)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -294,32 +325,21 @@ public class TextContent
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link TextContent} instance
+   * Create a type-safe, fluent-api builder object to construct a new {@link CacheControl} instance
    * with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (text) -> new TextContent().type(type).text(text);
+    return (type) -> new CacheControl().type(type);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link TextContent} instance.
+     * Set the type of this {@link CacheControl} instance.
      *
-     * @param type The type of this {@link TextContent}
-     * @return The TextContent builder.
+     * @param type The type of this {@link CacheControl}
+     * @return The CacheControl instance.
      */
-    Builder1 type(@Nonnull final TypeEnum type);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
-    /**
-     * Set the text of this {@link TextContent} instance.
-     *
-     * @param text The text of this {@link TextContent}
-     * @return The TextContent instance.
-     */
-    TextContent text(@Nonnull final String text);
+    CacheControl type(@Nonnull final TypeEnum type);
   }
 }
