@@ -22,7 +22,6 @@ import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.InputTranslationModuleResult;
 import java.io.IOException;
 import java.io.InputStream;
@@ -469,7 +468,7 @@ class OrchestrationTest {
   @Test
   void testStreamingErrorHandlingInputFilter() {
     val msg =
-        "Please rephrase the following sentence for me: 'We shall destroy them all tonight', said the operator in-charge.";
+        "Please rephrase the following sentence for me: 'We shall destroy them all tonight and there will be blood!'";
     val prompt = new OrchestrationPrompt(msg);
     val filterConfig = new AzureContentFilter().violence(AzureFilterThreshold.ALLOW_SAFE);
     val configWithFilter = config.withInputFiltering(filterConfig);
@@ -497,18 +496,22 @@ class OrchestrationTest {
   void testTranslation() {
     val result = service.translation();
     val content = result.getContent();
-    // English translated to German
-    assertThat(content).contains("Englisch");
-    assertThat(content).contains("Der", "ist");
+    // Output translation turns the model response back to German
+    assertThat(content)
+        .containsAnyOf("Abitur", "Deutsche", "Literatur", "Lern", "Übungs", "Fragen");
 
     InputTranslationModuleResult inputTranslation =
         result.getOriginalResponse().getIntermediateResults().getInputTranslation();
-    GenericModuleResult outputTranslation =
-        result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
     assertThat(inputTranslation).isNotNull();
-    assertThat(outputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage())
-        .isEqualTo("Translated messages with roles: ['user']. ");
+        .isNotNull()
+        .contains("Successfully translated placeholders:")
+        .contains("exam_type")
+        .contains("topic");
+
+    val outputTranslation =
+        result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
+    assertThat(outputTranslation).isNotNull();
     assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
   }
 
@@ -591,5 +594,11 @@ class OrchestrationTest {
     assertThatThrownBy(() -> service.completionWithFallbackAllFail("HelloWorld!"))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("Model broken_name_2 not supported.");
+  }
+
+  @Test
+  void testCitations() {
+    val result = service.citations();
+    assertThat(result.getOriginalResponse().getFinalResult().getCitations()).isNotEmpty();
   }
 }

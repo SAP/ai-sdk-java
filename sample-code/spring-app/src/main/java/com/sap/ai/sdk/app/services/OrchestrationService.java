@@ -4,6 +4,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.SONAR;
 import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
 
@@ -178,7 +179,7 @@ public class OrchestrationService {
       throws OrchestrationClientException {
     val prompt =
         new OrchestrationPrompt(
-            "Please rephrase the following sentence for me: 'We shall destroy them all tonight', said the operator in-charge.");
+            "Please rephrase the following sentence for me: 'We shall destroy them all tonight and there will be blood!'");
     val filterConfig =
         new AzureContentFilter()
             .hate(policy)
@@ -276,6 +277,7 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   public OrchestrationChatResponse maskingAnonymization(@Nonnull final DPIEntities entity) {
     val systemMessage =
         Message.system(
@@ -346,6 +348,7 @@ public class OrchestrationService {
    * @return the assistant response object
    */
   @Nonnull
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
   public OrchestrationChatResponse maskingPseudonymization(@Nonnull final DPIEntities entity) {
     val systemMessage =
         Message.system(
@@ -688,17 +691,30 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse translation() {
-    val prompt =
-        new OrchestrationPrompt(
-            "Quelle est la couleur de la tour Eiffel? Et en quelle langue tu me parles maintenant?");
+    val inputParams =
+        Map.of("exam_type", "Abitur", "topic", "Deutsche Literatur", "num_questions", "5");
+
+    val systemMessage =
+        Message.system(
+            "You are an expert study coach creating clear, concise exam notes and practice questions.");
+    val userMessage =
+        Message.user(
+            "Generate a study guide for the {{?exam_type}} exam on {{?topic}}.\n\nInclude {{?num_questions}} practice questions.");
+    val templatingConfig = TemplateConfig.create().withMessages(systemMessage, userMessage);
+
+    val prompt = new OrchestrationPrompt(inputParams);
     // list of supported language pairs
     // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
+
     val configWithTranslation =
         config
-            .withInputTranslationConfig(TranslationConfig.translateInputTo("en-US"))
+            .withTemplateConfig(templatingConfig)
+            .withInputTranslationConfig(
+                TranslationConfig.translateInputTo("en-US")
+                    .applyToPlaceholders("exam_type", "topic")
+                    .withSourceLanguage("de-DE"))
             .withOutputTranslationConfig(
-                TranslationConfig.translateOutputTo("de-DE")
-                    .withSourceLanguage("en-US")); // optional source language
+                TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
 
     return client.chatCompletion(prompt, configWithTranslation);
   }
@@ -841,5 +857,17 @@ public class OrchestrationService {
         new OrchestrationModuleConfig()
             .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
     return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig);
+  }
+
+  /**
+   * Chat request using the SONAR model which provides citations.
+   *
+   * @return the assistant response object with citations
+   */
+  @Nonnull
+  public OrchestrationChatResponse citations() {
+    val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
+    val sonarConfig = new OrchestrationModuleConfig().withLlmConfig(SONAR);
+    return client.chatCompletion(prompt, sonarConfig);
   }
 }

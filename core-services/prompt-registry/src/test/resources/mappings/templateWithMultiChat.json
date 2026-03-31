@@ -1,0 +1,43 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v2/lm/promptTemplates/8f79fec4-ae07-4c35-96e3-df7f4a3f1df5"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": "8f79fec4-ae07-4c35-96e3-df7f4a3f1df5",
+      "name": "test-multi",
+      "version": "0.0.1",
+      "scenario": "test-retrival",
+      "creationTimestamp": "2025-12-02T16:06:05.400000",
+      "managedBy": "imperative",
+      "isVersionHead": true,
+      "spec": {
+        "template": [
+          {
+            "role": "system",
+            "content": "System content"
+          },
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "First content line"
+              },
+              {
+                "type": "text",
+                "text": "Second content line"
+              }
+            ]
+          }
+        ],
+        "tools": []
+      }
+    }
+  }
+}

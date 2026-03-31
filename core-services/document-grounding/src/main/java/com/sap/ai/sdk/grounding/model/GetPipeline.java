@@ -17,10 +17,12 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 /** GetPipeline */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", visible = true)
 @JsonSubTypes({
+  @JsonSubTypes.Type(value = GoogleDrivePipelineGetResponse.class, name = "GoogleDrive"),
   @JsonSubTypes.Type(value = MSSharePointPipelineGetResponse.class, name = "MSSharePoint"),
   @JsonSubTypes.Type(value = S3PipelineGetResponse.class, name = "S3"),
   @JsonSubTypes.Type(value = SDMPipelineGetResponse.class, name = "SDM"),
   @JsonSubTypes.Type(value = SFTPPipelineGetResponse.class, name = "SFTP"),
+  @JsonSubTypes.Type(value = ServiceNowPipelineGetResponse.class, name = "ServiceNow"),
   @JsonSubTypes.Type(value = WorkZonePipelineGetResponse.class, name = "WorkZone"),
 })
 public interface GetPipeline {

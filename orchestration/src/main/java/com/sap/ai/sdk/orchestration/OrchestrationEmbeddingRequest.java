@@ -3,7 +3,6 @@ package com.sap.ai.sdk.orchestration;
 import static lombok.AccessLevel.NONE;
 import static lombok.AccessLevel.PRIVATE;
 
-import com.google.common.annotations.Beta;
 import com.google.common.collect.Lists;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsInput;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsInputText;
@@ -26,7 +25,6 @@ import lombok.experimental.Tolerate;
  *
  * @since 1.12.0
  */
-@Beta
 @Value
 @AllArgsConstructor(access = PRIVATE)
 public class OrchestrationEmbeddingRequest {

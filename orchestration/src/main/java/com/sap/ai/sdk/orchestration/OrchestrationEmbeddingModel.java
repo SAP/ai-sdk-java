@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsModelDetails;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParams;
@@ -19,7 +18,6 @@ import lombok.experimental.Accessors;
  *
  * @since 1.12.0
  */
-@Beta
 @With
 @Value
 @Accessors(fluent = true)
@@ -52,6 +50,10 @@ public class OrchestrationEmbeddingModel implements AiModel {
   /** NVIDIA LLaMA 3.2 7B NV EmbedQA model */
   public static final OrchestrationEmbeddingModel NVIDIA_LLAMA_32_NV_EMBEDQA_1B =
       new OrchestrationEmbeddingModel("nvidia--llama-3.2-nv-embedqa-1b");
+
+  /** Google Cloud Platform Gemini Embedding model */
+  public static final OrchestrationEmbeddingModel GEMINI_EMBEDDING =
+      new OrchestrationEmbeddingModel("gemini-embedding");
 
   /**
    * Creates a new embedding model configuration with the specified name.

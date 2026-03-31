@@ -57,6 +57,6 @@ public enum RetrievalSearchSelectOptionEnum {
         return b;
       }
     }
-    return null;
+    return UNKNOWN_DEFAULT_OPEN_API;
   }
 }

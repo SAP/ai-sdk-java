@@ -16,6 +16,14 @@ updates:
         versions: [ ">=4.0.0" ]
       - dependency-name: "org.springframework:*"
         versions: [ ">=7.0.0" ]
+      - dependency-name: "com.fasterxml.jackson.*:*"
+        versions: [ ">=3.0.0" ]
+      - dependency-name: "tools.jackson.*:*"
+        versions: [ ">=3.0.0" ]
+      - dependency-name: "com.github.victools:jsonschema-generator"
+        versions: [ ">=5.0.0" ]
+      - dependency-name: "com.github.victools:jsonschema-module-jackson"
+        versions: [ ">=5.0.0" ]
     groups:
       production-minor-patch:
         dependency-type: "production"
