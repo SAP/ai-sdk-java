@@ -20,7 +20,7 @@ class OpenAIClientImplWrapper implements OpenAIClient {
   @Override
   @Nonnull
   public ResponseService responses() {
-    return new AiCoreResponsesService(delegate.responses(), expectedModel);
+    return new AiCoreResponseService(delegate.responses(), expectedModel);
   }
 
   private interface Excludes {

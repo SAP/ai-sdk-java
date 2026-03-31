@@ -38,7 +38,7 @@ class AiCoreOpenAiClientTest {
   }
 
   @Test
-  void testResponseSuccessWithMatchingModel() {
+  void testResponseServiceSuccessWithMatchingModel() {
     final var params =
         ResponseCreateParams.builder()
             .input("What is the capital of France?")
@@ -52,7 +52,17 @@ class AiCoreOpenAiClientTest {
   }
 
   @Test
-  void testResponseFailsWithModelMismatch() {
+  void testResponseServiceSuccessWithoutModel() {
+    final var params =
+        ResponseCreateParams.builder().input("What is the capital of France?").build();
+    final Response response = client.responses().create(params);
+
+    assertThat(response).isNotNull();
+    assertThat(response.status().orElseThrow()).isEqualTo(ResponseStatus.COMPLETED);
+  }
+
+  @Test
+  void testResponseServiceFailsWithModelMismatch() {
     final var params =
         ResponseCreateParams.builder()
             .input("What is the capital of France?")
@@ -67,13 +77,17 @@ class AiCoreOpenAiClientTest {
   }
 
   @Test
-  void testResponseSuccessWithoutModel() {
-    final var params =
-        ResponseCreateParams.builder().input("What is the capital of France?").build();
-    final Response response = client.responses().create(params);
+  void testResponseServiceWithOptions() {
+    final var originalService = client.responses();
 
-    assertThat(response).isNotNull();
-    assertThat(response.status().orElseThrow()).isEqualTo(ResponseStatus.COMPLETED);
+    final var modifiedService =
+        originalService.withOptions(
+            builder -> {
+              // Modify some option
+              builder.putHeader("X-Custom-Header", "test-value");
+            });
+
+    assertThat(modifiedService).isInstanceOf(AiCoreResponseService.class);
   }
 
   @Test
