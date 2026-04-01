@@ -7,6 +7,8 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.openai.client.OpenAIClient;
 import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletion;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStatus;
@@ -78,10 +80,10 @@ class AiCoreOpenAiClientTest {
 
   @Test
   void testResponseServiceWithOptions() {
-    final var originalService = client.responses();
+    final var service = client.responses();
 
     final var modifiedService =
-        originalService.withOptions(
+        service.withOptions(
             builder -> {
               // Modify some option
               builder.putHeader("X-Custom-Header", "test-value");
@@ -91,9 +93,18 @@ class AiCoreOpenAiClientTest {
   }
 
   @Test
+  void testChatCompletionService() {
+    final var params =
+        ChatCompletionCreateParams.builder().addUserMessage("Say this is a test").build();
+    final ChatCompletion response =
+        AiCoreOpenAiClient.forModel(OpenAiModel.GPT_5).chat().completions().create(params);
+
+    assertThat(response).isNotNull();
+  }
+
+  @Test
   void testOtherServicesStillWork() {
-    // Verify that other OpenAI services are still accessible
-    assertThat(client.chat()).isNotNull();
+    assertThat(client.chat().completions()).isNotNull();
     assertThat(client.completions()).isNotNull();
     assertThat(client.embeddings()).isNotNull();
     assertThat(client.files()).isNotNull();

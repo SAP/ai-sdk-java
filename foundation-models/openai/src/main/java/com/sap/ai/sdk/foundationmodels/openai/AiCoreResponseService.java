@@ -20,25 +20,29 @@ import com.openai.services.blocking.responses.InputItemService;
 import com.openai.services.blocking.responses.InputTokenService;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
 
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class AiCoreResponseService implements ResponseService {
 
-  @Delegate(types = SafeMethods.class)
+  @Delegate(types = PassThroughMethods.class)
   private final ResponseService delegate;
 
-  private final ChatModel expectedModel;
+  private final String deploymentModel;
 
   @Override
   @Nonnull
   public ResponseService withOptions(@Nonnull final Consumer<ClientOptions.Builder> modifier) {
-    return new AiCoreResponseService(delegate.withOptions(modifier), expectedModel);
+    return new AiCoreResponseService(delegate.withOptions(modifier), deploymentModel);
   }
 
-  AiCoreResponseService(
-      @Nonnull final ResponseService delegate, @Nonnull final ChatModel expectedModel) {
-    this.delegate = delegate;
-    this.expectedModel = expectedModel;
+  @Override
+  @Nonnull
+  public ResponseService.WithRawResponse withRawResponse() {
+    throw new UnsupportedOperationException(
+        "withRawResponse() is not supported by AiCoreResponseService.");
   }
 
   @Override
@@ -51,7 +55,7 @@ class AiCoreResponseService implements ResponseService {
   @Nonnull
   public Response create(
       @Nonnull final ResponseCreateParams params, @Nonnull final RequestOptions requestOptions) {
-    return delegate.create(withValidatedModel(params), requestOptions);
+    return delegate.create(useDeploymentModel(params), requestOptions);
   }
 
   @Override
@@ -65,7 +69,7 @@ class AiCoreResponseService implements ResponseService {
   public <T> StructuredResponse<T> create(
       @Nonnull final StructuredResponseCreateParams<T> params,
       @Nonnull final RequestOptions requestOptions) {
-    return delegate.create(withValidatedModel(params), requestOptions);
+    return delegate.create(useDeploymentModel(params), requestOptions);
   }
 
   @Override
@@ -79,7 +83,7 @@ class AiCoreResponseService implements ResponseService {
   @Nonnull
   public StreamResponse<ResponseStreamEvent> createStreaming(
       @Nonnull final ResponseCreateParams params, @Nonnull final RequestOptions requestOptions) {
-    return delegate.createStreaming(withValidatedModel(params), requestOptions);
+    return delegate.createStreaming(useDeploymentModel(params), requestOptions);
   }
 
   @Override
@@ -94,7 +98,7 @@ class AiCoreResponseService implements ResponseService {
   public StreamResponse<ResponseStreamEvent> createStreaming(
       @Nonnull final StructuredResponseCreateParams<?> params,
       @Nonnull final RequestOptions requestOptions) {
-    return delegate.createStreaming(withValidatedModel(params), requestOptions);
+    return delegate.createStreaming(useDeploymentModel(params), requestOptions);
   }
 
   @Override
@@ -107,69 +111,60 @@ class AiCoreResponseService implements ResponseService {
   @Nonnull
   public CompactedResponse compact(
       @Nonnull final ResponseCompactParams params, @Nonnull final RequestOptions requestOptions) {
-    return delegate.compact(withValidatedModel(params), requestOptions);
+    return delegate.compact(useDeploymentModel(params), requestOptions);
   }
 
   @Nonnull
-  private ResponseCreateParams withValidatedModel(@Nonnull final ResponseCreateParams params) {
-    final ChatModel givenModel = params.model().map(ResponsesModel::asChat).orElse(null);
-
-    if (givenModel == null) {
-      return params.toBuilder().model(expectedModel).build();
-    }
-
-    if (!expectedModel.equals(givenModel)) {
-      throw new IllegalArgumentException(
-          """
-          Model mismatch:
-            Expected : '%s' (configured via forModel())
-            Actual   : '%s' (set in request parameters)
-          Fix: Either remove the model from the request parameters, \
-          or use forModel("%s") when creating the client.\
-          """
-              .formatted(expectedModel, givenModel, givenModel));
-    }
-
-    return params;
-  }
-
-  @Nonnull
-  private <T> StructuredResponseCreateParams<T> withValidatedModel(
+  private <T> StructuredResponseCreateParams<T> useDeploymentModel(
       @Nonnull final StructuredResponseCreateParams<T> params) {
-    final ResponseCreateParams validated = withValidatedModel(params.rawParams());
+    final ResponseCreateParams validated = useDeploymentModel(params.rawParams());
     return new StructuredResponseCreateParams<>(params.responseType(), validated);
   }
 
   @Nonnull
-  private ResponseCompactParams withValidatedModel(@Nonnull final ResponseCompactParams params) {
+  private ResponseCreateParams useDeploymentModel(@Nonnull final ResponseCreateParams params) {
+    final var givenModel =
+        params.model().map(ResponsesModel::asChat).map(ChatModel::asString).orElse(null);
+
+    if (givenModel == null) {
+      return params.toBuilder().model(deploymentModel).build();
+    }
+
+    throwOnModelMismatch(givenModel);
+    return params;
+  }
+
+  @Nonnull
+  private ResponseCompactParams useDeploymentModel(@Nonnull final ResponseCompactParams params) {
     final String givenModel =
         params.model().map(ResponseCompactParams.Model::asString).orElse(null);
 
     if (givenModel == null) {
-      return params.toBuilder().model(expectedModel.asString()).build();
+      return params.toBuilder().model(deploymentModel).build();
     }
 
-    if (!expectedModel.asString().equals(givenModel)) {
-      throw new IllegalArgumentException(
-          """
-          Model mismatch:
-            Expected : '%s' (configured via forModel())
-            Actual   : '%s' (set in request parameters)
-          Fix: Either remove the model from the request parameters, \
-          or use forModel("%s") when creating the client.\
-          """
-              .formatted(expectedModel, givenModel, givenModel));
-    }
-
+    throwOnModelMismatch(givenModel);
     return params;
   }
 
-  private interface SafeMethods {
+  private void throwOnModelMismatch(@Nonnull final String givenModel) {
+    if (!deploymentModel.equals(givenModel)) {
+      throw new IllegalArgumentException(
+          """
+        Model mismatch:
+          Expected : '%s' (configured via forModel())
+          Actual   : '%s' (set in request parameters)
+        Fix: Either remove the model from the request parameters, \
+        or use forModel("%s") when creating the client.\
+        """
+              .formatted(deploymentModel, givenModel, givenModel));
+    }
+  }
+
+  private interface PassThroughMethods {
     InputItemService inputItems();
 
     InputTokenService inputTokens();
-
-    ResponseService.WithRawResponse withRawResponse();
 
     Response retrieve(ResponseRetrieveParams params, RequestOptions requestOptions);
 
@@ -180,12 +175,10 @@ class AiCoreResponseService implements ResponseService {
 
     StreamResponse<ResponseStreamEvent> retrieveStreaming(ResponseRetrieveParams params);
 
-    // Delete operation - DELETE by ID, no model parameter
     void delete(ResponseDeleteParams params, RequestOptions requestOptions);
 
     void delete(ResponseDeleteParams params);
 
-    // Cancel operation - no model parameter
     Response cancel(ResponseCancelParams params, RequestOptions requestOptions);
 
     Response cancel(ResponseCancelParams params);

@@ -12,7 +12,6 @@ import com.openai.core.http.HttpResponse;
 import com.openai.errors.OpenAIIoException;
 import com.openai.models.ChatModel;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -24,6 +23,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -65,7 +65,7 @@ public final class AiCoreOpenAiClient {
    * @throws DeploymentResolutionException If no running deployment is found for the model.
    */
   @Nonnull
-  public static OpenAIClient forModel(@Nonnull final AiModel model) {
+  public static OpenAIClient forModel(@Nonnull final OpenAiModel model) {
     return forModel(model, DEFAULT_RESOURCE_GROUP);
   }
 
@@ -80,7 +80,7 @@ public final class AiCoreOpenAiClient {
    */
   @Nonnull
   public static OpenAIClient forModel(
-      @Nonnull final AiModel model, @Nonnull final String resourceGroup) {
+      @Nonnull final OpenAiModel model, @Nonnull final String resourceGroup) {
     final HttpDestination destination =
         new AiCoreService().getInferenceDestination(resourceGroup).forModel(model);
     return fromDestination(destination, model);
@@ -96,7 +96,7 @@ public final class AiCoreOpenAiClient {
   @Nonnull
   @SuppressWarnings("PMD.CloseResource")
   static OpenAIClient fromDestination(
-      @Nonnull final HttpDestination destination, @Nonnull final AiModel model) {
+      @Nonnull final HttpDestination destination, @Nonnull final OpenAiModel model) {
     final var baseUrl = destination.getUri().toString();
     final var httpClient = new AiCoreHttpClientImpl(destination);
 
@@ -107,7 +107,7 @@ public final class AiCoreOpenAiClient {
             .map(version -> model.name() + "-" + version)
             .orElseGet(model::name);
     return new OpenAIClientImplWrapper(
-        new OpenAIClientImpl(clientOptions), ChatModel.of(chatModel));
+        new OpenAIClientImpl(clientOptions), ChatModel.of(chatModel).asString());
   }
 
   /**
@@ -120,19 +120,19 @@ public final class AiCoreOpenAiClient {
     private final HttpDestination destination;
 
     private static final String SSE_MEDIA_TYPE = "text/event-stream";
-    private static final Set<String> ALLOWED_PATHS =
-        Set.of(
-            "/chat/completions",
-            "/responses",
-            "/responses/[^/]+",
-            "/responses/[^/]+/input_items",
-            "/responses/[^/]+/cancel");
+    private static final Map<String, Set<String>> ALLOWED_OPERATIONS =
+        Map.of(
+            "/chat/completions", Set.of("POST"),
+            "/responses", Set.of("GET", "POST"),
+            "/responses/[^/]+", Set.of("GET", "DELETE"),
+            "/responses/[^/]+/compact", Set.of("POST"),
+            "/responses/[^/]+/cancel", Set.of("POST"));
 
     @Override
     @Nonnull
     public HttpResponse execute(
         @Nonnull final HttpRequest request, @Nonnull final RequestOptions requestOptions) {
-      validateAllowedEndpoint(request);
+      validateAllowedOperation(request);
       final var apacheClient = ApacheHttpClient5Accessor.getHttpClient(destination);
       final var apacheRequest = toApacheRequest(request);
 
@@ -165,12 +165,25 @@ public final class AiCoreOpenAiClient {
       // Apache HttpClient lifecycle is managed by Cloud SDK's ApacheHttpClient5Cache
     }
 
-    private static void validateAllowedEndpoint(@Nonnull final HttpRequest request) {
+    private static void validateAllowedOperation(@Nonnull final HttpRequest request) {
       final var endpoint = "/" + String.join("/", request.pathSegments());
-      if (ALLOWED_PATHS.stream().noneMatch(endpoint::matches)) {
+      final var method = request.method().name();
+
+      // Find matching path pattern
+      final var matchingEntry =
+          ALLOWED_OPERATIONS.entrySet().stream()
+              .filter(entry -> endpoint.matches(entry.getKey()))
+              .findFirst()
+              .orElseThrow(
+                  () ->
+                      new UnsupportedOperationException(
+                          String.format("Endpoint %s is not supported in AI Core", endpoint)));
+
+      // Validate method
+      if (!matchingEntry.getValue().contains(method)) {
         throw new UnsupportedOperationException(
             String.format(
-                "Only requests to the following endpoints are allowed: %s.", ALLOWED_PATHS));
+                "HTTP %s method is not supported on endpoint %s in AI Core", method, endpoint));
       }
     }
 
