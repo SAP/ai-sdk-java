@@ -1,6 +1,16 @@
 name: 'Spec File Update Workflow'
 run-name: 'Spec File Update Workflow: ${{ github.event.inputs.service }}-${{ github.event.inputs.ref }}'
 
+# Notes:
+# To use this workflow as a service owner:
+#   1. Ask an SAP Cloud SDK for AI team member to add you to the service-owner team (read access is enough).
+#   2. Generate a fine-grained PAT with:
+#     - repo access: SAP/ai-sdk-js and SAP/ai-sdk-java (you have to select SAP as the resource owner to see these repos)
+#     - permissions:  Actions - read and write
+#.    - token expiration: up to you, you are responsible for rotation
+#   3. Save the PAT as a secret under `PUBLIC_GITHUB_SDKS_PAT`.
+#   4. Ask an SAP Cloud SDK for AI team member to create the sdk-integration and sdk-integration-cleanup workflows.
+
 on:
   workflow_dispatch:
     inputs:
