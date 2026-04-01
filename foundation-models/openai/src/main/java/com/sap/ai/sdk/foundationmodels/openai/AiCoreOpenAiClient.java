@@ -20,8 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -39,7 +37,6 @@ import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
-import org.apache.hc.core5.net.URIBuilder;
 
 /**
  * Factory for creating OpenAI SDK clients configured for SAP AI Core deployments.
@@ -189,9 +186,9 @@ public final class AiCoreOpenAiClient {
 
     @Nonnull
     private ClassicHttpRequest toApacheRequest(@Nonnull final HttpRequest request) {
-      final var fullUri = buildUrlWithQueryParams(request);
+      final var fullUri = request.url();
       final var method = request.method();
-      final var apacheRequest = new BasicClassicHttpRequest(method.name(), fullUri.toString());
+      final var apacheRequest = new BasicClassicHttpRequest(method.name(), fullUri);
       applyRequestHeaders(request, apacheRequest);
 
       try (var requestBody = request.body()) {
@@ -214,23 +211,6 @@ public final class AiCoreOpenAiClient {
       }
 
       return apacheRequest;
-    }
-
-    private static URI buildUrlWithQueryParams(@Nonnull final HttpRequest request) {
-      try {
-        final var uriBuilder = new URIBuilder(request.url());
-        final var queryParams = request.queryParams();
-
-        for (final var key : queryParams.keys()) {
-          for (final var value : queryParams.values(key)) {
-            uriBuilder.addParameter(key, value);
-          }
-        }
-
-        return uriBuilder.build();
-      } catch (URISyntaxException e) {
-        throw new OpenAIIoException("Failed to build URI with query parameters", e);
-      }
     }
 
     private static void applyRequestHeaders(

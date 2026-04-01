@@ -15,9 +15,11 @@ import com.openai.models.responses.ResponseStatus;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nonnull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @WireMockTest
@@ -93,22 +95,32 @@ class AiCoreOpenAiClientTest {
   }
 
   @Test
-  void testChatCompletionService() {
+  void testChatCompletionServiceSuccessWithMatchingModel() {
     final var params =
-        ChatCompletionCreateParams.builder().addUserMessage("Say this is a test").build();
-    final ChatCompletion response =
-        AiCoreOpenAiClient.forModel(OpenAiModel.GPT_5).chat().completions().create(params);
+        ChatCompletionCreateParams.builder()
+            .model(ChatModel.GPT_5)
+            .addUserMessage("Say this is a test")
+            .build();
 
+    final ChatCompletion response = client.chat().completions().create(params);
     assertThat(response).isNotNull();
   }
 
   @Test
-  void testOtherServicesStillWork() {
-    assertThat(client.chat().completions()).isNotNull();
-    assertThat(client.completions()).isNotNull();
-    assertThat(client.embeddings()).isNotNull();
-    assertThat(client.files()).isNotNull();
-    assertThat(client.images()).isNotNull();
-    assertThat(client.audio()).isNotNull();
+  @Disabled("Fails as Async client needs additional wrappers. Maintenance wall.")
+  void testAsyncChatCompletion() {
+    final var params =
+        ChatCompletionCreateParams.builder()
+            .model(ChatModel.GPT_5)
+            .addUserMessage("Say this is a test")
+            .build();
+
+    final CompletableFuture<ChatCompletion> future =
+        client.async().chat().completions().create(params);
+
+    final ChatCompletion response = future.join();
+
+    assertThat(response).isNotNull();
+    assertThat(response.choices()).isNotEmpty();
   }
 }

@@ -1,13 +1,14 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.openai.core.ClientOptions;
+import com.openai.core.http.QueryParams;
 import com.openai.services.blocking.ChatService;
 import com.openai.services.blocking.chat.ChatCompletionService;
 import java.util.function.Consumer;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
-import org.jspecify.annotations.NonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class AiCoreChatService implements ChatService {
@@ -16,18 +17,24 @@ class AiCoreChatService implements ChatService {
   private final String deploymentModel;
 
   @Override
-  public @NonNull ChatService withOptions(@NonNull final Consumer<ClientOptions.Builder> consumer) {
+  @Nonnull
+  public ChatService withOptions(@Nonnull final Consumer<ClientOptions.Builder> consumer) {
     return new AiCoreChatService(delegate.withOptions(consumer), deploymentModel);
   }
 
   @Override
-  public @NonNull WithRawResponse withRawResponse() {
+  @Nonnull
+  public WithRawResponse withRawResponse() {
     throw new UnsupportedOperationException(
         "withRawResponse() is not supported for AiCoreChatService");
   }
 
   @Override
-  public @NonNull ChatCompletionService completions() {
-    return new AiCoreChatCompletionService(delegate.completions(), deploymentModel);
+  @Nonnull
+  public ChatCompletionService completions() {
+    final var apiVersionQuery = QueryParams.builder().put("api-version", "2024-02-01").build();
+    final var completions =
+        delegate.completions().withOptions(builder -> builder.queryParams(apiVersionQuery));
+    return new AiCoreChatCompletionService(completions, deploymentModel);
   }
 }

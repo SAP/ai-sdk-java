@@ -2,7 +2,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.openai.core.ClientOptions;
 import com.openai.core.RequestOptions;
-import com.openai.core.http.QueryParams;
 import com.openai.core.http.StreamResponse;
 import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionChunk;
@@ -19,9 +18,11 @@ import com.openai.services.blocking.chat.ChatCompletionService;
 import com.openai.services.blocking.chat.completions.MessageService;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
-import org.jspecify.annotations.NonNull;
 
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class AiCoreChatCompletionService implements ChatCompletionService {
 
   @Delegate(types = PassThroughMethods.class)
@@ -29,17 +30,10 @@ class AiCoreChatCompletionService implements ChatCompletionService {
 
   private final String deploymentModel;
 
-  AiCoreChatCompletionService(
-      @Nonnull final ChatCompletionService delegate, @Nonnull final String expectedModel) {
-    final var apiVersionQuery = QueryParams.builder().put("api-version", "2024-02-01").build();
-    this.delegate = delegate.withOptions(builder -> builder.queryParams(apiVersionQuery));
-    this.deploymentModel = expectedModel;
-  }
-
   @Override
-  @NonNull
+  @Nonnull
   public ChatCompletionService withOptions(
-      @NonNull final Consumer<ClientOptions.Builder> consumer) {
+      @Nonnull final Consumer<ClientOptions.Builder> consumer) {
     return new AiCoreChatCompletionService(delegate.withOptions(consumer), deploymentModel);
   }
 
@@ -52,74 +46,65 @@ class AiCoreChatCompletionService implements ChatCompletionService {
 
   @Override
   @Nonnull
-  public @NonNull ChatCompletion create(@NonNull final ChatCompletionCreateParams params) {
+  public ChatCompletion create(@Nonnull final ChatCompletionCreateParams params) {
     return create(params, RequestOptions.none());
   }
 
   @Override
-  @NonNull
-  public ChatCompletion create(
-      @NonNull final ChatCompletionCreateParams params,
-      @NonNull final RequestOptions requestOptions) {
-    return delegate.create(params, requestOptions);
-  }
-
-  @Override
-  @NonNull
-  public <T> StructuredChatCompletion<T> create(
-      @NonNull final StructuredChatCompletionCreateParams<T> params) {
-    return create(params, RequestOptions.none());
-  }
-
-  @Override
-  @NonNull
-  public <T> StructuredChatCompletion<T> create(
-      @NonNull final StructuredChatCompletionCreateParams<T> params,
-      @NonNull final RequestOptions requestOptions) {
-    return delegate.create(params, requestOptions);
-  }
-
-  @Override
-  @NonNull
-  public StreamResponse<ChatCompletionChunk> createStreaming(
-      @NonNull final ChatCompletionCreateParams params) {
-    return createStreaming(params, RequestOptions.none());
-  }
-
-  @Override
-  @NonNull
-  public StreamResponse<ChatCompletionChunk> createStreaming(
-      @NonNull final ChatCompletionCreateParams params,
-      @NonNull final RequestOptions requestOptions) {
-    return delegate.createStreaming(params, requestOptions);
-  }
-
-  @Override
-  @NonNull
-  public StreamResponse<ChatCompletionChunk> createStreaming(
-      @NonNull final StructuredChatCompletionCreateParams<?> params) {
-    return createStreaming(params, RequestOptions.none());
-  }
-
-  @Override
-  @NonNull
-  public StreamResponse<ChatCompletionChunk> createStreaming(
-      @NonNull final StructuredChatCompletionCreateParams<?> params,
-      @NonNull final RequestOptions requestOptions) {
-    return delegate.createStreaming(params, requestOptions);
-  }
-
   @Nonnull
-  private ChatCompletionCreateParams useDeploymentModel(
+  public ChatCompletion create(
+      @Nonnull final ChatCompletionCreateParams params,
+      @Nonnull final RequestOptions requestOptions) {
+    throwOnModelMismatch(params.model().asString());
+    return delegate.create(params, requestOptions);
+  }
+
+  @Override
+  @Nonnull
+  public <T> StructuredChatCompletion<T> create(
+      @Nonnull final StructuredChatCompletionCreateParams<T> params) {
+    return create(params, RequestOptions.none());
+  }
+
+  @Override
+  @Nonnull
+  public <T> StructuredChatCompletion<T> create(
+      @Nonnull final StructuredChatCompletionCreateParams<T> params,
+      @Nonnull final RequestOptions requestOptions) {
+    throwOnModelMismatch(params.rawParams().model().asString());
+    return delegate.create(params, requestOptions);
+  }
+
+  @Override
+  @Nonnull
+  public StreamResponse<ChatCompletionChunk> createStreaming(
       @Nonnull final ChatCompletionCreateParams params) {
-    final var givenModel = params.model().asString();
+    return createStreaming(params, RequestOptions.none());
+  }
 
-    if (givenModel == null) {
-      return params.toBuilder().model(deploymentModel).build();
-    }
+  @Override
+  @Nonnull
+  public StreamResponse<ChatCompletionChunk> createStreaming(
+      @Nonnull final ChatCompletionCreateParams params,
+      @Nonnull final RequestOptions requestOptions) {
+    throwOnModelMismatch(params.model().asString());
+    return delegate.createStreaming(params, requestOptions);
+  }
 
-    throwOnModelMismatch(givenModel);
-    return params;
+  @Override
+  @Nonnull
+  public StreamResponse<ChatCompletionChunk> createStreaming(
+      @Nonnull final StructuredChatCompletionCreateParams<?> params) {
+    return createStreaming(params, RequestOptions.none());
+  }
+
+  @Override
+  @Nonnull
+  public StreamResponse<ChatCompletionChunk> createStreaming(
+      @Nonnull final StructuredChatCompletionCreateParams<?> params,
+      @Nonnull final RequestOptions requestOptions) {
+    throwOnModelMismatch(params.rawParams().model().asString());
+    return delegate.createStreaming(params, requestOptions);
   }
 
   private void throwOnModelMismatch(@Nonnull final String givenModel) {
