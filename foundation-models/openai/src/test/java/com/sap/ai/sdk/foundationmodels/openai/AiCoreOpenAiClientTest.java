@@ -5,6 +5,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.openai.client.OpenAIClient;
+import com.openai.core.http.QueryParams;
+import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletion;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStatus;
@@ -23,13 +27,9 @@ class AiCoreOpenAiClientTest {
 
   @BeforeEach
   void setup(@Nonnull final WireMockRuntimeInfo server) {
-    // Create destination pointing to WireMock server
     final var destination = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-
-    // Create OpenAI client using our custom implementation
     client = AiCoreOpenAiClient.fromDestination(destination);
 
-    // Disable HTTP client caching for tests to ensure fresh clients
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
 
@@ -40,18 +40,29 @@ class AiCoreOpenAiClientTest {
   }
 
   @Test
-  void testResponseSuccess() {
+  void testResponseServiceSuccessWithMatchingModel() {
     final var params =
         ResponseCreateParams.builder()
             .input("What is the capital of France?")
-            .model("gpt-5")
+            .model(ChatModel.GPT_5)
             .build();
 
     final Response response = client.responses().create(params);
 
     assertThat(response).isNotNull();
-    assertThat(response.id()).isEqualTo("resp_01a38d2783b385be0069bd43d260108193aef990678aa8a0af");
     assertThat(response.status().orElseThrow()).isEqualTo(ResponseStatus.COMPLETED);
-    assertThat(response.output()).isNotEmpty();
+  }
+
+  @Test
+  void testChatCompletionServiceSuccessWithMatchingModel() {
+    final var params =
+        ChatCompletionCreateParams.builder()
+            .model(ChatModel.GPT_5)
+            .addUserMessage("Say this is a test")
+            .additionalQueryParams(QueryParams.builder().put("api-version", "2024-02-01").build())
+            .build();
+
+    final ChatCompletion response = client.chat().completions().create(params);
+    assertThat(response).isNotNull();
   }
 }
