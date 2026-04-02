@@ -47,6 +47,7 @@ public class AiCoreOpenAiService {
    */
   @Nonnull
   public Response retrieveResponse(@Nonnull final String input) {
+    // Create a non-persistent response with store=false
     val params = ResponseCreateParams.builder().input(input).model(ChatModel.GPT_5).build();
     val createResponse = CLIENT.responses().create(params);
     return CLIENT.responses().retrieve(createResponse.id());
@@ -60,6 +61,7 @@ public class AiCoreOpenAiService {
    */
   @Nonnull
   public StreamResponse<ResponseStreamEvent> createStreamingResponse(@Nonnull final String input) {
+    // Create a non-persistent response with store=false
     val params =
         ResponseCreateParams.builder().input(input).model(ChatModel.GPT_5).store(false).build();
     return CLIENT.responses().createStreaming(params);
