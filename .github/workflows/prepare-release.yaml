@@ -163,7 +163,7 @@ jobs:
         with:
           app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
+          owner: SAP
           repositories: |
             ai-sdk-java
             ai-sdk
@@ -255,6 +255,7 @@ jobs:
         with:
           app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP  
           repositories: ai-sdk-java
           permission-contents: write
           permission-pull-requests: write
@@ -305,7 +306,7 @@ jobs:
         with:
           app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
-          owner: ${{ github.repository_owner }}
+          owner: SAP
           repositories: |
             ai-sdk-java
             ai-sdk
