@@ -10,6 +10,7 @@ import com.openai.core.http.HttpClient;
 import com.openai.core.http.HttpRequest;
 import com.openai.core.http.HttpResponse;
 import com.openai.errors.OpenAIIoException;
+import com.openai.models.ChatModel;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -79,26 +80,31 @@ public final class AiCoreOpenAiClient {
       @Nonnull final OpenAiModel model, @Nonnull final String resourceGroup) {
     final HttpDestination destination =
         new AiCoreService().getInferenceDestination(resourceGroup).forModel(model);
-
-    return fromDestination(destination);
+    return fromDestination(destination, model);
   }
 
   /**
    * Create an OpenAI client from a pre-resolved destination.
    *
    * @param destination The destination to use.
+   * @param model The model name for validation.
    * @return A configured OpenAI client instance.
    */
   @Nonnull
   @SuppressWarnings("PMD.CloseResource")
-  static OpenAIClient fromDestination(@Nonnull final HttpDestination destination) {
+  static OpenAIClient fromDestination(
+      @Nonnull final HttpDestination destination, @Nonnull final OpenAiModel model) {
     final var baseUrl = destination.getUri().toString();
     final var httpClient = new AiCoreHttpClientImpl(destination);
 
-    final ClientOptions clientOptions =
+    final var clientOptions =
         ClientOptions.builder().baseUrl(baseUrl).httpClient(httpClient).apiKey("unused").build();
-
-    return new OpenAIClientImpl(clientOptions);
+    final var chatModel =
+        Optional.ofNullable(model.version())
+            .map(version -> model.name() + "-" + version)
+            .orElseGet(model::name);
+    return new OpenAIClientImplWrapper(
+        new OpenAIClientImpl(clientOptions), ChatModel.of(chatModel).asString());
   }
 
   /**
