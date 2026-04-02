@@ -111,7 +111,6 @@ jobs:
       release-url: ${{ steps.create-release.outputs.RELEASE_URL }}
     permissions:
       contents: write # needed to create a new release
-      actions: read # needed to download the artifacts from the CI workflow
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout repository'
@@ -156,6 +155,7 @@ jobs:
     outputs:
       pr-url: ${{ steps.create-release-notes-pr.outputs.PR_URL }}
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: 'Generate GitHub App token'
         id: app-token
@@ -164,6 +164,9 @@ jobs:
           app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+          repositories: |
+            ai-sdk-java
+            ai-sdk
           permission-contents: write
           permission-pull-requests: write
 
@@ -244,6 +247,7 @@ jobs:
     outputs:
       pr-url: ${{ steps.create-code-pr.outputs.PR_URL }}
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: 'Generate GitHub App token'
         id: app-token
@@ -251,6 +255,7 @@ jobs:
         with:
           app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          repositories: ai-sdk-java
           permission-contents: write
           permission-pull-requests: write
 
@@ -301,6 +306,9 @@ jobs:
           app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+          repositories: |
+            ai-sdk-java
+            ai-sdk
           permission-contents: write
           permission-pull-requests: write
 

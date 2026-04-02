@@ -47,6 +47,8 @@ jobs:
   generate:
     name: 'Download, Generate, Compile and Push'
     runs-on: [ubuntu-latest]
+    permissions:
+      actions: read # for cache restore
     outputs:
       spec_diff: ${{ steps.spec_diff.outputs.spec_diff }}
       branch: ${{ steps.push.outputs.branch }}
@@ -65,6 +67,7 @@ jobs:
         with:
           app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          repositories: ai-sdk-java
           permission-contents: write
           permission-pull-requests: write
 

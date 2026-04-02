@@ -25,7 +25,9 @@ jobs:
       release-notes-branch: ${{ steps.determine-branch-names.outputs.RELEASE_NOTES_BRANCH_NAME }}
       release-tag: ${{ steps.determine-branch-names.outputs.RELEASE_TAG }}
       release-commit: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
-    permissions: write-all # contents and push are needed to see the draft release
+    permissions:
+      contents: read
+      pull-requests: read
     runs-on: ubuntu-latest
     steps:
       - name: 'Determine Branch Names'
@@ -54,6 +56,8 @@ jobs:
           app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+          repositories: ai-sdk
+          permission-pull-requests: read
 
       - name: 'Checkout Repository'
         uses: actions/checkout@v6
@@ -102,6 +106,9 @@ jobs:
           app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
+          repositories: |
+            ai-sdk-java
+            ai-sdk
           permission-contents: write # needed to modify the release draft
           permission-pull-requests: write # needed to merge the release PR
 
