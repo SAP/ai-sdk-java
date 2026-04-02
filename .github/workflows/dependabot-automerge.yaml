@@ -1,4 +1,4 @@
-name: "Dependabot Auto-Merge"
+name: 'Dependabot Auto-Merge'
 
 on:
   workflow_dispatch:
@@ -14,14 +14,22 @@ env:
 jobs:
   review-prs:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      contents: write
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
       - name: Checkout
         uses: actions/checkout@v6
 
       - name: Approve and Merge PRs
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           PRS=$(gh pr list --app "dependabot" --state "open" --json number,title)
           PR_NUMBERS=
@@ -29,14 +37,14 @@ jobs:
             if [[ -z "$GROUP" ]]; then
               continue
             fi
-          
+
             MATCHES=$(jq -r --arg group "$GROUP" '.[] | select(.title | contains($group)) | .number' <<< "$PRS")
             echo "[DEBUG] Found PRs for group '$GROUP': '$MATCHES'"
-          
+
             PR_NUMBERS="$MATCHES"$'\n'"$PR_NUMBERS"
           done <<< "${{ env.DEPENDABOT_GROUPS }}"
           echo "[DEBUG] Approving and Merging following PRs: '$PR_NUMBERS'"
-          
+
           while IFS= read -r PR_NUMBER; do
             if [[ -z "$PR_NUMBER" ]]; then
               continue
@@ -46,5 +54,3 @@ jobs:
             gh pr merge "$PR_NUMBER" --auto --squash
             gh pr review "$PR_NUMBER" --approve
           done <<< "$PR_NUMBERS"
-        env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
