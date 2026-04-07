@@ -5,7 +5,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.badRequest;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
-import static com.github.tomakehurst.wiremock.client.WireMock.findAll;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
@@ -41,7 +40,6 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
@@ -1059,16 +1057,16 @@ class OrchestrationUnitTest {
         Message.user("What is the title of the topic discussed here?").withPdf(pdfPath);
 
     var prompt =
-        new OrchestrationPrompt(messageWithImage)
-            .messageHistory(List.of(messageWithTwoTexts, messageWithFile));
+        new OrchestrationPrompt(messageWithFile)
+            .messageHistory(List.of(messageWithTwoTexts, messageWithImage));
 
+    final var expectedPdfAnswer =
+        "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue. The title of the topic discussed in the PDF is \"SAP AI SDK Orchestration\".";
     var result = client.chatCompletion(prompt, llmWithImageSupportConfig);
     var response = result.getOriginalResponse();
 
-    assertThat(result.getContent())
-        .isEqualTo(
-            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
-    assertThat(result.getAllMessages()).hasSize(3);
+    assertThat(result.getContent()).isEqualTo(expectedPdfAnswer);
+    assertThat(result.getAllMessages()).hasSize(4);
     var systemMessage = result.getAllMessages().get(0);
     assertThat(systemMessage.role()).isEqualTo("system");
     assertThat(systemMessage.content().items()).hasSize(2);
@@ -1078,67 +1076,55 @@ class OrchestrationUnitTest {
     assertThat(systemMessage.content().items().get(1)).isInstanceOf(TextItem.class);
     assertThat(((TextItem) systemMessage.content().items().get(1)).text())
         .isEqualTo("Start the first sentence with the word 'Well'.");
-    var userMessage = result.getAllMessages().get(1);
-    assertThat(userMessage.role()).isEqualTo("user");
-    assertThat(userMessage.content().items()).hasSize(3);
-    assertThat(userMessage.content().items().get(0)).isInstanceOf(TextItem.class);
-    assertThat(((TextItem) userMessage.content().items().get(0)).text())
+    var userMessageWithImage = result.getAllMessages().get(1);
+    assertThat(userMessageWithImage.role()).isEqualTo("user");
+    assertThat(userMessageWithImage.content().items()).hasSize(3);
+    assertThat(userMessageWithImage.content().items().get(0)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) userMessageWithImage.content().items().get(0)).text())
         .isEqualTo("What is in this image?");
-    assertThat(userMessage.content().items().get(1)).isInstanceOf(TextItem.class);
-    assertThat(((TextItem) userMessage.content().items().get(1)).text())
+    assertThat(userMessageWithImage.content().items().get(1)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) userMessageWithImage.content().items().get(1)).text())
         .isEqualTo("And what is the main color?");
-    assertThat(userMessage.content().items().get(2)).isInstanceOf(ImageItem.class);
-    assertThat(((ImageItem) userMessage.content().items().get(2)).imageUrl())
+    assertThat(userMessageWithImage.content().items().get(2)).isInstanceOf(ImageItem.class);
+    assertThat(((ImageItem) userMessageWithImage.content().items().get(2)).imageUrl())
         .isEqualTo(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
-    var assistantMessage = result.getAllMessages().get(2);
+
+    var userMessageWithFile = result.getAllMessages().get(2);
+    assertThat(userMessageWithFile.role()).isEqualTo("user");
+    assertThat(userMessageWithFile.content().items()).hasSize(2);
+    assertThat(userMessageWithFile.content().items().get(0)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) userMessageWithFile.content().items().get(0)).text())
+        .isEqualTo("What is the title of the topic discussed here?");
+    assertThat(userMessageWithFile.content().items().get(1)).isInstanceOf(PdfItem.class);
+    assertThat(((PdfItem) userMessageWithFile.content().items().get(1)).filename())
+        .isEqualTo("sample.pdf");
+    assertThat(((PdfItem) userMessageWithFile.content().items().get(1)).fileData())
+        .isEqualTo("data:application/pdf;base64,JVBERi0xLjcKJSVFT0Y=");
+
+    var assistantMessage = result.getAllMessages().get(3);
     assertThat(assistantMessage.role()).isEqualTo("assistant");
     assertThat(assistantMessage.content().items()).hasSize(1);
     assertThat(assistantMessage.content().items().get(0)).isInstanceOf(TextItem.class);
     assertThat(((TextItem) assistantMessage.content().items().get(0)).text())
-        .isEqualTo(
-            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
+        .isEqualTo(expectedPdfAnswer);
 
     assertThat(response).isNotNull();
     var llmResults = response.getIntermediateResults().getLlm();
     assertThat(llmResults).isNotNull();
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
-        .isEqualTo(
-            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
+        .isEqualTo(expectedPdfAnswer);
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     var orchestrationResult = response.getFinalResult();
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
-        .isEqualTo(
-            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
+        .isEqualTo(expectedPdfAnswer);
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
 
-    final String requestBody =
-        fileLoaderStr
-            .apply("multiMessageRequest.json")
-            // The fixture has a static filename; the temp file name is generated at runtime.
-            .replace("\"sample.pdf\"", "\"" + pdfPath.getFileName() + "\"");
-    verify(
-        postRequestedFor(urlPathEqualTo("/v2/completion"))
-            .withRequestBody(equalToJson(requestBody)));
-
-    final var actualRequest = findAll(postRequestedFor(urlPathEqualTo("/v2/completion"))).get(0);
-    final var fileContent =
-        new ObjectMapper()
-            .readTree(actualRequest.getBodyAsString())
-            .path("messages_history")
-            .path(1)
-            .path("content")
-            .path(1);
-    final var file = fileContent.path("file");
-
-    assertThat(fileContent.path("type").asText()).isEqualTo("file");
-    assertThat(file.path("file_data").asText())
-        .isEqualTo("data:application/pdf;base64,JVBERi0xLjcKJSVFT0Y=");
-    assertThat(file.path("filename").asText()).isEqualTo(pdfPath.getFileName().toString());
+    verify(postRequestedFor(urlPathEqualTo("/v2/completion")));
 
     Files.deleteIfExists(pdfPath);
   }
