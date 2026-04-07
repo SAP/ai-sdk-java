@@ -155,7 +155,8 @@ public class OrchestrationConvenienceUnitTest {
             UserChatMessageContent.createListOfUserChatMessageContentItems(
                 List.of(fileContentItem)));
 
-    assertThat(content.items()).isInstanceOf(PdfItem.class);
+    assertThat(content.items()).hasSize(1);
+    assertThat(content.items().get(0)).isInstanceOf(PdfItem.class);
     final var pdfItem = (PdfItem) content.items().get(0);
     assertThat(pdfItem.filename()).isEqualTo("doc.pdf");
     assertThat(pdfItem.fileData()).isEqualTo("cGRmLWNvbnRlbnQ=");
