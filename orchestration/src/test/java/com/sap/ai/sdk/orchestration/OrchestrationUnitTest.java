@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.badRequest;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.findAll;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
@@ -40,6 +41,7 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
@@ -1040,6 +1042,9 @@ class OrchestrationUnitTest {
 
     var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
+    final Path pdfPath = Files.createTempFile("orchestration-test", ".pdf");
+    Files.writeString(pdfPath, "%PDF-1.7\n%%EOF");
+
     var messageWithTwoTexts =
         Message.system("Please answer in exactly two sentences.")
             .withText("Start the first sentence with the word 'Well'.");
@@ -1049,8 +1054,13 @@ class OrchestrationUnitTest {
             .withText("And what is the main color?")
             .withImage(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
+
+    var messageWithFile =
+        Message.user("What is the title of the topic discussed here?").withPdf(pdfPath);
+
     var prompt =
-        new OrchestrationPrompt(messageWithImage).messageHistory(List.of(messageWithTwoTexts));
+        new OrchestrationPrompt(messageWithImage)
+            .messageHistory(List.of(messageWithTwoTexts, messageWithFile));
 
     var result = client.chatCompletion(prompt, llmWithImageSupportConfig);
     var response = result.getOriginalResponse();
@@ -1106,10 +1116,31 @@ class OrchestrationUnitTest {
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
 
-    final String requestBody = fileLoaderStr.apply("multiMessageRequest.json");
+    final String requestBody =
+        fileLoaderStr
+            .apply("multiMessageRequest.json")
+            // The fixture has a static filename; the temp file name is generated at runtime.
+            .replace("\"sample.pdf\"", "\"" + pdfPath.getFileName() + "\"");
     verify(
         postRequestedFor(urlPathEqualTo("/v2/completion"))
             .withRequestBody(equalToJson(requestBody)));
+
+    final var actualRequest = findAll(postRequestedFor(urlPathEqualTo("/v2/completion"))).get(0);
+    final var fileContent =
+        new ObjectMapper()
+            .readTree(actualRequest.getBodyAsString())
+            .path("messages_history")
+            .path(1)
+            .path("content")
+            .path(1);
+    final var file = fileContent.path("file");
+
+    assertThat(fileContent.path("type").asText()).isEqualTo("file");
+    assertThat(file.path("file_data").asText())
+        .isEqualTo("data:application/pdf;base64,JVBERi0xLjcKJSVFT0Y=");
+    assertThat(file.path("filename").asText()).isEqualTo(pdfPath.getFileName().toString());
+
+    Files.deleteIfExists(pdfPath);
   }
 
   //    Example class
@@ -1484,7 +1515,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testGetAllMessages() {
+  void testGetAllMessages() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(

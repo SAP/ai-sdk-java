@@ -45,6 +45,8 @@ public record MessageContent(@Nonnull List<ContentItem> items) {
         } else if (value.getType().equals(UserChatMessageContentItem.TypeEnum.IMAGE_URL)) {
           val detailLevel = ImageItem.DetailLevel.fromString(value.getImageUrl().getDetail());
           items.add(new ImageItem(value.getImageUrl().getUrl(), detailLevel));
+        } else if (value.getType().equals(UserChatMessageContentItem.TypeEnum.FILE)) {
+          items.add(new PdfItem(value.getFile().getFileData(), value.getFile().getFilename()));
         }
       }
       return new MessageContent(items);

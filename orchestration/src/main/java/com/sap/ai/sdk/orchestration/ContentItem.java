@@ -5,4 +5,4 @@ package com.sap.ai.sdk.orchestration;
  *
  * @since 1.3.0
  */
-public sealed interface ContentItem permits TextItem, ImageItem {}
+public sealed interface ContentItem permits TextItem, ImageItem, PdfItem {}

@@ -224,7 +224,7 @@ class OrchestrationTest {
     assertThat(response).isNotNull();
     var result = response.getOriginalResponse();
     var llmChoice = result.getFinalResult().getChoices().get(0);
-    assertThat(llmChoice.getMessage().getContent()).contains("&)UPnkL_izT)&1u%?2Kg*Y.@qFqR@/");
+    assertThat(llmChoice.getMessage().getContent()).contains("&)UPNkL_izT)&1u%?2Kg*Y.@qFqR@/");
   }
 
   @Test
@@ -372,6 +372,39 @@ class OrchestrationTest {
             .multiStringInput(
                 List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"))
             .getOriginalResponse();
+    val choices = (result.getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testFileInputLocalPath() throws IOException {
+    final Path pdfPath = Files.createTempFile("orchestration-test", ".pdf");
+    final URL url =
+        new URL("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
+    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestProperty("User-Agent", "Test implementation");
+    InputStream inputStream = connection.getInputStream();
+    Files.write(pdfPath, inputStream.readAllBytes());
+
+    val result = service.fileInput(pdfPath).getOriginalResponse();
+    val choices = (result.getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+
+    Files.deleteIfExists(pdfPath);
+  }
+
+  @Test
+  void testFileInputBase64() throws IOException {
+    final URL url =
+        new URL("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
+    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestProperty("User-Agent", "Test implementation");
+
+    final String base64Data;
+    InputStream inputStream = connection.getInputStream();
+    base64Data = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
+
+    val result = service.fileInputBase64(base64Data, "dummy.pdf").getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }

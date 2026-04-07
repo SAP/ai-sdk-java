@@ -49,6 +49,7 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -106,6 +107,37 @@ public class OrchestrationService {
   public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
     final var multiMessage =
         Message.user(questions.get(0)).withText(questions.get(1)).withText(questions.get(2));
+    final var prompt = new OrchestrationPrompt(multiMessage);
+    return client.chatCompletion(prompt, config);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with PDF file.
+   *
+   * @param filePath the path to a local PDF file
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse fileInput(@Nonnull final Path filePath) {
+    final var multiMessage =
+        Message.user("What is the title of the topic discussed here?").withPdf(filePath);
+    final var prompt = new OrchestrationPrompt(multiMessage);
+    return client.chatCompletion(prompt, config);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with base64 PDF input string.
+   *
+   * @param base64Data base64-encoded PDF payload
+   * @param filename the PDF filename
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse fileInputBase64(
+      @Nonnull final String base64Data, @Nonnull final String filename) {
+    final var multiMessage =
+        Message.user("What is the title of the topic discussed here?")
+            .withPdfBase64(base64Data, filename);
     final var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, config);
   }

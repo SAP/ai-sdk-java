@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import java.nio.file.Path;
 import java.util.List;
 import javax.annotation.Nonnull;
 
@@ -28,6 +29,18 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
   @Nonnull
   static UserMessage user(@Nonnull final ImageItem imageItem) {
     return new UserMessage(new MessageContent(List.of(imageItem)));
+  }
+
+  /**
+   * A convenience method to create a user message containing only a PDF loaded from disk.
+   *
+   * @param filePath the path to a local PDF file.
+   * @return the user message.
+   * @since 1.18.0
+   */
+  @Nonnull
+  static UserMessage user(@Nonnull final Path filePath) {
+    return new UserMessage(new MessageContent(List.of())).withPdf(filePath);
   }
 
   /**
