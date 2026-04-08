@@ -112,24 +112,24 @@ public class OrchestrationService {
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with PDF file.
+   * Chat request to OpenAI through the Orchestration service with a file.
    *
-   * @param filePath the path to a local PDF file
+   * @param filePath the path to a local file
    * @return the assistant response object
    */
   @Nonnull
   public OrchestrationChatResponse fileInput(@Nonnull final Path filePath) {
     final var multiMessage =
-        Message.user("What is the title of the topic discussed here?").withPdf(filePath);
+        Message.user("What is the title of the topic discussed here?").withFile(filePath);
     final var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, config);
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with base64 PDF input string.
+   * Chat request to OpenAI through the Orchestration service with base64 input string.
    *
-   * @param base64Data base64-encoded PDF payload
-   * @param filename the PDF filename
+   * @param base64Data base64-encoded payload
+   * @param filename the filename
    * @return the assistant response object
    */
   @Nonnull
@@ -137,7 +137,7 @@ public class OrchestrationService {
       @Nonnull final String base64Data, @Nonnull final String filename) {
     final var multiMessage =
         Message.user("What is the title of the topic discussed here?")
-            .withPdfBase64(base64Data, filename);
+            .withFileBase64(base64Data, filename);
     final var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, config);
   }

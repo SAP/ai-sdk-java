@@ -1040,8 +1040,8 @@ class OrchestrationUnitTest {
 
     var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
-    final Path pdfPath = Files.createTempFile("orchestration-test", ".pdf");
-    Files.writeString(pdfPath, "%PDF-1.7\n%%EOF");
+    final Path filePath = Files.createTempFile("orchestration-test", ".pdf");
+    Files.writeString(filePath, "%PDF-1.7\n%%EOF");
 
     var messageWithTwoTexts =
         Message.system("Please answer in exactly two sentences.")
@@ -1054,7 +1054,7 @@ class OrchestrationUnitTest {
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
 
     var messageWithFile =
-        Message.user("What is the title of the topic discussed here?").withPdf(pdfPath);
+        Message.user("What is the title of the topic discussed here?").withFile(filePath);
 
     var prompt =
         new OrchestrationPrompt(messageWithFile)
@@ -1096,10 +1096,10 @@ class OrchestrationUnitTest {
     assertThat(userMessageWithFile.content().items().get(0)).isInstanceOf(TextItem.class);
     assertThat(((TextItem) userMessageWithFile.content().items().get(0)).text())
         .isEqualTo("What is the title of the topic discussed here?");
-    assertThat(userMessageWithFile.content().items().get(1)).isInstanceOf(PdfItem.class);
-    assertThat(((PdfItem) userMessageWithFile.content().items().get(1)).filename())
+    assertThat(userMessageWithFile.content().items().get(1)).isInstanceOf(FileItem.class);
+    assertThat(((FileItem) userMessageWithFile.content().items().get(1)).filename())
         .isEqualTo("sample.pdf");
-    assertThat(((PdfItem) userMessageWithFile.content().items().get(1)).fileData())
+    assertThat(((FileItem) userMessageWithFile.content().items().get(1)).fileData())
         .isEqualTo("data:application/pdf;base64,JVBERi0xLjcKJSVFT0Y=");
 
     var assistantMessage = result.getAllMessages().get(3);
@@ -1126,7 +1126,7 @@ class OrchestrationUnitTest {
 
     verify(postRequestedFor(urlPathEqualTo("/v2/completion")));
 
-    Files.deleteIfExists(pdfPath);
+    Files.deleteIfExists(filePath);
   }
 
   //    Example class

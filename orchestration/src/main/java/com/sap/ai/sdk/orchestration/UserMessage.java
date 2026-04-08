@@ -94,51 +94,51 @@ public class UserMessage implements Message {
   }
 
   /**
-   * Add a PDF file to the message by reading it from disk.
+   * Add a file to the message by reading it from disk.
    *
-   * @param filePath the path to a local PDF file.
+   * @param filePath the path to a local file.
    * @return the new message.
    * @since 1.18.0
    */
   @Nonnull
-  public UserMessage withPdf(@Nonnull final Path filePath) {
+  public UserMessage withFile(@Nonnull final Path filePath) {
     final String filename = filePath.getFileName().toString();
     validatePdfFilename(filename);
     try {
       final String base64Data = Base64.getEncoder().encodeToString(Files.readAllBytes(filePath));
-      return appendPdfItem(PDF_DATA_URI_PREFIX + base64Data, filename);
+      return appendFileItem(PDF_DATA_URI_PREFIX + base64Data, filename);
     } catch (IOException e) {
-      throw new IllegalArgumentException("Failed to read PDF file: " + filePath, e);
+      throw new IllegalArgumentException("Failed to read the file: " + filePath, e);
     }
   }
 
   /**
-   * Add a PDF file to the message from a base64-encoded payload.
+   * Add a file to the message from a base64-encoded payload.
    *
-   * @param base64Data base64-encoded PDF payload.
-   * @param filename name of the file, must end with {@code .pdf}.
+   * @param base64Data base64-encoded payload.
+   * @param filename name of the file.
    * @return the new message.
    * @since 1.18.0
    */
   @Nonnull
-  public UserMessage withPdfBase64(
+  public UserMessage withFileBase64(
       @Nonnull final String base64Data, @Nonnull final String filename) {
     validatePdfFilename(filename);
     final String payload =
         base64Data.startsWith(PDF_DATA_URI_PREFIX) ? base64Data : PDF_DATA_URI_PREFIX + base64Data;
     try {
       Base64.getDecoder().decode(payload.substring(PDF_DATA_URI_PREFIX.length()));
-      return appendPdfItem(payload, filename);
+      return appendFileItem(payload, filename);
     } catch (IllegalArgumentException e) {
-      throw new IllegalArgumentException("Invalid base64 payload for PDF file.", e);
+      throw new IllegalArgumentException("Invalid base64 payload for the file.", e);
     }
   }
 
   @Nonnull
-  private UserMessage appendPdfItem(
+  private UserMessage appendFileItem(
       @Nonnull final String fileData, @Nonnull final String filename) {
     final var contentItems = new LinkedList<>(content.items());
-    contentItems.add(new PdfItem(fileData, filename));
+    contentItems.add(new FileItem(fileData, filename));
     return new UserMessage(new MessageContent(contentItems));
   }
 
@@ -165,9 +165,9 @@ public class UserMessage implements Message {
         final var detail = imageItem.detailLevel().toString();
         final var img = ImageContentUrl.create().url(imageItem.imageUrl()).detail(detail);
         contentList.add(UserChatMessageContentItem.create().type(IMAGE_URL).imageUrl(img));
-      } else if (item instanceof PdfItem pdfItem) {
+      } else if (item instanceof FileItem fileItem) {
         final var file =
-            FileContent.create().fileData(pdfItem.fileData()).filename(pdfItem.filename());
+            FileContent.create().fileData(fileItem.fileData()).filename(fileItem.filename());
         contentList.add(UserChatMessageContentItem.create().type(FILE)._file(file));
       }
     }

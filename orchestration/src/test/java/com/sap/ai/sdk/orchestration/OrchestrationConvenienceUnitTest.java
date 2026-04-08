@@ -96,13 +96,13 @@ public class OrchestrationConvenienceUnitTest {
   }
 
   @Test
-  void testMessageConstructionPdfFromPath() throws IOException {
-    final Path tempPdf = Files.createTempFile("orchestration-test", ".pdf");
-    Files.writeString(tempPdf, "%PDF-1.7\n%%EOF", StandardCharsets.UTF_8);
+  void testMessageConstructionFileFromPath() throws IOException {
+    final Path tempFile = Files.createTempFile("orchestration-test", ".pdf");
+    Files.writeString(tempFile, "%PDF-1.7\n%%EOF", StandardCharsets.UTF_8);
 
-    final var expectedBase64 = Base64.getEncoder().encodeToString(Files.readAllBytes(tempPdf));
+    final var expectedBase64 = Base64.getEncoder().encodeToString(Files.readAllBytes(tempFile));
 
-    final var message = Message.user(tempPdf);
+    final var message = Message.user(tempFile);
     final var chatMessage = (UserChatMessage) message.createChatMessage();
     final var content =
         ((UserChatMessageContent.ListOfUserChatMessageContentItems) chatMessage.getContent())
@@ -110,20 +110,20 @@ public class OrchestrationConvenienceUnitTest {
 
     assertThat(content).hasSize(1);
     assertThat(content.get(0).getType()).isEqualTo(FILE);
-    assertThat(content.get(0).getFile().getFilename()).isEqualTo(tempPdf.getFileName().toString());
+    assertThat(content.get(0).getFile().getFilename()).isEqualTo(tempFile.getFileName().toString());
     assertThat(content.get(0).getFile().getFileData())
         .isEqualTo("data:application/pdf;base64," + expectedBase64);
 
-    Files.deleteIfExists(tempPdf);
+    Files.deleteIfExists(tempFile);
   }
 
   @Test
-  void testMessageConstructionPdfFromBase64String() {
-    final byte[] pdfBytes = "%PDF-1.7\n%%EOF".getBytes(StandardCharsets.UTF_8);
-    final String base64Data = Base64.getEncoder().encodeToString(pdfBytes);
+  void testMessageConstructionFileFromBase64String() {
+    final byte[] fileBytes = "%PDF-1.7\n%%EOF".getBytes(StandardCharsets.UTF_8);
+    final String base64Data = Base64.getEncoder().encodeToString(fileBytes);
 
     final var message =
-        new UserMessage(new MessageContent(List.of())).withPdfBase64(base64Data, "inline.pdf");
+        new UserMessage(new MessageContent(List.of())).withFileBase64(base64Data, "inline.pdf");
     final var chatMessage = (UserChatMessage) message.createChatMessage();
     final var content =
         ((UserChatMessageContent.ListOfUserChatMessageContentItems) chatMessage.getContent())
@@ -156,8 +156,8 @@ public class OrchestrationConvenienceUnitTest {
                 List.of(fileContentItem)));
 
     assertThat(content.items()).hasSize(1);
-    assertThat(content.items().get(0)).isInstanceOf(PdfItem.class);
-    final var pdfItem = (PdfItem) content.items().get(0);
+    assertThat(content.items().get(0)).isInstanceOf(FileItem.class);
+    final var pdfItem = (FileItem) content.items().get(0);
     assertThat(pdfItem.filename()).isEqualTo("doc.pdf");
     assertThat(pdfItem.fileData()).isEqualTo("cGRmLWNvbnRlbnQ=");
   }

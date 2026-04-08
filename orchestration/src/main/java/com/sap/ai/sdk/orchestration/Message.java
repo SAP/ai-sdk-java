@@ -32,15 +32,15 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
   }
 
   /**
-   * A convenience method to create a user message containing only a PDF loaded from disk.
+   * A convenience method to create a user message containing only a file loaded from disk.
    *
-   * @param filePath the path to a local PDF file.
+   * @param filePath the path to a local file.
    * @return the user message.
    * @since 1.18.0
    */
   @Nonnull
   static UserMessage user(@Nonnull final Path filePath) {
-    return new UserMessage(new MessageContent(List.of())).withPdf(filePath);
+    return new UserMessage(new MessageContent(List.of())).withFile(filePath);
   }
 
   /**
