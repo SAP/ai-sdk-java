@@ -103,16 +103,20 @@ public class OrchestrationConvenienceUnitTest {
     final var expectedBase64 = Base64.getEncoder().encodeToString(Files.readAllBytes(tempFile));
 
     final var message = Message.user(tempFile);
-    final var chatMessage = (UserChatMessage) message.createChatMessage();
-    final var content =
-        ((UserChatMessageContent.ListOfUserChatMessageContentItems) chatMessage.getContent())
-            .values();
+    final var expectedLowLevelMessage =
+        UserChatMessage.create()
+            .content(
+                UserChatMessageContent.createListOfUserChatMessageContentItems(
+                    List.of(
+                        UserChatMessageContentItem.create()
+                            .type(FILE)
+                            ._file(
+                                FileContent.create()
+                                    .fileData("data:application/pdf;base64," + expectedBase64)
+                                    .filename(tempFile.getFileName().toString())))))
+            .role(USER);
 
-    assertThat(content).hasSize(1);
-    assertThat(content.get(0).getType()).isEqualTo(FILE);
-    assertThat(content.get(0).getFile().getFilename()).isEqualTo(tempFile.getFileName().toString());
-    assertThat(content.get(0).getFile().getFileData())
-        .isEqualTo("data:application/pdf;base64," + expectedBase64);
+    assertThat(message.createChatMessage()).isEqualTo(expectedLowLevelMessage);
 
     Files.deleteIfExists(tempFile);
   }
@@ -124,16 +128,20 @@ public class OrchestrationConvenienceUnitTest {
 
     final var message =
         new UserMessage(new MessageContent(List.of())).withFileBase64(base64Data, "inline.pdf");
-    final var chatMessage = (UserChatMessage) message.createChatMessage();
-    final var content =
-        ((UserChatMessageContent.ListOfUserChatMessageContentItems) chatMessage.getContent())
-            .values();
+    final var expectedLowLevelMessage =
+        UserChatMessage.create()
+            .content(
+                UserChatMessageContent.createListOfUserChatMessageContentItems(
+                    List.of(
+                        UserChatMessageContentItem.create()
+                            .type(FILE)
+                            ._file(
+                                FileContent.create()
+                                    .fileData("data:application/pdf;base64," + base64Data)
+                                    .filename("inline.pdf")))))
+            .role(USER);
 
-    assertThat(content).hasSize(1);
-    assertThat(content.get(0).getType()).isEqualTo(FILE);
-    assertThat(content.get(0).getFile().getFilename()).isEqualTo("inline.pdf");
-    assertThat(content.get(0).getFile().getFileData())
-        .isEqualTo("data:application/pdf;base64," + base64Data);
+    assertThat(message.createChatMessage()).isEqualTo(expectedLowLevelMessage);
   }
 
   @Test
