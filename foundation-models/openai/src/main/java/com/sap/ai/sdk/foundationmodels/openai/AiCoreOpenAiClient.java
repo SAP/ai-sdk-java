@@ -1,8 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.google.common.annotations.Beta;
-import com.openai.client.OpenAIClient;
-import com.openai.client.OpenAIClientImpl;
 import com.openai.core.ClientOptions;
 import com.openai.core.RequestOptions;
 import com.openai.core.http.Headers;
@@ -10,6 +8,8 @@ import com.openai.core.http.HttpClient;
 import com.openai.core.http.HttpRequest;
 import com.openai.core.http.HttpResponse;
 import com.openai.errors.OpenAIIoException;
+import com.openai.services.blocking.ResponseService;
+import com.openai.services.blocking.ResponseServiceImpl;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -48,7 +48,7 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Beta
-public final class AiCoreOpenAiClient {
+public class AiCoreOpenAiClient {
 
   private static final String DEFAULT_RESOURCE_GROUP = "default";
 
@@ -61,8 +61,8 @@ public final class AiCoreOpenAiClient {
    * @throws DeploymentResolutionException If no running deployment is found for the model.
    */
   @Nonnull
-  public static OpenAIClient forModel(@Nonnull final OpenAiModel model) {
-    return forModel(model, DEFAULT_RESOURCE_GROUP);
+  public static ResponseService responses(@Nonnull final OpenAiModel model) {
+    return responses(model, DEFAULT_RESOURCE_GROUP);
   }
 
   /**
@@ -75,30 +75,27 @@ public final class AiCoreOpenAiClient {
    * @throws DeploymentResolutionException If no running deployment is found for the model.
    */
   @Nonnull
-  public static OpenAIClient forModel(
+  public static ResponseService responses(
       @Nonnull final OpenAiModel model, @Nonnull final String resourceGroup) {
     final HttpDestination destination =
         new AiCoreService().getInferenceDestination(resourceGroup).forModel(model);
-
-    return fromDestination(destination);
+    return responses(model, destination);
   }
 
-  /**
-   * Create an OpenAI client from a pre-resolved destination.
-   *
-   * @param destination The destination to use.
-   * @return A configured OpenAI client instance.
-   */
   @Nonnull
-  @SuppressWarnings("PMD.CloseResource")
-  static OpenAIClient fromDestination(@Nonnull final HttpDestination destination) {
-    final var baseUrl = destination.getUri().toString();
-    final var httpClient = new AiCoreHttpClientImpl(destination);
-
-    final ClientOptions clientOptions =
-        ClientOptions.builder().baseUrl(baseUrl).httpClient(httpClient).apiKey("unused").build();
-
-    return new OpenAIClientImpl(clientOptions);
+  static ResponseService responses(
+      @Nonnull final OpenAiModel model, @Nonnull final HttpDestination destination) {
+    final var clientOptions =
+        ClientOptions.builder()
+            .baseUrl(destination.getUri().toString())
+            .httpClient(new AiCoreHttpClientImpl(destination))
+            .apiKey("unused")
+            .build();
+    final var chatModel =
+        Optional.ofNullable(model.version())
+            .map(version -> model.name() + "-" + version)
+            .orElseGet(model::name);
+    return new AiCoreResponseService(new ResponseServiceImpl(clientOptions), chatModel);
   }
 
   /**
