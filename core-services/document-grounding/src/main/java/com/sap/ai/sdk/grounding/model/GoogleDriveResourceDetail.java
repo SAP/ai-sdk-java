@@ -27,20 +27,20 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** GoogleDriveConfig */
+/** GoogleDriveResourceDetail */
 // CHECKSTYLE:OFF
-public class GoogleDriveConfig
+public class GoogleDriveResourceDetail
 // CHECKSTYLE:ON
 {
   /** Gets or Sets resourceType */
   public enum ResourceTypeEnum {
-    /** The SHARED_FOLDER option of this GoogleDriveConfig */
+    /** The SHARED_FOLDER option of this GoogleDriveResourceDetail */
     SHARED_FOLDER("SHARED_FOLDER"),
 
-    /** The SHARED_DRIVE option of this GoogleDriveConfig */
+    /** The SHARED_DRIVE option of this GoogleDriveResourceDetail */
     SHARED_DRIVE("SHARED_DRIVE"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this GoogleDriveConfig */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this GoogleDriveResourceDetail */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -75,7 +75,7 @@ public class GoogleDriveConfig
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type GoogleDriveConfig
+     * @return The enum value of type GoogleDriveResourceDetail
      */
     @JsonCreator
     @Nonnull
@@ -101,17 +101,18 @@ public class GoogleDriveConfig
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for GoogleDriveConfig. */
-  protected GoogleDriveConfig() {}
+  /** Default constructor for GoogleDriveResourceDetail. */
+  protected GoogleDriveResourceDetail() {}
 
   /**
-   * Set the resourceType of this {@link GoogleDriveConfig} instance and return the same instance.
+   * Set the resourceType of this {@link GoogleDriveResourceDetail} instance and return the same
+   * instance.
    *
-   * @param resourceType The resourceType of this {@link GoogleDriveConfig}
-   * @return The same instance of this {@link GoogleDriveConfig} class
+   * @param resourceType The resourceType of this {@link GoogleDriveResourceDetail}
+   * @return The same instance of this {@link GoogleDriveResourceDetail} class
    */
   @Nonnull
-  public GoogleDriveConfig resourceType(@Nonnull final ResourceTypeEnum resourceType) {
+  public GoogleDriveResourceDetail resourceType(@Nullable final ResourceTypeEnum resourceType) {
     this.resourceType = resourceType;
     return this;
   }
@@ -119,7 +120,7 @@ public class GoogleDriveConfig
   /**
    * Get resourceType
    *
-   * @return resourceType The resourceType of this {@link GoogleDriveConfig} instance.
+   * @return resourceType The resourceType of this {@link GoogleDriveResourceDetail} instance.
    */
   @Nonnull
   public ResourceTypeEnum getResourceType() {
@@ -127,22 +128,23 @@ public class GoogleDriveConfig
   }
 
   /**
-   * Set the resourceType of this {@link GoogleDriveConfig} instance.
+   * Set the resourceType of this {@link GoogleDriveResourceDetail} instance.
    *
-   * @param resourceType The resourceType of this {@link GoogleDriveConfig}
+   * @param resourceType The resourceType of this {@link GoogleDriveResourceDetail}
    */
-  public void setResourceType(@Nonnull final ResourceTypeEnum resourceType) {
+  public void setResourceType(@Nullable final ResourceTypeEnum resourceType) {
     this.resourceType = resourceType;
   }
 
   /**
-   * Set the resourceId of this {@link GoogleDriveConfig} instance and return the same instance.
+   * Set the resourceId of this {@link GoogleDriveResourceDetail} instance and return the same
+   * instance.
    *
-   * @param resourceId The resourceId of this {@link GoogleDriveConfig}
-   * @return The same instance of this {@link GoogleDriveConfig} class
+   * @param resourceId The resourceId of this {@link GoogleDriveResourceDetail}
+   * @return The same instance of this {@link GoogleDriveResourceDetail} class
    */
   @Nonnull
-  public GoogleDriveConfig resourceId(@Nullable final String resourceId) {
+  public GoogleDriveResourceDetail resourceId(@Nullable final String resourceId) {
     this.resourceId = resourceId;
     return this;
   }
@@ -150,7 +152,7 @@ public class GoogleDriveConfig
   /**
    * Get resourceId
    *
-   * @return resourceId The resourceId of this {@link GoogleDriveConfig} instance.
+   * @return resourceId The resourceId of this {@link GoogleDriveResourceDetail} instance.
    */
   @Nonnull
   public String getResourceId() {
@@ -158,34 +160,35 @@ public class GoogleDriveConfig
   }
 
   /**
-   * Set the resourceId of this {@link GoogleDriveConfig} instance.
+   * Set the resourceId of this {@link GoogleDriveResourceDetail} instance.
    *
-   * @param resourceId The resourceId of this {@link GoogleDriveConfig}
+   * @param resourceId The resourceId of this {@link GoogleDriveResourceDetail}
    */
   public void setResourceId(@Nullable final String resourceId) {
     this.resourceId = resourceId;
   }
 
   /**
-   * Set the includePaths of this {@link GoogleDriveConfig} instance and return the same instance.
+   * Set the includePaths of this {@link GoogleDriveResourceDetail} instance and return the same
+   * instance.
    *
-   * @param includePaths The includePaths of this {@link GoogleDriveConfig}
-   * @return The same instance of this {@link GoogleDriveConfig} class
+   * @param includePaths The includePaths of this {@link GoogleDriveResourceDetail}
+   * @return The same instance of this {@link GoogleDriveResourceDetail} class
    */
   @Nonnull
-  public GoogleDriveConfig includePaths(@Nullable final List<String> includePaths) {
+  public GoogleDriveResourceDetail includePaths(@Nullable final List<String> includePaths) {
     this.includePaths = includePaths;
     return this;
   }
 
   /**
-   * Add one includePaths instance to this {@link GoogleDriveConfig}.
+   * Add one includePaths instance to this {@link GoogleDriveResourceDetail}.
    *
    * @param includePathsItem The includePaths that should be added
-   * @return The same instance of type {@link GoogleDriveConfig}
+   * @return The same instance of type {@link GoogleDriveResourceDetail}
    */
   @Nonnull
-  public GoogleDriveConfig addIncludePathsItem(@Nonnull final String includePathsItem) {
+  public GoogleDriveResourceDetail addIncludePathsItem(@Nonnull final String includePathsItem) {
     if (this.includePaths == null) {
       this.includePaths = new ArrayList<>();
     }
@@ -196,7 +199,7 @@ public class GoogleDriveConfig
   /**
    * Get includePaths
    *
-   * @return includePaths The includePaths of this {@link GoogleDriveConfig} instance.
+   * @return includePaths The includePaths of this {@link GoogleDriveResourceDetail} instance.
    */
   @Nonnull
   public List<String> getIncludePaths() {
@@ -204,16 +207,16 @@ public class GoogleDriveConfig
   }
 
   /**
-   * Set the includePaths of this {@link GoogleDriveConfig} instance.
+   * Set the includePaths of this {@link GoogleDriveResourceDetail} instance.
    *
-   * @param includePaths The includePaths of this {@link GoogleDriveConfig}
+   * @param includePaths The includePaths of this {@link GoogleDriveResourceDetail}
    */
   public void setIncludePaths(@Nullable final List<String> includePaths) {
     this.includePaths = includePaths;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link GoogleDriveConfig}.
+   * Get the names of the unrecognizable properties of the {@link GoogleDriveResourceDetail}.
    *
    * @return The set of properties names
    */
@@ -224,7 +227,7 @@ public class GoogleDriveConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link GoogleDriveConfig} instance.
+   * Get the value of an unrecognizable property of this {@link GoogleDriveResourceDetail} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -235,13 +238,14 @@ public class GoogleDriveConfig
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("GoogleDriveConfig has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "GoogleDriveResourceDetail has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link GoogleDriveConfig} instance including
+   * Get the value of all properties of this {@link GoogleDriveResourceDetail} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -257,7 +261,7 @@ public class GoogleDriveConfig
   }
 
   /**
-   * Set an unrecognizable property of this {@link GoogleDriveConfig} instance. If the map
+   * Set an unrecognizable property of this {@link GoogleDriveResourceDetail} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -276,11 +280,11 @@ public class GoogleDriveConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final GoogleDriveConfig googleDriveConfig = (GoogleDriveConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, googleDriveConfig.cloudSdkCustomFields)
-        && Objects.equals(this.resourceType, googleDriveConfig.resourceType)
-        && Objects.equals(this.resourceId, googleDriveConfig.resourceId)
-        && Objects.equals(this.includePaths, googleDriveConfig.includePaths);
+    final GoogleDriveResourceDetail googleDriveResourceDetail = (GoogleDriveResourceDetail) o;
+    return Objects.equals(this.cloudSdkCustomFields, googleDriveResourceDetail.cloudSdkCustomFields)
+        && Objects.equals(this.resourceType, googleDriveResourceDetail.resourceType)
+        && Objects.equals(this.resourceId, googleDriveResourceDetail.resourceId)
+        && Objects.equals(this.includePaths, googleDriveResourceDetail.includePaths);
   }
 
   @Override
@@ -292,7 +296,7 @@ public class GoogleDriveConfig
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class GoogleDriveConfig {\n");
+    sb.append("class GoogleDriveResourceDetail {\n");
     sb.append("    resourceType: ").append(toIndentedString(resourceType)).append("\n");
     sb.append("    resourceId: ").append(toIndentedString(resourceId)).append("\n");
     sb.append("    includePaths: ").append(toIndentedString(includePaths)).append("\n");
@@ -313,22 +317,8 @@ public class GoogleDriveConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link GoogleDriveConfig}
-   * instance with all required arguments.
-   */
-  public static Builder create() {
-    return (resourceType) -> new GoogleDriveConfig().resourceType(resourceType);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the resourceType of this {@link GoogleDriveConfig} instance.
-     *
-     * @param resourceType The resourceType of this {@link GoogleDriveConfig}
-     * @return The GoogleDriveConfig instance.
-     */
-    GoogleDriveConfig resourceType(@Nonnull final ResourceTypeEnum resourceType);
+  /** Create a new {@link GoogleDriveResourceDetail} instance. No arguments are required. */
+  public static GoogleDriveResourceDetail create() {
+    return new GoogleDriveResourceDetail();
   }
 }

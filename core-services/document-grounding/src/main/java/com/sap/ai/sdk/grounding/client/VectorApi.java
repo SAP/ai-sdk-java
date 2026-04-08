@@ -744,7 +744,7 @@ public class VectorApi extends AbstractOpenApiService {
    *
    * <p><b>400</b> - The specification of the resource was incorrect
    *
-   * <p><b>404</b> - The specification of the resource was incorrect
+   * <p><b>404</b> - The specified monitor resource was not found
    *
    * <p><b>422</b> - There are validation issues with the data.
    *
@@ -821,7 +821,7 @@ public class VectorApi extends AbstractOpenApiService {
    *
    * <p><b>400</b> - The specification of the resource was incorrect
    *
-   * <p><b>404</b> - The specification of the resource was incorrect
+   * <p><b>404</b> - The specified monitor resource was not found
    *
    * <p><b>422</b> - There are validation issues with the data.
    *
