@@ -51,28 +51,4 @@ class AiCoreOpenAiTest {
       assertThat(hasTextDeltas).isTrue();
     }
   }
-
-  @Test
-  void testCreateChatCompletion() {
-    final var response = service.createChatCompletion("What is the capital of France?");
-    assertThat(response).isNotNull();
-  }
-
-  @Test
-  void testCreateStreamingChatCompletion() {
-    try (final var streamResponse =
-        service.createStreamingChatCompletion("What is the capital of France?")) {
-      final var events = streamResponse.stream().collect(Collectors.toList());
-
-      assertThat(events).isNotEmpty();
-
-      final var hasContentDeltas =
-          events.stream()
-              .anyMatch(
-                  event ->
-                      !event.choices().isEmpty()
-                          && event.choices().get(0).delta().content().isPresent());
-      assertThat(hasContentDeltas).isTrue();
-    }
-  }
 }

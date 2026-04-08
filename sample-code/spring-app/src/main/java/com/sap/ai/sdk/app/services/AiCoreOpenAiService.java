@@ -2,16 +2,12 @@ package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_5;
 
-import com.openai.client.OpenAIClient;
-import com.openai.core.http.QueryParams;
 import com.openai.core.http.StreamResponse;
 import com.openai.models.ChatModel;
-import com.openai.models.chat.completions.ChatCompletion;
-import com.openai.models.chat.completions.ChatCompletionChunk;
-import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStreamEvent;
+import com.openai.services.blocking.ResponseService;
 import com.sap.ai.sdk.foundationmodels.openai.AiCoreOpenAiClient;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +19,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AiCoreOpenAiService {
 
-  private static final OpenAIClient CLIENT = AiCoreOpenAiClient.forModel(GPT_5, "ai-sdk-java-e2e");
+  private static final ResponseService RESPONSE_CLIENT =
+      AiCoreOpenAiClient.responses(GPT_5, "ai-sdk-java-e2e");
 
   /**
    * Create a simple response using the Responses API
@@ -35,7 +32,7 @@ public class AiCoreOpenAiService {
   public Response createResponse(@Nonnull final String input) {
     val params =
         ResponseCreateParams.builder().input(input).model(ChatModel.GPT_5).store(false).build();
-    return CLIENT.responses().create(params);
+    return RESPONSE_CLIENT.create(params);
   }
 
   /**
@@ -49,8 +46,8 @@ public class AiCoreOpenAiService {
   public Response retrieveResponse(@Nonnull final String input) {
     // Create a non-persistent response with store=false
     val params = ResponseCreateParams.builder().input(input).model(ChatModel.GPT_5).build();
-    val createResponse = CLIENT.responses().create(params);
-    return CLIENT.responses().retrieve(createResponse.id());
+    val createResponse = RESPONSE_CLIENT.create(params);
+    return RESPONSE_CLIENT.retrieve(createResponse.id());
   }
 
   /**
@@ -64,42 +61,6 @@ public class AiCoreOpenAiService {
     // Create a non-persistent response with store=false
     val params =
         ResponseCreateParams.builder().input(input).model(ChatModel.GPT_5).store(false).build();
-    return CLIENT.responses().createStreaming(params);
-  }
-
-  /**
-   * Create a chat completion using the Chat Completions API. Note: This uses the legacy API version
-   * format via query parameters.
-   *
-   * @param input the input text to send to the model
-   * @return the chat completion response from the Chat Completions API
-   */
-  @Nonnull
-  public ChatCompletion createChatCompletion(@Nonnull final String input) {
-    val params =
-        ChatCompletionCreateParams.builder()
-            .addUserMessage(input)
-            .model(ChatModel.GPT_5)
-            .additionalQueryParams(QueryParams.builder().put("api-version", "2024-02-01").build())
-            .build();
-    return CLIENT.chat().completions().create(params);
-  }
-
-  /**
-   * Create a streaming chat completion using the Chat Completions API
-   *
-   * @param input the input text to send to the model
-   * @return the streaming chat completion response from the Chat Completions API
-   */
-  @Nonnull
-  public StreamResponse<ChatCompletionChunk> createStreamingChatCompletion(
-      @Nonnull final String input) {
-    val params =
-        ChatCompletionCreateParams.builder()
-            .addUserMessage(input)
-            .model(ChatModel.GPT_5)
-            .additionalQueryParams(QueryParams.builder().put("api-version", "2024-02-01").build())
-            .build();
-    return CLIENT.chat().completions().createStreaming(params);
+    return RESPONSE_CLIENT.createStreaming(params);
   }
 }
