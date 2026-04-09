@@ -172,7 +172,7 @@ public class GoogleDrivePipelineCreateRequest implements CreatePipeline
    */
   @Nonnull
   public GoogleDrivePipelineCreateRequest _configuration(
-      @Nullable final GoogleDriveConfigurationStruct _configuration) {
+      @Nonnull final GoogleDriveConfigurationStruct _configuration) {
     this._configuration = _configuration;
     return this;
   }
@@ -193,7 +193,7 @@ public class GoogleDrivePipelineCreateRequest implements CreatePipeline
    *
    * @param _configuration The _configuration of this {@link GoogleDrivePipelineCreateRequest}
    */
-  public void setConfiguration(@Nullable final GoogleDriveConfigurationStruct _configuration) {
+  public void setConfiguration(@Nonnull final GoogleDriveConfigurationStruct _configuration) {
     this._configuration = _configuration;
   }
 
@@ -308,7 +308,9 @@ public class GoogleDrivePipelineCreateRequest implements CreatePipeline
    * GoogleDrivePipelineCreateRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new GoogleDrivePipelineCreateRequest().type(type);
+    return (type) ->
+        (_configuration) ->
+            new GoogleDrivePipelineCreateRequest().type(type)._configuration(_configuration);
   }
 
   /** Builder helper class. */
@@ -317,8 +319,20 @@ public class GoogleDrivePipelineCreateRequest implements CreatePipeline
      * Set the type of this {@link GoogleDrivePipelineCreateRequest} instance.
      *
      * @param type The type of this {@link GoogleDrivePipelineCreateRequest}
+     * @return The GoogleDrivePipelineCreateRequest builder.
+     */
+    Builder1 type(@Nonnull final TypeEnum type);
+  }
+
+  /** Builder helper class. */
+  public interface Builder1 {
+    /**
+     * Set the _configuration of this {@link GoogleDrivePipelineCreateRequest} instance.
+     *
+     * @param _configuration The _configuration of this {@link GoogleDrivePipelineCreateRequest}
      * @return The GoogleDrivePipelineCreateRequest instance.
      */
-    GoogleDrivePipelineCreateRequest type(@Nonnull final TypeEnum type);
+    GoogleDrivePipelineCreateRequest _configuration(
+        @Nonnull final GoogleDriveConfigurationStruct _configuration);
   }
 }
