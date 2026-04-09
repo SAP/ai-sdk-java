@@ -377,6 +377,39 @@ class OrchestrationTest {
   }
 
   @Test
+  void testFileInputLocalPath() throws IOException {
+    final Path pdfPath = Files.createTempFile("orchestration-test", ".pdf");
+    final URL url =
+        new URL("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
+    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestProperty("User-Agent", "Test implementation");
+    InputStream inputStream = connection.getInputStream();
+    Files.write(pdfPath, inputStream.readAllBytes());
+
+    val result = service.fileInput(pdfPath).getOriginalResponse();
+    val choices = (result.getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+
+    Files.deleteIfExists(pdfPath);
+  }
+
+  @Test
+  void testFileInputBase64() throws IOException {
+    final URL url =
+        new URL("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
+    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestProperty("User-Agent", "Test implementation");
+
+    final String base64Data;
+    InputStream inputStream = connection.getInputStream();
+    base64Data = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
+
+    val result = service.fileInputBase64(base64Data, "dummy.pdf").getOriginalResponse();
+    val choices = (result.getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
   void testResponseFormatJsonSchema() {
     Translation translation =
         service.responseFormatJsonSchema("apple", Translation.class).asEntity(Translation.class);

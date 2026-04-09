@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Orchestration] Supported (PDF) file uploading feature by file path via `UserMessage.withFile` and base64 encoded string file via `UserMessage.withFileBase64`.
 
 ### 📈 Improvements
 
