@@ -6,6 +6,7 @@ import com.sap.ai.sdk.app.services.OpenAiWrapperService;
 import javax.annotation.Nonnull;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,5 +45,24 @@ class OpenAiWrapperController {
   @Nonnull
   String chat(@RequestParam @Nonnull final String message) throws JsonProcessingException {
     return ObjectMappers.jsonMapper().writeValueAsString(service.chatCompletion(message));
+  }
+
+  /**
+   * Chat completion filtering by resource group.
+   *
+   * @param resourceGroup the resource group to use
+   * @return a chat completion response as JSON string
+   * @throws JsonProcessingException if serialization fails
+   */
+  @GetMapping(
+      value = "/chatCompletion/{resourceGroup}",
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @Nonnull
+  String chatCompletionWithResource(
+      @Nonnull @PathVariable("resourceGroup") final String resourceGroup)
+      throws JsonProcessingException {
+    return ObjectMappers.jsonMapper()
+        .writeValueAsString(
+            service.chatCompletionWithResource(resourceGroup, "Where is the nearest coffee shop?"));
   }
 }
