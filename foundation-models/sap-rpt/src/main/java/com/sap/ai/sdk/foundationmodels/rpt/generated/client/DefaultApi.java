@@ -24,9 +24,6 @@ import javax.annotation.Nullable;
  */
 public class DefaultApi extends BaseApi {
 
-  /** Instantiates this API class to invoke operations on the SAP-RPT-1 Tabular AI */
-  public DefaultApi() {}
-
   /**
    * Instantiates this API class to invoke operations on the SAP-RPT-1 Tabular AI.
    *
