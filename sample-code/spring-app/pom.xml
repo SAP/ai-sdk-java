@@ -36,7 +36,7 @@
     <spring-boot.version>3.5.13</spring-boot.version>
     <logback.version>1.5.32</logback.version>
     <cf-logging.version>4.1.1</cf-logging.version>
-    <apache-tomcat-embed.version>11.0.20</apache-tomcat-embed.version>
+    <apache-tomcat-embed.version>11.0.21</apache-tomcat-embed.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
     <!-- Allow logging frameworks because this module is not released -->
