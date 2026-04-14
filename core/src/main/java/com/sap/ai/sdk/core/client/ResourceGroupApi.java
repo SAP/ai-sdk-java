@@ -47,6 +47,23 @@ public class ResourceGroupApi extends BaseApi {
     super(aiCoreService.getApiClient());
   }
 
+  private ResourceGroupApi(@Nonnull final ApiClient apiClient) {
+    super(apiClient);
+  }
+
+  /**
+   * Creates a new API instance with additional default headers.
+   *
+   * @param defaultHeaders Additional headers to include in all requests
+   * @return A new API instance with the combined headers
+   */
+  public ResourceGroupApi withDefaultHeaders(@Nonnull final Map<String, String> defaultHeaders) {
+    final var api = new ResourceGroupApi(apiClient);
+    api.defaultHeaders.putAll(this.defaultHeaders);
+    api.defaultHeaders.putAll(defaultHeaders);
+    return api;
+  }
+
   /**
    * Creates a resource group
    *
@@ -84,7 +101,7 @@ public class ResourceGroupApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
@@ -176,7 +193,7 @@ public class ResourceGroupApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
@@ -268,7 +285,7 @@ public class ResourceGroupApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
@@ -387,7 +404,7 @@ public class ResourceGroupApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
@@ -491,7 +508,7 @@ public class ResourceGroupApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)

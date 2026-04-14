@@ -51,6 +51,23 @@ public class DeploymentApi extends BaseApi {
     super(aiCoreService.getApiClient());
   }
 
+  private DeploymentApi(@Nonnull final ApiClient apiClient) {
+    super(apiClient);
+  }
+
+  /**
+   * Creates a new API instance with additional default headers.
+   *
+   * @param defaultHeaders Additional headers to include in all requests
+   * @return A new API instance with the combined headers
+   */
+  public DeploymentApi withDefaultHeaders(@Nonnull final Map<String, String> defaultHeaders) {
+    final var api = new DeploymentApi(apiClient);
+    api.defaultHeaders.putAll(this.defaultHeaders);
+    api.defaultHeaders.putAll(defaultHeaders);
+    return api;
+  }
+
   /**
    * Patch multiple deployments
    *
@@ -92,7 +109,7 @@ public class DeploymentApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
@@ -160,7 +177,7 @@ public class DeploymentApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     localVarCollectionQueryParams.addAll(
@@ -253,7 +270,7 @@ public class DeploymentApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
@@ -328,7 +345,7 @@ public class DeploymentApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
@@ -405,7 +422,7 @@ public class DeploymentApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     localVarQueryParams.addAll(ApiClient.parameterToPair("$select", $select));
@@ -516,7 +533,7 @@ public class DeploymentApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
@@ -635,7 +652,7 @@ public class DeploymentApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
@@ -711,7 +728,7 @@ public class DeploymentApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     localVarCollectionQueryParams.addAll(

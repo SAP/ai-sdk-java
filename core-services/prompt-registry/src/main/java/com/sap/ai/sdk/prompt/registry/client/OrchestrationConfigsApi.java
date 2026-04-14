@@ -47,6 +47,20 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
+   * Creates a new API instance with additional default headers.
+   *
+   * @param defaultHeaders Additional headers to include in all requests
+   * @return A new API instance with the combined headers
+   */
+  public OrchestrationConfigsApi withDefaultHeaders(
+      @Nonnull final Map<String, String> defaultHeaders) {
+    final var api = new OrchestrationConfigsApi(apiClient);
+    api.defaultHeaders.putAll(this.defaultHeaders);
+    api.defaultHeaders.putAll(defaultHeaders);
+    return api;
+  }
+
+  /**
    * Create or update an orchestration config
    *
    * <p><b>200</b> - Successful response
@@ -82,7 +96,7 @@ public class OrchestrationConfigsApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
@@ -171,7 +185,7 @@ public class OrchestrationConfigsApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
@@ -257,7 +271,7 @@ public class OrchestrationConfigsApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
@@ -348,7 +362,7 @@ public class OrchestrationConfigsApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     localVarQueryParams.addAll(
@@ -427,7 +441,7 @@ public class OrchestrationConfigsApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
@@ -545,7 +559,7 @@ public class OrchestrationConfigsApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     localVarQueryParams.addAll(ApiClient.parameterToPair("include_spec", includeSpec));
@@ -647,7 +661,7 @@ public class OrchestrationConfigsApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     localVarQueryParams.addAll(ApiClient.parameterToPair("scenario", scenario));
