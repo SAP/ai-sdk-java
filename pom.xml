@@ -34,6 +34,7 @@
     <module>core-services/document-grounding</module>
     <module>core-services/prompt-registry</module>
     <module>foundation-models/openai</module>
+    <module>foundation-models/openai-wrapper</module>
     <module>foundation-models/sap-rpt</module>
   </modules>
   <scm>
@@ -115,9 +116,9 @@
       </dependency>
       <!-- scope "compile" -->
       <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-core</artifactId>
-        <version>${springframework.version}</version>
+        <groupId>com.sap.ai.sdk</groupId>
+        <artifactId>openai-wrapper</artifactId>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
@@ -145,6 +146,11 @@
         <version>${jackson.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jdk8</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.github.victools</groupId>
         <artifactId>jsonschema-generator</artifactId>
         <version>${jsonschema-generator.version}</version>
@@ -161,6 +167,26 @@
       </dependency>
       <!-- conflicts resolution scope "compile" -->
       <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-jdk8</artifactId>
+        <version>1.9.10</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
+        <version>1.9.10</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-jdk7</artifactId>
+        <version>1.9.10</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-common</artifactId>
+        <version>1.9.10</version>
+      </dependency>
+      <dependency>
         <groupId>io.micrometer</groupId>
         <artifactId>micrometer-core</artifactId>
         <version>${micrometer.version}</version>
@@ -169,6 +195,11 @@
         <groupId>io.micrometer</groupId>
         <artifactId>micrometer-observation</artifactId>
         <version>${micrometer.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${springframework.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>

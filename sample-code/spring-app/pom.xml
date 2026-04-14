@@ -66,7 +66,7 @@
     <!-- scope "compile" -->
     <dependency>
       <groupId>com.sap.ai.sdk</groupId>
-      <artifactId>core</artifactId>
+      <artifactId>openai-wrapper</artifactId>
     </dependency>
     <dependency>
       <groupId>com.sap.ai.sdk.foundationmodels</groupId>
@@ -161,6 +161,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
+      <version>${springframework.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -279,6 +280,18 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <skipTests>${skipTests}</skipTests>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <configuration>
+          <ignoredUsedUndeclaredDependencies>
+            <!-- openai-java-core is a transitive dep of the declared openai-wrapper -->
+            <ignoredUsedUndeclaredDependency>com.openai:openai-java-core</ignoredUsedUndeclaredDependency>
+            <!-- core is a transitive dep of declared openai-wrapper and other modules -->
+            <ignoredUsedUndeclaredDependency>com.sap.ai.sdk:core</ignoredUsedUndeclaredDependency>
+          </ignoredUsedUndeclaredDependencies>
         </configuration>
       </plugin>
       <plugin>
