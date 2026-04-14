@@ -309,7 +309,7 @@ jobs:
 
       - name: 'Slack Notification'
         if: failure() && github.event.inputs.create-pr == 'true'
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook
