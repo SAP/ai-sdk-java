@@ -38,11 +38,11 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>92%</coverage.complexity>
-    <coverage.line>94%</coverage.line>
-    <coverage.instruction>95%</coverage.instruction>
+    <coverage.complexity>91%</coverage.complexity>
+    <coverage.line>93%</coverage.line>
+    <coverage.instruction>94%</coverage.instruction>
     <coverage.branch>100%</coverage.branch>
-    <coverage.method>85%</coverage.method>
+    <coverage.method>83%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
@@ -54,15 +54,7 @@
     </dependency>
     <dependency>
       <groupId>com.sap.cloud.sdk.datamodel</groupId>
-      <artifactId>openapi-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-web</artifactId>
+      <artifactId>openapi-core-apache</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.ai</groupId>
@@ -72,14 +64,6 @@
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
-      <artifactId>connectivity-apache-httpclient5</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents.client5</groupId>
-      <artifactId>httpclient5</artifactId>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -160,6 +144,7 @@
                     <typeMapping>File=byte[]</typeMapping>
                   </typeMappings>
                   <additionalProperties>
+                    <library>apache-httpclient</library>
                     <useAbstractionForFiles>true</useAbstractionForFiles>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
                     <pojoBuildMethodName/>

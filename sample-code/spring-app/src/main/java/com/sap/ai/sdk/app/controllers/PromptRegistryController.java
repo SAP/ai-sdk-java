@@ -38,7 +38,6 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -94,7 +93,7 @@ class PromptRegistryController {
 
   @GetMapping("/importTemplate")
   PromptTemplatePostResponse importTemplate() throws IOException {
-    final Resource template = new ClassPathResource("prompt-template.yaml");
+    val template = new ClassPathResource("prompt-template.yaml").getContentAsByteArray();
     return promptClient.importPromptTemplate("default", null, template);
   }
 
