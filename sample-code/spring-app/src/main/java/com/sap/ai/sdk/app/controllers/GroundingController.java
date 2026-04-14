@@ -29,7 +29,7 @@ import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunk;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunkCreate;
 import com.sap.ai.sdk.grounding.model.VectorDocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.VectorKeyValueListPair;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;

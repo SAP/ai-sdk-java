@@ -173,6 +173,7 @@ jobs:
 
             # Get the most recent completed run of this workflow with respect to the same feature branch
             PREVIOUS_RUN=$(gh run list \
+            --workflow "${{ github.workflow }}" \
             --branch main \
             --json databaseId,status,conclusion,displayTitle \
             --jq "map(select(.databaseId != ${CURRENT_RUN} and (.displayTitle | contains(\"${RUN_NAME}\")))) | .[0]")
@@ -308,7 +309,7 @@ jobs:
 
       - name: 'Slack Notification'
         if: failure() && github.event.inputs.create-pr == 'true'
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook
