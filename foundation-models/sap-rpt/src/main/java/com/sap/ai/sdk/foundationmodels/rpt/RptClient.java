@@ -14,6 +14,7 @@ import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import java.io.File;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +75,7 @@ public class RptClient {
   @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(@Nonnull final PredictRequestPayload requestBody) {
-    return api.predict(requestBody, "gzip");
+    return api.withDefaultHeaders(Map.of("Content-Encoding", "gzip")).predict(requestBody);
   }
 
   /**
