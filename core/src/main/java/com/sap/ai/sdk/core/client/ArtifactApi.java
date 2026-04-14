@@ -1,26 +1,22 @@
 package com.sap.ai.sdk.core.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.AiArtifact;
 import com.sap.ai.sdk.core.model.AiArtifactCreationResponse;
 import com.sap.ai.sdk.core.model.AiArtifactList;
 import com.sap.ai.sdk.core.model.AiArtifactPostData;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.Pair;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * AI Core in version 2.42.0.
@@ -32,7 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
-public class ArtifactApi extends AbstractOpenApiService {
+public class ArtifactApi extends BaseApi {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public ArtifactApi() {
@@ -46,6 +42,23 @@ public class ArtifactApi extends AbstractOpenApiService {
    */
   public ArtifactApi(@Nonnull final AiCoreService aiCoreService) {
     super(aiCoreService.getApiClient());
+  }
+
+  private ArtifactApi(@Nonnull final ApiClient apiClient) {
+    super(apiClient);
+  }
+
+  /**
+   * Creates a new API instance with additional default headers.
+   *
+   * @param defaultHeaders Additional headers to include in all requests
+   * @return A new API instance with the combined headers
+   */
+  public ArtifactApi withDefaultHeaders(@Nonnull final Map<String, String> defaultHeaders) {
+    final var api = new ArtifactApi(apiClient);
+    api.defaultHeaders.putAll(this.defaultHeaders);
+    api.defaultHeaders.putAll(defaultHeaders);
+    return api;
   }
 
   /**
@@ -67,7 +80,7 @@ public class ArtifactApi extends AbstractOpenApiService {
    * @param $search (optional) Generic search term to be looked for in various attributes
    * @param searchCaseInsensitive (optional, default to false) indicates whether the search should
    *     be case insensitive
-   * @param artifactLabelSelector (optional Filter artifact by labels. Pass in expressions in the
+   * @param artifactLabelSelector (optional) Filter artifact by labels. Pass in expressions in the
    *     form of \&quot;key&#x3D;value\&quot; or \&quot;key!&#x3D;value\&quot; separated by commas
    *     and the result will be filtered to only those resources that have labels that match all
    *     provided expressions (i.e. logical AND). The maximum number of labels permitted for
@@ -89,59 +102,54 @@ public class ArtifactApi extends AbstractOpenApiService {
       @Nullable final Boolean searchCaseInsensitive,
       @Nullable final List<String> artifactLabelSelector)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling count");
+              "Missing the required parameter 'aiResourceGroup' when calling count")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/artifacts/$count").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/artifacts/$count";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "scenarioId", scenarioId));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "executionId", executionId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "name", name));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "kind", kind));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$search", $search));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "searchCaseInsensitive", searchCaseInsensitive));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(
-            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
-            "artifactLabelSelector",
-            artifactLabelSelector));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("scenarioId", scenarioId));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("executionId", executionId));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("name", name));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("kind", kind));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$search", $search));
+    localVarQueryParams.addAll(
+        ApiClient.parameterToPair("searchCaseInsensitive", searchCaseInsensitive));
+    localVarCollectionQueryParams.addAll(
+        ApiClient.parameterToPairs("csv", "artifactLabelSelector", artifactLabelSelector));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"text/plain", "application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<Integer> localVarReturnType =
-        new ParameterizedTypeReference<Integer>() {};
+    final TypeReference<Integer> localVarReturnType = new TypeReference<Integer>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -183,51 +191,52 @@ public class ArtifactApi extends AbstractOpenApiService {
   public AiArtifactCreationResponse create(
       @Nonnull final String aiResourceGroup, @Nonnull final AiArtifactPostData aiArtifactPostData)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiArtifactPostData;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling create");
+              "Missing the required parameter 'aiResourceGroup' when calling create")
+          .statusCode(400);
     }
 
     // verify the required parameter 'aiArtifactPostData' is set
     if (aiArtifactPostData == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiArtifactPostData' when calling create");
+              "Missing the required parameter 'aiArtifactPostData' when calling create")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/artifacts").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/artifacts";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<AiArtifactCreationResponse> localVarReturnType =
+        new TypeReference<AiArtifactCreationResponse>() {};
 
-    final ParameterizedTypeReference<AiArtifactCreationResponse> localVarReturnType =
-        new ParameterizedTypeReference<AiArtifactCreationResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        aiArtifactPostData,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -254,58 +263,57 @@ public class ArtifactApi extends AbstractOpenApiService {
       @Nonnull final String artifactId,
       @Nullable final String $expand)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling get");
+              "Missing the required parameter 'aiResourceGroup' when calling get")
+          .statusCode(400);
     }
 
     // verify the required parameter 'artifactId' is set
     if (artifactId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'artifactId' when calling get");
+              "Missing the required parameter 'artifactId' when calling get")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("artifactId", artifactId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/artifacts/{artifactId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/artifacts/{artifactId}"
+            .replaceAll(
+                "\\{" + "artifactId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(artifactId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$expand", $expand));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$expand", $expand));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<AiArtifact> localVarReturnType =
-        new ParameterizedTypeReference<AiArtifact>() {};
+    final TypeReference<AiArtifact> localVarReturnType = new TypeReference<AiArtifact>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -348,7 +356,7 @@ public class ArtifactApi extends AbstractOpenApiService {
    * @param executionId (optional) Execution identifier
    * @param name (optional) Artifact name
    * @param kind (optional) Kind of the artifact
-   * @param artifactLabelSelector (optional Filter artifact by labels. Pass in expressions in the
+   * @param artifactLabelSelector (optional) Filter artifact by labels. Pass in expressions in the
    *     form of \&quot;key&#x3D;value\&quot; or \&quot;key!&#x3D;value\&quot; separated by commas
    *     and the result will be filtered to only those resources that have labels that match all
    *     provided expressions (i.e. logical AND). The maximum number of labels permitted for
@@ -379,62 +387,57 @@ public class ArtifactApi extends AbstractOpenApiService {
       @Nullable final Boolean searchCaseInsensitive,
       @Nullable final String $expand)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling query");
+              "Missing the required parameter 'aiResourceGroup' when calling query")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/artifacts").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/artifacts";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "scenarioId", scenarioId));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "executionId", executionId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "name", name));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "kind", kind));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(
-            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
-            "artifactLabelSelector",
-            artifactLabelSelector));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$search", $search));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "searchCaseInsensitive", searchCaseInsensitive));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$expand", $expand));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("scenarioId", scenarioId));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("executionId", executionId));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("name", name));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("kind", kind));
+    localVarCollectionQueryParams.addAll(
+        ApiClient.parameterToPairs("csv", "artifactLabelSelector", artifactLabelSelector));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$search", $search));
+    localVarQueryParams.addAll(
+        ApiClient.parameterToPair("searchCaseInsensitive", searchCaseInsensitive));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$expand", $expand));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<AiArtifactList> localVarReturnType =
-        new ParameterizedTypeReference<AiArtifactList>() {};
+    final TypeReference<AiArtifactList> localVarReturnType = new TypeReference<AiArtifactList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 

@@ -24,9 +24,6 @@ import javax.annotation.Nullable;
  */
 public class DefaultApi extends BaseApi {
 
-  /** Instantiates this API class to invoke operations on the SAP-RPT-1 Tabular AI */
-  public DefaultApi() {}
-
   /**
    * Instantiates this API class to invoke operations on the SAP-RPT-1 Tabular AI.
    *
@@ -44,6 +41,19 @@ public class DefaultApi extends BaseApi {
    */
   public DefaultApi(@Nonnull final ApiClient apiClient) {
     super(apiClient);
+  }
+
+  /**
+   * Creates a new API instance with additional default headers.
+   *
+   * @param defaultHeaders Additional headers to include in all requests
+   * @return A new API instance with the combined headers
+   */
+  public DefaultApi withDefaultHeaders(@Nonnull final Map<String, String> defaultHeaders) {
+    final var api = new DefaultApi(apiClient);
+    api.defaultHeaders.putAll(this.defaultHeaders);
+    api.defaultHeaders.putAll(defaultHeaders);
+    return api;
   }
 
   /**
@@ -86,7 +96,7 @@ public class DefaultApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     final String[] localVarAccepts = {"application/json"};
@@ -163,7 +173,7 @@ public class DefaultApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (_file != null) localVarFormParams.put("file", _file);
