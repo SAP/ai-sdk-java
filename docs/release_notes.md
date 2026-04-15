@@ -20,6 +20,7 @@
 - [PromptRegistry] (Breaking) Removed `includeSpec` parameter from `listPromptTemplateHistory` method in `PromptTemplatesApi`
 - [Grounding] (Breaking) `GoogleDriveConfig` now has fields `resourceType` and `resourceId` instead of `folder`.
   `GoogleDriveFolderDetail` has been renamed to `GoogleDriveResourceDetail` and can now represent both folders and drives using `resourceType` and `resourceId`.
+  `GoogleDrivePipelineCreateRequest` now requires `GoogleDriveConfigurationStruct` to be created
 
 ### ✨ New Functionality
 
