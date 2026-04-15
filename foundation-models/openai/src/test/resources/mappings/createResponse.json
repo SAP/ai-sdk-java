@@ -5,8 +5,7 @@
     "bodyPatterns": [
       {
         "equalToJson": {
-          "input": "What is the capital of France?",
-          "model": "gpt-5"
+          "input": "What is the capital of France?"
         }
       }
     ]
