@@ -30,8 +30,7 @@ public class AiCoreOpenAiService {
    */
   @Nonnull
   public Response createResponse(@Nonnull final String input) {
-    val params =
-        ResponseCreateParams.builder().input(input).model(ChatModel.GPT_5).store(false).build();
+    val params = ResponseCreateParams.builder().input(input).store(false).build();
     return RESPONSE_CLIENT.create(params);
   }
 
@@ -45,7 +44,7 @@ public class AiCoreOpenAiService {
   @Nonnull
   public Response retrieveResponse(@Nonnull final String input) {
     // Create a non-persistent response with store=false
-    val params = ResponseCreateParams.builder().input(input).model(ChatModel.GPT_5).build();
+    val params = ResponseCreateParams.builder().input(input).build();
     val createResponse = RESPONSE_CLIENT.create(params);
     return RESPONSE_CLIENT.retrieve(createResponse.id());
   }

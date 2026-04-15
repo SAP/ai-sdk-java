@@ -79,23 +79,18 @@ public class AiCoreOpenAiClient {
       @Nonnull final OpenAiModel model, @Nonnull final String resourceGroup) {
     final HttpDestination destination =
         new AiCoreService().getInferenceDestination(resourceGroup).forModel(model);
-    return responses(model, destination);
+    return responses(destination);
   }
 
   @Nonnull
-  static ResponseService responses(
-      @Nonnull final OpenAiModel model, @Nonnull final HttpDestination destination) {
+  static ResponseService responses(@Nonnull final HttpDestination destination) {
     final var clientOptions =
         ClientOptions.builder()
             .baseUrl(destination.getUri().toString())
             .httpClient(new AiCoreHttpClientImpl(destination))
             .apiKey("unused")
             .build();
-    final var chatModel =
-        Optional.ofNullable(model.version())
-            .map(version -> model.name() + "-" + version)
-            .orElseGet(model::name);
-    return new AiCoreResponseService(new ResponseServiceImpl(clientOptions), chatModel);
+    return new ResponseServiceImpl(clientOptions);
   }
 
   /**
