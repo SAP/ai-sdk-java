@@ -381,9 +381,8 @@ class OrchestrationTest {
     final Path pdfPath = Files.createTempFile("orchestration-test", ".pdf");
     Files.writeString(pdfPath, "%PDF-1.7\n%%EOF", StandardCharsets.UTF_8);
 
-    val result = service.fileInput(pdfPath).getOriginalResponse();
-    val choices = (result.getFinalResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    val response = service.fileInput(pdfPath);
+    assertThat(response.getContent()).containsAnyOf("dummy", "Dummy");
 
     Files.deleteIfExists(pdfPath);
   }
