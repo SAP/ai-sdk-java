@@ -392,9 +392,8 @@ class OrchestrationTest {
     final String fileUrl =
         "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
 
-    val result = service.fileInput(fileUrl, null).getOriginalResponse();
-    val choices = (result.getFinalResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    val response = service.fileInput(fileUrl, null);
+    assertThat(response.getContent()).containsAnyOf("dummy", "Dummy");
   }
 
   @Test
