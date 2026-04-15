@@ -40,6 +40,12 @@ public class DataRepository
   @JsonProperty("metadata")
   private List<RetrievalKeyValueListPair> metadata = new ArrayList<>();
 
+  @JsonProperty("remoteGroundingName")
+  private String remoteGroundingName;
+
+  @JsonProperty("message")
+  private String message;
+
   @JsonProperty("type")
   private DataRepositoryType type;
 
@@ -161,13 +167,76 @@ public class DataRepository
   }
 
   /**
+   * Set the remoteGroundingName of this {@link DataRepository} instance and return the same
+   * instance.
+   *
+   * @param remoteGroundingName The remoteGroundingName of this {@link DataRepository}
+   * @return The same instance of this {@link DataRepository} class
+   */
+  @Nonnull
+  public DataRepository remoteGroundingName(@Nullable final String remoteGroundingName) {
+    this.remoteGroundingName = remoteGroundingName;
+    return this;
+  }
+
+  /**
+   * Get remoteGroundingName
+   *
+   * @return remoteGroundingName The remoteGroundingName of this {@link DataRepository} instance.
+   */
+  @Nullable
+  public String getRemoteGroundingName() {
+    return remoteGroundingName;
+  }
+
+  /**
+   * Set the remoteGroundingName of this {@link DataRepository} instance.
+   *
+   * @param remoteGroundingName The remoteGroundingName of this {@link DataRepository}
+   */
+  public void setRemoteGroundingName(@Nullable final String remoteGroundingName) {
+    this.remoteGroundingName = remoteGroundingName;
+  }
+
+  /**
+   * Set the message of this {@link DataRepository} instance and return the same instance.
+   *
+   * @param message The message of this {@link DataRepository}
+   * @return The same instance of this {@link DataRepository} class
+   */
+  @Nonnull
+  public DataRepository message(@Nullable final String message) {
+    this.message = message;
+    return this;
+  }
+
+  /**
+   * Get message
+   *
+   * @return message The message of this {@link DataRepository} instance.
+   */
+  @Nullable
+  public String getMessage() {
+    return message;
+  }
+
+  /**
+   * Set the message of this {@link DataRepository} instance.
+   *
+   * @param message The message of this {@link DataRepository}
+   */
+  public void setMessage(@Nullable final String message) {
+    this.message = message;
+  }
+
+  /**
    * Set the type of this {@link DataRepository} instance and return the same instance.
    *
    * @param type The type of this {@link DataRepository}
    * @return The same instance of this {@link DataRepository} class
    */
   @Nonnull
-  public DataRepository type(@Nullable final DataRepositoryType type) {
+  public DataRepository type(@Nonnull final DataRepositoryType type) {
     this.type = type;
     return this;
   }
@@ -177,7 +246,7 @@ public class DataRepository
    *
    * @return type The type of this {@link DataRepository} instance.
    */
-  @Nullable
+  @Nonnull
   public DataRepositoryType getType() {
     return type;
   }
@@ -187,7 +256,7 @@ public class DataRepository
    *
    * @param type The type of this {@link DataRepository}
    */
-  public void setType(@Nullable final DataRepositoryType type) {
+  public void setType(@Nonnull final DataRepositoryType type) {
     this.type = type;
   }
 
@@ -232,6 +301,8 @@ public class DataRepository
     if (id != null) declaredFields.put("id", id);
     if (title != null) declaredFields.put("title", title);
     if (metadata != null) declaredFields.put("metadata", metadata);
+    if (remoteGroundingName != null) declaredFields.put("remoteGroundingName", remoteGroundingName);
+    if (message != null) declaredFields.put("message", message);
     if (type != null) declaredFields.put("type", type);
     return declaredFields;
   }
@@ -261,12 +332,15 @@ public class DataRepository
         && Objects.equals(this.id, dataRepository.id)
         && Objects.equals(this.title, dataRepository.title)
         && Objects.equals(this.metadata, dataRepository.metadata)
+        && Objects.equals(this.remoteGroundingName, dataRepository.remoteGroundingName)
+        && Objects.equals(this.message, dataRepository.message)
         && Objects.equals(this.type, dataRepository.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, metadata, type, cloudSdkCustomFields);
+    return Objects.hash(
+        id, title, metadata, remoteGroundingName, message, type, cloudSdkCustomFields);
   }
 
   @Override
@@ -277,6 +351,10 @@ public class DataRepository
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+    sb.append("    remoteGroundingName: ")
+        .append(toIndentedString(remoteGroundingName))
+        .append("\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -333,6 +411,6 @@ public class DataRepository
      * @param type The type of this {@link DataRepository}
      * @return The DataRepository instance.
      */
-    DataRepository type(@Nullable final DataRepositoryType type);
+    DataRepository type(@Nonnull final DataRepositoryType type);
   }
 }

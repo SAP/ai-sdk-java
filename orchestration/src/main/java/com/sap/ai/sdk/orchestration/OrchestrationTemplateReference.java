@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
@@ -21,9 +20,10 @@ import lombok.With;
 @EqualsAndHashCode(callSuper = true)
 @Value
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Beta
 public class OrchestrationTemplateReference extends TemplateConfig {
-  @Nonnull TemplateRefTemplateRef reference;
+  @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
+  @Nonnull
+  TemplateRefTemplateRef reference;
 
   /** The scope of the template reference. */
   @With @Nonnull ScopeEnum scope;

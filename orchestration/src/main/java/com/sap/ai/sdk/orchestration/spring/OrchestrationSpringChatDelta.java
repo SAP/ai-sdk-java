@@ -23,6 +23,7 @@ import org.springframework.ai.chat.model.Generation;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
+@SuppressWarnings("PMD.PublicClassExtendsModelType")
 public class OrchestrationSpringChatDelta extends ChatResponse {
 
   OrchestrationSpringChatDelta(@Nonnull final OrchestrationChatCompletionDelta delta) {

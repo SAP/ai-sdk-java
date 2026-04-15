@@ -9,7 +9,6 @@ import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
 import com.github.victools.jsonschema.generator.SchemaVersion;
 import com.github.victools.jsonschema.module.jackson.JacksonModule;
 import com.github.victools.jsonschema.module.jackson.JacksonOption;
-import com.google.common.annotations.Beta;
 import java.lang.reflect.Type;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -28,7 +27,6 @@ import lombok.val;
 @Value
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @With
-@Beta
 public class ResponseJsonSchema {
   @Nonnull Map<String, Object> schemaMap;
   @Nonnull String name;

@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/v2/lm/scenarios/categorization/promptTemplates/multi-text/versions/0.0.1/substitution?metadata=false"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "parsedPrompt": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "First content line"
+            },
+            {
+              "type": "text",
+              "text": "Second content line"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

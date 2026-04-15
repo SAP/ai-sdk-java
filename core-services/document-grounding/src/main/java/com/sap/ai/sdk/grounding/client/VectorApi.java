@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.grounding.client;
 
-import com.google.common.annotations.Beta;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.grounding.model.Collection;
 import com.sap.ai.sdk.grounding.model.CollectionRequest;
 import com.sap.ai.sdk.grounding.model.CollectionsListResponse;
@@ -11,28 +11,26 @@ import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.DocumentUpdateRequest;
 import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.DocumentsListResponse;
+import com.sap.ai.sdk.grounding.model.MetadataResponse;
+import com.sap.ai.sdk.grounding.model.MetadataUpdates;
 import com.sap.ai.sdk.grounding.model.TextSearchRequest;
 import com.sap.ai.sdk.grounding.model.VectorSearchResults;
 import com.sap.ai.sdk.grounding.model.VectorV1VectorEndpointsGetCollectionCreationStatus200Response;
 import com.sap.ai.sdk.grounding.model.VectorV1VectorEndpointsGetCollectionDeletionStatus200Response;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.Pair;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Grounding in version 0.1.0.
@@ -43,7 +41,8 @@ import org.springframework.web.util.UriComponentsBuilder;
  * generative AI capabilities with the ability to use real-time, precise data to improve
  * decision-making and business operations for specific AI-driven business solutions.
  */
-public class VectorApi extends AbstractOpenApiService {
+public class VectorApi extends BaseApi {
+
   /**
    * Instantiates this API class to invoke operations on the Grounding.
    *
@@ -59,9 +58,21 @@ public class VectorApi extends AbstractOpenApiService {
    *
    * @param apiClient ApiClient to invoke the API on
    */
-  @Beta
   public VectorApi(@Nonnull final ApiClient apiClient) {
     super(apiClient);
+  }
+
+  /**
+   * Creates a new API instance with additional default headers.
+   *
+   * @param defaultHeaders Additional headers to include in all requests
+   * @return A new API instance with the combined headers
+   */
+  public VectorApi withDefaultHeaders(@Nonnull final Map<String, String> defaultHeaders) {
+    final var api = new VectorApi(apiClient);
+    api.defaultHeaders.putAll(this.defaultHeaders);
+    api.defaultHeaders.putAll(defaultHeaders);
+    return api;
   }
 
   /**
@@ -85,53 +96,53 @@ public class VectorApi extends AbstractOpenApiService {
   public OpenApiResponse createCollection(
       @Nonnull final String aiResourceGroup, @Nonnull final CollectionRequest collectionRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = collectionRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling createCollection");
+              "Missing the required parameter 'aiResourceGroup' when calling createCollection")
+          .statusCode(400);
     }
 
     // verify the required parameter 'collectionRequest' is set
     if (collectionRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionRequest' when calling vectorV1VectorEndpointsCreateCollection");
+              "Missing the required parameter 'collectionRequest' when calling vectorV1VectorEndpointsCreateCollection")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/collections").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/vector/collections";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final TypeReference<OpenApiResponse> localVarReturnType =
+        new TypeReference<OpenApiResponse>() {};
 
-    final ParameterizedTypeReference<Void> localVarReturnType =
-        new ParameterizedTypeReference<Void>() {};
-    apiClient.invokeAPI(
+    return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        collectionRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
-    return new OpenApiResponse(apiClient);
   }
 
   /**
@@ -160,62 +171,63 @@ public class VectorApi extends AbstractOpenApiService {
       @Nonnull final UUID collectionId,
       @Nonnull final DocumentCreateRequest documentCreateRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = documentCreateRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling createDocuments");
+              "Missing the required parameter 'aiResourceGroup' when calling createDocuments")
+          .statusCode(400);
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling createDocuments");
+              "Missing the required parameter 'collectionId' when calling createDocuments")
+          .statusCode(400);
     }
 
     // verify the required parameter 'documentCreateRequest' is set
     if (documentCreateRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentCreateRequest' when calling vectorV1VectorEndpointsCreateDocuments");
+              "Missing the required parameter 'documentCreateRequest' when calling vectorV1VectorEndpointsCreateDocuments")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("collectionId", collectionId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/collections/{collectionId}/documents")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/vector/collections/{collectionId}/documents"
+            .replaceAll(
+                "\\{" + "collectionId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(collectionId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final TypeReference<DocumentsListResponse> localVarReturnType =
+        new TypeReference<DocumentsListResponse>() {};
 
-    final ParameterizedTypeReference<DocumentsListResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentsListResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        documentCreateRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -242,51 +254,52 @@ public class VectorApi extends AbstractOpenApiService {
       @Nonnull final String aiResourceGroup,
       @Nonnull final DocumentBulkDeleteRequest documentBulkDeleteRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = documentBulkDeleteRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deleteAllDocuments");
+              "Missing the required parameter 'aiResourceGroup' when calling deleteAllDocuments")
+          .statusCode(400);
     }
 
     // verify the required parameter 'documentBulkDeleteRequest' is set
     if (documentBulkDeleteRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentBulkDeleteRequest' when calling vectorV1VectorEndpointsDeleteAllDocuments");
+              "Missing the required parameter 'documentBulkDeleteRequest' when calling vectorV1VectorEndpointsDeleteAllDocuments")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/documents").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/vector/documents";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final TypeReference<DocumentBulkDeleteResponse> localVarReturnType =
+        new TypeReference<DocumentBulkDeleteResponse>() {};
 
-    final ParameterizedTypeReference<DocumentBulkDeleteResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentBulkDeleteResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.DELETE,
+        "DELETE",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        documentBulkDeleteRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -313,58 +326,58 @@ public class VectorApi extends AbstractOpenApiService {
   public OpenApiResponse deleteCollectionById(
       @Nonnull final String aiResourceGroup, @Nonnull final String collectionId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deleteCollectionById");
+              "Missing the required parameter 'aiResourceGroup' when calling deleteCollectionById")
+          .statusCode(400);
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling deleteCollectionById");
+              "Missing the required parameter 'collectionId' when calling deleteCollectionById")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("collectionId", collectionId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/collections/{collectionId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/vector/collections/{collectionId}"
+            .replaceAll(
+                "\\{" + "collectionId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(collectionId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<Void> localVarReturnType =
-        new ParameterizedTypeReference<Void>() {};
-    apiClient.invokeAPI(
+    final TypeReference<OpenApiResponse> localVarReturnType =
+        new TypeReference<OpenApiResponse>() {};
+
+    return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.DELETE,
+        "DELETE",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
-    return new OpenApiResponse(apiClient);
   }
 
   /**
@@ -392,65 +405,68 @@ public class VectorApi extends AbstractOpenApiService {
       @Nonnull final UUID collectionId,
       @Nonnull final UUID documentId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling deleteDocumentById");
+              "Missing the required parameter 'aiResourceGroup' when calling deleteDocumentById")
+          .statusCode(400);
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling deleteDocumentById");
+              "Missing the required parameter 'collectionId' when calling deleteDocumentById")
+          .statusCode(400);
     }
 
     // verify the required parameter 'documentId' is set
     if (documentId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentId' when calling deleteDocumentById");
+              "Missing the required parameter 'documentId' when calling deleteDocumentById")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("collectionId", collectionId);
-    localVarPathParams.put("documentId", documentId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/collections/{collectionId}/documents/{documentId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/vector/collections/{collectionId}/documents/{documentId}"
+            .replaceAll(
+                "\\{" + "collectionId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(collectionId)))
+            .replaceAll(
+                "\\{" + "documentId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(documentId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<Void> localVarReturnType =
-        new ParameterizedTypeReference<Void>() {};
-    apiClient.invokeAPI(
+    final TypeReference<OpenApiResponse> localVarReturnType =
+        new TypeReference<OpenApiResponse>() {};
+
+    return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.DELETE,
+        "DELETE",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
-    return new OpenApiResponse(apiClient);
   }
 
   /**
@@ -479,49 +495,49 @@ public class VectorApi extends AbstractOpenApiService {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getAllCollections");
+              "Missing the required parameter 'aiResourceGroup' when calling getAllCollections")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/collections").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/vector/collections";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$count", $count));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<CollectionsListResponse> localVarReturnType =
-        new ParameterizedTypeReference<CollectionsListResponse>() {};
+    final TypeReference<CollectionsListResponse> localVarReturnType =
+        new TypeReference<CollectionsListResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -576,60 +592,59 @@ public class VectorApi extends AbstractOpenApiService {
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getAllDocuments");
+              "Missing the required parameter 'aiResourceGroup' when calling getAllDocuments")
+          .statusCode(400);
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling getAllDocuments");
+              "Missing the required parameter 'collectionId' when calling getAllDocuments")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("collectionId", collectionId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/collections/{collectionId}/documents")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/vector/collections/{collectionId}/documents"
+            .replaceAll(
+                "\\{" + "collectionId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(collectionId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$count", $count));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<Documents> localVarReturnType =
-        new ParameterizedTypeReference<Documents>() {};
+    final TypeReference<Documents> localVarReturnType = new TypeReference<Documents>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -680,56 +695,56 @@ public class VectorApi extends AbstractOpenApiService {
   public Collection getCollectionById(
       @Nonnull final String aiResourceGroup, @Nonnull final UUID collectionId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getCollectionById");
+              "Missing the required parameter 'aiResourceGroup' when calling getCollectionById")
+          .statusCode(400);
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling getCollectionById");
+              "Missing the required parameter 'collectionId' when calling getCollectionById")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("collectionId", collectionId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/collections/{collectionId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/vector/collections/{collectionId}"
+            .replaceAll(
+                "\\{" + "collectionId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(collectionId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<Collection> localVarReturnType =
-        new ParameterizedTypeReference<Collection>() {};
+    final TypeReference<Collection> localVarReturnType = new TypeReference<Collection>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -755,58 +770,57 @@ public class VectorApi extends AbstractOpenApiService {
   public VectorV1VectorEndpointsGetCollectionCreationStatus200Response getCollectionCreationStatus(
       @Nonnull final String aiResourceGroup, @Nonnull final UUID id)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getCollectionCreationStatus");
+              "Missing the required parameter 'aiResourceGroup' when calling getCollectionCreationStatus")
+          .statusCode(400);
     }
 
     // verify the required parameter 'id' is set
     if (id == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'id' when calling getCollectionCreationStatus");
+              "Missing the required parameter 'id' when calling getCollectionCreationStatus")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("id", id);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/collections/{id}/creationStatus")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/vector/collections/{id}/creationStatus"
+            .replaceAll(
+                "\\{" + "id" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(id)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<VectorV1VectorEndpointsGetCollectionCreationStatus200Response>
+    final TypeReference<VectorV1VectorEndpointsGetCollectionCreationStatus200Response>
         localVarReturnType =
-            new ParameterizedTypeReference<
-                VectorV1VectorEndpointsGetCollectionCreationStatus200Response>() {};
+            new TypeReference<VectorV1VectorEndpointsGetCollectionCreationStatus200Response>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -832,58 +846,57 @@ public class VectorApi extends AbstractOpenApiService {
   public VectorV1VectorEndpointsGetCollectionDeletionStatus200Response getCollectionDeletionStatus(
       @Nonnull final String aiResourceGroup, @Nonnull final UUID id)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getCollectionDeletionStatus");
+              "Missing the required parameter 'aiResourceGroup' when calling getCollectionDeletionStatus")
+          .statusCode(400);
     }
 
     // verify the required parameter 'id' is set
     if (id == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'id' when calling getCollectionDeletionStatus");
+              "Missing the required parameter 'id' when calling getCollectionDeletionStatus")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("id", id);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/collections/{id}/deletionStatus")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/vector/collections/{id}/deletionStatus"
+            .replaceAll(
+                "\\{" + "id" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(id)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<VectorV1VectorEndpointsGetCollectionDeletionStatus200Response>
+    final TypeReference<VectorV1VectorEndpointsGetCollectionDeletionStatus200Response>
         localVarReturnType =
-            new ParameterizedTypeReference<
-                VectorV1VectorEndpointsGetCollectionDeletionStatus200Response>() {};
+            new TypeReference<VectorV1VectorEndpointsGetCollectionDeletionStatus200Response>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -912,63 +925,67 @@ public class VectorApi extends AbstractOpenApiService {
       @Nonnull final UUID collectionId,
       @Nonnull final UUID documentId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling getDocumentById");
+              "Missing the required parameter 'aiResourceGroup' when calling getDocumentById")
+          .statusCode(400);
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling getDocumentById");
+              "Missing the required parameter 'collectionId' when calling getDocumentById")
+          .statusCode(400);
     }
 
     // verify the required parameter 'documentId' is set
     if (documentId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentId' when calling getDocumentById");
+              "Missing the required parameter 'documentId' when calling getDocumentById")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("collectionId", collectionId);
-    localVarPathParams.put("documentId", documentId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/collections/{collectionId}/documents/{documentId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/vector/collections/{collectionId}/documents/{documentId}"
+            .replaceAll(
+                "\\{" + "collectionId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(collectionId)))
+            .replaceAll(
+                "\\{" + "documentId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(documentId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<DocumentResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentResponse>() {};
+    final TypeReference<DocumentResponse> localVarReturnType =
+        new TypeReference<DocumentResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -994,51 +1011,194 @@ public class VectorApi extends AbstractOpenApiService {
   public VectorSearchResults search(
       @Nonnull final String aiResourceGroup, @Nonnull final TextSearchRequest textSearchRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = textSearchRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling search");
+              "Missing the required parameter 'aiResourceGroup' when calling search")
+          .statusCode(400);
     }
 
     // verify the required parameter 'textSearchRequest' is set
     if (textSearchRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'textSearchRequest' when calling vectorV1VectorEndpointsSearchChunk");
+              "Missing the required parameter 'textSearchRequest' when calling vectorV1VectorEndpointsSearchChunk")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/search").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/vector/search";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final TypeReference<VectorSearchResults> localVarReturnType =
+        new TypeReference<VectorSearchResults>() {};
 
-    final ParameterizedTypeReference<VectorSearchResults> localVarReturnType =
-        new ParameterizedTypeReference<VectorSearchResults>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        textSearchRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Patch chunks metadata
+   *
+   * <p>Allows to add, remove and modify the chunks metadata.
+   *
+   * <p><b>200</b> - Successful Response
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>404</b> - The specification of the resource was incorrect
+   *
+   * <p><b>422</b> - There are validation issues with the data.
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param metadataUpdates The value for the parameter metadataUpdates
+   * @return MetadataResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public MetadataResponse updateChunksMetadata(
+      @Nonnull final String aiResourceGroup, @Nonnull final MetadataUpdates metadataUpdates)
+      throws OpenApiRequestException {
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'aiResourceGroup' when calling updateChunksMetadata")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'metadataUpdates' is set
+    if (metadataUpdates == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'metadataUpdates' when calling vectorV1VectorEndpointsUpdateChunksMetadata")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath = "/vector/chunks/metadata";
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<MetadataResponse> localVarReturnType =
+        new TypeReference<MetadataResponse>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "PATCH",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        metadataUpdates,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarReturnType);
+  }
+
+  /**
+   * Patch collections metadata
+   *
+   * <p>Allows to add, remove and modify the collections metadata.
+   *
+   * <p><b>200</b> - Successful Response
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>404</b> - The specification of the resource was incorrect
+   *
+   * <p><b>422</b> - There are validation issues with the data.
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param metadataUpdates The value for the parameter metadataUpdates
+   * @return MetadataResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public MetadataResponse updateCollectionsMetadata(
+      @Nonnull final String aiResourceGroup, @Nonnull final MetadataUpdates metadataUpdates)
+      throws OpenApiRequestException {
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'aiResourceGroup' when calling updateCollectionsMetadata")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'metadataUpdates' is set
+    if (metadataUpdates == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'metadataUpdates' when calling vectorV1VectorEndpointsUpdateCollectionsMetadata")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath = "/vector/collections/metadata";
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<MetadataResponse> localVarReturnType =
+        new TypeReference<MetadataResponse>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "PATCH",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        metadataUpdates,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
         localVarReturnType);
   }
 
@@ -1067,62 +1227,134 @@ public class VectorApi extends AbstractOpenApiService {
       @Nonnull final UUID collectionId,
       @Nonnull final DocumentUpdateRequest documentUpdateRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = documentUpdateRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling updateDocuments");
+              "Missing the required parameter 'aiResourceGroup' when calling updateDocuments")
+          .statusCode(400);
     }
 
     // verify the required parameter 'collectionId' is set
     if (collectionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'collectionId' when calling updateDocuments");
+              "Missing the required parameter 'collectionId' when calling updateDocuments")
+          .statusCode(400);
     }
 
     // verify the required parameter 'documentUpdateRequest' is set
     if (documentUpdateRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'documentUpdateRequest' when calling vectorV1VectorEndpointsUpdateDocuments");
+              "Missing the required parameter 'documentUpdateRequest' when calling vectorV1VectorEndpointsUpdateDocuments")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("collectionId", collectionId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/vector/collections/{collectionId}/documents")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/vector/collections/{collectionId}/documents"
+            .replaceAll(
+                "\\{" + "collectionId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(collectionId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {};
+    final TypeReference<DocumentsListResponse> localVarReturnType =
+        new TypeReference<DocumentsListResponse>() {};
 
-    final ParameterizedTypeReference<DocumentsListResponse> localVarReturnType =
-        new ParameterizedTypeReference<DocumentsListResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.PATCH,
+        "PATCH",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        documentUpdateRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
+        localVarReturnType);
+  }
+
+  /**
+   * Patch documents metadata
+   *
+   * <p>Allows to add, remove and modify the documents metadata.
+   *
+   * <p><b>200</b> - Successful Response
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>404</b> - The specification of the resource was incorrect
+   *
+   * <p><b>422</b> - There are validation issues with the data.
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param metadataUpdates The value for the parameter metadataUpdates
+   * @return MetadataResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public MetadataResponse updateDocumentsMetadata(
+      @Nonnull final String aiResourceGroup, @Nonnull final MetadataUpdates metadataUpdates)
+      throws OpenApiRequestException {
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'aiResourceGroup' when calling updateDocumentsMetadata")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'metadataUpdates' is set
+    if (metadataUpdates == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'metadataUpdates' when calling vectorV1VectorEndpointsUpdateDocumentsMetadata")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath = "/vector/documents/metadata";
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<MetadataResponse> localVarReturnType =
+        new TypeReference<MetadataResponse>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "PATCH",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        metadataUpdates,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
         localVarReturnType);
   }
 }

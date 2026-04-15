@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.core.common;
 
-import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -11,7 +10,6 @@ import javax.annotation.Nullable;
  * @param <E> The subtype of {@link ClientException} to be created by this factory.
  * @param <R> The subtype of {@link ClientError} payload that can be processed by this factory.
  */
-@Beta
 @FunctionalInterface
 public interface ClientExceptionFactory<E extends ClientException, R extends ClientError> {
 

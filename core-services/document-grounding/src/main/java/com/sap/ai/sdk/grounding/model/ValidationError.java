@@ -32,13 +32,19 @@ public class ValidationError
 // CHECKSTYLE:ON
 {
   @JsonProperty("loc")
-  private List<String> loc = new ArrayList<>();
+  private List<LocationInner> loc = new ArrayList<>();
 
   @JsonProperty("msg")
   private String msg;
 
   @JsonProperty("type")
   private String type;
+
+  @JsonProperty("input")
+  private Object input = null;
+
+  @JsonProperty("ctx")
+  private Object ctx;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -53,7 +59,7 @@ public class ValidationError
    * @return The same instance of this {@link ValidationError} class
    */
   @Nonnull
-  public ValidationError loc(@Nonnull final List<String> loc) {
+  public ValidationError loc(@Nonnull final List<LocationInner> loc) {
     this.loc = loc;
     return this;
   }
@@ -65,7 +71,7 @@ public class ValidationError
    * @return The same instance of type {@link ValidationError}
    */
   @Nonnull
-  public ValidationError addLocItem(@Nonnull final String locItem) {
+  public ValidationError addLocItem(@Nonnull final LocationInner locItem) {
     if (this.loc == null) {
       this.loc = new ArrayList<>();
     }
@@ -79,7 +85,7 @@ public class ValidationError
    * @return loc The loc of this {@link ValidationError} instance.
    */
   @Nonnull
-  public List<String> getLoc() {
+  public List<LocationInner> getLoc() {
     return loc;
   }
 
@@ -88,7 +94,7 @@ public class ValidationError
    *
    * @param loc The loc of this {@link ValidationError}
    */
-  public void setLoc(@Nonnull final List<String> loc) {
+  public void setLoc(@Nonnull final List<LocationInner> loc) {
     this.loc = loc;
   }
 
@@ -155,6 +161,68 @@ public class ValidationError
   }
 
   /**
+   * Set the input of this {@link ValidationError} instance and return the same instance.
+   *
+   * @param input The input of this {@link ValidationError}
+   * @return The same instance of this {@link ValidationError} class
+   */
+  @Nonnull
+  public ValidationError input(@Nullable final Object input) {
+    this.input = input;
+    return this;
+  }
+
+  /**
+   * Get input
+   *
+   * @return input The input of this {@link ValidationError} instance.
+   */
+  @Nullable
+  public Object getInput() {
+    return input;
+  }
+
+  /**
+   * Set the input of this {@link ValidationError} instance.
+   *
+   * @param input The input of this {@link ValidationError}
+   */
+  public void setInput(@Nullable final Object input) {
+    this.input = input;
+  }
+
+  /**
+   * Set the ctx of this {@link ValidationError} instance and return the same instance.
+   *
+   * @param ctx The ctx of this {@link ValidationError}
+   * @return The same instance of this {@link ValidationError} class
+   */
+  @Nonnull
+  public ValidationError ctx(@Nullable final Object ctx) {
+    this.ctx = ctx;
+    return this;
+  }
+
+  /**
+   * Get ctx
+   *
+   * @return ctx The ctx of this {@link ValidationError} instance.
+   */
+  @Nonnull
+  public Object getCtx() {
+    return ctx;
+  }
+
+  /**
+   * Set the ctx of this {@link ValidationError} instance.
+   *
+   * @param ctx The ctx of this {@link ValidationError}
+   */
+  public void setCtx(@Nullable final Object ctx) {
+    this.ctx = ctx;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link ValidationError}.
    *
    * @return The set of properties names
@@ -195,6 +263,8 @@ public class ValidationError
     if (loc != null) declaredFields.put("loc", loc);
     if (msg != null) declaredFields.put("msg", msg);
     if (type != null) declaredFields.put("type", type);
+    if (input != null) declaredFields.put("input", input);
+    if (ctx != null) declaredFields.put("ctx", ctx);
     return declaredFields;
   }
 
@@ -222,12 +292,14 @@ public class ValidationError
     return Objects.equals(this.cloudSdkCustomFields, validationError.cloudSdkCustomFields)
         && Objects.equals(this.loc, validationError.loc)
         && Objects.equals(this.msg, validationError.msg)
-        && Objects.equals(this.type, validationError.type);
+        && Objects.equals(this.type, validationError.type)
+        && Objects.equals(this.input, validationError.input)
+        && Objects.equals(this.ctx, validationError.ctx);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(loc, msg, type, cloudSdkCustomFields);
+    return Objects.hash(loc, msg, type, input, ctx, cloudSdkCustomFields);
   }
 
   @Override
@@ -238,6 +310,8 @@ public class ValidationError
     sb.append("    loc: ").append(toIndentedString(loc)).append("\n");
     sb.append("    msg: ").append(toIndentedString(msg)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    input: ").append(toIndentedString(input)).append("\n");
+    sb.append("    ctx: ").append(toIndentedString(ctx)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -271,7 +345,7 @@ public class ValidationError
      * @param loc The loc of this {@link ValidationError}
      * @return The ValidationError builder.
      */
-    Builder1 loc(@Nonnull final List<String> loc);
+    Builder1 loc(@Nonnull final List<LocationInner> loc);
 
     /**
      * Set the loc of this {@link ValidationError} instance.
@@ -279,7 +353,7 @@ public class ValidationError
      * @param loc The loc of this {@link ValidationError}
      * @return The ValidationError builder.
      */
-    default Builder1 loc(@Nonnull final String... loc) {
+    default Builder1 loc(@Nonnull final LocationInner... loc) {
       return loc(Arrays.asList(loc));
     }
   }

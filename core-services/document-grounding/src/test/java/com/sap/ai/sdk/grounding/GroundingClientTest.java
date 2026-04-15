@@ -1,5 +1,10 @@
 package com.sap.ai.sdk.grounding;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,6 +18,7 @@ import com.sap.ai.sdk.grounding.model.DataRepositories;
 import com.sap.ai.sdk.grounding.model.DataRepositoryType;
 import com.sap.ai.sdk.grounding.model.DocumentResponse;
 import com.sap.ai.sdk.grounding.model.Documents;
+import com.sap.ai.sdk.grounding.model.FilterMatchModeEnum;
 import com.sap.ai.sdk.grounding.model.GetPipelines;
 import com.sap.ai.sdk.grounding.model.RetrievalKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.VectorDocumentKeyValueListPair;
@@ -36,7 +42,7 @@ class GroundingClientTest {
   void testPipelines() {
     final PipelinesApi api = new GroundingClient(SERVICE).pipelines();
 
-    final GetPipelines allPipelines = api.getAllPipelines("reosurceGroup");
+    final GetPipelines allPipelines = api.getAllPipelines("resourceGroup");
     assertThat(allPipelines).isNotNull();
     assertThat(allPipelines.getResources()).isEmpty();
   }
@@ -45,7 +51,7 @@ class GroundingClientTest {
   void testVector() {
     final VectorApi api = new GroundingClient(SERVICE).vector();
 
-    final CollectionsListResponse collections = api.getAllCollections("reosurceGroup");
+    final CollectionsListResponse collections = api.getAllCollections("resourceGroup");
     assertThat(collections).isNotNull();
     assertThat(collections.getResources())
         .isNotNull()
@@ -63,13 +69,13 @@ class GroundingClientTest {
             });
 
     final UUID collectionId = collections.getResources().get(0).getId();
-    final Documents documents = api.getAllDocuments("reosurceGroup", collectionId);
+    final Documents documents = api.getAllDocuments("resourceGroup", collectionId);
     assertThat(documents).isNotNull();
     final var documentMeta =
         VectorDocumentKeyValueListPair.create()
             .key("url")
             .value("http://hello.com", "123")
-            .matchMode(VectorDocumentKeyValueListPair.MatchModeEnum.ANY);
+            .matchMode(FilterMatchModeEnum.ANY);
     assertThat(documents.getResources())
         .isNotNull()
         .hasSize(1)
@@ -82,7 +88,7 @@ class GroundingClientTest {
 
     final UUID documentId = documents.getResources().get(0).getId();
     final DocumentResponse document =
-        api.getDocumentById("reosurceGroup", collectionId, documentId);
+        api.getDocumentById("resourceGroup", collectionId, documentId);
     assertThat(document).isNotNull();
     assertThat(document.getId()).isEqualTo(documentId);
     assertThat(document.getMetadata()).isNotNull().containsExactly(documentMeta);
@@ -115,7 +121,7 @@ class GroundingClientTest {
   void testRetrieval() {
     final RetrievalApi api = new GroundingClient(SERVICE).retrieval();
 
-    DataRepositories repositories = api.getDataRepositories("reosurceGroup");
+    DataRepositories repositories = api.getDataRepositories("resourceGroup");
     assertThat(repositories).isNotNull();
     assertThat(repositories.getResources())
         .isNotEmpty()
@@ -136,5 +142,27 @@ class GroundingClientTest {
               assertThat(r2.getType()).isEqualTo(DataRepositoryType.VECTOR);
               assertThat(r2.getMetadata()).isNotNull().isEmpty();
             });
+  }
+
+  @Test
+  void testCustomHeaders() {
+    WM.stubFor(
+        get(anyUrl())
+            .withHeader("x-test-header", equalTo("test-value"))
+            .willReturn(
+                okJson(
+                    """
+                    {
+                      "count": 0,
+                      "resources": []
+                    }
+                    """)));
+
+    new GroundingClient(SERVICE)
+        .withHeader("x-test-header", "test-value")
+        .pipelines()
+        .getAllPipelines("resourceGroup");
+
+    WM.verify(getRequestedFor(anyUrl()).withHeader("x-test-header", equalTo("test-value")));
   }
 }

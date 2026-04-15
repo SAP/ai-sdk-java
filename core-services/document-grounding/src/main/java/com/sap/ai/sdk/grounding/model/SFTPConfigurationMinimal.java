@@ -29,7 +29,7 @@ public class SFTPConfigurationMinimal
 // CHECKSTYLE:ON
 {
   @JsonProperty("sftp")
-  private SFTPConfigurationSftp sftp;
+  private ServiceNowConfigurationMinimalServiceNow sftp;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -44,7 +44,8 @@ public class SFTPConfigurationMinimal
    * @return The same instance of this {@link SFTPConfigurationMinimal} class
    */
   @Nonnull
-  public SFTPConfigurationMinimal sftp(@Nonnull final SFTPConfigurationSftp sftp) {
+  public SFTPConfigurationMinimal sftp(
+      @Nonnull final ServiceNowConfigurationMinimalServiceNow sftp) {
     this.sftp = sftp;
     return this;
   }
@@ -55,7 +56,7 @@ public class SFTPConfigurationMinimal
    * @return sftp The sftp of this {@link SFTPConfigurationMinimal} instance.
    */
   @Nonnull
-  public SFTPConfigurationSftp getSftp() {
+  public ServiceNowConfigurationMinimalServiceNow getSftp() {
     return sftp;
   }
 
@@ -64,7 +65,7 @@ public class SFTPConfigurationMinimal
    *
    * @param sftp The sftp of this {@link SFTPConfigurationMinimal}
    */
-  public void setSftp(@Nonnull final SFTPConfigurationSftp sftp) {
+  public void setSftp(@Nonnull final ServiceNowConfigurationMinimalServiceNow sftp) {
     this.sftp = sftp;
   }
 
@@ -180,6 +181,6 @@ public class SFTPConfigurationMinimal
      * @param sftp The sftp of this {@link SFTPConfigurationMinimal}
      * @return The SFTPConfigurationMinimal instance.
      */
-    SFTPConfigurationMinimal sftp(@Nonnull final SFTPConfigurationSftp sftp);
+    SFTPConfigurationMinimal sftp(@Nonnull final ServiceNowConfigurationMinimalServiceNow sftp);
   }
 }

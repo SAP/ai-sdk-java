@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.orchestration.OrchestrationClientException.lastErro
 import static com.sap.ai.sdk.orchestration.OrchestrationClientException.lastErrorStreaming;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientError;
 import com.sap.ai.sdk.orchestration.model.Error;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
@@ -20,7 +19,6 @@ import lombok.Value;
  *
  * @since 1.1.0
  */
-@Beta
 public interface OrchestrationError extends ClientError {
   /**
    * Orchestration error response for synchronous requests.
@@ -30,8 +28,11 @@ public interface OrchestrationError extends ClientError {
   @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
   @Value
   class Synchronous implements OrchestrationError {
+    @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
     private static Error NOT_FOUND =
         Error.create().requestId("").code(-1).message("Error not found.").location("");
+
+    @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
     ErrorResponse errorResponse;
 
     @Override
@@ -51,8 +52,11 @@ public interface OrchestrationError extends ClientError {
   @AllArgsConstructor(onConstructor = @__({@JsonCreator}), access = AccessLevel.PROTECTED)
   @Value
   class Streaming implements OrchestrationError {
+    @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
     private static ErrorStreaming NOT_FOUND =
         ErrorStreaming.create().requestId("").code(-1).message("Error not found.").location("");
+
+    @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
     ErrorResponseStreaming errorResponse;
 
     @Override

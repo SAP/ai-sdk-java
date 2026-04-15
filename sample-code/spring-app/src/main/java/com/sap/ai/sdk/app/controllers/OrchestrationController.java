@@ -8,6 +8,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
+import com.sap.ai.sdk.orchestration.model.Citation;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
@@ -407,5 +408,28 @@ class OrchestrationController {
       return response;
     }
     return response.getContent();
+  }
+
+  @GetMapping("/citations")
+  @Nonnull
+  Object citations(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var response = service.citations();
+    if ("json".equals(format)) {
+      return response;
+    }
+
+    final StringBuilder content = new StringBuilder(response.getContent().replaceAll("\n", "<br>"));
+    final var citations = response.getOriginalResponse().getFinalResult().getCitations();
+
+    if (!citations.isEmpty()) {
+      content.append("<br><br>Citations:");
+      for (final Citation citation : citations) {
+        content.append(
+            "<br>%d. <a href=\"%s\">%s</a>"
+                .formatted(citation.getRefId(), citation.getUrl(), citation.getTitle()));
+      }
+    }
+    return content.toString();
   }
 }

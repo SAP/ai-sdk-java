@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_HAIKU;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -44,7 +44,7 @@ import reactor.core.publisher.Flux;
 public class SpringAiOrchestrationService {
   private final ChatModel client = new OrchestrationChatModel();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_5_HAIKU);
+      new OrchestrationModuleConfig().withLlmConfig(GPT_41);
   private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);
 
   @Nullable
@@ -137,7 +137,7 @@ public class SpringAiOrchestrationService {
 
     val prompt =
         new Prompt(
-            "Please rephrase the following sentence for me: 'We shall destroy them all tonight', said the operator in-charge.",
+            "Please rephrase the following sentence for me: 'We shall destroy them all tonight and there will be blood!'",
             opts);
 
     return client.call(prompt);
