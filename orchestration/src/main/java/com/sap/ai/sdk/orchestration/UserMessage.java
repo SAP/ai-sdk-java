@@ -106,7 +106,7 @@ public class UserMessage implements Message {
   @Nonnull
   public UserMessage withFile(@Nonnull final Path filePath) {
     final String filename = filePath.getFileName().toString();
-    validatePdfFilename(filename);
+    warnNotPdfFile(filename);
     try {
       final String base64Data = Base64.getEncoder().encodeToString(Files.readAllBytes(filePath));
       return appendFileItem(PDF_DATA_URI_PREFIX + base64Data, filename);
@@ -125,7 +125,7 @@ public class UserMessage implements Message {
    */
   @Nonnull
   public UserMessage withFileUrl(@Nonnull final String fileUrl, @Nullable final String filename) {
-    validatePdfFilename(filename);
+    warnNotPdfFile(filename);
     return appendFileItem(fileUrl, filename);
   }
 
@@ -140,7 +140,7 @@ public class UserMessage implements Message {
   @Nonnull
   public UserMessage withFileBase64(
       @Nonnull final String base64Data, @Nullable final String filename) {
-    validatePdfFilename(filename);
+    warnNotPdfFile(filename);
     final String payload =
         base64Data.startsWith(PDF_DATA_URI_PREFIX) ? base64Data : PDF_DATA_URI_PREFIX + base64Data;
     try {
@@ -159,7 +159,7 @@ public class UserMessage implements Message {
     return new UserMessage(new MessageContent(contentItems));
   }
 
-  private static void validatePdfFilename(@Nullable final String filename) {
+  private static void warnNotPdfFile(@Nullable final String filename) {
     if (filename != null && !filename.toLowerCase(Locale.ROOT).endsWith(".pdf")) {
       log.warn("Only .pdf files are supported.");
     }

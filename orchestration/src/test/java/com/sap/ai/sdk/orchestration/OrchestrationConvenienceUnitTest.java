@@ -5,7 +5,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeE
 import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.FILE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -164,9 +164,8 @@ public class OrchestrationConvenienceUnitTest {
 
   @Test
   void testMessageConstructionFileFromNonPdf() {
-    assertThatThrownBy(() -> Message.user(Path.of("sample.txt")))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Failed to read the file: sample.txt");
+    assertThatCode(() -> Message.user(Path.of("src/test/resources/streamChatCompletion.txt")))
+        .doesNotThrowAnyException();
   }
 
   @Test
