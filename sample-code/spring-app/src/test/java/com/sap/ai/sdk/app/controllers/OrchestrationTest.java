@@ -408,9 +408,8 @@ class OrchestrationTest {
     InputStream inputStream = connection.getInputStream();
     base64Data = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
 
-    val result = service.fileInputBase64(base64Data, "dummy.pdf").getOriginalResponse();
-    val choices = (result.getFinalResult()).getChoices();
-    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+    val response = service.fileInputBase64(base64Data, "dummy.pdf");
+    assertThat(response.getContent()).containsAnyOf("dummy", "Dummy");
   }
 
   @Test
