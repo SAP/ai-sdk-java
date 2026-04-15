@@ -59,7 +59,8 @@ public class OrchestrationAiModel {
    *
    * @deprecated This model is deprecated on AI Core.
    */
-  @Deprecated public static final OrchestrationAiModel MISTRAL_LARGE_INSTRUCT =
+  @Deprecated
+  public static final OrchestrationAiModel MISTRAL_LARGE_INSTRUCT =
       new OrchestrationAiModel("mistralai--mistral-large-instruct");
 
   /**
@@ -67,7 +68,8 @@ public class OrchestrationAiModel {
    *
    * @deprecated This model is deprecated on AI Core.
    */
-  @Deprecated public static final OrchestrationAiModel MISTRAL_SMALL_INSTRUCT =
+  @Deprecated
+  public static final OrchestrationAiModel MISTRAL_SMALL_INSTRUCT =
       new OrchestrationAiModel("mistralai--mistral-small-instruct");
 
   /** MistralAI Mistral Medium Instruct model */
@@ -301,7 +303,8 @@ public class OrchestrationAiModel {
    *
    * @deprecated This model is deprecated on AI Core.
    */
-  @Deprecated public static final OrchestrationAiModel OPENAI_O3_MINI = new OrchestrationAiModel("o3-mini");
+  @Deprecated
+  public static final OrchestrationAiModel OPENAI_O3_MINI = new OrchestrationAiModel("o3-mini");
 
   /** Azure OpenAI o4-mini model */
   public static final OrchestrationAiModel OPENAI_O4_MINI = new OrchestrationAiModel("o4-mini");
