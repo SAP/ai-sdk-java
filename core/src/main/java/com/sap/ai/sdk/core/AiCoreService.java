@@ -4,13 +4,11 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.google.common.annotations.Beta;
-import com.google.common.collect.Iterables;
-import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -18,10 +16,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * Connectivity convenience methods for AI Core, offering convenient access to destinations
@@ -122,16 +116,7 @@ public class AiCoreService {
    */
   @Nonnull
   public ApiClient getApiClient() {
-    val destination = getBaseDestination();
-    val httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-    httpRequestFactory.setHttpClient(ApacheHttpClient5Accessor.getHttpClient(destination));
-
-    val rt = new RestTemplate();
-    Iterables.filter(rt.getMessageConverters(), MappingJackson2HttpMessageConverter.class)
-        .forEach(converter -> converter.setObjectMapper(objectMapper));
-    rt.setRequestFactory(new BufferingClientHttpRequestFactory(httpRequestFactory));
-
-    return new ApiClient(rt).setBasePath(destination.asHttp().getUri().toString());
+    return ApiClient.create(getBaseDestination()).withObjectMapper(objectMapper);
   }
 
   /**

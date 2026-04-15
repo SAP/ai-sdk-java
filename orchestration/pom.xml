@@ -201,6 +201,7 @@
                   <generateApis>false</generateApis>
                   <modelPackage>com.sap.ai.sdk.orchestration.model</modelPackage>
                   <additionalProperties>
+                    <library>apache-httpclient</library>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>
                     <pojoBuildMethodName/>
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>

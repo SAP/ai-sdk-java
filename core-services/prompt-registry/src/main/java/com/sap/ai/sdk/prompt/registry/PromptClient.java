@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.google.common.collect.Iterables;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
 import com.sap.ai.sdk.prompt.registry.model.MultiChatContent;
@@ -21,17 +20,13 @@ import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatText;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
-import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
+import lombok.val;
 
 /**
  * Client for the Prompt Registry service.
@@ -62,23 +57,13 @@ public class PromptClient extends PromptTemplatesApi {
   @Nonnull
   private static ApiClient addMixin(@Nonnull final AiCoreService service) {
     final var destination = service.getBaseDestination();
-    final var httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-    httpRequestFactory.setHttpClient(ApacheHttpClient5Accessor.getHttpClient(destination));
 
-    final var rt = new RestTemplate();
-    Iterables.filter(rt.getMessageConverters(), MappingJackson2HttpMessageConverter.class)
-        .forEach(
-            converter ->
-                converter.setObjectMapper(
-                    getDefaultObjectMapper()
-                        .addMixIn(PromptTemplate.class, JacksonMixin.TemplateMixIn.class)
-                        .addMixIn(
-                            PromptTemplateSpecResponseFormat.class,
-                            JacksonMixin.ResponseFormat.class)));
+    val objectMapper =
+        getDefaultObjectMapper()
+            .addMixIn(PromptTemplate.class, JacksonMixin.TemplateMixIn.class)
+            .addMixIn(PromptTemplateSpecResponseFormat.class, JacksonMixin.ResponseFormat.class);
 
-    rt.setRequestFactory(new BufferingClientHttpRequestFactory(httpRequestFactory));
-
-    return new ApiClient(rt).setBasePath(destination.asHttp().getUri().toString());
+    return ApiClient.create(destination).withObjectMapper(objectMapper);
   }
 
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
