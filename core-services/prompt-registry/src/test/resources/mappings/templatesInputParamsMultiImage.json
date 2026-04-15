@@ -1,0 +1,31 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/v2/lm/scenarios/categorization/promptTemplates/multi-image/versions/0.0.1/substitution?metadata=false"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "parsedPrompt": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Describe this image"
+            },
+            {
+              "type": "image_url",
+              "image_url": {
+                "url": "https://example.invalid/image.png"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

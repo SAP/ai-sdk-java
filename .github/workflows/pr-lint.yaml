@@ -25,6 +25,7 @@ jobs:
             DevOps
             PromptRegistry
             Grounding
+            RPT
           headerPattern: '^(\w.+): (?:\[(\w.+)\] )?(.+)$'
           headerPatternCorrespondence: type, scope, subject
           # for available types, check:

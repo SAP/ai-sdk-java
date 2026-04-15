@@ -21,7 +21,8 @@
               "Hate": 6,
               "SelfHarm": 0,
               "Sexual": 0,
-              "Violence": 6
+              "Violence": 6,
+              "ProtectedMaterialCode": false
             },
             "llama_guard_3_8b": {
               "violent_crimes": true

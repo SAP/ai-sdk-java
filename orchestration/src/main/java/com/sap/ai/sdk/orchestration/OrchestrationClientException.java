@@ -29,6 +29,10 @@ public class OrchestrationClientException extends ClientException {
       (message, clientError, cause) -> {
         final var details = extractInputFilterDetails(clientError);
         if (details.isEmpty()) {
+          if (message.contains("No Prompt Template found in the Prompt Registry.")) {
+            message +=
+                "\n Please make sure to provide a resource group id and verify that it matches the provided template reference details if the template is referenced from a resource-group scope, otherwise use the tenant scope without providing resource group id.";
+          }
           return new OrchestrationClientException(message, cause).setClientError(clientError);
         }
         return new Input(message, cause).setFilterDetails(details).setClientError(clientError);
@@ -43,7 +47,7 @@ public class OrchestrationClientException extends ClientException {
           .flatMap(OrchestrationClientException::lastError)
           .map(Error::getIntermediateResults)
           .map(ModuleResults::getInputFiltering)
-          .filter(filter -> !filter.getMessage().equals("Input Filter passed successfully."))
+          .filter(filter -> !filter.getMessage().equals("Filtering passed successfully. "))
           .map(GenericModuleResult::getData)
           .map(map -> (Map<String, Object>) map)
           .orElseGet(Collections::emptyMap);
@@ -53,7 +57,7 @@ public class OrchestrationClientException extends ClientException {
           .flatMap(OrchestrationClientException::lastErrorStreaming)
           .map(ErrorStreaming::getIntermediateResults)
           .map(ModuleResultsStreaming::getInputFiltering)
-          .filter(filter -> !filter.getMessage().equals("Input Filter passed successfully."))
+          .filter(filter -> !filter.getMessage().equals("Filtering passed successfully. "))
           .map(GenericModuleResult::getData)
           .filter(Map.class::isInstance)
           .map(map -> (Map<String, Object>) map)
@@ -127,7 +131,6 @@ public class OrchestrationClientException extends ClientException {
    * @return the HTTP status code, or {@code null} if not available
    * @since 1.10.0
    */
-  @Beta
   @Nullable
   public Integer getStatusCode() {
     return Optional.ofNullable(getErrorResponse())

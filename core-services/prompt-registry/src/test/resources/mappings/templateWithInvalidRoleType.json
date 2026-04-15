@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v2/lm/promptTemplates/45cb1358-0bf1-4f43-870b-00f14d0f9f16"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": "45cb1358-0bf1-4f43-870b-00f14d0f9f16",
+      "name": "invalid-role",
+      "version": "0.0.1",
+      "scenario": "test-retrival",
+      "creationTimestamp": "2025-12-02T16:06:05.400000",
+      "managedBy": "imperative",
+      "isVersionHead": true,
+      "spec": {
+        "template": [
+          {
+            "role": 123,
+            "content": "Test content"
+          }
+        ],
+        "tools": []
+      }
+    }
+  }
+}

@@ -16,8 +16,12 @@ import javax.annotation.Nullable;
  */
 public record OpenAiModel(@Nonnull String name, @Nullable String version) implements AiModel {
 
-  /** internal [Azure OpenAI dall-e-3 model] */
-  public static final OpenAiModel DALL_E_3 = new OpenAiModel("dall-e-3", null);
+  /**
+   * internal [Azure OpenAI dall-e-3 model]
+   *
+   * @deprecated This model is deprecated on AI Core.
+   */
+  @Deprecated public static final OpenAiModel DALL_E_3 = new OpenAiModel("dall-e-3", null);
 
   /**
    * Azure OpenAI GPT-3.5 Turbo model
@@ -63,8 +67,13 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   /** Azure OpenAI GPT-4o model */
   public static final OpenAiModel GPT_4O = new OpenAiModel("gpt-4o", null);
 
-  /** Azure OpenAI GPT-4o Mini model */
-  public static final OpenAiModel GPT_4O_MINI = new OpenAiModel("gpt-4o-mini", null);
+  /**
+   * Azure OpenAI GPT-4o Mini model
+   *
+   * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
+   *     OpenAiModel#GPT_5_MINI}.
+   */
+  @Deprecated public static final OpenAiModel GPT_4O_MINI = new OpenAiModel("gpt-4o-mini", null);
 
   /** Azure OpenAI GPT-o3 Mini model */
   public static final OpenAiModel O3_MINI = new OpenAiModel("o3-mini", null);
@@ -103,6 +112,12 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
 
   /** Azure OpenAI GPT-5-nano model */
   public static final OpenAiModel GPT_5_NANO = new OpenAiModel("gpt-5-nano", null);
+
+  /** Azure OpenAI GPT-5-nano model */
+  public static final OpenAiModel GPT_REALTIME = new OpenAiModel("gpt-realtime", null);
+
+  /** Azure OpenAI GPT-5.2 model */
+  public static final OpenAiModel GPT_52 = new OpenAiModel("gpt-5.2", null);
 
   /**
    * Azure OpenAI Text Embedding ADA 002 model

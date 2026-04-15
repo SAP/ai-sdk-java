@@ -6,7 +6,7 @@
     "location": "request body",
     "intermediate_results": {
       "input_filtering": {
-        "message": "Input Filter passed successfully.",
+        "message": "Filtering passed successfully. ",
         "data": {
           "azure_content_safety": {
             "userPromptAnalysis": {

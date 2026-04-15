@@ -15,7 +15,7 @@
       "id": "chatcmpl-AzmCw5QZBi6zQkJPQhvsyjW4Fe90c",
       "object": "chat.completion",
       "created": 1739286682,
-      "model": "gpt-4o-mini-2024-07-18",
+      "model": "gpt-5-mini-2024-07-18",
       "system_fingerprint": "fp_f3927aa00d",
       "choices": [
         {

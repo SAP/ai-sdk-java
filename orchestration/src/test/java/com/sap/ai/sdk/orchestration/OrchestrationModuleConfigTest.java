@@ -3,6 +3,8 @@ package com.sap.ai.sdk.orchestration;
 import static com.sap.ai.sdk.orchestration.AzureFilterThreshold.ALLOW_SAFE_LOW_MEDIUM;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.MAX_TOKENS;
+import static com.sap.ai.sdk.orchestration.TranslationConfig.TemplateRole.ASSISTANT;
+import static com.sap.ai.sdk.orchestration.TranslationConfig.TemplateRole.USER;
 import static com.sap.ai.sdk.orchestration.model.DataRepositoryType.VECTOR;
 import static com.sap.ai.sdk.orchestration.model.GroundingModuleConfig.TypeEnum.DOCUMENT_GROUNDING_SERVICE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,6 +22,7 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInne
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfigProviders;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
+import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
@@ -55,7 +58,8 @@ class OrchestrationModuleConfigTest {
             .hate(ALLOW_SAFE_LOW_MEDIUM)
             .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
             .sexual(ALLOW_SAFE_LOW_MEDIUM)
-            .violence(ALLOW_SAFE_LOW_MEDIUM);
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(true);
 
     final var configWithInputFirst = config.withInputFiltering(filter).withOutputFiltering(filter);
     assertThat(configWithInputFirst.getFilteringConfig()).isNotNull();
@@ -136,6 +140,93 @@ class OrchestrationModuleConfigTest {
             DPIMethodConstant.create()
                 .method(DPIMethodConstant.MethodEnum.CONSTANT)
                 .value("**-**-*****"));
+  }
+
+  @Test
+  void testTranslationConfig() {
+    var inputTranslationConfig =
+        TranslationConfig.translateInputTo("en-US").withSourceLanguage("de-DE");
+    var outputTranslationConfig =
+        TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US");
+
+    var sapInput = inputTranslationConfig.createSAPDocumentTranslationInput();
+    var sapOutput = outputTranslationConfig.createSAPDocumentTranslationOutput();
+
+    assertThat(sapInput.getConfig()).isNotNull();
+    assertThat(sapInput.getConfig().getTargetLanguage()).isEqualTo("en-US");
+    assertThat(sapInput.getConfig().getSourceLanguage())
+        .isEqualTo(inputTranslationConfig.getSourceLanguage());
+
+    assertThat(sapOutput.getConfig()).isNotNull();
+    assertThat(
+            ((SAPDocumentTranslationOutputTargetLanguage.InnerString)
+                    sapOutput.getConfig().getTargetLanguage())
+                .value())
+        .isEqualTo("de-DE");
+    assertThat(sapOutput.getConfig().getSourceLanguage())
+        .isEqualTo(outputTranslationConfig.getSourceLanguage());
+  }
+
+  @Test
+  void testTranslationConfigApplyToSelectors() {
+    var inputTranslationConfig =
+        TranslationConfig.translateInputTo("en-US")
+            .applyToPlaceholders("exam_type", "topic")
+            .withSourceLanguage("de-DE")
+            .applyToTemplateRoles(USER, ASSISTANT)
+            .withSourceLanguage("en-US");
+
+    var sapInput = inputTranslationConfig.createSAPDocumentTranslationInput();
+    assertThat(sapInput.getConfig().getTargetLanguage()).isEqualTo("en-US");
+    assertThat(sapInput.getConfig().getSourceLanguage()).isNull();
+    assertThat(sapInput.getConfig().getApplyTo().get(0).getSourceLanguage()).isEqualTo("de-DE");
+    assertThat(sapInput.getConfig().getApplyTo().get(1).getSourceLanguage()).isEqualTo("en-US");
+
+    assertThat(sapInput.getConfig().getApplyTo()).hasSize(2);
+    assertThat(sapInput.getConfig().getApplyTo().get(0).getCategory().getValue())
+        .isEqualTo("placeholders");
+    assertThat(sapInput.getConfig().getApplyTo().get(0).getItems())
+        .containsExactly("exam_type", "topic");
+    assertThat(sapInput.getConfig().getApplyTo().get(1).getCategory().getValue())
+        .isEqualTo("template_roles");
+    assertThat(sapInput.getConfig().getApplyTo().get(1).getItems())
+        .containsExactly("user", "assistant");
+
+    // applyTo == null list
+    final var inputNull = TranslationConfig.translateInputTo("en-US").withSourceLanguage("de-DE");
+    final var sapNull = inputNull.createSAPDocumentTranslationInput();
+    assertThat(sapNull.getConfig().getTargetLanguage()).isEqualTo("en-US");
+    assertThat(sapNull.getConfig().getSourceLanguage()).isEqualTo("de-DE");
+    assertThat(sapNull.getConfig().getApplyTo()).isNull();
+  }
+
+  @Test
+  void testTranslationConfigViaModuleConfig() {
+    final var inputTranslation =
+        TranslationConfig.translateInputTo("en-US").withSourceLanguage("de-DE");
+    final var outputTranslation =
+        TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US");
+
+    final var config =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(GPT_4O)
+            .withInputTranslationConfig(inputTranslation)
+            .withOutputTranslationConfig(outputTranslation);
+
+    assertThat(config.getInputTranslationConfig()).isNotNull();
+    assertThat(config.getInputTranslationConfig().getConfig().getTargetLanguage())
+        .isEqualTo("en-US");
+    assertThat(config.getInputTranslationConfig().getConfig().getSourceLanguage())
+        .isEqualTo("de-DE");
+
+    assertThat(config.getOutputTranslationConfig()).isNotNull();
+    assertThat(
+            ((SAPDocumentTranslationOutputTargetLanguage.InnerString)
+                    config.getOutputTranslationConfig().getConfig().getTargetLanguage())
+                .value())
+        .isEqualTo("de-DE");
+    assertThat(config.getOutputTranslationConfig().getConfig().getSourceLanguage())
+        .isEqualTo("en-US");
   }
 
   @Test

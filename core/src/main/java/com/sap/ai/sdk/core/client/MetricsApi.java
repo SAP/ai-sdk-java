@@ -1,27 +1,25 @@
 package com.sap.ai.sdk.core.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.TrckDeleteMetricsResponse;
 import com.sap.ai.sdk.core.model.TrckGetMetricResourceList;
 import com.sap.ai.sdk.core.model.TrckMetricResource;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.Pair;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
+import java.util.StringJoiner;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.41.0.
+ * AI Core in version 2.42.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -30,7 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
-public class MetricsApi extends AbstractOpenApiService {
+public class MetricsApi extends BaseApi {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public MetricsApi() {
@@ -44,6 +42,23 @@ public class MetricsApi extends AbstractOpenApiService {
    */
   public MetricsApi(@Nonnull final AiCoreService aiCoreService) {
     super(aiCoreService.getApiClient());
+  }
+
+  private MetricsApi(@Nonnull final ApiClient apiClient) {
+    super(apiClient);
+  }
+
+  /**
+   * Creates a new API instance with additional default headers.
+   *
+   * @param defaultHeaders Additional headers to include in all requests
+   * @return A new API instance with the combined headers
+   */
+  public MetricsApi withDefaultHeaders(@Nonnull final Map<String, String> defaultHeaders) {
+    final var api = new MetricsApi(apiClient);
+    api.defaultHeaders.putAll(this.defaultHeaders);
+    api.defaultHeaders.putAll(defaultHeaders);
+    return api;
   }
 
   /**
@@ -64,53 +79,54 @@ public class MetricsApi extends AbstractOpenApiService {
   public TrckDeleteMetricsResponse delete(
       @Nonnull final String aiResourceGroup, @Nonnull final String executionId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling delete");
+              "Missing the required parameter 'aiResourceGroup' when calling delete")
+          .statusCode(400);
     }
 
     // verify the required parameter 'executionId' is set
     if (executionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'executionId' when calling delete");
+              "Missing the required parameter 'executionId' when calling delete")
+          .statusCode(400);
     }
 
-    final String localVarPath = UriComponentsBuilder.fromPath("/lm/metrics").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/metrics";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "executionId", executionId));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("executionId", executionId));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<TrckDeleteMetricsResponse> localVarReturnType =
-        new ParameterizedTypeReference<TrckDeleteMetricsResponse>() {};
+    final TypeReference<TrckDeleteMetricsResponse> localVarReturnType =
+        new TypeReference<TrckDeleteMetricsResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.DELETE,
+        "DELETE",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -132,9 +148,9 @@ public class MetricsApi extends AbstractOpenApiService {
    * @param aiResourceGroup (required) Specify a resource group id
    * @param $filter (optional) Filter parameter allows filtering of metric resource using
    *     ExecutionId(s). User can only use in, eq operators in filter expression.
-   * @param executionIds (optional executionIds parameter allows filtering of metric resource using
+   * @param executionIds (optional) executionIds parameter allows filtering of metric resource using
    *     single or multiple ExecutionId(s).
-   * @param $select (optional returns only the resources that the client explicitly requests. User
+   * @param $select (optional) returns only the resources that the client explicitly requests. User
    *     can also pass * as a value for $select, which will behave same as that of not passing
    *     $select query param.
    * @param tagFilters (optional) Filter metrics using tags by providing expressions in the format
@@ -158,59 +174,53 @@ public class MetricsApi extends AbstractOpenApiService {
       @Nullable final Integer $top,
       @Nullable final Integer $skip)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling find");
+              "Missing the required parameter 'aiResourceGroup' when calling find")
+          .statusCode(400);
     }
 
-    final String localVarPath = UriComponentsBuilder.fromPath("/lm/metrics").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/metrics";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$filter", $filter));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(
-            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
-            "executionIds",
-            executionIds));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(
-            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
-            "$select",
-            $select));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "tagFilters", tagFilters));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$filter", $filter));
+    localVarCollectionQueryParams.addAll(
+        ApiClient.parameterToPairs("csv", "executionIds", executionIds));
+    localVarCollectionQueryParams.addAll(ApiClient.parameterToPairs("csv", "$select", $select));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("tagFilters", tagFilters));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<TrckGetMetricResourceList> localVarReturnType =
-        new ParameterizedTypeReference<TrckGetMetricResourceList>() {};
+    final TypeReference<TrckGetMetricResourceList> localVarReturnType =
+        new TypeReference<TrckGetMetricResourceList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -259,51 +269,52 @@ public class MetricsApi extends AbstractOpenApiService {
   public OpenApiResponse patch(
       @Nonnull final String aiResourceGroup, @Nonnull final TrckMetricResource trckMetricResource)
       throws OpenApiRequestException {
-    final Object localVarPostBody = trckMetricResource;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling patch");
+              "Missing the required parameter 'aiResourceGroup' when calling patch")
+          .statusCode(400);
     }
 
     // verify the required parameter 'trckMetricResource' is set
     if (trckMetricResource == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'trckMetricResource' when calling patch");
+              "Missing the required parameter 'trckMetricResource' when calling patch")
+          .statusCode(400);
     }
 
-    final String localVarPath = UriComponentsBuilder.fromPath("/lm/metrics").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/metrics";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/merge-patch+json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<OpenApiResponse> localVarReturnType =
+        new TypeReference<OpenApiResponse>() {};
 
-    final ParameterizedTypeReference<Void> localVarReturnType =
-        new ParameterizedTypeReference<Void>() {};
-    apiClient.invokeAPI(
+    return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.PATCH,
+        "PATCH",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        trckMetricResource,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
-    return new OpenApiResponse(apiClient);
   }
 }

@@ -1,25 +1,25 @@
-name: "Prepare Release"
+name: 'Prepare Release'
 
 on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "The Branch to Release From"
+        description: 'The Branch to Release From'
         required: false
-        default: "main"
+        default: 'main'
       release-version:
-        description: "The Version to Release"
+        description: 'The Version to Release'
         required: false
 
 env:
-  CI_BUILD_WORKFLOW: "continuous-integration.yaml" # Name of the workflow that should be triggered for CI build
+  CI_BUILD_WORKFLOW: 'continuous-integration.yaml' # Name of the workflow that should be triggered for CI build
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
-  JAVA_VERSION: 17
+  JAVA_VERSION: 21
   DOCS_REPO: SAP/ai-sdk
 
 jobs:
   bump-version:
-    name: "Bump Version"
+    name: 'Bump Version'
     outputs:
       current-version: ${{ steps.determine-versions.outputs.CURRENT_SNAPSHOT }}
       release-version: ${{ steps.determine-versions.outputs.RELEASE_VERSION }}
@@ -31,27 +31,27 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: "Checkout Repository"
+      - name: 'Checkout Repository'
         uses: actions/checkout@v6
         with:
           ref: ${{ github.event.inputs.branch }}
 
-      - name: "Prepare git"
+      - name: 'Prepare git'
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
 
-      - name: "Determine Versions"
+      - name: 'Determine Versions'
         id: determine-versions
         run: python .pipeline/scripts/get-release-versions.py
         env:
           INPUT_VERSION: ${{ github.event.inputs.release-version }}
 
-      - run: "echo Release Version: ${{ steps.determine-versions.outputs.RELEASE_VERSION }}"
-      - run: "echo Current Version: ${{ steps.determine-versions.outputs.CURRENT_SNAPSHOT }}"
-      - run: "echo New Version: ${{ steps.determine-versions.outputs.NEW_SNAPSHOT }}"
+      - run: 'echo Release Version: ${{ steps.determine-versions.outputs.RELEASE_VERSION }}'
+      - run: 'echo Current Version: ${{ steps.determine-versions.outputs.CURRENT_SNAPSHOT }}'
+      - run: 'echo New Version: ${{ steps.determine-versions.outputs.NEW_SNAPSHOT }}'
 
-      - name: "Set Release Version to ${{ steps.determine-versions.outputs.RELEASE_VERSION }}"
+      - name: 'Set Release Version to ${{ steps.determine-versions.outputs.RELEASE_VERSION }}'
         id: prepare-release
         run: |
           # NOTE: If you change this pattern here, also adjust perform_release.yml:
@@ -66,7 +66,7 @@ jobs:
           # We need to get the commit id, and push the branch so the release tag will point at the right commit afterwards
           RELEASE_COMMIT_ID=$(git log -1 --pretty=format:"%H")
           echo "RELEASE_COMMIT_ID=$RELEASE_COMMIT_ID" >> $GITHUB_OUTPUT
-          
+
           TAG_NAME=rel/${{ steps.determine-versions.outputs.RELEASE_VERSION }}
           git tag $TAG_NAME $RELEASE_COMMIT_ID
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
@@ -75,21 +75,21 @@ jobs:
           git push origin $TAG_NAME
 
   run-ci:
-    name: "Continuous Integration"
+    name: 'Continuous Integration'
     outputs:
       ci-run-id: ${{ steps.trigger-ci.outputs.run-id }}
-    needs: [ bump-version ]
+    needs: [bump-version]
     runs-on: ubuntu-latest
     permissions:
       actions: write # needed to trigger the ci-build workflow
       statuses: write # needed to update the commit status
     steps:
-      - name: "Checkout repository"
+      - name: 'Checkout repository'
         uses: actions/checkout@v6
         with:
           ref: ${{ needs.bump-version.outputs.release-branch }}
 
-      - name: "Trigger CI Workflow"
+      - name: 'Trigger CI Workflow'
         id: trigger-ci
         uses: ./.github/actions/trigger-workflow
         with:
@@ -97,41 +97,40 @@ jobs:
           workflow-ref: ${{ needs.bump-version.outputs.release-branch }}
           commit-sha: ${{ needs.bump-version.outputs.release-commit }}
 
-      - name: "Await CI Workflow"
+      - name: 'Await CI Workflow'
         uses: ./.github/actions/await-workflow
         with:
           run-id: ${{ steps.trigger-ci.outputs.run-id }}
-          commit-status: "Continuous Integration Workflow"
+          commit-status: 'Continuous Integration Workflow'
 
   create-release:
-    name: "Create GitHub Release"
-    needs: [ bump-version, run-ci ]
+    name: 'Create GitHub Release'
+    needs: [bump-version, run-ci]
     outputs:
       release-name: ${{ steps.create-release.outputs.RELEASE_NAME }}
       release-url: ${{ steps.create-release.outputs.RELEASE_URL }}
     permissions:
       contents: write # needed to create a new release
-      actions: read # needed to download the artifacts from the CI workflow
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout repository"
+      - name: 'Checkout repository'
         uses: actions/checkout@v6
         with:
           ref: ${{ needs.bump-version.outputs.release-branch }}
 
-      - name: "Setup java"
+      - name: 'Setup java'
         uses: actions/setup-java@v5
         with:
-          distribution: "sapmachine"
+          distribution: 'sapmachine'
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
-      - name: "Build SDK"
+      - name: 'Build SDK'
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests"
           mvn $MVN_ARGS
 
-      - name: "Create Release"
+      - name: 'Create Release'
         id: create-release
         run: |
           # Create a tarball of the whole repository into release-artifacts.tar.gz
@@ -139,63 +138,73 @@ jobs:
 
           RELEASE_NAME="rel/${{ needs.bump-version.outputs.release-version }}"
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_OUTPUT
-          
+
           RELEASE_URL=$(gh release create "$RELEASE_NAME" \
           --target ${{ needs.bump-version.outputs.release-commit }} \
           --title "Release ${{ needs.bump-version.outputs.release-version }}" \
           --draft --generate-notes \
           release-artifacts.tar.gz)
-          
+
           echo "RELEASE_URL=$RELEASE_URL" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ github.token }}
 
-
   create-release-notes-pr:
-    name: "Create Release Notes PR"
-    needs: [ bump-version, run-ci ]
+    name: 'Create Release Notes PR'
+    needs: [bump-version, run-ci]
     outputs:
       pr-url: ${{ steps.create-release-notes-pr.outputs.PR_URL }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
+    permissions: {}
     steps:
-      - name: "Checkout Code Repository"
+      - name: 'Generate GitHub App token'
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: |
+            ai-sdk-java
+            ai-sdk
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: 'Checkout Code Repository'
         uses: actions/checkout@v6
         with:
           ref: ${{ needs.bump-version.outputs.release-branch }}
-          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
-      - name: "Checkout Docs Repository"
+          token: ${{ steps.app-token.outputs.token }}
+      - name: 'Checkout Docs Repository'
         uses: actions/checkout@v6
         with:
           repository: ${{ env.DOCS_REPO }}
           path: .ai-sdk-docs
-          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
-      - name: "Prepare Git"
+          token: ${{ steps.app-token.outputs.token }}
+      - name: 'Prepare Git'
         working-directory: ./.ai-sdk-docs
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
 
-      - name: "Create Release Notes Branch"
+      - name: 'Create Release Notes Branch'
         working-directory: ./.ai-sdk-docs
         run: git checkout -B java/release-notes-${{ needs.bump-version.outputs.release-version }}
 
-      - name: "Create Release Notes"
+      - name: 'Create Release Notes'
         run: python .pipeline/scripts/release_notes_automation.py --version ${{ needs.bump-version.outputs.release-version }} --folder ".ai-sdk-docs/docs-java/release-notes"
 
-      - name: "Commit Release Notes"
+      - name: 'Commit Release Notes'
         working-directory: ./.ai-sdk-docs
         run: |
           git add .
           git commit -m "Add new release notes"
 
-      - name: "Push Release Notes"
+      - name: 'Push Release Notes'
         working-directory: ./.ai-sdk-docs
         run: git push origin java/release-notes-${{ needs.bump-version.outputs.release-version }}
 
-      - name: "Create Release Notes PR"
+      - name: 'Create Release Notes PR'
         id: create-release-notes-pr
         working-directory: ./.ai-sdk-docs
         run: |
@@ -214,9 +223,9 @@ jobs:
           PR_URL=$(gh pr create --title "$PR_TITLE" --body "$PR_BODY" --repo "${{ env.DOCS_REPO }}")
           echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
         env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
-      - name: "Reset Release Notes for Next Version"
+      - name: 'Reset Release Notes for Next Version'
         run: |
           rm -rf .ai-sdk-docs
 
@@ -233,36 +242,45 @@ jobs:
           git push
 
   create-code-pr:
-    name: "Create Code PR"
-    needs: [ bump-version, run-ci, create-release, create-release-notes-pr ]
+    name: 'Create Code PR'
+    needs: [bump-version, run-ci, create-release, create-release-notes-pr]
     outputs:
       pr-url: ${{ steps.create-code-pr.outputs.PR_URL }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
+    permissions: {}
     steps:
-      - name: "Checkout Repository"
+      - name: 'Generate GitHub App token'
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP  
+          repositories: ai-sdk-java
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: 'Checkout Repository'
         uses: actions/checkout@v6
         with:
           ref: ${{ needs.bump-version.outputs.release-branch }}
-          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }} # this is needed so that the same token is used when pushing our changes later. Otherwise, our on: push workflows (i.e. our continuous integration) won't be triggered.
-      - name: "Prepare Git"
+          token: ${{ steps.app-token.outputs.token }} # this is needed so that the same token is used when pushing our changes later. Otherwise, our on: push workflows (i.e. our continuous integration) won't be triggered.
+      - name: 'Prepare Git'
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
 
-      - name: "Set New Version"
+      - name: 'Set New Version'
         run: |
           python .pipeline/scripts/set-release-versions.py --version ${{ needs.bump-version.outputs.new-version }}
           git add .
           git commit -m "Update to version ${{ needs.bump-version.outputs.new-version }}"
           git push
 
-      - name: "Create Code PR"
+      - name: 'Create Code PR'
         run: |
           COMMIT_URL=${{ github.event.repository.html_url }}/commit/${{ needs.bump-version.outputs.release-commit }}
-          
+
           PR_URL=$(gh pr create --title "feat: Release ${{ needs.bump-version.outputs.release-version }}" --body "## TODOs
           - [ ] Review the changes in [the release commit]($COMMIT_URL)
           - [ ] Review **and approve** the [Release Notes PR](${{ needs.create-release-notes-pr.outputs.pr-url }})
@@ -272,49 +290,63 @@ jobs:
           - [ ] Once the `Perform Release` workflow is through, head over to the [Central Sonatype](https://central.sonatype.com/publishing/deployments) and log in with the credentials in the Team Password Safe. There should be a published release.")
           echo "PR_URL=$PR_URL" >> $GITHUB_OUTPUT
         env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
   handle-failure:
     runs-on: ubuntu-latest
-    needs: [ bump-version, create-release, create-release-notes-pr, create-code-pr ]
+    needs:
+      [bump-version, create-release, create-release-notes-pr, create-code-pr]
     permissions:
-      contents: write # needed to delete the GitHub release
+      contents: read
     if: ${{ failure() }}
     steps:
-      - name: "Checkout Repository"
+      - name: 'Generate GitHub App token'
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: |
+            ai-sdk-java
+            ai-sdk
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: 'Checkout Repository'
         uses: actions/checkout@v6
         with:
           ref: ${{ github.event.inputs.branch }}
 
-      - name: "Prepare git"
+      - name: 'Prepare git'
         run: |
           git config --global user.email "cloudsdk@sap.com"
           git config --global user.name "SAP Cloud SDK Bot"
 
-      - name: "Delete Release"
+      - name: 'Delete Release'
         if: ${{ needs.create-release.outputs.release-url != '' }}
         run: gh release delete --repo "${{ github.repository }}" ${{ needs.create-release.outputs.release-name }} --yes
         env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         continue-on-error: true
 
-      - name: "Delete Release Branch"
+      - name: 'Delete Release Branch'
         if: ${{ needs.bump-version.outputs.release-branch != '' }}
         run: git push --delete origin ${{ needs.bump-version.outputs.release-branch }}
         env:
-          GITHUB_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         continue-on-error: true
 
-      - name: "Delete Release Tag"
+      - name: 'Delete Release Tag'
         if: ${{ needs.bump-version.outputs.release-tag != '' }}
         run: git push --delete origin ${{ needs.bump-version.outputs.release-tag }}
         env:
-          GITHUB_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
         continue-on-error: true
 
-      - name: "Delete Release Notes PR"
+      - name: 'Delete Release Notes PR'
         if: ${{ needs.create-release-notes-pr.outputs.pr-url != '' }}
         run: gh pr close --repo "${{ env.DOCS_REPO }}" ${{ needs.create-release-notes-pr.outputs.pr-url }} --delete-branch
         env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         continue-on-error: true

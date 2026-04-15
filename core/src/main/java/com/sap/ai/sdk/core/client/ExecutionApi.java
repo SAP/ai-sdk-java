@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.core.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.AiEnactmentCreationRequest;
 import com.sap.ai.sdk.core.model.AiExecutionBulkModificationRequest;
@@ -10,34 +11,22 @@ import com.sap.ai.sdk.core.model.AiExecutionList;
 import com.sap.ai.sdk.core.model.AiExecutionModificationRequest;
 import com.sap.ai.sdk.core.model.AiExecutionModificationResponse;
 import com.sap.ai.sdk.core.model.AiExecutionResponseWithDetails;
-import com.sap.ai.sdk.core.model.AiExecutionSchedule;
-import com.sap.ai.sdk.core.model.AiExecutionScheduleCreationData;
-import com.sap.ai.sdk.core.model.AiExecutionScheduleCreationResponse;
-import com.sap.ai.sdk.core.model.AiExecutionScheduleDeletionResponse;
-import com.sap.ai.sdk.core.model.AiExecutionScheduleList;
-import com.sap.ai.sdk.core.model.AiExecutionScheduleModificationRequest;
-import com.sap.ai.sdk.core.model.AiExecutionScheduleModificationResponse;
 import com.sap.ai.sdk.core.model.RTALogCommonResponse;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.Pair;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.41.0.
+ * AI Core in version 2.42.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -46,7 +35,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
-public class ExecutionApi extends AbstractOpenApiService {
+public class ExecutionApi extends BaseApi {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public ExecutionApi() {
@@ -60,6 +49,23 @@ public class ExecutionApi extends AbstractOpenApiService {
    */
   public ExecutionApi(@Nonnull final AiCoreService aiCoreService) {
     super(aiCoreService.getApiClient());
+  }
+
+  private ExecutionApi(@Nonnull final ApiClient apiClient) {
+    super(apiClient);
+  }
+
+  /**
+   * Creates a new API instance with additional default headers.
+   *
+   * @param defaultHeaders Additional headers to include in all requests
+   * @return A new API instance with the combined headers
+   */
+  public ExecutionApi withDefaultHeaders(@Nonnull final Map<String, String> defaultHeaders) {
+    final var api = new ExecutionApi(apiClient);
+    api.defaultHeaders.putAll(this.defaultHeaders);
+    api.defaultHeaders.putAll(defaultHeaders);
+    return api;
   }
 
   /**
@@ -82,51 +88,52 @@ public class ExecutionApi extends AbstractOpenApiService {
       @Nonnull final String aiResourceGroup,
       @Nonnull final AiExecutionBulkModificationRequest aiExecutionBulkModificationRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiExecutionBulkModificationRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling batchModify");
+              "Missing the required parameter 'aiResourceGroup' when calling batchModify")
+          .statusCode(400);
     }
 
     // verify the required parameter 'aiExecutionBulkModificationRequest' is set
     if (aiExecutionBulkModificationRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiExecutionBulkModificationRequest' when calling batchModify");
+              "Missing the required parameter 'aiExecutionBulkModificationRequest' when calling batchModify")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executions").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/executions";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/merge-patch+json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<AiExecutionBulkModificationResponse> localVarReturnType =
+        new TypeReference<AiExecutionBulkModificationResponse>() {};
 
-    final ParameterizedTypeReference<AiExecutionBulkModificationResponse> localVarReturnType =
-        new ParameterizedTypeReference<AiExecutionBulkModificationResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.PATCH,
+        "PATCH",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        aiExecutionBulkModificationRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -141,7 +148,7 @@ public class ExecutionApi extends AbstractOpenApiService {
    * <p><b>400</b> - The specification of the resource was incorrect
    *
    * @param aiResourceGroup (required) Specify a resource group id
-   * @param executableIds (optional Limit query to only these executable IDs
+   * @param executableIds (optional) Limit query to only these executable IDs
    * @param configurationId (optional) Configuration identifier
    * @param scenarioId (optional) Scenario identifier
    * @param executionScheduleId (optional) Execution Schedule identifier
@@ -158,57 +165,52 @@ public class ExecutionApi extends AbstractOpenApiService {
       @Nullable final String executionScheduleId,
       @Nullable final String status)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling count");
+              "Missing the required parameter 'aiResourceGroup' when calling count")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executions/$count").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/executions/$count";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(
-            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
-            "executableIds",
-            executableIds));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "configurationId", configurationId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "scenarioId", scenarioId));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "executionScheduleId", executionScheduleId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "status", status));
-
+    localVarCollectionQueryParams.addAll(
+        ApiClient.parameterToPairs("csv", "executableIds", executableIds));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("configurationId", configurationId));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("scenarioId", scenarioId));
+    localVarQueryParams.addAll(
+        ApiClient.parameterToPair("executionScheduleId", executionScheduleId));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("status", status));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"text/plain", "application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<Integer> localVarReturnType =
-        new ParameterizedTypeReference<Integer>() {};
+    final TypeReference<Integer> localVarReturnType = new TypeReference<Integer>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -232,93 +234,6 @@ public class ExecutionApi extends AbstractOpenApiService {
   }
 
   /**
-   * Get number of execution schedules
-   *
-   * <p>Retrieve the number of scheduled executions. The number can be filtered by configurationId
-   * or executionScheduleStatus.
-   *
-   * <p><b>200</b> - Number of execution schedules
-   *
-   * <p><b>400</b> - The specification of the resource was incorrect
-   *
-   * @param aiResourceGroup (required) Specify a resource group id
-   * @param configurationId (optional) Configuration identifier
-   * @param status (optional) Execution Schedule status
-   * @return Integer
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public Integer count_0(
-      @Nonnull final String aiResourceGroup,
-      @Nullable final String configurationId,
-      @Nullable final String status)
-      throws OpenApiRequestException {
-    final Object localVarPostBody = null;
-
-    // verify the required parameter 'aiResourceGroup' is set
-    if (aiResourceGroup == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling count_0");
-    }
-
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executionSchedules/$count").build().toUriString();
-
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
-
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "configurationId", configurationId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "status", status));
-
-    if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
-
-    final String[] localVarAccepts = {"text/plain", "application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
-
-    final ParameterizedTypeReference<Integer> localVarReturnType =
-        new ParameterizedTypeReference<Integer>() {};
-    return apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.GET,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-  }
-
-  /**
-   * Get number of execution schedules
-   *
-   * <p>Retrieve the number of scheduled executions. The number can be filtered by configurationId
-   * or executionScheduleStatus.
-   *
-   * <p><b>200</b> - Number of execution schedules
-   *
-   * <p><b>400</b> - The specification of the resource was incorrect
-   *
-   * @param aiResourceGroup Specify a resource group id
-   * @return Integer
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public Integer count_0(@Nonnull final String aiResourceGroup) throws OpenApiRequestException {
-    return count_0(aiResourceGroup, null, null);
-  }
-
-  /**
    * Create execution
    *
    * <p>Create an execution using the configuration specified by configurationId.
@@ -337,120 +252,52 @@ public class ExecutionApi extends AbstractOpenApiService {
       @Nonnull final String aiResourceGroup,
       @Nonnull final AiEnactmentCreationRequest aiEnactmentCreationRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiEnactmentCreationRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling create");
+              "Missing the required parameter 'aiResourceGroup' when calling create")
+          .statusCode(400);
     }
 
     // verify the required parameter 'aiEnactmentCreationRequest' is set
     if (aiEnactmentCreationRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiEnactmentCreationRequest' when calling create");
+              "Missing the required parameter 'aiEnactmentCreationRequest' when calling create")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executions").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/executions";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<AiExecutionCreationResponse> localVarReturnType =
+        new TypeReference<AiExecutionCreationResponse>() {};
 
-    final ParameterizedTypeReference<AiExecutionCreationResponse> localVarReturnType =
-        new ParameterizedTypeReference<AiExecutionCreationResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        aiEnactmentCreationRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-  }
-
-  /**
-   * Create execution schedule
-   *
-   * <p>Create an execution schedule using the configuration specified by configurationId, and
-   * schedule.
-   *
-   * <p><b>202</b> - The execution schedule has been created successfully
-   *
-   * <p><b>400</b> - The specification of the resource was incorrect
-   *
-   * @param aiResourceGroup Specify a resource group id
-   * @param aiExecutionScheduleCreationData The value for the parameter
-   *     aiExecutionScheduleCreationData
-   * @return AiExecutionScheduleCreationResponse
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public AiExecutionScheduleCreationResponse create_0(
-      @Nonnull final String aiResourceGroup,
-      @Nonnull final AiExecutionScheduleCreationData aiExecutionScheduleCreationData)
-      throws OpenApiRequestException {
-    final Object localVarPostBody = aiExecutionScheduleCreationData;
-
-    // verify the required parameter 'aiResourceGroup' is set
-    if (aiResourceGroup == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling create_0");
-    }
-
-    // verify the required parameter 'aiExecutionScheduleCreationData' is set
-    if (aiExecutionScheduleCreationData == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiExecutionScheduleCreationData' when calling create_0");
-    }
-
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executionSchedules").build().toUriString();
-
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
-
-    if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
-
-    final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
-
-    final ParameterizedTypeReference<AiExecutionScheduleCreationResponse> localVarReturnType =
-        new ParameterizedTypeReference<AiExecutionScheduleCreationResponse>() {};
-    return apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.POST,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -476,129 +323,57 @@ public class ExecutionApi extends AbstractOpenApiService {
   public AiExecutionDeletionResponse delete(
       @Nonnull final String aiResourceGroup, @Nonnull final String executionId)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling delete");
+              "Missing the required parameter 'aiResourceGroup' when calling delete")
+          .statusCode(400);
     }
 
     // verify the required parameter 'executionId' is set
     if (executionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'executionId' when calling delete");
+              "Missing the required parameter 'executionId' when calling delete")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("executionId", executionId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executions/{executionId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/executions/{executionId}"
+            .replaceAll(
+                "\\{" + "executionId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(executionId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<AiExecutionDeletionResponse> localVarReturnType =
-        new ParameterizedTypeReference<AiExecutionDeletionResponse>() {};
+    final TypeReference<AiExecutionDeletionResponse> localVarReturnType =
+        new TypeReference<AiExecutionDeletionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.DELETE,
+        "DELETE",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-  }
-
-  /**
-   * Delete execution schedule
-   *
-   * <p>Delete the execution schedule with executionScheduleId.
-   *
-   * <p><b>202</b> - The execution schedule has been deleted successfully
-   *
-   * <p><b>400</b> - The specification of the resource was incorrect
-   *
-   * <p><b>404</b> - The specified resource was not found
-   *
-   * @param aiResourceGroup Specify a resource group id
-   * @param executionScheduleId Execution Schedule identifier
-   * @return AiExecutionScheduleDeletionResponse
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public AiExecutionScheduleDeletionResponse delete_0(
-      @Nonnull final String aiResourceGroup, @Nonnull final String executionScheduleId)
-      throws OpenApiRequestException {
-    final Object localVarPostBody = null;
-
-    // verify the required parameter 'aiResourceGroup' is set
-    if (aiResourceGroup == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling delete_0");
-    }
-
-    // verify the required parameter 'executionScheduleId' is set
-    if (executionScheduleId == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'executionScheduleId' when calling delete_0");
-    }
-
-    // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("executionScheduleId", executionScheduleId);
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executionSchedules/{executionScheduleId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
-
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
-
-    if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
-
-    final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
-
-    final ParameterizedTypeReference<AiExecutionScheduleDeletionResponse> localVarReturnType =
-        new ParameterizedTypeReference<AiExecutionScheduleDeletionResponse>() {};
-    return apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.DELETE,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -625,58 +400,58 @@ public class ExecutionApi extends AbstractOpenApiService {
       @Nonnull final String executionId,
       @Nullable final String $select)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling get");
+              "Missing the required parameter 'aiResourceGroup' when calling get")
+          .statusCode(400);
     }
 
     // verify the required parameter 'executionId' is set
     if (executionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'executionId' when calling get");
+              "Missing the required parameter 'executionId' when calling get")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("executionId", executionId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executions/{executionId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/executions/{executionId}"
+            .replaceAll(
+                "\\{" + "executionId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(executionId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$select", $select));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$select", $select));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<AiExecutionResponseWithDetails> localVarReturnType =
-        new ParameterizedTypeReference<AiExecutionResponseWithDetails>() {};
+    final TypeReference<AiExecutionResponseWithDetails> localVarReturnType =
+        new TypeReference<AiExecutionResponseWithDetails>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -743,55 +518,54 @@ public class ExecutionApi extends AbstractOpenApiService {
       @Nullable final OffsetDateTime end,
       @Nullable final String $order)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'executionId' is set
     if (executionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'executionId' when calling getLogs");
+              "Missing the required parameter 'executionId' when calling getLogs")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("executionId", executionId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executions/{executionId}/logs")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/executions/{executionId}/logs"
+            .replaceAll(
+                "\\{" + "executionId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(executionId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "start", start));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "end", end));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$order", $order));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("start", start));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("end", end));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$order", $order));
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<RTALogCommonResponse> localVarReturnType =
-        new ParameterizedTypeReference<RTALogCommonResponse>() {};
+    final TypeReference<RTALogCommonResponse> localVarReturnType =
+        new TypeReference<RTALogCommonResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -822,79 +596,6 @@ public class ExecutionApi extends AbstractOpenApiService {
   }
 
   /**
-   * Get information about an execution schedule
-   *
-   * <p>Retrieve details for execution schedule with executionScheduleId.
-   *
-   * <p><b>200</b> - Information about the execution schedule
-   *
-   * <p><b>400</b> - The specification of the resource was incorrect
-   *
-   * <p><b>404</b> - The specified resource was not found
-   *
-   * @param aiResourceGroup Specify a resource group id
-   * @param executionScheduleId Execution Schedule identifier
-   * @return AiExecutionSchedule
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public AiExecutionSchedule get_0(
-      @Nonnull final String aiResourceGroup, @Nonnull final String executionScheduleId)
-      throws OpenApiRequestException {
-    final Object localVarPostBody = null;
-
-    // verify the required parameter 'aiResourceGroup' is set
-    if (aiResourceGroup == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling get_0");
-    }
-
-    // verify the required parameter 'executionScheduleId' is set
-    if (executionScheduleId == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'executionScheduleId' when calling get_0");
-    }
-
-    // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("executionScheduleId", executionScheduleId);
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executionSchedules/{executionScheduleId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
-
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
-
-    if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
-
-    final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
-
-    final ParameterizedTypeReference<AiExecutionSchedule> localVarReturnType =
-        new ParameterizedTypeReference<AiExecutionSchedule>() {};
-    return apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.GET,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-  }
-
-  /**
    * Update target status of an execution
    *
    * <p>Update target status of the execution to stop an execution.
@@ -920,145 +621,63 @@ public class ExecutionApi extends AbstractOpenApiService {
       @Nonnull final String executionId,
       @Nonnull final AiExecutionModificationRequest aiExecutionModificationRequest)
       throws OpenApiRequestException {
-    final Object localVarPostBody = aiExecutionModificationRequest;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling modify");
+              "Missing the required parameter 'aiResourceGroup' when calling modify")
+          .statusCode(400);
     }
 
     // verify the required parameter 'executionId' is set
     if (executionId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'executionId' when calling modify");
+              "Missing the required parameter 'executionId' when calling modify")
+          .statusCode(400);
     }
 
     // verify the required parameter 'aiExecutionModificationRequest' is set
     if (aiExecutionModificationRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiExecutionModificationRequest' when calling modify");
+              "Missing the required parameter 'aiExecutionModificationRequest' when calling modify")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("executionId", executionId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executions/{executionId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/lm/executions/{executionId}"
+            .replaceAll(
+                "\\{" + "executionId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(executionId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<AiExecutionModificationResponse> localVarReturnType =
+        new TypeReference<AiExecutionModificationResponse>() {};
 
-    final ParameterizedTypeReference<AiExecutionModificationResponse> localVarReturnType =
-        new ParameterizedTypeReference<AiExecutionModificationResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.PATCH,
+        "PATCH",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        aiExecutionModificationRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-  }
-
-  /**
-   * Update an execution schedule
-   *
-   * <p>Update details of an execution schedule
-   *
-   * <p><b>202</b> - The execution schedule has been modified successfully
-   *
-   * <p><b>400</b> - The specification of the resource was incorrect
-   *
-   * <p><b>404</b> - The specified resource was not found
-   *
-   * @param aiResourceGroup Specify a resource group id
-   * @param executionScheduleId Execution Schedule identifier
-   * @param aiExecutionScheduleModificationRequest The value for the parameter
-   *     aiExecutionScheduleModificationRequest
-   * @return AiExecutionScheduleModificationResponse
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public AiExecutionScheduleModificationResponse modify_0(
-      @Nonnull final String aiResourceGroup,
-      @Nonnull final String executionScheduleId,
-      @Nonnull final AiExecutionScheduleModificationRequest aiExecutionScheduleModificationRequest)
-      throws OpenApiRequestException {
-    final Object localVarPostBody = aiExecutionScheduleModificationRequest;
-
-    // verify the required parameter 'aiResourceGroup' is set
-    if (aiResourceGroup == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling modify_0");
-    }
-
-    // verify the required parameter 'executionScheduleId' is set
-    if (executionScheduleId == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'executionScheduleId' when calling modify_0");
-    }
-
-    // verify the required parameter 'aiExecutionScheduleModificationRequest' is set
-    if (aiExecutionScheduleModificationRequest == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiExecutionScheduleModificationRequest' when calling modify_0");
-    }
-
-    // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("executionScheduleId", executionScheduleId);
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executionSchedules/{executionScheduleId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
-
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
-
-    if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
-
-    final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
-
-    final ParameterizedTypeReference<AiExecutionScheduleModificationResponse> localVarReturnType =
-        new ParameterizedTypeReference<AiExecutionScheduleModificationResponse>() {};
-    return apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.PATCH,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -1075,7 +694,7 @@ public class ExecutionApi extends AbstractOpenApiService {
    * <p><b>400</b> - The specification of the resource was incorrect
    *
    * @param aiResourceGroup (required) Specify a resource group id
-   * @param executableIds (optional Limit query to only these executable IDs
+   * @param executableIds (optional) Limit query to only these executable IDs
    * @param configurationId (optional) Configuration identifier
    * @param scenarioId (optional) Scenario identifier
    * @param executionScheduleId (optional) Execution Schedule identifier
@@ -1098,60 +717,56 @@ public class ExecutionApi extends AbstractOpenApiService {
       @Nullable final Integer $skip,
       @Nullable final String $select)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'aiResourceGroup' is set
     if (aiResourceGroup == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling query");
+              "Missing the required parameter 'aiResourceGroup' when calling query")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executions").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/lm/executions";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(
-            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
-            "executableIds",
-            executableIds));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "configurationId", configurationId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "scenarioId", scenarioId));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "executionScheduleId", executionScheduleId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "status", status));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$select", $select));
-
+    localVarCollectionQueryParams.addAll(
+        ApiClient.parameterToPairs("csv", "executableIds", executableIds));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("configurationId", configurationId));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("scenarioId", scenarioId));
+    localVarQueryParams.addAll(
+        ApiClient.parameterToPair("executionScheduleId", executionScheduleId));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("status", status));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$select", $select));
     if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<AiExecutionList> localVarReturnType =
-        new ParameterizedTypeReference<AiExecutionList>() {};
+    final TypeReference<AiExecutionList> localVarReturnType =
+        new TypeReference<AiExecutionList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -1175,101 +790,5 @@ public class ExecutionApi extends AbstractOpenApiService {
   public AiExecutionList query(@Nonnull final String aiResourceGroup)
       throws OpenApiRequestException {
     return query(aiResourceGroup, null, null, null, null, null, null, null, null);
-  }
-
-  /**
-   * Get list of execution schedules
-   *
-   * <p>Retrieve a list of execution schedules that match the specified filter criteria. Filter
-   * criteria include executionScheduleStatus or a configurationId. With top/skip parameters it is
-   * possible to paginate the result list.
-   *
-   * <p><b>200</b> - A list of execution schedules
-   *
-   * <p><b>400</b> - The specification of the resource was incorrect
-   *
-   * @param aiResourceGroup (required) Specify a resource group id
-   * @param configurationId (optional) Configuration identifier
-   * @param status (optional) Execution Schedule status
-   * @param $top (optional, default to 10000) Number of results to display
-   * @param $skip (optional) Number of results to be skipped from the ordered list of results
-   * @return AiExecutionScheduleList
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public AiExecutionScheduleList query_0(
-      @Nonnull final String aiResourceGroup,
-      @Nullable final String configurationId,
-      @Nullable final String status,
-      @Nullable final Integer $top,
-      @Nullable final Integer $skip)
-      throws OpenApiRequestException {
-    final Object localVarPostBody = null;
-
-    // verify the required parameter 'aiResourceGroup' is set
-    if (aiResourceGroup == null) {
-      throw new OpenApiRequestException(
-          "Missing the required parameter 'aiResourceGroup' when calling query_0");
-    }
-
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/lm/executionSchedules").build().toUriString();
-
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
-
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "configurationId", configurationId));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "status", status));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-
-    if (aiResourceGroup != null)
-      localVarHeaderParams.add("AI-Resource-Group", apiClient.parameterToString(aiResourceGroup));
-
-    final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
-
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
-
-    final ParameterizedTypeReference<AiExecutionScheduleList> localVarReturnType =
-        new ParameterizedTypeReference<AiExecutionScheduleList>() {};
-    return apiClient.invokeAPI(
-        localVarPath,
-        HttpMethod.GET,
-        localVarQueryParams,
-        localVarPostBody,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarAuthNames,
-        localVarReturnType);
-  }
-
-  /**
-   * Get list of execution schedules
-   *
-   * <p>Retrieve a list of execution schedules that match the specified filter criteria. Filter
-   * criteria include executionScheduleStatus or a configurationId. With top/skip parameters it is
-   * possible to paginate the result list.
-   *
-   * <p><b>200</b> - A list of execution schedules
-   *
-   * <p><b>400</b> - The specification of the resource was incorrect
-   *
-   * @param aiResourceGroup Specify a resource group id
-   * @return AiExecutionScheduleList
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
-   */
-  @Nonnull
-  public AiExecutionScheduleList query_0(@Nonnull final String aiResourceGroup)
-      throws OpenApiRequestException {
-    return query_0(aiResourceGroup, null, null, null, null);
   }
 }

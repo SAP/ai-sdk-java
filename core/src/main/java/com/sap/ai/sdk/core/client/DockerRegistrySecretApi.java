@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.core.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.BcknddockerRegistrySecretCreationResponse;
 import com.sap.ai.sdk.core.model.BcknddockerRegistrySecretDeletionResponse;
@@ -8,23 +9,20 @@ import com.sap.ai.sdk.core.model.BcknddockerRegistrySecretStatus;
 import com.sap.ai.sdk.core.model.BcknddockerRegistrySecretStatusResponse;
 import com.sap.ai.sdk.core.model.BcknddockerRegistrySecretWithSensitiveDataRequest;
 import com.sap.ai.sdk.core.model.KubesubmitV4DockerRegistrySecretsCreateRequest;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.Pair;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
- * AI Core in version 2.41.0.
+ * AI Core in version 2.42.0.
  *
  * <p>Provides tools to manage your scenarios and workflows in SAP AI Core. Execute pipelines as a
  * batch job, for example to pre-process or train your models, or perform batch inference. Serve
@@ -33,7 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
-public class DockerRegistrySecretApi extends AbstractOpenApiService {
+public class DockerRegistrySecretApi extends BaseApi {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public DockerRegistrySecretApi() {
@@ -47,6 +45,24 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
    */
   public DockerRegistrySecretApi(@Nonnull final AiCoreService aiCoreService) {
     super(aiCoreService.getApiClient());
+  }
+
+  private DockerRegistrySecretApi(@Nonnull final ApiClient apiClient) {
+    super(apiClient);
+  }
+
+  /**
+   * Creates a new API instance with additional default headers.
+   *
+   * @param defaultHeaders Additional headers to include in all requests
+   * @return A new API instance with the combined headers
+   */
+  public DockerRegistrySecretApi withDefaultHeaders(
+      @Nonnull final Map<String, String> defaultHeaders) {
+    final var api = new DockerRegistrySecretApi(apiClient);
+    api.defaultHeaders.putAll(this.defaultHeaders);
+    api.defaultHeaders.putAll(defaultHeaders);
+    return api;
   }
 
   /**
@@ -75,45 +91,45 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
               kubesubmitV4DockerRegistrySecretsCreateRequest,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = kubesubmitV4DockerRegistrySecretsCreateRequest;
 
     // verify the required parameter 'kubesubmitV4DockerRegistrySecretsCreateRequest' is set
     if (kubesubmitV4DockerRegistrySecretsCreateRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'kubesubmitV4DockerRegistrySecretsCreateRequest' when calling create");
+              "Missing the required parameter 'kubesubmitV4DockerRegistrySecretsCreateRequest' when calling create")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/dockerRegistrySecrets").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/admin/dockerRegistrySecrets";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<BcknddockerRegistrySecretCreationResponse> localVarReturnType =
+        new TypeReference<BcknddockerRegistrySecretCreationResponse>() {};
 
-    final ParameterizedTypeReference<BcknddockerRegistrySecretCreationResponse> localVarReturnType =
-        new ParameterizedTypeReference<BcknddockerRegistrySecretCreationResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        kubesubmitV4DockerRegistrySecretsCreateRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -166,50 +182,50 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
   public BcknddockerRegistrySecretDeletionResponse delete(
       @Nonnull final String dockerRegistryName, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'dockerRegistryName' is set
     if (dockerRegistryName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'dockerRegistryName' when calling delete");
+              "Missing the required parameter 'dockerRegistryName' when calling delete")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("dockerRegistryName", dockerRegistryName);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/dockerRegistrySecrets/{dockerRegistryName}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/admin/dockerRegistrySecrets/{dockerRegistryName}"
+            .replaceAll(
+                "\\{" + "dockerRegistryName" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(dockerRegistryName)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BcknddockerRegistrySecretDeletionResponse> localVarReturnType =
-        new ParameterizedTypeReference<BcknddockerRegistrySecretDeletionResponse>() {};
+    final TypeReference<BcknddockerRegistrySecretDeletionResponse> localVarReturnType =
+        new TypeReference<BcknddockerRegistrySecretDeletionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.DELETE,
+        "DELETE",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -260,50 +276,50 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
   public BcknddockerRegistrySecretStatus get(
       @Nonnull final String dockerRegistryName, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'dockerRegistryName' is set
     if (dockerRegistryName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'dockerRegistryName' when calling get");
+              "Missing the required parameter 'dockerRegistryName' when calling get")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("dockerRegistryName", dockerRegistryName);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/dockerRegistrySecrets/{dockerRegistryName}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/admin/dockerRegistrySecrets/{dockerRegistryName}"
+            .replaceAll(
+                "\\{" + "dockerRegistryName" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(dockerRegistryName)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BcknddockerRegistrySecretStatus> localVarReturnType =
-        new ParameterizedTypeReference<BcknddockerRegistrySecretStatus>() {};
+    final TypeReference<BcknddockerRegistrySecretStatus> localVarReturnType =
+        new TypeReference<BcknddockerRegistrySecretStatus>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -361,57 +377,56 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
               bcknddockerRegistrySecretWithSensitiveDataRequest,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bcknddockerRegistrySecretWithSensitiveDataRequest;
 
     // verify the required parameter 'dockerRegistryName' is set
     if (dockerRegistryName == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'dockerRegistryName' when calling patch");
+              "Missing the required parameter 'dockerRegistryName' when calling patch")
+          .statusCode(400);
     }
 
     // verify the required parameter 'bcknddockerRegistrySecretWithSensitiveDataRequest' is set
     if (bcknddockerRegistrySecretWithSensitiveDataRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'bcknddockerRegistrySecretWithSensitiveDataRequest' when calling patch");
+              "Missing the required parameter 'bcknddockerRegistrySecretWithSensitiveDataRequest' when calling patch")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("dockerRegistryName", dockerRegistryName);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/dockerRegistrySecrets/{dockerRegistryName}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/admin/dockerRegistrySecrets/{dockerRegistryName}"
+            .replaceAll(
+                "\\{" + "dockerRegistryName" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(dockerRegistryName)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/merge-patch+json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<BcknddockerRegistrySecretModificationResponse> localVarReturnType =
+        new TypeReference<BcknddockerRegistrySecretModificationResponse>() {};
 
-    final ParameterizedTypeReference<BcknddockerRegistrySecretModificationResponse>
-        localVarReturnType =
-            new ParameterizedTypeReference<BcknddockerRegistrySecretModificationResponse>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.PATCH,
+        "PATCH",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        bcknddockerRegistrySecretWithSensitiveDataRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -475,43 +490,42 @@ public class DockerRegistrySecretApi extends AbstractOpenApiService {
       @Nullable final Boolean $count,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/dockerRegistrySecrets").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/admin/dockerRegistrySecrets";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$count", $count));
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BcknddockerRegistrySecretStatusResponse> localVarReturnType =
-        new ParameterizedTypeReference<BcknddockerRegistrySecretStatusResponse>() {};
+    final TypeReference<BcknddockerRegistrySecretStatusResponse> localVarReturnType =
+        new TypeReference<BcknddockerRegistrySecretStatusResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 

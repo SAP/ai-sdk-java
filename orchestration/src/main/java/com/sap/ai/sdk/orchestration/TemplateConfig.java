@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
+import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.TENANT;
+
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
@@ -13,7 +14,6 @@ import lombok.EqualsAndHashCode;
  * @since 1.4.0
  */
 @EqualsAndHashCode
-@Beta
 public abstract class TemplateConfig {
 
   /**
@@ -35,28 +35,33 @@ public abstract class TemplateConfig {
   }
 
   /**
-   * Build a template reference.
+   * Build a template reference with tenant level scope.
    *
    * @return An intermediate object to build the template reference.
    */
   @Nonnull
   public static ReferenceBuilder reference() {
     final var templ = TemplateRefByScenarioNameVersion.create();
-    return s -> n -> v -> new OrchestrationTemplateReference(templ.scenario(s).name(n).version(v));
+
+    return scenario ->
+        name ->
+            version ->
+                new OrchestrationTemplateReference(
+                    templ.scenario(scenario).name(name).version(version), TENANT);
   }
 
   /** Intermediate object to build a template reference. */
   @FunctionalInterface
   public interface ReferenceBuilder {
     /**
-     * Build a template reference with the given id.
+     * Build a template reference with the given id for tenant scope.
      *
      * @param id The id of the template.
      * @return A template reference with the given id.
      */
     @Nonnull
     default OrchestrationTemplateReference byId(@Nonnull final String id) {
-      return new OrchestrationTemplateReference(TemplateRefByID.create().id(id));
+      return new OrchestrationTemplateReference(TemplateRefByID.create().id(id), TENANT);
     }
 
     /**

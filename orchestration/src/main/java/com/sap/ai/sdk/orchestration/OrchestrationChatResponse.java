@@ -27,6 +27,8 @@ import lombok.val;
 @Value
 @RequiredArgsConstructor(access = PACKAGE)
 public class OrchestrationChatResponse {
+
+  @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
   CompletionPostResponse originalResponse;
 
   /**

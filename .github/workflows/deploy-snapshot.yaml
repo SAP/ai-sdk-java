@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-java@v5
         with:
           distribution: "sapmachine"
-          java-version: "17"
+          java-version: "21"
           server-id: artifactory-snapshots
           server-username: DEPLOYMENT_USER
           server-password: DEPLOYMENT_PASS
@@ -42,7 +42,7 @@ jobs:
 
       - name: "Slack Notification"
         if: failure()
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook

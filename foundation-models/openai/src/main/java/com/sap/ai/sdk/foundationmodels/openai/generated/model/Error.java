@@ -28,6 +28,12 @@ import javax.annotation.Nullable;
 public class Error
 // CHECKSTYLE:ON
 {
+  @JsonProperty("code")
+  private String code;
+
+  @JsonProperty("message")
+  private String message;
+
   @JsonProperty("param")
   private String param;
 
@@ -37,14 +43,70 @@ public class Error
   @JsonProperty("inner_error")
   private InnerError innerError;
 
-  @JsonProperty("code")
-  private String code;
-
-  @JsonProperty("message")
-  private String message;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
+
+  /**
+   * Set the code of this {@link Error} instance and return the same instance.
+   *
+   * @param code The code of this {@link Error}
+   * @return The same instance of this {@link Error} class
+   */
+  @Nonnull
+  public Error code(@Nullable final String code) {
+    this.code = code;
+    return this;
+  }
+
+  /**
+   * Get code
+   *
+   * @return code The code of this {@link Error} instance.
+   */
+  @Nonnull
+  public String getCode() {
+    return code;
+  }
+
+  /**
+   * Set the code of this {@link Error} instance.
+   *
+   * @param code The code of this {@link Error}
+   */
+  public void setCode(@Nullable final String code) {
+    this.code = code;
+  }
+
+  /**
+   * Set the message of this {@link Error} instance and return the same instance.
+   *
+   * @param message The message of this {@link Error}
+   * @return The same instance of this {@link Error} class
+   */
+  @Nonnull
+  public Error message(@Nullable final String message) {
+    this.message = message;
+    return this;
+  }
+
+  /**
+   * Get message
+   *
+   * @return message The message of this {@link Error} instance.
+   */
+  @Nonnull
+  public String getMessage() {
+    return message;
+  }
+
+  /**
+   * Set the message of this {@link Error} instance.
+   *
+   * @param message The message of this {@link Error}
+   */
+  public void setMessage(@Nullable final String message) {
+    this.message = message;
+  }
 
   /**
    * Set the param of this {@link Error} instance and return the same instance.
@@ -140,68 +202,6 @@ public class Error
   }
 
   /**
-   * Set the code of this {@link Error} instance and return the same instance.
-   *
-   * @param code The code of this {@link Error}
-   * @return The same instance of this {@link Error} class
-   */
-  @Nonnull
-  public Error code(@Nullable final String code) {
-    this.code = code;
-    return this;
-  }
-
-  /**
-   * Get code
-   *
-   * @return code The code of this {@link Error} instance.
-   */
-  @Nonnull
-  public String getCode() {
-    return code;
-  }
-
-  /**
-   * Set the code of this {@link Error} instance.
-   *
-   * @param code The code of this {@link Error}
-   */
-  public void setCode(@Nullable final String code) {
-    this.code = code;
-  }
-
-  /**
-   * Set the message of this {@link Error} instance and return the same instance.
-   *
-   * @param message The message of this {@link Error}
-   * @return The same instance of this {@link Error} class
-   */
-  @Nonnull
-  public Error message(@Nullable final String message) {
-    this.message = message;
-    return this;
-  }
-
-  /**
-   * Get message
-   *
-   * @return message The message of this {@link Error} instance.
-   */
-  @Nonnull
-  public String getMessage() {
-    return message;
-  }
-
-  /**
-   * Set the message of this {@link Error} instance.
-   *
-   * @param message The message of this {@link Error}
-   */
-  public void setMessage(@Nullable final String message) {
-    this.message = message;
-  }
-
-  /**
    * Get the names of the unrecognizable properties of the {@link Error}.
    *
    * @return The set of properties names
@@ -239,11 +239,11 @@ public class Error
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
+    if (code != null) declaredFields.put("code", code);
+    if (message != null) declaredFields.put("message", message);
     if (param != null) declaredFields.put("param", param);
     if (type != null) declaredFields.put("type", type);
     if (innerError != null) declaredFields.put("innerError", innerError);
-    if (code != null) declaredFields.put("code", code);
-    if (message != null) declaredFields.put("message", message);
     return declaredFields;
   }
 
@@ -269,16 +269,16 @@ public class Error
     }
     final Error error = (Error) o;
     return Objects.equals(this.cloudSdkCustomFields, error.cloudSdkCustomFields)
+        && Objects.equals(this.code, error.code)
+        && Objects.equals(this.message, error.message)
         && Objects.equals(this.param, error.param)
         && Objects.equals(this.type, error.type)
-        && Objects.equals(this.innerError, error.innerError)
-        && Objects.equals(this.code, error.code)
-        && Objects.equals(this.message, error.message);
+        && Objects.equals(this.innerError, error.innerError);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(param, type, innerError, code, message, cloudSdkCustomFields);
+    return Objects.hash(code, message, param, type, innerError, cloudSdkCustomFields);
   }
 
   @Override
@@ -286,11 +286,11 @@ public class Error
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class Error {\n");
+    sb.append("    code: ").append(toIndentedString(code)).append("\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    param: ").append(toIndentedString(param)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    innerError: ").append(toIndentedString(innerError)).append("\n");
-    sb.append("    code: ").append(toIndentedString(code)).append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

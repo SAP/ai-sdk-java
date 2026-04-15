@@ -3,7 +3,16 @@ package com.sap.ai.sdk.app.controllers;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatModel;
+import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
 import com.sap.ai.sdk.prompt.registry.PromptClient;
+import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
+import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigDeleteResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigListResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigModules;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostRequest;
@@ -11,9 +20,12 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpec;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
+import com.sap.ai.sdk.prompt.registry.model.Template;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
+import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
 import com.sap.ai.sdk.prompt.registry.spring.SpringAiConverter;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +38,6 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,23 +48,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/prompt-registry")
 class PromptRegistryController {
   static final String NAME = "java-e2e-test";
-  private static final PromptClient client = new PromptClient();
+  private static final PromptClient promptClient = new PromptClient();
+  private static final OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
 
   @GetMapping("/listTemplates")
   PromptTemplateListResponse listTemplates() {
-    return client.listPromptTemplates();
+    return promptClient.listPromptTemplates();
   }
 
   @GetMapping("/createTemplate")
   PromptTemplatePostResponse createTemplate() {
-    return client.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
+    return promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
   }
 
   @GetMapping("/updateTemplate")
   PromptTemplatePostResponse updateTemplate() {
     // create template then update
-    client.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
-    return client.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports, Politics"));
+    promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
+    return promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports, Politics"));
   }
 
   private PromptTemplatePostRequest getTemplate(final String categories) {
@@ -76,25 +88,25 @@ class PromptRegistryController {
 
   @GetMapping("/history")
   PromptTemplateListResponse history() {
-    return client.listPromptTemplateHistory("categorization", "0.0.1", NAME);
+    return promptClient.listPromptTemplateHistory("categorization", "0.0.1", NAME);
   }
 
   @GetMapping("/importTemplate")
   PromptTemplatePostResponse importTemplate() throws IOException {
-    final Resource template = new ClassPathResource("prompt-template.yaml");
-    return client.importPromptTemplate("default", null, template.getFile());
+    val template = new ClassPathResource("prompt-template.yaml").getContentAsByteArray();
+    return promptClient.importPromptTemplate("default", null, template);
   }
 
   @GetMapping("/exportTemplate")
-  File exportTemplate() throws IOException {
+  byte[] exportTemplate() throws IOException {
     final var template = importTemplate();
-    return client.exportPromptTemplate(template.getId());
+    return promptClient.exportPromptTemplate(template.getId());
   }
 
   @GetMapping("/useTemplate")
   PromptTemplateSubstitutionResponse useTemplate() {
     final var template = createTemplate();
-    return client.parsePromptTemplateById(
+    return promptClient.parsePromptTemplateById(
         template.getId(),
         "default",
         null,
@@ -105,17 +117,17 @@ class PromptRegistryController {
 
   @GetMapping("/deleteTemplate")
   List<PromptTemplateDeleteResponse> deleteTemplate() {
-    final PromptTemplateListResponse templates = client.listPromptTemplates();
+    final PromptTemplateListResponse templates = promptClient.listPromptTemplates();
 
     return templates.getResources().stream()
         .filter(template -> NAME.equals(template.getName()))
-        .map(template -> client.deletePromptTemplate(template.getId()))
+        .map(template -> promptClient.deletePromptTemplate(template.getId()))
         .toList();
   }
 
   @GetMapping("/promptRegistryToSpringAi")
   Generation promptRegistryToSpringAi() {
-    val openAiClient = new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.GPT_4O_MINI));
+    val openAiClient = new OpenAiChatModel(OpenAiClient.forModel(OpenAiModel.GPT_5_MINI));
     val repository = new InMemoryChatMemoryRepository();
     val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
@@ -137,5 +149,46 @@ class PromptRegistryController {
     val prompt = new Prompt(messages);
     val response = cl.prompt(prompt).call().chatResponse();
     return response != null ? response.getResult() : null;
+  }
+
+  @GetMapping("/listOrchConfigs")
+  OrchestrationConfigListResponse listOrchConfigs() {
+    return orchConfigClient.listOrchestrationConfigs();
+  }
+
+  @GetMapping("/createOrchConfig")
+  OrchestrationConfigPostResponse createOrchConfig() {
+    // build OrchestrationConfig
+    final var message =
+        UserChatMessage.create()
+            .content(new UserChatMessageContent.InnerString("message"))
+            .role(UserChatMessage.RoleEnum.USER);
+    final var promptTemplating =
+        PromptTemplatingModuleConfig.create()
+            .prompt(Template.create().template(message))
+            .model(LLMModelDetails.create().name("model-name"));
+    final var orchestrationConfig =
+        OrchestrationConfig.create()
+            .modules(
+                OrchestrationConfigModules.createInnerModuleConfigs(
+                    ModuleConfigs.create().promptTemplating(promptTemplating)));
+    // use OrchestrationConfig in OrchestrationConfigClient
+    final OrchestrationConfigPostRequest postRequest =
+        OrchestrationConfigPostRequest.create()
+            .name(NAME)
+            .version("0.0.1")
+            .scenario("sdk-test-scenario")
+            .spec(orchestrationConfig);
+    return orchConfigClient.createUpdateOrchestrationConfig(postRequest);
+  }
+
+  @GetMapping("/deleteOrchConfig")
+  List<OrchestrationConfigDeleteResponse> deleteOrchConfig() {
+    final OrchestrationConfigListResponse configs = orchConfigClient.listOrchestrationConfigs();
+
+    return configs.getResources().stream()
+        .filter(config -> NAME.equals(config.getName()))
+        .map(config -> orchConfigClient.deleteOrchestrationConfig(config.getId()))
+        .toList();
   }
 }

@@ -5,7 +5,6 @@ import com.sap.ai.sdk.orchestration.model.LLMChoice;
 import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -25,6 +24,7 @@ import org.springframework.ai.chat.model.Generation;
  */
 @Value
 @EqualsAndHashCode(callSuper = true)
+@SuppressWarnings("PMD.PublicClassExtendsModelType")
 public class OrchestrationSpringChatResponse extends ChatResponse {
 
   OrchestrationChatResponse orchestrationResponse;
@@ -59,7 +59,11 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
                         toolCall.getFunction().getArguments()))
             .toList();
 
-    val message = new AssistantMessage(choice.getMessage().getContent(), Map.of(), toolCalls);
+    val message =
+        AssistantMessage.builder()
+            .content(choice.getMessage().getContent())
+            .toolCalls(toolCalls)
+            .build();
     return new Generation(message, metadata.build());
   }
 

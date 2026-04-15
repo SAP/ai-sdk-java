@@ -6,7 +6,7 @@ on:
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
-  JAVA_VERSION: 17
+  JAVA_VERSION: 21
 
 jobs:
   end-to-end-tests:
@@ -101,7 +101,7 @@ jobs:
 
       - name: "Slack Notification"
         if: failure()
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook

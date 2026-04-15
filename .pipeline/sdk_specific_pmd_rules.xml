@@ -407,4 +407,245 @@
 
     <rule ref="category/java/errorprone.xml/CloseResource" />
     <rule ref="category/java/bestpractices.xml/UseTryWithResources" />
+
+    <!-- Custom rule to detect non-beta public methods that return or accept types from .model package -->
+    <rule name="PublicApiExposesModelType" language="java"
+          message="Public API method exposes internal model type from .model package. Consider using @Beta annotation or creating a wrapper type"
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Public methods should not expose types from the .model package
+            in their signatures (return types or parameters) unless marked with @Beta annotation.
+            The .model package contains generated/internal types that may change without notice.
+            
+            This rule checks for:
+            - Return types from .model package
+            - Parameter types from .model package
+            - Generic type arguments from .model package (e.g., List&lt;ModelType&gt;)
+        </description>
+        <priority>2</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        (: Find public methods not marked @Beta, where class is also not @Beta :)
+                        //MethodDeclaration[
+                            @Visibility = 'public' and
+                            not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Beta']) and
+                            not(./ModifierList/Annotation[@SimpleName = 'Beta'])
+                        ]
+                        (: Check if return type or any parameter type matches an import from .model package :)
+                        [
+                            (: Get all type names used in return type and parameters :)
+                            (./ResultType//ClassType | ./FormalParameters//ClassType)
+                                [@SimpleName = ancestor::CompilationUnit//ImportDeclaration[contains(@ImportedName, '.model.')]/substring-after(@ImportedName, '.model.')]
+                        ]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            // BAD: Public method returns model type without @Beta
+            public CompletionPostResponse executeRequest(CompletionPostRequest request) {
+                // ...
+            }
+            
+            // BAD: Public method has model type parameter without @Beta
+            public void process(List<MessageToolCall> toolCalls) {
+                // ...
+            }
+            
+            // GOOD: Method marked with @Beta
+            @Beta
+            public CompletionPostResponse executeRequest(CompletionPostRequest request) {
+                // ...
+            }
+            
+            // GOOD: Class marked with @Beta
+            @Beta
+            public class MyClass {
+                public CompletionPostResponse executeRequest(CompletionPostRequest request) {
+                    // ...
+                }
+            }
+            
+            // GOOD: Uses wrapper types instead of model types
+            public OrchestrationChatResponse chatCompletion(OrchestrationPrompt prompt) {
+                // ...
+            }
+            ]]>
+        </example>
+    </rule>
+
+    <!-- Custom rule to detect non-beta public classes extending model types -->
+    <rule name="PublicClassExtendsModelType" language="java"
+          message="Public class extends internal model type from .model package. Consider using @Beta annotation or composition instead of inheritance"
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Public classes should not extend types from a .model package
+            unless marked with @Beta annotation. Extending model types exposes all inherited public
+            methods to consumers, which may change without notice.
+        </description>
+        <priority>2</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        (: Find public classes not marked @Beta that extend a type from .model package :)
+                        //ClassDeclaration[
+                            @Visibility = 'public' and
+                            not(./ModifierList/Annotation[@SimpleName = 'Beta'])
+                        ]
+                        [
+                            ./ExtendsList/ClassType
+                                [@SimpleName = ancestor::CompilationUnit//ImportDeclaration[contains(@ImportedName, '.model.')]/substring-after(@ImportedName, '.model.')]
+                        ]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            // BAD: Public class extends model type without @Beta
+            public class OrchestrationChatCompletionDelta extends CompletionPostResponseStreaming {
+                // ...
+            }
+            
+            // GOOD: Class marked with @Beta
+            @Beta
+            public class OrchestrationChatCompletionDelta extends CompletionPostResponseStreaming {
+                // ...
+            }
+            
+            // GOOD: Uses composition instead of inheritance
+            public class OrchestrationChatCompletionDelta {
+                private final CompletionPostResponseStreaming delegate;
+                // ...
+            }
+            ]]>
+        </example>
+    </rule>
+
+    <!-- Custom rule to detect non-beta public Lombok @With annotations on fields with model types -->
+    <rule name="LombokWithExposesModelType" language="java"
+          message="Lombok @With annotation on field with model type will generate public method exposing internal type. Consider using @With(AccessLevel.PACKAGE/PRIVATE/NONE) or @Beta annotation"
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Fields with Lombok's @With annotation (or class-level @With) that have model types
+            will generate public withXxx() methods exposing internal types. These should be marked
+            with @Beta or use @With(AccessLevel.PACKAGE/PRIVATE/NONE) to prevent public exposure.
+        </description>
+        <priority>2</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        (: Find fields in classes with @With, where class is not @Beta :)
+                        //FieldDeclaration[
+                            (ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'With']) and
+                            not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Beta']) and
+                            not(./ModifierList/Annotation[@SimpleName = 'With']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
+                            not(./ModifierList/Annotation[@SimpleName = 'With']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')])
+                        ]
+                        [
+                            ./ClassType
+                                [@SimpleName = ancestor::CompilationUnit//ImportDeclaration[contains(@ImportedName, '.model.')]/substring-after(@ImportedName, '.model.')]
+                        ]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            // GOOD: Field has restricted @With access
+            @Value
+            @With
+            public class OrchestrationModuleConfig {
+                @With(AccessLevel.PRIVATE)
+                LLMModelDetails llmConfig;
+            }
+            
+            // GOOD: Class is marked @Beta
+            @Beta
+            @Value
+            @With
+            public class OrchestrationModuleConfig {
+                LLMModelDetails llmConfig;
+            }
+            ]]>
+        </example>
+    </rule>
+
+    <!-- Custom rule to detect non-beta public Lombok @Getter/@Setter on fields with model types -->
+    <rule name="LombokGetterSetterExposesModelType" language="java"
+          message="Lombok @Getter/@Setter (or class-level @Getter/@Setter/@Data/@Value) on field with model type will generate public accessor exposing internal type. Consider using AccessLevel.PACKAGE/PRIVATE/NONE or @Beta annotation"
+          class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+        <description>
+            Fields with Lombok's @Getter/@Setter (or class-level @Getter/@Setter/@Data) that have model types
+            will generate public getter/setter methods exposing internal types. These should be marked
+            with @Beta or use @Getter/@Setter(AccessLevel.PACKAGE/PRIVATE/NONE) to prevent public exposure.
+        </description>
+        <priority>2</priority>
+        <properties>
+            <property name="xpath">
+                <value>
+                    <![CDATA[
+                        (: Find fields in classes with Lombok accessor-generating annotations, where class is not @Beta :)
+                        //FieldDeclaration[
+                            (
+                                ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Getter' or @SimpleName = 'Setter' or @SimpleName = 'Data' or @SimpleName = 'Value'] or
+                                ./ModifierList/Annotation[@SimpleName = 'Getter' or @SimpleName = 'Setter']
+                            ) and
+                            not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Beta']) and
+                            (: Exclude if class-level @Getter has restricted access level :)
+                            not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
+                            not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')]) and
+                            (: Exclude if class-level @Setter has restricted access level :)
+                            not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
+                            not(ancestor::ClassDeclaration/ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')]) and
+                            (: Exclude if field-level @Getter has restricted access level :)
+                            not(./ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
+                            not(./ModifierList/Annotation[@SimpleName = 'Getter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')]) and
+                            (: Exclude if field-level @Setter has restricted access level :)
+                            not(./ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//FieldAccess[@Name = 'PACKAGE' or @Name = 'PRIVATE' or @Name = 'NONE']) and
+                            not(./ModifierList/Annotation[@SimpleName = 'Setter']/AnnotationMemberList//AmbiguousName[contains(@Name, 'PACKAGE') or contains(@Name, 'PRIVATE') or contains(@Name, 'NONE')])
+                        ]
+                        [
+                            ./ClassType
+                                [@SimpleName = ancestor::CompilationUnit//ImportDeclaration[contains(@ImportedName, '.model.')]/substring-after(@ImportedName, '.model.')]
+                        ]
+                    ]]>
+                </value>
+            </property>
+        </properties>
+        <example>
+            <![CDATA[
+            // BAD: Class-level @Getter will generate public getter exposing model type
+            @Getter
+            public class OrchestrationModuleConfig {
+                LLMModelDetails llmConfig;
+            }
+
+            // BAD: Field-level @Setter will generate public setter exposing model type
+            public class OrchestrationModuleConfig {
+                @Setter
+                LLMModelDetails llmConfig;
+            }
+
+            // GOOD: Field has restricted accessor visibility
+            public class OrchestrationModuleConfig {
+                @Getter(AccessLevel.PRIVATE)
+                @Setter(AccessLevel.PRIVATE)
+                LLMModelDetails llmConfig;
+            }
+
+            // GOOD: Class is marked @Beta
+            @Beta
+            @Getter
+            public class OrchestrationModuleConfig {
+                LLMModelDetails llmConfig;
+            }
+            ]]>
+        </example>
+    </rule>
 </ruleset>

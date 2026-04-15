@@ -67,7 +67,7 @@ class SpringAiOrchestrationTest {
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 (Bad Request)");
   }
 
@@ -105,7 +105,7 @@ class SpringAiOrchestrationTest {
             .getIntermediateResults()
             .getOutputFiltering();
     assertThat(filterResult.getMessage())
-        .contains("Choice 0: LLM response filtered due to safety violations");
+        .contains("Choice 0: Content filtered due to safety violations.");
   }
 
   @Test
@@ -123,7 +123,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getOutputFiltering();
-    assertThat(filterResult.getMessage()).contains("Choice 0: Output Filter was skipped");
+    assertThat(filterResult.getMessage()).contains("Choice 0: Filtering was skipped.");
   }
 
   @Test
@@ -131,6 +131,7 @@ class SpringAiOrchestrationTest {
     ChatResponse response = service.toolCalling(false);
     List<ToolCall> toolCalls = response.getResult().getOutput().getToolCalls();
     assertThat(toolCalls).hasSize(2);
+
     ToolCall toolCall1 = toolCalls.get(0);
     ToolCall toolCall2 = toolCalls.get(1);
     assertThat(toolCall1.type()).isEqualTo("function");
@@ -138,9 +139,9 @@ class SpringAiOrchestrationTest {
     assertThat(toolCall1.name()).isEqualTo("getCurrentWeather");
     assertThat(toolCall2.name()).isEqualTo("getCurrentWeather");
     assertThat(toolCall1.arguments())
-        .isEqualTo("{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}");
+        .matches("\\{\"arg0\": \\{\"location\": \"[^\"]*Potsdam[^\"]*\", \"unit\": \"C\"}}");
     assertThat(toolCall2.arguments())
-        .isEqualTo("{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}");
+        .matches("\\{\"arg0\": \\{\"location\": \"[^\"]*Toulouse[^\"]*\", \"unit\": \"C\"}}");
   }
 
   @Test

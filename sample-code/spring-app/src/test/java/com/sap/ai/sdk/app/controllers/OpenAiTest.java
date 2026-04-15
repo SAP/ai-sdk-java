@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionResponseMessageRole.ASSISTANT;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,7 +42,7 @@ class OpenAiTest {
   void chatCompletionImage() {
     final var completion =
         service.chatCompletionImage(
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
+            "https://content.cdn.sap.com/is/image/sap/sap-locations-walldorf-photo-anvilwindow:XL");
 
     assertThat(completion.getContent()).isNotEmpty();
     assertThat(completion.getChoice().getMessage().getRole()).isEqualTo(ASSISTANT);
@@ -56,7 +56,7 @@ class OpenAiTest {
     final var usageRef = new AtomicReference<CompletionUsage>();
     final var filledDeltaCount = new AtomicInteger(0);
 
-    OpenAiClient.forModel(GPT_4O_MINI)
+    OpenAiClient.forModel(GPT_5_MINI)
         .streamChatCompletionDeltas(prompt)
         // foreach consumes all elements, closing the stream at the end
         .forEach(

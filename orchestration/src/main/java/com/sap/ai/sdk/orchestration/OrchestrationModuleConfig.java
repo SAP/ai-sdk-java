@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
@@ -59,7 +58,9 @@ public class OrchestrationModuleConfig {
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/model-configuration">
    *     SAP AI Core: Orchestration - Model Configuration</a>
    */
-  @Nullable LLMModelDetails llmConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  LLMModelDetails llmConfig;
 
   /**
    * A template to be populated with input parameters. Upon request execution, this template will be
@@ -68,7 +69,9 @@ public class OrchestrationModuleConfig {
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
    */
-  @Nullable PromptTemplatingModuleConfigPrompt templateConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  PromptTemplatingModuleConfigPrompt templateConfig;
 
   /**
    * A masking configuration to pseudonymous or anonymize sensitive data in the input.
@@ -77,7 +80,9 @@ public class OrchestrationModuleConfig {
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
    */
-  @Nullable MaskingModuleConfig maskingConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  MaskingModuleConfig maskingConfig;
 
   /**
    * A content filter to filter the prompt.
@@ -89,7 +94,9 @@ public class OrchestrationModuleConfig {
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
    */
-  @Nullable FilteringModuleConfig filteringConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  FilteringModuleConfig filteringConfig;
 
   /**
    * A grounding configuration to provide additional context to the AI model.
@@ -98,11 +105,33 @@ public class OrchestrationModuleConfig {
    *     AI Core: Orchestration - </a>
    * @since 1.1.0
    */
-  @Nullable GroundingModuleConfig groundingConfig;
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  GroundingModuleConfig groundingConfig;
 
-  @Nullable SAPDocumentTranslationInput inputTranslationConfig;
+  /**
+   * Configuration for translating input content before processing.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-translation">
+   *     SAP AI Core: Orchestration - Input Translation</a>
+   * @since 1.8.0
+   */
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  SAPDocumentTranslationInput inputTranslationConfig;
 
-  @Nullable SAPDocumentTranslationOutput outputTranslationConfig;
+  /**
+   * Configuration for translating output content after processing.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/enhance-model-consumption-with-output-translation">
+   *     SAP AI Core: Orchestration - Output Translation</a>
+   * @since 1.8.0
+   */
+  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
+  @Nullable
+  SAPDocumentTranslationOutput outputTranslationConfig;
 
   /** Configuration of optional streaming options for output filtering. */
   @With(AccessLevel.NONE) // may be exposed to public in the future
@@ -138,7 +167,6 @@ public class OrchestrationModuleConfig {
    * @return A new configuration with the given stream configuration.
    * @since 1.12.0
    */
-  @Beta
   @Nonnull
   public OrchestrationModuleConfig withStreamConfig(
       @Nonnull final OrchestrationStreamConfig config) {
@@ -299,9 +327,34 @@ public class OrchestrationModuleConfig {
    */
   @Tolerate
   @Nonnull
-  @Beta
   public OrchestrationModuleConfig withTemplateConfig(
       @Nonnull final TemplateConfig templateConfig) {
     return this.withTemplateConfig(templateConfig.toLowLevel());
+  }
+
+  /**
+   * Configure input translation using a high-level TranslationConfig.
+   *
+   * @param translationConfig The translation configuration
+   * @return A new OrchestrationModuleConfig with input translation configured
+   */
+  @Tolerate
+  @Nonnull
+  public OrchestrationModuleConfig withInputTranslationConfig(
+      @Nonnull final TranslationConfig.Input translationConfig) {
+    return this.withInputTranslationConfig(translationConfig.createSAPDocumentTranslationInput());
+  }
+
+  /**
+   * Configure output translation using a high-level TranslationConfig.
+   *
+   * @param translationConfig The translation configuration
+   * @return A new OrchestrationModuleConfig with output translation configured
+   */
+  @Tolerate
+  @Nonnull
+  public OrchestrationModuleConfig withOutputTranslationConfig(
+      @Nonnull final TranslationConfig.Output translationConfig) {
+    return this.withOutputTranslationConfig(translationConfig.createSAPDocumentTranslationOutput());
   }
 }

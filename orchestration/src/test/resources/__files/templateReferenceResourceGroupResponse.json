@@ -1,0 +1,69 @@
+{
+  "request_id": "921f38b7-3434-9171-85df-27be1b7fca3c",
+  "intermediate_results": {
+    "templating": [
+      {
+        "role": "system",
+        "content": "You classify input text into the two following categories: Finance, Tech, Sports"
+      },
+      {
+        "content": "What's the latest news on the stock market?",
+        "role": "user"
+      }
+    ],
+    "llm": {
+      "id": "",
+      "object": "chat.completion",
+      "created": 1769424215,
+      "model": "gemini-2.5-flash",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Finance"
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 154,
+        "prompt_tokens": 26,
+        "total_tokens": 180,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 153
+        }
+      }
+    }
+  },
+  "final_result": {
+    "id": "",
+    "object": "chat.completion",
+    "created": 1769424215,
+    "model": "gemini-2.5-flash",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "Finance"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 154,
+      "prompt_tokens": 26,
+      "total_tokens": 180,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 153
+      }
+    }
+  }
+}

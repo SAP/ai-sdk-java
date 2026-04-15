@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.core.common;
 
-import com.google.common.annotations.Beta;
 import javax.annotation.Nullable;
 
 /**
@@ -8,7 +7,6 @@ import javax.annotation.Nullable;
  *
  * @since 1.1.0
  */
-@Beta
 @FunctionalInterface
 public interface ClientError {
   /**

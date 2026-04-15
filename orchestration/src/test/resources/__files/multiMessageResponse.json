@@ -40,7 +40,7 @@
       "id": "chatcmpl-AyGx4yLYUH79TK81i21BaABoUpf4v",
       "object": "chat.completion",
       "created": 1738928206,
-      "model": "gpt-4o-mini-2024-07-18",
+      "model": "gpt-5-mini-2024-07-18",
       "system_fingerprint": "fp_f3927aa00d",
       "choices": [
         {

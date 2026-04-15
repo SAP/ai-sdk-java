@@ -22,7 +22,6 @@ import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
-import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.InputTranslationModuleResult;
 import java.io.IOException;
 import java.io.InputStream;
@@ -243,7 +242,7 @@ class OrchestrationTest {
 
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .hasMessageContaining(
-            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 (Bad Request)")
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
@@ -273,7 +272,7 @@ class OrchestrationTest {
   @Test
   void testOutputFilteringStrict() {
     var policy = AzureFilterThreshold.ALLOW_SAFE;
-    var response = service.outputFiltering(policy);
+    var response = service.outputFiltering(policy, true);
 
     assertThatThrownBy(response::getContent)
         .hasMessageContaining("Content filter filtered the output.")
@@ -286,6 +285,7 @@ class OrchestrationTest {
               assertThat(actualAzureContentSafety.getSelfHarm()).isEqualTo(NUMBER_0);
               assertThat(actualAzureContentSafety.getSexual()).isEqualTo(NUMBER_0);
               assertThat(actualAzureContentSafety.getHate()).isEqualTo(NUMBER_0);
+              assertThat(actualAzureContentSafety.isProtectedMaterialCode()).isFalse();
             });
   }
 
@@ -293,13 +293,13 @@ class OrchestrationTest {
   void testOutputFilteringLenient() {
     var policy = AzureFilterThreshold.ALLOW_ALL;
 
-    var response = service.outputFiltering(policy);
+    var response = service.outputFiltering(policy, false);
 
     assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("Choice 0: Output Filter was skipped");
+    assertThat(filterResult.getMessage()).containsPattern("Choice 0: Filtering was skipped.");
   }
 
   @Test
@@ -307,7 +307,7 @@ class OrchestrationTest {
     assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
         .isInstanceOf(OrchestrationFilterException.Input.class)
         .hasMessageContaining(
-            "Prompt filtered due to safety violations. Please modify the prompt and try again.")
+            "Content filtered due to safety violations. Please modify the prompt and try again.")
         .hasMessageContaining("400 (Bad Request)")
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
@@ -337,7 +337,7 @@ class OrchestrationTest {
     val result =
         service
             .imageInput(
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png")
+                "https://content.cdn.sap.com/is/image/sap/sap-locations-walldorf-photo-anvilwindow:XL")
             .getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
@@ -401,16 +401,41 @@ class OrchestrationTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryById() {
-    val result = service.templateFromPromptRegistryById("Cloud ERP systems").getOriginalResponse();
+  void testTemplateFromPromptRegistryByIdTenant() {
+    val result =
+        service.templateFromPromptRegistryByIdTenant("Cloud ERP systems").getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test
-  void testTemplateFromPromptRegistryByScenario() {
+  void testTemplateFromPromptRegistryByIdResourceGroup() {
     val result =
-        service.templateFromPromptRegistryByScenario("Cloud ERP systems").getOriginalResponse();
+        service
+            .templateFromPromptRegistryByIdResourceGroup(
+                "What's the latest news on the stock market?")
+            .getOriginalResponse();
+    val choices = (result.getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioTenant() {
+    val result =
+        service
+            .templateFromPromptRegistryByScenarioTenant("Cloud ERP systems")
+            .getOriginalResponse();
+    val choices = (result.getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testTemplateFromPromptRegistryByScenarioResourceGroup() {
+    val result =
+        service
+            .templateFromPromptRegistryByScenarioResourceGroup(
+                "What's the latest news on the stock market?")
+            .getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
@@ -442,8 +467,10 @@ class OrchestrationTest {
 
   @Test
   void testStreamingErrorHandlingInputFilter() {
-    val prompt = new OrchestrationPrompt("Create 5 paraphrases of 'I hate you'.");
-    val filterConfig = new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE);
+    val msg =
+        "Please rephrase the following sentence for me: 'We shall destroy them all tonight and there will be blood!'";
+    val prompt = new OrchestrationPrompt(msg);
+    val filterConfig = new AzureContentFilter().violence(AzureFilterThreshold.ALLOW_SAFE);
     val configWithFilter = config.withInputFiltering(filterConfig);
 
     assertThatThrownBy(() -> client.streamChatCompletion(prompt, configWithFilter))
@@ -469,18 +496,22 @@ class OrchestrationTest {
   void testTranslation() {
     val result = service.translation();
     val content = result.getContent();
-    // English translated to German
-    assertThat(content).contains("Englisch");
-    assertThat(content).contains("Der", "ist");
+    // Output translation turns the model response back to German
+    assertThat(content)
+        .containsAnyOf("Abitur", "Deutsche", "Literatur", "Lern", "Übungs", "Fragen");
 
     InputTranslationModuleResult inputTranslation =
         result.getOriginalResponse().getIntermediateResults().getInputTranslation();
-    GenericModuleResult outputTranslation =
-        result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
     assertThat(inputTranslation).isNotNull();
-    assertThat(outputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage())
-        .isEqualTo("Translated messages with roles: ['user']. ");
+        .isNotNull()
+        .contains("Successfully translated placeholders:")
+        .contains("exam_type")
+        .contains("topic");
+
+    val outputTranslation =
+        result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
+    assertThat(outputTranslation).isNotNull();
     assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
   }
 
@@ -520,5 +551,54 @@ class OrchestrationTest {
         .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400")
         .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
+  }
+
+  @Test
+  void testExecuteRequestFromReference() {
+    val result = service.executeConfigFromReference();
+    val choices = (result.getOriginalResponse().getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
+  }
+
+  @Test
+  void testCompletionWithFallback() {
+    val result = service.completionWithFallback("HelloWorld!");
+
+    assertThat(result).isNotNull();
+    assertThat(result.getContent()).isNotEmpty();
+    assertThat(result.getOriginalResponse().getIntermediateFailures().size()).isEqualTo(2);
+    assertThat(result.getOriginalResponse().getIntermediateFailures().get(0).getMessage())
+        .contains("Model broken_name not supported.");
+    assertThat(result.getOriginalResponse().getIntermediateFailures().get(0).getCode())
+        .isEqualTo(400);
+    assertThat(result.getOriginalResponse().getFinalResult().getChoices().get(0).getFinishReason())
+        .contains("stop");
+  }
+
+  @Test
+  void testCompletionWithFallbackStreaming() {
+    final var stream = service.streamCompletionWithFallback("HelloWorld!");
+    val filledDeltaCount = new AtomicInteger(0);
+    stream.forEach(
+        delta -> {
+          log.info("delta: {}", delta);
+          if (!delta.isEmpty()) {
+            filledDeltaCount.incrementAndGet();
+          }
+        });
+    assertThat(filledDeltaCount.get()).isGreaterThan(0);
+  }
+
+  @Test
+  void testCompletionWithFallbackAllFail() {
+    assertThatThrownBy(() -> service.completionWithFallbackAllFail("HelloWorld!"))
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining("Model broken_name_2 not supported.");
+  }
+
+  @Test
+  void testCitations() {
+    val result = service.citations();
+    assertThat(result.getOriginalResponse().getFinalResult().getCitations()).isNotEmpty();
   }
 }

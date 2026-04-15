@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O;
-import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_4O_MINI;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 import static com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionTool.ToolType.FUNCTION;
 
@@ -44,7 +44,7 @@ public class OpenAiServiceDeprecated {
    */
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt) {
-    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(prompt);
+    return OpenAiClient.forModel(GPT_5_MINI).chatCompletion(prompt);
   }
 
   /**
@@ -60,7 +60,7 @@ public class OpenAiServiceDeprecated {
         new OpenAiChatCompletionParameters()
             .addMessages(new OpenAiChatMessage.OpenAiChatUserMessage().addText(message));
 
-    return OpenAiClient.forModel(GPT_4O_MINI).streamChatCompletionDeltas(request);
+    return OpenAiClient.forModel(GPT_5_MINI).streamChatCompletionDeltas(request);
   }
 
   /**
@@ -71,7 +71,7 @@ public class OpenAiServiceDeprecated {
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String message) {
-    return OpenAiClient.forModel(GPT_4O_MINI)
+    return OpenAiClient.forModel(GPT_5_MINI)
         .withSystemPrompt("Be a good, honest AI and answer the following question:")
         .streamChatCompletion(message);
   }
@@ -128,7 +128,7 @@ public class OpenAiServiceDeprecated {
             .setTools(List.of(tool));
 
     final OpenAiChatCompletionOutput response =
-        OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(request);
+        OpenAiClient.forModel(GPT_5_MINI).chatCompletion(request);
 
     // 2. Optionally, execute the function.
     final OpenAiChatToolCall toolCall =
@@ -151,7 +151,7 @@ public class OpenAiServiceDeprecated {
         new OpenAiChatCompletionParameters()
             .addMessages(messages.toArray(OpenAiChatMessage[]::new));
 
-    return OpenAiClient.forModel(GPT_4O_MINI).chatCompletion(finalRequest);
+    return OpenAiClient.forModel(GPT_5_MINI).chatCompletion(finalRequest);
   }
 
   private static <T> T parseJson(@Nonnull final String rawJson, @Nonnull final Class<T> clazz) {
