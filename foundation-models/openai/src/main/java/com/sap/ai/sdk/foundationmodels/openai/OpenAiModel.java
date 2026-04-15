@@ -127,13 +127,13 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   /** Azure OpenAI GPT-5.2 model */
   public static final OpenAiModel GPT_52 = new OpenAiModel("gpt-5.2", null);
 
-  /** Azure OpenAI GPT-5.2 model */
+  /** Azure OpenAI GPT-5.3-codex model */
   public static final OpenAiModel GPT_53_CODEX = new OpenAiModel("gpt-5.3-codex", null);
 
-  /** Azure OpenAI GPT-5.2 model */
+  /** Azure OpenAI GPT-5.4 model */
   public static final OpenAiModel GPT_54 = new OpenAiModel("gpt-5.4", null);
 
-  /** Azure OpenAI GPT-5.2 model */
+  /** Azure OpenAI GPT-5.4-nano model */
   public static final OpenAiModel GPT_54_NANO = new OpenAiModel("gpt-5.4-nano", null);
 
   /**

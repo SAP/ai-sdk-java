@@ -324,13 +324,13 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-5.2 model */
   public static final OrchestrationAiModel GPT_52 = new OrchestrationAiModel("gpt-5.2");
 
-  /** Azure OpenAI GPT-5.2 model */
+  /** Azure OpenAI GPT-5.3-codex model */
   public static final OrchestrationAiModel GPT_53_CODEX = new OrchestrationAiModel("gpt-5.3-codex");
 
-  /** Azure OpenAI GPT-5.2 model */
+  /** Azure OpenAI GPT-5.4 model */
   public static final OrchestrationAiModel GPT_54 = new OrchestrationAiModel("gpt-5.4");
 
-  /** Azure OpenAI GPT-5.2 model */
+  /** Azure OpenAI GPT-5.4-nano model */
   public static final OrchestrationAiModel GPT_54_NANO = new OrchestrationAiModel("gpt-5.4-nano");
 
   /**
