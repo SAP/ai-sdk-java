@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class AiCoreOpenAiService {
 
   private static final ResponseService RESPONSE_CLIENT =
-      AiCoreOpenAiClient.responses(GPT_5, "ai-sdk-java-e2e");
+      AiCoreOpenAiClient.forModel(GPT_5, "ai-sdk-java-e2e");
 
   /**
    * Create a simple response using the Responses API

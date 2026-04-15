@@ -7,7 +7,6 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseStatus;
-import com.openai.services.blocking.ResponseService;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -20,13 +19,11 @@ import org.junit.jupiter.api.Test;
 @WireMockTest
 class AiCoreOpenAiClientTest {
 
-  private ResponseService responseClient;
+  private HttpDestination destination;
 
   @BeforeEach
   void setup(@Nonnull final WireMockRuntimeInfo server) {
-    final HttpDestination destination =
-        DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    responseClient = AiCoreOpenAiClient.responses(destination);
+    destination = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
 
@@ -38,11 +35,29 @@ class AiCoreOpenAiClientTest {
 
   @Test
   void testSimpleResponseServiceCall() {
+    final var responseClient = AiCoreOpenAiClient.forDestination(destination).responses();
     final var params =
         ResponseCreateParams.builder().input("What is the capital of France?").build();
     final Response response = responseClient.create(params);
 
     assertThat(response).isNotNull();
     assertThat(response.status().orElseThrow()).isEqualTo(ResponseStatus.COMPLETED);
+  }
+
+  @Test
+  void testSimpleResponseServiceCallAsync() {
+    final var responseClientAsync =
+        AiCoreOpenAiClient.forDestination(destination).async().responses();
+    final var params =
+        ResponseCreateParams.builder().input("What is the capital of France?").build();
+    final var response = responseClientAsync.create(params);
+    assertThat(response).isNotNull();
+    response
+        .thenAccept(
+            r -> {
+              assertThat(r).isNotNull();
+              assertThat(r.status().orElseThrow()).isEqualTo(ResponseStatus.COMPLETED);
+            })
+        .join();
   }
 }
