@@ -4065,12 +4065,26 @@ components:
         type:
           type: string
           title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
         - loc
         - msg
         - type
       title: ValidationError
+    GenericError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+      title: GenericError
     DocumentBulkDeleteRequest:
       properties:
         ids:
@@ -4630,6 +4644,12 @@ components:
             properties:
               error:
                 $ref: '#/components/schemas/ApiError'
+    MonitorNotFound:
+      description: The specified monitor resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericError'
 
 
   parameters:
