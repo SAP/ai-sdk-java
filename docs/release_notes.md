@@ -26,6 +26,7 @@
 
 - [Grounding] Added values `CREATING`, `CREATED`, `CREATION_FAILED`, `DELETION_INPROGRESS` and `DELETION_FAILED` for `PipelineExecutionStatus`.
 - [Grounding] New error type `GenericError` added. `ValidationError` now includes additional fields `input` and `ctx` for better debugging and error handling.
+- [Orchestration] Supported (PDF) file uploading feature by local file path via `UserMessage.withFile`, by remote file URL via `UserMessage.withFileUrl` , and by base64 encoded string file via `UserMessage.withFileBase64`.
 
 ### 📈 Improvements
 
