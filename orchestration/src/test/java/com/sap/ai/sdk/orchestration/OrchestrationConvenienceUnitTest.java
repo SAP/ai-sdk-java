@@ -145,10 +145,28 @@ public class OrchestrationConvenienceUnitTest {
   }
 
   @Test
-  void testMessageConstructionPdfRejectsNonPdfSuffixForPath() {
+  void testMessageConstructionFileFromUrl() {
+    final String fileUrl = "https://example.org/docs/inline.pdf";
+
+    final var message = new UserMessage(new MessageContent(List.of())).withFileUrl(fileUrl, null);
+    final var expectedLowLevelMessage =
+        UserChatMessage.create()
+            .content(
+                UserChatMessageContent.createListOfUserChatMessageContentItems(
+                    List.of(
+                        UserChatMessageContentItem.create()
+                            .type(FILE)
+                            ._file(FileContent.create().fileData(fileUrl).filename(null)))))
+            .role(USER);
+
+    assertThat(message.createChatMessage()).isEqualTo(expectedLowLevelMessage);
+  }
+
+  @Test
+  void testMessageConstructionFileFromNonPdf() {
     assertThatThrownBy(() -> Message.user(Path.of("sample.txt")))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("Only .pdf files are supported.");
+        .hasMessageContaining("Failed to read the file: sample.txt");
   }
 
   @Test

@@ -379,18 +379,23 @@ class OrchestrationTest {
   @Test
   void testFileInputLocalPath() throws IOException {
     final Path pdfPath = Files.createTempFile("orchestration-test", ".pdf");
-    final URL url =
-        new URL("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
-    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-    connection.setRequestProperty("User-Agent", "Test implementation");
-    InputStream inputStream = connection.getInputStream();
-    Files.write(pdfPath, inputStream.readAllBytes());
+    Files.writeString(pdfPath, "%PDF-1.7\n%%EOF", StandardCharsets.UTF_8);
 
     val result = service.fileInput(pdfPath).getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
     assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
 
     Files.deleteIfExists(pdfPath);
+  }
+
+  @Test
+  void testFileInputUrl() {
+    final String fileUrl =
+        "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+
+    val result = service.fileInput(fileUrl, null).getOriginalResponse();
+    val choices = (result.getFinalResult()).getChoices();
+    assertThat(choices.get(0).getMessage().getContent()).isNotEmpty();
   }
 
   @Test

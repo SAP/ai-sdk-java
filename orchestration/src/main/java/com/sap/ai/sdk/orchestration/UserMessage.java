@@ -19,14 +19,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.experimental.Tolerate;
+import lombok.extern.slf4j.Slf4j;
 
 /** Represents a chat message as 'user' to the orchestration service. */
+@Slf4j
 @Value
 @Accessors(fluent = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -113,16 +116,30 @@ public class UserMessage implements Message {
   }
 
   /**
+   * Add a file to the message by passing its URL.
+   *
+   * @param fileUrl the URL of the file.
+   * @param filename optional name of the file.
+   * @return the new message.
+   * @since 1.18.0
+   */
+  @Nonnull
+  public UserMessage withFileUrl(@Nonnull final String fileUrl, @Nullable final String filename) {
+    validatePdfFilename(filename);
+    return appendFileItem(fileUrl, filename);
+  }
+
+  /**
    * Add a file to the message from a base64-encoded payload.
    *
    * @param base64Data base64-encoded payload.
-   * @param filename name of the file.
+   * @param filename optional name of the file.
    * @return the new message.
    * @since 1.18.0
    */
   @Nonnull
   public UserMessage withFileBase64(
-      @Nonnull final String base64Data, @Nonnull final String filename) {
+      @Nonnull final String base64Data, @Nullable final String filename) {
     validatePdfFilename(filename);
     final String payload =
         base64Data.startsWith(PDF_DATA_URI_PREFIX) ? base64Data : PDF_DATA_URI_PREFIX + base64Data;
@@ -136,15 +153,15 @@ public class UserMessage implements Message {
 
   @Nonnull
   private UserMessage appendFileItem(
-      @Nonnull final String fileData, @Nonnull final String filename) {
+      @Nonnull final String fileData, @Nullable final String filename) {
     final var contentItems = new LinkedList<>(content.items());
     contentItems.add(new FileItem(fileData, filename));
     return new UserMessage(new MessageContent(contentItems));
   }
 
-  private static void validatePdfFilename(@Nonnull final String filename) {
-    if (!filename.toLowerCase(Locale.ROOT).endsWith(".pdf")) {
-      throw new IllegalArgumentException("Only .pdf files are supported.");
+  private static void validatePdfFilename(@Nullable final String filename) {
+    if (filename != null && !filename.toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+      log.warn("Only .pdf files are supported.");
     }
   }
 

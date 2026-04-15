@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.badRequest;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
@@ -1127,6 +1128,26 @@ class OrchestrationUnitTest {
     verify(postRequestedFor(urlPathEqualTo("/v2/completion")));
 
     Files.deleteIfExists(filePath);
+  }
+
+  @Test
+  void testWithFileUrl() {
+    stubFor(
+        post("/v2/completion")
+            .willReturn(aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
+
+    final String fileUrl =
+        "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+    final var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    final var prompt =
+        new OrchestrationPrompt(
+            Message.user("What is the title of the topic discussed here?")
+                .withFileUrl(fileUrl, null));
+
+    final var response = client.chatCompletion(prompt, llmWithImageSupportConfig);
+    assertThat(response.getContent()).isNotEmpty();
+
+    verify(postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(containing(fileUrl)));
   }
 
   //    Example class

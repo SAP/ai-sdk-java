@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -114,7 +115,24 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with a file.
    *
-   * @param filePath the path to a local file
+   * @param fileUrl the URL to a PDF file
+   * @param filename optional filename for the file
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse fileInput(
+      @Nonnull final String fileUrl, @Nullable final String filename) {
+    final var multiMessage =
+        Message.user("What is the title of the topic discussed here?")
+            .withFileUrl(fileUrl, filename);
+    final var prompt = new OrchestrationPrompt(multiMessage);
+    return client.chatCompletion(prompt, config);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with a local file.
+   *
+   * @param filePath the path to a local PDF file
    * @return the assistant response object
    */
   @Nonnull
