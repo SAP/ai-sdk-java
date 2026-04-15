@@ -34,7 +34,6 @@ on:
 jobs:
   cleanup:
     name: 'Delete Spec Update Branch'
-    needs: [auth]
     runs-on: [ubuntu-latest]
     permissions:
       contents: write

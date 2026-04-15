@@ -47,9 +47,6 @@ jobs:
   generate:
     name: 'Download, Generate, Compile and Push'
     runs-on: [ubuntu-latest]
-    permissions:
-      pull-requests: write
-      contents: write
     outputs:
       spec_diff: ${{ steps.spec_diff.outputs.spec_diff }}
       branch: ${{ steps.push.outputs.branch }}
@@ -62,10 +59,21 @@ jobs:
       REF: ${{ github.event.inputs.ref }}
       CREATE_PR: ${{ github.event.inputs.create-pr }}
     steps:
+      - name: 'Generate GitHub App token'
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.SAP_AI_SDK_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
+          owner: SAP
+          repositories: ai-sdk-java
+          permission-contents: write
+          permission-pull-requests: write
+
       - name: 'Checkout repository'
         uses: actions/checkout@v6
         with:
-          token: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: 'Determine PR base'
         id: pr_base
@@ -154,7 +162,7 @@ jobs:
       - name: 'Exit if there are no spec changes'
         id: spec_diff
         env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           # if there are no spec changes in this commit, check if previous run on this branch is red. If it is red, exit 1; if it is green, exit 0.
           if [[ `git status --porcelain` ]]; then
@@ -240,7 +248,7 @@ jobs:
         id: create-pr
         if: ${{ env.CREATE_PR == 'true' && steps.spec_diff.outputs.spec_diff == 'true'}}
         env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           BRANCH: ${{ steps.branch.outputs.branch }}
           BASE: ${{ steps.pr_base.outputs.BASE }}
         run: |
