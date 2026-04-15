@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class RptClient {
   @Nonnull private final DefaultApi api;
+  @Nonnull private final DefaultApi apiWithGzipEncoding;
 
   /**
    * Creates a new RptClient for the specified foundation model.
@@ -50,7 +51,8 @@ public class RptClient {
    */
   static RptClient forDestination(@Nonnull final Destination destination) {
     final var apiClient = ApiClient.create(destination).withObjectMapper(getDefaultObjectMapper());
-    return new RptClient(new DefaultApi(apiClient));
+    final var api = new DefaultApi(apiClient);
+    return new RptClient(api, api.withDefaultHeaders(Map.of("Content-Encoding", "gzip")));
   }
 
   /**
@@ -75,7 +77,7 @@ public class RptClient {
   @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(@Nonnull final PredictRequestPayload requestBody) {
-    return api.withDefaultHeaders(Map.of("Content-Encoding", "gzip")).predict(requestBody);
+    return apiWithGzipEncoding.predict(requestBody);
   }
 
   /**
