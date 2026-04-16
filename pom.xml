@@ -859,14 +859,24 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                 <quiet>true</quiet>
                 <additionalOptions>-Xdoclint:none</additionalOptions>
                 <show>protected</show>
-                <sourcepath>${project.basedir}/target/delombok</sourcepath>
+                <sourcepath>${project.basedir}/core/target/delombok:${project.basedir}/orchestration/target/delombok:${project.basedir}/core-services/document-grounding/target/delombok:${project.basedir}/core-services/prompt-registry/target/delombok:${project.basedir}/foundation-models/openai/target/delombok:${project.basedir}/foundation-models/sap-rpt/target/delombok</sourcepath>
               </configuration>
+              <dependencies>
+                <dependency>
+                  <groupId>org.projectlombok</groupId>
+                  <artifactId>lombok</artifactId>
+                  <version>1.18.44</version>
+                </dependency>
+              </dependencies>
               <executions>
                 <execution>
                   <id>javadoc-jar</id>
                   <goals>
                     <goal>jar</goal>
                   </goals>
+                  <configuration>
+                    <sourcepath>${project.basedir}/target/delombok</sourcepath>
+                  </configuration>
                 </execution>
               </executions>
             </plugin>
