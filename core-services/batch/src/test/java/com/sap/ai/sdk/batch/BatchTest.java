@@ -1,15 +1,14 @@
 package com.sap.ai.sdk.batch;
 
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.batch.generated.client.BatchesApi;
-import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 public class BatchTest {
   @RegisterExtension
@@ -23,8 +22,9 @@ public class BatchTest {
     final HttpDestination destination = DefaultHttpDestination.builder(WM.baseUrl()).build();
     client = new BatchesApi(destination);
   }
+
   @Test
   public void testBatchesApi() {
-    client.
+    client.listBatches();
   }
 }

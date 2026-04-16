@@ -76,13 +76,13 @@ public class BatchesApi extends BaseApi {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchCancelResponse batchServiceControllerBatchControllerCancelBatch(
-      @Nonnull final UUID batchId) throws OpenApiRequestException {
+  public BatchCancelResponse cancelBatch(@Nonnull final UUID batchId)
+      throws OpenApiRequestException {
 
     // verify the required parameter 'batchId' is set
     if (batchId == null) {
       throw new OpenApiRequestException(
-              "Missing the required parameter 'batchId' when calling batchServiceControllerBatchControllerCancelBatch")
+              "Missing the required parameter 'batchId' when calling cancelBatch")
           .statusCode(400);
     }
 
@@ -138,13 +138,13 @@ public class BatchesApi extends BaseApi {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchCreateResponse batchServiceControllerBatchControllerCreateBatch(
-      @Nonnull final BatchCreateRequest batchCreateRequest) throws OpenApiRequestException {
+  public BatchCreateResponse createBatch(@Nonnull final BatchCreateRequest batchCreateRequest)
+      throws OpenApiRequestException {
 
     // verify the required parameter 'batchCreateRequest' is set
     if (batchCreateRequest == null) {
       throw new OpenApiRequestException(
-              "Missing the required parameter 'batchCreateRequest' when calling batchServiceControllerBatchControllerCreateBatch")
+              "Missing the required parameter 'batchCreateRequest' when calling createBatch")
           .statusCode(400);
     }
 
@@ -197,13 +197,13 @@ public class BatchesApi extends BaseApi {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchDeleteResponse batchServiceControllerBatchControllerDeleteBatch(
-      @Nonnull final UUID batchId) throws OpenApiRequestException {
+  public BatchDeleteResponse deleteBatch(@Nonnull final UUID batchId)
+      throws OpenApiRequestException {
 
     // verify the required parameter 'batchId' is set
     if (batchId == null) {
       throw new OpenApiRequestException(
-              "Missing the required parameter 'batchId' when calling batchServiceControllerBatchControllerDeleteBatch")
+              "Missing the required parameter 'batchId' when calling deleteBatch")
           .statusCode(400);
     }
 
@@ -259,13 +259,13 @@ public class BatchesApi extends BaseApi {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchDetailResponse batchServiceControllerBatchControllerGetBatchById(
-      @Nonnull final UUID batchId) throws OpenApiRequestException {
+  public BatchDetailResponse getBatchById(@Nonnull final UUID batchId)
+      throws OpenApiRequestException {
 
     // verify the required parameter 'batchId' is set
     if (batchId == null) {
       throw new OpenApiRequestException(
-              "Missing the required parameter 'batchId' when calling batchServiceControllerBatchControllerGetBatchById")
+              "Missing the required parameter 'batchId' when calling getBatchById")
           .statusCode(400);
     }
 
@@ -321,13 +321,13 @@ public class BatchesApi extends BaseApi {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchStatusResponse batchServiceControllerBatchControllerGetBatchStatus(
-      @Nonnull final UUID batchId) throws OpenApiRequestException {
+  public BatchStatusResponse getBatchStatus(@Nonnull final UUID batchId)
+      throws OpenApiRequestException {
 
     // verify the required parameter 'batchId' is set
     if (batchId == null) {
       throw new OpenApiRequestException(
-              "Missing the required parameter 'batchId' when calling batchServiceControllerBatchControllerGetBatchStatus")
+              "Missing the required parameter 'batchId' when calling getBatchStatus")
           .statusCode(400);
     }
 
@@ -380,8 +380,7 @@ public class BatchesApi extends BaseApi {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchListResponse batchServiceControllerBatchControllerListBatches()
-      throws OpenApiRequestException {
+  public BatchListResponse listBatches() throws OpenApiRequestException {
 
     // create path and map variables
     final String localVarPath = "/batches";

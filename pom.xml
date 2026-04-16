@@ -261,33 +261,6 @@
       <version>${logback.version}</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.sap.cloud.sdk.datamodel</groupId>
-      <artifactId>openapi-core-apache</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.code.findbugs</groupId>
-      <artifactId>jsr305</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-      <version>6.1.0-M1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.wiremock</groupId>
-      <artifactId>wiremock</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.wiremock</groupId>
-      <artifactId>wiremock</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.sap.ai.sdk</groupId>
-      <artifactId>core</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
   <build>
     <resources>
