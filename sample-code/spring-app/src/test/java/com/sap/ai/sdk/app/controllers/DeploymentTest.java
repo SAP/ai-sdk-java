@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 class DeploymentTest {
   /** Java end-to-end test specific configuration ID. "name":"config-java-e2e-test-gpt-5" */
-  public static final String CONFIG_ID = "9db691a2-a136-41c9-8fe1-1ffad5a63594";
+  public static final String CONFIG_ID = "e88f7dba-fd9c-4068-ab18-3306f2aa46bd";
 
   /**
    * Manual execution to create a new config for a new model when the current model gets deprecated.
