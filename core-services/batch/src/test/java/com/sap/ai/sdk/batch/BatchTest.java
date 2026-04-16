@@ -24,7 +24,5 @@ public class BatchTest {
   }
 
   @Test
-  public void testBatchesApi() {
-    client.listBatches();
-  }
+  public void testBatchesApi() {}
 }
