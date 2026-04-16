@@ -75,11 +75,19 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
    */
   @Deprecated public static final OpenAiModel GPT_4O_MINI = new OpenAiModel("gpt-4o-mini", null);
 
-  /** Azure OpenAI GPT-o3 Mini model */
-  public static final OpenAiModel O3_MINI = new OpenAiModel("o3-mini", null);
+  /**
+   * Azure OpenAI GPT-o3 Mini model
+   *
+   * @deprecated This model is deprecated on AI Core.
+   */
+  @Deprecated public static final OpenAiModel O3_MINI = new OpenAiModel("o3-mini", null);
 
-  /** Azure OpenAI GPT-o1 model */
-  public static final OpenAiModel O1 = new OpenAiModel("o1", null);
+  /**
+   * Azure OpenAI GPT-o1 model
+   *
+   * @deprecated This model is deprecated on AI Core.
+   */
+  @Deprecated public static final OpenAiModel O1 = new OpenAiModel("o1", null);
 
   /** Azure OpenAI Text Embedding 3 Large model */
   public static final OpenAiModel TEXT_EMBEDDING_3_LARGE =
@@ -118,6 +126,15 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
 
   /** Azure OpenAI GPT-5.2 model */
   public static final OpenAiModel GPT_52 = new OpenAiModel("gpt-5.2", null);
+
+  /** Azure OpenAI GPT-5.3-codex model */
+  public static final OpenAiModel GPT_53_CODEX = new OpenAiModel("gpt-5.3-codex", null);
+
+  /** Azure OpenAI GPT-5.4 model */
+  public static final OpenAiModel GPT_54 = new OpenAiModel("gpt-5.4", null);
+
+  /** Azure OpenAI GPT-5.4-nano model */
+  public static final OpenAiModel GPT_54_NANO = new OpenAiModel("gpt-5.4-nano", null);
 
   /**
    * Azure OpenAI Text Embedding ADA 002 model
