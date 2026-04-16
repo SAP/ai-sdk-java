@@ -26,6 +26,7 @@ jobs:
             PromptRegistry
             Grounding
             RPT
+            Batch
           headerPattern: '^(\w.+): (?:\[(\w.+)\] )?(.+)$'
           headerPatternCorrespondence: type, scope, subject
           # for available types, check:
