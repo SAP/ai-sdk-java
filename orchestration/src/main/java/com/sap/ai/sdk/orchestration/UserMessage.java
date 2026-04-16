@@ -143,12 +143,8 @@ public class UserMessage implements Message {
     warnNotPdfFile(filename);
     final String payload =
         base64Data.startsWith(PDF_DATA_URI_PREFIX) ? base64Data : PDF_DATA_URI_PREFIX + base64Data;
-    try {
-      Base64.getDecoder().decode(payload.substring(PDF_DATA_URI_PREFIX.length()));
-      return appendFileItem(payload, filename);
-    } catch (IllegalArgumentException e) {
-      throw new IllegalArgumentException("Invalid base64 payload for the file.", e);
-    }
+
+    return appendFileItem(payload, filename);
   }
 
   @Nonnull
