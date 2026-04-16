@@ -20,12 +20,14 @@ import lombok.extern.slf4j.Slf4j;
  * <p>This class provides factory methods that return fully configured OpenAI SDK clients using SAP
  * Cloud SDK's Apache HttpClient with automatic OAuth token refresh.
  *
- * @since 1.18.0
+ * @since 1.19.0
  */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Beta
 public class AiCoreOpenAiClient {
+
+  private final HttpDestination destination;
   private static final String DEFAULT_RESOURCE_GROUP = "default";
 
   /**
@@ -37,7 +39,7 @@ public class AiCoreOpenAiClient {
    * @throws DeploymentResolutionException If no running deployment is found for the model.
    */
   @Nonnull
-  public static Sync forModel(@Nonnull final OpenAiModel model) {
+  public static AiCoreOpenAiClient forModel(@Nonnull final OpenAiModel model) {
     return forModel(model, DEFAULT_RESOURCE_GROUP);
   }
 
@@ -51,7 +53,7 @@ public class AiCoreOpenAiClient {
    * @throws DeploymentResolutionException If no running deployment is found for the model.
    */
   @Nonnull
-  public static Sync forModel(
+  public static AiCoreOpenAiClient forModel(
       @Nonnull final OpenAiModel model, @Nonnull final String resourceGroup) {
     final HttpDestination destination =
         new AiCoreService().getInferenceDestination(resourceGroup).forModel(model);
@@ -59,32 +61,8 @@ public class AiCoreOpenAiClient {
   }
 
   @Nonnull
-  public static Sync forDestination(@Nonnull final HttpDestination destination) {
-    return new Sync(destination);
-  }
-
-  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class Sync {
-    private final HttpDestination destination;
-
-    @Nonnull
-    public ResponseService responses() {
-      return new ResponseServiceImpl(buildClientOptions(destination));
-    }
-
-    public Async async() {
-      return new Async(destination);
-    }
-  }
-
-  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-  public static class Async {
-    private final HttpDestination destination;
-
-    @Nonnull
-    public ResponseServiceAsync responses() {
-      return new ResponseServiceAsyncImpl(buildClientOptions(destination));
-    }
+  static AiCoreOpenAiClient forDestination(@Nonnull final HttpDestination destination) {
+    return new AiCoreOpenAiClient(destination);
   }
 
   @Nonnull
@@ -94,5 +72,38 @@ public class AiCoreOpenAiClient {
         .httpClient(new AiCoreHttpClientImpl(destination))
         .apiKey("unused")
         .build();
+  }
+
+  /**
+   * Get a synchronous ResponseService client for the configured model and resource group.
+   *
+   * @return A configured synchronous OpenAI ResponseService client.
+   */
+  @Nonnull
+  public ResponseService responses() {
+    return new ResponseServiceImpl(buildClientOptions(destination));
+  }
+
+  public Async async() {
+    return new Async(destination);
+  }
+
+  /**
+   * Asynchronous client factory for accessing OpenAI services with a pre-configured model and
+   * resource group.
+   */
+  @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+  public static class Async {
+    private final HttpDestination destination;
+
+    /**
+     * Get an asynchronous ResponseService client for the configured model and resource group.
+     *
+     * @return A configured OpenAI ResponseServiceAsync client.
+     */
+    @Nonnull
+    public ResponseServiceAsync responses() {
+      return new ResponseServiceAsyncImpl(buildClientOptions(destination));
+    }
   }
 }

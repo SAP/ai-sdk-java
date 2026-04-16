@@ -36,7 +36,7 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
  */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-final class AiCoreHttpClientImpl implements HttpClient {
+class AiCoreHttpClientImpl implements HttpClient {
   private final HttpDestination destination;
 
   private static final String SSE_MEDIA_TYPE = "text/event-stream";
