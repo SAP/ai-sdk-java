@@ -12,8 +12,12 @@ import com.sap.ai.sdk.orchestration.model.Citation;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
@@ -113,6 +117,64 @@ class OrchestrationController {
     final var response =
         service.multiStringInput(
             List.of("What is the capital of France?", "What is Chess about?", "What is 2+2?"));
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/fileInputUrl")
+  @Nonnull
+  Object fileInputUrl(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var response =
+        service.fileInput(
+            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", null);
+    if ("json".equals(format)) {
+      return response;
+    }
+    return response.getContent();
+  }
+
+  @GetMapping("/fileInputLocalPath")
+  @Nonnull
+  Object fileInputLocalPath(
+      @Nullable @RequestParam(value = "format", required = false) final String format)
+      throws IOException {
+    final URL url =
+        new URL("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
+    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestProperty("User-Agent", "Controller implementation");
+
+    final Path pdfPath = Files.createTempFile("orchestration-controller", ".pdf");
+    try (var inputStream = connection.getInputStream()) {
+      Files.write(pdfPath, inputStream.readAllBytes());
+      final var response = service.fileInput(pdfPath);
+      if ("json".equals(format)) {
+        return response;
+      }
+      return response.getContent();
+    } finally {
+      Files.deleteIfExists(pdfPath);
+    }
+  }
+
+  @GetMapping("/fileInputBase64")
+  @Nonnull
+  Object fileInputBase64(
+      @Nullable @RequestParam(value = "format", required = false) final String format)
+      throws IOException {
+    final URL url =
+        new URL("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
+    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestProperty("User-Agent", "Controller implementation");
+
+    final String base64Data;
+    try (var inputStream = connection.getInputStream()) {
+      base64Data = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
+    }
+
+    final var response = service.fileInputBase64(base64Data, "dummy.pdf");
     if ("json".equals(format)) {
       return response;
     }

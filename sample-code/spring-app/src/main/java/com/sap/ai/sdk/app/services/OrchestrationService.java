@@ -49,10 +49,12 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -106,6 +108,54 @@ public class OrchestrationService {
   public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
     final var multiMessage =
         Message.user(questions.get(0)).withText(questions.get(1)).withText(questions.get(2));
+    final var prompt = new OrchestrationPrompt(multiMessage);
+    return client.chatCompletion(prompt, config);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with a file.
+   *
+   * @param fileUrl the URL to a PDF file
+   * @param filename optional filename for the file
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse fileInput(
+      @Nonnull final String fileUrl, @Nullable final String filename) {
+    final var multiMessage =
+        Message.user("What is the title of the topic discussed here?")
+            .withFileUrl(fileUrl, filename);
+    final var prompt = new OrchestrationPrompt(multiMessage);
+    return client.chatCompletion(prompt, config);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with a local file.
+   *
+   * @param filePath the path to a local PDF file
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse fileInput(@Nonnull final Path filePath) {
+    final var multiMessage =
+        Message.user("What is the title of the topic discussed here?").withFile(filePath);
+    final var prompt = new OrchestrationPrompt(multiMessage);
+    return client.chatCompletion(prompt, config);
+  }
+
+  /**
+   * Chat request to OpenAI through the Orchestration service with base64 input string.
+   *
+   * @param base64Data base64-encoded payload
+   * @param filename the filename
+   * @return the assistant response object
+   */
+  @Nonnull
+  public OrchestrationChatResponse fileInputBase64(
+      @Nonnull final String base64Data, @Nonnull final String filename) {
+    final var multiMessage =
+        Message.user("What is the title of the topic discussed here?")
+            .withFileBase64(base64Data, filename);
     final var prompt = new OrchestrationPrompt(multiMessage);
     return client.chatCompletion(prompt, config);
   }

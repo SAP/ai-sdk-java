@@ -377,6 +377,48 @@ class OrchestrationTest {
   }
 
   @Test
+  void testFileInputLocalPath() throws IOException {
+    final URL url =
+        new URL("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
+    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestProperty("User-Agent", "Test implementation");
+
+    final Path pdfPath = Files.createTempFile("orchestration-test", ".pdf");
+    try (InputStream inputStream = connection.getInputStream()) {
+      Files.write(pdfPath, inputStream.readAllBytes());
+    }
+
+    val response = service.fileInput(pdfPath);
+    assertThat(response.getContent()).containsAnyOf("dummy", "Dummy");
+
+    Files.deleteIfExists(pdfPath);
+  }
+
+  @Test
+  void testFileInputUrl() {
+    final String fileUrl =
+        "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+
+    val response = service.fileInput(fileUrl, null);
+    assertThat(response.getContent()).containsAnyOf("dummy", "Dummy");
+  }
+
+  @Test
+  void testFileInputBase64() throws IOException {
+    final URL url =
+        new URL("https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf");
+    final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    connection.setRequestProperty("User-Agent", "Test implementation");
+
+    final String base64Data;
+    InputStream inputStream = connection.getInputStream();
+    base64Data = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
+
+    val response = service.fileInputBase64(base64Data, "dummy.pdf");
+    assertThat(response.getContent()).containsAnyOf("dummy", "Dummy");
+  }
+
+  @Test
   void testResponseFormatJsonSchema() {
     Translation translation =
         service.responseFormatJsonSchema("apple", Translation.class).asEntity(Translation.class);

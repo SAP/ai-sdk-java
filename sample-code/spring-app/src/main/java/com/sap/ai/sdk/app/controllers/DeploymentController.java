@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 class DeploymentController {
 
   private static final DeploymentApi CLIENT = new DeploymentApi();
-  private static final String RESOURCE_GROUP = "default";
+  private static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
 
   /** Create and delete a deployment with the Java specific configuration ID. */
   @Nullable

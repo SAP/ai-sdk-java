@@ -1,29 +1,40 @@
 package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
+import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.FILE;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.IMAGE_URL;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.TEXT;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.FileContent;
 import com.sap.ai.sdk.orchestration.model.ImageContentUrl;
 import com.sap.ai.sdk.orchestration.model.UserChatMessage;
 import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Base64;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.experimental.Tolerate;
+import lombok.extern.slf4j.Slf4j;
 
 /** Represents a chat message as 'user' to the orchestration service. */
+@Slf4j
 @Value
 @Accessors(fluent = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class UserMessage implements Message {
+  private static final String PDF_DATA_URI_PREFIX = "data:application/pdf;base64,";
 
   /** The role of the assistant. */
   @Nonnull String role = "user";
@@ -85,6 +96,71 @@ public class UserMessage implements Message {
     return new UserMessage(new MessageContent(contentItems));
   }
 
+  /**
+   * Add a file to the message by reading it from disk.
+   *
+   * @param filePath the path to a local file.
+   * @return the new message.
+   * @since 1.18.0
+   */
+  @Nonnull
+  public UserMessage withFile(@Nonnull final Path filePath) {
+    final String filename = filePath.getFileName().toString();
+    warnNotPdfFile(filename);
+    try {
+      final String base64Data = Base64.getEncoder().encodeToString(Files.readAllBytes(filePath));
+      return appendFileItem(PDF_DATA_URI_PREFIX + base64Data, filename);
+    } catch (IOException e) {
+      throw new IllegalArgumentException("Failed to read the file: " + filePath, e);
+    }
+  }
+
+  /**
+   * Add a file to the message by passing its URL.
+   *
+   * @param fileUrl the URL of the file.
+   * @param filename optional name of the file.
+   * @return the new message.
+   * @since 1.18.0
+   */
+  @Nonnull
+  public UserMessage withFileUrl(@Nonnull final String fileUrl, @Nullable final String filename) {
+    warnNotPdfFile(filename);
+    return appendFileItem(fileUrl, filename);
+  }
+
+  /**
+   * Add a file to the message from a base64-encoded payload.
+   *
+   * @param base64Data base64-encoded payload.
+   * @param filename optional name of the file.
+   * @return the new message.
+   * @since 1.18.0
+   */
+  @Nonnull
+  public UserMessage withFileBase64(
+      @Nonnull final String base64Data, @Nullable final String filename) {
+    warnNotPdfFile(filename);
+    final String payload =
+        base64Data.startsWith(PDF_DATA_URI_PREFIX) ? base64Data : PDF_DATA_URI_PREFIX + base64Data;
+
+    return appendFileItem(payload, filename);
+  }
+
+  @Nonnull
+  private UserMessage appendFileItem(
+      @Nonnull final String fileData, @Nullable final String filename) {
+    final var contentItems = new LinkedList<>(content.items());
+    contentItems.add(new FileItem(fileData, filename));
+    return new UserMessage(new MessageContent(contentItems));
+  }
+
+  private static void warnNotPdfFile(@Nullable final String filename) {
+    if (filename != null && !filename.toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+      log.warn("Only .pdf files are supported.");
+    }
+  }
+
   @Override
   @Nonnull
   public ChatMessage createChatMessage() {
@@ -102,6 +178,10 @@ public class UserMessage implements Message {
         final var detail = imageItem.detailLevel().toString();
         final var img = ImageContentUrl.create().url(imageItem.imageUrl()).detail(detail);
         contentList.add(UserChatMessageContentItem.create().type(IMAGE_URL).imageUrl(img));
+      } else if (item instanceof FileItem fileItem) {
+        final var file =
+            FileContent.create().fileData(fileItem.fileData()).filename(fileItem.filename());
+        contentList.add(UserChatMessageContentItem.create().type(FILE)._file(file));
       }
     }
     return UserChatMessage.create()

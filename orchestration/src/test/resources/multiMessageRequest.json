@@ -52,6 +52,22 @@
           "text": "Start the first sentence with the word 'Well'."
         }
       ]
+    },
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "text",
+          "text": "What is the title of the topic discussed here?"
+        },
+        {
+          "type": "file",
+          "file": {
+            "file_data": "data:application/pdf;base64,JVBERi0xLjcKJSVFT0Y=",
+            "filename": "sample.pdf"
+          }
+        }
+      ]
     }
   ]
 }

@@ -34,6 +34,22 @@
             }
           }
         ]
+      },
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "text",
+            "text": "What is the title of the topic discussed here?"
+          },
+          {
+            "type": "file",
+            "file": {
+              "file_data": "data:application/pdf;base64,JVBERi0xLjcKJSVFT0Y=",
+              "filename": "sample.pdf"
+            }
+          }
+        ]
       }
     ],
     "llm": {
@@ -47,7 +63,7 @@
           "index": 0,
           "message": {
             "role": "assistant",
-            "content": "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue."
+            "content": "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue. The title of the topic discussed in the PDF is \"SAP AI SDK Orchestration\"."
           },
           "finish_reason": "stop"
         }
@@ -70,7 +86,7 @@
         "index": 0,
         "message": {
           "role": "assistant",
-          "content": "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue."
+          "content": "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue. The title of the topic discussed in the PDF is \"SAP AI SDK Orchestration\"."
         },
         "finish_reason": "stop"
       }
