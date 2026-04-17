@@ -122,7 +122,7 @@ jobs:
           # x=extract v=verbose z=decompress f=file C=destination directory
           tar -xvzf release-artifacts.tar.gz -C .
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: 'Import GPG Key'
         run: |
