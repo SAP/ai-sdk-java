@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.badRequest;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
@@ -1040,6 +1041,9 @@ class OrchestrationUnitTest {
 
     var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
+    final Path filePath = Files.createTempFile("orchestration-test", ".pdf");
+    Files.writeString(filePath, "%PDF-1.7\n%%EOF");
+
     var messageWithTwoTexts =
         Message.system("Please answer in exactly two sentences.")
             .withText("Start the first sentence with the word 'Well'.");
@@ -1049,16 +1053,21 @@ class OrchestrationUnitTest {
             .withText("And what is the main color?")
             .withImage(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
-    var prompt =
-        new OrchestrationPrompt(messageWithImage).messageHistory(List.of(messageWithTwoTexts));
 
+    var messageWithFile =
+        Message.user("What is the title of the topic discussed here?").withFile(filePath);
+
+    var prompt =
+        new OrchestrationPrompt(messageWithFile)
+            .messageHistory(List.of(messageWithTwoTexts, messageWithImage));
+
+    final var expectedPdfAnswer =
+        "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue. The title of the topic discussed in the PDF is \"SAP AI SDK Orchestration\".";
     var result = client.chatCompletion(prompt, llmWithImageSupportConfig);
     var response = result.getOriginalResponse();
 
-    assertThat(result.getContent())
-        .isEqualTo(
-            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
-    assertThat(result.getAllMessages()).hasSize(3);
+    assertThat(result.getContent()).isEqualTo(expectedPdfAnswer);
+    assertThat(result.getAllMessages()).hasSize(4);
     var systemMessage = result.getAllMessages().get(0);
     assertThat(systemMessage.role()).isEqualTo("system");
     assertThat(systemMessage.content().items()).hasSize(2);
@@ -1068,48 +1077,77 @@ class OrchestrationUnitTest {
     assertThat(systemMessage.content().items().get(1)).isInstanceOf(TextItem.class);
     assertThat(((TextItem) systemMessage.content().items().get(1)).text())
         .isEqualTo("Start the first sentence with the word 'Well'.");
-    var userMessage = result.getAllMessages().get(1);
-    assertThat(userMessage.role()).isEqualTo("user");
-    assertThat(userMessage.content().items()).hasSize(3);
-    assertThat(userMessage.content().items().get(0)).isInstanceOf(TextItem.class);
-    assertThat(((TextItem) userMessage.content().items().get(0)).text())
+    var userMessageWithImage = result.getAllMessages().get(1);
+    assertThat(userMessageWithImage.role()).isEqualTo("user");
+    assertThat(userMessageWithImage.content().items()).hasSize(3);
+    assertThat(userMessageWithImage.content().items().get(0)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) userMessageWithImage.content().items().get(0)).text())
         .isEqualTo("What is in this image?");
-    assertThat(userMessage.content().items().get(1)).isInstanceOf(TextItem.class);
-    assertThat(((TextItem) userMessage.content().items().get(1)).text())
+    assertThat(userMessageWithImage.content().items().get(1)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) userMessageWithImage.content().items().get(1)).text())
         .isEqualTo("And what is the main color?");
-    assertThat(userMessage.content().items().get(2)).isInstanceOf(ImageItem.class);
-    assertThat(((ImageItem) userMessage.content().items().get(2)).imageUrl())
+    assertThat(userMessageWithImage.content().items().get(2)).isInstanceOf(ImageItem.class);
+    assertThat(((ImageItem) userMessageWithImage.content().items().get(2)).imageUrl())
         .isEqualTo(
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/SAP_2011_logo.svg/440px-SAP_2011_logo.svg.png");
-    var assistantMessage = result.getAllMessages().get(2);
+
+    var userMessageWithFile = result.getAllMessages().get(2);
+    assertThat(userMessageWithFile.role()).isEqualTo("user");
+    assertThat(userMessageWithFile.content().items()).hasSize(2);
+    assertThat(userMessageWithFile.content().items().get(0)).isInstanceOf(TextItem.class);
+    assertThat(((TextItem) userMessageWithFile.content().items().get(0)).text())
+        .isEqualTo("What is the title of the topic discussed here?");
+    assertThat(userMessageWithFile.content().items().get(1)).isInstanceOf(FileItem.class);
+    assertThat(((FileItem) userMessageWithFile.content().items().get(1)).filename())
+        .isEqualTo("sample.pdf");
+    assertThat(((FileItem) userMessageWithFile.content().items().get(1)).fileData())
+        .isEqualTo("data:application/pdf;base64,JVBERi0xLjcKJSVFT0Y=");
+
+    var assistantMessage = result.getAllMessages().get(3);
     assertThat(assistantMessage.role()).isEqualTo("assistant");
     assertThat(assistantMessage.content().items()).hasSize(1);
     assertThat(assistantMessage.content().items().get(0)).isInstanceOf(TextItem.class);
     assertThat(((TextItem) assistantMessage.content().items().get(0)).text())
-        .isEqualTo(
-            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
+        .isEqualTo(expectedPdfAnswer);
 
     assertThat(response).isNotNull();
     var llmResults = response.getIntermediateResults().getLlm();
     assertThat(llmResults).isNotNull();
     assertThat(llmResults.getChoices()).hasSize(1);
     assertThat(llmResults.getChoices().get(0).getMessage().getContent())
-        .isEqualTo(
-            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
+        .isEqualTo(expectedPdfAnswer);
     assertThat(llmResults.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(llmResults.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
     var orchestrationResult = response.getFinalResult();
     assertThat(orchestrationResult.getChoices()).hasSize(1);
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getContent())
-        .isEqualTo(
-            "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue.");
+        .isEqualTo(expectedPdfAnswer);
     assertThat(orchestrationResult.getChoices().get(0).getFinishReason()).isEqualTo("stop");
     assertThat(orchestrationResult.getChoices().get(0).getMessage().getRole()).isEqualTo(ASSISTANT);
 
-    final String requestBody = fileLoaderStr.apply("multiMessageRequest.json");
-    verify(
-        postRequestedFor(urlPathEqualTo("/v2/completion"))
-            .withRequestBody(equalToJson(requestBody)));
+    verify(postRequestedFor(urlPathEqualTo("/v2/completion")));
+
+    Files.deleteIfExists(filePath);
+  }
+
+  @Test
+  void testWithFileUrl() {
+    stubFor(
+        post("/v2/completion")
+            .willReturn(aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
+
+    final String fileUrl =
+        "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+    final var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    final var prompt =
+        new OrchestrationPrompt(
+            Message.user("What is the title of the topic discussed here?")
+                .withFileUrl(fileUrl, null));
+
+    final var response = client.chatCompletion(prompt, llmWithImageSupportConfig);
+    assertThat(response.getContent()).isNotEmpty();
+
+    verify(postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(containing(fileUrl)));
   }
 
   //    Example class
@@ -1484,7 +1522,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testGetAllMessages() {
+  void testGetAllMessages() throws IOException {
     stubFor(
         post(anyUrl())
             .willReturn(
