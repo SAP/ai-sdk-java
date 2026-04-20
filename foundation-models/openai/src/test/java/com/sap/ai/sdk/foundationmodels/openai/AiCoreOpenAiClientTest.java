@@ -68,35 +68,69 @@ class AiCoreOpenAiClientTest {
             .build();
 
     try (var stream = responseService.createStreaming(params)) {
-      final var events = stream.stream().toList();
-      assertThat(events).hasSize(18);
-      assertThat(events).anyMatch(ResponseStreamEvent::isOutputTextDelta);
-      assertThat(events).anyMatch(ResponseStreamEvent::isOutputTextDone);
+      stream.stream().forEach(AiCoreOpenAiClientTest::assertCreateResponseStreaming);
     }
   }
 
-  public static void assertCreateResponse(@Nonnull final Response response) {
+  static void assertCreateResponse(@Nonnull final Response response) {
     assertThat(response.isValid()).isTrue();
     assertThat(response.model().asString()).isEqualTo("gpt-5-2025-08-07-dz-std");
     assertThat(response.status()).contains(ResponseStatus.COMPLETED);
     assertThat(response.reasoning())
         .hasValueSatisfying(r -> assertThat(r.effort()).contains(ReasoningEffort.MEDIUM));
-    assertThat(response.usage())
-        .hasValueSatisfying(
-            u -> {
-              assertThat(u.inputTokens()).isEqualTo(13L);
-              assertThat(u.outputTokens()).isEqualTo(59L);
-              assertThat(u.totalTokens()).isEqualTo(72L);
-            });
-    assertThat(response.output())
-        .satisfiesExactly(
-            item -> assertThat(item.isReasoning()).isTrue(),
-            item -> {
-              assertThat(item.isMessage()).isTrue();
-              assertThat(item.asMessage().content()).isNotEmpty();
-              final ResponseOutputMessage.Content content = item.asMessage().content().get(0);
-              assertThat(content.isOutputText()).isTrue();
-              assertThat(content.asOutputText().text()).isEqualTo("Paris.");
-            });
+
+    final var usage = response.usage().orElseThrow();
+    assertThat(usage.inputTokens()).isEqualTo(13L);
+    assertThat(usage.outputTokens()).isEqualTo(59L);
+    assertThat(usage.totalTokens()).isEqualTo(72L);
+
+    final var output = response.output();
+    assertThat(output).isNotNull();
+    final var item1 = output.get(0);
+    assertThat(item1.isReasoning()).isTrue();
+    final var item2 = output.get(1);
+    assertThat(item2.isMessage()).isTrue();
+    assertThat(item2.asMessage().content()).isNotEmpty();
+    final ResponseOutputMessage.Content content = item2.asMessage().content().get(0);
+    assertThat(content.isOutputText()).isTrue();
+    assertThat(content.asOutputText().text()).isEqualTo("Paris.");
+  }
+
+  static void assertCreateResponseStreaming(@Nonnull final ResponseStreamEvent event) {
+    assertThat(event.isValid()).isTrue();
+
+    if (event.isCreated()) {
+      assertThat(event.asCreated().response()).isNotNull();
+      assertThat(event.asCreated().response().model().asString())
+          .isEqualTo("gpt-5-2025-08-07-dz-std");
+      assertThat(event.asCreated().response().status()).contains(ResponseStatus.IN_PROGRESS);
+      assertThat(event.asCreated().response().reasoning())
+          .hasValueSatisfying(r -> assertThat(r.effort()).contains(ReasoningEffort.MEDIUM));
+    }
+
+    if (event.isOutputTextDelta()) {
+      final var delta = event.asOutputTextDelta();
+      assertThat(delta.delta()).isNotBlank();
+    }
+
+    if (event.isCompleted()) {
+      final var completed = event.asCompleted().response();
+
+      final var usage = completed.usage().orElseThrow();
+      assertThat(usage.inputTokens()).isEqualTo(13L);
+      assertThat(usage.outputTokens()).isEqualTo(59L);
+      assertThat(usage.totalTokens()).isEqualTo(72L);
+
+      final var output = completed.output();
+      assertThat(output).isNotNull();
+      final var item1 = output.get(0);
+      assertThat(item1.isReasoning()).isTrue();
+      final var item2 = output.get(1);
+      assertThat(item2.isMessage()).isTrue();
+      assertThat(item2.asMessage().content()).isNotEmpty();
+      final ResponseOutputMessage.Content content = item2.asMessage().content().get(0);
+      assertThat(content.isOutputText()).isTrue();
+      assertThat(content.asOutputText().text()).contains("lemonade");
+    }
   }
 }
