@@ -65,7 +65,7 @@ class GroundingController {
   Object getAllPipelines(
       @Nullable @RequestParam(value = "format", required = false) final String format,
       @Nonnull @RequestParam(value = "resource-group") final String resourceGroup) {
-    final var pipelines = CLIENT_PIPELINES.getAllPipelines(resourceGroup, 10, 0, true);
+    final var pipelines = CLIENT_PIPELINES.getAllPipelines(resourceGroup, null, 10, 0, true);
     log.info("Found {} pipelines", pipelines.getResources().size());
 
     if ("json".equals(format)) {
