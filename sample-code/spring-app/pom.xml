@@ -94,6 +94,10 @@
     </dependency>
     <dependency>
       <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>batch</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
       <artifactId>document-grounding</artifactId>
     </dependency>
     <dependency>
