@@ -54,11 +54,21 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel IBM_GRANITE_13B_CHAT =
       new OrchestrationAiModel("ibm--granite-13b-chat");
 
-  /** MistralAI Mistral Large Instruct model */
+  /**
+   * MistralAI Mistral Large Instruct model
+   *
+   * @deprecated This model is deprecated on AI Core.
+   */
+  @Deprecated
   public static final OrchestrationAiModel MISTRAL_LARGE_INSTRUCT =
       new OrchestrationAiModel("mistralai--mistral-large-instruct");
 
-  /** MistralAI Mistral Small Instruct model */
+  /**
+   * MistralAI Mistral Small Instruct model
+   *
+   * @deprecated This model is deprecated on AI Core.
+   */
+  @Deprecated
   public static final OrchestrationAiModel MISTRAL_SMALL_INSTRUCT =
       new OrchestrationAiModel("mistralai--mistral-small-instruct");
 
@@ -281,10 +291,19 @@ public class OrchestrationAiModel {
   @Deprecated
   public static final OrchestrationAiModel GPT_4O_MINI = new OrchestrationAiModel("gpt-4o-mini");
 
-  /** Azure OpenAI o1 model */
-  public static final OrchestrationAiModel OPENAI_O1 = new OrchestrationAiModel("o1");
+  /**
+   * Azure OpenAI o1 model
+   *
+   * @deprecated This model is deprecated on AI Core.
+   */
+  @Deprecated public static final OrchestrationAiModel OPENAI_O1 = new OrchestrationAiModel("o1");
 
-  /** Azure OpenAI o3-mini model */
+  /**
+   * Azure OpenAI o3-mini model
+   *
+   * @deprecated This model is deprecated on AI Core.
+   */
+  @Deprecated
   public static final OrchestrationAiModel OPENAI_O3_MINI = new OrchestrationAiModel("o3-mini");
 
   /** Azure OpenAI o4-mini model */
@@ -304,6 +323,15 @@ public class OrchestrationAiModel {
 
   /** Azure OpenAI GPT-5.2 model */
   public static final OrchestrationAiModel GPT_52 = new OrchestrationAiModel("gpt-5.2");
+
+  /** Azure OpenAI GPT-5.3-codex model */
+  public static final OrchestrationAiModel GPT_53_CODEX = new OrchestrationAiModel("gpt-5.3-codex");
+
+  /** Azure OpenAI GPT-5.4 model */
+  public static final OrchestrationAiModel GPT_54 = new OrchestrationAiModel("gpt-5.4");
+
+  /** Azure OpenAI GPT-5.4-nano model */
+  public static final OrchestrationAiModel GPT_54_NANO = new OrchestrationAiModel("gpt-5.4-nano");
 
   /**
    * Google Cloud Platform Gemini 1.0 Pro model

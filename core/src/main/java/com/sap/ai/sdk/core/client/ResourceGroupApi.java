@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.core.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.model.BckndResourceGroup;
 import com.sap.ai.sdk.core.model.BckndResourceGroupBase;
@@ -7,23 +8,18 @@ import com.sap.ai.sdk.core.model.BckndResourceGroupDeletionResponse;
 import com.sap.ai.sdk.core.model.BckndResourceGroupList;
 import com.sap.ai.sdk.core.model.BckndResourceGroupPatchRequest;
 import com.sap.ai.sdk.core.model.BckndResourceGroupsPostRequest;
-import com.sap.cloud.sdk.services.openapi.apiclient.ApiClient;
-import com.sap.cloud.sdk.services.openapi.core.AbstractOpenApiService;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiRequestException;
-import com.sap.cloud.sdk.services.openapi.core.OpenApiResponse;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
+import com.sap.cloud.sdk.services.openapi.apache.apiclient.Pair;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
+import java.util.StringJoiner;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * AI Core in version 2.42.0.
@@ -35,7 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * your AI content from your own git repository, and register your own object store for training
  * data and trained models.
  */
-public class ResourceGroupApi extends AbstractOpenApiService {
+public class ResourceGroupApi extends BaseApi {
 
   /** Instantiates this API class to invoke operations on the AI Core */
   public ResourceGroupApi() {
@@ -49,6 +45,23 @@ public class ResourceGroupApi extends AbstractOpenApiService {
    */
   public ResourceGroupApi(@Nonnull final AiCoreService aiCoreService) {
     super(aiCoreService.getApiClient());
+  }
+
+  private ResourceGroupApi(@Nonnull final ApiClient apiClient) {
+    super(apiClient);
+  }
+
+  /**
+   * Creates a new API instance with additional default headers.
+   *
+   * @param defaultHeaders Additional headers to include in all requests
+   * @return A new API instance with the combined headers
+   */
+  public ResourceGroupApi withDefaultHeaders(@Nonnull final Map<String, String> defaultHeaders) {
+    final var api = new ResourceGroupApi(apiClient);
+    api.defaultHeaders.putAll(this.defaultHeaders);
+    api.defaultHeaders.putAll(defaultHeaders);
+    return api;
   }
 
   /**
@@ -74,45 +87,45 @@ public class ResourceGroupApi extends AbstractOpenApiService {
       @Nonnull final BckndResourceGroupsPostRequest bckndResourceGroupsPostRequest,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndResourceGroupsPostRequest;
 
     // verify the required parameter 'bckndResourceGroupsPostRequest' is set
     if (bckndResourceGroupsPostRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'bckndResourceGroupsPostRequest' when calling create");
+              "Missing the required parameter 'bckndResourceGroupsPostRequest' when calling create")
+          .statusCode(400);
     }
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/resourceGroups").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/admin/resourceGroups";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<BckndResourceGroupBase> localVarReturnType =
+        new TypeReference<BckndResourceGroupBase>() {};
 
-    final ParameterizedTypeReference<BckndResourceGroupBase> localVarReturnType =
-        new ParameterizedTypeReference<BckndResourceGroupBase>() {};
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.POST,
+        "POST",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        bckndResourceGroupsPostRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -162,50 +175,50 @@ public class ResourceGroupApi extends AbstractOpenApiService {
   public BckndResourceGroupDeletionResponse delete(
       @Nonnull final String resourceGroupId, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'resourceGroupId' is set
     if (resourceGroupId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'resourceGroupId' when calling delete");
+              "Missing the required parameter 'resourceGroupId' when calling delete")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("resourceGroupId", resourceGroupId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/resourceGroups/{resourceGroupId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/admin/resourceGroups/{resourceGroupId}"
+            .replaceAll(
+                "\\{" + "resourceGroupId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(resourceGroupId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BckndResourceGroupDeletionResponse> localVarReturnType =
-        new ParameterizedTypeReference<BckndResourceGroupDeletionResponse>() {};
+    final TypeReference<BckndResourceGroupDeletionResponse> localVarReturnType =
+        new TypeReference<BckndResourceGroupDeletionResponse>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.DELETE,
+        "DELETE",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -254,50 +267,50 @@ public class ResourceGroupApi extends AbstractOpenApiService {
   public BckndResourceGroup get(
       @Nonnull final String resourceGroupId, @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
     // verify the required parameter 'resourceGroupId' is set
     if (resourceGroupId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'resourceGroupId' when calling get");
+              "Missing the required parameter 'resourceGroupId' when calling get")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("resourceGroupId", resourceGroupId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/resourceGroups/{resourceGroupId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/admin/resourceGroups/{resourceGroupId}"
+            .replaceAll(
+                "\\{" + "resourceGroupId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(resourceGroupId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BckndResourceGroup> localVarReturnType =
-        new ParameterizedTypeReference<BckndResourceGroup>() {};
+    final TypeReference<BckndResourceGroup> localVarReturnType =
+        new TypeReference<BckndResourceGroup>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -367,7 +380,7 @@ public class ResourceGroupApi extends AbstractOpenApiService {
    *     valid whether due to expiration (generally five to fifteen minutes) or a configuration
    *     change on the server, the server will respond with a 410 ResourceExpired error. In this
    *     case, the client must restart their list request without the continue token.
-   * @param labelSelector (optional filter by labels. Pass in pairs in the form of
+   * @param labelSelector (optional) filter by labels. Pass in pairs in the form of
    *     &#39;key&#x3D;value&#39; and / or &#39;key!&#x3D;value&#39; separated by commas and the
    *     result will be filtered to only those scenarios containing and / or not containing all
    *     given key/values
@@ -384,51 +397,46 @@ public class ResourceGroupApi extends AbstractOpenApiService {
       @Nullable final String continueToken,
       @Nullable final List<String> labelSelector)
       throws OpenApiRequestException {
-    final Object localVarPostBody = null;
 
-    final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/resourceGroups").build().toUriString();
+    // create path and map variables
+    final String localVarPath = "/admin/resourceGroups";
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$top", $top));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$skip", $skip));
-    localVarQueryParams.putAll(apiClient.parameterToMultiValueMap(null, "$count", $count));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(null, "continueToken", continueToken));
-    localVarQueryParams.putAll(
-        apiClient.parameterToMultiValueMap(
-            ApiClient.CollectionFormat.valueOf("csv".toUpperCase(Locale.ROOT)),
-            "labelSelector",
-            labelSelector));
-
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$count", $count));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("continueToken", continueToken));
+    localVarCollectionQueryParams.addAll(
+        ApiClient.parameterToPairs("csv", "labelSelector", labelSelector));
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
-    if (prefer != null) localVarHeaderParams.add("Prefer", apiClient.parameterToString(prefer));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
+    if (prefer != null) localVarHeaderParams.put("Prefer", ApiClient.parameterToString(prefer));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final ParameterizedTypeReference<BckndResourceGroupList> localVarReturnType =
-        new ParameterizedTypeReference<BckndResourceGroupList>() {};
+    final TypeReference<BckndResourceGroupList> localVarReturnType =
+        new TypeReference<BckndResourceGroupList>() {};
+
     return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.GET,
+        "GET",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
   }
 
@@ -475,58 +483,57 @@ public class ResourceGroupApi extends AbstractOpenApiService {
       @Nonnull final BckndResourceGroupPatchRequest bckndResourceGroupPatchRequest,
       @Nullable final String authorization)
       throws OpenApiRequestException {
-    final Object localVarPostBody = bckndResourceGroupPatchRequest;
 
     // verify the required parameter 'resourceGroupId' is set
     if (resourceGroupId == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'resourceGroupId' when calling patch");
+              "Missing the required parameter 'resourceGroupId' when calling patch")
+          .statusCode(400);
     }
 
     // verify the required parameter 'bckndResourceGroupPatchRequest' is set
     if (bckndResourceGroupPatchRequest == null) {
       throw new OpenApiRequestException(
-          "Missing the required parameter 'bckndResourceGroupPatchRequest' when calling patch");
+              "Missing the required parameter 'bckndResourceGroupPatchRequest' when calling patch")
+          .statusCode(400);
     }
 
     // create path and map variables
-    final Map<String, Object> localVarPathParams = new HashMap<String, Object>();
-    localVarPathParams.put("resourceGroupId", resourceGroupId);
     final String localVarPath =
-        UriComponentsBuilder.fromPath("/admin/resourceGroups/{resourceGroupId}")
-            .buildAndExpand(localVarPathParams)
-            .toUriString();
+        "/admin/resourceGroups/{resourceGroupId}"
+            .replaceAll(
+                "\\{" + "resourceGroupId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(resourceGroupId)));
 
-    final MultiValueMap<String, String> localVarQueryParams =
-        new LinkedMultiValueMap<String, String>();
-    final HttpHeaders localVarHeaderParams = new HttpHeaders();
-    final MultiValueMap<String, Object> localVarFormParams =
-        new LinkedMultiValueMap<String, Object>();
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (authorization != null)
-      localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
+      localVarHeaderParams.put("Authorization", ApiClient.parameterToString(authorization));
 
     final String[] localVarAccepts = {"application/json"};
-    final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
     final String[] localVarContentTypes = {"application/json"};
-    final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
 
-    final String[] localVarAuthNames = new String[] {"Oauth2"};
+    final TypeReference<OpenApiResponse> localVarReturnType =
+        new TypeReference<OpenApiResponse>() {};
 
-    final ParameterizedTypeReference<Void> localVarReturnType =
-        new ParameterizedTypeReference<Void>() {};
-    apiClient.invokeAPI(
+    return apiClient.invokeAPI(
         localVarPath,
-        HttpMethod.PATCH,
+        "PATCH",
         localVarQueryParams,
-        localVarPostBody,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        bckndResourceGroupPatchRequest,
         localVarHeaderParams,
         localVarFormParams,
         localVarAccept,
         localVarContentType,
-        localVarAuthNames,
         localVarReturnType);
-    return new OpenApiResponse(apiClient);
   }
 
   /**

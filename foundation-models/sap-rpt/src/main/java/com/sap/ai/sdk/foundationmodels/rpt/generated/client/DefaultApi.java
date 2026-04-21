@@ -24,9 +24,6 @@ import javax.annotation.Nullable;
  */
 public class DefaultApi extends BaseApi {
 
-  /** Instantiates this API class to invoke operations on the SAP-RPT-1 Tabular AI */
-  public DefaultApi() {}
-
   /**
    * Instantiates this API class to invoke operations on the SAP-RPT-1 Tabular AI.
    *
@@ -47,75 +44,16 @@ public class DefaultApi extends BaseApi {
   }
 
   /**
-   * Make in-context predictions for specified target columns based on provided table data JSON
-   * (optionally gzip-compressed).
+   * Creates a new API instance with additional default headers.
    *
-   * <p>Make in-context predictions for specified target columns. Either \&quot;rows\&quot; or
-   * \&quot;columns\&quot; must be provided and must contain both context and query rows. You can
-   * optionally send gzip-compressed JSON payloads and set a \&quot;Content-Encoding: gzip\&quot;
-   * header.
-   *
-   * <p><b>200</b> - Successful Prediction
-   *
-   * <p><b>400</b> - Bad Request - Invalid input data
-   *
-   * <p><b>413</b> - Payload Too Large
-   *
-   * <p><b>422</b> - Validation Error
-   *
-   * <p><b>500</b> - Internal Server Error
-   *
-   * @param predictRequestPayload (required) The value for the parameter predictRequestPayload
-   * @param contentEncoding (optional) Content encoding of the request body. Use &#39;gzip&#39; for
-   *     gzip-compressed payloads.
-   * @return PredictResponsePayload
-   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   * @param defaultHeaders Additional headers to include in all requests
+   * @return A new API instance with the combined headers
    */
-  @Nonnull
-  public PredictResponsePayload predict(
-      @Nonnull final PredictRequestPayload predictRequestPayload,
-      @Nullable final String contentEncoding)
-      throws OpenApiRequestException {
-
-    // verify the required parameter 'predictRequestPayload' is set
-    if (predictRequestPayload == null) {
-      throw new OpenApiRequestException(
-              "Missing the required parameter 'predictRequestPayload' when calling predict")
-          .statusCode(400);
-    }
-
-    // create path and map variables
-    final String localVarPath = "/predict";
-
-    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
-    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
-    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
-    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
-
-    if (contentEncoding != null)
-      localVarHeaderParams.put("Content-Encoding", ApiClient.parameterToString(contentEncoding));
-
-    final String[] localVarAccepts = {"application/json"};
-    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
-    final String[] localVarContentTypes = {"application/json"};
-    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
-
-    final TypeReference<PredictResponsePayload> localVarReturnType =
-        new TypeReference<PredictResponsePayload>() {};
-
-    return apiClient.invokeAPI(
-        localVarPath,
-        "POST",
-        localVarQueryParams,
-        localVarCollectionQueryParams,
-        localVarQueryStringJoiner.toString(),
-        predictRequestPayload,
-        localVarHeaderParams,
-        localVarFormParams,
-        localVarAccept,
-        localVarContentType,
-        localVarReturnType);
+  public DefaultApi withDefaultHeaders(@Nonnull final Map<String, String> defaultHeaders) {
+    final var api = new DefaultApi(apiClient);
+    api.defaultHeaders.putAll(this.defaultHeaders);
+    api.defaultHeaders.putAll(defaultHeaders);
+    return api;
   }
 
   /**
@@ -144,7 +82,43 @@ public class DefaultApi extends BaseApi {
   @Nonnull
   public PredictResponsePayload predict(@Nonnull final PredictRequestPayload predictRequestPayload)
       throws OpenApiRequestException {
-    return predict(predictRequestPayload, null);
+
+    // verify the required parameter 'predictRequestPayload' is set
+    if (predictRequestPayload == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'predictRequestPayload' when calling predict")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath = "/predict";
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<PredictResponsePayload> localVarReturnType =
+        new TypeReference<PredictResponsePayload>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "POST",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        predictRequestPayload,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarReturnType);
   }
 
   /**
@@ -199,7 +173,7 @@ public class DefaultApi extends BaseApi {
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
-    final Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
     if (_file != null) localVarFormParams.put("file", _file);

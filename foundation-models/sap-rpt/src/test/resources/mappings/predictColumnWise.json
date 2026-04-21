@@ -2,6 +2,11 @@
   "request": {
     "method": "POST",
     "url": "/predict",
+    "headers": {
+      "Content-Encoding": {
+        "equalTo": "gzip"
+      }
+    },
     "bodyPatterns": [
       {
         "equalToJson": {

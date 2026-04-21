@@ -14,6 +14,7 @@ import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import java.io.File;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class RptClient {
   @Nonnull private final DefaultApi api;
+  @Nonnull private final DefaultApi apiWithGzipEncoding;
 
   /**
    * Creates a new RptClient for the specified foundation model.
@@ -49,7 +51,8 @@ public class RptClient {
    */
   static RptClient forDestination(@Nonnull final Destination destination) {
     final var apiClient = ApiClient.create(destination).withObjectMapper(getDefaultObjectMapper());
-    return new RptClient(new DefaultApi(apiClient));
+    final var api = new DefaultApi(apiClient);
+    return new RptClient(api, api.withDefaultHeaders(Map.of("Content-Encoding", "gzip")));
   }
 
   /**
@@ -74,7 +77,7 @@ public class RptClient {
   @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(@Nonnull final PredictRequestPayload requestBody) {
-    return api.predict(requestBody, "gzip");
+    return apiWithGzipEncoding.predict(requestBody);
   }
 
   /**
