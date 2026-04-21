@@ -23,7 +23,7 @@ public class AiCoreOpenAiService {
       AiCoreOpenAiClient.forModel(GPT_5, "ai-sdk-java-e2e").responses();
 
   /**
-   * Create a simple response using the Responses API
+   * Create a simple non-persistent response using the Responses API
    *
    * @param input the input text to send to the model
    * @return the response object from the Responses API
@@ -35,29 +35,13 @@ public class AiCoreOpenAiService {
   }
 
   /**
-   * Create a response and immediately retrieve it using the Responses API. This demonstrates the
-   * two-step process of creating and then fetching a response.
-   *
-   * @param input the input text to send to the model
-   * @return the retrieved response object from the Responses API
-   */
-  @Nonnull
-  public Response retrieveResponse(@Nonnull final String input) {
-    // Create a non-persistent response with store=false
-    val params = ResponseCreateParams.builder().input(input).build();
-    val createResponse = RESPONSE_CLIENT.create(params);
-    return RESPONSE_CLIENT.retrieve(createResponse.id());
-  }
-
-  /**
-   * Create a streaming response using the Responses API
+   * Create a non-persistent streaming response using the Responses API
    *
    * @param input the input text to send to the model
    * @return the streaming response object from the Responses API
    */
   @Nonnull
   public StreamResponse<ResponseStreamEvent> createStreamingResponse(@Nonnull final String input) {
-    // Create a non-persistent response with store=false
     val params =
         ResponseCreateParams.builder().input(input).model(ChatModel.GPT_5).store(false).build();
     return RESPONSE_CLIENT.createStreaming(params);
