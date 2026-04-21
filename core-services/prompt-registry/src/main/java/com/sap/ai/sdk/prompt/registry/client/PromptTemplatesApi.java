@@ -13,7 +13,6 @@ import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.Pair;
 import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
