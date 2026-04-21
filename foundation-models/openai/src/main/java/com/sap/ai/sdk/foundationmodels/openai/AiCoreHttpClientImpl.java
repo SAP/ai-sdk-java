@@ -42,7 +42,7 @@ class AiCoreHttpClientImpl implements HttpClient {
   private static final String SSE_MEDIA_TYPE = "text/event-stream";
   private static final Map<String, Set<String>> ALLOWED_OPERATIONS =
       Map.of(
-          "/v1/responses", Set.of("GET", "POST"),
+          "/v1/responses", Set.of("POST"),
           "/v1/responses/[^/]+/compact", Set.of("POST"),
           "/v1/responses/[^/]+/cancel", Set.of("POST"));
 
