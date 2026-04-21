@@ -24,7 +24,7 @@
   | `POST /v1/responses/{id}/compact`    | Create response (compact) | ✅ |
   | `POST /v1/responses/{id}/cancel`     | Cancel response           | ✅ |
   | `GET /v1/responses/{id}/input_items` | List input items          | ❌ |
-  | `GET /v1/responses/input_tokens`     | Count input tokens        | ❌ |
+  | `POST /v1/responses/input_tokens`    | Count input tokens        | ❌ |
 
 ### 📈 Improvements
 
