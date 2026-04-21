@@ -84,6 +84,12 @@ public class AiCoreOpenAiClient {
     return new ResponseServiceImpl(buildClientOptions(destination));
   }
 
+  /**
+   * Get an asynchronous client factory for the configured model and resource group.
+   *
+   * @return An Async factory for creating asynchronous OpenAI clients.
+   */
+  @Nonnull
   public Async async() {
     return new Async(destination);
   }

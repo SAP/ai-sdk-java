@@ -42,11 +42,9 @@ class AiCoreHttpClientImpl implements HttpClient {
   private static final String SSE_MEDIA_TYPE = "text/event-stream";
   private static final Map<String, Set<String>> ALLOWED_OPERATIONS =
       Map.of(
-          "/chat/completions", Set.of("POST"),
-          "/responses", Set.of("GET", "POST"),
-          "/responses/[^/]+", Set.of("GET", "DELETE"),
-          "/responses/[^/]+/compact", Set.of("POST"),
-          "/responses/[^/]+/cancel", Set.of("POST"));
+          "/v1/responses", Set.of("GET", "POST"),
+          "/v1/responses/[^/]+/compact", Set.of("POST"),
+          "/v1/responses/[^/]+/cancel", Set.of("POST"));
 
   @Override
   @Nonnull
@@ -86,7 +84,7 @@ class AiCoreHttpClientImpl implements HttpClient {
   }
 
   private static void validateAllowedOperation(@Nonnull final HttpRequest request) {
-    final var endpoint = "/" + String.join("/", request.pathSegments());
+    final var endpoint = "/v1/" + String.join("/", request.pathSegments());
     final var method = request.method().name();
 
     // Find matching path pattern
@@ -108,7 +106,7 @@ class AiCoreHttpClientImpl implements HttpClient {
   }
 
   @Nonnull
-  private ClassicHttpRequest toApacheRequest(@Nonnull final HttpRequest request) {
+  ClassicHttpRequest toApacheRequest(@Nonnull final HttpRequest request) {
     final var fullUri = request.url();
     final var method = request.method();
     final var apacheRequest = new BasicClassicHttpRequest(method.name(), fullUri);
@@ -210,11 +208,15 @@ class AiCoreHttpClientImpl implements HttpClient {
     public void close() {
       try {
         body.close();
-        apacheResponse.close();
-        log.debug("Closed streaming response connection");
       } catch (final IOException e) {
-        log.warn("Failed to close streaming response", e);
+        log.debug("Failed to close streaming response body", e);
       }
+      try {
+        apacheResponse.close();
+      } catch (final IOException e) {
+        log.debug("Failed to close streaming response connection", e);
+      }
+      log.debug("Closed streaming response connection");
     }
   }
 
