@@ -80,6 +80,7 @@
     <!-- Formatting -->
     <spotless.version>3.4.0</spotless.version>
     <spotless.skip>false</spotless.skip>
+    <maven-project-info-reports-plugin.version>3.4.5</maven-project-info-reports-plugin.version>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
     <enforcer.skipBanLoggingFrameworks>false</enforcer.skipBanLoggingFrameworks>
@@ -859,7 +860,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                 <quiet>true</quiet>
                 <additionalOptions>-Xdoclint:none</additionalOptions>
                 <show>protected</show>
-                <sourcepath>${project.basedir}/core/target/delombok:${project.basedir}/orchestration/target/delombok:${project.basedir}/core-services/document-grounding/target/delombok:${project.basedir}/core-services/prompt-registry/target/delombok:${project.basedir}/foundation-models/openai/target/delombok:${project.basedir}/foundation-models/sap-rpt/target/delombok</sourcepath>
+                <failOnError>false</failOnError>
               </configuration>
               <dependencies>
                 <dependency>
@@ -874,9 +875,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                   <goals>
                     <goal>jar</goal>
                   </goals>
-                  <configuration>
-                    <sourcepath>${project.basedir}/target/delombok</sourcepath>
-                  </configuration>
                 </execution>
               </executions>
             </plugin>
@@ -999,6 +997,42 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           </plugin>
         </plugins>
       </build>
+      <reporting>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <version>${maven-project-info-reports-plugin.version}</version>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.12.0</version>
+            <inherited>false</inherited>
+            <configuration>
+              <quiet>true</quiet>
+              <additionalOptions>-Xdoclint:none</additionalOptions>
+              <show>protected</show>
+              <failOnError>false</failOnError>
+              <additionalDependencies>
+                <additionalDependency>
+                  <groupId>org.projectlombok</groupId>
+                  <artifactId>lombok</artifactId>
+                  <version>1.18.44</version>
+                </additionalDependency>
+              </additionalDependencies>
+            </configuration>
+            <reportSets>
+              <reportSet>
+                <id>aggregate-no-fork</id>
+                <reports>
+                  <report>aggregate-no-fork</report>
+                </reports>
+              </reportSet>
+            </reportSets>
+          </plugin>
+        </plugins>
+      </reporting>
     </profile>
   </profiles>
 </project>

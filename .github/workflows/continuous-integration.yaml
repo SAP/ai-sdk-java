@@ -66,6 +66,10 @@ jobs:
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -Dgenerate -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
 
+      - name: "Build Local Javadocs"
+        run: |
+          bash scripts/build-local-javadocs.sh
+
       - name: "Verify Local Changes"
         run: |
           CHANGED_FILES="$(git --no-pager diff --name-only)"
