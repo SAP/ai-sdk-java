@@ -23,12 +23,12 @@ class AiCoreOpenAiTest {
     assertThat(response).isNotNull();
     assertThat(response.output()).isNotNull();
 
-    final var message0 = response.output().get(0);
-    assertThat(message0.isReasoning()).isTrue();
-    final var message1 = response.output().get(1);
-    assertThat(message1.isMessage()).isTrue();
-    assertThat(message1.asMessage().content()).isNotEmpty();
-    final var content = message1.asMessage().content().get(0);
+    final var reasoningOutput = response.output().get(0);
+    assertThat(reasoningOutput.isReasoning()).isTrue();
+    final var messageOutput = response.output().get(1);
+    assertThat(messageOutput.isMessage()).isTrue();
+    assertThat(messageOutput.asMessage().content()).isNotEmpty();
+    final var content = messageOutput.asMessage().content().get(0);
     assertThat(content.isOutputText()).isTrue();
     assertThat(content.asOutputText().text()).containsIgnoringCase("Paris");
   }
