@@ -66,10 +66,6 @@ jobs:
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -Dgenerate -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
 
-      - name: "Build Local Javadocs"
-        run: |
-          bash scripts/build-local-javadocs.sh
-
       - name: "Verify Local Changes"
         run: |
           CHANGED_FILES="$(git --no-pager diff --name-only)"
@@ -96,3 +92,7 @@ jobs:
             {
               "text": "🚨 Main Build Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
             }
+
+  build-local-javadocs:
+    needs: continuous-integration
+    uses: ./.github/workflows/build-local-javadocs.yaml
