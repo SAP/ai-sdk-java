@@ -115,7 +115,7 @@ jobs:
           first=1
           for p in "${delombok_paths[@]}"; do
             if (( first )); then delombok_sourcepath="$p"; first=0
-            else delombok_sourcepath+="$p"; fi
+            else delombok_sourcepath+=":$p"; fi
           done
 
           # Patch options file: replace the argument after -sourcepath with delombok paths
