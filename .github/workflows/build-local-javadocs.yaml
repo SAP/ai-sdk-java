@@ -17,6 +17,9 @@ jobs:
 
   build-local-javadocs:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
     steps:
 
       - name: "Checkout repository"
@@ -42,8 +45,7 @@ jobs:
       - name: "Build SDK and generate Javadoc site"
         run: |
           mvn -B -ntp -Dstyle.color=never -Drelease -DskipTests -Dmaven.javadoc.failOnError=false \
-            clean package site \
-            2>&1 | tee .build.log
+            clean package site
 
       - name: "Run aggregate-no-fork and verify all modules are present"
         run: |
@@ -124,7 +126,7 @@ jobs:
               if($0=="-sourcepath"){replace_next=1}}' \
             "$options_file" > "$patched_options_file"
 
-          javadoc @"$patched_options_file" @"$packages_file" 2>&1 | tee .delombok-javadoc.log
+          javadoc @"$patched_options_file" @"$packages_file"
 
       - name: "Assemble local-javadocs output directory"
         run: |
