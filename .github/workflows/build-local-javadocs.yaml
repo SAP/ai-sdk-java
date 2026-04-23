@@ -199,7 +199,7 @@ jobs:
           echo "Local javadocs assembled at: $out_dir/index.html"
 
       - name: "Upload Javadocs artifact"
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: local-javadocs
           path: target/local-javadocs/
