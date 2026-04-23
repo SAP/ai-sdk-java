@@ -22,7 +22,7 @@
   | `GET /v1/responses/{id}`             | Retrieve response         | ❌ |
   | `DELETE /v1/responses/{id}`          | Delete response           | ❌ |
   | `POST /v1/responses/{id}/compact`    | Create response (compact) | ✅ |
-  | `POST /v1/responses/{id}/cancel`     | Cancel response           | ✅ |
+  | `POST /v1/responses/{id}/cancel`     | Cancel response           | ❌ |
   | `GET /v1/responses/{id}/input_items` | List input items          | ❌ |
   | `POST /v1/responses/input_tokens`    | Count input tokens        | ❌ |
 
