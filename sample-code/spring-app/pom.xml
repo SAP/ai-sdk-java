@@ -33,7 +33,7 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <spring-boot.version>3.5.13</spring-boot.version>
+    <spring-boot.version>3.5.14</spring-boot.version>
     <logback.version>1.5.32</logback.version>
     <cf-logging.version>4.2.0</cf-logging.version>
     <apache-tomcat-embed.version>11.0.21</apache-tomcat-embed.version>
