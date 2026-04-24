@@ -9,13 +9,12 @@ on:
 
 env:
   JAVA_VERSION: 21
-  # keep the following two variables in sync with our 'cache-maven-dependencies.yaml' workflow
   MAVEN_CACHE_KEY: maven-dependencies
   MAVEN_CACHE_DIR: ~/.m2
 
 jobs:
 
-  build-local-javadocs:
+  build:
     runs-on: ubuntu-latest
     defaults:
       run:
