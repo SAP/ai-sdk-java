@@ -37,7 +37,7 @@
     <logback.version>1.5.32</logback.version>
     <cf-logging.version>4.2.0</cf-logging.version>
     <apache-tomcat-embed.version>11.0.21</apache-tomcat-embed.version>
-    <mcp-core.version>1.1.1</mcp-core.version>
+    <mcp-core.version>1.1.2</mcp-core.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
     <!-- Allow logging frameworks because this module is not released -->
