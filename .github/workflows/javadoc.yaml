@@ -1,11 +1,10 @@
 name: "Build Local Javadocs"
 on:
-  pull_request:
-    branches: [ "*" ]
-  push:
-    branches: [ "main" ]
-  workflow_dispatch: # triggered by the prepare-release workflow
   workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
 
 env:
   JAVA_VERSION: 21
@@ -25,8 +24,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 1
-          ref: ${{ github.event.pull_request.head.ref || github.sha }}
-          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+          ref: ${{ inputs.branch }}
 
       - name: "Setup Java"
         uses: actions/setup-java@v5

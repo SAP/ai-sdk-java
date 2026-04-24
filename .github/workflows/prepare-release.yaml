@@ -152,22 +152,10 @@ jobs:
   create-javadoc-aggregated-pr:
     needs: [ create-release ]
     name: "Create Aggregated JavaDoc PR on Documentation Portal"
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write # needed to trigger the ci-build workflow
-      statuses: write # needed to update the commit status
-    steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ needs.create-release.outputs.release-name }}
-      - name: "Trigger workflow (ignore failures)"
-        uses: ./.github/actions/trigger-workflow
-        continue-on-error: true
-        with:
-          workflow: javadoc.yaml
-          workflow-ref: main
-          parameters: -f branch=${{ needs.create-release.outputs.release-name }}
+    uses: ./.github/workflows/javadoc.yaml
+    with:
+      branch: ${{ needs.create-release.outputs.release-name }}
+    secrets: inherit
 
   create-release-notes-pr:
     name: 'Create Release Notes PR'
