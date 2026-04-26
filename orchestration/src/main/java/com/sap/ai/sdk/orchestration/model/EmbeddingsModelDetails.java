@@ -146,7 +146,7 @@ public class EmbeddingsModelDetails
    * Set the timeout of this {@link EmbeddingsModelDetails} instance and return the same instance.
    *
    * @param timeout Timeout for the Embeddings request in seconds. This parameter is currently
-   *     ignored for Vertex AI models. Minimum: 1 Maximum: 600
+   *     ignored for Vertex AI models. Minimum: 1 Maximum: 1200
    * @return The same instance of this {@link EmbeddingsModelDetails} class
    */
   @Nonnull
@@ -157,7 +157,7 @@ public class EmbeddingsModelDetails
 
   /**
    * Timeout for the Embeddings request in seconds. This parameter is currently ignored for Vertex
-   * AI models. minimum: 1 maximum: 600
+   * AI models. minimum: 1 maximum: 1200
    *
    * @return timeout The timeout of this {@link EmbeddingsModelDetails} instance.
    */
@@ -170,7 +170,7 @@ public class EmbeddingsModelDetails
    * Set the timeout of this {@link EmbeddingsModelDetails} instance.
    *
    * @param timeout Timeout for the Embeddings request in seconds. This parameter is currently
-   *     ignored for Vertex AI models. Minimum: 1 Maximum: 600
+   *     ignored for Vertex AI models. Minimum: 1 Maximum: 1200
    */
   public void setTimeout(@Nullable final Integer timeout) {
     this.timeout = timeout;
