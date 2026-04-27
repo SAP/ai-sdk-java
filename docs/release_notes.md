@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- [Document Grounding] `getAllPipelines()` has additional nullable parameter `metadataConfigId`.
 
 ### ✨ New Functionality
 
