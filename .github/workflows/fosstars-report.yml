@@ -1,4 +1,4 @@
-name: "Fosstars (Security)"
+name: 'Fosstars (Security)'
 on:
   workflow_dispatch:
   schedule:
@@ -13,53 +13,53 @@ env:
 
 jobs:
   create_fosstars_report:
-    name: "Security rating"
+    name: 'Security rating'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       actions: write
     steps:
-      - name: "Checkout repository"
+      - name: 'Checkout repository'
         uses: actions/checkout@v6
 
-      - name: "Setup java"
+      - name: 'Setup java'
         uses: actions/setup-java@v5
         with:
-          distribution: "sapmachine"
+          distribution: 'sapmachine'
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
-      - name: "Restore CVE Database"
+      - name: 'Restore CVE Database'
         uses: actions/cache/restore@v5
         with:
           path: ${{ env.CVE_CACHE_DIR }}
           key: ${{ env.CVE_CACHE_KEY }}
-         # fail-on-cache-miss: true
+          # fail-on-cache-miss: true
 
-      - name: "Build SDK"
+      - name: 'Build SDK'
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
 
-      - name: "Create settings.xml"
+      - name: 'Create settings.xml'
         run: |
           echo '${{ secrets.OSS_INDEX_SETTINGS_XML }}' > settings.xml
 
-      - name: "CVE Scan"
+      - name: 'CVE Scan'
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: >
           mvn -T1 --no-transfer-progress -s settings.xml
           --batch-mode org.owasp:dependency-check-maven:check org.owasp:dependency-check-maven:aggregate
 
-      - name: "Archive CVE Report"
+      - name: 'Archive CVE Report'
         uses: actions/upload-artifact@v7
         with:
           name: cve-report
           path: target/dependency-check-report.html
           retention-days: 7
 
-      - name: "Delete Old CVE Cache"
+      - name: 'Delete Old CVE Cache'
         run: |
           CACHE_IDS=$(gh cache list --key "${{ env.CVE_CACHE_KEY }}" --ref "${{ env.CVE_CACHE_REF }}" --json id | jq -r '.[] | .id')
           for CACHE_ID in $CACHE_IDS; do
@@ -69,22 +69,22 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Create Updated CVE Cache"
+      - name: 'Create Updated CVE Cache'
         uses: actions/cache/save@v5
         with:
           path: ${{ env.CVE_CACHE_DIR }}
           key: ${{ env.CVE_CACHE_KEY }}
 
       # This action changes the active branch!
-      - name: "Fosstars Rating"
+      - name: 'Fosstars Rating'
         uses: SAP/fosstars-rating-core-action@v1.14.0
         with:
           report-branch: fosstars-report
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Slack Notification"
+      - name: 'Slack Notification'
         if: failure()
-        uses: slackapi/slack-github-action@v2.1.1
+        uses: slackapi/slack-github-action@v3.0.1
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook

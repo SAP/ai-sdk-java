@@ -23,55 +23,53 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** GoogleDriveConfigurationMinimal */
+/** GenericError */
 // CHECKSTYLE:OFF
-public class GoogleDriveConfigurationMinimal
+public class GenericError
 // CHECKSTYLE:ON
 {
-  @JsonProperty("googleDrive")
-  private GoogleDriveResourceDetail googleDrive;
+  @JsonProperty("error")
+  private String error;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for GoogleDriveConfigurationMinimal. */
-  protected GoogleDriveConfigurationMinimal() {}
+  /** Default constructor for GenericError. */
+  protected GenericError() {}
 
   /**
-   * Set the googleDrive of this {@link GoogleDriveConfigurationMinimal} instance and return the
-   * same instance.
+   * Set the error of this {@link GenericError} instance and return the same instance.
    *
-   * @param googleDrive The googleDrive of this {@link GoogleDriveConfigurationMinimal}
-   * @return The same instance of this {@link GoogleDriveConfigurationMinimal} class
+   * @param error Human-readable error message
+   * @return The same instance of this {@link GenericError} class
    */
   @Nonnull
-  public GoogleDriveConfigurationMinimal googleDrive(
-      @Nonnull final GoogleDriveResourceDetail googleDrive) {
-    this.googleDrive = googleDrive;
+  public GenericError error(@Nonnull final String error) {
+    this.error = error;
     return this;
   }
 
   /**
-   * Get googleDrive
+   * Human-readable error message
    *
-   * @return googleDrive The googleDrive of this {@link GoogleDriveConfigurationMinimal} instance.
+   * @return error The error of this {@link GenericError} instance.
    */
   @Nonnull
-  public GoogleDriveResourceDetail getGoogleDrive() {
-    return googleDrive;
+  public String getError() {
+    return error;
   }
 
   /**
-   * Set the googleDrive of this {@link GoogleDriveConfigurationMinimal} instance.
+   * Set the error of this {@link GenericError} instance.
    *
-   * @param googleDrive The googleDrive of this {@link GoogleDriveConfigurationMinimal}
+   * @param error Human-readable error message
    */
-  public void setGoogleDrive(@Nonnull final GoogleDriveResourceDetail googleDrive) {
-    this.googleDrive = googleDrive;
+  public void setError(@Nonnull final String error) {
+    this.error = error;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link GoogleDriveConfigurationMinimal}.
+   * Get the names of the unrecognizable properties of the {@link GenericError}.
    *
    * @return The set of properties names
    */
@@ -82,8 +80,7 @@ public class GoogleDriveConfigurationMinimal
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link GoogleDriveConfigurationMinimal}
-   * instance.
+   * Get the value of an unrecognizable property of this {@link GenericError} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -94,15 +91,14 @@ public class GoogleDriveConfigurationMinimal
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "GoogleDriveConfigurationMinimal has no field with name '" + name + "'.");
+      throw new NoSuchElementException("GenericError has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link GoogleDriveConfigurationMinimal} instance
-   * including unrecognized properties.
+   * Get the value of all properties of this {@link GenericError} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -110,14 +106,13 @@ public class GoogleDriveConfigurationMinimal
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (googleDrive != null) declaredFields.put("googleDrive", googleDrive);
+    if (error != null) declaredFields.put("error", error);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link GoogleDriveConfigurationMinimal} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
-   * value.
+   * Set an unrecognizable property of this {@link GenericError} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -135,24 +130,22 @@ public class GoogleDriveConfigurationMinimal
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final GoogleDriveConfigurationMinimal googleDriveConfigurationMinimal =
-        (GoogleDriveConfigurationMinimal) o;
-    return Objects.equals(
-            this.cloudSdkCustomFields, googleDriveConfigurationMinimal.cloudSdkCustomFields)
-        && Objects.equals(this.googleDrive, googleDriveConfigurationMinimal.googleDrive);
+    final GenericError genericError = (GenericError) o;
+    return Objects.equals(this.cloudSdkCustomFields, genericError.cloudSdkCustomFields)
+        && Objects.equals(this.error, genericError.error);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(googleDrive, cloudSdkCustomFields);
+    return Objects.hash(error, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class GoogleDriveConfigurationMinimal {\n");
-    sb.append("    googleDrive: ").append(toIndentedString(googleDrive)).append("\n");
+    sb.append("class GenericError {\n");
+    sb.append("    error: ").append(toIndentedString(error)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -171,22 +164,21 @@ public class GoogleDriveConfigurationMinimal
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * GoogleDriveConfigurationMinimal} instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link GenericError} instance
+   * with all required arguments.
    */
   public static Builder create() {
-    return (googleDrive) -> new GoogleDriveConfigurationMinimal().googleDrive(googleDrive);
+    return (error) -> new GenericError().error(error);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the googleDrive of this {@link GoogleDriveConfigurationMinimal} instance.
+     * Set the error of this {@link GenericError} instance.
      *
-     * @param googleDrive The googleDrive of this {@link GoogleDriveConfigurationMinimal}
-     * @return The GoogleDriveConfigurationMinimal instance.
+     * @param error Human-readable error message
+     * @return The GenericError instance.
      */
-    GoogleDriveConfigurationMinimal googleDrive(
-        @Nonnull final GoogleDriveResourceDetail googleDrive);
+    GenericError error(@Nonnull final String error);
   }
 }

@@ -1,11 +1,12 @@
-name: "Cache Maven Dependencies"
+name: 'Cache Maven Dependencies'
 permissions:
   contents: read
+  actions: write
 
 on:
   workflow_dispatch:
   schedule:
-      - cron: '57 4 * * Sun'
+    - cron: '57 4 * * Sun'
 
 env:
   MAVEN_CACHE_REF: refs/heads/main
@@ -16,21 +17,21 @@ jobs:
   update-cache:
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout"
+      - name: 'Checkout'
         uses: actions/checkout@v6
         with:
           ref: ${{ env.MAVEN_CACHE_REF }}
 
-      - name: "Setup Java"
+      - name: 'Setup Java'
         uses: actions/setup-java@v5
         with:
-          distribution: "sapmachine"
+          distribution: 'sapmachine'
           java-version: 21
 
-      - name: "Download Dependencies"
+      - name: 'Download Dependencies'
         run: mvn -B dependency:go-offline
 
-      - name: "Delete Existing Caches"
+      - name: 'Delete Existing Caches'
         run: |
           CACHE_IDS=$(gh cache list --key "${{ env.MAVEN_CACHE_KEY }}" --ref "${{ env.MAVEN_CACHE_REF }}" --json id | jq -r '.[] | .id')
           for CACHE_ID in $CACHE_IDS; do
@@ -38,9 +39,9 @@ jobs:
               gh cache delete "${CACHE_ID}"
           done
         env:
-          GH_TOKEN: ${{ secrets.BOT_SDK_JS_FOR_DOCS_REPO_PR }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: "Cache Dependencies"
+      - name: 'Cache Dependencies'
         uses: actions/cache/save@v5
         with:
           path: ${{ env.MAVEN_CACHE_DIR }}

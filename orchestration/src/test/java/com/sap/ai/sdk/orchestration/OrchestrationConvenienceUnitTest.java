@@ -3,13 +3,16 @@ package com.sap.ai.sdk.orchestration;
 import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
 import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.TENANT;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
+import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.FILE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.FileContent;
 import com.sap.ai.sdk.orchestration.model.FunctionObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
@@ -20,9 +23,12 @@ import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import com.sap.ai.sdk.orchestration.model.UserChatMessage;
 import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +93,98 @@ public class OrchestrationConvenienceUnitTest {
     var userMessageWithImageAndDetail =
         Message.user("Text 1").withImage("url", ImageItem.DetailLevel.AUTO);
     assertThat(userMessageWithImage).isEqualTo(userMessageWithImageAndDetail);
+  }
+
+  @Test
+  void testMessageConstructionFileFromPath() throws IOException {
+    final Path tempFile = Files.createTempFile("orchestration-test", ".pdf");
+    Files.writeString(tempFile, "%PDF-1.7\n%%EOF", StandardCharsets.UTF_8);
+
+    final var expectedBase64 = Base64.getEncoder().encodeToString(Files.readAllBytes(tempFile));
+
+    final var message = Message.user(tempFile);
+    final var expectedLowLevelMessage =
+        UserChatMessage.create()
+            .content(
+                UserChatMessageContent.createListOfUserChatMessageContentItems(
+                    List.of(
+                        UserChatMessageContentItem.create()
+                            .type(FILE)
+                            ._file(
+                                FileContent.create()
+                                    .fileData("data:application/pdf;base64," + expectedBase64)
+                                    .filename(tempFile.getFileName().toString())))))
+            .role(USER);
+
+    assertThat(message.createChatMessage()).isEqualTo(expectedLowLevelMessage);
+
+    Files.deleteIfExists(tempFile);
+  }
+
+  @Test
+  void testMessageConstructionFileFromBase64String() {
+    final byte[] fileBytes = "%PDF-1.7\n%%EOF".getBytes(StandardCharsets.UTF_8);
+    final String base64Data = Base64.getEncoder().encodeToString(fileBytes);
+
+    final var message =
+        new UserMessage(new MessageContent(List.of())).withFileBase64(base64Data, "inline.pdf");
+    final var expectedLowLevelMessage =
+        UserChatMessage.create()
+            .content(
+                UserChatMessageContent.createListOfUserChatMessageContentItems(
+                    List.of(
+                        UserChatMessageContentItem.create()
+                            .type(FILE)
+                            ._file(
+                                FileContent.create()
+                                    .fileData("data:application/pdf;base64," + base64Data)
+                                    .filename("inline.pdf")))))
+            .role(USER);
+
+    assertThat(message.createChatMessage()).isEqualTo(expectedLowLevelMessage);
+  }
+
+  @Test
+  void testMessageConstructionFileFromUrl() {
+    final String fileUrl = "https://example.org/docs/inline.pdf";
+
+    final var message = new UserMessage(new MessageContent(List.of())).withFileUrl(fileUrl, null);
+    final var expectedLowLevelMessage =
+        UserChatMessage.create()
+            .content(
+                UserChatMessageContent.createListOfUserChatMessageContentItems(
+                    List.of(
+                        UserChatMessageContentItem.create()
+                            .type(FILE)
+                            ._file(FileContent.create().fileData(fileUrl).filename(null)))))
+            .role(USER);
+
+    assertThat(message.createChatMessage()).isEqualTo(expectedLowLevelMessage);
+  }
+
+  @Test
+  void testMessageConstructionFileFromNonPdf() {
+    assertThatCode(() -> Message.user(Path.of("src/test/resources/streamChatCompletion.txt")))
+        .doesNotThrowAnyException();
+  }
+
+  @Test
+  void testMessageContentDeserializationFileItem() {
+    final var fileContentItem =
+        UserChatMessageContentItem.create()
+            .type(FILE)
+            ._file(FileContent.create().fileData("cGRmLWNvbnRlbnQ=").filename("doc.pdf"));
+
+    final var content =
+        MessageContent.fromUserChatMessageContent(
+            UserChatMessageContent.createListOfUserChatMessageContentItems(
+                List.of(fileContentItem)));
+
+    assertThat(content.items()).hasSize(1);
+    assertThat(content.items().get(0)).isInstanceOf(FileItem.class);
+    final var pdfItem = (FileItem) content.items().get(0);
+    assertThat(pdfItem.filename()).isEqualTo("doc.pdf");
+    assertThat(pdfItem.fileData()).isEqualTo("cGRmLWNvbnRlbnQ=");
   }
 
   @Test
