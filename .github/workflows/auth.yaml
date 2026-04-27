@@ -8,6 +8,7 @@ jobs:
   check-permission:
     name: 'Check if actor has maintain role'
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - name: 'Check permission'
         env:

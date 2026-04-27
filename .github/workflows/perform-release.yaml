@@ -20,6 +20,12 @@ env:
 jobs:
   prerequisites:
     name: 'Prerequisites'
+    permissions:
+      contents: read
+      pull-requests: read
+      statuses: read
+      checks: read
+      actions: read
     outputs:
       code-branch: ${{ steps.determine-branch-names.outputs.CODE_BRANCH_NAME }}
       release-notes-branch: ${{ steps.determine-branch-names.outputs.RELEASE_NOTES_BRANCH_NAME }}
