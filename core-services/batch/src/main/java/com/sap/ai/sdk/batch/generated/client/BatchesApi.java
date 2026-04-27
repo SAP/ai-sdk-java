@@ -71,13 +71,22 @@ public class BatchesApi extends BaseApi {
    *
    * <p><b>500</b> - Internal server error
    *
+   * @param aiResourceGroup Specify the resource group to use for the request
    * @param batchId The value for the parameter batchId
    * @return BatchCancelResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchCancelResponse cancelBatch(@Nonnull final UUID batchId)
+  public BatchCancelResponse cancelBatch(
+      @Nonnull final String aiResourceGroup, @Nonnull final UUID batchId)
       throws OpenApiRequestException {
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'aiResourceGroup' when calling cancelBatch")
+          .statusCode(400);
+    }
 
     // verify the required parameter 'batchId' is set
     if (batchId == null) {
@@ -88,7 +97,7 @@ public class BatchesApi extends BaseApi {
 
     // create path and map variables
     final String localVarPath =
-        "/batches/{batch_id}/cancel"
+        "/llm-batch-service/v1/batches/{batch_id}/cancel"
             .replaceAll(
                 "\\{" + "batch_id" + "\\}",
                 ApiClient.escapeString(ApiClient.parameterToString(batchId)));
@@ -98,6 +107,9 @@ public class BatchesApi extends BaseApi {
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
@@ -133,13 +145,22 @@ public class BatchesApi extends BaseApi {
    *
    * <p><b>500</b> - Internal server error
    *
+   * @param aiResourceGroup Specify the resource group to use for the request
    * @param batchCreateRequest The value for the parameter batchCreateRequest
    * @return BatchCreateResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchCreateResponse createBatch(@Nonnull final BatchCreateRequest batchCreateRequest)
+  public BatchCreateResponse createBatch(
+      @Nonnull final String aiResourceGroup, @Nonnull final BatchCreateRequest batchCreateRequest)
       throws OpenApiRequestException {
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'aiResourceGroup' when calling createBatch")
+          .statusCode(400);
+    }
 
     // verify the required parameter 'batchCreateRequest' is set
     if (batchCreateRequest == null) {
@@ -149,13 +170,16 @@ public class BatchesApi extends BaseApi {
     }
 
     // create path and map variables
-    final String localVarPath = "/batches";
+    final String localVarPath = "/llm-batch-service/v1/batches";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
@@ -192,13 +216,22 @@ public class BatchesApi extends BaseApi {
    *
    * <p><b>500</b> - Internal server error
    *
+   * @param aiResourceGroup Specify the resource group to use for the request
    * @param batchId The value for the parameter batchId
    * @return BatchDeleteResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchDeleteResponse deleteBatch(@Nonnull final UUID batchId)
+  public BatchDeleteResponse deleteBatch(
+      @Nonnull final String aiResourceGroup, @Nonnull final UUID batchId)
       throws OpenApiRequestException {
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'aiResourceGroup' when calling deleteBatch")
+          .statusCode(400);
+    }
 
     // verify the required parameter 'batchId' is set
     if (batchId == null) {
@@ -209,7 +242,7 @@ public class BatchesApi extends BaseApi {
 
     // create path and map variables
     final String localVarPath =
-        "/batches/{batch_id}"
+        "/llm-batch-service/v1/batches/{batch_id}"
             .replaceAll(
                 "\\{" + "batch_id" + "\\}",
                 ApiClient.escapeString(ApiClient.parameterToString(batchId)));
@@ -219,6 +252,9 @@ public class BatchesApi extends BaseApi {
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
@@ -254,13 +290,22 @@ public class BatchesApi extends BaseApi {
    *
    * <p><b>500</b> - Internal server error
    *
+   * @param aiResourceGroup Specify the resource group to use for the request
    * @param batchId The value for the parameter batchId
    * @return BatchDetailResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchDetailResponse getBatchById(@Nonnull final UUID batchId)
+  public BatchDetailResponse getBatchById(
+      @Nonnull final String aiResourceGroup, @Nonnull final UUID batchId)
       throws OpenApiRequestException {
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'aiResourceGroup' when calling getBatchById")
+          .statusCode(400);
+    }
 
     // verify the required parameter 'batchId' is set
     if (batchId == null) {
@@ -271,7 +316,7 @@ public class BatchesApi extends BaseApi {
 
     // create path and map variables
     final String localVarPath =
-        "/batches/{batch_id}"
+        "/llm-batch-service/v1/batches/{batch_id}"
             .replaceAll(
                 "\\{" + "batch_id" + "\\}",
                 ApiClient.escapeString(ApiClient.parameterToString(batchId)));
@@ -281,6 +326,9 @@ public class BatchesApi extends BaseApi {
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
@@ -316,13 +364,22 @@ public class BatchesApi extends BaseApi {
    *
    * <p><b>500</b> - Internal server error
    *
+   * @param aiResourceGroup Specify the resource group to use for the request
    * @param batchId The value for the parameter batchId
    * @return BatchStatusResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchStatusResponse getBatchStatus(@Nonnull final UUID batchId)
+  public BatchStatusResponse getBatchStatus(
+      @Nonnull final String aiResourceGroup, @Nonnull final UUID batchId)
       throws OpenApiRequestException {
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'aiResourceGroup' when calling getBatchStatus")
+          .statusCode(400);
+    }
 
     // verify the required parameter 'batchId' is set
     if (batchId == null) {
@@ -333,7 +390,7 @@ public class BatchesApi extends BaseApi {
 
     // create path and map variables
     final String localVarPath =
-        "/batches/{batch_id}/status"
+        "/llm-batch-service/v1/batches/{batch_id}/status"
             .replaceAll(
                 "\\{" + "batch_id" + "\\}",
                 ApiClient.escapeString(ApiClient.parameterToString(batchId)));
@@ -343,6 +400,9 @@ public class BatchesApi extends BaseApi {
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
@@ -376,20 +436,32 @@ public class BatchesApi extends BaseApi {
    *
    * <p><b>500</b> - Internal server error
    *
+   * @param aiResourceGroup Specify the resource group to use for the request
    * @return BatchListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public BatchListResponse listBatches() throws OpenApiRequestException {
+  public BatchListResponse listBatches(@Nonnull final String aiResourceGroup)
+      throws OpenApiRequestException {
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'aiResourceGroup' when calling listBatches")
+          .statusCode(400);
+    }
 
     // create path and map variables
-    final String localVarPath = "/batches";
+    final String localVarPath = "/llm-batch-service/v1/batches";
 
     final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
     final List<Pair> localVarQueryParams = new ArrayList<Pair>();
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);

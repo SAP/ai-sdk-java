@@ -5,12 +5,15 @@ info:
   version: 0.0.1
 
 paths:
-  /batches:
+  /llm-batch-service/v1/batches:
     post:
       summary: Create a new batch job
       operationId: batch_service.controller.batch_controller.create_batch
+      x-sap-cloud-sdk-operation-name: createBatch
       tags:
         - Batches
+      parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
       requestBody:
         required: true
         content:
@@ -34,8 +37,11 @@ paths:
     get:
       summary: List all batches
       operationId: batch_service.controller.batch_controller.list_batches
+      x-sap-cloud-sdk-operation-name: listBatches
       tags:
         - Batches
+      parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
       responses:
         '200':
           description: List of batches
@@ -48,13 +54,15 @@ paths:
       security:
         - {}
 
-  /batches/{batch_id}:
+  /llm-batch-service/v1/batches/{batch_id}:
     get:
       summary: Get Batch job details
       operationId: batch_service.controller.batch_controller.get_batch_by_id
+      x-sap-cloud-sdk-operation-name: getBatchById
       tags:
         - Batches
       parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
         - name: batch_id
           in: path
           required: true
@@ -78,9 +86,11 @@ paths:
     delete:
       summary: Delete a Batch job (only for cancelled, completed, or failed batches)
       operationId: batch_service.controller.batch_controller.delete_batch
+      x-sap-cloud-sdk-operation-name: deleteBatch
       tags:
         - Batches
       parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
         - name: batch_id
           in: path
           required: true
@@ -103,13 +113,15 @@ paths:
       security:
         - {}
 
-  /batches/{batch_id}/status:
+  /llm-batch-service/v1/batches/{batch_id}/status:
     get:
       summary: Get Batch job status
       operationId: batch_service.controller.batch_controller.get_batch_status
+      x-sap-cloud-sdk-operation-name: getBatchStatus
       tags:
         - Batches
       parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
         - name: batch_id
           in: path
           required: true
@@ -130,13 +142,15 @@ paths:
       security:
         - {}
 
-  /batches/{batch_id}/cancel:
+  /llm-batch-service/v1/batches/{batch_id}/cancel:
     patch:
       summary: Cancel a batch
       operationId: batch_service.controller.batch_controller.cancel_batch
+      x-sap-cloud-sdk-operation-name: cancelBatch
       tags:
         - Batches
       parameters:
+        - $ref: '#/components/parameters/ResourceGroup'
         - name: batch_id
           in: path
           required: true
@@ -158,6 +172,15 @@ paths:
         - {}
 
 components:
+  parameters:
+    ResourceGroup:
+      name: AI-Resource-Group
+      in: header
+      required: true
+      schema:
+        type: string
+      description: Specify the resource group to use for the request
+
   schemas:
     BatchCreateRequest:
       type: object
