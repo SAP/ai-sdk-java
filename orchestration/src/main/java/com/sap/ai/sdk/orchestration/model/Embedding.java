@@ -46,4 +46,22 @@ public interface Embedding {
   static InnerString create(@Nonnull final String val) {
     return new InnerString(val);
   }
+
+  /** Helper class to create {@code EmbeddingMultiFormat } that implements {@link Embedding}. */
+  record InnerEmbeddingMultiFormat(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull EmbeddingMultiFormat value)
+      implements Embedding {}
+
+  /**
+   * Creator to enable deserialization of {@code EmbeddingMultiFormat }.
+   *
+   * @param val the value to use
+   * @return a new instance of {@link InnerEmbeddingMultiFormat}.
+   */
+  @com.fasterxml.jackson.annotation.JsonCreator
+  @Nonnull
+  static InnerEmbeddingMultiFormat createInnerEmbeddingMultiFormat(
+      @Nonnull final EmbeddingMultiFormat val) {
+    return new InnerEmbeddingMultiFormat(val);
+  }
 }
