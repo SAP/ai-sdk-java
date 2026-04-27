@@ -13,10 +13,8 @@ package com.sap.ai.sdk.orchestration.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -36,68 +34,8 @@ public class EmbeddingsModelParams
   @JsonProperty("dimensions")
   private Integer dimensions;
 
-  /** OpenAI&#39;s spec allows for &#39;float&#39; and &#39;base64&#39; encoding formats. */
-  public enum EncodingFormatEnum {
-    /** The FLOAT option of this EmbeddingsModelParams */
-    FLOAT("float"),
-
-    /** The BASE64 option of this EmbeddingsModelParams */
-    BASE64("base64"),
-
-    /** The BINARY option of this EmbeddingsModelParams */
-    BINARY("binary"),
-
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this EmbeddingsModelParams */
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
-
-    private String value;
-
-    EncodingFormatEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type EmbeddingsModelParams
-     */
-    @JsonCreator
-    @Nonnull
-    public static EncodingFormatEnum fromValue(@Nonnull final String value) {
-      for (EncodingFormatEnum b : EncodingFormatEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      return UNKNOWN_DEFAULT_OPEN_API;
-    }
-  }
-
   @JsonProperty("encoding_format")
-  private EncodingFormatEnum encodingFormat;
+  private EmbeddingsModelParamsEncodingFormat encodingFormat;
 
   @JsonProperty("normalize")
   private Boolean normalize;
@@ -143,33 +81,33 @@ public class EmbeddingsModelParams
    * Set the encodingFormat of this {@link EmbeddingsModelParams} instance and return the same
    * instance.
    *
-   * @param encodingFormat OpenAI&#39;s spec allows for &#39;float&#39; and &#39;base64&#39;
-   *     encoding formats.
+   * @param encodingFormat The encodingFormat of this {@link EmbeddingsModelParams}
    * @return The same instance of this {@link EmbeddingsModelParams} class
    */
   @Nonnull
-  public EmbeddingsModelParams encodingFormat(@Nullable final EncodingFormatEnum encodingFormat) {
+  public EmbeddingsModelParams encodingFormat(
+      @Nullable final EmbeddingsModelParamsEncodingFormat encodingFormat) {
     this.encodingFormat = encodingFormat;
     return this;
   }
 
   /**
-   * OpenAI&#39;s spec allows for &#39;float&#39; and &#39;base64&#39; encoding formats.
+   * Get encodingFormat
    *
    * @return encodingFormat The encodingFormat of this {@link EmbeddingsModelParams} instance.
    */
   @Nonnull
-  public EncodingFormatEnum getEncodingFormat() {
+  public EmbeddingsModelParamsEncodingFormat getEncodingFormat() {
     return encodingFormat;
   }
 
   /**
    * Set the encodingFormat of this {@link EmbeddingsModelParams} instance.
    *
-   * @param encodingFormat OpenAI&#39;s spec allows for &#39;float&#39; and &#39;base64&#39;
-   *     encoding formats.
+   * @param encodingFormat The encodingFormat of this {@link EmbeddingsModelParams}
    */
-  public void setEncodingFormat(@Nullable final EncodingFormatEnum encodingFormat) {
+  public void setEncodingFormat(
+      @Nullable final EmbeddingsModelParamsEncodingFormat encodingFormat) {
     this.encodingFormat = encodingFormat;
   }
 
