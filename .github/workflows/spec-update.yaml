@@ -47,6 +47,7 @@ jobs:
   generate:
     name: 'Download, Generate, Compile and Push'
     runs-on: [ubuntu-latest]
+    permissions: {}
     outputs:
       spec_diff: ${{ steps.spec_diff.outputs.spec_diff }}
       branch: ${{ steps.push.outputs.branch }}
