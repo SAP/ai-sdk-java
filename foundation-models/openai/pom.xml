@@ -40,8 +40,8 @@
     <project.rootdir>${project.basedir}/../../</project.rootdir>
     <coverage.complexity>81%</coverage.complexity>
     <coverage.line>91%</coverage.line>
-    <coverage.instruction>88%</coverage.instruction>
-    <coverage.branch>78%</coverage.branch>
+    <coverage.instruction>89%</coverage.instruction>
+    <coverage.branch>79%</coverage.branch>
     <coverage.method>90%</coverage.method>
     <coverage.class>92%</coverage.class>
   </properties>
@@ -49,6 +49,10 @@
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>cloudplatform-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
@@ -115,6 +119,11 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.openai</groupId>
+      <artifactId>openai-java-core</artifactId>
       <optional>true</optional>
     </dependency>
     <!-- scope "provided" -->

@@ -89,6 +89,10 @@
       <artifactId>openai</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.openai</groupId>
+      <artifactId>openai-java-core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.sap.ai.sdk</groupId>
       <artifactId>orchestration</artifactId>
     </dependency>
