@@ -13,6 +13,7 @@ import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.Pair;
 import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -448,7 +449,7 @@ public class PromptTemplatesApi extends BaseApi {
   public PromptTemplatePostResponse importPromptTemplate(
       @Nullable final String aiResourceGroup,
       @Nullable final String aiResourceGroupScope,
-      @Nullable final byte[] _file)
+      @Nullable final File _file)
       throws OpenApiRequestException {
 
     // create path and map variables
