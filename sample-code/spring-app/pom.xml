@@ -33,11 +33,11 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <spring-boot.version>3.5.13</spring-boot.version>
+    <spring-boot.version>3.5.14</spring-boot.version>
     <logback.version>1.5.32</logback.version>
     <cf-logging.version>4.2.0</cf-logging.version>
     <apache-tomcat-embed.version>11.0.21</apache-tomcat-embed.version>
-    <mcp-core.version>1.1.1</mcp-core.version>
+    <mcp-core.version>1.1.2</mcp-core.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
     <!-- Allow logging frameworks because this module is not released -->
@@ -240,6 +240,11 @@
         <exclusion>
           <groupId>ch.qos.logback</groupId>
           <artifactId>logback-classic</artifactId>
+        </exclusion>
+        <exclusion>
+          <!-- mitigate CVE-2026-34478(6.9), CVE-2026-34480(6.9), CVE-2026-34481(6.3) -->
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
