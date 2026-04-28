@@ -39,28 +39,14 @@ jobs:
           key: ${{ env.MAVEN_CACHE_KEY }}
           path: ${{ env.MAVEN_CACHE_DIR }}
 
-      - name: "Build SDK and generate aggregate options file"
+      - name: "Build SDK"
         run: |
-          mvn -B -ntp -Dstyle.color=never -Drelease -DskipTests -Dmaven.javadoc.failOnError=false -Dgpg.skip=true \
+          mvn -B -ntp -Dstyle.color=never -Drelease -DskipTests -Dgpg.skip=true \
             clean install
 
-          # aggregate-no-fork across full reactor writes options/packages to target/reports/apidocs
-          # Lombok errors on child modules are expected (failOnError=false); the root options file
-          # is written first and survives regardless, giving us the combined classpath and flags.
-          mvn -B -ntp -Dstyle.color=never -Drelease -Dmaven.javadoc.failOnError=false -Dgpg.skip=true \
-            javadoc:aggregate-no-fork
-
-          if [[ ! -f target/reports/apidocs/options || ! -f target/reports/apidocs/packages ]]; then
-            echo "Missing aggregate javadoc argument files in target/reports/apidocs" >&2
-            exit 1
-          fi
-          echo "Aggregate options/packages files generated"
-
-      - name: "Generate per-module and combined Javadocs from delomboked sources"
+      - name: "Generate Javadocs from delomboked sources"
         run: |
           JAVADOC="$JAVA_HOME/bin/javadoc"
-          OPTIONS="target/reports/apidocs/options"
-          ALL_PACKAGES="target/reports/apidocs/packages"
 
           module_paths=(
             "core"
@@ -71,29 +57,47 @@ jobs:
             "foundation-models/sap-rpt"
           )
 
-          patch_and_run() {
+          # Build classpath from all module jars + dependencies
+          classpath=""
+          for module_path in "${module_paths[@]}"; do
+            cp_file="$module_path/target/cp.txt"
+            mvn -B -ntp -f "$module_path/pom.xml" \
+              dependency:build-classpath -Dmdep.outputFile=target/cp.txt -Dmdep.includeScope=compile \
+              -Dgpg.skip=true -q
+            module_jar=$(find "$module_path/target" -maxdepth 1 -name "*.jar" ! -name "*sources*" ! -name "*javadoc*" | head -1)
+            if [[ -n "$module_jar" ]]; then
+              [[ -z "$classpath" ]] && classpath="$module_jar" || classpath+=":$module_jar"
+            fi
+            if [[ -f "$cp_file" ]]; then
+              cp_content=$(cat "$cp_file")
+              [[ -n "$cp_content" ]] && classpath+=":$cp_content"
+            fi
+          done
+
+          run_javadoc() {
             local sourcepath="$1"
             local destdir="$2"
-            local packages_file="$3"
-            local patched="${OPTIONS}.patched"
+            local pkg_file="$3"
 
-            awk -v sp="$sourcepath" -v dd="$destdir" '
-              BEGIN { skip_next=0 }
-              {
-                if (skip_next) { skip_next=0; next }
-                if ($0 == "-sourcepath") { print; print "\047" sp "\047"; skip_next=1; next }
-                if ($0 == "-d")          { print; print "\047" dd "\047"; skip_next=1; next }
-                print
-              }
-            ' "$OPTIONS" > "$patched"
+            if [[ ! -s "$pkg_file" ]]; then
+              echo "No packages found for $destdir, skipping" >&2
+              return
+            fi
 
-            grep -qF "$sourcepath" "$patched" || { echo "ERROR: sourcepath patch failed for $destdir" >&2; exit 1; }
             mkdir -p "$destdir"
-            "$JAVADOC" @"$patched" @"$packages_file"
-            rm -f "$patched"
+            "$JAVADOC" \
+              -sourcepath "$sourcepath" \
+              -d "$destdir" \
+              -classpath "$classpath" \
+              -quiet \
+              -Xdoclint:none \
+              -encoding UTF-8 \
+              -charset UTF-8 \
+              -docencoding UTF-8 \
+              @"$pkg_file"
           }
 
-          # Per-module: derive packages list from that module's delombok sources only
+          # Per-module javadocs
           for module_path in "${module_paths[@]}"; do
             delombok_dir="$module_path/target/delombok"
             if [[ ! -d "$delombok_dir" ]]; then
@@ -106,18 +110,23 @@ jobs:
               | xargs grep "^package " \
               | awk '{print $2}' | tr -d ';' | sort -u > "$pkg_file"
             echo "Generating javadoc for $module_path ..."
-            patch_and_run "$delombok_dir" "$module_path/target/javadoc-delombok" "$pkg_file"
+            run_javadoc "$delombok_dir" "$module_path/target/javadoc-delombok" "$pkg_file"
           done
 
-          # Combined (parent): all modules' delombok dirs + original packages file
+          # Combined javadoc (all modules)
           combined_sourcepath=""
+          combined_pkg_file="target/javadoc-all-packages"
+          > "$combined_pkg_file"
           for module_path in "${module_paths[@]}"; do
+            delombok_dir="$module_path/target/delombok"
             [[ -z "$combined_sourcepath" ]] \
-              && combined_sourcepath="$module_path/target/delombok" \
-              || combined_sourcepath+=":$module_path/target/delombok"
+              && combined_sourcepath="$delombok_dir" \
+              || combined_sourcepath+=":$delombok_dir"
+            cat "$module_path/target/javadoc-packages" >> "$combined_pkg_file"
           done
+          sort -u "$combined_pkg_file" -o "$combined_pkg_file"
           echo "Generating combined javadoc for sdk-parent ..."
-          patch_and_run "$combined_sourcepath" "target/javadoc-delombok" "$ALL_PACKAGES"
+          run_javadoc "$combined_sourcepath" "target/javadoc-delombok" "$combined_pkg_file"
 
       - name: "Assemble local-javadocs output directory"
         run: |
