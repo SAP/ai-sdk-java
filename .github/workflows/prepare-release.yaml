@@ -149,14 +149,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-  create-javadoc-aggregated-pr:
-    needs: [ create-release ]
-    name: "Create Aggregated JavaDoc PR on Documentation Portal"
-    uses: ./.github/workflows/javadoc.yaml
-    with:
-      branch: ${{ needs.create-release.outputs.release-name }}
-    secrets: inherit
-
   create-release-notes-pr:
     name: 'Create Release Notes PR'
     needs: [bump-version, run-ci]
