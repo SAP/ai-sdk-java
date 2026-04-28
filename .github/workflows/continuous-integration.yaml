@@ -92,3 +92,8 @@ jobs:
             {
               "text": "🚨 Main Build Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
             }
+
+  javadoc:
+    uses: ./.github/workflows/javadoc.yaml
+    with:
+      branch: ${{ github.event.pull_request.head.ref || github.ref_name }}
