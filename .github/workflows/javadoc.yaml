@@ -41,13 +41,13 @@ jobs:
 
       - name: "Build SDK and generate aggregate options file"
         run: |
-          mvn -B -ntp -Dstyle.color=never -Drelease -DskipTests -Dmaven.javadoc.failOnError=false \
+          mvn -B -ntp -Dstyle.color=never -DskipTests -Dmaven.javadoc.failOnError=false \
             clean install
 
           # aggregate-no-fork across full reactor writes options/packages to target/reports/apidocs
           # Lombok errors on child modules are expected (failOnError=false); the root options file
           # is written first and survives regardless, giving us the combined classpath and flags.
-          mvn -B -ntp -Dstyle.color=never -Drelease -Dmaven.javadoc.failOnError=false \
+          mvn -B -ntp -Dstyle.color=never -Dmaven.javadoc.failOnError=false \
             javadoc:aggregate-no-fork
 
           if [[ ! -f target/reports/apidocs/options || ! -f target/reports/apidocs/packages ]]; then
