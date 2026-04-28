@@ -42,7 +42,7 @@ jobs:
       - name: "Build SDK and generate aggregate options file"
         run: |
           mvn -B -ntp -Dstyle.color=never -Drelease -DskipTests -Dmaven.javadoc.failOnError=false \
-            clean package
+            clean install
 
           # aggregate-no-fork across full reactor writes options/packages to target/reports/apidocs
           # Lombok errors on child modules are expected (failOnError=false); the root options file
