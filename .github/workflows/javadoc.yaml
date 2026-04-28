@@ -39,54 +39,28 @@ jobs:
           key: ${{ env.MAVEN_CACHE_KEY }}
           path: ${{ env.MAVEN_CACHE_DIR }}
 
-      - name: "Build SDK and generate Javadoc site"
+      - name: "Build SDK and generate aggregate options file"
         run: |
           mvn -B -ntp -Dstyle.color=never -Drelease -DskipTests -Dmaven.javadoc.failOnError=false \
-            clean package site
+            clean package
 
-      - name: "Run aggregate-no-fork and verify all modules are present"
-        run: |
-          mvn -B -ntp -Dstyle.color=never -Drelease -DskipTests -Dmaven.javadoc.failOnError=false \
-            javadoc:aggregate-no-fork \
-            2>&1 | tee .aggregate-no-fork.log
+          # aggregate-no-fork across full reactor writes options/packages to target/reports/apidocs
+          # Lombok errors on child modules are expected (failOnError=false); the root options file
+          # is written first and survives regardless, giving us the combined classpath and flags.
+          mvn -B -ntp -Dstyle.color=never -Drelease -Dmaven.javadoc.failOnError=false \
+            javadoc:aggregate-no-fork
 
-          module_artifact_ids=(
-            "sdk-parent"
-            "core"
-            "orchestration"
-            "document-grounding"
-            "prompt-registry"
-            "openai"
-            "sap-rpt"
-          )
-
-          for module_artifact_id in "${module_artifact_ids[@]}"; do
-            if ! grep -qE "^\[INFO\] --- javadoc:[^:]+:aggregate-no-fork .* @ ${module_artifact_id} ---$" .aggregate-no-fork.log; then
-              echo "Missing aggregate-no-fork execution line for module artifact: ${module_artifact_id}" >&2
-              exit 1
-            fi
-          done
-
-          # Print compact status block
-          awk '
-            /^\[INFO\]$/ { print; next }
-            /^\[INFO\] -+< / { print; next }
-            /^\[INFO\] Building / { print; next }
-            /^\[INFO\]   from / { print; next }
-            /^\[INFO\] -+\[ jar \]-+$/ { print; next }
-            /^\[INFO\] --- javadoc:[^:]+:aggregate-no-fork .* ---$/ { print; next }
-          ' .aggregate-no-fork.log
-
-      - name: "Re-run Javadoc with delomboked sources"
-        run: |
-          options_file="target/site/apidocs/options"
-          packages_file="target/site/apidocs/packages"
-          patched_options_file="target/site/apidocs/options.delombok"
-
-          if [[ ! -f "$options_file" || ! -f "$packages_file" ]]; then
-            echo "Missing aggregate javadoc argument files in target/site/apidocs" >&2
+          if [[ ! -f target/reports/apidocs/options || ! -f target/reports/apidocs/packages ]]; then
+            echo "Missing aggregate javadoc argument files in target/reports/apidocs" >&2
             exit 1
           fi
+          echo "Aggregate options/packages files generated"
+
+      - name: "Generate per-module and combined Javadocs from delomboked sources"
+        run: |
+          JAVADOC="$JAVA_HOME/bin/javadoc"
+          OPTIONS="target/reports/apidocs/options"
+          ALL_PACKAGES="target/reports/apidocs/packages"
 
           module_paths=(
             "core"
@@ -97,46 +71,59 @@ jobs:
             "foundation-models/sap-rpt"
           )
 
-          delombok_paths=()
+          patch_and_run() {
+            local sourcepath="$1"
+            local destdir="$2"
+            local packages_file="$3"
+            local patched="${OPTIONS}.patched"
+
+            awk -v sp="$sourcepath" -v dd="$destdir" '
+              BEGIN { skip_next=0 }
+              {
+                if (skip_next) { skip_next=0; next }
+                if ($0 == "-sourcepath") { print; print "\047" sp "\047"; skip_next=1; next }
+                if ($0 == "-d")          { print; print "\047" dd "\047"; skip_next=1; next }
+                print
+              }
+            ' "$OPTIONS" > "$patched"
+
+            grep -qF "$sourcepath" "$patched" || { echo "ERROR: sourcepath patch failed for $destdir" >&2; exit 1; }
+            mkdir -p "$destdir"
+            "$JAVADOC" @"$patched" @"$packages_file"
+            rm -f "$patched"
+          }
+
+          # Per-module: derive packages list from that module's delombok sources only
           for module_path in "${module_paths[@]}"; do
             delombok_dir="$module_path/target/delombok"
             if [[ ! -d "$delombok_dir" ]]; then
-              echo "Missing delombok sources for $module_path at $delombok_dir" >&2
+              echo "Missing delombok sources for $module_path" >&2
               exit 1
             fi
-            delombok_paths+=("$delombok_dir")
+            pkg_file="$module_path/target/javadoc-packages"
+            find "$delombok_dir" -name "*.java" \
+              | xargs grep -l "^package " \
+              | xargs grep "^package " \
+              | awk '{print $2}' | tr -d ';' | sort -u > "$pkg_file"
+            echo "Generating javadoc for $module_path ..."
+            patch_and_run "$delombok_dir" "$module_path/target/javadoc-delombok" "$pkg_file"
           done
 
-          # Build colon-separated sourcepath
-          delombok_sourcepath=""
-          first=1
-          for p in "${delombok_paths[@]}"; do
-            if (( first )); then delombok_sourcepath="$p"; first=0
-            else delombok_sourcepath+=":$p"; fi
+          # Combined (parent): all modules' delombok dirs + original packages file
+          combined_sourcepath=""
+          for module_path in "${module_paths[@]}"; do
+            [[ -z "$combined_sourcepath" ]] \
+              && combined_sourcepath="$module_path/target/delombok" \
+              || combined_sourcepath+=":$module_path/target/delombok"
           done
-
-          # Patch options file: replace the argument after -sourcepath with delombok paths
-          awk -v sp="$delombok_sourcepath" \
-            'BEGIN{replace_next=0}
-             {if(replace_next==1){print "\047" sp "\047"; replace_next=0; next}
-              print;
-              if($0=="-sourcepath"){replace_next=1}}' \
-            "$options_file" > "$patched_options_file"
-
-          javadoc @"$patched_options_file" @"$packages_file"
+          echo "Generating combined javadoc for sdk-parent ..."
+          patch_and_run "$combined_sourcepath" "target/javadoc-delombok" "$ALL_PACKAGES"
 
       - name: "Assemble local-javadocs output directory"
         run: |
           out_dir="target/local-javadocs"
           rm -rf "$out_dir"
           mkdir -p "$out_dir"
-
-          aggregate_dir="target/site/apidocs"
-          if [[ ! -f "$aggregate_dir/index.html" ]]; then
-            echo "Missing aggregate javadocs at $aggregate_dir" >&2
-            exit 1
-          fi
-          cp -R "$aggregate_dir" "$out_dir/aggregate"
 
           module_paths=(
             "core"
@@ -156,6 +143,13 @@ jobs:
             "SAP RPT Model Client"
           )
 
+          # Combined (parent) javadoc
+          if [[ ! -f "target/javadoc-delombok/index.html" ]]; then
+            echo "Missing combined javadocs at target/javadoc-delombok" >&2
+            exit 1
+          fi
+          cp -R "target/javadoc-delombok" "$out_dir/aggregate"
+
           index_file="$out_dir/index.html"
           cat > "$index_file" <<'HTML'
           <!doctype html>
@@ -166,7 +160,7 @@ jobs:
           </head>
           <body>
             <h1>Local Javadocs</h1>
-            <p><a href="aggregate/index.html">Aggregate API docs</a></p>
+            <p><a href="aggregate/index.html">Aggregate API docs (all modules)</a></p>
             <ul>
           HTML
 
@@ -174,16 +168,14 @@ jobs:
             module_path="${module_paths[$i]}"
             module_name="${module_names[$i]}"
             module_id="${module_path//\//-}"
-            module_dir="$out_dir/$module_id"
-            mkdir -p "$module_dir"
 
-            jar_path=("$module_path"/target/*-javadoc.jar)
-            if [[ ${#jar_path[@]} -eq 0 ]]; then
-              echo "Missing javadoc jar for $module_path" >&2
+            src_dir="$module_path/target/javadoc-delombok"
+            if [[ ! -f "$src_dir/index.html" ]]; then
+              echo "Missing javadocs for $module_path at $src_dir" >&2
               exit 1
             fi
 
-            unzip -q "${jar_path[0]}" -d "$module_dir"
+            cp -R "$src_dir" "$out_dir/$module_id"
             printf '    <li><a href="%s/index.html">%s</a></li>\n' "$module_id" "$module_name" >> "$index_file"
           done
 
@@ -196,7 +188,7 @@ jobs:
           echo "Local javadocs assembled at: $out_dir/index.html"
 
       - name: "Upload Javadocs artifact"
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: local-javadocs
           path: target/local-javadocs/
