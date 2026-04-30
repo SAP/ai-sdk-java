@@ -10,6 +10,20 @@ env:
   JAVA_VERSION: 21
   MAVEN_CACHE_KEY: maven-dependencies
   MAVEN_CACHE_DIR: ~/.m2
+  MODULE_PATHS: |
+    core
+    orchestration
+    core-services/document-grounding
+    core-services/prompt-registry
+    foundation-models/openai
+    foundation-models/sap-rpt
+  MODULE_NAMES: |
+    AI Core client
+    Orchestration client
+    Document Grounding Client
+    Prompt Registry client
+    OpenAI client
+    SAP RPT Model Client
 
 jobs:
 
@@ -48,14 +62,7 @@ jobs:
         run: |
           JAVADOC="$JAVA_HOME/bin/javadoc"
 
-          module_paths=(
-            "core"
-            "orchestration"
-            "core-services/document-grounding"
-            "core-services/prompt-registry"
-            "foundation-models/openai"
-            "foundation-models/sap-rpt"
-          )
+          mapfile -t module_paths <<< "$MODULE_PATHS"
 
           # Build classpath from all module jars + dependencies
           classpath=""
@@ -75,9 +82,10 @@ jobs:
           done
 
           run_javadoc() {
-            local sourcepath="$1"
-            local destdir="$2"
-            local pkg_file="$3"
+            local javadoc="$1"
+            local sourcepath="$2"
+            local destdir="$3"
+            local pkg_file="$4"
 
             if [[ ! -s "$pkg_file" ]]; then
               echo "No packages found for $destdir, skipping" >&2
@@ -85,7 +93,7 @@ jobs:
             fi
 
             mkdir -p "$destdir"
-            "$JAVADOC" \
+            "$javadoc" \
               -sourcepath "$sourcepath" \
               -d "$destdir" \
               -classpath "$classpath" \
@@ -110,7 +118,7 @@ jobs:
               | xargs grep "^package " \
               | awk '{print $2}' | tr -d ';' | sort -u > "$pkg_file"
             echo "Generating javadoc for $module_path ..."
-            run_javadoc "$delombok_dir" "$module_path/target/javadoc-delombok" "$pkg_file"
+            run_javadoc "$JAVADOC" "$delombok_dir" "$module_path/target/javadoc-delombok" "$pkg_file"
           done
 
           # Combined javadoc (all modules)
@@ -126,7 +134,7 @@ jobs:
           done
           sort -u "$combined_pkg_file" -o "$combined_pkg_file"
           echo "Generating combined javadoc for sdk-parent ..."
-          run_javadoc "$combined_sourcepath" "target/javadoc-delombok" "$combined_pkg_file"
+          run_javadoc "$JAVADOC" "$combined_sourcepath" "target/javadoc-delombok" "$combined_pkg_file"
 
       - name: "Assemble local-javadocs output directory"
         run: |
@@ -134,23 +142,8 @@ jobs:
           rm -rf "$out_dir"
           mkdir -p "$out_dir"
 
-          module_paths=(
-            "core"
-            "orchestration"
-            "core-services/document-grounding"
-            "core-services/prompt-registry"
-            "foundation-models/openai"
-            "foundation-models/sap-rpt"
-          )
-
-          module_names=(
-            "AI Core client"
-            "Orchestration client"
-            "Document Grounding Client"
-            "Prompt Registry client"
-            "OpenAI client"
-            "SAP RPT Model Client"
-          )
+          mapfile -t module_paths <<< "$MODULE_PATHS"
+          mapfile -t module_names <<< "$MODULE_NAMES"
 
           # Combined (parent) javadoc
           if [[ ! -f "target/javadoc-delombok/index.html" ]]; then
