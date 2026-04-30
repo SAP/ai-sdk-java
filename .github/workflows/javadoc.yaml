@@ -40,9 +40,9 @@ jobs:
           path: ${{ env.MAVEN_CACHE_DIR }}
 
       - name: "Build SDK"
-        run: |
-          mvn -B -ntp -Dstyle.color=never -Drelease -DskipTests -Dgpg.skip=true \
-            clean install
+        run: >
+          mvn -B -ntp -Dstyle.color=never -Drelease -DskipTests -Dgpg.skip=true
+          clean install
 
       - name: "Generate Javadocs from delomboked sources"
         run: |
