@@ -1,0 +1,223 @@
+name: "Build Local Javadocs"
+on:
+  workflow_call:
+    inputs:
+      branch:
+        required: true
+        type: string
+
+env:
+  JAVA_VERSION: 21
+  MAVEN_CACHE_KEY: maven-dependencies
+  MAVEN_CACHE_DIR: ~/.m2
+  MODULE_PATHS: |
+    core
+    orchestration
+    core-services/document-grounding
+    core-services/prompt-registry
+    foundation-models/openai
+    foundation-models/sap-rpt
+  MODULE_NAMES: |
+    AI Core client
+    Orchestration client
+    Document Grounding Client
+    Prompt Registry client
+    OpenAI client
+    SAP RPT Model Client
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+    steps:
+
+      - name: "Checkout repository"
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          ref: ${{ inputs.branch }}
+
+      - name: "Setup Java"
+        uses: actions/setup-java@v5
+        with:
+          distribution: "sapmachine"
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: 'maven'
+
+      - name: "Restore Dependencies"
+        uses: actions/cache/restore@v5
+        with:
+          key: ${{ env.MAVEN_CACHE_KEY }}
+          path: ${{ env.MAVEN_CACHE_DIR }}
+
+      - name: "Build SDK"
+        run: >
+          mvn -B -ntp -Dstyle.color=never -Drelease -DskipTests -Dgpg.skip=true
+          clean install
+
+      - name: "Generate Javadocs from delomboked sources"
+        run: |
+          JAVADOC="$JAVA_HOME/bin/javadoc"
+
+          # Reconstruct the module list from the top-level env var.
+          # printf '%s' prevents <<< from adding an extra newline, which would produce a spurious empty element.
+          readarray -t module_paths < <(printf '%s' "$MODULE_PATHS")
+
+          # Build a classpath from all module JARs and their dependencies so javadoc can resolve cross-module type references.
+          classpath=""
+          for module_path in "${module_paths[@]}"; do
+            cp_file="$module_path/target/cp.txt"
+
+            # Write all compile- and provided-scope dependency JARs to cp.txt.
+            # provided-scope types (e.g. SAP Cloud SDK interfaces) must be on the classpath for javadoc to resolve them.
+            mvn -B -ntp -f "$module_path/pom.xml" \
+              dependency:build-classpath -Dmdep.outputFile=target/cp.txt -Dmdep.includeScope=provided \
+              -Dgpg.skip=true -q
+
+            # Add the module's own compiled JAR to the classpath.
+            # Exclude *-sources.jar and *-javadoc.jar produced by the release profile.
+            module_jar=$(find "$module_path/target" -maxdepth 1 -name "*.jar" ! -name "*sources*" ! -name "*javadoc*" | head -1)
+            if [[ -n "$module_jar" ]]; then
+              [[ -z "$classpath" ]] && classpath="$module_jar" || classpath+=":$module_jar"
+            fi
+
+            # Append the dependency JARs from cp.txt to the classpath.
+            if [[ -f "$cp_file" ]]; then
+              cp_content=$(cat "$cp_file")
+              if [[ -n "$cp_content" ]]; then
+                [[ -z "$classpath" ]] && classpath="$cp_content" || classpath+=":$cp_content"
+              fi
+            fi
+          done
+
+          # Runs the javadoc tool for a given source tree and writes HTML to destdir.
+          run_javadoc() {
+            local javadoc="$1"
+            local sourcepath="$2"
+            local destdir="$3"
+            local pkg_file="$4"
+            local cp="$5"
+
+            # Skip if no packages were found for this module.
+            if [[ ! -s "$pkg_file" ]]; then
+              echo "No packages found for $destdir, skipping" >&2
+              return
+            fi
+
+            mkdir -p "$destdir"
+            "$javadoc" \
+              -sourcepath "$sourcepath" \
+              -d "$destdir" \
+              -classpath "$cp" \
+              -quiet \
+              -Xdoclint:none \
+              -encoding UTF-8 \
+              -charset UTF-8 \
+              -docencoding UTF-8 \
+              @"$pkg_file"
+          }
+
+          # Generate per-module javadocs from delomboked sources (Lombok annotations expanded to plain Java).
+          for module_path in "${module_paths[@]}"; do
+            delombok_dir="$module_path/target/delombok"
+            if [[ ! -d "$delombok_dir" ]]; then
+              echo "Missing delombok sources for $module_path" >&2
+              exit 1
+            fi
+
+            # Extract unique package names from the module's Java files.
+            # -print0/-0: null-delimited to handle spaces in paths; -r: skip if no files; -h: omit filenames from output.
+            pkg_file="$module_path/target/javadoc-packages"
+            find "$delombok_dir" -name "*.java" -print0 \
+              | xargs -r -0 grep -h "^package " \
+              | awk '{print $2}' | tr -d ';' | sort -u > "$pkg_file"
+            echo "Generating javadoc for $module_path ..."
+            run_javadoc "$JAVADOC" "$delombok_dir" "$module_path/target/javadoc-delombok" "$pkg_file" "$classpath"
+          done
+
+          # Generate a combined javadoc across all modules with a unified package index.
+          combined_sourcepath=""
+          combined_pkg_file="target/javadoc-all-packages"
+          > "$combined_pkg_file"
+          for module_path in "${module_paths[@]}"; do
+            delombok_dir="$module_path/target/delombok"
+            # Colon-join all delombok dirs into a single sourcepath for javadoc.
+            [[ -z "$combined_sourcepath" ]] \
+              && combined_sourcepath="$delombok_dir" \
+              || combined_sourcepath+=":$delombok_dir"
+            # Accumulate package names from all modules into one file.
+            cat "$module_path/target/javadoc-packages" >> "$combined_pkg_file"
+          done
+          # Deduplicate packages shared across modules.
+          sort -u "$combined_pkg_file" -o "$combined_pkg_file"
+          echo "Generating combined javadoc for sdk-parent ..."
+          run_javadoc "$JAVADOC" "$combined_sourcepath" "target/javadoc-delombok" "$combined_pkg_file" "$classpath"
+
+      - name: "Assemble local-javadocs output directory"
+        run: |
+          out_dir="target/local-javadocs"
+          rm -rf "$out_dir"
+          mkdir -p "$out_dir"
+
+          # Reconstruct the module lists from the top-level env vars.
+          # printf '%s' prevents <<< from adding an extra newline, which would produce a spurious empty element.
+          readarray -t module_paths < <(printf '%s' "$MODULE_PATHS")
+          readarray -t module_names < <(printf '%s' "$MODULE_NAMES")
+
+          # Copy the combined javadoc into the 'aggregate' subdirectory.
+          if [[ ! -f "target/javadoc-delombok/index.html" ]]; then
+            echo "Missing combined javadocs at target/javadoc-delombok" >&2
+            exit 1
+          fi
+          cp -R "target/javadoc-delombok" "$out_dir/aggregate"
+
+          # Write an HTML index linking to the aggregate docs and each per-module doc.
+          index_file="$out_dir/index.html"
+          cat > "$index_file" <<'HTML'
+          <!doctype html>
+          <html lang="en">
+          <head>
+            <meta charset="utf-8" />
+            <title>Local Javadocs</title>
+          </head>
+          <body>
+            <h1>Local Javadocs</h1>
+            <p><a href="aggregate/index.html">Aggregate API docs (all modules)</a></p>
+            <ul>
+          HTML
+
+          # Iterate over modules by index to pair each path with its display name.
+          for i in "${!module_paths[@]}"; do
+            module_path="${module_paths[$i]}"
+            module_name="${module_names[$i]}"
+            # Replace '/' with '-' to use the module path as a flat directory name.
+            module_id="${module_path//\//-}"
+
+            src_dir="$module_path/target/javadoc-delombok"
+            if [[ ! -f "$src_dir/index.html" ]]; then
+              echo "Missing javadocs for $module_path at $src_dir" >&2
+              exit 1
+            fi
+
+            # Copy the module's javadoc into the output dir and add an index entry.
+            cp -R "$src_dir" "$out_dir/$module_id"
+            printf '    <li><a href="%s/index.html">%s</a></li>\n' "$module_id" "$module_name" >> "$index_file"
+          done
+
+          cat >> "$index_file" <<'HTML'
+            </ul>
+          </body>
+          </html>
+          HTML
+
+          echo "Local javadocs assembled at: $out_dir/index.html"
+
+      - name: "Upload Javadocs artifact"
+        uses: actions/upload-artifact@v7
+        with:
+          name: local-javadocs
+          path: target/local-javadocs/
+          retention-days: 7
