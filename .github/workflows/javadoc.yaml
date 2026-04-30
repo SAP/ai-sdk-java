@@ -113,9 +113,8 @@ jobs:
               exit 1
             fi
             pkg_file="$module_path/target/javadoc-packages"
-            find "$delombok_dir" -name "*.java" \
-              | xargs grep -l "^package " \
-              | xargs grep "^package " \
+            find "$delombok_dir" -name "*.java" -print0 \
+              | xargs -r -0 grep -h "^package " \
               | awk '{print $2}' | tr -d ';' | sort -u > "$pkg_file"
             echo "Generating javadoc for $module_path ..."
             run_javadoc "$JAVADOC" "$delombok_dir" "$module_path/target/javadoc-delombok" "$pkg_file"
