@@ -62,19 +62,29 @@ jobs:
         run: |
           JAVADOC="$JAVA_HOME/bin/javadoc"
 
+          # Reconstruct the module list from the top-level env var.
+          # printf '%s' prevents <<< from adding an extra newline, which would produce a spurious empty element.
           readarray -t module_paths < <(printf '%s' "$MODULE_PATHS")
 
-          # Build classpath from all module jars + dependencies
+          # Build a classpath from all module JARs and their dependencies so javadoc can resolve cross-module type references.
           classpath=""
           for module_path in "${module_paths[@]}"; do
             cp_file="$module_path/target/cp.txt"
+
+            # Write all compile- and provided-scope dependency JARs to cp.txt.
+            # provided-scope types (e.g. SAP Cloud SDK interfaces) must be on the classpath for javadoc to resolve them.
             mvn -B -ntp -f "$module_path/pom.xml" \
               dependency:build-classpath -Dmdep.outputFile=target/cp.txt -Dmdep.includeScope=provided \
               -Dgpg.skip=true -q
+
+            # Add the module's own compiled JAR to the classpath.
+            # Exclude *-sources.jar and *-javadoc.jar produced by the release profile.
             module_jar=$(find "$module_path/target" -maxdepth 1 -name "*.jar" ! -name "*sources*" ! -name "*javadoc*" | head -1)
             if [[ -n "$module_jar" ]]; then
               [[ -z "$classpath" ]] && classpath="$module_jar" || classpath+=":$module_jar"
             fi
+
+            # Append the dependency JARs from cp.txt to the classpath.
             if [[ -f "$cp_file" ]]; then
               cp_content=$(cat "$cp_file")
               if [[ -n "$cp_content" ]]; then
@@ -83,6 +93,7 @@ jobs:
             fi
           done
 
+          # Runs the javadoc tool for a given source tree and writes HTML to destdir.
           run_javadoc() {
             local javadoc="$1"
             local sourcepath="$2"
@@ -90,6 +101,7 @@ jobs:
             local pkg_file="$4"
             local cp="$5"
 
+            # Skip if no packages were found for this module.
             if [[ ! -s "$pkg_file" ]]; then
               echo "No packages found for $destdir, skipping" >&2
               return
@@ -108,13 +120,16 @@ jobs:
               @"$pkg_file"
           }
 
-          # Per-module javadocs
+          # Generate per-module javadocs from delomboked sources (Lombok annotations expanded to plain Java).
           for module_path in "${module_paths[@]}"; do
             delombok_dir="$module_path/target/delombok"
             if [[ ! -d "$delombok_dir" ]]; then
               echo "Missing delombok sources for $module_path" >&2
               exit 1
             fi
+
+            # Extract unique package names from the module's Java files.
+            # -print0/-0: null-delimited to handle spaces in paths; -r: skip if no files; -h: omit filenames from output.
             pkg_file="$module_path/target/javadoc-packages"
             find "$delombok_dir" -name "*.java" -print0 \
               | xargs -r -0 grep -h "^package " \
@@ -123,17 +138,20 @@ jobs:
             run_javadoc "$JAVADOC" "$delombok_dir" "$module_path/target/javadoc-delombok" "$pkg_file" "$classpath"
           done
 
-          # Combined javadoc (all modules)
+          # Generate a combined javadoc across all modules with a unified package index.
           combined_sourcepath=""
           combined_pkg_file="target/javadoc-all-packages"
           > "$combined_pkg_file"
           for module_path in "${module_paths[@]}"; do
             delombok_dir="$module_path/target/delombok"
+            # Colon-join all delombok dirs into a single sourcepath for javadoc.
             [[ -z "$combined_sourcepath" ]] \
               && combined_sourcepath="$delombok_dir" \
               || combined_sourcepath+=":$delombok_dir"
+            # Accumulate package names from all modules into one file.
             cat "$module_path/target/javadoc-packages" >> "$combined_pkg_file"
           done
+          # Deduplicate packages shared across modules.
           sort -u "$combined_pkg_file" -o "$combined_pkg_file"
           echo "Generating combined javadoc for sdk-parent ..."
           run_javadoc "$JAVADOC" "$combined_sourcepath" "target/javadoc-delombok" "$combined_pkg_file" "$classpath"
@@ -144,16 +162,19 @@ jobs:
           rm -rf "$out_dir"
           mkdir -p "$out_dir"
 
+          # Reconstruct the module lists from the top-level env vars.
+          # printf '%s' prevents <<< from adding an extra newline, which would produce a spurious empty element.
           readarray -t module_paths < <(printf '%s' "$MODULE_PATHS")
           readarray -t module_names < <(printf '%s' "$MODULE_NAMES")
 
-          # Combined (parent) javadoc
+          # Copy the combined javadoc into the 'aggregate' subdirectory.
           if [[ ! -f "target/javadoc-delombok/index.html" ]]; then
             echo "Missing combined javadocs at target/javadoc-delombok" >&2
             exit 1
           fi
           cp -R "target/javadoc-delombok" "$out_dir/aggregate"
 
+          # Write an HTML index linking to the aggregate docs and each per-module doc.
           index_file="$out_dir/index.html"
           cat > "$index_file" <<'HTML'
           <!doctype html>
@@ -168,9 +189,11 @@ jobs:
             <ul>
           HTML
 
+          # Iterate over modules by index to pair each path with its display name.
           for i in "${!module_paths[@]}"; do
             module_path="${module_paths[$i]}"
             module_name="${module_names[$i]}"
+            # Replace '/' with '-' to use the module path as a flat directory name.
             module_id="${module_path//\//-}"
 
             src_dir="$module_path/target/javadoc-delombok"
@@ -179,6 +202,7 @@ jobs:
               exit 1
             fi
 
+            # Copy the module's javadoc into the output dir and add an index entry.
             cp -R "$src_dir" "$out_dir/$module_id"
             printf '    <li><a href="%s/index.html">%s</a></li>\n' "$module_id" "$module_name" >> "$index_file"
           done
