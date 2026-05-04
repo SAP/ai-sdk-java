@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Orchestration] Added `MISTRAL_SMALL` to model list in `OrchestrationAiModel`.
 
 ### 📈 Improvements
 
