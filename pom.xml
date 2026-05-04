@@ -94,6 +94,9 @@
     <coverage.branch>100%</coverage.branch>
     <coverage.method>100%</coverage.method>
     <coverage.class>100%</coverage.class>
+    <!-- japicmp configuration -->
+    <japicmp.skip>true</japicmp.skip>
+    <japicmp.oldVersion.file>${project.build.directory}/empty.jar</japicmp.oldVersion.file>
   </properties>
 
   <dependencyManagement>
@@ -782,6 +785,32 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           <nvdValidForHours>46</nvdValidForHours>
           <skipProvidedScope>true</skipProvidedScope>
           <ossIndexServerId>ossindex</ossIndexServerId>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.github.siom79.japicmp</groupId>
+        <artifactId>japicmp-maven-plugin</artifactId>
+        <version>0.25.6</version>
+        <configuration>
+          <skip>${japicmp.skip}</skip>
+          <oldVersion>
+            <file>
+              <path>${japicmp.oldVersion.file}</path>
+            </file>
+          </oldVersion>
+          <newVersion>
+            <file>
+              <path>${project.build.directory}/${project.artifactId}-${project.version}.jar</path>
+            </file>
+          </newVersion>
+          <parameter>
+            <breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
+            <breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
+            <onlyModified>true</onlyModified>
+            <accessModifier>public</accessModifier>
+            <onlyBinaryIncompatible>false</onlyBinaryIncompatible>
+            <ignoreMissingOldVersion>true</ignoreMissingOldVersion>
+          </parameter>
         </configuration>
       </plugin>
     </plugins>
