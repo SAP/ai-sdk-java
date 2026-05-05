@@ -7,6 +7,9 @@ on:
         required: true
         default: 'main'
 
+permissions:
+  contents: read
+
 env:
   JAVA_VERSION: 21
   MAVEN_CACHE_KEY: maven-dependencies
