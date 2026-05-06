@@ -8,7 +8,7 @@ import com.sap.ai.sdk.batch.generated.model.BatchDeleteResponse;
 import com.sap.ai.sdk.batch.generated.model.BatchDetailResponse;
 import com.sap.ai.sdk.batch.generated.model.BatchListResponse;
 import com.sap.ai.sdk.batch.generated.model.BatchStatusResponse;
-import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.Pair;
@@ -32,22 +32,21 @@ import javax.annotation.Nonnull;
  */
 public class BatchesApi extends BaseApi {
 
-  /**
-   * Instantiates this API class to invoke operations on the LLM Batch Service API.
-   *
-   * @param httpDestination The destination that API should be used with
-   */
-  public BatchesApi(@Nonnull final Destination httpDestination) {
-    super(httpDestination);
+  /** Instantiates this API class to invoke operations on the LLM Batch Service API */
+  public BatchesApi() {
+    super(new AiCoreService().getApiClient());
   }
 
   /**
-   * Instantiates this API class to invoke operations on the LLM Batch Service API based on a given
-   * {@link ApiClient}.
+   * Instantiates this API class to invoke operations on the LLM Batch Service API
    *
-   * @param apiClient ApiClient to invoke the API on
+   * @param aiCoreService The configured connectivity instance to AI Core
    */
-  public BatchesApi(@Nonnull final ApiClient apiClient) {
+  public BatchesApi(@Nonnull final AiCoreService aiCoreService) {
+    super(aiCoreService.getApiClient());
+  }
+
+  private BatchesApi(@Nonnull final ApiClient apiClient) {
     super(apiClient);
   }
 
