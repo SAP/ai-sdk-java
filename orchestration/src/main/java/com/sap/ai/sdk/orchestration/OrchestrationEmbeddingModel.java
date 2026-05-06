@@ -3,7 +3,8 @@ package com.sap.ai.sdk.orchestration;
 import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsModelDetails;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParams;
-import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParams.EncodingFormatEnum;
+import com.sap.ai.sdk.orchestration.model.EmbeddingsModelParamsEncodingFormat;
+import com.sap.ai.sdk.orchestration.model.EncodingFormat;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -69,7 +70,9 @@ public class OrchestrationEmbeddingModel implements AiModel {
         EmbeddingsModelParams.create()
             .dimensions(dimensions)
             .normalize(normalize)
-            .encodingFormat(EncodingFormatEnum.FLOAT);
+            .encodingFormat(
+                EmbeddingsModelParamsEncodingFormat.createInnerEncodingFormat(
+                    EncodingFormat.FLOAT));
     return EmbeddingsModelDetails.create().name(name).version(version).params(params);
   }
 }

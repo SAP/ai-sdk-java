@@ -9,6 +9,8 @@ jobs:
   find-stale-branches:
     name: 'Find stale spec-update branches'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       branches: ${{ steps.list.outputs.branches }}
     steps:
@@ -48,6 +50,8 @@ jobs:
   cleanup-stale-branch:
     name: 'Cleanup ${{ matrix.branch }}'
     needs: find-stale-branches
+    permissions:
+      contents: write
     if: ${{ needs.find-stale-branches.outputs.branches != '[]' }}
     strategy:
       matrix:

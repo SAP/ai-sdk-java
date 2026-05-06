@@ -8,15 +8,15 @@
 
 ### 🔧 Compatibility Notes
 
--
+- [Document Grounding] `getAllPipelines()` has additional nullable parameter `metadataConfigId`.
 
 ### ✨ New Functionality
 
--
+- [Orchestration] Added `MISTRAL_SMALL` to model list in `OrchestrationAiModel`.
 
 ### 📈 Improvements
 
--
+- Aggregated JavaDocs are now published on our [documentation portal](https://sap.github.io/ai-sdk/docs/java/overview-cloud-sdk-for-ai-java).
 
 ### 🐛 Fixed Issues
 

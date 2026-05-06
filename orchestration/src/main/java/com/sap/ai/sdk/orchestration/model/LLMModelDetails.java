@@ -169,7 +169,7 @@ public class LLMModelDetails
    * Set the timeout of this {@link LLMModelDetails} instance and return the same instance.
    *
    * @param timeout Timeout for the LLM request in seconds. This parameter is currently ignored for
-   *     Vertex AI models. Minimum: 1 Maximum: 600
+   *     Vertex AI models. Minimum: 1 Maximum: 1200
    * @return The same instance of this {@link LLMModelDetails} class
    */
   @Nonnull
@@ -180,7 +180,7 @@ public class LLMModelDetails
 
   /**
    * Timeout for the LLM request in seconds. This parameter is currently ignored for Vertex AI
-   * models. minimum: 1 maximum: 600
+   * models. minimum: 1 maximum: 1200
    *
    * @return timeout The timeout of this {@link LLMModelDetails} instance.
    */
@@ -193,7 +193,7 @@ public class LLMModelDetails
    * Set the timeout of this {@link LLMModelDetails} instance.
    *
    * @param timeout Timeout for the LLM request in seconds. This parameter is currently ignored for
-   *     Vertex AI models. Minimum: 1 Maximum: 600
+   *     Vertex AI models. Minimum: 1 Maximum: 1200
    */
   public void setTimeout(@Nullable final Integer timeout) {
     this.timeout = timeout;
