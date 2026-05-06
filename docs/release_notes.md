@@ -9,6 +9,7 @@
 ### 🔧 Compatibility Notes
 
 - [Document Grounding] `getAllPipelines()` has additional nullable parameter `metadataConfigId`.
+- [Prompt Registry] `importPromptTemplate` and `importOrchestrationConfig` accepts `File` instead of `byte[]` to propagate file name in `Content-Disposition` header.
 
 ### ✨ New Functionality
 
