@@ -274,7 +274,6 @@ jobs:
           CHANGED_FILES="$(git status -s)"
           if [[ -z "$CHANGED_FILES" ]]; then
             echo "[DEBUG] No changes to API docs detected, skipping Pull Request creation."
-            echo "CREATE_PR=false" >> $GITHUB_OUTPUT
             exit 0
           fi
 
