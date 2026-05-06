@@ -1,6 +1,6 @@
 /*
  * LLM Batch Service API
- * API for managing LLM batch processing jobs
+ * The LLM Batch Service enables asynchronous, large-scale processing of LLM requests through SAP AI Core. Instead of making individual inference calls, users can submit a batch of requests as a JSONL file stored in an object store, and the service processes them in the background. The batch job will be completed in a 24h time window and the results will be stored in the provided object store.
  *
  *
  *

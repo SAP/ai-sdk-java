@@ -23,87 +23,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Batch job specification */
+/** ErrorResponse */
 // CHECKSTYLE:OFF
-public class BatchCreateRequestSpec
+public class ErrorResponse
 // CHECKSTYLE:ON
 {
-  @JsonProperty("provider")
-  private String provider;
+  @JsonProperty("request_id")
+  private String requestId;
 
-  @JsonProperty("model")
-  private String model;
+  @JsonProperty("message")
+  private String message;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for BatchCreateRequestSpec. */
-  protected BatchCreateRequestSpec() {}
+  /** Default constructor for ErrorResponse. */
+  protected ErrorResponse() {}
 
   /**
-   * Set the provider of this {@link BatchCreateRequestSpec} instance and return the same instance.
+   * Set the requestId of this {@link ErrorResponse} instance and return the same instance.
    *
-   * @param provider LLM provider name
-   * @return The same instance of this {@link BatchCreateRequestSpec} class
+   * @param requestId Unique identifier for the request, used for tracing.
+   * @return The same instance of this {@link ErrorResponse} class
    */
   @Nonnull
-  public BatchCreateRequestSpec provider(@Nonnull final String provider) {
-    this.provider = provider;
+  public ErrorResponse requestId(@Nonnull final String requestId) {
+    this.requestId = requestId;
     return this;
   }
 
   /**
-   * LLM provider name
+   * Unique identifier for the request, used for tracing.
    *
-   * @return provider The provider of this {@link BatchCreateRequestSpec} instance.
+   * @return requestId The requestId of this {@link ErrorResponse} instance.
    */
   @Nonnull
-  public String getProvider() {
-    return provider;
+  public String getRequestId() {
+    return requestId;
   }
 
   /**
-   * Set the provider of this {@link BatchCreateRequestSpec} instance.
+   * Set the requestId of this {@link ErrorResponse} instance.
    *
-   * @param provider LLM provider name
+   * @param requestId Unique identifier for the request, used for tracing.
    */
-  public void setProvider(@Nonnull final String provider) {
-    this.provider = provider;
+  public void setRequestId(@Nonnull final String requestId) {
+    this.requestId = requestId;
   }
 
   /**
-   * Set the model of this {@link BatchCreateRequestSpec} instance and return the same instance.
+   * Set the message of this {@link ErrorResponse} instance and return the same instance.
    *
-   * @param model Model name
-   * @return The same instance of this {@link BatchCreateRequestSpec} class
+   * @param message A human-readable error message.
+   * @return The same instance of this {@link ErrorResponse} class
    */
   @Nonnull
-  public BatchCreateRequestSpec model(@Nonnull final String model) {
-    this.model = model;
+  public ErrorResponse message(@Nonnull final String message) {
+    this.message = message;
     return this;
   }
 
   /**
-   * Model name
+   * A human-readable error message.
    *
-   * @return model The model of this {@link BatchCreateRequestSpec} instance.
+   * @return message The message of this {@link ErrorResponse} instance.
    */
   @Nonnull
-  public String getModel() {
-    return model;
+  public String getMessage() {
+    return message;
   }
 
   /**
-   * Set the model of this {@link BatchCreateRequestSpec} instance.
+   * Set the message of this {@link ErrorResponse} instance.
    *
-   * @param model Model name
+   * @param message A human-readable error message.
    */
-  public void setModel(@Nonnull final String model) {
-    this.model = model;
+  public void setMessage(@Nonnull final String message) {
+    this.message = message;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link BatchCreateRequestSpec}.
+   * Get the names of the unrecognizable properties of the {@link ErrorResponse}.
    *
    * @return The set of properties names
    */
@@ -114,7 +114,7 @@ public class BatchCreateRequestSpec
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link BatchCreateRequestSpec} instance.
+   * Get the value of an unrecognizable property of this {@link ErrorResponse} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -125,15 +125,14 @@ public class BatchCreateRequestSpec
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException(
-          "BatchCreateRequestSpec has no field with name '" + name + "'.");
+      throw new NoSuchElementException("ErrorResponse has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link BatchCreateRequestSpec} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link ErrorResponse} instance including unrecognized
+   * properties.
    *
    * @return The map of all properties
    */
@@ -141,14 +140,14 @@ public class BatchCreateRequestSpec
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (provider != null) declaredFields.put("provider", provider);
-    if (model != null) declaredFields.put("model", model);
+    if (requestId != null) declaredFields.put("requestId", requestId);
+    if (message != null) declaredFields.put("message", message);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link BatchCreateRequestSpec} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link ErrorResponse} instance. If the map previously
+   * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -166,24 +165,24 @@ public class BatchCreateRequestSpec
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final BatchCreateRequestSpec batchCreateRequestSpec = (BatchCreateRequestSpec) o;
-    return Objects.equals(this.cloudSdkCustomFields, batchCreateRequestSpec.cloudSdkCustomFields)
-        && Objects.equals(this.provider, batchCreateRequestSpec.provider)
-        && Objects.equals(this.model, batchCreateRequestSpec.model);
+    final ErrorResponse errorResponse = (ErrorResponse) o;
+    return Objects.equals(this.cloudSdkCustomFields, errorResponse.cloudSdkCustomFields)
+        && Objects.equals(this.requestId, errorResponse.requestId)
+        && Objects.equals(this.message, errorResponse.message);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(provider, model, cloudSdkCustomFields);
+    return Objects.hash(requestId, message, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class BatchCreateRequestSpec {\n");
-    sb.append("    provider: ").append(toIndentedString(provider)).append("\n");
-    sb.append("    model: ").append(toIndentedString(model)).append("\n");
+    sb.append("class ErrorResponse {\n");
+    sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -202,32 +201,32 @@ public class BatchCreateRequestSpec
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link BatchCreateRequestSpec}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link ErrorResponse} instance
+   * with all required arguments.
    */
   public static Builder create() {
-    return (provider) -> (model) -> new BatchCreateRequestSpec().provider(provider).model(model);
+    return (requestId) -> (message) -> new ErrorResponse().requestId(requestId).message(message);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the provider of this {@link BatchCreateRequestSpec} instance.
+     * Set the requestId of this {@link ErrorResponse} instance.
      *
-     * @param provider LLM provider name
-     * @return The BatchCreateRequestSpec builder.
+     * @param requestId Unique identifier for the request, used for tracing.
+     * @return The ErrorResponse builder.
      */
-    Builder1 provider(@Nonnull final String provider);
+    Builder1 requestId(@Nonnull final String requestId);
   }
 
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the model of this {@link BatchCreateRequestSpec} instance.
+     * Set the message of this {@link ErrorResponse} instance.
      *
-     * @param model Model name
-     * @return The BatchCreateRequestSpec instance.
+     * @param message A human-readable error message.
+     * @return The ErrorResponse instance.
      */
-    BatchCreateRequestSpec model(@Nonnull final String model);
+    ErrorResponse message(@Nonnull final String message);
   }
 }

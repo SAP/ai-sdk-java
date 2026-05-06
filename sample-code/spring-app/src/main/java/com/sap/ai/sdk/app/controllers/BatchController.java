@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BatchController {
 
   private static final BatchesApi CLIENT = new BatchesApi(new AiCoreService().getApiClient());
-  private static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
+  public static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
 
   /**
    * Create a new batch job

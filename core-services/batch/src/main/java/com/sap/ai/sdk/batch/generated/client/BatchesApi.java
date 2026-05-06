@@ -24,7 +24,11 @@ import javax.annotation.Nonnull;
 /**
  * LLM Batch Service API in version 0.0.1.
  *
- * <p>API for managing LLM batch processing jobs
+ * <p>The LLM Batch Service enables asynchronous, large-scale processing of LLM requests through SAP
+ * AI Core. Instead of making individual inference calls, users can submit a batch of requests as a
+ * JSONL file stored in an object store, and the service processes them in the background. The batch
+ * job will be completed in a 24h time window and the results will be stored in the provided object
+ * store.
  */
 public class BatchesApi extends BaseApi {
 
@@ -63,7 +67,8 @@ public class BatchesApi extends BaseApi {
   /**
    * Cancel a batch
    *
-   * <p>
+   * <p>Cancel a batch processing job that is currently in progress. The batch will be scheduled for
+   * cancellation.
    *
    * <p><b>202</b> - Batch job scheduled for cancellation
    *
@@ -72,7 +77,7 @@ public class BatchesApi extends BaseApi {
    * <p><b>500</b> - Internal server error
    *
    * @param aiResourceGroup Specify the resource group to use for the request
-   * @param batchId The value for the parameter batchId
+   * @param batchId The unique identifier of the batch job.
    * @return BatchCancelResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -137,7 +142,8 @@ public class BatchesApi extends BaseApi {
   /**
    * Create a new batch job
    *
-   * <p>
+   * <p>Create a new LLM batch processing job. The batch job processes input data from the specified
+   * URI and writes results to the output URI.
    *
    * <p><b>202</b> - Batch job scheduled
    *
@@ -206,9 +212,10 @@ public class BatchesApi extends BaseApi {
   /**
    * Delete a Batch job (only for cancelled, completed, or failed batches)
    *
-   * <p>
+   * <p>Delete a batch processing job. Only batches in a terminal state (cancelled, completed, or
+   * failed) can be deleted.
    *
-   * <p><b>200</b> - Batch job deleted
+   * <p><b>202</b> - Batch job deleted
    *
    * <p><b>400</b> - Bad request - Batch job not in deletable state
    *
@@ -217,7 +224,7 @@ public class BatchesApi extends BaseApi {
    * <p><b>500</b> - Internal server error
    *
    * @param aiResourceGroup Specify the resource group to use for the request
-   * @param batchId The value for the parameter batchId
+   * @param batchId The unique identifier of the batch job.
    * @return BatchDeleteResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -282,7 +289,8 @@ public class BatchesApi extends BaseApi {
   /**
    * Get Batch job details
    *
-   * <p>
+   * <p>Retrieve the details of a specific batch processing job, including its configuration and
+   * current status.
    *
    * <p><b>200</b> - Batch job details
    *
@@ -291,7 +299,7 @@ public class BatchesApi extends BaseApi {
    * <p><b>500</b> - Internal server error
    *
    * @param aiResourceGroup Specify the resource group to use for the request
-   * @param batchId The value for the parameter batchId
+   * @param batchId The unique identifier of the batch job.
    * @return BatchDetailResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -356,7 +364,7 @@ public class BatchesApi extends BaseApi {
   /**
    * Get Batch job status
    *
-   * <p>
+   * <p>Retrieve the current status of a specific batch processing job.
    *
    * <p><b>200</b> - Batch job status
    *
@@ -365,7 +373,7 @@ public class BatchesApi extends BaseApi {
    * <p><b>500</b> - Internal server error
    *
    * @param aiResourceGroup Specify the resource group to use for the request
-   * @param batchId The value for the parameter batchId
+   * @param batchId The unique identifier of the batch job.
    * @return BatchStatusResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -430,7 +438,7 @@ public class BatchesApi extends BaseApi {
   /**
    * List all batches
    *
-   * <p>
+   * <p>Retrieve a list of all batch processing jobs for the current tenant.
    *
    * <p><b>200</b> - List of batches
    *
