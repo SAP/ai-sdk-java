@@ -16,7 +16,7 @@
 
 ### 📈 Improvements
 
--
+- Aggregated JavaDocs are now published on our [documentation portal](https://sap.github.io/ai-sdk/docs/java/overview-cloud-sdk-for-ai-java).
 
 ### 🐛 Fixed Issues
 
