@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] Added `MISTRAL_SMALL` to model list in `OrchestrationAiModel`.
+- [Orchestration] Added `MISTRAL_SMALL` and `CLAUDE_4_7_OPUS` to model list in `OrchestrationAiModel`.
 
 ### 📈 Improvements
 
