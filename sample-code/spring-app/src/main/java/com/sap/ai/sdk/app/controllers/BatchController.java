@@ -37,7 +37,7 @@ public class BatchController {
   public static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
 
   /** Directory path for batch output files in the object store. */
-  public static final String S3_DIRECTORY = "s3secret//";
+  public static final String S3_DIRECTORY = "s3secret/batch-output/";
 
   /** Batch output file name */
   public static final String OUTPUT_JSONL = "/output.jsonl";
@@ -57,7 +57,7 @@ public class BatchController {
         BatchCreateRequest.create()
             .type(TypeEnum.LLM_NATIVE)
             .input(BatchCreateRequestInput.create().uri("ai://s3secret/input-batch.jsonl"))
-            .output(BatchCreateRequestOutput.create().uri("ai://s3secret/"))
+            .output(BatchCreateRequestOutput.create().uri("ai://" + S3_DIRECTORY))
             .spec(BatchCreateRequestSpec.create().provider("azure-openai").model("gpt-4.1")));
   }
 

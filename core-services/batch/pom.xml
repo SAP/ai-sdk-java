@@ -36,12 +36,12 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>0%</coverage.complexity>
-    <coverage.line>0%</coverage.line>
-    <coverage.instruction>0%</coverage.instruction>
-    <coverage.branch>0%</coverage.branch>
-    <coverage.method>0%</coverage.method>
-    <coverage.class>0%</coverage.class>
+    <coverage.complexity>13%</coverage.complexity>
+    <coverage.line>17%</coverage.line>
+    <coverage.instruction>14%</coverage.instruction>
+    <coverage.branch>2%</coverage.branch>
+    <coverage.method>21%</coverage.method>
+    <coverage.class>77%</coverage.class>
   </properties>
 
   <dependencies>
