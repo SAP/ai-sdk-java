@@ -63,7 +63,7 @@ public class BatchController {
   }
 
   /**
-   * List all batches
+   * List all batch jobs
    *
    * @return response object
    */
@@ -74,7 +74,7 @@ public class BatchController {
   }
 
   /**
-   * Get a batch job for an id
+   * Get batch job for an id
    *
    * @param id the id of the batch job
    * @return the response object
@@ -106,9 +106,10 @@ public class BatchController {
   @GetMapping("/read/{id}")
   @Nonnull
   public String read(@Nonnull @PathVariable("id") final String id) {
-    val filePath = S3_DIRECTORY + id + OUTPUT_JSONL;
+    final UUID validatedId = UUID.fromString(id);
+    val filePath = S3_DIRECTORY + validatedId + OUTPUT_JSONL;
     try {
-      final File downloadedFile = FILE_CLIENT.download(filePath, RESOURCE_GROUP);
+      val downloadedFile = FILE_CLIENT.download(filePath, RESOURCE_GROUP);
       val content = Files.readAllBytes(downloadedFile.toPath());
       // Clean up temporary file
       val ignore = downloadedFile.delete();
@@ -120,9 +121,9 @@ public class BatchController {
       }
 
     } catch (OpenApiRequestException e) {
-      return "Error downloading file " + filePath + ": " + e.getMessage();
+      return "Error downloading file";
     } catch (Exception e) {
-      return "Error reading file " + filePath + ": " + e.getMessage();
+      return "Error reading file";
     }
   }
 }
