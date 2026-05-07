@@ -9,10 +9,11 @@
 ### 🔧 Compatibility Notes
 
 - [Document Grounding] `getAllPipelines()` has additional nullable parameter `metadataConfigId`.
+- [Prompt Registry] The `importPromptTemplate` and `importOrchestrationConfig` accepts `File` instead of `byte[]` to propagate file name in `Content-Disposition` header.
 
 ### ✨ New Functionality
 
-- [Orchestration] Added `MISTRAL_SMALL` to model list in `OrchestrationAiModel`.
+- [Orchestration] Added `MISTRAL_SMALL` and `CLAUDE_4_7_OPUS` to model list in `OrchestrationAiModel`.
 
 ### 📈 Improvements
 
