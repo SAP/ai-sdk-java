@@ -27,7 +27,8 @@ public class BatchTest {
         System.out.println("Delete batch: " + response.getMessage());
 
         // Clean up old batch output files from object store.
-        // Object store content can be accessed from an S3 bucket reader with the following credentials
+        // Object store content can be accessed from an S3 bucket reader with the following
+        // credentials
         // BTP Cockpit -> Instances -> s3 -> credentials
         String filePath = S3_DIRECTORY + id + OUTPUT_JSONL;
         try {
