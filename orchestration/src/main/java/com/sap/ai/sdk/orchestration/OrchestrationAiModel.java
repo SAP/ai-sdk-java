@@ -183,6 +183,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_4_6_SONNET =
       new OrchestrationAiModel("anthropic--claude-4.6-sonnet");
 
+  /** Anthropic Claude 4.7 Opus model */
+  public static final OrchestrationAiModel CLAUDE_4_7_OPUS =
+      new OrchestrationAiModel("anthropic--claude-4.7-opus");
+
   /**
    * Amazon Titan Text Lite model
    *
