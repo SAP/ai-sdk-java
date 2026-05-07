@@ -54,6 +54,10 @@
       <artifactId>core</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>cloudplatform-connectivity</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
     </dependency>
@@ -92,12 +96,21 @@
       <artifactId>httpcore5</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
-      <artifactId>cloudplatform-connectivity</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <configuration>
+          <ignoredNonTestScopedDependencies>
+            <!-- cloudplatform-connectivity is used transitively through BaseApi, we need it in compile scope not test -->
+            <ignoredNonTestScopedDependency>com.sap.cloud.sdk.cloudplatform:cloudplatform-connectivity</ignoredNonTestScopedDependency>
+          </ignoredNonTestScopedDependencies>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
   <profiles>
     <profile>
       <id>generate</id>
