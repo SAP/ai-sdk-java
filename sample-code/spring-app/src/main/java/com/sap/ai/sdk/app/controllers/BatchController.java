@@ -12,7 +12,6 @@ import com.sap.ai.sdk.batch.generated.model.BatchDetailResponse;
 import com.sap.ai.sdk.batch.generated.model.BatchListResponse;
 import com.sap.ai.sdk.core.client.FileApi;
 import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
-import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.UUID;
