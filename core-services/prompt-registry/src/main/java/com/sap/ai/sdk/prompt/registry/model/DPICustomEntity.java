@@ -75,7 +75,7 @@ public class DPICustomEntity implements DPIEntityConfig
    * Set the replacementStrategy of this {@link DPICustomEntity} instance and return the same
    * instance.
    *
-   * @param replacementStrategy Replacement strategy to be used for the entity
+   * @param replacementStrategy The replacementStrategy of this {@link DPICustomEntity}
    * @return The same instance of this {@link DPICustomEntity} class
    */
   @Nonnull
@@ -85,7 +85,7 @@ public class DPICustomEntity implements DPIEntityConfig
   }
 
   /**
-   * Replacement strategy to be used for the entity
+   * Get replacementStrategy
    *
    * @return replacementStrategy The replacementStrategy of this {@link DPICustomEntity} instance.
    */
@@ -97,7 +97,7 @@ public class DPICustomEntity implements DPIEntityConfig
   /**
    * Set the replacementStrategy of this {@link DPICustomEntity} instance.
    *
-   * @param replacementStrategy Replacement strategy to be used for the entity
+   * @param replacementStrategy The replacementStrategy of this {@link DPICustomEntity}
    */
   public void setReplacementStrategy(@Nonnull final DPIMethodConstant replacementStrategy) {
     this.replacementStrategy = replacementStrategy;
@@ -229,7 +229,7 @@ public class DPICustomEntity implements DPIEntityConfig
     /**
      * Set the replacementStrategy of this {@link DPICustomEntity} instance.
      *
-     * @param replacementStrategy Replacement strategy to be used for the entity
+     * @param replacementStrategy The replacementStrategy of this {@link DPICustomEntity}
      * @return The DPICustomEntity instance.
      */
     DPICustomEntity replacementStrategy(@Nonnull final DPIMethodConstant replacementStrategy);

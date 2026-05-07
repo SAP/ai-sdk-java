@@ -286,11 +286,19 @@
           <groupId>com.sap.cloud.sdk.datamodel</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
           <version>${cloud-sdk.version}</version>
+          <dependencies>
+            <!-- Handle regression in 7.22.0 -->
+            <dependency>
+              <groupId>org.openapitools</groupId>
+              <artifactId>openapi-generator</artifactId>
+              <version>7.21.0</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.21.0</version>
+          <version>7.22.0</version>
         </plugin>
       </plugins>
     </pluginManagement>

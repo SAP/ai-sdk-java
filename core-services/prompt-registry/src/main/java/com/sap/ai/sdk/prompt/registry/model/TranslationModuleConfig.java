@@ -43,7 +43,7 @@ public class TranslationModuleConfig
   /**
    * Set the input of this {@link TranslationModuleConfig} instance and return the same instance.
    *
-   * @param input Configuration for input translation
+   * @param input The input of this {@link TranslationModuleConfig}
    * @return The same instance of this {@link TranslationModuleConfig} class
    */
   @Nonnull
@@ -53,7 +53,7 @@ public class TranslationModuleConfig
   }
 
   /**
-   * Configuration for input translation
+   * Get input
    *
    * @return input The input of this {@link TranslationModuleConfig} instance.
    */
@@ -65,7 +65,7 @@ public class TranslationModuleConfig
   /**
    * Set the input of this {@link TranslationModuleConfig} instance.
    *
-   * @param input Configuration for input translation
+   * @param input The input of this {@link TranslationModuleConfig}
    */
   public void setInput(@Nullable final SAPDocumentTranslationInput input) {
     this.input = input;
@@ -74,7 +74,7 @@ public class TranslationModuleConfig
   /**
    * Set the output of this {@link TranslationModuleConfig} instance and return the same instance.
    *
-   * @param output Configuration for output translation
+   * @param output The output of this {@link TranslationModuleConfig}
    * @return The same instance of this {@link TranslationModuleConfig} class
    */
   @Nonnull
@@ -84,7 +84,7 @@ public class TranslationModuleConfig
   }
 
   /**
-   * Configuration for output translation
+   * Get output
    *
    * @return output The output of this {@link TranslationModuleConfig} instance.
    */
@@ -96,7 +96,7 @@ public class TranslationModuleConfig
   /**
    * Set the output of this {@link TranslationModuleConfig} instance.
    *
-   * @param output Configuration for output translation
+   * @param output The output of this {@link TranslationModuleConfig}
    */
   public void setOutput(@Nullable final SAPDocumentTranslationOutput output) {
     this.output = output;
