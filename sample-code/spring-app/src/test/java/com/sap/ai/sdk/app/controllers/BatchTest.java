@@ -17,17 +17,17 @@ public class BatchTest {
 
   @BeforeAll
   public static void yesterdaysCleanup() {
-    for (val listResponse : controller.list().getResources()) {
-      if (listResponse.getCreatedAt().isBefore(java.time.OffsetDateTime.now().minusSeconds(1))
-          && (listResponse.getStatus().equals("CANCELLED")
-              || listResponse.getStatus().equals("COMPLETED")
-              || listResponse.getStatus().equals("FAILED"))) {
-        String id = listResponse.getId().toString();
+    for (val batchJob : controller.list().getResources()) {
+      if (batchJob.getCreatedAt().isBefore(java.time.OffsetDateTime.now().minusDays(1))
+          && (batchJob.getStatus().equals("CANCELLED")
+              || batchJob.getStatus().equals("COMPLETED")
+              || batchJob.getStatus().equals("FAILED"))) {
+        String id = batchJob.getId().toString();
         val response = controller.delete(id);
         System.out.println("Delete batch: " + response.getMessage());
 
         // Clean up old batch output files from object store.
-        // Object store content can accessed from a S3 bucket reader with the following credentials
+        // Object store content can be accessed from an S3 bucket reader with the following credentials
         // BTP Cockpit -> Instances -> s3 -> credentials
         String filePath = S3_DIRECTORY + id + OUTPUT_JSONL;
         try {
