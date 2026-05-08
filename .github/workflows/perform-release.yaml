@@ -21,7 +21,7 @@ jobs:
   prerequisites:
     name: 'Prerequisites'
     permissions:
-      contents: read
+      contents: write # needed to view draft releases
       pull-requests: read
       statuses: read
       checks: read
