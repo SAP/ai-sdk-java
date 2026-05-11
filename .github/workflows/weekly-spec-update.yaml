@@ -19,6 +19,7 @@ jobs:
           - prompt-registry
           - orchestration
           - sap-rpt
+          - batch
 
     steps:
       - name: 'Checkout repository'

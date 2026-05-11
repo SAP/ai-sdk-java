@@ -24,6 +24,7 @@ on:
           - orchestration
           - prompt-registry
           - sap-rpt
+          - batch
         default: orchestration
       ref:
         description: 'Branch or tag to checkout the spec file from'
@@ -153,6 +154,10 @@ jobs:
             sap-rpt) # https://github.tools.sap/DL-COE/sap-rpt-1-public-content
               API_URL="$API_BASE_URL/DL-COE/sap-rpt-1-public-content/contents/sap-rpt-1_openapi.json?ref=$REF"
               FILE_PATH='foundation-models/sap-rpt/src/main/resources/spec/sap-rpt-1_openapi.json'
+              ;;
+            batch)
+              API_URL="$API_BASE_URL/AI/llm-batch-service/contents/components/llm-batch-service-api/src/spec/batch-service.yaml?ref=$REF"
+              FILE_PATH='core-services/batch/src/main/resources/spec/batch-service.yaml'
               ;;
           esac
 

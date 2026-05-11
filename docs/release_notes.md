@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Batch] Added a new `BatchesApi` client to access the Batch Service API.
 
 ### 📈 Improvements
 
