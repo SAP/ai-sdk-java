@@ -54,6 +54,7 @@ jobs:
       pr_url: ${{ steps.create-pr.outputs.pr_url }}
       compilation_result: ${{ steps.compile.outputs.compilation_result }}
       test_result: ${{ steps.compile.outputs.test_result }}
+      api_compat_result: ${{ steps.api_compat.outputs.api_compat_result }}
     env:
       API_BASE_URL: 'https://github.tools.sap/api/v3/repos'
       SERVICE: ${{ github.event.inputs.service }}
@@ -137,25 +138,31 @@ jobs:
             core)
               API_URL="$API_BASE_URL/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
               FILE_PATH='core/src/main/resources/spec/aicore.yaml'
+              MODULE_PATH='core'
               ;;
             document-grounding)
               API_URL="$API_BASE_URL/AI/rage-proxy-inference/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
               FILE_PATH='core-services/document-grounding/src/main/resources/spec/grounding.yaml'
+              MODULE_PATH='core-services/document-grounding'
               ;;
             orchestration)
               API_URL="$API_BASE_URL/AI/llm-orchestration/contents/src/spec/v2.yaml?ref=$REF"
               FILE_PATH='orchestration/src/main/resources/spec/orchestration.yaml'
+              MODULE_PATH='orchestration'
               ;;
             prompt-registry)
               API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml?ref=$REF"
               FILE_PATH='core-services/prompt-registry/src/main/resources/spec/prompt-registry.yaml'
+              MODULE_PATH='core-services/prompt-registry'
               ;;
             sap-rpt) # https://github.tools.sap/DL-COE/sap-rpt-1-public-content
               API_URL="$API_BASE_URL/DL-COE/sap-rpt-1-public-content/contents/sap-rpt-1_openapi.json?ref=$REF"
               FILE_PATH='foundation-models/sap-rpt/src/main/resources/spec/sap-rpt-1_openapi.json'
+              MODULE_PATH='foundation-models/sap-rpt'
               ;;
           esac
 
+          echo "module_path=$MODULE_PATH" >> "$GITHUB_OUTPUT"
           echo "Downloading $SERVICE specification file from $API_URL ..."
 
           gh api "$API_URL" -H "Accept: application/vnd.github.raw" > $FILE_PATH
@@ -206,6 +213,23 @@ jobs:
             fi
           fi
 
+      - name: 'Build baseline JAR'
+        id: baseline
+        if: steps.spec_diff.outputs.spec_diff == 'true'
+        env:
+          MODULE_PATH: ${{ steps.download.outputs.module_path }}
+        run: |
+          # Fetch main branch and create a parallel checkout via git worktree
+          git fetch --no-tags --depth=1 origin main
+          git worktree add /tmp/main-baseline origin/main
+
+          # Build the baseline JAR from main (only the affected module + its dependencies)
+          mvn package -DskipTests -pl "$MODULE_PATH" -am \
+            -f /tmp/main-baseline/pom.xml ${{ env.MVN_MULTI_THREADED_ARGS }}
+
+          # Copy the baseline JAR to a known location for japicmp
+          cp /tmp/main-baseline/$MODULE_PATH/target/*.jar /tmp/baseline.jar
+
       - name: 'Generate'
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
@@ -214,6 +238,27 @@ jobs:
             echo "generation_result=success" >> "$GITHUB_OUTPUT"
           else
             echo "generation_result=failure" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 'API compatibility check'
+        id: api_compat
+        if: >
+          steps.spec_diff.outputs.spec_diff == 'true' &&
+          steps.generate.outputs.generation_result == 'success'
+        env:
+          MODULE_PATH: ${{ steps.download.outputs.module_path }}
+        run: |
+          # Run japicmp: compare baseline (main) JAR vs newly generated JAR
+          if mvn japicmp:cmp -pl "$MODULE_PATH" \
+            -Djapicmp.oldVersion.file=/tmp/baseline.jar \
+            ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
+            echo "api_compat_result=compatible" >> "$GITHUB_OUTPUT"
+          else
+            echo "api_compat_result=incompatible" >> "$GITHUB_OUTPUT"
+            # Append the japicmp markdown report to the job summary
+            echo "## API Compatibility Report" >> $GITHUB_STEP_SUMMARY
+            cat "$MODULE_PATH/target/japicmp/default-cli.md" >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
+            exit 1
           fi
 
       - name: 'Compile and Test'
@@ -268,6 +313,7 @@ jobs:
 
           - Compilation outcome: ${{ steps.compile.outputs.compilation_result }}
           - Test run outcome: ${{ steps.compile.outputs.test_result }}
+          - API compatibility: ${{ steps.api_compat.outputs.api_compat_result || 'skipped' }}
 
           Before merging, make sure to update tests and release notes, if necessary.
 
@@ -300,6 +346,7 @@ jobs:
             echo "| Client Generation | ${{ steps.generate.outputs.generation_result == 'success' && '✅' || '❌' }} ${{ steps.generate.outputs.generation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
+            echo "| API Compatibility | ${{ steps.api_compat.outputs.api_compat_result == 'compatible' && '✅' || steps.api_compat.outputs.api_compat_result == 'incompatible' && '❌' || '⏩' }} ${{ steps.api_compat.outputs.api_compat_result || 'skipped' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Pull Request Creation | ${{ env.CREATE_PR == 'false' && '⏩ skipped' || '' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' || '' }}" >> $GITHUB_STEP_SUMMARY
           fi
