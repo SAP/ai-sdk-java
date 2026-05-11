@@ -140,6 +140,23 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.github.siom79.japicmp</groupId>
+        <artifactId>japicmp-maven-plugin</artifactId>
+        <configuration>
+          <parameter>
+            <includes>
+              <include>com.sap.ai.sdk.core.client</include>
+              <include>com.sap.ai.sdk.core.model</include>
+            </includes>
+          </parameter>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <profiles>
     <profile>
       <id>generate</id>

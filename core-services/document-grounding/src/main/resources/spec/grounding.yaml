@@ -1446,17 +1446,8 @@ components:
           $ref: "#/components/schemas/MSSharePointConfiguration"
         metadata:
           $ref: "#/components/schemas/MetaData"
-        # additive: field addition
-        extraField:
-          type: string
-          example: extraValue
       additionalProperties: true
-    # additive: add a new class
-    NewFeatureResponse:
-      type: object
-      properties:
-        status:
-          type: string
+
     S3PipelineCreateRequest:
       type: object
       required:
@@ -1465,8 +1456,7 @@ components:
       properties:
         type:
           type: string
-          # additive: add a new enum
-          enum: [S3, Extra]
+          enum: [S3]
         configuration:
           $ref: "#/components/schemas/S3Configuration"
         metadata:

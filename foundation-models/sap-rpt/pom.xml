@@ -181,6 +181,17 @@
           </ignoredUnusedDeclaredDependencies>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>com.github.siom79.japicmp</groupId>
+        <artifactId>japicmp-maven-plugin</artifactId>
+        <configuration>
+          <parameter>
+            <includes>
+              <include>com.sap.ai.sdk.foundationmodels.rpt.generated</include>
+            </includes>
+          </parameter>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <profiles>

@@ -35,9 +35,6 @@ public class S3PipelineCreateRequest implements CreatePipeline
     /** The S3 option of this S3PipelineCreateRequest */
     S3("S3"),
 
-    /** The EXTRA option of this S3PipelineCreateRequest */
-    EXTRA("Extra"),
-
     /** The UNKNOWN_DEFAULT_OPEN_API option of this S3PipelineCreateRequest */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 

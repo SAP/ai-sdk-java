@@ -93,9 +93,6 @@ public class MSSharePointPipelineCreateRequest implements CreatePipeline
   @JsonProperty("metadata")
   private MetaData metadata;
 
-  @JsonProperty("extraField")
-  private String extraField;
-
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -201,38 +198,6 @@ public class MSSharePointPipelineCreateRequest implements CreatePipeline
   }
 
   /**
-   * Set the extraField of this {@link MSSharePointPipelineCreateRequest} instance and return the
-   * same instance.
-   *
-   * @param extraField The extraField of this {@link MSSharePointPipelineCreateRequest}
-   * @return The same instance of this {@link MSSharePointPipelineCreateRequest} class
-   */
-  @Nonnull
-  public MSSharePointPipelineCreateRequest extraField(@Nullable final String extraField) {
-    this.extraField = extraField;
-    return this;
-  }
-
-  /**
-   * Get extraField
-   *
-   * @return extraField The extraField of this {@link MSSharePointPipelineCreateRequest} instance.
-   */
-  @Nonnull
-  public String getExtraField() {
-    return extraField;
-  }
-
-  /**
-   * Set the extraField of this {@link MSSharePointPipelineCreateRequest} instance.
-   *
-   * @param extraField The extraField of this {@link MSSharePointPipelineCreateRequest}
-   */
-  public void setExtraField(@Nullable final String extraField) {
-    this.extraField = extraField;
-  }
-
-  /**
    * Get the names of the unrecognizable properties of the {@link
    * MSSharePointPipelineCreateRequest}.
    *
@@ -276,7 +241,6 @@ public class MSSharePointPipelineCreateRequest implements CreatePipeline
     if (type != null) declaredFields.put("type", type);
     if (_configuration != null) declaredFields.put("_configuration", _configuration);
     if (metadata != null) declaredFields.put("metadata", metadata);
-    if (extraField != null) declaredFields.put("extraField", extraField);
     return declaredFields;
   }
 
@@ -307,13 +271,12 @@ public class MSSharePointPipelineCreateRequest implements CreatePipeline
             this.cloudSdkCustomFields, msSharePointPipelineCreateRequest.cloudSdkCustomFields)
         && Objects.equals(this.type, msSharePointPipelineCreateRequest.type)
         && Objects.equals(this._configuration, msSharePointPipelineCreateRequest._configuration)
-        && Objects.equals(this.metadata, msSharePointPipelineCreateRequest.metadata)
-        && Objects.equals(this.extraField, msSharePointPipelineCreateRequest.extraField);
+        && Objects.equals(this.metadata, msSharePointPipelineCreateRequest.metadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, _configuration, metadata, extraField, cloudSdkCustomFields);
+    return Objects.hash(type, _configuration, metadata, cloudSdkCustomFields);
   }
 
   @Override
@@ -324,7 +287,6 @@ public class MSSharePointPipelineCreateRequest implements CreatePipeline
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    _configuration: ").append(toIndentedString(_configuration)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("    extraField: ").append(toIndentedString(extraField)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

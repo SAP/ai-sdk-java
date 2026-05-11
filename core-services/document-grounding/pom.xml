@@ -104,7 +104,14 @@
       <plugin>
         <groupId>com.github.siom79.japicmp</groupId>
         <artifactId>japicmp-maven-plugin</artifactId>
-        <!-- Configuration inherited from parent, just declaring it activates it for this module -->
+        <configuration>
+          <parameter>
+            <includes>
+              <include>com.sap.ai.sdk.grounding.client</include>
+              <include>com.sap.ai.sdk.grounding.model</include>
+            </includes>
+          </parameter>
+        </configuration>
       </plugin>
     </plugins>
   </build>
