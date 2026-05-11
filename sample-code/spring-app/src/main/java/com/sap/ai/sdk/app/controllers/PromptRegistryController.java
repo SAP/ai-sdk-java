@@ -93,7 +93,7 @@ class PromptRegistryController {
 
   @GetMapping("/importTemplate")
   PromptTemplatePostResponse importTemplate() throws IOException {
-    val template = new ClassPathResource("prompt-template.yaml").getContentAsByteArray();
+    val template = new ClassPathResource("prompt-template.yaml").getFile();
     return promptClient.importPromptTemplate("default", null, template);
   }
 

@@ -86,6 +86,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel MIXTRAL_8X7B_INSTRUCT_V01 =
       new OrchestrationAiModel("mistralai--mixtral-8x7b-instruct-v01");
 
+  /** MistralAI Mistral Small model */
+  public static final OrchestrationAiModel MISTRAL_SMALL =
+      new OrchestrationAiModel("mistralai--mistral-small");
+
   /**
    * Meta Llama3 70B Instruct model
    *
@@ -178,6 +182,10 @@ public class OrchestrationAiModel {
   /** Anthropic Claude 4.6 Sonnet model */
   public static final OrchestrationAiModel CLAUDE_4_6_SONNET =
       new OrchestrationAiModel("anthropic--claude-4.6-sonnet");
+
+  /** Anthropic Claude 4.7 Opus model */
+  public static final OrchestrationAiModel CLAUDE_4_7_OPUS =
+      new OrchestrationAiModel("anthropic--claude-4.7-opus");
 
   /**
    * Amazon Titan Text Lite model
