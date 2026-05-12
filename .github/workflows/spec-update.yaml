@@ -257,27 +257,25 @@ jobs:
         env:
           MODULE_PATH: ${{ steps.download.outputs.module_path }}
         run: |
-          # Debug: show which JARs are being compared
-          echo "Baseline JAR:"
-          ls -la /tmp/baseline.jar
-          echo "New JAR:"
-          ls -la "$MODULE_PATH/target/"*.jar
-
           # Run japicmp: compare baseline (main) JAR vs newly generated JAR
           if mvn com.github.siom79.japicmp:japicmp-maven-plugin:cmp -pl "$MODULE_PATH" \
             -Djapicmp.oldVersion.file=/tmp/baseline.jar \
             ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
             echo "api_compat_result=compatible" >> "$GITHUB_OUTPUT"
-            # Debug: always print the diff report
-            echo "--- japicmp diff report ---"
-            cat "$MODULE_PATH/target/japicmp/default-cli.diff" 2>/dev/null || true
           else
             echo "api_compat_result=incompatible" >> "$GITHUB_OUTPUT"
-            # Append the japicmp markdown report to the job summary
-            echo "## API Compatibility Report" >> $GITHUB_STEP_SUMMARY
-            cat "$MODULE_PATH/target/japicmp/default-cli.md" >> $GITHUB_STEP_SUMMARY 2>/dev/null || true
+            echo "## ❌ API Compatibility: Breaking changes detected" >> $GITHUB_STEP_SUMMARY
+            echo "Download the **japicmp-report** artifact for details." >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
+
+      - name: 'Upload japicmp report'
+        if: always() && steps.api_compat.outcome != 'skipped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: japicmp-report
+          path: ${{ steps.download.outputs.module_path }}/target/japicmp/
+          if-no-files-found: ignore
 
       - name: 'Compile and Test'
         id: compile
