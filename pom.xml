@@ -94,7 +94,7 @@
     <coverage.branch>100%</coverage.branch>
     <coverage.method>100%</coverage.method>
     <coverage.class>100%</coverage.class>
-    <japicmp.version>0.25.6</japicmp.version>
+    <japicmp.version>0.25.7</japicmp.version>
   </properties>
 
   <dependencyManagement>
