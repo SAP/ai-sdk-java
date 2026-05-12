@@ -36,6 +36,11 @@ on:
         required: false
         default: true
         type: boolean
+      is-weekly:
+        description: 'Flag to signal this is triggered by the weekly update run'
+        required: false
+        default: false
+        type: boolean
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
@@ -170,10 +175,14 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
-          # if there are no spec changes in this commit, check if previous run on this branch is red. If it is red, exit 1; if it is green, exit 0.
+          # if there are no spec changes in this commit and this is not run during the weekly update,
+          # check if the previous run on this branch is red. If it is red, exit 1; if it is green, exit 0.
           if [[ `git status --porcelain` ]]; then
             echo "Spec changes detected, continuing with generation."
             echo "spec_diff=true" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.event.inputs.is-weekly }}" == "true" ]]; then
+            echo "No spec changes detected during weekly spec update. This run succeeds."
+            echo "spec_diff=false" >> "$GITHUB_OUTPUT"
           else
             echo "No spec changes detected. Checking status of previous run."
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
@@ -298,7 +307,11 @@ jobs:
           echo "| Spec File Changes | ${{ steps.spec_diff.outputs.spec_diff == 'true' && '🔄 Changes Detected' || '⏹️ No Changes' }}" >> $GITHUB_STEP_SUMMARY
 
           if ${{ steps.spec_diff.outputs.spec_diff == 'false' }}; then
-            echo "| Outcome Previous Run | ${{ steps.spec_diff.outputs.prev_run_success == 'true' && '✅ (Current run succeeds as a result.)' || '❌ (Current run fails as a result.)' }}" >> $GITHUB_STEP_SUMMARY
+            if ${{ github.event.inputs.is-weekly == 'true' }}; then
+              echo "| Weekly Run | ✅ No spec changes detected, run succeeds." >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| Outcome Previous Run | ${{ steps.spec_diff.outputs.prev_run_success == 'true' && '✅ (Current run succeeds as a result.)' || '❌ (Current run fails as a result.)' }}" >> $GITHUB_STEP_SUMMARY
+            fi
           fi
 
           if ${{ steps.spec_diff.outputs.spec_diff == 'true' }}; then
@@ -316,7 +329,7 @@ jobs:
           exit 1
 
       - name: 'Fail if no spec changes and previous run failed'
-        if: steps.spec_diff.outputs.prev_run_success == 'false'
+        if: steps.spec_diff.outputs.prev_run_success == 'false' && github.event.inputs.is-weekly != 'true'
         run: |
           echo "Previous run failed and there were no spec changes since, thus failing this run as well."
           exit 1
