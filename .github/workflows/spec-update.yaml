@@ -248,11 +248,20 @@ jobs:
         env:
           MODULE_PATH: ${{ steps.download.outputs.module_path }}
         run: |
+          # Debug: show which JARs are being compared
+          echo "Baseline JAR:"
+          ls -la /tmp/baseline.jar
+          echo "New JAR:"
+          ls -la "$MODULE_PATH/target/"*.jar
+
           # Run japicmp: compare baseline (main) JAR vs newly generated JAR
           if mvn com.github.siom79.japicmp:japicmp-maven-plugin:cmp -pl "$MODULE_PATH" \
             -Djapicmp.oldVersion.file=/tmp/baseline.jar \
             ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
             echo "api_compat_result=compatible" >> "$GITHUB_OUTPUT"
+            # Debug: always print the diff report
+            echo "--- japicmp diff report ---"
+            cat "$MODULE_PATH/target/japicmp/default-cli.diff" 2>/dev/null || true
           else
             echo "api_compat_result=incompatible" >> "$GITHUB_OUTPUT"
             # Append the japicmp markdown report to the job summary
