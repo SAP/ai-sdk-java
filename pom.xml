@@ -73,6 +73,7 @@
     <jackson.version>2.21.3</jackson.version>
     <logback.version>1.5.32</logback.version>
     <commons-codec.version>1.22.0</commons-codec.version>
+    <japicmp.version>0.25.7</japicmp.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.5</micrometer.version>
     <json.version>20251224</json.version>
@@ -94,7 +95,8 @@
     <coverage.branch>100%</coverage.branch>
     <coverage.method>100%</coverage.method>
     <coverage.class>100%</coverage.class>
-    <japicmp.version>0.25.7</japicmp.version>
+    <!--  Binary compatibility check old version file -->
+    <japicmp.oldVersion.file/>
   </properties>
 
   <dependencyManagement>
@@ -306,6 +308,11 @@
           <artifactId>japicmp-maven-plugin</artifactId>
           <version>${japicmp.version}</version>
           <configuration>
+            <oldVersion>
+              <file>
+                <path>${japicmp.oldVersion.file}</path>
+              </file>
+            </oldVersion>
             <newVersion>
               <file>
                 <path>${project.build.directory}/${project.artifactId}-${project.version}.jar</path>
@@ -317,7 +324,7 @@
               <onlyModified>true</onlyModified>
               <accessModifier>public</accessModifier>
               <onlyBinaryIncompatible>false</onlyBinaryIncompatible>
-              <ignoreMissingOldVersion>true</ignoreMissingOldVersion>
+              <ignoreMissingOldVersion>false</ignoreMissingOldVersion>
             </parameter>
           </configuration>
         </plugin>
@@ -448,7 +455,8 @@
               <rules>
                 <bannedDependencies>
                   <message>Do not use JUnit 4.X, instead exclusively use Junit Jupiter. JUnit 4 tests will (silently)
-                    simply not be executed.</message>
+                    simply not be executed.
+                  </message>
                   <excludes>
                     <exclude>junit:junit</exclude>
                   </excludes>
@@ -538,7 +546,8 @@
           <licenseMerges>
             <licenseMerge>Apache Software License - Version 2.0|Apache License Version 2.0|Apache 2.0|
               The Apache License, Version 2.0|Apache License, Version 2.0|Apache-2.0|
-              The Apache Software License, Version 2.0|Apache License 2.0</licenseMerge>
+              The Apache Software License, Version 2.0|Apache License 2.0
+            </licenseMerge>
             <licenseMerge>The MIT License|MIT License|The MIT License (MIT)|MIT|MIT-0</licenseMerge>
             <licenseMerge>The BSD 3-Clause License|BSD License 3|The BSD License|BSD-3-Clause|BSD-2-Clause|BSD licence</licenseMerge>
             <licenseMerge>Eclipse Distribution License - v 1.0|EDL 1.0</licenseMerge>
