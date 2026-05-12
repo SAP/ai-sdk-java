@@ -249,7 +249,7 @@ jobs:
           MODULE_PATH: ${{ steps.download.outputs.module_path }}
         run: |
           # Run japicmp: compare baseline (main) JAR vs newly generated JAR
-          if mvn japicmp:cmp -pl "$MODULE_PATH" \
+          if mvn com.github.siom79.japicmp:japicmp-maven-plugin:cmp -pl "$MODULE_PATH" \
             -Djapicmp.oldVersion.file=/tmp/baseline.jar \
             ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
             echo "api_compat_result=compatible" >> "$GITHUB_OUTPUT"
