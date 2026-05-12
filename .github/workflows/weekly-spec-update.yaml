@@ -51,7 +51,8 @@ jobs:
           gh workflow run spec-update.yaml \
             --field service=${{ matrix.service }} \
             --field ref=$BRANCH \
-            --field create-pr=true
+            --field create-pr=true \
+            --field is-weekly=true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

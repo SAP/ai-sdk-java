@@ -402,6 +402,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_2_5_PRO =
       new OrchestrationAiModel("gemini-2.5-pro");
 
+  /** Google Cloud Platform Gemini 3.1 Flash Lite model */
+  public static final OrchestrationAiModel GEMINI_3_1_FLASH_LITE =
+      new OrchestrationAiModel("gemini-3.1-flash-lite");
+
   /**
    * Alephalpha-pharia-1-7b-control model
    *
