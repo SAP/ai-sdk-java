@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -234,9 +235,16 @@ public class SpringAiOrchestrationService {
     val prompt1 = new Prompt("What is the capital of France?", defaultOptions);
     val prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
 
-    cl.prompt(prompt1).call().content();
+    cl.prompt(prompt1)
+        .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "conversation id"))
+        .call()
+        .content();
     return Objects.requireNonNull(
-        cl.prompt(prompt2).call().chatResponse(), "Chat response is null");
+        cl.prompt(prompt2)
+            .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "conversation id"))
+            .call()
+            .chatResponse(),
+        "Chat response is null");
   }
 
   /**
