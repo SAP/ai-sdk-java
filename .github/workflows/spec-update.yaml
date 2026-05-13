@@ -262,18 +262,16 @@ jobs:
 
           echo ""
           echo "=== Effective POM for $MODULE_PATH ==="
-          mvn help:effective-pom -pl "$MODULE_PATH" -Doutput=/tmp/effective-pom.xml ${{ env.MVN_MULTI_THREADED_ARGS }}
-
-          echo "--- grep japicmp ---"
-          grep -A 30 "japicmp" /tmp/effective-pom.xml || echo "NOT FOUND: japicmp"
+          mvn help:effective-pom -pl "$MODULE_PATH" -Doutput=/tmp/effective-pom.xml --batch-mode --no-transfer-progress
 
           echo ""
-          echo "--- grep oldVersion ---"
-          grep -B 2 -A 5 "oldVersion" /tmp/effective-pom.xml || echo "NOT FOUND: oldVersion"
+          echo "=== File stats ==="
+          wc -l /tmp/effective-pom.xml
+          grep -c "<plugin>" /tmp/effective-pom.xml || echo "No <plugin> tags found"
 
           echo ""
-          echo "--- grep baseline ---"
-          grep "baseline" /tmp/effective-pom.xml || echo "NOT FOUND: baseline"
+          echo "=== Full effective POM content (last 200 lines) ==="
+          tail -200 /tmp/effective-pom.xml
 
       - name: 'API compatibility check'
         id: api_compat
