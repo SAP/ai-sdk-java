@@ -59,6 +59,12 @@
         <artifactId>tomcat-embed-websocket</artifactId>
         <version>${apache-tomcat-embed.version}</version>
       </dependency>
+      <!-- Pin mcp-core to align with spring-ai-client-chat transitive dependency -->
+      <dependency>
+        <groupId>io.modelcontextprotocol.sdk</groupId>
+        <artifactId>mcp-core</artifactId>
+        <version>${mcp-core.version}</version>
+      </dependency>
       <!-- Enforce consistent Junit version -->
       <dependency>
         <groupId>org.junit</groupId>
