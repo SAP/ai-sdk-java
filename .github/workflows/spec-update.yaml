@@ -233,12 +233,12 @@ jobs:
           mkdir -p /tmp/main-baseline
           git archive origin/main | tar -x -C /tmp/main-baseline
 
-          # Build the baseline JAR (only the affected module + its dependencies)
-          mvn package -DskipTests -pl "$MODULE_PATH" -am \
-            -f /tmp/main-baseline/pom.xml ${{ env.MVN_MULTI_THREADED_ARGS }}
+          # Build from within the baseline directory to avoid -f path resolution issues
+          cd /tmp/main-baseline
+          mvn package -DskipTests -pl "$MODULE_PATH" -am ${{ env.MVN_MULTI_THREADED_ARGS }}
 
           # Copy the baseline JAR to a known location for japicmp
-          cp /tmp/main-baseline/$MODULE_PATH/target/*.jar /tmp/baseline.jar
+          cp "$MODULE_PATH/target/"*.jar /tmp/baseline.jar
 
       - name: 'Generate'
         id: generate
