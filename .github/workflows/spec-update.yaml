@@ -261,9 +261,19 @@ jobs:
           ls -la /tmp/baseline.jar
 
           echo ""
-          echo "=== Effective POM japicmp section for $MODULE_PATH ==="
-          mvn help:effective-pom -pl "$MODULE_PATH" ${{ env.MVN_MULTI_THREADED_ARGS }} \
-            | sed -n '/japicmp-maven-plugin/,/<\/plugin>/p'
+          echo "=== Effective POM for $MODULE_PATH ==="
+          mvn help:effective-pom -pl "$MODULE_PATH" -Doutput=/tmp/effective-pom.xml ${{ env.MVN_MULTI_THREADED_ARGS }}
+
+          echo "--- grep japicmp ---"
+          grep -A 30 "japicmp" /tmp/effective-pom.xml || echo "NOT FOUND: japicmp"
+
+          echo ""
+          echo "--- grep oldVersion ---"
+          grep -B 2 -A 5 "oldVersion" /tmp/effective-pom.xml || echo "NOT FOUND: oldVersion"
+
+          echo ""
+          echo "--- grep baseline ---"
+          grep "baseline" /tmp/effective-pom.xml || echo "NOT FOUND: baseline"
 
       - name: 'API compatibility check'
         id: api_compat
