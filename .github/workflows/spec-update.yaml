@@ -228,11 +228,12 @@ jobs:
         env:
           MODULE_PATH: ${{ steps.download.outputs.module_path }}
         run: |
-          # Fetch main branch and create a parallel checkout via git worktree
+          # Extract main branch source into a temporary directory
           git fetch --no-tags --depth=1 origin main
-          git worktree add /tmp/main-baseline origin/main
+          mkdir -p /tmp/main-baseline
+          git archive origin/main | tar -x -C /tmp/main-baseline
 
-          # Build the baseline JAR from main (only the affected module + its dependencies)
+          # Build the baseline JAR (only the affected module + its dependencies)
           mvn package -DskipTests -pl "$MODULE_PATH" -am \
             -f /tmp/main-baseline/pom.xml ${{ env.MVN_MULTI_THREADED_ARGS }}
 
