@@ -310,7 +310,7 @@
           <configuration>
             <oldVersion>
               <file>
-                <path>${japicmp.oldVersion.file}</path>
+                <path>/tmp/baseline.jar</path>
               </file>
             </oldVersion>
             <newVersion>
