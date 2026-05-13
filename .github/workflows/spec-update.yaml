@@ -250,6 +250,21 @@ jobs:
             echo "generation_result=failure" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: 'Debug japicmp configuration'
+        if: >
+          steps.spec_diff.outputs.spec_diff == 'true' &&
+          steps.generate.outputs.generation_result == 'success'
+        env:
+          MODULE_PATH: ${{ steps.download.outputs.module_path }}
+        run: |
+          echo "=== Does baseline.jar exist? ==="
+          ls -la /tmp/baseline.jar
+
+          echo ""
+          echo "=== Effective POM japicmp section for $MODULE_PATH ==="
+          mvn help:effective-pom -pl "$MODULE_PATH" ${{ env.MVN_MULTI_THREADED_ARGS }} \
+            | sed -n '/japicmp-maven-plugin/,/<\/plugin>/p'
+
       - name: 'API compatibility check'
         id: api_compat
         if: >
