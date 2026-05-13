@@ -27,7 +27,7 @@ jobs:
       - name: 'Get orchestration version'
         if: matrix.service == 'orchestration'
         run: |
-          ORCH_VERSION=$(curl --silent --request GET --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github.v3.raw" | grep 'version:' | awk '{print $2}')
+          ORCH_VERSION=$(curl --silent --request GET --url "$ORCH_GITOPS_LINK" -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github.v3.raw" | grep 'version:' | awk '{print $2}')
 
           if [ -z "$ORCH_VERSION" ]; then
               echo "Failed to fetch orchestration version"
@@ -37,6 +37,7 @@ jobs:
           echo "ORCH_VERSION=$ORCH_VERSION" >> $GITHUB_ENV
         env:
           TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
+          ORCH_GITOPS_LINK: ${{ secrets.ORCH_GITOPS_LINK }}
 
       - name: 'Trigger spec update'
         run: |
