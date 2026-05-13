@@ -259,8 +259,12 @@ jobs:
         env:
           MODULE_PATH: ${{ steps.download.outputs.module_path }}
         run: |
+          # Debug: output effective POM to verify japicmp configuration
+          mvn help:effective-pom -pl "$MODULE_PATH" -Doutput=/tmp/effective-pom.xml ${{ env.MVN_MULTI_THREADED_ARGS }}
+          cat /tmp/effective-pom.xml
+
           # Run japicmp: compare baseline (main) JAR vs newly generated JAR
-          if mvn japicmp:cmp -pl "$MODULE_PATH" \
+          if mvn com.github.siom79.japicmp:japicmp-maven-plugin:cmp -pl "$MODULE_PATH" \
             ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
             echo "api_compat_result=compatible" >> "$GITHUB_OUTPUT"
           else
