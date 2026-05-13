@@ -114,8 +114,8 @@ public class BatchController {
   @GetMapping("/read/{id}")
   @Nonnull
   public String read(@Nonnull @PathVariable("id") final String id) {
-    final UUID validatedId = UUID.fromString(id);
-    String filePath = S3_OUTPUT_DIRECTORY + validatedId + OUTPUT_JSONL;
+    val validatedId = UUID.fromString(id);
+    val filePath = S3_OUTPUT_DIRECTORY + validatedId + OUTPUT_JSONL;
     try {
       val downloadedFile = FILE_CLIENT.download(filePath, RESOURCE_GROUP);
       val content = Files.readAllBytes(downloadedFile.toPath());
