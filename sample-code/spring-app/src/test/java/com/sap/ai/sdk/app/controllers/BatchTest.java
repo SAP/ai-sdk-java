@@ -3,7 +3,7 @@ package com.sap.ai.sdk.app.controllers;
 import static com.sap.ai.sdk.app.controllers.BatchController.FILE_CLIENT;
 import static com.sap.ai.sdk.app.controllers.BatchController.OUTPUT_JSONL;
 import static com.sap.ai.sdk.app.controllers.BatchController.RESOURCE_GROUP;
-import static com.sap.ai.sdk.app.controllers.BatchController.S3_DIRECTORY;
+import static com.sap.ai.sdk.app.controllers.BatchController.S3_OUTPUT_DIRECTORY;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
@@ -30,7 +30,7 @@ public class BatchTest {
         // Object store content can be accessed from an S3 bucket reader with the following
         // credentials
         // BTP Cockpit -> Instances -> s3 -> credentials
-        String filePath = S3_DIRECTORY + id + OUTPUT_JSONL;
+        String filePath = S3_OUTPUT_DIRECTORY + id + OUTPUT_JSONL;
         try {
           FILE_CLIENT.delete(filePath, RESOURCE_GROUP);
           System.out.println("Deleted file: " + filePath);

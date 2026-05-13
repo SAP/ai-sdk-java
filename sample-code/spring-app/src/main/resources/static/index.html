@@ -1277,13 +1277,12 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <input type="hidden" name="resource-group" value="ai-sdk-js-e2e">
                                     <button type="submit" formaction="/batch/create"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/batch/create</code>
                                     </button>
                                     <div class="tooltip-content">
-                                        Create a new batch job.
+                                        Upload the input and create a new batch job.
                                     </div>
                                 </div>
                             </li>
@@ -1291,7 +1290,6 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <input type="hidden" name="resource-group" value="ai-sdk-js-e2e">
                                     <button type="submit" formaction="/batch/list"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/batch/list</code>
@@ -1305,7 +1303,6 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <input type="hidden" name="resource-group" value="ai-sdk-js-e2e">
                                     <button type="submit" formaction="/batch/get/[id]"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/batch/get/[id]</code>
@@ -1319,7 +1316,6 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <input type="hidden" name="resource-group" value="ai-sdk-js-e2e">
                                     <button type="submit" formaction="/batch/delete/[id]"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/batch/delete/[id]</code>
@@ -1333,13 +1329,25 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <input type="hidden" name="resource-group" value="ai-sdk-js-e2e">
                                     <button type="submit" formaction="/batch/read/[id]"
                                             class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                         <code>/batch/read/[id]</code>
                                     </button>
                                     <div class="tooltip-content">
                                         Read the content of a batch output in the S3 bucket.
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/batch/uploadInput"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/batch/uploadInput</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Upload the input.jsonl file to the S3 bucket.
                                     </div>
                                 </div>
                             </li>
