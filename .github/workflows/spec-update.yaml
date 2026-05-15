@@ -59,6 +59,7 @@ jobs:
       pr_url: ${{ steps.create-pr.outputs.pr_url }}
       compilation_result: ${{ steps.compile.outputs.compilation_result }}
       test_result: ${{ steps.compile.outputs.test_result }}
+      api_compat_result: ${{ steps.api_compat.outputs.api_compat_result }}
     env:
       API_BASE_URL: 'https://github.tools.sap/api/v3/repos'
       SERVICE: ${{ github.event.inputs.service }}
@@ -142,25 +143,31 @@ jobs:
             core)
               API_URL="$API_BASE_URL/cloudsdk/cloud-sdk-java-tests/contents/aicore.yaml?ref=$REF"
               FILE_PATH='core/src/main/resources/spec/aicore.yaml'
+              MODULE_PATH='core'
               ;;
             document-grounding)
               API_URL="$API_BASE_URL/AI/rage-proxy-inference/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
               FILE_PATH='core-services/document-grounding/src/main/resources/spec/grounding.yaml'
+              MODULE_PATH='core-services/document-grounding'
               ;;
             orchestration)
               API_URL="$API_BASE_URL/AI/llm-orchestration/contents/src/spec/v2.yaml?ref=$REF"
               FILE_PATH='orchestration/src/main/resources/spec/orchestration.yaml'
+              MODULE_PATH='orchestration'
               ;;
             prompt-registry)
               API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml?ref=$REF"
               FILE_PATH='core-services/prompt-registry/src/main/resources/spec/prompt-registry.yaml'
+              MODULE_PATH='core-services/prompt-registry'
               ;;
             sap-rpt) # https://github.tools.sap/DL-COE/sap-rpt-1-public-content
               API_URL="$API_BASE_URL/DL-COE/sap-rpt-1-public-content/contents/sap-rpt-1_openapi.json?ref=$REF"
               FILE_PATH='foundation-models/sap-rpt/src/main/resources/spec/sap-rpt-1_openapi.json'
+              MODULE_PATH='foundation-models/sap-rpt'
               ;;
           esac
 
+          echo "module_path=$MODULE_PATH" >> "$GITHUB_OUTPUT"
           echo "Downloading $SERVICE specification file from $API_URL ..."
 
           gh api "$API_URL" -H "Accept: application/vnd.github.raw" > $FILE_PATH
@@ -215,6 +222,27 @@ jobs:
             fi
           fi
 
+      - name: 'Build baseline JAR'
+        id: baseline
+        if: steps.spec_diff.outputs.spec_diff == 'true'
+        env:
+          MODULE_PATH: ${{ steps.download.outputs.module_path }}
+        run: |
+          # Extract main branch source into a temporary directory
+          git fetch --no-tags --depth=1 origin main
+          mkdir -p /tmp/main-baseline
+          git archive origin/main | tar -x -C /tmp/main-baseline
+
+          # Build inside a subshell to avoid polluting the working directory
+          (
+            cd /tmp/main-baseline
+            mvn package -DskipTests -pl "$MODULE_PATH" -am ${{ env.MVN_MULTI_THREADED_ARGS }}
+            FINAL_NAME=$(mvn -q -pl "$MODULE_PATH" help:evaluate -Dexpression=project.build.finalName -DforceStdout)
+            cp "$MODULE_PATH/target/${FINAL_NAME}.jar" /tmp/baseline.jar
+          )
+
+          echo "Baseline JAR ready: $(ls -lh /tmp/baseline.jar)"
+
       - name: 'Generate'
         id: generate
         if: steps.spec_diff.outputs.spec_diff == 'true'
@@ -224,6 +252,39 @@ jobs:
           else
             echo "generation_result=failure" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: 'API compatibility check'
+        id: api_compat
+        if: >
+          steps.spec_diff.outputs.spec_diff == 'true' &&
+          steps.generate.outputs.generation_result == 'success'
+        env:
+          MODULE_PATH: ${{ steps.download.outputs.module_path }}
+        run: |
+          FINAL_NAME=$(mvn -q -pl "$MODULE_PATH" help:evaluate -Dexpression=project.build.finalName -DforceStdout)
+          CURRENT_JAR="$MODULE_PATH/target/${FINAL_NAME}.jar"
+
+          # Run japicmp: compare baseline (main) JAR vs newly generated JAR
+          if mvn com.github.siom79.japicmp:japicmp-maven-plugin:cmp@api-compatibility \
+            -pl "$MODULE_PATH" \
+            -Djapicmp.oldVersion.file=/tmp/baseline.jar \
+            -Djapicmp.newVersion.file="$CURRENT_JAR" \
+            ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
+            echo "api_compat_result=compatible" >> "$GITHUB_OUTPUT"
+          else
+            echo "api_compat_result=incompatible" >> "$GITHUB_OUTPUT"
+            echo "## ❌ API Compatibility: Breaking changes detected" >> $GITHUB_STEP_SUMMARY
+            echo "Download the **japicmp-report** artifact for details." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+      - name: 'Upload japicmp report'
+        if: always() && steps.api_compat.outcome != 'skipped'
+        uses: actions/upload-artifact@v4
+        with:
+          name: japicmp-report
+          path: ${{ steps.download.outputs.module_path }}/target/japicmp/
+          if-no-files-found: ignore
 
       - name: 'Compile and Test'
         id: compile
@@ -277,6 +338,7 @@ jobs:
 
           - Compilation outcome: ${{ steps.compile.outputs.compilation_result }}
           - Test run outcome: ${{ steps.compile.outputs.test_result }}
+          - API compatibility: ${{ steps.api_compat.outputs.api_compat_result || 'skipped' }}
 
           Before merging, make sure to update tests and release notes, if necessary.
 
@@ -313,6 +375,7 @@ jobs:
             echo "| Client Generation | ${{ steps.generate.outputs.generation_result == 'success' && '✅' || '❌' }} ${{ steps.generate.outputs.generation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Compilation | ${{ steps.compile.outputs.compilation_result == 'success' && '✅' || '❌' }} ${{ steps.compile.outputs.compilation_result }}" >> $GITHUB_STEP_SUMMARY
             echo "| Client Testing | ${{ steps.compile.outputs.test_result == 'success' && '✅' || steps.compile.outputs.test_result == 'skipped' && '⏩' || '❌' }} ${{ steps.compile.outputs.test_result }}" >> $GITHUB_STEP_SUMMARY
+            echo "| API Compatibility | ${{ steps.api_compat.outputs.api_compat_result == 'compatible' && '✅' || steps.api_compat.outputs.api_compat_result == 'incompatible' && '❌' || '⏩' }} ${{ steps.api_compat.outputs.api_compat_result || 'skipped' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Branch Creation | ${{ steps.push.outcome == 'success' && '✅ [Branch Link]($DIFF_URL)' || '❌ failure' }}" >> $GITHUB_STEP_SUMMARY
             echo "| Pull Request Creation | ${{ env.CREATE_PR == 'false' && '⏩ skipped' || '' }}${{ env.CREATE_PR == 'true' && steps.push.outcome == 'success' && '✅ [PR Link]($PR_URL)' || '' }}" >> $GITHUB_STEP_SUMMARY
           fi

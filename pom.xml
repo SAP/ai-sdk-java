@@ -73,6 +73,7 @@
     <jackson.version>2.21.3</jackson.version>
     <logback.version>1.5.32</logback.version>
     <commons-codec.version>1.22.0</commons-codec.version>
+    <japicmp.version>0.25.7</japicmp.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.5</micrometer.version>
     <json.version>20251224</json.version>
@@ -94,6 +95,9 @@
     <coverage.branch>100%</coverage.branch>
     <coverage.method>100%</coverage.method>
     <coverage.class>100%</coverage.class>
+    <!--  Binary compatibility check old/new version file -->
+    <japicmp.oldVersion.file>/tmp/baseline.jar</japicmp.oldVersion.file>
+    <japicmp.newVersion.file>${project.build.directory}/${project.build.finalName}.jar</japicmp.newVersion.file>
   </properties>
 
   <dependencyManagement>
@@ -299,6 +303,40 @@
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
           <version>7.22.0</version>
+        </plugin>
+        <plugin>
+          <groupId>com.github.siom79.japicmp</groupId>
+          <artifactId>japicmp-maven-plugin</artifactId>
+          <version>${japicmp.version}</version>
+          <executions>
+            <execution>
+              <id>api-compatibility</id>
+              <goals>
+                <goal>cmp</goal>
+              </goals>
+              <phase>none</phase>
+              <configuration>
+                <oldVersion>
+                  <file>
+                    <path>${japicmp.oldVersion.file}</path>
+                  </file>
+                </oldVersion>
+                <newVersion>
+                  <file>
+                    <path>${japicmp.newVersion.file}</path>
+                  </file>
+                </newVersion>
+                <parameter>
+                  <breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
+                  <breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
+                  <onlyModified>true</onlyModified>
+                  <accessModifier>public</accessModifier>
+                  <onlyBinaryIncompatible>false</onlyBinaryIncompatible>
+                  <ignoreMissingOldVersion>false</ignoreMissingOldVersion>
+                </parameter>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
