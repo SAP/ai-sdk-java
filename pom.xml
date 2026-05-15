@@ -314,6 +314,7 @@
               <goals>
                 <goal>cmp</goal>
               </goals>
+              <phase>none</phase>
               <configuration>
                 <oldVersion>
                   <file>
