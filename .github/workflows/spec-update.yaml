@@ -238,7 +238,14 @@ jobs:
           mvn package -DskipTests -pl "$MODULE_PATH" -am ${{ env.MVN_MULTI_THREADED_ARGS }}
 
           # Copy the baseline JAR to a known location
-          cp /tmp/main-baseline/$MODULE_PATH/target/*.jar /tmp/baseline.jar
+          BASELINE_FINAL_NAME=$(mvn -q -pl "$MODULE_PATH" help:evaluate -Dexpression=project.build.finalName -DforceStdout)
+          BASELINE_JAR="$MODULE_PATH/target/${BASELINE_FINAL_NAME}.jar"
+          if [ ! -f "$BASELINE_JAR" ]; then
+            echo "::error::Baseline JAR not found: $BASELINE_JAR"
+            ls -la "$MODULE_PATH/target/" || true
+            exit 1
+          fi
+          cp "$BASELINE_JAR" /tmp/baseline.jar
           echo "Baseline JAR ready: $(ls -lh /tmp/baseline.jar)"
 
       - name: 'Generate'
@@ -259,12 +266,28 @@ jobs:
         env:
           MODULE_PATH: ${{ steps.download.outputs.module_path }}
         run: |
-          # Debug: output effective POM to verify japicmp configuration
-          mvn help:effective-pom -pl "$MODULE_PATH" -Doutput=/tmp/effective-pom.xml ${{ env.MVN_MULTI_THREADED_ARGS }}
-          cat /tmp/effective-pom.xml
+          # Resolve the current (newly generated) JAR path
+          CURRENT_FINAL_NAME=$(mvn -q -pl "$MODULE_PATH" help:evaluate -Dexpression=project.build.finalName -DforceStdout)
+          CURRENT_JAR="$MODULE_PATH/target/${CURRENT_FINAL_NAME}.jar"
+
+          # Verify both JARs exist before running comparison
+          if [ ! -f "/tmp/baseline.jar" ]; then
+            echo "::error::Baseline JAR not found: /tmp/baseline.jar"
+            ls -la /tmp/ || true
+            exit 1
+          fi
+          if [ ! -f "$CURRENT_JAR" ]; then
+            echo "::error::Current JAR not found: $CURRENT_JAR"
+            ls -la "$MODULE_PATH/target/" || true
+            exit 1
+          fi
+          echo "Comparing: /tmp/baseline.jar vs $CURRENT_JAR"
 
           # Run japicmp: compare baseline (main) JAR vs newly generated JAR
-          if mvn com.github.siom79.japicmp:japicmp-maven-plugin:cmp -pl "$MODULE_PATH" \
+          if mvn com.github.siom79.japicmp:japicmp-maven-plugin:cmp@api-compatibility \
+            -pl "$MODULE_PATH" \
+            -Djapicmp.oldVersion.file=/tmp/baseline.jar \
+            -Djapicmp.newVersion.file="$CURRENT_JAR" \
             ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
             echo "api_compat_result=compatible" >> "$GITHUB_OUTPUT"
           else

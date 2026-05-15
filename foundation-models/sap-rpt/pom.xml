@@ -184,13 +184,18 @@
       <plugin>
         <groupId>com.github.siom79.japicmp</groupId>
         <artifactId>japicmp-maven-plugin</artifactId>
-        <configuration>
-          <parameter>
-            <includes>
-              <include>com.sap.ai.sdk.foundationmodels.rpt.generated</include>
-            </includes>
-          </parameter>
-        </configuration>
+        <executions>
+          <execution>
+            <id>api-compatibility</id>
+            <configuration>
+              <parameter>
+                <includes combine.children="append">
+                  <include>com.sap.ai.sdk.foundationmodels.rpt.generated</include>
+                </includes>
+              </parameter>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

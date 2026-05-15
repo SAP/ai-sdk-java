@@ -95,8 +95,9 @@
     <coverage.branch>100%</coverage.branch>
     <coverage.method>100%</coverage.method>
     <coverage.class>100%</coverage.class>
-    <!--  Binary compatibility check old version file -->
-    <japicmp.oldVersion.file/>
+    <!--  Binary compatibility check old/new version file -->
+    <japicmp.oldVersion.file>/tmp/baseline.jar</japicmp.oldVersion.file>
+    <japicmp.newVersion.file>${project.build.directory}/${project.build.finalName}.jar</japicmp.newVersion.file>
   </properties>
 
   <dependencyManagement>
@@ -307,26 +308,34 @@
           <groupId>com.github.siom79.japicmp</groupId>
           <artifactId>japicmp-maven-plugin</artifactId>
           <version>${japicmp.version}</version>
-          <configuration>
-            <oldVersion>
-              <file>
-                <path>/tmp/baseline.jar</path>
-              </file>
-            </oldVersion>
-            <newVersion>
-              <file>
-                <path>${project.build.directory}/${project.artifactId}-${project.version}.jar</path>
-              </file>
-            </newVersion>
-            <parameter>
-              <breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
-              <breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
-              <onlyModified>true</onlyModified>
-              <accessModifier>public</accessModifier>
-              <onlyBinaryIncompatible>false</onlyBinaryIncompatible>
-              <ignoreMissingOldVersion>false</ignoreMissingOldVersion>
-            </parameter>
-          </configuration>
+          <executions>
+            <execution>
+              <id>api-compatibility</id>
+              <goals>
+                <goal>cmp</goal>
+              </goals>
+              <configuration>
+                <oldVersion>
+                  <file>
+                    <path>${japicmp.oldVersion.file}</path>
+                  </file>
+                </oldVersion>
+                <newVersion>
+                  <file>
+                    <path>${japicmp.newVersion.file}</path>
+                  </file>
+                </newVersion>
+                <parameter>
+                  <breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
+                  <breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
+                  <onlyModified>true</onlyModified>
+                  <accessModifier>public</accessModifier>
+                  <onlyBinaryIncompatible>false</onlyBinaryIncompatible>
+                  <ignoreMissingOldVersion>false</ignoreMissingOldVersion>
+                </parameter>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
