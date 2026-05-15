@@ -273,9 +273,6 @@ jobs:
             echo "api_compat_result=compatible" >> "$GITHUB_OUTPUT"
           else
             echo "api_compat_result=incompatible" >> "$GITHUB_OUTPUT"
-            echo "## ❌ API Compatibility: Breaking changes detected" >> $GITHUB_STEP_SUMMARY
-            echo "Download the **japicmp-report** artifact for details." >> $GITHUB_STEP_SUMMARY
-            exit 1
           fi
 
       - name: 'Upload japicmp report'
@@ -384,6 +381,12 @@ jobs:
         if: steps.generate.outputs.generation_result == 'failure'
         run: |
           echo "Client generation failed. Please check the Generate step logs for details."
+          exit 1
+
+      - name: 'Fail if API incompatible'
+        if: steps.api_compat.outputs.api_compat_result == 'incompatible'
+        run: |
+          echo "API compatibility check detected breaking changes. Download the japicmp-report artifact for details."
           exit 1
 
       - name: 'Fail if no spec changes and previous run failed'
