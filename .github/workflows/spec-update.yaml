@@ -228,24 +228,32 @@ jobs:
         env:
           MODULE_PATH: ${{ steps.download.outputs.module_path }}
         run: |
+          set -euo pipefail
+
           # Extract main branch source into a temporary directory
           git fetch --no-tags --depth=1 origin main
+          rm -rf /tmp/main-baseline
           mkdir -p /tmp/main-baseline
           git archive origin/main | tar -x -C /tmp/main-baseline
 
-          # Build from within the baseline directory
-          cd /tmp/main-baseline
-          mvn package -DskipTests -pl "$MODULE_PATH" -am ${{ env.MVN_MULTI_THREADED_ARGS }}
+          # Build inside a subshell to avoid polluting the working directory
+          (
+            cd /tmp/main-baseline
 
-          # Copy the baseline JAR to a known location
-          BASELINE_FINAL_NAME=$(mvn -q -pl "$MODULE_PATH" help:evaluate -Dexpression=project.build.finalName -DforceStdout)
-          BASELINE_JAR="$MODULE_PATH/target/${BASELINE_FINAL_NAME}.jar"
-          if [ ! -f "$BASELINE_JAR" ]; then
-            echo "::error::Baseline JAR not found: $BASELINE_JAR"
-            ls -la "$MODULE_PATH/target/" || true
-            exit 1
-          fi
-          cp "$BASELINE_JAR" /tmp/baseline.jar
+            mvn package -DskipTests -pl "$MODULE_PATH" -am ${{ env.MVN_MULTI_THREADED_ARGS }}
+
+            BASELINE_FINAL_NAME=$(mvn -q -pl "$MODULE_PATH" help:evaluate -Dexpression=project.build.finalName -DforceStdout)
+            BASELINE_JAR="$MODULE_PATH/target/${BASELINE_FINAL_NAME}.jar"
+
+            if [ ! -f "$BASELINE_JAR" ]; then
+              echo "::error::Baseline JAR not found: $BASELINE_JAR"
+              ls -la "$MODULE_PATH/target/" || true
+              exit 1
+            fi
+
+            cp "$BASELINE_JAR" /tmp/baseline.jar
+          )
+
           echo "Baseline JAR ready: $(ls -lh /tmp/baseline.jar)"
 
       - name: 'Generate'
