@@ -274,6 +274,23 @@ jobs:
         env:
           MODULE_PATH: ${{ steps.download.outputs.module_path }}
         run: |
+          # Diagnostic: confirm branch, commit and POM state on runner
+          echo "=== Git state ==="
+          git branch --show-current
+          git log -1 --oneline
+
+          echo "=== Effective POM japicmp section ==="
+          mvn help:effective-pom -pl "$MODULE_PATH" -Doutput=/tmp/effective-pom.xml ${{ env.MVN_MULTI_THREADED_ARGS }}
+          grep -n "japicmp-maven-plugin" /tmp/effective-pom.xml || true
+          grep -n "api-compatibility" /tmp/effective-pom.xml || true
+          grep -n "baseline.jar" /tmp/effective-pom.xml || true
+
+          echo "=== Parent POM japicmp section ==="
+          grep -n -A 40 "japicmp-maven-plugin" pom.xml | head -60 || true
+
+          echo "=== Module POM japicmp section ==="
+          grep -n -A 20 "japicmp-maven-plugin" "$MODULE_PATH/pom.xml" | head -30 || true
+
           # Resolve the current (newly generated) JAR path
           CURRENT_FINAL_NAME=$(mvn -q -pl "$MODULE_PATH" help:evaluate -Dexpression=project.build.finalName -DforceStdout)
           CURRENT_JAR="$MODULE_PATH/target/${CURRENT_FINAL_NAME}.jar"
