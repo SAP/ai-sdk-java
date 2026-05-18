@@ -153,7 +153,7 @@ public class BatchController {
 
       return response.getMessage();
     } catch (OpenApiRequestException e) {
-      return "Error uploading file: " + e.getMessage();
+      return "Error uploading file";
     }
   }
 }
