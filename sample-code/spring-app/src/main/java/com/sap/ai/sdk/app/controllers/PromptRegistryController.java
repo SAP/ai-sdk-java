@@ -32,6 +32,7 @@ import java.util.Map;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.messages.Message;
@@ -147,7 +148,11 @@ class PromptRegistryController {
 
     final List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
     val prompt = new Prompt(messages);
-    val response = cl.prompt(prompt).call().chatResponse();
+    val response =
+        cl.prompt(prompt)
+            .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "conversation id"))
+            .call()
+            .chatResponse();
     return response != null ? response.getResult() : null;
   }
 
