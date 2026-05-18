@@ -31,6 +31,7 @@
   <modules>
     <module>core</module>
     <module>orchestration</module>
+    <module>core-services/batch</module>
     <module>core-services/document-grounding</module>
     <module>core-services/prompt-registry</module>
     <module>foundation-models/openai</module>
@@ -218,6 +219,11 @@
       <dependency>
         <groupId>com.sap.ai.sdk</groupId>
         <artifactId>orchestration</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sap.ai.sdk</groupId>
+        <artifactId>batch</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -699,6 +705,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/grounding/model/*</exclude>
             <exclude>com/sap/ai/sdk/prompt/registry/client/*</exclude>
             <exclude>com/sap/ai/sdk/prompt/registry/model/*</exclude>
+            <exclude>com/sap/ai/sdk/batch/generated/**</exclude>
           </excludes>
         </configuration>
         <executions>

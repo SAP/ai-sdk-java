@@ -100,6 +100,10 @@
     </dependency>
     <dependency>
       <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>batch</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
       <artifactId>document-grounding</artifactId>
     </dependency>
     <dependency>
@@ -221,6 +225,10 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
+    </dependency>
     <!-- scope "runtime" -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -270,10 +278,6 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
-      <artifactId>jackson-dataformat-yaml</artifactId>
     </dependency>
   </dependencies>
 
