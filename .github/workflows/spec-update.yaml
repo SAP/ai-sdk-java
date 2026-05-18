@@ -169,6 +169,7 @@ jobs:
             batch)
               API_URL="$API_BASE_URL/AI/llm-batch-service/contents/components/llm-batch-service-api/src/spec/batch-service.yaml?ref=$REF"
               FILE_PATH='core-services/batch/src/main/resources/spec/batch-service.yaml'
+              MODULE_PATH='core-services/batch'
               ;;
           esac
 
