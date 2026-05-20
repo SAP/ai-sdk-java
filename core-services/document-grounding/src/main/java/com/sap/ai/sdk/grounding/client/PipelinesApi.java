@@ -219,6 +219,7 @@ public class PipelinesApi extends BaseApi {
    * <p><b>400</b> - The specification of the resource was incorrect
    *
    * @param aiResourceGroup (required) Resource Group ID
+   * @param metadataConfigId (optional) Filter pipelines based on metadataConfigId
    * @param $top (optional) Number of results to display
    * @param $skip (optional) Number of results to be skipped from the ordered list of results
    * @param $count (optional) When the $count field is set to false, the response contains a count
@@ -231,6 +232,7 @@ public class PipelinesApi extends BaseApi {
   @Nonnull
   public GetPipelines getAllPipelines(
       @Nonnull final String aiResourceGroup,
+      @Nullable final String metadataConfigId,
       @Nullable final Integer $top,
       @Nullable final Integer $skip,
       @Nullable final Boolean $count)
@@ -252,6 +254,7 @@ public class PipelinesApi extends BaseApi {
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
+    localVarQueryParams.addAll(ApiClient.parameterToPair("metadataConfigId", metadataConfigId));
     localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
     localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
     localVarQueryParams.addAll(ApiClient.parameterToPair("$count", $count));
@@ -296,7 +299,7 @@ public class PipelinesApi extends BaseApi {
   @Nonnull
   public GetPipelines getAllPipelines(@Nonnull final String aiResourceGroup)
       throws OpenApiRequestException {
-    return getAllPipelines(aiResourceGroup, null, null, null);
+    return getAllPipelines(aiResourceGroup, null, null, null, null);
   }
 
   /**

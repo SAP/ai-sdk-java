@@ -19,6 +19,7 @@ jobs:
           - prompt-registry
           - orchestration
           - sap-rpt
+          - batch
 
     steps:
       - name: 'Checkout repository'
@@ -27,7 +28,7 @@ jobs:
       - name: 'Get orchestration version'
         if: matrix.service == 'orchestration'
         run: |
-          ORCH_VERSION=$(curl --silent --request GET --url "https://github.tools.sap/api/v3/repos/MLF-prod/mlf-gitops-prod/contents/services/llm-orchestration/source/Chart.yaml?ref=aws.eu-central-1.prod-eu/current" -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github.v3.raw" | grep 'version:' | awk '{print $2}')
+          ORCH_VERSION=$(curl --silent --request GET --url "$ORCH_GITOPS_LINK" -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github.v3.raw" | grep 'version:' | awk '{print $2}')
 
           if [ -z "$ORCH_VERSION" ]; then
               echo "Failed to fetch orchestration version"
@@ -37,6 +38,7 @@ jobs:
           echo "ORCH_VERSION=$ORCH_VERSION" >> $GITHUB_ENV
         env:
           TOKEN: ${{ secrets.GH_TOOLS_TOKEN }}
+          ORCH_GITOPS_LINK: ${{ secrets.ORCH_GITOPS_LINK }}
 
       - name: 'Trigger spec update'
         run: |
@@ -51,13 +53,14 @@ jobs:
           gh workflow run spec-update.yaml \
             --field service=${{ matrix.service }} \
             --field ref=$BRANCH \
-            --field create-pr=true
+            --field create-pr=true \
+            --field is-weekly=true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Slack Notification'
         if: failure()
-        uses: slackapi/slack-github-action@v3.0.1
+        uses: slackapi/slack-github-action@v3.0.3
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook

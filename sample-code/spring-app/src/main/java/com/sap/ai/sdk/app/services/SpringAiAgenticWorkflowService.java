@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
@@ -68,7 +69,12 @@ public class SpringAiAgenticWorkflowService {
 
       // Make a call to the LLM with the new input
       response =
-          Objects.requireNonNull(cl.prompt(prompt).call().chatResponse(), "Chat response is null.");
+          Objects.requireNonNull(
+              cl.prompt(prompt)
+                  .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "conversation id"))
+                  .call()
+                  .chatResponse(),
+              "Chat response is null.");
       responseText = response.getResult().getOutput().getText();
     }
 

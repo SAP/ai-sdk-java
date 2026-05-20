@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.19.0-SNAPSHOT</version>
+    <version>1.20.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.app</groupId>
@@ -33,11 +33,11 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <spring-boot.version>3.5.13</spring-boot.version>
+    <spring-boot.version>3.5.14</spring-boot.version>
     <logback.version>1.5.32</logback.version>
     <cf-logging.version>4.2.0</cf-logging.version>
-    <apache-tomcat-embed.version>11.0.21</apache-tomcat-embed.version>
-    <mcp-core.version>1.1.1</mcp-core.version>
+    <apache-tomcat-embed.version>11.0.22</apache-tomcat-embed.version>
+    <mcp-core.version>1.1.2</mcp-core.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
     <!-- Allow logging frameworks because this module is not released -->
@@ -58,6 +58,12 @@
         <groupId>org.apache.tomcat.embed</groupId>
         <artifactId>tomcat-embed-websocket</artifactId>
         <version>${apache-tomcat-embed.version}</version>
+      </dependency>
+      <!-- Pin mcp-core to align with spring-ai-client-chat transitive dependency -->
+      <dependency>
+        <groupId>io.modelcontextprotocol.sdk</groupId>
+        <artifactId>mcp-core</artifactId>
+        <version>${mcp-core.version}</version>
       </dependency>
       <!-- Enforce consistent Junit version -->
       <dependency>
@@ -95,6 +101,10 @@
     <dependency>
       <groupId>com.sap.ai.sdk</groupId>
       <artifactId>orchestration</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>batch</artifactId>
     </dependency>
     <dependency>
       <groupId>com.sap.ai.sdk</groupId>
@@ -152,7 +162,7 @@
     <dependency>
       <groupId>org.springframework.ai</groupId>
       <artifactId>spring-ai-autoconfigure-mcp-client</artifactId>
-      <version>1.0.5</version>
+      <version>1.0.7</version>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>
@@ -219,6 +229,10 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
+    </dependency>
     <!-- scope "runtime" -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -245,6 +259,11 @@
           <groupId>ch.qos.logback</groupId>
           <artifactId>logback-classic</artifactId>
         </exclusion>
+        <exclusion>
+          <!-- mitigate CVE-2026-34478(6.9), CVE-2026-34480(6.9), CVE-2026-34481(6.3) -->
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-api</artifactId>
+        </exclusion>
       </exclusions>
     </dependency>
     <!-- scope "provided" -->
@@ -263,10 +282,6 @@
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
-      <artifactId>jackson-dataformat-yaml</artifactId>
     </dependency>
   </dependencies>
 

@@ -15,6 +15,7 @@
   <suppress files="[/\\]grounding[/\\]model[/\\]" checks=".*"/>
   <suppress files="[/\\]registry[/\\]client[/\\]" checks=".*"/>
   <suppress files="[/\\]registry[/\\]model[/\\]" checks=".*"/>
+  <suppress files="[/\\]batch[/\\]generated[/\\]" checks=".*"/>
   <!-- Suppress TODOs -->
   <suppress files="OpenAiChatMessage.java" checks="TodoComment" lines="261,7" />
   <suppress files="ChatCompletionResponseMessage.java" checks="TodoComment" lines="53,34" />

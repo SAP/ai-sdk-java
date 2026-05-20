@@ -41,6 +41,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
@@ -246,8 +247,14 @@ class OrchestrationChatModelTest {
     val prompt1 = new Prompt("What is the capital of France?", defaultOptions);
     val prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
 
-    cl.prompt(prompt1).call().content();
-    cl.prompt(prompt2).call().content();
+    cl.prompt(prompt1)
+        .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "test-conversation"))
+        .call()
+        .content();
+    cl.prompt(prompt2)
+        .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "test-conversation"))
+        .call()
+        .content();
     // The response is not important
     // We just want to verify that the second call remembered the first call
     try (var requestInputStream = fileLoader.apply("chatMemory.json")) {
