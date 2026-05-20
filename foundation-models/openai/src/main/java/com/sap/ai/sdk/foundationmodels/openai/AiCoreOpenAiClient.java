@@ -76,6 +76,17 @@ public class AiCoreOpenAiClient {
         .build();
   }
 
+  @Nonnull
+  private static ClientOptions buildRealtimeClientOptions(
+      @Nonnull final HttpDestination destination) {
+    return ClientOptions.builder()
+        .baseUrl(destination.getUri().toString())
+        .httpClient(new AiCoreHttpClientImpl(destination))
+        .apiKey("unused")
+        .putQueryParam("api-version", "preview")
+        .build();
+  }
+
   /**
    * Get a synchronous ResponseService client for the configured model and resource group.
    *
@@ -93,7 +104,7 @@ public class AiCoreOpenAiClient {
    */
   @Nonnull
   public RealtimeService realtime() {
-    return new RealtimeServiceImpl(buildClientOptions(destination));
+    return new RealtimeServiceImpl(buildRealtimeClientOptions(destination));
   }
 
   /**
