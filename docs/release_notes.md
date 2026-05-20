@@ -25,6 +25,8 @@
   | `POST /v1/responses/{id}/cancel`     | Cancel response           | ❌ |
   | `GET /v1/responses/{id}/input_items` | List input items          | ❌ |
   | `POST /v1/responses/input_tokens`    | Count input tokens        | ❌ |
+- [Orchestration] Added `GEMINI_3_1_FLASH_LITE` to model list in `OrchestrationAiModel`.
+- [Batch] Added a new `BatchesApi` client to access the [Batch Service API](https://github.tools.sap/AI/llm-batch-service).
 
 ### 📈 Improvements
 
