@@ -1,0 +1,37 @@
+data: {"type":"response.created","response":{"id":"resp_040e939efb1b27de0069df945064c08195a352a393afd113eb","object":"response","created_at":1776260176,"status":"in_progress","background":false,"completed_at":null,"content_filters":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":null,"max_output_tokens":null,"max_tool_calls":null,"model":"gpt-5-2025-08-07-dz-std","output":[],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":null,"prompt_cache_retention":null,"reasoning":{"effort":"medium","summary":null},"safety_identifier":null,"service_tier":"auto","store":true,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":"medium"},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":1.0,"truncation":"disabled","usage":null,"user":null,"metadata":{}},"sequence_number":0}
+
+data: {"type":"response.in_progress","response":{"id":"resp_040e939efb1b27de0069df945064c08195a352a393afd113eb","object":"response","created_at":1776260176,"status":"in_progress","background":false,"completed_at":null,"content_filters":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":null,"max_output_tokens":null,"max_tool_calls":null,"model":"gpt-5-2025-08-07-dz-std","output":[],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":null,"prompt_cache_retention":null,"reasoning":{"effort":"medium","summary":null},"safety_identifier":null,"service_tier":"auto","store":true,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":"medium"},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":1.0,"truncation":"disabled","usage":null,"user":null,"metadata":{}},"sequence_number":1}
+
+data: {"type":"response.output_item.added","item":{"id":"rs_040e939efb1b27de0069df9450dd0c8195b7adff834c64ff88","type":"reasoning","summary":[]},"output_index":0,"sequence_number":2}
+
+data: {"type":"response.output_item.done","item":{"id":"rs_040e939efb1b27de0069df9450dd0c8195b7adff834c64ff88","type":"reasoning","summary":[]},"output_index":0,"sequence_number":3}
+
+data: {"type":"response.output_item.added","item":{"id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","type":"message","status":"in_progress","content":[],"role":"assistant"},"output_index":1,"sequence_number":4}
+
+data: {"type":"response.content_part.added","content_index":0,"item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","output_index":1,"part":{"type":"output_text","annotations":[],"logprobs":[],"text":""},"sequence_number":5}
+
+data: {"type":"response.output_text.delta","content_index":0,"delta":"When","item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","logprobs":[],"obfuscation":"uLUkH8DqAaOq","output_index":1,"sequence_number":6}
+
+data: {"type":"response.output_text.delta","content_index":0,"delta":" life","item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","logprobs":[],"obfuscation":"txhrxI01iGa","output_index":1,"sequence_number":7}
+
+data: {"type":"response.output_text.delta","content_index":0,"delta":" gives","item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","logprobs":[],"obfuscation":"DqKKQUQiHh","output_index":1,"sequence_number":8}
+
+data: {"type":"response.output_text.delta","content_index":0,"delta":" you","item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","logprobs":[],"obfuscation":"ApyZnEiP6ITN","output_index":1,"sequence_number":9}
+
+data: {"type":"response.output_text.delta","content_index":0,"delta":" lemons","item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","logprobs":[],"obfuscation":"30w9CMMGx","output_index":1,"sequence_number":10}
+
+data: {"type":"response.output_text.delta","content_index":0,"delta":",","item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","logprobs":[],"obfuscation":"UCTM3NFTcz7UEbQ","output_index":1,"sequence_number":11}
+
+data: {"type":"response.output_text.delta","content_index":0,"delta":" make","item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","logprobs":[],"obfuscation":"Ki6vUIMRnYG","output_index":1,"sequence_number":12}
+
+data: {"type":"response.output_text.delta","content_index":0,"delta":" lemonade","item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","logprobs":[],"obfuscation":"EiHOtQ4","output_index":1,"sequence_number":13}
+
+data: {"type":"response.output_text.delta","content_index":0,"delta":".","item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","logprobs":[],"obfuscation":"9B9nxz8QJOcC5BC","output_index":1,"sequence_number":14}
+
+data: {"type":"response.output_text.done","content_index":0,"item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","logprobs":[],"output_index":1,"sequence_number":15,"text":"When life gives you lemons, make lemonade."}
+
+data: {"type":"response.content_part.done","content_index":0,"item_id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","output_index":1,"part":{"type":"output_text","annotations":[],"logprobs":[],"text":"When life gives you lemons, make lemonade."},"sequence_number":16}
+
+data: {"type":"response.output_item.done","item":{"id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","type":"message","status":"completed","content":[{"type":"output_text","annotations":[],"logprobs":[],"text":"When life gives you lemons, make lemonade."}],"role":"assistant"},"output_index":1,"sequence_number":17}
+
+data: {"type":"response.completed","response":{"id":"resp_040e939efb1b27de0069df945064c08195a352a393afd113eb","object":"response","created_at":1776260176,"status":"completed","background":false,"completed_at":1776260179,"content_filters":null,"error":null,"frequency_penalty":0.0,"incomplete_details":null,"instructions":null,"max_output_tokens":null,"max_tool_calls":null,"model":"gpt-5-2025-08-07-dz-std","output":[{"id":"rs_040e939efb1b27de0069df9450dd0c8195b7adff834c64ff88","type":"reasoning","summary":[]},{"id":"msg_040e939efb1b27de0069df9452f950819590ac84a4c2a14deb","type":"message","status":"completed","content":[{"type":"output_text","annotations":[],"logprobs":[],"text":"When life gives you lemons, make lemonade."}],"role":"assistant"}],"parallel_tool_calls":true,"presence_penalty":0.0,"previous_response_id":null,"prompt_cache_key":null,"prompt_cache_retention":null,"reasoning":{"effort":"medium","summary":null},"safety_identifier":null,"service_tier":"default","store":true,"temperature":1.0,"text":{"format":{"type":"text"},"verbosity":"medium"},"tool_choice":"auto","tools":[],"top_logprobs":0,"top_p":1.0,"truncation":"disabled","usage":{"input_tokens":17,"input_tokens_details":{"cached_tokens":0},"output_tokens":195,"output_tokens_details":{"reasoning_tokens":128},"total_tokens":212},"user":null,"metadata":{}},"sequence_number":18}
