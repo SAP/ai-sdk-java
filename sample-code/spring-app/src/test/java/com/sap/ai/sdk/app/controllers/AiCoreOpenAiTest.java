@@ -1,7 +1,9 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.openai.errors.OpenAIException;
 import com.openai.models.responses.ResponseOutputItem;
 import com.sap.ai.sdk.app.services.AiCoreOpenAiService;
 import lombok.extern.slf4j.Slf4j;
@@ -54,5 +56,11 @@ class AiCoreOpenAiTest {
                 }
               });
     }
+  }
+
+  @Test
+  void testCreateRealtimeClientSecret() {
+    assertThatThrownBy(() -> service.createRealtimeClientSecret())
+        .isInstanceOf(OpenAIException.class);
   }
 }

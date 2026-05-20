@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openai.models.realtime.RealtimeSessionCreateRequest;
+import com.openai.models.realtime.calls.CallAcceptParams;
+import com.openai.models.realtime.calls.CallReferParams;
+import com.openai.models.realtime.clientsecrets.ClientSecretCreateResponse;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
 import com.sap.ai.sdk.app.services.AiCoreOpenAiService;
@@ -23,6 +27,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
@@ -37,6 +43,8 @@ public class OpenAiController {
 
   private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
+  private record ReferRequest(@Nonnull String targetUri) {}
 
   @GetMapping("/chatCompletion")
   @Nonnull
@@ -178,6 +186,47 @@ public class OpenAiController {
         .filter(ResponseOutputMessage.Content::isOutputText)
         .map(text -> text.asOutputText().text())
         .collect(Collectors.joining());
+  }
+
+  @GetMapping("/realtimeClientSecret")
+  @Nonnull
+  ClientSecretCreateResponse createRealtimeClientSecret() {
+    return aiCoreOpenAiService.createRealtimeClientSecret();
+  }
+
+  @PostMapping("/realtimeAcceptCall/{callId}")
+  @Nonnull
+  ResponseEntity<Void> acceptCall(
+      @Nonnull @PathVariable("callId") final String callId,
+      @Nonnull @RequestBody final RealtimeSessionCreateRequest session) {
+    final var params =
+        CallAcceptParams.builder().callId(callId).realtimeSessionCreateRequest(session).build();
+    aiCoreOpenAiService.acceptCall(callId, params);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/realtimeHangupCall/{callId}")
+  @Nonnull
+  ResponseEntity<Void> hangupCall(@Nonnull @PathVariable("callId") final String callId) {
+    aiCoreOpenAiService.hangupCall(callId);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/realtimeReferCall/{callId}")
+  @Nonnull
+  ResponseEntity<Void> referCall(
+      @Nonnull @PathVariable("callId") final String callId,
+      @Nonnull @RequestBody final ReferRequest body) {
+    final var params = CallReferParams.builder().callId(callId).targetUri(body.targetUri()).build();
+    aiCoreOpenAiService.referCall(callId, params);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/realtimeRejectCall/{callId}")
+  @Nonnull
+  ResponseEntity<Void> rejectCall(@Nonnull @PathVariable("callId") final String callId) {
+    aiCoreOpenAiService.rejectCall(callId);
+    return ResponseEntity.noContent().build();
   }
 
   @GetMapping("/streamResponses")

@@ -4,6 +4,8 @@ import com.google.common.annotations.Beta;
 import com.openai.core.ClientOptions;
 import com.openai.services.async.ResponseServiceAsync;
 import com.openai.services.async.ResponseServiceAsyncImpl;
+import com.openai.services.blocking.RealtimeService;
+import com.openai.services.blocking.RealtimeServiceImpl;
 import com.openai.services.blocking.ResponseService;
 import com.openai.services.blocking.ResponseServiceImpl;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -82,6 +84,16 @@ public class AiCoreOpenAiClient {
   @Nonnull
   public ResponseService responses() {
     return new ResponseServiceImpl(buildClientOptions(destination));
+  }
+
+  /**
+   * Get a synchronous RealtimeService client for the configured model and resource group.
+   *
+   * @return A configured synchronous OpenAI RealtimeService client.
+   */
+  @Nonnull
+  public RealtimeService realtime() {
+    return new RealtimeServiceImpl(buildClientOptions(destination));
   }
 
   /**

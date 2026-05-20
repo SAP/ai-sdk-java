@@ -141,6 +141,73 @@ class AiCoreHttpClientImplTest {
             "HTTP DELETE method is not supported on endpoint /v1/responses in AI Core");
   }
 
+  @Test
+  void testRealtimeClientSecretsEndpointIsAllowed() {
+    final var request =
+        HttpRequest.builder()
+            .pathSegments(List.of("realtime", "client_secrets"))
+            .method(HttpMethod.valueOf("POST"))
+            .baseUrl(destination.getUri().toString())
+            .build();
+
+    // Should not throw - the endpoint is in the allowlist
+    assertThatThrownBy(() -> client.execute(request))
+        .isNotInstanceOf(UnsupportedOperationException.class);
+  }
+
+  @Test
+  void testRealtimeCallsAcceptEndpointIsAllowed() {
+    final var request =
+        HttpRequest.builder()
+            .pathSegments(List.of("realtime", "calls", "call_abc123", "accept"))
+            .method(HttpMethod.valueOf("POST"))
+            .baseUrl(destination.getUri().toString())
+            .build();
+
+    // Should not throw - the endpoint is in the allowlist
+    assertThatThrownBy(() -> client.execute(request))
+        .isNotInstanceOf(UnsupportedOperationException.class);
+  }
+
+  @Test
+  void testRealtimeCallsHangupEndpointIsAllowed() {
+    final var request =
+        HttpRequest.builder()
+            .pathSegments(List.of("realtime", "calls", "call_abc123", "hangup"))
+            .method(HttpMethod.valueOf("POST"))
+            .baseUrl(destination.getUri().toString())
+            .build();
+
+    assertThatThrownBy(() -> client.execute(request))
+        .isNotInstanceOf(UnsupportedOperationException.class);
+  }
+
+  @Test
+  void testRealtimeCallsReferEndpointIsAllowed() {
+    final var request =
+        HttpRequest.builder()
+            .pathSegments(List.of("realtime", "calls", "call_abc123", "refer"))
+            .method(HttpMethod.valueOf("POST"))
+            .baseUrl(destination.getUri().toString())
+            .build();
+
+    assertThatThrownBy(() -> client.execute(request))
+        .isNotInstanceOf(UnsupportedOperationException.class);
+  }
+
+  @Test
+  void testRealtimeCallsRejectEndpointIsAllowed() {
+    final var request =
+        HttpRequest.builder()
+            .pathSegments(List.of("realtime", "calls", "call_abc123", "reject"))
+            .method(HttpMethod.valueOf("POST"))
+            .baseUrl(destination.getUri().toString())
+            .build();
+
+    assertThatThrownBy(() -> client.execute(request))
+        .isNotInstanceOf(UnsupportedOperationException.class);
+  }
+
   @SneakyThrows
   @Test
   void testExecuteReturnsBufferedResponseForNon2xxStreamingResponse() {

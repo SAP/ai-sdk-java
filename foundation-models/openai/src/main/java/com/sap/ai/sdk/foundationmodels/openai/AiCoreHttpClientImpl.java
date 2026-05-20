@@ -43,7 +43,12 @@ class AiCoreHttpClientImpl implements HttpClient {
   private static final Map<String, Set<String>> ALLOWED_OPERATIONS =
       Map.of(
           "/v1/responses", Set.of("POST"),
-          "/v1/responses/[^/]+/compact", Set.of("POST"));
+          "/v1/responses/[^/]+/compact", Set.of("POST"),
+          "/v1/realtime/client_secrets", Set.of("POST"),
+          "/v1/realtime/calls/[^/]+/accept", Set.of("POST"),
+          "/v1/realtime/calls/[^/]+/hangup", Set.of("POST"),
+          "/v1/realtime/calls/[^/]+/refer", Set.of("POST"),
+          "/v1/realtime/calls/[^/]+/reject", Set.of("POST"));
 
   @Override
   @Nonnull
