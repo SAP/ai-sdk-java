@@ -78,6 +78,8 @@
     <openai-java.version>4.29.0</openai-java.version>
     <commons-codec.version>1.22.0</commons-codec.version>
     <japicmp.version>0.25.7</japicmp.version>
+    <kotlin-stdlib-jdk8.version>1.9.10</kotlin-stdlib-jdk8.version>
+    <openai-java.version>4.29.0</openai-java.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.5</micrometer.version>
     <json.version>20251224</json.version>
