@@ -159,6 +159,66 @@ public class DPIConfig
   @JsonProperty("mask_grounding_input")
   private DPIConfigMaskGroundingInput maskGroundingInput;
 
+  /** Type of masking method to be used for file inputs. Required if file inputs are provided. */
+  public enum MaskFileInputMethodEnum {
+    /** The ANONYMIZATION option of this DPIConfig */
+    ANONYMIZATION("anonymization"),
+
+    /** The SKIP option of this DPIConfig */
+    SKIP("skip"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this DPIConfig */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    MaskFileInputMethodEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type DPIConfig
+     */
+    @JsonCreator
+    @Nonnull
+    public static MaskFileInputMethodEnum fromValue(@Nonnull final String value) {
+      for (MaskFileInputMethodEnum b : MaskFileInputMethodEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+  }
+
+  @JsonProperty("mask_file_input_method")
+  private MaskFileInputMethodEnum maskFileInputMethod;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -353,6 +413,40 @@ public class DPIConfig
   }
 
   /**
+   * Set the maskFileInputMethod of this {@link DPIConfig} instance and return the same instance.
+   *
+   * @param maskFileInputMethod Type of masking method to be used for file inputs. Required if file
+   *     inputs are provided.
+   * @return The same instance of this {@link DPIConfig} class
+   */
+  @Nonnull
+  public DPIConfig maskFileInputMethod(
+      @Nullable final MaskFileInputMethodEnum maskFileInputMethod) {
+    this.maskFileInputMethod = maskFileInputMethod;
+    return this;
+  }
+
+  /**
+   * Type of masking method to be used for file inputs. Required if file inputs are provided.
+   *
+   * @return maskFileInputMethod The maskFileInputMethod of this {@link DPIConfig} instance.
+   */
+  @Nonnull
+  public MaskFileInputMethodEnum getMaskFileInputMethod() {
+    return maskFileInputMethod;
+  }
+
+  /**
+   * Set the maskFileInputMethod of this {@link DPIConfig} instance.
+   *
+   * @param maskFileInputMethod Type of masking method to be used for file inputs. Required if file
+   *     inputs are provided.
+   */
+  public void setMaskFileInputMethod(@Nullable final MaskFileInputMethodEnum maskFileInputMethod) {
+    this.maskFileInputMethod = maskFileInputMethod;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link DPIConfig}.
    *
    * @return The set of properties names
@@ -395,6 +489,7 @@ public class DPIConfig
     if (entities != null) declaredFields.put("entities", entities);
     if (allowlist != null) declaredFields.put("allowlist", allowlist);
     if (maskGroundingInput != null) declaredFields.put("maskGroundingInput", maskGroundingInput);
+    if (maskFileInputMethod != null) declaredFields.put("maskFileInputMethod", maskFileInputMethod);
     return declaredFields;
   }
 
@@ -424,13 +519,20 @@ public class DPIConfig
         && Objects.equals(this.method, dpIConfig.method)
         && Objects.equals(this.entities, dpIConfig.entities)
         && Objects.equals(this.allowlist, dpIConfig.allowlist)
-        && Objects.equals(this.maskGroundingInput, dpIConfig.maskGroundingInput);
+        && Objects.equals(this.maskGroundingInput, dpIConfig.maskGroundingInput)
+        && Objects.equals(this.maskFileInputMethod, dpIConfig.maskFileInputMethod);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        type, method, entities, allowlist, maskGroundingInput, cloudSdkCustomFields);
+        type,
+        method,
+        entities,
+        allowlist,
+        maskGroundingInput,
+        maskFileInputMethod,
+        cloudSdkCustomFields);
   }
 
   @Override
@@ -443,6 +545,9 @@ public class DPIConfig
     sb.append("    entities: ").append(toIndentedString(entities)).append("\n");
     sb.append("    allowlist: ").append(toIndentedString(allowlist)).append("\n");
     sb.append("    maskGroundingInput: ").append(toIndentedString(maskGroundingInput)).append("\n");
+    sb.append("    maskFileInputMethod: ")
+        .append(toIndentedString(maskFileInputMethod))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

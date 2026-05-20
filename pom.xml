@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.sap.ai.sdk</groupId>
   <artifactId>sdk-parent</artifactId>
-  <version>1.19.0-SNAPSHOT</version>
+  <version>1.20.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Parent pom</name>
   <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. The parent pom defines dependency versions and plugin configurations</description>
@@ -31,6 +31,7 @@
   <modules>
     <module>core</module>
     <module>orchestration</module>
+    <module>core-services/batch</module>
     <module>core-services/document-grounding</module>
     <module>core-services/prompt-registry</module>
     <module>foundation-models/openai</module>
@@ -56,31 +57,32 @@
     <maven.compiler.proc>full</maven.compiler.proc>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputTimestamp>2025-04-03T13:23:00Z</project.build.outputTimestamp>
-    <cloud-sdk.version>5.28.0</cloud-sdk.version>
+    <cloud-sdk.version>5.30.0</cloud-sdk.version>
     <junit-jupiter.version>6.0.3</junit-jupiter.version>
     <wiremock.version>3.13.2</wiremock.version>
     <assertj-core.version>3.27.7</assertj-core.version>
     <slf4j.version>2.0.17</slf4j.version>
-    <checkstyle.version>13.4.0</checkstyle.version>
+    <checkstyle.version>13.4.2</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.5</surefire.version>
-    <spring-ai.version>1.1.4</spring-ai.version>
-    <reactor-core.version>3.8.4</reactor-core.version>
+    <spring-ai.version>1.1.6</spring-ai.version>
+    <reactor-core.version>3.8.5</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.23.0</mockito.version>
-    <javaparser.version>3.28.0</javaparser.version>
+    <javaparser.version>3.28.1</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
-    <jackson.version>2.21.2</jackson.version>
+    <jackson.version>2.21.3</jackson.version>
     <logback.version>1.5.32</logback.version>
-    <commons-codec.version>1.21.0</commons-codec.version>
+    <commons-codec.version>1.22.0</commons-codec.version>
+    <japicmp.version>0.25.7</japicmp.version>
     <kotlin-stdlib-jdk8.version>1.9.10</kotlin-stdlib-jdk8.version>
     <openai-java.version>4.29.0</openai-java.version>
     <!-- conflicts resolution -->
-    <micrometer.version>1.16.4</micrometer.version>
+    <micrometer.version>1.16.5</micrometer.version>
     <json.version>20251224</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <!-- Formatting -->
-    <spotless.version>3.4.0</spotless.version>
+    <spotless.version>3.5.0</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
@@ -96,6 +98,9 @@
     <coverage.branch>100%</coverage.branch>
     <coverage.method>100%</coverage.method>
     <coverage.class>100%</coverage.class>
+    <!--  Binary compatibility check old/new version file -->
+    <japicmp.oldVersion.file>/tmp/baseline.jar</japicmp.oldVersion.file>
+    <japicmp.newVersion.file>${project.build.directory}/${project.build.finalName}.jar</japicmp.newVersion.file>
   </properties>
 
   <dependencyManagement>
@@ -220,6 +225,11 @@
       </dependency>
       <dependency>
         <groupId>com.sap.ai.sdk</groupId>
+        <artifactId>batch</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sap.ai.sdk</groupId>
         <artifactId>document-grounding</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -314,11 +324,53 @@
           <groupId>com.sap.cloud.sdk.datamodel</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
           <version>${cloud-sdk.version}</version>
+          <dependencies>
+            <!-- Handle regression in 7.22.0 -->
+            <dependency>
+              <groupId>org.openapitools</groupId>
+              <artifactId>openapi-generator</artifactId>
+              <version>7.21.0</version>
+            </dependency>
+          </dependencies>
         </plugin>
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.21.0</version>
+          <version>7.22.0</version>
+        </plugin>
+        <plugin>
+          <groupId>com.github.siom79.japicmp</groupId>
+          <artifactId>japicmp-maven-plugin</artifactId>
+          <version>${japicmp.version}</version>
+          <executions>
+            <execution>
+              <id>api-compatibility</id>
+              <goals>
+                <goal>cmp</goal>
+              </goals>
+              <phase>none</phase>
+              <configuration>
+                <oldVersion>
+                  <file>
+                    <path>${japicmp.oldVersion.file}</path>
+                  </file>
+                </oldVersion>
+                <newVersion>
+                  <file>
+                    <path>${japicmp.newVersion.file}</path>
+                  </file>
+                </newVersion>
+                <parameter>
+                  <breakBuildOnBinaryIncompatibleModifications>true</breakBuildOnBinaryIncompatibleModifications>
+                  <breakBuildOnSourceIncompatibleModifications>true</breakBuildOnSourceIncompatibleModifications>
+                  <onlyModified>true</onlyModified>
+                  <accessModifier>public</accessModifier>
+                  <onlyBinaryIncompatible>false</onlyBinaryIncompatible>
+                  <ignoreMissingOldVersion>false</ignoreMissingOldVersion>
+                </parameter>
+              </configuration>
+            </execution>
+          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -681,6 +733,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/grounding/model/*</exclude>
             <exclude>com/sap/ai/sdk/prompt/registry/client/*</exclude>
             <exclude>com/sap/ai/sdk/prompt/registry/model/*</exclude>
+            <exclude>com/sap/ai/sdk/batch/generated/**</exclude>
           </excludes>
         </configuration>
         <executions>
@@ -862,7 +915,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
                 <dependency>
                   <groupId>org.projectlombok</groupId>
                   <artifactId>lombok</artifactId>
-                  <version>1.18.44</version>
+                  <version>1.18.46</version>
                 </dependency>
               </dependencies>
               <executions>

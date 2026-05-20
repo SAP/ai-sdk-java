@@ -1285,6 +1285,100 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-xl-4 max-width-container">
+                <div class="card endpoint-card">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <h2>📂 Batch API</h2>
+                        </div>
+                        Batch API calls together to reduce the number of HTTP connections your client has to make.
+                        For more information, check the <a
+                            href="https://github.tools.sap/AI/llm-batch-service"
+                            target="_blank">Batch API Documentation</a>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/batch/create"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/batch/create</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Upload the input and create a new batch job.
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/batch/list"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/batch/list</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        List all batch jobs.
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/batch/get/[id]"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/batch/get/[id]</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Get a batch job for an id.
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/batch/delete/[id]"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/batch/delete/[id]</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Delete a batch job for an id.
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/batch/read/[id]"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/batch/read/[id]</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Read the content of a batch output in the S3 bucket.
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/batch/uploadInput"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/batch/uploadInput</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Upload the input.jsonl file to the S3 bucket.
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

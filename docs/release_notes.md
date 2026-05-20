@@ -12,11 +12,13 @@
 
 ### ✨ New Functionality
 
+- [Orchestration] Added `GEMINI_3_1_FLASH_LITE` to model list in `OrchestrationAiModel`.
+- [Batch] Added a new `BatchesApi` client to access the [Batch Service API](https://github.tools.sap/AI/llm-batch-service).
 - Support for OpenAI Responses API with the new `AiCoreOpenAiClient`.
   The following endpoints are currently supported:
 
   | API Endpoint                         | Description               | Supported |
-    |--------------------------------------|---------------------------|--|
+      |--------------------------------------|---------------------------|--|
   | `POST /v1/responses`                 | Create response           | ✅ |
   | `POST /v1/responses` (streaming)     | Create streaming response | ✅ |
   | `GET /v1/responses/{id}`             | Retrieve response         | ❌ |

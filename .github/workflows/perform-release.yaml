@@ -20,9 +20,16 @@ env:
 jobs:
   prerequisites:
     name: 'Prerequisites'
+    permissions:
+      contents: write # needed to view draft releases
+      pull-requests: read
+      statuses: read
+      checks: read
+      actions: read
     outputs:
       code-branch: ${{ steps.determine-branch-names.outputs.CODE_BRANCH_NAME }}
       release-notes-branch: ${{ steps.determine-branch-names.outputs.RELEASE_NOTES_BRANCH_NAME }}
+      javadoc-branch: ${{ steps.determine-branch-names.outputs.JAVADOC_BRANCH_NAME }}
       release-tag: ${{ steps.determine-branch-names.outputs.RELEASE_TAG }}
       release-commit: ${{ steps.determine-branch-names.outputs.RELEASE_COMMIT }}
     runs-on: ubuntu-latest
@@ -35,12 +42,14 @@ jobs:
           RELEASE_TAG=rel/$RELEASE_VERSION
           RELEASE_COMMIT=$(gh release view $RELEASE_TAG --repo ${{github.repository}} --json targetCommitish --jq '.targetCommitish')
           RELEASE_NOTES_BRANCH_NAME=java/release-notes-$RELEASE_VERSION
+          JAVADOC_BRANCH_NAME=java/release-docs-$RELEASE_VERSION
 
           echo "CODE_BRANCH_NAME=$CODE_BRANCH_NAME" >> $GITHUB_OUTPUT
           echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_OUTPUT
           echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
           echo "RELEASE_COMMIT=$RELEASE_COMMIT" >> $GITHUB_OUTPUT
           echo "RELEASE_NOTES_BRANCH_NAME=$RELEASE_NOTES_BRANCH_NAME" >> $GITHUB_OUTPUT
+          echo "JAVADOC_BRANCH_NAME=$JAVADOC_BRANCH_NAME" >> $GITHUB_OUTPUT
 
           echo -e "[DEBUG] Current GITHUB_OUTPUT:\n$(cat $GITHUB_OUTPUT)"
         env:
@@ -82,6 +91,18 @@ jobs:
         uses: ./.github/actions/pr-is-mergeable
         with:
           pr-ref: ${{ steps.determine-branch-names.outputs.RELEASE_NOTES_BRANCH_NAME }}
+          repo: ${{ env.DOCS_REPO }}
+          token: ${{ steps.app-token.outputs.token }}
+          excluded-check-runs: |
+            {
+              \"Build Cloud SDK Documentation\": [\"dependabot\"]
+            }
+
+      - name: 'Check Whether JavaDoc PR Can Be Merged'
+        if: ${{ inputs.skip-pr-merge != 'true' }}
+        uses: ./.github/actions/pr-is-mergeable
+        with:
+          pr-ref: ${{ steps.determine-branch-names.outputs.JAVADOC_BRANCH_NAME }}
           repo: ${{ env.DOCS_REPO }}
           token: ${{ steps.app-token.outputs.token }}
           excluded-check-runs: |
@@ -155,5 +176,11 @@ jobs:
       - name: 'Merge Release Notes PR'
         if: ${{ inputs.skip-pr-merge != 'true' }}
         run: gh pr merge --squash "${{ needs.prerequisites.outputs.release-notes-branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+
+      - name: 'Merge JavaDoc PR'
+        if: ${{ inputs.skip-pr-merge != 'true' }}
+        run: gh pr merge --squash "${{ needs.prerequisites.outputs.javadoc-branch }}" --delete-branch --repo "${{ env.DOCS_REPO }}"
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}

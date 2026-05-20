@@ -44,6 +44,21 @@ public class EmbeddingsInput
     /** The QUERY option of this EmbeddingsInput */
     QUERY("query"),
 
+    /** The SEARCH_DOCUMENT option of this EmbeddingsInput */
+    SEARCH_DOCUMENT("search_document"),
+
+    /** The SEARCH_QUERY option of this EmbeddingsInput */
+    SEARCH_QUERY("search_query"),
+
+    /** The CLASSIFICATION option of this EmbeddingsInput */
+    CLASSIFICATION("classification"),
+
+    /** The CLUSTERING option of this EmbeddingsInput */
+    CLUSTERING("clustering"),
+
+    /** The IMAGE option of this EmbeddingsInput */
+    IMAGE("image"),
+
     /** The UNKNOWN_DEFAULT_OPEN_API option of this EmbeddingsInput */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 

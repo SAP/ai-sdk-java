@@ -94,8 +94,7 @@ In case of delays in the release process of AI Core:
   2. The AI SDK release is delayed equally
   3. The AI SDK is released anyway with exceptional PO approval
 
-## Further Links
+## Further Remarks
 
-- The single source of truth for all landscapes is in [mlf-gitops](https://github.tools.sap/MLF-prod/mlf-gitops-prod)
-  - In particular, we care about the [version of orchestration](https://github.tools.sap/MLF-prod/mlf-gitops-prod/blob/aws.eu-central-1.prod-eu/current/services/llm-orchestration/source/Chart.yaml)
-- [This JIRA ticket](https://jira.tools.sap/browse/AI-44024) tracks releases
+- The single source of truth for all landscapes, including the version of orchestration, is in the internal mlf operations repo.
+  - This is handled by the weekly spec update workflow, so it should not be necessary to check this manually.
