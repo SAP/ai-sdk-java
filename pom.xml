@@ -74,7 +74,7 @@
     <jackson.version>2.21.3</jackson.version>
     <logback.version>1.5.32</logback.version>
     <commons-codec.version>1.22.0</commons-codec.version>
-    <japicmp.version>0.25.7</japicmp.version>
+    <japicmp.version>0.26.0</japicmp.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.5</micrometer.version>
     <json.version>20251224</json.version>
