@@ -1,0 +1,25 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/realtime/calls/call_test_123/reject",
+    "queryParameters": {
+      "api-version": {
+        "equalTo": "preview"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "equalToJson": {
+          "status_code": 486
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": ""
+  }
+}
