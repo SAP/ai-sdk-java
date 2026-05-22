@@ -5,6 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.openai.models.ReasoningEffort;
+import com.openai.models.realtime.RealtimeSessionCreateRequest;
+import com.openai.models.realtime.calls.CallAcceptParams;
+import com.openai.models.realtime.calls.CallReferParams;
+import com.openai.models.realtime.calls.CallRejectParams;
+import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseOutputMessage;
@@ -70,6 +75,55 @@ class AiCoreOpenAiClientTest {
     try (var stream = responseService.createStreaming(params)) {
       stream.stream().forEach(AiCoreOpenAiClientTest::assertCreateResponseStreaming);
     }
+  }
+
+  @Test
+  void testRealtimeClientSecretCreate() {
+    final var session =
+        RealtimeSessionCreateRequest.builder()
+            .model("gpt-realtime")
+            .instructions("You are a helpful assistant.")
+            .build();
+    final var params = ClientSecretCreateParams.builder().session(session).build();
+
+    final var response = client.realtime().clientSecrets().create(params);
+
+    assertThat(response.value()).isEqualTo("ek_test_abc123");
+    assertThat(response.expiresAt()).isEqualTo(1774011999L);
+    assertThat(response.session().isRealtime()).isTrue();
+    assertThat(response.session().asRealtime().clientSecret().value()).contains("ek_test_abc123");
+  }
+
+  @Test
+  void testRealtimeCallAccept() {
+    final var session =
+        RealtimeSessionCreateRequest.builder()
+            .model("gpt-realtime")
+            .instructions("Greet the caller politely.")
+            .build();
+    final var params = CallAcceptParams.builder().realtimeSessionCreateRequest(session).build();
+
+    // Returns void on success: mapping returns 200 only when path/query/body match.
+    client.realtime().calls().accept("call_test_123", params);
+  }
+
+  @Test
+  void testRealtimeCallHangup() {
+    client.realtime().calls().hangup("call_test_123");
+  }
+
+  @Test
+  void testRealtimeCallRefer() {
+    final var params = CallReferParams.builder().targetUri("tel:+14155550123").build();
+
+    client.realtime().calls().refer("call_test_123", params);
+  }
+
+  @Test
+  void testRealtimeCallReject() {
+    final var params = CallRejectParams.builder().statusCode(486L).build();
+
+    client.realtime().calls().reject("call_test_123", params);
   }
 
   static void assertCreateResponse(@Nonnull final Response response) {

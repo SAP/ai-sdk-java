@@ -1,11 +1,14 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_5;
+import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_REALTIME;
 
 import com.openai.core.http.StreamResponse;
 import com.openai.models.ChatModel;
+import com.openai.models.realtime.RealtimeSessionCreateRequest;
 import com.openai.models.realtime.calls.CallAcceptParams;
 import com.openai.models.realtime.calls.CallReferParams;
+import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
 import com.openai.models.realtime.clientsecrets.ClientSecretCreateResponse;
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
@@ -27,7 +30,7 @@ public class AiCoreOpenAiService {
       AiCoreOpenAiClient.forModel(GPT_5, "ai-sdk-java-e2e").responses();
 
   private static final RealtimeService REALTIME_CLIENT =
-      AiCoreOpenAiClient.forModel(GPT_5, "ai-sdk-java-e2e").realtime();
+      AiCoreOpenAiClient.forModel(GPT_REALTIME, "ai-sdk-java-e2e").realtime();
 
   /**
    * Create a simple non-persistent response using the Responses API
@@ -61,7 +64,14 @@ public class AiCoreOpenAiService {
    */
   @Nonnull
   public ClientSecretCreateResponse createRealtimeClientSecret() {
-    return REALTIME_CLIENT.clientSecrets().create();
+    val session =
+        RealtimeSessionCreateRequest.builder()
+            .type(com.openai.core.JsonValue.from("realtime"))
+            .model("gpt-realtime")
+            .instructions("You are a helpful assistant.")
+            .build();
+    val params = ClientSecretCreateParams.builder().session(session).build();
+    return REALTIME_CLIENT.clientSecrets().create(params);
   }
 
   /**
