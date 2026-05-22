@@ -1,0 +1,25 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/realtime/calls/call_test_123/refer",
+    "queryParameters": {
+      "api-version": {
+        "equalTo": "preview"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "equalToJson": {
+          "target_uri": "tel:+14155550123"
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": ""
+  }
+}

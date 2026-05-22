@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/realtime/calls/call_test_123/accept",
+    "queryParameters": {
+      "api-version": {
+        "equalTo": "preview"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "equalToJson": {
+          "type": "realtime",
+          "model": "gpt-realtime",
+          "instructions": "Greet the caller politely."
+        },
+        "ignoreExtraElements": true
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": ""
+  }
+}

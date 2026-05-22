@@ -1,13 +1,24 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.openai.core.ObjectMappers.jsonMapper;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openai.models.realtime.RealtimeSessionCreateRequest;
+import com.openai.models.realtime.calls.CallAcceptParams;
+import com.openai.models.realtime.calls.CallReferParams;
+import com.openai.models.realtime.clientsecrets.ClientSecretCreateResponse;
+import com.openai.models.responses.ResponseOutputItem;
+import com.openai.models.responses.ResponseOutputMessage;
+import com.sap.ai.sdk.app.services.AiCoreOpenAiService;
 import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +27,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
@@ -26,8 +39,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 public class OpenAiController {
   @Autowired private OpenAiService service;
+  @Autowired private AiCoreOpenAiService aiCoreOpenAiService;
+
   private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+
+  private record ReferRequest(@Nonnull String targetUri) {}
 
   @GetMapping("/chatCompletion")
   @Nonnull
@@ -149,5 +166,89 @@ public class OpenAiController {
       return response;
     }
     return response.getContent();
+  }
+
+  @GetMapping("/responses")
+  @Nonnull
+  Object createResponse(
+      @Nullable @RequestParam(value = "format", required = false) final String format)
+      throws JsonProcessingException {
+    final var response = aiCoreOpenAiService.createResponse("Who is the prettiest");
+    if ("json".equals(format)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(jsonMapper().writeValueAsString(response));
+    }
+    return response.output().stream()
+        .filter(ResponseOutputItem::isMessage)
+        .map(ResponseOutputItem::asMessage)
+        .flatMap(message -> message.content().stream())
+        .filter(ResponseOutputMessage.Content::isOutputText)
+        .map(text -> text.asOutputText().text())
+        .collect(Collectors.joining());
+  }
+
+  @GetMapping("/realtimeClientSecret")
+  @Nonnull
+  ClientSecretCreateResponse createRealtimeClientSecret() {
+    return aiCoreOpenAiService.createRealtimeClientSecret();
+  }
+
+  @PostMapping("/realtimeAcceptCall/{callId}")
+  @Nonnull
+  ResponseEntity<Void> acceptCall(
+      @Nonnull @PathVariable("callId") final String callId,
+      @Nonnull @RequestBody final RealtimeSessionCreateRequest session) {
+    final var params =
+        CallAcceptParams.builder().callId(callId).realtimeSessionCreateRequest(session).build();
+    aiCoreOpenAiService.acceptCall(callId, params);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/realtimeHangupCall/{callId}")
+  @Nonnull
+  ResponseEntity<Void> hangupCall(@Nonnull @PathVariable("callId") final String callId) {
+    aiCoreOpenAiService.hangupCall(callId);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/realtimeReferCall/{callId}")
+  @Nonnull
+  ResponseEntity<Void> referCall(
+      @Nonnull @PathVariable("callId") final String callId,
+      @Nonnull @RequestBody final ReferRequest body) {
+    final var params = CallReferParams.builder().callId(callId).targetUri(body.targetUri()).build();
+    aiCoreOpenAiService.referCall(callId, params);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PostMapping("/realtimeRejectCall/{callId}")
+  @Nonnull
+  ResponseEntity<Void> rejectCall(@Nonnull @PathVariable("callId") final String callId) {
+    aiCoreOpenAiService.rejectCall(callId);
+    return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/streamResponses")
+  @Nonnull
+  Object createStreamingResponse(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    final var input = "Give me the first 100 Fibonacci numbers.";
+    final var emitter = new ResponseBodyEmitter();
+
+    final Runnable consumeStream =
+        () -> {
+          try (var response = aiCoreOpenAiService.createStreamingResponse(input)) {
+            response.stream()
+                .forEach(
+                    event ->
+                        event.outputTextDelta().ifPresent(delta -> send(emitter, delta.delta())));
+          } finally {
+            emitter.complete();
+          }
+        };
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
+    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 }

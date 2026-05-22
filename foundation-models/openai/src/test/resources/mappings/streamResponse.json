@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPattern": "/responses",
+    "bodyPatterns": [
+      {
+        "equalToJson": {
+          "stream": true
+        },
+        "ignoreExtraElements": true
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache"
+    },
+    "bodyFileName": "streamResponse.txt"
+  }
+}

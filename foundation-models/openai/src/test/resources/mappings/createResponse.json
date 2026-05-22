@@ -1,0 +1,157 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPattern": "/responses",
+    "bodyPatterns": [
+      {
+        "equalToJson": {
+          "input": "What is the capital of France?"
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "x-request-id": "a1c0c7e7-58a0-957c-bda8-1cf971154766",
+      "ai-inference-id": "a1c0c7e7-58a0-957c-bda8-1cf971154766",
+      "x-upstream-service-time": "1474"
+    },
+    "jsonBody": {
+      "background": false,
+      "completed_at": 1774011347,
+      "content_filters": [
+        {
+          "blocked": false,
+          "content_filter_offsets": {
+            "check_offset": 0,
+            "end_offset": 60,
+            "start_offset": 30
+          },
+          "content_filter_raw": [],
+          "content_filter_results": {
+            "hate": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "self_harm": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "sexual": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "violence": {
+              "filtered": false,
+              "severity": "safe"
+            }
+          },
+          "source_type": "prompt"
+        },
+        {
+          "blocked": false,
+          "content_filter_offsets": {
+            "check_offset": 0,
+            "end_offset": 221,
+            "start_offset": 0
+          },
+          "content_filter_raw": [],
+          "content_filter_results": {
+            "hate": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "protected_material_code": {
+              "detected": false,
+              "filtered": false
+            },
+            "self_harm": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "sexual": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "violence": {
+              "filtered": false,
+              "severity": "safe"
+            }
+          },
+          "source_type": "completion"
+        }
+      ],
+      "created_at": 1774011346,
+      "error": null,
+      "frequency_penalty": 0.0,
+      "id": "resp_01a38d2783b385be0069bd43d260108193aef990678aa8a0af",
+      "incomplete_details": null,
+      "instructions": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "metadata": {},
+      "model": "gpt-5-2025-08-07-dz-std",
+      "object": "response",
+      "output": [
+        {
+          "id": "rs_01a38d2783b385be0069bd43d2de808193a34727b53738d2e1",
+          "summary": [],
+          "type": "reasoning"
+        },
+        {
+          "content": [
+            {
+              "annotations": [],
+              "logprobs": [],
+              "text": "Paris.",
+              "type": "output_text"
+            }
+          ],
+          "id": "msg_01a38d2783b385be0069bd43d354388193a870074cabde1603",
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": true,
+      "presence_penalty": 0.0,
+      "previous_response_id": null,
+      "prompt_cache_key": null,
+      "prompt_cache_retention": null,
+      "reasoning": {
+        "effort": "medium",
+        "summary": null
+      },
+      "safety_identifier": null,
+      "service_tier": "default",
+      "status": "completed",
+      "store": true,
+      "temperature": 1.0,
+      "text": {
+        "format": {
+          "type": "text"
+        },
+        "verbosity": "medium"
+      },
+      "tool_choice": "auto",
+      "tools": [],
+      "top_logprobs": 0,
+      "top_p": 1.0,
+      "truncation": "disabled",
+      "usage": {
+        "input_tokens": 13,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 59,
+        "output_tokens_details": {
+          "reasoning_tokens": 0
+        },
+        "total_tokens": 72
+      },
+      "user": null
+    }
+  }
+}
