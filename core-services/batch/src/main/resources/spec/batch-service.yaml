@@ -8,19 +8,19 @@ externalDocs:
   description: SAP AI Core - Generative AI Hub documentation
   url: https://help.sap.com/docs/sap-ai-core/generative-ai/generative-ai-hub
 servers:
-  - url: https://api.ai.{region}.ml.hana.ondemand.com/v2
-    description: Production endpoint for SAP AI Core
-    variables:
-      region:
-        enum:
-          - prod.eu-central-1.aws
-          - prodeuonly.eu-central-1.aws
-          - prod-eu20.westeurope.azure
-          - prod-eu30.europe-west3.gcp
-          - prod.us-east-1.aws
-          - prod-us21.eastus.azure
-          - prod-us30.us-central1.gcp
-        default: prod.eu-central-1.aws
+- url: https://api.ai.{region}.ml.hana.ondemand.com/v2
+  description: Production endpoint for SAP AI Core
+  variables:
+    region:
+      enum:
+      - prod.eu-central-1.aws
+      - prodeuonly.eu-central-1.aws
+      - prod-eu20.westeurope.azure
+      - prod-eu30.europe-west3.gcp
+      - prod.us-east-1.aws
+      - prod-us21.eastus.azure
+      - prod-us30.us-central1.gcp
+      default: prod.eu-central-1.aws
 
 paths:
   /llm-batch-service/v1/batches:
