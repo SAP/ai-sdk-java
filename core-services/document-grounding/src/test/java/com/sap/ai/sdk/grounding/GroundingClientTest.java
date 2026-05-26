@@ -2,9 +2,13 @@ package com.sap.ai.sdk.grounding;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,10 +25,15 @@ import com.sap.ai.sdk.grounding.model.Documents;
 import com.sap.ai.sdk.grounding.model.FilterMatchModeEnum;
 import com.sap.ai.sdk.grounding.model.GetPipelines;
 import com.sap.ai.sdk.grounding.model.RetrievalKeyValueListPair;
+import com.sap.ai.sdk.grounding.model.TextSearchRequest;
 import com.sap.ai.sdk.grounding.model.VectorDocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.VectorKeyValueListPair;
+import com.sap.ai.sdk.grounding.model.VectorSearchConfiguration;
+import com.sap.ai.sdk.grounding.model.VectorSearchFilter;
+import com.sap.ai.sdk.grounding.model.VectorSearchResults;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -142,6 +151,62 @@ class GroundingClientTest {
               assertThat(r2.getType()).isEqualTo(DataRepositoryType.VECTOR);
               assertThat(r2.getMetadata()).isNotNull().isEmpty();
             });
+  }
+
+  @Test
+  void testVectorSearch() {
+    final String responseBody =
+        """
+        {"results":[{"results":[{"documents":[{"chunks":[{"content":"Joule is the AI copilot."}]}]}]}]}
+        """;
+
+    WM.stubFor(
+        post(urlPathEqualTo("/v2/lm/document-grounding/vector/search"))
+            .willReturn(okJson(responseBody)));
+
+    final VectorApi api = new GroundingClient(SERVICE).vector();
+
+    final VectorSearchConfiguration configuration =
+        VectorSearchConfiguration.create().maxChunkCount(5);
+
+    final VectorSearchFilter filter =
+        VectorSearchFilter.create()
+            .id("filter-1")
+            .collectionIds("001766c1-05c7-41fe-a3d7-c1fb02fc1473")
+            ._configuration(configuration);
+
+    final TextSearchRequest request =
+        TextSearchRequest.create().query("What is Joule?").filters(List.of(filter));
+
+    final VectorSearchResults result = api.search("resourceGroup", request);
+
+    assertThat(result).isNotNull();
+    assertThat(result.getResults()).isNotNull().hasSize(1);
+
+    WM.verify(
+        postRequestedFor(urlPathEqualTo("/v2/lm/document-grounding/vector/search"))
+            .withHeader("AI-Resource-Group", equalTo("resourceGroup"))
+            .withHeader("Content-Type", equalTo("application/json; charset=UTF-8"))
+            .withHeader("Accept", equalTo("application/json"))
+            .withRequestBody(
+                equalToJson(
+                    """
+                    {
+                      "query" : "What is Joule?",
+                      "filters" : [ {
+                        "id" : "filter-1",
+                        "collectionIds" : [ "001766c1-05c7-41fe-a3d7-c1fb02fc1473" ],
+                        "configuration" : {
+                          "maxChunkCount" : 5,
+                          "maxDocumentCount" : null
+                        },
+                        "collectionMetadata" : [ ],
+                        "documentMetadata" : [ ],
+                        "chunkMetadata" : [ ],
+                        "filter" : null
+                      } ]
+                    }
+                    """)));
   }
 
   @Test
