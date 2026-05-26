@@ -33,7 +33,6 @@ import com.sap.ai.sdk.grounding.model.VectorSearchFilter;
 import com.sap.ai.sdk.grounding.model.VectorSearchResults;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
-import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -160,31 +159,26 @@ class GroundingClientTest {
         {"results":[{"results":[{"documents":[{"chunks":[{"content":"Joule is the AI copilot."}]}]}]}]}
         """;
 
-    WM.stubFor(
-        post(urlPathEqualTo("/v2/lm/document-grounding/vector/search"))
-            .willReturn(okJson(responseBody)));
-
-    final VectorApi api = new GroundingClient(SERVICE).vector();
-
-    final VectorSearchConfiguration configuration =
-        VectorSearchConfiguration.create().maxChunkCount(5);
+    final String requestUri = "/v2/lm/document-grounding/vector/search";
+    WM.stubFor(post(urlPathEqualTo(requestUri)).willReturn(okJson(responseBody)));
 
     final VectorSearchFilter filter =
         VectorSearchFilter.create()
             .id("filter-1")
             .collectionIds("001766c1-05c7-41fe-a3d7-c1fb02fc1473")
-            ._configuration(configuration);
+            ._configuration(VectorSearchConfiguration.create().maxChunkCount(5));
 
     final TextSearchRequest request =
-        TextSearchRequest.create().query("What is Joule?").filters(List.of(filter));
+        TextSearchRequest.create().query("What is Joule?").filters(filter);
 
+    final VectorApi api = new GroundingClient(SERVICE).vector();
     final VectorSearchResults result = api.search("resourceGroup", request);
 
     assertThat(result).isNotNull();
     assertThat(result.getResults()).isNotNull().hasSize(1);
 
     WM.verify(
-        postRequestedFor(urlPathEqualTo("/v2/lm/document-grounding/vector/search"))
+        postRequestedFor(urlPathEqualTo(requestUri))
             .withHeader("AI-Resource-Group", equalTo("resourceGroup"))
             .withHeader("Content-Type", equalTo("application/json; charset=UTF-8"))
             .withHeader("Accept", equalTo("application/json"))
