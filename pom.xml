@@ -80,7 +80,7 @@
     <json.version>20251224</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <!-- Formatting -->
-    <spotless.version>3.5.0</spotless.version>
+    <spotless.version>3.5.1</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
@@ -351,7 +351,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.6.2</version>
+        <version>3.6.3</version>
         <configuration>
           <fail>true</fail>
           <skip>${enforcer.skip}</skip>
