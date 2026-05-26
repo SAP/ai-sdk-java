@@ -386,7 +386,7 @@ jobs:
       - name: 'Fail if API incompatible'
         if: steps.api_compat.outputs.api_compat_result == 'incompatible'
         run: |
-          echo "API compatibility check detected breaking changes. Download the japicmp-report artifact for details."
+          echo "API compatibility check detected breaking changes. Check the japicmp-report artifact in the workflow run summary for details."
           exit 1
 
       - name: 'Fail if no spec changes and previous run failed'
