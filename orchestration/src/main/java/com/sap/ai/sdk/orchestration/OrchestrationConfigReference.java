@@ -17,7 +17,6 @@ import lombok.Value;
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter(AccessLevel.PACKAGE)
-@Beta
 public class OrchestrationConfigReference {
   String id;
   String scenario;

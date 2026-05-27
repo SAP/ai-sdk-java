@@ -15,7 +15,6 @@ import javax.annotation.Nonnull;
  * {@code @JsonCreator} annotations by intelligently detecting the JSON structure and choosing the
  * appropriate implementation.
  */
-@Beta
 class EmbeddingDeserializer extends JsonDeserializer<Embedding> {
 
   /**
