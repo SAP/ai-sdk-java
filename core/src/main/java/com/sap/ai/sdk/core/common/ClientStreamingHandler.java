@@ -18,7 +18,6 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
  * @param <R> The type of the error.
  * @since 1.2.0
  */
-@Beta
 @Slf4j
 public class ClientStreamingHandler<
         D extends StreamedDelta, R extends ClientError, E extends ClientException>
@@ -31,6 +30,7 @@ public class ClientStreamingHandler<
    * @return the current instance of {@link ClientStreamingHandler} with the changed object mapper
    */
   @Nonnull
+  @Beta
   public ClientStreamingHandler<D, R, E> objectMapper(@Nonnull final ObjectMapper jackson) {
     super.objectMapper(jackson);
     return this;

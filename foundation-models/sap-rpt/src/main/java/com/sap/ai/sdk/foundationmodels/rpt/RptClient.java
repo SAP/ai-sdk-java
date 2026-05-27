@@ -74,6 +74,7 @@ public class RptClient {
    * @param requestBody The prediction request
    * @return prediction response from the RPT model
    */
+  @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(@Nonnull final PredictRequestPayload requestBody) {
     return apiWithGzipEncoding.predict(requestBody);

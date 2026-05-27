@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;

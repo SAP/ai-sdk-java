@@ -27,7 +27,6 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
  * @param <R> The type of the error response.
  * @since 1.1.0
  */
-@Beta
 @Slf4j
 @RequiredArgsConstructor
 public class ClientResponseHandler<T, R extends ClientError, E extends ClientException>
