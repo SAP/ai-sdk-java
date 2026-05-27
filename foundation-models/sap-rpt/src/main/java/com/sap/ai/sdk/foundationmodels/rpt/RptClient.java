@@ -102,6 +102,7 @@ public class RptClient {
    * @return prediction response from the RPT model
    * @since 1.16.0
    */
+  @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(
       @Nonnull final File parquetFile, @Nonnull final PredictionConfig predictionConfig) {
