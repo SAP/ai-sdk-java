@@ -72,7 +72,7 @@
     <javaparser.version>3.28.1</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.21.3</jackson.version>
-    <logback.version>1.5.32</logback.version>
+    <logback.version>1.5.33</logback.version>
     <commons-codec.version>1.22.0</commons-codec.version>
     <japicmp.version>0.26.0</japicmp.version>
     <!-- conflicts resolution -->
@@ -80,7 +80,7 @@
     <json.version>20251224</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <!-- Formatting -->
-    <spotless.version>3.5.1</spotless.version>
+    <spotless.version>3.6.0</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
