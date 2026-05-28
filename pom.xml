@@ -77,7 +77,7 @@
     <japicmp.version>0.26.0</japicmp.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.16.5</micrometer.version>
-    <json.version>20251224</json.version>
+    <json.version>20260522</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <!-- Formatting -->
     <spotless.version>3.5.1</spotless.version>
