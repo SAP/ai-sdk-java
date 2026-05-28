@@ -65,7 +65,7 @@
     <checkstyle.version>13.4.2</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.5</surefire.version>
-    <spring-ai.version>1.1.6</spring-ai.version>
+    <spring-ai.version>1.1.7</spring-ai.version>
     <reactor-core.version>3.8.5</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.23.0</mockito.version>
