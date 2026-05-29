@@ -200,7 +200,9 @@ class GroundingClientTest {
                         "filter" : null
                       } ]
                     }
-                    """)));
+                    """,
+                    true /* ignore order */,
+                    false /* ignore extra fields */)));
   }
 
   @Test
