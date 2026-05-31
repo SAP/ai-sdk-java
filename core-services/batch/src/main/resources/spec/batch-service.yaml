@@ -14,7 +14,6 @@ servers:
     region:
       enum:
       - prod.eu-central-1.aws
-      - prodeuonly.eu-central-1.aws
       - prod-eu20.westeurope.azure
       - prod-eu30.europe-west3.gcp
       - prod.us-east-1.aws
