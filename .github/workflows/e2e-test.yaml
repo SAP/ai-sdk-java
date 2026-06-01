@@ -53,7 +53,7 @@ jobs:
           mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}" | tee mvn_output.log # tee writes to both the console and a file
 
           awk '/Results:/, /----/' mvn_output.log > test_error.log || true # true ensures the step doesn't fail if no match is found.
-          ERROR_MSG=$(cat test_error.log | tail +4 | head -n -4 | awk '{gsub(/"/, "\\\""); printf "%s\\n", $0}') # Slack formatting
+          ERROR_MSG=$(cat test_error.log | tail +4 | head -n -4 | awk 'BEGIN{RS=""} {gsub(/"/, "\\\""); gsub(/Expecting KeySet:.*but could not find the following element\(s\):/, "Missing element: "); printf "%s\n", $0}')
           echo "$ERROR_MSG"
           echo "error_message=$ERROR_MSG" >> $GITHUB_OUTPUT
 
