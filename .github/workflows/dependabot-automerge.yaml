@@ -26,6 +26,7 @@ jobs:
           owner: SAP
           repositories: ai-sdk-java
           permission-pull-requests: write
+          permission-contents: write
 
       - name: Checkout
         uses: actions/checkout@v6
