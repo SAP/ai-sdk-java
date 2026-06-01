@@ -11,6 +11,7 @@ env:
     plugins group
     test group
     github-actions group
+    bump group
 jobs:
   review-prs:
     runs-on: ubuntu-latest
