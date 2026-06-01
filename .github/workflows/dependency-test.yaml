@@ -27,7 +27,7 @@ jobs:
           response=$(curl -s "https://search.maven.org/solrsearch/select?q=g:%22${GROUP_ID}%22+AND+a:%22${ARTIFACT_ID}%22&rows=15&core=gav&wt=json")
           
           # Extract and filter versions (e.g., to exclude snapshots or specific versions)
-          versions=$(echo "$response" | jq -r '.response.docs[].v' | grep -v -E 'SNAPSHOT|alpha|beta' | sort -V)
+          versions=$(echo "$response" | jq -r '.response.docs[].v' | grep -v -E 'SNAPSHOT|alpha|beta' | sort -rV | head -15 | sort -V)
           
           # Convert the versions to a JSON array
           json_versions=$(echo "$versions" | jq -R . | jq -s . | tr -d '\n')
