@@ -1,7 +1,7 @@
 name: lint pr
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - edited
@@ -15,6 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: amannn/action-semantic-pull-request@v6
+        # only run if PR is not from a fork
+        # since we cannot use pull_request_target, it always fails for PRs from a fork
+        if: github.event.pull_request.head.repo.fork == false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
