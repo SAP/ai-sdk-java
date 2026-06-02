@@ -286,7 +286,7 @@ jobs:
 
       - name: 'Upload japicmp report'
         if: always() && steps.api_compat.outcome != 'skipped'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: japicmp-report
           path: ${{ steps.download.outputs.module_path }}/target/japicmp/
