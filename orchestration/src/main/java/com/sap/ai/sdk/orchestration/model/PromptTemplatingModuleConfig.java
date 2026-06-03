@@ -49,7 +49,7 @@ public class PromptTemplatingModuleConfig
    */
   @Nonnull
   public PromptTemplatingModuleConfig prompt(
-      @Nonnull final PromptTemplatingModuleConfigPrompt prompt) {
+      @Nullable final PromptTemplatingModuleConfigPrompt prompt) {
     this.prompt = prompt;
     return this;
   }
@@ -69,7 +69,7 @@ public class PromptTemplatingModuleConfig
    *
    * @param prompt The prompt of this {@link PromptTemplatingModuleConfig}
    */
-  public void setPrompt(@Nonnull final PromptTemplatingModuleConfigPrompt prompt) {
+  public void setPrompt(@Nullable final PromptTemplatingModuleConfigPrompt prompt) {
     this.prompt = prompt;
   }
 
@@ -213,22 +213,11 @@ public class PromptTemplatingModuleConfig
    * PromptTemplatingModuleConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (prompt) -> (model) -> new PromptTemplatingModuleConfig().prompt(prompt).model(model);
+    return (model) -> new PromptTemplatingModuleConfig().model(model);
   }
 
   /** Builder helper class. */
   public interface Builder {
-    /**
-     * Set the prompt of this {@link PromptTemplatingModuleConfig} instance.
-     *
-     * @param prompt The prompt of this {@link PromptTemplatingModuleConfig}
-     * @return The PromptTemplatingModuleConfig builder.
-     */
-    Builder1 prompt(@Nonnull final PromptTemplatingModuleConfigPrompt prompt);
-  }
-
-  /** Builder helper class. */
-  public interface Builder1 {
     /**
      * Set the model of this {@link PromptTemplatingModuleConfig} instance.
      *
