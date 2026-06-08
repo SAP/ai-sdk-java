@@ -10,6 +10,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 import static com.sap.ai.sdk.core.AiCoreService.DEFAULT_RESOURCE_GROUP;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.tuple;
 
 import com.sap.ai.sdk.core.client.WireMockTestServer;
 import com.sap.ai.sdk.core.model.AiDeployment;
@@ -167,6 +168,25 @@ class DeploymentResolverTest extends WireMockTestServer {
     assertThat(DeploymentResolver.isDeploymentOfModel(gpt4AnyVersion, deployment)).isTrue();
     assertThat(DeploymentResolver.isDeploymentOfModel(gpt4Version1, deployment)).isFalse();
     assertThat(DeploymentResolver.isDeploymentOfModel(gpt4VersionLatest, deployment)).isTrue();
+  }
+
+  @Test
+  void testDeploymentResolvesToRunningTarget() {
+    wireMockServer.stubFor(
+        get(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("hasStoppedDeployment.json")
+                    .withHeader("content-type", "application/json")));
+
+    var deployment = resolver.getDeploymentIdByScenario(DEFAULT_RESOURCE_GROUP, "orchestration");
+
+    assertThat(deployment).isEqualTo("d4b1396b84c1944d");
+    assertThat(cache.get("default"))
+        .extracting(AiDeployment::getId, AiDeployment::getTargetStatus)
+        .contains(
+            tuple("d2a491b5010620b0", AiDeployment.TargetStatusEnum.STOPPED),
+            tuple("d4b1396b84c1944d", AiDeployment.TargetStatusEnum.RUNNING));
   }
 
   private record TestModel(String name, String version) implements AiModel {}

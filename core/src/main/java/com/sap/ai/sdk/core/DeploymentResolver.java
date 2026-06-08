@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.core;
 
+import static com.sap.ai.sdk.core.model.AiDeployment.TargetStatusEnum.RUNNING;
+
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.model.AiDeployment;
 import java.util.HashSet;
@@ -118,6 +120,7 @@ class DeploymentResolver {
       @Nonnull final String resourceGroup, @Nonnull final Predicate<AiDeployment> predicate) {
     return cache.getOrDefault(resourceGroup, new HashSet<>()).stream()
         .filter(predicate)
+        .filter(deployment -> deployment.getTargetStatus().equals(RUNNING))
         .findFirst()
         .map(AiDeployment::getId);
   }
