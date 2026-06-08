@@ -180,7 +180,6 @@ public class OrchestrationClient {
    * @return The completion output
    * @since 1.15.0
    */
-  @Beta
   @Nonnull
   public OrchestrationChatResponse chatCompletionUsingReference(
       @Nonnull final OrchestrationConfigReference reference) {
@@ -298,7 +297,6 @@ public class OrchestrationClient {
    * @return a new client.
    * @since 1.11.0
    */
-  @Beta
   @Nonnull
   public OrchestrationClient withHeader(@Nonnull final String key, @Nonnull final String value) {
     final var newClient = new OrchestrationClient(this.executor);

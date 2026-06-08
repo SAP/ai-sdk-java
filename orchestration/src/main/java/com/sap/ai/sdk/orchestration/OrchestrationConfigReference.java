@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -17,7 +16,6 @@ import lombok.Value;
 @Value
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter(AccessLevel.PACKAGE)
-@Beta
 public class OrchestrationConfigReference {
   String id;
   String scenario;

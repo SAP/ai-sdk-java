@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
  *
  * @since 1.2.0
  */
-@Beta
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class OrchestrationJacksonConfiguration {
 
@@ -32,6 +31,7 @@ public class OrchestrationJacksonConfiguration {
    *     href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/converter/json/Jackson2ObjectMapperBuilder.html">Jackson2ObjectMapperBuilder</a>
    */
   @Nonnull
+  @Beta
   public static ObjectMapper getOrchestrationObjectMapper() {
 
     final var module =

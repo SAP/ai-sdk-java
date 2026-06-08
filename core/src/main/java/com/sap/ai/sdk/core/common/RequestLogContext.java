@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.core.common;
 
-import com.google.common.annotations.Beta;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nonnull;
@@ -20,7 +19,6 @@ import org.slf4j.MDC;
  */
 @Slf4j
 @UtilityClass
-@Beta
 public class RequestLogContext {
 
   private static void setCallId(@Nonnull final String callId) {

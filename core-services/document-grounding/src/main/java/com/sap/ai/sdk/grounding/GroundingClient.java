@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.grounding;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.grounding.client.PipelinesApi;
 import com.sap.ai.sdk.grounding.client.RetrievalApi;
@@ -84,7 +83,6 @@ public class GroundingClient {
    * @return a new client.
    * @since 1.17.0
    */
-  @Beta
   @Nonnull
   public GroundingClient withHeader(@Nonnull final String key, @Nonnull final String value) {
     final var newClient = new GroundingClient(this.service, this.basePath);
