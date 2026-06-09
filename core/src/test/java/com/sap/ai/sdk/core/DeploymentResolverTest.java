@@ -179,7 +179,8 @@ class DeploymentResolverTest extends WireMockTestServer {
                     .withBodyFile("hasStoppedDeployment.json")
                     .withHeader("content-type", "application/json")));
 
-    final var deployment = resolver.getDeploymentIdByScenario(DEFAULT_RESOURCE_GROUP, "orchestration");
+    final var deployment =
+        resolver.getDeploymentIdByScenario(DEFAULT_RESOURCE_GROUP, "orchestration");
 
     assertThat(deployment).isEqualTo("d4b1396b84c1944d");
     assertThat(cache.get(DEFAULT_RESOURCE_GROUP))
