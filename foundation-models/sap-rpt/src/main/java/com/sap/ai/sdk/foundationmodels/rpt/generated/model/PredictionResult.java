@@ -75,7 +75,7 @@ public class PredictionResult
   /**
    * Set the confidence of this {@link PredictionResult} instance and return the same instance.
    *
-   * @param confidence The confidence of this {@link PredictionResult}
+   * @param confidence The confidence of the prediction (currently not provided).
    * @return The same instance of this {@link PredictionResult} class
    */
   @Nonnull
@@ -85,7 +85,7 @@ public class PredictionResult
   }
 
   /**
-   * Get confidence
+   * The confidence of the prediction (currently not provided).
    *
    * @return confidence The confidence of this {@link PredictionResult} instance.
    */
@@ -97,7 +97,7 @@ public class PredictionResult
   /**
    * Set the confidence of this {@link PredictionResult} instance.
    *
-   * @param confidence The confidence of this {@link PredictionResult}
+   * @param confidence The confidence of the prediction (currently not provided).
    */
   public void setConfidence(@Nullable final BigDecimal confidence) {
     this.confidence = confidence;

@@ -118,7 +118,7 @@ public class AiDeployment
   @JsonProperty("targetStatus")
   private TargetStatusEnum targetStatus;
 
-  /** Gets or Sets lastOperation */
+  /** Last operation applied to this deployment. */
   public enum LastOperationEnum {
     /** The CREATE option of this AiDeployment */
     CREATE("CREATE"),
@@ -496,7 +496,7 @@ public class AiDeployment
   /**
    * Set the lastOperation of this {@link AiDeployment} instance and return the same instance.
    *
-   * @param lastOperation The lastOperation of this {@link AiDeployment}
+   * @param lastOperation Last operation applied to this deployment.
    * @return The same instance of this {@link AiDeployment} class
    */
   @Nonnull
@@ -506,7 +506,7 @@ public class AiDeployment
   }
 
   /**
-   * Get lastOperation
+   * Last operation applied to this deployment.
    *
    * @return lastOperation The lastOperation of this {@link AiDeployment} instance.
    */
@@ -518,7 +518,7 @@ public class AiDeployment
   /**
    * Set the lastOperation of this {@link AiDeployment} instance.
    *
-   * @param lastOperation The lastOperation of this {@link AiDeployment}
+   * @param lastOperation Last operation applied to this deployment.
    */
   public void setLastOperation(@Nullable final LastOperationEnum lastOperation) {
     this.lastOperation = lastOperation;

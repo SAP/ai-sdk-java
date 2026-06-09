@@ -36,7 +36,10 @@ public class TargetColumnConfig
   @JsonProperty("prediction_placeholder")
   private PredictionPlaceholder predictionPlaceholder;
 
-  /** Gets or Sets taskType */
+  /**
+   * The type of prediction task for this column. If not provided, the model will infer the task
+   * type from the data.
+   */
   public enum TaskTypeEnum {
     /** The CLASSIFICATION option of this TargetColumnConfig */
     CLASSIFICATION("classification"),
@@ -170,7 +173,8 @@ public class TargetColumnConfig
   /**
    * Set the taskType of this {@link TargetColumnConfig} instance and return the same instance.
    *
-   * @param taskType The taskType of this {@link TargetColumnConfig}
+   * @param taskType The type of prediction task for this column. If not provided, the model will
+   *     infer the task type from the data.
    * @return The same instance of this {@link TargetColumnConfig} class
    */
   @Nonnull
@@ -180,7 +184,8 @@ public class TargetColumnConfig
   }
 
   /**
-   * Get taskType
+   * The type of prediction task for this column. If not provided, the model will infer the task
+   * type from the data.
    *
    * @return taskType The taskType of this {@link TargetColumnConfig} instance.
    */
@@ -192,7 +197,8 @@ public class TargetColumnConfig
   /**
    * Set the taskType of this {@link TargetColumnConfig} instance.
    *
-   * @param taskType The taskType of this {@link TargetColumnConfig}
+   * @param taskType The type of prediction task for this column. If not provided, the model will
+   *     infer the task type from the data.
    */
   public void setTaskType(@Nullable final TaskTypeEnum taskType) {
     this.taskType = taskType;
