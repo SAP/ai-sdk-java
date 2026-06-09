@@ -171,7 +171,7 @@ class DeploymentResolverTest extends WireMockTestServer {
   }
 
   @Test
-  void testDeploymentResolvesToRunningTarget() {
+  void testCacheContainsRunningDeployments() {
     wireMockServer.stubFor(
         get(anyUrl())
             .willReturn(
@@ -184,10 +184,8 @@ class DeploymentResolverTest extends WireMockTestServer {
 
     assertThat(deployment).isEqualTo("d4b1396b84c1944d");
     assertThat(cache.get(DEFAULT_RESOURCE_GROUP))
-        .extracting(AiDeployment::getId, AiDeployment::getTargetStatus)
-        .contains(
-            tuple("d2a491b5010620b0", AiDeployment.TargetStatusEnum.STOPPED),
-            tuple("d4b1396b84c1944d", AiDeployment.TargetStatusEnum.RUNNING));
+        .extracting(AiDeployment::getId, AiDeployment::getStatus)
+        .containsExactly(tuple("d4b1396b84c1944d", AiDeploymentStatus.RUNNING));
   }
 
   private record TestModel(String name, String version) implements AiModel {}
