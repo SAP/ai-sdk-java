@@ -120,7 +120,7 @@ class DeploymentResolver {
       @Nonnull final String resourceGroup, @Nonnull final Predicate<AiDeployment> predicate) {
     return cache.getOrDefault(resourceGroup, new HashSet<>()).stream()
         .filter(predicate)
-        .filter(deployment -> deployment.getTargetStatus().equals(RUNNING))
+        .filter(deployment -> RUNNING.equals(deployment.getTargetStatus()))
         .findFirst()
         .map(AiDeployment::getId);
   }
