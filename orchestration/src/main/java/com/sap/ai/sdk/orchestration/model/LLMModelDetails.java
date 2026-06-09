@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -39,7 +38,7 @@ public class LLMModelDetails
   private String version = "latest";
 
   @JsonProperty("params")
-  private Map<String, Object> params = new HashMap<>();
+  private LLMModelDetailsParams params;
 
   @JsonProperty("timeout")
   private Integer timeout = 600;
@@ -118,50 +117,31 @@ public class LLMModelDetails
   /**
    * Set the params of this {@link LLMModelDetails} instance and return the same instance.
    *
-   * @param params Additional parameters for the model. Default values are used for mandatory
-   *     parameters.
+   * @param params The params of this {@link LLMModelDetails}
    * @return The same instance of this {@link LLMModelDetails} class
    */
   @Nonnull
-  public LLMModelDetails params(@Nullable final Map<String, Object> params) {
+  public LLMModelDetails params(@Nullable final LLMModelDetailsParams params) {
     this.params = params;
     return this;
   }
 
   /**
-   * Put one params instance to this {@link LLMModelDetails} instance.
-   *
-   * @param key The String key of this params instance
-   * @param paramsItem The params that should be added under the given key
-   * @return The same instance of type {@link LLMModelDetails}
-   */
-  @Nonnull
-  public LLMModelDetails putparamsItem(
-      @Nonnull final String key, @Nullable final Object paramsItem) {
-    if (this.params == null) {
-      this.params = new HashMap<>();
-    }
-    this.params.put(key, paramsItem);
-    return this;
-  }
-
-  /**
-   * Additional parameters for the model. Default values are used for mandatory parameters.
+   * Get params
    *
    * @return params The params of this {@link LLMModelDetails} instance.
    */
   @Nonnull
-  public Map<String, Object> getParams() {
+  public LLMModelDetailsParams getParams() {
     return params;
   }
 
   /**
    * Set the params of this {@link LLMModelDetails} instance.
    *
-   * @param params Additional parameters for the model. Default values are used for mandatory
-   *     parameters.
+   * @param params The params of this {@link LLMModelDetails}
    */
-  public void setParams(@Nullable final Map<String, Object> params) {
+  public void setParams(@Nullable final LLMModelDetailsParams params) {
     this.params = params;
   }
 

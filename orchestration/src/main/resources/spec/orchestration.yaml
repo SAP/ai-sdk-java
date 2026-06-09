@@ -1208,6 +1208,11 @@ components:
         params:
           type: object
           description: Additional parameters for the model. Default values are used for mandatory parameters.
+          properties:
+            temperature:
+              type: number
+              format: float
+              description: Controls randomness.
           additionalProperties: true
           example:
             max_completion_tokens: 300 # max_tokens param has been deprecated in Azure Open AI spec
@@ -2293,8 +2298,6 @@ components:
       properties:
         config_ref:
           $ref: "#/components/schemas/CompletionRequestConfigurationReferenceByIdConfigRef"
-        config:
-          $ref: "#/components/schemas/OrchestrationConfig"
         placeholder_values:
           type: object
           example:
@@ -2326,8 +2329,6 @@ components:
       properties:
         config_ref:
           $ref: "#/components/schemas/CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef"
-        config:
-          $ref: "#/components/schemas/OrchestrationConfig"
         placeholder_values:
           type: object
           example:
