@@ -18,7 +18,7 @@
 
 ### 📈 Improvements
 
--
+- [Core] Optimized the deployments cache to store only `RUNNING` deployments, ensuring that requests do not resolve to `STOPPED` instances
 
 ### 🐛 Fixed Issues
 
