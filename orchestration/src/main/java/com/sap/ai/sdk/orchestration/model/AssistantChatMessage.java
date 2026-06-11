@@ -99,7 +99,7 @@ public class AssistantChatMessage implements ChatMessage
   private List<MessageToolCall> toolCalls = new ArrayList<>();
 
   @JsonProperty("reasoning_content")
-  private String reasoningContent;
+  private List<ReasoningBlock> reasoningContent = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -251,23 +251,38 @@ public class AssistantChatMessage implements ChatMessage
    * instance.
    *
    * @param reasoningContent Reasoning or thinking content from the model&#39;s previous turn.
-   *     Required when using extended thinking with tool calls for Anthropic Claude Models.
    * @return The same instance of this {@link AssistantChatMessage} class
    */
   @Nonnull
-  public AssistantChatMessage reasoningContent(@Nullable final String reasoningContent) {
+  public AssistantChatMessage reasoningContent(
+      @Nullable final List<ReasoningBlock> reasoningContent) {
     this.reasoningContent = reasoningContent;
     return this;
   }
 
   /**
-   * Reasoning or thinking content from the model&#39;s previous turn. Required when using extended
-   * thinking with tool calls for Anthropic Claude Models.
+   * Add one reasoningContent instance to this {@link AssistantChatMessage}.
+   *
+   * @param reasoningContentItem The reasoningContent that should be added
+   * @return The same instance of type {@link AssistantChatMessage}
+   */
+  @Nonnull
+  public AssistantChatMessage addReasoningContentItem(
+      @Nonnull final ReasoningBlock reasoningContentItem) {
+    if (this.reasoningContent == null) {
+      this.reasoningContent = new ArrayList<>();
+    }
+    this.reasoningContent.add(reasoningContentItem);
+    return this;
+  }
+
+  /**
+   * Reasoning or thinking content from the model&#39;s previous turn.
    *
    * @return reasoningContent The reasoningContent of this {@link AssistantChatMessage} instance.
    */
   @Nonnull
-  public String getReasoningContent() {
+  public List<ReasoningBlock> getReasoningContent() {
     return reasoningContent;
   }
 
@@ -275,9 +290,8 @@ public class AssistantChatMessage implements ChatMessage
    * Set the reasoningContent of this {@link AssistantChatMessage} instance.
    *
    * @param reasoningContent Reasoning or thinking content from the model&#39;s previous turn.
-   *     Required when using extended thinking with tool calls for Anthropic Claude Models.
    */
-  public void setReasoningContent(@Nullable final String reasoningContent) {
+  public void setReasoningContent(@Nullable final List<ReasoningBlock> reasoningContent) {
     this.reasoningContent = reasoningContent;
   }
 
