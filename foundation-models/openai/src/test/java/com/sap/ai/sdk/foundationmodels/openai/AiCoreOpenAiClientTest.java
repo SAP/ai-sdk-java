@@ -1,13 +1,20 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.deleteRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.openai.models.ReasoningEffort;
 import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseCancelParams;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseDeleteParams;
 import com.openai.models.responses.ResponseOutputMessage;
+import com.openai.models.responses.ResponseRetrieveParams;
 import com.openai.models.responses.ResponseStatus;
 import com.openai.models.responses.ResponseStreamEvent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -70,6 +77,57 @@ class AiCoreOpenAiClientTest {
     try (var stream = responseService.createStreaming(params)) {
       stream.stream().forEach(AiCoreOpenAiClientTest::assertCreateResponseStreaming);
     }
+  }
+
+  @Test
+  void testRetrieveResponseServiceCall() {
+    final var responseService = client.responses();
+    final var params =
+        ResponseRetrieveParams.builder()
+            .responseId("resp_07bcc4ce7d57e28d006a19115b9848819588503af93015f462")
+            .build();
+
+    final var response = responseService.retrieve(params);
+
+    assertThat(response).isNotNull();
+    assertThat(response.isValid()).isTrue();
+    assertThat(response.id()).isEqualTo("resp_07bcc4ce7d57e28d006a19115b9848819588503af93015f462");
+    assertThat(response.status()).contains(ResponseStatus.COMPLETED);
+    assertThat(response.model().asString()).isEqualTo("gpt-5-2025-08-07-dz-std");
+    final var message = response.output().get(1).asMessage();
+    assertThat(message.content().get(0).asOutputText().text())
+        .isEqualTo("Hi! How can I help you today?");
+  }
+
+  @Test
+  void testCancelResponseServiceCall() {
+    final var responseService = client.responses();
+    final var params =
+        ResponseCancelParams.builder()
+            .responseId("resp_0960af38c651a868006a1911b68a448194b0918d31bfa6f586")
+            .build();
+
+    final var response = responseService.cancel(params);
+
+    assertThat(response).isNotNull();
+    assertThat(response.isValid()).isTrue();
+    assertThat(response.id()).isEqualTo("resp_0960af38c651a868006a1911b68a448194b0918d31bfa6f586");
+    assertThat(response.status()).contains(ResponseStatus.CANCELLED);
+    assertThat(response.background()).contains(true);
+  }
+
+  @Test
+  void testDeleteResponseServiceCall() {
+    final var responseService = client.responses();
+    final var params =
+        ResponseDeleteParams.builder()
+            .responseId("resp_07bcc4ce7d57e28d006a19115b9848819588503af93015f462")
+            .build();
+
+    assertThatNoException().isThrownBy(() -> responseService.delete(params));
+    verify(
+        deleteRequestedFor(
+            urlMatching("/responses/resp_07bcc4ce7d57e28d006a19115b9848819588503af93015f462")));
   }
 
   static void assertCreateResponse(@Nonnull final Response response) {

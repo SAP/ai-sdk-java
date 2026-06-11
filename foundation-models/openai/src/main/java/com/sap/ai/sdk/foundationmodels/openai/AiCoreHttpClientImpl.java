@@ -42,8 +42,9 @@ class AiCoreHttpClientImpl implements HttpClient {
   private static final String SSE_MEDIA_TYPE = "text/event-stream";
   private static final Map<String, Set<String>> ALLOWED_OPERATIONS =
       Map.of(
-          "/v1/responses", Set.of("POST"),
-          "/v1/responses/[^/]+/compact", Set.of("POST"));
+          "/responses", Set.of("POST"),
+          "/responses/[^/]+", Set.of("GET", "DELETE"),
+          "/responses/[^/]+/cancel", Set.of("POST"));
 
   @Override
   @Nonnull
@@ -83,7 +84,7 @@ class AiCoreHttpClientImpl implements HttpClient {
   }
 
   private static void validateAllowedOperation(@Nonnull final HttpRequest request) {
-    final var endpoint = "/v1/" + String.join("/", request.pathSegments());
+    final var endpoint = "/" + String.join("/", request.pathSegments());
     final var method = request.method().name();
 
     // Find matching path pattern

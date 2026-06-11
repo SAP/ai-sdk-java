@@ -1,8 +1,10 @@
 package com.sap.ai.sdk.app.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import com.openai.models.responses.ResponseOutputItem;
+import com.openai.models.responses.ResponseStatus;
 import com.sap.ai.sdk.app.services.AiCoreOpenAiService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,5 +56,45 @@ class AiCoreOpenAiTest {
                 }
               });
     }
+  }
+
+  @Test
+  void testRetrieveResponse() {
+    final var created = service.createPersistentResponse("Say hi.", false);
+    assertThat(created.id()).isNotBlank();
+
+    final var retrieved = service.retrieveResponse(created.id());
+    assertThat(retrieved).isNotNull();
+    assertThat(retrieved.id()).isEqualTo(created.id());
+
+    // Cleanup
+    service.deleteResponse(created.id());
+  }
+
+  @Test
+  void testCancelResponse() {
+    final var created =
+        service.createPersistentResponse(
+            "Write an extremely detailed 10-page essay covering the full history of distributed"
+                + " systems from the 1960s to today. Include subsections, citations, and concrete"
+                + " examples for every decade.",
+            true);
+    assertThat(created.id()).isNotBlank();
+
+    final var cancelled = service.cancelResponse(created.id());
+    assertThat(cancelled).isNotNull();
+    assertThat(cancelled.id()).isEqualTo(created.id());
+    assertThat(cancelled.status()).contains(ResponseStatus.CANCELLED);
+
+    // Cleanup
+    service.deleteResponse(created.id());
+  }
+
+  @Test
+  void testDeleteResponse() {
+    final var created = service.createPersistentResponse("Say hi.", false);
+    assertThat(created.id()).isNotBlank();
+
+    assertThatNoException().isThrownBy(() -> service.deleteResponse(created.id()));
   }
 }
