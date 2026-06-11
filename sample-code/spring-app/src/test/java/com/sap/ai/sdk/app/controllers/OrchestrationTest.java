@@ -10,6 +10,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.app.services.OrchestrationService.Translation;
+import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
@@ -58,6 +59,8 @@ class OrchestrationTest {
 
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotEmpty();
+    assertThat(result.getLastMessage()).isInstanceOf(AssistantMessage.class);
+    assertThat(result.getLastMessage()).isNotNull();
   }
 
   @Test
