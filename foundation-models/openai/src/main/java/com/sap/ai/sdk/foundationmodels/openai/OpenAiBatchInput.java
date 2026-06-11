@@ -25,7 +25,6 @@ import lombok.val;
  *
  * @since 1.20.0
  */
-@Beta
 @JsonSerialize(using = BatchInputSerializer.class)
 public class OpenAiBatchInput {
   private static final ObjectMapper mapper = getDefaultObjectMapper();
@@ -38,6 +37,7 @@ public class OpenAiBatchInput {
    *
    * @param chatCompletionRequests the list of chat completion requests to include in the batch
    */
+  @Beta
   public OpenAiBatchInput(@Nonnull final OpenAiChatCompletionRequest... chatCompletionRequests) {
     for (int i = 0; i < chatCompletionRequests.length; i++) {
       val request = chatCompletionRequests[i];

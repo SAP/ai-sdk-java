@@ -121,8 +121,8 @@ final class ConfigToRequestTransformer {
         ModuleConfigs.create()
             .promptTemplating(
                 PromptTemplatingModuleConfig.create()
-                    .prompt(config.getTemplateConfig())
-                    .model(llmConfig));
+                    .model(llmConfig)
+                    .prompt(config.getTemplateConfig()));
 
     Option.of(config.getFilteringConfig()).forEach(moduleConfig::filtering);
     Option.of(config.getMaskingConfig()).forEach(moduleConfig::masking);
