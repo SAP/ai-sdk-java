@@ -12,9 +12,9 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] Added `GEMINI_3_1_FLASH_LITE` to model list in `OrchestrationAiModel`.
 - [Batch] Added a new `BatchesApi` client to access the [Batch Service API](https://github.tools.sap/AI/llm-batch-service).
-- Added new OpenAI GPT-5.5 model: `OpenAiModel.GPT_55`and `OrchestrationAiModel.GPT_55`.
+- [Orchestration] Added `GEMINI_3_1_FLASH_LITE`, `GEMINI_3_5_FLASH`, `GPT_55`, `SONAR_DEEP_RESEARCH`, and `LLAMA_CINDERELLA_DN`  to model list in `OrchestrationAiModel`.
+- [OpenAI] Added `GPT_55` to model list in `OpenAiModel`.
 
 ### 📈 Improvements
 
