@@ -110,7 +110,7 @@ public class MetadataConfigurationResponse
   @JsonProperty("labels")
   private List<MetadataConfigurationRequestLabelsInner> labels = new ArrayList<>();
 
-  /** Gets or Sets enumerationStatus */
+  /** Status of metadata enumeration for the configuration. */
   public enum EnumerationStatusEnum {
     /** The NEW option of this MetadataConfigurationResponse */
     NEW("NEW"),
@@ -416,7 +416,7 @@ public class MetadataConfigurationResponse
    * Set the enumerationStatus of this {@link MetadataConfigurationResponse} instance and return the
    * same instance.
    *
-   * @param enumerationStatus The enumerationStatus of this {@link MetadataConfigurationResponse}
+   * @param enumerationStatus Status of metadata enumeration for the configuration.
    * @return The same instance of this {@link MetadataConfigurationResponse} class
    */
   @Nonnull
@@ -427,7 +427,7 @@ public class MetadataConfigurationResponse
   }
 
   /**
-   * Get enumerationStatus
+   * Status of metadata enumeration for the configuration.
    *
    * @return enumerationStatus The enumerationStatus of this {@link MetadataConfigurationResponse}
    *     instance.
@@ -440,7 +440,7 @@ public class MetadataConfigurationResponse
   /**
    * Set the enumerationStatus of this {@link MetadataConfigurationResponse} instance.
    *
-   * @param enumerationStatus The enumerationStatus of this {@link MetadataConfigurationResponse}
+   * @param enumerationStatus Status of metadata enumeration for the configuration.
    */
   public void setEnumerationStatus(@Nullable final EnumerationStatusEnum enumerationStatus) {
     this.enumerationStatus = enumerationStatus;
