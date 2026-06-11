@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "DELETE",
+    "urlPattern": "/responses/resp_[A-Za-z0-9]+"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "deleted": true,
+      "id": "resp_07bcc4ce7d57e28d006a19115b9848819588503af93015f462",
+      "object": "response.deleted"
+    }
+  }
+}
