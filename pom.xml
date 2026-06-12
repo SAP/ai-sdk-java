@@ -684,7 +684,7 @@
               <includeProjectDependencies>true</includeProjectDependencies>
               <includePluginDependencies>true</includePluginDependencies>
               <classpathScope>compile</classpathScope>
-              <mainClass>com.sap.ai.sdk.architecture.ModelInheritanceMain</mainClass>
+              <mainClass>com.sap.ai.sdk.architecture.InheritGeneratedModel</mainClass>
               <systemProperties>
                 <systemProperty>
                   <key>model.inheritance.basePackage</key>
