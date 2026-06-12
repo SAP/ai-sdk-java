@@ -36,6 +36,18 @@ public final class InheritGeneratedModel {
           "not annotated with @AllowModelInheritance",
           input -> !input.isAnnotatedWith(AllowModelInheritance.class));
 
+  private static final ArchCondition<JavaClass> NOT_INHERIT_FROM_MODEL_TYPES =
+      new ArchCondition<>("not extend or implement com.sap.ai.sdk..model types") {
+        @Override
+        public void check(final JavaClass item, final ConditionEvents events) {
+          final var superClass = item.getRawSuperclass();
+          final var extendsModel = superClass.isPresent() && MODEL_PACKAGE.test(superClass.get());
+          if (extendsModel || item.getRawInterfaces().stream().anyMatch(MODEL_PACKAGE)) {
+            events.add(violated(item, MSG_VIOLATION.formatted(item.getFullName())));
+          }
+        }
+      };
+
   private InheritGeneratedModel() {}
 
   /**
@@ -54,24 +66,8 @@ public final class InheritGeneratedModel {
     classes()
         .that(NOT_IN_MODEL_PACKAGE)
         .and(NOT_ALLOWLISTED)
-        .should(
-            new ArchCondition<>("not extend or implement com.sap.ai.sdk..model types") {
-              @Override
-              public void check(final JavaClass item, final ConditionEvents events) {
-                if (targetsModelPackage(item)) {
-                  events.add(violated(item, MSG_VIOLATION.formatted(item.getFullName())));
-                }
-              }
-            })
+        .should(NOT_INHERIT_FROM_MODEL_TYPES)
         .check(importedClasses);
-  }
-
-  private static boolean targetsModelPackage(final JavaClass source) {
-    final var superClass = source.getRawSuperclass();
-    if (superClass.isPresent() && MODEL_PACKAGE.test(superClass.get())) {
-      return true;
-    }
-    return source.getRawInterfaces().stream().anyMatch(MODEL_PACKAGE);
   }
 
   /**
