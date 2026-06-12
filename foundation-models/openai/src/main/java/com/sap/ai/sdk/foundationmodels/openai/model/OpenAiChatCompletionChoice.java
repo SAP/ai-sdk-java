@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sap.ai.sdk.architecture.AllowModelInheritance;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatAssistantMessage;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -15,6 +16,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 @Deprecated
+@AllowModelInheritance(reason = "Maintains backward-compatible wrapper inheritance for OpenAI model types.")
 public class OpenAiChatCompletionChoice extends OpenAiCompletionChoice {
   /** Completion chat message. */
   @JsonProperty("message")
