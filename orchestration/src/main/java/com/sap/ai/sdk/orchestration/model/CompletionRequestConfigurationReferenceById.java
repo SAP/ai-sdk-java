@@ -35,7 +35,7 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
   private CompletionRequestConfigurationReferenceByIdConfigRef configRef;
 
   @JsonProperty("config")
-  private OrchestrationConfig config;
+  private PartialOrchestrationConfig config;
 
   @JsonProperty("placeholder_values")
   private Map<String, String> placeholderValues = new HashMap<>();
@@ -93,7 +93,7 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
    */
   @Nonnull
   public CompletionRequestConfigurationReferenceById config(
-      @Nullable final OrchestrationConfig config) {
+      @Nullable final PartialOrchestrationConfig config) {
     this.config = config;
     return this;
   }
@@ -104,7 +104,7 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
    * @return config The config of this {@link CompletionRequestConfigurationReferenceById} instance.
    */
   @Nonnull
-  public OrchestrationConfig getConfig() {
+  public PartialOrchestrationConfig getConfig() {
     return config;
   }
 
@@ -113,7 +113,7 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
    *
    * @param config The config of this {@link CompletionRequestConfigurationReferenceById}
    */
-  public void setConfig(@Nullable final OrchestrationConfig config) {
+  public void setConfig(@Nullable final PartialOrchestrationConfig config) {
     this.config = config;
   }
 

@@ -36,7 +36,7 @@ public class CompletionRequestConfigurationReferenceByNameScenarioVersion
   private CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef configRef;
 
   @JsonProperty("config")
-  private OrchestrationConfig config;
+  private PartialOrchestrationConfig config;
 
   @JsonProperty("placeholder_values")
   private Map<String, String> placeholderValues = new HashMap<>();
@@ -102,7 +102,7 @@ public class CompletionRequestConfigurationReferenceByNameScenarioVersion
    */
   @Nonnull
   public CompletionRequestConfigurationReferenceByNameScenarioVersion config(
-      @Nullable final OrchestrationConfig config) {
+      @Nullable final PartialOrchestrationConfig config) {
     this.config = config;
     return this;
   }
@@ -114,7 +114,7 @@ public class CompletionRequestConfigurationReferenceByNameScenarioVersion
    *     CompletionRequestConfigurationReferenceByNameScenarioVersion} instance.
    */
   @Nonnull
-  public OrchestrationConfig getConfig() {
+  public PartialOrchestrationConfig getConfig() {
     return config;
   }
 
@@ -125,7 +125,7 @@ public class CompletionRequestConfigurationReferenceByNameScenarioVersion
    * @param config The config of this {@link
    *     CompletionRequestConfigurationReferenceByNameScenarioVersion}
    */
-  public void setConfig(@Nullable final OrchestrationConfig config) {
+  public void setConfig(@Nullable final PartialOrchestrationConfig config) {
     this.config = config;
   }
 
