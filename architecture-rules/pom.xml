@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.sap.ai.sdk</groupId>
+    <artifactId>sdk-parent</artifactId>
+    <version>1.20.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>architecture-rules</artifactId>
+  <name>Architecture rules</name>
+  <description>Shared ArchUnit-based architecture rules for the SAP AI SDK for Java.</description>
+
+  <properties>
+    <project.rootdir>${project.basedir}/../</project.rootdir>
+    <coverage.complexity>0%</coverage.complexity>
+    <coverage.line>0%</coverage.line>
+    <coverage.instruction>0%</coverage.instruction>
+    <coverage.branch>0%</coverage.branch>
+    <coverage.method>0%</coverage.method>
+    <coverage.class>0%</coverage.class>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.tngtech.archunit</groupId>
+      <artifactId>archunit</artifactId>
+      <version>1.4.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+    </dependency>
+  </dependencies>
+</project>

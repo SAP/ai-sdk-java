@@ -31,6 +31,7 @@
   <modules>
     <module>core</module>
     <module>orchestration</module>
+    <module>architecture-rules</module>
     <module>core-services/batch</module>
     <module>core-services/document-grounding</module>
     <module>core-services/prompt-registry</module>
@@ -70,6 +71,7 @@
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.23.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
+    <archunit.version>1.4.1</archunit.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.22.0</jackson.version>
     <logback.version>1.5.34</logback.version>
@@ -219,6 +221,11 @@
       <dependency>
         <groupId>com.sap.ai.sdk</groupId>
         <artifactId>orchestration</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sap.ai.sdk</groupId>
+        <artifactId>architecture-rules</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -649,6 +656,44 @@
             <logback.configurationFile>${project.rootdir}/logback.xml</logback.configurationFile>
           </systemPropertyVariables>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>3.6.2</version>
+        <dependencies>
+          <dependency>
+            <groupId>com.sap.ai.sdk</groupId>
+            <artifactId>architecture-rules</artifactId>
+            <version>${project.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit</artifactId>
+            <version>${archunit.version}</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <id>check-model-inheritance</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <phase>process-classes</phase>
+            <configuration>
+              <includeProjectDependencies>true</includeProjectDependencies>
+              <includePluginDependencies>true</includePluginDependencies>
+              <classpathScope>compile</classpathScope>
+              <mainClass>com.sap.ai.sdk.architecture.InheritGeneratedModel</mainClass>
+              <systemProperties>
+                <systemProperty>
+                  <key>model.inheritance.basePackage</key>
+                  <value>${project.groupId}</value>
+                </systemProperty>
+              </systemProperties>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <!-- phase: verify -->
       <plugin>
