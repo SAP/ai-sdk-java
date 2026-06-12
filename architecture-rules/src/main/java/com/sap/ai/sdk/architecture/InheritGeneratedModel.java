@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.architecture;
 
+import static com.tngtech.archunit.lang.SimpleConditionEvent.violated;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 import com.tngtech.archunit.base.DescribedPredicate;
@@ -8,7 +9,6 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ConditionEvents;
-import com.tngtech.archunit.lang.SimpleConditionEvent;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -22,10 +22,12 @@ import javax.annotation.Nonnull;
  */
 public final class InheritGeneratedModel {
   private static final DescribedPredicate<JavaClass> MODEL_PACKAGE =
-      JavaClass.Predicates.resideInAPackage("..model");
+      JavaClass.Predicates.resideInAPackage("com.sap.ai.sdk..model");
+  private static final String MSG_VIOLATION =
+      "%s inherits from a type in a package matching 'com.sap.ai.sdk..model' while not residing in such a package itself. Use @AllowModelInheritance(reason = \"...\") for approved exceptions.";
 
   private static final DescribedPredicate<JavaClass> NOT_IN_MODEL_PACKAGE =
-      new DescribedPredicate<>("not residing in a package ending with .model") {
+      new DescribedPredicate<>("not residing in a package matching com.sap.ai.sdk..model") {
         @Override
         public boolean test(final JavaClass input) {
           return !MODEL_PACKAGE.test(input);
@@ -59,16 +61,11 @@ public final class InheritGeneratedModel {
         .that(NOT_IN_MODEL_PACKAGE)
         .and(NOT_ALLOWLISTED)
         .should(
-            new ArchCondition<>("not extend or implement .model types") {
+            new ArchCondition<>("not extend or implement com.sap.ai.sdk..model types") {
               @Override
               public void check(final JavaClass item, final ConditionEvents events) {
                 if (targetsModelPackage(item)) {
-                  events.add(
-                      SimpleConditionEvent.violated(
-                          item,
-                          item.getFullName()
-                              + " inherits from a type in a package ending with '.model' while not residing in such a package itself. "
-                              + "Use @AllowModelInheritance(reason = \"...\") for approved exceptions."));
+                  events.add(violated(item, MSG_VIOLATION.formatted(item.getFullName())));
                 }
               }
             })
