@@ -27,20 +27,14 @@ public final class InheritGeneratedModel {
       "%s inherits from a type in a package matching 'com.sap.ai.sdk..model' while not residing in such a package itself. Use @AllowModelInheritance(reason = \"...\") for approved exceptions.";
 
   private static final DescribedPredicate<JavaClass> NOT_IN_MODEL_PACKAGE =
-      new DescribedPredicate<>("not residing in a package matching com.sap.ai.sdk..model") {
-        @Override
-        public boolean test(final JavaClass input) {
-          return !MODEL_PACKAGE.test(input);
-        }
-      };
+      DescribedPredicate.describe(
+          "not residing in a package matching com.sap.ai.sdk..model",
+          input -> !MODEL_PACKAGE.test(input));
 
   private static final DescribedPredicate<JavaClass> NOT_ALLOWLISTED =
-      new DescribedPredicate<>("not annotated with @AllowModelInheritance") {
-        @Override
-        public boolean test(final JavaClass input) {
-          return !input.isAnnotatedWith(AllowModelInheritance.class);
-        }
-      };
+      DescribedPredicate.describe(
+          "not annotated with @AllowModelInheritance",
+          input -> !input.isAnnotatedWith(AllowModelInheritance.class));
 
   private InheritGeneratedModel() {}
 
