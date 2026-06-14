@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * The prompt template to be used. Can be either a user defined template or a reference to a
- * template in the prompt registry. If omitted, messages_history must be provided in the request
- * body.
+ * template in the prompt registry.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({

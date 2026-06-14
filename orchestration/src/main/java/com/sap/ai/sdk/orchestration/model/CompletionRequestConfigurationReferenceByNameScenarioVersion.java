@@ -35,9 +35,6 @@ public class CompletionRequestConfigurationReferenceByNameScenarioVersion
   @JsonProperty("config_ref")
   private CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef configRef;
 
-  @JsonProperty("config")
-  private OrchestrationConfig config;
-
   @JsonProperty("placeholder_values")
   private Map<String, String> placeholderValues = new HashMap<>();
 
@@ -89,44 +86,6 @@ public class CompletionRequestConfigurationReferenceByNameScenarioVersion
       @Nonnull
           final CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef configRef) {
     this.configRef = configRef;
-  }
-
-  /**
-   * Set the config of this {@link CompletionRequestConfigurationReferenceByNameScenarioVersion}
-   * instance and return the same instance.
-   *
-   * @param config The config of this {@link
-   *     CompletionRequestConfigurationReferenceByNameScenarioVersion}
-   * @return The same instance of this {@link
-   *     CompletionRequestConfigurationReferenceByNameScenarioVersion} class
-   */
-  @Nonnull
-  public CompletionRequestConfigurationReferenceByNameScenarioVersion config(
-      @Nullable final OrchestrationConfig config) {
-    this.config = config;
-    return this;
-  }
-
-  /**
-   * Get config
-   *
-   * @return config The config of this {@link
-   *     CompletionRequestConfigurationReferenceByNameScenarioVersion} instance.
-   */
-  @Nonnull
-  public OrchestrationConfig getConfig() {
-    return config;
-  }
-
-  /**
-   * Set the config of this {@link CompletionRequestConfigurationReferenceByNameScenarioVersion}
-   * instance.
-   *
-   * @param config The config of this {@link
-   *     CompletionRequestConfigurationReferenceByNameScenarioVersion}
-   */
-  public void setConfig(@Nullable final OrchestrationConfig config) {
-    this.config = config;
   }
 
   /**
@@ -290,7 +249,6 @@ public class CompletionRequestConfigurationReferenceByNameScenarioVersion
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (configRef != null) declaredFields.put("configRef", configRef);
-    if (config != null) declaredFields.put("config", config);
     if (placeholderValues != null) declaredFields.put("placeholderValues", placeholderValues);
     if (messagesHistory != null) declaredFields.put("messagesHistory", messagesHistory);
     return declaredFields;
@@ -326,8 +284,6 @@ public class CompletionRequestConfigurationReferenceByNameScenarioVersion
         && Objects.equals(
             this.configRef, completionRequestConfigurationReferenceByNameScenarioVersion.configRef)
         && Objects.equals(
-            this.config, completionRequestConfigurationReferenceByNameScenarioVersion.config)
-        && Objects.equals(
             this.placeholderValues,
             completionRequestConfigurationReferenceByNameScenarioVersion.placeholderValues)
         && Objects.equals(
@@ -337,8 +293,7 @@ public class CompletionRequestConfigurationReferenceByNameScenarioVersion
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        configRef, config, placeholderValues, messagesHistory, cloudSdkCustomFields);
+    return Objects.hash(configRef, placeholderValues, messagesHistory, cloudSdkCustomFields);
   }
 
   @Override
@@ -347,7 +302,6 @@ public class CompletionRequestConfigurationReferenceByNameScenarioVersion
     final StringBuilder sb = new StringBuilder();
     sb.append("class CompletionRequestConfigurationReferenceByNameScenarioVersion {\n");
     sb.append("    configRef: ").append(toIndentedString(configRef)).append("\n");
-    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     sb.append("    placeholderValues: ").append(toIndentedString(placeholderValues)).append("\n");
     sb.append("    messagesHistory: ").append(toIndentedString(messagesHistory)).append("\n");
     cloudSdkCustomFields.forEach(
