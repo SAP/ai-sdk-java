@@ -23,9 +23,12 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** PromptTemplatingModuleConfig */
+/**
+ * Partial prompt templating configuration for use with config_ref overrides. model is optional so
+ * that only the prompt can be overridden without repeating the model config.
+ */
 // CHECKSTYLE:OFF
-public class PromptTemplatingModuleConfig
+public class PartialPromptTemplatingModuleConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("prompt")
@@ -37,18 +40,18 @@ public class PromptTemplatingModuleConfig
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for PromptTemplatingModuleConfig. */
-  protected PromptTemplatingModuleConfig() {}
+  /** Default constructor for PartialPromptTemplatingModuleConfig. */
+  protected PartialPromptTemplatingModuleConfig() {}
 
   /**
-   * Set the prompt of this {@link PromptTemplatingModuleConfig} instance and return the same
+   * Set the prompt of this {@link PartialPromptTemplatingModuleConfig} instance and return the same
    * instance.
    *
-   * @param prompt The prompt of this {@link PromptTemplatingModuleConfig}
-   * @return The same instance of this {@link PromptTemplatingModuleConfig} class
+   * @param prompt The prompt of this {@link PartialPromptTemplatingModuleConfig}
+   * @return The same instance of this {@link PartialPromptTemplatingModuleConfig} class
    */
   @Nonnull
-  public PromptTemplatingModuleConfig prompt(
+  public PartialPromptTemplatingModuleConfig prompt(
       @Nullable final PromptTemplatingModuleConfigPrompt prompt) {
     this.prompt = prompt;
     return this;
@@ -57,7 +60,7 @@ public class PromptTemplatingModuleConfig
   /**
    * Get prompt
    *
-   * @return prompt The prompt of this {@link PromptTemplatingModuleConfig} instance.
+   * @return prompt The prompt of this {@link PartialPromptTemplatingModuleConfig} instance.
    */
   @Nonnull
   public PromptTemplatingModuleConfigPrompt getPrompt() {
@@ -65,23 +68,23 @@ public class PromptTemplatingModuleConfig
   }
 
   /**
-   * Set the prompt of this {@link PromptTemplatingModuleConfig} instance.
+   * Set the prompt of this {@link PartialPromptTemplatingModuleConfig} instance.
    *
-   * @param prompt The prompt of this {@link PromptTemplatingModuleConfig}
+   * @param prompt The prompt of this {@link PartialPromptTemplatingModuleConfig}
    */
   public void setPrompt(@Nullable final PromptTemplatingModuleConfigPrompt prompt) {
     this.prompt = prompt;
   }
 
   /**
-   * Set the model of this {@link PromptTemplatingModuleConfig} instance and return the same
+   * Set the model of this {@link PartialPromptTemplatingModuleConfig} instance and return the same
    * instance.
    *
-   * @param model The model of this {@link PromptTemplatingModuleConfig}
-   * @return The same instance of this {@link PromptTemplatingModuleConfig} class
+   * @param model The model of this {@link PartialPromptTemplatingModuleConfig}
+   * @return The same instance of this {@link PartialPromptTemplatingModuleConfig} class
    */
   @Nonnull
-  public PromptTemplatingModuleConfig model(@Nonnull final LLMModelDetails model) {
+  public PartialPromptTemplatingModuleConfig model(@Nullable final LLMModelDetails model) {
     this.model = model;
     return this;
   }
@@ -89,7 +92,7 @@ public class PromptTemplatingModuleConfig
   /**
    * Get model
    *
-   * @return model The model of this {@link PromptTemplatingModuleConfig} instance.
+   * @return model The model of this {@link PartialPromptTemplatingModuleConfig} instance.
    */
   @Nonnull
   public LLMModelDetails getModel() {
@@ -97,16 +100,17 @@ public class PromptTemplatingModuleConfig
   }
 
   /**
-   * Set the model of this {@link PromptTemplatingModuleConfig} instance.
+   * Set the model of this {@link PartialPromptTemplatingModuleConfig} instance.
    *
-   * @param model The model of this {@link PromptTemplatingModuleConfig}
+   * @param model The model of this {@link PartialPromptTemplatingModuleConfig}
    */
-  public void setModel(@Nonnull final LLMModelDetails model) {
+  public void setModel(@Nullable final LLMModelDetails model) {
     this.model = model;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link PromptTemplatingModuleConfig}.
+   * Get the names of the unrecognizable properties of the {@link
+   * PartialPromptTemplatingModuleConfig}.
    *
    * @return The set of properties names
    */
@@ -117,7 +121,7 @@ public class PromptTemplatingModuleConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link PromptTemplatingModuleConfig}
+   * Get the value of an unrecognizable property of this {@link PartialPromptTemplatingModuleConfig}
    * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
@@ -130,14 +134,14 @@ public class PromptTemplatingModuleConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "PromptTemplatingModuleConfig has no field with name '" + name + "'.");
+          "PartialPromptTemplatingModuleConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link PromptTemplatingModuleConfig} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link PartialPromptTemplatingModuleConfig} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -151,8 +155,8 @@ public class PromptTemplatingModuleConfig
   }
 
   /**
-   * Set an unrecognizable property of this {@link PromptTemplatingModuleConfig} instance. If the
-   * map previously contained a mapping for the key, the old value is replaced by the specified
+   * Set an unrecognizable property of this {@link PartialPromptTemplatingModuleConfig} instance. If
+   * the map previously contained a mapping for the key, the old value is replaced by the specified
    * value.
    *
    * @param customFieldName The name of the property
@@ -171,12 +175,12 @@ public class PromptTemplatingModuleConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final PromptTemplatingModuleConfig promptTemplatingModuleConfig =
-        (PromptTemplatingModuleConfig) o;
+    final PartialPromptTemplatingModuleConfig partialPromptTemplatingModuleConfig =
+        (PartialPromptTemplatingModuleConfig) o;
     return Objects.equals(
-            this.cloudSdkCustomFields, promptTemplatingModuleConfig.cloudSdkCustomFields)
-        && Objects.equals(this.prompt, promptTemplatingModuleConfig.prompt)
-        && Objects.equals(this.model, promptTemplatingModuleConfig.model);
+            this.cloudSdkCustomFields, partialPromptTemplatingModuleConfig.cloudSdkCustomFields)
+        && Objects.equals(this.prompt, partialPromptTemplatingModuleConfig.prompt)
+        && Objects.equals(this.model, partialPromptTemplatingModuleConfig.model);
   }
 
   @Override
@@ -188,7 +192,7 @@ public class PromptTemplatingModuleConfig
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class PromptTemplatingModuleConfig {\n");
+    sb.append("class PartialPromptTemplatingModuleConfig {\n");
     sb.append("    prompt: ").append(toIndentedString(prompt)).append("\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -209,21 +213,9 @@ public class PromptTemplatingModuleConfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link
-   * PromptTemplatingModuleConfig} instance with all required arguments.
+   * Create a new {@link PartialPromptTemplatingModuleConfig} instance. No arguments are required.
    */
-  public static Builder create() {
-    return (model) -> new PromptTemplatingModuleConfig().model(model);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the model of this {@link PromptTemplatingModuleConfig} instance.
-     *
-     * @param model The model of this {@link PromptTemplatingModuleConfig}
-     * @return The PromptTemplatingModuleConfig instance.
-     */
-    PromptTemplatingModuleConfig model(@Nonnull final LLMModelDetails model);
+  public static PartialPromptTemplatingModuleConfig create() {
+    return new PartialPromptTemplatingModuleConfig();
   }
 }

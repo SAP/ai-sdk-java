@@ -14,14 +14,10 @@ package com.sap.ai.sdk.prompt.registry.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/**
- * The prompt template to be used. Can be either a user defined template or a reference to a
- * template in the prompt registry. If omitted, messages_history must be provided in the request
- * body.
- */
+/** OrchestrationConfigResourceSpec */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = Template.class),
-  @JsonSubTypes.Type(value = TemplateRef.class),
+  @JsonSubTypes.Type(value = OrchestrationConfig.class),
+  @JsonSubTypes.Type(value = PartialOrchestrationConfig.class),
 })
-public interface PromptTemplatingModuleConfigPrompt {}
+public interface OrchestrationConfigResourceSpec {}
