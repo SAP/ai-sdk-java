@@ -67,7 +67,7 @@
     <surefire.version>3.5.6</surefire.version>
     <spring-ai.version>1.1.7</spring-ai.version>
     <spring-framework.version>6.2.19</spring-framework.version>
-    <reactor-core.version>3.8.5</reactor-core.version>
+    <reactor-core.version>3.8.6</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.23.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
@@ -77,7 +77,7 @@
     <commons-codec.version>1.22.0</commons-codec.version>
     <japicmp.version>0.26.1</japicmp.version>
     <!-- conflicts resolution -->
-    <micrometer.version>1.16.6</micrometer.version>
+    <micrometer.version>1.17.0</micrometer.version>
     <json.version>20260522</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <!-- Formatting -->
@@ -316,7 +316,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.22.0</version>
+          <version>7.23.0</version>
         </plugin>
         <plugin>
           <groupId>com.github.siom79.japicmp</groupId>
@@ -728,7 +728,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.14</version>
+        <version>0.8.15</version>
         <configuration>
           <excludes>
             <!-- Exclude generated clients and end to end application from test coverage -->
@@ -811,7 +811,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.9.8.3</version>
+        <version>4.10.2.0</version>
         <configuration>
           <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
