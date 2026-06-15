@@ -108,6 +108,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel LLAMA3_1_70B_INSTRUCT =
       new OrchestrationAiModel("meta--llama3.1-70b-instruct");
 
+  /** Meta Llama Cinderella DN model */
+  public static final OrchestrationAiModel LLAMA_CINDERELLA_DN =
+      new OrchestrationAiModel("llama-cinderella-dn");
+
   /** Cohere Command a Reasoning model */
   public static final OrchestrationAiModel COHERE_COMMAND_A_REASONING =
       new OrchestrationAiModel("cohere--command-a-reasoning");
@@ -409,6 +413,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_3_1_FLASH_LITE =
       new OrchestrationAiModel("gemini-3.1-flash-lite");
 
+  /** Google Cloud Platform Gemini 3.5 Flash model */
+  public static final OrchestrationAiModel GEMINI_3_5_FLASH =
+      new OrchestrationAiModel("gemini-3.5-flash");
+
   /**
    * Alephalpha-pharia-1-7b-control model
    *
@@ -433,6 +441,10 @@ public class OrchestrationAiModel {
 
   /** Perplexity AI Sonar Pro model */
   public static final OrchestrationAiModel SONAR_PRO = new OrchestrationAiModel("sonar-pro");
+
+  /** Perplexity AI Sonar Deep Research model */
+  public static final OrchestrationAiModel SONAR_DEEP_RESEARCH =
+      new OrchestrationAiModel("sonar-deep-research");
 
   /** SAP ABAP 1 model */
   public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
