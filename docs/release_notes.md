@@ -8,7 +8,8 @@
 
 ### 🔧 Compatibility Notes
 
--
+- `PromptTemplatingModuleConfig.Builder` has no `.prompt()` method anymore.
+  Use `PromptTemplatingModuleConfig.setPrompt()` instead.
 
 ### ✨ New Functionality
 
