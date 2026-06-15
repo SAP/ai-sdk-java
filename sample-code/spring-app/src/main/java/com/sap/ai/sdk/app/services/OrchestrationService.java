@@ -833,22 +833,25 @@ public class OrchestrationService {
   }
 
   private OrchestrationConfig buildOrchestrationConfig() {
+    final var prompt =
+        com.sap.ai.sdk.prompt.registry.model.Template.create()
+            .template(
+                UserChatMessage.create()
+                    .content(
+                        new UserChatMessageContent.InnerString(
+                            "Create {{?number}} paraphrases of {{?phrase}}"))
+                    .role(UserChatMessage.RoleEnum.USER))
+            .defaults(Map.of("number", "3"));
+
+    final var moduleConfig =
+        PromptTemplatingModuleConfig.create()
+            .model(LLMModelDetails.create().name(GPT_41_NANO.getName()));
+    moduleConfig.setPrompt(prompt);
+
     return OrchestrationConfig.create()
         .modules(
             OrchestrationConfigModules.createInnerModuleConfigs(
-                ModuleConfigs.create()
-                    .promptTemplating(
-                        PromptTemplatingModuleConfig.create()
-                            .prompt(
-                                com.sap.ai.sdk.prompt.registry.model.Template.create()
-                                    .template(
-                                        UserChatMessage.create()
-                                            .content(
-                                                new UserChatMessageContent.InnerString(
-                                                    "Create {{?number}} paraphrases of {{?phrase}}"))
-                                            .role(UserChatMessage.RoleEnum.USER))
-                                    .defaults(Map.of("number", "3")))
-                            .model(LLMModelDetails.create().name(GPT_41_NANO.getName())))));
+                ModuleConfigs.create().promptTemplating(moduleConfig)));
   }
 
   /**
