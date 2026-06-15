@@ -65,8 +65,7 @@
     <checkstyle.version>13.5.0</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.6</surefire.version>
-    <spring-ai.version>1.1.7</spring-ai.version>
-    <spring-framework.version>6.2.19</spring-framework.version>
+    <spring-ai.version>1.1.8</spring-ai.version>
     <reactor-core.version>3.8.6</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.23.0</mockito.version>
@@ -104,13 +103,6 @@
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-framework-bom</artifactId>
-        <version>${spring-framework.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
       <dependency>
         <groupId>com.sap.cloud.sdk</groupId>
         <artifactId>sdk-bom</artifactId>
