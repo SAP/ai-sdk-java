@@ -45,7 +45,7 @@ public class ConfigurationDocument
   @JsonProperty("createdTimestamp")
   private OffsetDateTime createdTimestamp;
 
-  /** Gets or Sets type */
+  /** Type of the resource. Can be FOLDER, DOCUMENT. */
   public enum TypeEnum {
     /** The FOLDER option of this ConfigurationDocument */
     FOLDER("FOLDER"),
@@ -245,7 +245,7 @@ public class ConfigurationDocument
   /**
    * Set the type of this {@link ConfigurationDocument} instance and return the same instance.
    *
-   * @param type The type of this {@link ConfigurationDocument}
+   * @param type Type of the resource. Can be FOLDER, DOCUMENT.
    * @return The same instance of this {@link ConfigurationDocument} class
    */
   @Nonnull
@@ -255,7 +255,7 @@ public class ConfigurationDocument
   }
 
   /**
-   * Get type
+   * Type of the resource. Can be FOLDER, DOCUMENT.
    *
    * @return type The type of this {@link ConfigurationDocument} instance.
    */
@@ -267,7 +267,7 @@ public class ConfigurationDocument
   /**
    * Set the type of this {@link ConfigurationDocument} instance.
    *
-   * @param type The type of this {@link ConfigurationDocument}
+   * @param type Type of the resource. Can be FOLDER, DOCUMENT.
    */
   public void setType(@Nullable final TypeEnum type) {
     this.type = type;
