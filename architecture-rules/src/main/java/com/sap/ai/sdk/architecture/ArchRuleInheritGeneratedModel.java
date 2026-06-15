@@ -5,9 +5,8 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 import com.tngtech.archunit.base.DescribedPredicate;
 import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.importer.ClassFileImporter;
-import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchCondition;
+import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.lang.ConditionEvents;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -17,10 +16,10 @@ import java.lang.annotation.Target;
 import javax.annotation.Nonnull;
 
 /**
- * Runs the global architecture rule that restricts inheritance from packages ending with {@code
+ * Shared ArchUnit rule that restricts inheritance from SAP AI SDK packages ending with {@code
  * .model}.
  */
-public final class InheritGeneratedModel {
+final class ArchRuleInheritGeneratedModel {
   private static final DescribedPredicate<JavaClass> MODEL_PACKAGE =
       JavaClass.Predicates.resideInAPackage("com.sap.ai.sdk..model");
   private static final String MSG_VIOLATION =
@@ -48,27 +47,14 @@ public final class InheritGeneratedModel {
         }
       };
 
-  private InheritGeneratedModel() {}
+  /** ArchUnit rule for non-model types inheriting from SDK model packages. */
+  static final ArchRule NO_NON_MODEL_INHERITANCE =
+      classes()
+          .that(NOT_IN_MODEL_PACKAGE)
+          .and(NOT_ALLOWLISTED)
+          .should(NOT_INHERIT_FROM_MODEL_TYPES);
 
-  /**
-   * Executes the inheritance rule for the package configured via {@code
-   * model.inheritance.basePackage}.
-   *
-   * @param args Unused command line arguments.
-   */
-  public static void main(final String[] args) {
-    final var targetPackage = System.getProperty("model.inheritance.basePackage", "");
-    final var importedClasses =
-        new ClassFileImporter()
-            .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
-            .importPackages(targetPackage);
-
-    classes()
-        .that(NOT_IN_MODEL_PACKAGE)
-        .and(NOT_ALLOWLISTED)
-        .should(NOT_INHERIT_FROM_MODEL_TYPES)
-        .check(importedClasses);
-  }
+  private ArchRuleInheritGeneratedModel() {}
 
   /**
    * Marks approved exceptions to the model inheritance rule.

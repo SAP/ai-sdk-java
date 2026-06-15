@@ -563,6 +563,7 @@
 
             <!-- other licenses as needed -->
             <includedLicense>Eclipse Distribution License - v 1.0</includedLicense>
+            <includedLicense>Eclipse Public License, Version 2.0</includedLicense>
             <includedLicense>Bouncy Castle Licence</includedLicense>
           </includedLicenses>
           <licenseMerges>
@@ -658,40 +659,15 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>3.6.2</version>
-        <dependencies>
-          <dependency>
-            <groupId>com.sap.ai.sdk</groupId>
-            <artifactId>architecture-rules</artifactId>
-            <version>${project.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>com.tngtech.archunit</groupId>
-            <artifactId>archunit</artifactId>
-            <version>${archunit.version}</version>
-          </dependency>
-        </dependencies>
+        <groupId>com.sap.ai.sdk</groupId>
+        <artifactId>architecture-rules</artifactId>
+        <version>${project.version}</version>
         <executions>
           <execution>
-            <id>check-model-inheritance</id>
             <goals>
-              <goal>java</goal>
+              <goal>check-model-inheritance</goal>
             </goals>
             <phase>process-classes</phase>
-            <configuration>
-              <includeProjectDependencies>true</includeProjectDependencies>
-              <includePluginDependencies>true</includePluginDependencies>
-              <classpathScope>compile</classpathScope>
-              <mainClass>com.sap.ai.sdk.architecture.InheritGeneratedModel</mainClass>
-              <systemProperties>
-                <systemProperty>
-                  <key>model.inheritance.basePackage</key>
-                  <value>${project.groupId}</value>
-                </systemProperty>
-              </systemProperties>
-            </configuration>
           </execution>
         </executions>
       </plugin>
