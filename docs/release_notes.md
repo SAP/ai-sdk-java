@@ -8,8 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
-- `PromptTemplatingModuleConfig.Builder` has no `.prompt()` method anymore.
-  Use `PromptTemplatingModuleConfig.setPrompt()` instead.
+- Instead of `PromptTemplatingModuleConfig.create().prompt(prompt).model(model)` you have to use `PromptTemplatingModuleConfig.create().model(model).prompt(prompt)` instead.
 
 ### ✨ New Functionality
 

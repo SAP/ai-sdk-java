@@ -169,8 +169,9 @@ class PromptRegistryController {
             .content(new UserChatMessageContent.InnerString("message"))
             .role(UserChatMessage.RoleEnum.USER);
     final var promptTemplating =
-        PromptTemplatingModuleConfig.create().model(LLMModelDetails.create().name("model-name"));
-    promptTemplating.setPrompt(Template.create().template(message));
+        PromptTemplatingModuleConfig.create()
+            .model(LLMModelDetails.create().name("model-name"))
+            .prompt(Template.create().template(message));
     final var orchestrationConfig =
         OrchestrationConfig.create()
             .modules(

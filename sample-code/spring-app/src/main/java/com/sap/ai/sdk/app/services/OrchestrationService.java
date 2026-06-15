@@ -845,8 +845,8 @@ public class OrchestrationService {
 
     final var moduleConfig =
         PromptTemplatingModuleConfig.create()
-            .model(LLMModelDetails.create().name(GPT_41_NANO.getName()));
-    moduleConfig.setPrompt(prompt);
+            .model(LLMModelDetails.create().name(GPT_41_NANO.getName()))
+            .prompt(prompt);
 
     return OrchestrationConfig.create()
         .modules(
