@@ -1,0 +1,54 @@
+{
+  "count": 8,
+  "resources": [
+    {
+      "id": "d2a491b5010620b0",
+      "createdAt": "2026-06-08T14:56:25Z",
+      "modifiedAt": "2026-06-08T15:10:18Z",
+      "status": "STOPPED",
+      "details": {
+        "scaling": {
+          "backendDetails": {},
+          "backend_details": {}
+        },
+        "resources": {
+          "backendDetails": {},
+          "backend_details": {}
+        }
+      },
+      "scenarioId": "orchestration",
+      "configurationId": "0f0fb4c1-cf2c-441f-98d1-1f983d1b1756",
+      "targetStatus": "STOPPED",
+      "submissionTime": "2026-06-08T15:03:35Z",
+      "startTime": "2026-06-08T15:05:27Z",
+      "completionTime": "2026-06-08T15:27:23Z",
+      "configurationName": "orchestration-config",
+      "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d2a491b5010620b0"
+    },
+    {
+      "id": "d4b1396b84c1944d",
+      "createdAt": "2026-04-16T10:03:39Z",
+      "modifiedAt": "2026-04-16T10:03:39Z",
+      "status": "RUNNING",
+      "details": {
+        "scaling": {
+          "backendDetails": {},
+          "backend_details": {}
+        },
+        "resources": {
+          "backendDetails": {},
+          "backend_details": {}
+        }
+      },
+      "scenarioId": "orchestration",
+      "configurationId": "e88f7dba-fd9c-4068-ab18-3306f2aa46bd",
+      "latestRunningConfigurationId": "e88f7dba-fd9c-4068-ab18-3306f2aa46bd",
+      "lastOperation": "CREATE",
+      "targetStatus": "RUNNING",
+      "submissionTime": "2026-04-17T08:32:01Z",
+      "startTime": "2026-04-17T08:32:59Z",
+      "configurationName": "orchestration-config",
+      "deploymentUrl": "https://api.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/d4b1396b84c1944d"
+    }
+  ]
+}
