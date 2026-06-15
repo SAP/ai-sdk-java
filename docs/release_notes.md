@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- Instead of `PromptTemplatingModuleConfig.create().prompt(prompt).model(model)` you have to use `PromptTemplatingModuleConfig.create().model(model).prompt(prompt)` instead.
 
 ### ✨ New Functionality
 
