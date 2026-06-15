@@ -308,7 +308,7 @@
         <plugin>
           <groupId>org.openapitools</groupId>
           <artifactId>openapi-generator-maven-plugin</artifactId>
-          <version>7.22.0</version>
+          <version>7.23.0</version>
         </plugin>
         <plugin>
           <groupId>com.github.siom79.japicmp</groupId>
@@ -720,7 +720,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.14</version>
+        <version>0.8.15</version>
         <configuration>
           <excludes>
             <!-- Exclude generated clients and end to end application from test coverage -->
