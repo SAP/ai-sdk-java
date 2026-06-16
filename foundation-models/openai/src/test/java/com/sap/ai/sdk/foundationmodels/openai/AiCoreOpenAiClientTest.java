@@ -90,13 +90,7 @@ class AiCoreOpenAiClientTest {
     final var response = responseService.retrieve(params);
 
     assertThat(response).isNotNull();
-    assertThat(response.isValid()).isTrue();
-    assertThat(response.id()).isEqualTo("resp_07bcc4ce7d57e28d006a19115b9848819588503af93015f462");
-    assertThat(response.status()).contains(ResponseStatus.COMPLETED);
-    assertThat(response.model().asString()).isEqualTo("gpt-5-2025-08-07-dz-std");
-    final var message = response.output().get(1).asMessage();
-    assertThat(message.content().get(0).asOutputText().text())
-        .isEqualTo("Hi! How can I help you today?");
+    assertRetrieveResponse(response);
   }
 
   @Test
@@ -110,10 +104,7 @@ class AiCoreOpenAiClientTest {
     final var response = responseService.cancel(params);
 
     assertThat(response).isNotNull();
-    assertThat(response.isValid()).isTrue();
-    assertThat(response.id()).isEqualTo("resp_0960af38c651a868006a1911b68a448194b0918d31bfa6f586");
-    assertThat(response.status()).contains(ResponseStatus.CANCELLED);
-    assertThat(response.background()).contains(true);
+    assertCancelResponse(response);
   }
 
   @Test
@@ -128,6 +119,47 @@ class AiCoreOpenAiClientTest {
     verify(
         deleteRequestedFor(
             urlMatching("/responses/resp_07bcc4ce7d57e28d006a19115b9848819588503af93015f462")));
+  }
+
+  static void assertRetrieveResponse(@Nonnull final Response response) {
+    assertThat(response.isValid()).isTrue();
+    assertThat(response.id()).isEqualTo("resp_07bcc4ce7d57e28d006a19115b9848819588503af93015f462");
+    assertThat(response.model().asString()).isEqualTo("gpt-5-2025-08-07-dz-std");
+    assertThat(response.status()).contains(ResponseStatus.COMPLETED);
+    assertThat(response.background()).contains(false);
+    assertThat(response.reasoning())
+        .hasValueSatisfying(r -> assertThat(r.effort()).contains(ReasoningEffort.MEDIUM));
+
+    final var usage = response.usage().orElseThrow();
+    assertThat(usage.inputTokens()).isEqualTo(9L);
+    assertThat(usage.outputTokens()).isEqualTo(120L);
+    assertThat(usage.totalTokens()).isEqualTo(129L);
+
+    final var output = response.output();
+    assertThat(output).isNotNull();
+    final var item1 = output.get(0);
+    assertThat(item1.isReasoning()).isTrue();
+    final var item2 = output.get(1);
+    assertThat(item2.isMessage()).isTrue();
+    assertThat(item2.asMessage().content()).isNotEmpty();
+    final ResponseOutputMessage.Content content = item2.asMessage().content().get(0);
+    assertThat(content.isOutputText()).isTrue();
+    assertThat(content.asOutputText().text()).isEqualTo("Hi! How can I help you today?");
+  }
+
+  static void assertCancelResponse(@Nonnull final Response response) {
+    assertThat(response.isValid()).isTrue();
+    assertThat(response.id()).isEqualTo("resp_0960af38c651a868006a1911b68a448194b0918d31bfa6f586");
+    assertThat(response.model().toString()).contains("gpt-5");
+    assertThat(response.status()).contains(ResponseStatus.CANCELLED);
+    assertThat(response.background()).contains(true);
+    assertThat(response.reasoning())
+        .hasValueSatisfying(r -> assertThat(r.effort()).contains(ReasoningEffort.HIGH));
+
+    assertThat(response.maxOutputTokens()).contains(8000L);
+    assertThat(response.usage()).isEmpty();
+
+    assertThat(response.output()).isEmpty();
   }
 
   static void assertCreateResponse(@Nonnull final Response response) {

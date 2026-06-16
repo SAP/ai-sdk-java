@@ -237,8 +237,9 @@ public class OpenAiController {
 
   @DeleteMapping("/responses/{responseId}")
   @Nonnull
-  Object deleteResponse(@Nonnull @PathVariable("responseId") final String responseId) {
+  ResponseEntity<String> deleteResponse(
+      @Nonnull @PathVariable("responseId") final String responseId) {
     aiCoreOpenAiService.deleteResponse(responseId);
-    return "deleted: " + responseId;
+    return ResponseEntity.ok("deleted: " + responseId);
   }
 }

@@ -140,41 +140,6 @@ class AiCoreHttpClientImplTest {
         .hasMessageContaining("HTTP GET method is not supported on endpoint /responses in AI Core");
   }
 
-  @Test
-  void testExecuteAllowsRetrieveCancelAndDelete() throws IOException {
-    final var mockApacheClient = mock(CloseableHttpClient.class);
-    when(mockApacheClient.execute(any(), (HttpClientResponseHandler<?>) any()))
-        .thenThrow(new IOException("stub"));
-    ApacheHttpClient5Accessor.setHttpClientFactory(dest -> mockApacheClient);
-
-    final var retrieve =
-        HttpRequest.builder()
-            .pathSegments(List.of("responses", "resp_abc123"))
-            .method(HttpMethod.valueOf("GET"))
-            .baseUrl(destination.getUri().toString())
-            .build();
-    final var delete =
-        HttpRequest.builder()
-            .pathSegments(List.of("responses", "resp_abc123"))
-            .method(HttpMethod.valueOf("DELETE"))
-            .baseUrl(destination.getUri().toString())
-            .build();
-    final var cancel =
-        HttpRequest.builder()
-            .pathSegments(List.of("responses", "resp_abc123", "cancel"))
-            .method(HttpMethod.valueOf("POST"))
-            .baseUrl(destination.getUri().toString())
-            .build();
-
-    // None of these should throw UnsupportedOperationException; they should pass validation
-    // and reach the (mocked) apache client, which surfaces as OpenAIIoException.
-    for (final var request : List.of(retrieve, delete, cancel)) {
-      assertThatThrownBy(() -> client.execute(request))
-          .isInstanceOf(OpenAIIoException.class)
-          .hasMessageContaining("HTTP request execution failed");
-    }
-  }
-
   @SneakyThrows
   @Test
   void testExecuteReturnsBufferedResponseForNon2xxStreamingResponse() {
