@@ -642,9 +642,8 @@ public class OrchestrationService {
   public OrchestrationChatResponse templateFromPromptRegistryByIdResourceGroup(
       @Nonnull final String inputExample) {
 
-    final var destination =
-        new AiCoreService().getInferenceDestination("ai-sdk-java-e2e").forScenario("orchestration");
-    final var clientWithResourceGroup = new OrchestrationClient(destination);
+    final var clientWithResourceGroup =
+        client.withResourceGroup("ai-sdk-java-e2e", "orchestration");
 
     val template =
         TemplateConfig.reference()
@@ -691,9 +690,9 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenarioResourceGroup(
       @Nonnull final String inputExample) {
-    final var destination =
-        new AiCoreService().getInferenceDestination("ai-sdk-java-e2e").forScenario("orchestration");
-    final var clientWithResourceGroup = new OrchestrationClient(destination);
+
+    final var clientWithResourceGroup =
+        client.withResourceGroup("ai-sdk-java-e2e", "orchestration");
 
     val template =
         TemplateConfig.reference()
