@@ -159,4 +159,15 @@ public class OrchestrationChatResponse {
           e);
     }
   }
+
+  /**
+   * Get the last message in the response, which is the assistant's reply.
+   *
+   * @return The assistant's reply message.
+   */
+  @Nonnull
+  public Message getLastMessage() {
+    final var messages = getAllMessages();
+    return messages.get(messages.size() - 1);
+  }
 }
