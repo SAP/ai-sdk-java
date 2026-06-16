@@ -38,7 +38,7 @@ public class OrchestrationConfigPostRequest
   private String scenario;
 
   @JsonProperty("spec")
-  private OrchestrationConfig spec;
+  private PromptRegistryOrchestrationConfig spec;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -150,7 +150,8 @@ public class OrchestrationConfigPostRequest
    * @return The same instance of this {@link OrchestrationConfigPostRequest} class
    */
   @Nonnull
-  public OrchestrationConfigPostRequest spec(@Nonnull final OrchestrationConfig spec) {
+  public OrchestrationConfigPostRequest spec(
+      @Nonnull final PromptRegistryOrchestrationConfig spec) {
     this.spec = spec;
     return this;
   }
@@ -161,7 +162,7 @@ public class OrchestrationConfigPostRequest
    * @return spec The spec of this {@link OrchestrationConfigPostRequest} instance.
    */
   @Nonnull
-  public OrchestrationConfig getSpec() {
+  public PromptRegistryOrchestrationConfig getSpec() {
     return spec;
   }
 
@@ -170,7 +171,7 @@ public class OrchestrationConfigPostRequest
    *
    * @param spec The spec of this {@link OrchestrationConfigPostRequest}
    */
-  public void setSpec(@Nonnull final OrchestrationConfig spec) {
+  public void setSpec(@Nonnull final PromptRegistryOrchestrationConfig spec) {
     this.spec = spec;
   }
 
@@ -340,6 +341,6 @@ public class OrchestrationConfigPostRequest
      * @param spec The spec of this {@link OrchestrationConfigPostRequest}
      * @return The OrchestrationConfigPostRequest instance.
      */
-    OrchestrationConfigPostRequest spec(@Nonnull final OrchestrationConfig spec);
+    OrchestrationConfigPostRequest spec(@Nonnull final PromptRegistryOrchestrationConfig spec);
   }
 }
