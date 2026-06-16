@@ -642,9 +642,8 @@ public class OrchestrationService {
   public OrchestrationChatResponse templateFromPromptRegistryByIdResourceGroup(
       @Nonnull final String inputExample) {
 
-    final var destination =
-        new AiCoreService().getInferenceDestination("ai-sdk-java-e2e").forScenario("orchestration");
-    final var clientWithResourceGroup = new OrchestrationClient(destination);
+    final var clientWithResourceGroup =
+        client.withResourceGroup("ai-sdk-java-e2e", "orchestration");
 
     val template =
         TemplateConfig.reference()
@@ -691,9 +690,9 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenarioResourceGroup(
       @Nonnull final String inputExample) {
-    final var destination =
-        new AiCoreService().getInferenceDestination("ai-sdk-java-e2e").forScenario("orchestration");
-    final var clientWithResourceGroup = new OrchestrationClient(destination);
+
+    final var clientWithResourceGroup =
+        client.withResourceGroup("ai-sdk-java-e2e", "orchestration");
 
     val template =
         TemplateConfig.reference()
@@ -833,22 +832,25 @@ public class OrchestrationService {
   }
 
   private OrchestrationConfig buildOrchestrationConfig() {
+    final var prompt =
+        com.sap.ai.sdk.prompt.registry.model.Template.create()
+            .template(
+                UserChatMessage.create()
+                    .content(
+                        new UserChatMessageContent.InnerString(
+                            "Create {{?number}} paraphrases of {{?phrase}}"))
+                    .role(UserChatMessage.RoleEnum.USER))
+            .defaults(Map.of("number", "3"));
+
+    final var moduleConfig =
+        PromptTemplatingModuleConfig.create()
+            .model(LLMModelDetails.create().name(GPT_41_NANO.getName()))
+            .prompt(prompt);
+
     return OrchestrationConfig.create()
         .modules(
             OrchestrationConfigModules.createInnerModuleConfigs(
-                ModuleConfigs.create()
-                    .promptTemplating(
-                        PromptTemplatingModuleConfig.create()
-                            .prompt(
-                                com.sap.ai.sdk.prompt.registry.model.Template.create()
-                                    .template(
-                                        UserChatMessage.create()
-                                            .content(
-                                                new UserChatMessageContent.InnerString(
-                                                    "Create {{?number}} paraphrases of {{?phrase}}"))
-                                            .role(UserChatMessage.RoleEnum.USER))
-                                    .defaults(Map.of("number", "3")))
-                            .model(LLMModelDetails.create().name(GPT_41_NANO.getName())))));
+                ModuleConfigs.create().promptTemplating(moduleConfig)));
   }
 
   /**

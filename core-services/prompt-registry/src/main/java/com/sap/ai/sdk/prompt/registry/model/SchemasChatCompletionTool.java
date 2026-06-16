@@ -1,6 +1,6 @@
 /*
- * Orchestration v2
- * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
+ * Prompt Registry API
+ * Prompt Storage service for Design time & Runtime prompt templates.
  *
  *
  *
@@ -9,7 +9,7 @@
  * Do not edit the class manually.
  */
 
-package com.sap.ai.sdk.orchestration.model;
+package com.sap.ai.sdk.prompt.registry.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -25,17 +25,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ChatCompletionTool */
+/** SchemasChatCompletionTool */
 // CHECKSTYLE:OFF
-public class ChatCompletionTool
+public class SchemasChatCompletionTool
 // CHECKSTYLE:ON
 {
   /** The type of the tool. Currently, only &#x60;function&#x60; is supported. */
   public enum TypeEnum {
-    /** The FUNCTION option of this ChatCompletionTool */
+    /** The FUNCTION option of this SchemasChatCompletionTool */
     FUNCTION("function"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ChatCompletionTool */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this SchemasChatCompletionTool */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -70,7 +70,7 @@ public class ChatCompletionTool
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ChatCompletionTool
+     * @return The enum value of type SchemasChatCompletionTool
      */
     @JsonCreator
     @Nonnull
@@ -96,17 +96,17 @@ public class ChatCompletionTool
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ChatCompletionTool. */
-  protected ChatCompletionTool() {}
+  /** Default constructor for SchemasChatCompletionTool. */
+  protected SchemasChatCompletionTool() {}
 
   /**
-   * Set the type of this {@link ChatCompletionTool} instance and return the same instance.
+   * Set the type of this {@link SchemasChatCompletionTool} instance and return the same instance.
    *
    * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
-   * @return The same instance of this {@link ChatCompletionTool} class
+   * @return The same instance of this {@link SchemasChatCompletionTool} class
    */
   @Nonnull
-  public ChatCompletionTool type(@Nonnull final TypeEnum type) {
+  public SchemasChatCompletionTool type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -114,7 +114,7 @@ public class ChatCompletionTool
   /**
    * The type of the tool. Currently, only &#x60;function&#x60; is supported.
    *
-   * @return type The type of this {@link ChatCompletionTool} instance.
+   * @return type The type of this {@link SchemasChatCompletionTool} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -122,7 +122,7 @@ public class ChatCompletionTool
   }
 
   /**
-   * Set the type of this {@link ChatCompletionTool} instance.
+   * Set the type of this {@link SchemasChatCompletionTool} instance.
    *
    * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
    */
@@ -131,13 +131,14 @@ public class ChatCompletionTool
   }
 
   /**
-   * Set the function of this {@link ChatCompletionTool} instance and return the same instance.
+   * Set the function of this {@link SchemasChatCompletionTool} instance and return the same
+   * instance.
    *
-   * @param function The function of this {@link ChatCompletionTool}
-   * @return The same instance of this {@link ChatCompletionTool} class
+   * @param function The function of this {@link SchemasChatCompletionTool}
+   * @return The same instance of this {@link SchemasChatCompletionTool} class
    */
   @Nonnull
-  public ChatCompletionTool function(@Nonnull final FunctionObject function) {
+  public SchemasChatCompletionTool function(@Nonnull final FunctionObject function) {
     this.function = function;
     return this;
   }
@@ -145,7 +146,7 @@ public class ChatCompletionTool
   /**
    * Get function
    *
-   * @return function The function of this {@link ChatCompletionTool} instance.
+   * @return function The function of this {@link SchemasChatCompletionTool} instance.
    */
   @Nonnull
   public FunctionObject getFunction() {
@@ -153,22 +154,23 @@ public class ChatCompletionTool
   }
 
   /**
-   * Set the function of this {@link ChatCompletionTool} instance.
+   * Set the function of this {@link SchemasChatCompletionTool} instance.
    *
-   * @param function The function of this {@link ChatCompletionTool}
+   * @param function The function of this {@link SchemasChatCompletionTool}
    */
   public void setFunction(@Nonnull final FunctionObject function) {
     this.function = function;
   }
 
   /**
-   * Set the cacheControl of this {@link ChatCompletionTool} instance and return the same instance.
+   * Set the cacheControl of this {@link SchemasChatCompletionTool} instance and return the same
+   * instance.
    *
-   * @param cacheControl The cacheControl of this {@link ChatCompletionTool}
-   * @return The same instance of this {@link ChatCompletionTool} class
+   * @param cacheControl The cacheControl of this {@link SchemasChatCompletionTool}
+   * @return The same instance of this {@link SchemasChatCompletionTool} class
    */
   @Nonnull
-  public ChatCompletionTool cacheControl(@Nullable final CacheControl cacheControl) {
+  public SchemasChatCompletionTool cacheControl(@Nullable final CacheControl cacheControl) {
     this.cacheControl = cacheControl;
     return this;
   }
@@ -176,7 +178,7 @@ public class ChatCompletionTool
   /**
    * Get cacheControl
    *
-   * @return cacheControl The cacheControl of this {@link ChatCompletionTool} instance.
+   * @return cacheControl The cacheControl of this {@link SchemasChatCompletionTool} instance.
    */
   @Nonnull
   public CacheControl getCacheControl() {
@@ -184,16 +186,16 @@ public class ChatCompletionTool
   }
 
   /**
-   * Set the cacheControl of this {@link ChatCompletionTool} instance.
+   * Set the cacheControl of this {@link SchemasChatCompletionTool} instance.
    *
-   * @param cacheControl The cacheControl of this {@link ChatCompletionTool}
+   * @param cacheControl The cacheControl of this {@link SchemasChatCompletionTool}
    */
   public void setCacheControl(@Nullable final CacheControl cacheControl) {
     this.cacheControl = cacheControl;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ChatCompletionTool}.
+   * Get the names of the unrecognizable properties of the {@link SchemasChatCompletionTool}.
    *
    * @return The set of properties names
    */
@@ -204,7 +206,7 @@ public class ChatCompletionTool
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ChatCompletionTool} instance.
+   * Get the value of an unrecognizable property of this {@link SchemasChatCompletionTool} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -215,13 +217,14 @@ public class ChatCompletionTool
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ChatCompletionTool has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "SchemasChatCompletionTool has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ChatCompletionTool} instance including
+   * Get the value of all properties of this {@link SchemasChatCompletionTool} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -237,7 +240,7 @@ public class ChatCompletionTool
   }
 
   /**
-   * Set an unrecognizable property of this {@link ChatCompletionTool} instance. If the map
+   * Set an unrecognizable property of this {@link SchemasChatCompletionTool} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -256,11 +259,11 @@ public class ChatCompletionTool
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ChatCompletionTool chatCompletionTool = (ChatCompletionTool) o;
-    return Objects.equals(this.cloudSdkCustomFields, chatCompletionTool.cloudSdkCustomFields)
-        && Objects.equals(this.type, chatCompletionTool.type)
-        && Objects.equals(this.function, chatCompletionTool.function)
-        && Objects.equals(this.cacheControl, chatCompletionTool.cacheControl);
+    final SchemasChatCompletionTool schemasChatCompletionTool = (SchemasChatCompletionTool) o;
+    return Objects.equals(this.cloudSdkCustomFields, schemasChatCompletionTool.cloudSdkCustomFields)
+        && Objects.equals(this.type, schemasChatCompletionTool.type)
+        && Objects.equals(this.function, schemasChatCompletionTool.function)
+        && Objects.equals(this.cacheControl, schemasChatCompletionTool.cacheControl);
   }
 
   @Override
@@ -272,7 +275,7 @@ public class ChatCompletionTool
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ChatCompletionTool {\n");
+    sb.append("class SchemasChatCompletionTool {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    function: ").append(toIndentedString(function)).append("\n");
     sb.append("    cacheControl: ").append(toIndentedString(cacheControl)).append("\n");
@@ -294,20 +297,20 @@ public class ChatCompletionTool
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ChatCompletionTool}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * SchemasChatCompletionTool} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (function) -> new ChatCompletionTool().type(type).function(function);
+    return (type) -> (function) -> new SchemasChatCompletionTool().type(type).function(function);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ChatCompletionTool} instance.
+     * Set the type of this {@link SchemasChatCompletionTool} instance.
      *
      * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
-     * @return The ChatCompletionTool builder.
+     * @return The SchemasChatCompletionTool builder.
      */
     Builder1 type(@Nonnull final TypeEnum type);
   }
@@ -315,11 +318,11 @@ public class ChatCompletionTool
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the function of this {@link ChatCompletionTool} instance.
+     * Set the function of this {@link SchemasChatCompletionTool} instance.
      *
-     * @param function The function of this {@link ChatCompletionTool}
-     * @return The ChatCompletionTool instance.
+     * @param function The function of this {@link SchemasChatCompletionTool}
+     * @return The SchemasChatCompletionTool instance.
      */
-    ChatCompletionTool function(@Nonnull final FunctionObject function);
+    SchemasChatCompletionTool function(@Nonnull final FunctionObject function);
   }
 }

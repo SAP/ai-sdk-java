@@ -1534,6 +1534,9 @@ class OrchestrationUnitTest {
     assertThat(messageListTemplating.get(0)).isInstanceOf(SystemMessage.class);
     assertThat(messageListTemplating.get(1)).isInstanceOf(UserMessage.class);
     assertThat(messageListTemplating.get(2)).isInstanceOf(AssistantMessage.class);
+    assertThat(resultTemplating.getLastMessage()).isInstanceOf(AssistantMessage.class);
+    assertThat(((TextItem) resultTemplating.getLastMessage().content().items().get(0)).text())
+        .isEqualTo("Le service d'orchestration fonctionne!");
 
     stubFor(
         post(anyUrl())

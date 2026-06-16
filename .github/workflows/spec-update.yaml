@@ -233,15 +233,16 @@ jobs:
         if: steps.spec_diff.outputs.spec_diff == 'true'
         env:
           MODULE_PATH: ${{ steps.download.outputs.module_path }}
+          BASE: ${{ steps.pr_base.outputs.BASE }}
         run: |
-          # Extract main branch source into a temporary directory
-          git fetch --no-tags --depth=1 origin main
-          mkdir -p /tmp/main-baseline
-          git archive origin/main | tar -x -C /tmp/main-baseline
+          # Extract $BASE branch source into a temporary directory
+          git fetch --no-tags --depth=1 origin "$BASE"
+          mkdir -p /tmp/api-baseline
+          git archive "origin/$BASE" | tar -x -C /tmp/api-baseline
 
           # Build inside a subshell to avoid polluting the working directory
           (
-            cd /tmp/main-baseline
+            cd /tmp/api-baseline
             mvn package -DskipTests -pl "$MODULE_PATH" -am ${{ env.MVN_MULTI_THREADED_ARGS }}
             FINAL_NAME=$(mvn -q -pl "$MODULE_PATH" help:evaluate -Dexpression=project.build.finalName -DforceStdout)
             cp "$MODULE_PATH/target/${FINAL_NAME}.jar" /tmp/baseline.jar
@@ -270,23 +271,20 @@ jobs:
           FINAL_NAME=$(mvn -q -pl "$MODULE_PATH" help:evaluate -Dexpression=project.build.finalName -DforceStdout)
           CURRENT_JAR="$MODULE_PATH/target/${FINAL_NAME}.jar"
 
-          # Run japicmp: compare baseline (main) JAR vs newly generated JAR
+          # Run japicmp: compare baseline ($BASE) JAR vs newly generated JAR
           if mvn com.github.siom79.japicmp:japicmp-maven-plugin:cmp@api-compatibility \
-            -pl "$MODULE_PATH" \
+            -pl "$MODULE_PATH" \ 
             -Djapicmp.oldVersion.file=/tmp/baseline.jar \
             -Djapicmp.newVersion.file="$CURRENT_JAR" \
             ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
             echo "api_compat_result=compatible" >> "$GITHUB_OUTPUT"
           else
             echo "api_compat_result=incompatible" >> "$GITHUB_OUTPUT"
-            echo "## ❌ API Compatibility: Breaking changes detected" >> $GITHUB_STEP_SUMMARY
-            echo "Download the **japicmp-report** artifact for details." >> $GITHUB_STEP_SUMMARY
-            exit 1
           fi
 
       - name: 'Upload japicmp report'
         if: always() && steps.api_compat.outcome != 'skipped'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: japicmp-report
           path: ${{ steps.download.outputs.module_path }}/target/japicmp/
@@ -390,6 +388,12 @@ jobs:
         if: steps.generate.outputs.generation_result == 'failure'
         run: |
           echo "Client generation failed. Please check the Generate step logs for details."
+          exit 1
+
+      - name: 'Fail if API incompatible'
+        if: steps.api_compat.outputs.api_compat_result == 'incompatible'
+        run: |
+          echo "API compatibility check detected breaking changes. Check the japicmp-report artifact in the workflow run summary for details."
           exit 1
 
       - name: 'Fail if no spec changes and previous run failed'

@@ -81,7 +81,8 @@ class AiCoreServiceTest {
     assertThat(destination.getHeaders()).containsExactly(new Header("AI-Resource-Group", "foo"));
 
     // scenario-based destination
-    val d = "{\"count\":1,\"resources\":[{\"id\":\"0123456789abcdef\",\"scenarioId\":\"foobar\"}]}";
+    val d =
+        "{\"count\":1,\"resources\":[{\"id\":\"0123456789abcdef\",\"scenarioId\":\"foobar\", \"status\":\"RUNNING\"}]}";
     val server = new WireMockServer(wireMockConfig().dynamicPort());
     server.start();
     server.stubFor(get(urlEqualTo("/v2/lm/deployments")).willReturn(okJson(d)));

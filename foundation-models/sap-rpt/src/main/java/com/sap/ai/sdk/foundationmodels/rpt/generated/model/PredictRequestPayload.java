@@ -144,7 +144,9 @@ public class PredictRequestPayload
   /**
    * Set the columns of this {@link PredictRequestPayload} instance and return the same instance.
    *
-   * @param columns The columns of this {@link PredictRequestPayload}
+   * @param columns Alternative to rows: columns of data where each key is a column name and the
+   *     value is a list of all column values. Either \&quot;rows\&quot; or \&quot;columns\&quot;
+   *     must be provided.
    * @return The same instance of this {@link PredictRequestPayload} class
    */
   @Nonnull
@@ -171,7 +173,8 @@ public class PredictRequestPayload
   }
 
   /**
-   * Get columns
+   * Alternative to rows: columns of data where each key is a column name and the value is a list of
+   * all column values. Either \&quot;rows\&quot; or \&quot;columns\&quot; must be provided.
    *
    * @return columns The columns of this {@link PredictRequestPayload} instance.
    */
@@ -183,7 +186,9 @@ public class PredictRequestPayload
   /**
    * Set the columns of this {@link PredictRequestPayload} instance.
    *
-   * @param columns The columns of this {@link PredictRequestPayload}
+   * @param columns Alternative to rows: columns of data where each key is a column name and the
+   *     value is a list of all column values. Either \&quot;rows\&quot; or \&quot;columns\&quot;
+   *     must be provided.
    */
   public void setColumns(@Nullable final Map<String, List<RowsInnerValue>> columns) {
     this.columns = columns;
@@ -193,7 +198,10 @@ public class PredictRequestPayload
    * Set the indexColumn of this {@link PredictRequestPayload} instance and return the same
    * instance.
    *
-   * @param indexColumn The indexColumn of this {@link PredictRequestPayload}
+   * @param indexColumn The name of the index column. If provided, the service will return this
+   *     column&#39;s value in each prediction object to facilitate aligning the output predictions
+   *     with the input rows on the client side. If not provided, the column will not be included in
+   *     the output.
    * @return The same instance of this {@link PredictRequestPayload} class
    */
   @Nonnull
@@ -203,7 +211,9 @@ public class PredictRequestPayload
   }
 
   /**
-   * Get indexColumn
+   * The name of the index column. If provided, the service will return this column&#39;s value in
+   * each prediction object to facilitate aligning the output predictions with the input rows on the
+   * client side. If not provided, the column will not be included in the output.
    *
    * @return indexColumn The indexColumn of this {@link PredictRequestPayload} instance.
    */
@@ -215,7 +225,10 @@ public class PredictRequestPayload
   /**
    * Set the indexColumn of this {@link PredictRequestPayload} instance.
    *
-   * @param indexColumn The indexColumn of this {@link PredictRequestPayload}
+   * @param indexColumn The name of the index column. If provided, the service will return this
+   *     column&#39;s value in each prediction object to facilitate aligning the output predictions
+   *     with the input rows on the client side. If not provided, the column will not be included in
+   *     the output.
    */
   public void setIndexColumn(@Nullable final String indexColumn) {
     this.indexColumn = indexColumn;
@@ -261,7 +274,8 @@ public class PredictRequestPayload
   /**
    * Set the dataSchema of this {@link PredictRequestPayload} instance and return the same instance.
    *
-   * @param dataSchema The dataSchema of this {@link PredictRequestPayload}
+   * @param dataSchema Optional schema defining the data types of each column. If provided, this
+   *     will override automatic data type parsing.
    * @return The same instance of this {@link PredictRequestPayload} class
    */
   @Nonnull
@@ -289,7 +303,8 @@ public class PredictRequestPayload
   }
 
   /**
-   * Get dataSchema
+   * Optional schema defining the data types of each column. If provided, this will override
+   * automatic data type parsing.
    *
    * @return dataSchema The dataSchema of this {@link PredictRequestPayload} instance.
    */
@@ -301,7 +316,8 @@ public class PredictRequestPayload
   /**
    * Set the dataSchema of this {@link PredictRequestPayload} instance.
    *
-   * @param dataSchema The dataSchema of this {@link PredictRequestPayload}
+   * @param dataSchema Optional schema defining the data types of each column. If provided, this
+   *     will override automatic data type parsing.
    */
   public void setDataSchema(@Nullable final Map<String, SchemaFieldConfig> dataSchema) {
     this.dataSchema = dataSchema;

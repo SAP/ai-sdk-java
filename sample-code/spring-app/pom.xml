@@ -33,11 +33,11 @@
   </developers>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <spring-boot.version>3.5.14</spring-boot.version>
-    <logback.version>1.5.32</logback.version>
+    <spring-boot.version>3.5.15</spring-boot.version>
+    <logback.version>1.5.34</logback.version>
     <cf-logging.version>4.2.0</cf-logging.version>
     <apache-tomcat-embed.version>11.0.22</apache-tomcat-embed.version>
-    <mcp-core.version>1.1.2</mcp-core.version>
+    <mcp-core.version>2.0.0</mcp-core.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
     <!-- Allow logging frameworks because this module is not released -->
@@ -162,7 +162,7 @@
     <dependency>
       <groupId>org.springframework.ai</groupId>
       <artifactId>spring-ai-autoconfigure-mcp-client</artifactId>
-      <version>1.0.7</version>
+      <version>1.0.9</version>
       <scope>runtime</scope>
       <exclusions>
         <exclusion>

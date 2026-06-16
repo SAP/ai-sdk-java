@@ -180,7 +180,6 @@ public class OrchestrationClient {
    * @return The completion output
    * @since 1.15.0
    */
-  @Beta
   @Nonnull
   public OrchestrationChatResponse chatCompletionUsingReference(
       @Nonnull final OrchestrationConfigReference reference) {
@@ -298,12 +297,26 @@ public class OrchestrationClient {
    * @return a new client.
    * @since 1.11.0
    */
-  @Beta
   @Nonnull
   public OrchestrationClient withHeader(@Nonnull final String key, @Nonnull final String value) {
     final var newClient = new OrchestrationClient(this.executor);
     newClient.customHeaders.addAll(this.customHeaders);
     newClient.customHeaders.add(new Header(key, value));
     return newClient;
+  }
+
+  /**
+   * Create a new orchestration client for the given resource group and scenario.
+   *
+   * @param resourceGroup the resource group
+   * @param scenario the scenario
+   * @return a new client configured with the resolved destination.
+   */
+  @Nonnull
+  public OrchestrationClient withResourceGroup(
+      @Nonnull final String resourceGroup, @Nonnull final String scenario) {
+    final var destination =
+        new AiCoreService().getInferenceDestination(resourceGroup).forScenario(scenario);
+    return new OrchestrationClient(destination);
   }
 }
