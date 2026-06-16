@@ -240,6 +240,6 @@ public class OpenAiController {
   ResponseEntity<String> deleteResponse(
       @Nonnull @PathVariable("responseId") final String responseId) {
     aiCoreOpenAiService.deleteResponse(responseId);
-    return ResponseEntity.ok("deleted: " + responseId);
+    return ResponseEntity.ok("deleted");
   }
 }
