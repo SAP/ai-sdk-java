@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.ChatMemory;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Grounding;
 import com.sap.ai.sdk.orchestration.ImageItem;
@@ -215,8 +216,30 @@ public class OrchestrationService {
   }
 
   /**
-   * Apply input filtering for a request to orchestration.
+   * Chat request to OpenAI through the Orchestration service using chat memory to automatically
+   * manage conversation history across multiple turns.
    *
+   * @param prevMessage the first message to send to the assistant
+   * @return the assistant response object for the second turn
+   */
+  @Nonnull
+  public OrchestrationChatResponse chatMemory(@Nonnull final String prevMessage) {
+    val memory = ChatMemory.messageWindow(10);
+
+    // JONAS: does orchestration have something like conv id that we can natively use?
+    // JONAS: maybe move all the logic into .chatCompletion?
+
+    // Turn 1
+    memory.addMessage("conversation1", Message.user(prevMessage));
+    val result = client.chatCompletion(memory.toPrompt("conversation1"), config);
+    memory.addMessage("conversation1", Message.assistant(result.getContent()));
+
+    // Turn 2 — history is managed automatically by the memory
+    memory.addMessage("conversation1", Message.user("What is the typical food there?"));
+    return client.chatCompletion(memory.toPrompt("conversation1"), config);
+  }
+
+  /**
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
