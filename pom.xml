@@ -668,6 +668,14 @@
               <goal>check-model-inheritance</goal>
             </goals>
             <phase>process-classes</phase>
+            <configuration>
+              <ignore>
+                <inheritModel>com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionChoice</inheritModel>
+                <inheritModel>com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta</inheritModel>
+                <inheritModel>com.sap.ai.sdk.orchestration.OrchestrationTemplate</inheritModel>
+                <inheritModel>com.sap.ai.sdk.orchestration.OrchestrationTemplateReference</inheritModel>
+              </ignore>
+            </configuration>
           </execution>
         </executions>
       </plugin>
