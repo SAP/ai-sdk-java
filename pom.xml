@@ -669,12 +669,12 @@
             </goals>
             <phase>process-classes</phase>
             <configuration>
-              <ignore>
+              <suppressions>
                 <inheritModel>com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionChoice</inheritModel>
                 <inheritModel>com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta</inheritModel>
                 <inheritModel>com.sap.ai.sdk.orchestration.OrchestrationTemplate</inheritModel>
                 <inheritModel>com.sap.ai.sdk.orchestration.OrchestrationTemplateReference</inheritModel>
-              </ignore>
+              </suppressions>
             </configuration>
           </execution>
         </executions>

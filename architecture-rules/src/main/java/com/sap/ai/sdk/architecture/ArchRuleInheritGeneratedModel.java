@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
  * Shared ArchUnit rule that restricts inheritance from SAP AI SDK packages ending with {@code
  * .model}.
  */
-final class ArchRuleInheritGeneratedModel  {
+final class ArchRuleInheritGeneratedModel {
   private static final DescribedPredicate<JavaClass> MODEL_PACKAGE =
       JavaClass.Predicates.resideInAPackage("com.sap.ai.sdk..model");
   private static final String MSG_VIOLATION =
