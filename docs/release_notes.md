@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
-- Instead of `PromptTemplatingModuleConfig.create().prompt(prompt).model(model)` you have to use `PromptTemplatingModuleConfig.create().model(model).prompt(prompt)` instead.
+-
 
 ### ✨ New Functionality
 
@@ -28,10 +28,11 @@
   | `POST /responses/input_tokens` | Count input tokens        | ❌ |
 - [Orchestration] Added `GEMINI_3_1_FLASH_LITE`, `GEMINI_3_5_FLASH`, `GPT_55`, `SONAR_DEEP_RESEARCH`, and `LLAMA_CINDERELLA_DN`  to model list in `OrchestrationAiModel`.
 - [OpenAI] Added `GPT_55` to model list in `OpenAiModel`.
+-
 
 ### 📈 Improvements
 
-- [Core] Optimized the deployments cache to store only `RUNNING` deployments, ensuring that requests do not resolve to `STOPPED` instances
+-
 
 ### 🐛 Fixed Issues
 
