@@ -38,7 +38,7 @@ final class ArchRuleInheritGeneratedModel {
     val msg1 = "not residing in a package matching com.sap.ai.sdk..model";
     val notInModelPackage = describe(msg1, (JavaClass cl) -> !MODEL_PACKAGE.test(cl));
 
-    val msg2 = "not configured in allowedModelInheritanceClasses";
+    val msg2 = "not configured in `suppressions.inheritModel`";
     val notAllowlisted = describe(msg2, (JavaClass cl) -> !allowed.contains(cl.getFullName()));
 
     return classes().that(notInModelPackage).and(notAllowlisted).should(notInheritFromModelTypes());

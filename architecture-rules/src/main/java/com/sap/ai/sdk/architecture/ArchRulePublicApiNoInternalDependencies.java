@@ -26,7 +26,7 @@ final class ArchRulePublicApiNoInternalDependencies {
   @Nonnull
   static ArchRule create(@Nonnull final Suppressions suppressions) {
     val allowed = suppressions.getExposeInternal();
-    val msg = "not configured in suppressions.exposeInternal";
+    val msg = "not configured in `suppressions.exposeInternal`";
     val notAllowlisted = describe(msg, (JavaClass cl) -> !allowed.contains(cl.getFullName()));
 
     return noClasses()

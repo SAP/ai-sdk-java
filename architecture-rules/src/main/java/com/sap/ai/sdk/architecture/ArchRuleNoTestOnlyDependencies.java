@@ -26,7 +26,7 @@ final class ArchRuleNoTestOnlyDependencies {
   @Nonnull
   static ArchRule create(@Nonnull final Suppressions suppressions) {
     val allowed = suppressions.getTestOnlyDependencies();
-    val msg = "not configured in suppressions.testOnlyDependencies";
+    val msg = "not configured in `suppressions.testOnlyDependencies`";
     val notAllowlisted = describe(msg, (JavaClass cl) -> !allowed.contains(cl.getFullName()));
 
     return noClasses()
