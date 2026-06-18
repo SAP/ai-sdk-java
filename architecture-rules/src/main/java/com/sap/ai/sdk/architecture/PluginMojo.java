@@ -1,9 +1,7 @@
 package com.sap.ai.sdk.architecture;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.annotation.Nonnull;
-import lombok.Data;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -15,7 +13,7 @@ import org.apache.maven.plugins.annotations.Parameter;
     name = "check-model-inheritance",
     defaultPhase = LifecyclePhase.PROCESS_CLASSES,
     threadSafe = true)
-public final class ArchitectureRulesMojo extends AbstractMojo {
+public final class PluginMojo extends AbstractMojo {
 
   @Parameter(
       property = "model.inheritance.basePackage",
@@ -23,7 +21,7 @@ public final class ArchitectureRulesMojo extends AbstractMojo {
       required = true)
   private String basePackage;
 
-  @Parameter @Nonnull private final Suppressions suppressions = new Suppressions();
+  @Parameter @Nonnull private final ArchRule.Suppressions suppressions = new ArchRule.Suppressions();
 
   @Override
   public void execute() throws MojoFailureException {
@@ -34,9 +32,4 @@ public final class ArchitectureRulesMojo extends AbstractMojo {
     }
   }
 
-  /** Maven configuration bean for ignored architecture-rule violations. */
-  @Data
-  public static final class Suppressions {
-    @Parameter @Nonnull private Set<String> inheritModel = new HashSet<>();
-  }
 }
