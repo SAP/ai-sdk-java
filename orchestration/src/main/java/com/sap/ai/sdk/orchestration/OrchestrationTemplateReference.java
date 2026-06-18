@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.architecture.InheritGeneratedModel.AllowModelInheritance;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
@@ -21,8 +20,6 @@ import lombok.With;
 @EqualsAndHashCode(callSuper = true)
 @Value
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@AllowModelInheritance(
-    reason = "Maintains backward-compatible wrapper inheritance for orchestration model types.")
 public class OrchestrationTemplateReference extends TemplateConfig {
   @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
   @Nonnull

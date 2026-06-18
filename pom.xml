@@ -225,11 +225,6 @@
       </dependency>
       <dependency>
         <groupId>com.sap.ai.sdk</groupId>
-        <artifactId>architecture-rules</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.sap.ai.sdk</groupId>
         <artifactId>batch</artifactId>
         <version>${project.version}</version>
       </dependency>

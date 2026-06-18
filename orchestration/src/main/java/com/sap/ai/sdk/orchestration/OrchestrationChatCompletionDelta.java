@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.architecture.InheritGeneratedModel.AllowModelInheritance;
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponseStreaming;
 import javax.annotation.Nonnull;
@@ -9,8 +8,6 @@ import lombok.val;
 
 /** Orchestration chat completion output delta for streaming. */
 @SuppressWarnings("PMD.PublicClassExtendsModelType")
-@AllowModelInheritance(
-    reason = "Maintains backward-compatible wrapper inheritance for orchestration model types.")
 public class OrchestrationChatCompletionDelta extends CompletionPostResponseStreaming
     implements StreamedDelta {
 

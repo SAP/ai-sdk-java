@@ -62,9 +62,9 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugin-tools</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>${maven-plugin-tools.version}</version>
+        <version>3.13.1</version>
         <configuration>
           <goalPrefix>architecture-rules</goalPrefix>
         </configuration>

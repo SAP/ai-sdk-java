@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.sap.ai.sdk.architecture.InheritGeneratedModel.AllowModelInheritance;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
@@ -40,8 +39,6 @@ import lombok.val;
 @With
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-@AllowModelInheritance(
-    reason = "Maintains backward-compatible wrapper inheritance for orchestration model types.")
 public class OrchestrationTemplate extends TemplateConfig {
 
   /** Please use {@link #withMessages(Message...)} instead. */
