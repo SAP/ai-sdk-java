@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.architecture;
 
 import javax.annotation.Nonnull;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -21,7 +20,8 @@ public final class PluginMojo extends AbstractMojo {
       required = true)
   private String basePackage;
 
-  @Parameter @Nonnull private final ArchRule.Suppressions suppressions = new ArchRule.Suppressions();
+  @Parameter @Nonnull
+  private final ArchRule.Suppressions suppressions = new ArchRule.Suppressions();
 
   @Override
   public void execute() throws MojoFailureException {
@@ -31,5 +31,4 @@ public final class PluginMojo extends AbstractMojo {
       throw new MojoFailureException(error.getMessage(), error);
     }
   }
-
 }
