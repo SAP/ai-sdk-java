@@ -80,7 +80,7 @@
     <json.version>20260522</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <!-- Formatting -->
-    <spotless.version>3.6.0</spotless.version>
+    <spotless.version>3.7.0</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
