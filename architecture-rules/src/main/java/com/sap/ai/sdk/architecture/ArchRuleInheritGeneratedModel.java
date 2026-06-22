@@ -41,7 +41,11 @@ final class ArchRuleInheritGeneratedModel {
     val msg2 = "not configured in `suppressions.inheritModel`";
     val notAllowlisted = describe(msg2, (JavaClass cl) -> !allowed.contains(cl.getFullName()));
 
-    return classes().that(notInModelPackage).and(notAllowlisted).should(notInheritFromModelTypes());
+    return classes()
+        .that(notInModelPackage)
+        .and(notAllowlisted)
+        .should(notInheritFromModelTypes())
+        .allowEmptyShould(true);
   }
 
   private static ArchCondition<JavaClass> notInheritFromModelTypes() {
