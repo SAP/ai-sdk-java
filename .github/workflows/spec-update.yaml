@@ -402,15 +402,15 @@ jobs:
           echo "Previous run failed and there were no spec changes since, thus failing this run as well."
           exit 1
 
-#      - name: 'Slack Notification'
-#        if: failure() && github.event.inputs.create-pr == 'true'
-#        uses: slackapi/slack-github-action@v3.0.3
-#        with:
-#          webhook: ${{ secrets.SLACK_WEBHOOK }}
-#          webhook-type: incoming-webhook
-#          payload: |
-#            blocks:
-#              - type: "section"
-#                text:
-#                    type: "mrkdwn"
-#                    text: "⚠️ Weekly spec update failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
+      - name: 'Slack Notification'
+        if: failure() && github.event.inputs.create-pr == 'true'
+        uses: slackapi/slack-github-action@v3.0.3
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "section"
+                text:
+                    type: "mrkdwn"
+                    text: "⚠️ Weekly spec update failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
