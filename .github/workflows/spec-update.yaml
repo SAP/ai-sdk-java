@@ -157,7 +157,7 @@ jobs:
               MODULE_PATH='orchestration'
               ;;
             prompt-registry)
-              API_URL="$API_BASE_URL/AI/prompt-registry/contents/src/spec/generated/prompt-registry-combined.yaml?ref=$REF"
+              API_URL="$API_BASE_URL/AI/prompt-registry/contents/components/prompt-registry-api/src/spec/generated/prompt-registry-combined.yaml?ref=$REF"
               FILE_PATH='core-services/prompt-registry/src/main/resources/spec/prompt-registry.yaml'
               MODULE_PATH='core-services/prompt-registry'
               ;;
