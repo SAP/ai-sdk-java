@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- [Prompt Registry] Use `PromptRegistryOrchestrationConfig` instead of `OrchestrationConfig` in `OrchestrationConfigPostRequest` and similar classes.
 
 ### ✨ New Functionality
 
