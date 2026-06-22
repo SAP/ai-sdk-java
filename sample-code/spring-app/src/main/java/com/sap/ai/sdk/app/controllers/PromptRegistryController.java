@@ -163,7 +163,7 @@ class PromptRegistryController {
 
   @GetMapping("/createOrchConfig")
   OrchestrationConfigPostResponse createOrchConfig() {
-    // build OrchestrationConfig
+    // build PromptRegistryOrchestrationConfig
     final var message =
         UserChatMessage.create()
             .content(new UserChatMessageContent.InnerString("message"))
@@ -177,7 +177,7 @@ class PromptRegistryController {
             .modules(
                 PromptRegistryOrchestrationConfigModules.createInnerPartialModuleConfigs(
                     PartialModuleConfigs.create().promptTemplating(promptTemplating)));
-    // use OrchestrationConfig in OrchestrationConfigClient
+    // use the config in OrchestrationConfigClient
     final OrchestrationConfigPostRequest postRequest =
         OrchestrationConfigPostRequest.create()
             .name(NAME)
