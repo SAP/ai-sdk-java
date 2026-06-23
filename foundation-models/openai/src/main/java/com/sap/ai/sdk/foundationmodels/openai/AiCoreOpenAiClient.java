@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
  * <p>This class provides factory methods that return fully configured OpenAI SDK clients using SAP
  * Cloud SDK's Apache HttpClient with automatic OAuth token refresh.
  *
- * @since 1.19.0
+ * @since 1.21.0
  */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
