@@ -260,11 +260,6 @@
       </dependency>
       <dependency>
         <groupId>com.openai</groupId>
-        <artifactId>openai-java-client-okhttp</artifactId>
-        <version>${openai-java.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.openai</groupId>
         <artifactId>openai-java-core</artifactId>
         <version>${openai-java.version}</version>
       </dependency>

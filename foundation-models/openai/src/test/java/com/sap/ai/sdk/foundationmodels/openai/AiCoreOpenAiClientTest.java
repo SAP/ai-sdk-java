@@ -207,9 +207,9 @@ class AiCoreOpenAiClientTest {
       final var completed = event.asCompleted().response();
 
       final var usage = completed.usage().orElseThrow();
-      assertThat(usage.inputTokens()).isEqualTo(13L);
-      assertThat(usage.outputTokens()).isEqualTo(59L);
-      assertThat(usage.totalTokens()).isEqualTo(72L);
+      assertThat(usage.inputTokens()).isEqualTo(17L);
+      assertThat(usage.outputTokens()).isEqualTo(195L);
+      assertThat(usage.totalTokens()).isEqualTo(212L);
 
       final var output = completed.output();
       assertThat(output).isNotNull();

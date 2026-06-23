@@ -13,6 +13,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -40,11 +42,16 @@ class AiCoreHttpClientImpl implements HttpClient {
   private final HttpDestination destination;
 
   private static final String SSE_MEDIA_TYPE = "text/event-stream";
-  private static final Map<String, Set<String>> ALLOWED_OPERATIONS =
-      Map.of(
-          "/responses", Set.of("POST"),
-          "/responses/[^/]+", Set.of("GET", "DELETE"),
-          "/responses/[^/]+/cancel", Set.of("POST"));
+  private static final Map<String, Set<String>> ALLOWED_OPERATIONS;
+
+  static {
+    // LinkedHashMap to keep most-specific patterns first.
+    final var operations = new LinkedHashMap<String, Set<String>>();
+    operations.put("/responses/[^/]+/cancel", Set.of("POST"));
+    operations.put("/responses/[^/]+", Set.of("GET", "DELETE"));
+    operations.put("/responses", Set.of("POST"));
+    ALLOWED_OPERATIONS = Collections.unmodifiableMap(operations);
+  }
 
   @Override
   @Nonnull
