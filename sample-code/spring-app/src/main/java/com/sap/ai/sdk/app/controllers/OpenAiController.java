@@ -167,7 +167,7 @@ public class OpenAiController {
   Object createResponse(
       @Nullable @RequestParam(value = "format", required = false) final String format)
       throws JsonProcessingException {
-    final var response = aiCoreOpenAiService.createResponse("Who is the prettiest");
+    final var response = aiCoreOpenAiService.createResponse("Who is the prettiest?");
     if ("json".equals(format)) {
       return ResponseEntity.ok()
           .contentType(MediaType.APPLICATION_JSON)
