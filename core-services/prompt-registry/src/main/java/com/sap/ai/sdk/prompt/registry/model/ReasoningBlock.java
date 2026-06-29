@@ -23,53 +23,87 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** TemplateRef */
+/** ReasoningBlock */
 // CHECKSTYLE:OFF
-public class TemplateRef implements PartialPromptTemplatingModuleConfigPrompt
+public class ReasoningBlock
 // CHECKSTYLE:ON
 {
-  @JsonProperty("template_ref")
-  private TemplateRefTemplateRef templateRef;
+  @JsonProperty("content")
+  private String content = "";
+
+  @JsonProperty("signature")
+  private String signature = "";
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for TemplateRef. */
-  protected TemplateRef() {}
+  /** Default constructor for ReasoningBlock. */
+  protected ReasoningBlock() {}
 
   /**
-   * Set the templateRef of this {@link TemplateRef} instance and return the same instance.
+   * Set the content of this {@link ReasoningBlock} instance and return the same instance.
    *
-   * @param templateRef The templateRef of this {@link TemplateRef}
-   * @return The same instance of this {@link TemplateRef} class
+   * @param content The content of this {@link ReasoningBlock}
+   * @return The same instance of this {@link ReasoningBlock} class
    */
   @Nonnull
-  public TemplateRef templateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
-    this.templateRef = templateRef;
+  public ReasoningBlock content(@Nullable final String content) {
+    this.content = content;
     return this;
   }
 
   /**
-   * Get templateRef
+   * Get content
    *
-   * @return templateRef The templateRef of this {@link TemplateRef} instance.
+   * @return content The content of this {@link ReasoningBlock} instance.
    */
   @Nonnull
-  public TemplateRefTemplateRef getTemplateRef() {
-    return templateRef;
+  public String getContent() {
+    return content;
   }
 
   /**
-   * Set the templateRef of this {@link TemplateRef} instance.
+   * Set the content of this {@link ReasoningBlock} instance.
    *
-   * @param templateRef The templateRef of this {@link TemplateRef}
+   * @param content The content of this {@link ReasoningBlock}
    */
-  public void setTemplateRef(@Nonnull final TemplateRefTemplateRef templateRef) {
-    this.templateRef = templateRef;
+  public void setContent(@Nullable final String content) {
+    this.content = content;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link TemplateRef}.
+   * Set the signature of this {@link ReasoningBlock} instance and return the same instance.
+   *
+   * @param signature The signature of this {@link ReasoningBlock}
+   * @return The same instance of this {@link ReasoningBlock} class
+   */
+  @Nonnull
+  public ReasoningBlock signature(@Nullable final String signature) {
+    this.signature = signature;
+    return this;
+  }
+
+  /**
+   * Get signature
+   *
+   * @return signature The signature of this {@link ReasoningBlock} instance.
+   */
+  @Nonnull
+  public String getSignature() {
+    return signature;
+  }
+
+  /**
+   * Set the signature of this {@link ReasoningBlock} instance.
+   *
+   * @param signature The signature of this {@link ReasoningBlock}
+   */
+  public void setSignature(@Nullable final String signature) {
+    this.signature = signature;
+  }
+
+  /**
+   * Get the names of the unrecognizable properties of the {@link ReasoningBlock}.
    *
    * @return The set of properties names
    */
@@ -80,7 +114,7 @@ public class TemplateRef implements PartialPromptTemplatingModuleConfigPrompt
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link TemplateRef} instance.
+   * Get the value of an unrecognizable property of this {@link ReasoningBlock} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -91,13 +125,13 @@ public class TemplateRef implements PartialPromptTemplatingModuleConfigPrompt
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("TemplateRef has no field with name '" + name + "'.");
+      throw new NoSuchElementException("ReasoningBlock has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link TemplateRef} instance including unrecognized
+   * Get the value of all properties of this {@link ReasoningBlock} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -106,12 +140,13 @@ public class TemplateRef implements PartialPromptTemplatingModuleConfigPrompt
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (templateRef != null) declaredFields.put("templateRef", templateRef);
+    if (content != null) declaredFields.put("content", content);
+    if (signature != null) declaredFields.put("signature", signature);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link TemplateRef} instance. If the map previously
+   * Set an unrecognizable property of this {@link ReasoningBlock} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -130,22 +165,24 @@ public class TemplateRef implements PartialPromptTemplatingModuleConfigPrompt
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final TemplateRef templateRef = (TemplateRef) o;
-    return Objects.equals(this.cloudSdkCustomFields, templateRef.cloudSdkCustomFields)
-        && Objects.equals(this.templateRef, templateRef.templateRef);
+    final ReasoningBlock reasoningBlock = (ReasoningBlock) o;
+    return Objects.equals(this.cloudSdkCustomFields, reasoningBlock.cloudSdkCustomFields)
+        && Objects.equals(this.content, reasoningBlock.content)
+        && Objects.equals(this.signature, reasoningBlock.signature);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(templateRef, cloudSdkCustomFields);
+    return Objects.hash(content, signature, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class TemplateRef {\n");
-    sb.append("    templateRef: ").append(toIndentedString(templateRef)).append("\n");
+    sb.append("class ReasoningBlock {\n");
+    sb.append("    content: ").append(toIndentedString(content)).append("\n");
+    sb.append("    signature: ").append(toIndentedString(signature)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -163,22 +200,8 @@ public class TemplateRef implements PartialPromptTemplatingModuleConfigPrompt
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link TemplateRef} instance
-   * with all required arguments.
-   */
-  public static Builder create() {
-    return (templateRef) -> new TemplateRef().templateRef(templateRef);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the templateRef of this {@link TemplateRef} instance.
-     *
-     * @param templateRef The templateRef of this {@link TemplateRef}
-     * @return The TemplateRef instance.
-     */
-    TemplateRef templateRef(@Nonnull final TemplateRefTemplateRef templateRef);
+  /** Create a new {@link ReasoningBlock} instance. No arguments are required. */
+  public static ReasoningBlock create() {
+    return new ReasoningBlock();
   }
 }
