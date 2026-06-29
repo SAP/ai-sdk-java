@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
-- [Prompt Registry] Use `PromptRegistryOrchestrationConfig` instead of `OrchestrationConfig` in `OrchestrationConfigPostRequest` and similar classes.
+- [Prompt Registry] In `OrchestrationConfigPostRequest` and similar classes to create prompt registry requests, use `PromptRegistryOrchestrationConfig` instead of `OrchestrationConfig`, `PromptRegistryOrchestrationConfigModules` instead of `OrchestrationConfigModules`, `PartialModuleConfigs` instead of `ModuleConfigs`, and `PartialPromptTemplatingModuleConfig` instead of `PromptTemplatingModuleConfig`. 
 
 ### ✨ New Functionality
 
