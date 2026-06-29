@@ -42,7 +42,7 @@ public class Template implements PromptTemplatingModuleConfigPrompt
   private TemplateResponseFormat responseFormat;
 
   @JsonProperty("tools")
-  private List<ChatCompletionTool> tools = new ArrayList<>();
+  private List<SchemasChatCompletionTool> tools = new ArrayList<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -189,7 +189,7 @@ public class Template implements PromptTemplatingModuleConfigPrompt
    * @return The same instance of this {@link Template} class
    */
   @Nonnull
-  public Template tools(@Nullable final List<ChatCompletionTool> tools) {
+  public Template tools(@Nullable final List<SchemasChatCompletionTool> tools) {
     this.tools = tools;
     return this;
   }
@@ -201,7 +201,7 @@ public class Template implements PromptTemplatingModuleConfigPrompt
    * @return The same instance of type {@link Template}
    */
   @Nonnull
-  public Template addToolsItem(@Nonnull final ChatCompletionTool toolsItem) {
+  public Template addToolsItem(@Nonnull final SchemasChatCompletionTool toolsItem) {
     if (this.tools == null) {
       this.tools = new ArrayList<>();
     }
@@ -216,7 +216,7 @@ public class Template implements PromptTemplatingModuleConfigPrompt
    * @return tools The tools of this {@link Template} instance.
    */
   @Nonnull
-  public List<ChatCompletionTool> getTools() {
+  public List<SchemasChatCompletionTool> getTools() {
     return tools;
   }
 
@@ -226,7 +226,7 @@ public class Template implements PromptTemplatingModuleConfigPrompt
    * @param tools A list of tools the model may call. Used to provide a list of functions the model
    *     may generate JSON inputs for. This is the same as the OpenAI definition.
    */
-  public void setTools(@Nullable final List<ChatCompletionTool> tools) {
+  public void setTools(@Nullable final List<SchemasChatCompletionTool> tools) {
     this.tools = tools;
   }
 

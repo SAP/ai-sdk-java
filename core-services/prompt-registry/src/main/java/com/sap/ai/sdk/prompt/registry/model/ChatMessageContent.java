@@ -17,22 +17,24 @@ import javax.annotation.Nonnull;
 /** ChatMessageContent */
 public interface ChatMessageContent {
   /**
-   * Helper class to create {@code List<TextContent> } that implements {@link ChatMessageContent}.
+   * Helper class to create {@code List<SchemasTextContent> } that implements {@link
+   * ChatMessageContent}.
    */
-  record ListOfTextContents(
-      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<TextContent> values)
+  record ListOfSchemasTextContents(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<SchemasTextContent> values)
       implements ChatMessageContent {}
 
   /**
-   * Creator to enable deserialization of {@code List<TextContent> }.
+   * Creator to enable deserialization of {@code List<SchemasTextContent> }.
    *
    * @param val the value to use
-   * @return a new instance of {@link ListOfTextContents}.
+   * @return a new instance of {@link ListOfSchemasTextContents}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static ListOfTextContents createListOfTextContents(@Nonnull final List<TextContent> val) {
-    return new ListOfTextContents(val);
+  static ListOfSchemasTextContents createListOfSchemasTextContents(
+      @Nonnull final List<SchemasTextContent> val) {
+    return new ListOfSchemasTextContents(val);
   }
 
   /** Helper class to create {@code String } that implements {@link ChatMessageContent}. */

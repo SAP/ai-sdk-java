@@ -2,6 +2,7 @@ package com.sap.ai.sdk.core;
 
 import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.model.AiDeployment;
+import com.sap.ai.sdk.core.model.AiDeploymentStatus;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -9,6 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +29,7 @@ class DeploymentResolver {
 
   @Nonnull private final AiCoreService service;
 
-  /** Cache for deployment ids. The key is the model name and the value is the deployment id. */
+  /** Cache for deployments. The key is the resource group and the value a set of deployments. */
   @Nonnull private final Map<String, Set<AiDeployment>> cache;
 
   DeploymentResolver(@Nonnull final AiCoreService service) {
@@ -35,7 +37,7 @@ class DeploymentResolver {
   }
 
   /**
-   * Remove all entries from the cache then load all deployments into the cache.
+   * Remove cached deployments for the resource group and reload running deployments into the cache.
    *
    * <p><b>Call this whenever a deployment is deleted.</b>
    *
@@ -46,8 +48,16 @@ class DeploymentResolver {
     try {
       val apiClient = new DeploymentApi(service);
       val deployments = new HashSet<>(apiClient.query(resourceGroup).getResources());
-      log.info("Found {} deployments in resource group '{}'.", deployments.size(), resourceGroup);
-      cache.put(resourceGroup, deployments);
+      val runningDeployments =
+          deployments.stream()
+              .filter(deployment -> AiDeploymentStatus.RUNNING.equals(deployment.getStatus()))
+              .collect(Collectors.toSet());
+      log.info(
+          "Found {} of {} deployments running in resource group '{}'.",
+          runningDeployments.size(),
+          deployments.size(),
+          resourceGroup);
+      cache.put(resourceGroup, runningDeployments);
     } catch (final RuntimeException e) {
       throw new DeploymentResolutionException(
           "Failed to load deployments for resource group " + resourceGroup, e);

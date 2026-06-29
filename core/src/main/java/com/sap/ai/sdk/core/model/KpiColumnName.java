@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
-/** Gets or Sets KpiColumnName */
+/** Name of the Column */
 public enum KpiColumnName {
   RESOURCE_GROUP("ResourceGroup"),
 

@@ -170,8 +170,8 @@ class PromptRegistryController {
             .role(UserChatMessage.RoleEnum.USER);
     final var promptTemplating =
         PromptTemplatingModuleConfig.create()
-            .prompt(Template.create().template(message))
-            .model(LLMModelDetails.create().name("model-name"));
+            .model(LLMModelDetails.create().name("model-name"))
+            .prompt(Template.create().template(message));
     final var orchestrationConfig =
         OrchestrationConfig.create()
             .modules(
