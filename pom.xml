@@ -828,6 +828,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <version>12.1.0</version>
         <configuration>
           <connectionTimeout>60000</connectionTimeout>
+          <nvdDatafeedUrl>https://dependency-check.github.io/DependencyCheck_Builder/nvd_cache/nvdcve-{0}.json.gz</nvdDatafeedUrl>
           <nvdMaxRetryCount>20</nvdMaxRetryCount>
           <failBuildOnCVSS>7</failBuildOnCVSS>
           <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
