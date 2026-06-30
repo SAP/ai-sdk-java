@@ -31,6 +31,7 @@
   <modules>
     <module>core</module>
     <module>orchestration</module>
+    <module>architecture-rules</module>
     <module>core-services/batch</module>
     <module>core-services/document-grounding</module>
     <module>core-services/prompt-registry</module>
@@ -70,6 +71,7 @@
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.23.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
+    <archunit.version>1.4.1</archunit.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.22.0</jackson.version>
     <logback.version>1.5.36</logback.version>
@@ -556,6 +558,7 @@
 
             <!-- other licenses as needed -->
             <includedLicense>Eclipse Distribution License - v 1.0</includedLicense>
+            <includedLicense>Eclipse Public License, Version 2.0</includedLicense>
             <includedLicense>Bouncy Castle Licence</includedLicense>
           </includedLicenses>
           <licenseMerges>
@@ -649,6 +652,27 @@
             <logback.configurationFile>${project.rootdir}/logback.xml</logback.configurationFile>
           </systemPropertyVariables>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.sap.ai.sdk</groupId>
+        <artifactId>architecture-rules</artifactId>
+        <version>${project.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check-model-inheritance</goal>
+            </goals>
+            <phase>process-classes</phase>
+            <configuration>
+              <suppressions>
+                <inheritModel>com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionChoice</inheritModel>
+                <inheritModel>com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta</inheritModel>
+                <inheritModel>com.sap.ai.sdk.orchestration.OrchestrationTemplate</inheritModel>
+                <inheritModel>com.sap.ai.sdk.orchestration.OrchestrationTemplateReference</inheritModel>
+              </suppressions>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <!-- phase: verify -->
       <plugin>
