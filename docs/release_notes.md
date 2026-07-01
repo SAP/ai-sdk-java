@@ -23,16 +23,10 @@
 - Support for OpenAI Responses API with the new `AiCoreOpenAiClient`.
   The following endpoints are currently supported:
 
-  | API Endpoint                   | Description               | Supported |
-      |--------------------------------|---------------------------|--|
-  | `POST /responses`              | Create response           | ✅ |
-  | `POST /responses` (streaming)  | Create streaming response | ✅ |
-  | `GET /responses/{id}`          | Retrieve response         | ✅ |
-  | `POST /responses/{id}/cancel`  | Cancel response           | ✅ |
-  | `DELETE /responses/{id}`       | Delete response           | ✅ |
-  | `POST /responses/{id}/compact` | Create response (compact) | ❌ |
-  | `GET /responses/{id}/input_items` | List input items          | ❌ |
-  | `POST /responses/input_tokens` | Count input tokens        | ❌ |
+- create()
+- createStreaming()
+- retrieve()
+- delete()
 - [Orchestration] Added `CLAUDE_4_8_OPUS`, `QWEN_3_MAX`, `QWEN_3_6_PLUS` and `QWEN_3_6_FLASH` to the model list in `OrchestrationAiModel`.
 
 ### 📈 Improvements
