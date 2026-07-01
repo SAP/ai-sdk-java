@@ -6,8 +6,8 @@
           "name": "gpt-4o",
           "params": {},
           "version": "latest",
-          "timeout" : 600,
-          "max_retries" : 2
+          "timeout": 600,
+          "max_retries": 2
         },
         "prompt": {
           "template": [
@@ -18,7 +18,8 @@
             {
               "role": "assistant",
               "content": "Le service d'orchestration fonctionne!",
-              "tool_calls": []
+              "tool_calls": [],
+              "reasoning_content": []
             },
             {
               "role": "user",
