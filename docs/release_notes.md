@@ -33,8 +33,6 @@
   | `POST /responses/{id}/compact` | Create response (compact) | ❌ |
   | `GET /responses/{id}/input_items` | List input items          | ❌ |
   | `POST /responses/input_tokens` | Count input tokens        | ❌ |
-- [Orchestration] Added `GEMINI_3_1_FLASH_LITE`, `GEMINI_3_5_FLASH`, `GPT_55`, `SONAR_DEEP_RESEARCH`, and `LLAMA_CINDERELLA_DN`  to model list in `OrchestrationAiModel`.
-- [OpenAI] Added `GPT_55` to model list in `OpenAiModel`.
 - [Orchestration] Added `CLAUDE_4_8_OPUS`, `QWEN_3_MAX`, `QWEN_3_6_PLUS` and `QWEN_3_6_FLASH` to the model list in `OrchestrationAiModel`.
 
 ### 📈 Improvements
