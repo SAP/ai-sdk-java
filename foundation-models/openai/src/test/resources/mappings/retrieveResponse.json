@@ -1,0 +1,86 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/responses/resp_[A-Za-z0-9]+(\\?.*)?"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "background": false,
+      "completed_at": 1780027741,
+      "content_filters": [],
+      "created_at": 1780027739,
+      "error": null,
+      "frequency_penalty": 0.0,
+      "id": "resp_07bcc4ce7d57e28d006a19115b9848819588503af93015f462",
+      "incomplete_details": null,
+      "instructions": null,
+      "max_output_tokens": null,
+      "max_tool_calls": null,
+      "metadata": {},
+      "model": "gpt-5-2025-08-07-dz-std",
+      "object": "response",
+      "output": [
+        {
+          "id": "rs_07bcc4ce7d57e28d006a19115c0f888195a49e956252b09a5a",
+          "summary": [],
+          "type": "reasoning"
+        },
+        {
+          "content": [
+            {
+              "annotations": [],
+              "logprobs": [],
+              "text": "Hi! How can I help you today?",
+              "type": "output_text"
+            }
+          ],
+          "id": "msg_07bcc4ce7d57e28d006a19115d26048195aff17b0125b61056",
+          "role": "assistant",
+          "status": "completed",
+          "type": "message"
+        }
+      ],
+      "parallel_tool_calls": true,
+      "presence_penalty": 0.0,
+      "previous_response_id": null,
+      "prompt_cache_key": null,
+      "prompt_cache_retention": null,
+      "reasoning": {
+        "effort": "medium",
+        "summary": null
+      },
+      "safety_identifier": null,
+      "service_tier": "default",
+      "status": "completed",
+      "store": true,
+      "temperature": 1.0,
+      "text": {
+        "format": {
+          "type": "text"
+        },
+        "verbosity": "medium"
+      },
+      "tool_choice": "auto",
+      "tools": [],
+      "top_logprobs": 0,
+      "top_p": 1.0,
+      "truncation": "disabled",
+      "usage": {
+        "input_tokens": 9,
+        "input_tokens_details": {
+          "cached_tokens": 0
+        },
+        "output_tokens": 120,
+        "output_tokens_details": {
+          "reasoning_tokens": 64
+        },
+        "total_tokens": 129
+      },
+      "user": null
+    }
+  }
+}
