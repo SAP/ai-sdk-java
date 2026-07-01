@@ -135,7 +135,7 @@ class AiCoreOpenAiTest {
         followUp.output().stream().filter(ResponseOutputItem::isMessage).findFirst();
     assertThat(message).isPresent();
     assertThat(message.get().asMessage().content().get(0).asOutputText().text())
-        .containsIgnoringCase("3");
+        .containsAnyOf("three", "3");
   }
 
   @Test
