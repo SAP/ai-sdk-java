@@ -24,4 +24,4 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
   @JsonSubTypes.Type(value = Template.class),
   @JsonSubTypes.Type(value = TemplateRef.class),
 })
-public interface PromptTemplatingModuleConfigPrompt {}
+public interface PartialPromptTemplatingModuleConfigPrompt {}
