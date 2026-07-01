@@ -40,7 +40,7 @@ jobs:
     steps:
 
       - name: "Checkout repository"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
           ref: ${{ inputs.branch }}
@@ -53,7 +53,7 @@ jobs:
           cache: 'maven'
 
       - name: "Restore Dependencies"
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ env.MAVEN_CACHE_KEY }}
           path: ${{ env.MAVEN_CACHE_DIR }}
@@ -253,7 +253,7 @@ jobs:
           git config --global user.name "SAP Cloud SDK Bot"
 
       - name: "Checkout Docs Repository"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ env.DOCS_REPO }}
           path: .ai-sdk-docs

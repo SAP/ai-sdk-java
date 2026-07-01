@@ -29,7 +29,7 @@ jobs:
           permission-contents: write
 
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Approve and Merge PRs
         env:
