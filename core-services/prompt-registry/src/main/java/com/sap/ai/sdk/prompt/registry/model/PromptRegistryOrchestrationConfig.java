@@ -23,13 +23,13 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** OrchestrationConfig */
+/** PromptRegistryOrchestrationConfig */
 // CHECKSTYLE:OFF
-public class OrchestrationConfig
+public class PromptRegistryOrchestrationConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("modules")
-  private OrchestrationConfigModules modules;
+  private PromptRegistryOrchestrationConfigModules modules;
 
   @JsonProperty("stream")
   private GlobalStreamOptions stream;
@@ -37,17 +37,19 @@ public class OrchestrationConfig
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for OrchestrationConfig. */
-  protected OrchestrationConfig() {}
+  /** Default constructor for PromptRegistryOrchestrationConfig. */
+  protected PromptRegistryOrchestrationConfig() {}
 
   /**
-   * Set the modules of this {@link OrchestrationConfig} instance and return the same instance.
+   * Set the modules of this {@link PromptRegistryOrchestrationConfig} instance and return the same
+   * instance.
    *
-   * @param modules The modules of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
+   * @param modules The modules of this {@link PromptRegistryOrchestrationConfig}
+   * @return The same instance of this {@link PromptRegistryOrchestrationConfig} class
    */
   @Nonnull
-  public OrchestrationConfig modules(@Nonnull final OrchestrationConfigModules modules) {
+  public PromptRegistryOrchestrationConfig modules(
+      @Nullable final PromptRegistryOrchestrationConfigModules modules) {
     this.modules = modules;
     return this;
   }
@@ -55,30 +57,31 @@ public class OrchestrationConfig
   /**
    * Get modules
    *
-   * @return modules The modules of this {@link OrchestrationConfig} instance.
+   * @return modules The modules of this {@link PromptRegistryOrchestrationConfig} instance.
    */
   @Nonnull
-  public OrchestrationConfigModules getModules() {
+  public PromptRegistryOrchestrationConfigModules getModules() {
     return modules;
   }
 
   /**
-   * Set the modules of this {@link OrchestrationConfig} instance.
+   * Set the modules of this {@link PromptRegistryOrchestrationConfig} instance.
    *
-   * @param modules The modules of this {@link OrchestrationConfig}
+   * @param modules The modules of this {@link PromptRegistryOrchestrationConfig}
    */
-  public void setModules(@Nonnull final OrchestrationConfigModules modules) {
+  public void setModules(@Nullable final PromptRegistryOrchestrationConfigModules modules) {
     this.modules = modules;
   }
 
   /**
-   * Set the stream of this {@link OrchestrationConfig} instance and return the same instance.
+   * Set the stream of this {@link PromptRegistryOrchestrationConfig} instance and return the same
+   * instance.
    *
-   * @param stream The stream of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
+   * @param stream The stream of this {@link PromptRegistryOrchestrationConfig}
+   * @return The same instance of this {@link PromptRegistryOrchestrationConfig} class
    */
   @Nonnull
-  public OrchestrationConfig stream(@Nullable final GlobalStreamOptions stream) {
+  public PromptRegistryOrchestrationConfig stream(@Nullable final GlobalStreamOptions stream) {
     this.stream = stream;
     return this;
   }
@@ -86,7 +89,7 @@ public class OrchestrationConfig
   /**
    * Get stream
    *
-   * @return stream The stream of this {@link OrchestrationConfig} instance.
+   * @return stream The stream of this {@link PromptRegistryOrchestrationConfig} instance.
    */
   @Nonnull
   public GlobalStreamOptions getStream() {
@@ -94,16 +97,17 @@ public class OrchestrationConfig
   }
 
   /**
-   * Set the stream of this {@link OrchestrationConfig} instance.
+   * Set the stream of this {@link PromptRegistryOrchestrationConfig} instance.
    *
-   * @param stream The stream of this {@link OrchestrationConfig}
+   * @param stream The stream of this {@link PromptRegistryOrchestrationConfig}
    */
   public void setStream(@Nullable final GlobalStreamOptions stream) {
     this.stream = stream;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link OrchestrationConfig}.
+   * Get the names of the unrecognizable properties of the {@link
+   * PromptRegistryOrchestrationConfig}.
    *
    * @return The set of properties names
    */
@@ -114,7 +118,8 @@ public class OrchestrationConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link OrchestrationConfig} instance.
+   * Get the value of an unrecognizable property of this {@link PromptRegistryOrchestrationConfig}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -126,14 +131,14 @@ public class OrchestrationConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "OrchestrationConfig has no field with name '" + name + "'.");
+          "PromptRegistryOrchestrationConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link OrchestrationConfig} instance including
-   * unrecognized properties.
+   * Get the value of all properties of this {@link PromptRegistryOrchestrationConfig} instance
+   * including unrecognized properties.
    *
    * @return The map of all properties
    */
@@ -147,8 +152,9 @@ public class OrchestrationConfig
   }
 
   /**
-   * Set an unrecognizable property of this {@link OrchestrationConfig} instance. If the map
-   * previously contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link PromptRegistryOrchestrationConfig} instance. If
+   * the map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -166,10 +172,12 @@ public class OrchestrationConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final OrchestrationConfig orchestrationConfig = (OrchestrationConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, orchestrationConfig.cloudSdkCustomFields)
-        && Objects.equals(this.modules, orchestrationConfig.modules)
-        && Objects.equals(this.stream, orchestrationConfig.stream);
+    final PromptRegistryOrchestrationConfig promptRegistryOrchestrationConfig =
+        (PromptRegistryOrchestrationConfig) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, promptRegistryOrchestrationConfig.cloudSdkCustomFields)
+        && Objects.equals(this.modules, promptRegistryOrchestrationConfig.modules)
+        && Objects.equals(this.stream, promptRegistryOrchestrationConfig.stream);
   }
 
   @Override
@@ -181,7 +189,7 @@ public class OrchestrationConfig
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class OrchestrationConfig {\n");
+    sb.append("class PromptRegistryOrchestrationConfig {\n");
     sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
     sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -201,22 +209,8 @@ public class OrchestrationConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link OrchestrationConfig}
-   * instance with all required arguments.
-   */
-  public static Builder create() {
-    return (modules) -> new OrchestrationConfig().modules(modules);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the modules of this {@link OrchestrationConfig} instance.
-     *
-     * @param modules The modules of this {@link OrchestrationConfig}
-     * @return The OrchestrationConfig instance.
-     */
-    OrchestrationConfig modules(@Nonnull final OrchestrationConfigModules modules);
+  /** Create a new {@link PromptRegistryOrchestrationConfig} instance. No arguments are required. */
+  public static PromptRegistryOrchestrationConfig create() {
+    return new PromptRegistryOrchestrationConfig();
   }
 }
