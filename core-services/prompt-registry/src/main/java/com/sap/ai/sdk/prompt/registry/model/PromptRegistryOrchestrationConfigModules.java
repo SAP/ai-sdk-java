@@ -14,35 +14,36 @@ package com.sap.ai.sdk.prompt.registry.model;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-/** OrchestrationConfigModules */
-public interface OrchestrationConfigModules {
+/** PromptRegistryOrchestrationConfigModules */
+public interface PromptRegistryOrchestrationConfigModules {
   /**
-   * Helper class to create {@code ModuleConfigs } that implements {@link
-   * OrchestrationConfigModules}.
+   * Helper class to create {@code PartialModuleConfigs } that implements {@link
+   * PromptRegistryOrchestrationConfigModules}.
    */
-  record InnerModuleConfigs(
-      @com.fasterxml.jackson.annotation.JsonValue @Nonnull ModuleConfigs value)
-      implements OrchestrationConfigModules {}
+  record InnerPartialModuleConfigs(
+      @com.fasterxml.jackson.annotation.JsonValue @Nonnull PartialModuleConfigs value)
+      implements PromptRegistryOrchestrationConfigModules {}
 
   /**
-   * Creator to enable deserialization of {@code ModuleConfigs }.
+   * Creator to enable deserialization of {@code PartialModuleConfigs }.
    *
    * @param val the value to use
-   * @return a new instance of {@link InnerModuleConfigs}.
+   * @return a new instance of {@link InnerPartialModuleConfigs}.
    */
   @com.fasterxml.jackson.annotation.JsonCreator
   @Nonnull
-  static InnerModuleConfigs createInnerModuleConfigs(@Nonnull final ModuleConfigs val) {
-    return new InnerModuleConfigs(val);
+  static InnerPartialModuleConfigs createInnerPartialModuleConfigs(
+      @Nonnull final PartialModuleConfigs val) {
+    return new InnerPartialModuleConfigs(val);
   }
 
   /**
    * Helper class to create {@code List<ModuleConfigs> } that implements {@link
-   * OrchestrationConfigModules}.
+   * PromptRegistryOrchestrationConfigModules}.
    */
   record ListOfModuleConfigss(
       @com.fasterxml.jackson.annotation.JsonValue @Nonnull List<ModuleConfigs> values)
-      implements OrchestrationConfigModules {}
+      implements PromptRegistryOrchestrationConfigModules {}
 
   /**
    * Creator to enable deserialization of {@code List<ModuleConfigs> }.

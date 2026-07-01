@@ -41,11 +41,11 @@ import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
-import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
-import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
-import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigModules;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
-import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
+import com.sap.ai.sdk.prompt.registry.model.PartialModuleConfigs;
+import com.sap.ai.sdk.prompt.registry.model.PartialPromptTemplatingModuleConfig;
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfig;
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfigModules;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
 import java.io.IOException;
@@ -831,7 +831,7 @@ public class OrchestrationService {
         .anyMatch(resp -> resp.getName().equals(configName));
   }
 
-  private OrchestrationConfig buildOrchestrationConfig() {
+  private PromptRegistryOrchestrationConfig buildOrchestrationConfig() {
     final var prompt =
         com.sap.ai.sdk.prompt.registry.model.Template.create()
             .template(
@@ -843,14 +843,14 @@ public class OrchestrationService {
             .defaults(Map.of("number", "3"));
 
     final var moduleConfig =
-        PromptTemplatingModuleConfig.create()
+        PartialPromptTemplatingModuleConfig.create()
             .model(LLMModelDetails.create().name(GPT_41_NANO.getName()))
             .prompt(prompt);
 
-    return OrchestrationConfig.create()
+    return PromptRegistryOrchestrationConfig.create()
         .modules(
-            OrchestrationConfigModules.createInnerModuleConfigs(
-                ModuleConfigs.create().promptTemplating(moduleConfig)));
+            PromptRegistryOrchestrationConfigModules.createInnerPartialModuleConfigs(
+                PartialModuleConfigs.create().promptTemplating(moduleConfig)));
   }
 
   /**
