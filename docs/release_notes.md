@@ -19,7 +19,6 @@
 
 ### ✨ New Functionality
 
-- [Batch] Added a new `BatchesApi` client to access the [Batch Service API](https://github.tools.sap/AI/llm-batch-service).
 - Support for OpenAI Responses API with the new `AiCoreOpenAiClient`.
   The following endpoints are currently supported:
 
