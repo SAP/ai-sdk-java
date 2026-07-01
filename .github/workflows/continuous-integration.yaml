@@ -23,7 +23,7 @@ jobs:
     steps:
 
       - name: "Checkout repository"
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
           ref: ${{ github.event.pull_request.head.ref }}
@@ -38,7 +38,7 @@ jobs:
 
       - name: "Restore Dependencies"
         id: restore-dependencies
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ env.MAVEN_CACHE_KEY }}
           path: ${{ env.MAVEN_CACHE_DIR }}
