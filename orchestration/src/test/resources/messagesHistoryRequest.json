@@ -13,8 +13,8 @@
             "n": 1
           },
           "version": "latest",
-          "timeout" : 600,
-          "max_retries" : 2
+          "timeout": 600,
+          "max_retries": 2
         },
         "prompt": {
           "template": [
@@ -47,7 +47,8 @@
           "text": "Paris is known for its art, fashion, and culture."
         }
       ],
-      "tool_calls": []
+      "tool_calls": [],
+      "reasoning_content": []
     }
   ]
 }
