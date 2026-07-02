@@ -1,20 +1,13 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.openai.core.ObjectMappers.jsonMapper;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openai.models.responses.ResponseOutputItem;
-import com.openai.models.responses.ResponseOutputMessage;
-import com.sap.ai.sdk.app.services.AiCoreOpenAiService;
 import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +26,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 public class OpenAiController {
   @Autowired private OpenAiService service;
-  @Autowired private AiCoreOpenAiService aiCoreOpenAiService;
 
   private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
@@ -158,147 +150,5 @@ public class OpenAiController {
       return response;
     }
     return response.getContent();
-  }
-
-  @GetMapping("/responses")
-  @Nonnull
-  Object createResponse(
-      @Nullable @RequestParam(value = "format", required = false) final String format)
-      throws JsonProcessingException {
-    final var response = aiCoreOpenAiService.createResponse("Who is the prettiest?");
-    if ("json".equals(format)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(jsonMapper().writeValueAsString(response));
-    }
-    return response.output().stream()
-        .filter(ResponseOutputItem::isMessage)
-        .map(ResponseOutputItem::asMessage)
-        .flatMap(message -> message.content().stream())
-        .filter(ResponseOutputMessage.Content::isOutputText)
-        .map(text -> text.asOutputText().text())
-        .collect(Collectors.joining());
-  }
-
-  @GetMapping("/responses/persistent")
-  @Nonnull
-  Object createPersistentResponse(
-      @Nullable @RequestParam(value = "format", required = false) final String format)
-      throws JsonProcessingException {
-    final var response =
-        aiCoreOpenAiService.createPersistentResponse("Who is the prettiest?", false);
-    if ("json".equals(format)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(jsonMapper().writeValueAsString(response));
-    }
-    return response.output().stream()
-        .filter(ResponseOutputItem::isMessage)
-        .map(ResponseOutputItem::asMessage)
-        .flatMap(message -> message.content().stream())
-        .filter(ResponseOutputMessage.Content::isOutputText)
-        .map(text -> text.asOutputText().text())
-        .collect(Collectors.joining());
-  }
-
-  @GetMapping("/responses/background")
-  @Nonnull
-  Object createBackgroundResponse(
-      @Nullable @RequestParam(value = "format", required = false) final String format)
-      throws JsonProcessingException {
-    final var response =
-        aiCoreOpenAiService.createPersistentResponse(
-            "Give me the first 1000 Fibonacci numbers.", true);
-    if ("json".equals(format)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(jsonMapper().writeValueAsString(response));
-    }
-    return response.output().stream()
-        .filter(ResponseOutputItem::isMessage)
-        .map(ResponseOutputItem::asMessage)
-        .flatMap(message -> message.content().stream())
-        .filter(ResponseOutputMessage.Content::isOutputText)
-        .map(text -> text.asOutputText().text())
-        .collect(Collectors.joining());
-  }
-
-  @GetMapping("/streamResponses")
-  @Nonnull
-  Object createStreamingResponse(
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
-    final var input = "Give me the first 100 Fibonacci numbers.";
-    final var emitter = new ResponseBodyEmitter();
-
-    final Runnable consumeStream =
-        () -> {
-          try (var response = aiCoreOpenAiService.createStreamingResponse(input)) {
-            response.stream()
-                .forEach(
-                    event ->
-                        event.outputTextDelta().ifPresent(delta -> send(emitter, delta.delta())));
-          } finally {
-            emitter.complete();
-          }
-        };
-    ThreadContextExecutors.getExecutor().execute(consumeStream);
-    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
-    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
-  }
-
-  @GetMapping("/responses/retrieve/{responseId}")
-  @Nonnull
-  Object retrieveResponse(
-      @Nonnull @PathVariable("responseId") final String responseId,
-      @Nullable @RequestParam(value = "format", required = false) final String format)
-      throws JsonProcessingException {
-    final var response = aiCoreOpenAiService.retrieveResponse(responseId);
-    if ("json".equals(format)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(jsonMapper().writeValueAsString(response));
-    }
-    return response.output().stream()
-        .filter(ResponseOutputItem::isMessage)
-        .map(ResponseOutputItem::asMessage)
-        .flatMap(message -> message.content().stream())
-        .filter(ResponseOutputMessage.Content::isOutputText)
-        .map(text -> text.asOutputText().text())
-        .collect(Collectors.joining());
-  }
-
-  @GetMapping("/responses/{responseId}/cancel")
-  @Nonnull
-  Object cancelResponse(
-      @Nonnull @PathVariable("responseId") final String responseId,
-      @Nullable @RequestParam(value = "format", required = false) final String format)
-      throws JsonProcessingException {
-    final var response = aiCoreOpenAiService.cancelResponse(responseId);
-    if ("json".equals(format)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(jsonMapper().writeValueAsString(response));
-    }
-    return response.output().stream()
-        .filter(ResponseOutputItem::isMessage)
-        .map(ResponseOutputItem::asMessage)
-        .flatMap(message -> message.content().stream())
-        .filter(ResponseOutputMessage.Content::isOutputText)
-        .map(text -> text.asOutputText().text())
-        .collect(Collectors.joining());
-  }
-
-  @GetMapping("/responses/delete/{responseId}")
-  @Nonnull
-  Object deleteResponse(
-      @Nonnull @PathVariable("responseId") final String responseId,
-      @Nullable @RequestParam(value = "format", required = false) final String format) {
-    aiCoreOpenAiService.deleteResponse(responseId);
-    if ("json".equals(format)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body("{\"status\":\"deleted\"}");
-    }
-    return ResponseEntity.ok("deleted");
   }
 }
