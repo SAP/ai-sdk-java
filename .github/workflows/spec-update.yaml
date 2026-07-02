@@ -79,7 +79,7 @@ jobs:
           permission-pull-requests: write
 
       - name: 'Checkout repository'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           token: ${{ steps.app-token.outputs.token }}
 
@@ -103,7 +103,7 @@ jobs:
 
       - name: 'Restore Dependencies'
         id: restore-dependencies
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           key: ${{ env.MAVEN_CACHE_KEY }}
           path: ${{ env.MAVEN_CACHE_DIR }}
@@ -348,8 +348,9 @@ jobs:
 
           ## Definition of Done
 
-          - [ ] Unit tests cover new classes
+          - [ ] (Optional) Unit tests cover new classes
           - [ ] Release notes updated
+          - [ ] Documentation code samples updated
           ") && echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
 
       - name: 'Generate Job Summary'

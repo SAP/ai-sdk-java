@@ -66,7 +66,7 @@ jobs:
           permission-pull-requests: read
 
       - name: 'Checkout Repository'
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: 'Check Whether Code PR Can Be Merged'
         if: ${{ inputs.skip-pr-merge != 'true' }}
@@ -75,8 +75,8 @@ jobs:
           pr-ref: ${{ steps.determine-branch-names.outputs.CODE_BRANCH_NAME }}
           excluded-check-runs: |
             {
-              \"Continuous Integration\": [\"Run BlackDuck Scan\", \"Run Security Rating\"], 
-              \"dependabot merger\": [] 
+              \"Continuous Integration\": [\"Run BlackDuck Scan\", \"Run Security Rating\"],
+              \"dependabot merger\": []
             }
 
       - name: 'Check Code Release Commit Continuous Integration'
@@ -114,6 +114,7 @@ jobs:
     name: 'Release'
     needs: [prerequisites]
     runs-on: ubuntu-latest
+    environment: release
     permissions:
       contents: read
     steps:
