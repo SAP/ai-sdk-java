@@ -192,7 +192,13 @@ public class OpenAiController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(jsonMapper().writeValueAsString(response));
     }
-    return response;
+    return response.output().stream()
+        .filter(ResponseOutputItem::isMessage)
+        .map(ResponseOutputItem::asMessage)
+        .flatMap(message -> message.content().stream())
+        .filter(ResponseOutputMessage.Content::isOutputText)
+        .map(text -> text.asOutputText().text())
+        .collect(Collectors.joining());
   }
 
   @GetMapping("/responses/background")
@@ -208,7 +214,13 @@ public class OpenAiController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(jsonMapper().writeValueAsString(response));
     }
-    return response;
+    return response.output().stream()
+        .filter(ResponseOutputItem::isMessage)
+        .map(ResponseOutputItem::asMessage)
+        .flatMap(message -> message.content().stream())
+        .filter(ResponseOutputMessage.Content::isOutputText)
+        .map(text -> text.asOutputText().text())
+        .collect(Collectors.joining());
   }
 
   @GetMapping("/streamResponses")
@@ -246,7 +258,13 @@ public class OpenAiController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(jsonMapper().writeValueAsString(response));
     }
-    return response;
+    return response.output().stream()
+        .filter(ResponseOutputItem::isMessage)
+        .map(ResponseOutputItem::asMessage)
+        .flatMap(message -> message.content().stream())
+        .filter(ResponseOutputMessage.Content::isOutputText)
+        .map(text -> text.asOutputText().text())
+        .collect(Collectors.joining());
   }
 
   @GetMapping("/responses/{responseId}/cancel")
@@ -261,7 +279,13 @@ public class OpenAiController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(jsonMapper().writeValueAsString(response));
     }
-    return response;
+    return response.output().stream()
+        .filter(ResponseOutputItem::isMessage)
+        .map(ResponseOutputItem::asMessage)
+        .flatMap(message -> message.content().stream())
+        .filter(ResponseOutputMessage.Content::isOutputText)
+        .map(text -> text.asOutputText().text())
+        .collect(Collectors.joining());
   }
 
   @GetMapping("/responses/delete/{responseId}")
