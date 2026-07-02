@@ -21,10 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
@@ -182,6 +180,27 @@ public class OpenAiController {
         .collect(Collectors.joining());
   }
 
+  @GetMapping("/responses/persistent")
+  @Nonnull
+  Object createPersistentResponse() throws JsonProcessingException {
+    final var response =
+        aiCoreOpenAiService.createPersistentResponse("Who is the prettiest?", false);
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(jsonMapper().writeValueAsString(response));
+  }
+
+  @GetMapping("/responses/background")
+  @Nonnull
+  Object createBackgroundResponse() throws JsonProcessingException {
+    final var response =
+        aiCoreOpenAiService.createPersistentResponse(
+            "Give me the first 1000 Fibonacci numbers.", true);
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(jsonMapper().writeValueAsString(response));
+  }
+
   @GetMapping("/streamResponses")
   @Nonnull
   Object createStreamingResponse(
@@ -205,37 +224,29 @@ public class OpenAiController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
-  @GetMapping("/responses/{responseId}")
+  @GetMapping("/responses/retrieve/{responseId}")
   @Nonnull
   Object retrieveResponse(
-      @Nonnull @PathVariable("responseId") final String responseId,
-      @Nullable @RequestParam(value = "format", required = false) final String format)
+      @Nonnull @PathVariable("responseId") final String responseId)
       throws JsonProcessingException {
     final var response = aiCoreOpenAiService.retrieveResponse(responseId);
-    if ("json".equals(format)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(jsonMapper().writeValueAsString(response));
-    }
-    return response.id();
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(jsonMapper().writeValueAsString(response));
   }
 
-  @PostMapping("/responses/{responseId}/cancel")
+  @GetMapping("/responses/{responseId}/cancel")
   @Nonnull
   Object cancelResponse(
-      @Nonnull @PathVariable("responseId") final String responseId,
-      @Nullable @RequestParam(value = "format", required = false) final String format)
+      @Nonnull @PathVariable("responseId") final String responseId)
       throws JsonProcessingException {
     final var response = aiCoreOpenAiService.cancelResponse(responseId);
-    if ("json".equals(format)) {
-      return ResponseEntity.ok()
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(jsonMapper().writeValueAsString(response));
-    }
-    return response.status().map(Object::toString).orElse("unknown");
+    return ResponseEntity.ok()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(jsonMapper().writeValueAsString(response));
   }
 
-  @DeleteMapping("/responses/{responseId}")
+  @GetMapping("/responses/delete/{responseId}")
   @Nonnull
   ResponseEntity<String> deleteResponse(
       @Nonnull @PathVariable("responseId") final String responseId) {

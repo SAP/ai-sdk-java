@@ -821,6 +821,63 @@
                                     </div>
                                 </div>
                             </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/responses/persistent"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/responses/persistent</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Create a persistent response and return its ID.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/responses/background"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/responses/background</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Create a background (async) persistent response.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/responses/retrieve/[responseId]"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/responses/retrieve/[responseId]</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Retrieve a stored response by ID.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/responses/[responseId]/cancel"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/responses/[responseId]/cancel</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Cancel a background response by ID.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/responses/delete/[responseId]"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/responses/delete/[responseId]</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Delete a stored response by ID.
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                     <div class="card-body">
