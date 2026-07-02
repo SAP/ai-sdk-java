@@ -1,6 +1,6 @@
 /*
- * Prompt Registry API
- * Prompt Storage service for Design time & Runtime prompt templates.
+ * Orchestration v2
+ * Orchestration is an inference service which provides common additional capabilities for business AI scenarios, such as content filtering and data masking. At the core of the service is the LLM module which allows for an easy, harmonized access to the language models of gen AI hub. The service is designed to be modular and extensible, allowing for the addition of new modules in the future. Each module can be configured independently and at runtime, allowing for a high degree of flexibility in the orchestration of AI services.
  *
  *
  *
@@ -9,7 +9,7 @@
  * Do not edit the class manually.
  */
 
-package com.sap.ai.sdk.prompt.registry.model;
+package com.sap.ai.sdk.orchestration.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -23,13 +23,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** OrchestrationConfig */
+/**
+ * Partial orchestration configuration for use with config_ref overrides. All fields are optional so
+ * that only the parts that should be overridden need to be specified. The remaining configuration
+ * is taken from the referenced orchestration config.
+ */
 // CHECKSTYLE:OFF
-public class OrchestrationConfig
+public class PartialOrchestrationConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("modules")
-  private OrchestrationConfigModules modules;
+  private PartialModuleConfigs modules;
 
   @JsonProperty("stream")
   private GlobalStreamOptions stream;
@@ -37,17 +41,18 @@ public class OrchestrationConfig
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for OrchestrationConfig. */
-  protected OrchestrationConfig() {}
+  /** Default constructor for PartialOrchestrationConfig. */
+  protected PartialOrchestrationConfig() {}
 
   /**
-   * Set the modules of this {@link OrchestrationConfig} instance and return the same instance.
+   * Set the modules of this {@link PartialOrchestrationConfig} instance and return the same
+   * instance.
    *
-   * @param modules The modules of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
+   * @param modules The modules of this {@link PartialOrchestrationConfig}
+   * @return The same instance of this {@link PartialOrchestrationConfig} class
    */
   @Nonnull
-  public OrchestrationConfig modules(@Nonnull final OrchestrationConfigModules modules) {
+  public PartialOrchestrationConfig modules(@Nullable final PartialModuleConfigs modules) {
     this.modules = modules;
     return this;
   }
@@ -55,30 +60,31 @@ public class OrchestrationConfig
   /**
    * Get modules
    *
-   * @return modules The modules of this {@link OrchestrationConfig} instance.
+   * @return modules The modules of this {@link PartialOrchestrationConfig} instance.
    */
   @Nonnull
-  public OrchestrationConfigModules getModules() {
+  public PartialModuleConfigs getModules() {
     return modules;
   }
 
   /**
-   * Set the modules of this {@link OrchestrationConfig} instance.
+   * Set the modules of this {@link PartialOrchestrationConfig} instance.
    *
-   * @param modules The modules of this {@link OrchestrationConfig}
+   * @param modules The modules of this {@link PartialOrchestrationConfig}
    */
-  public void setModules(@Nonnull final OrchestrationConfigModules modules) {
+  public void setModules(@Nullable final PartialModuleConfigs modules) {
     this.modules = modules;
   }
 
   /**
-   * Set the stream of this {@link OrchestrationConfig} instance and return the same instance.
+   * Set the stream of this {@link PartialOrchestrationConfig} instance and return the same
+   * instance.
    *
-   * @param stream The stream of this {@link OrchestrationConfig}
-   * @return The same instance of this {@link OrchestrationConfig} class
+   * @param stream The stream of this {@link PartialOrchestrationConfig}
+   * @return The same instance of this {@link PartialOrchestrationConfig} class
    */
   @Nonnull
-  public OrchestrationConfig stream(@Nullable final GlobalStreamOptions stream) {
+  public PartialOrchestrationConfig stream(@Nullable final GlobalStreamOptions stream) {
     this.stream = stream;
     return this;
   }
@@ -86,7 +92,7 @@ public class OrchestrationConfig
   /**
    * Get stream
    *
-   * @return stream The stream of this {@link OrchestrationConfig} instance.
+   * @return stream The stream of this {@link PartialOrchestrationConfig} instance.
    */
   @Nonnull
   public GlobalStreamOptions getStream() {
@@ -94,16 +100,16 @@ public class OrchestrationConfig
   }
 
   /**
-   * Set the stream of this {@link OrchestrationConfig} instance.
+   * Set the stream of this {@link PartialOrchestrationConfig} instance.
    *
-   * @param stream The stream of this {@link OrchestrationConfig}
+   * @param stream The stream of this {@link PartialOrchestrationConfig}
    */
   public void setStream(@Nullable final GlobalStreamOptions stream) {
     this.stream = stream;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link OrchestrationConfig}.
+   * Get the names of the unrecognizable properties of the {@link PartialOrchestrationConfig}.
    *
    * @return The set of properties names
    */
@@ -114,7 +120,8 @@ public class OrchestrationConfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link OrchestrationConfig} instance.
+   * Get the value of an unrecognizable property of this {@link PartialOrchestrationConfig}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -126,13 +133,13 @@ public class OrchestrationConfig
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "OrchestrationConfig has no field with name '" + name + "'.");
+          "PartialOrchestrationConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link OrchestrationConfig} instance including
+   * Get the value of all properties of this {@link PartialOrchestrationConfig} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -147,7 +154,7 @@ public class OrchestrationConfig
   }
 
   /**
-   * Set an unrecognizable property of this {@link OrchestrationConfig} instance. If the map
+   * Set an unrecognizable property of this {@link PartialOrchestrationConfig} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -166,10 +173,11 @@ public class OrchestrationConfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final OrchestrationConfig orchestrationConfig = (OrchestrationConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, orchestrationConfig.cloudSdkCustomFields)
-        && Objects.equals(this.modules, orchestrationConfig.modules)
-        && Objects.equals(this.stream, orchestrationConfig.stream);
+    final PartialOrchestrationConfig partialOrchestrationConfig = (PartialOrchestrationConfig) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, partialOrchestrationConfig.cloudSdkCustomFields)
+        && Objects.equals(this.modules, partialOrchestrationConfig.modules)
+        && Objects.equals(this.stream, partialOrchestrationConfig.stream);
   }
 
   @Override
@@ -181,7 +189,7 @@ public class OrchestrationConfig
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class OrchestrationConfig {\n");
+    sb.append("class PartialOrchestrationConfig {\n");
     sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
     sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -201,22 +209,8 @@ public class OrchestrationConfig
     return o.toString().replace("\n", "\n    ");
   }
 
-  /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link OrchestrationConfig}
-   * instance with all required arguments.
-   */
-  public static Builder create() {
-    return (modules) -> new OrchestrationConfig().modules(modules);
-  }
-
-  /** Builder helper class. */
-  public interface Builder {
-    /**
-     * Set the modules of this {@link OrchestrationConfig} instance.
-     *
-     * @param modules The modules of this {@link OrchestrationConfig}
-     * @return The OrchestrationConfig instance.
-     */
-    OrchestrationConfig modules(@Nonnull final OrchestrationConfigModules modules);
+  /** Create a new {@link PartialOrchestrationConfig} instance. No arguments are required. */
+  public static PartialOrchestrationConfig create() {
+    return new PartialOrchestrationConfig();
   }
 }

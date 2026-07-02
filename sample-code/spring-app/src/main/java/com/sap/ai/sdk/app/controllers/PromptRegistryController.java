@@ -6,13 +6,14 @@ import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatModel;
 import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
 import com.sap.ai.sdk.prompt.registry.PromptClient;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
-import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
-import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigListResponse;
-import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigModules;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
+import com.sap.ai.sdk.prompt.registry.model.PartialModuleConfigs;
+import com.sap.ai.sdk.prompt.registry.model.PartialPromptTemplatingModuleConfig;
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfig;
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfigModules;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostRequest;
@@ -20,7 +21,6 @@ import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpec;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
-import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.Template;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
@@ -163,21 +163,21 @@ class PromptRegistryController {
 
   @GetMapping("/createOrchConfig")
   OrchestrationConfigPostResponse createOrchConfig() {
-    // build OrchestrationConfig
+    // build PromptRegistryOrchestrationConfig
     final var message =
         UserChatMessage.create()
             .content(new UserChatMessageContent.InnerString("message"))
             .role(UserChatMessage.RoleEnum.USER);
     final var promptTemplating =
-        PromptTemplatingModuleConfig.create()
+        PartialPromptTemplatingModuleConfig.create()
             .model(LLMModelDetails.create().name("model-name"))
             .prompt(Template.create().template(message));
     final var orchestrationConfig =
-        OrchestrationConfig.create()
+        PromptRegistryOrchestrationConfig.create()
             .modules(
-                OrchestrationConfigModules.createInnerModuleConfigs(
-                    ModuleConfigs.create().promptTemplating(promptTemplating)));
-    // use OrchestrationConfig in OrchestrationConfigClient
+                PromptRegistryOrchestrationConfigModules.createInnerPartialModuleConfigs(
+                    PartialModuleConfigs.create().promptTemplating(promptTemplating)));
+    // use the config in OrchestrationConfigClient
     final OrchestrationConfigPostRequest postRequest =
         OrchestrationConfigPostRequest.create()
             .name(NAME)
