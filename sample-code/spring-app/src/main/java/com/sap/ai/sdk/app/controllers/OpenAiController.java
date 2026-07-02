@@ -182,23 +182,33 @@ public class OpenAiController {
 
   @GetMapping("/responses/persistent")
   @Nonnull
-  Object createPersistentResponse() throws JsonProcessingException {
+  Object createPersistentResponse(
+      @Nullable @RequestParam(value = "format", required = false) final String format)
+      throws JsonProcessingException {
     final var response =
         aiCoreOpenAiService.createPersistentResponse("Who is the prettiest?", false);
-    return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(jsonMapper().writeValueAsString(response));
+    if ("json".equals(format)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(jsonMapper().writeValueAsString(response));
+    }
+    return response;
   }
 
   @GetMapping("/responses/background")
   @Nonnull
-  Object createBackgroundResponse() throws JsonProcessingException {
+  Object createBackgroundResponse(
+      @Nullable @RequestParam(value = "format", required = false) final String format)
+      throws JsonProcessingException {
     final var response =
         aiCoreOpenAiService.createPersistentResponse(
             "Give me the first 1000 Fibonacci numbers.", true);
-    return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(jsonMapper().writeValueAsString(response));
+    if ("json".equals(format)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(jsonMapper().writeValueAsString(response));
+    }
+    return response;
   }
 
   @GetMapping("/streamResponses")
@@ -226,29 +236,45 @@ public class OpenAiController {
 
   @GetMapping("/responses/retrieve/{responseId}")
   @Nonnull
-  Object retrieveResponse(@Nonnull @PathVariable("responseId") final String responseId)
+  Object retrieveResponse(
+      @Nonnull @PathVariable("responseId") final String responseId,
+      @Nullable @RequestParam(value = "format", required = false) final String format)
       throws JsonProcessingException {
     final var response = aiCoreOpenAiService.retrieveResponse(responseId);
-    return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(jsonMapper().writeValueAsString(response));
+    if ("json".equals(format)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(jsonMapper().writeValueAsString(response));
+    }
+    return response;
   }
 
   @GetMapping("/responses/{responseId}/cancel")
   @Nonnull
-  Object cancelResponse(@Nonnull @PathVariable("responseId") final String responseId)
+  Object cancelResponse(
+      @Nonnull @PathVariable("responseId") final String responseId,
+      @Nullable @RequestParam(value = "format", required = false) final String format)
       throws JsonProcessingException {
     final var response = aiCoreOpenAiService.cancelResponse(responseId);
-    return ResponseEntity.ok()
-        .contentType(MediaType.APPLICATION_JSON)
-        .body(jsonMapper().writeValueAsString(response));
+    if ("json".equals(format)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(jsonMapper().writeValueAsString(response));
+    }
+    return response;
   }
 
   @GetMapping("/responses/delete/{responseId}")
   @Nonnull
-  ResponseEntity<String> deleteResponse(
-      @Nonnull @PathVariable("responseId") final String responseId) {
+  Object deleteResponse(
+      @Nonnull @PathVariable("responseId") final String responseId,
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
     aiCoreOpenAiService.deleteResponse(responseId);
+    if ("json".equals(format)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body("{\"status\":\"deleted\"}");
+    }
     return ResponseEntity.ok("deleted");
   }
 }
