@@ -348,8 +348,9 @@ jobs:
 
           ## Definition of Done
 
-          - [ ] Unit tests cover new classes
+          - [ ] (Optional) Unit tests cover new classes
           - [ ] Release notes updated
+          - [ ] Documentation code samples updated
           ") && echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
 
       - name: 'Generate Job Summary'
