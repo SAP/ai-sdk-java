@@ -226,8 +226,7 @@ public class OpenAiController {
 
   @GetMapping("/responses/retrieve/{responseId}")
   @Nonnull
-  Object retrieveResponse(
-      @Nonnull @PathVariable("responseId") final String responseId)
+  Object retrieveResponse(@Nonnull @PathVariable("responseId") final String responseId)
       throws JsonProcessingException {
     final var response = aiCoreOpenAiService.retrieveResponse(responseId);
     return ResponseEntity.ok()
@@ -237,8 +236,7 @@ public class OpenAiController {
 
   @GetMapping("/responses/{responseId}/cancel")
   @Nonnull
-  Object cancelResponse(
-      @Nonnull @PathVariable("responseId") final String responseId)
+  Object cancelResponse(@Nonnull @PathVariable("responseId") final String responseId)
       throws JsonProcessingException {
     final var response = aiCoreOpenAiService.cancelResponse(responseId);
     return ResponseEntity.ok()
