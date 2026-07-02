@@ -716,169 +716,178 @@
                             <img src="Open-AI-Logo.svg" alt="OpenAI Logo" class="me-1 mb-1">
                             <h5 class="mb-1">OpenAI</h5>
                         </div>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/chatCompletion"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/chatCompletion</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to OpenAI.
+                        <details open>
+                            <summary><h5 style="display:inline-block">Chat completion</h5></summary>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/chatCompletion"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/chatCompletion</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to OpenAI.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/streamChatCompletion"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/streamChatCompletion</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Asynchronous stream of an OpenAI chat request.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/streamChatCompletion"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/streamChatCompletion</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Asynchronous stream of an OpenAI chat request.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/streamChatCompletionDeltas"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/streamChatCompletionDeltas</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Asynchronous stream of an OpenAI chat request and provision
-                                        of complete
-                                        response.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/streamChatCompletionDeltas"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/streamChatCompletionDeltas</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Asynchronous stream of an OpenAI chat request and provision
+                                            of complete
+                                            response.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/chatCompletionToolExecution"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/chatCompletionToolExecution</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to OpenAI with an executed tool call.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/chatCompletionToolExecution"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/chatCompletionToolExecution</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to OpenAI with an executed tool call.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/chatCompletionImage"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/chatCompletionImage</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to OpenAI with an image.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/chatCompletionImage"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/chatCompletionImage</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to OpenAI with an image.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/embedding"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/embedding</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Get the embedding of a text.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/embedding"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/embedding</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Get the embedding of a text.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/chatCompletion/ai-sdk-java-e2e"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/chatCompletion/resourceGroup</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to OpenAI filtering by resource group.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/chatCompletion/ai-sdk-java-e2e"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/chatCompletion/resourceGroup</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request to OpenAI filtering by resource group.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/responses"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/responses</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Create a response using Responses API
+                                </li>
+                            </ul>
+                        </details>
+                        <br>
+                        <details>
+                            <summary><h5 style="display:inline-block">Responses</h5></summary>
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/responses"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/responses</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Create a response using Responses API
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/streamResponses"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/streamResponses</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Create a streaming response using Responses API
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/streamResponses"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/streamResponses</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Create a streaming response using Responses API
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/responses/persistent"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/responses/persistent</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Create a persistent response and return its ID.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/responses/persistent"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/responses/persistent</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Create a persistent response and return its ID.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/responses/background"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/responses/background</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Create a background (async) persistent response.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/responses/background"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/responses/background</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Create a background (async) persistent response.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/responses/retrieve/[responseId]"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/responses/retrieve/[responseId]</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Retrieve a stored response by ID.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/responses/retrieve/[responseId]"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/responses/retrieve/[responseId]</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Retrieve a stored response by ID.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/responses/[responseId]/cancel"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/responses/[responseId]/cancel</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Cancel a background response by ID.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/responses/[responseId]/cancel"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/responses/cancel/[responseId]</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Cancel a background response by ID.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/responses/delete/[responseId]"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/responses/delete/[responseId]</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Delete a stored response by ID.
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit" formaction="/responses/delete/[responseId]"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/responses/delete/[responseId]</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Delete a stored response by ID.
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
+                        </details>
                     </div>
                     <div class="card-body">
                         <div class="d-flex align-items-center">
