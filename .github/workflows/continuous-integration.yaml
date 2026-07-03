@@ -108,13 +108,13 @@ jobs:
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report org.jacoco:jacoco-maven-plugin:check@default-check"
           mvn $MVN_ARGS
 
-      - name: "Slack Notification"
-        if: ${{ github.ref == 'refs/heads/main' && failure() }}
-        uses: slackapi/slack-github-action@v3.0.3
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK }}
-          webhook-type: incoming-webhook
-          payload: |
-            {
-              "text": "🚨 Main Build Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
-            }
+#      - name: "Slack Notification"
+#        if: ${{ github.ref == 'refs/heads/main' && failure() }}
+#        uses: slackapi/slack-github-action@v3.0.3
+#        with:
+#          webhook: ${{ secrets.SLACK_WEBHOOK }}
+#          webhook-type: incoming-webhook
+#          payload: |
+#            {
+#              "text": "🚨 Main Build Failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
+#            }
