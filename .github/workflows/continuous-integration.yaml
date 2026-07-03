@@ -46,7 +46,7 @@ jobs:
               <mirror>
                 <id>artifactory-snapshots</id>
                 <mirrorOf>central</mirrorOf>
-                <url>https://common.repositories.cloud.sap/artifactory/build-releases</url>
+                <url>https://common.repositories.cloud.sap/artifactory/maven-central</url>
               </mirror>
             </mirrors>
             <servers>
