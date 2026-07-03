@@ -3,6 +3,7 @@ package com.sap.ai.sdk.app.controllers;
 import static com.openai.core.ObjectMappers.jsonMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseOutputMessage;
 import com.sap.ai.sdk.app.services.AiCoreOpenAiService;
@@ -38,13 +39,7 @@ public class AiCoreOpenAiResponsesController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(jsonMapper().writeValueAsString(response));
     }
-    return response.output().stream()
-        .filter(ResponseOutputItem::isMessage)
-        .map(ResponseOutputItem::asMessage)
-        .flatMap(message -> message.content().stream())
-        .filter(ResponseOutputMessage.Content::isOutputText)
-        .map(text -> text.asOutputText().text())
-        .collect(Collectors.joining());
+    return extractText(response);
   }
 
   @GetMapping("/responses/persistent")
@@ -59,13 +54,7 @@ public class AiCoreOpenAiResponsesController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(jsonMapper().writeValueAsString(response));
     }
-    return response.output().stream()
-        .filter(ResponseOutputItem::isMessage)
-        .map(ResponseOutputItem::asMessage)
-        .flatMap(message -> message.content().stream())
-        .filter(ResponseOutputMessage.Content::isOutputText)
-        .map(text -> text.asOutputText().text())
-        .collect(Collectors.joining());
+    return extractText(response);
   }
 
   @GetMapping("/responses/background")
@@ -81,13 +70,7 @@ public class AiCoreOpenAiResponsesController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(jsonMapper().writeValueAsString(response));
     }
-    return response.output().stream()
-        .filter(ResponseOutputItem::isMessage)
-        .map(ResponseOutputItem::asMessage)
-        .flatMap(message -> message.content().stream())
-        .filter(ResponseOutputMessage.Content::isOutputText)
-        .map(text -> text.asOutputText().text())
-        .collect(Collectors.joining());
+    return extractText(response);
   }
 
   @GetMapping("/streamResponses")
@@ -127,13 +110,7 @@ public class AiCoreOpenAiResponsesController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(jsonMapper().writeValueAsString(response));
     }
-    return response.output().stream()
-        .filter(ResponseOutputItem::isMessage)
-        .map(ResponseOutputItem::asMessage)
-        .flatMap(message -> message.content().stream())
-        .filter(ResponseOutputMessage.Content::isOutputText)
-        .map(text -> text.asOutputText().text())
-        .collect(Collectors.joining());
+    return extractText(response);
   }
 
   @GetMapping("/responses/{responseId}/cancel")
@@ -148,13 +125,7 @@ public class AiCoreOpenAiResponsesController {
           .contentType(MediaType.APPLICATION_JSON)
           .body(jsonMapper().writeValueAsString(response));
     }
-    return response.output().stream()
-        .filter(ResponseOutputItem::isMessage)
-        .map(ResponseOutputItem::asMessage)
-        .flatMap(message -> message.content().stream())
-        .filter(ResponseOutputMessage.Content::isOutputText)
-        .map(text -> text.asOutputText().text())
-        .collect(Collectors.joining());
+    return extractText(response);
   }
 
   @GetMapping("/responses/delete/{responseId}")
@@ -169,5 +140,16 @@ public class AiCoreOpenAiResponsesController {
           .body("{\"status\":\"deleted\"}");
     }
     return ResponseEntity.ok("deleted");
+  }
+
+  @Nonnull
+  private static String extractText(@Nonnull final Response response) {
+    return response.output().stream()
+        .filter(ResponseOutputItem::isMessage)
+        .map(ResponseOutputItem::asMessage)
+        .flatMap(message -> message.content().stream())
+        .filter(ResponseOutputMessage.Content::isOutputText)
+        .map(text -> text.asOutputText().text())
+        .collect(Collectors.joining());
   }
 }
