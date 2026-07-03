@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 public class OpenAiController {
   @Autowired private OpenAiService service;
+
   private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 

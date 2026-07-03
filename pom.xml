@@ -75,6 +75,7 @@
     <logback.version>1.5.37</logback.version>
     <commons-codec.version>1.22.0</commons-codec.version>
     <japicmp.version>0.26.1</japicmp.version>
+    <openai-java.version>4.41.0</openai-java.version>
     <!-- conflicts resolution -->
     <micrometer.version>1.17.0</micrometer.version>
     <json.version>20260522</json.version>
@@ -255,6 +256,16 @@
         <groupId>commons-codec</groupId>
         <artifactId>commons-codec</artifactId>
         <version>${commons-codec.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.openai</groupId>
+        <artifactId>openai-java-core</artifactId>
+        <version>${openai-java.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.openai</groupId>
+        <artifactId>openai-java</artifactId>
+        <version>${openai-java.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
