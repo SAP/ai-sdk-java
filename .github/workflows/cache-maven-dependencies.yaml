@@ -10,7 +10,7 @@ on:
 
 env:
   MAVEN_CACHE_REF: refs/heads/main
-  MAVEN_CACHE_KEY: maven-dependencies
+  MAVEN_CACHE_KEY: maven-dependencies-sf1-test
   MAVEN_CACHE_DIR: ~/.m2
 
 jobs:
@@ -37,7 +37,7 @@ jobs:
               <mirror>
                 <id>artifactory-snapshots</id>
                 <mirrorOf>central</mirrorOf>
-                <url>https://common.repositories.cloud.sap/artifactory/build-releases</url>
+                <url>https://common.repositories.cloud.sap/artifactory/maven-central</url>
               </mirror>
             </mirrors>
             <servers>
