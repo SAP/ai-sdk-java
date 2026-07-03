@@ -28,6 +28,31 @@ jobs:
           distribution: 'sapmachine'
           java-version: 21
 
+      - name: 'Configure Artifactory Mirror'
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << EOF
+          <settings>
+            <mirrors>
+              <mirror>
+                <id>artifactory-snapshots</id>
+                <mirrorOf>central</mirrorOf>
+                <url>https://common.repositories.cloud.sap/artifactory/build-releases</url>
+              </mirror>
+            </mirrors>
+            <servers>
+              <server>
+                <id>artifactory-snapshots</id>
+                <username>${ARTIFACTORY_USER}</username>
+                <password>${ARTIFACTORY_PASS}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+        env:
+          ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_COMMON_USER }}
+          ARTIFACTORY_PASS: ${{ secrets.ARTIFACTORY_COMMON_PASSWORD }}
+
       - name: 'Download Dependencies'
         run: mvn -B dependency:go-offline
 
