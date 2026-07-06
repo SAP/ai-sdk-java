@@ -1113,6 +1113,14 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void testStreamChatCompletionDeltasThrowsOnUnsupportedRequestType() {
+    final CompletionPostRequest unknownRequest = new CompletionPostRequest() {};
+    assertThatThrownBy(() -> client.streamChatCompletionDeltas(unknownRequest))
+        .isExactlyInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("Unsupported request type");
+  }
+
+  @Test
   void testMultiMessage() throws IOException {
     stubFor(
         post("/v2/completion")

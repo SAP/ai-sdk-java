@@ -236,7 +236,9 @@ public class OrchestrationClient {
   }
 
   /**
-   * Generate a completion for the given prompt.
+   * Generate a completion for the given request object.
+   *
+   * <p>Note, that streaming will get enabled on the request object as a side effect.
    *
    * @param request the prompt, including messages and other parameters.
    * @return A stream of chat completion delta elements.
@@ -260,8 +262,7 @@ public class OrchestrationClient {
       }
       enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
     } else {
-      throw new OrchestrationClientException(
-          "Unsupported request type: " + request.getClass().getName());
+      throw new IllegalStateException("Unsupported request type: " + request.getClass().getName());
     }
     return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
   }
