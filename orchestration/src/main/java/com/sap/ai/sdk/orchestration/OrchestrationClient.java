@@ -11,12 +11,15 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByNameScenarioVersion;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import io.vavr.NotImplementedError;
 import io.vavr.control.Try;
 import java.util.ArrayList;
 import java.util.List;
@@ -241,7 +244,7 @@ public class OrchestrationClient {
    */
   @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
-  public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
+  public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltasOld(
       @Nonnull final CompletionRequestConfiguration request) throws OrchestrationClientException {
     val config = request.getConfig();
     val stream = config.getStream();
@@ -253,6 +256,41 @@ public class OrchestrationClient {
 
     return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
   }
+
+  @Nonnull
+  public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
+      @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
+    if (request instanceof CompletionRequestConfiguration requestConfig) {
+      val config = requestConfig.getConfig();
+      val stream = config.getStream();
+      if (stream == null) {
+        config.setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
+      } else {
+        stream.enabled(true);
+      }
+    } else if (request instanceof CompletionRequestConfigurationReferenceById requestConfigById) {
+      val config = requestConfigById.getConfig();
+      val stream = config.getStream();
+      if (stream == null) {
+        config.setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
+      } else {
+        stream.enabled(true);
+      }
+    } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion requestConfigByNSV) {
+      val config = requestConfigByNSV.getConfig();
+      val stream = config.getStream();
+      if (stream == null) {
+        config.setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
+      } else {
+        stream.enabled(true);
+      }
+    } else {
+      throw new RuntimeException("This should not happen.");
+    }
+    return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
+  }
+
+//  private obtainConfig
 
   /**
    * Generate embeddings for a {@code OrchestrationEmbeddingRequest} request.
