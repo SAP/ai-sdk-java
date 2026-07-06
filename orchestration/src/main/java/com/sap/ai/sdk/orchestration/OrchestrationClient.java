@@ -17,6 +17,7 @@ import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.PartialOrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import io.vavr.control.Try;
@@ -263,8 +264,14 @@ public class OrchestrationClient {
     if (request instanceof CompletionRequestConfiguration r) {
       enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
     } else if (request instanceof CompletionRequestConfigurationReferenceById r) {
+      if (r.getConfig() == null) {
+        r.setConfig(PartialOrchestrationConfig.create());
+      }
       enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
     } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion r) {
+      if (r.getConfig() == null) {
+        r.setConfig(PartialOrchestrationConfig.create());
+      }
       enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
     } else {
       throw new OrchestrationClientException(
