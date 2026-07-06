@@ -245,20 +245,6 @@ public class OrchestrationClient {
    */
   @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
-  public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltasOld(
-      @Nonnull final CompletionRequestConfiguration request) throws OrchestrationClientException {
-    val config = request.getConfig();
-    val stream = config.getStream();
-    if (stream == null) {
-      config.setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
-    } else {
-      stream.enabled(true);
-    }
-
-    return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
-  }
-
-  @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
     if (request instanceof CompletionRequestConfiguration r) {
