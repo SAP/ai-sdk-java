@@ -19,11 +19,11 @@ import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
-import io.vavr.NotImplementedError;
 import io.vavr.control.Try;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -260,37 +260,28 @@ public class OrchestrationClient {
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
-    if (request instanceof CompletionRequestConfiguration requestConfig) {
-      val config = requestConfig.getConfig();
-      val stream = config.getStream();
-      if (stream == null) {
-        config.setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
-      } else {
-        stream.enabled(true);
-      }
-    } else if (request instanceof CompletionRequestConfigurationReferenceById requestConfigById) {
-      val config = requestConfigById.getConfig();
-      val stream = config.getStream();
-      if (stream == null) {
-        config.setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
-      } else {
-        stream.enabled(true);
-      }
-    } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion requestConfigByNSV) {
-      val config = requestConfigByNSV.getConfig();
-      val stream = config.getStream();
-      if (stream == null) {
-        config.setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
-      } else {
-        stream.enabled(true);
-      }
+    if (request instanceof CompletionRequestConfiguration r) {
+      enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
+    } else if (request instanceof CompletionRequestConfigurationReferenceById r) {
+      enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
+    } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion r) {
+      enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
     } else {
-      throw new RuntimeException("This should not happen.");
+      throw new OrchestrationClientException(
+          "Unsupported request type: " + request.getClass().getName());
     }
     return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
   }
 
-//  private obtainConfig
+  private static void enableStreaming(
+      @Nonnull final Supplier<GlobalStreamOptions> getStream,
+      @Nonnull final Consumer<GlobalStreamOptions> setStream) {
+    if (getStream.get() == null) {
+      setStream.accept(GlobalStreamOptions.create().enabled(true).delimiters(null));
+    } else {
+      getStream.get().enabled(true);
+    }
+  }
 
   /**
    * Generate embeddings for a {@code OrchestrationEmbeddingRequest} request.

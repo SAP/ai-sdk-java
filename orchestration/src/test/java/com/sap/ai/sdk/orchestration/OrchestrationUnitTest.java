@@ -45,6 +45,12 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.github.tomakehurst.wiremock.stubbing.Scenario;
 import com.sap.ai.sdk.orchestration.model.ChatDelta;
+import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByIdConfigRef;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByNameScenarioVersion;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
@@ -52,6 +58,7 @@ import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import com.sap.ai.sdk.orchestration.model.ErrorResponseError;
 import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
+import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
@@ -59,6 +66,7 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigPlaceholder
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
+import com.sap.ai.sdk.orchestration.model.PartialOrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -1031,6 +1039,77 @@ class OrchestrationUnitTest {
       }
       Mockito.verify(inputStream, times(1)).close();
     }
+  }
+
+  private static Stream<CompletionPostRequest> streamChatCompletionDeltasRequests() {
+    var localConfig = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_4O);
+    var localPrompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
+    var requestConfig = OrchestrationClient.toCompletionPostRequest(localPrompt, localConfig);
+    var requestById =
+        CompletionRequestConfigurationReferenceById.create()
+            .configRef(CompletionRequestConfigurationReferenceByIdConfigRef.create().id("test-id"))
+            .config(PartialOrchestrationConfig.create());
+    var requestByNSV =
+        CompletionRequestConfigurationReferenceByNameScenarioVersion.create()
+            .configRef(
+                CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef.create()
+                    .scenario("scenario")
+                    .name("name")
+                    .version("0.0.1"))
+            .config(PartialOrchestrationConfig.create());
+    return Stream.of(requestConfig, requestById, requestByNSV);
+  }
+
+  @ParameterizedTest
+  @MethodSource("streamChatCompletionDeltasRequests")
+  void testEnableStreamingOnAllRequestTypes(@Nonnull final CompletionPostRequest request)
+      throws IOException {
+    try (var inputStream = fileLoader.apply("streamChatCompletion.txt")) {
+      final var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
+      mockResponse.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
+      mockResponse.setHeader("Content-Type", "text/event-stream");
+      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
+
+      client.streamChatCompletionDeltas(request).toList();
+    }
+
+    if (request instanceof CompletionRequestConfiguration r) {
+      assertThat(r.getConfig().getStream().isEnabled()).isTrue();
+    } else if (request instanceof CompletionRequestConfigurationReferenceById r) {
+      assertThat(r.getConfig().getStream().isEnabled()).isTrue();
+    } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion r) {
+      assertThat(r.getConfig().getStream().isEnabled()).isTrue();
+    }
+  }
+
+  @ParameterizedTest
+  @MethodSource("streamChatCompletionDeltasRequests")
+  void testEnableStreamingPreservesExistingStreamOptions(
+      @Nonnull final CompletionPostRequest request) throws IOException {
+    var existingStream = GlobalStreamOptions.create().enabled(false).chunkSize(42);
+    if (request instanceof CompletionRequestConfiguration r) {
+      r.getConfig().setStream(existingStream);
+    } else if (request instanceof CompletionRequestConfigurationReferenceById r) {
+      r.getConfig().setStream(existingStream);
+    } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion r) {
+      r.getConfig().setStream(existingStream);
+    }
+
+    try (var inputStream = fileLoader.apply("streamChatCompletion.txt")) {
+      final var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
+      mockResponse.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
+      mockResponse.setHeader("Content-Type", "text/event-stream");
+      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
+
+      client.streamChatCompletionDeltas(request).toList();
+    }
+
+    assertThat(existingStream.isEnabled()).isTrue();
+    assertThat(existingStream.getChunkSize()).isEqualTo(42);
   }
 
   @Test
