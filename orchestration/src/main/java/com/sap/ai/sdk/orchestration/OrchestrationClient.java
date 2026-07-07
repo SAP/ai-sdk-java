@@ -249,6 +249,8 @@ public class OrchestrationClient {
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
       @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
+    // since CompletionPostRequest is an empty and generated interface, we have to access the stream
+    // options explicitly for each type
     if (request instanceof CompletionRequestConfiguration r) {
       enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
     } else if (request instanceof CompletionRequestConfigurationReferenceById r) {
@@ -262,7 +264,10 @@ public class OrchestrationClient {
       }
       enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
     } else {
-      throw new IllegalStateException("Unsupported request type: " + request.getClass().getName());
+      throw new IllegalStateException(
+          "Unsupported request type: "
+              + request.getClass().getName()
+              + ". This method only supports classes from com.sap.ai.sdk.orchestration.model.");
     }
     return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
   }
