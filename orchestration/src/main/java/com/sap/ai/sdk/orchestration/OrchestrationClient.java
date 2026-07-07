@@ -267,7 +267,12 @@ public class OrchestrationClient {
       throw new IllegalStateException(
           "Unsupported request type: "
               + request.getClass().getName()
-              + ". This method only supports classes from com.sap.ai.sdk.orchestration.model.");
+              + ". This method only supports "
+              + CompletionRequestConfiguration.class.getName()
+              + ", "
+              + CompletionRequestConfigurationReferenceById.class.getName()
+              + ", and "
+              + CompletionRequestConfigurationReferenceByNameScenarioVersion.class.getName());
     }
     return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
   }
