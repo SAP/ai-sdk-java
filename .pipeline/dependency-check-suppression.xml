@@ -4,4 +4,8 @@
     <notes><![CDATA[This is a JS dependency.]]></notes>
     <cve>CVE-2021-41251</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[This is an issue related to Apache HttpComponents v5. OWASP mistakenly flags dependencies from v4.]]></notes>
+    <cve>CVE-2026-54399</cve>
+  </suppress>
 </suppressions>
