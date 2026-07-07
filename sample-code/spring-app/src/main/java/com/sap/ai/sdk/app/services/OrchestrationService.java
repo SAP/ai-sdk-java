@@ -10,26 +10,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeE
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.AzureContentFilter;
-import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
-import com.sap.ai.sdk.orchestration.DpiMasking;
-import com.sap.ai.sdk.orchestration.Grounding;
-import com.sap.ai.sdk.orchestration.ImageItem;
-import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
-import com.sap.ai.sdk.orchestration.Message;
-import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
-import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
-import com.sap.ai.sdk.orchestration.OrchestrationClient;
-import com.sap.ai.sdk.orchestration.OrchestrationClientException;
-import com.sap.ai.sdk.orchestration.OrchestrationConfigReference;
-import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
-import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
-import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
-import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
-import com.sap.ai.sdk.orchestration.SystemMessage;
-import com.sap.ai.sdk.orchestration.TemplateConfig;
-import com.sap.ai.sdk.orchestration.TranslationConfig;
+import com.sap.ai.sdk.orchestration.*;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
@@ -52,6 +33,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -83,12 +65,14 @@ public class OrchestrationService {
   }
 
   /**
-   * TODO: document
-   * @param input
-   * @return
+   * Voices input text into output audio
+   *
+   * @param outputConsumer byte chunks output consumer in PCM16 format, 16-bit, mono, 24000 Hz, little-endian,
+   *              boolean flag signifies end of the current reply (only true for last chunk of current response)
+   * @return text input channel to supply text to voice, should be closed when not needed anymore
    */
-  public Stream<byte[]> speech(@Nonnull final String input) {
-    return client.speech(input);
+  public TextInputChannel textToSpeech(@Nonnull final BiConsumer<byte[], Boolean> outputConsumer) {
+    return client.textToSpeech(outputConsumer);
   }
 
   /**

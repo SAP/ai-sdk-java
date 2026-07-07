@@ -12,6 +12,7 @@ import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.models.beta.realtime.sessions.Session;
 import com.openai.models.realtime.SessionUpdateEvent;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
@@ -32,6 +33,7 @@ import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -42,6 +44,8 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 /** Client to execute requests to the orchestration service. */
 @Slf4j
@@ -124,142 +128,26 @@ public class OrchestrationClient {
     /**
      * Voices input text into output audio
      *
-     * @param input text to voice
-     * @return byte chunks output stream in PCM16 format, 16-bit, mono, 24000 Hz, little-endian
+     * @param output byte chunks output consumer in PCM16 format, 16-bit, mono, 24000 Hz, little-endian,
+     *              boolean flag signifies end of the current reply (only true for last chunk of current response)
+     * @return text input channel to supply text to voice, should be closed when not needed anymore
      */
-    public Stream<byte[]> speech(String input) {
-
-        var deploymentID = "";
-        final List<byte[]> result = new ArrayList<>();
-        try {
-            HttpClient client = HttpClient.newHttpClient(); // TODO: fix local setup and use autocloseable
-      WebSocket ws =
-          client
-              .newWebSocketBuilder()
-              .header(
-                  "Authorization",
-                  "Bearer .......")
-              .header("AI-Resource-Group", "default")
-              .buildAsync(
-                  URI.create(REALTIME_API_PATH + deploymentID),
-                  new WebSocket.Listener() {
-
-                    @Override
-                    public void onOpen(WebSocket webSocket) {
-                      log.warn("Websocket connection opened");
-                      String sessionUpdateJson =
-                          """
-                            {
-                              "type": "session.update",
-                              "session": {
-                                "type": "realtime",
-                                "output_modalities": ["audio"],
-                                "instructions": "you are a speaker and your role is to read (produce audio) of the user input speech. voice user text input",
-                                "audio": {
-                                  "input": { "format": { "type": "audio/pcm", "rate": 24000 } },
-                                  "output": { "format": { "type": "audio/pcm", "rate": 24000 }, "voice": "alloy" }
-                                }
-                              }
-                            }
-                            """;
-
-                      // String sessionUpdateJson = "{\"type\": \"session.update\", \"session\":
-                      // {\"modalities\": [\"audio\", \"text\"]}}";
-                      webSocket.sendText(sessionUpdateJson, true);
-                      webSocket.request(1);
-
-                      String textMessage =
-                          """
-{
-  "type": "conversation.item.create",
-  "item": {
-    "type": "message",
-    "role": "system",
-    "content": [
-      {
-        "type": "input_text",
-        "text": "you are a speaker and your role is to read (produce audio) of the user input speech. voice user text input"
-      }
-    ]
-  }
-}
-""";
-                              //.replaceFirst("%VALUE%", input); // TODO: sanitize or/and escape input
-                      log.warn("Sending message to websocket: {}", textMessage);
-                      webSocket.sendText(textMessage, true);
-                      webSocket.request(1);
-
-                      String voiceMessage =
-                              """
-    {
-      "type": "conversation.item.create",
-      "item": {
-        "type": "message",
-        "role": "user",
-        "content": [
-          {
-            "type": "input_text",
-            "text": "Eat more of these fresh french baguettes"
-          }
-        ]
-      }
-    }
-    """;
-
-                      webSocket.sendText(voiceMessage, true);
-                      webSocket.request(1);
-
-
-
-
-                      String askForResponse = "{ \"type\": \"response.create\" }";
-                      webSocket.sendText(askForResponse, true);
-
-                      webSocket.request(80);
-                    }
-
-                    @Override
-                    public CompletionStage<?> onText(
-                        WebSocket webSocket, CharSequence data, boolean last) {
-                        try {
-                            Thread.sleep(500);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                        log.warn("text received: {}", data);
-                      final JsonNode event;
-                      try {
-                        event = JACKSON.readTree(data.toString());
-                      } catch (JsonProcessingException e) {
-                        throw new OrchestrationClientException(
-                            "Error parsing JSON response from speech API", e);
-                      }
-                      String type = event.get("type").asText();
-                      if ("response.output_audio.delta".equals(type)) {
-                        String base64Audio = event.get("delta").asText();
-                        byte[] audio = Base64.getDecoder().decode(base64Audio);
-                        result.add(audio);
-                      } else if ("response.audio_transcript.delta".equals(type)) {
-                        log.warn("RECEIVED TRANSCRIPT: {}", event.get("delta").asText());
-                      } else if ("response.output_audio.done".equals(type)) {
-                        // TODO: we should not wait last ack, we should return stream immediately,
-                        // this requires
-                        // TODO: thread management, factory and thread safety of all structs
-                        webSocket.sendClose(1000, "done");
-                        return null;
-                      } else {
-                        log.warn("Unhandled event type: {}", data);
-                      }
-                      return CompletableFuture.completedStage(null);
-                    }
-                  })
-              .join();
-            Thread.sleep(25000);
-            return result.stream();
-        } catch (Exception e) {
-            //log.error(e.getMessage(), e);
-            throw new OrchestrationClientException("Failed to call realtime API", e);
+    public TextInputChannel textToSpeech(BiConsumer<byte[], Boolean> output) {
+      var destination = new AiCoreService().getInferenceDestination().forModel(new AiModel() {
+        @Override
+        public @NonNull String name() {
+          return OrchestrationAiModel.GPT_REALTIME.getName();
         }
+
+        @Override
+        public @Nullable String version() {
+          return OrchestrationAiModel.GPT_REALTIME.getVersion();
+        }
+      });
+
+      var factory = new RealtimeChannelFactory(() -> destination);
+
+      return factory.textToSpeech(output);
     }
 
   /**

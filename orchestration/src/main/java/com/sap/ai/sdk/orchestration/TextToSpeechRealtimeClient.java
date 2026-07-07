@@ -1,13 +1,14 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.openai.models.realtime.RealtimeSessionCreateRequest;
-import io.vavr.collection.Array;
+import com.openai.models.realtime.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.function.BiConsumer;
 
-public class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient {
+@Slf4j
+public class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implements TextInputChannel {
 
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
@@ -30,6 +31,18 @@ public class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient {
         this.outputConsumer = outputConsumer;
     }
 
+    public void sendText(String text) {
+        var message = ConversationItemCreateEvent.builder()
+                .item(ConversationItem.ofRealtimeConversationItemUserMessage(
+                        RealtimeConversationItemUserMessage.builder()
+                                .addContent(RealtimeConversationItemUserMessage.Content.builder()
+                                        .text(text)
+                                        .type(RealtimeConversationItemUserMessage.Content.Type.INPUT_TEXT).build()).build()
+                )).build();
+
+        super.sendMessage(message);
+    }
+
     @Override
     protected String getSystemPrompt() {
         return TASK;
@@ -46,8 +59,11 @@ public class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient {
             var base64Audio = event.get("delta").asText();
             byte[] audio = Base64.getDecoder().decode(base64Audio);
             this.outputConsumer.accept(audio, Boolean.FALSE);
+            log.warn("Called consumer with base64 converted to bytes: {} (base64)", base64Audio);
         } else if ("response.output_audio.done".equals(eventType)) {
             this.outputConsumer.accept(EMPTY_BYTE_ARRAY, Boolean.TRUE);
+        } else {
+            log.warn("skipping message type: {}", eventType);
         }
     }
 }
