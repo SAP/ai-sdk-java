@@ -67,8 +67,9 @@ public class OrchestrationService {
   /**
    * Voices input text into output audio
    *
-   * @param outputConsumer byte chunks output consumer in PCM16 format, 16-bit, mono, 24000 Hz, little-endian,
-   *              boolean flag signifies end of the current reply (only true for last chunk of current response)
+   * @param outputConsumer byte chunks output consumer in PCM16 format, 16-bit, mono, 24000 Hz,
+   *     little-endian, boolean flag signifies end of the current reply (only true for last chunk of
+   *     current response)
    * @return text input channel to supply text to voice, should be closed when not needed anymore
    */
   public TextInputChannel textToSpeech(@Nonnull final BiConsumer<byte[], Boolean> outputConsumer) {

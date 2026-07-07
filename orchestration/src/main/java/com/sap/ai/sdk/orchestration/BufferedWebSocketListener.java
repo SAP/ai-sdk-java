@@ -8,32 +8,33 @@ import java.util.function.Consumer;
 
 public class BufferedWebSocketListener implements WebSocket.Listener {
 
-    private final Consumer<WebSocket> onOpen;
-    private final BiConsumer<WebSocket, CharSequence> onText;
-    private final StringBuilder buffer;
+  private final Consumer<WebSocket> onOpen;
+  private final BiConsumer<WebSocket, CharSequence> onText;
+  private final StringBuilder buffer;
 
-    public BufferedWebSocketListener(Consumer<WebSocket> onOpen, BiConsumer<WebSocket, CharSequence> onText) {
-        this.onOpen = onOpen;
-        this.onText = onText;
-        this.buffer = new StringBuilder(1024 * 1024);
+  public BufferedWebSocketListener(
+      Consumer<WebSocket> onOpen, BiConsumer<WebSocket, CharSequence> onText) {
+    this.onOpen = onOpen;
+    this.onText = onText;
+    this.buffer = new StringBuilder(1024 * 1024);
+  }
+
+  @Override
+  public void onOpen(WebSocket webSocket) {
+    this.onOpen.accept(webSocket);
+    webSocket.request(1);
+  }
+
+  @Override
+  public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
+    buffer.append(data);
+    webSocket.request(1);
+    if (last) {
+      var completeMessage = buffer.toString();
+      buffer.setLength(0);
+      this.onText.accept(webSocket, completeMessage);
     }
 
-    @Override
-    public void onOpen(WebSocket webSocket) {
-        this.onOpen.accept(webSocket);
-        webSocket.request(1);
-    }
-
-    @Override
-    public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
-        buffer.append(data);
-        webSocket.request(1);
-        if (last) {
-            var completeMessage = buffer.toString();
-            buffer.setLength(0);
-            this.onText.accept(webSocket, completeMessage);
-        }
-
-        return CompletableFuture.completedStage(null);
-    }
+    return CompletableFuture.completedStage(null);
+  }
 }
