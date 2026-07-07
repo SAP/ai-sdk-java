@@ -6,14 +6,16 @@ import java.util.concurrent.CompletionStage;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public class WebsocketListenerGlue implements WebSocket.Listener {
+public class BufferedWebSocketListener implements WebSocket.Listener {
 
     private final Consumer<WebSocket> onOpen;
     private final BiConsumer<WebSocket, CharSequence> onText;
+    private final StringBuilder buffer;
 
-    public WebsocketListenerGlue(Consumer<WebSocket> onOpen, BiConsumer<WebSocket, CharSequence> onText) {
+    public BufferedWebSocketListener(Consumer<WebSocket> onOpen, BiConsumer<WebSocket, CharSequence> onText) {
         this.onOpen = onOpen;
         this.onText = onText;
+        this.buffer = new StringBuilder(1024 * 1024);
     }
 
     @Override
@@ -24,8 +26,14 @@ public class WebsocketListenerGlue implements WebSocket.Listener {
 
     @Override
     public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
-        this.onText.accept(webSocket, data);
+        buffer.append(data);
         webSocket.request(1);
+        if (last) {
+            var completeMessage = buffer.toString();
+            buffer.setLength(0);
+            this.onText.accept(webSocket, completeMessage);
+        }
+
         return CompletableFuture.completedStage(null);
     }
 }

@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.openai.models.conversations.Message;
-import com.openai.models.conversations.TextContent;
 import com.openai.models.realtime.*;
 import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
 import lombok.AccessLevel;
@@ -55,7 +53,7 @@ public abstract class WSSOpenAIRealtimeClient implements AutoCloseable {
         for (Map.Entry<String, String> entry : httpHeaders.entrySet()) {
             wsBuilder = wsBuilder.header(entry.getKey(), entry.getValue());
         }
-        this.ws = wsBuilder.buildAsync(URI.create(url), new WebsocketListenerGlue(this::onSocketOpen, this::onText));
+        this.ws = wsBuilder.buildAsync(URI.create(url), new BufferedWebSocketListener(this::onSocketOpen, this::onText));
         this.handleMessageTypes = handleMessageTypes;
         this.heartbeatTimer = new Timer(HEARTBEAT_TIMER_NAME,true);
     }
@@ -149,6 +147,7 @@ public abstract class WSSOpenAIRealtimeClient implements AutoCloseable {
                                 RealtimeAudioConfig.builder()
                                     .input(
                                         RealtimeAudioConfigInput.builder()
+                                                .turnDetection(Optional.empty())
                                             .format(
                                                 RealtimeAudioFormats.AudioPcm.builder()
                                                     .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)

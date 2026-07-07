@@ -16,12 +16,7 @@ import java.util.function.Supplier;
 public class RealtimeChannelFactory {
     private static final String AI_RESOURCE_GROUP_HEADER_NAME = "AI-Resource-Group";
     private static final String AI_RESOURCE_GROUP_HEADER_VALUE = "default";
-    private static final String REALTIME_API_PATH_SUFFIX = "/v2/inference/deployments/%s/v1/realtime";
     private static final int PATH_BUFFER_SIZE = 400; // existing URLs are ~120 symbols long, 400 has reasonable margin
-
-
-    private static final String REALTIME_API_PATH =
-            "wss://realtime.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/ddb5a959fdb51ffe/v1/realtime";
 
     private final Supplier<HttpDestination> destinationSupplier;
 

@@ -53,8 +53,6 @@ import org.jspecify.annotations.Nullable;
 public class OrchestrationClient {
   private static final String DEFAULT_SCENARIO = "orchestration";
   private static final String COMPLETION_ENDPOINT = "/v2/completion";
-  private static final String REALTIME_API_PATH =
-          "wss://realtime.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/ddb5a959fdb51ffe/v1/realtime";
 
   static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
