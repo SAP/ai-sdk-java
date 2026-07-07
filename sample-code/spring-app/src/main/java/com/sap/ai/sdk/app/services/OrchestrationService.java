@@ -83,6 +83,15 @@ public class OrchestrationService {
   }
 
   /**
+   * TODO: document
+   * @param input
+   * @return
+   */
+  public Stream<byte[]> speech(@Nonnull final String input) {
+    return client.speech(input);
+  }
+
+  /**
    * Chat request to OpenAI through the Orchestration service with an image.
    *
    * @param pathToImage the path to the image

@@ -7,6 +7,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.annotations.Beta;
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.models.beta.realtime.sessions.Session;
+import com.openai.models.realtime.SessionUpdateEvent;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
@@ -17,16 +21,27 @@ import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import io.vavr.collection.Array;
 import io.vavr.control.Try;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.WebSocket;
+import java.nio.ByteBuffer;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
 
 /** Client to execute requests to the orchestration service. */
 @Slf4j
@@ -34,8 +49,11 @@ import lombok.val;
 public class OrchestrationClient {
   private static final String DEFAULT_SCENARIO = "orchestration";
   private static final String COMPLETION_ENDPOINT = "/v2/completion";
+  private static final String REALTIME_API_PATH =
+          "wss://realtime.ai.intprod-eu12.eu-central-1.aws.ml.hana.ondemand.com/v2/inference/deployments/ddb5a959fdb51ffe/v1/realtime";
 
   static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
+
 
   private final OrchestrationHttpExecutor executor;
   private final List<Header> customHeaders = new ArrayList<>();
@@ -102,6 +120,147 @@ public class OrchestrationClient {
     val response = executeRequest(request);
     return new OrchestrationChatResponse(response);
   }
+
+    /**
+     * Voices input text into output audio
+     *
+     * @param input text to voice
+     * @return byte chunks output stream in PCM16 format, 16-bit, mono, 24000 Hz, little-endian
+     */
+    public Stream<byte[]> speech(String input) {
+
+        var deploymentID = "";
+        final List<byte[]> result = new ArrayList<>();
+        try {
+            HttpClient client = HttpClient.newHttpClient(); // TODO: fix local setup and use autocloseable
+      WebSocket ws =
+          client
+              .newWebSocketBuilder()
+              .header(
+                  "Authorization",
+                  "Bearer .......")
+              .header("AI-Resource-Group", "default")
+              .buildAsync(
+                  URI.create(REALTIME_API_PATH + deploymentID),
+                  new WebSocket.Listener() {
+
+                    @Override
+                    public void onOpen(WebSocket webSocket) {
+                      log.warn("Websocket connection opened");
+                      String sessionUpdateJson =
+                          """
+                            {
+                              "type": "session.update",
+                              "session": {
+                                "type": "realtime",
+                                "output_modalities": ["audio"],
+                                "instructions": "you are a speaker and your role is to read (produce audio) of the user input speech. voice user text input",
+                                "audio": {
+                                  "input": { "format": { "type": "audio/pcm", "rate": 24000 } },
+                                  "output": { "format": { "type": "audio/pcm", "rate": 24000 }, "voice": "alloy" }
+                                }
+                              }
+                            }
+                            """;
+
+                      // String sessionUpdateJson = "{\"type\": \"session.update\", \"session\":
+                      // {\"modalities\": [\"audio\", \"text\"]}}";
+                      webSocket.sendText(sessionUpdateJson, true);
+                      webSocket.request(1);
+
+                      String textMessage =
+                          """
+{
+  "type": "conversation.item.create",
+  "item": {
+    "type": "message",
+    "role": "system",
+    "content": [
+      {
+        "type": "input_text",
+        "text": "you are a speaker and your role is to read (produce audio) of the user input speech. voice user text input"
+      }
+    ]
+  }
+}
+""";
+                              //.replaceFirst("%VALUE%", input); // TODO: sanitize or/and escape input
+                      log.warn("Sending message to websocket: {}", textMessage);
+                      webSocket.sendText(textMessage, true);
+                      webSocket.request(1);
+
+                      String voiceMessage =
+                              """
+    {
+      "type": "conversation.item.create",
+      "item": {
+        "type": "message",
+        "role": "user",
+        "content": [
+          {
+            "type": "input_text",
+            "text": "Eat more of these fresh french baguettes"
+          }
+        ]
+      }
+    }
+    """;
+
+                      webSocket.sendText(voiceMessage, true);
+                      webSocket.request(1);
+
+
+
+
+                      String askForResponse = "{ \"type\": \"response.create\" }";
+                      webSocket.sendText(askForResponse, true);
+
+                      webSocket.request(80);
+                    }
+
+                    @Override
+                    public CompletionStage<?> onText(
+                        WebSocket webSocket, CharSequence data, boolean last) {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        log.warn("text received: {}", data);
+                      final JsonNode event;
+                      try {
+                        event = JACKSON.readTree(data.toString());
+                      } catch (JsonProcessingException e) {
+                        throw new OrchestrationClientException(
+                            "Error parsing JSON response from speech API", e);
+                      }
+                      String type = event.get("type").asText();
+                      if ("response.output_audio.delta".equals(type)) {
+                        String base64Audio = event.get("delta").asText();
+                        byte[] audio = Base64.getDecoder().decode(base64Audio);
+                        result.add(audio);
+                      } else if ("response.audio_transcript.delta".equals(type)) {
+                        log.warn("RECEIVED TRANSCRIPT: {}", event.get("delta").asText());
+                      } else if ("response.output_audio.done".equals(type)) {
+                        // TODO: we should not wait last ack, we should return stream immediately,
+                        // this requires
+                        // TODO: thread management, factory and thread safety of all structs
+                        webSocket.sendClose(1000, "done");
+                        return null;
+                      } else {
+                        log.warn("Unhandled event type: {}", data);
+                      }
+                      return CompletableFuture.completedStage(null);
+                    }
+                  })
+              .join();
+            Thread.sleep(25000);
+            return result.stream();
+        } catch (Exception e) {
+            //log.error(e.getMessage(), e);
+            throw new OrchestrationClientException("Failed to call realtime API", e);
+        }
+    }
 
   /**
    * Generate a completion for the given prompt.
