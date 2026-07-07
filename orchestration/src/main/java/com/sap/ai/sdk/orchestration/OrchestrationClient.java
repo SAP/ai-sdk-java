@@ -277,6 +277,11 @@ public class OrchestrationClient {
     return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
   }
 
+  // getStream reads the current GlobalStreamOptions from the request config (which may be null).
+  // setStream writes a GlobalStreamOptions back into the request config.
+  // Both are passed as lambdas because the config types (OrchestrationConfig vs
+  // PartialOrchestrationConfig) share no common usable supertype, so a single generic method is not
+  // possible without reflection.
   private static void enableStreaming(
       @Nonnull final Supplier<GlobalStreamOptions> getStream,
       @Nonnull final Consumer<GlobalStreamOptions> setStream) {
