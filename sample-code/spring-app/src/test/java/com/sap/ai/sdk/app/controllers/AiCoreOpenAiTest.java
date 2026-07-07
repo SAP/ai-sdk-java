@@ -13,6 +13,7 @@ import com.openai.models.responses.ResponseOutputItem;
 import com.openai.models.responses.ResponseStatus;
 import com.sap.ai.sdk.app.services.AiCoreOpenAiService;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -134,7 +135,15 @@ class AiCoreOpenAiTest {
     final var message =
         followUp.output().stream().filter(ResponseOutputItem::isMessage).findFirst();
     assertThat(message).isPresent();
-    assertThat(message.get().asMessage().content().get(0).asOutputText().text())
+    assertThat(
+            message
+                .get()
+                .asMessage()
+                .content()
+                .get(0)
+                .asOutputText()
+                .text()
+                .toLowerCase(Locale.ROOT))
         .containsAnyOf("three", "3");
   }
 
