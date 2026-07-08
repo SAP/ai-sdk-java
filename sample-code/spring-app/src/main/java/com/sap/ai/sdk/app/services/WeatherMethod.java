@@ -17,14 +17,6 @@ class WeatherMethod {
   }
 
   /**
-   * Request for the weather
-   *
-   * @param location the city
-   * @param unit the unit of temperature
-   */
-  record Request(String location, Unit unit) {}
-
-  /**
    * Response for the weather
    *
    * @param temp the temperature
@@ -35,8 +27,10 @@ class WeatherMethod {
   @Nonnull
   @SuppressWarnings("unused")
   @Tool(description = "Get the weather in location")
-  static Response getCurrentWeather(@ToolParam @Nonnull final Request request) {
-    final int temperature = request.location.hashCode() % 30;
-    return new Response(temperature, request.unit);
+  static Response getCurrentWeather(
+      @ToolParam(description = "the city") @Nonnull final String location,
+      @ToolParam(description = "the unit of temperature") @Nonnull final Unit unit) {
+    final int temperature = location.hashCode() % 30;
+    return new Response(temperature, unit);
   }
 }
