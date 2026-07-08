@@ -11,16 +11,20 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByNameScenarioVersion;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.PartialOrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import io.vavr.control.Try;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -232,7 +236,9 @@ public class OrchestrationClient {
   }
 
   /**
-   * Generate a completion for the given prompt.
+   * Generate a completion for the given request object.
+   *
+   * <p>Note, that streaming will get enabled on the request object as a side effect.
    *
    * @param request the prompt, including messages and other parameters.
    * @return A stream of chat completion delta elements.
@@ -242,16 +248,48 @@ public class OrchestrationClient {
   @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
-      @Nonnull final CompletionRequestConfiguration request) throws OrchestrationClientException {
-    val config = request.getConfig();
-    val stream = config.getStream();
-    if (stream == null) {
-      config.setStream(GlobalStreamOptions.create().enabled(true).delimiters(null));
+      @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
+    // since CompletionPostRequest is an empty and generated interface, we have to access the stream
+    // options explicitly for each type
+    if (request instanceof CompletionRequestConfiguration r) {
+      enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
+    } else if (request instanceof CompletionRequestConfigurationReferenceById r) {
+      if (r.getConfig() == null) {
+        r.setConfig(PartialOrchestrationConfig.create());
+      }
+      enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
+    } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion r) {
+      if (r.getConfig() == null) {
+        r.setConfig(PartialOrchestrationConfig.create());
+      }
+      enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
     } else {
-      stream.enabled(true);
+      throw new IllegalStateException(
+          "Unsupported request type: "
+              + request.getClass().getName()
+              + ". This method only supports "
+              + CompletionRequestConfiguration.class.getName()
+              + ", "
+              + CompletionRequestConfigurationReferenceById.class.getName()
+              + ", and "
+              + CompletionRequestConfigurationReferenceByNameScenarioVersion.class.getName());
     }
-
     return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
+  }
+
+  // getStream reads the current GlobalStreamOptions from the request config (which may be null).
+  // setStream writes a GlobalStreamOptions back into the request config.
+  // Both are passed as lambdas because the config types (OrchestrationConfig vs
+  // PartialOrchestrationConfig) share no common usable supertype, so a single generic method is not
+  // possible without reflection.
+  private static void enableStreaming(
+      @Nonnull final Supplier<GlobalStreamOptions> getStream,
+      @Nonnull final Consumer<GlobalStreamOptions> setStream) {
+    if (getStream.get() == null) {
+      setStream.accept(GlobalStreamOptions.create().enabled(true).delimiters(null));
+    } else {
+      getStream.get().enabled(true);
+    }
   }
 
   /**

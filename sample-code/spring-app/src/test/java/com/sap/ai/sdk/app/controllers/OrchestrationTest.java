@@ -635,6 +635,48 @@ class OrchestrationTest {
   }
 
   @Test
+  void testStreamDeltasWithInlineConfig() {
+    final var stream = service.streamDeltasWithInlineConfig("HelloWorld!");
+    val filledDeltaCount = new AtomicInteger(0);
+    stream.forEach(
+        delta -> {
+          log.info("delta: {}", delta);
+          if (!delta.getDeltaContent().isEmpty()) {
+            filledDeltaCount.incrementAndGet();
+          }
+        });
+    assertThat(filledDeltaCount.get()).isGreaterThan(0);
+  }
+
+  @Test
+  void testStreamDeltasWithReferenceById() {
+    final var stream = service.streamDeltasWithReferenceById();
+    val filledDeltaCount = new AtomicInteger(0);
+    stream.forEach(
+        delta -> {
+          log.info("delta: {}", delta);
+          if (!delta.getDeltaContent().isEmpty()) {
+            filledDeltaCount.incrementAndGet();
+          }
+        });
+    assertThat(filledDeltaCount.get()).isGreaterThan(0);
+  }
+
+  @Test
+  void testStreamDeltasWithReferenceByScenario() {
+    final var stream = service.streamDeltasWithReferenceByScenario();
+    val filledDeltaCount = new AtomicInteger(0);
+    stream.forEach(
+        delta -> {
+          log.info("delta: {}", delta);
+          if (!delta.getDeltaContent().isEmpty()) {
+            filledDeltaCount.incrementAndGet();
+          }
+        });
+    assertThat(filledDeltaCount.get()).isGreaterThan(0);
+  }
+
+  @Test
   void testCompletionWithFallbackAllFail() {
     assertThatThrownBy(() -> service.completionWithFallbackAllFail("HelloWorld!"))
         .isInstanceOf(OrchestrationClientException.class)
