@@ -156,10 +156,15 @@
         <version>${jackson.version}</version>
       </dependency>
       <!-- conflicts resolution scope "compile" -->
-      <!-- CVE-2026-54428: pin httpcore5-h2 >= 5.4.3 until httpclient5 (pulled via cloud-sdk openapi-core-apache) ships with a fixed version -->
+      <!-- CVE-2026-54428, 54399: pin httpcore5-h2, httpcore5 >= 5.4.3 until httpclient5 (pulled via cloud-sdk openapi-core-apache) ships with fixed versions -->
       <dependency>
         <groupId>org.apache.httpcomponents.core5</groupId>
         <artifactId>httpcore5-h2</artifactId>
+        <version>${httpcomponents-core5.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents.core5</groupId>
+        <artifactId>httpcore5</artifactId>
         <version>${httpcomponents-core5.version}</version>
       </dependency>
       <dependency>
