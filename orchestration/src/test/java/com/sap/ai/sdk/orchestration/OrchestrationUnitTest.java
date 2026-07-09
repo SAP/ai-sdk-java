@@ -1703,8 +1703,8 @@ class OrchestrationUnitTest {
     assertThat(answerChunks).containsExactly("42");
     assertThat(reasoningChunks).containsExactly("Let me ", "think.");
     assertThat(reasoning).hasSize(1);
-    assertThat(reasoning.get(0).getContent()).isEqualTo("Let me think.");
-    assertThat(reasoning.get(0).getSignature()).isEqualTo("sig-final");
+    assertThat(reasoning.get(0).content()).isEqualTo("Let me think.");
+    assertThat(reasoning.get(0).signature()).isEqualTo("sig-final");
   }
 
   @Test
@@ -1727,18 +1727,18 @@ class OrchestrationUnitTest {
 
     assertThat(response.getContent()).startsWith("# Why the Sky is Blue");
     assertThat(response.getReasoningContent()).hasSize(1);
-    assertThat(response.getReasoningContent().get(0).getContent())
+    assertThat(response.getReasoningContent().get(0).content())
         .startsWith("This is a classic question about atmospheric physics.");
-    assertThat(response.getReasoningContent().get(0).getSignature()).startsWith("EtAECnAIDxABGAIq");
+    assertThat(response.getReasoningContent().get(0).signature()).startsWith("EtAECnAIDxABGAIq");
     assertThat(response.getReasoningText())
-        .isEqualTo(response.getReasoningContent().get(0).getContent());
+        .isEqualTo(response.getReasoningContent().get(0).content());
 
     // getAllMessages() must attach the reasoning content to the final assistant message so it can
     // be in messages_history on a follow-up request.
     final var last = (AssistantMessage) response.getLastMessage();
     assertThat(last.reasoningContent()).hasSize(1);
-    assertThat(last.reasoningContent().get(0).getSignature())
-        .isEqualTo(response.getReasoningContent().get(0).getSignature());
+    assertThat(last.reasoningContent().get(0).signature())
+        .isEqualTo(response.getReasoningContent().get(0).signature());
   }
 
   @Test
@@ -1761,7 +1761,7 @@ class OrchestrationUnitTest {
     // Turn 1 assertions: real reasoning content + signature parsed correctly.
     assertThat(firstResponse.getContent()).isEqualTo("6 times 7 is 42.");
     assertThat(firstResponse.getReasoningContent()).hasSize(1);
-    assertThat(firstResponse.getReasoningContent().get(0).getSignature())
+    assertThat(firstResponse.getReasoningContent().get(0).signature())
         .startsWith("EpACCnAIDxABGAIq");
 
     // Turn 2: send a follow-up carrying the whole history (which includes turn 1's reasoning).

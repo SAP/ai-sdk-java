@@ -113,9 +113,9 @@ class OrchestrationController {
                   "[accumulated block "
                       + i
                       + "] content="
-                      + block.getContent()
+                      + block.content()
                       + " signature="
-                      + block.getSignature());
+                      + block.signature());
             }
           } finally {
             emitter.complete();

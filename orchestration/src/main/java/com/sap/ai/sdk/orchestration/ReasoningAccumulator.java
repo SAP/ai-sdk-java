@@ -1,12 +1,11 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.sap.ai.sdk.orchestration.model.ReasoningBlock;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
 /**
- * Accumulates reasoning ({@code reasoning_content}) blocks across the chunks of a streaming
+ * Accumulates reasoning ({@code reasoning_content}) items across the chunks of a streaming
  * orchestration response.
  *
  * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
@@ -14,7 +13,8 @@ import javax.annotation.Nonnull;
  */
 public class ReasoningAccumulator {
 
-  private final List<ReasoningBlock> blocks = new ArrayList<>();
+  private final List<StringBuilder> contentByIndex = new ArrayList<>();
+  private final List<String> signatureByIndex = new ArrayList<>();
 
   /**
    * Consume the reasoning content carried by a single stream chunk.
@@ -22,31 +22,34 @@ public class ReasoningAccumulator {
    * @param delta the streaming delta.
    */
   public void accept(@Nonnull final OrchestrationChatCompletionDelta delta) {
-    final List<ReasoningBlock> chunk = delta.getDeltaReasoningContent();
+    final List<ReasoningItem> chunk = delta.getDeltaReasoningContent();
     for (int i = 0; i < chunk.size(); i++) {
-      while (blocks.size() <= i) {
-        blocks.add(ReasoningBlock.create().content("").signature(""));
+      while (contentByIndex.size() <= i) {
+        contentByIndex.add(new StringBuilder());
+        signatureByIndex.add("");
       }
-      final ReasoningBlock target = blocks.get(i);
-      final ReasoningBlock source = chunk.get(i);
-      if (!source.getContent().isEmpty()) {
-        target.setContent(target.getContent() + source.getContent());
+      final ReasoningItem source = chunk.get(i);
+      if (!source.content().isEmpty()) {
+        contentByIndex.get(i).append(source.content());
       }
-      if (!source.getSignature().isEmpty() && target.getSignature().isEmpty()) {
-        target.setSignature(source.getSignature());
+      if (!source.signature().isEmpty() && signatureByIndex.get(i).isEmpty()) {
+        signatureByIndex.set(i, source.signature());
       }
     }
   }
 
   /**
-   * Assemble the fully accumulated list of reasoning blocks, ready to be re-submitted as part of
+   * Assemble the fully accumulated list of reasoning items, ready to be re-submitted as part of
    * {@code messages_history}.
    *
-   * @return the assembled blocks, in the order they appeared in the stream.
+   * @return the assembled items, in the order they appeared in the stream.
    */
-  @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
-  public List<ReasoningBlock> assemble() {
-    return List.copyOf(blocks);
+  public List<ReasoningItem> assemble() {
+    final var result = new ArrayList<ReasoningItem>(contentByIndex.size());
+    for (int i = 0; i < contentByIndex.size(); i++) {
+      result.add(new ReasoningItem(contentByIndex.get(i).toString(), signatureByIndex.get(i)));
+    }
+    return result;
   }
 }

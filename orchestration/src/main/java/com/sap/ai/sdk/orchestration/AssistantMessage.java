@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.val;
@@ -21,6 +23,7 @@ import lombok.val;
 @Value
 @Getter
 @Accessors(fluent = true)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AssistantMessage implements Message {
 
   /** The role of the assistant. */
@@ -33,7 +36,7 @@ public class AssistantMessage implements Message {
   @Nullable List<MessageToolCall> toolCalls;
 
   /** Reasoning (thinking) content produced by the model, if any. */
-  @Nullable List<ReasoningBlock> reasoningContent;
+  @Nullable List<ReasoningItem> reasoningContent;
 
   /**
    * Creates a new assistant message with the given single message.
@@ -70,15 +73,6 @@ public class AssistantMessage implements Message {
     reasoningContent = null;
   }
 
-  private AssistantMessage(
-      @Nonnull final MessageContent content,
-      @Nullable final List<MessageToolCall> toolCalls,
-      @Nullable final List<ReasoningBlock> reasoningContent) {
-    this.content = content;
-    this.toolCalls = toolCalls;
-    this.reasoningContent = reasoningContent;
-  }
-
   /**
    * Returns a new AssistantMessage instance with the provided tool calls added to the existing
    * ones.
@@ -97,15 +91,14 @@ public class AssistantMessage implements Message {
   /**
    * Returns a new AssistantMessage instance carrying the given reasoning content.
    *
-   * @param reasoningContent the reasoning blocks from the previous assistant turn.
+   * @param reasoningContent the reasoning items from the previous assistant turn.
    * @return a new AssistantMessage instance with the reasoning content set.
    * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
    *     Orchestration - Reasoning</a>
    */
-  @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
   public AssistantMessage withReasoningContent(
-      @Nonnull final List<ReasoningBlock> reasoningContent) {
+      @Nonnull final List<ReasoningItem> reasoningContent) {
     return new AssistantMessage(this.content, this.toolCalls, List.copyOf(reasoningContent));
   }
 
@@ -119,7 +112,12 @@ public class AssistantMessage implements Message {
     }
 
     if (reasoningContent != null) {
-      assistantChatMessage.setReasoningContent(reasoningContent);
+      assistantChatMessage.setReasoningContent(
+          reasoningContent.stream()
+              .map(
+                  item ->
+                      ReasoningBlock.create().content(item.content()).signature(item.signature()))
+              .toList());
     }
 
     ChatMessageContent text;

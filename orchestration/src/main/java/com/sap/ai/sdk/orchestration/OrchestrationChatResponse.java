@@ -74,24 +74,28 @@ public class OrchestrationChatResponse {
    *
    * <p>Note: If there are multiple choices only the first one's reasoning content is returned.
    *
-   * @return the list of reasoning blocks; never {@code null}, may be empty.
+   * @return the list of reasoning items; never {@code null}, may be empty.
    * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
    *     Orchestration - Reasoning</a>
    */
-  @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
-  public List<ReasoningBlock> getReasoningContent() {
-    return getChoice().getMessage().getReasoningContent();
+  public List<ReasoningItem> getReasoningContent() {
+    return toReasoningItems(getChoice().getMessage().getReasoningContent());
   }
 
   /**
    * Get the reasoning (thinking) content as a single joined string, for display purposes.
    *
-   * @return the concatenated content of all reasoning blocks; empty if there is no reasoning.
+   * @return the concatenated content of all reasoning items; empty if there is no reasoning.
    */
   @Nonnull
   public String getReasoningText() {
-    return getReasoningContent().stream().map(ReasoningBlock::getContent).collect(joining());
+    return getReasoningContent().stream().map(ReasoningItem::content).collect(joining());
+  }
+
+  @Nonnull
+  static List<ReasoningItem> toReasoningItems(@Nonnull final List<ReasoningBlock> blocks) {
+    return blocks.stream().map(b -> new ReasoningItem(b.getContent(), b.getSignature())).toList();
   }
 
   /**
@@ -117,7 +121,7 @@ public class OrchestrationChatResponse {
         }
         final var reasoning = assistantChatMessage.getReasoningContent();
         if (!reasoning.isEmpty()) {
-          assistantMessage = assistantMessage.withReasoningContent(reasoning);
+          assistantMessage = assistantMessage.withReasoningContent(toReasoningItems(reasoning));
         }
         messages.add(assistantMessage);
       } else if (chatMessage instanceof SystemChatMessage systemChatMessage) {

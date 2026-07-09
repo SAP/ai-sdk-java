@@ -6,7 +6,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponseStreaming;
-import com.sap.ai.sdk.orchestration.model.ReasoningBlock;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.val;
@@ -53,17 +52,21 @@ class OrchestrationReasoningContentTest {
 
   @Test
   void assistantMessageCarriesReasoningContentInSerializedOutput() {
-    val blocks =
+    val items =
         List.of(
-            ReasoningBlock.create().content("Step 1: think").signature("sig-1"),
-            ReasoningBlock.create().content("Step 2: conclude").signature("sig-2"));
+            new ReasoningItem("Step 1: think", "sig-1"),
+            new ReasoningItem("Step 2: conclude", "sig-2"));
 
-    val message = new AssistantMessage("The answer is 42.").withReasoningContent(blocks);
+    val message = new AssistantMessage("The answer is 42.").withReasoningContent(items);
 
-    assertThat(message.reasoningContent()).containsExactlyElementsOf(blocks);
+    assertThat(message.reasoningContent()).containsExactlyElementsOf(items);
 
     val serialized = (AssistantChatMessage) message.createChatMessage();
-    assertThat(serialized.getReasoningContent()).containsExactlyElementsOf(blocks);
+    assertThat(serialized.getReasoningContent()).hasSize(2);
+    assertThat(serialized.getReasoningContent().get(0).getContent()).isEqualTo("Step 1: think");
+    assertThat(serialized.getReasoningContent().get(0).getSignature()).isEqualTo("sig-1");
+    assertThat(serialized.getReasoningContent().get(1).getContent()).isEqualTo("Step 2: conclude");
+    assertThat(serialized.getReasoningContent().get(1).getSignature()).isEqualTo("sig-2");
   }
 
   @Test
@@ -81,8 +84,8 @@ class OrchestrationReasoningContentTest {
             ", \"reasoning_content\": [{\"content\": \"thinking...\", \"signature\": \"sig-a\"}]");
 
     assertThat(response.getReasoningContent()).hasSize(1);
-    assertThat(response.getReasoningContent().get(0).getContent()).isEqualTo("thinking...");
-    assertThat(response.getReasoningContent().get(0).getSignature()).isEqualTo("sig-a");
+    assertThat(response.getReasoningContent().get(0).content()).isEqualTo("thinking...");
+    assertThat(response.getReasoningContent().get(0).signature()).isEqualTo("sig-a");
     assertThat(response.getReasoningText()).isEqualTo("thinking...");
   }
 
@@ -94,7 +97,7 @@ class OrchestrationReasoningContentTest {
 
     val last = (AssistantMessage) response.getLastMessage();
     assertThat(last.reasoningContent()).hasSize(1);
-    assertThat(last.reasoningContent().get(0).getContent()).isEqualTo("thinking...");
+    assertThat(last.reasoningContent().get(0).content()).isEqualTo("thinking...");
   }
 
   @Test
@@ -113,7 +116,7 @@ class OrchestrationReasoningContentTest {
     // messages[0] user, messages[1] history assistant with reasoning, messages[2] final assistant
     val historyAssistant = (AssistantMessage) messages.get(1);
     assertThat(historyAssistant.reasoningContent()).hasSize(1);
-    assertThat(historyAssistant.reasoningContent().get(0).getContent()).isEqualTo("past-thought");
+    assertThat(historyAssistant.reasoningContent().get(0).content()).isEqualTo("past-thought");
   }
 
   @Test
@@ -128,12 +131,12 @@ class OrchestrationReasoningContentTest {
     val accumulator = new ReasoningAccumulator();
     accumulator.accept(chunk);
 
-    val blocks = accumulator.assemble();
-    assertThat(blocks).hasSize(2);
-    assertThat(blocks.get(0).getContent()).isEqualTo("first");
-    assertThat(blocks.get(0).getSignature()).isEqualTo("s1");
-    assertThat(blocks.get(1).getContent()).isEqualTo("second");
-    assertThat(blocks.get(1).getSignature()).isEqualTo("s2");
+    val items = accumulator.assemble();
+    assertThat(items).hasSize(2);
+    assertThat(items.get(0).content()).isEqualTo("first");
+    assertThat(items.get(0).signature()).isEqualTo("s1");
+    assertThat(items.get(1).content()).isEqualTo("second");
+    assertThat(items.get(1).signature()).isEqualTo("s2");
   }
 
   private static @Nonnull OrchestrationChatResponse parseSyncResponse(

@@ -18,7 +18,6 @@ import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.PartialOrchestrationConfig;
-import com.sap.ai.sdk.orchestration.model.ReasoningBlock;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import io.vavr.control.Try;
@@ -134,7 +133,7 @@ public class OrchestrationClient {
 
   /**
    * Stream a completion from a reasoning-capable model. Answer and reasoning text chunks are pushed
-   * live to the given consumers (empty chunks are skipped); the accumulated reasoning blocks are
+   * live to the given consumers (empty chunks are skipped); the accumulated reasoning items are
    * returned for re-submission in a follow-up request.
    *
    * @param prompt the prompt to send.
@@ -142,15 +141,14 @@ public class OrchestrationClient {
    * @param onAnswerChunk consumer invoked with each non-empty answer text chunk.
    * @param onReasoningChunk consumer invoked with each non-empty reasoning text chunk.
    * @param fallbackConfigs fallback configurations.
-   * @return the assembled reasoning blocks, preserved verbatim as returned by the API.
+   * @return the assembled reasoning items, preserved verbatim as returned by the API.
    * @throws OrchestrationClientException if the request fails or the finish reason is {@code
    *     content_filter}.
    * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
    *     Orchestration - Reasoning</a>
    */
-  @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
-  public List<ReasoningBlock> streamReasoning(
+  public List<ReasoningItem> streamReasoning(
       @Nonnull final OrchestrationPrompt prompt,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final Consumer<String> onAnswerChunk,
@@ -169,9 +167,9 @@ public class OrchestrationClient {
                 if (!content.isEmpty()) {
                   onAnswerChunk.accept(content);
                 }
-                for (final var block : delta.getDeltaReasoningContent()) {
-                  if (!block.getContent().isEmpty()) {
-                    onReasoningChunk.accept(block.getContent());
+                for (final var item : delta.getDeltaReasoningContent()) {
+                  if (!item.content().isEmpty()) {
+                    onReasoningChunk.accept(item.content());
                   }
                 }
                 accumulator.accept(delta);

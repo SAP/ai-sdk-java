@@ -29,6 +29,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ReasoningEffort;
+import com.sap.ai.sdk.orchestration.ReasoningItem;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
@@ -42,7 +43,6 @@ import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
-import com.sap.ai.sdk.orchestration.model.ReasoningBlock;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -206,7 +206,7 @@ public class OrchestrationService {
    * @param answer the final assistant reply.
    * @param reasoning the reasoning blocks produced by the model (maybe empty).
    */
-  public record ReasoningResult(@Nonnull String answer, @Nonnull List<ReasoningBlock> reasoning) {}
+  public record ReasoningResult(@Nonnull String answer, @Nonnull List<ReasoningItem> reasoning) {}
 
   /**
    * Streaming chat request to a reasoning-capable model. Answer and reasoning chunks are pushed
@@ -219,7 +219,7 @@ public class OrchestrationService {
    * @return the assembled reasoning blocks as returned by the API.
    */
   @Nonnull
-  public List<ReasoningBlock> streamReasoning(
+  public List<ReasoningItem> streamReasoning(
       @Nonnull final String topic,
       @Nonnull final Consumer<String> onAnswerChunk,
       @Nonnull final Consumer<String> onReasoningChunk) {
