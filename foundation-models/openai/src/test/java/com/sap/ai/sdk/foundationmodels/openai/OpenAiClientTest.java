@@ -507,4 +507,51 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
             .withHeader("Header-For-Both", equalTo("value"))
             .withHeader("foot", equalTo("baz")));
   }
+
+  @Test
+  void testWithHeadersAddsAllHeaders() {
+    stubForChatCompletion();
+    final var request =
+        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+
+    final var result =
+        client
+            .withHeaders(Map.of("x-custom-one", "value1", "x-custom-two", "value2"))
+            .chatCompletion(request);
+    assertThat(result).isNotNull();
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("x-custom-one", equalTo("value1"))
+            .withHeader("x-custom-two", equalTo("value2")));
+  }
+
+  @Test
+  void testWithHeadersCarriesOverPreviousHeaders() {
+    stubForChatCompletion();
+    final var request =
+        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+
+    client
+        .withHeader("x-existing", "existing-value")
+        .withHeaders(Map.of("x-new", "new-value"))
+        .chatCompletion(request);
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("x-existing", equalTo("existing-value"))
+            .withHeader("x-new", equalTo("new-value")));
+  }
+
+  @Test
+  void testWithHeadersDoesNotMutateOriginalClient() {
+    stubForChatCompletion();
+    final var request =
+        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+
+    client.withHeaders(Map.of("x-should-not-appear", "value"));
+    client.chatCompletion(request);
+
+    verify(postRequestedFor(anyUrl()).withoutHeader("x-should-not-appear"));
+  }
 }

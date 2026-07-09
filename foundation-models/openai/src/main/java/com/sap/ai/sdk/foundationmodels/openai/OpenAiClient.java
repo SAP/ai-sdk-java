@@ -34,6 +34,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -148,6 +149,24 @@ public final class OpenAiClient {
     final var newClient = new OpenAiClient(this.destination);
     newClient.customHeaders.addAll(this.customHeaders);
     newClient.customHeaders.add(new Header(key, value));
+    return newClient;
+  }
+
+  /**
+   * Create a new OpenAI client with multiple custom headers added to every call made with this
+   * client
+   *
+   * @param headers a map of key value pairs for the custom headers to add
+   * @return a new client.
+   * @since 1.22.0
+   */
+  @Nonnull
+  public OpenAiClient withHeaders(@Nonnull final Map<String, String> headers) {
+    final var newClient = new OpenAiClient(this.destination);
+    newClient.customHeaders.addAll(this.customHeaders);
+    headers.entrySet().stream()
+        .map(e -> new Header(e.getKey(), e.getValue()))
+        .forEach(newClient.customHeaders::add);
     return newClient;
   }
 
