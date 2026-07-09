@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponseStreaming;
+import com.sap.ai.sdk.orchestration.model.ReasoningBlock;
 import java.util.List;
 import javax.annotation.Nonnull;
 import lombok.val;
@@ -51,15 +52,15 @@ class OrchestrationReasoningContentTest {
   }
 
   @Test
-  void assistantMessageCarriesReasoningContentInSerializedOutput() {
-    val items =
+  void assistantMessageSerializesReasoningContentVerbatim() {
+    // Reasoning content (including the opaque signatures) is attached internally by the SDK and
+    // must be serialized verbatim so it can be re-submitted in messages_history.
+    val blocks =
         List.of(
-            new ReasoningItem("Step 1: think", "sig-1"),
-            new ReasoningItem("Step 2: conclude", "sig-2"));
+            ReasoningBlock.create().content("Step 1: think").signature("sig-1"),
+            ReasoningBlock.create().content("Step 2: conclude").signature("sig-2"));
 
-    val message = new AssistantMessage("The answer is 42.").withReasoningContent(items);
-
-    assertThat(message.reasoningContent()).containsExactlyElementsOf(items);
+    val message = new AssistantMessage("The answer is 42.").withReasoningContent(blocks);
 
     val serialized = (AssistantChatMessage) message.createChatMessage();
     assertThat(serialized.getReasoningContent()).hasSize(2);
@@ -78,30 +79,32 @@ class OrchestrationReasoningContentTest {
   }
 
   @Test
-  void chatResponseGetReasoningContentReturnsBlocks() throws Exception {
+  void chatResponseGetReasoningContentReturnsText() throws Exception {
     val response =
         parseSyncResponse(
             ", \"reasoning_content\": [{\"content\": \"thinking...\", \"signature\": \"sig-a\"}]");
 
-    assertThat(response.getReasoningContent()).hasSize(1);
-    assertThat(response.getReasoningContent().get(0).content()).isEqualTo("thinking...");
-    assertThat(response.getReasoningContent().get(0).signature()).isEqualTo("sig-a");
+    assertThat(response.getReasoningContent()).containsExactly("thinking...");
     assertThat(response.getReasoningText()).isEqualTo("thinking...");
   }
 
   @Test
-  void getAllMessagesAttachesReasoningToFinalAssistant() throws Exception {
+  void getAllMessagesReSubmitsReasoningVerbatim() throws Exception {
+    // The final assistant message reconstructed by getAllMessages() must serialize the reasoning
+    // content (content + opaque signature) exactly as returned, ready for the next request.
     val response =
         parseSyncResponse(
             ", \"reasoning_content\": [{\"content\": \"thinking...\", \"signature\": \"sig-a\"}]");
 
-    val last = (AssistantMessage) response.getLastMessage();
-    assertThat(last.reasoningContent()).hasSize(1);
-    assertThat(last.reasoningContent().get(0).content()).isEqualTo("thinking...");
+    val last = response.getLastMessage().createChatMessage();
+    val serialized = (AssistantChatMessage) last;
+    assertThat(serialized.getReasoningContent()).hasSize(1);
+    assertThat(serialized.getReasoningContent().get(0).getContent()).isEqualTo("thinking...");
+    assertThat(serialized.getReasoningContent().get(0).getSignature()).isEqualTo("sig-a");
   }
 
   @Test
-  void getAllMessagesAttachesReasoningToHistoryAssistant() throws Exception {
+  void getAllMessagesReSubmitsHistoryAssistantReasoningVerbatim() throws Exception {
     val json =
         new String(
             java.util.Objects.requireNonNull(
@@ -114,29 +117,57 @@ class OrchestrationReasoningContentTest {
 
     val messages = response.getAllMessages();
     // messages[0] user, messages[1] history assistant with reasoning, messages[2] final assistant
-    val historyAssistant = (AssistantMessage) messages.get(1);
-    assertThat(historyAssistant.reasoningContent()).hasSize(1);
-    assertThat(historyAssistant.reasoningContent().get(0).content()).isEqualTo("past-thought");
+    val serialized = (AssistantChatMessage) messages.get(1).createChatMessage();
+    assertThat(serialized.getReasoningContent()).hasSize(1);
+    assertThat(serialized.getReasoningContent().get(0).getContent()).isEqualTo("past-thought");
+    assertThat(serialized.getReasoningContent().get(0).getSignature()).isEqualTo("past-sig");
   }
 
   @Test
-  void reasoningAccumulatorKeepsBlocksAtDifferentIndexesSeparate() throws Exception {
-    val chunk =
+  void reasoningAccumulatorMergesTextByIndex() throws Exception {
+    val chunk1 =
         parseStreamingDelta(
             0,
             ", \"reasoning_content\": ["
-                + "{\"content\": \"first\", \"signature\": \"s1\"},"
-                + "{\"content\": \"second\", \"signature\": \"s2\"}]");
+                + "{\"content\": \"fir\", \"signature\": \"\"},"
+                + "{\"content\": \"sec\", \"signature\": \"\"}]");
+    val chunk2 =
+        parseStreamingDelta(
+            0,
+            ", \"reasoning_content\": ["
+                + "{\"content\": \"st\", \"signature\": \"\"},"
+                + "{\"content\": \"ond\", \"signature\": \"\"}]");
 
     val accumulator = new ReasoningAccumulator();
-    accumulator.accept(chunk);
+    accumulator.accept(chunk1);
+    accumulator.accept(chunk2);
 
-    val items = accumulator.assemble();
-    assertThat(items).hasSize(2);
-    assertThat(items.get(0).content()).isEqualTo("first");
-    assertThat(items.get(0).signature()).isEqualTo("s1");
-    assertThat(items.get(1).content()).isEqualTo("second");
-    assertThat(items.get(1).signature()).isEqualTo("s2");
+    assertThat(accumulator.assemble()).containsExactly("first", "second");
+  }
+
+  @Test
+  void streamingDeltaExposesReasoningText() throws Exception {
+    val delta =
+        parseStreamingDelta(
+            0, ", \"reasoning_content\": [{\"content\": \"chunk\", \"signature\": \"\"}]");
+
+    assertThat(delta.getDeltaContent()).isEqualTo("hello");
+    assertThat(delta.getDeltaReasoningContent()).containsExactly("chunk");
+  }
+
+  @Test
+  void streamingDeltaReturnsEmptyForNonZeroIndex() throws Exception {
+    val delta =
+        parseStreamingDelta(
+            1, ", \"reasoning_content\": [{\"content\": \"x\", \"signature\": \"\"}]");
+
+    assertThat(delta.getDeltaContent()).isEmpty();
+    assertThat(delta.getDeltaReasoningContent()).isEmpty();
+
+    // A non-zero-index delta contributes nothing to the accumulator either.
+    val accumulator = new ReasoningAccumulator();
+    accumulator.accept(delta);
+    assertThat(accumulator.assemble()).isEmpty();
   }
 
   private static @Nonnull OrchestrationChatResponse parseSyncResponse(

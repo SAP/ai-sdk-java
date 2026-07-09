@@ -13,6 +13,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -33,8 +34,11 @@ public class AssistantMessage implements Message {
   /** Tool call if there is any. */
   @Nullable List<MessageToolCall> toolCalls;
 
-  /** Reasoning (thinking) content produced by the model, if any. */
-  @Nullable List<ReasoningItem> reasoningContent;
+  /** Reasoning (thinking) blocks from the model's previous turn. */
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
+  @Getter(AccessLevel.NONE)
+  @Nullable
+  List<ReasoningBlock> reasoningContent;
 
   /**
    * Creates a new assistant message with the given single message.
@@ -87,16 +91,13 @@ public class AssistantMessage implements Message {
   }
 
   /**
-   * Returns a new AssistantMessage instance carrying the given reasoning content.
+   * Returns a new AssistantMessage instance carrying the given reasoning blocks.
    *
-   * @param reasoningContent the reasoning items from the previous assistant turn.
+   * @param reasoningContent the reasoning blocks from the previous assistant turn.
    * @return a new AssistantMessage instance with the reasoning content set.
-   * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
-   *     Orchestration - Reasoning</a>
    */
   @Nonnull
-  public AssistantMessage withReasoningContent(
-      @Nonnull final List<ReasoningItem> reasoningContent) {
+  AssistantMessage withReasoningContent(@Nonnull final List<ReasoningBlock> reasoningContent) {
     return new AssistantMessage(this.content, this.toolCalls, List.copyOf(reasoningContent));
   }
 
@@ -110,12 +111,7 @@ public class AssistantMessage implements Message {
     }
 
     if (reasoningContent != null) {
-      assistantChatMessage.setReasoningContent(
-          reasoningContent.stream()
-              .map(
-                  item ->
-                      ReasoningBlock.create().content(item.content()).signature(item.signature()))
-              .toList());
+      assistantChatMessage.setReasoningContent(reasoningContent);
     }
 
     ChatMessageContent text;

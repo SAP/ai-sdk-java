@@ -104,18 +104,9 @@ class OrchestrationController {
                     topic,
                     answer -> send(emitter, "[answer] " + answer),
                     reasoning -> send(emitter, "[reasoning] " + reasoning));
-            // Emit the fully accumulated reasoning blocks at the end of the stream so callers can
-            // resubmit them in messages_history for a follow-up request.
+            // Emit the fully accumulated reasoning text at the end of the stream.
             for (int i = 0; i < accumulated.size(); i++) {
-              final var block = accumulated.get(i);
-              send(
-                  emitter,
-                  "[accumulated block "
-                      + i
-                      + "] content="
-                      + block.content()
-                      + " signature="
-                      + block.signature());
+              send(emitter, "[accumulated block " + i + "] " + accumulated.get(i));
             }
           } finally {
             emitter.complete();

@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import static java.util.stream.Collectors.joining;
 import static lombok.AccessLevel.PACKAGE;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -70,32 +69,27 @@ public class OrchestrationChatResponse {
   }
 
   /**
-   * Get the reasoning (thinking) content produced by the model, if any.
+   * Get the reasoning (thinking) content produced by the model, as text, if any.
    *
-   * <p>Note: If there are multiple choices only the first one's reasoning content is returned.
-   *
-   * @return the list of reasoning items; never {@code null}, may be empty.
+   * @return the reasoning text of each block; never {@code null}, may be empty.
    * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
    *     Orchestration - Reasoning</a>
    */
   @Nonnull
-  public List<ReasoningItem> getReasoningContent() {
-    return toReasoningItems(getChoice().getMessage().getReasoningContent());
+  public List<String> getReasoningContent() {
+    return getChoice().getMessage().getReasoningContent().stream()
+        .map(ReasoningBlock::getContent)
+        .toList();
   }
 
   /**
    * Get the reasoning (thinking) content as a single joined string, for display purposes.
    *
-   * @return the concatenated content of all reasoning items; empty if there is no reasoning.
+   * @return the concatenated reasoning text; empty if there is no reasoning.
    */
   @Nonnull
   public String getReasoningText() {
-    return getReasoningContent().stream().map(ReasoningItem::content).collect(joining());
-  }
-
-  @Nonnull
-  static List<ReasoningItem> toReasoningItems(@Nonnull final List<ReasoningBlock> blocks) {
-    return blocks.stream().map(b -> new ReasoningItem(b.getContent(), b.getSignature())).toList();
+    return String.join("", getReasoningContent());
   }
 
   /**
@@ -121,7 +115,7 @@ public class OrchestrationChatResponse {
         }
         final var reasoning = assistantChatMessage.getReasoningContent();
         if (!reasoning.isEmpty()) {
-          assistantMessage = assistantMessage.withReasoningContent(toReasoningItems(reasoning));
+          assistantMessage = assistantMessage.withReasoningContent(reasoning);
         }
         messages.add(assistantMessage);
       } else if (chatMessage instanceof SystemChatMessage systemChatMessage) {
@@ -144,7 +138,7 @@ public class OrchestrationChatResponse {
     }
 
     var lastAssistant = Message.assistant(getChoice().getMessage().getContent());
-    final var lastReasoning = getReasoningContent();
+    final var lastReasoning = getChoice().getMessage().getReasoningContent();
     if (!lastReasoning.isEmpty()) {
       lastAssistant = lastAssistant.withReasoningContent(lastReasoning);
     }

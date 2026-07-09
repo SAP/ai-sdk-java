@@ -718,13 +718,12 @@ class OrchestrationTest {
     val firstPrompt = new OrchestrationPrompt("What is 6 times 7?");
     val firstResponse = orchestrationClient.chatCompletion(firstPrompt, reasoningConfig);
 
-    val history = firstResponse.getAllMessages();
-    val lastAssistant = (AssistantMessage) firstResponse.getLastMessage();
-    if (lastAssistant.reasoningContent() != null) {
-      assertThat(lastAssistant.reasoningContent()).isEqualTo(firstResponse.getReasoningContent());
-    }
+    assertThat(firstResponse.getReasoningContent()).isNotNull();
 
-    val followUpPrompt = new OrchestrationPrompt("Are you sure?").messageHistory(history);
+    // Feed the whole history (which carries the previous reasoning content internally) into the
+    // follow-up turn.
+    val followUpPrompt =
+        new OrchestrationPrompt("Are you sure?").messageHistory(firstResponse.getAllMessages());
     val followUp = orchestrationClient.chatCompletion(followUpPrompt, reasoningConfig);
 
     assertThat(followUp.getContent()).isNotEmpty();

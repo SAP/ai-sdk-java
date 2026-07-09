@@ -1,12 +1,13 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.sap.ai.sdk.orchestration.model.ReasoningBlock;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 
 /**
- * Accumulates reasoning ({@code reasoning_content}) items across the chunks of a streaming
- * orchestration response.
+ * Accumulates reasoning ({@code reasoning_content}) text across the chunks of a streaming
+ * orchestration response, merging the pieces of each block by their position.
  *
  * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
  *     Orchestration - Reasoning</a>
@@ -14,7 +15,6 @@ import javax.annotation.Nonnull;
 public class ReasoningAccumulator {
 
   private final List<StringBuilder> contentByIndex = new ArrayList<>();
-  private final List<String> signatureByIndex = new ArrayList<>();
 
   /**
    * Consume the reasoning content carried by a single stream chunk.
@@ -22,34 +22,35 @@ public class ReasoningAccumulator {
    * @param delta the streaming delta.
    */
   public void accept(@Nonnull final OrchestrationChatCompletionDelta delta) {
-    final List<ReasoningItem> chunk = delta.getDeltaReasoningContent();
+    final List<ReasoningBlock> chunk = rawReasoning(delta);
     for (int i = 0; i < chunk.size(); i++) {
       while (contentByIndex.size() <= i) {
         contentByIndex.add(new StringBuilder());
-        signatureByIndex.add("");
       }
-      final ReasoningItem source = chunk.get(i);
-      if (!source.content().isEmpty()) {
-        contentByIndex.get(i).append(source.content());
-      }
-      if (!source.signature().isEmpty() && signatureByIndex.get(i).isEmpty()) {
-        signatureByIndex.set(i, source.signature());
+      final String content = chunk.get(i).getContent();
+      if (!content.isEmpty()) {
+        contentByIndex.get(i).append(content);
       }
     }
   }
 
   /**
-   * Assemble the fully accumulated list of reasoning items, ready to be re-submitted as part of
-   * {@code messages_history}.
+   * Assemble the fully accumulated reasoning text, one entry per reasoning block.
    *
-   * @return the assembled items, in the order they appeared in the stream.
+   * @return the assembled reasoning text, in the order it appeared in the stream.
    */
   @Nonnull
-  public List<ReasoningItem> assemble() {
-    final var result = new ArrayList<ReasoningItem>(contentByIndex.size());
-    for (int i = 0; i < contentByIndex.size(); i++) {
-      result.add(new ReasoningItem(contentByIndex.get(i).toString(), signatureByIndex.get(i)));
+  public List<String> assemble() {
+    return contentByIndex.stream().map(StringBuilder::toString).toList();
+  }
+
+  @Nonnull
+  private static List<ReasoningBlock> rawReasoning(
+      @Nonnull final OrchestrationChatCompletionDelta delta) {
+    final var choices = delta.getFinalResult().getChoices();
+    if (!choices.isEmpty() && choices.get(0).getIndex() == 0) {
+      return choices.get(0).getDelta().getReasoningContent();
     }
-    return result;
+    return List.of();
   }
 }
