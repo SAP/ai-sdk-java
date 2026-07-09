@@ -12,13 +12,7 @@
 
 ### ✨ New Functionality
 
-- Support for OpenAI Responses API with the new `AiCoreOpenAiClient`.
-  The following endpoints are currently supported:
-  - create()
-  - createStreaming()
-  - retrieve()
-  - delete()
-  - cancel()
+-
 
 ### 📈 Improvements
 
