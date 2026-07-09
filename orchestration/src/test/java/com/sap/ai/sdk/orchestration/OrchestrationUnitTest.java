@@ -197,6 +197,62 @@ class OrchestrationUnitTest {
   }
 
   @Test
+  void testWithHeadersAddsAllHeaders() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var result =
+        client
+            .withHeaders(Map.of("x-custom-one", "value1", "x-custom-two", "value2"))
+            .chatCompletion(prompt, config);
+    assertThat(result).isNotNull();
+
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("x-custom-one", equalTo("value1"))
+            .withHeader("x-custom-two", equalTo("value2")));
+  }
+
+  @Test
+  void testWithHeadersCarriesOverPreviousHeaders() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    client
+        .withHeader("x-existing", "existing-value")
+        .withHeaders(Map.of("x-new", "new-value"))
+        .chatCompletion(prompt, config);
+
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("x-existing", equalTo("existing-value"))
+            .withHeader("x-new", equalTo("new-value")));
+  }
+
+  @Test
+  void testWithHeadersDoesNotMutateOriginalClient() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    client.withHeaders(Map.of("x-should-not-appear", "value"));
+    client.chatCompletion(prompt, config);
+
+    verify(postRequestedFor(urlPathEqualTo("/v2/completion")).withoutHeader("x-should-not-appear"));
+  }
+
+  @Test
   void testGrounding() throws IOException {
     stubFor(
         post(urlPathEqualTo("/v2/completion"))

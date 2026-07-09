@@ -12,13 +12,14 @@
 
 ### ✨ New Functionality
 
-- Support for OpenAI Responses API with the new `AiCoreOpenAiClient`.
+- [OpenAI] Support for OpenAI Responses API with the new `AiCoreOpenAiClient`.
   The following endpoints are currently supported:
   - create()
   - createStreaming()
   - retrieve()
   - delete()
   - cancel()
+- [Orchestration] You can now add multiple custom headers to an `OrchestrationClient` at once via `.withHeaders()`.
 
 ### 📈 Improvements
 
