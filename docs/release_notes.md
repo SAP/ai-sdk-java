@@ -19,6 +19,7 @@
   - retrieve()
   - delete()
   - cancel()
+- [OpenAI] You can now add multiple custom headers to an `OpenAiClient` at once via `.withHeaders()`.
 - [Orchestration] You can now add multiple custom headers to an `OrchestrationClient` at once via `.withHeaders()`.
 
 ### 📈 Improvements
