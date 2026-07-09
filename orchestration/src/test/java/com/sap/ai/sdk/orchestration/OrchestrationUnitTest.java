@@ -1751,16 +1751,23 @@ class OrchestrationUnitTest {
         new OrchestrationModuleConfig()
             .withLlmConfig(
                 OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    final var request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
+
     final var answerChunks = new ArrayList<String>();
-    final var reasoningChunks = new ArrayList<String>();
-    final var reasoning =
-        client.streamReasoning(prompt, reasoningConfig, answerChunks::add, reasoningChunks::add);
+    final var accumulator = new ReasoningAccumulator();
+    try (var stream = client.streamChatCompletionDeltas(request)) {
+      stream.forEach(
+          delta -> {
+            if (!delta.getDeltaContent().isEmpty()) {
+              answerChunks.add(delta.getDeltaContent());
+            }
+            accumulator.accept(delta);
+          });
+    }
+    final var reasoning = accumulator.assemble();
 
     assertThat(answerChunks).containsExactly("42");
-    assertThat(reasoningChunks).containsExactly("Let me ", "think.");
-    assertThat(reasoning).hasSize(1);
-    assertThat(reasoning.get(0).content()).isEqualTo("Let me think.");
-    assertThat(reasoning.get(0).signature()).isEqualTo("sig-final");
+    assertThat(reasoning).containsExactly("Let me think.");
   }
 
   @Test
@@ -1783,18 +1790,18 @@ class OrchestrationUnitTest {
 
     assertThat(response.getContent()).startsWith("# Why the Sky is Blue");
     assertThat(response.getReasoningContent()).hasSize(1);
-    assertThat(response.getReasoningContent().get(0).content())
+    assertThat(response.getReasoningContent().get(0))
         .startsWith("This is a classic question about atmospheric physics.");
-    assertThat(response.getReasoningContent().get(0).signature()).startsWith("EtAECnAIDxABGAIq");
-    assertThat(response.getReasoningText())
-        .isEqualTo(response.getReasoningContent().get(0).content());
+    assertThat(response.getReasoningText()).isEqualTo(response.getReasoningContent().get(0));
 
-    // getAllMessages() must attach the reasoning content to the final assistant message so it can
-    // be in messages_history on a follow-up request.
-    final var last = (AssistantMessage) response.getLastMessage();
-    assertThat(last.reasoningContent()).hasSize(1);
-    assertThat(last.reasoningContent().get(0).signature())
-        .isEqualTo(response.getReasoningContent().get(0).signature());
+    // getAllMessages() must attach the reasoning content (including the opaque signature) to the
+    // final assistant message so it round-trips in messages_history.
+    final var serialized =
+        (com.sap.ai.sdk.orchestration.model.AssistantChatMessage)
+            response.getLastMessage().createChatMessage();
+    assertThat(serialized.getReasoningContent()).hasSize(1);
+    assertThat(serialized.getReasoningContent().get(0).getSignature())
+        .startsWith("EtAECnAIDxABGAIq");
   }
 
   @Test
@@ -1814,19 +1821,17 @@ class OrchestrationUnitTest {
     final var firstResponse =
         client.chatCompletion(new OrchestrationPrompt("What is 6 times 7?"), reasoningConfig);
 
-    // Turn 1 assertions: real reasoning content + signature parsed correctly.
+    // Turn 1 assertions: reasoning text parsed correctly.
     assertThat(firstResponse.getContent()).isEqualTo("6 times 7 is 42.");
     assertThat(firstResponse.getReasoningContent()).hasSize(1);
-    assertThat(firstResponse.getReasoningContent().get(0).signature())
-        .startsWith("EpACCnAIDxABGAIq");
 
     // Turn 2: send a follow-up carrying the whole history (which includes turn 1's reasoning).
     final var followUp =
         new OrchestrationPrompt("Are you sure?").messageHistory(firstResponse.getAllMessages());
     client.chatCompletion(followUp, reasoningConfig);
 
-    // The outgoing request for turn 2 must contain the reasoning_content from turn 1
-    // in the messages_history array. This is the multi-turn round-trip contract from the docs.
+    // The outgoing request for turn 2 must contain the reasoning_content from turn 1 (content +
+    // signature) in the messages_history array. This is the multi-turn round-trip contract.
     final String expectedTurn2Request = fileLoaderStr.apply("multiTurnReasoningTurn2Request.json");
     verify(
         postRequestedFor(urlPathEqualTo("/v2/completion"))

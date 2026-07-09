@@ -28,8 +28,8 @@ import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.ReasoningAccumulator;
 import com.sap.ai.sdk.orchestration.ReasoningEffort;
-import com.sap.ai.sdk.orchestration.ReasoningItem;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
@@ -201,32 +201,48 @@ public class OrchestrationService {
 
   /**
    * The result of a reasoning-model chat request: the final answer plus the model's reasoning
-   * (thinking) blocks.
+   * (thinking) text.
    *
    * @param answer the final assistant reply.
-   * @param reasoning the reasoning blocks produced by the model (maybe empty).
+   * @param reasoning the reasoning text produced by the model (may be empty).
    */
-  public record ReasoningResult(@Nonnull String answer, @Nonnull List<ReasoningItem> reasoning) {}
+  public record ReasoningResult(@Nonnull String answer, @Nonnull List<String> reasoning) {}
 
   /**
    * Streaming chat request to a reasoning-capable model. Answer and reasoning chunks are pushed
-   * live to the given consumers; the accumulated reasoning blocks are returned for re-submission in
-   * a follow-up request.
+   * live to the given consumers; the accumulated reasoning text is returned.
    *
    * @param topic the topic to ask about.
    * @param onAnswerChunk consumer invoked with each answer text chunk.
    * @param onReasoningChunk consumer invoked with each reasoning text chunk.
-   * @return the assembled reasoning blocks as returned by the API.
+   * @return the assembled reasoning text as returned by the API.
    */
   @Nonnull
-  public List<ReasoningItem> streamReasoning(
+  public List<String> streamReasoning(
       @Nonnull final String topic,
       @Nonnull final Consumer<String> onAnswerChunk,
       @Nonnull final Consumer<String> onReasoningChunk) {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
-    return client.streamReasoning(prompt, reasoningConfig, onAnswerChunk, onReasoningChunk);
+    val request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
+    val accumulator = new ReasoningAccumulator();
+    try (val stream = client.streamChatCompletionDeltas(request)) {
+      stream.forEach(
+          delta -> {
+            val content = delta.getDeltaContent();
+            if (!content.isEmpty()) {
+              onAnswerChunk.accept(content);
+            }
+            for (val reasoningText : delta.getDeltaReasoningContent()) {
+              if (!reasoningText.isEmpty()) {
+                onReasoningChunk.accept(reasoningText);
+              }
+            }
+            accumulator.accept(delta);
+          });
+    }
+    return accumulator.assemble();
   }
 
   /**
