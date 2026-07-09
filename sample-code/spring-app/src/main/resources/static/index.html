@@ -269,6 +269,42 @@
                                 <li class="list-group-item">
                                     <div class="info-tooltip">
                                         <button type="submit"
+                                                formaction="/orchestration/reasoning"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/reasoning</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Chat request against a reasoning-capable model. Returns both the final answer and the reasoning blocks.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/streamReasoning"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/streamReasoning</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Streaming variant that emits answer and reasoning chunks live, followed by the accumulated reasoning blocks.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
+                                                formaction="/orchestration/multiTurnReasoning"
+                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                            <code>/orchestration/multiTurnReasoning</code>
+                                        </button>
+                                        <div class="tooltip-content">
+                                            Two-turn conversation demonstrating re-submission of reasoning_content in messages_history.
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <div class="info-tooltip">
+                                        <button type="submit"
                                                 formaction="/orchestration/completionWithFallback"
                                                 class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
                                             <code>/orchestration/completionWithFallback</code>

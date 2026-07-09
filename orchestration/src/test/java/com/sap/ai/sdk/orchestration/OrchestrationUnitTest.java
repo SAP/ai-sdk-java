@@ -81,6 +81,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1677,5 +1678,102 @@ class OrchestrationUnitTest {
     final String request = fileLoaderStr.apply("fallbackRequest.json");
     verify(
         postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
+  }
+
+  @Test
+  void streamReasoning() throws IOException {
+    final var body =
+        new String(
+            Objects.requireNonNull(
+                    getClass().getClassLoader().getResourceAsStream("streamReasoning.txt"))
+                .readAllBytes());
+    stubFor(
+        post(anyUrl())
+            .willReturn(aResponse().withBody(body).withHeader("Content-Type", "application/json")));
+
+    final var reasoningConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(
+                OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    final var answerChunks = new ArrayList<String>();
+    final var reasoningChunks = new ArrayList<String>();
+    final var reasoning =
+        client.streamReasoning(prompt, reasoningConfig, answerChunks::add, reasoningChunks::add);
+
+    assertThat(answerChunks).containsExactly("42");
+    assertThat(reasoningChunks).containsExactly("Let me ", "think.");
+    assertThat(reasoning).hasSize(1);
+    assertThat(reasoning.get(0).getContent()).isEqualTo("Let me think.");
+    assertThat(reasoning.get(0).getSignature()).isEqualTo("sig-final");
+  }
+
+  @Test
+  void reasoningResponse() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("reasoningResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var reasoningConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(
+                OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    final var reasoningPrompt =
+        new OrchestrationPrompt("Think carefully and explain step by step: Why is the sky blue?");
+
+    final var response = client.chatCompletion(reasoningPrompt, reasoningConfig);
+
+    assertThat(response.getContent()).startsWith("# Why the Sky is Blue");
+    assertThat(response.getReasoningContent()).hasSize(1);
+    assertThat(response.getReasoningContent().get(0).getContent())
+        .startsWith("This is a classic question about atmospheric physics.");
+    assertThat(response.getReasoningContent().get(0).getSignature()).startsWith("EtAECnAIDxABGAIq");
+    assertThat(response.getReasoningText())
+        .isEqualTo(response.getReasoningContent().get(0).getContent());
+
+    // getAllMessages() must attach the reasoning content to the final assistant message so it can
+    // be in messages_history on a follow-up request.
+    final var last = (AssistantMessage) response.getLastMessage();
+    assertThat(last.reasoningContent()).hasSize(1);
+    assertThat(last.reasoningContent().get(0).getSignature())
+        .isEqualTo(response.getReasoningContent().get(0).getSignature());
+  }
+
+  @Test
+  void multiTurnReasoningPreservesReasoningContent() {
+    // Turn 1: model returns reasoning content + signature.
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("multiTurnReasoningTurn1Response.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var reasoningConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(
+                OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    final var firstResponse =
+        client.chatCompletion(new OrchestrationPrompt("What is 6 times 7?"), reasoningConfig);
+
+    // Turn 1 assertions: real reasoning content + signature parsed correctly.
+    assertThat(firstResponse.getContent()).isEqualTo("6 times 7 is 42.");
+    assertThat(firstResponse.getReasoningContent()).hasSize(1);
+    assertThat(firstResponse.getReasoningContent().get(0).getSignature())
+        .startsWith("EpACCnAIDxABGAIq");
+
+    // Turn 2: send a follow-up carrying the whole history (which includes turn 1's reasoning).
+    final var followUp =
+        new OrchestrationPrompt("Are you sure?").messageHistory(firstResponse.getAllMessages());
+    client.chatCompletion(followUp, reasoningConfig);
+
+    // The outgoing request for turn 2 must contain the reasoning_content from turn 1
+    // in the messages_history array. This is the multi-turn round-trip contract from the docs.
+    final String expectedTurn2Request = fileLoaderStr.apply("multiTurnReasoningTurn2Request.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(equalToJson(expectedTurn2Request, true, true)));
   }
 }

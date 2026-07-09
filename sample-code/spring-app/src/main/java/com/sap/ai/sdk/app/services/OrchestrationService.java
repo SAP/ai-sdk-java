@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
@@ -27,6 +28,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.ReasoningEffort;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
@@ -40,6 +42,7 @@ import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+import com.sap.ai.sdk.orchestration.model.ReasoningBlock;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -57,6 +60,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -177,6 +181,79 @@ public class OrchestrationService {
         new OrchestrationPrompt(
             "Please create a small story about " + topic + " with around 700 words.");
     return client.streamChatCompletion(prompt, config);
+  }
+
+  /**
+   * Chat request to a reasoning-capable model through the Orchestration service, returning both the
+   * final answer and the reasoning (thinking) trace.
+   *
+   * @param topic the topic to ask about.
+   * @return a {@link ReasoningResult} with the answer and the reasoning blocks.
+   */
+  @Nonnull
+  public ReasoningResult reasoning(@Nonnull final String topic) {
+    val reasoningConfig =
+        config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
+    val response = client.chatCompletion(prompt, reasoningConfig);
+    return new ReasoningResult(response.getContent(), response.getReasoningContent());
+  }
+
+  /**
+   * The result of a reasoning-model chat request: the final answer plus the model's reasoning
+   * (thinking) blocks.
+   *
+   * @param answer the final assistant reply.
+   * @param reasoning the reasoning blocks produced by the model (maybe empty).
+   */
+  public record ReasoningResult(@Nonnull String answer, @Nonnull List<ReasoningBlock> reasoning) {}
+
+  /**
+   * Streaming chat request to a reasoning-capable model. Answer and reasoning chunks are pushed
+   * live to the given consumers; the accumulated reasoning blocks are returned for re-submission in
+   * a follow-up request.
+   *
+   * @param topic the topic to ask about.
+   * @param onAnswerChunk consumer invoked with each answer text chunk.
+   * @param onReasoningChunk consumer invoked with each reasoning text chunk.
+   * @return the assembled reasoning blocks as returned by the API.
+   */
+  @Nonnull
+  public List<ReasoningBlock> streamReasoning(
+      @Nonnull final String topic,
+      @Nonnull final Consumer<String> onAnswerChunk,
+      @Nonnull final Consumer<String> onReasoningChunk) {
+    val reasoningConfig =
+        config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
+    return client.streamReasoning(prompt, reasoningConfig, onAnswerChunk, onReasoningChunk);
+  }
+
+  /**
+   * Two-turn conversation against a reasoning-capable model.
+   *
+   * @param firstQuestion the initial question.
+   * @param followUp the follow-up question.
+   * @return the second turn's assistant reply.
+   */
+  @Nonnull
+  public ReasoningResult multiTurnReasoning(
+      @Nonnull final String firstQuestion, @Nonnull final String followUp) {
+    val reasoningConfig =
+        config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+
+    // Turn 1
+    val firstPrompt = new OrchestrationPrompt(firstQuestion);
+    val firstResponse = client.chatCompletion(firstPrompt, reasoningConfig);
+
+    // Turn 2 feeds the whole history back. getAllMessages() already carries the reasoning content
+    // on the final assistant message.
+    val followUpPrompt =
+        new OrchestrationPrompt(followUp).messageHistory(firstResponse.getAllMessages());
+    val followUpResponse = client.chatCompletion(followUpPrompt, reasoningConfig);
+
+    return new ReasoningResult(
+        followUpResponse.getContent(), followUpResponse.getReasoningContent());
   }
 
   /**

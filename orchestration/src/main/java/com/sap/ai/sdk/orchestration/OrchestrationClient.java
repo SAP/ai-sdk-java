@@ -18,6 +18,7 @@ import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.PartialOrchestrationConfig;
+import com.sap.ai.sdk.orchestration.model.ReasoningBlock;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import io.vavr.control.Try;
@@ -129,6 +130,54 @@ public class OrchestrationClient {
     return streamChatCompletionDeltas(request)
         .peek(OrchestrationClient::throwOnContentFilter)
         .map(OrchestrationChatCompletionDelta::getDeltaContent);
+  }
+
+  /**
+   * Stream a completion from a reasoning-capable model. Answer and reasoning text chunks are pushed
+   * live to the given consumers (empty chunks are skipped); the accumulated reasoning blocks are
+   * returned for re-submission in a follow-up request.
+   *
+   * @param prompt the prompt to send.
+   * @param config the configuration to use.
+   * @param onAnswerChunk consumer invoked with each non-empty answer text chunk.
+   * @param onReasoningChunk consumer invoked with each non-empty reasoning text chunk.
+   * @param fallbackConfigs fallback configurations.
+   * @return the assembled reasoning blocks, preserved verbatim as returned by the API.
+   * @throws OrchestrationClientException if the request fails or the finish reason is {@code
+   *     content_filter}.
+   * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
+   *     Orchestration - Reasoning</a>
+   */
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
+  @Nonnull
+  public List<ReasoningBlock> streamReasoning(
+      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final OrchestrationModuleConfig config,
+      @Nonnull final Consumer<String> onAnswerChunk,
+      @Nonnull final Consumer<String> onReasoningChunk,
+      @Nonnull final OrchestrationModuleConfig... fallbackConfigs)
+      throws OrchestrationClientException {
+
+    val request = toCompletionPostRequest(prompt, config, fallbackConfigs);
+    val accumulator = new ReasoningAccumulator();
+    try (Stream<OrchestrationChatCompletionDelta> stream = streamChatCompletionDeltas(request)) {
+      stream
+          .peek(OrchestrationClient::throwOnContentFilter)
+          .forEach(
+              delta -> {
+                final var content = delta.getDeltaContent();
+                if (!content.isEmpty()) {
+                  onAnswerChunk.accept(content);
+                }
+                for (final var block : delta.getDeltaReasoningContent()) {
+                  if (!block.getContent().isEmpty()) {
+                    onReasoningChunk.accept(block.getContent());
+                  }
+                }
+                accumulator.accept(delta);
+              });
+    }
+    return accumulator.assemble();
   }
 
   private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)

@@ -2,6 +2,8 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.core.common.StreamedDelta;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponseStreaming;
+import com.sap.ai.sdk.orchestration.model.ReasoningBlock;
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.val;
@@ -25,6 +27,23 @@ public class OrchestrationChatCompletionDelta extends CompletionPostResponseStre
       return message.getContent();
     }
     return "";
+  }
+
+  /**
+   * Get the reasoning (thinking) blocks carried by this chunk.
+   *
+   * @return the reasoning blocks in this chunk; never {@code null}, may be empty.
+   * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
+   *     Orchestration - Reasoning</a>
+   */
+  @SuppressWarnings("PMD.PublicApiExposesModelType")
+  @Nonnull
+  public List<ReasoningBlock> getDeltaReasoningContent() {
+    val choices = getFinalResult().getChoices();
+    if (!choices.isEmpty() && choices.get(0).getIndex() == 0) {
+      return choices.get(0).getDelta().getReasoningContent();
+    }
+    return List.of();
   }
 
   @Nullable

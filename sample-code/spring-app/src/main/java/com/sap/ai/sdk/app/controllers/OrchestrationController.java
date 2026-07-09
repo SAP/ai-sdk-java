@@ -79,6 +79,55 @@ class OrchestrationController {
     return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
   }
 
+  @GetMapping("/reasoning")
+  Object reasoning(
+      @RequestParam(value = "topic", defaultValue = "Why is the sky blue?") final String topic) {
+    return service.reasoning(topic);
+  }
+
+  @GetMapping("/multiTurnReasoning")
+  Object multiTurnReasoning(
+      @RequestParam(value = "first", defaultValue = "What is 6 times 7?") final String first,
+      @RequestParam(value = "followUp", defaultValue = "Are you sure?") final String followUp) {
+    return service.multiTurnReasoning(first, followUp);
+  }
+
+  @GetMapping("/streamReasoning")
+  ResponseEntity<ResponseBodyEmitter> streamReasoning(
+      @RequestParam(value = "topic", defaultValue = "Why is the sky blue?") final String topic) {
+    final var emitter = new ResponseBodyEmitter();
+    final Runnable consumeStream =
+        () -> {
+          try {
+            final var accumulated =
+                service.streamReasoning(
+                    topic,
+                    answer -> send(emitter, "[answer] " + answer),
+                    reasoning -> send(emitter, "[reasoning] " + reasoning));
+            // Emit the fully accumulated reasoning blocks at the end of the stream so callers can
+            // resubmit them in messages_history for a follow-up request.
+            for (int i = 0; i < accumulated.size(); i++) {
+              final var block = accumulated.get(i);
+              send(
+                  emitter,
+                  "[accumulated block "
+                      + i
+                      + "] content="
+                      + block.getContent()
+                      + " signature="
+                      + block.getSignature());
+            }
+          } finally {
+            emitter.complete();
+          }
+        };
+
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
+
+    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+  }
+
   @GetMapping("/template")
   Object template(@Nullable @RequestParam(value = "format", required = false) final String format) {
     final var response = service.template("German");

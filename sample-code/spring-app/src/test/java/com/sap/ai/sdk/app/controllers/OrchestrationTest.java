@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
@@ -20,6 +21,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.ReasoningEffort;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
@@ -687,5 +689,47 @@ class OrchestrationTest {
   void testCitations() {
     val result = service.citations();
     assertThat(result.getOriginalResponse().getFinalResult().getCitations()).isNotEmpty();
+  }
+
+  @Test
+  void testReasoningContentSync() {
+    val result = service.reasoning("What is 6 times 7?");
+
+    assertThat(result.answer()).isNotEmpty();
+    assertThat(result.reasoning()).isNotNull();
+  }
+
+  @Test
+  void testReasoningContentStreaming() {
+    val answerBuilder = new StringBuilder();
+    val accumulatedReasoning =
+        service.streamReasoning("What is 6 times 7?", answerBuilder::append, reasoning -> {});
+
+    assertThat(answerBuilder.toString()).isNotEmpty();
+    assertThat(accumulatedReasoning).isNotNull();
+  }
+
+  @Test
+  void testMultiTurnReasoning() {
+    val reasoningConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    val orchestrationClient = new OrchestrationClient();
+    val firstPrompt = new OrchestrationPrompt("What is 6 times 7?");
+    val firstResponse = orchestrationClient.chatCompletion(firstPrompt, reasoningConfig);
+
+    val history = firstResponse.getAllMessages();
+    val lastAssistant = (AssistantMessage) firstResponse.getLastMessage();
+    if (lastAssistant.reasoningContent() != null) {
+      assertThat(lastAssistant.reasoningContent()).isEqualTo(firstResponse.getReasoningContent());
+    }
+
+    val followUpPrompt = new OrchestrationPrompt("Are you sure?").messageHistory(history);
+    val followUp = orchestrationClient.chatCompletion(followUpPrompt, reasoningConfig);
+
+    assertThat(followUp.getContent()).isNotEmpty();
+    // Reasoning is still returned on the follow-up turn, proving the model kept reasoning enabled
+    // after we resubmitted the previous reasoning_content in messages_history.
+    assertThat(followUp.getReasoningContent()).isNotNull();
   }
 }

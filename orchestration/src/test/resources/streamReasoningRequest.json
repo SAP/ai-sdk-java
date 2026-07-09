@@ -1,0 +1,30 @@
+{
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "prompt": {
+          "template": [
+            {
+              "content": "Think carefully and explain step by step: Why is the sky blue?",
+              "role": "user"
+            }
+          ],
+          "defaults": {},
+          "tools": []
+        },
+        "model": {
+          "name": "anthropic--claude-4.5-sonnet",
+          "version": "latest",
+          "params": {
+            "reasoning_effort": "medium"
+          },
+          "timeout": 600,
+          "max_retries": 2
+        }
+      }
+    },
+    "stream": {"enabled": true, "chunk_size": 100}
+  },
+  "placeholder_values": {},
+  "messages_history": []
+}
