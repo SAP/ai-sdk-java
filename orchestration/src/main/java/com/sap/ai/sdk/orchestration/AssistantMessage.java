@@ -13,7 +13,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -21,7 +20,6 @@ import lombok.val;
 
 /** Represents a chat message as 'assistant' to the orchestration service. */
 @Value
-@Getter
 @Accessors(fluent = true)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AssistantMessage implements Message {
@@ -30,7 +28,7 @@ public class AssistantMessage implements Message {
   @Nonnull String role = "assistant";
 
   /** The content of the message. */
-  @Nonnull @Getter MessageContent content;
+  @Nonnull MessageContent content;
 
   /** Tool call if there is any. */
   @Nullable List<MessageToolCall> toolCalls;
