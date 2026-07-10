@@ -1,11 +1,15 @@
-package com.sap.ai.sdk.orchestration;
+package com.sap.ai.sdk.foundationmodels.openai;
+
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.http.WebSocket;
+import java.nio.ByteBuffer;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+@Slf4j
 public class BufferedWebSocketListener implements WebSocket.Listener {
 
     private final Consumer<WebSocket> onOpen;
@@ -34,6 +38,17 @@ public class BufferedWebSocketListener implements WebSocket.Listener {
             this.onText.accept(webSocket, completeMessage);
         }
 
+        return CompletableFuture.completedStage(null);
+    }
+
+    @Override
+    public void onError(WebSocket webSocket, Throwable error) {
+        log.error("Websocket error occurred during realtime communication", error);
+    }
+
+    @Override
+    public CompletionStage<?> onBinary(WebSocket webSocket, ByteBuffer data, boolean last) {
+        log.warn("Received unexpected binary bytes for WebSocket connection");
         return CompletableFuture.completedStage(null);
     }
 }

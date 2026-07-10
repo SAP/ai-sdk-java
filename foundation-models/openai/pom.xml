@@ -67,6 +67,10 @@
       <artifactId>core</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.openai</groupId>
+      <artifactId>openai-java</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
     </dependency>

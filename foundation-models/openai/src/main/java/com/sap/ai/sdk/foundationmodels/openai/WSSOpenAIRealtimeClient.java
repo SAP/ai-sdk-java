@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.orchestration;
+package com.sap.ai.sdk.foundationmodels.openai;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openai.models.realtime.*;
 import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
+import com.sap.ai.sdk.core.common.ClientException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +19,12 @@ import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
-
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public abstract class WSSOpenAIRealtimeClient implements AutoCloseable {
 
     private static final int SUCCESS_FINISH_WSS_CODE = 1000;
-    private static final ObjectMapper JACKSON = getOrchestrationObjectMapper()
+    private static final ObjectMapper JACKSON = new ObjectMapper()
             .setVisibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE);
 
     /**
@@ -86,20 +85,18 @@ public abstract class WSSOpenAIRealtimeClient implements AutoCloseable {
 
     protected abstract String getSystemPrompt();
 
-    protected abstract List<RealtimeSessionCreateRequest.OutputModality> getOutputModalities();
-
     protected abstract void onResponse(String eventType, JsonNode event);
 
-    protected void sendMessage(ConversationItemCreateEvent message) {
+    protected abstract SessionUpdateEvent sessionConfiguration();
+
+    protected void sendMessage(Object message) {
         WebSocket ws = this.ws.join();
         synchronized (this) {
             try {
                 ws.sendText(JACKSON.writeValueAsString(message), true);
                 ws.request(1);
-                log.warn("WSS sent message: {}", JACKSON.writeValueAsString(message));
-                askForResponse();
             } catch (JsonProcessingException e) {
-                throw new OrchestrationClientException("Failed to serialize message", e);
+                throw new ClientException("Failed to serialize message", e);
             }
 
         }
@@ -112,17 +109,17 @@ public abstract class WSSOpenAIRealtimeClient implements AutoCloseable {
     }
 
     private void onText(WebSocket webSocket, CharSequence data) {
-        log.warn("WSS received message: {}", data);
         final JsonNode event;
         try {
             event = JACKSON.readTree(data.toString());
         } catch (JsonProcessingException e) {
-            throw new OrchestrationClientException(
-                    "Error parsing JSON response from speech API", e);
+            throw new ClientException("Error parsing JSON response from speech API", e);
         }
         var eventType = event.get("type").asText();
         if (handleMessageTypes.contains(eventType)) {
             onResponse(eventType, event);
+        } else {
+            log.trace("Unhandled event type: {}", eventType);
         }
 
         webSocket.request(1);
@@ -137,36 +134,11 @@ public abstract class WSSOpenAIRealtimeClient implements AutoCloseable {
     }
 
     private void configureSession(WebSocket ws) {
-    SessionUpdateEvent sue =
-        SessionUpdateEvent.builder()
-            .session(
-                ClientSecretCreateParams.Session.ofRealtime(
-                        RealtimeSessionCreateRequest.builder()
-                            .outputModalities(getOutputModalities())
-                            .audio(
-                                RealtimeAudioConfig.builder()
-                                    .input(
-                                        RealtimeAudioConfigInput.builder()
-                                                .turnDetection(Optional.empty())
-                                            .format(
-                                                RealtimeAudioFormats.AudioPcm.builder()
-                                                    .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
-                                                    .build())
-                                            .build())
-                                    .output(
-                                        RealtimeAudioConfigOutput.builder()
-                                            .format(RealtimeAudioFormats.AudioPcm.builder().build())
-                                            .voice(
-                                                RealtimeAudioConfigOutput.Voice.UnionMember1.ALLOY)
-                                            .build())
-                                    .build())
-                            .build())
-                    .asRealtime())
-            .build();
+    SessionUpdateEvent sue = sessionConfiguration();
         try {
             ws.sendText(JACKSON.writeValueAsString(sue), true);
         } catch (JsonProcessingException e) {
-            throw new OrchestrationClientException("Failed to serialize session request", e);
+            throw new ClientException("Failed to serialize session request", e);
         }
 
         ws.request(1);
@@ -174,6 +146,9 @@ public abstract class WSSOpenAIRealtimeClient implements AutoCloseable {
 
     private void configureConversation(WebSocket ws) {
         var systemPrompt = getSystemPrompt();
+        if (systemPrompt == null || systemPrompt.isEmpty()) {
+            return;
+        }
         var systemConversationItem = ConversationItemCreateEvent.builder()
                 .item(ConversationItem.ofRealtimeConversationItemSystemMessage(
                         RealtimeConversationItemSystemMessage.builder()
@@ -185,9 +160,8 @@ public abstract class WSSOpenAIRealtimeClient implements AutoCloseable {
         try {
             var json = JACKSON.writeValueAsString(systemConversationItem);
             ws.sendText(json, true);
-            log.warn("WSS conversation config sent: {}", json);
         } catch (JsonProcessingException e) {
-            throw new OrchestrationClientException("Failed to serialize message", e);
+            throw new ClientException("Failed to serialize message", e);
         }
         ws.request(1);
     }

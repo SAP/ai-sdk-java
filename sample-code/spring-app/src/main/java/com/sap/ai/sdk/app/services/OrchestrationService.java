@@ -33,7 +33,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,17 +61,6 @@ public class OrchestrationService {
   public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
     return client.chatCompletion(prompt, config);
-  }
-
-  /**
-   * Voices input text into output audio
-   *
-   * @param outputConsumer byte chunks output consumer in PCM16 format, 16-bit, mono, 24000 Hz, little-endian,
-   *              boolean flag signifies end of the current reply (only true for last chunk of current response)
-   * @return text input channel to supply text to voice, should be closed when not needed anymore
-   */
-  public TextInputChannel textToSpeech(@Nonnull final BiConsumer<byte[], Boolean> outputConsumer) {
-    return client.textToSpeech(outputConsumer);
   }
 
   /**

@@ -7,12 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.annotations.Beta;
-import com.openai.client.OpenAIClient;
-import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.models.beta.realtime.sessions.Session;
-import com.openai.models.realtime.SessionUpdateEvent;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.core.AiModel;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
@@ -22,30 +17,15 @@ import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
-import io.vavr.collection.Array;
 import io.vavr.control.Try;
 
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.WebSocket;
-import java.nio.ByteBuffer;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 
 /** Client to execute requests to the orchestration service. */
 @Slf4j
@@ -55,7 +35,6 @@ public class OrchestrationClient {
   private static final String COMPLETION_ENDPOINT = "/v2/completion";
 
   static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
-
 
   private final OrchestrationHttpExecutor executor;
   private final List<Header> customHeaders = new ArrayList<>();
@@ -122,31 +101,6 @@ public class OrchestrationClient {
     val response = executeRequest(request);
     return new OrchestrationChatResponse(response);
   }
-
-    /**
-     * Voices input text into output audio
-     *
-     * @param output byte chunks output consumer in PCM16 format, 16-bit, mono, 24000 Hz, little-endian,
-     *              boolean flag signifies end of the current reply (only true for last chunk of current response)
-     * @return text input channel to supply text to voice, should be closed when not needed anymore
-     */
-    public TextInputChannel textToSpeech(BiConsumer<byte[], Boolean> output) {
-      var destination = new AiCoreService().getInferenceDestination().forModel(new AiModel() {
-        @Override
-        public @NonNull String name() {
-          return OrchestrationAiModel.GPT_REALTIME.getName();
-        }
-
-        @Override
-        public @Nullable String version() {
-          return OrchestrationAiModel.GPT_REALTIME.getVersion();
-        }
-      });
-
-      var factory = new RealtimeChannelFactory(() -> destination);
-
-      return factory.textToSpeech(output);
-    }
 
   /**
    * Generate a completion for the given prompt.
