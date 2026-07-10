@@ -44,9 +44,10 @@ public class SpeechToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implem
             cursorLeft += MAX_DATA_CHUNK_SIZE_BYTES;
         }
 
-        var commitAudioMessage = InputAudioBufferCommitEvent.builder().build();
-        super.sendMessage(commitAudioMessage);
-        askForResponse();
+        // TODO: make turn detection configurable and uncomment for explicit turn control
+        // var commitAudioMessage = InputAudioBufferCommitEvent.builder().build();
+        // super.sendMessage(commitAudioMessage);
+        // askForResponse();
     }
 
     @Override
@@ -67,7 +68,8 @@ public class SpeechToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implem
 
     @Override
     protected SessionUpdateEvent sessionConfiguration() {
-        SessionUpdateEvent sessionUpdateEvent = SessionUpdateEvent.builder()
+    SessionUpdateEvent sessionUpdateEvent =
+        SessionUpdateEvent.builder()
             .session(
                 ClientSecretCreateParams.Session.ofRealtime(
                         RealtimeSessionCreateRequest.builder()
@@ -76,21 +78,25 @@ public class SpeechToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implem
                                 RealtimeAudioConfig.builder()
                                     .input(
                                         RealtimeAudioConfigInput.builder()
-                                            .turnDetection(Optional.empty())
+                                            .turnDetection(
+                                                RealtimeAudioInputTurnDetection.ofSemanticVad(RealtimeAudioInputTurnDetection.SemanticVad.builder().build()))
                                             .format(
-                                                RealtimeAudioFormats.AudioPcm
-                                                    .builder()
-                                                        .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
-                                                        .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
-                                                .build())
+                                                RealtimeAudioFormats.AudioPcm.builder()
+                                                    .type(
+                                                        RealtimeAudioFormats.AudioPcm.Type
+                                                            .AUDIO_PCM)
+                                                    .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
+                                                    .build())
                                             .build())
                                     .output(
                                         RealtimeAudioConfigOutput.builder()
-                                            .format(RealtimeAudioFormats.AudioPcm
-                                                .builder()
-                                                    .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
+                                            .format(
+                                                RealtimeAudioFormats.AudioPcm.builder()
+                                                    .type(
+                                                        RealtimeAudioFormats.AudioPcm.Type
+                                                            .AUDIO_PCM)
                                                     .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
-                                                .build())
+                                                    .build())
                                             .voice(
                                                 RealtimeAudioConfigOutput.Voice.UnionMember1.ALLOY)
                                             .build())
