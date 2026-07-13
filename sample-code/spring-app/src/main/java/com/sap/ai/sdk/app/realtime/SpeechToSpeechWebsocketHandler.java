@@ -19,43 +19,47 @@ import org.springframework.web.socket.handler.BinaryWebSocketHandler;
 @Slf4j
 public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {
 
-    private final OpenAiService service;
-    private final Map<String, AudioInputChannel> channels;
+  private final OpenAiService service;
+  private final Map<String, AudioInputChannel> channels;
 
-    @Autowired
-    public SpeechToSpeechWebsocketHandler(OpenAiService service) {
-        this.service = service;
-        channels = new ConcurrentHashMap<>();
-    }
+  @Autowired
+  public SpeechToSpeechWebsocketHandler(OpenAiService service) {
+    this.service = service;
+    channels = new ConcurrentHashMap<>();
+  }
 
-    @Override
-    protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
-        ByteBuffer payload = message.getPayload();
-        byte[] chunkBytes = payload.array();
-        AudioInputChannel channel = channels.computeIfAbsent(
-                session.getId(),
-                sessionId -> service.speechToSpeech((rawBytesChunk, isLast) -> {
-                    try {
+  @Override
+  protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
+    ByteBuffer payload = message.getPayload();
+    byte[] chunkBytes = payload.array();
+    AudioInputChannel channel =
+        channels.computeIfAbsent(
+            session.getId(),
+            sessionId ->
+                service.speechToSpeech(
+                    (rawBytesChunk, isLast) -> {
+                      try {
                         session.sendMessage(new BinaryMessage(rawBytesChunk, isLast));
-                    } catch (IOException e) {
+                      } catch (IOException e) {
                         log.error("failed to send audio data to realtime api", e);
-                    }
-                })
-        );
-        channel.inputAudio(chunkBytes);
-    }
+                      }
+                    }));
+    channel.inputAudio(chunkBytes);
+  }
 
-    @Override
-    public void afterConnectionClosed(WebSocketSession session, @NonNull CloseStatus status) throws Exception {
-        channels.computeIfPresent(session.getId(), (sessionId, inputChannel) -> {
-            try {
-                inputChannel.close();
-            } catch (Exception e) {
-                log.warn("failed to close input channel for session {}", sessionId, e);
-            }
-            return null;
+  @Override
+  public void afterConnectionClosed(WebSocketSession session, @NonNull CloseStatus status)
+      throws Exception {
+    channels.computeIfPresent(
+        session.getId(),
+        (sessionId, inputChannel) -> {
+          try {
+            inputChannel.close();
+          } catch (Exception e) {
+            log.warn("failed to close input channel for session {}", sessionId, e);
+          }
+          return null;
         });
-        super.afterConnectionClosed(session, status);
-    }
-
+    super.afterConnectionClosed(session, status);
+  }
 }

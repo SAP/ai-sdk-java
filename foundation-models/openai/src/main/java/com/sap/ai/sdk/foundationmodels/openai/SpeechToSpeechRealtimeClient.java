@@ -3,117 +3,119 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.openai.models.realtime.*;
 import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
-import java.util.*;
-
 import com.sap.ai.sdk.core.model.SpeechOutputParam;
 import com.sap.ai.sdk.core.model.SpeechOutputParamTurnDetection;
 import com.sap.ai.sdk.core.model.SpeechOutputParamVoice;
+import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 class SpeechToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implements AudioInputChannel {
 
-    private static final int MAX_DATA_CHUNK_SIZE_BYTES = 8192;
-    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
+  private static final int MAX_DATA_CHUNK_SIZE_BYTES = 8192;
+  private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
-    private static final Set<String> HANDLED_RESPONSE_TYPES = Set.of(
-            "response.output_audio.delta", "response.output_audio.done"
-    );
+  private static final Set<String> HANDLED_RESPONSE_TYPES =
+      Set.of("response.output_audio.delta", "response.output_audio.done");
 
-    private static final List<RealtimeSessionCreateRequest.OutputModality> OUTPUT_MODALITIES = List.of(
-            RealtimeSessionCreateRequest.OutputModality.AUDIO
-    );
+  private static final List<RealtimeSessionCreateRequest.OutputModality> OUTPUT_MODALITIES =
+      List.of(RealtimeSessionCreateRequest.OutputModality.AUDIO);
 
-    private static final String TASK = "";
+  private static final String TASK = "";
 
-    private final AudioOutputChannel outputConsumer;
-    private final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
-    private final boolean eagerTurnDetection;
+  private final AudioOutputChannel outputConsumer;
+  private final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
+  private final boolean eagerTurnDetection;
 
-    public SpeechToSpeechRealtimeClient(String url, Map<String, String> httpHeaders, AudioOutputChannel outputConsumer,
-                                        SpeechOutputParam... params) {
-        super(url, httpHeaders, HANDLED_RESPONSE_TYPES);
-        this.outputConsumer = outputConsumer;
+  public SpeechToSpeechRealtimeClient(
+      String url,
+      Map<String, String> httpHeaders,
+      AudioOutputChannel outputConsumer,
+      SpeechOutputParam... params) {
+    super(url, httpHeaders, HANDLED_RESPONSE_TYPES);
+    this.outputConsumer = outputConsumer;
 
-        var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
-        var turnDetectionEager = false;
-        for (SpeechOutputParam param : params) {
-            switch (param.getParamName()) {
-                case VOICE -> {
-                    if (SpeechOutputParamVoice.DEFAULT_WOMAN.equals(param)) {
-                        voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
-                    } else if (SpeechOutputParamVoice.DEFAULT_MAN.equals(param)) {
-                        voice = RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO;
-                    }
-                }
-                case TURN_DETECTION -> {
-                    if (SpeechOutputParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
-                        turnDetectionEager = true;
-                    } else if (SpeechOutputParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
-                        turnDetectionEager = false;
-                    }
-                }
-            }
+    var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
+    var turnDetectionEager = false;
+    for (SpeechOutputParam param : params) {
+      switch (param.getParamName()) {
+        case VOICE -> {
+          if (SpeechOutputParamVoice.DEFAULT_WOMAN.equals(param)) {
+            voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
+          } else if (SpeechOutputParamVoice.DEFAULT_MAN.equals(param)) {
+            voice = RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO;
+          }
         }
-        this.voice = voice;
-        this.eagerTurnDetection = turnDetectionEager;
+        case TURN_DETECTION -> {
+          if (SpeechOutputParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
+            turnDetectionEager = true;
+          } else if (SpeechOutputParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
+            turnDetectionEager = false;
+          }
+        }
+      }
+    }
+    this.voice = voice;
+    this.eagerTurnDetection = turnDetectionEager;
+  }
+
+  public void inputAudio(byte[] rawAudioChunk) {
+    if (rawAudioChunk.length == 0) {
+      return;
+    }
+    var cursorLeft = 0;
+    while (cursorLeft < rawAudioChunk.length) {
+      var cursorRight = Math.min(cursorLeft + MAX_DATA_CHUNK_SIZE_BYTES, rawAudioChunk.length);
+      var part = Arrays.copyOfRange(rawAudioChunk, cursorLeft, cursorRight);
+      var audioInputMessage =
+          InputAudioBufferAppendEvent.builder()
+              .audio(Base64.getEncoder().encodeToString(part))
+              .build();
+      super.sendMessage(audioInputMessage);
+      cursorLeft += MAX_DATA_CHUNK_SIZE_BYTES;
     }
 
-    public void inputAudio(byte[] rawAudioChunk) {
-        if (rawAudioChunk.length == 0) {
-            return;
-        }
-        var cursorLeft = 0;
-        while (cursorLeft < rawAudioChunk.length) {
-            var cursorRight = Math.min(cursorLeft + MAX_DATA_CHUNK_SIZE_BYTES, rawAudioChunk.length);
-            var part = Arrays.copyOfRange(rawAudioChunk, cursorLeft, cursorRight);
-            var audioInputMessage = InputAudioBufferAppendEvent.builder()
-                    .audio(Base64.getEncoder().encodeToString(part)).build();
-            super.sendMessage(audioInputMessage);
-            cursorLeft += MAX_DATA_CHUNK_SIZE_BYTES;
-        }
+    if (eagerTurnDetection) {
+      var commitAudioMessage = InputAudioBufferCommitEvent.builder().build();
+      super.sendMessage(commitAudioMessage);
+      askForResponse();
+    }
+  }
 
-        if (eagerTurnDetection) {
-            var commitAudioMessage = InputAudioBufferCommitEvent.builder().build();
-            super.sendMessage(commitAudioMessage);
-            askForResponse();
-        }
+  @Override
+  protected String getSystemPrompt() {
+    return TASK;
+  }
+
+  @Override
+  protected void onResponse(String eventType, JsonNode event) {
+    if ("response.output_audio.delta".equals(eventType)) {
+      var base64Audio = event.get("delta").asText();
+      byte[] audio = Base64.getDecoder().decode(base64Audio);
+      this.outputConsumer.outputAudio(audio, Boolean.FALSE);
+    } else if ("response.output_audio.done".equals(eventType)) {
+      this.outputConsumer.outputAudio(EMPTY_BYTE_ARRAY, Boolean.TRUE);
+    }
+  }
+
+  @Override
+  protected SessionUpdateEvent sessionConfiguration() {
+    RealtimeAudioInputTurnDetection turnDetection;
+    if (eagerTurnDetection) {
+      turnDetection = null;
+    } else {
+      turnDetection =
+          RealtimeAudioInputTurnDetection.ofSemanticVad(
+              RealtimeAudioInputTurnDetection.SemanticVad.builder().build());
     }
 
-    @Override
-    protected String getSystemPrompt() {
-        return TASK;
-    }
-
-    @Override
-    protected void onResponse(String eventType, JsonNode event) {
-        if ("response.output_audio.delta".equals(eventType)) {
-            var base64Audio = event.get("delta").asText();
-            byte[] audio = Base64.getDecoder().decode(base64Audio);
-            this.outputConsumer.outputAudio(audio, Boolean.FALSE);
-        } else if ("response.output_audio.done".equals(eventType)) {
-            this.outputConsumer.outputAudio(EMPTY_BYTE_ARRAY, Boolean.TRUE);
-        }
-    }
-
-    @Override
-    protected SessionUpdateEvent sessionConfiguration() {
-        RealtimeAudioInputTurnDetection turnDetection;
-        if (eagerTurnDetection) {
-            turnDetection = null;
-        } else {
-            turnDetection = RealtimeAudioInputTurnDetection.ofSemanticVad(
-                RealtimeAudioInputTurnDetection.SemanticVad.builder().build()
-            );
-        }
-
-        return SessionUpdateEvent.builder()
-            .session(
-                ClientSecretCreateParams.Session.ofRealtime(
-                    RealtimeSessionCreateRequest
-                        .builder()
-                            .outputModalities(OUTPUT_MODALITIES)
-                            .audio(RealtimeAudioConfig.builder()
+    return SessionUpdateEvent.builder()
+        .session(
+            ClientSecretCreateParams.Session.ofRealtime(
+                    RealtimeSessionCreateRequest.builder()
+                        .outputModalities(OUTPUT_MODALITIES)
+                        .audio(
+                            RealtimeAudioConfig.builder()
                                 .input(
                                     RealtimeAudioConfigInput.builder()
                                         .turnDetection(turnDetection)
@@ -121,27 +123,20 @@ class SpeechToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implements Au
                                             RealtimeAudioFormats.AudioPcm.builder()
                                                 .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
                                                 .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
-                                            .build()
-                                         )
-                                    .build()
-                                )
+                                                .build())
+                                        .build())
                                 .output(
                                     RealtimeAudioConfigOutput.builder()
                                         .format(
                                             RealtimeAudioFormats.AudioPcm.builder()
-                                            .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
+                                                .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
                                                 .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
-                                            .build()
-                                        )
+                                                .build())
                                         .voice(voice)
-                                    .build()
-                                )
-                            .build()
-                        )
-                    .build()
-                )
-            .asRealtime()
-            )
+                                        .build())
+                                .build())
+                        .build())
+                .asRealtime())
         .build();
-    }
+  }
 }
