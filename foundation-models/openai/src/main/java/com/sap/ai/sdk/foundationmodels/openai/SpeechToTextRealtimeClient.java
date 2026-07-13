@@ -8,7 +8,7 @@ import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class SpeechToTextRealtimeClient extends WSSOpenAIRealtimeClient implements AudioInputChannel {
+class SpeechToTextRealtimeClient extends WSSOpenAIRealtimeClient implements AudioInputChannel {
 
     private static final int MAX_DATA_CHUNK_SIZE_BYTES = 8192;
     private static final Set<String> HANDLED_RESPONSE_TYPES = Set.of(

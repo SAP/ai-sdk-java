@@ -11,7 +11,7 @@ import com.sap.ai.sdk.core.model.SpeechOutputParamVoice;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class SpeechToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implements AudioInputChannel {
+class SpeechToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implements AudioInputChannel {
 
     private static final int MAX_DATA_CHUNK_SIZE_BYTES = 8192;
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];

@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public abstract class WSSOpenAIRealtimeClient implements AutoCloseable {
+abstract class WSSOpenAIRealtimeClient implements AutoCloseable {
 
     private static final int SUCCESS_FINISH_WSS_CODE = 1000;
     private static final ObjectMapper JACKSON = new ObjectMapper()

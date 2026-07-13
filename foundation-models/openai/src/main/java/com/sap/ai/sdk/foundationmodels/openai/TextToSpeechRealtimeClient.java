@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.*;
 
 @Slf4j
-public class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implements TextInputChannel {
+class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implements TextInputChannel {
 
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
