@@ -3,6 +3,9 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.openai.models.realtime.*;
 import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
+import com.sap.ai.sdk.core.model.SpeechOutputParam;
+import com.sap.ai.sdk.core.model.SpeechOutputParamTurnDetection;
+import com.sap.ai.sdk.core.model.SpeechOutputParamVoice;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
@@ -25,10 +28,35 @@ public class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implemen
 
 
     private final AudioOutputChannel outputConsumer;
+    private final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
+    private final boolean eagerTurnDetection;
 
-    public TextToSpeechRealtimeClient(String url, Map<String, String> httpHeaders, AudioOutputChannel outputConsumer) {
+    public TextToSpeechRealtimeClient(String url, Map<String, String> httpHeaders, AudioOutputChannel outputConsumer,
+                                      SpeechOutputParam... params) {
         super(url, httpHeaders, HANDLED_RESPONSE_TYPES);
         this.outputConsumer = outputConsumer;
+        var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
+        var turnDetectionEager = true;
+        for (SpeechOutputParam param : params) {
+            switch (param.getParamName()) {
+                case VOICE -> {
+                    if (SpeechOutputParamVoice.DEFAULT_WOMAN.equals(param)) {
+                        voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
+                    } else if (SpeechOutputParamVoice.DEFAULT_MAN.equals(param)) {
+                        voice = RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO;
+                    }
+                }
+                case TURN_DETECTION -> {
+                    if (SpeechOutputParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
+                        turnDetectionEager = true;
+                    } else if (SpeechOutputParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
+                        turnDetectionEager = false;
+                    }
+                }
+            }
+        }
+        this.voice = voice;
+        this.eagerTurnDetection = turnDetectionEager;
     }
 
     public void sendText(String text) {
@@ -41,7 +69,9 @@ public class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implemen
                 )).build();
 
         super.sendMessage(message);
-        askForResponse();
+        if (eagerTurnDetection) {
+            askForResponse();
+        }
     }
 
     @Override
@@ -88,8 +118,7 @@ public class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implemen
                                                     .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
                                                     .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
                                                 .build())
-                                            .voice(
-                                                RealtimeAudioConfigOutput.Voice.UnionMember1.ALLOY)
+                                            .voice(voice)
                                             .build())
                                     .build())
                             .build())

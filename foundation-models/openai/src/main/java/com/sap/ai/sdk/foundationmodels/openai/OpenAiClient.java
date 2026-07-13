@@ -15,6 +15,7 @@ import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.RequestLogContext;
 import com.sap.ai.sdk.core.common.StreamedDelta;
+import com.sap.ai.sdk.core.model.SpeechOutputParam;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
@@ -288,7 +289,8 @@ public final class OpenAiClient {
    * @return input channel, allowing for text input
    */
   @Nonnull
-  public TextInputChannel textToSpeech(@Nonnull final AudioOutputChannel audioOutputConsumer) {
+  public TextInputChannel textToSpeech(@Nonnull final AudioOutputChannel audioOutputConsumer,
+                                       SpeechOutputParam... params) {
     var extraHeaders = destination.asHttp().getHeaders();
     var headers = new HashMap<String, String>(extraHeaders.size() + 1);
     for (Header header : extraHeaders) {
@@ -296,10 +298,11 @@ public final class OpenAiClient {
     }
     var endpoint = getRealtimeEndpoint();
 
-    return new TextToSpeechRealtimeClient(endpoint, headers, audioOutputConsumer);
+    return new TextToSpeechRealtimeClient(endpoint, headers, audioOutputConsumer, params);
   }
 
-  public AudioInputChannel speechToText(@Nonnull final TextOutputChannel textOutputConsumer) {
+  // unstable, requires further debugging and testing
+  AudioInputChannel speechToText(@Nonnull final TextOutputChannel textOutputConsumer) {
     var extraHeaders = destination.asHttp().getHeaders();
     var headers = new HashMap<String, String>(extraHeaders.size() + 1);
     for (Header header : extraHeaders) {
@@ -310,7 +313,8 @@ public final class OpenAiClient {
     return new SpeechToTextRealtimeClient(endpoint, headers, textOutputConsumer);
   }
 
-  public AudioInputChannel speechToSpeech(@Nonnull final AudioOutputChannel audioOutputChannel) {
+  public AudioInputChannel speechToSpeech(@Nonnull final AudioOutputChannel audioOutputChannel,
+                                          SpeechOutputParam... params) {
     var extraHeaders = destination.asHttp().getHeaders();
     var headers = new HashMap<String, String>(extraHeaders.size() + 1);
     for (Header header : extraHeaders) {
@@ -318,7 +322,7 @@ public final class OpenAiClient {
     }
     var endpoint = getRealtimeEndpoint();
 
-    return new SpeechToSpeechRealtimeClient(endpoint, headers, audioOutputChannel);
+    return new SpeechToSpeechRealtimeClient(endpoint, headers, audioOutputChannel, params);
   }
 
   private String getRealtimeEndpoint() {

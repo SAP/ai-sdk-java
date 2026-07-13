@@ -96,10 +96,6 @@ public class OpenAiService {
     return OpenAiClient.forModel(OpenAiModel.GPT_REALTIME).textToSpeech(audioOutputConsumer);
   }
 
-  public AudioInputChannel speechToText(@Nonnull final TextOutputChannel textOutputConsumer) {
-    return OpenAiClient.forModel(OpenAiModel.GPT_REALTIME).speechToText(textOutputConsumer);
-  }
-
   public AudioInputChannel speechToSpeech(@Nonnull final AudioOutputChannel audioOutputConsumer) {
     return OpenAiClient.forModel(OpenAiModel.GPT_REALTIME).speechToSpeech(audioOutputConsumer);
   }

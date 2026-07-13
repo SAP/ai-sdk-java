@@ -2,7 +2,6 @@ package com.sap.ai.sdk.app.realtime;
 
 import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
-import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Map;
@@ -41,7 +40,8 @@ public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {
                     } catch (IOException e) {
                         log.error("failed to send audio data to realtime api", e);
                     }
-        }));
+                })
+        );
         channel.inputAudio(chunkBytes);
     }
 
