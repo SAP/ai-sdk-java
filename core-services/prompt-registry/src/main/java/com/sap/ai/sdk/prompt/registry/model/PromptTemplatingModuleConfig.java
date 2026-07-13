@@ -29,7 +29,7 @@ public class PromptTemplatingModuleConfig
 // CHECKSTYLE:ON
 {
   @JsonProperty("prompt")
-  private PromptTemplatingModuleConfigPrompt prompt;
+  private PartialPromptTemplatingModuleConfigPrompt prompt;
 
   @JsonProperty("model")
   private LLMModelDetails model;
@@ -49,7 +49,7 @@ public class PromptTemplatingModuleConfig
    */
   @Nonnull
   public PromptTemplatingModuleConfig prompt(
-      @Nullable final PromptTemplatingModuleConfigPrompt prompt) {
+      @Nullable final PartialPromptTemplatingModuleConfigPrompt prompt) {
     this.prompt = prompt;
     return this;
   }
@@ -60,7 +60,7 @@ public class PromptTemplatingModuleConfig
    * @return prompt The prompt of this {@link PromptTemplatingModuleConfig} instance.
    */
   @Nonnull
-  public PromptTemplatingModuleConfigPrompt getPrompt() {
+  public PartialPromptTemplatingModuleConfigPrompt getPrompt() {
     return prompt;
   }
 
@@ -69,7 +69,7 @@ public class PromptTemplatingModuleConfig
    *
    * @param prompt The prompt of this {@link PromptTemplatingModuleConfig}
    */
-  public void setPrompt(@Nullable final PromptTemplatingModuleConfigPrompt prompt) {
+  public void setPrompt(@Nullable final PartialPromptTemplatingModuleConfigPrompt prompt) {
     this.prompt = prompt;
   }
 

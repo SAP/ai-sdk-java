@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.21.0-SNAPSHOT</version>
+    <version>1.23.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.app</groupId>
@@ -34,9 +34,8 @@
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
     <spring-boot.version>3.5.16</spring-boot.version>
-    <logback.version>1.5.36</logback.version>
     <cf-logging.version>4.2.0</cf-logging.version>
-    <apache-tomcat-embed.version>11.0.22</apache-tomcat-embed.version>
+    <apache-tomcat-embed.version>11.0.23</apache-tomcat-embed.version>
     <mcp-core.version>2.0.0</mcp-core.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
@@ -81,6 +80,12 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <!-- Override Spring Boot BOM's logback-core version to align with logback-classic -->
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -93,6 +98,10 @@
     <dependency>
       <groupId>com.sap.ai.sdk.foundationmodels</groupId>
       <artifactId>openai</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.openai</groupId>
+      <artifactId>openai-java-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.sap.ai.sdk</groupId>

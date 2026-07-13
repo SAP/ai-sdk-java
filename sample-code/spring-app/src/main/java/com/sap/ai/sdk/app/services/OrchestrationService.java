@@ -10,7 +10,31 @@ import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeE
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.orchestration.*;
+import com.sap.ai.sdk.orchestration.AzureContentFilter;
+import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.Grounding;
+import com.sap.ai.sdk.orchestration.ImageItem;
+import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
+import com.sap.ai.sdk.orchestration.Message;
+import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
+import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
+import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
+import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationClientException;
+import com.sap.ai.sdk.orchestration.OrchestrationConfigReference;
+import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
+import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
+import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
+import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
+import com.sap.ai.sdk.orchestration.SystemMessage;
+import com.sap.ai.sdk.orchestration.TemplateConfig;
+import com.sap.ai.sdk.orchestration.TranslationConfig;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByIdConfigRef;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByNameScenarioVersion;
+import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
@@ -22,11 +46,11 @@ import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
-import com.sap.ai.sdk.prompt.registry.model.ModuleConfigs;
-import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfig;
-import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigModules;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
-import com.sap.ai.sdk.prompt.registry.model.PromptTemplatingModuleConfig;
+import com.sap.ai.sdk.prompt.registry.model.PartialModuleConfigs;
+import com.sap.ai.sdk.prompt.registry.model.PartialPromptTemplatingModuleConfig;
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfig;
+import com.sap.ai.sdk.prompt.registry.model.PromptRegistryOrchestrationConfigModules;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessage;
 import com.sap.ai.sdk.prompt.registry.model.UserChatMessageContent;
 import java.io.IOException;
@@ -812,7 +836,7 @@ public class OrchestrationService {
         .anyMatch(resp -> resp.getName().equals(configName));
   }
 
-  private OrchestrationConfig buildOrchestrationConfig() {
+  private PromptRegistryOrchestrationConfig buildOrchestrationConfig() {
     final var prompt =
         com.sap.ai.sdk.prompt.registry.model.Template.create()
             .template(
@@ -824,14 +848,14 @@ public class OrchestrationService {
             .defaults(Map.of("number", "3"));
 
     final var moduleConfig =
-        PromptTemplatingModuleConfig.create()
+        PartialPromptTemplatingModuleConfig.create()
             .model(LLMModelDetails.create().name(GPT_41_NANO.getName()))
             .prompt(prompt);
 
-    return OrchestrationConfig.create()
+    return PromptRegistryOrchestrationConfig.create()
         .modules(
-            OrchestrationConfigModules.createInnerModuleConfigs(
-                ModuleConfigs.create().promptTemplating(moduleConfig)));
+            PromptRegistryOrchestrationConfigModules.createInnerPartialModuleConfigs(
+                PartialModuleConfigs.create().promptTemplating(moduleConfig)));
   }
 
   /**
@@ -852,6 +876,70 @@ public class OrchestrationService {
         new OrchestrationModuleConfig()
             .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
     return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig, workingConfig);
+  }
+
+  /**
+   * Streaming chat completion using a {@link
+   * com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration} (inline config).
+   *
+   * @param famousPhrase the phrase to send to the assistant
+   * @return a stream of chat completion deltas
+   */
+  @Nonnull
+  public Stream<OrchestrationChatCompletionDelta> streamDeltasWithInlineConfig(
+      @Nonnull final String famousPhrase) {
+    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val request = OrchestrationClient.toCompletionPostRequest(prompt, config);
+    return client.streamChatCompletionDeltas(request);
+  }
+
+  /**
+   * Streaming chat completion using a {@link
+   * com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById} (config
+   * referenced by ID from the orchestration config registry).
+   *
+   * @return a stream of chat completion deltas
+   */
+  @Nonnull
+  public Stream<OrchestrationChatCompletionDelta> streamDeltasWithReferenceById() {
+    // get a valid id
+    ensureOrchestrationConfigExists("sdk-test-paraphrase", "create-3-paraphrases-of-sentence");
+    val orchConfigClient = new OrchestrationConfigClient();
+    val id =
+        orchConfigClient.listOrchestrationConfigs().getResources().stream()
+            .filter(r -> r.getName().equals("test-config-for-OrchestrationTest"))
+            .findFirst()
+            .orElseThrow()
+            .getId()
+            .toString();
+    // build the request object using the id
+    val request =
+        CompletionRequestConfigurationReferenceById.create()
+            .configRef(CompletionRequestConfigurationReferenceByIdConfigRef.create().id(id))
+            .placeholderValues(Map.of("phrase", "Hello World"));
+    return client.streamChatCompletionDeltas(request);
+  }
+
+  /**
+   * Streaming chat completion using a {@link
+   * com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByNameScenarioVersion}
+   * (config referenced by scenario, name, and version).
+   *
+   * @return a stream of chat completion deltas
+   */
+  @Nonnull
+  public Stream<OrchestrationChatCompletionDelta> streamDeltasWithReferenceByScenario() {
+    ensureOrchestrationConfigExists("sdk-test-paraphrase", "create-3-paraphrases-of-sentence");
+    val request =
+        CompletionRequestConfigurationReferenceByNameScenarioVersion.create()
+            .configRef(
+                CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef.create()
+                    .scenario("sdk-test-scenario")
+                    .name("test-config-for-OrchestrationTest")
+                    .version("0.0.1"))
+            .placeholderValues(Map.of("phrase", "Hello World"));
+    return client.streamChatCompletionDeltas(request);
   }
 
   /**

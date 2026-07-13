@@ -1,0 +1,56 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPattern": "/responses/resp_[A-Za-z0-9]+/cancel"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "background": true,
+      "completed_at": null,
+      "content_filters": null,
+      "created_at": 1780027830,
+      "error": null,
+      "frequency_penalty": 0.0,
+      "id": "resp_0960af38c651a868006a1911b68a448194b0918d31bfa6f586",
+      "incomplete_details": null,
+      "instructions": null,
+      "max_output_tokens": 8000,
+      "max_tool_calls": null,
+      "metadata": {},
+      "model": "gpt-5",
+      "object": "response",
+      "output": [],
+      "parallel_tool_calls": true,
+      "presence_penalty": 0.0,
+      "previous_response_id": null,
+      "prompt_cache_key": null,
+      "prompt_cache_retention": null,
+      "reasoning": {
+        "effort": "high",
+        "summary": null
+      },
+      "safety_identifier": null,
+      "service_tier": "auto",
+      "status": "cancelled",
+      "store": true,
+      "temperature": 1.0,
+      "text": {
+        "format": {
+          "type": "text"
+        },
+        "verbosity": "medium"
+      },
+      "tool_choice": "auto",
+      "tools": [],
+      "top_logprobs": 0,
+      "top_p": 1.0,
+      "truncation": "disabled",
+      "usage": null,
+      "user": null
+    }
+  }
+}

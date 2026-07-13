@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.21.0-SNAPSHOT</version>
+    <version>1.23.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.foundationmodels</groupId>
@@ -38,17 +38,21 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>81%</coverage.complexity>
-    <coverage.line>91%</coverage.line>
-    <coverage.instruction>88%</coverage.instruction>
-    <coverage.branch>78%</coverage.branch>
-    <coverage.method>90%</coverage.method>
+    <coverage.complexity>82%</coverage.complexity>
+    <coverage.line>92%</coverage.line>
+    <coverage.instruction>89%</coverage.instruction>
+    <coverage.branch>79%</coverage.branch>
+    <coverage.method>91%</coverage.method>
     <coverage.class>92%</coverage.class>
   </properties>
   <dependencies>
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>cloudplatform-core</artifactId>
     </dependency>
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
@@ -119,6 +123,11 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.openai</groupId>
+      <artifactId>openai-java-core</artifactId>
       <optional>true</optional>
     </dependency>
     <!-- scope "provided" -->

@@ -34,6 +34,9 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
   @JsonProperty("config_ref")
   private CompletionRequestConfigurationReferenceByIdConfigRef configRef;
 
+  @JsonProperty("config")
+  private PartialOrchestrationConfig config;
+
   @JsonProperty("placeholder_values")
   private Map<String, String> placeholderValues = new HashMap<>();
 
@@ -79,6 +82,39 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
   public void setConfigRef(
       @Nonnull final CompletionRequestConfigurationReferenceByIdConfigRef configRef) {
     this.configRef = configRef;
+  }
+
+  /**
+   * Set the config of this {@link CompletionRequestConfigurationReferenceById} instance and return
+   * the same instance.
+   *
+   * @param config The config of this {@link CompletionRequestConfigurationReferenceById}
+   * @return The same instance of this {@link CompletionRequestConfigurationReferenceById} class
+   */
+  @Nonnull
+  public CompletionRequestConfigurationReferenceById config(
+      @Nullable final PartialOrchestrationConfig config) {
+    this.config = config;
+    return this;
+  }
+
+  /**
+   * Get config
+   *
+   * @return config The config of this {@link CompletionRequestConfigurationReferenceById} instance.
+   */
+  @Nonnull
+  public PartialOrchestrationConfig getConfig() {
+    return config;
+  }
+
+  /**
+   * Set the config of this {@link CompletionRequestConfigurationReferenceById} instance.
+   *
+   * @param config The config of this {@link CompletionRequestConfigurationReferenceById}
+   */
+  public void setConfig(@Nullable final PartialOrchestrationConfig config) {
+    this.config = config;
   }
 
   /**
@@ -230,6 +266,7 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (configRef != null) declaredFields.put("configRef", configRef);
+    if (config != null) declaredFields.put("config", config);
     if (placeholderValues != null) declaredFields.put("placeholderValues", placeholderValues);
     if (messagesHistory != null) declaredFields.put("messagesHistory", messagesHistory);
     return declaredFields;
@@ -262,6 +299,7 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
             this.cloudSdkCustomFields,
             completionRequestConfigurationReferenceById.cloudSdkCustomFields)
         && Objects.equals(this.configRef, completionRequestConfigurationReferenceById.configRef)
+        && Objects.equals(this.config, completionRequestConfigurationReferenceById.config)
         && Objects.equals(
             this.placeholderValues, completionRequestConfigurationReferenceById.placeholderValues)
         && Objects.equals(
@@ -270,7 +308,8 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
 
   @Override
   public int hashCode() {
-    return Objects.hash(configRef, placeholderValues, messagesHistory, cloudSdkCustomFields);
+    return Objects.hash(
+        configRef, config, placeholderValues, messagesHistory, cloudSdkCustomFields);
   }
 
   @Override
@@ -279,6 +318,7 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
     final StringBuilder sb = new StringBuilder();
     sb.append("class CompletionRequestConfigurationReferenceById {\n");
     sb.append("    configRef: ").append(toIndentedString(configRef)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
     sb.append("    placeholderValues: ").append(toIndentedString(placeholderValues)).append("\n");
     sb.append("    messagesHistory: ").append(toIndentedString(messagesHistory)).append("\n");
     cloudSdkCustomFields.forEach(

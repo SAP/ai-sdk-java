@@ -98,6 +98,9 @@ public class AssistantChatMessage implements ChatMessage
   @JsonProperty("tool_calls")
   private List<MessageToolCall> toolCalls = new ArrayList<>();
 
+  @JsonProperty("reasoning_content")
+  private List<ReasoningBlock> reasoningContent = new ArrayList<>();
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -244,6 +247,55 @@ public class AssistantChatMessage implements ChatMessage
   }
 
   /**
+   * Set the reasoningContent of this {@link AssistantChatMessage} instance and return the same
+   * instance.
+   *
+   * @param reasoningContent Reasoning or thinking content from the model&#39;s previous turn.
+   * @return The same instance of this {@link AssistantChatMessage} class
+   */
+  @Nonnull
+  public AssistantChatMessage reasoningContent(
+      @Nullable final List<ReasoningBlock> reasoningContent) {
+    this.reasoningContent = reasoningContent;
+    return this;
+  }
+
+  /**
+   * Add one reasoningContent instance to this {@link AssistantChatMessage}.
+   *
+   * @param reasoningContentItem The reasoningContent that should be added
+   * @return The same instance of type {@link AssistantChatMessage}
+   */
+  @Nonnull
+  public AssistantChatMessage addReasoningContentItem(
+      @Nonnull final ReasoningBlock reasoningContentItem) {
+    if (this.reasoningContent == null) {
+      this.reasoningContent = new ArrayList<>();
+    }
+    this.reasoningContent.add(reasoningContentItem);
+    return this;
+  }
+
+  /**
+   * Reasoning or thinking content from the model&#39;s previous turn.
+   *
+   * @return reasoningContent The reasoningContent of this {@link AssistantChatMessage} instance.
+   */
+  @Nonnull
+  public List<ReasoningBlock> getReasoningContent() {
+    return reasoningContent;
+  }
+
+  /**
+   * Set the reasoningContent of this {@link AssistantChatMessage} instance.
+   *
+   * @param reasoningContent Reasoning or thinking content from the model&#39;s previous turn.
+   */
+  public void setReasoningContent(@Nullable final List<ReasoningBlock> reasoningContent) {
+    this.reasoningContent = reasoningContent;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link AssistantChatMessage}.
    *
    * @return The set of properties names
@@ -286,6 +338,7 @@ public class AssistantChatMessage implements ChatMessage
     if (content != null) declaredFields.put("content", content);
     if (refusal != null) declaredFields.put("refusal", refusal);
     if (toolCalls != null) declaredFields.put("toolCalls", toolCalls);
+    if (reasoningContent != null) declaredFields.put("reasoningContent", reasoningContent);
     return declaredFields;
   }
 
@@ -314,12 +367,13 @@ public class AssistantChatMessage implements ChatMessage
         && Objects.equals(this.role, assistantChatMessage.role)
         && Objects.equals(this.content, assistantChatMessage.content)
         && Objects.equals(this.refusal, assistantChatMessage.refusal)
-        && Objects.equals(this.toolCalls, assistantChatMessage.toolCalls);
+        && Objects.equals(this.toolCalls, assistantChatMessage.toolCalls)
+        && Objects.equals(this.reasoningContent, assistantChatMessage.reasoningContent);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(role, content, refusal, toolCalls, cloudSdkCustomFields);
+    return Objects.hash(role, content, refusal, toolCalls, reasoningContent, cloudSdkCustomFields);
   }
 
   @Override
@@ -331,6 +385,7 @@ public class AssistantChatMessage implements ChatMessage
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("    refusal: ").append(toIndentedString(refusal)).append("\n");
     sb.append("    toolCalls: ").append(toIndentedString(toolCalls)).append("\n");
+    sb.append("    reasoningContent: ").append(toIndentedString(reasoningContent)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

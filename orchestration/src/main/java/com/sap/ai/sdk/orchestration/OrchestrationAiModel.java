@@ -126,7 +126,13 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_3_SONNET =
       new OrchestrationAiModel("anthropic--claude-3-sonnet");
 
-  /** Anthropic Claude 3 Haiku model */
+  /**
+   * Anthropic Claude 3 Haiku model
+   *
+   * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
+   *     OrchestrationAiModel#CLAUDE_4_5_HAIKU}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel CLAUDE_3_HAIKU =
       new OrchestrationAiModel("anthropic--claude-3-haiku");
 
@@ -167,7 +173,13 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_4_5_OPUS =
       new OrchestrationAiModel("anthropic--claude-4.5-opus");
 
-  /** Anthropic Claude 4 Sonnet model */
+  /**
+   * Anthropic Claude 4 Sonnet model
+   *
+   * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
+   *     OrchestrationAiModel#CLAUDE_4_5_SONNET}.
+   */
+  @Deprecated
   public static final OrchestrationAiModel CLAUDE_4_SONNET =
       new OrchestrationAiModel("anthropic--claude-4-sonnet");
 
@@ -190,6 +202,10 @@ public class OrchestrationAiModel {
   /** Anthropic Claude 4.7 Opus model */
   public static final OrchestrationAiModel CLAUDE_4_7_OPUS =
       new OrchestrationAiModel("anthropic--claude-4.7-opus");
+
+  /** Anthropic Claude 4.8 Opus model */
+  public static final OrchestrationAiModel CLAUDE_4_8_OPUS =
+      new OrchestrationAiModel("anthropic--claude-4.8-opus");
 
   /**
    * Amazon Titan Text Lite model
@@ -451,6 +467,16 @@ public class OrchestrationAiModel {
 
   /** SAP ABAP 1 model */
   public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
+
+  /** Alibaba Qwen 3 max model */
+  public static final OrchestrationAiModel QWEN_3_MAX = new OrchestrationAiModel("qwen3-max");
+
+  /** Alibaba Qwen 3.6 plus model */
+  public static final OrchestrationAiModel QWEN_3_6_PLUS = new OrchestrationAiModel("qwen3.6-plus");
+
+  /** Alibaba Qwen 3.6 flash model */
+  public static final OrchestrationAiModel QWEN_3_6_FLASH =
+      new OrchestrationAiModel("qwen3.6-flash");
 
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");
