@@ -8,7 +8,7 @@ const speechBtn = document.getElementById('speech-to-speech-btn')
 let sts_ws = null;
 let sts_audioCtx = null;
 let sts_mediaStream = null;
-let sts_processor = null;
+let sts_workletNode = null;
 let sts_nextStartTime = 0;
 let sts_started = false;
 
@@ -43,27 +43,38 @@ async function startMicrophone() {
 
         sts_audioCtx = new (window.AudioContext || window.webkitAudioContext)({sampleRate: SPEECH_TO_SPEECH_SAMPLE_RATE});
 
-        const source = sts_audioCtx.createMediaStreamSource(sts_mediaStream);
-        sts_processor = sts_audioCtx.createScriptProcessor(2048, 1, 1);
-        sts_processor.onaudioprocess = (e) => {
-            if (sts_ws && sts_ws.readyState === WebSocket.OPEN) {
-                const float32Input = e.inputBuffer.getChannelData(0);
-                const int16Buffer = new Int16Array(float32Input.length);
-
-                for (let i = 0; i < float32Input.length; i++) {
-                    let s = Math.max(-1, Math.min(1, float32Input[i]));
-                    int16Buffer[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+        const workletCode = `
+            class MicProcessor extends AudioWorkletProcessor {
+                process(inputs) {
+                    const input = inputs[0];
+                    if (input && input[0]) {
+                        const float32Input = input[0];
+                        const int16Buffer = new Int16Array(float32Input.length);
+                        for (let i = 0; i < float32Input.length; i++) {
+                            const s = Math.max(-1, Math.min(1, float32Input[i]));
+                            int16Buffer[i] = s < 0 ? s * 0x8000 : s * 0x7FFF;
+                        }
+                        this.port.postMessage(int16Buffer.buffer, [int16Buffer.buffer]);
+                    }
+                    return true;
                 }
-                sts_ws.send(int16Buffer.buffer);
+            }
+            registerProcessor('mic-processor', MicProcessor);
+        `;
+        const blob = new Blob([workletCode], {type: 'application/javascript'});
+        const workletUrl = URL.createObjectURL(blob);
+        await sts_audioCtx.audioWorklet.addModule(workletUrl);
+        URL.revokeObjectURL(workletUrl);
+
+        const source = sts_audioCtx.createMediaStreamSource(sts_mediaStream);
+        sts_workletNode = new AudioWorkletNode(sts_audioCtx, 'mic-processor');
+        sts_workletNode.port.onmessage = (e) => {
+            if (sts_ws && sts_ws.readyState === WebSocket.OPEN) {
+                sts_ws.send(e.data);
             }
         };
 
-        const gainNode = sts_audioCtx.createGain();
-        gainNode.gain.value = 0;
-
-        source.connect(sts_processor);
-        sts_processor.connect(gainNode);
-        gainNode.connect(sts_audioCtx.destination)
+        source.connect(sts_workletNode);
 
     } catch (err) {
         console.error('failed to find or bind microphone: ', err);
@@ -98,7 +109,7 @@ function sts_playPcmAudio(arrayBuffer) {
 function stopSession() {
     if (sts_ws) sts_ws.close();
     if (sts_mediaStream) sts_mediaStream.getTracks().forEach(track => track.stop());
-    if (sts_processor) sts_processor.disconnect();
+    if (sts_workletNode) sts_workletNode.disconnect();
     if (sts_audioCtx) {
         sts_audioCtx.close();
         sts_audioCtx = null;
