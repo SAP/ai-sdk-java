@@ -1751,7 +1751,10 @@ class OrchestrationUnitTest {
         new OrchestrationModuleConfig()
             .withLlmConfig(
                 OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
-    final var request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
+    final var reasoningPrompt =
+        new OrchestrationPrompt("Think carefully and explain step by step: Why is the sky blue?");
+    final var request =
+        OrchestrationClient.toCompletionPostRequest(reasoningPrompt, reasoningConfig);
 
     final var answerChunks = new ArrayList<String>();
     final var accumulator = new ReasoningAccumulator();
@@ -1768,6 +1771,11 @@ class OrchestrationUnitTest {
 
     assertThat(answerChunks).containsExactly("42");
     assertThat(reasoning).containsExactly("Let me think.");
+
+    final String expectedRequest = fileLoaderStr.apply("streamReasoningRequest.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(equalToJson(expectedRequest, true, true)));
   }
 
   @Test
@@ -1802,6 +1810,11 @@ class OrchestrationUnitTest {
     assertThat(serialized.getReasoningContent()).hasSize(1);
     assertThat(serialized.getReasoningContent().get(0).getSignature())
         .startsWith("EtAECnAIDxABGAIq");
+
+    final String expectedRequest = fileLoaderStr.apply("reasoningRequest.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(equalToJson(expectedRequest, true, true)));
   }
 
   @Test
@@ -1832,6 +1845,10 @@ class OrchestrationUnitTest {
 
     // The outgoing request for turn 2 must contain the reasoning_content from turn 1 (content +
     // signature) in the messages_history array. This is the multi-turn round-trip contract.
+    final String expectedTurn1Request = fileLoaderStr.apply("multiTurnReasoningTurn1Request.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(equalToJson(expectedTurn1Request, true, true)));
     final String expectedTurn2Request = fileLoaderStr.apply("multiTurnReasoningTurn2Request.json");
     verify(
         postRequestedFor(urlPathEqualTo("/v2/completion"))
