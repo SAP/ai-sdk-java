@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- [Orchestration] Removed `OrchestrationAiModel COHERE_RERANKER`. This model was supported neither by Orchestration nor by AI SDK.
 
 ### ✨ New Functionality
 
