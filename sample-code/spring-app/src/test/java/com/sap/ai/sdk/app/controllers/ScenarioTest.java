@@ -110,6 +110,11 @@ class ScenarioTest {
                         .noneMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
             .map(AiModelBaseData::getModel)
             .collect(Collectors.toSet());
+    // intersect of both sets
+    val surplusModels =
+        declaredOrchestrationModelList.keySet().stream()
+            .filter(nonOrchestrationModels::contains)
+            .collect(Collectors.toSet());
 
     // Assert that the declared Orchestration models match the expected list
     assertThat(declaredOrchestrationModelList.keySet())
@@ -117,6 +122,9 @@ class ScenarioTest {
 
     // Assert that models not available for orchestration are not declared in OrchestrationAiModel
     assertThat(declaredOrchestrationModelList.keySet())
+        .withFailMessage(
+            "Declared Orchestration models should not contain models that are not available for orchestration: %s",
+            surplusModels)
         .doesNotContainAnyElementsOf(nonOrchestrationModels);
 
     SoftAssertions softly = new SoftAssertions();
