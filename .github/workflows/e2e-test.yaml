@@ -101,19 +101,19 @@ jobs:
         # print response body with headers to stdout.  q:body only  O:print  -:stdout  S:headers
         run: wget -qO- -S localhost:8080
 
-#      - name: "Slack Notification"
-#        if: failure()
-#        uses: slackapi/slack-github-action@v3.0.3
-#        with:
-#          webhook: ${{ secrets.SLACK_WEBHOOK }}
-#          webhook-type: incoming-webhook
-#          payload: |
-#            blocks:
-#              - type: "section"
-#                text:
-#                    type: "mrkdwn"
-#                    text: "⚠️ End-to-end tests failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
-#              - type: "section"
-#                text:
-#                  type: "plain_text"
-#                  text: "${{ steps.run_tests.outputs.error_message }} "
+      - name: "Slack Notification"
+        if: failure()
+        uses: slackapi/slack-github-action@v3.0.3
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "section"
+                text:
+                    type: "mrkdwn"
+                    text: "⚠️ End-to-end tests failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
+              - type: "section"
+                text:
+                  type: "plain_text"
+                  text: "${{ steps.run_tests.outputs.error_message }} "
