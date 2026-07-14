@@ -89,6 +89,20 @@ class OrchestrationReasoningContentTest {
   }
 
   @Test
+  void getReasoningTextJoinsBlocksWithDelimiter() throws Exception {
+    val response =
+        parseSyncResponse(
+            ", \"reasoning_content\": ["
+                + "{\"content\": \"first\", \"signature\": \"sig-a\"},"
+                + "{\"content\": \"second\", \"signature\": \"sig-b\"}]");
+
+    // No-arg overload defaults to an empty delimiter.
+    assertThat(response.getReasoningText()).isEqualTo("firstsecond");
+    // Explicit delimiter is placed between blocks.
+    assertThat(response.getReasoningText("\n\n")).isEqualTo("first\n\nsecond");
+  }
+
+  @Test
   void getAllMessagesReSubmitsReasoningVerbatim() throws Exception {
     // The final assistant message reconstructed by getAllMessages() must serialize the reasoning
     // content (content + opaque signature) exactly as returned, ready for the next request.

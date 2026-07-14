@@ -83,13 +83,27 @@ public class OrchestrationChatResponse {
   }
 
   /**
-   * Get the reasoning (thinking) content as a single joined string, for display purposes.
+   * Get the reasoning (thinking) content as a single joined string, for display purposes. The
+   * reasoning blocks are concatenated with no separator between them.
    *
    * @return the concatenated reasoning text; empty if there is no reasoning.
+   * @see #getReasoningText(String)
    */
   @Nonnull
   public String getReasoningText() {
-    return String.join("", getReasoningContent());
+    return getReasoningText("");
+  }
+
+  /**
+   * Get the reasoning (thinking) content as a single joined string, for display purposes, with the
+   * reasoning blocks separated by the given delimiter.
+   *
+   * @param delimiter the delimiter to place between reasoning blocks.
+   * @return the joined reasoning text; empty if there is no reasoning.
+   */
+  @Nonnull
+  public String getReasoningText(@Nonnull final String delimiter) {
+    return String.join(delimiter, getReasoningContent());
   }
 
   /**

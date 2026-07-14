@@ -696,7 +696,7 @@ class OrchestrationTest {
     val result = service.reasoning("What is 6 times 7?");
 
     assertThat(result.answer()).isNotEmpty();
-    assertThat(result.reasoning()).isNotEmpyt();
+    assertThat(result.reasoning()).isNotEmpty();
   }
 
   @Test

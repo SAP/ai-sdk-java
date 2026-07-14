@@ -35,7 +35,6 @@ public class AssistantMessage implements Message {
   @Nullable List<MessageToolCall> toolCalls;
 
   /** Reasoning (thinking) blocks from the model's previous turn. */
-  @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Getter(AccessLevel.NONE)
   @Nullable
   List<ReasoningBlock> reasoningContent;
