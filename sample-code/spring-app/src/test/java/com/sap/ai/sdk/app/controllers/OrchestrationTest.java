@@ -729,6 +729,6 @@ class OrchestrationTest {
     assertThat(followUp.getContent()).isNotEmpty();
     // Reasoning is still returned on the follow-up turn, proving the model kept reasoning enabled
     // after we resubmitted the previous reasoning_content in messages_history.
-    assertThat(followUp.getReasoningContent()).isNotNull();
+    assertThat(followUp.getReasoningContent()).isNotEmpty();
   }
 }
