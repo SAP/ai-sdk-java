@@ -240,10 +240,6 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel NOVA_PREMIER =
       new OrchestrationAiModel("amazon--nova-premier");
 
-  /** Cohere Reranker Model */
-  public static final OrchestrationAiModel COHERE_RERANKER =
-      new OrchestrationAiModel("cohere-reranker");
-
   /**
    * Azure OpenAI GPT-3.5 Turbo model
    *
