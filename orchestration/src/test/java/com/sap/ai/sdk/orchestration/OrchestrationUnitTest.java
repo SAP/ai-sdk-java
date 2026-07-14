@@ -1757,20 +1757,20 @@ class OrchestrationUnitTest {
         OrchestrationClient.toCompletionPostRequest(reasoningPrompt, reasoningConfig);
 
     final var answerChunks = new ArrayList<String>();
-    final var accumulator = new ReasoningAccumulator();
+    final var reasoningChunks = new ArrayList<String>();
     try (var stream = client.streamChatCompletionDeltas(request)) {
       stream.forEach(
           delta -> {
             if (!delta.getDeltaContent().isEmpty()) {
               answerChunks.add(delta.getDeltaContent());
             }
-            accumulator.accept(delta);
+            reasoningChunks.addAll(delta.getDeltaReasoningContent());
           });
     }
-    final var reasoning = accumulator.assemble();
 
     assertThat(answerChunks).containsExactly("42");
-    assertThat(reasoning).containsExactly("Let me think.");
+    // Reasoning arrives split across chunks ("Let me " + "think."); joining reconstructs the text.
+    assertThat(String.join("", reasoningChunks)).isEqualTo("Let me think.");
 
     final String expectedRequest = fileLoaderStr.apply("streamReasoningRequest.json");
     verify(

@@ -28,7 +28,6 @@ import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
-import com.sap.ai.sdk.orchestration.ReasoningAccumulator;
 import com.sap.ai.sdk.orchestration.ReasoningEffort;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
@@ -60,7 +59,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -188,61 +186,44 @@ public class OrchestrationService {
    * final answer and the reasoning (thinking) trace.
    *
    * @param topic the topic to ask about.
-   * @return a {@link ReasoningResult} with the answer and the reasoning blocks.
+   * @return a {@link ReasoningOutput} with the answer and the reasoning blocks.
    */
   @Nonnull
-  public ReasoningResult reasoning(@Nonnull final String topic) {
+  public ReasoningOutput reasoning(@Nonnull final String topic) {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
     val response = client.chatCompletion(prompt, reasoningConfig);
-    return new ReasoningResult(response.getContent(), response.getReasoningContent());
+    return new ReasoningOutput(response.getContent(), response.getReasoningContent());
   }
 
   /**
-   * The result of a reasoning-model chat request: the final answer plus the model's reasoning
-   * (thinking) text.
+   * Answer and reasoning (thinking) text from a reasoning-capable model.
    *
-   * @param answer the final assistant reply.
-   * @param reasoning the reasoning text produced by the model (may be empty).
+   * @param answer the answer text.
+   * @param reasoning the reasoning text blocks (may be empty).
    */
-  public record ReasoningResult(@Nonnull String answer, @Nonnull List<String> reasoning) {}
+  public record ReasoningOutput(@Nonnull String answer, @Nonnull List<String> reasoning) {}
 
   /**
-   * Streaming chat request to a reasoning-capable model. Answer and reasoning chunks are pushed
-   * live to the given consumers; the accumulated reasoning text is returned.
+   * Streaming chat request to a reasoning-capable model. Returns a stream of {@link
+   * ReasoningOutput}, each carrying the answer and reasoning text of one delta, in the order the
+   * API produced them.
    *
    * @param topic the topic to ask about.
-   * @param onAnswerChunk consumer invoked with each answer text chunk.
-   * @param onReasoningChunk consumer invoked with each reasoning text chunk.
-   * @return the assembled reasoning text as returned by the API.
+   * @return a stream of reasoning outputs, one per delta.
    */
   @Nonnull
-  public List<String> streamReasoning(
-      @Nonnull final String topic,
-      @Nonnull final Consumer<String> onAnswerChunk,
-      @Nonnull final Consumer<String> onReasoningChunk) {
+  public Stream<ReasoningOutput> streamReasoning(@Nonnull final String topic) {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
     val request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
-    val accumulator = new ReasoningAccumulator();
-    try (val stream = client.streamChatCompletionDeltas(request)) {
-      stream.forEach(
-          delta -> {
-            val content = delta.getDeltaContent();
-            if (!content.isEmpty()) {
-              onAnswerChunk.accept(content);
-            }
-            for (val reasoningText : delta.getDeltaReasoningContent()) {
-              if (!reasoningText.isEmpty()) {
-                onReasoningChunk.accept(reasoningText);
-              }
-            }
-            accumulator.accept(delta);
-          });
-    }
-    return accumulator.assemble();
+    return client
+        .streamChatCompletionDeltas(request)
+        .map(
+            delta ->
+                new ReasoningOutput(delta.getDeltaContent(), delta.getDeltaReasoningContent()));
   }
 
   /**
@@ -253,7 +234,7 @@ public class OrchestrationService {
    * @return the second turn's assistant reply.
    */
   @Nonnull
-  public ReasoningResult multiTurnReasoning(
+  public ReasoningOutput multiTurnReasoning(
       @Nonnull final String firstQuestion, @Nonnull final String followUp) {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
@@ -268,7 +249,7 @@ public class OrchestrationService {
         new OrchestrationPrompt(followUp).messageHistory(firstResponse.getAllMessages());
     val followUpResponse = client.chatCompletion(followUpPrompt, reasoningConfig);
 
-    return new ReasoningResult(
+    return new ReasoningOutput(
         followUpResponse.getContent(), followUpResponse.getReasoningContent());
   }
 

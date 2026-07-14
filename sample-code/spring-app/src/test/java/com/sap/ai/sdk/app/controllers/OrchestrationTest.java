@@ -33,6 +33,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -702,11 +703,17 @@ class OrchestrationTest {
   @Test
   void testReasoningContentStreaming() {
     val answerBuilder = new StringBuilder();
-    val accumulatedReasoning =
-        service.streamReasoning("What is 6 times 7?", answerBuilder::append, reasoning -> {});
+    val reasoning = new ArrayList<String>();
+    try (val stream = service.streamReasoning("What is 6 times 7?")) {
+      stream.forEach(
+          chunk -> {
+            answerBuilder.append(chunk.answer());
+            reasoning.addAll(chunk.reasoning());
+          });
+    }
 
     assertThat(answerBuilder.toString()).isNotEmpty();
-    assertThat(accumulatedReasoning).isNotNull();
+    assertThat(reasoning).isNotNull();
   }
 
   @Test

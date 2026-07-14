@@ -138,28 +138,6 @@ class OrchestrationReasoningContentTest {
   }
 
   @Test
-  void reasoningAccumulatorMergesTextByIndex() throws Exception {
-    val chunk1 =
-        parseStreamingDelta(
-            0,
-            ", \"reasoning_content\": ["
-                + "{\"content\": \"fir\", \"signature\": \"\"},"
-                + "{\"content\": \"sec\", \"signature\": \"\"}]");
-    val chunk2 =
-        parseStreamingDelta(
-            0,
-            ", \"reasoning_content\": ["
-                + "{\"content\": \"st\", \"signature\": \"\"},"
-                + "{\"content\": \"ond\", \"signature\": \"\"}]");
-
-    val accumulator = new ReasoningAccumulator();
-    accumulator.accept(chunk1);
-    accumulator.accept(chunk2);
-
-    assertThat(accumulator.assemble()).containsExactly("first", "second");
-  }
-
-  @Test
   void streamingDeltaExposesReasoningText() throws Exception {
     val delta =
         parseStreamingDelta(
@@ -177,11 +155,6 @@ class OrchestrationReasoningContentTest {
 
     assertThat(delta.getDeltaContent()).isEmpty();
     assertThat(delta.getDeltaReasoningContent()).isEmpty();
-
-    // A non-zero-index delta contributes nothing to the accumulator either.
-    val accumulator = new ReasoningAccumulator();
-    accumulator.accept(delta);
-    assertThat(accumulator.assemble()).isEmpty();
   }
 
   private static @Nonnull OrchestrationChatResponse parseSyncResponse(

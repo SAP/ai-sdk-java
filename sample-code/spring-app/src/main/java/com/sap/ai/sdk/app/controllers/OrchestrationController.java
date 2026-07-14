@@ -98,16 +98,18 @@ class OrchestrationController {
     final var emitter = new ResponseBodyEmitter();
     final Runnable consumeStream =
         () -> {
-          try {
-            final var accumulated =
-                service.streamReasoning(
-                    topic,
-                    answer -> send(emitter, "[answer] " + answer),
-                    reasoning -> send(emitter, "[reasoning] " + reasoning));
-            // Emit the fully accumulated reasoning text at the end of the stream.
-            for (int i = 0; i < accumulated.size(); i++) {
-              send(emitter, "[accumulated block " + i + "] " + accumulated.get(i));
-            }
+          try (var stream = service.streamReasoning(topic)) {
+            stream.forEach(
+                chunk -> {
+                  if (!chunk.answer().isEmpty()) {
+                    send(emitter, "[answer] " + chunk.answer());
+                  }
+                  for (final var reasoning : chunk.reasoning()) {
+                    if (!reasoning.isEmpty()) {
+                      send(emitter, "[reasoning] " + reasoning);
+                    }
+                  }
+                });
           } finally {
             emitter.complete();
           }
