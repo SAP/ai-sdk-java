@@ -718,7 +718,7 @@ class OrchestrationTest {
     val firstPrompt = new OrchestrationPrompt("What is 6 times 7?");
     val firstResponse = orchestrationClient.chatCompletion(firstPrompt, reasoningConfig);
 
-    assertThat(firstResponse.getReasoningContent()).isNotNull();
+    assertThat(firstResponse.getReasoningContent()).isNotEmpty();
 
     // Feed the whole history (which carries the previous reasoning content internally) into the
     // follow-up turn.
