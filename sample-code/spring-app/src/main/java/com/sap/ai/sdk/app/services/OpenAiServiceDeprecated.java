@@ -107,10 +107,8 @@ public class OpenAiServiceDeprecated {
   public OpenAiChatCompletionOutput chatCompletionToolExecution(
       @Nonnull final String location, @Nonnull final String unit) {
 
-    record WeatherRequest(String location, WeatherMethod.Unit unit) {}
-
     // 1. Define the function
-    final Map<String, Object> schemaMap = generateSchema(WeatherRequest.class);
+    final Map<String, Object> schemaMap = generateSchema(WeatherMethod.Request.class);
     final var function =
         new OpenAiChatCompletionFunction()
             .setName("weather")
@@ -135,8 +133,8 @@ public class OpenAiServiceDeprecated {
     // 2. Optionally, execute the function.
     final OpenAiChatToolCall toolCall =
         response.getChoices().get(0).getMessage().getToolCalls().get(0);
-    final WeatherRequest arguments =
-        parseJson(toolCall.getFunction().getArguments(), WeatherRequest.class);
+    final WeatherMethod.Request arguments =
+        parseJson(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
     final WeatherMethod.Response currentWeather =
         WeatherMethod.getCurrentWeather(arguments.location(), arguments.unit());
 

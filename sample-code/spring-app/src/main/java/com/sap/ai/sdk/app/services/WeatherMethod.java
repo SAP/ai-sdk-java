@@ -17,6 +17,14 @@ class WeatherMethod {
   }
 
   /**
+   * Request for the weather
+   *
+   * @param location the city
+   * @param unit the unit of temperature
+   */
+  record Request(String location, Unit unit) {}
+
+  /**
    * Response for the weather
    *
    * @param temp the temperature

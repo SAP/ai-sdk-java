@@ -120,14 +120,13 @@ public class OpenAiService {
     final var messages = new ArrayList<OpenAiMessage>();
     messages.add(OpenAiMessage.user("What's the weather in %s in %s?".formatted(location, unit)));
 
-    record WeatherRequest(String location, WeatherMethod.Unit unit) {}
-
     // 1. Define the function
     final List<OpenAiTool> tools =
         List.of(
             OpenAiTool.forFunction(
-                    (WeatherRequest r) -> WeatherMethod.getCurrentWeather(r.location(), r.unit()))
-                .withArgument(WeatherRequest.class)
+                    (WeatherMethod.Request r) ->
+                        WeatherMethod.getCurrentWeather(r.location(), r.unit()))
+                .withArgument(WeatherMethod.Request.class)
                 .withName("weather")
                 .withDescription("Get the weather for the given location"));
 
