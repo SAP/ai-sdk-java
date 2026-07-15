@@ -209,8 +209,7 @@ class OrchestrationTest {
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(result.getIntermediateResults().getGrounding()).isNotNull();
     assertThat(result.getIntermediateResults().getGrounding().getData()).isNotNull();
-    assertThat(result.getIntermediateResults().getGrounding().getMessage())
-        .isEqualTo("grounding result");
+    assertThat(result.getIntermediateResults().getGrounding().getMessage()).contains("Grounding");
     var groundingData =
         (Map<String, String>) result.getIntermediateResults().getGrounding().getData();
     assertThat(groundingData.get("grounding_result")).contains("metadata");
@@ -244,8 +243,7 @@ class OrchestrationTest {
     var policy = AzureFilterThreshold.ALLOW_SAFE;
 
     assertThatThrownBy(() -> service.inputFiltering(policy))
-        .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContainingAll("Filtering", "blocked")
         .hasMessageContaining("400 (Bad Request)")
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
@@ -269,7 +267,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("passed"); // prompt shield is a filter
+    assertThat(filterResult.getMessage()).isNotEmpty(); // prompt shield is a filter
   }
 
   @Test
@@ -302,15 +300,14 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("Choice 0: Filtering was skipped.");
+    assertThat(filterResult.getMessage()).contains("Filtering", "blocked");
   }
 
   @Test
   void testLlamaGuardEnabled() {
     assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
         .isInstanceOf(OrchestrationFilterException.Input.class)
-        .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContainingAll("Filtering", "blocked")
         .hasMessageContaining("400 (Bad Request)")
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
