@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
+import static java.util.Locale.ROOT;
+
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientException;
 import com.sap.ai.sdk.core.common.ClientExceptionFactory;
@@ -14,15 +16,12 @@ import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleResults;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
 import java.util.Collections;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.experimental.StandardException;
 import lombok.val;
-
-import static java.util.Locale.ROOT;
 
 /** Exception thrown by the {@link OrchestrationClient} in case of an error. */
 @StandardException
