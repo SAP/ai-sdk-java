@@ -10,7 +10,9 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.SneakyThrows;
+import lombok.val;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,9 +26,9 @@ class ScenarioTest {
   void openAiModelAvailability() {
 
     // Gather AI Core's list of available OpenAI models
-    final var aiModelList = new ScenarioController().getModels().getResources();
+    val aiModelList = new ScenarioController().getModels().getResources();
 
-    final var availableOpenAiModels =
+    val availableOpenAiModels =
         aiModelList.stream()
             .filter(model -> model.getExecutableId().equals("azure-openai"))
             .collect(
@@ -50,7 +52,7 @@ class ScenarioTest {
     assertThat(declaredOpenAiModelList.keySet()).containsAll(availableOpenAiModels.keySet());
 
     SoftAssertions softly = new SoftAssertions();
-    for (var model : availableOpenAiModels.entrySet()) {
+    for (val model : availableOpenAiModels.entrySet()) {
       Boolean declaredDeprecated = declaredOpenAiModelList.get(model.getKey());
       softly
           .assertThat(declaredDeprecated)
@@ -69,11 +71,11 @@ class ScenarioTest {
   void orchestrationAiModelAvailability() {
 
     // Gather AI Core's list of available Orchestration models
-    final var aiModelList = new ScenarioController().getModels().getResources();
+    val aiModelList = new ScenarioController().getModels().getResources();
 
-    var internalOnlyModels = Set.of("abap-codestral");
+    val internalOnlyModels = Set.of("abap-codestral");
 
-    final var availableOrchestrationModels =
+    val availableOrchestrationModels =
         aiModelList.stream()
             .filter(
                 model ->
@@ -99,12 +101,34 @@ class ScenarioTest {
       }
     }
 
+    // Gather models that are available but NOT allowed for orchestration scenario
+    val nonOrchestrationModels =
+        aiModelList.stream()
+            .filter(
+                model ->
+                    model.getAllowedScenarios().stream()
+                        .noneMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
+            .map(AiModelBaseData::getModel)
+            .collect(Collectors.toSet());
+    // intersect of both sets
+    val surplusModels =
+        declaredOrchestrationModelList.keySet().stream()
+            .filter(nonOrchestrationModels::contains)
+            .collect(Collectors.toSet());
+
     // Assert that the declared Orchestration models match the expected list
     assertThat(declaredOrchestrationModelList.keySet())
         .containsAll(availableOrchestrationModels.keySet());
 
+    // Assert that models not available for orchestration are not declared in OrchestrationAiModel
+    assertThat(declaredOrchestrationModelList.keySet())
+        .withFailMessage(
+            "Declared Orchestration models should not contain models that are not available for orchestration: %s",
+            surplusModels)
+        .doesNotContainAnyElementsOf(nonOrchestrationModels);
+
     SoftAssertions softly = new SoftAssertions();
-    for (var model : availableOrchestrationModels.entrySet()) {
+    for (val model : availableOrchestrationModels.entrySet()) {
       Boolean declaredDeprecated = declaredOrchestrationModelList.get(model.getKey());
       softly
           .assertThat(declaredDeprecated)

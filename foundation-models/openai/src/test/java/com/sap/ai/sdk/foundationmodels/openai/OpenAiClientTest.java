@@ -507,4 +507,45 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
             .withHeader("Header-For-Both", equalTo("value"))
             .withHeader("foot", equalTo("baz")));
   }
+
+  @Test
+  @SuppressWarnings("deprecation")
+  void testWithHeaderPreservesSystemPrompt() {
+    stubForChatCompletion();
+
+    client
+        .withSystemPrompt("You are a helpful AI")
+        .withHeader("foo", "bar")
+        .chatCompletion("Hello World! Why is this phrase so famous?");
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("foo", equalTo("bar"))
+            .withRequestBody(
+                matchingJsonPath("$.messages[0].role", equalTo("system"))
+                    .and(
+                        matchingJsonPath(
+                            "$.messages[0].content", equalTo("You are a helpful AI")))));
+  }
+
+  @Test
+  @SuppressWarnings("deprecation")
+  void testMultipleCustomHeaders() {
+    stubForChatCompletion();
+
+    client
+        .withSystemPrompt("You are a helpful AI")
+        .withHeaders(Map.of("foo", "bar", "baz", "qux"))
+        .chatCompletion("Hello World! Why is this phrase so famous?");
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("foo", equalTo("bar"))
+            .withHeader("baz", equalTo("qux"))
+            .withRequestBody(
+                matchingJsonPath("$.messages[0].role", equalTo("system"))
+                    .and(
+                        matchingJsonPath(
+                            "$.messages[0].content", equalTo("You are a helpful AI")))));
+  }
 }
