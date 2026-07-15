@@ -98,22 +98,28 @@ class OrchestrationController {
     final var emitter = new ResponseBodyEmitter();
     final Runnable consumeStream =
         () -> {
+          final var lastLabel = new String[] {""};
+
           try (var stream = service.streamReasoning(topic)) {
             stream.forEach(
                 chunk -> {
                   if (!chunk.answer().isEmpty()) {
-                    send(emitter, "[answer] " + chunk.answer());
+                    if (!"answer".equals(lastLabel[0])) {
+                      send(emitter, "\n-----ANSWER-----\n");
+                      lastLabel[0] = "answer";
+                    }
+                    send(emitter, chunk.answer());
                   }
                   for (final var reasoning : chunk.reasoning()) {
                     if (!reasoning.isEmpty()) {
-                      send(emitter, "[reasoning] " + reasoning);
+                      if (!"reasoning".equals(lastLabel[0])) {
+                        send(emitter, "\n----REASONING----\n");
+                        lastLabel[0] = "reasoning";
+                      }
+                      send(emitter, reasoning);
                     }
                   }
                 });
-          } finally {
-            emitter.complete();
-          }
-        };
 
     ThreadContextExecutors.getExecutor().execute(consumeStream);
 
