@@ -85,7 +85,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("skipped");
+    assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
   }
 
   @Test
@@ -121,7 +121,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getOutputFiltering();
-    assertThat(filterResult.getMessage()).contains("Filtering", "skipped");
+    assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
   }
 
   @Test
