@@ -12,7 +12,7 @@
         "tool_calls": [
           {
             "function": {
-              "arguments": "{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}",
+              "arguments": "{\"arg0\": \"Potsdam\", \"arg1\": \"C\"}",
               "name": "getCurrentWeather"
             },
             "id": "call_MQ7MyYGmoP5TpMSv6AfeWCg5",
@@ -20,7 +20,7 @@
           },
           {
             "function": {
-              "arguments": "{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}",
+              "arguments": "{\"arg0\": \"Toulouse\", \"arg1\": \"C\"}",
               "name": "getCurrentWeather"
             },
             "id": "call_BQpUfvkUUqx7e3yZv7Rmpnxy",
