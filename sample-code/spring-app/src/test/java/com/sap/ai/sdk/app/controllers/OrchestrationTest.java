@@ -5,6 +5,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.*;
 import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
+import static java.util.Locale.ROOT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -209,7 +210,7 @@ class OrchestrationTest {
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(result.getIntermediateResults().getGrounding()).isNotNull();
     assertThat(result.getIntermediateResults().getGrounding().getData()).isNotNull();
-    assertThat(result.getIntermediateResults().getGrounding().getMessage().toLowerCase())
+    assertThat(result.getIntermediateResults().getGrounding().getMessage().toLowerCase(ROOT))
         .contains("grounding");
     var groundingData =
         (Map<String, String>) result.getIntermediateResults().getGrounding().getData();

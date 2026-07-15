@@ -14,12 +14,15 @@ import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.ModuleResults;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.experimental.StandardException;
 import lombok.val;
+
+import static java.util.Locale.ROOT;
 
 /** Exception thrown by the {@link OrchestrationClient} in case of an error. */
 @StandardException
@@ -44,14 +47,14 @@ public class OrchestrationClientException extends ClientException {
           .map(ErrorResponse::getError)
           .flatMap(OrchestrationClientException::lastError)
           .map(Error::getLocation)
-          .map(filter -> filter.toLowerCase().contains("filter"))
+          .map(filter -> filter.toLowerCase(ROOT).contains("filter"))
           .orElse(false);
     } else if (error instanceof OrchestrationError.Streaming streamingError) {
       return Optional.of(streamingError.getErrorResponse())
           .map(ErrorResponseStreaming::getError)
           .flatMap(OrchestrationClientException::lastErrorStreaming)
           .map(ErrorStreaming::getLocation)
-          .map(filter -> filter.toLowerCase().contains("filter"))
+          .map(filter -> filter.toLowerCase(ROOT).contains("filter"))
           .orElse(false);
     }
     return false;
