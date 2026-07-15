@@ -80,7 +80,7 @@ jobs:
           fi
           
           cd sample-code/spring-app
-          mvn spring-boot:run &
+          mvn spring-boot:run 2>&1 &
           timeout=15
           while ! nc -z localhost 8080; do
             sleep 1
