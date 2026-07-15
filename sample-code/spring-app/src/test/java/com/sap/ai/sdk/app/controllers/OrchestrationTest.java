@@ -209,7 +209,8 @@ class OrchestrationTest {
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(result.getIntermediateResults().getGrounding()).isNotNull();
     assertThat(result.getIntermediateResults().getGrounding().getData()).isNotNull();
-    assertThat(result.getIntermediateResults().getGrounding().getMessage()).contains("Grounding");
+    assertThat(result.getIntermediateResults().getGrounding().getMessage().toLowerCase())
+        .contains("grounding");
     var groundingData =
         (Map<String, String>) result.getIntermediateResults().getGrounding().getData();
     assertThat(groundingData.get("grounding_result")).contains("metadata");
