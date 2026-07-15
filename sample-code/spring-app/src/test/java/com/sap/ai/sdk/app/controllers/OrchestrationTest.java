@@ -73,7 +73,6 @@ class OrchestrationTest {
         // foreach consumes all elements, closing the stream at the end
         .forEach(
         delta -> {
-          log.info("delta: {}", delta);
           if (!delta.isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
@@ -626,7 +625,6 @@ class OrchestrationTest {
     val filledDeltaCount = new AtomicInteger(0);
     stream.forEach(
         delta -> {
-          log.info("delta: {}", delta);
           if (!delta.isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
@@ -640,7 +638,6 @@ class OrchestrationTest {
     val filledDeltaCount = new AtomicInteger(0);
     stream.forEach(
         delta -> {
-          log.info("delta: {}", delta);
           if (!delta.getDeltaContent().isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
@@ -654,7 +651,6 @@ class OrchestrationTest {
     val filledDeltaCount = new AtomicInteger(0);
     stream.forEach(
         delta -> {
-          log.info("delta: {}", delta);
           if (!delta.getDeltaContent().isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
@@ -668,7 +664,6 @@ class OrchestrationTest {
     val filledDeltaCount = new AtomicInteger(0);
     stream.forEach(
         delta -> {
-          log.info("delta: {}", delta);
           if (!delta.getDeltaContent().isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }

@@ -13,8 +13,6 @@ import org.springframework.ai.chat.model.ChatResponse;
 class SpringAiOpenAiTest {
 
   private final SpringAiOpenAiService service = new SpringAiOpenAiService();
-  private static final org.slf4j.Logger log =
-      org.slf4j.LoggerFactory.getLogger(SpringAiOrchestrationTest.class);
 
   @Test
   void testEmbedStrings() {
@@ -46,7 +44,6 @@ class SpringAiOpenAiTest {
         // foreach consumes all elements, closing the stream at the end
         .forEach(
         delta -> {
-          log.info("delta: {}", delta);
           String text = delta.getResult().getOutput().getText();
           if (text != null && !text.isEmpty()) {
             filledDeltaCount.incrementAndGet();
@@ -86,7 +83,6 @@ class SpringAiOpenAiTest {
     ChatResponse response = service.chatMemory();
     assertThat(response).isNotNull();
     String text = response.getResult().getOutput().getText();
-    log.info(text);
     assertThat(text)
         .containsAnyOf(
             "French", "onion", "pastries", "cheese", "baguette", "coq au vin", "foie gras");
