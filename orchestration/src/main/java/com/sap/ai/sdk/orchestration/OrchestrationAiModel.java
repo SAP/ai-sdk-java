@@ -461,10 +461,11 @@ public class OrchestrationAiModel {
   /** SAP ABAP 1 model */
   public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
 
-  /** Alibaba Qwen 3 max model
+  /**
+   * Alibaba Qwen 3 max model
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2026-02-01.
-   * */
+   */
   @Deprecated
   public static final OrchestrationAiModel QWEN_3_MAX = new OrchestrationAiModel("qwen3-max");
 
@@ -472,7 +473,8 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel QWEN_3_6_PLUS = new OrchestrationAiModel("qwen3.6-plus");
 
   /** Alibaba Qwen 3.6 flash model */
-  public static final OrchestrationAiModel QWEN_3_6_FLASH = new OrchestrationAiModel("qwen3.6-flash");
+  public static final OrchestrationAiModel QWEN_3_6_FLASH =
+      new OrchestrationAiModel("qwen3.6-flash");
 
   /** Alibaba Qwen 3.7 max model */
   public static final OrchestrationAiModel QWEN_3_7_MAX = new OrchestrationAiModel("qwen3.7-max");
@@ -481,7 +483,8 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel QWEN_3_7_PLUS = new OrchestrationAiModel("qwen3.7-plus");
 
   /** Alibaba text-embedding-4 model */
-  public static final OrchestrationAiModel ALIBABA_TEXT_EMBEDDING_4 = new OrchestrationAiModel("text-embedding-4");
+  public static final OrchestrationAiModel ALIBABA_TEXT_EMBEDDING_4 =
+      new OrchestrationAiModel("text-embedding-4");
 
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");
