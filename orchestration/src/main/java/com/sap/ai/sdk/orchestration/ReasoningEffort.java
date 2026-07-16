@@ -24,9 +24,7 @@ public enum ReasoningEffort {
   /** Disable reasoning when the model supports doing so. */
   NONE("none");
 
-  /**
-   * The string sent as the value of the {@code reasoning_effort} model parameter.
-   */
+  /** The string sent as the value of the {@code reasoning_effort} model parameter. */
   @Getter private final String value;
 
   ReasoningEffort(@Nonnull final String value) {
