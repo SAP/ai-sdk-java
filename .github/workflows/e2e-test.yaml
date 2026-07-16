@@ -116,5 +116,5 @@ jobs:
                     text: "⚠️ End-to-end tests failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
               - type: "section"
                 text:
-                  type: "plain_text"
+                  type: "mrkdwn"
                   text: "${{ steps.run_tests.outputs.error_message }} "
