@@ -52,7 +52,7 @@ jobs:
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} surefire:test -pl :spring-app -DskipTests=false"
           mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}" 2>&1 | tee mvn_output.log # tee writes to both the console and a file
 
-          ERROR_MSG=$(grep -E '^\[ERROR\] +[A-Za-z][A-Za-z0-9_]*\.[a-zA-Z][a-zA-Z0-9_]*:[0-9]+' mvn_output.log | sed $'s/\\[ERROR\\] */\\\n 🔴/' || true)
+          ERROR_MSG=$(grep -E '^\[ERROR\] +[A-Za-z][A-Za-z0-9_]*\.[a-zA-Z][a-zA-Z0-9_]*:[0-9]+' mvn_output.log | sed $'s/\\[ERROR\\] */\\\n 🔴 /' || true)
           echo "$ERROR_MSG"
           {
             echo "error_message<<EOF"
