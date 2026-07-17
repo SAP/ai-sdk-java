@@ -6,10 +6,8 @@ import org.jspecify.annotations.NonNull;
 
 public final class RealtimeParamVoice implements RealtimeParam {
 
-  public static final RealtimeParamVoice DEFAULT_1 =
-      new RealtimeParamVoice("DEFAULT_1");
-  public static final RealtimeParamVoice DEFAULT_2 =
-      new RealtimeParamVoice("DEFAULT_1");
+  public static final RealtimeParamVoice DEFAULT_1 = new RealtimeParamVoice("DEFAULT_1");
+  public static final RealtimeParamVoice DEFAULT_2 = new RealtimeParamVoice("DEFAULT_1");
 
   private final String voice;
 

@@ -21,8 +21,8 @@ class TextToSpeechRealtimeClient extends WSSOpenAiRealtimeClient implements Text
       List.of(RealtimeSessionCreateRequest.OutputModality.AUDIO);
 
   private static final String TASK =
-      "you are a speaker and your role is to read (produce audio) of the user input speech. voice user text input, " +
-              "do not answer questions, just read them";
+      "you are a speaker and your role is to read (produce audio) of the user input speech. voice user text input, "
+          + "do not answer questions, just read them";
 
   private final AudioOutputChannel outputConsumer;
   private final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
@@ -45,7 +45,9 @@ class TextToSpeechRealtimeClient extends WSSOpenAiRealtimeClient implements Text
           } else if (RealtimeParamVoice.DEFAULT_1.equals(param)) {
             voice = RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO;
           } else {
-            voice = RealtimeAudioConfigOutput.Voice.UnionMember1.of(param.getValueAsString().toLowerCase());
+            voice =
+                RealtimeAudioConfigOutput.Voice.UnionMember1.of(
+                    param.getValueAsString().toLowerCase());
           }
         }
         case TURN_DETECTION -> {

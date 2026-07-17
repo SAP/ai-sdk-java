@@ -11,7 +11,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +27,7 @@ public class RealtimeApiTest {
 
   @BeforeAll
   public static void setUp() {
-    try (var fis = new FileInputStream( "src/test/resources/fixtures/question.pcm")) {
+    try (var fis = new FileInputStream("src/test/resources/fixtures/question.pcm")) {
       QUESTION_FIXTURE_PCM = fis.readAllBytes();
     } catch (IOException e) {
       fail(e.getMessage());
@@ -104,14 +103,15 @@ public class RealtimeApiTest {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-
   }
 
-  private record AudioMetrics(double rms, double entropy){};
+  private record AudioMetrics(double rms, double entropy) {}
+  ;
 
   /**
    * Audio quality metrics for signed 16-bit little-endian PCM, computed on the mean-subtracted
    * (DC-offset-removed) signal so they reflect only the varying, audible part of the audio.
+   *
    * @param pcm - The raw PCM audio buffer.
    * @return The RMS amplitude and Shannon entropy (bits) of the zero-mean samples.
    */
@@ -120,21 +120,21 @@ public class RealtimeApiTest {
       return new AudioMetrics(0, 0);
     }
     var sum = 0L;
-    for (var i = 0; i < pcm.length; i+=2) {
-      sum += (pcm[i]) | ((pcm[i+1]) << 8);
+    for (var i = 0; i < pcm.length; i += 2) {
+      sum += (pcm[i]) | ((pcm[i + 1]) << 8);
     }
     var mean = sum / (pcm.length / 2);
 
     var sumOfSquares = 0d;
     var counts = new char[Character.MAX_VALUE];
-    for (var i = 0; i < pcm.length; i+= 2) {
-      var residual = ((pcm[i]) | ((pcm[i+1]) << 8)) - mean;
+    for (var i = 0; i < pcm.length; i += 2) {
+      var residual = ((pcm[i]) | ((pcm[i + 1]) << 8)) - mean;
       sumOfSquares += residual * residual;
       var key = (int) (residual + Short.MAX_VALUE + 1);
       counts[key]++;
     }
 
-    var rms = Math.sqrt(sumOfSquares / (double) ( pcm.length / 2 ));
+    var rms = Math.sqrt(sumOfSquares / (double) (pcm.length / 2));
     var entropy = 0d;
     for (var i = 0; i < counts.length; i++) {
       var p = counts[i] / counts.length;

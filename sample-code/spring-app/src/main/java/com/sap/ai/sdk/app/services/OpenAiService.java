@@ -5,6 +5,8 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.foundationmodels.openai.OpenAiModel.TEXT_EMBEDDING_3_SMALL;
 
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionDelta;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiChatCompletionResponse;
@@ -14,8 +16,6 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiEmbeddingResponse;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiTool;
-import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
-import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,8 +127,10 @@ public class OpenAiService {
    * any other input). When input channel is closed, output channel will be closed automatically and
    * output consumer will not be called anymore.
    *
-   * @param audioOutputConsumer - audio consumer of raw PCM mono 24000 Hz little endian output, 16 bit depth
-   * @return input channel, allowing for audio data input (bytes, PCM mono 24000 Hz little endian 16 bit)
+   * @param audioOutputConsumer - audio consumer of raw PCM mono 24000 Hz little endian output, 16
+   *     bit depth
+   * @return input channel, allowing for audio data input (bytes, PCM mono 24000 Hz little endian 16
+   *     bit)
    */
   public AudioInputChannel speechToSpeech(@Nonnull final AudioOutputChannel audioOutputConsumer) {
     return OpenAiClient.realtimeClient().speechToSpeech(audioOutputConsumer);
