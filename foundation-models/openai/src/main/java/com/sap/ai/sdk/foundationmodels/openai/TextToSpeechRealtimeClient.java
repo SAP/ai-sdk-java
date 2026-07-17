@@ -23,13 +23,13 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
     super(url, httpHeaders, outputConsumer, params);
     var turnDetectionEager = true;
     for (RealtimeParam param : params) {
-        if (param.getParamName() == RealtimeParam.SpeechOutputParamName.TURN_DETECTION) {
-            if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
-                turnDetectionEager = true;
-            } else if (RealtimeParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
-                turnDetectionEager = false;
-            }
+      if (param.getParamName() == RealtimeParam.SpeechOutputParamName.TURN_DETECTION) {
+        if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
+          turnDetectionEager = true;
+        } else if (RealtimeParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
+          turnDetectionEager = false;
         }
+      }
     }
     this.eagerTurnDetection = turnDetectionEager;
   }
@@ -37,15 +37,13 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
   @Override
   protected RealtimeAudioConfigInput inputConfig() {
     return RealtimeAudioConfigInput.builder()
-            .turnDetection(Optional.empty())
-            .format(
-                    RealtimeAudioFormats.AudioPcm.builder()
-                            .type(
-                                    RealtimeAudioFormats.AudioPcm.Type
-                                            .AUDIO_PCM)
-                            .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
-                            .build())
-            .build();
+        .turnDetection(Optional.empty())
+        .format(
+            RealtimeAudioFormats.AudioPcm.builder()
+                .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
+                .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
+                .build())
+        .build();
   }
 
   public void sendText(String text) {
@@ -72,5 +70,4 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
   protected String getSystemPrompt() {
     return TASK;
   }
-
 }

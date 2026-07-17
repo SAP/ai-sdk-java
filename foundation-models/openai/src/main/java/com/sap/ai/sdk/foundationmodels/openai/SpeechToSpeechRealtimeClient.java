@@ -7,12 +7,10 @@ import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeAudioInputTurnDetection;
 import com.sap.ai.sdk.core.RealtimeParam;
 import com.sap.ai.sdk.core.RealtimeParamTurnDetection;
-
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 class SpeechToSpeechRealtimeClient extends ToAudioRealtimeClient implements AudioInputChannel {
@@ -32,13 +30,13 @@ class SpeechToSpeechRealtimeClient extends ToAudioRealtimeClient implements Audi
 
     var turnDetectionEager = false;
     for (RealtimeParam param : params) {
-        if (param.getParamName() == RealtimeParam.SpeechOutputParamName.TURN_DETECTION) {
-            if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
-                turnDetectionEager = true;
-            } else if (RealtimeParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
-                turnDetectionEager = false;
-            }
+      if (param.getParamName() == RealtimeParam.SpeechOutputParamName.TURN_DETECTION) {
+        if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
+          turnDetectionEager = true;
+        } else if (RealtimeParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
+          turnDetectionEager = false;
         }
+      }
     }
     this.eagerTurnDetection = turnDetectionEager;
   }
@@ -50,17 +48,18 @@ class SpeechToSpeechRealtimeClient extends ToAudioRealtimeClient implements Audi
       turnDetection = null;
     } else {
       turnDetection =
-              RealtimeAudioInputTurnDetection.ofSemanticVad(
-                      RealtimeAudioInputTurnDetection.SemanticVad.builder().build());
+          RealtimeAudioInputTurnDetection.ofSemanticVad(
+              RealtimeAudioInputTurnDetection.SemanticVad.builder().build());
     }
 
     return RealtimeAudioConfigInput.builder()
-            .turnDetection(turnDetection)
-            .format(
-                    RealtimeAudioFormats.AudioPcm.builder()
-                            .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
-                            .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
-                            .build()).build();
+        .turnDetection(turnDetection)
+        .format(
+            RealtimeAudioFormats.AudioPcm.builder()
+                .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
+                .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
+                .build())
+        .build();
   }
 
   public void inputAudio(byte[] rawAudioChunk) {
@@ -90,5 +89,4 @@ class SpeechToSpeechRealtimeClient extends ToAudioRealtimeClient implements Audi
   protected String getSystemPrompt() {
     return TASK;
   }
-
 }
