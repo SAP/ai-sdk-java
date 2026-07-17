@@ -1,8 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-/**
- * Functional interface representing audio output channel (audio data consumer)
- */
+/** Functional interface representing audio output channel (audio data consumer) */
 public interface AudioOutputChannel {
 
   /**
