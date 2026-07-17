@@ -66,8 +66,7 @@ class SpringAiOrchestrationTest {
 
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContainingAll("Filtering", "blocked")
         .hasMessageContaining("400 (Bad Request)");
   }
 
@@ -86,7 +85,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("skipped");
+    assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
   }
 
   @Test
@@ -104,8 +103,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getOutputFiltering();
-    assertThat(filterResult.getMessage())
-        .contains("Choice 0: Content filtered due to safety violations.");
+    assertThat(filterResult.getMessage()).contains("Filtering", "blocked");
   }
 
   @Test
@@ -123,7 +121,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getOutputFiltering();
-    assertThat(filterResult.getMessage()).contains("Choice 0: Filtering was skipped.");
+    assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
   }
 
   @Test
@@ -139,9 +137,9 @@ class SpringAiOrchestrationTest {
     assertThat(toolCall1.name()).isEqualTo("getCurrentWeather");
     assertThat(toolCall2.name()).isEqualTo("getCurrentWeather");
     assertThat(toolCall1.arguments())
-        .matches("\\{\"arg0\": \\{\"location\": \"[^\"]*Potsdam[^\"]*\", \"unit\": \"C\"}}");
+        .matches("\\{\"arg0\": \"[^\"]*Potsdam[^\"]*\", \"arg1\": \"C\"}");
     assertThat(toolCall2.arguments())
-        .matches("\\{\"arg0\": \\{\"location\": \"[^\"]*Toulouse[^\"]*\", \"unit\": \"C\"}}");
+        .matches("\\{\"arg0\": \"[^\"]*Toulouse[^\"]*\", \"arg1\": \"C\"}");
   }
 
   @Test

@@ -12,4 +12,8 @@
     <notes><![CDATA[This is an issue related to Apache HttpComponents v5. OWASP mistakenly flags dependencies from v4.]]></notes>
     <cve>CVE-2026-54428</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[Temporary, there is no fix yet, plus our customers could upgrade the version themselves.]]></notes>
+    <cve>CVE-2026-53914</cve>
+  </suppress>
 </suppressions>

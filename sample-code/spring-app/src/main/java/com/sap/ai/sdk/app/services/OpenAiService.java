@@ -185,7 +185,9 @@ public class OpenAiService {
     // 1. Define the function
     final List<OpenAiTool> tools =
         List.of(
-            OpenAiTool.forFunction(WeatherMethod::getCurrentWeather)
+            OpenAiTool.forFunction(
+                    (WeatherMethod.Request r) ->
+                        WeatherMethod.getCurrentWeather(r.location(), r.unit()))
                 .withArgument(WeatherMethod.Request.class)
                 .withName("weather")
                 .withDescription("Get the weather for the given location"));
