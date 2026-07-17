@@ -10,12 +10,11 @@ import com.openai.models.realtime.SessionUpdateEvent;
 import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
 import com.sap.ai.sdk.core.RealtimeParam;
 import com.sap.ai.sdk.core.RealtimeParamVoice;
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
@@ -23,16 +22,17 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
   private static final Set<String> HANDLED_RESPONSE_TYPES =
       Set.of("response.output_audio.delta", "response.output_audio.done");
   private static final List<RealtimeSessionCreateRequest.OutputModality> OUTPUT_MODALITIES =
-          List.of(RealtimeSessionCreateRequest.OutputModality.AUDIO);
+      List.of(RealtimeSessionCreateRequest.OutputModality.AUDIO);
   private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
   private final AudioOutputChannel outputConsumer;
   private final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
 
-  public ToAudioRealtimeClient(String url,
-                               Map<String, String> httpHeaders,
-                               AudioOutputChannel outputConsumer,
-                               RealtimeParam... params) {
+  public ToAudioRealtimeClient(
+      String url,
+      Map<String, String> httpHeaders,
+      AudioOutputChannel outputConsumer,
+      RealtimeParam... params) {
     super(url, httpHeaders, HANDLED_RESPONSE_TYPES);
     var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
     for (RealtimeParam param : params) {
