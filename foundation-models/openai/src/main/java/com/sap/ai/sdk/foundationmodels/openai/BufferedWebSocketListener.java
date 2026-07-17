@@ -9,13 +9,13 @@ import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class BufferedWebSocketListener implements WebSocket.Listener {
+class BufferedWebSocketListener implements WebSocket.Listener {
 
   private final Consumer<WebSocket> onOpen;
   private final BiConsumer<WebSocket, CharSequence> onText;
   private final StringBuilder buffer;
 
-  public BufferedWebSocketListener(
+  BufferedWebSocketListener(
       Consumer<WebSocket> onOpen, BiConsumer<WebSocket, CharSequence> onText) {
     this.onOpen = onOpen;
     this.onText = onText;
@@ -29,10 +29,10 @@ public class BufferedWebSocketListener implements WebSocket.Listener {
   }
 
   @Override
-  public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean last) {
+  public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean isLast) {
     buffer.append(data);
     webSocket.request(1);
-    if (last) {
+    if (isLast) {
       var completeMessage = buffer.toString();
       buffer.setLength(0);
       this.onText.accept(webSocket, completeMessage);
@@ -47,7 +47,7 @@ public class BufferedWebSocketListener implements WebSocket.Listener {
   }
 
   @Override
-  public CompletionStage<?> onBinary(WebSocket webSocket, ByteBuffer data, boolean last) {
+  public CompletionStage<?> onBinary(WebSocket webSocket, ByteBuffer data, boolean isLast) {
     log.warn("Received unexpected binary bytes for WebSocket connection");
     return CompletableFuture.completedStage(null);
   }

@@ -3,14 +3,14 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.openai.models.realtime.*;
 import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
-import com.sap.ai.sdk.core.model.SpeechOutputParam;
-import com.sap.ai.sdk.core.model.SpeechOutputParamTurnDetection;
-import com.sap.ai.sdk.core.model.SpeechOutputParamVoice;
+import com.sap.ai.sdk.core.RealtimeParam;
+import com.sap.ai.sdk.core.RealtimeParamTurnDetection;
+import com.sap.ai.sdk.core.RealtimeParamVoice;
 import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implements TextInputChannel {
+class TextToSpeechRealtimeClient extends WSSOpenAiRealtimeClient implements TextInputChannel {
 
   private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
@@ -21,7 +21,8 @@ class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implements Text
       List.of(RealtimeSessionCreateRequest.OutputModality.AUDIO);
 
   private static final String TASK =
-      "you are a speaker and your role is to read (produce audio) of the user input speech. voice user text input";
+      "you are a speaker and your role is to read (produce audio) of the user input speech. voice user text input, " +
+              "do not answer questions, just read them";
 
   private final AudioOutputChannel outputConsumer;
   private final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
@@ -31,24 +32,26 @@ class TextToSpeechRealtimeClient extends WSSOpenAIRealtimeClient implements Text
       String url,
       Map<String, String> httpHeaders,
       AudioOutputChannel outputConsumer,
-      SpeechOutputParam... params) {
+      RealtimeParam... params) {
     super(url, httpHeaders, HANDLED_RESPONSE_TYPES);
     this.outputConsumer = outputConsumer;
     var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
     var turnDetectionEager = true;
-    for (SpeechOutputParam param : params) {
+    for (RealtimeParam param : params) {
       switch (param.getParamName()) {
         case VOICE -> {
-          if (SpeechOutputParamVoice.DEFAULT_WOMAN.equals(param)) {
+          if (RealtimeParamVoice.DEFAULT_2.equals(param)) {
             voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
-          } else if (SpeechOutputParamVoice.DEFAULT_MAN.equals(param)) {
+          } else if (RealtimeParamVoice.DEFAULT_1.equals(param)) {
             voice = RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO;
+          } else {
+            voice = RealtimeAudioConfigOutput.Voice.UnionMember1.of(param.getValueAsString().toLowerCase());
           }
         }
         case TURN_DETECTION -> {
-          if (SpeechOutputParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
+          if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
             turnDetectionEager = true;
-          } else if (SpeechOutputParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
+          } else if (RealtimeParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
             turnDetectionEager = false;
           }
         }

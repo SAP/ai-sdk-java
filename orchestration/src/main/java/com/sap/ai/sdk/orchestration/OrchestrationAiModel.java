@@ -346,9 +346,6 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-5-mini model */
   public static final OrchestrationAiModel GPT_5_MINI = new OrchestrationAiModel("gpt-5-mini");
 
-  /** Azure OpenAI GPT-realtime model */
-  public static final OrchestrationAiModel GPT_REALTIME = new OrchestrationAiModel("gpt-realtime");
-
   /** Azure OpenAI GPT-5-nano model */
   public static final OrchestrationAiModel GPT_5_NANO = new OrchestrationAiModel("gpt-5-nano");
 

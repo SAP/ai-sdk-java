@@ -22,7 +22,7 @@ public class WebsocketConfig implements WebSocketConfigurer {
 
   @Override
   public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-    registry.addHandler(textToSpeech, "/text-to-speech").setAllowedOrigins("*");
-    registry.addHandler(speechToSpeech, "/speech-to-speech").setAllowedOrigins("*");
+    registry.addHandler(textToSpeech, "/text-to-speech");
+    registry.addHandler(speechToSpeech, "/speech-to-speech");
   }
 }

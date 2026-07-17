@@ -15,7 +15,6 @@ import com.sap.ai.sdk.core.common.ClientResponseHandler;
 import com.sap.ai.sdk.core.common.ClientStreamingHandler;
 import com.sap.ai.sdk.core.common.RequestLogContext;
 import com.sap.ai.sdk.core.common.StreamedDelta;
-import com.sap.ai.sdk.core.model.SpeechOutputParam;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionStreamOptions;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
@@ -52,8 +51,6 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OpenAiClient {
   private static final String DEFAULT_API_VERSION = "2024-02-01";
-  private static final int PATH_BUFFER_SIZE =
-      400; // existing URLs are ~120 symbols long, 400 has reasonable margin
 
   private static final ObjectMapper JACKSON = getOpenAiObjectMapper();
 
@@ -77,6 +74,17 @@ public final class OpenAiClient {
 
     final var client = new OpenAiClient(destination);
     return client.withApiVersion(DEFAULT_API_VERSION);
+  }
+
+  /**
+   * Creates and configures OpenAI Realtime API client
+   *
+   * @return created client
+   */
+  @Beta
+  public static OpenAiRealtimeClient realtimeClient() {
+    var withResolvedDestination = OpenAiClient.forModel(OpenAiModel.GPT_REALTIME);
+    return new OpenAiRealtimeClient(withResolvedDestination.destination);
   }
 
   /**
@@ -262,80 +270,6 @@ public final class OpenAiClient {
     return streamChatCompletionDeltas(request.createCreateChatCompletionRequest())
         .peek(OpenAiClient::throwOnContentFilter)
         .map(OpenAiChatCompletionDelta::getDeltaContent);
-  }
-
-  /**
-   * Creates realtime channel allowing to input text and voice it (receive audio output)
-   *
-   * <p>The input channel should be used with a try-with-resources block to ensure that the
-   * underlying connection is closed.
-   *
-   * <p>Example:
-   *
-   * <pre>{@code
-   * try (var textInputChannel = client.textToSpeech(audioOutputConsumer)) {
-   *       textInputChannel.sendText("...");
-   *       ....
-   * }
-   * }</pre>
-   *
-   * This API implements full duplex (input + output) communication channels. Application should
-   * logically synchronize their state and close input channel when it is appropriate (e.g. last
-   * part of the response has been received via output channel and application does not need to send
-   * any other input). When input channel is closed, output channel will be closed automatically and
-   * output consumer will not be called anymore.
-   *
-   * @param audioOutputConsumer - audio consumer of raw PCM mono 24000 Hz little endian output
-   * @return input channel, allowing for text input
-   */
-  @Nonnull
-  public TextInputChannel textToSpeech(
-      @Nonnull final AudioOutputChannel audioOutputConsumer, SpeechOutputParam... params) {
-    var extraHeaders = destination.asHttp().getHeaders();
-    var headers = new HashMap<String, String>(extraHeaders.size() + 1);
-    for (Header header : extraHeaders) {
-      headers.put(header.getName(), header.getValue());
-    }
-    var endpoint = getRealtimeEndpoint();
-
-    return new TextToSpeechRealtimeClient(endpoint, headers, audioOutputConsumer, params);
-  }
-
-  // unstable, requires further debugging and testing
-  AudioInputChannel speechToText(@Nonnull final TextOutputChannel textOutputConsumer) {
-    var extraHeaders = destination.asHttp().getHeaders();
-    var headers = new HashMap<String, String>(extraHeaders.size() + 1);
-    for (Header header : extraHeaders) {
-      headers.put(header.getName(), header.getValue());
-    }
-    var endpoint = getRealtimeEndpoint() + "?intent=transcription";
-
-    return new SpeechToTextRealtimeClient(endpoint, headers, textOutputConsumer);
-  }
-
-  public AudioInputChannel speechToSpeech(
-      @Nonnull final AudioOutputChannel audioOutputChannel, SpeechOutputParam... params) {
-    var extraHeaders = destination.asHttp().getHeaders();
-    var headers = new HashMap<String, String>(extraHeaders.size() + 1);
-    for (Header header : extraHeaders) {
-      headers.put(header.getName(), header.getValue());
-    }
-    var endpoint = getRealtimeEndpoint();
-
-    return new SpeechToSpeechRealtimeClient(endpoint, headers, audioOutputChannel, params);
-  }
-
-  private String getRealtimeEndpoint() {
-    var sb = new StringBuilder(PATH_BUFFER_SIZE);
-    sb.append("wss://");
-    var pathParts = destination.asHttp().getUri().toString().split("//");
-    if (pathParts.length != 2) {
-      throw new IllegalArgumentException(
-          "Invalid destination URI: " + destination.asHttp().getUri());
-    }
-    sb.append(pathParts[1].replaceFirst("^api\\.", "realtime."));
-    sb.append("v1/realtime");
-    return sb.toString();
   }
 
   private static void throwOnContentFilter(@Nonnull final OpenAiChatCompletionDelta delta) {

@@ -1,8 +1,8 @@
-package com.sap.ai.sdk.core.model;
+package com.sap.ai.sdk.core;
 
 import javax.annotation.Nonnull;
 
-public interface SpeechOutputParam {
+public interface RealtimeParam {
   enum SpeechOutputParamName {
     VOICE,
     TURN_DETECTION,
@@ -10,4 +10,7 @@ public interface SpeechOutputParam {
 
   @Nonnull
   SpeechOutputParamName getParamName();
+
+  @Nonnull
+  String getValueAsString();
 }
