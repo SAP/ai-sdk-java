@@ -2,8 +2,6 @@ package com.sap.ai.sdk.foundationmodels.openai;
 
 /**
  * Functional interface representing text output channel (text data consumer)
- *
- * <p>Should be closed by application (try-with-resources) when not needed anymore
  */
 public interface TextOutputChannel {
 
