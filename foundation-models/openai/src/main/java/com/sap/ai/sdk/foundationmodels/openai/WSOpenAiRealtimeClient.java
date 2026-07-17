@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-abstract class WSSOpenAiRealtimeClient implements AutoCloseable {
+abstract class WSOpenAiRealtimeClient implements AutoCloseable {
 
   private static final int SUCCESS_FINISH_WSS_CODE = 1000;
   private static final ObjectMapper JACKSON =
@@ -56,7 +56,7 @@ abstract class WSSOpenAiRealtimeClient implements AutoCloseable {
   private final Timer heartbeatTimer;
   private final Set<String> handleMessageTypes;
 
-  public WSSOpenAiRealtimeClient(
+  public WSOpenAiRealtimeClient(
       String url, Map<String, String> httpHeaders, Set<String> handleMessageTypes) {
     this.client = HttpClient.newHttpClient();
     var wsBuilder = this.client.newWebSocketBuilder();

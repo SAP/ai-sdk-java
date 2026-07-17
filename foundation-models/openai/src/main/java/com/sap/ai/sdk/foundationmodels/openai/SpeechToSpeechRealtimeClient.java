@@ -10,7 +10,7 @@ import java.util.*;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-class SpeechToSpeechRealtimeClient extends WSSOpenAiRealtimeClient implements AudioInputChannel {
+class SpeechToSpeechRealtimeClient extends WSOpenAiRealtimeClient implements AudioInputChannel {
 
   private static final int MAX_DATA_CHUNK_SIZE_BYTES = 8192;
   private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];

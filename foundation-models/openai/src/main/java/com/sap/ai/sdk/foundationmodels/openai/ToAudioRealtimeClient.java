@@ -5,7 +5,7 @@ import com.openai.models.realtime.SessionUpdateEvent;
 import java.util.Map;
 import java.util.Set;
 
-class ToAudioRealtimeClient extends WSSOpenAiRealtimeClient {
+class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
 
   private static final Set<String> HANDLED_RESPONSE_TYPES =
       Set.of("response.output_audio.delta", "response.output_audio.done");
