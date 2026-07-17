@@ -280,11 +280,6 @@
         <artifactId>openai-java-core</artifactId>
         <version>${openai-java.version}</version>
       </dependency>
-      <dependency>
-        <groupId>com.openai</groupId>
-        <artifactId>openai-java</artifactId>
-        <version>${openai-java.version}</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
   <dependencies>
