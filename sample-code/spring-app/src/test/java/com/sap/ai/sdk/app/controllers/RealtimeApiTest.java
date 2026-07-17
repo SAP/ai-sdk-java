@@ -9,7 +9,6 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -98,11 +97,15 @@ public class RealtimeApiTest {
       return;
     }
 
-    try (var fis = new FileOutputStream("/tmp/response.pcm")) {
-      fis.write(outputBuffer.toByteArray());
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    assertThat(monitor.getCount()).isEqualTo(0);
+    assertThat(outputBuffer.size()).isGreaterThan(0);
+
+    var metrics = pcm16AudioMetrics(outputBuffer.toByteArray());
+
+    // root mean squire (measures the deviation from an average value)
+    assertThat(metrics.rms).isGreaterThan(500d);
+    // asserts that variety of deviation is sufficient (not a trivial repeating pattern)
+    assertThat(metrics.entropy).isGreaterThan(4);
   }
 
   private record AudioMetrics(double rms, double entropy) {}
