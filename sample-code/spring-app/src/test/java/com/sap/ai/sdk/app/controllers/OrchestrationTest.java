@@ -713,7 +713,7 @@ class OrchestrationTest {
     }
 
     assertThat(answerBuilder.toString()).isNotEmpty();
-    assertThat(reasoning).isNotNull();
+    assertThat(reasoning).isNotEmpty();
   }
 
   @Test
