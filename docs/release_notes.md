@@ -9,6 +9,11 @@
 ### 🔧 Compatibility Notes
 
 - [Orchestration] Removed `OrchestrationAiModel COHERE_RERANKER`. This model was supported neither by Orchestration nor by AI SDK.
+- [Prompt Registry] Added optional arguments `$top` and `$skip` to the following methods:
+  - `OrchestrationConfigsApi.listOrchestrationConfigHistory`
+  - `OrchestrationConfigsApi.listOrchestrationConfigs`
+  - `PromptTemplatesApi.listPromptTemplateHistory`
+  - `PromptTemplatesApi.listPromptTemplates`
 
 ### ✨ New Functionality
 
