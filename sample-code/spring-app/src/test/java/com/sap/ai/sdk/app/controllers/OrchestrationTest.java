@@ -556,7 +556,7 @@ class OrchestrationTest {
     val outputTranslation =
         result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
     assertThat(outputTranslation).isNotNull();
-    assertThat(outputTranslation.getMessage()).contains("translation", "successful");
+    assertThat(outputTranslation.getMessage()).contains("Translation", "successful");
   }
 
   @Test
