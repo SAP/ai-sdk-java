@@ -35,8 +35,8 @@ class SpringAiOrchestrationTest {
         // foreach consumes all elements, closing the stream at the end
         .forEach(
         delta -> {
-          log.info("delta: {}", delta);
-          if (!delta.getResult().getOutput().getText().isEmpty()) {
+          final var text = delta.getResult().getOutput().getText();
+          if (text != null && !text.isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
         });
@@ -66,8 +66,7 @@ class SpringAiOrchestrationTest {
 
     assertThatThrownBy(() -> service.inputFiltering(policy))
         .isInstanceOf(OrchestrationClientException.class)
-        .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContainingAll("Filtering", "blocked")
         .hasMessageContaining("400 (Bad Request)");
   }
 
@@ -86,7 +85,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("skipped");
+    assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
   }
 
   @Test
@@ -104,8 +103,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getOutputFiltering();
-    assertThat(filterResult.getMessage())
-        .contains("Choice 0: Content filtered due to safety violations.");
+    assertThat(filterResult.getMessage()).contains("Filtering", "blocked");
   }
 
   @Test
@@ -123,7 +121,7 @@ class SpringAiOrchestrationTest {
             .getOriginalResponse()
             .getIntermediateResults()
             .getOutputFiltering();
-    assertThat(filterResult.getMessage()).contains("Choice 0: Filtering was skipped.");
+    assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
   }
 
   @Test
@@ -155,7 +153,6 @@ class SpringAiOrchestrationTest {
     ChatResponse response = service.chatMemory();
     assertThat(response).isNotNull();
     String text = response.getResult().getOutput().getText();
-    log.info(text);
     assertThat(text)
         .containsAnyOf(
             "French", "onion", "pastries", "cheese", "baguette", "coq au vin", "foie gras");

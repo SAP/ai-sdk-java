@@ -498,6 +498,9 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * <p><b>403</b> - Forbidden Error
    *
+   * <p><b>413</b> - Payload Too Large — result set exceeds maximum allowed rows; use $top and $skip
+   * to paginate
+   *
    * <p><b>0</b> - Common Error
    *
    * @param scenario (required) The value for the parameter scenario
@@ -509,6 +512,9 @@ public class OrchestrationConfigsApi extends BaseApi {
    * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
    *     instead
    * @param resolveTemplateRef2 (optional) The value for the parameter resolveTemplateRef2
+   * @param $top (optional) Number of results to return (1–500). When omitted the full result set is
+   *     returned (up to the server limit).
+   * @param $skip (optional, default to 0) Number of results to skip before returning the page.
    * @return OrchestrationConfigListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -521,7 +527,9 @@ public class OrchestrationConfigsApi extends BaseApi {
       @Nullable final Boolean includeSpec,
       @Nullable final Boolean includeSpec2,
       @Nullable final Boolean resolveTemplateRef,
-      @Nullable final Boolean resolveTemplateRef2)
+      @Nullable final Boolean resolveTemplateRef2,
+      @Nullable final Integer $top,
+      @Nullable final Integer $skip)
       throws OpenApiRequestException {
 
     // verify the required parameter 'scenario' is set
@@ -569,6 +577,8 @@ public class OrchestrationConfigsApi extends BaseApi {
         ApiClient.parameterToPair("resolve_template_ref", resolveTemplateRef));
     localVarQueryParams.addAll(
         ApiClient.parameterToPair("resolveTemplateRef", resolveTemplateRef2));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
     if (aiResourceGroup != null)
       localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
@@ -604,6 +614,9 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * <p><b>403</b> - Forbidden Error
    *
+   * <p><b>413</b> - Payload Too Large — result set exceeds maximum allowed rows; use $top and $skip
+   * to paginate
+   *
    * <p><b>0</b> - Common Error
    *
    * @param scenario The value for the parameter scenario
@@ -616,7 +629,8 @@ public class OrchestrationConfigsApi extends BaseApi {
   public OrchestrationConfigListResponse listOrchestrationConfigHistory(
       @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
       throws OpenApiRequestException {
-    return listOrchestrationConfigHistory(scenario, version, name, null, null, null, null, null);
+    return listOrchestrationConfigHistory(
+        scenario, version, name, null, null, null, null, null, null, null);
   }
 
   /**
@@ -627,6 +641,9 @@ public class OrchestrationConfigsApi extends BaseApi {
    * <p><b>400</b> - Bad Request
    *
    * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>413</b> - Payload Too Large — result set exceeds maximum allowed rows; use $top and $skip
+   * to paginate
    *
    * <p><b>0</b> - Common Error
    *
@@ -640,6 +657,9 @@ public class OrchestrationConfigsApi extends BaseApi {
    * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
    *     instead
    * @param resolveTemplateRef2 (optional) The value for the parameter resolveTemplateRef2
+   * @param $top (optional) Number of results to return (1–500). When omitted the full result set is
+   *     returned (up to the server limit).
+   * @param $skip (optional, default to 0) Number of results to skip before returning the page.
    * @return OrchestrationConfigListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -653,7 +673,9 @@ public class OrchestrationConfigsApi extends BaseApi {
       @Nullable final Boolean includeSpec,
       @Nullable final Boolean includeSpec2,
       @Nullable final Boolean resolveTemplateRef,
-      @Nullable final Boolean resolveTemplateRef2)
+      @Nullable final Boolean resolveTemplateRef2,
+      @Nullable final Integer $top,
+      @Nullable final Integer $skip)
       throws OpenApiRequestException {
 
     // create path and map variables
@@ -675,6 +697,8 @@ public class OrchestrationConfigsApi extends BaseApi {
         ApiClient.parameterToPair("resolve_template_ref", resolveTemplateRef));
     localVarQueryParams.addAll(
         ApiClient.parameterToPair("resolveTemplateRef", resolveTemplateRef2));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
     if (aiResourceGroup != null)
       localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
 
@@ -710,6 +734,9 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * <p><b>403</b> - Forbidden Error
    *
+   * <p><b>413</b> - Payload Too Large — result set exceeds maximum allowed rows; use $top and $skip
+   * to paginate
+   *
    * <p><b>0</b> - Common Error
    *
    * @return OrchestrationConfigListResponse
@@ -717,6 +744,7 @@ public class OrchestrationConfigsApi extends BaseApi {
    */
   @Nonnull
   public OrchestrationConfigListResponse listOrchestrationConfigs() throws OpenApiRequestException {
-    return listOrchestrationConfigs(null, null, null, null, null, null, null, null, null);
+    return listOrchestrationConfigs(
+        null, null, null, null, null, null, null, null, null, null, null);
   }
 }

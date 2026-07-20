@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.orchestration;
 
+import static java.util.Locale.ROOT;
+
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.common.ClientException;
 import com.sap.ai.sdk.core.common.ClientExceptionFactory;
@@ -27,16 +29,35 @@ public class OrchestrationClientException extends ClientException {
 
   static final ClientExceptionFactory<OrchestrationClientException, OrchestrationError> FACTORY =
       (message, clientError, cause) -> {
-        final var details = extractInputFilterDetails(clientError);
-        if (details.isEmpty()) {
-          if (message.contains("No Prompt Template found in the Prompt Registry.")) {
-            message +=
-                "\n Please make sure to provide a resource group id and verify that it matches the provided template reference details if the template is referenced from a resource-group scope, otherwise use the tenant scope without providing resource group id.";
-          }
-          return new OrchestrationClientException(message, cause).setClientError(clientError);
+        if (isInputFilterError(clientError)) {
+          return new Input(message, cause)
+              .setFilterDetails(extractInputFilterDetails(clientError))
+              .setClientError(clientError);
+        } else if (message.contains("No Prompt Template found in the Prompt Registry.")) {
+          message +=
+              "\n Please make sure to provide a resource group id and verify that it matches the provided template reference details if the template is referenced from a resource-group scope, otherwise use the tenant scope without providing resource group id.";
         }
-        return new Input(message, cause).setFilterDetails(details).setClientError(clientError);
+        return new OrchestrationClientException(message, cause).setClientError(clientError);
       };
+
+  static boolean isInputFilterError(@Nullable final OrchestrationError error) {
+    if (error instanceof OrchestrationError.Synchronous synchronousError) {
+      return Optional.of(synchronousError.getErrorResponse())
+          .map(ErrorResponse::getError)
+          .flatMap(OrchestrationClientException::lastError)
+          .map(Error::getLocation)
+          .map(filter -> filter.toLowerCase(ROOT).contains("filter"))
+          .orElse(false);
+    } else if (error instanceof OrchestrationError.Streaming streamingError) {
+      return Optional.of(streamingError.getErrorResponse())
+          .map(ErrorResponseStreaming::getError)
+          .flatMap(OrchestrationClientException::lastErrorStreaming)
+          .map(ErrorStreaming::getLocation)
+          .map(filter -> filter.toLowerCase(ROOT).contains("filter"))
+          .orElse(false);
+    }
+    return false;
+  }
 
   @SuppressWarnings("unchecked")
   @Nonnull
