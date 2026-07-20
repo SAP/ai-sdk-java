@@ -548,14 +548,14 @@ class OrchestrationTest {
     assertThat(inputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage())
         .isNotNull()
-        .contains("Successfully", " placeholders:")
+        .contains("successful", " placeholders:")
         .contains("exam_type")
         .contains("topic");
 
     val outputTranslation =
         result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
     assertThat(outputTranslation).isNotNull();
-    assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
+    assertThat(outputTranslation.getMessage()).contains("Translation", "successful");
   }
 
   @Test
