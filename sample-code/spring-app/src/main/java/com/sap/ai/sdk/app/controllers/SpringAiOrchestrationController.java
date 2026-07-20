@@ -70,9 +70,10 @@ class SpringAiOrchestrationController {
     try {
       response = service.inputFiltering(policy);
     } catch (OrchestrationClientException e) {
-      final var msg = "Failed to obtain a response as the content was flagged by input filter.";
-      log.debug(msg, e);
-      return ResponseEntity.internalServerError().body(msg);
+      final var errorMessage =
+          "Failed to obtain a response as the content was flagged by input filter.";
+      log.error(errorMessage, e);
+      return ResponseEntity.internalServerError().body(errorMessage);
     }
 
     if ("json".equals(format)) {

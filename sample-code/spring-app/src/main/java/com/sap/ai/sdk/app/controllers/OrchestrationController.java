@@ -63,11 +63,7 @@ class OrchestrationController {
     final Runnable consumeStream =
         () -> {
           try (stream) {
-            stream.forEach(
-                deltaMessage -> {
-                  log.info("Service: {}", deltaMessage);
-                  send(emitter, deltaMessage);
-                });
+            stream.forEach(deltaMessage -> send(emitter, deltaMessage));
           } finally {
             emitter.complete();
           }
@@ -191,7 +187,7 @@ class OrchestrationController {
     try {
       response = service.inputFiltering(policy);
     } catch (OrchestrationFilterException.Input e) {
-      final var msg =
+      final var errorMessage =
           new StringBuilder(
               "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
                   .formatted(e.getStatusCode()));
@@ -199,10 +195,11 @@ class OrchestrationController {
       Optional.ofNullable(e.getAzureContentSafetyInput())
           .map(AzureContentSafetyInput::getViolence)
           .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
-          .ifPresent(rating -> msg.append("Violence score %d".formatted(rating.getValue())));
+          .ifPresent(
+              rating -> errorMessage.append("Violence score %d".formatted(rating.getValue())));
 
-      log.debug(msg.toString(), e);
-      return ResponseEntity.internalServerError().body(msg.toString());
+      log.error(errorMessage.toString(), e);
+      return ResponseEntity.internalServerError().body(errorMessage.toString());
     }
 
     if ("json".equals(format)) {
@@ -224,17 +221,18 @@ class OrchestrationController {
     try {
       content = response.getContent();
     } catch (OrchestrationFilterException.Output e) {
-      final var msg =
+      final var errorMessage =
           new StringBuilder(
               "Failed to obtain a response as the content was flagged by output filter. ");
 
       Optional.ofNullable(e.getAzureContentSafetyOutput())
           .map(AzureContentSafetyOutput::getViolence)
           .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
-          .ifPresent(rating -> msg.append("Violence score %d ".formatted(rating.getValue())));
+          .ifPresent(
+              rating -> errorMessage.append("Violence score %d ".formatted(rating.getValue())));
 
-      log.debug(msg.toString(), e);
-      return ResponseEntity.internalServerError().body(msg.toString());
+      log.error(errorMessage.toString(), e);
+      return ResponseEntity.internalServerError().body(errorMessage.toString());
     }
 
     if ("json".equals(format)) {
@@ -253,14 +251,14 @@ class OrchestrationController {
     try {
       response = service.llamaGuardInputFilter(enabled);
     } catch (OrchestrationFilterException.Input e) {
-      var msg =
+      var errorMessage =
           "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
               .formatted(e.getStatusCode());
       if (e.getLlamaGuard38b() != null) {
-        msg += " Violent crimes are %s".formatted(e.getLlamaGuard38b().isViolentCrimes());
+        errorMessage += " Violent crimes are %s".formatted(e.getLlamaGuard38b().isViolentCrimes());
       }
-      log.debug(msg, e);
-      return ResponseEntity.internalServerError().body(msg);
+      log.error(errorMessage, e);
+      return ResponseEntity.internalServerError().body(errorMessage);
     }
 
     if ("json".equals(format)) {
