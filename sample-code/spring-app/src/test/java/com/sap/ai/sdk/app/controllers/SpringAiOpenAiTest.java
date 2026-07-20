@@ -73,9 +73,9 @@ class SpringAiOpenAiTest {
     assertThat(toolCall1.name()).isEqualTo("getCurrentWeather");
     assertThat(toolCall2.name()).isEqualTo("getCurrentWeather");
     assertThat(toolCall1.arguments())
-        .matches("\\{\"arg0\": \\{\"location\": \"[^\"]*Potsdam[^\"]*\", \"unit\": \"C\"}}");
+        .matches("\\{\"arg0\": \"[^\"]*Potsdam[^\"]*\", \"arg1\": \"C\"}");
     assertThat(toolCall2.arguments())
-        .matches("\\{\"arg0\": \\{\"location\": \"[^\"]*Toulouse[^\"]*\", \"unit\": \"C\"}}");
+        .matches("\\{\"arg0\": \"[^\"]*Toulouse[^\"]*\", \"arg1\": \"C\"}");
   }
 
   @Test
