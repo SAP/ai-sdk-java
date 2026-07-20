@@ -7,13 +7,14 @@ import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.BinaryWebSocketHandler;
+
+import javax.annotation.Nonnull;
 
 @Component
 @Slf4j
@@ -48,7 +49,7 @@ public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {
   }
 
   @Override
-  public void afterConnectionClosed(WebSocketSession session, @NonNull CloseStatus status)
+  public void afterConnectionClosed(WebSocketSession session, @Nonnull CloseStatus status)
       throws Exception {
     channels.computeIfPresent(
         session.getId(),

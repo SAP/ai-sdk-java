@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.core;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
-import org.jspecify.annotations.NonNull;
 
 public final class RealtimeParamTurnDetection implements RealtimeParam {
 
@@ -17,12 +17,12 @@ public final class RealtimeParamTurnDetection implements RealtimeParam {
   }
 
   @Override
-  public @NonNull SpeechOutputParamName getParamName() {
+  public @Nonnull SpeechOutputParamName getParamName() {
     return SpeechOutputParamName.TURN_DETECTION;
   }
 
   @Override
-  public @NonNull String getValueAsString() {
+  public @Nonnull String getValueAsString() {
     return turnDetectionKind;
   }
 

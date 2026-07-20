@@ -2,7 +2,6 @@ package com.sap.ai.sdk.core;
 
 import java.util.Objects;
 import javax.annotation.Nonnull;
-import org.jspecify.annotations.NonNull;
 
 public final class RealtimeParamVoice implements RealtimeParam {
 
@@ -20,12 +19,12 @@ public final class RealtimeParamVoice implements RealtimeParam {
   }
 
   @Override
-  public @NonNull SpeechOutputParamName getParamName() {
+  public @Nonnull SpeechOutputParamName getParamName() {
     return SpeechOutputParamName.VOICE;
   }
 
   @Override
-  public @NonNull String getValueAsString() {
+  public @Nonnull String getValueAsString() {
     return voice;
   }
 
