@@ -2,9 +2,7 @@ package com.sap.ai.sdk.core;
 
 import javax.annotation.Nonnull;
 
-/**
- * Represents possible configuration params of realtime client
- */
+/** Represents possible configuration params of realtime client */
 public interface RealtimeParam {
   enum SpeechOutputParamName {
     VOICE,
@@ -13,6 +11,7 @@ public interface RealtimeParam {
 
   /**
    * Returns param name
+   *
    * @return name
    */
   @Nonnull
@@ -20,6 +19,7 @@ public interface RealtimeParam {
 
   /**
    * Returns string value representation of the param
+   *
    * @return string value
    */
   @Nonnull

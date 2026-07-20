@@ -3,19 +3,13 @@ package com.sap.ai.sdk.core;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 
-/**
- * Allows to configure model output voice
- */
+/** Allows to configure model output voice */
 public final class RealtimeParamVoice implements RealtimeParam {
 
-  /**
-   * Standard voice 1
-   */
+  /** Standard voice 1 */
   public static final RealtimeParamVoice DEFAULT_1 = new RealtimeParamVoice("DEFAULT_1");
 
-  /**
-   * Standard voice 2
-   */
+  /** Standard voice 2 */
   public static final RealtimeParamVoice DEFAULT_2 = new RealtimeParamVoice("DEFAULT_2");
 
   private final String voice;
@@ -27,6 +21,7 @@ public final class RealtimeParamVoice implements RealtimeParam {
   /**
    * Allows to configure raw voice name as named by model provider. Unsafe because SDK cannot verify
    * in advance if the provided voice name is correct and supported by the chosen model and use case
+   *
    * @param voiceName as named by model provider
    * @return typed voice client configuration param
    */
