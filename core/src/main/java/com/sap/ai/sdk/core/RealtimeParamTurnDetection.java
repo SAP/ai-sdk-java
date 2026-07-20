@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.core;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
+import javax.annotation.Nonnull;
 
 public final class RealtimeParamTurnDetection implements RealtimeParam {
 
