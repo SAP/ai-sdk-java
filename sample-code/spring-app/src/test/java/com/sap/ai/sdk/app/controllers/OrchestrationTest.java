@@ -549,7 +549,7 @@ class OrchestrationTest {
     assertThat(inputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage())
         .isNotNull()
-        .contains("Successfully", " placeholders:")
+        .contains("successfully", " placeholders:")
         .contains("exam_type")
         .contains("topic");
 
