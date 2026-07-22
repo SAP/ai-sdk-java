@@ -4,6 +4,7 @@ import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import java.nio.file.Path;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /** Interface representing convenience wrappers of chat message to the orchestration service. */
 public sealed interface Message permits AssistantMessage, SystemMessage, ToolMessage, UserMessage {
@@ -16,7 +17,20 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    */
   @Nonnull
   static UserMessage user(@Nonnull final String message) {
-    return new UserMessage(message);
+    return user(message, null);
+  }
+
+  /**
+   * A convenience method to create a user message from a string.
+   *
+   * @since 1.23.0
+   * @param message the message content.
+   * @param cacheControl cache checkpoint configuration
+   * @return the user message.
+   */
+  @Nonnull
+  static UserMessage user(@Nonnull final String message, @Nullable final CacheControl cacheControl) {
+    return new UserMessage(message, cacheControl);
   }
 
   /**
@@ -62,7 +76,21 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    */
   @Nonnull
   static SystemMessage system(@Nonnull final String message) {
-    return new SystemMessage(message);
+    return system(message, null);
+  }
+
+  /**
+   * A convenience method to create a system message from a string allowing to configure
+   * cache checkpoint
+   *
+   * @since 1.23.0
+   * @param message the message content
+   * @param cacheControl optional cache checkpoint configuration
+   * @return the system message
+   */
+  @Nonnull
+  static SystemMessage system(@Nonnull final String message, @Nullable final CacheControl cacheControl) {
+    return new SystemMessage(message, cacheControl);
   }
 
   /**

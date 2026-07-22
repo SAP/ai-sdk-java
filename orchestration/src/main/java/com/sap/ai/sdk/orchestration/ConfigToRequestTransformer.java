@@ -16,10 +16,15 @@ import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import io.vavr.collection.HashMap;
 import io.vavr.control.Option;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -37,8 +42,9 @@ final class ConfigToRequestTransformer {
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
 
+    final var cachingConfig = resolveCachingConfig(config, fallbackConfigs);
     final UnaryOperator<OrchestrationModuleConfig> copyWithImmutableTemplateConfig =
-        c -> c.withTemplateConfig(toTemplateModuleConfig(prompt, c.getTemplateConfig()));
+        c -> c.withTemplateConfig(toTemplateModuleConfig(prompt, cachingConfig, c.getTemplateConfig()));
     val configList = Lists.asList(config, fallbackConfigs);
     val configsCopy = Lists.transform(configList, copyWithImmutableTemplateConfig::apply);
 
@@ -61,7 +67,16 @@ final class ConfigToRequestTransformer {
 
   @Nonnull
   static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
+          @Nonnull final OrchestrationPrompt prompt,
+          @Nullable final PromptTemplatingModuleConfigPrompt config
+  ) {
+    return toTemplateModuleConfig(prompt, PromptCachingConfig.noCaching(), config);
+  }
+
+  @Nonnull
+  static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
       @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final PromptCachingConfig cachingConfig,
       @Nullable final PromptTemplatingModuleConfigPrompt config) {
     /*
      * Currently, we have to merge the prompt into the template configuration.
@@ -78,8 +93,9 @@ final class ConfigToRequestTransformer {
     val messages = template.getTemplate();
     val messagesWithPrompt = new ArrayList<>(messages);
 
-    messagesWithPrompt.addAll(
-        prompt.getMessages().stream().map(Message::createChatMessage).toList());
+    var promptMessages = withCachingConstraintsApplied(prompt.getMessages(), cachingConfig);
+
+    messagesWithPrompt.addAll(promptMessages.stream().map(Message::createChatMessage).toList());
     if (messagesWithPrompt.isEmpty()) {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
@@ -96,6 +112,66 @@ final class ConfigToRequestTransformer {
       result.setCustomField(customFieldName, template.toMap().get(customFieldName));
     }
     return result;
+  }
+
+  static PromptCachingConfig resolveCachingConfig(@Nonnull final OrchestrationModuleConfig config,
+                                                  @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
+
+    var modelName = "unknown";
+    if (config.getLlmConfig() != null) {
+      modelName = config.getLlmConfig().getName();
+    } else {
+      for (var fallbackConfig : fallbackConfigs) {
+        if (fallbackConfig.getLlmConfig() != null) {
+          modelName = fallbackConfig.getLlmConfig().getName();
+          break;
+        }
+      }
+    }
+    return PromptCachingConfig.forModel(modelName);
+  }
+
+  static List<Message> withCachingConstraintsApplied(@Nonnull final List<Message> promptMessages,
+                                                     @Nonnull final PromptCachingConfig cachingConfig) {
+    var outputMessages = new ArrayList<Message>(promptMessages.size());
+    var remainingCacheableCheckpoints = cachingConfig.getMaxCheckpointsPerRequest();
+    for (int i = 0; i < promptMessages.size(); i++) {
+      var message = promptMessages.get(i);
+      var contentItems = new ArrayList<ContentItem>(message.content().items().size());
+      var messageSupportsCache = false;
+      if (message instanceof UserMessage || message instanceof SystemMessage) {
+        messageSupportsCache = true;
+      }
+      for (int j = 0; j < message.content().items().size(); j++) {
+        var contentItem = message.content().items().get(j);
+        if (contentItem instanceof TextItem textItem) {
+          var existingCacheControl = textItem.getCacheControl();
+          if (existingCacheControl != null) {
+            if (remainingCacheableCheckpoints <= 0 || !messageSupportsCache) {
+              // skipping text control if there is already too many cache checkpoints
+              contentItem = new TextItem(textItem.text());
+            } else if (cachingConfig.getMinTokensPerCheckpoint() > textItem.getText().chars().filter(c -> c == ' ').count() + 1) {
+              // to few tokens to cache, skipping to respect model limitation
+              contentItem = new TextItem(textItem.text());
+            } else {
+              remainingCacheableCheckpoints--;
+              if (!cachingConfig.getSupportedTTLValues().matcher(existingCacheControl.getTtl()).matches()) {
+                contentItem = new TextItem(textItem.text(), new CacheControl(cachingConfig.getDefaultTTLValue()));
+              }
+            }
+          }
+        }
+        contentItems.add(contentItem);
+      }
+      if (message instanceof UserMessage) {
+        message = new UserMessage(new MessageContent(contentItems));
+      } else if (message instanceof SystemMessage) {
+        message = new SystemMessage(new MessageContent(contentItems));
+      }
+
+      outputMessages.add(message);
+    }
+    return outputMessages;
   }
 
   @Nonnull
