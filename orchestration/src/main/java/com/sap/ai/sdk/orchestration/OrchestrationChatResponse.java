@@ -19,6 +19,7 @@ import io.vavr.control.Try;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -69,20 +70,6 @@ public class OrchestrationChatResponse {
   }
 
   /**
-   * Get the reasoning (thinking) content produced by the model, as text, if any.
-   *
-   * @return the reasoning text of each block; never {@code null}, may be empty.
-   * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
-   *     Orchestration - Reasoning</a>
-   */
-  @Nonnull
-  public List<String> getReasoningContent() {
-    return getChoice().getMessage().getReasoningContent().stream()
-        .map(ReasoningBlock::getContent)
-        .toList();
-  }
-
-  /**
    * Get the reasoning (thinking) content as a single joined string, for display purposes. The
    * reasoning blocks are concatenated with no separator between them.
    *
@@ -100,10 +87,14 @@ public class OrchestrationChatResponse {
    *
    * @param delimiter the delimiter to place between reasoning blocks.
    * @return the joined reasoning text; empty if there is no reasoning.
+   * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
+   *     Orchestration - Reasoning</a>
    */
   @Nonnull
   public String getReasoningText(@Nonnull final String delimiter) {
-    return String.join(delimiter, getReasoningContent());
+    return getChoice().getMessage().getReasoningContent().stream()
+        .map(ReasoningBlock::getContent)
+        .collect(Collectors.joining(delimiter));
   }
 
   /**

@@ -106,10 +106,8 @@ class OrchestrationController {
   private static String formatReasoning(
       @Nonnull final OrchestrationService.ReasoningOutput response) {
     final var content = new StringBuilder();
-    for (final var reasoning : response.reasoning()) {
-      if (!reasoning.isEmpty()) {
-        content.append("----REASONING----\n").append(reasoning).append("\n\n");
-      }
+    if (!response.reasoning().isEmpty()) {
+      content.append("----REASONING----\n").append(response.reasoning()).append("\n\n");
     }
     content.append("-----ANSWER-----\n").append(response.answer());
     return content.toString();
@@ -149,14 +147,12 @@ class OrchestrationController {
                     }
                     send(emitter, chunk.answer());
                   }
-                  for (final var reasoning : chunk.reasoning()) {
-                    if (!reasoning.isEmpty()) {
-                      if (!"reasoning".equals(lastLabel[0])) {
-                        send(emitter, "\n----REASONING----\n");
-                        lastLabel[0] = "reasoning";
-                      }
-                      send(emitter, reasoning);
+                  if (!chunk.reasoning().isEmpty()) {
+                    if (!"reasoning".equals(lastLabel[0])) {
+                      send(emitter, "\n----REASONING----\n");
+                      lastLabel[0] = "reasoning";
                     }
+                    send(emitter, chunk.reasoning());
                   }
                 });
           } finally {

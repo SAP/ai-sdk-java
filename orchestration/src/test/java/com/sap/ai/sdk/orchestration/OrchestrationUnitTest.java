@@ -1764,7 +1764,9 @@ class OrchestrationUnitTest {
             if (!delta.getDeltaContent().isEmpty()) {
               answerChunks.add(delta.getDeltaContent());
             }
-            reasoningChunks.addAll(delta.getDeltaReasoningContent());
+            if (!delta.getDeltaReasoningContent().isEmpty()) {
+              reasoningChunks.add(delta.getDeltaReasoningContent());
+            }
           });
     }
 
@@ -1797,10 +1799,8 @@ class OrchestrationUnitTest {
     final var response = client.chatCompletion(reasoningPrompt, reasoningConfig);
 
     assertThat(response.getContent()).startsWith("# Why the Sky is Blue");
-    assertThat(response.getReasoningContent()).hasSize(1);
-    assertThat(response.getReasoningContent().get(0))
+    assertThat(response.getReasoningText())
         .startsWith("This is a classic question about atmospheric physics.");
-    assertThat(response.getReasoningText()).isEqualTo(response.getReasoningContent().get(0));
 
     // getAllMessages() must attach the reasoning content (including the opaque signature) to the
     // final assistant message so it round-trips in messages_history.
@@ -1836,7 +1836,7 @@ class OrchestrationUnitTest {
 
     // Turn 1 assertions: reasoning text parsed correctly.
     assertThat(firstResponse.getContent()).isEqualTo("6 times 7 is 42.");
-    assertThat(firstResponse.getReasoningContent()).hasSize(1);
+    assertThat(firstResponse.getReasoningText()).isNotEmpty();
 
     // Turn 2: send a follow-up carrying the whole history (which includes turn 1's reasoning).
     final var followUp =

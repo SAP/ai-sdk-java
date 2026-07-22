@@ -702,7 +702,9 @@ class OrchestrationTest {
       stream.forEach(
           chunk -> {
             answerBuilder.append(chunk.answer());
-            reasoning.addAll(chunk.reasoning());
+            if (!chunk.reasoning().isEmpty()) {
+              reasoning.add(chunk.reasoning());
+            }
           });
     }
 
@@ -719,7 +721,7 @@ class OrchestrationTest {
     val firstPrompt = new OrchestrationPrompt("What is 6 times 7?");
     val firstResponse = orchestrationClient.chatCompletion(firstPrompt, reasoningConfig);
 
-    assertThat(firstResponse.getReasoningContent()).isNotEmpty();
+    assertThat(firstResponse.getReasoningText()).isNotEmpty();
 
     // Feed the whole history (which carries the previous reasoning content internally) into the
     // follow-up turn.
@@ -730,6 +732,6 @@ class OrchestrationTest {
     assertThat(followUp.getContent()).isNotEmpty();
     // Reasoning is still returned on the follow-up turn, proving the model kept reasoning enabled
     // after we resubmitted the previous reasoning_content in messages_history.
-    assertThat(followUp.getReasoningContent()).isNotEmpty();
+    assertThat(followUp.getReasoningText()).isNotEmpty();
   }
 }

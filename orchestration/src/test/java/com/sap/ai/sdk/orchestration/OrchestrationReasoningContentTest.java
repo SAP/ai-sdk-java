@@ -74,7 +74,6 @@ class OrchestrationReasoningContentTest {
   void chatResponseGetReasoningContentReturnsEmptyWhenAbsent() throws Exception {
     val response = parseSyncResponse("");
 
-    assertThat(response.getReasoningContent()).isEmpty();
     assertThat(response.getReasoningText()).isEmpty();
   }
 
@@ -84,7 +83,6 @@ class OrchestrationReasoningContentTest {
         parseSyncResponse(
             ", \"reasoning_content\": [{\"content\": \"thinking...\", \"signature\": \"sig-a\"}]");
 
-    assertThat(response.getReasoningContent()).containsExactly("thinking...");
     assertThat(response.getReasoningText()).isEqualTo("thinking...");
   }
 
@@ -144,7 +142,7 @@ class OrchestrationReasoningContentTest {
             0, ", \"reasoning_content\": [{\"content\": \"chunk\", \"signature\": \"\"}]");
 
     assertThat(delta.getDeltaContent()).isEqualTo("hello");
-    assertThat(delta.getDeltaReasoningContent()).containsExactly("chunk");
+    assertThat(delta.getDeltaReasoningContent()).isEqualTo("chunk");
   }
 
   @Test

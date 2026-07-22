@@ -194,16 +194,16 @@ public class OrchestrationService {
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
     val response = client.chatCompletion(prompt, reasoningConfig);
-    return new ReasoningOutput(response.getContent(), response.getReasoningContent());
+    return new ReasoningOutput(response.getContent(), response.getReasoningText());
   }
 
   /**
    * Answer and reasoning (thinking) text from a reasoning-capable model.
    *
    * @param answer the answer text.
-   * @param reasoning the reasoning text blocks (may be empty).
+   * @param reasoning the reasoning text (may be empty).
    */
-  public record ReasoningOutput(@Nonnull String answer, @Nonnull List<String> reasoning) {}
+  public record ReasoningOutput(@Nonnull String answer, @Nonnull String reasoning) {}
 
   /**
    * Streaming chat request to a reasoning-capable model. Returns a stream of {@link
@@ -249,8 +249,7 @@ public class OrchestrationService {
         new OrchestrationPrompt(followUp).messageHistory(firstResponse.getAllMessages());
     val followUpResponse = client.chatCompletion(followUpPrompt, reasoningConfig);
 
-    return new ReasoningOutput(
-        followUpResponse.getContent(), followUpResponse.getReasoningContent());
+    return new ReasoningOutput(followUpResponse.getContent(), followUpResponse.getReasoningText());
   }
 
   /**
