@@ -29,7 +29,8 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @return the user message.
    */
   @Nonnull
-  static UserMessage user(@Nonnull final String message, @Nullable final CacheControl cacheControl) {
+  static UserMessage user(
+      @Nonnull final String message, @Nullable final CacheControl cacheControl) {
     return new UserMessage(message, cacheControl);
   }
 
@@ -80,8 +81,8 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
   }
 
   /**
-   * A convenience method to create a system message from a string allowing to configure
-   * cache checkpoint
+   * A convenience method to create a system message from a string allowing to configure cache
+   * checkpoint
    *
    * @since 1.23.0
    * @param message the message content
@@ -89,7 +90,8 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @return the system message
    */
   @Nonnull
-  static SystemMessage system(@Nonnull final String message, @Nullable final CacheControl cacheControl) {
+  static SystemMessage system(
+      @Nonnull final String message, @Nullable final CacheControl cacheControl) {
     return new SystemMessage(message, cacheControl);
   }
 

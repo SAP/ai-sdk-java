@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
-import java.util.function.UnaryOperator;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -55,14 +54,15 @@ public class UserMessage implements Message {
     this(message, null);
   }
 
-
   /**
    * Creates a new user message from a string with a cache checkpoint
+   *
    * @param message the first message
    * @param cacheControl caching checkpoint configuration
    */
-  public UserMessage(@Nonnull final String message,
-                     @Nullable final com.sap.ai.sdk.orchestration.CacheControl cacheControl) {
+  public UserMessage(
+      @Nonnull final String message,
+      @Nullable final com.sap.ai.sdk.orchestration.CacheControl cacheControl) {
     this(new MessageContent(List.of(new TextItem(message, cacheControl))));
   }
 
@@ -87,8 +87,9 @@ public class UserMessage implements Message {
    * @since 1.23.0
    */
   @Nonnull
-  public UserMessage withText(@Nonnull final String message,
-                              @Nullable final com.sap.ai.sdk.orchestration.CacheControl cacheControl) {
+  public UserMessage withText(
+      @Nonnull final String message,
+      @Nullable final com.sap.ai.sdk.orchestration.CacheControl cacheControl) {
     final var contentItems = new LinkedList<>(content.items());
     contentItems.add(new TextItem(message, cacheControl));
     return new UserMessage(new MessageContent(contentItems));
@@ -194,25 +195,27 @@ public class UserMessage implements Message {
   public ChatMessage createChatMessage() {
     final var contentList = new LinkedList<UserChatMessageContentItem>();
 
-    final Function<TextItem, UserChatMessageContentItem> toContentItem = (textItem) -> {
-      var contentItem = UserChatMessageContentItem.create().type(TEXT).text(textItem.text());
-      var cacheControl = textItem.getCacheControl();
-      if (cacheControl != null) {
-        var cacheControlConverted = CacheControl.create()
-                .type(CacheControl.TypeEnum.EPHEMERAL)
-                .ttl(CacheControl.TtlEnum.fromValue(cacheControl.getTtl()));
-        contentItem.setCacheControl(cacheControlConverted);
-      }
-      return contentItem;
-    };
+    final Function<TextItem, UserChatMessageContentItem> toContentItem =
+        (textItem) -> {
+          var contentItem = UserChatMessageContentItem.create().type(TEXT).text(textItem.text());
+          var cacheControl = textItem.getCacheControl();
+          if (cacheControl != null) {
+            var cacheControlConverted =
+                CacheControl.create()
+                    .type(CacheControl.TypeEnum.EPHEMERAL)
+                    .ttl(CacheControl.TtlEnum.fromValue(cacheControl.getTtl()));
+            contentItem.setCacheControl(cacheControlConverted);
+          }
+          return contentItem;
+        };
 
     if (content.items().size() == 1 && content.items().get(0) instanceof TextItem textItem) {
       if (textItem.getCacheControl() != null) {
-        return UserChatMessage
-                .create()
-                .content(UserChatMessageContent
-                        .createListOfUserChatMessageContentItems(List.of(toContentItem.apply(textItem))))
-                .role(USER);
+        return UserChatMessage.create()
+            .content(
+                UserChatMessageContent.createListOfUserChatMessageContentItems(
+                    List.of(toContentItem.apply(textItem))))
+            .role(USER);
       }
       return UserChatMessage.create()
           .content(UserChatMessageContent.create(textItem.text()))

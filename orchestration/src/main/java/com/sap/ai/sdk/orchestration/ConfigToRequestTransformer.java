@@ -16,15 +16,10 @@ import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
-import com.sap.ai.sdk.orchestration.model.UserChatMessage;
-import io.vavr.collection.HashMap;
 import io.vavr.control.Option;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
@@ -44,7 +39,9 @@ final class ConfigToRequestTransformer {
 
     final var cachingConfig = resolveCachingConfig(config, fallbackConfigs);
     final UnaryOperator<OrchestrationModuleConfig> copyWithImmutableTemplateConfig =
-        c -> c.withTemplateConfig(toTemplateModuleConfig(prompt, cachingConfig, c.getTemplateConfig()));
+        c ->
+            c.withTemplateConfig(
+                toTemplateModuleConfig(prompt, cachingConfig, c.getTemplateConfig()));
     val configList = Lists.asList(config, fallbackConfigs);
     val configsCopy = Lists.transform(configList, copyWithImmutableTemplateConfig::apply);
 
@@ -67,9 +64,8 @@ final class ConfigToRequestTransformer {
 
   @Nonnull
   static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
-          @Nonnull final OrchestrationPrompt prompt,
-          @Nullable final PromptTemplatingModuleConfigPrompt config
-  ) {
+      @Nonnull final OrchestrationPrompt prompt,
+      @Nullable final PromptTemplatingModuleConfigPrompt config) {
     return toTemplateModuleConfig(prompt, PromptCachingConfig.noCaching(), config);
   }
 
@@ -114,8 +110,9 @@ final class ConfigToRequestTransformer {
     return result;
   }
 
-  static PromptCachingConfig resolveCachingConfig(@Nonnull final OrchestrationModuleConfig config,
-                                                  @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
+  static PromptCachingConfig resolveCachingConfig(
+      @Nonnull final OrchestrationModuleConfig config,
+      @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
 
     var modelName = "unknown";
     if (config.getLlmConfig() != null) {
@@ -131,8 +128,9 @@ final class ConfigToRequestTransformer {
     return PromptCachingConfig.forModel(modelName);
   }
 
-  static List<Message> withCachingConstraintsApplied(@Nonnull final List<Message> promptMessages,
-                                                     @Nonnull final PromptCachingConfig cachingConfig) {
+  static List<Message> withCachingConstraintsApplied(
+      @Nonnull final List<Message> promptMessages,
+      @Nonnull final PromptCachingConfig cachingConfig) {
     var outputMessages = new ArrayList<Message>(promptMessages.size());
     var remainingCacheableCheckpoints = cachingConfig.getMaxCheckpointsPerRequest();
     for (int i = 0; i < promptMessages.size(); i++) {
@@ -150,13 +148,19 @@ final class ConfigToRequestTransformer {
             if (remainingCacheableCheckpoints <= 0 || !messageSupportsCache) {
               // skipping text control if there is already too many cache checkpoints
               contentItem = new TextItem(textItem.text());
-            } else if (cachingConfig.getMinTokensPerCheckpoint() > textItem.getText().chars().filter(c -> c == ' ').count() + 1) {
+            } else if (cachingConfig.getMinTokensPerCheckpoint()
+                > textItem.getText().chars().filter(c -> c == ' ').count() + 1) {
               // to few tokens to cache, skipping to respect model limitation
               contentItem = new TextItem(textItem.text());
             } else {
               remainingCacheableCheckpoints--;
-              if (!cachingConfig.getSupportedTTLValues().matcher(existingCacheControl.getTtl()).matches()) {
-                contentItem = new TextItem(textItem.text(), new CacheControl(cachingConfig.getDefaultTTLValue()));
+              if (!cachingConfig
+                  .getSupportedTTLValues()
+                  .matcher(existingCacheControl.getTtl())
+                  .matches()) {
+                contentItem =
+                    new TextItem(
+                        textItem.text(), new CacheControl(cachingConfig.getDefaultTTLValue()));
               }
             }
           }

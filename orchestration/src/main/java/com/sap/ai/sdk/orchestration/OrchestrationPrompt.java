@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Value;
@@ -43,7 +42,8 @@ public class OrchestrationPrompt {
    * @param message A user message.
    * @param cacheControl optional cache checkpoint configuration
    */
-  public OrchestrationPrompt(@Nonnull final String message, @Nullable final CacheControl cacheControl) {
+  public OrchestrationPrompt(
+      @Nonnull final String message, @Nullable final CacheControl cacheControl) {
     messages.add(new UserMessage(message, cacheControl));
   }
 
