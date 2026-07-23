@@ -2,6 +2,7 @@ package com.sap.ai.sdk.core;
 
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /** Allows to configure turn detection (how model responds). */
 public final class RealtimeParamTurnDetection implements RealtimeParam {
@@ -20,7 +21,7 @@ public final class RealtimeParamTurnDetection implements RealtimeParam {
 
   private final String turnDetectionKind;
 
-  private RealtimeParamTurnDetection(String turnDetectionKind) {
+  private RealtimeParamTurnDetection(final String turnDetectionKind) {
     this.turnDetectionKind = turnDetectionKind;
   }
 
@@ -35,9 +36,11 @@ public final class RealtimeParamTurnDetection implements RealtimeParam {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass()) return false;
-    RealtimeParamTurnDetection that = (RealtimeParamTurnDetection) o;
+  public boolean equals(@Nullable final Object o) {
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    final RealtimeParamTurnDetection that = (RealtimeParamTurnDetection) o;
     return Objects.equals(turnDetectionKind, that.turnDetectionKind);
   }
 

@@ -2,6 +2,7 @@ package com.sap.ai.sdk.core;
 
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /** Allows to configure model output voice */
 public final class RealtimeParamVoice implements RealtimeParam {
@@ -14,7 +15,7 @@ public final class RealtimeParamVoice implements RealtimeParam {
 
   private final String voice;
 
-  private RealtimeParamVoice(@Nonnull String voice) {
+  private RealtimeParamVoice(@Nonnull final String voice) {
     this.voice = voice;
   }
 
@@ -25,7 +26,8 @@ public final class RealtimeParamVoice implements RealtimeParam {
    * @param voiceName as named by model provider
    * @return typed voice client configuration param
    */
-  public static RealtimeParamVoice unsafeWithExplicitVoice(String voiceName) {
+  @Nonnull
+  public static RealtimeParamVoice unsafeWithExplicitVoice(@Nonnull final String voiceName) {
     return new RealtimeParamVoice(voiceName);
   }
 
@@ -40,9 +42,11 @@ public final class RealtimeParamVoice implements RealtimeParam {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass()) return false;
-    RealtimeParamVoice that = (RealtimeParamVoice) o;
+  public boolean equals(@Nullable final Object o) {
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    final RealtimeParamVoice that = (RealtimeParamVoice) o;
     return Objects.equals(voice, that.voice);
   }
 
