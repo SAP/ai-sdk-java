@@ -102,7 +102,7 @@
     <!--  Binary compatibility check old/new version file -->
     <japicmp.oldVersion.file>/tmp/baseline.jar</japicmp.oldVersion.file>
     <japicmp.newVersion.file>${project.build.directory}/${project.build.finalName}.jar</japicmp.newVersion.file>
-    <kotlin.stdlib.jdk8.version>1.8.10</kotlin.stdlib.jdk8.version>
+    <kotlin.stdlib.jdk8.version>1.9.10</kotlin.stdlib.jdk8.version>
   </properties>
 
   <dependencyManagement>
@@ -178,6 +178,16 @@
         <!-->Used by openai-java, but has to be overridden because of versioning issues<-->
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-stdlib-jdk8</artifactId>
+        <version>${kotlin.stdlib.jdk8.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
+        <version>${kotlin.stdlib.jdk8.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-common</artifactId>
         <version>${kotlin.stdlib.jdk8.version}</version>
       </dependency>
       <dependency>
