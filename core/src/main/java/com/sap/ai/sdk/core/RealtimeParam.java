@@ -4,16 +4,13 @@ import javax.annotation.Nonnull;
 
 /** Represents possible configuration params of realtime client */
 public interface RealtimeParam {
-  /**
-   * Represents configurable options
-   */
+  /** Represents configurable options */
   enum SpeechOutputParamName {
-    /**
-     * Voice name to use to produce sound
-     */
+    /** Voice name to use to produce sound */
     VOICE,
     /**
-     * How model will recognize that it is its turn to respond (e.g. explicitly asked, automatically detected)
+     * How model will recognize that it is its turn to respond (e.g. explicitly asked, automatically
+     * detected)
      */
     TURN_DETECTION,
   }
