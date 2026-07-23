@@ -87,17 +87,14 @@ class OrchestrationReasoningContentTest {
   }
 
   @Test
-  void getReasoningTextJoinsBlocksWithDelimiter() throws Exception {
+  void getReasoningTextConcatenatesMultipleBlocks() throws Exception {
     val response =
         parseSyncResponse(
             ", \"reasoning_content\": ["
                 + "{\"content\": \"first\", \"signature\": \"sig-a\"},"
                 + "{\"content\": \"second\", \"signature\": \"sig-b\"}]");
 
-    // No-arg overload defaults to an empty delimiter.
-    assertThat(response.getReasoningText()).isEqualTo("firstsecond");
-    // Explicit delimiter is placed between blocks.
-    assertThat(response.getReasoningText("\n\n")).isEqualTo("first\n\nsecond");
+    assertThat(response.getReasoningText()).isEqualTo("first second");
   }
 
   @Test

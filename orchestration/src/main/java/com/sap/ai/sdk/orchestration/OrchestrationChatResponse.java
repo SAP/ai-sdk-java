@@ -70,31 +70,18 @@ public class OrchestrationChatResponse {
   }
 
   /**
-   * Get the reasoning (thinking) content as a single joined string, for display purposes. The
-   * reasoning blocks are concatenated with no separator between them.
+   * Get the reasoning (thinking) content produced by the model, as text, for display purposes. When
+   * the model returns multiple reasoning blocks, they are joined with a single space.
    *
-   * @return the concatenated reasoning text; empty if there is no reasoning.
-   * @see #getReasoningText(String)
-   */
-  @Nonnull
-  public String getReasoningText() {
-    return getReasoningText("");
-  }
-
-  /**
-   * Get the reasoning (thinking) content as a single joined string, for display purposes, with the
-   * reasoning blocks separated by the given delimiter.
-   *
-   * @param delimiter the delimiter to place between reasoning blocks.
-   * @return the joined reasoning text; empty if there is no reasoning.
+   * @return the reasoning text; empty if there is no reasoning.
    * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
    *     Orchestration - Reasoning</a>
    */
   @Nonnull
-  public String getReasoningText(@Nonnull final String delimiter) {
+  public String getReasoningText() {
     return getChoice().getMessage().getReasoningContent().stream()
         .map(ReasoningBlock::getContent)
-        .collect(Collectors.joining(delimiter));
+        .collect(Collectors.joining(" "));
   }
 
   /**
