@@ -3,10 +3,11 @@ name: 'Dependabot Auto-Merge'
 on:
   workflow_dispatch:
   schedule:
-    - cron: '00 01 * * *' # trigger daily at 01:00 a.m.
+    - cron: '13 10 * * *' # trigger daily at 10:13
 
 env:
   DEPENDABOT_GROUPS: |
+    production-major group
     production-minor-patch group
     plugins group
     test group
@@ -15,9 +16,9 @@ jobs:
   review-prs:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: read # all write operations use app token
     steps:
-      - name: Generate GitHub App token
+      - name: 'Create GitHub App Token'
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
@@ -25,15 +26,13 @@ jobs:
           private-key: ${{ secrets.SAP_AI_SDK_BOT_PRIVATE_KEY }}
           owner: SAP
           repositories: ai-sdk-java
-          permission-pull-requests: write
           permission-contents: write
+          permission-pull-requests: write
 
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Approve and Merge PRs
-        env:
-          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+      - name: 'Approve and Merge PRs'
         run: |
           PRS=$(gh pr list --app "dependabot" --state "open" --json number,title)
           PR_NUMBERS=
@@ -53,8 +52,10 @@ jobs:
             if [[ -z "$PR_NUMBER" ]]; then
               continue
             fi
-            
+
             echo "[DEBUG] Approving and Merging PR #$PR_NUMBER"
             gh pr merge "$PR_NUMBER" --auto --squash
             gh pr review "$PR_NUMBER" --approve
           done <<< "$PR_NUMBERS"
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
