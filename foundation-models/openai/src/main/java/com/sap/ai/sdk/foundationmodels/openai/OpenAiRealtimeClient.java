@@ -8,8 +8,8 @@ import java.util.HashMap;
 import javax.annotation.Nonnull;
 
 /**
- * OpenAI client implementation of Realtime API. Abstracts technical implementation,
- * transport and threading and exposes business-level operations (high level interface)
+ * OpenAI client implementation of Realtime API. Abstracts technical implementation, transport and
+ * threading and exposes business-level operations (high level interface)
  */
 public class OpenAiRealtimeClient {
 
@@ -45,8 +45,8 @@ public class OpenAiRealtimeClient {
    *
    * @param audioOutputConsumer - audio consumer of raw PCM mono 24000 Hz little endian output, 16
    *     bit depth
-   * @param params - allows for various additional features (e.g. voice configuration or conversation
-   *               turn recognition options)
+   * @param params - allows for various additional features (e.g. voice configuration or
+   *     conversation turn recognition options)
    * @return input channel, allowing for text input
    */
   @Nonnull
