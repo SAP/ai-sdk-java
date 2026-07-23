@@ -175,7 +175,7 @@
         <version>${httpcomponents-core5.version}</version>
       </dependency>
       <dependency>
-        <!-->Used by openai-java, but has to be overridden because of versioning issues<-->
+        <!-->Pinned to align all kotlin-stdlib transitive versions pulled via openai-java and okio<-->
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-stdlib-jdk8</artifactId>
         <version>${kotlin.stdlib.jdk8.version}</version>

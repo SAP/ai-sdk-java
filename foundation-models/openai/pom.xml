@@ -71,13 +71,9 @@
       <artifactId>core</artifactId>
     </dependency>
     <dependency>
-      <!-->Used by openai-java, but has to be overridden because of versioning issues<-->
-      <groupId>org.jetbrains.kotlin</groupId>
-      <artifactId>kotlin-stdlib-jdk8</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.openai</groupId>
       <artifactId>openai-java</artifactId>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
