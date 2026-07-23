@@ -1455,6 +1455,8 @@
                         Realtime API allows for various real time interactions <a
                             href="https://todo.todo"
                             target="_blank">TBD Documentation</a>
+                        In these examples, web socket sessions are created and used
+                        to send text/audio to the local server and receive audio back
                     </div>
                     <div class="card-body">
                         <ul class="list-group">
@@ -1467,6 +1469,9 @@
                                         <input type="text" id="text-to-speech-input" placeholder="enter text" disabled>
                                         <button id="text-to-speech-send-btn" type="button" disabled>Send</button>
                                     </div>
+                                    <div class="tooltip-content">
+                                        Translate input text into output sound (speech).
+                                    </div>
                                 </div>
                                 <script src="text-to-speech.js"></script>
                             </li>
@@ -1477,6 +1482,9 @@
                                     <div><span id="speech-to-speech-mic-status">disabled</span></div>
                                     <div class="input-group">
                                         <button id="speech-to-speech-btn" type="button">Start</button>
+                                    </div>
+                                    <div class="tooltip-content">
+                                        Speak with an AI assistant.
                                     </div>
                                 </div>
                                 <script src="speech-to-speech.js"></script>
