@@ -102,7 +102,7 @@
     <!--  Binary compatibility check old/new version file -->
     <japicmp.oldVersion.file>/tmp/baseline.jar</japicmp.oldVersion.file>
     <japicmp.newVersion.file>${project.build.directory}/${project.build.finalName}.jar</japicmp.newVersion.file>
-    <kotlin.stdlib.jdk8.version>1.9.10</kotlin.stdlib.jdk8.version>
+    <kotlin.stdlib.jdk8.version>1.8.10</kotlin.stdlib.jdk8.version>
   </properties>
 
   <dependencyManagement>
