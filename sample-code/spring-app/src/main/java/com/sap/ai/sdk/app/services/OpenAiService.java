@@ -132,6 +132,7 @@ public class OpenAiService {
    * @return input channel, allowing for audio data input (bytes, PCM mono 24000 Hz little endian 16
    *     bit)
    */
+  @Nonnull
   public AudioInputChannel speechToSpeech(@Nonnull final AudioOutputChannel audioOutputConsumer) {
     return OpenAiClient.realtimeClient().speechToSpeech(audioOutputConsumer);
   }

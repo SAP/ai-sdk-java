@@ -7,6 +7,8 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
+import javax.annotation.Nonnull;
+
 /** Implements spring Web Socket configuration to expose Web Socket handlers for Realtime API */
 @Configuration
 @EnableWebSocket
@@ -21,7 +23,9 @@ public class WebsocketConfig implements WebSocketConfigurer {
    * @param speechToSpeech - speech to speech realtime api handler
    */
   public WebsocketConfig(
-      TextToSpeechWebsocketHandler textToSpeech, SpeechToSpeechWebsocketHandler speechToSpeech) {
+          @Nonnull final TextToSpeechWebsocketHandler textToSpeech,
+          @Nonnull final SpeechToSpeechWebsocketHandler speechToSpeech
+  ) {
     this.textToSpeech = textToSpeech;
     this.speechToSpeech = speechToSpeech;
   }
@@ -32,7 +36,7 @@ public class WebsocketConfig implements WebSocketConfigurer {
    * @param registry - registry where to register handlers
    */
   @Override
-  public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+  public void registerWebSocketHandlers(@Nonnull final WebSocketHandlerRegistry registry) {
     registry.addHandler(textToSpeech, "/text-to-speech");
     registry.addHandler(speechToSpeech, "/speech-to-speech");
   }

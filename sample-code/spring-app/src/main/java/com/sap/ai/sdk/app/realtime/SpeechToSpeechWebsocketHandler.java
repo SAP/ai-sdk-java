@@ -29,16 +29,22 @@ public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {
    * @param service - handling service
    */
   @Autowired
-  public SpeechToSpeechWebsocketHandler(OpenAiService service) {
+  public SpeechToSpeechWebsocketHandler(@Nonnull final OpenAiService service) {
     this.service = service;
     channels = new ConcurrentHashMap<>();
   }
 
   @Override
-  protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
-    ByteBuffer payload = message.getPayload();
-    byte[] chunkBytes = payload.array();
-    AudioInputChannel channel =
+  // The channel MUST NOT be closed here, its lifecycle is managed by the WebSocket container (RAII)
+  // closing performed in afterConnectionClosed method
+  @SuppressWarnings("PMD.CloseResource")
+  protected void handleBinaryMessage(
+          @Nonnull final WebSocketSession session,
+          @Nonnull final BinaryMessage message
+  ) {
+    final ByteBuffer payload = message.getPayload();
+    final byte[] chunkBytes = payload.array();
+    final AudioInputChannel channel =
         channels.computeIfAbsent(
             session.getId(),
             sessionId ->
@@ -46,7 +52,7 @@ public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {
                     (rawBytesChunk, isLast) -> {
                       try {
                         session.sendMessage(new BinaryMessage(rawBytesChunk, isLast));
-                      } catch (IOException e) {
+                      } catch (final IOException e) {
                         log.error("failed to send audio data to realtime api", e);
                       }
                     }));
@@ -54,14 +60,15 @@ public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {
   }
 
   @Override
-  public void afterConnectionClosed(WebSocketSession session, @Nonnull CloseStatus status)
-      throws Exception {
+  public void afterConnectionClosed(@Nonnull final WebSocketSession session,
+                                    @Nonnull final CloseStatus status
+  ) throws Exception {
     channels.computeIfPresent(
         session.getId(),
         (sessionId, inputChannel) -> {
           try {
             inputChannel.close();
-          } catch (Exception e) {
+          } catch (final Exception e) {
             log.warn("failed to close input channel for session {}", sessionId, e);
           }
           return null;
