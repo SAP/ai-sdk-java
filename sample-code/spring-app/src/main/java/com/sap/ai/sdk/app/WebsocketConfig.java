@@ -17,6 +17,11 @@ public class WebsocketConfig implements WebSocketConfigurer {
   private final TextToSpeechWebsocketHandler textToSpeech;
   private final SpeechToSpeechWebsocketHandler speechToSpeech;
 
+  /**
+   * Constructs configuration object
+   * @param textToSpeech - text to speech realtime api handler
+   * @param speechToSpeech - speech to speech realtime api handler
+   */
   public WebsocketConfig(
       TextToSpeechWebsocketHandler textToSpeech, SpeechToSpeechWebsocketHandler speechToSpeech) {
     this.textToSpeech = textToSpeech;
