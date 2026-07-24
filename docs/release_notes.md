@@ -19,6 +19,7 @@
 
 - [OpenAI] You can now add multiple custom headers to an `OpenAiClient` at once via `.withHeaders()`.
 - [Orchestration] Added `GEMINI_3_1_PRO_PREVIEW_EA` to model list in `OrchestrationAiModel`.
+- [Orchestration] Reasoning content is now supported for users through `OrchestrationChatResponse.getReasoningText()` and `OrchestrationChatCompletionDelta.getDeltaReasoningText()` to see the thinking processes when using the reasoning models.
 
 ### 📈 Improvements
 

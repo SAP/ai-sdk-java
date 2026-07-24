@@ -10,6 +10,7 @@ import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
 import com.sap.ai.sdk.orchestration.model.LLMChoice;
+import com.sap.ai.sdk.orchestration.model.ReasoningBlock;
 import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
@@ -18,6 +19,7 @@ import io.vavr.control.Try;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -68,6 +70,21 @@ public class OrchestrationChatResponse {
   }
 
   /**
+   * Get the reasoning (thinking) content produced by the model, as text, for display purposes. When
+   * the model returns multiple reasoning blocks, they are joined with a single space.
+   *
+   * @return the reasoning text; empty if there is no reasoning.
+   * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
+   *     Orchestration - Reasoning</a>
+   */
+  @Nonnull
+  public String getReasoningText() {
+    return getChoice().getMessage().getReasoningContent().stream()
+        .map(ReasoningBlock::getContent)
+        .collect(Collectors.joining(" "));
+  }
+
+  /**
    * Get all messages. This can be used for subsequent prompts as a message history.
    *
    * @throws IllegalArgumentException if the MultiChatMessage type message in chat.
@@ -80,13 +97,19 @@ public class OrchestrationChatResponse {
         originalResponse.getIntermediateResults().getTemplating()) {
       if (chatMessage instanceof AssistantChatMessage assistantChatMessage) {
         val toolCalls = assistantChatMessage.getToolCalls();
+        AssistantMessage assistantMessage;
         if (!toolCalls.isEmpty()) {
-          messages.add(new AssistantMessage(toolCalls));
+          assistantMessage = new AssistantMessage(toolCalls);
         } else {
-          messages.add(
+          assistantMessage =
               new AssistantMessage(
-                  MessageContent.fromChatMessageContent(assistantChatMessage.getContent())));
+                  MessageContent.fromChatMessageContent(assistantChatMessage.getContent()));
         }
+        final var reasoning = assistantChatMessage.getReasoningContent();
+        if (!reasoning.isEmpty()) {
+          assistantMessage = assistantMessage.withReasoningContent(reasoning);
+        }
+        messages.add(assistantMessage);
       } else if (chatMessage instanceof SystemChatMessage systemChatMessage) {
         messages.add(
             new SystemMessage(
@@ -106,7 +129,12 @@ public class OrchestrationChatResponse {
       }
     }
 
-    messages.add(Message.assistant(getChoice().getMessage().getContent()));
+    var lastAssistant = Message.assistant(getChoice().getMessage().getContent());
+    final var lastReasoning = getChoice().getMessage().getReasoningContent();
+    if (!lastReasoning.isEmpty()) {
+      lastAssistant = lastAssistant.withReasoningContent(lastReasoning);
+    }
+    messages.add(lastAssistant);
     return messages;
   }
 

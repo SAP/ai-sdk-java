@@ -6,30 +6,38 @@ import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.MessageToolCall;
+import com.sap.ai.sdk.orchestration.model.ReasoningBlock;
 import com.sap.ai.sdk.orchestration.model.TextContent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.experimental.Accessors;
 import lombok.val;
 
 /** Represents a chat message as 'assistant' to the orchestration service. */
 @Value
-@Getter
 @Accessors(fluent = true)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class AssistantMessage implements Message {
 
   /** The role of the assistant. */
   @Nonnull String role = "assistant";
 
   /** The content of the message. */
-  @Nonnull @Getter MessageContent content;
+  @Nonnull MessageContent content;
 
   /** Tool call if there is any. */
   @Nullable List<MessageToolCall> toolCalls;
+
+  /** Reasoning (thinking) blocks from the model's previous turn. */
+  @Getter(AccessLevel.NONE)
+  @Nullable
+  List<ReasoningBlock> reasoningContent;
 
   /**
    * Creates a new assistant message with the given single message.
@@ -39,6 +47,7 @@ public class AssistantMessage implements Message {
   public AssistantMessage(@Nonnull final String singleMessage) {
     content = new MessageContent(List.of(new TextItem(singleMessage)));
     toolCalls = null;
+    reasoningContent = null;
   }
 
   /**
@@ -49,6 +58,7 @@ public class AssistantMessage implements Message {
   AssistantMessage(@Nonnull final MessageContent content) {
     this.content = content;
     toolCalls = null;
+    reasoningContent = null;
   }
 
   /**
@@ -61,12 +71,7 @@ public class AssistantMessage implements Message {
   public AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
     content = new MessageContent(List.of());
     this.toolCalls = toolCalls;
-  }
-
-  private AssistantMessage(
-      @Nonnull final MessageContent content, @Nullable final List<MessageToolCall> toolCalls) {
-    this.content = content;
-    this.toolCalls = toolCalls;
+    reasoningContent = null;
   }
 
   /**
@@ -81,7 +86,18 @@ public class AssistantMessage implements Message {
   public AssistantMessage withToolCalls(@Nonnull final List<MessageToolCall> toolCalls) {
     val newToolcalls = new ArrayList<>(this.toolCalls != null ? this.toolCalls : List.of());
     newToolcalls.addAll(toolCalls);
-    return new AssistantMessage(this.content, newToolcalls);
+    return new AssistantMessage(this.content, newToolcalls, this.reasoningContent);
+  }
+
+  /**
+   * Returns a new AssistantMessage instance carrying the given reasoning blocks.
+   *
+   * @param reasoningContent the reasoning blocks from the previous assistant turn.
+   * @return a new AssistantMessage instance with the reasoning content set.
+   */
+  @Nonnull
+  AssistantMessage withReasoningContent(@Nonnull final List<ReasoningBlock> reasoningContent) {
+    return new AssistantMessage(this.content, this.toolCalls, List.copyOf(reasoningContent));
   }
 
   @Nonnull
@@ -91,6 +107,10 @@ public class AssistantMessage implements Message {
 
     if (toolCalls != null) {
       assistantChatMessage.setToolCalls(toolCalls);
+    }
+
+    if (reasoningContent != null) {
+      assistantChatMessage.setReasoningContent(reasoningContent);
     }
 
     ChatMessageContent text;

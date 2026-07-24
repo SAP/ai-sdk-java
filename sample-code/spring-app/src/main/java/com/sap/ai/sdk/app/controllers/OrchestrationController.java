@@ -2,6 +2,8 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
@@ -41,6 +43,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 @RequestMapping("/orchestration")
 class OrchestrationController {
+  private static final ObjectMapper MAPPER = new ObjectMapper();
+
   @Autowired private OrchestrationService service;
 
   @Value("classpath:promptTemplateExample.yaml")
@@ -64,6 +68,93 @@ class OrchestrationController {
         () -> {
           try (stream) {
             stream.forEach(deltaMessage -> send(emitter, deltaMessage));
+          } finally {
+            emitter.complete();
+          }
+        };
+
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
+
+    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+  }
+
+  @GetMapping("/reasoning")
+  Object reasoning(
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @RequestParam(value = "topic", defaultValue = "Why is the sky blue?") final String topic) {
+    final var response = service.reasoning(topic);
+    if ("json".equals(format)) {
+      return response;
+    }
+    return formatReasoning(response);
+  }
+
+  @GetMapping("/multiTurnReasoning")
+  Object multiTurnReasoning(
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @RequestParam(value = "first", defaultValue = "What is 6 times 7?") final String first,
+      @RequestParam(value = "followUp", defaultValue = "Are you sure?") final String followUp) {
+    final var response = service.multiTurnReasoning(first, followUp);
+    if ("json".equals(format)) {
+      return response;
+    }
+    return formatReasoning(response);
+  }
+
+  @Nonnull
+  private static String formatReasoning(
+      @Nonnull final OrchestrationService.ReasoningOutput response) {
+    final var content = new StringBuilder();
+    if (!response.reasoning().isEmpty()) {
+      content.append("----REASONING----\n").append(response.reasoning()).append("\n\n");
+    }
+    content.append("-----ANSWER-----\n").append(response.answer());
+    return content.toString();
+  }
+
+  private static void sendJsonLine(
+      @Nonnull final ResponseBodyEmitter emitter,
+      @Nonnull final OrchestrationService.ReasoningOutput chunk) {
+    try {
+      send(emitter, MAPPER.writeValueAsString(chunk) + "\n");
+    } catch (final JsonProcessingException e) {
+      log.error("Failed to serialize reasoning chunk to JSON", e);
+    }
+  }
+
+  @GetMapping("/streamReasoning")
+  ResponseEntity<ResponseBodyEmitter> streamReasoning(
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @RequestParam(value = "topic", defaultValue = "Why is the sky blue?") final String topic) {
+    final var emitter = new ResponseBodyEmitter();
+    final var json = "json".equals(format);
+    final Runnable consumeStream =
+        () -> {
+          final var lastLabel = new String[] {""};
+
+          try (var stream = service.streamReasoning(topic)) {
+            stream.forEach(
+                chunk -> {
+                  if (json) {
+                    sendJsonLine(emitter, chunk);
+                    return;
+                  }
+                  if (!chunk.answer().isEmpty()) {
+                    if (!"answer".equals(lastLabel[0])) {
+                      send(emitter, "\n-----ANSWER-----\n");
+                      lastLabel[0] = "answer";
+                    }
+                    send(emitter, chunk.answer());
+                  }
+                  if (!chunk.reasoning().isEmpty()) {
+                    if (!"reasoning".equals(lastLabel[0])) {
+                      send(emitter, "\n----REASONING----\n");
+                      lastLabel[0] = "reasoning";
+                    }
+                    send(emitter, chunk.reasoning());
+                  }
+                });
           } finally {
             emitter.complete();
           }
