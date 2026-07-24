@@ -15,6 +15,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
@@ -161,7 +162,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     if (ws.isInputClosed()) {
       return;
     }
-    ws.sendPing(ByteBuffer.wrap("ping".getBytes())).join();
+    ws.sendPing(ByteBuffer.wrap("ping".getBytes(StandardCharsets.UTF_8))).join();
     ws.request(1);
   }
 
