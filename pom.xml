@@ -65,7 +65,7 @@
     <checkstyle.version>13.6.0</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.6</surefire.version>
-    <spring-ai.version>1.1.8</spring-ai.version>
+    <spring-ai.version>2.0.0</spring-ai.version>
     <reactor-core.version>3.8.6</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.23.0</mockito.version>
@@ -79,7 +79,7 @@
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.3</httpcomponents-core5.version>
     <micrometer.version>1.17.0</micrometer.version>
-    <json.version>20260522</json.version>
+    <json.version>20260719</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <!-- Formatting -->
     <spotless.version>3.8.0</spotless.version>
