@@ -26,6 +26,7 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChat
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
+import com.sap.ai.sdk.foundationmodels.openai.realtime.OpenAiRealtimeClient;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -74,6 +75,18 @@ public final class OpenAiClient {
 
     final var client = new OpenAiClient(destination);
     return client.withApiVersion(DEFAULT_API_VERSION);
+  }
+
+  /**
+   * Creates and configures OpenAI Realtime API client
+   *
+   * @return created client
+   */
+  @Beta
+  @Nonnull
+  public static OpenAiRealtimeClient realtimeClient() {
+    final var withResolvedDestination = OpenAiClient.forModel(OpenAiModel.GPT_REALTIME);
+    return new OpenAiRealtimeClient(withResolvedDestination.destination);
   }
 
   /**

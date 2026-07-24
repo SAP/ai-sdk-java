@@ -66,6 +66,7 @@
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.6</surefire.version>
     <spring-ai.version>1.1.8</spring-ai.version>
+    <openai-java.version>4.41.0</openai-java.version>
     <reactor-core.version>3.8.6</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.23.0</mockito.version>
@@ -101,6 +102,7 @@
     <!--  Binary compatibility check old/new version file -->
     <japicmp.oldVersion.file>/tmp/baseline.jar</japicmp.oldVersion.file>
     <japicmp.newVersion.file>${project.build.directory}/${project.build.finalName}.jar</japicmp.newVersion.file>
+    <kotlin.stdlib.jdk8.version>1.9.10</kotlin.stdlib.jdk8.version>
   </properties>
 
   <dependencyManagement>
@@ -166,6 +168,22 @@
         <groupId>org.apache.httpcomponents.core5</groupId>
         <artifactId>httpcore5</artifactId>
         <version>${httpcomponents-core5.version}</version>
+      </dependency>
+      <dependency>
+        <!-->Pinned to align all kotlin-stdlib transitive versions pulled via openai-java and okio<-->
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-jdk8</artifactId>
+        <version>${kotlin.stdlib.jdk8.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
+        <version>${kotlin.stdlib.jdk8.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-common</artifactId>
+        <version>${kotlin.stdlib.jdk8.version}</version>
       </dependency>
       <dependency>
         <groupId>io.micrometer</groupId>
@@ -272,11 +290,6 @@
       <dependency>
         <groupId>com.openai</groupId>
         <artifactId>openai-java-core</artifactId>
-        <version>${openai-java.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.openai</groupId>
-        <artifactId>openai-java</artifactId>
         <version>${openai-java.version}</version>
       </dependency>
     </dependencies>
