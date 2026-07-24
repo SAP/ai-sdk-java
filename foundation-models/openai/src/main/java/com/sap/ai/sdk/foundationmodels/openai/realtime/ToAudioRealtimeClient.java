@@ -38,13 +38,13 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
     super(url, httpHeaders, HANDLED_RESPONSE_TYPES);
     var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
     for (final RealtimeParam param : params) {
-        if (param.getParamName() == RealtimeParam.SpeechOutputParamName.VOICE) {
-            if (RealtimeParamVoice.DEFAULT_2.equals(param)) {
-                voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
-            } else if (RealtimeParamVoice.DEFAULT_1.equals(param)) {
-                voice = RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO;
-            }
+      if (param.getParamName() == RealtimeParam.SpeechOutputParamName.VOICE) {
+        if (RealtimeParamVoice.DEFAULT_2.equals(param)) {
+          voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
+        } else if (RealtimeParamVoice.DEFAULT_1.equals(param)) {
+          voice = RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO;
         }
+      }
     }
     this.outputConsumer = outputConsumer;
     this.voice = voice;
