@@ -139,7 +139,7 @@ class OrchestrationReasoningContentTest {
             0, ", \"reasoning_content\": [{\"content\": \"chunk\", \"signature\": \"\"}]");
 
     assertThat(delta.getDeltaContent()).isEqualTo("hello");
-    assertThat(delta.getDeltaReasoningContent()).isEqualTo("chunk");
+    assertThat(delta.getDeltaReasoningText()).isEqualTo("chunk");
   }
 
   @Test
@@ -149,7 +149,7 @@ class OrchestrationReasoningContentTest {
             1, ", \"reasoning_content\": [{\"content\": \"x\", \"signature\": \"\"}]");
 
     assertThat(delta.getDeltaContent()).isEmpty();
-    assertThat(delta.getDeltaReasoningContent()).isEmpty();
+    assertThat(delta.getDeltaReasoningText()).isEmpty();
   }
 
   private static @Nonnull OrchestrationChatResponse parseSyncResponse(

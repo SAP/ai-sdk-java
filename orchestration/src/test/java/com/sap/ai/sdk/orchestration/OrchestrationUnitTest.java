@@ -1764,8 +1764,8 @@ class OrchestrationUnitTest {
             if (!delta.getDeltaContent().isEmpty()) {
               answerChunks.add(delta.getDeltaContent());
             }
-            if (!delta.getDeltaReasoningContent().isEmpty()) {
-              reasoningChunks.add(delta.getDeltaReasoningContent());
+            if (!delta.getDeltaReasoningText().isEmpty()) {
+              reasoningChunks.add(delta.getDeltaReasoningText());
             }
           });
     }

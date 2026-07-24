@@ -223,7 +223,7 @@ public class OrchestrationService {
         .streamChatCompletionDeltas(request)
         .map(
             delta ->
-                new ReasoningOutput(delta.getDeltaContent(), delta.getDeltaReasoningContent()));
+                new ReasoningOutput(delta.getDeltaContent(), delta.getDeltaReasoningText()));
   }
 
   /**

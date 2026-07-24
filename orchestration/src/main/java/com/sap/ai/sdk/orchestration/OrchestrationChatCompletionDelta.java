@@ -37,7 +37,7 @@ public class OrchestrationChatCompletionDelta extends CompletionPostResponseStre
    *     Orchestration - Reasoning</a>
    */
   @Nonnull
-  public String getDeltaReasoningContent() {
+  public String getDeltaReasoningText() {
     val choices = getFinalResult().getChoices();
     if (!choices.isEmpty() && choices.get(0).getIndex() == 0) {
       return choices.get(0).getDelta().getReasoningContent().stream()
