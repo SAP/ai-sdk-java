@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.Nonnull;
+
 @Slf4j
 abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
 
@@ -29,9 +31,9 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
   private final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
 
   public ToAudioRealtimeClient(
-      String url,
-      Map<String, String> httpHeaders,
-      AudioOutputChannel outputConsumer,
+      @Nonnull final String url,
+      @Nonnull final Map<String, String> httpHeaders,
+      @Nonnull final AudioOutputChannel outputConsumer,
       RealtimeParam... params) {
     super(url, httpHeaders, HANDLED_RESPONSE_TYPES);
     var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
@@ -50,13 +52,14 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
     this.voice = voice;
   }
 
+  @Nonnull
   protected abstract RealtimeAudioConfigInput inputConfig();
 
   @Override
-  protected void onResponse(String eventType, JsonNode event) {
+  protected void onResponse(@Nonnull final String eventType, @Nonnull final JsonNode event) {
     if ("response.output_audio.delta".equals(eventType)) {
-      var base64Audio = event.get("delta").asText();
-      byte[] audio = Base64.getDecoder().decode(base64Audio);
+      final var base64Audio = event.get("delta").asText();
+      final byte[] audio = Base64.getDecoder().decode(base64Audio);
       this.outputConsumer.outputAudio(audio, Boolean.FALSE);
     } else if ("response.output_audio.done".equals(eventType)) {
       this.outputConsumer.outputAudio(EMPTY_BYTE_ARRAY, Boolean.TRUE);
@@ -66,6 +69,7 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
   }
 
   @Override
+  @Nonnull
   protected SessionUpdateEvent sessionConfiguration() {
     return SessionUpdateEvent.builder()
         .session(

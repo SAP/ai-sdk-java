@@ -3,8 +3,11 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.openai.models.realtime.*;
 import com.sap.ai.sdk.core.RealtimeParam;
 import com.sap.ai.sdk.core.RealtimeParamTurnDetection;
-import java.util.*;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.annotation.Nonnull;
+import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextInputChannel {
@@ -16,9 +19,9 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
   private final boolean eagerTurnDetection;
 
   public TextToSpeechRealtimeClient(
-      String url,
-      Map<String, String> httpHeaders,
-      AudioOutputChannel outputConsumer,
+      @Nonnull final String url,
+      @Nonnull final Map<String, String> httpHeaders,
+      @Nonnull final AudioOutputChannel outputConsumer,
       RealtimeParam... params) {
     super(url, httpHeaders, outputConsumer, params);
     var turnDetectionEager = true;
@@ -35,6 +38,7 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
   }
 
   @Override
+  @Nonnull
   protected RealtimeAudioConfigInput inputConfig() {
     return RealtimeAudioConfigInput.builder()
         .turnDetection(Optional.empty())
@@ -46,8 +50,8 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
         .build();
   }
 
-  public void sendText(String text) {
-    var message =
+  public void sendText(@Nonnull final String text) {
+    final var message =
         ConversationItemCreateEvent.builder()
             .item(
                 ConversationItem.ofRealtimeConversationItemUserMessage(
@@ -67,6 +71,7 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
   }
 
   @Override
+  @Nonnull
   protected String getSystemPrompt() {
     return TASK;
   }

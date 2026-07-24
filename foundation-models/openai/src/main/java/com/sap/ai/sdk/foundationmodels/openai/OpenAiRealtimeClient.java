@@ -18,7 +18,7 @@ public class OpenAiRealtimeClient {
 
   private final Destination destination;
 
-  OpenAiRealtimeClient(Destination destination) {
+  OpenAiRealtimeClient(@Nonnull final Destination destination) {
     this.destination = destination;
   }
 
@@ -53,12 +53,12 @@ public class OpenAiRealtimeClient {
   @Beta
   public TextInputChannel textToSpeech(
       @Nonnull final AudioOutputChannel audioOutputConsumer, RealtimeParam... params) {
-    var extraHeaders = destination.asHttp().getHeaders();
-    var headers = new HashMap<String, String>(extraHeaders.size() + 1);
+    final var extraHeaders = destination.asHttp().getHeaders();
+    final var headers = new HashMap<String, String>(extraHeaders.size() + 1);
     for (Header header : extraHeaders) {
       headers.put(header.getName(), header.getValue());
     }
-    var endpoint = getRealtimeEndpoint();
+    final var endpoint = getRealtimeEndpoint();
 
     return new TextToSpeechRealtimeClient(endpoint, headers, audioOutputConsumer, params);
   }
@@ -94,20 +94,20 @@ public class OpenAiRealtimeClient {
   @Beta
   public AudioInputChannel speechToSpeech(
       @Nonnull final AudioOutputChannel audioOutputConsumer, RealtimeParam... params) {
-    var extraHeaders = destination.asHttp().getHeaders();
-    var headers = new HashMap<String, String>(extraHeaders.size() + 1);
+    final var extraHeaders = destination.asHttp().getHeaders();
+    final var headers = new HashMap<String, String>(extraHeaders.size() + 1);
     for (Header header : extraHeaders) {
       headers.put(header.getName(), header.getValue());
     }
-    var endpoint = getRealtimeEndpoint();
+    final var endpoint = getRealtimeEndpoint();
 
     return new SpeechToSpeechRealtimeClient(endpoint, headers, audioOutputConsumer, params);
   }
 
   private String getRealtimeEndpoint() {
-    var sb = new StringBuilder(PATH_BUFFER_SIZE);
+    final var sb = new StringBuilder(PATH_BUFFER_SIZE);
     sb.append("wss://");
-    var pathParts = destination.asHttp().getUri().toString().split("//");
+    final var pathParts = destination.asHttp().getUri().toString().split("//");
     if (pathParts.length != 2) {
       throw new IllegalArgumentException(
           "Invalid destination URI: " + destination.asHttp().getUri());

@@ -82,8 +82,9 @@ public final class OpenAiClient {
    * @return created client
    */
   @Beta
+  @Nonnull
   public static OpenAiRealtimeClient realtimeClient() {
-    var withResolvedDestination = OpenAiClient.forModel(OpenAiModel.GPT_REALTIME);
+    final var withResolvedDestination = OpenAiClient.forModel(OpenAiModel.GPT_REALTIME);
     return new OpenAiRealtimeClient(withResolvedDestination.destination);
   }
 

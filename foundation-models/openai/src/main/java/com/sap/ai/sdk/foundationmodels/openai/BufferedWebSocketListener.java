@@ -8,6 +8,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.annotation.Nonnull;
+
 @Slf4j
 class BufferedWebSocketListener implements WebSocket.Listener {
 
@@ -16,20 +18,25 @@ class BufferedWebSocketListener implements WebSocket.Listener {
   private final StringBuilder buffer;
 
   BufferedWebSocketListener(
-      Consumer<WebSocket> onOpen, BiConsumer<WebSocket, CharSequence> onText) {
+      @Nonnull final Consumer<WebSocket> onOpen, @Nonnull final BiConsumer<WebSocket, CharSequence> onText) {
     this.onOpen = onOpen;
     this.onText = onText;
     this.buffer = new StringBuilder(1024 * 1024);
   }
 
   @Override
-  public void onOpen(WebSocket webSocket) {
+  public void onOpen(@Nonnull final WebSocket webSocket) {
     this.onOpen.accept(webSocket);
     webSocket.request(1);
   }
 
   @Override
-  public CompletionStage<?> onText(WebSocket webSocket, CharSequence data, boolean isLast) {
+  @Nonnull
+  public CompletionStage<?> onText(
+          final @Nonnull WebSocket webSocket,
+          final @Nonnull CharSequence data,
+          final boolean isLast
+  ) {
     buffer.append(data);
     webSocket.request(1);
     if (isLast) {
@@ -42,12 +49,17 @@ class BufferedWebSocketListener implements WebSocket.Listener {
   }
 
   @Override
-  public void onError(WebSocket webSocket, Throwable error) {
+  public void onError(@Nonnull final WebSocket webSocket, @Nonnull final Throwable error) {
     log.error("Websocket error occurred during realtime communication", error);
   }
 
   @Override
-  public CompletionStage<?> onBinary(WebSocket webSocket, ByteBuffer data, boolean isLast) {
+  @Nonnull
+  public CompletionStage<?> onBinary(
+          @Nonnull final WebSocket webSocket,
+          @Nonnull final ByteBuffer data,
+          final boolean isLast
+  ) {
     log.warn("Received unexpected binary bytes for WebSocket connection");
     return CompletableFuture.completedStage(null);
   }
