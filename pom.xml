@@ -123,11 +123,6 @@
       </dependency>
       <!-- scope "compile" -->
       <dependency>
-        <groupId>com.openai</groupId>
-        <artifactId>openai-java</artifactId>
-        <version>${openai-java.version}</version>
-      </dependency>
-      <dependency>
         <groupId>io.projectreactor</groupId>
         <artifactId>reactor-core</artifactId>
         <version>${reactor-core.version}</version>
