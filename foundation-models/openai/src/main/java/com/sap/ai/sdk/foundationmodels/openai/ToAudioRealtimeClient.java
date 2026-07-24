@@ -33,8 +33,7 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
       @Nonnull final String url,
       @Nonnull final Map<String, String> httpHeaders,
       @Nonnull final AudioOutputChannel outputConsumer,
-      @Nonnull final RealtimeParam... params
-  ) {
+      @Nonnull final RealtimeParam... params) {
     super(url, httpHeaders, HANDLED_RESPONSE_TYPES);
     var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
     for (final RealtimeParam param : params) {

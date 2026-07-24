@@ -26,8 +26,7 @@ class SpeechToSpeechRealtimeClient extends ToAudioRealtimeClient implements Audi
       @Nonnull final String url,
       @Nonnull final Map<String, String> httpHeaders,
       @Nonnull final AudioOutputChannel outputConsumer,
-      @Nonnull final RealtimeParam... params
-  ) {
+      @Nonnull final RealtimeParam... params) {
     super(url, httpHeaders, outputConsumer, params);
 
     var turnDetectionEager = false;

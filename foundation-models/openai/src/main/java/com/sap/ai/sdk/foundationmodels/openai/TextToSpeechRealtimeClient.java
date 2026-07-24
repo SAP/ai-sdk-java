@@ -25,8 +25,7 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
       @Nonnull final String url,
       @Nonnull final Map<String, String> httpHeaders,
       @Nonnull final AudioOutputChannel outputConsumer,
-      @Nonnull final RealtimeParam... params
-  ) {
+      @Nonnull final RealtimeParam... params) {
     super(url, httpHeaders, outputConsumer, params);
     var turnDetectionEager = true;
     for (RealtimeParam param : params) {
