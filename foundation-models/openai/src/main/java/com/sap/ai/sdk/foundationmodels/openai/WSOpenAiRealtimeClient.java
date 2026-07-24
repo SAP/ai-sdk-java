@@ -64,7 +64,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
   ) {
     this.client = HttpClient.newHttpClient();
     var wsBuilder = this.client.newWebSocketBuilder();
-    for (Map.Entry<String, String> entry : httpHeaders.entrySet()) {
+    for (final Map.Entry<String, String> entry : httpHeaders.entrySet()) {
       wsBuilder = wsBuilder.header(entry.getKey(), entry.getValue());
     }
     this.ws =
@@ -85,7 +85,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
       try {
         ws.sendText(JACKSON.writeValueAsString(ResponseCreateEvent.builder().build()), true);
       } catch (final JsonProcessingException e) {
-        throw new RuntimeException("Failed to serialize ask for response", e);
+        throw new ClientException("Failed to serialize ask for response", e);
       }
       ws.request(1);
     }
@@ -148,7 +148,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     } catch (final JsonProcessingException e) {
       throw new ClientException("Error parsing JSON response from speech API", e);
     }
-    var eventType = event.get("type").asText();
+    final var eventType = event.get("type").asText();
     if (handleMessageTypes.contains(eventType)) {
       onResponse(eventType, event);
     } else {
@@ -182,7 +182,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     if (systemPrompt.isEmpty()) {
       return;
     }
-    var systemConversationItem =
+    final var systemConversationItem =
         ConversationItemCreateEvent.builder()
             .item(
                 ConversationItem.ofRealtimeConversationItemSystemMessage(
@@ -196,7 +196,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
             .build();
 
     try {
-      var json = JACKSON.writeValueAsString(systemConversationItem);
+      final var json = JACKSON.writeValueAsString(systemConversationItem);
       ws.sendText(json, true);
     } catch (final JsonProcessingException e) {
       throw new ClientException("Failed to serialize message", e);
@@ -205,7 +205,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
   }
 
   private void scheduleHeartbeat(@Nonnull final WebSocket ws) {
-    TimerTask task =
+    final TimerTask task =
         new TimerTask() {
           @Override
           public void run() {

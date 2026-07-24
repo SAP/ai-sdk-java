@@ -1,6 +1,10 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
-import com.openai.models.realtime.*;
+import com.openai.models.realtime.ConversationItem;
+import com.openai.models.realtime.ConversationItemCreateEvent;
+import com.openai.models.realtime.RealtimeAudioConfigInput;
+import com.openai.models.realtime.RealtimeAudioFormats;
+import com.openai.models.realtime.RealtimeConversationItemUserMessage;
 import com.sap.ai.sdk.core.RealtimeParam;
 import com.sap.ai.sdk.core.RealtimeParamTurnDetection;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +26,8 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
       @Nonnull final String url,
       @Nonnull final Map<String, String> httpHeaders,
       @Nonnull final AudioOutputChannel outputConsumer,
-      RealtimeParam... params) {
+      @Nonnull final RealtimeParam... params
+  ) {
     super(url, httpHeaders, outputConsumer, params);
     var turnDetectionEager = true;
     for (RealtimeParam param : params) {

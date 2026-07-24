@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import javax.annotation.Nonnull;
+
 /** Functional interface representing text output channel (text data consumer) */
 public interface TextOutputChannel {
 
@@ -12,5 +14,5 @@ public interface TextOutputChannel {
    *     single logical entity (e.g. gets called at the end when all parts of a single message get
    *     passed)
    */
-  void outputText(CharSequence textChunk, boolean isLast);
+  void outputText(@Nonnull final CharSequence textChunk, final boolean isLast);
 }

@@ -40,7 +40,7 @@ class BufferedWebSocketListener implements WebSocket.Listener {
     buffer.append(data);
     webSocket.request(1);
     if (isLast) {
-      var completeMessage = buffer.toString();
+      final var completeMessage = buffer.toString();
       buffer.setLength(0);
       this.onText.accept(webSocket, completeMessage);
     }
