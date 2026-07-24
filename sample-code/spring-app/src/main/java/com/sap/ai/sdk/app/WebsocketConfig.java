@@ -17,6 +17,7 @@ public class WebsocketConfig implements WebSocketConfigurer {
 
   /**
    * Constructs configuration object
+   *
    * @param textToSpeech - text to speech realtime api handler
    * @param speechToSpeech - speech to speech realtime api handler
    */
