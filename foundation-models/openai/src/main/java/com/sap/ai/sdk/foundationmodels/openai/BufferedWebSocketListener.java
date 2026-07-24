@@ -21,7 +21,7 @@ class BufferedWebSocketListener implements WebSocket.Listener {
       @Nonnull final BiConsumer<WebSocket, CharSequence> onText) {
     this.onOpen = onOpen;
     this.onText = onText;
-    this.buffer = new StringBuilder(1024 * 1024);
+    this.buffer = new StringBuilder(128 * 1024);
   }
 
   @Override
