@@ -45,7 +45,7 @@ public class GroundingFilterSearchConfiguration
    * the same instance.
    *
    * @param maxChunkCount Maximum number of chunks to be returned. Cannot be used with
-   *     &#39;maxDocumentCount&#39;. Minimum: 0
+   *     &#39;maxDocumentCount&#39;. Minimum: 0 (exclusive)
    * @return The same instance of this {@link GroundingFilterSearchConfiguration} class
    */
   @Nonnull
@@ -56,7 +56,7 @@ public class GroundingFilterSearchConfiguration
 
   /**
    * Maximum number of chunks to be returned. Cannot be used with &#39;maxDocumentCount&#39;.
-   * minimum: 0
+   * minimum: 0 (exclusive)
    *
    * @return maxChunkCount The maxChunkCount of this {@link GroundingFilterSearchConfiguration}
    *     instance.
@@ -70,7 +70,7 @@ public class GroundingFilterSearchConfiguration
    * Set the maxChunkCount of this {@link GroundingFilterSearchConfiguration} instance.
    *
    * @param maxChunkCount Maximum number of chunks to be returned. Cannot be used with
-   *     &#39;maxDocumentCount&#39;. Minimum: 0
+   *     &#39;maxDocumentCount&#39;. Minimum: 0 (exclusive)
    */
   public void setMaxChunkCount(@Nullable final Integer maxChunkCount) {
     this.maxChunkCount = maxChunkCount;
@@ -82,7 +82,7 @@ public class GroundingFilterSearchConfiguration
    *
    * @param maxDocumentCount [Only supports &#39;vector&#39; dataRepositoryType] - Maximum number of
    *     documents to be returned. Cannot be used with &#39;maxChunkCount&#39;. If maxDocumentCount
-   *     is given, then only one chunk per document is returned. Minimum: 0
+   *     is given, then only one chunk per document is returned. Minimum: 0 (exclusive)
    * @return The same instance of this {@link GroundingFilterSearchConfiguration} class
    */
   @Nonnull
@@ -95,7 +95,7 @@ public class GroundingFilterSearchConfiguration
   /**
    * [Only supports &#39;vector&#39; dataRepositoryType] - Maximum number of documents to be
    * returned. Cannot be used with &#39;maxChunkCount&#39;. If maxDocumentCount is given, then only
-   * one chunk per document is returned. minimum: 0
+   * one chunk per document is returned. minimum: 0 (exclusive)
    *
    * @return maxDocumentCount The maxDocumentCount of this {@link
    *     GroundingFilterSearchConfiguration} instance.
@@ -110,7 +110,7 @@ public class GroundingFilterSearchConfiguration
    *
    * @param maxDocumentCount [Only supports &#39;vector&#39; dataRepositoryType] - Maximum number of
    *     documents to be returned. Cannot be used with &#39;maxChunkCount&#39;. If maxDocumentCount
-   *     is given, then only one chunk per document is returned. Minimum: 0
+   *     is given, then only one chunk per document is returned. Minimum: 0 (exclusive)
    */
   public void setMaxDocumentCount(@Nullable final Integer maxDocumentCount) {
     this.maxDocumentCount = maxDocumentCount;
