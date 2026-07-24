@@ -52,8 +52,8 @@ public class OpenAiRealtimeClient {
   @Nonnull
   @Beta
   public TextInputChannel textToSpeech(
-      @Nonnull final AudioOutputChannel audioOutputConsumer, @Nonnull final RealtimeParam... params
-  ) {
+      @Nonnull final AudioOutputChannel audioOutputConsumer,
+      @Nonnull final RealtimeParam... params) {
     final var extraHeaders = destination.asHttp().getHeaders();
     final var headers = new HashMap<String, String>(extraHeaders.size() + 1);
     for (Header header : extraHeaders) {
@@ -94,7 +94,8 @@ public class OpenAiRealtimeClient {
   @Nonnull
   @Beta
   public AudioInputChannel speechToSpeech(
-      @Nonnull final AudioOutputChannel audioOutputConsumer, @Nonnull final RealtimeParam... params) {
+      @Nonnull final AudioOutputChannel audioOutputConsumer,
+      @Nonnull final RealtimeParam... params) {
     final var extraHeaders = destination.asHttp().getHeaders();
     final var headers = new HashMap<String, String>(extraHeaders.size() + 1);
     for (Header header : extraHeaders) {
