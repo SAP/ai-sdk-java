@@ -7,9 +7,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
-/**
- * Implements spring Web Socket configuration to expose Web Socket handlers for Realtime API
- */
+/** Implements spring Web Socket configuration to expose Web Socket handlers for Realtime API */
 @Configuration
 @EnableWebSocket
 public class WebsocketConfig implements WebSocketConfigurer {
@@ -30,6 +28,7 @@ public class WebsocketConfig implements WebSocketConfigurer {
 
   /**
    * Registers websocket handlers, implements WebSocketConfigurer contract
+   *
    * @param registry - registry where to register handlers
    */
   @Override
