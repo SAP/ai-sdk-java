@@ -10,13 +10,12 @@ import com.openai.models.realtime.SessionUpdateEvent;
 import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
 import com.sap.ai.sdk.core.RealtimeParam;
 import com.sap.ai.sdk.core.RealtimeParamVoice;
+import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
-
-import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

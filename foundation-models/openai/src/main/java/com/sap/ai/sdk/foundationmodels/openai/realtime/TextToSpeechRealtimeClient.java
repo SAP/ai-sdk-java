@@ -7,12 +7,11 @@ import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeConversationItemUserMessage;
 import com.sap.ai.sdk.core.RealtimeParam;
 import com.sap.ai.sdk.core.RealtimeParamTurnDetection;
+import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nonnull;
-
-import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
-import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

@@ -23,6 +23,7 @@ public class OpenAiRealtimeClient {
 
   /**
    * Created OpenAI Realtime client for a specific destination
+   *
    * @param destination - destination to use
    */
   public OpenAiRealtimeClient(@Nonnull final Destination destination) {
