@@ -10,9 +10,8 @@ import com.sap.ai.sdk.core.RealtimeParamTurnDetection;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
-
 import javax.annotation.Nonnull;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 class SpeechToSpeechRealtimeClient extends ToAudioRealtimeClient implements AudioInputChannel {
@@ -71,7 +70,8 @@ class SpeechToSpeechRealtimeClient extends ToAudioRealtimeClient implements Audi
     }
     var cursorLeft = 0;
     while (cursorLeft < rawAudioChunk.length) {
-      final var cursorRight = Math.min(cursorLeft + MAX_DATA_CHUNK_SIZE_BYTES, rawAudioChunk.length);
+      final var cursorRight =
+          Math.min(cursorLeft + MAX_DATA_CHUNK_SIZE_BYTES, rawAudioChunk.length);
       final var part = Arrays.copyOfRange(rawAudioChunk, cursorLeft, cursorRight);
       final var audioInputMessage =
           InputAudioBufferAppendEvent.builder()

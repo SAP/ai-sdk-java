@@ -14,9 +14,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import lombok.extern.slf4j.Slf4j;
-
 import javax.annotation.Nonnull;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {

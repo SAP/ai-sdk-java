@@ -21,11 +21,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.annotation.Nonnull;
 
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -58,10 +57,9 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
   private final Set<String> handleMessageTypes;
 
   public WSOpenAiRealtimeClient(
-          @Nonnull final String url,
-          @Nonnull final Map<String, String> httpHeaders,
-          @Nonnull final Set<String> handleMessageTypes
-  ) {
+      @Nonnull final String url,
+      @Nonnull final Map<String, String> httpHeaders,
+      @Nonnull final Set<String> handleMessageTypes) {
     this.client = HttpClient.newHttpClient();
     var wsBuilder = this.client.newWebSocketBuilder();
     for (Map.Entry<String, String> entry : httpHeaders.entrySet()) {
@@ -113,7 +111,8 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
   @Nonnull
   protected abstract String getSystemPrompt();
 
-  protected abstract void onResponse(@Nonnull final String eventType, @Nonnull final JsonNode event);
+  protected abstract void onResponse(
+      @Nonnull final String eventType, @Nonnull final JsonNode event);
 
   @Nonnull
   protected abstract SessionUpdateEvent sessionConfiguration();

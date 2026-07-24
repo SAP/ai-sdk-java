@@ -3,11 +3,10 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.openai.models.realtime.*;
 import com.sap.ai.sdk.core.RealtimeParam;
 import com.sap.ai.sdk.core.RealtimeParamTurnDetection;
-import lombok.extern.slf4j.Slf4j;
-
-import javax.annotation.Nonnull;
 import java.util.Map;
 import java.util.Optional;
+import javax.annotation.Nonnull;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextInputChannel {
