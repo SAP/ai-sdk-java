@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_6_SONNET;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
@@ -8,12 +9,14 @@ import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.AS
 import static java.util.Locale.ROOT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.withinPercentage;
 
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.app.services.OrchestrationService.Translation;
 import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
+import com.sap.ai.sdk.orchestration.CacheControl;
 import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
@@ -21,10 +24,13 @@ import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TextItem;
+import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.InputTranslationModuleResult;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -44,6 +50,20 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 @Slf4j
 class OrchestrationTest {
+
+  private static final String PROMPT_FIXTURE;
+  private static final int PROMPT_FIXTURE_LENGTH_TOKENS = 1895;
+
+  static {
+    try {
+      ClassLoader classLoader = OrchestrationTest.class.getClassLoader();
+      File file = new File(classLoader.getResource("fixture-for-caching.txt").getFile());
+      PROMPT_FIXTURE = Files.readString(file.toPath(), StandardCharsets.UTF_8);
+    } catch (IOException | NullPointerException e) {
+      throw new RuntimeException("failed to initialize test", e);
+    }
+  }
+
   private final OrchestrationClient client = new OrchestrationClient();
   private final OrchestrationModuleConfig config =
       new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
@@ -82,6 +102,79 @@ class OrchestrationTest {
     // the first two and the last delta don't have any content
     // see OpenAiChatCompletionDelta#getDeltaContent
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
+  }
+
+  @Test
+  void testPromptCaching() {
+    val prompt =
+        new OrchestrationPrompt(
+            new UserMessage(PROMPT_FIXTURE, new CacheControl("5m")),
+            new UserMessage(
+                "Does this license permit free of charge commercial use of the library licensed under it?"));
+    val cfgCacheSupportingModel = new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_6_SONNET);
+    val res = new OrchestrationClient().chatCompletion(prompt, cfgCacheSupportingModel);
+
+    val readFromCacheOrJustCached =
+        Math.max(
+            res.getTokenUsage().getPromptTokensDetails().getCacheCreationTokens(),
+            res.getTokenUsage().getPromptTokensDetails().getCachedTokens());
+    assertThat(readFromCacheOrJustCached)
+        .isCloseTo(PROMPT_FIXTURE_LENGTH_TOKENS, withinPercentage(5));
+  }
+
+  @Test
+  void testPromptCachingSystemMessageCanBeCached() {
+    val prompt =
+        new OrchestrationPrompt(
+            new SystemMessage(PROMPT_FIXTURE, new CacheControl("5m")),
+            new UserMessage(
+                "Does this license permit free of charge commercial use of the library licensed under it?"));
+    val cfgCacheSupportingModel = new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_6_SONNET);
+    val res = new OrchestrationClient().chatCompletion(prompt, cfgCacheSupportingModel);
+
+    val readFromCacheOrJustCached =
+        Math.max(
+            res.getTokenUsage().getPromptTokensDetails().getCacheCreationTokens(),
+            res.getTokenUsage().getPromptTokensDetails().getCachedTokens());
+    assertThat(readFromCacheOrJustCached)
+        .isCloseTo(PROMPT_FIXTURE_LENGTH_TOKENS, withinPercentage(5));
+  }
+
+  @Test
+  void testPromptCachingIgnoredForShortInput() {
+    val prompt =
+        new OrchestrationPrompt(
+            new UserMessage(
+                "Recent developments in production automation and robotics are spectacular",
+                new CacheControl("5m")),
+            new UserMessage(
+                "Will we see advanced home robots like cooking humanoids in foreseeable future?"));
+    val cfgCacheSupportingModel = new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_6_SONNET);
+    val res = new OrchestrationClient().chatCompletion(prompt, cfgCacheSupportingModel);
+
+    val readFromCacheOrJustCached =
+        Math.max(
+            res.getTokenUsage().getPromptTokensDetails().getCacheCreationTokens(),
+            res.getTokenUsage().getPromptTokensDetails().getCachedTokens());
+    assertThat(readFromCacheOrJustCached).isEqualTo(0);
+  }
+
+  @Test
+  void testPromptCachingInvalidTTLGetsResetToDefault() {
+    val prompt =
+        new OrchestrationPrompt(
+            new UserMessage(PROMPT_FIXTURE, new CacheControl("0s")),
+            new UserMessage(
+                "Does this license permit free of charge commercial use of the library licensed under it?"));
+    val cfgCacheSupportingModel = new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_6_SONNET);
+    val res = new OrchestrationClient().chatCompletion(prompt, cfgCacheSupportingModel);
+
+    val readFromCacheOrJustCached =
+        Math.max(
+            res.getTokenUsage().getPromptTokensDetails().getCacheCreationTokens(),
+            res.getTokenUsage().getPromptTokensDetails().getCachedTokens());
+    assertThat(readFromCacheOrJustCached)
+        .isCloseTo(PROMPT_FIXTURE_LENGTH_TOKENS, withinPercentage(5));
   }
 
   @Test
