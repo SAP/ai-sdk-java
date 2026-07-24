@@ -221,9 +221,7 @@ public class OrchestrationService {
     val request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
     return client
         .streamChatCompletionDeltas(request)
-        .map(
-            delta ->
-                new ReasoningOutput(delta.getDeltaContent(), delta.getDeltaReasoningText()));
+        .map(delta -> new ReasoningOutput(delta.getDeltaContent(), delta.getDeltaReasoningText()));
   }
 
   /**
