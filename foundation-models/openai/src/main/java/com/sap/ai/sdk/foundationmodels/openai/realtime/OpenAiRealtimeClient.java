@@ -63,7 +63,7 @@ public class OpenAiRealtimeClient {
       @Nonnull final RealtimeParam... params) {
     final var extraHeaders = destination.asHttp().getHeaders();
     final var headers = new HashMap<String, String>(extraHeaders.size() + 1);
-    for (Header header : extraHeaders) {
+    for (final Header header : extraHeaders) {
       headers.put(header.getName(), header.getValue());
     }
     final var endpoint = getRealtimeEndpoint();
@@ -105,7 +105,7 @@ public class OpenAiRealtimeClient {
       @Nonnull final RealtimeParam... params) {
     final var extraHeaders = destination.asHttp().getHeaders();
     final var headers = new HashMap<String, String>(extraHeaders.size() + 1);
-    for (Header header : extraHeaders) {
+    for (final Header header : extraHeaders) {
       headers.put(header.getName(), header.getValue());
     }
     final var endpoint = getRealtimeEndpoint();

@@ -31,7 +31,7 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
       @Nonnull final RealtimeParam... params) {
     super(url, httpHeaders, outputConsumer, params);
     var turnDetectionEager = true;
-    for (RealtimeParam param : params) {
+    for (final RealtimeParam param : params) {
       if (param.getParamName() == RealtimeParam.SpeechOutputParamName.TURN_DETECTION) {
         if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
           turnDetectionEager = true;
