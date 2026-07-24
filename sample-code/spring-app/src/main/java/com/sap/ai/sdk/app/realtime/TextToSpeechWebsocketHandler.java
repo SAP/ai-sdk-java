@@ -4,6 +4,7 @@ import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
@@ -55,7 +56,7 @@ public class TextToSpeechWebsocketHandler extends BinaryWebSocketHandler {
                         log.error("failed to send text message to realtime api", e);
                       }
                     }));
-    channel.sendText(new String(textBytes));
+    channel.sendText(new String(textBytes, StandardCharsets.UTF_8));
   }
 
   @Override
