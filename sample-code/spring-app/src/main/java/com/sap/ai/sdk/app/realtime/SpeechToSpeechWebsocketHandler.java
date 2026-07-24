@@ -39,9 +39,7 @@ public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {
   // closing performed in afterConnectionClosed method
   @SuppressWarnings("PMD.CloseResource")
   protected void handleBinaryMessage(
-          @Nonnull final WebSocketSession session,
-          @Nonnull final BinaryMessage message
-  ) {
+      @Nonnull final WebSocketSession session, @Nonnull final BinaryMessage message) {
     final ByteBuffer payload = message.getPayload();
     final byte[] chunkBytes = payload.array();
     final AudioInputChannel channel =
@@ -60,9 +58,8 @@ public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {
   }
 
   @Override
-  public void afterConnectionClosed(@Nonnull final WebSocketSession session,
-                                    @Nonnull final CloseStatus status
-  ) throws Exception {
+  public void afterConnectionClosed(
+      @Nonnull final WebSocketSession session, @Nonnull final CloseStatus status) throws Exception {
     channels.computeIfPresent(
         session.getId(),
         (sessionId, inputChannel) -> {

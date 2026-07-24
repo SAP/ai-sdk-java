@@ -38,9 +38,8 @@ public class TextToSpeechWebsocketHandler extends BinaryWebSocketHandler {
   // The channel MUST NOT be closed here, its lifecycle is managed by the WebSocket container (RAII)
   // closing performed in afterConnectionClosed method
   @SuppressWarnings("PMD.CloseResource")
-  protected void handleBinaryMessage(@Nonnull final WebSocketSession session,
-                                     @Nonnull final BinaryMessage message
-  ) {
+  protected void handleBinaryMessage(
+      @Nonnull final WebSocketSession session, @Nonnull final BinaryMessage message) {
     final ByteBuffer payload = message.getPayload();
     final byte[] textBytes = payload.array();
     final TextInputChannel channel =
@@ -59,10 +58,8 @@ public class TextToSpeechWebsocketHandler extends BinaryWebSocketHandler {
   }
 
   @Override
-  public void afterConnectionClosed(@Nonnull final WebSocketSession session,
-                                    @Nonnull final CloseStatus status
-  )
-      throws Exception {
+  public void afterConnectionClosed(
+      @Nonnull final WebSocketSession session, @Nonnull final CloseStatus status) throws Exception {
     channels.computeIfPresent(
         session.getId(),
         (sessionId, inputChannel) -> {

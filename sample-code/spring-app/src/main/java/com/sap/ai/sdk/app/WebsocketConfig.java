@@ -2,12 +2,11 @@ package com.sap.ai.sdk.app;
 
 import com.sap.ai.sdk.app.realtime.SpeechToSpeechWebsocketHandler;
 import com.sap.ai.sdk.app.realtime.TextToSpeechWebsocketHandler;
+import javax.annotation.Nonnull;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
-
-import javax.annotation.Nonnull;
 
 /** Implements spring Web Socket configuration to expose Web Socket handlers for Realtime API */
 @Configuration
@@ -24,9 +23,8 @@ public class WebsocketConfig implements WebSocketConfigurer {
    * @param speechToSpeech - speech to speech realtime api handler
    */
   public WebsocketConfig(
-          @Nonnull final TextToSpeechWebsocketHandler textToSpeech,
-          @Nonnull final SpeechToSpeechWebsocketHandler speechToSpeech
-  ) {
+      @Nonnull final TextToSpeechWebsocketHandler textToSpeech,
+      @Nonnull final SpeechToSpeechWebsocketHandler speechToSpeech) {
     this.textToSpeech = textToSpeech;
     this.speechToSpeech = speechToSpeech;
   }
