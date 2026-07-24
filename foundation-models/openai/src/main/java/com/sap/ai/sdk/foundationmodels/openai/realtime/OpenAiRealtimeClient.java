@@ -1,7 +1,10 @@
-package com.sap.ai.sdk.foundationmodels.openai;
+package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.RealtimeParam;
+import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import java.util.HashMap;
@@ -18,7 +21,11 @@ public class OpenAiRealtimeClient {
 
   private final Destination destination;
 
-  OpenAiRealtimeClient(@Nonnull final Destination destination) {
+  /**
+   * Created OpenAI Realtime client for a specific destination
+   * @param destination - destination to use
+   */
+  public OpenAiRealtimeClient(@Nonnull final Destination destination) {
     this.destination = destination;
   }
 

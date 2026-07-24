@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.foundationmodels.openai;
+package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.openai.models.realtime.InputAudioBufferAppendEvent;
 import com.openai.models.realtime.InputAudioBufferCommitEvent;
@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
 import javax.annotation.Nonnull;
+
+import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

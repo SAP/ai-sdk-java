@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.foundationmodels.openai;
+package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.openai.models.realtime.ConversationItem;
 import com.openai.models.realtime.ConversationItemCreateEvent;
@@ -10,6 +10,9 @@ import com.sap.ai.sdk.core.RealtimeParamTurnDetection;
 import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+
+import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

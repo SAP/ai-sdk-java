@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.foundationmodels.openai;
+package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.openai.models.realtime.RealtimeAudioConfig;
@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
+
+import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
