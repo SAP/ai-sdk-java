@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.core.RealtimeParam;
+import com.sap.ai.sdk.core.client.realtime.RealtimeParam;
 import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;

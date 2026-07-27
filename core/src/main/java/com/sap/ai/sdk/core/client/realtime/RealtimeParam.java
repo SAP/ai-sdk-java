@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core;
+package com.sap.ai.sdk.core.client.realtime;
 
 import javax.annotation.Nonnull;
 

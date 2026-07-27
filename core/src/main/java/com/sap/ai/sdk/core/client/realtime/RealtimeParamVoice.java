@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core;
+package com.sap.ai.sdk.core.client.realtime;
 
 import java.util.Objects;
 import javax.annotation.Nonnull;
@@ -15,7 +15,7 @@ public final class RealtimeParamVoice implements RealtimeParam {
 
   private final String voice;
 
-  private RealtimeParamVoice(@Nonnull final String voice) {
+  RealtimeParamVoice(@Nonnull final String voice) {
     this.voice = voice;
   }
 

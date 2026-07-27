@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core;
+package com.sap.ai.sdk.core.client.realtime;
 
 import java.util.Objects;
 import javax.annotation.Nonnull;
@@ -21,7 +21,7 @@ public final class RealtimeParamTurnDetection implements RealtimeParam {
 
   private final String turnDetectionKind;
 
-  private RealtimeParamTurnDetection(final String turnDetectionKind) {
+  RealtimeParamTurnDetection(final String turnDetectionKind) {
     this.turnDetectionKind = turnDetectionKind;
   }
 
