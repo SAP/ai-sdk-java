@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
@@ -27,6 +28,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.ReasoningEffort;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
@@ -177,6 +179,75 @@ public class OrchestrationService {
         new OrchestrationPrompt(
             "Please create a small story about " + topic + " with around 700 words.");
     return client.streamChatCompletion(prompt, config);
+  }
+
+  /**
+   * Chat request to a reasoning-capable model through the Orchestration service, returning both the
+   * final answer and the reasoning (thinking) trace.
+   *
+   * @param topic the topic to ask about.
+   * @return a {@link ReasoningOutput} with the answer and the reasoning blocks.
+   */
+  @Nonnull
+  public ReasoningOutput reasoning(@Nonnull final String topic) {
+    val reasoningConfig =
+        config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
+    val response = client.chatCompletion(prompt, reasoningConfig);
+    return new ReasoningOutput(response.getContent(), response.getReasoningText());
+  }
+
+  /**
+   * Answer and reasoning (thinking) text from a reasoning-capable model.
+   *
+   * @param answer the answer text.
+   * @param reasoning the reasoning text (may be empty).
+   */
+  public record ReasoningOutput(@Nonnull String answer, @Nonnull String reasoning) {}
+
+  /**
+   * Streaming chat request to a reasoning-capable model. Returns a stream of {@link
+   * ReasoningOutput}, each carrying the answer and reasoning text of one delta, in the order the
+   * API produced them.
+   *
+   * @param topic the topic to ask about.
+   * @return a stream of reasoning outputs, one per delta.
+   */
+  @Nonnull
+  public Stream<ReasoningOutput> streamReasoning(@Nonnull final String topic) {
+    val reasoningConfig =
+        config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
+    val request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
+    return client
+        .streamChatCompletionDeltas(request)
+        .map(delta -> new ReasoningOutput(delta.getDeltaContent(), delta.getDeltaReasoningText()));
+  }
+
+  /**
+   * Two-turn conversation against a reasoning-capable model.
+   *
+   * @param firstQuestion the initial question.
+   * @param followUp the follow-up question.
+   * @return the second turn's assistant reply.
+   */
+  @Nonnull
+  public ReasoningOutput multiTurnReasoning(
+      @Nonnull final String firstQuestion, @Nonnull final String followUp) {
+    val reasoningConfig =
+        config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+
+    // Turn 1
+    val firstPrompt = new OrchestrationPrompt(firstQuestion);
+    val firstResponse = client.chatCompletion(firstPrompt, reasoningConfig);
+
+    // Turn 2 feeds the whole history back. getAllMessages() already carries the reasoning content
+    // on the final assistant message.
+    val followUpPrompt =
+        new OrchestrationPrompt(followUp).messageHistory(firstResponse.getAllMessages());
+    val followUpResponse = client.chatCompletion(followUpPrompt, reasoningConfig);
+
+    return new ReasoningOutput(followUpResponse.getContent(), followUpResponse.getReasoningText());
   }
 
   /**
