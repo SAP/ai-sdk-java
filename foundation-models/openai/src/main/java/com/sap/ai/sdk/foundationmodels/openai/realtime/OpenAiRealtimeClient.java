@@ -1,13 +1,13 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.core.client.realtime.RealtimeParam;
 import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nonnull;
 
 /**
@@ -62,14 +62,8 @@ public class OpenAiRealtimeClient {
   public TextInputChannel textToSpeech(
       @Nonnull final AudioOutputChannel audioOutputConsumer,
       @Nonnull final RealtimeParam... params) {
-    final var extraHeaders = destination.asHttp().getHeaders();
-    final var headers = new HashMap<String, String>(extraHeaders.size() + 1);
-    for (final Header header : extraHeaders) {
-      headers.put(header.getName(), header.getValue());
-    }
-    final var endpoint = getRealtimeEndpoint();
-
-    return new TextToSpeechRealtimeClient(endpoint, headers, audioOutputConsumer, params);
+    return new TextToSpeechRealtimeClient(
+        getRealtimeEndpoint(), buildRealtimeHeaders(), audioOutputConsumer, params);
   }
 
   /**
@@ -104,14 +98,17 @@ public class OpenAiRealtimeClient {
   public AudioInputChannel speechToSpeech(
       @Nonnull final AudioOutputChannel audioOutputConsumer,
       @Nonnull final RealtimeParam... params) {
+    return new SpeechToSpeechRealtimeClient(
+        getRealtimeEndpoint(), buildRealtimeHeaders(), audioOutputConsumer, params);
+  }
+
+  private Map<String, String> buildRealtimeHeaders() {
     final var extraHeaders = destination.asHttp().getHeaders();
     final var headers = new HashMap<String, String>(extraHeaders.size() + 1);
     for (final Header header : extraHeaders) {
       headers.put(header.getName(), header.getValue());
     }
-    final var endpoint = getRealtimeEndpoint();
-
-    return new SpeechToSpeechRealtimeClient(endpoint, headers, audioOutputConsumer, params);
+    return headers;
   }
 
   private String getRealtimeEndpoint() {

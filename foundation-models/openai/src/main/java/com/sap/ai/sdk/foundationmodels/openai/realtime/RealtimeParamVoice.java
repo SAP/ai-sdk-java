@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core.client.realtime;
+package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import java.util.Objects;
 import javax.annotation.Nonnull;
@@ -32,8 +32,8 @@ public final class RealtimeParamVoice implements RealtimeParam {
   }
 
   @Override
-  public @Nonnull SpeechOutputParamName getParamName() {
-    return SpeechOutputParamName.VOICE;
+  public @Nonnull ParamName getParamName() {
+    return ParamName.OUTPUT_VOICE;
   }
 
   @Override

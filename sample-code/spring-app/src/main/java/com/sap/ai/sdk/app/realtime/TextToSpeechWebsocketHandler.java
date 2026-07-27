@@ -52,7 +52,7 @@ public class TextToSpeechWebsocketHandler extends BinaryWebSocketHandler {
                       try {
                         session.sendMessage(new BinaryMessage(rawBytesChunk, isLast));
                       } catch (final IOException e) {
-                        log.error("failed to send text message to realtime api", e);
+                        log.error("Failed to send text message to realtime api", e);
                       }
                     }));
     channel.sendText(new String(textBytes, StandardCharsets.UTF_8));
@@ -67,7 +67,7 @@ public class TextToSpeechWebsocketHandler extends BinaryWebSocketHandler {
           try {
             inputChannel.close();
           } catch (Exception e) {
-            log.warn("failed to close input channel for session {}", sessionId, e);
+            log.warn("Failed to close input channel for session {}", sessionId, e);
           }
           return null;
         });

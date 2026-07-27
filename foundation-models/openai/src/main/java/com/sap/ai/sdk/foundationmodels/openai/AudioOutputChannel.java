@@ -1,6 +1,9 @@
 package com.sap.ai.sdk.foundationmodels.openai;
 
+import com.google.common.annotations.Beta;
+
 /** Functional interface representing audio output channel (audio data consumer) */
+@Beta
 public interface AudioOutputChannel {
 
   /**
@@ -13,5 +16,6 @@ public interface AudioOutputChannel {
    *     single logical entity (e.g. gets called at the end when all byte parts of a single message
    *     get passed)
    */
+  @Beta
   void outputAudio(byte[] rawBytesChunk, boolean isLast);
 }

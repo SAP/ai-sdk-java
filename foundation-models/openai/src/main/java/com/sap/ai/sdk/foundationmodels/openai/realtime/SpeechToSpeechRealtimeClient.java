@@ -5,8 +5,6 @@ import com.openai.models.realtime.InputAudioBufferCommitEvent;
 import com.openai.models.realtime.RealtimeAudioConfigInput;
 import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeAudioInputTurnDetection;
-import com.sap.ai.sdk.core.client.realtime.RealtimeParam;
-import com.sap.ai.sdk.core.client.realtime.RealtimeParamTurnDetection;
 import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import java.util.Arrays;
@@ -20,28 +18,12 @@ class SpeechToSpeechRealtimeClient extends ToAudioRealtimeClient implements Audi
 
   private static final int MAX_DATA_CHUNK_SIZE_BYTES = 8192;
 
-  private static final String TASK = "";
-
-  private final boolean eagerTurnDetection;
-
   public SpeechToSpeechRealtimeClient(
       @Nonnull final String url,
       @Nonnull final Map<String, String> httpHeaders,
       @Nonnull final AudioOutputChannel outputConsumer,
       @Nonnull final RealtimeParam... params) {
-    super(url, httpHeaders, outputConsumer, params);
-
-    var turnDetectionEager = false;
-    for (final RealtimeParam param : params) {
-      if (param.getParamName() == RealtimeParam.SpeechOutputParamName.TURN_DETECTION) {
-        if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
-          turnDetectionEager = true;
-        } else if (RealtimeParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
-          turnDetectionEager = false;
-        }
-      }
-    }
-    this.eagerTurnDetection = turnDetectionEager;
+    super(url, httpHeaders, outputConsumer, false, params);
   }
 
   @Override
@@ -88,11 +70,5 @@ class SpeechToSpeechRealtimeClient extends ToAudioRealtimeClient implements Audi
       super.sendMessage(commitAudioMessage);
       askForResponse();
     }
-  }
-
-  @Override
-  @Nonnull
-  protected String getSystemPrompt() {
-    return TASK;
   }
 }

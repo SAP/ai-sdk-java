@@ -17,6 +17,7 @@ import java.net.http.WebSocket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -78,7 +79,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     try {
       ws = this.ws.join();
     } catch (final CompletionException e) {
-      throw new ClientException("failed to establish web socket connection", e);
+      throw new ClientException("Failed to establish web socket connection", e);
     }
     synchronized (this) {
       try {
@@ -96,7 +97,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     try {
       ws = this.ws.join();
     } catch (final CompletionException e) {
-      throw new ClientException("failed to establish web socket connection", e);
+      throw new ClientException("Failed to establish web socket connection", e);
     }
     synchronized (this) {
       heartbeatTimer.cancel();
@@ -110,7 +111,10 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
   }
 
   @Nonnull
-  protected abstract String getSystemPrompt();
+  protected Optional<String> getSystemPrompt() {
+    return Optional.empty();
+  }
+  ;
 
   protected abstract void onResponse(
       @Nonnull final String eventType, @Nonnull final JsonNode event);
@@ -123,7 +127,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     try {
       ws = this.ws.join();
     } catch (CompletionException e) {
-      throw new ClientException("failed to establish web socket connection", e);
+      throw new ClientException("Failed to establish web socket connection", e);
     }
     synchronized (this) {
       try {
@@ -179,7 +183,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
 
   private void configureConversation(@Nonnull final WebSocket ws) {
     final var systemPrompt = getSystemPrompt();
-    if (systemPrompt.isEmpty()) {
+    if (systemPrompt.isEmpty() || systemPrompt.get().isEmpty()) {
       return;
     }
     final var systemConversationItem =
@@ -189,7 +193,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
                     RealtimeConversationItemSystemMessage.builder()
                         .addContent(
                             RealtimeConversationItemSystemMessage.Content.builder()
-                                .text(systemPrompt)
+                                .text(systemPrompt.get())
                                 .type(RealtimeConversationItemSystemMessage.Content.Type.INPUT_TEXT)
                                 .build())
                         .build()))

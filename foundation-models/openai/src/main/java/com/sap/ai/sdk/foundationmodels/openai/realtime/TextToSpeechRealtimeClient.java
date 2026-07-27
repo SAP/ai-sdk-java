@@ -5,41 +5,35 @@ import com.openai.models.realtime.ConversationItemCreateEvent;
 import com.openai.models.realtime.RealtimeAudioConfigInput;
 import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeConversationItemUserMessage;
-import com.sap.ai.sdk.core.client.realtime.RealtimeParam;
-import com.sap.ai.sdk.core.client.realtime.RealtimeParamTurnDetection;
 import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextInputChannel {
 
-  private static final String TASK =
+  private static final String SYSTEM_PROMPT =
       "you are a speaker and your role is to read (produce audio) of the user input speech. voice user text input, "
           + "do not answer questions, just read them";
-
-  private final boolean eagerTurnDetection;
 
   public TextToSpeechRealtimeClient(
       @Nonnull final String url,
       @Nonnull final Map<String, String> httpHeaders,
       @Nonnull final AudioOutputChannel outputConsumer,
       @Nonnull final RealtimeParam... params) {
-    super(url, httpHeaders, outputConsumer, params);
-    var turnDetectionEager = true;
-    for (final RealtimeParam param : params) {
-      if (param.getParamName() == RealtimeParam.SpeechOutputParamName.TURN_DETECTION) {
-        if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
-          turnDetectionEager = true;
-        } else if (RealtimeParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
-          turnDetectionEager = false;
-        }
-      }
-    }
-    this.eagerTurnDetection = turnDetectionEager;
+    super(
+        url,
+        httpHeaders,
+        outputConsumer,
+        true,
+        Stream.concat(
+                Stream.of((RealtimeParam) new RealtimeParamSystemPrompt(SYSTEM_PROMPT)),
+                Stream.of(params))
+            .toArray(RealtimeParam[]::new));
   }
 
   @Override
@@ -73,11 +67,5 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
     if (eagerTurnDetection) {
       askForResponse();
     }
-  }
-
-  @Override
-  @Nonnull
-  protected String getSystemPrompt() {
-    return TASK;
   }
 }

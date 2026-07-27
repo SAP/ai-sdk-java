@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core.client.realtime;
+package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,11 +24,11 @@ class RealtimeParamVoiceUnitTest {
 
   @Test
   void getParamName() {
-    assertThat(random.getParamName()).isEqualTo(RealtimeParam.SpeechOutputParamName.VOICE);
+    assertThat(random.getParamName()).isEqualTo(RealtimeParam.ParamName.OUTPUT_VOICE);
     assertThat(RealtimeParamVoice.DEFAULT_1.getParamName())
-        .isEqualTo(RealtimeParam.SpeechOutputParamName.VOICE);
+        .isEqualTo(RealtimeParam.ParamName.OUTPUT_VOICE);
     assertThat(RealtimeParamVoice.DEFAULT_1.getParamName())
-        .isEqualTo(RealtimeParam.SpeechOutputParamName.VOICE);
+        .isEqualTo(RealtimeParam.ParamName.OUTPUT_VOICE);
   }
 
   @Test

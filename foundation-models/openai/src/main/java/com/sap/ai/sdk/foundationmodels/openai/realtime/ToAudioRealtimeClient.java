@@ -8,16 +8,16 @@ import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeSessionCreateRequest;
 import com.openai.models.realtime.SessionUpdateEvent;
 import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
-import com.sap.ai.sdk.core.client.realtime.RealtimeParam;
-import com.sap.ai.sdk.core.client.realtime.RealtimeParamVoice;
 import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
+/** Implements common functionality for realtime api clients that output audio */
 @Slf4j
 abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
 
@@ -30,15 +30,34 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
   private final AudioOutputChannel outputConsumer;
   private final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
 
+  /**
+   * defines default eagerness (if EACH_CALL_IS_A_TURN) behavior if specific turn detection config
+   * not provided
+   */
+  protected final boolean eagerTurnDetection;
+
+  private final String systemPrompt;
+
+  /**
+   * Constructs the object
+   *
+   * @param url - realtime api endpoint url
+   * @param httpHeaders - http headers (key - value) for client to use
+   * @param outputConsumer - consumer of audio bytes in pcm 24000 Hz mono little endian format
+   * @param defaultTurnDetectionEager - if explicit cfg for turn detection was not specified, this
+   *     turn detection eagerness flag will be used (true results in EACH_CALL_IS_A_TURN handling)
+   * @param params - possible overrides for default params (e.g. voice, system prompt, etc.)
+   */
   public ToAudioRealtimeClient(
       @Nonnull final String url,
       @Nonnull final Map<String, String> httpHeaders,
       @Nonnull final AudioOutputChannel outputConsumer,
+      final boolean defaultTurnDetectionEager,
       @Nonnull final RealtimeParam... params) {
     super(url, httpHeaders, HANDLED_RESPONSE_TYPES);
     var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
     for (final RealtimeParam param : params) {
-      if (param.getParamName() == RealtimeParam.SpeechOutputParamName.VOICE) {
+      if (param.getParamName() == RealtimeParam.ParamName.OUTPUT_VOICE) {
         if (RealtimeParamVoice.DEFAULT_2.equals(param)) {
           voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
         } else if (RealtimeParamVoice.DEFAULT_1.equals(param)) {
@@ -46,12 +65,39 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
         }
       }
     }
+
+    var turnDetectionEager = defaultTurnDetectionEager;
+    for (final RealtimeParam param : params) {
+      if (param.getParamName() == RealtimeParam.ParamName.TURN_DETECTION) {
+        if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
+          turnDetectionEager = true;
+        } else if (RealtimeParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
+          turnDetectionEager = false;
+        }
+      }
+    }
+
+    var systemPrompt = "";
+    for (final RealtimeParam param : params) {
+      if (param.getParamName() == RealtimeParam.ParamName.SYSTEM_PROMPT) {
+        systemPrompt = param.getValueAsString();
+      }
+    }
+
     this.outputConsumer = outputConsumer;
     this.voice = voice;
+    this.eagerTurnDetection = turnDetectionEager;
+    this.systemPrompt = systemPrompt;
   }
 
   @Nonnull
   protected abstract RealtimeAudioConfigInput inputConfig();
+
+  @Override
+  @Nonnull
+  protected Optional<String> getSystemPrompt() {
+    return systemPrompt.isEmpty() ? Optional.empty() : Optional.of(systemPrompt);
+  }
 
   @Override
   protected void onResponse(@Nonnull final String eventType, @Nonnull final JsonNode event) {

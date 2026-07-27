@@ -3,10 +3,10 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-import com.sap.ai.sdk.core.client.realtime.RealtimeParamTurnDetection;
 import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.realtime.RealtimeParamTurnDetection;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;

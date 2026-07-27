@@ -51,7 +51,7 @@ public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {
                       try {
                         session.sendMessage(new BinaryMessage(rawBytesChunk, isLast));
                       } catch (final IOException e) {
-                        log.error("failed to send audio data to realtime api", e);
+                        log.error("Failed to send audio data to realtime api", e);
                       }
                     }));
     channel.inputAudio(chunkBytes);
@@ -66,7 +66,7 @@ public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {
           try {
             inputChannel.close();
           } catch (final Exception e) {
-            log.warn("failed to close input channel for session {}", sessionId, e);
+            log.warn("Failed to close input channel for session {}", sessionId, e);
           }
           return null;
         });

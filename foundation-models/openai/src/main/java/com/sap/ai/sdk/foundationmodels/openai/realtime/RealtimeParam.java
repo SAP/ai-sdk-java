@@ -1,18 +1,20 @@
-package com.sap.ai.sdk.core.client.realtime;
+package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import javax.annotation.Nonnull;
 
 /** Represents possible configuration params of realtime client */
 public interface RealtimeParam {
   /** Represents configurable options */
-  enum SpeechOutputParamName {
+  enum ParamName {
     /** Voice name to use to produce sound */
-    VOICE,
+    OUTPUT_VOICE,
     /**
      * How model will recognize that it is its turn to respond (e.g. explicitly asked, automatically
      * detected)
      */
     TURN_DETECTION,
+    /** Override or specify system prompt given to a model */
+    SYSTEM_PROMPT,
   }
 
   /**
@@ -21,7 +23,7 @@ public interface RealtimeParam {
    * @return name
    */
   @Nonnull
-  SpeechOutputParamName getParamName();
+  ParamName getParamName();
 
   /**
    * Returns string value representation of the param

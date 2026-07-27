@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.core.client.realtime;
+package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,11 +19,11 @@ class RealtimeParamTurnDetectionUnitTest {
 
   @Test
   void getParamName() {
-    assertThat(random.getParamName()).isEqualTo(RealtimeParam.SpeechOutputParamName.TURN_DETECTION);
+    assertThat(random.getParamName()).isEqualTo(RealtimeParam.ParamName.TURN_DETECTION);
     assertThat(RealtimeParamTurnDetection.BY_MODEL_AUTO.getParamName())
-        .isEqualTo(RealtimeParam.SpeechOutputParamName.TURN_DETECTION);
+        .isEqualTo(RealtimeParam.ParamName.TURN_DETECTION);
     assertThat(RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.getParamName())
-        .isEqualTo(RealtimeParam.SpeechOutputParamName.TURN_DETECTION);
+        .isEqualTo(RealtimeParam.ParamName.TURN_DETECTION);
   }
 
   @Test
