@@ -273,7 +273,7 @@ jobs:
 
           # Run japicmp: compare baseline ($BASE) JAR vs newly generated JAR
           if mvn com.github.siom79.japicmp:japicmp-maven-plugin:cmp@api-compatibility \
-            -pl "$MODULE_PATH" \ 
+            -pl "$MODULE_PATH" \
             -Djapicmp.oldVersion.file=/tmp/baseline.jar \
             -Djapicmp.newVersion.file="$CURRENT_JAR" \
             ${{ env.MVN_MULTI_THREADED_ARGS }} ; then

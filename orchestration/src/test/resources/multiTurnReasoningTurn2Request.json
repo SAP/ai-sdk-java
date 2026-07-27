@@ -1,0 +1,38 @@
+{
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "prompt": {
+          "template": [
+            {
+              "content": "Are you sure?",
+              "role": "user"
+            }
+          ]
+        },
+        "model": {
+          "name": "anthropic--claude-4.5-sonnet",
+          "params": {
+            "reasoning_effort": "medium"
+          }
+        }
+      }
+    }
+  },
+  "messages_history": [
+    {
+      "content": "What is 6 times 7?",
+      "role": "user"
+    },
+    {
+      "role": "assistant",
+      "content": "6 times 7 is 42.",
+      "reasoning_content": [
+        {
+          "content": "This is a simple multiplication question. 6 times 7 equals 42.",
+          "signature": "EpACCnAIDxABGAIqQJg6O4DbYCclwzR0D0KGKTpCDTQ4PD6YxelN1aci6UiUmvX2Xg0ZNzAtdUMekPynzA57/5i0wjkp+vdcrpDn4OUyGmNsYXVkZS1zb25uZXQtNC01LTIwMjUwOTI5OABCCHRoaW5raW5nEgxq8jJz+WuqAkZKabEaDH1IeHlDMiXUwN8XDiIwcjwy62HqlyTXMhRmrEkybRtq4wD7GOaQ4xrpmJuy9T5Z1xAjmNtl3y8dQmFuQDPoKk4n2gAfLmXS+IQyN4bmc0BaFT7RkzNUdkak4pTtKeWwLo55cHdBBmGQsFtpEV7G28AEsqTyy9Qak6urih233RHKDLHzh9banjoPgHTzLX0YAQ=="
+        }
+      ]
+    }
+  ]
+}
