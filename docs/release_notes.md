@@ -18,7 +18,7 @@
 ### ✨ New Functionality
 
 - [OpenAI] You can now add multiple custom headers to an `OpenAiClient` at once via `.withHeaders()`.
-- [Orchestration] Added `GEMINI_3_1_PRO_PREVIEW_EA` to model list in `OrchestrationAiModel`.
+- [Orchestration] Added `GEMINI_3_1_PRO_PREVIEW_EA` and `MISTRAL_MEDIUM` to model list in `OrchestrationAiModel`.
 
 ### 📈 Improvements
 

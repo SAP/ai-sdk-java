@@ -90,6 +90,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel MISTRAL_SMALL =
       new OrchestrationAiModel("mistralai--mistral-small");
 
+  /** MistralAI Mistral Medium model */
+  public static final OrchestrationAiModel MISTRAL_MEDIUM =
+      new OrchestrationAiModel("mistralai--mistral-medium");
+
   /**
    * Meta Llama3 70B Instruct model
    *
