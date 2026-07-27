@@ -79,7 +79,7 @@
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.3</httpcomponents-core5.version>
     <micrometer.version>1.17.0</micrometer.version>
-    <json.version>20260522</json.version>
+    <json.version>20260719</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <!-- Formatting -->
     <spotless.version>3.8.0</spotless.version>
