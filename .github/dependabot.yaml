@@ -11,6 +11,8 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: 'chore: [DevOps] '
+    cooldown:
+      default-days: 4
     ignore:
       - dependency-name: "org.springframework.boot:*"
         versions: [ ">=4.0.0" ]
