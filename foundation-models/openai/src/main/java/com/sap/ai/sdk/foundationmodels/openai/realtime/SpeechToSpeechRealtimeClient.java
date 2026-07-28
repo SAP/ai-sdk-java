@@ -7,9 +7,13 @@ import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeAudioInputTurnDetection;
 import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
+import java.net.http.HttpClient;
+import java.net.http.WebSocket;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Timer;
+import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +28,15 @@ class SpeechToSpeechRealtimeClient extends ToAudioRealtimeClient implements Audi
       @Nonnull final AudioOutputChannel outputConsumer,
       @Nonnull final RealtimeParam... params) {
     super(url, httpHeaders, outputConsumer, false, params);
+  }
+
+  SpeechToSpeechRealtimeClient(
+      @Nonnull final HttpClient httpClient,
+      @Nonnull final CompletableFuture<WebSocket> ws,
+      @Nonnull final Timer timer,
+      @Nonnull final AudioOutputChannel outputConsumer,
+      @Nonnull final RealtimeParam... params) {
+    super(httpClient, ws, timer, outputConsumer, false, params);
   }
 
   @Override

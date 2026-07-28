@@ -9,11 +9,15 @@ import com.openai.models.realtime.RealtimeSessionCreateRequest;
 import com.openai.models.realtime.SessionUpdateEvent;
 import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
 import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
+import java.net.http.HttpClient;
+import java.net.http.WebSocket;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Timer;
+import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,8 +31,8 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
       List.of(RealtimeSessionCreateRequest.OutputModality.AUDIO);
   private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
-  private final AudioOutputChannel outputConsumer;
-  private final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
+  final AudioOutputChannel outputConsumer;
+  final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
 
   /**
    * defines default eagerness (if EACH_CALL_IS_A_TURN) behavior if specific turn detection config
@@ -36,7 +40,7 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
    */
   protected final boolean eagerTurnDetection;
 
-  private final String systemPrompt;
+  final String systemPrompt;
 
   /**
    * Constructs the object
@@ -84,6 +88,46 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
       }
     }
 
+    this.outputConsumer = outputConsumer;
+    this.voice = voice;
+    this.eagerTurnDetection = turnDetectionEager;
+    this.systemPrompt = systemPrompt;
+  }
+
+  ToAudioRealtimeClient(
+      @Nonnull final HttpClient httpClient,
+      @Nonnull final CompletableFuture<WebSocket> ws,
+      @Nonnull final Timer timer,
+      @Nonnull final AudioOutputChannel outputConsumer,
+      final boolean eagerTurnDetection,
+      @Nonnull final RealtimeParam... params) {
+    super(httpClient, ws, timer, HANDLED_RESPONSE_TYPES);
+    var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
+    for (final RealtimeParam param : params) {
+      if (param.getParamName() == RealtimeParam.ParamName.OUTPUT_VOICE) {
+        if (RealtimeParamVoice.DEFAULT_2.equals(param)) {
+          voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
+        } else if (RealtimeParamVoice.DEFAULT_1.equals(param)) {
+          voice = RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO;
+        }
+      }
+    }
+    var turnDetectionEager = eagerTurnDetection;
+    for (final RealtimeParam param : params) {
+      if (param.getParamName() == RealtimeParam.ParamName.TURN_DETECTION) {
+        if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
+          turnDetectionEager = true;
+        } else if (RealtimeParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
+          turnDetectionEager = false;
+        }
+      }
+    }
+    var systemPrompt = "";
+    for (final RealtimeParam param : params) {
+      if (param.getParamName() == RealtimeParam.ParamName.SYSTEM_PROMPT) {
+        systemPrompt = param.getValueAsString();
+      }
+    }
     this.outputConsumer = outputConsumer;
     this.voice = voice;
     this.eagerTurnDetection = turnDetectionEager;

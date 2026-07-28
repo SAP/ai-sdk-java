@@ -16,10 +16,10 @@ import javax.annotation.Nonnull;
  */
 public class OpenAiRealtimeClient {
 
-  private static final int PATH_BUFFER_SIZE =
+  static final int PATH_BUFFER_SIZE =
       400; // existing URLs are ~120 symbols long, 400 has reasonable margin
 
-  private final Destination destination;
+  final Destination destination;
 
   /**
    * Created OpenAI Realtime client for a specific destination
@@ -102,7 +102,7 @@ public class OpenAiRealtimeClient {
         getRealtimeEndpoint(), buildRealtimeHeaders(), audioOutputConsumer, params);
   }
 
-  private Map<String, String> buildRealtimeHeaders() {
+  Map<String, String> buildRealtimeHeaders() {
     final var extraHeaders = destination.asHttp().getHeaders();
     final var headers = new HashMap<String, String>(extraHeaders.size() + 1);
     for (final Header header : extraHeaders) {
@@ -111,7 +111,7 @@ public class OpenAiRealtimeClient {
     return headers;
   }
 
-  private String getRealtimeEndpoint() {
+  String getRealtimeEndpoint() {
     final var sb = new StringBuilder(PATH_BUFFER_SIZE);
     sb.append("wss://");
     final var pathParts = destination.asHttp().getUri().toString().split("//");

@@ -7,8 +7,12 @@ import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeConversationItemUserMessage;
 import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
+import java.net.http.HttpClient;
+import java.net.http.WebSocket;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +32,24 @@ class TextToSpeechRealtimeClient extends ToAudioRealtimeClient implements TextIn
     super(
         url,
         httpHeaders,
+        outputConsumer,
+        true,
+        Stream.concat(
+                Stream.of((RealtimeParam) new RealtimeParamSystemPrompt(SYSTEM_PROMPT)),
+                Stream.of(params))
+            .toArray(RealtimeParam[]::new));
+  }
+
+  TextToSpeechRealtimeClient(
+      @Nonnull final HttpClient httpClient,
+      @Nonnull final CompletableFuture<WebSocket> ws,
+      @Nonnull final Timer timer,
+      @Nonnull final AudioOutputChannel outputConsumer,
+      @Nonnull final RealtimeParam... params) {
+    super(
+        httpClient,
+        ws,
+        timer,
         outputConsumer,
         true,
         Stream.concat(

@@ -139,13 +139,13 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     }
   }
 
-  private synchronized void onSocketOpen(@Nonnull final WebSocket ws) {
+  synchronized void onSocketOpen(@Nonnull final WebSocket ws) {
     configureSession(ws);
     configureConversation(ws);
     scheduleHeartbeat(ws);
   }
 
-  private void onText(@Nonnull final WebSocket webSocket, @Nonnull final CharSequence data) {
+  protected void onText(@Nonnull final WebSocket webSocket, @Nonnull final CharSequence data) {
     final JsonNode event;
     try {
       event = JACKSON.readTree(data.toString());
@@ -162,7 +162,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     webSocket.request(1);
   }
 
-  private synchronized void sendPing(@Nonnull final WebSocket ws) {
+  protected synchronized void sendPing(@Nonnull final WebSocket ws) {
     if (ws.isInputClosed()) {
       return;
     }
