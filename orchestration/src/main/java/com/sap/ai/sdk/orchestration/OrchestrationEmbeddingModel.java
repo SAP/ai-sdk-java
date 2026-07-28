@@ -55,6 +55,10 @@ public class OrchestrationEmbeddingModel implements AiModel {
   public static final OrchestrationEmbeddingModel GEMINI_EMBEDDING =
       new OrchestrationEmbeddingModel("gemini-embedding");
 
+  /** Alibaba text-embedding-4 model */
+  public static final OrchestrationEmbeddingModel ALIBABA_TEXT_EMBEDDING_4 =
+      new OrchestrationEmbeddingModel("text-embedding-4");
+
   /**
    * Creates a new embedding model configuration with the specified name.
    *

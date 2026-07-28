@@ -490,10 +490,6 @@ public class OrchestrationAiModel {
   /** Alibaba Qwen 3.7 plus model */
   public static final OrchestrationAiModel QWEN_3_7_PLUS = new OrchestrationAiModel("qwen3.7-plus");
 
-  /** Alibaba text-embedding-4 model */
-  public static final OrchestrationAiModel ALIBABA_TEXT_EMBEDDING_4 =
-      new OrchestrationAiModel("text-embedding-4");
-
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");
   }
