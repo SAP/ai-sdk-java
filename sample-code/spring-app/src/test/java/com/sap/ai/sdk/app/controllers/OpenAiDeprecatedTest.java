@@ -9,11 +9,9 @@ import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
 import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
 import java.util.concurrent.atomic.AtomicInteger;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-@Slf4j
 class OpenAiDeprecatedTest {
   OpenAiServiceDeprecated service;
 
@@ -57,7 +55,6 @@ class OpenAiDeprecatedTest {
         .forEach(
             delta -> {
               final String deltaContent = delta.getDeltaContent();
-              log.info("delta: {}", delta);
               if (!deltaContent.isEmpty()) {
                 filledDeltaCount.incrementAndGet();
               }

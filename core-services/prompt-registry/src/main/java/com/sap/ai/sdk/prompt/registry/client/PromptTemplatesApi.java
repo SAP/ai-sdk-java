@@ -516,6 +516,9 @@ public class PromptTemplatesApi extends BaseApi {
    *
    * <p><b>403</b> - Forbidden Error
    *
+   * <p><b>413</b> - Payload Too Large — result set exceeds maximum allowed rows; use $top and $skip
+   * to paginate
+   *
    * <p><b>0</b> - Common Error
    *
    * @param scenario (required) The value for the parameter scenario
@@ -523,6 +526,9 @@ public class PromptTemplatesApi extends BaseApi {
    * @param name (required) The value for the parameter name
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
+   * @param $top (optional) Number of results to return (1–500). When omitted the full result set is
+   *     returned (up to the server limit).
+   * @param $skip (optional, default to 0) Number of results to skip before returning the page.
    * @return PromptTemplateListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -532,7 +538,9 @@ public class PromptTemplatesApi extends BaseApi {
       @Nonnull final String version,
       @Nonnull final String name,
       @Nullable final String aiResourceGroup,
-      @Nullable final String aiResourceGroupScope)
+      @Nullable final String aiResourceGroupScope,
+      @Nullable final Integer $top,
+      @Nullable final Integer $skip)
       throws OpenApiRequestException {
 
     // verify the required parameter 'scenario' is set
@@ -574,6 +582,8 @@ public class PromptTemplatesApi extends BaseApi {
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
 
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
     if (aiResourceGroup != null)
       localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
@@ -612,6 +622,9 @@ public class PromptTemplatesApi extends BaseApi {
    *
    * <p><b>403</b> - Forbidden Error
    *
+   * <p><b>413</b> - Payload Too Large — result set exceeds maximum allowed rows; use $top and $skip
+   * to paginate
+   *
    * <p><b>0</b> - Common Error
    *
    * @param scenario The value for the parameter scenario
@@ -624,7 +637,7 @@ public class PromptTemplatesApi extends BaseApi {
   public PromptTemplateListResponse listPromptTemplateHistory(
       @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
       throws OpenApiRequestException {
-    return listPromptTemplateHistory(scenario, version, name, null, null);
+    return listPromptTemplateHistory(scenario, version, name, null, null, null, null);
   }
 
   /**
@@ -636,6 +649,9 @@ public class PromptTemplatesApi extends BaseApi {
    *
    * <p><b>403</b> - Forbidden Error
    *
+   * <p><b>413</b> - Payload Too Large — result set exceeds maximum allowed rows; use $top and $skip
+   * to paginate
+   *
    * <p><b>0</b> - Common Error
    *
    * @param aiResourceGroup (optional) Specify a resource group id to use
@@ -645,6 +661,9 @@ public class PromptTemplatesApi extends BaseApi {
    * @param version (optional) The value for the parameter version
    * @param retrieve (optional, default to both) The value for the parameter retrieve
    * @param includeSpec (optional, default to false) The value for the parameter includeSpec
+   * @param $top (optional) Number of results to return (1–500). When omitted the full result set is
+   *     returned (up to the server limit).
+   * @param $skip (optional, default to 0) Number of results to skip before returning the page.
    * @return PromptTemplateListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -656,7 +675,9 @@ public class PromptTemplatesApi extends BaseApi {
       @Nullable final String name,
       @Nullable final String version,
       @Nullable final String retrieve,
-      @Nullable final Boolean includeSpec)
+      @Nullable final Boolean includeSpec,
+      @Nullable final Integer $top,
+      @Nullable final Integer $skip)
       throws OpenApiRequestException {
 
     // create path and map variables
@@ -673,6 +694,8 @@ public class PromptTemplatesApi extends BaseApi {
     localVarQueryParams.addAll(ApiClient.parameterToPair("version", version));
     localVarQueryParams.addAll(ApiClient.parameterToPair("retrieve", retrieve));
     localVarQueryParams.addAll(ApiClient.parameterToPair("includeSpec", includeSpec));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$top", $top));
+    localVarQueryParams.addAll(ApiClient.parameterToPair("$skip", $skip));
     if (aiResourceGroup != null)
       localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
     if (aiResourceGroupScope != null)
@@ -711,6 +734,9 @@ public class PromptTemplatesApi extends BaseApi {
    *
    * <p><b>403</b> - Forbidden Error
    *
+   * <p><b>413</b> - Payload Too Large — result set exceeds maximum allowed rows; use $top and $skip
+   * to paginate
+   *
    * <p><b>0</b> - Common Error
    *
    * @return PromptTemplateListResponse
@@ -718,7 +744,7 @@ public class PromptTemplatesApi extends BaseApi {
    */
   @Nonnull
   public PromptTemplateListResponse listPromptTemplates() throws OpenApiRequestException {
-    return listPromptTemplates(null, null, null, null, null, null, null);
+    return listPromptTemplates(null, null, null, null, null, null, null, null, null);
   }
 
   /**

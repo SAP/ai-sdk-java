@@ -13,8 +13,6 @@ import org.springframework.ai.chat.model.ChatResponse;
 class SpringAiOpenAiTest {
 
   private final SpringAiOpenAiService service = new SpringAiOpenAiService();
-  private static final org.slf4j.Logger log =
-      org.slf4j.LoggerFactory.getLogger(SpringAiOrchestrationTest.class);
 
   @Test
   void testEmbedStrings() {
@@ -46,7 +44,6 @@ class SpringAiOpenAiTest {
         // foreach consumes all elements, closing the stream at the end
         .forEach(
         delta -> {
-          log.info("delta: {}", delta);
           String text = delta.getResult().getOutput().getText();
           if (text != null && !text.isEmpty()) {
             filledDeltaCount.incrementAndGet();
@@ -76,9 +73,9 @@ class SpringAiOpenAiTest {
     assertThat(toolCall1.name()).isEqualTo("getCurrentWeather");
     assertThat(toolCall2.name()).isEqualTo("getCurrentWeather");
     assertThat(toolCall1.arguments())
-        .matches("\\{\"arg0\": \\{\"location\": \"[^\"]*Potsdam[^\"]*\", \"unit\": \"C\"}}");
+        .matches("\\{\"arg0\": \"[^\"]*Potsdam[^\"]*\", \"arg1\": \"C\"}");
     assertThat(toolCall2.arguments())
-        .matches("\\{\"arg0\": \\{\"location\": \"[^\"]*Toulouse[^\"]*\", \"unit\": \"C\"}}");
+        .matches("\\{\"arg0\": \"[^\"]*Toulouse[^\"]*\", \"arg1\": \"C\"}");
   }
 
   @Test
@@ -86,7 +83,6 @@ class SpringAiOpenAiTest {
     ChatResponse response = service.chatMemory();
     assertThat(response).isNotNull();
     String text = response.getResult().getOutput().getText();
-    log.info(text);
     assertThat(text)
         .containsAnyOf(
             "French", "onion", "pastries", "cheese", "baguette", "coq au vin", "foie gras");

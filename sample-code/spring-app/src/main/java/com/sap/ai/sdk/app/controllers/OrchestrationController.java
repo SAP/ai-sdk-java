@@ -2,6 +2,8 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.app.controllers.OpenAiController.send;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OrchestrationService;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.OrchestrationChatResponse;
@@ -41,6 +43,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 @SuppressWarnings("unused")
 @RequestMapping("/orchestration")
 class OrchestrationController {
+  private static final ObjectMapper MAPPER = new ObjectMapper();
+
   @Autowired private OrchestrationService service;
 
   @Value("classpath:promptTemplateExample.yaml")
@@ -63,10 +67,93 @@ class OrchestrationController {
     final Runnable consumeStream =
         () -> {
           try (stream) {
+            stream.forEach(deltaMessage -> send(emitter, deltaMessage));
+          } finally {
+            emitter.complete();
+          }
+        };
+
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
+
+    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+  }
+
+  @GetMapping("/reasoning")
+  Object reasoning(
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @RequestParam(value = "topic", defaultValue = "Why is the sky blue?") final String topic) {
+    final var response = service.reasoning(topic);
+    if ("json".equals(format)) {
+      return response;
+    }
+    return formatReasoning(response);
+  }
+
+  @GetMapping("/multiTurnReasoning")
+  Object multiTurnReasoning(
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @RequestParam(value = "first", defaultValue = "What is 6 times 7?") final String first,
+      @RequestParam(value = "followUp", defaultValue = "Are you sure?") final String followUp) {
+    final var response = service.multiTurnReasoning(first, followUp);
+    if ("json".equals(format)) {
+      return response;
+    }
+    return formatReasoning(response);
+  }
+
+  @Nonnull
+  private static String formatReasoning(
+      @Nonnull final OrchestrationService.ReasoningOutput response) {
+    final var content = new StringBuilder();
+    if (!response.reasoning().isEmpty()) {
+      content.append("----REASONING----\n").append(response.reasoning()).append("\n\n");
+    }
+    content.append("-----ANSWER-----\n").append(response.answer());
+    return content.toString();
+  }
+
+  private static void sendJsonLine(
+      @Nonnull final ResponseBodyEmitter emitter,
+      @Nonnull final OrchestrationService.ReasoningOutput chunk) {
+    try {
+      send(emitter, MAPPER.writeValueAsString(chunk) + "\n");
+    } catch (final JsonProcessingException e) {
+      log.error("Failed to serialize reasoning chunk to JSON", e);
+    }
+  }
+
+  @GetMapping("/streamReasoning")
+  ResponseEntity<ResponseBodyEmitter> streamReasoning(
+      @Nullable @RequestParam(value = "format", required = false) final String format,
+      @RequestParam(value = "topic", defaultValue = "Why is the sky blue?") final String topic) {
+    final var emitter = new ResponseBodyEmitter();
+    final var json = "json".equals(format);
+    final Runnable consumeStream =
+        () -> {
+          final var lastLabel = new String[] {""};
+
+          try (var stream = service.streamReasoning(topic)) {
             stream.forEach(
-                deltaMessage -> {
-                  log.info("Service: {}", deltaMessage);
-                  send(emitter, deltaMessage);
+                chunk -> {
+                  if (json) {
+                    sendJsonLine(emitter, chunk);
+                    return;
+                  }
+                  if (!chunk.answer().isEmpty()) {
+                    if (!"answer".equals(lastLabel[0])) {
+                      send(emitter, "\n-----ANSWER-----\n");
+                      lastLabel[0] = "answer";
+                    }
+                    send(emitter, chunk.answer());
+                  }
+                  if (!chunk.reasoning().isEmpty()) {
+                    if (!"reasoning".equals(lastLabel[0])) {
+                      send(emitter, "\n----REASONING----\n");
+                      lastLabel[0] = "reasoning";
+                    }
+                    send(emitter, chunk.reasoning());
+                  }
                 });
           } finally {
             emitter.complete();
@@ -191,7 +278,7 @@ class OrchestrationController {
     try {
       response = service.inputFiltering(policy);
     } catch (OrchestrationFilterException.Input e) {
-      final var msg =
+      final var errorMessage =
           new StringBuilder(
               "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
                   .formatted(e.getStatusCode()));
@@ -199,10 +286,11 @@ class OrchestrationController {
       Optional.ofNullable(e.getAzureContentSafetyInput())
           .map(AzureContentSafetyInput::getViolence)
           .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
-          .ifPresent(rating -> msg.append("Violence score %d".formatted(rating.getValue())));
+          .ifPresent(
+              rating -> errorMessage.append("Violence score %d".formatted(rating.getValue())));
 
-      log.debug(msg.toString(), e);
-      return ResponseEntity.internalServerError().body(msg.toString());
+      log.error(errorMessage.toString(), e);
+      return ResponseEntity.internalServerError().body(errorMessage.toString());
     }
 
     if ("json".equals(format)) {
@@ -224,17 +312,18 @@ class OrchestrationController {
     try {
       content = response.getContent();
     } catch (OrchestrationFilterException.Output e) {
-      final var msg =
+      final var errorMessage =
           new StringBuilder(
               "Failed to obtain a response as the content was flagged by output filter. ");
 
       Optional.ofNullable(e.getAzureContentSafetyOutput())
           .map(AzureContentSafetyOutput::getViolence)
           .filter(rating -> rating.compareTo(policy.getAzureThreshold()) > 0)
-          .ifPresent(rating -> msg.append("Violence score %d ".formatted(rating.getValue())));
+          .ifPresent(
+              rating -> errorMessage.append("Violence score %d ".formatted(rating.getValue())));
 
-      log.debug(msg.toString(), e);
-      return ResponseEntity.internalServerError().body(msg.toString());
+      log.error(errorMessage.toString(), e);
+      return ResponseEntity.internalServerError().body(errorMessage.toString());
     }
 
     if ("json".equals(format)) {
@@ -253,14 +342,14 @@ class OrchestrationController {
     try {
       response = service.llamaGuardInputFilter(enabled);
     } catch (OrchestrationFilterException.Input e) {
-      var msg =
+      var errorMessage =
           "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
               .formatted(e.getStatusCode());
       if (e.getLlamaGuard38b() != null) {
-        msg += " Violent crimes are %s".formatted(e.getLlamaGuard38b().isViolentCrimes());
+        errorMessage += " Violent crimes are %s".formatted(e.getLlamaGuard38b().isViolentCrimes());
       }
-      log.debug(msg, e);
-      return ResponseEntity.internalServerError().body(msg);
+      log.error(errorMessage, e);
+      return ResponseEntity.internalServerError().body(errorMessage);
     }
 
     if ("json".equals(format)) {

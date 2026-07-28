@@ -135,7 +135,8 @@ public class OpenAiServiceDeprecated {
         response.getChoices().get(0).getMessage().getToolCalls().get(0);
     final WeatherMethod.Request arguments =
         parseJson(toolCall.getFunction().getArguments(), WeatherMethod.Request.class);
-    final WeatherMethod.Response currentWeather = WeatherMethod.getCurrentWeather(arguments);
+    final WeatherMethod.Response currentWeather =
+        WeatherMethod.getCurrentWeather(arguments.location(), arguments.unit());
 
     final OpenAiChatMessage.OpenAiChatAssistantMessage assistantMessage =
         response.getChoices().get(0).getMessage();

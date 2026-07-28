@@ -12,7 +12,7 @@
           "type": "function",
           "function": {
             "name": "getCurrentWeather",
-            "arguments": "{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}"
+            "arguments": "{\"arg0\": \"Potsdam\", \"arg1\": \"C\"}"
           }
         },
         {
@@ -20,7 +20,7 @@
           "type": "function",
           "function": {
             "name": "getCurrentWeather",
-            "arguments": "{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}"
+            "arguments": "{\"arg0\": \"Toulouse\", \"arg1\": \"C\"}"
           }
         }
       ]
@@ -47,27 +47,21 @@
           "type": "object",
           "properties": {
             "arg0": {
-              "type": "object",
-              "properties": {
-                "location": {
-                  "type": "string"
-                },
-                "unit": {
-                  "type": "string",
-                  "enum": [
-                    "C",
-                    "F"
-                  ]
-                }
-              },
-              "required": [
-                "location",
-                "unit"
+              "type": "string",
+              "description": "the city"
+            },
+            "arg1": {
+              "type": "string",
+              "description": "the unit of temperature",
+              "enum": [
+                "C",
+                "F"
               ]
             }
           },
           "required": [
-            "arg0"
+            "arg0",
+            "arg1"
           ],
           "additionalProperties": false
         },

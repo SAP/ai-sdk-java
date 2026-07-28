@@ -254,6 +254,7 @@ class AiCoreOpenAiTest {
     assertThat(second).isNotNull();
     assertThat(second.promptCacheKey()).contains(cacheKey);
     assertThat(second.usage().isPresent()).isTrue();
+
     assertThat(second.usage().get().inputTokensDetails().cachedTokens()).isGreaterThanOrEqualTo(0);
   }
 }

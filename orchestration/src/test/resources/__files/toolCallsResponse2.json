@@ -15,7 +15,7 @@
             "type": "function",
             "function": {
               "name": "getCurrentWeather",
-              "arguments": "{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}"
+              "arguments": "{\"arg0\": \"Potsdam\", \"arg1\": \"C\"}"
             }
           },
           {
@@ -23,7 +23,7 @@
             "type": "function",
             "function": {
               "name": "getCurrentWeather",
-              "arguments": "{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}"
+              "arguments": "{\"arg0\": \"Toulouse\", \"arg1\": \"C\"}"
             }
           }
         ]

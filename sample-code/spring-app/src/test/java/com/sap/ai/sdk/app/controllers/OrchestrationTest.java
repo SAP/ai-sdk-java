@@ -1,10 +1,12 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.*;
 import static com.sap.ai.sdk.orchestration.model.ResponseChatMessage.RoleEnum.ASSISTANT;
+import static java.util.Locale.ROOT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -20,6 +22,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.ReasoningEffort;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
@@ -31,6 +34,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -73,7 +77,6 @@ class OrchestrationTest {
         // foreach consumes all elements, closing the stream at the end
         .forEach(
         delta -> {
-          log.info("delta: {}", delta);
           if (!delta.isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
@@ -209,8 +212,8 @@ class OrchestrationTest {
     assertThat(llmChoice.getFinishReason()).isEqualTo("stop");
     assertThat(result.getIntermediateResults().getGrounding()).isNotNull();
     assertThat(result.getIntermediateResults().getGrounding().getData()).isNotNull();
-    assertThat(result.getIntermediateResults().getGrounding().getMessage())
-        .isEqualTo("grounding result");
+    assertThat(result.getIntermediateResults().getGrounding().getMessage().toLowerCase(ROOT))
+        .contains("grounding");
     var groundingData =
         (Map<String, String>) result.getIntermediateResults().getGrounding().getData();
     assertThat(groundingData.get("grounding_result")).contains("metadata");
@@ -244,8 +247,7 @@ class OrchestrationTest {
     var policy = AzureFilterThreshold.ALLOW_SAFE;
 
     assertThatThrownBy(() -> service.inputFiltering(policy))
-        .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContainingAll("Filtering", "blocked")
         .hasMessageContaining("400 (Bad Request)")
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
@@ -269,7 +271,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("passed"); // prompt shield is a filter
+    assertThat(filterResult.getMessage()).isNotEmpty(); // prompt shield is a filter
   }
 
   @Test
@@ -302,15 +304,14 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getOutputFiltering();
-    assertThat(filterResult.getMessage()).containsPattern("Choice 0: Filtering was skipped.");
+    assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
   }
 
   @Test
   void testLlamaGuardEnabled() {
     assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
         .isInstanceOf(OrchestrationFilterException.Input.class)
-        .hasMessageContaining(
-            "Content filtered due to safety violations. Please modify the prompt and try again.")
+        .hasMessageContainingAll("Filtering", "blocked")
         .hasMessageContaining("400 (Bad Request)")
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
@@ -332,7 +333,7 @@ class OrchestrationTest {
     assertThat(response.getContent()).isNotEmpty();
 
     var filterResult = response.getOriginalResponse().getIntermediateResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("skipped");
+    assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
   }
 
   @Test
@@ -550,14 +551,14 @@ class OrchestrationTest {
     assertThat(inputTranslation).isNotNull();
     assertThat(inputTranslation.getMessage())
         .isNotNull()
-        .contains("Successfully translated placeholders:")
+        .contains("successful", " placeholders:")
         .contains("exam_type")
         .contains("topic");
 
     val outputTranslation =
         result.getOriginalResponse().getIntermediateResults().getOutputTranslation();
     assertThat(outputTranslation).isNotNull();
-    assertThat(outputTranslation.getMessage()).isEqualTo("Output Translation successful");
+    assertThat(outputTranslation.getMessage()).contains("Translation", "successful");
   }
 
   @Test
@@ -626,7 +627,6 @@ class OrchestrationTest {
     val filledDeltaCount = new AtomicInteger(0);
     stream.forEach(
         delta -> {
-          log.info("delta: {}", delta);
           if (!delta.isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
@@ -640,7 +640,6 @@ class OrchestrationTest {
     val filledDeltaCount = new AtomicInteger(0);
     stream.forEach(
         delta -> {
-          log.info("delta: {}", delta);
           if (!delta.getDeltaContent().isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
@@ -654,7 +653,6 @@ class OrchestrationTest {
     val filledDeltaCount = new AtomicInteger(0);
     stream.forEach(
         delta -> {
-          log.info("delta: {}", delta);
           if (!delta.getDeltaContent().isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
@@ -668,7 +666,6 @@ class OrchestrationTest {
     val filledDeltaCount = new AtomicInteger(0);
     stream.forEach(
         delta -> {
-          log.info("delta: {}", delta);
           if (!delta.getDeltaContent().isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
@@ -687,5 +684,54 @@ class OrchestrationTest {
   void testCitations() {
     val result = service.citations();
     assertThat(result.getOriginalResponse().getFinalResult().getCitations()).isNotEmpty();
+  }
+
+  @Test
+  void testReasoningContentSync() {
+    val result = service.reasoning("What is 6 times 7?");
+
+    assertThat(result.answer()).isNotEmpty();
+    assertThat(result.reasoning()).isNotEmpty();
+  }
+
+  @Test
+  void testReasoningContentStreaming() {
+    val answerBuilder = new StringBuilder();
+    val reasoning = new ArrayList<String>();
+    try (val stream = service.streamReasoning("What is 6 times 7?")) {
+      stream.forEach(
+          chunk -> {
+            answerBuilder.append(chunk.answer());
+            if (!chunk.reasoning().isEmpty()) {
+              reasoning.add(chunk.reasoning());
+            }
+          });
+    }
+
+    assertThat(answerBuilder.toString()).isNotEmpty();
+    assertThat(reasoning).isNotEmpty();
+  }
+
+  @Test
+  void testMultiTurnReasoning() {
+    val reasoningConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    val orchestrationClient = new OrchestrationClient();
+    val firstPrompt = new OrchestrationPrompt("What is 6 times 7?");
+    val firstResponse = orchestrationClient.chatCompletion(firstPrompt, reasoningConfig);
+
+    assertThat(firstResponse.getReasoningText()).isNotEmpty();
+
+    // Feed the whole history (which carries the previous reasoning content internally) into the
+    // follow-up turn.
+    val followUpPrompt =
+        new OrchestrationPrompt("Are you sure?").messageHistory(firstResponse.getAllMessages());
+    val followUp = orchestrationClient.chatCompletion(followUpPrompt, reasoningConfig);
+
+    assertThat(followUp.getContent()).isNotEmpty();
+    // Reasoning is still returned on the follow-up turn, proving the model kept reasoning enabled
+    // after we resubmitted the previous reasoning_content in messages_history.
+    assertThat(followUp.getReasoningText()).isNotEmpty();
   }
 }

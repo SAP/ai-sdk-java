@@ -148,10 +148,8 @@ public class OpenAiChatModelTest {
     assertThat(toolCall2.type()).isEqualTo("function");
     assertThat(toolCall1.name()).isEqualTo("getCurrentWeather");
     assertThat(toolCall2.name()).isEqualTo("getCurrentWeather");
-    assertThat(toolCall1.arguments())
-        .isEqualTo("{\"arg0\": {\"location\": \"Potsdam\", \"unit\": \"C\"}}");
-    assertThat(toolCall2.arguments())
-        .isEqualTo("{\"arg0\": {\"location\": \"Toulouse\", \"unit\": \"C\"}}");
+    assertThat(toolCall1.arguments()).isEqualTo("{\"arg0\": \"Potsdam\", \"arg1\": \"C\"}");
+    assertThat(toolCall2.arguments()).isEqualTo("{\"arg0\": \"Toulouse\", \"arg1\": \"C\"}");
 
     try (var request1InputStream = fileLoader.apply("toolCallsRequest.json")) {
       final String request1 = new String(request1InputStream.readAllBytes());

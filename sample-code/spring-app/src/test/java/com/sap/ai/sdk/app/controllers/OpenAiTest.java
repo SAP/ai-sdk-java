@@ -12,11 +12,9 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-@Slf4j
 class OpenAiTest {
   OpenAiService service;
 
@@ -63,7 +61,6 @@ class OpenAiTest {
             delta -> {
               usageRef.compareAndExchange(null, delta.getCompletionUsage());
               final String deltaContent = delta.getDeltaContent();
-              log.info("delta: {}", delta);
               if (!deltaContent.isEmpty()) {
                 filledDeltaCount.incrementAndGet();
               }

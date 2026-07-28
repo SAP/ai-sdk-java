@@ -273,7 +273,7 @@ jobs:
 
           # Run japicmp: compare baseline ($BASE) JAR vs newly generated JAR
           if mvn com.github.siom79.japicmp:japicmp-maven-plugin:cmp@api-compatibility \
-            -pl "$MODULE_PATH" \ 
+            -pl "$MODULE_PATH" \
             -Djapicmp.oldVersion.file=/tmp/baseline.jar \
             -Djapicmp.newVersion.file="$CURRENT_JAR" \
             ${{ env.MVN_MULTI_THREADED_ARGS }} ; then
@@ -405,7 +405,7 @@ jobs:
 
       - name: 'Slack Notification'
         if: failure() && github.event.inputs.create-pr == 'true'
-        uses: slackapi/slack-github-action@v3.0.3
+        uses: slackapi/slack-github-action@v4.0.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
           webhook-type: incoming-webhook

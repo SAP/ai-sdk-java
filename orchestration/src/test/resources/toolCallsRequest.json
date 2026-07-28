@@ -29,27 +29,21 @@
                   "type": "object",
                   "properties": {
                     "arg0": {
-                      "type": "object",
-                      "properties": {
-                        "location": {
-                          "type": "string"
-                        },
-                        "unit": {
-                          "type": "string",
-                          "enum": [
-                            "C",
-                            "F"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "location",
-                        "unit"
+                      "type": "string",
+                      "description": "the city"
+                    },
+                    "arg1": {
+                      "type": "string",
+                      "description": "the unit of temperature",
+                      "enum": [
+                        "C",
+                        "F"
                       ]
                     }
                   },
                   "required": [
-                    "arg0"
+                    "arg0",
+                    "arg1"
                   ]
                 },
                 "strict": false

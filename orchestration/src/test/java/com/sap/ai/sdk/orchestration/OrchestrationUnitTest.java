@@ -81,6 +81,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -1733,5 +1734,124 @@ class OrchestrationUnitTest {
     final String request = fileLoaderStr.apply("fallbackRequest.json");
     verify(
         postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
+  }
+
+  @Test
+  void streamReasoning() throws IOException {
+    final var body =
+        new String(
+            Objects.requireNonNull(
+                    getClass().getClassLoader().getResourceAsStream("streamReasoning.txt"))
+                .readAllBytes());
+    stubFor(
+        post(anyUrl())
+            .willReturn(aResponse().withBody(body).withHeader("Content-Type", "application/json")));
+
+    final var reasoningConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(
+                OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    final var reasoningPrompt =
+        new OrchestrationPrompt("Think carefully and explain step by step: Why is the sky blue?");
+    final var request =
+        OrchestrationClient.toCompletionPostRequest(reasoningPrompt, reasoningConfig);
+
+    final var answerChunks = new ArrayList<String>();
+    final var reasoningChunks = new ArrayList<String>();
+    try (var stream = client.streamChatCompletionDeltas(request)) {
+      stream.forEach(
+          delta -> {
+            if (!delta.getDeltaContent().isEmpty()) {
+              answerChunks.add(delta.getDeltaContent());
+            }
+            if (!delta.getDeltaReasoningText().isEmpty()) {
+              reasoningChunks.add(delta.getDeltaReasoningText());
+            }
+          });
+    }
+
+    assertThat(answerChunks).containsExactly("42");
+    // Reasoning arrives split across chunks ("Let me " + "think."); joining reconstructs the text.
+    assertThat(String.join("", reasoningChunks)).isEqualTo("Let me think.");
+
+    final String expectedRequest = fileLoaderStr.apply("streamReasoningRequest.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(equalToJson(expectedRequest, true, true)));
+  }
+
+  @Test
+  void reasoningResponse() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("reasoningResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var reasoningConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(
+                OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    final var reasoningPrompt =
+        new OrchestrationPrompt("Think carefully and explain step by step: Why is the sky blue?");
+
+    final var response = client.chatCompletion(reasoningPrompt, reasoningConfig);
+
+    assertThat(response.getContent()).startsWith("# Why the Sky is Blue");
+    assertThat(response.getReasoningText())
+        .startsWith("This is a classic question about atmospheric physics.");
+
+    // getAllMessages() must attach the reasoning content (including the opaque signature) to the
+    // final assistant message so it round-trips in messages_history.
+    final var serialized =
+        (com.sap.ai.sdk.orchestration.model.AssistantChatMessage)
+            response.getLastMessage().createChatMessage();
+    assertThat(serialized.getReasoningContent()).hasSize(1);
+    assertThat(serialized.getReasoningContent().get(0).getSignature())
+        .startsWith("EtAECnAIDxABGAIq");
+
+    final String expectedRequest = fileLoaderStr.apply("reasoningRequest.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(equalToJson(expectedRequest, true, true)));
+  }
+
+  @Test
+  void multiTurnReasoningPreservesReasoningContent() {
+    // Turn 1: model returns reasoning content + signature.
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("multiTurnReasoningTurn1Response.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var reasoningConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(
+                OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    final var firstResponse =
+        client.chatCompletion(new OrchestrationPrompt("What is 6 times 7?"), reasoningConfig);
+
+    // Turn 1 assertions: reasoning text parsed correctly.
+    assertThat(firstResponse.getContent()).isEqualTo("6 times 7 is 42.");
+    assertThat(firstResponse.getReasoningText()).isNotEmpty();
+
+    // Turn 2: send a follow-up carrying the whole history (which includes turn 1's reasoning).
+    final var followUp =
+        new OrchestrationPrompt("Are you sure?").messageHistory(firstResponse.getAllMessages());
+    client.chatCompletion(followUp, reasoningConfig);
+
+    // The outgoing request for turn 2 must contain the reasoning_content from turn 1 (content +
+    // signature) in the messages_history array. This is the multi-turn round-trip contract.
+    final String expectedTurn1Request = fileLoaderStr.apply("multiTurnReasoningTurn1Request.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(equalToJson(expectedTurn1Request, true, true)));
+    final String expectedTurn2Request = fileLoaderStr.apply("multiTurnReasoningTurn2Request.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(equalToJson(expectedTurn2Request, true, true)));
   }
 }
