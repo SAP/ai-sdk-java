@@ -7,6 +7,8 @@ import java.util.concurrent.CompletionStage;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
+
+import com.google.common.annotations.Beta;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -21,7 +23,7 @@ class BufferedWebSocketListener implements WebSocket.Listener {
       @Nonnull final BiConsumer<WebSocket, CharSequence> onText) {
     this.onOpen = onOpen;
     this.onText = onText;
-    this.buffer = new StringBuilder(128 * 1024);
+    this.buffer = new StringBuilder(256 * 1024);
   }
 
   @Override

@@ -17,6 +17,7 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiImageItem;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiMessage;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiTool;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.realtime.RealtimeParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -129,12 +130,15 @@ public class OpenAiService {
    *
    * @param audioOutputConsumer - audio consumer of raw PCM mono 24000 Hz little endian output, 16
    *     bit depth
+   * @param realtimeParams - optional additional configuration params
    * @return input channel, allowing for audio data input (bytes, PCM mono 24000 Hz little endian 16
    *     bit)
    */
   @Nonnull
-  public AudioInputChannel speechToSpeech(@Nonnull final AudioOutputChannel audioOutputConsumer) {
-    return OpenAiClient.realtimeClient().speechToSpeech(audioOutputConsumer);
+  public AudioInputChannel speechToSpeech(
+      @Nonnull final AudioOutputChannel audioOutputConsumer,
+      @Nonnull final RealtimeParam... realtimeParams) {
+    return OpenAiClient.realtimeClient().speechToSpeech(audioOutputConsumer, realtimeParams);
   }
 
   /**

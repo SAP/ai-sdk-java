@@ -67,7 +67,7 @@ class OpenAiRealtimeClientUnitTest {
             .build();
     final var client = new OpenAiRealtimeClient(destination);
 
-    assertThat(client.getRealtimeEndpoint()).startsWith("wss://").endsWith("v1/realtime");
+    assertThat(client.getRealtimeEndpoint()).startsWith("wss://").endsWith("/v1/realtime");
   }
 
   @Test

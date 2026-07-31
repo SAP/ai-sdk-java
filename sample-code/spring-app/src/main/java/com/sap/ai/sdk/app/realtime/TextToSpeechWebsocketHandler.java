@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.realtime;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import org.springframework.web.socket.handler.BinaryWebSocketHandler;
 /** Implements handler (Web Socket messages handling) for text to speech realtime api operation */
 @Component
 @Slf4j
+@Beta
 public class TextToSpeechWebsocketHandler extends BinaryWebSocketHandler {
 
   private final OpenAiService service;
@@ -30,6 +32,7 @@ public class TextToSpeechWebsocketHandler extends BinaryWebSocketHandler {
    * @param service - handling service
    */
   @Autowired
+  @Beta
   public TextToSpeechWebsocketHandler(@Nonnull final OpenAiService service) {
     this.service = service;
     channels = new ConcurrentHashMap<>();
@@ -59,6 +62,7 @@ public class TextToSpeechWebsocketHandler extends BinaryWebSocketHandler {
   }
 
   @Override
+  @Beta
   public void afterConnectionClosed(
       @Nonnull final WebSocketSession session, @Nonnull final CloseStatus status) throws Exception {
     channels.computeIfPresent(

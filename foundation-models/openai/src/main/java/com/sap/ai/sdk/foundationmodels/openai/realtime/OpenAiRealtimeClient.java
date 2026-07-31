@@ -14,6 +14,7 @@ import javax.annotation.Nonnull;
  * OpenAI client implementation of Realtime API. Abstracts technical implementation, transport and
  * threading and exposes business-level operations (high level interface)
  */
+@Beta
 public class OpenAiRealtimeClient {
 
   static final int PATH_BUFFER_SIZE =
@@ -26,6 +27,7 @@ public class OpenAiRealtimeClient {
    *
    * @param destination - destination to use
    */
+  @Beta
   public OpenAiRealtimeClient(@Nonnull final Destination destination) {
     this.destination = destination;
   }
@@ -120,7 +122,7 @@ public class OpenAiRealtimeClient {
           "Invalid destination URI: " + destination.asHttp().getUri());
     }
     sb.append(pathParts[1].replaceFirst("^api\\.", "realtime."));
-    sb.append("v1/realtime");
+    sb.append("/v1/realtime");
     return sb.toString();
   }
 }

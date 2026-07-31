@@ -114,7 +114,6 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
   protected Optional<String> getSystemPrompt() {
     return Optional.empty();
   }
-  ;
 
   protected abstract void onResponse(
       @Nonnull final String eventType, @Nonnull final JsonNode event);

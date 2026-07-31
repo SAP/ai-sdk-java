@@ -18,8 +18,8 @@ class RealtimeParamVoiceUnitTest {
   }
 
   @Test
-  void unsafeWithExplicitVoice() {
-    assertThat(random).isEqualTo(RealtimeParamVoice.unsafeWithExplicitVoice(expectedRandomValue));
+  void withExplicitVoice() {
+    assertThat(random).isEqualTo(RealtimeParamVoice.withExplicitVoice(expectedRandomValue));
   }
 
   @Test

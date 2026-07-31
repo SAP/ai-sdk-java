@@ -82,6 +82,78 @@
             max-height: 500px;
             overflow-y: auto;
         }
+
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        #modal-caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            height: 150px;
+        }
+
+        .modal-content, #modal-caption {
+            -webkit-animation-name: zoom;
+            -webkit-animation-duration: 0.6s;
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @-webkit-keyframes zoom {
+            from {-webkit-transform:scale(0)}
+            to {-webkit-transform:scale(1)}
+        }
+
+        @keyframes zoom {
+            from {transform:scale(0)}
+            to {transform:scale(1)}
+        }
+
+        .modal-close-button {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .modal-close-button:hover,
+        .modal-close-button:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @media only screen and (max-width: 700px){
+            .modal-content {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1494,12 +1566,20 @@
                         <br>
                         In these examples, web socket sessions are created and used
                         to send text/audio to the local server and receive audio back
+                        <br>
+                        <button id="show-arch-scheme-btn" type="button" disabled>Show architecture diagram</button>
+                        <div id="show-realtime-scheme" class="modal">
+                            <span class="modal-close-button">&times;</span>
+                            <img class="modal-content" id="realtime-scheme">
+                            <div id="modal-caption"></div>
+                        </div>
+                        <script src="show-realtime-diagram.js"></script>
                     </div>
                     <div class="card-body">
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <h4>Text to speech</h4>
+                                    <h4><span>Text to speech (<a href="/realtime/smokeTestTextToSpeech" target="_blank">smoke-test</a>)</span></h4>
                                     <span id="text-to-speech-status">disabled</span>
                                     <div class="input-group">
                                         <label for="text-to-speech-input"></label>
@@ -1514,9 +1594,9 @@
                             </li>
                             <li class="list-group-item">
                                 <div class="info-tooltip">
-                                    <h4>Speech to speech</h4>
-                                    <div><span id="speech-to-speech-websocket-status">disconnected</span></div>
-                                    <div><span id="speech-to-speech-mic-status">disabled</span></div>
+                                    <h4><span>Speech to speech (<a href="/realtime/smokeTestSpeechToSpeech" target="_blank">smoke-test</a>)</span></h4>
+                                    <div><span id="speech-to-speech-websocket-status">socket: disconnected</span></div>
+                                    <div><span id="speech-to-speech-mic-status">microphone: disabled</span></div>
                                     <div class="input-group">
                                         <button id="speech-to-speech-btn" type="button">Start</button>
                                     </div>

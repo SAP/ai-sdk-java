@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.annotations.Beta;
 import com.openai.models.realtime.RealtimeAudioConfig;
 import com.openai.models.realtime.RealtimeAudioConfigInput;
 import com.openai.models.realtime.RealtimeAudioConfigOutput;
@@ -12,6 +13,7 @@ import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,13 +33,16 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
       List.of(RealtimeSessionCreateRequest.OutputModality.AUDIO);
   private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
+  private static final Map<RealtimeParam.ParamName, RealtimeParam> FALLBACK_DEFAULT_PARAMS =
+      Map.of(
+          RealtimeParam.ParamName.OUTPUT_VOICE, RealtimeParamVoice.DEFAULT_1,
+          RealtimeParam.ParamName.TURN_DETECTION, RealtimeParamTurnDetection.BY_MODEL_AUTO,
+          RealtimeParam.ParamName.SYSTEM_PROMPT, new RealtimeParamSystemPrompt(""));
+
   final AudioOutputChannel outputConsumer;
   final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
 
-  /**
-   * defines default eagerness (if EACH_CALL_IS_A_TURN) behavior if specific turn detection config
-   * not provided
-   */
+  /** defines if every call to the client should be considered conversation turn */
   protected final boolean eagerTurnDetection;
 
   final String systemPrompt;
@@ -59,39 +64,22 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
       final boolean defaultTurnDetectionEager,
       @Nonnull final RealtimeParam... params) {
     super(url, httpHeaders, HANDLED_RESPONSE_TYPES);
-    var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
-    for (final RealtimeParam param : params) {
-      if (param.getParamName() == RealtimeParam.ParamName.OUTPUT_VOICE) {
-        if (RealtimeParamVoice.DEFAULT_2.equals(param)) {
-          voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
-        } else if (RealtimeParamVoice.DEFAULT_1.equals(param)) {
-          voice = RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO;
-        }
-      }
-    }
-
-    var turnDetectionEager = defaultTurnDetectionEager;
-    for (final RealtimeParam param : params) {
-      if (param.getParamName() == RealtimeParam.ParamName.TURN_DETECTION) {
-        if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
-          turnDetectionEager = true;
-        } else if (RealtimeParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
-          turnDetectionEager = false;
-        }
-      }
-    }
-
-    var systemPrompt = "";
-    for (final RealtimeParam param : params) {
-      if (param.getParamName() == RealtimeParam.ParamName.SYSTEM_PROMPT) {
-        systemPrompt = param.getValueAsString();
-      }
-    }
+    final var defaults = new HashMap<>(FALLBACK_DEFAULT_PARAMS);
+    defaults.put(
+        RealtimeParam.ParamName.TURN_DETECTION,
+        defaultTurnDetectionEager
+            ? RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN
+            : RealtimeParamTurnDetection.BY_MODEL_AUTO);
+    final var resolvedParams = resolveParams(defaults, params);
 
     this.outputConsumer = outputConsumer;
-    this.voice = voice;
-    this.eagerTurnDetection = turnDetectionEager;
-    this.systemPrompt = systemPrompt;
+    this.voice =
+        mapVoice((RealtimeParamVoice) resolvedParams.get(RealtimeParam.ParamName.OUTPUT_VOICE));
+    this.eagerTurnDetection =
+        RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(
+            resolvedParams.get(RealtimeParam.ParamName.TURN_DETECTION));
+    this.systemPrompt =
+        resolvedParams.get(RealtimeParam.ParamName.SYSTEM_PROMPT).getValueAsString();
   }
 
   ToAudioRealtimeClient(
@@ -102,36 +90,21 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
       final boolean eagerTurnDetection,
       @Nonnull final RealtimeParam... params) {
     super(httpClient, ws, timer, HANDLED_RESPONSE_TYPES);
-    var voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
-    for (final RealtimeParam param : params) {
-      if (param.getParamName() == RealtimeParam.ParamName.OUTPUT_VOICE) {
-        if (RealtimeParamVoice.DEFAULT_2.equals(param)) {
-          voice = RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
-        } else if (RealtimeParamVoice.DEFAULT_1.equals(param)) {
-          voice = RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO;
-        }
-      }
-    }
-    var turnDetectionEager = eagerTurnDetection;
-    for (final RealtimeParam param : params) {
-      if (param.getParamName() == RealtimeParam.ParamName.TURN_DETECTION) {
-        if (RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(param)) {
-          turnDetectionEager = true;
-        } else if (RealtimeParamTurnDetection.BY_MODEL_AUTO.equals(param)) {
-          turnDetectionEager = false;
-        }
-      }
-    }
-    var systemPrompt = "";
-    for (final RealtimeParam param : params) {
-      if (param.getParamName() == RealtimeParam.ParamName.SYSTEM_PROMPT) {
-        systemPrompt = param.getValueAsString();
-      }
-    }
+    final var defaults = new HashMap<>(FALLBACK_DEFAULT_PARAMS);
+    defaults.put(
+        RealtimeParam.ParamName.TURN_DETECTION,
+        eagerTurnDetection
+            ? RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN
+            : RealtimeParamTurnDetection.BY_MODEL_AUTO);
+    final var resolvedParams = resolveParams(defaults, params);
     this.outputConsumer = outputConsumer;
-    this.voice = voice;
-    this.eagerTurnDetection = turnDetectionEager;
-    this.systemPrompt = systemPrompt;
+    this.voice =
+        mapVoice((RealtimeParamVoice) resolvedParams.get(RealtimeParam.ParamName.OUTPUT_VOICE));
+    this.eagerTurnDetection =
+        RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN.equals(
+            resolvedParams.get(RealtimeParam.ParamName.TURN_DETECTION));
+    this.systemPrompt =
+        resolvedParams.get(RealtimeParam.ParamName.SYSTEM_PROMPT).getValueAsString();
   }
 
   @Nonnull
@@ -148,12 +121,40 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
     if ("response.output_audio.delta".equals(eventType)) {
       final var base64Audio = event.get("delta").asText();
       final byte[] audio = Base64.getDecoder().decode(base64Audio);
-      this.outputConsumer.outputAudio(audio, Boolean.FALSE);
+      this.outputConsumer.outputAudio(audio, false);
     } else if ("response.output_audio.done".equals(eventType)) {
-      this.outputConsumer.outputAudio(EMPTY_BYTE_ARRAY, Boolean.TRUE);
+      this.outputConsumer.outputAudio(EMPTY_BYTE_ARRAY, true);
     } else {
       log.warn("skipping message type: {}", eventType);
     }
+  }
+
+  /*
+   side effect: modifies defaults
+  */
+  @Nonnull
+  protected Map<RealtimeParam.ParamName, RealtimeParam> resolveParams(
+      final @Nonnull Map<RealtimeParam.ParamName, RealtimeParam> defaults,
+      final @Nonnull RealtimeParam... params) {
+    for (final RealtimeParam param : params) {
+      if (param == null) {
+        log.warn("skipping null param for realtime client");
+        continue;
+      }
+      defaults.put(param.getParamName(), param);
+    }
+    return defaults;
+  }
+
+  @Nonnull
+  private RealtimeAudioConfigOutput.Voice.UnionMember1 mapVoice(
+      @Nonnull final RealtimeParamVoice voice) {
+    if (voice.equals(RealtimeParamVoice.DEFAULT_1)) {
+      return RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN;
+    } else if (voice.equals(RealtimeParamVoice.DEFAULT_2)) {
+      return RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO;
+    }
+    return RealtimeAudioConfigOutput.Voice.UnionMember1.of(voice.getValueAsString());
   }
 
   @Override

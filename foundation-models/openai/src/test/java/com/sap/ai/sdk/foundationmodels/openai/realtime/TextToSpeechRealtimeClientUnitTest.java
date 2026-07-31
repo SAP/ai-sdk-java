@@ -21,7 +21,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-class TextToSpeechRealtimeClientTest {
+class TextToSpeechRealtimeClientUnitTest {
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
 

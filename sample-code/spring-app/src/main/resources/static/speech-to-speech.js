@@ -17,7 +17,7 @@ async function startSession() {
     sts_ws.binaryType = 'arraybuffer';
 
     sts_ws.onopen = async () => {
-        wsStatusEl.textContent = `connected to ${SPEECH_TO_SPEECH_URL}`;
+        wsStatusEl.textContent = `socket: connected to ${SPEECH_TO_SPEECH_URL}`;
         wsStatusEl.style.color = 'green';
 
         await startMicrophone();
@@ -38,7 +38,7 @@ async function startMicrophone() {
     try {
         sts_mediaStream = await navigator.mediaDevices.getUserMedia({audio: true});
         console.log("mediaStream is: ", sts_mediaStream)
-        micStatusEl.textContent = 'active';
+        micStatusEl.textContent = 'microphone: active';
         micStatusEl.style.color = 'green';
 
         sts_audioCtx = new (window.AudioContext || window.webkitAudioContext)({sampleRate: SPEECH_TO_SPEECH_SAMPLE_RATE});
@@ -115,9 +115,9 @@ function stopSession() {
         sts_audioCtx = null;
     }
 
-    wsStatusEl.textContent = 'disconnected';
+    wsStatusEl.textContent = 'socket: disconnected';
     wsStatusEl.style.color = 'red';
-    micStatusEl.textContent = 'disabled';
+    micStatusEl.textContent = 'microphone: disabled';
     micStatusEl.style.color = 'red';
     speechBtn.innerText = 'Start';
     sts_started = false;

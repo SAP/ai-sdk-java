@@ -78,15 +78,15 @@ class ToAudioRealtimeClientUnitTest {
   }
 
   @Test
-  void voiceIsMarinWhenDefault2Provided() {
+  void voiceIsEchoWhenDefault2Provided() {
     assertThat(build(outputConsumerMock, false, RealtimeParamVoice.DEFAULT_2).voice)
-        .isEqualTo(RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN);
+        .isEqualTo(RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO);
   }
 
   @Test
-  void voiceIsEchoWhenDefault1Provided() {
+  void voiceIsMarinWhenDefault1Provided() {
     assertThat(build(outputConsumerMock, false, RealtimeParamVoice.DEFAULT_1).voice)
-        .isEqualTo(RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO);
+        .isEqualTo(RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN);
   }
 
   @Test
@@ -98,7 +98,7 @@ class ToAudioRealtimeClientUnitTest {
                     RealtimeParamVoice.DEFAULT_1,
                     RealtimeParamVoice.DEFAULT_2)
                 .voice)
-        .isEqualTo(RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN);
+        .isEqualTo(RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO);
   }
 
   @Test
@@ -267,7 +267,7 @@ class ToAudioRealtimeClientUnitTest {
   }
 
   @Test
-  void sessionConfigurationOutputVoiceIsEchoWhenDefault1Provided() {
+  void sessionConfigurationOutputVoiceIsMarinWhenDefault1Provided() {
     final var voice =
         build(outputConsumerMock, false, RealtimeParamVoice.DEFAULT_1)
             .sessionConfiguration()
@@ -283,7 +283,7 @@ class ToAudioRealtimeClientUnitTest {
             .unionMember1()
             .orElseThrow();
 
-    assertThat(voice).isEqualTo(RealtimeAudioConfigOutput.Voice.UnionMember1.ECHO);
+    assertThat(voice).isEqualTo(RealtimeAudioConfigOutput.Voice.UnionMember1.MARIN);
   }
 
   @Test
