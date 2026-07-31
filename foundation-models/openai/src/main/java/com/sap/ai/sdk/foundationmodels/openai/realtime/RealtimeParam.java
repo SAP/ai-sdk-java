@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.google.common.annotations.Beta;
-
 import javax.annotation.Nonnull;
 
 /** Represents possible configuration params of realtime client */

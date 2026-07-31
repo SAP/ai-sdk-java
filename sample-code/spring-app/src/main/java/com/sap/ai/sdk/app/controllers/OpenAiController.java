@@ -3,7 +3,6 @@ package com.sap.ai.sdk.app.controllers;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.core.common.ClientException;
 import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
@@ -56,7 +55,6 @@ public class OpenAiController {
 
   @GetMapping(value = "/realtime/smokeTestTextToSpeech", produces = "audio/pcm")
   @Nonnull
-  @Beta
   ResponseEntity<byte[]> smokeTestTextToSpeech() throws TimeoutException {
     final var respBody = ByteBuffer.allocate(300000);
     final var lock = new AtomicBoolean(false);
@@ -89,7 +87,6 @@ public class OpenAiController {
 
   @GetMapping(value = "/realtime/smokeTestSpeechToSpeech", produces = "audio/pcm")
   @Nonnull
-  @Beta
   ResponseEntity<byte[]> smokeTestSpeechToSpeech() throws TimeoutException {
     final var respBody = ByteBuffer.allocate(800000);
     final var lock = new AtomicBoolean(false);

@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.google.common.annotations.Beta;
-
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

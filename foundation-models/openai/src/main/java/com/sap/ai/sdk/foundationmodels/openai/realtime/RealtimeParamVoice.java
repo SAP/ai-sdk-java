@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.google.common.annotations.Beta;
-
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -25,7 +24,8 @@ public final class RealtimeParamVoice implements RealtimeParam {
   /**
    * Allows to configure raw voice name as named by model provider. Unsafe because SDK cannot verify
    * in advance if the provided voice name is correct and supported by the chosen model and use case
-   * NOTE: this method does not check voice name and incorrect input may produce runtime exceptions (unsafe)
+   * NOTE: this method does not check voice name and incorrect input may produce runtime exceptions
+   * (unsafe)
    *
    * @param voiceName as named by model provider
    * @return typed voice client configuration param

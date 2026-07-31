@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.annotations.Beta;
 import com.openai.models.realtime.RealtimeAudioConfig;
 import com.openai.models.realtime.RealtimeAudioConfigInput;
 import com.openai.models.realtime.RealtimeAudioConfigOutput;

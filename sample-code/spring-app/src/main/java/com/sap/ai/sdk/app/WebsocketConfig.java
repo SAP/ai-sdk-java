@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.app;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.app.realtime.SpeechToSpeechWebsocketHandler;
 import com.sap.ai.sdk.app.realtime.TextToSpeechWebsocketHandler;
 import javax.annotation.Nonnull;
@@ -12,7 +11,6 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 /** Implements spring Web Socket configuration to expose Web Socket handlers for Realtime API */
 @Configuration
 @EnableWebSocket
-@Beta
 public class WebsocketConfig implements WebSocketConfigurer {
 
   private final TextToSpeechWebsocketHandler textToSpeech;
@@ -24,7 +22,6 @@ public class WebsocketConfig implements WebSocketConfigurer {
    * @param textToSpeech - text to speech realtime api handler
    * @param speechToSpeech - speech to speech realtime api handler
    */
-  @Beta
   public WebsocketConfig(
       @Nonnull final TextToSpeechWebsocketHandler textToSpeech,
       @Nonnull final SpeechToSpeechWebsocketHandler speechToSpeech) {
@@ -38,7 +35,6 @@ public class WebsocketConfig implements WebSocketConfigurer {
    * @param registry - registry where to register handlers
    */
   @Override
-  @Beta
   public void registerWebSocketHandlers(@Nonnull final WebSocketHandlerRegistry registry) {
     registry.addHandler(textToSpeech, "/text-to-speech");
     registry.addHandler(speechToSpeech, "/speech-to-speech");

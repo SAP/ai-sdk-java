@@ -7,8 +7,6 @@ import java.util.concurrent.CompletionStage;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
-
-import com.google.common.annotations.Beta;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
