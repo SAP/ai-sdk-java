@@ -33,7 +33,7 @@ public class OpenAiRealtimeClient {
   }
 
   /**
-   * Creates realtime channel allowing to input text and voice it (receive audio output)
+   * Creates a realtime channel allowing to input text and voice it (receive audio output)
    *
    * <p>The input channel should be used with a try-with-resources block to ensure that the
    * underlying connection is closed.
@@ -48,10 +48,10 @@ public class OpenAiRealtimeClient {
    * }</pre>
    *
    * This API implements full duplex (input + output) communication channels. Application should
-   * logically synchronize their state and close input channel when it is appropriate (e.g. last
-   * part of the response has been received via output channel and application does not need to send
-   * any other input). When input channel is closed, output channel will be closed automatically and
-   * output consumer will not be called anymore.
+   * logically synchronize their state and close the input channel when it is appropriate (e.g. the
+   * last part of the response has been received via the output channel and the application does not
+   * need to send any other input). When the input channel is closed, the output channel will be
+   * closed automatically and the output consumer will not be called anymore.
    *
    * @param audioOutputConsumer - audio consumer of raw PCM mono 24000 Hz little endian output, 16
    *     bit depth
@@ -69,7 +69,7 @@ public class OpenAiRealtimeClient {
   }
 
   /**
-   * Creates realtime channel allowing for audio conversation with a model
+   * Creates a realtime channel allowing for audio conversation with a model.
    *
    * <p>The input channel should be used with a try-with-resources block to ensure that the
    * underlying connection is closed.
@@ -83,11 +83,11 @@ public class OpenAiRealtimeClient {
    * }
    * }</pre>
    *
-   * This API implements full duplex (input + output) communication channels. Application should
-   * logically synchronize their state and close input channel when it is appropriate (e.g. last
-   * part of the response has been received via output channel and application does not need to send
-   * any other input). When input channel is closed, output channel will be closed automatically and
-   * output consumer will not be called anymore.
+   * This API implements full duplex (input + output) communication channels. An application should
+   * logically synchronize their state and close the input channel when it is appropriate (e.g. the
+   * last part of the response has been received via the output channel and the application does not
+   * need to send any other input). When the input channel is closed, the output channel will be
+   * closed automatically and the output consumer will not be called anymore.
    *
    * @param audioOutputConsumer - audio consumer of raw PCM mono 24000 Hz little endian output, 16
    *     bit depth
