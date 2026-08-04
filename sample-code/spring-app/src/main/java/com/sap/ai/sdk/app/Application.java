@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.annotation.Nonnull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.server.servlet.context.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Primary;
 /** Main class to start the Spring Boot application. */
 @SpringBootApplication
 @ComponentScan({"com.sap.cloud.sdk", "com.sap.ai.sdk.app"})
+@ServletComponentScan({"com.sap.cloud.sdk", "com.sap.ai.sdk.app"})
 public class Application {
 
   /**
