@@ -22,7 +22,6 @@
 - [OpenAI] You can now add multiple custom headers to an `OpenAiClient` at once via `.withHeaders()`.
 - [Orchestration] Added `GEMINI_3_1_PRO_PREVIEW_EA` and `MISTRAL_MEDIUM` to model list in `OrchestrationAiModel`.
 - [Orchestration] Reasoning content is now supported for users through `OrchestrationChatResponse.getReasoningText()` and `OrchestrationChatCompletionDelta.getDeltaReasoningText()` to see the thinking processes when using the reasoning models.
-- [spring-app] The `spring-app` is now updated to Spring 7 Spring Boot 4.
 
 ### 📈 Improvements
 
