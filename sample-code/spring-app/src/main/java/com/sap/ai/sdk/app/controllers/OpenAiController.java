@@ -40,7 +40,7 @@ public class OpenAiController {
   private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
-  private Resource sampleQuestionPcm = new ClassPathResource("static/question.pcm");
+  private final Resource sampleQuestionPcm = new ClassPathResource("static/question.pcm");
 
   @GetMapping("/chatCompletion")
   @Nonnull
@@ -53,9 +53,9 @@ public class OpenAiController {
     return response.getContent();
   }
 
-  @GetMapping(value = "/realtime/smokeTestTextToSpeech", produces = "audio/pcm")
+  @GetMapping(value = "/realtime/textToSpeech", produces = "audio/pcm")
   @Nonnull
-  ResponseEntity<byte[]> smokeTestTextToSpeech() throws TimeoutException {
+  ResponseEntity<byte[]> textToSpeech() throws TimeoutException {
     final var respBody = ByteBuffer.allocate(300000);
     final var lock = new AtomicBoolean(false);
     final AudioOutputChannel audioOutput =
@@ -85,9 +85,9 @@ public class OpenAiController {
     throw new TimeoutException("Timeout waiting for text to speech");
   }
 
-  @GetMapping(value = "/realtime/smokeTestSpeechToSpeech", produces = "audio/pcm")
+  @GetMapping(value = "/realtime/speechToSpeech", produces = "audio/pcm")
   @Nonnull
-  ResponseEntity<byte[]> smokeTestSpeechToSpeech() throws TimeoutException {
+  ResponseEntity<byte[]> speechToSpeech() throws TimeoutException {
     final var respBody = ByteBuffer.allocate(800000);
     final var lock = new AtomicBoolean(false);
     final AudioOutputChannel audioOutput =
