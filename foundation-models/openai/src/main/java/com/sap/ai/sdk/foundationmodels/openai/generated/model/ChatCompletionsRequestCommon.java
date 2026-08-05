@@ -39,7 +39,7 @@ public class ChatCompletionsRequestCommon
   private Boolean stream = false;
 
   @JsonProperty("stop")
-  private ChatCompletionsRequestCommonStop stop = null;
+  private ChatCompletionsRequestCommonStop stop;
 
   @JsonProperty("max_tokens")
   private Integer maxTokens = 4096;
