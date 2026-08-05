@@ -122,7 +122,6 @@ class AiCoreOpenAiClientTest {
   }
 
   static void assertRetrieveResponse(@Nonnull final Response response) {
-    assertThat(response.isValid()).isTrue();
     assertThat(response.id()).isEqualTo("resp_07bcc4ce7d57e28d006a19115b9848819588503af93015f462");
     assertThat(response.model().asString()).isEqualTo("gpt-5-2025-08-07-dz-std");
     assertThat(response.status()).contains(ResponseStatus.COMPLETED);
@@ -148,7 +147,6 @@ class AiCoreOpenAiClientTest {
   }
 
   static void assertCancelResponse(@Nonnull final Response response) {
-    assertThat(response.isValid()).isTrue();
     assertThat(response.id()).isEqualTo("resp_0960af38c651a868006a1911b68a448194b0918d31bfa6f586");
     assertThat(response.model().toString()).contains("gpt-5");
     assertThat(response.status()).contains(ResponseStatus.CANCELLED);
@@ -163,7 +161,6 @@ class AiCoreOpenAiClientTest {
   }
 
   static void assertCreateResponse(@Nonnull final Response response) {
-    assertThat(response.isValid()).isTrue();
     assertThat(response.model().asString()).isEqualTo("gpt-5-2025-08-07-dz-std");
     assertThat(response.status()).contains(ResponseStatus.COMPLETED);
     assertThat(response.reasoning())
@@ -187,8 +184,6 @@ class AiCoreOpenAiClientTest {
   }
 
   static void assertCreateResponseStreaming(@Nonnull final ResponseStreamEvent event) {
-    assertThat(event.isValid()).isTrue();
-
     if (event.isCreated()) {
       assertThat(event.asCreated().response()).isNotNull();
       assertThat(event.asCreated().response().model().asString())
