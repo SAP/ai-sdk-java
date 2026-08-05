@@ -4,6 +4,7 @@ import com.sap.ai.sdk.foundationmodels.rpt.RptClient;
 import com.sap.ai.sdk.foundationmodels.rpt.RptModel;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.ColumnType;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayload;
+import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayloadOneOf;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayload;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionPlaceholder;
@@ -66,12 +67,12 @@ public class RptService {
                 "COSTCENTER", RowsInnerValue.create("Data Infrastructure")));
 
     final var request =
-        PredictRequestPayload.create()
+        PredictRequestPayloadOneOf.create()
             .predictionConfig(PredictionConfig.create().targetColumns(targetColumns))
+            .rows(rows)
             .indexColumn("ID")
             .dataSchema(dataSchema)
-            .parseDataTypes(true)
-            .rows(rows);
+            .parseDataTypes(true);
     return rptClient.tableCompletion(request);
   }
 
