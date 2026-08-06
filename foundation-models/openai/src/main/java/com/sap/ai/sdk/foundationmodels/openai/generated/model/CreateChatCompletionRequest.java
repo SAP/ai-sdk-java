@@ -42,7 +42,7 @@ public class CreateChatCompletionRequest
   private Boolean stream = false;
 
   @JsonProperty("stop")
-  private CreateChatCompletionRequestAllOfStop stop = null;
+  private CreateChatCompletionRequestAllOfStop stop;
 
   @JsonProperty("max_tokens")
   private Integer maxTokens;
