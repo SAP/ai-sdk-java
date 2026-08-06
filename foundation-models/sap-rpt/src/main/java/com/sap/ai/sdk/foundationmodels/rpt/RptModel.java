@@ -13,11 +13,11 @@ import javax.annotation.Nullable;
  */
 public record RptModel(@Nonnull String name, @Nullable String version) implements AiModel {
 
-  /** SAP RPT 1 Small model. */
-  public static final RptModel SAP_RPT_1_SMALL = new RptModel("sap-rpt-1-small", null);
+  /** SAP Relational Pre-trained Transformer 1.5 model. */
+  public static final RptModel SAP_RPT_15 = new RptModel("sap-rpt-1.5", null);
 
-  /** SAP RPT 1 Large model. */
-  public static final RptModel SAP_RPT_1_LARGE = new RptModel("sap-rpt-1-large", null);
+  /** SAP Relational Pre-trained Transformer Large 1.5 model. */
+  public static final RptModel SAP_RPT_15_LARGE = new RptModel("sap-rpt-1.5-large", null);
 
   /**
    * Create a new instance of RptModel with the provided version.
