@@ -1,7 +1,9 @@
 package com.sap.ai.sdk.app.services;
 
+import static com.sap.ai.sdk.foundationmodels.rpt.RptModel.SAP_RPT_15;
+import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig.TaskTypeEnum.CLASSIFICATION;
+
 import com.sap.ai.sdk.foundationmodels.rpt.RptClient;
-import com.sap.ai.sdk.foundationmodels.rpt.RptModel;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.ColumnType;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayloadOneOf;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayload;
@@ -10,7 +12,6 @@ import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionPlaceholder
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.RowsInnerValue;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.SchemaFieldConfig;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig;
-import java.io.File;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.util.List;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RptService {
 
-  static final RptClient rptClient = RptClient.forModel(RptModel.SAP_RPT_15);
+  static final RptClient rptClient = RptClient.forModel(SAP_RPT_15);
 
   /**
    * Makes a prediction request to the RPT model. *
@@ -43,7 +44,7 @@ public class RptService {
             TargetColumnConfig.create()
                 .name("COSTCENTER")
                 .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
-                .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION));
+                .taskType(CLASSIFICATION));
     final List<Map<String, RowsInnerValue>> rows =
         List.of(
             Map.of(
@@ -83,15 +84,15 @@ public class RptService {
   @Nonnull
   public PredictResponsePayload predictParquet() {
     // resources/sampl.parquet
-    final File parquetData = Path.of("src/main/resources/sample.parquet").toFile();
+    final var parquetFile = Path.of("src/main/resources/sample.parquet").toFile();
     final var targetColumns =
         List.of(
             TargetColumnConfig.create()
                 .name("COSTCENTER")
                 .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
-                .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION));
+                .taskType(CLASSIFICATION));
 
     return rptClient.tableCompletion(
-        parquetData, PredictionConfig.create().targetColumns(targetColumns));
+        parquetFile, PredictionConfig.create().targetColumns(targetColumns));
   }
 }

@@ -1,5 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.rpt;
 
+import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.ColumnType.STRING;
+import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig.TaskTypeEnum.CLASSIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -16,13 +18,12 @@ import com.sap.ai.sdk.foundationmodels.rpt.generated.model.*;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import lombok.SneakyThrows;
+import lombok.val;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
@@ -39,6 +40,21 @@ import org.junit.jupiter.api.Test;
 class RptClientTest {
   private static RptClient client;
 
+  private static final Map<String, SchemaFieldConfig> DATA_SCHEMA =
+      Map.of(
+          "PRODUCT", SchemaFieldConfig.create().dtype(STRING),
+          "PRICE", SchemaFieldConfig.create().dtype(STRING),
+          "ORDERDATE", SchemaFieldConfig.create().dtype(ColumnType.DATE),
+          "ID", SchemaFieldConfig.create().dtype(STRING),
+          "COSTCENTER", SchemaFieldConfig.create().dtype(STRING));
+
+  private static final List<TargetColumnConfig> TARGET_COLUMN =
+      List.of(
+          TargetColumnConfig.create()
+              .name("COSTCENTER")
+              .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
+              .taskType(CLASSIFICATION));
+
   @BeforeEach
   void setup(final WireMockRuntimeInfo server) {
     final DefaultHttpDestination destination =
@@ -49,37 +65,15 @@ class RptClientTest {
 
   @Test
   void testRptModels() {
-    assertThat(RptModel.SAP_RPT_1_SMALL.name()).isEqualTo("sap-rpt-1-small");
-    assertThat(RptModel.SAP_RPT_1_SMALL.version()).isNull();
+    assertThat(RptModel.SAP_RPT_15.name()).isEqualTo("sap-rpt-1.5");
+    assertThat(RptModel.SAP_RPT_15.version()).isNull();
 
-    assertThat(RptModel.SAP_RPT_1_LARGE.name()).isEqualTo("sap-rpt-1-large");
-    assertThat(RptModel.SAP_RPT_1_LARGE.version()).isNull();
+    assertThat(RptModel.SAP_RPT_15_LARGE.name()).isEqualTo("sap-rpt-1.5-large");
+    assertThat(RptModel.SAP_RPT_15_LARGE.version()).isEqualTo(null);
 
-    final var modelWithVersion = RptModel.SAP_RPT_1_SMALL.withVersion("v1.0");
-    assertThat(modelWithVersion.name()).isEqualTo("sap-rpt-1-small");
+    val modelWithVersion = RptModel.SAP_RPT_15.withVersion("v1.0");
+    assertThat(modelWithVersion.name()).isEqualTo("sap-rpt-1.5");
     assertThat(modelWithVersion.version()).isEqualTo("v1.0");
-  }
-
-  static PredictRequestPayload createBaseRequest() {
-    final var dataSchema =
-        Map.of(
-            "PRODUCT", SchemaFieldConfig.create().dtype(ColumnType.STRING),
-            "PRICE", SchemaFieldConfig.create().dtype(ColumnType.STRING),
-            "ORDERDATE", SchemaFieldConfig.create().dtype(ColumnType.DATE),
-            "ID", SchemaFieldConfig.create().dtype(ColumnType.STRING),
-            "COSTCENTER", SchemaFieldConfig.create().dtype(ColumnType.STRING));
-    final var targetColumns =
-        List.of(
-            TargetColumnConfig.create()
-                .name("COSTCENTER")
-                .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
-                .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION));
-
-    return PredictRequestPayload.create()
-        .predictionConfig(PredictionConfig.create().targetColumns(targetColumns))
-        .indexColumn("ID")
-        .dataSchema(dataSchema)
-        .parseDataTypes(true);
   }
 
   @Test
@@ -104,9 +98,16 @@ class RptClientTest {
                 "ORDERDATE", RowsInnerValue.create("01-11-2025"),
                 "ID", RowsInnerValue.create("104"),
                 "COSTCENTER", RowsInnerValue.create("Data Infrastructure")));
-    final var request = createBaseRequest().rows(rows);
+    val request =
+        PredictRequestPayloadOneOf.create()
+            .predictionConfig(PredictionConfig.create().targetColumns(TARGET_COLUMN))
+            .rows(rows)
+            .indexColumn("ID")
+            .dataSchema(DATA_SCHEMA)
+            .parseDataTypes(true);
 
-    final var response = client.tableCompletion(request);
+    final PredictResponsePayload response = client.tableCompletion(request);
+
     assertThat(response).isNotNull();
     assertThat(response.getId()).isEqualTo("0381c575-9ee5-46f1-9223-4f9caf039e48");
     assertThat(response.getMetadata().getNumColumns()).isEqualTo(5);
@@ -159,9 +160,15 @@ class RptClientTest {
                     RowsInnerValue.create("[PREDICT]"),
                     RowsInnerValue.create("Office Furniture"),
                     RowsInnerValue.create("Data Infrastructure")));
-    final var request = createBaseRequest().columns(columns);
+    val request =
+        PredictRequestPayloadOneOf1.create()
+            .predictionConfig(PredictionConfig.create().targetColumns(TARGET_COLUMN))
+            .columns(columns)
+            .indexColumn("ID")
+            .dataSchema(DATA_SCHEMA)
+            .parseDataTypes(true);
 
-    final var response = client.tableCompletion(request);
+    final PredictResponsePayload response = client.tableCompletion(request);
 
     assertThat(response).isNotNull();
     assertThat(response.getId()).isEqualTo("f89fb682-8d6b-4ef5-97f4-bd3c9aab8c49");
@@ -189,8 +196,8 @@ class RptClientTest {
   @SneakyThrows
   @Disabled("Used to generate test-data.parquet file")
   @Test
-  void generateTestParquetFile() throws IOException {
-    final var schemaString =
+  void generateTestParquetFile() {
+    val schemaString =
         """
         {
           "type": "record",
@@ -206,8 +213,7 @@ class RptClientTest {
         """;
 
     final Schema schema = new Schema.Parser().parse(schemaString);
-    final Path outputPath =
-        Path.of(getClass().getResource("/").toURI()).resolve("test-data.parquet");
+    val outputPath = Path.of("src/test/resources/test-data.parquet");
 
     try (ParquetWriter<GenericRecord> writer =
         AvroParquetWriter.<GenericRecord>builder(new LocalOutputFile(outputPath))
@@ -244,21 +250,18 @@ class RptClientTest {
     return record;
   }
 
-  @SneakyThrows
   @Test
-  void testTableCompletionWithParquetFile() throws IOException {
-    final var resourceStream =
-        Path.of(getClass().getResource("/test-data.parquet").toURI()).toFile();
-    assertThat(resourceStream).isNotNull();
+  void testTableCompletionWithParquetFile() {
+    val parquetFile = Path.of("src/test/resources/test-data.parquet").toFile();
 
-    final var targetConfig =
+    val targetConfig =
         TargetColumnConfig.create()
             .name("COSTCENTER")
             .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
-            .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION);
-    final var predictionConfig = PredictionConfig.create().targetColumns(List.of(targetConfig));
+            .taskType(CLASSIFICATION);
+    val predictionConfig = PredictionConfig.create().targetColumns(List.of(targetConfig));
 
-    final var response = client.tableCompletion(resourceStream, predictionConfig);
+    val response = client.tableCompletion(parquetFile, predictionConfig);
 
     assertThat(response).isNotNull();
     assertThat(response.getId()).isEqualTo("3a4ed523-b834-4685-8538-92f94b3cfa1d");
@@ -284,16 +287,17 @@ class RptClientTest {
 
   @SneakyThrows
   @Test
-  void testTableCompletionWithParquetThrowsIllegalArgumentException() throws IOException {
-    final var predictionConfig = mock(PredictionConfig.class);
-    final var objectMapper = mock(JsonMapper.class);
+  void testTableCompletionWithParquetThrowsIllegalArgumentException() {
+    val parquetFile = Path.of("src/test/resources/test-data.parquet").toFile();
+    val predictionConfig = mock(PredictionConfig.class);
+    val objectMapper = mock(JsonMapper.class);
 
-    try (final var mockedStatic = mockStatic(JacksonConfiguration.class)) {
+    try (val mockedStatic = mockStatic(JacksonConfiguration.class)) {
       mockedStatic.when(JacksonConfiguration::getDefaultObjectMapper).thenReturn(objectMapper);
 
       when(objectMapper.writeValueAsString(any()))
           .thenThrow(new JsonProcessingException("Test") {});
-      assertThatThrownBy(() -> client.tableCompletion(mock(File.class), predictionConfig))
+      assertThatThrownBy(() -> client.tableCompletion(parquetFile, predictionConfig))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("Failed to serialize PredictionConfig");
     }
