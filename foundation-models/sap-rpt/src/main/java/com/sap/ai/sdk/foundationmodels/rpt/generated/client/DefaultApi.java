@@ -8,6 +8,7 @@ import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.Pair;
 import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -223,8 +224,8 @@ public class DefaultApi extends BaseApi {
    */
   @Nonnull
   public PredictResponsePayload predictParquet(
-      @Nonnull final String _file,
-      @Nonnull final String predictionConfig,
+      @Nonnull final File _file,
+      @Nonnull final File predictionConfig,
       @Nullable final String indexColumn,
       @Nullable final Boolean parseDataTypes)
       throws OpenApiRequestException {
@@ -304,7 +305,7 @@ public class DefaultApi extends BaseApi {
    */
   @Nonnull
   public PredictResponsePayload predictParquet(
-      @Nonnull final String _file, @Nonnull final String predictionConfig)
+      @Nonnull final File _file, @Nonnull final File predictionConfig)
       throws OpenApiRequestException {
     return predictParquet(_file, predictionConfig, null, null);
   }

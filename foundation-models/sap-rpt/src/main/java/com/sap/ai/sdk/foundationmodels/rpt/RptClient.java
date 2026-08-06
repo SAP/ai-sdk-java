@@ -2,7 +2,6 @@ package com.sap.ai.sdk.foundationmodels.rpt;
 
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
@@ -15,9 +14,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import java.io.File;
 import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.Files;
-import java.util.Base64;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -111,15 +107,12 @@ public class RptClient {
   public PredictResponsePayload tableCompletion(
       @Nonnull final File parquetFile, @Nonnull final PredictionConfig predictionConfig) {
     try {
-      final var fileBytes = Files.readAllBytes(parquetFile.toPath());
-      final var base64File = Base64.getEncoder().encodeToString(fileBytes);
-      final var config =
-          JacksonConfiguration.getDefaultObjectMapper().writeValueAsString(predictionConfig);
-      return api.predictParquet(base64File, config);
-    } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException("Failed to serialize PredictionConfig to JSON", e);
+      final File tempFile = File.createTempFile("prediction-config", ".json");
+      tempFile.deleteOnExit();
+      JacksonConfiguration.getDefaultObjectMapper().writeValue(tempFile, predictionConfig);
+      return api.predictParquet(parquetFile, tempFile);
     } catch (IOException e) {
-      throw new UncheckedIOException("Failed to read Parquet file", e);
+      throw new IllegalArgumentException("Failed to serialize PredictionConfig to JSON", e);
     }
   }
 }
