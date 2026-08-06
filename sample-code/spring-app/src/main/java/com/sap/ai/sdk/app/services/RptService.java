@@ -3,7 +3,6 @@ package com.sap.ai.sdk.app.services;
 import com.sap.ai.sdk.foundationmodels.rpt.RptClient;
 import com.sap.ai.sdk.foundationmodels.rpt.RptModel;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.ColumnType;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayload;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayloadOneOf;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayload;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig;
@@ -13,7 +12,7 @@ import com.sap.ai.sdk.foundationmodels.rpt.generated.model.SchemaFieldConfig;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig;
 import java.io.File;
 import java.math.BigDecimal;
-import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -23,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RptService {
 
-  static final RptClient rptClient = RptClient.forModel(RptModel.SAP_RPT_1_SMALL);
+  static final RptClient rptClient = RptClient.forModel(RptModel.SAP_RPT_15);
 
   /**
    * Makes a prediction request to the RPT model. *
@@ -83,19 +82,16 @@ public class RptService {
    */
   @Nonnull
   public PredictResponsePayload predictParquet() {
-    try {
-      final File parquetData = new File(getClass().getResource("/sample.parquet").toURI());
-      final var targetColumns =
-          List.of(
-              TargetColumnConfig.create()
-                  .name("COSTCENTER")
-                  .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
-                  .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION));
+    // resources/sampl.parquet
+    final File parquetData = Path.of("src/main/resources/sample.parquet").toFile();
+    final var targetColumns =
+        List.of(
+            TargetColumnConfig.create()
+                .name("COSTCENTER")
+                .predictionPlaceholder(PredictionPlaceholder.create("[PREDICT]"))
+                .taskType(TargetColumnConfig.TaskTypeEnum.CLASSIFICATION));
 
-      return rptClient.tableCompletion(
-          parquetData, PredictionConfig.create().targetColumns(targetColumns));
-    } catch (final URISyntaxException e) {
-      throw new IllegalArgumentException("Failed to load Parquet file for prediction", e);
-    }
+    return rptClient.tableCompletion(
+        parquetData, PredictionConfig.create().targetColumns(targetColumns));
   }
 }
