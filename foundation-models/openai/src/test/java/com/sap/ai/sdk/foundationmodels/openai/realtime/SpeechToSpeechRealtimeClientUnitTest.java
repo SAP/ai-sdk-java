@@ -13,7 +13,6 @@ import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openai.models.realtime.RealtimeAudioFormats;
-import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.util.Arrays;

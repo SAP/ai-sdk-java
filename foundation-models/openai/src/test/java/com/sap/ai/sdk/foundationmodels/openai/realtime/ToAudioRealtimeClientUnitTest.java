@@ -11,7 +11,6 @@ import com.openai.models.realtime.RealtimeAudioConfigInput;
 import com.openai.models.realtime.RealtimeAudioConfigOutput;
 import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeSessionCreateRequest;
-import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Optional;

@@ -1,8 +1,6 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.google.common.annotations.Beta;
-import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
-import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;

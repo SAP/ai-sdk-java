@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.foundationmodels.openai;
+package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.google.common.annotations.Beta;
 

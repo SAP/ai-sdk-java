@@ -1,9 +1,9 @@
-package com.sap.ai.sdk.foundationmodels.openai;
+package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.google.common.annotations.Beta;
 
 /**
- * Functional interface representing audio input channel (audio data consumer)
+ * Functional interface representing audio input channel (used by audio data producer)
  *
  * <p>Should be closed by application (try-with-resources) when not needed anymore
  */

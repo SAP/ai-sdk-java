@@ -3,9 +3,9 @@ package com.sap.ai.sdk.app.controllers;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
+import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.realtime.AudioInputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.realtime.RealtimeParamTurnDetection;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -24,6 +24,8 @@ public class RealtimeApiTest {
 
   private static byte[] QUESTION_FIXTURE_PCM;
 
+  private final OpenAiService service = new OpenAiService();
+
   @BeforeAll
   public static void setUp() {
     try (var fis = new FileInputStream("src/test/resources/fixtures/question.pcm")) {
@@ -38,17 +40,15 @@ public class RealtimeApiTest {
   void testTextToSpeech() {
     var outputBuffer = new ByteArrayOutputStream(300000);
     var monitor = new CountDownLatch(1);
-    var client = OpenAiClient.realtimeClient();
 
     try (TextInputChannel input =
-        client.textToSpeech(
+        service.textToSpeech(
             (byteChunk, isLast) -> {
               outputBuffer.writeBytes(byteChunk);
               if (isLast) {
                 monitor.countDown();
               }
-            },
-            RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN)) {
+            })) {
       input.sendText("Ordnung muss sein!");
       monitor.await();
     } catch (Exception e) {
@@ -75,10 +75,9 @@ public class RealtimeApiTest {
   void testSpeechToSpeech() {
     var outputBuffer = new ByteArrayOutputStream(300000);
     var monitor = new CountDownLatch(1);
-    var client = OpenAiClient.realtimeClient();
 
     try (AudioInputChannel input =
-        client.speechToSpeech(
+        service.speechToSpeech(
             (byteChunk, isLast) -> {
               outputBuffer.writeBytes(byteChunk);
               if (isLast) {

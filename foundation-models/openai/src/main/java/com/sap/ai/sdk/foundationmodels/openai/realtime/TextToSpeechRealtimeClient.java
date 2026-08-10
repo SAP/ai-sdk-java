@@ -5,7 +5,6 @@ import com.openai.models.realtime.ConversationItemCreateEvent;
 import com.openai.models.realtime.RealtimeAudioConfigInput;
 import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeConversationItemUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;

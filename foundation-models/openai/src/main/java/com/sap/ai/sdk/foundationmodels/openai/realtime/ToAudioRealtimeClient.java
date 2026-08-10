@@ -8,7 +8,6 @@ import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeSessionCreateRequest;
 import com.openai.models.realtime.SessionUpdateEvent;
 import com.openai.models.realtime.clientsecrets.ClientSecretCreateParams;
-import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.util.Base64;

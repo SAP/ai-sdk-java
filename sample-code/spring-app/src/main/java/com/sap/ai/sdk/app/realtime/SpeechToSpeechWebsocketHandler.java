@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.realtime;
 
 import com.sap.ai.sdk.app.services.OpenAiService;
-import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.realtime.AudioInputChannel;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Map;

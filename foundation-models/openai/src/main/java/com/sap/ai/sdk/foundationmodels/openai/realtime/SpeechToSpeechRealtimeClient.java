@@ -5,8 +5,6 @@ import com.openai.models.realtime.InputAudioBufferCommitEvent;
 import com.openai.models.realtime.RealtimeAudioConfigInput;
 import com.openai.models.realtime.RealtimeAudioFormats;
 import com.openai.models.realtime.RealtimeAudioInputTurnDetection;
-import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
-import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.util.Arrays;

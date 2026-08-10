@@ -3,8 +3,6 @@ package com.sap.ai.sdk.foundationmodels.openai.realtime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.sap.ai.sdk.foundationmodels.openai.AudioInputChannel;
-import com.sap.ai.sdk.foundationmodels.openai.AudioOutputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import org.junit.jupiter.api.Test;
