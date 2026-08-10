@@ -1,0 +1,54 @@
+{
+  "request_id": "46f4b2ea-8fd1-9611-84ee-9b072ebe2aae",
+  "intermediate_results": {
+    "templating": [
+      {"content": "What is 6 times 7?", "role": "user"}
+    ],
+    "llm": {
+      "id": "msg_bdrk_011mH16vLzW8J9AF3FP5JaCs",
+      "object": "chat.completion",
+      "created": 1783556133,
+      "model": "claude-sonnet-4-5-20250929",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "6 times 7 is 42.",
+            "reasoning_content": [
+              {
+                "content": "This is a simple multiplication question. 6 times 7 equals 42.",
+                "signature": "EpACCnAIDxABGAIqQJg6O4DbYCclwzR0D0KGKTpCDTQ4PD6YxelN1aci6UiUmvX2Xg0ZNzAtdUMekPynzA57/5i0wjkp+vdcrpDn4OUyGmNsYXVkZS1zb25uZXQtNC01LTIwMjUwOTI5OABCCHRoaW5raW5nEgxq8jJz+WuqAkZKabEaDH1IeHlDMiXUwN8XDiIwcjwy62HqlyTXMhRmrEkybRtq4wD7GOaQ4xrpmJuy9T5Z1xAjmNtl3y8dQmFuQDPoKk4n2gAfLmXS+IQyN4bmc0BaFT7RkzNUdkak4pTtKeWwLo55cHdBBmGQsFtpEV7G28AEsqTyy9Qak6urih233RHKDLHzh9banjoPgHTzLX0YAQ=="
+              }
+            ]
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {"completion_tokens": 39, "prompt_tokens": 45, "total_tokens": 84}
+    }
+  },
+  "final_result": {
+    "id": "msg_bdrk_011mH16vLzW8J9AF3FP5JaCs",
+    "object": "chat.completion",
+    "created": 1783556133,
+    "model": "claude-sonnet-4-5-20250929",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "6 times 7 is 42.",
+          "reasoning_content": [
+            {
+              "content": "This is a simple multiplication question. 6 times 7 equals 42.",
+              "signature": "EpACCnAIDxABGAIqQJg6O4DbYCclwzR0D0KGKTpCDTQ4PD6YxelN1aci6UiUmvX2Xg0ZNzAtdUMekPynzA57/5i0wjkp+vdcrpDn4OUyGmNsYXVkZS1zb25uZXQtNC01LTIwMjUwOTI5OABCCHRoaW5raW5nEgxq8jJz+WuqAkZKabEaDH1IeHlDMiXUwN8XDiIwcjwy62HqlyTXMhRmrEkybRtq4wD7GOaQ4xrpmJuy9T5Z1xAjmNtl3y8dQmFuQDPoKk4n2gAfLmXS+IQyN4bmc0BaFT7RkzNUdkak4pTtKeWwLo55cHdBBmGQsFtpEV7G28AEsqTyy9Qak6urih233RHKDLHzh9banjoPgHTzLX0YAQ=="
+            }
+          ]
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {"completion_tokens": 39, "prompt_tokens": 45, "total_tokens": 84}
+  }
+}

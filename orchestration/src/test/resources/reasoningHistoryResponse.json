@@ -1,0 +1,19 @@
+{
+  "intermediate_results": {
+    "templating": [
+      {"role": "user", "content": "hi"},
+      {
+        "role": "assistant",
+        "content": "hello",
+        "reasoning_content": [{"content": "past-thought", "signature": "past-sig"}]
+      }
+    ]
+  },
+  "final_result": {
+    "choices": [
+      {
+        "message": {"role": "assistant", "content": "final answer"}
+      }
+    ]
+  }
+}

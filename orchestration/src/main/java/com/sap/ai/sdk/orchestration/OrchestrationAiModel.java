@@ -90,6 +90,10 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel MISTRAL_SMALL =
       new OrchestrationAiModel("mistralai--mistral-small");
 
+  /** MistralAI Mistral Medium model */
+  public static final OrchestrationAiModel MISTRAL_MEDIUM =
+      new OrchestrationAiModel("mistralai--mistral-medium");
+
   /**
    * Meta Llama3 70B Instruct model
    *
@@ -465,7 +469,12 @@ public class OrchestrationAiModel {
   /** SAP ABAP 1 model */
   public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
 
-  /** Alibaba Qwen 3 max model */
+  /**
+   * Alibaba Qwen 3 max model
+   *
+   * @deprecated This model is deprecated on AI Core with a planned retirement on 2026-02-01.
+   */
+  @Deprecated
   public static final OrchestrationAiModel QWEN_3_MAX = new OrchestrationAiModel("qwen3-max");
 
   /** Alibaba Qwen 3.6 plus model */
@@ -474,6 +483,12 @@ public class OrchestrationAiModel {
   /** Alibaba Qwen 3.6 flash model */
   public static final OrchestrationAiModel QWEN_3_6_FLASH =
       new OrchestrationAiModel("qwen3.6-flash");
+
+  /** Alibaba Qwen 3.7 max model */
+  public static final OrchestrationAiModel QWEN_3_7_MAX = new OrchestrationAiModel("qwen3.7-max");
+
+  /** Alibaba Qwen 3.7 plus model */
+  public static final OrchestrationAiModel QWEN_3_7_PLUS = new OrchestrationAiModel("qwen3.7-plus");
 
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");
@@ -519,6 +534,19 @@ public class OrchestrationAiModel {
   }
 
   /**
+   * Set the {@code reasoning_effort} parameter on this model.
+   *
+   * @param effort the reasoning effort level.
+   * @return a new model with the {@code reasoning_effort} parameter set.
+   * @see <a href="https://help.sap.com/docs/sap-ai-core/generative-ai/reasoning">SAP AI Core:
+   *     Orchestration - Reasoning</a>
+   */
+  @Nonnull
+  public OrchestrationAiModel withReasoningEffort(@Nonnull final ReasoningEffort effort) {
+    return withParam(Parameter.REASONING_EFFORT, effort.getValue());
+  }
+
+  /**
    * Parameter key for a model.
    *
    * @param <ValueT> the parameter value type.
@@ -542,6 +570,9 @@ public class OrchestrationAiModel {
 
     /** The number of chat completion choices to generate for each input message. */
     Parameter<Integer> N = () -> "n";
+
+    /** The reasoning effort for reasoning-capable models. */
+    Parameter<String> REASONING_EFFORT = () -> "reasoning_effort";
 
     /**
      * The name of the parameter.

@@ -1,0 +1,29 @@
+{
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "prompt": {
+          "template": [
+            {
+              "content": "What is 6 times 7?",
+              "role": "user"
+            }
+          ],
+          "defaults": {},
+          "tools": []
+        },
+        "model": {
+          "name": "anthropic--claude-4.5-sonnet",
+          "version": "latest",
+          "params": {
+            "reasoning_effort": "medium"
+          },
+          "timeout": 600,
+          "max_retries": 2
+        }
+      }
+    }
+  },
+  "placeholder_values": {},
+  "messages_history": []
+}

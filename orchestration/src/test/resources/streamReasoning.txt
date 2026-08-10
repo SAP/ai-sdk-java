@@ -1,0 +1,6 @@
+data: {"request_id": "req", "intermediate_results": {"templating": [{"role": "user", "content": "hi"}]}, "final_result": {"id": "", "object": "", "created": 0, "model": "", "choices": [{"index": 0, "delta": {"role": "", "content": ""}, "finish_reason": ""}]}}
+data: {"request_id": "req", "final_result": {"id": "id", "object": "chat.completion.chunk", "created": 0, "model": "m", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "reasoning_content": [{"content": "Let me ", "signature": ""}]}, "finish_reason": ""}]}}
+data: {"request_id": "req", "final_result": {"id": "id", "object": "chat.completion.chunk", "created": 0, "model": "m", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "reasoning_content": [{"content": "think.", "signature": ""}]}, "finish_reason": ""}]}}
+data: {"request_id": "req", "final_result": {"id": "id", "object": "chat.completion.chunk", "created": 0, "model": "m", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "", "reasoning_content": [{"content": "", "signature": "sig-final"}]}, "finish_reason": ""}]}}
+data: {"request_id": "req", "final_result": {"id": "id", "object": "chat.completion.chunk", "created": 0, "model": "m", "choices": [{"index": 0, "delta": {"role": "assistant", "content": "42"}, "finish_reason": "stop"}]}}
+data: [DONE]

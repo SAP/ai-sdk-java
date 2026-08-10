@@ -85,7 +85,7 @@ public class PostProcessingOperation implements RetrievalSearchInputPostProcessi
    * instance.
    *
    * @param maxChunkCount Maximum number of chunks to be retained in final PerSearchFilterResult.
-   *     Minimum: 0 Maximum: 10000000
+   *     Minimum: 0 (exclusive) Maximum: 10000000
    * @return The same instance of this {@link PostProcessingOperation} class
    */
   @Nonnull
@@ -95,8 +95,8 @@ public class PostProcessingOperation implements RetrievalSearchInputPostProcessi
   }
 
   /**
-   * Maximum number of chunks to be retained in final PerSearchFilterResult. minimum: 0 maximum:
-   * 10000000
+   * Maximum number of chunks to be retained in final PerSearchFilterResult. minimum: 0 (exclusive)
+   * maximum: 10000000
    *
    * @return maxChunkCount The maxChunkCount of this {@link PostProcessingOperation} instance.
    */
@@ -109,7 +109,7 @@ public class PostProcessingOperation implements RetrievalSearchInputPostProcessi
    * Set the maxChunkCount of this {@link PostProcessingOperation} instance.
    *
    * @param maxChunkCount Maximum number of chunks to be retained in final PerSearchFilterResult.
-   *     Minimum: 0 Maximum: 10000000
+   *     Minimum: 0 (exclusive) Maximum: 10000000
    */
   public void setMaxChunkCount(@Nullable final Integer maxChunkCount) {
     this.maxChunkCount = maxChunkCount;
