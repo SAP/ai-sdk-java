@@ -138,7 +138,9 @@ final class ConfigToRequestTransformer {
       var message = promptMessages.get(i);
       final var contentItems = new ArrayList<ContentItem>(message.content().items().size());
       final var messageSupportsCache =
-          message instanceof UserMessage || message instanceof SystemMessage || message instanceof ToolMessage;
+          message instanceof UserMessage
+              || message instanceof SystemMessage
+              || message instanceof ToolMessage;
       for (int j = 0; j < message.content().items().size(); j++) {
         var contentItem = message.content().items().get(j);
         if (contentItem instanceof TextItem textItem) {
