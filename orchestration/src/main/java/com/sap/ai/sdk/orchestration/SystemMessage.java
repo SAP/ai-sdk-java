@@ -47,6 +47,7 @@ public class SystemMessage implements Message {
    *
    * @since 1.23.0
    * @param message the first message.
+   * @param cacheControl prompt caching configuration to use, nullable
    */
   public SystemMessage(
       @Nonnull final String message,
@@ -74,6 +75,8 @@ public class SystemMessage implements Message {
    * @param cacheControl optional cache checkpoint configuration
    * @return the new message
    */
+  @SuppressWarnings(
+      "PMD.PublicApiExposesModelType") // only exposes obj from the same package, already a dto
   @Nonnull
   public SystemMessage withText(
       @Nonnull final String message,
@@ -88,11 +91,11 @@ public class SystemMessage implements Message {
   public ChatMessage createChatMessage() {
     final Function<TextItem, TextContent> toTextContent =
         (item) -> {
-          var convertedItem =
+          final var convertedItem =
               TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text());
-          var cacheControl = item.getCacheControl();
+          final var cacheControl = item.getCacheControl();
           if (cacheControl != null) {
-            var cacheControlConverted =
+            final var cacheControlConverted =
                 com.sap.ai.sdk.orchestration.model.CacheControl.create()
                     .type(com.sap.ai.sdk.orchestration.model.CacheControl.TypeEnum.EPHEMERAL)
                     .ttl(CacheControl.TtlEnum.fromValue(cacheControl.getTtl()));

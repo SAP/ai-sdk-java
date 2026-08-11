@@ -89,7 +89,7 @@ final class ConfigToRequestTransformer {
     val messages = template.getTemplate();
     val messagesWithPrompt = new ArrayList<>(messages);
 
-    var promptMessages = withCachingConstraintsApplied(prompt.getMessages(), cachingConfig);
+    final var promptMessages = withCachingConstraintsApplied(prompt.getMessages(), cachingConfig);
 
     messagesWithPrompt.addAll(promptMessages.stream().map(Message::createChatMessage).toList());
     if (messagesWithPrompt.isEmpty()) {
@@ -118,7 +118,7 @@ final class ConfigToRequestTransformer {
     if (config.getLlmConfig() != null) {
       modelName = config.getLlmConfig().getName();
     } else {
-      for (var fallbackConfig : fallbackConfigs) {
+      for (final var fallbackConfig : fallbackConfigs) {
         if (fallbackConfig.getLlmConfig() != null) {
           modelName = fallbackConfig.getLlmConfig().getName();
           break;
@@ -131,19 +131,18 @@ final class ConfigToRequestTransformer {
   static List<Message> withCachingConstraintsApplied(
       @Nonnull final List<Message> promptMessages,
       @Nonnull final PromptCachingConfig cachingConfig) {
-    var outputMessages = new ArrayList<Message>(promptMessages.size());
+    final var outputMessages = new ArrayList<Message>(promptMessages.size());
+    @SuppressWarnings("PMD.LocalVariableShouldBeFinal") // it is a variable, cannot be final
     var remainingCacheableCheckpoints = cachingConfig.getMaxCheckpointsPerRequest();
     for (int i = 0; i < promptMessages.size(); i++) {
       var message = promptMessages.get(i);
-      var contentItems = new ArrayList<ContentItem>(message.content().items().size());
-      var messageSupportsCache = false;
-      if (message instanceof UserMessage || message instanceof SystemMessage) {
-        messageSupportsCache = true;
-      }
+      final var contentItems = new ArrayList<ContentItem>(message.content().items().size());
+      final var messageSupportsCache =
+          message instanceof UserMessage || message instanceof SystemMessage;
       for (int j = 0; j < message.content().items().size(); j++) {
         var contentItem = message.content().items().get(j);
         if (contentItem instanceof TextItem textItem) {
-          var existingCacheControl = textItem.getCacheControl();
+          final var existingCacheControl = textItem.getCacheControl();
           if (existingCacheControl != null) {
             if (remainingCacheableCheckpoints <= 0 || !messageSupportsCache) {
               // skipping text control if there is already too many cache checkpoints

@@ -18,6 +18,12 @@ public final class TextItem implements ContentItem, CacheablePrompt {
   private final String text;
   private final CacheControl cacheControl;
 
+  /**
+   * Constructs text item
+   *
+   * @param text - text content
+   * @param cacheControl - nullable cache control param
+   */
   public TextItem(@Nonnull final String text, @Nullable final CacheControl cacheControl) {
     this.text = text;
     this.cacheControl = cacheControl;
@@ -38,14 +44,17 @@ public final class TextItem implements ContentItem, CacheablePrompt {
    *
    * @return text
    */
+  @Nonnull
   public String text() {
     return text;
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (o == null || getClass() != o.getClass()) return false;
-    TextItem textItem = (TextItem) o;
+  public boolean equals(@Nullable final Object o) {
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    final TextItem textItem = (TextItem) o;
     return Objects.equals(text, textItem.text)
         && Objects.equals(cacheControl, textItem.cacheControl);
   }

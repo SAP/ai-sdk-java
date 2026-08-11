@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.Getter;
 
 /** Describes supported caching properties of a model */
@@ -58,24 +59,49 @@ public final class PromptCachingConfig {
   private final String defaultTTLValue;
 
   private PromptCachingConfig(
-      int minTokensPerCheckpoint,
-      int maxCheckpointsPerRequest,
-      String ttlPattern,
-      String defaultTTLValue) {
+      final int minTokensPerCheckpoint,
+      final int maxCheckpointsPerRequest,
+      final String ttlPattern,
+      final String defaultTTLValue) {
     this.minTokensPerCheckpoint = minTokensPerCheckpoint;
     this.maxCheckpointsPerRequest = maxCheckpointsPerRequest;
     this.supportedTTLValues = Pattern.compile(ttlPattern);
     this.defaultTTLValue = defaultTTLValue;
   }
 
+  /**
+   * Factory method, returns instance of PromptCachingConfig with possible caching configurations.
+   * If model does not support caching, a special instance will be returned
+   *
+   * @param modelName - model name to use
+   * @return model prompt caching configuration
+   */
   @Nonnull
-  public static PromptCachingConfig forModel(String modelName) {
+  public static PromptCachingConfig forModel(@Nullable final String modelName) {
     if (modelName == null || modelName.isEmpty()) {
       return NOT_SUPPORTED;
     }
     return PROMPT_CACHING_SUPPORT.getOrDefault(modelName, NOT_SUPPORTED);
   }
 
+  /**
+   * Factory method, returns instance of PromptCachingConfig with possible caching configurations.
+   * If model does not support caching, a special instance will be returned
+   *
+   * @param model - model to use
+   * @return model prompt caching configuration
+   */
+  @Nonnull
+  public static PromptCachingConfig forModel(@Nonnull final OrchestrationAiModel model) {
+    return forModel(model.getName());
+  }
+
+  /**
+   * Explicit "no caching" configuration
+   *
+   * @return "no caching" prompt caching configuration
+   */
+  @Nonnull
   public static PromptCachingConfig noCaching() {
     return NOT_SUPPORTED;
   }

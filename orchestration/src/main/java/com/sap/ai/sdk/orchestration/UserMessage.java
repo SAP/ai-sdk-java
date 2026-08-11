@@ -60,6 +60,8 @@ public class UserMessage implements Message {
    * @param message the first message
    * @param cacheControl caching checkpoint configuration
    */
+  @SuppressWarnings(
+      "PMD.PublicApiExposesModelType") // only exposes obj from the same package, already a dto
   public UserMessage(
       @Nonnull final String message,
       @Nullable final com.sap.ai.sdk.orchestration.CacheControl cacheControl) {
@@ -86,6 +88,8 @@ public class UserMessage implements Message {
    * @return the new message.
    * @since 1.23.0
    */
+  @SuppressWarnings(
+      "PMD.PublicApiExposesModelType") // only exposes obj from the same package, already a dto
   @Nonnull
   public UserMessage withText(
       @Nonnull final String message,
@@ -197,10 +201,11 @@ public class UserMessage implements Message {
 
     final Function<TextItem, UserChatMessageContentItem> toContentItem =
         (textItem) -> {
-          var contentItem = UserChatMessageContentItem.create().type(TEXT).text(textItem.text());
-          var cacheControl = textItem.getCacheControl();
+          final var contentItem =
+              UserChatMessageContentItem.create().type(TEXT).text(textItem.text());
+          final var cacheControl = textItem.getCacheControl();
           if (cacheControl != null) {
-            var cacheControlConverted =
+            final var cacheControlConverted =
                 CacheControl.create()
                     .type(CacheControl.TypeEnum.EPHEMERAL)
                     .ttl(CacheControl.TtlEnum.fromValue(cacheControl.getTtl()));
