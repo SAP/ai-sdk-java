@@ -4,14 +4,24 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.app.services.OpenAiService;
+import com.sap.ai.sdk.core.common.ClientException;
+import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CompletionUsage;
+import com.sap.ai.sdk.foundationmodels.openai.realtime.AudioInputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.realtime.AudioOutputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.realtime.RealtimeParamTurnDetection;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +40,8 @@ public class OpenAiController {
   private static final ObjectMapper MAPPER =
       new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
 
+  private Resource sampleQuestionPcm = new ClassPathResource("static/question.pcm");
+
   @GetMapping("/chatCompletion")
   @Nonnull
   Object chatCompletion(
@@ -39,6 +51,71 @@ public class OpenAiController {
       return response;
     }
     return response.getContent();
+  }
+
+  @GetMapping(value = "/realtime/smokeTestTextToSpeech", produces = "audio/pcm")
+  @Nonnull
+  ResponseEntity<byte[]> smokeTestTextToSpeech() throws TimeoutException {
+    final var respBody = ByteBuffer.allocate(300000);
+    final var lock = new AtomicBoolean(false);
+    final AudioOutputChannel audioOutput =
+        (final byte[] pcmBytes, final boolean isLast) -> {
+          respBody.put(pcmBytes);
+          if (isLast) {
+            lock.set(true);
+          }
+        };
+
+    try (TextInputChannel channel = service.textToSpeech(audioOutput)) {
+      channel.sendText("Hello, how are you today?");
+      final var started = System.currentTimeMillis();
+      while (!lock.get() && System.currentTimeMillis() - started < 15000) {
+        if (lock.get()) {
+          return ResponseEntity.ok(respBody.array());
+        }
+        Thread.sleep(1000);
+      }
+    } catch (final Exception e) {
+      throw new ClientException("Failure occurred during communication with the server", e);
+    }
+
+    if (lock.get()) {
+      return ResponseEntity.ok(respBody.array());
+    }
+    throw new TimeoutException("Timeout waiting for text to speech");
+  }
+
+  @GetMapping(value = "/realtime/smokeTestSpeechToSpeech", produces = "audio/pcm")
+  @Nonnull
+  ResponseEntity<byte[]> smokeTestSpeechToSpeech() throws TimeoutException {
+    final var respBody = ByteBuffer.allocate(800000);
+    final var lock = new AtomicBoolean(false);
+    final AudioOutputChannel audioOutput =
+        (final byte[] pcmBytes, final boolean isLast) -> {
+          respBody.put(pcmBytes);
+          if (isLast) {
+            lock.set(true);
+          }
+        };
+
+    try (AudioInputChannel channel =
+        service.speechToSpeech(audioOutput, RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN)) {
+      channel.inputAudio(sampleQuestionPcm.getContentAsByteArray());
+      final var started = System.currentTimeMillis();
+      while (!lock.get() && System.currentTimeMillis() - started < 30000) {
+        if (lock.get()) {
+          return ResponseEntity.ok(respBody.array());
+        }
+        Thread.sleep(1000);
+      }
+    } catch (final Exception e) {
+      throw new ClientException("Failure occurred during communication with the server", e);
+    }
+
+    if (lock.get()) {
+      return ResponseEntity.ok(respBody.array());
+    }
+    throw new TimeoutException("Timeout waiting for speech to speech");
   }
 
   @SuppressWarnings("unused") // The end-to-end test doesn't use this method
