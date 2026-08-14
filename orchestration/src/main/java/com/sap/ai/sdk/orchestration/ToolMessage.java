@@ -4,6 +4,7 @@ import static com.sap.ai.sdk.orchestration.model.ToolChatMessage.RoleEnum.TOOL;
 
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
+import com.sap.ai.sdk.orchestration.model.TextContent;
 import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
 import java.util.List;
 import javax.annotation.Nonnull;
@@ -50,9 +51,26 @@ public final class ToolMessage implements Message {
   @Nonnull
   @Override
   public ChatMessage createChatMessage() {
-    return ToolChatMessage.create()
-        .role(TOOL)
-        .toolCallId(id)
-        .content(ChatMessageContent.create(content));
+    ChatMessageContent chatMessageContent;
+    if (cacheControl == null) {
+      chatMessageContent = ChatMessageContent.create(content);
+    } else {
+      chatMessageContent =
+          ChatMessageContent.createListOfTextContents(
+              List.of(
+                  TextContent.create()
+                      .type(TextContent.TypeEnum.TEXT)
+                      .text(content)
+                      .cacheControl(
+                          com.sap.ai.sdk.orchestration.model.CacheControl.create()
+                              .type(
+                                  com.sap.ai.sdk.orchestration.model.CacheControl.TypeEnum
+                                      .EPHEMERAL)
+                              .ttl(
+                                  com.sap.ai.sdk.orchestration.model.CacheControl.TtlEnum.fromValue(
+                                      cacheControl.getTtl())))));
+    }
+
+    return ToolChatMessage.create().role(TOOL).toolCallId(id).content(chatMessageContent);
   }
 }

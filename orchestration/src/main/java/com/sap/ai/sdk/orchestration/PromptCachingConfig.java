@@ -6,11 +6,11 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import lombok.Getter;
+import lombok.Value;
 
 /** Describes supported caching properties of a model */
-@Getter
-public final class PromptCachingConfig {
+@Value
+public class PromptCachingConfig {
 
   private static final PromptCachingConfig NOT_SUPPORTED =
       new PromptCachingConfig(0, 0, "0m", "5m");
@@ -47,16 +47,16 @@ public final class PromptCachingConfig {
           });
 
   /** Caching checkpoint can only be made for so few prompt input tokens and not fewer */
-  private final int minTokensPerCheckpoint;
+  int minTokensPerCheckpoint;
 
   /** Only up to this number of caching points can be created per request */
-  private final int maxCheckpointsPerRequest;
+  int maxCheckpointsPerRequest;
 
   /** Pattern of supported TTL values, which can be passed */
-  private final Pattern supportedTTLValues;
+  Pattern supportedTTLValues;
 
   /** Caching TTL value to use if TTL has not been explicitly specified */
-  private final String defaultTTLValue;
+  String defaultTTLValue;
 
   private PromptCachingConfig(
       final int minTokensPerCheckpoint,

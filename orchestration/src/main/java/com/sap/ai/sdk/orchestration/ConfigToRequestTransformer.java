@@ -151,7 +151,7 @@ final class ConfigToRequestTransformer {
               contentItem = new TextItem(textItem.text());
             } else if (cachingConfig.getMinTokensPerCheckpoint()
                 > textItem.getText().chars().filter(c -> c == ' ').count() + 1) {
-              // to few tokens to cache, skipping to respect model limitation
+              // too few tokens to cache, skipping to respect model limitation
               contentItem = new TextItem(textItem.text());
             } else {
               remainingCacheableCheckpoints--;
@@ -172,6 +172,8 @@ final class ConfigToRequestTransformer {
         message = new UserMessage(new MessageContent(contentItems));
       } else if (message instanceof SystemMessage) {
         message = new SystemMessage(new MessageContent(contentItems));
+      } else if (message instanceof ToolMessage toolMessage) {
+        message = new ToolMessage(toolMessage.id, toolMessage.content);
       }
 
       outputMessages.add(message);
