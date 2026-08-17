@@ -92,7 +92,7 @@ class ConfigToRequestTransformerTest {
 
   @Test
   void withCachingConstraintsAppliedTooManyCachePoints() {
-    final var cachingCfg = PromptCachingConfig.forModel(OrchestrationAiModel.CLAUDE_4_OPUS);
+    final var cachingCfg = ModelPromptCachingSupport.forModel(OrchestrationAiModel.CLAUDE_4_OPUS);
     final var maxCachedCheckpoints = cachingCfg.getMaxCheckpointsPerRequest();
     final var minTokensPerCheckpoint = cachingCfg.getMinTokensPerCheckpoint();
     final var userMessages = new ArrayList<Message>();
@@ -118,7 +118,7 @@ class ConfigToRequestTransformerTest {
 
   @Test
   void withCachingConstraintsAppliedTooFewTokensInCachePoints() {
-    final var cachingCfg = PromptCachingConfig.forModel(OrchestrationAiModel.CLAUDE_4_OPUS);
+    final var cachingCfg = ModelPromptCachingSupport.forModel(OrchestrationAiModel.CLAUDE_4_OPUS);
     final var maxCachedCheckpoints = cachingCfg.getMaxCheckpointsPerRequest();
     final var minTokensPerCheckpoint = cachingCfg.getMinTokensPerCheckpoint();
     final var userMessages = new ArrayList<Message>();
@@ -144,7 +144,7 @@ class ConfigToRequestTransformerTest {
 
   @Test
   void withCachingConstraintsAppliedInvalidTTL() {
-    final var cachingCfg = PromptCachingConfig.forModel(OrchestrationAiModel.CLAUDE_4_OPUS);
+    final var cachingCfg = ModelPromptCachingSupport.forModel(OrchestrationAiModel.CLAUDE_4_OPUS);
     final var minTokensPerCheckpoint = cachingCfg.getMinTokensPerCheckpoint();
     final var expectedTTL = cachingCfg.getDefaultTTLValue();
     final var invalidTTL = "99h";
@@ -174,7 +174,7 @@ class ConfigToRequestTransformerTest {
 
   @Test
   void withCachingConstraintsAppliedSystemMessageCanBeCached() {
-    final var cachingCfg = PromptCachingConfig.forModel(OrchestrationAiModel.CLAUDE_4_OPUS);
+    final var cachingCfg = ModelPromptCachingSupport.forModel(OrchestrationAiModel.CLAUDE_4_OPUS);
     final var minTokensPerCheckpoint = cachingCfg.getMinTokensPerCheckpoint();
     final var systemMessage =
         new SystemMessage("Hello world".repeat(minTokensPerCheckpoint + 1), new CacheControl("5m"));

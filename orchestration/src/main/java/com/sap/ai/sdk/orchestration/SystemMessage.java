@@ -76,7 +76,8 @@ public class SystemMessage implements Message {
    * @return the new message
    */
   @SuppressWarnings(
-      "PMD.PublicApiExposesModelType") // only exposes obj from the same package, already a dto
+      "PMD.PublicApiExposesModelType") // false positive: the two CacheControl classes are mixed up
+  // by the rule
   @Nonnull
   public SystemMessage withText(
       @Nonnull final String message,

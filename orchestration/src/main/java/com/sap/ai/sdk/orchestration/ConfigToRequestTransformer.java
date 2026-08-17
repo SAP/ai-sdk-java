@@ -66,13 +66,13 @@ final class ConfigToRequestTransformer {
   static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
       @Nonnull final OrchestrationPrompt prompt,
       @Nullable final PromptTemplatingModuleConfigPrompt config) {
-    return toTemplateModuleConfig(prompt, PromptCachingConfig.noCaching(), config);
+    return toTemplateModuleConfig(prompt, ModelPromptCachingSupport.noCaching(), config);
   }
 
   @Nonnull
   static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
       @Nonnull final OrchestrationPrompt prompt,
-      @Nonnull final PromptCachingConfig cachingConfig,
+      @Nonnull final ModelPromptCachingSupport cachingConfig,
       @Nullable final PromptTemplatingModuleConfigPrompt config) {
     /*
      * Currently, we have to merge the prompt into the template configuration.
@@ -110,7 +110,7 @@ final class ConfigToRequestTransformer {
     return result;
   }
 
-  static PromptCachingConfig resolveCachingConfig(
+  static ModelPromptCachingSupport resolveCachingConfig(
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
 
@@ -125,12 +125,12 @@ final class ConfigToRequestTransformer {
         }
       }
     }
-    return PromptCachingConfig.forModel(modelName);
+    return ModelPromptCachingSupport.forModel(modelName);
   }
 
   static List<Message> withCachingConstraintsApplied(
       @Nonnull final List<Message> promptMessages,
-      @Nonnull final PromptCachingConfig cachingConfig) {
+      @Nonnull final ModelPromptCachingSupport cachingConfig) {
     final var outputMessages = new ArrayList<Message>(promptMessages.size());
     @SuppressWarnings("PMD.LocalVariableShouldBeFinal") // it is a variable, cannot be final
     var remainingCacheableCheckpoints = cachingConfig.getMaxCheckpointsPerRequest();
@@ -155,10 +155,7 @@ final class ConfigToRequestTransformer {
               contentItem = new TextItem(textItem.text());
             } else {
               remainingCacheableCheckpoints--;
-              if (!cachingConfig
-                  .getSupportedTTLValues()
-                  .matcher(existingCacheControl.getTtl())
-                  .matches()) {
+              if (!cachingConfig.supportsTTLValue(existingCacheControl.getTtl())) {
                 contentItem =
                     new TextItem(
                         textItem.text(), new CacheControl(cachingConfig.getDefaultTTLValue()));

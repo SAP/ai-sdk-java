@@ -4,21 +4,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
-class PromptCachingConfigTest {
+class ModelPromptCachingSupportTest {
 
   @Test
   void forModelReturnsNoCachingForUnknownModel() {
     final var unknownModelName = "unknownModel";
 
-    assertThat(PromptCachingConfig.forModel(unknownModelName))
-        .isEqualTo(PromptCachingConfig.noCaching());
+    assertThat(ModelPromptCachingSupport.forModel(unknownModelName))
+        .isEqualTo(ModelPromptCachingSupport.noCaching());
   }
 
   @Test
   void forModelReturnsKnownConfigCorrectly() {
     final var knownModelName = OrchestrationAiModel.CLAUDE_4_6_SONNET.getName();
 
-    assertThat(PromptCachingConfig.forModel(knownModelName))
-        .isEqualTo(PromptCachingConfig.forModel(OrchestrationAiModel.CLAUDE_4_6_SONNET));
+    assertThat(ModelPromptCachingSupport.forModel(knownModelName))
+        .isEqualTo(ModelPromptCachingSupport.forModel(OrchestrationAiModel.CLAUDE_4_6_SONNET));
   }
 }

@@ -61,7 +61,8 @@ public class UserMessage implements Message {
    * @param cacheControl caching checkpoint configuration
    */
   @SuppressWarnings(
-      "PMD.PublicApiExposesModelType") // only exposes obj from the same package, already a dto
+      "PMD.PublicApiExposesModelType") // false positive: the two CacheControl classes are mixed up
+  // by the rule
   public UserMessage(
       @Nonnull final String message,
       @Nullable final com.sap.ai.sdk.orchestration.CacheControl cacheControl) {
@@ -89,7 +90,8 @@ public class UserMessage implements Message {
    * @since 1.23.0
    */
   @SuppressWarnings(
-      "PMD.PublicApiExposesModelType") // only exposes obj from the same package, already a dto
+      "PMD.PublicApiExposesModelType") // false positive: the two CacheControl classes are mixed up
+  // by the rule
   @Nonnull
   public UserMessage withText(
       @Nonnull final String message,

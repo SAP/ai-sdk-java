@@ -6,59 +6,58 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import lombok.Value;
+import lombok.Getter;
 
 /** Describes supported caching properties of a model */
-@Value
-public class PromptCachingConfig {
+class ModelPromptCachingSupport {
 
-  private static final PromptCachingConfig NOT_SUPPORTED =
-      new PromptCachingConfig(0, 0, "0m", "5m");
+  private static final ModelPromptCachingSupport NOT_SUPPORTED =
+      new ModelPromptCachingSupport(0, 0, "0m", "5m");
 
-  private static final Map<String, PromptCachingConfig> PROMPT_CACHING_SUPPORT =
+  private static final Map<String, ModelPromptCachingSupport> PROMPT_CACHING_SUPPORT =
       Collections.unmodifiableMap(
           new HashMap<>() {
             {
               put(
                   OrchestrationAiModel.CLAUDE_4_5_OPUS.getName(),
-                  new PromptCachingConfig(4096, 4, "5m|1h", "5m"));
+                  new ModelPromptCachingSupport(4096, 4, "5m|1h", "5m"));
               put(
                   OrchestrationAiModel.CLAUDE_4_6_OPUS.getName(),
-                  new PromptCachingConfig(4096, 4, "5m|1h", "5m"));
+                  new ModelPromptCachingSupport(4096, 4, "5m|1h", "5m"));
               put(
                   OrchestrationAiModel.CLAUDE_4_5_SONNET.getName(),
-                  new PromptCachingConfig(4096, 4, "5m|1h", "5m"));
+                  new ModelPromptCachingSupport(4096, 4, "5m|1h", "5m"));
               put(
                   OrchestrationAiModel.CLAUDE_4_6_SONNET.getName(),
-                  new PromptCachingConfig(1024, 4, "5m|1h", "5m"));
+                  new ModelPromptCachingSupport(1024, 4, "5m|1h", "5m"));
               put(
                   OrchestrationAiModel.CLAUDE_4_5_HAIKU.getName(),
-                  new PromptCachingConfig(4096, 4, "5m|1h", "5m"));
+                  new ModelPromptCachingSupport(4096, 4, "5m|1h", "5m"));
               put(
                   OrchestrationAiModel.CLAUDE_4_OPUS.getName(),
-                  new PromptCachingConfig(4096, 4, "5m", "5m"));
+                  new ModelPromptCachingSupport(4096, 4, "5m", "5m"));
               put(
                   OrchestrationAiModel.CLAUDE_4_7_OPUS.getName(),
-                  new PromptCachingConfig(4096, 4, "5m|1h", "5m"));
+                  new ModelPromptCachingSupport(4096, 4, "5m|1h", "5m"));
               put(
                   OrchestrationAiModel.CLAUDE_4_8_OPUS.getName(),
-                  new PromptCachingConfig(4096, 4, "5m|1h", "5m"));
+                  new ModelPromptCachingSupport(4096, 4, "5m|1h", "5m"));
             }
           });
 
   /** Caching checkpoint can only be made for so few prompt input tokens and not fewer */
-  int minTokensPerCheckpoint;
+  @Getter private final int minTokensPerCheckpoint;
 
   /** Only up to this number of caching points can be created per request */
-  int maxCheckpointsPerRequest;
+  @Getter private final int maxCheckpointsPerRequest;
 
   /** Pattern of supported TTL values, which can be passed */
-  Pattern supportedTTLValues;
+  private final Pattern supportedTTLValues;
 
   /** Caching TTL value to use if TTL has not been explicitly specified */
-  String defaultTTLValue;
+  @Getter private final String defaultTTLValue;
 
-  private PromptCachingConfig(
+  private ModelPromptCachingSupport(
       final int minTokensPerCheckpoint,
       final int maxCheckpointsPerRequest,
       final String ttlPattern,
@@ -77,7 +76,7 @@ public class PromptCachingConfig {
    * @return model prompt caching configuration
    */
   @Nonnull
-  public static PromptCachingConfig forModel(@Nullable final String modelName) {
+  public static ModelPromptCachingSupport forModel(@Nullable final String modelName) {
     if (modelName == null || modelName.isEmpty()) {
       return NOT_SUPPORTED;
     }
@@ -92,7 +91,7 @@ public class PromptCachingConfig {
    * @return model prompt caching configuration
    */
   @Nonnull
-  public static PromptCachingConfig forModel(@Nonnull final OrchestrationAiModel model) {
+  public static ModelPromptCachingSupport forModel(@Nonnull final OrchestrationAiModel model) {
     return forModel(model.getName());
   }
 
@@ -102,7 +101,17 @@ public class PromptCachingConfig {
    * @return "no caching" prompt caching configuration
    */
   @Nonnull
-  public static PromptCachingConfig noCaching() {
+  public static ModelPromptCachingSupport noCaching() {
     return NOT_SUPPORTED;
+  }
+
+  /**
+   * Checks if passed ttl value correct and supported
+   *
+   * @param ttlValue ttl value to check
+   * @return true if ttlValue is supported, else false
+   */
+  boolean supportsTTLValue(final String ttlValue) {
+    return supportedTTLValues.matcher(ttlValue).matches();
   }
 }
