@@ -25,6 +25,11 @@
 - [OpenAI] You can now add multiple custom headers to an `OpenAiClient` at once via `.withHeaders()`.
 - [Orchestration] Added `GEMINI_3_1_PRO_PREVIEW_EA` and `MISTRAL_MEDIUM` to model list in `OrchestrationAiModel`.
 - [Orchestration] Reasoning content is now supported for users through `OrchestrationChatResponse.getReasoningText()` and `OrchestrationChatCompletionDelta.getDeltaReasoningText()` to see the thinking processes when using the reasoning models.
+- [Orchestration] Added support for prompt caching for new Claude models. The following messages are cacheable:
+  - `SystemMessage`,
+  - `UserMessage`,
+  - `ToolMessage`.
+  - Refer to documentation for the models supporting caching.
 
 ### 📈 Improvements
 
