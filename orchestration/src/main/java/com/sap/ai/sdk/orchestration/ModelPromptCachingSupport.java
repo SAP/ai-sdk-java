@@ -76,7 +76,7 @@ class ModelPromptCachingSupport {
    * @return model prompt caching configuration
    */
   @Nonnull
-  public static ModelPromptCachingSupport forModel(@Nullable final String modelName) {
+  static ModelPromptCachingSupport forModel(@Nullable final String modelName) {
     if (modelName == null || modelName.isEmpty()) {
       return NOT_SUPPORTED;
     }
@@ -91,7 +91,7 @@ class ModelPromptCachingSupport {
    * @return model prompt caching configuration
    */
   @Nonnull
-  public static ModelPromptCachingSupport forModel(@Nonnull final OrchestrationAiModel model) {
+  static ModelPromptCachingSupport forModel(@Nonnull final OrchestrationAiModel model) {
     return forModel(model.getName());
   }
 
@@ -101,7 +101,7 @@ class ModelPromptCachingSupport {
    * @return "no caching" prompt caching configuration
    */
   @Nonnull
-  public static ModelPromptCachingSupport noCaching() {
+  static ModelPromptCachingSupport noCaching() {
     return NOT_SUPPORTED;
   }
 
