@@ -29,7 +29,7 @@
   - `SystemMessage`,
   - `UserMessage`,
   - `ToolMessage`.
-  - Refer to `com.sap.ai.sdk.orchestration.ModelPromptCachingSupport.PROMPT_CACHING_SUPPORT` for the models supporting caching.
+  - Refer to documentation for the models supporting caching.
 
 ### 📈 Improvements
 
