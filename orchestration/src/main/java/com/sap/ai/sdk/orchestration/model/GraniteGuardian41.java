@@ -23,35 +23,16 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/**
- * Configuration for IBM Granite Guardian 4.1 filter provider. Note: Granite Guardian requires
- * separate calls for each configured content category. Recommendation: Use only &#x60;harm&#x60;
- * catch all content category.
- */
+/** Configuration for IBM Granite Guardian 4.1 filter provider. */
 // CHECKSTYLE:OFF
 public class GraniteGuardian41
 // CHECKSTYLE:ON
 {
-  @JsonProperty("harm")
-  private Boolean harm;
+  @JsonProperty("enable_think_mode")
+  private Boolean enableThinkMode = false;
 
-  @JsonProperty("social_bias")
-  private Boolean socialBias;
-
-  @JsonProperty("jailbreak")
-  private Boolean jailbreak;
-
-  @JsonProperty("violence")
-  private Boolean violence;
-
-  @JsonProperty("profanity")
-  private Boolean profanity;
-
-  @JsonProperty("sexual_content")
-  private Boolean sexualContent;
-
-  @JsonProperty("unethical_behavior")
-  private Boolean unethicalBehavior;
+  @JsonProperty("categories")
+  private GraniteGuardian41Categories categories;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -60,227 +41,69 @@ public class GraniteGuardian41
   protected GraniteGuardian41() {}
 
   /**
-   * Set the harm of this {@link GraniteGuardian41} instance and return the same instance.
-   *
-   * @param harm Catch-all criterion for generally harmful content.
-   * @return The same instance of this {@link GraniteGuardian41} class
-   */
-  @Nonnull
-  public GraniteGuardian41 harm(@Nullable final Boolean harm) {
-    this.harm = harm;
-    return this;
-  }
-
-  /**
-   * Catch-all criterion for generally harmful content.
-   *
-   * @return harm The harm of this {@link GraniteGuardian41} instance.
-   */
-  @Nonnull
-  public Boolean isHarm() {
-    return harm;
-  }
-
-  /**
-   * Set the harm of this {@link GraniteGuardian41} instance.
-   *
-   * @param harm Catch-all criterion for generally harmful content.
-   */
-  public void setHarm(@Nullable final Boolean harm) {
-    this.harm = harm;
-  }
-
-  /**
-   * Set the socialBias of this {@link GraniteGuardian41} instance and return the same instance.
-   *
-   * @param socialBias Detect prejudice or discrimination based on identity or protected
-   *     characteristics.
-   * @return The same instance of this {@link GraniteGuardian41} class
-   */
-  @Nonnull
-  public GraniteGuardian41 socialBias(@Nullable final Boolean socialBias) {
-    this.socialBias = socialBias;
-    return this;
-  }
-
-  /**
-   * Detect prejudice or discrimination based on identity or protected characteristics.
-   *
-   * @return socialBias The socialBias of this {@link GraniteGuardian41} instance.
-   */
-  @Nonnull
-  public Boolean isSocialBias() {
-    return socialBias;
-  }
-
-  /**
-   * Set the socialBias of this {@link GraniteGuardian41} instance.
-   *
-   * @param socialBias Detect prejudice or discrimination based on identity or protected
-   *     characteristics.
-   */
-  public void setSocialBias(@Nullable final Boolean socialBias) {
-    this.socialBias = socialBias;
-  }
-
-  /**
-   * Set the jailbreak of this {@link GraniteGuardian41} instance and return the same instance.
-   *
-   * @param jailbreak Detect attempts to manipulate the model into producing harmful or otherwise
-   *     undesired outputs.
-   * @return The same instance of this {@link GraniteGuardian41} class
-   */
-  @Nonnull
-  public GraniteGuardian41 jailbreak(@Nullable final Boolean jailbreak) {
-    this.jailbreak = jailbreak;
-    return this;
-  }
-
-  /**
-   * Detect attempts to manipulate the model into producing harmful or otherwise undesired outputs.
-   *
-   * @return jailbreak The jailbreak of this {@link GraniteGuardian41} instance.
-   */
-  @Nonnull
-  public Boolean isJailbreak() {
-    return jailbreak;
-  }
-
-  /**
-   * Set the jailbreak of this {@link GraniteGuardian41} instance.
-   *
-   * @param jailbreak Detect attempts to manipulate the model into producing harmful or otherwise
-   *     undesired outputs.
-   */
-  public void setJailbreak(@Nullable final Boolean jailbreak) {
-    this.jailbreak = jailbreak;
-  }
-
-  /**
-   * Set the violence of this {@link GraniteGuardian41} instance and return the same instance.
-   *
-   * @param violence Detect content promoting or depicting physical, mental, or sexual harm.
-   * @return The same instance of this {@link GraniteGuardian41} class
-   */
-  @Nonnull
-  public GraniteGuardian41 violence(@Nullable final Boolean violence) {
-    this.violence = violence;
-    return this;
-  }
-
-  /**
-   * Detect content promoting or depicting physical, mental, or sexual harm.
-   *
-   * @return violence The violence of this {@link GraniteGuardian41} instance.
-   */
-  @Nonnull
-  public Boolean isViolence() {
-    return violence;
-  }
-
-  /**
-   * Set the violence of this {@link GraniteGuardian41} instance.
-   *
-   * @param violence Detect content promoting or depicting physical, mental, or sexual harm.
-   */
-  public void setViolence(@Nullable final Boolean violence) {
-    this.violence = violence;
-  }
-
-  /**
-   * Set the profanity of this {@link GraniteGuardian41} instance and return the same instance.
-   *
-   * @param profanity Detect offensive language or insults.
-   * @return The same instance of this {@link GraniteGuardian41} class
-   */
-  @Nonnull
-  public GraniteGuardian41 profanity(@Nullable final Boolean profanity) {
-    this.profanity = profanity;
-    return this;
-  }
-
-  /**
-   * Detect offensive language or insults.
-   *
-   * @return profanity The profanity of this {@link GraniteGuardian41} instance.
-   */
-  @Nonnull
-  public Boolean isProfanity() {
-    return profanity;
-  }
-
-  /**
-   * Set the profanity of this {@link GraniteGuardian41} instance.
-   *
-   * @param profanity Detect offensive language or insults.
-   */
-  public void setProfanity(@Nullable final Boolean profanity) {
-    this.profanity = profanity;
-  }
-
-  /**
-   * Set the sexualContent of this {@link GraniteGuardian41} instance and return the same instance.
-   *
-   * @param sexualContent Detect explicit or suggestive material of a sexual nature.
-   * @return The same instance of this {@link GraniteGuardian41} class
-   */
-  @Nonnull
-  public GraniteGuardian41 sexualContent(@Nullable final Boolean sexualContent) {
-    this.sexualContent = sexualContent;
-    return this;
-  }
-
-  /**
-   * Detect explicit or suggestive material of a sexual nature.
-   *
-   * @return sexualContent The sexualContent of this {@link GraniteGuardian41} instance.
-   */
-  @Nonnull
-  public Boolean isSexualContent() {
-    return sexualContent;
-  }
-
-  /**
-   * Set the sexualContent of this {@link GraniteGuardian41} instance.
-   *
-   * @param sexualContent Detect explicit or suggestive material of a sexual nature.
-   */
-  public void setSexualContent(@Nullable final Boolean sexualContent) {
-    this.sexualContent = sexualContent;
-  }
-
-  /**
-   * Set the unethicalBehavior of this {@link GraniteGuardian41} instance and return the same
+   * Set the enableThinkMode of this {@link GraniteGuardian41} instance and return the same
    * instance.
    *
-   * @param unethicalBehavior Detect content describing actions that violate moral or legal
-   *     standards.
+   * @param enableThinkMode Enable reasoning (think) mode for Granite Guardian. Applies to every
+   *     configured category. Returns reasoning content when enabled.
    * @return The same instance of this {@link GraniteGuardian41} class
    */
   @Nonnull
-  public GraniteGuardian41 unethicalBehavior(@Nullable final Boolean unethicalBehavior) {
-    this.unethicalBehavior = unethicalBehavior;
+  public GraniteGuardian41 enableThinkMode(@Nullable final Boolean enableThinkMode) {
+    this.enableThinkMode = enableThinkMode;
     return this;
   }
 
   /**
-   * Detect content describing actions that violate moral or legal standards.
+   * Enable reasoning (think) mode for Granite Guardian. Applies to every configured category.
+   * Returns reasoning content when enabled.
    *
-   * @return unethicalBehavior The unethicalBehavior of this {@link GraniteGuardian41} instance.
+   * @return enableThinkMode The enableThinkMode of this {@link GraniteGuardian41} instance.
    */
   @Nonnull
-  public Boolean isUnethicalBehavior() {
-    return unethicalBehavior;
+  public Boolean isEnableThinkMode() {
+    return enableThinkMode;
   }
 
   /**
-   * Set the unethicalBehavior of this {@link GraniteGuardian41} instance.
+   * Set the enableThinkMode of this {@link GraniteGuardian41} instance.
    *
-   * @param unethicalBehavior Detect content describing actions that violate moral or legal
-   *     standards.
+   * @param enableThinkMode Enable reasoning (think) mode for Granite Guardian. Applies to every
+   *     configured category. Returns reasoning content when enabled.
    */
-  public void setUnethicalBehavior(@Nullable final Boolean unethicalBehavior) {
-    this.unethicalBehavior = unethicalBehavior;
+  public void setEnableThinkMode(@Nullable final Boolean enableThinkMode) {
+    this.enableThinkMode = enableThinkMode;
+  }
+
+  /**
+   * Set the categories of this {@link GraniteGuardian41} instance and return the same instance.
+   *
+   * @param categories The categories of this {@link GraniteGuardian41}
+   * @return The same instance of this {@link GraniteGuardian41} class
+   */
+  @Nonnull
+  public GraniteGuardian41 categories(@Nonnull final GraniteGuardian41Categories categories) {
+    this.categories = categories;
+    return this;
+  }
+
+  /**
+   * Get categories
+   *
+   * @return categories The categories of this {@link GraniteGuardian41} instance.
+   */
+  @Nonnull
+  public GraniteGuardian41Categories getCategories() {
+    return categories;
+  }
+
+  /**
+   * Set the categories of this {@link GraniteGuardian41} instance.
+   *
+   * @param categories The categories of this {@link GraniteGuardian41}
+   */
+  public void setCategories(@Nonnull final GraniteGuardian41Categories categories) {
+    this.categories = categories;
   }
 
   /**
@@ -321,13 +144,8 @@ public class GraniteGuardian41
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (harm != null) declaredFields.put("harm", harm);
-    if (socialBias != null) declaredFields.put("socialBias", socialBias);
-    if (jailbreak != null) declaredFields.put("jailbreak", jailbreak);
-    if (violence != null) declaredFields.put("violence", violence);
-    if (profanity != null) declaredFields.put("profanity", profanity);
-    if (sexualContent != null) declaredFields.put("sexualContent", sexualContent);
-    if (unethicalBehavior != null) declaredFields.put("unethicalBehavior", unethicalBehavior);
+    if (enableThinkMode != null) declaredFields.put("enableThinkMode", enableThinkMode);
+    if (categories != null) declaredFields.put("categories", categories);
     return declaredFields;
   }
 
@@ -353,26 +171,13 @@ public class GraniteGuardian41
     }
     final GraniteGuardian41 graniteGuardian41 = (GraniteGuardian41) o;
     return Objects.equals(this.cloudSdkCustomFields, graniteGuardian41.cloudSdkCustomFields)
-        && Objects.equals(this.harm, graniteGuardian41.harm)
-        && Objects.equals(this.socialBias, graniteGuardian41.socialBias)
-        && Objects.equals(this.jailbreak, graniteGuardian41.jailbreak)
-        && Objects.equals(this.violence, graniteGuardian41.violence)
-        && Objects.equals(this.profanity, graniteGuardian41.profanity)
-        && Objects.equals(this.sexualContent, graniteGuardian41.sexualContent)
-        && Objects.equals(this.unethicalBehavior, graniteGuardian41.unethicalBehavior);
+        && Objects.equals(this.enableThinkMode, graniteGuardian41.enableThinkMode)
+        && Objects.equals(this.categories, graniteGuardian41.categories);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        harm,
-        socialBias,
-        jailbreak,
-        violence,
-        profanity,
-        sexualContent,
-        unethicalBehavior,
-        cloudSdkCustomFields);
+    return Objects.hash(enableThinkMode, categories, cloudSdkCustomFields);
   }
 
   @Override
@@ -380,13 +185,8 @@ public class GraniteGuardian41
   public String toString() {
     final StringBuilder sb = new StringBuilder();
     sb.append("class GraniteGuardian41 {\n");
-    sb.append("    harm: ").append(toIndentedString(harm)).append("\n");
-    sb.append("    socialBias: ").append(toIndentedString(socialBias)).append("\n");
-    sb.append("    jailbreak: ").append(toIndentedString(jailbreak)).append("\n");
-    sb.append("    violence: ").append(toIndentedString(violence)).append("\n");
-    sb.append("    profanity: ").append(toIndentedString(profanity)).append("\n");
-    sb.append("    sexualContent: ").append(toIndentedString(sexualContent)).append("\n");
-    sb.append("    unethicalBehavior: ").append(toIndentedString(unethicalBehavior)).append("\n");
+    sb.append("    enableThinkMode: ").append(toIndentedString(enableThinkMode)).append("\n");
+    sb.append("    categories: ").append(toIndentedString(categories)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -404,8 +204,22 @@ public class GraniteGuardian41
     return o.toString().replace("\n", "\n    ");
   }
 
-  /** Create a new {@link GraniteGuardian41} instance. No arguments are required. */
-  public static GraniteGuardian41 create() {
-    return new GraniteGuardian41();
+  /**
+   * Create a type-safe, fluent-api builder object to construct a new {@link GraniteGuardian41}
+   * instance with all required arguments.
+   */
+  public static Builder create() {
+    return (categories) -> new GraniteGuardian41().categories(categories);
+  }
+
+  /** Builder helper class. */
+  public interface Builder {
+    /**
+     * Set the categories of this {@link GraniteGuardian41} instance.
+     *
+     * @param categories The categories of this {@link GraniteGuardian41}
+     * @return The GraniteGuardian41 instance.
+     */
+    GraniteGuardian41 categories(@Nonnull final GraniteGuardian41Categories categories);
   }
 }
