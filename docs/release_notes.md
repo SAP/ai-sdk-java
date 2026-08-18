@@ -17,11 +17,19 @@
 
 ### ✨ New Functionality
 
+- [OpenAI] Support for OpenAI Realtime API with the new OpenAiRealtimeClient. The following cases are currently supported:
+  - `textToSpeech`
+  - `speechToSpeech`
 - [Orchestration] Added `QWEN_3_7_MAX`, `QWEN_3_7_PLUS` and `ALIBABA_TEXT_EMBEDDING_4` to model list in `OrchestrationAiModel`.
 - [Orchestration] Marked as deprecated `QWEN_3_MAX` model (retired, use newer models instead, e.g. `QWEN_3_7_MAX`).
 - [OpenAI] You can now add multiple custom headers to an `OpenAiClient` at once via `.withHeaders()`.
 - [Orchestration] Added `GEMINI_3_1_PRO_PREVIEW_EA` and `MISTRAL_MEDIUM` to model list in `OrchestrationAiModel`.
 - [Orchestration] Reasoning content is now supported for users through `OrchestrationChatResponse.getReasoningText()` and `OrchestrationChatCompletionDelta.getDeltaReasoningText()` to see the thinking processes when using the reasoning models.
+- [Orchestration] Added support for prompt caching for new Claude models. The following messages are cacheable:
+  - `SystemMessage`,
+  - `UserMessage`,
+  - `ToolMessage`.
+  - Refer to documentation for the models supporting caching.
 
 ### 📈 Improvements
 

@@ -1,0 +1,85 @@
+package com.sap.ai.sdk.foundationmodels.openai.realtime;
+
+import com.openai.models.realtime.InputAudioBufferAppendEvent;
+import com.openai.models.realtime.InputAudioBufferCommitEvent;
+import com.openai.models.realtime.RealtimeAudioConfigInput;
+import com.openai.models.realtime.RealtimeAudioFormats;
+import com.openai.models.realtime.RealtimeAudioInputTurnDetection;
+import java.net.http.HttpClient;
+import java.net.http.WebSocket;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Map;
+import java.util.Timer;
+import java.util.concurrent.CompletableFuture;
+import javax.annotation.Nonnull;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+class SpeechToSpeechRealtimeClient extends ToAudioRealtimeClient implements AudioInputChannel {
+
+  private static final int MAX_DATA_CHUNK_SIZE_BYTES = 8192;
+
+  public SpeechToSpeechRealtimeClient(
+      @Nonnull final String url,
+      @Nonnull final Map<String, String> httpHeaders,
+      @Nonnull final AudioOutputChannel outputConsumer,
+      @Nonnull final RealtimeParam... params) {
+    super(url, httpHeaders, outputConsumer, false, params);
+  }
+
+  SpeechToSpeechRealtimeClient(
+      @Nonnull final HttpClient httpClient,
+      @Nonnull final CompletableFuture<WebSocket> ws,
+      @Nonnull final Timer timer,
+      @Nonnull final AudioOutputChannel outputConsumer,
+      @Nonnull final RealtimeParam... params) {
+    super(httpClient, ws, timer, outputConsumer, false, params);
+  }
+
+  @Override
+  @Nonnull
+  protected RealtimeAudioConfigInput inputConfig() {
+    RealtimeAudioInputTurnDetection turnDetection;
+    if (eagerTurnDetection) {
+      turnDetection = null;
+    } else {
+      turnDetection =
+          RealtimeAudioInputTurnDetection.ofSemanticVad(
+              RealtimeAudioInputTurnDetection.SemanticVad.builder().build());
+    }
+
+    return RealtimeAudioConfigInput.builder()
+        .turnDetection(turnDetection)
+        .format(
+            RealtimeAudioFormats.AudioPcm.builder()
+                .type(RealtimeAudioFormats.AudioPcm.Type.AUDIO_PCM)
+                .rate(RealtimeAudioFormats.AudioPcm.Rate._24000)
+                .build())
+        .build();
+  }
+
+  public void inputAudio(@Nonnull final byte[] rawAudioChunk) {
+    if (rawAudioChunk.length == 0) {
+      return;
+    }
+    var cursorLeft = 0;
+    while (cursorLeft < rawAudioChunk.length) {
+      final var cursorRight =
+          Math.min(cursorLeft + MAX_DATA_CHUNK_SIZE_BYTES, rawAudioChunk.length);
+      final var part = Arrays.copyOfRange(rawAudioChunk, cursorLeft, cursorRight);
+      final var audioInputMessage =
+          InputAudioBufferAppendEvent.builder()
+              .audio(Base64.getEncoder().encodeToString(part))
+              .build();
+      super.sendMessage(audioInputMessage);
+      cursorLeft += MAX_DATA_CHUNK_SIZE_BYTES;
+    }
+
+    if (eagerTurnDetection) {
+      final var commitAudioMessage = InputAudioBufferCommitEvent.builder().build();
+      super.sendMessage(commitAudioMessage);
+      askForResponse();
+    }
+  }
+}

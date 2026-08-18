@@ -37,8 +37,11 @@ final class ConfigToRequestTransformer {
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
 
+    final var cachingConfig = resolveCachingConfig(config, fallbackConfigs);
     final UnaryOperator<OrchestrationModuleConfig> copyWithImmutableTemplateConfig =
-        c -> c.withTemplateConfig(toTemplateModuleConfig(prompt, c.getTemplateConfig()));
+        c ->
+            c.withTemplateConfig(
+                toTemplateModuleConfig(prompt, cachingConfig, c.getTemplateConfig()));
     val configList = Lists.asList(config, fallbackConfigs);
     val configsCopy = Lists.transform(configList, copyWithImmutableTemplateConfig::apply);
 
@@ -63,6 +66,14 @@ final class ConfigToRequestTransformer {
   static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
       @Nonnull final OrchestrationPrompt prompt,
       @Nullable final PromptTemplatingModuleConfigPrompt config) {
+    return toTemplateModuleConfig(prompt, ModelPromptCachingSupport.noCaching(), config);
+  }
+
+  @Nonnull
+  static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
+      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final ModelPromptCachingSupport cachingConfig,
+      @Nullable final PromptTemplatingModuleConfigPrompt config) {
     /*
      * Currently, we have to merge the prompt into the template configuration.
      * This works around the limitation that the template config is required.
@@ -78,8 +89,9 @@ final class ConfigToRequestTransformer {
     val messages = template.getTemplate();
     val messagesWithPrompt = new ArrayList<>(messages);
 
-    messagesWithPrompt.addAll(
-        prompt.getMessages().stream().map(Message::createChatMessage).toList());
+    final var promptMessages = withCachingConstraintsApplied(prompt.getMessages(), cachingConfig);
+
+    messagesWithPrompt.addAll(promptMessages.stream().map(Message::createChatMessage).toList());
     if (messagesWithPrompt.isEmpty()) {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
@@ -96,6 +108,74 @@ final class ConfigToRequestTransformer {
       result.setCustomField(customFieldName, template.toMap().get(customFieldName));
     }
     return result;
+  }
+
+  static ModelPromptCachingSupport resolveCachingConfig(
+      @Nonnull final OrchestrationModuleConfig config,
+      @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
+
+    var modelName = "unknown";
+    if (config.getLlmConfig() != null) {
+      modelName = config.getLlmConfig().getName();
+    } else {
+      for (final var fallbackConfig : fallbackConfigs) {
+        if (fallbackConfig.getLlmConfig() != null) {
+          modelName = fallbackConfig.getLlmConfig().getName();
+          break;
+        }
+      }
+    }
+    return ModelPromptCachingSupport.forModel(modelName);
+  }
+
+  static List<Message> withCachingConstraintsApplied(
+      @Nonnull final List<Message> promptMessages,
+      @Nonnull final ModelPromptCachingSupport cachingConfig) {
+    final var outputMessages = new ArrayList<Message>(promptMessages.size());
+    @SuppressWarnings("PMD.LocalVariableShouldBeFinal") // it is a variable, cannot be final
+    var remainingCacheableCheckpoints = cachingConfig.getMaxCheckpointsPerRequest();
+    for (int i = 0; i < promptMessages.size(); i++) {
+      var message = promptMessages.get(i);
+      final var contentItems = new ArrayList<ContentItem>(message.content().items().size());
+      final var messageSupportsCache =
+          message instanceof UserMessage
+              || message instanceof SystemMessage
+              || message instanceof ToolMessage;
+      for (int j = 0; j < message.content().items().size(); j++) {
+        var contentItem = message.content().items().get(j);
+        if (contentItem instanceof TextItem textItem) {
+          final var existingCacheControl = textItem.getCacheControl();
+          if (existingCacheControl != null) {
+            if (remainingCacheableCheckpoints <= 0 || !messageSupportsCache) {
+              // skipping text control if there is already too many cache checkpoints
+              contentItem = new TextItem(textItem.text());
+            } else if (cachingConfig.getMinTokensPerCheckpoint()
+                > textItem.getText().chars().filter(c -> c == ' ').count() + 1) {
+              // too few tokens to cache, skipping to respect model limitation
+              contentItem = new TextItem(textItem.text());
+            } else {
+              remainingCacheableCheckpoints--;
+              if (!cachingConfig.supportsTTLValue(existingCacheControl.getTtl())) {
+                contentItem =
+                    new TextItem(
+                        textItem.text(), new CacheControl(cachingConfig.getDefaultTTLValue()));
+              }
+            }
+          }
+        }
+        contentItems.add(contentItem);
+      }
+      if (message instanceof UserMessage) {
+        message = new UserMessage(new MessageContent(contentItems));
+      } else if (message instanceof SystemMessage) {
+        message = new SystemMessage(new MessageContent(contentItems));
+      } else if (message instanceof ToolMessage toolMessage) {
+        message = new ToolMessage(toolMessage.id, toolMessage.content);
+      }
+
+      outputMessages.add(message);
+    }
+    return outputMessages;
   }
 
   @Nonnull
