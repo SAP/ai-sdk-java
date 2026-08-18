@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.foundationmodels.rpt;
+package com.sap.ai.sdk.foundationmodels.rpt1_5;
 
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
@@ -6,10 +6,10 @@ import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.JacksonConfiguration;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.client.DefaultApi;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayload;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayload;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.client.DefaultApi;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.PredictRequestPayload;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.PredictResponsePayload;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.PredictionConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import java.io.File;

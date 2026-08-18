@@ -1,17 +1,17 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.foundationmodels.rpt.RptModel.SAP_RPT_15;
-import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig.TaskTypeEnum.CLASSIFICATION;
+import static com.sap.ai.sdk.foundationmodels.rpt1_5.RptModel.SAP_RPT_15;
+import static com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.TargetColumnConfig.TaskTypeEnum.CLASSIFICATION;
 
-import com.sap.ai.sdk.foundationmodels.rpt.RptClient;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.ColumnType;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayloadOneOf;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayload;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionPlaceholder;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.RowsInnerValue;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.SchemaFieldConfig;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.RptClient;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.ColumnType;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.PredictRequestPayloadOneOf;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.PredictResponsePayload;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.PredictionConfig;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.PredictionPlaceholder;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.RowsInnerValue;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.SchemaFieldConfig;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.TargetColumnConfig;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.util.List;

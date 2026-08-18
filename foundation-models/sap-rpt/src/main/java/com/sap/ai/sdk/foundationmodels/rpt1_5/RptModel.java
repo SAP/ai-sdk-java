@@ -1,4 +1,4 @@
-package com.sap.ai.sdk.foundationmodels.rpt;
+package com.sap.ai.sdk.foundationmodels.rpt1_5;
 
 import com.sap.ai.sdk.core.AiModel;
 import javax.annotation.Nonnull;

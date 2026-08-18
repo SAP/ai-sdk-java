@@ -9,16 +9,16 @@
  * Do not edit the class manually.
  */
 
-package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
+package com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model;
 
 import java.math.BigDecimal;
 import javax.annotation.Nonnull;
 
-/** RowsInnerValue */
-public interface RowsInnerValue {
-  /** Helper class to create {@code String } that implements {@link RowsInnerValue}. */
+/** The predicted value for the column (string for classification, number for regression). */
+public interface Prediction {
+  /** Helper class to create {@code String } that implements {@link Prediction}. */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
-      implements RowsInnerValue {}
+      implements Prediction {}
 
   /**
    * Creator to enable deserialization of {@code String }.
@@ -32,25 +32,9 @@ public interface RowsInnerValue {
     return new InnerString(val);
   }
 
-  /** Helper class to create {@code Integer } that implements {@link RowsInnerValue}. */
-  record InnerInteger(@com.fasterxml.jackson.annotation.JsonValue @Nonnull Integer value)
-      implements RowsInnerValue {}
-
-  /**
-   * Creator to enable deserialization of {@code Integer }.
-   *
-   * @param val the value to use
-   * @return a new instance of {@link InnerInteger}.
-   */
-  @com.fasterxml.jackson.annotation.JsonCreator
-  @Nonnull
-  static InnerInteger create(@Nonnull final Integer val) {
-    return new InnerInteger(val);
-  }
-
-  /** Helper class to create {@code BigDecimal } that implements {@link RowsInnerValue}. */
+  /** Helper class to create {@code BigDecimal } that implements {@link Prediction}. */
   record InnerBigDecimal(@com.fasterxml.jackson.annotation.JsonValue @Nonnull BigDecimal value)
-      implements RowsInnerValue {}
+      implements Prediction {}
 
   /**
    * Creator to enable deserialization of {@code BigDecimal }.

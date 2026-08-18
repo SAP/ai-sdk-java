@@ -1,8 +1,8 @@
-package com.sap.ai.sdk.foundationmodels.rpt.generated.client;
+package com.sap.ai.sdk.foundationmodels.rpt1_5.generated.client;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayload;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayload;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.PredictRequestPayload;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.PredictResponsePayload;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;

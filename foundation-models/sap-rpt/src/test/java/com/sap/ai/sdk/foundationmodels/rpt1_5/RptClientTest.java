@@ -1,23 +1,24 @@
-package com.sap.ai.sdk.foundationmodels.rpt;
+package com.sap.ai.sdk.foundationmodels.rpt1_5;
 
-import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.ColumnType.STRING;
-import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig.TaskTypeEnum.CLASSIFICATION;
+import static com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.ColumnType.STRING;
+import static com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.TargetColumnConfig.TaskTypeEnum.CLASSIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.sap.ai.sdk.core.JacksonConfiguration;
-import com.sap.ai.sdk.foundationmodels.rpt.generated.model.*;
+import com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model.*;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
+import java.io.File;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.util.List;
@@ -213,7 +214,7 @@ class RptClientTest {
         """;
 
     final Schema schema = new Schema.Parser().parse(schemaString);
-    val outputPath = Path.of("src/test/resources/test-data.parquet");
+    val outputPath = Path.of("src/test/resources/rpt1_5/test-data.parquet");
 
     try (ParquetWriter<GenericRecord> writer =
         AvroParquetWriter.<GenericRecord>builder(new LocalOutputFile(outputPath))
@@ -252,7 +253,7 @@ class RptClientTest {
 
   @Test
   void testTableCompletionWithParquetFile() {
-    val parquetFile = Path.of("src/test/resources/test-data.parquet").toFile();
+    val parquetFile = Path.of("src/test/resources/rpt1_5/test-data.parquet").toFile();
 
     val targetConfig =
         TargetColumnConfig.create()
@@ -288,15 +289,17 @@ class RptClientTest {
   @SneakyThrows
   @Test
   void testTableCompletionWithParquetThrowsIllegalArgumentException() {
-    val parquetFile = Path.of("src/test/resources/test-data.parquet").toFile();
+    val parquetFile = Path.of("src/test/resources/rpt1_5/test-data.parquet").toFile();
     val predictionConfig = mock(PredictionConfig.class);
     val objectMapper = mock(JsonMapper.class);
 
     try (val mockedStatic = mockStatic(JacksonConfiguration.class)) {
       mockedStatic.when(JacksonConfiguration::getDefaultObjectMapper).thenReturn(objectMapper);
 
-      when(objectMapper.writeValueAsString(any()))
-          .thenThrow(new JsonProcessingException("Test") {});
+      doThrow(new JsonProcessingException("Test") {})
+          .when(objectMapper)
+          .writeValue(any(File.class), any());
+
       assertThatThrownBy(() -> client.tableCompletion(parquetFile, predictionConfig))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("Failed to serialize PredictionConfig");
