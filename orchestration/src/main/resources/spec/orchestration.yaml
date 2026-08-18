@@ -1673,8 +1673,7 @@ components:
 
     LlamaGuard38bFilterConfig:
       deprecated: true
-      description: "Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be 
-      removed 2027-09-20."
+      description: "Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20."
       type: object
       required:
         - type
