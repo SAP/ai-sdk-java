@@ -25,17 +25,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** GraniteGuardianConfig */
+/** GraniteGuardianFilterConfig */
 // CHECKSTYLE:OFF
-public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterConfig
+public class GraniteGuardianFilterConfig implements InputFilterConfig, OutputFilterConfig
 // CHECKSTYLE:ON
 {
   /** Name of the filter provider type */
   public enum TypeEnum {
-    /** The GRANITE_GUARDIAN_4_1 option of this GraniteGuardianConfig */
+    /** The GRANITE_GUARDIAN_4_1 option of this GraniteGuardianFilterConfig */
     GRANITE_GUARDIAN_4_1("granite_guardian_4_1"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this GraniteGuardianConfig */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this GraniteGuardianFilterConfig */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -70,7 +70,7 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type GraniteGuardianConfig
+     * @return The enum value of type GraniteGuardianFilterConfig
      */
     @JsonCreator
     @Nonnull
@@ -93,17 +93,17 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for GraniteGuardianConfig. */
-  protected GraniteGuardianConfig() {}
+  /** Default constructor for GraniteGuardianFilterConfig. */
+  protected GraniteGuardianFilterConfig() {}
 
   /**
-   * Set the type of this {@link GraniteGuardianConfig} instance and return the same instance.
+   * Set the type of this {@link GraniteGuardianFilterConfig} instance and return the same instance.
    *
    * @param type Name of the filter provider type
-   * @return The same instance of this {@link GraniteGuardianConfig} class
+   * @return The same instance of this {@link GraniteGuardianFilterConfig} class
    */
   @Nonnull
-  public GraniteGuardianConfig type(@Nonnull final TypeEnum type) {
+  public GraniteGuardianFilterConfig type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -111,7 +111,7 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   /**
    * Name of the filter provider type
    *
-   * @return type The type of this {@link GraniteGuardianConfig} instance.
+   * @return type The type of this {@link GraniteGuardianFilterConfig} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -119,7 +119,7 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   }
 
   /**
-   * Set the type of this {@link GraniteGuardianConfig} instance.
+   * Set the type of this {@link GraniteGuardianFilterConfig} instance.
    *
    * @param type Name of the filter provider type
    */
@@ -128,13 +128,14 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   }
 
   /**
-   * Set the config of this {@link GraniteGuardianConfig} instance and return the same instance.
+   * Set the config of this {@link GraniteGuardianFilterConfig} instance and return the same
+   * instance.
    *
-   * @param config The config of this {@link GraniteGuardianConfig}
-   * @return The same instance of this {@link GraniteGuardianConfig} class
+   * @param config The config of this {@link GraniteGuardianFilterConfig}
+   * @return The same instance of this {@link GraniteGuardianFilterConfig} class
    */
   @Nonnull
-  public GraniteGuardianConfig config(@Nonnull final GraniteGuardian41 config) {
+  public GraniteGuardianFilterConfig config(@Nonnull final GraniteGuardian41 config) {
     this.config = config;
     return this;
   }
@@ -142,7 +143,7 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   /**
    * Get config
    *
-   * @return config The config of this {@link GraniteGuardianConfig} instance.
+   * @return config The config of this {@link GraniteGuardianFilterConfig} instance.
    */
   @Nonnull
   public GraniteGuardian41 getConfig() {
@@ -150,16 +151,16 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   }
 
   /**
-   * Set the config of this {@link GraniteGuardianConfig} instance.
+   * Set the config of this {@link GraniteGuardianFilterConfig} instance.
    *
-   * @param config The config of this {@link GraniteGuardianConfig}
+   * @param config The config of this {@link GraniteGuardianFilterConfig}
    */
   public void setConfig(@Nonnull final GraniteGuardian41 config) {
     this.config = config;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link GraniteGuardianConfig}.
+   * Get the names of the unrecognizable properties of the {@link GraniteGuardianFilterConfig}.
    *
    * @return The set of properties names
    */
@@ -170,7 +171,8 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link GraniteGuardianConfig} instance.
+   * Get the value of an unrecognizable property of this {@link GraniteGuardianFilterConfig}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -182,13 +184,13 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "GraniteGuardianConfig has no field with name '" + name + "'.");
+          "GraniteGuardianFilterConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link GraniteGuardianConfig} instance including
+   * Get the value of all properties of this {@link GraniteGuardianFilterConfig} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -203,7 +205,7 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   }
 
   /**
-   * Set an unrecognizable property of this {@link GraniteGuardianConfig} instance. If the map
+   * Set an unrecognizable property of this {@link GraniteGuardianFilterConfig} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -222,10 +224,11 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final GraniteGuardianConfig graniteGuardianConfig = (GraniteGuardianConfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, graniteGuardianConfig.cloudSdkCustomFields)
-        && Objects.equals(this.type, graniteGuardianConfig.type)
-        && Objects.equals(this.config, graniteGuardianConfig.config);
+    final GraniteGuardianFilterConfig graniteGuardianFilterConfig = (GraniteGuardianFilterConfig) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, graniteGuardianFilterConfig.cloudSdkCustomFields)
+        && Objects.equals(this.type, graniteGuardianFilterConfig.type)
+        && Objects.equals(this.config, graniteGuardianFilterConfig.config);
   }
 
   @Override
@@ -237,7 +240,7 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class GraniteGuardianConfig {\n");
+    sb.append("class GraniteGuardianFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
     cloudSdkCustomFields.forEach(
@@ -258,20 +261,20 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link GraniteGuardianConfig}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * GraniteGuardianFilterConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (config) -> new GraniteGuardianConfig().type(type).config(config);
+    return (type) -> (config) -> new GraniteGuardianFilterConfig().type(type).config(config);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link GraniteGuardianConfig} instance.
+     * Set the type of this {@link GraniteGuardianFilterConfig} instance.
      *
      * @param type Name of the filter provider type
-     * @return The GraniteGuardianConfig builder.
+     * @return The GraniteGuardianFilterConfig builder.
      */
     Builder1 type(@Nonnull final TypeEnum type);
   }
@@ -279,11 +282,11 @@ public class GraniteGuardianConfig implements InputFilterConfig, OutputFilterCon
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the config of this {@link GraniteGuardianConfig} instance.
+     * Set the config of this {@link GraniteGuardianFilterConfig} instance.
      *
-     * @param config The config of this {@link GraniteGuardianConfig}
-     * @return The GraniteGuardianConfig instance.
+     * @param config The config of this {@link GraniteGuardianFilterConfig}
+     * @return The GraniteGuardianFilterConfig instance.
      */
-    GraniteGuardianConfig config(@Nonnull final GraniteGuardian41 config);
+    GraniteGuardianFilterConfig config(@Nonnull final GraniteGuardian41 config);
   }
 }

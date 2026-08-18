@@ -23,7 +23,11 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Configuration for IBM Granite Guardian 4.1 filter provider. */
+/**
+ * Configuration for IBM Granite Guardian 4.1 filter provider. Note: Granite Guardian requires
+ * separate calls for each configured content category. Recommendation: Use only &#x60;harm&#x60;
+ * catch all content category.
+ */
 // CHECKSTYLE:OFF
 public class GraniteGuardian41
 // CHECKSTYLE:ON
