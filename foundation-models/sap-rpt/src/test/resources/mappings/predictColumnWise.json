@@ -9,63 +9,127 @@
     },
     "bodyPatterns": [
       {
-        "equalToJson": {
-          "prediction_config": {
-            "target_columns": [
-              {
-                "name": "COSTCENTER",
-                "prediction_placeholder": "[PREDICT]",
-                "task_type": "classification"
+        "or": [
+          {
+            "equalToJson": {
+              "prediction_config": {
+                "target_columns": [
+                  {
+                    "name": "COSTCENTER",
+                    "prediction_placeholder": "[PREDICT]",
+                    "task_type": "classification"
+                  }
+                ]
+              },
+              "columns": {
+                "PRICE": [
+                  999.99,
+                  150.8,
+                  2200.0
+                ],
+                "ID": [
+                  "35",
+                  "44",
+                  "104"
+                ],
+                "PRODUCT": [
+                  "Couch",
+                  "Office Chair",
+                  "Server Rack"
+                ],
+                "COSTCENTER": [
+                  "[PREDICT]",
+                  "Office Furniture",
+                  "Data Infrastructure"
+                ],
+                "ORDERDATE": [
+                  "28-11-2025",
+                  "02-11-2025",
+                  "01-11-2025"
+                ]
+              },
+              "index_column": "ID",
+              "parse_data_types": true,
+              "data_schema": {
+                "PRICE": {
+                  "dtype": "string"
+                },
+                "ID": {
+                  "dtype": "string"
+                },
+                "PRODUCT": {
+                  "dtype": "string"
+                },
+                "COSTCENTER": {
+                  "dtype": "string"
+                },
+                "ORDERDATE": {
+                  "dtype": "date"
+                }
               }
-            ]
+            }
           },
-          "columns": {
-            "PRICE": [
-              999.99,
-              150.8,
-              2200.0
-            ],
-            "ID": [
-              "35",
-              "44",
-              "104"
-            ],
-            "PRODUCT": [
-              "Couch",
-              "Office Chair",
-              "Server Rack"
-            ],
-            "COSTCENTER": [
-              "[PREDICT]",
-              "Office Furniture",
-              "Data Infrastructure"
-            ],
-            "ORDERDATE": [
-              "28-11-2025",
-              "02-11-2025",
-              "01-11-2025"
-            ]
-          },
-          "index_column": "ID",
-          "parse_data_types": true,
-          "data_schema": {
-            "PRICE": {
-              "dtype": "string"
-            },
-            "ID": {
-              "dtype": "string"
-            },
-            "PRODUCT": {
-              "dtype": "string"
-            },
-            "COSTCENTER": {
-              "dtype": "string"
-            },
-            "ORDERDATE": {
-              "dtype": "date"
+          {
+            "equalToJson": {
+              "prediction_config": {
+                "target_columns": [
+                  {
+                    "name": "COSTCENTER",
+                    "prediction_placeholder": "[PREDICT]",
+                    "task_type": "classification"
+                  }
+                ]
+              },
+              "rows": [],
+              "columns": {
+                "PRICE": [
+                  999.99,
+                  150.8,
+                  2200.0
+                ],
+                "ID": [
+                  "35",
+                  "44",
+                  "104"
+                ],
+                "PRODUCT": [
+                  "Couch",
+                  "Office Chair",
+                  "Server Rack"
+                ],
+                "COSTCENTER": [
+                  "[PREDICT]",
+                  "Office Furniture",
+                  "Data Infrastructure"
+                ],
+                "ORDERDATE": [
+                  "28-11-2025",
+                  "02-11-2025",
+                  "01-11-2025"
+                ]
+              },
+              "index_column": "ID",
+              "parse_data_types": true,
+              "data_schema": {
+                "PRICE": {
+                  "dtype": "string"
+                },
+                "ID": {
+                  "dtype": "string"
+                },
+                "PRODUCT": {
+                  "dtype": "string"
+                },
+                "COSTCENTER": {
+                  "dtype": "string"
+                },
+                "ORDERDATE": {
+                  "dtype": "date"
+                }
+              }
             }
           }
-        }
+        ]
       }
     ]
   },
