@@ -478,10 +478,6 @@ public class OrchestrationAiModel {
   /** SAP ABAP 1 model */
   public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
 
-  /** SAP ABAP Starcoder 2-7b */
-  public static final OrchestrationAiModel SAP_ABAP_STARCODER2_7b =
-      new OrchestrationAiModel("abap-starcoder2-7b");
-
   /** Alibaba Qwen 3 max model */
   public static final OrchestrationAiModel QWEN_3_MAX = new OrchestrationAiModel("qwen3-max");
 
