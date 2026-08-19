@@ -606,8 +606,7 @@ class OrchestrationTest {
 
   @Test
   void testStreamingErrorHandlingInputFilter() {
-    val msg =
-        "We shall destroy them all tonight and there will be blood!";
+    val msg = "We shall destroy them all tonight and there will be blood!";
     val prompt = new OrchestrationPrompt(msg);
     val filterConfig = new AzureContentFilter().violence(AzureFilterThreshold.ALLOW_SAFE);
     val configWithFilter = config.withInputFiltering(filterConfig);
