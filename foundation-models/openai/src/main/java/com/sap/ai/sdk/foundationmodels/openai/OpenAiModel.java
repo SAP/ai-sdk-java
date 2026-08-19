@@ -139,6 +139,15 @@ public record OpenAiModel(@Nonnull String name, @Nullable String version) implem
   /** Azure OpenAI GPT-5.5 model */
   public static final OpenAiModel GPT_55 = new OpenAiModel("gpt-5.5", null);
 
+  /** Azure OpenAI GPT-5.6-luna model */
+  public static final OpenAiModel GPT_56_LUNA = new OpenAiModel("gpt-5.6-luna", null);
+
+  /** Azure OpenAI GPT-5.6-sol model */
+  public static final OpenAiModel GPT_56_SOL = new OpenAiModel("gpt-5.6-sol", null);
+
+  /** Azure OpenAI GPT-5.6-terra model */
+  public static final OpenAiModel GPT_56_TERRA = new OpenAiModel("gpt-5.6-terra", null);
+
   /**
    * Azure OpenAI Text Embedding ADA 002 model
    *

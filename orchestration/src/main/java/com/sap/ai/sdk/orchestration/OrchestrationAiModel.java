@@ -364,6 +364,15 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-5.5 model */
   public static final OrchestrationAiModel GPT_55 = new OrchestrationAiModel("gpt-5.5");
 
+  /** Azure OpenAI GPT-5.6-sol model */
+  public static final OrchestrationAiModel GPT_56_SOL = new OrchestrationAiModel("gpt-5.6-sol");
+
+  /** Azure OpenAI GPT-5.6-luna model */
+  public static final OrchestrationAiModel GPT_56_LUNA = new OrchestrationAiModel("gpt-5.6-luna");
+
+  /** Azure OpenAI GPT-5.6-terra model */
+  public static final OrchestrationAiModel GPT_56_TERRA = new OrchestrationAiModel("gpt-5.6-terra");
+
   /**
    * Google Cloud Platform Gemini 1.0 Pro model
    *
@@ -469,12 +478,11 @@ public class OrchestrationAiModel {
   /** SAP ABAP 1 model */
   public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
 
-  /**
-   * Alibaba Qwen 3 max model
-   *
-   * @deprecated This model is deprecated on AI Core with a planned retirement on 2026-02-01.
-   */
-  @Deprecated
+  /** SAP ABAP Starcoder 2-7b */
+  public static final OrchestrationAiModel SAP_ABAP_STARCODER2_7b =
+      new OrchestrationAiModel("abap-starcoder2-7b");
+
+  /** Alibaba Qwen 3 max model */
   public static final OrchestrationAiModel QWEN_3_MAX = new OrchestrationAiModel("qwen3-max");
 
   /** Alibaba Qwen 3.6 plus model */
