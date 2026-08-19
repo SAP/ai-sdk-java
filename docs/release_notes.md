@@ -21,8 +21,8 @@
   - `textToSpeech`
   - `speechToSpeech`
 - [OpenAI] You can now add multiple custom headers to an `OpenAiClient` at once via `.withHeaders()`.
-- [OpenAI] Added `GPT_56_LUNA`, `GPT_56_SOL`, and `GPT_56_TERRA` to model list in `OpenAiModel`.
-- [Orchestration] Added `QWEN_3_7_MAX`, `QWEN_3_7_PLUS`, `ALIBABA_TEXT_EMBEDDING_4`, `GEMINI_3_1_PRO_PREVIEW_EA`, `MISTRAL_MEDIUM`, `GPT_56_LUNA`, `GPT_56_SOL`, and `GPT_56_TERRA` to model list in `OrchestrationAiModel`.
+- [OpenAI] Added `GPT_56_LUNA`, `GPT_56_SOL` and `GPT_56_TERRA` to model list in `OpenAiModel`.
+- [Orchestration] Added `QWEN_3_7_MAX`, `QWEN_3_7_PLUS`, `ALIBABA_TEXT_EMBEDDING_4`, `GEMINI_3_1_PRO_PREVIEW_EA`, `MISTRAL_MEDIUM`, `GPT_56_LUNA`, `GPT_56_SOL` and `GPT_56_TERRA` to model list in `OrchestrationAiModel`.
 - [Orchestration] Reasoning content is now supported for users through `OrchestrationChatResponse.getReasoningText()` and `OrchestrationChatCompletionDelta.getDeltaReasoningText()` to see the thinking processes when using the reasoning models.
 - [Orchestration] Added support for prompt caching for new Claude models. The following messages are cacheable:
   - `SystemMessage`,
