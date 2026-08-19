@@ -78,7 +78,7 @@
     <japicmp.version>0.26.1</japicmp.version>
     <openai-java.version>4.45.0</openai-java.version>
     <!-- conflicts resolution -->
-    <httpcomponents-core5.version>5.6.4</httpcomponents-core5.version>
+    <httpcomponents-core5.version>5.4.3</httpcomponents-core5.version>
     <httpcomponents-client5.version>5.6.4</httpcomponents-client5.version>
     <micrometer.version>1.17.0</micrometer.version>
     <json.version>20260719</json.version>
