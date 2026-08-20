@@ -78,6 +78,7 @@
     <openai-java.version>4.45.0</openai-java.version>
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.3</httpcomponents-core5.version>
+    <httpcomponents-client5.version>5.6.4</httpcomponents-client5.version>
     <micrometer.version>1.17.0</micrometer.version>
     <json.version>20260719</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
@@ -157,7 +158,7 @@
         <version>${jackson.version}</version>
       </dependency>
       <!-- conflicts resolution scope "compile" -->
-      <!-- CVE-2026-54428, 54399: pin httpcore5-h2, httpcore5 >= 5.4.3 until httpclient5 (pulled via cloud-sdk openapi-core-apache) ships with fixed versions -->
+      <!-- CVE-2026-54428, 54399, 71290: pin httpcore5-h2, httpcore5 >= 5.6.4 until httpclient5 (pulled via cloud-sdk openapi-core-apache) ships with fixed versions -->
       <dependency>
         <groupId>org.apache.httpcomponents.core5</groupId>
         <artifactId>httpcore5-h2</artifactId>
@@ -167,6 +168,11 @@
         <groupId>org.apache.httpcomponents.core5</groupId>
         <artifactId>httpcore5</artifactId>
         <version>${httpcomponents-core5.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents.client5</groupId>
+        <artifactId>httpclient5</artifactId>
+        <version>${httpcomponents-client5.version}</version>
       </dependency>
       <dependency>
         <!--> Pinned to align all kotlin-stdlib transitive versions pulled via openai-java and okio <-->
