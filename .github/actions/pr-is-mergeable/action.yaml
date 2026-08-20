@@ -64,7 +64,7 @@ runs:
         PR_CHECKS=$(jq -r '.statusCheckRollup' <<< "$PR_JSON")
         
         # check runs are things like our CI pipeline
-        FAILED_CHECK_RUNS=$(jq -r '.[] | select(.__typename == "CheckRun" and .conclusion != "SUCCESS" and .conclusion != "NEUTRAL")' <<< "$PR_CHECKS")
+        FAILED_CHECK_RUNS=$(jq -r '.[] | select(.__typename == "CheckRun" and .conclusion != "SUCCESS" and .conclusion != "NEUTRAL" and .conclusion != "SKIPPED")' <<< "$PR_CHECKS")
         EXCLUDED_WORKFLOWS=$(jq -r 'keys[]' <<< "${{ inputs.excluded-check-runs }}")
         
         while IFS= read -r EXCLUDED_WORKFLOW; do
