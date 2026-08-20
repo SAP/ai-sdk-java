@@ -304,8 +304,7 @@ public class OrchestrationService {
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
     val prompt =
-        new OrchestrationPrompt(
-            "Please rephrase the following sentence for me: 'We shall destroy them all tonight and there will be blood!'");
+        new OrchestrationPrompt("We shall destroy them all tonight and there will be blood!");
     val filterConfig =
         new AzureContentFilter()
             .hate(policy)

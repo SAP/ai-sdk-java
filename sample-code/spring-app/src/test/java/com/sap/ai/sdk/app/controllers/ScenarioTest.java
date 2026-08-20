@@ -73,7 +73,7 @@ class ScenarioTest {
     // Gather AI Core's list of available Orchestration models
     val aiModelList = new ScenarioController().getModels().getResources();
 
-    val internalOnlyModels = Set.of("abap-codestral");
+    val internalOnlyModels = Set.of("abap-codestral", "abap-starcoder2-7b");
 
     val availableOrchestrationModels =
         aiModelList.stream()
