@@ -44,7 +44,7 @@
     <coverage.method>83%</coverage.method>
     <parquet-avro.version>1.18.0</parquet-avro.version>
     <hadoop-common.version>3.5.0</hadoop-common.version>
-    <avro.version>1.12.1</avro.version>
+    <avro.version>1.12.2</avro.version>
   </properties>
 
   <dependencies>
