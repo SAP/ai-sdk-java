@@ -125,6 +125,7 @@ public class OrchestrationClientException extends ClientException {
    * @return The {@link ErrorResponse} object, or {@code null} if not available.
    * @since 1.10.0
    */
+  @Beta
   @Nullable
   public ErrorResponse getErrorResponse() {
     if (getClientError() instanceof OrchestrationError.Synchronous orchestrationError) {
@@ -142,6 +143,7 @@ public class OrchestrationClientException extends ClientException {
    * @return The {@link ErrorResponseStreaming} object, or {@code null} if not available.
    * @since 1.10.0
    */
+  @Beta
   @Nullable
   public ErrorResponseStreaming getErrorResponseStreaming() {
     if (getClientError() instanceof OrchestrationError.Streaming orchestrationError) {

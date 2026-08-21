@@ -22,6 +22,7 @@ public class OpenAiClientException extends ClientException {
    *
    * @return The {@link ErrorResponse} object, or {@code null} if not available.
    */
+  @Beta
   @Nullable
   public ErrorResponse getErrorResponse() {
     final var clientError = super.getClientError();
