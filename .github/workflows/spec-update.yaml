@@ -161,9 +161,9 @@ jobs:
               FILE_PATH='core-services/prompt-registry/src/main/resources/spec/prompt-registry.yaml'
               MODULE_PATH='core-services/prompt-registry'
               ;;
-            sap-rpt) # https://github.tools.sap/DL-COE/sap-rpt-1-public-content
-              API_URL="$API_BASE_URL/DL-COE/sap-rpt-1-public-content/contents/sap-rpt-1_openapi.json?ref=$REF"
-              FILE_PATH='foundation-models/sap-rpt/src/main/resources/spec/sap-rpt-1_openapi.json'
+            sap-rpt) # https://github.tools.sap/DL-COE/sap-rpt-resources
+              API_URL="$API_BASE_URL/DL-COE/sap-rpt-resources/contents/sap-rpt-1.5_openapi.json?ref=$REF"
+              FILE_PATH='foundation-models/sap-rpt/src/main/resources/spec/sap-rpt_openapi.json'
               MODULE_PATH='foundation-models/sap-rpt'
               ;;
             batch)

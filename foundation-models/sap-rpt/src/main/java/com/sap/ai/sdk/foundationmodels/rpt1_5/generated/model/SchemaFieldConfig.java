@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -9,7 +9,7 @@
  * Do not edit the class manually.
  */
 
-package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
+package com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -40,8 +40,9 @@ public class SchemaFieldConfig
   /**
    * Set the dtype of this {@link SchemaFieldConfig} instance and return the same instance.
    *
-   * @param dtype The data type of the target column. Supported types are [&#39;string&#39;,
-   *     &#39;numeric&#39;, &#39;date&#39;].
+   * @param dtype The data type of the column. Supports base types (string, numeric, date) and
+   *     extended types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to
+   *     corresponding base types internally. Case-insensitive.
    * @return The same instance of this {@link SchemaFieldConfig} class
    */
   @Nonnull
@@ -51,8 +52,9 @@ public class SchemaFieldConfig
   }
 
   /**
-   * The data type of the target column. Supported types are [&#39;string&#39;, &#39;numeric&#39;,
-   * &#39;date&#39;].
+   * The data type of the column. Supports base types (string, numeric, date) and extended types
+   * (e.g., Boolean, Integer, Timestamp). Extended types are mapped to corresponding base types
+   * internally. Case-insensitive.
    *
    * @return dtype The dtype of this {@link SchemaFieldConfig} instance.
    */
@@ -64,8 +66,9 @@ public class SchemaFieldConfig
   /**
    * Set the dtype of this {@link SchemaFieldConfig} instance.
    *
-   * @param dtype The data type of the target column. Supported types are [&#39;string&#39;,
-   *     &#39;numeric&#39;, &#39;date&#39;].
+   * @param dtype The data type of the column. Supports base types (string, numeric, date) and
+   *     extended types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to
+   *     corresponding base types internally. Case-insensitive.
    */
   public void setDtype(@Nonnull final ColumnType dtype) {
     this.dtype = dtype;
@@ -126,7 +129,7 @@ public class SchemaFieldConfig
   }
 
   @Override
-  public boolean equals(@Nullable final Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -159,7 +162,7 @@ public class SchemaFieldConfig
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }
@@ -179,8 +182,9 @@ public class SchemaFieldConfig
     /**
      * Set the dtype of this {@link SchemaFieldConfig} instance.
      *
-     * @param dtype The data type of the target column. Supported types are [&#39;string&#39;,
-     *     &#39;numeric&#39;, &#39;date&#39;].
+     * @param dtype The data type of the column. Supports base types (string, numeric, date) and
+     *     extended types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to
+     *     corresponding base types internally. Case-insensitive.
      * @return The SchemaFieldConfig instance.
      */
     SchemaFieldConfig dtype(@Nonnull final ColumnType dtype);

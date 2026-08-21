@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -9,7 +9,7 @@
  * Do not edit the class manually.
  */
 
-package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
+package com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -145,7 +145,7 @@ public class TargetColumnConfig
    */
   @Nonnull
   public TargetColumnConfig predictionPlaceholder(
-      @Nonnull final PredictionPlaceholder predictionPlaceholder) {
+      @Nullable final PredictionPlaceholder predictionPlaceholder) {
     this.predictionPlaceholder = predictionPlaceholder;
     return this;
   }
@@ -156,7 +156,7 @@ public class TargetColumnConfig
    * @return predictionPlaceholder The predictionPlaceholder of this {@link TargetColumnConfig}
    *     instance.
    */
-  @Nonnull
+  @Nullable
   public PredictionPlaceholder getPredictionPlaceholder() {
     return predictionPlaceholder;
   }
@@ -166,7 +166,8 @@ public class TargetColumnConfig
    *
    * @param predictionPlaceholder The predictionPlaceholder of this {@link TargetColumnConfig}
    */
-  public void setPredictionPlaceholder(@Nonnull final PredictionPlaceholder predictionPlaceholder) {
+  public void setPredictionPlaceholder(
+      @Nullable final PredictionPlaceholder predictionPlaceholder) {
     this.predictionPlaceholder = predictionPlaceholder;
   }
 
@@ -262,7 +263,7 @@ public class TargetColumnConfig
   }
 
   @Override
-  public boolean equals(@Nullable final Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -301,7 +302,7 @@ public class TargetColumnConfig
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }
@@ -338,6 +339,6 @@ public class TargetColumnConfig
      * @return The TargetColumnConfig instance.
      */
     TargetColumnConfig predictionPlaceholder(
-        @Nonnull final PredictionPlaceholder predictionPlaceholder);
+        @Nullable final PredictionPlaceholder predictionPlaceholder);
   }
 }

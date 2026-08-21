@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -9,7 +9,7 @@
  * Do not edit the class manually.
  */
 
-package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
+package com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -33,6 +33,9 @@ public class PredictionConfig
 {
   @JsonProperty("target_columns")
   private List<TargetColumnConfig> targetColumns = new ArrayList<>();
+
+  @JsonProperty("explanations")
+  private ExplanationConfig explanations;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -88,6 +91,39 @@ public class PredictionConfig
   }
 
   /**
+   * Set the explanations of this {@link PredictionConfig} instance and return the same instance.
+   *
+   * @param explanations Optional configuration for explainability outputs (column scores and
+   *     relevant context rows).
+   * @return The same instance of this {@link PredictionConfig} class
+   */
+  @Nonnull
+  public PredictionConfig explanations(@Nullable final ExplanationConfig explanations) {
+    this.explanations = explanations;
+    return this;
+  }
+
+  /**
+   * Optional configuration for explainability outputs (column scores and relevant context rows).
+   *
+   * @return explanations The explanations of this {@link PredictionConfig} instance.
+   */
+  @Nonnull
+  public ExplanationConfig getExplanations() {
+    return explanations;
+  }
+
+  /**
+   * Set the explanations of this {@link PredictionConfig} instance.
+   *
+   * @param explanations Optional configuration for explainability outputs (column scores and
+   *     relevant context rows).
+   */
+  public void setExplanations(@Nullable final ExplanationConfig explanations) {
+    this.explanations = explanations;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link PredictionConfig}.
    *
    * @return The set of properties names
@@ -126,6 +162,7 @@ public class PredictionConfig
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (targetColumns != null) declaredFields.put("targetColumns", targetColumns);
+    if (explanations != null) declaredFields.put("explanations", explanations);
     return declaredFields;
   }
 
@@ -142,7 +179,7 @@ public class PredictionConfig
   }
 
   @Override
-  public boolean equals(@Nullable final Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -151,12 +188,13 @@ public class PredictionConfig
     }
     final PredictionConfig predictionConfig = (PredictionConfig) o;
     return Objects.equals(this.cloudSdkCustomFields, predictionConfig.cloudSdkCustomFields)
-        && Objects.equals(this.targetColumns, predictionConfig.targetColumns);
+        && Objects.equals(this.targetColumns, predictionConfig.targetColumns)
+        && Objects.equals(this.explanations, predictionConfig.explanations);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(targetColumns, cloudSdkCustomFields);
+    return Objects.hash(targetColumns, explanations, cloudSdkCustomFields);
   }
 
   @Override
@@ -165,6 +203,7 @@ public class PredictionConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class PredictionConfig {\n");
     sb.append("    targetColumns: ").append(toIndentedString(targetColumns)).append("\n");
+    sb.append("    explanations: ").append(toIndentedString(explanations)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -175,7 +214,7 @@ public class PredictionConfig
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }

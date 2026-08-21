@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -9,7 +9,7 @@
  * Do not edit the class manually.
  */
 
-package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
+package com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -232,7 +232,7 @@ public class PredictResponseMetadata
   }
 
   @Override
-  public boolean equals(@Nullable final Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -271,7 +271,7 @@ public class PredictResponseMetadata
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }

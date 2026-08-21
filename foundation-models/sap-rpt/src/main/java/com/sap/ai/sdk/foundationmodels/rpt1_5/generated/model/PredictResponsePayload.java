@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -9,7 +9,7 @@
  * Do not edit the class manually.
  */
 
-package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
+package com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -39,6 +39,9 @@ public class PredictResponsePayload
 
   @JsonProperty("predictions")
   private List<Map<String, PredictionsInnerValue>> predictions = new ArrayList<>();
+
+  @JsonProperty("explanations")
+  private ExplanationResult explanations;
 
   @JsonProperty("metadata")
   private PredictResponseMetadata metadata;
@@ -161,6 +164,38 @@ public class PredictResponsePayload
   }
 
   /**
+   * Set the explanations of this {@link PredictResponsePayload} instance and return the same
+   * instance.
+   *
+   * @param explanations Explanation data containing context row and column scores.
+   * @return The same instance of this {@link PredictResponsePayload} class
+   */
+  @Nonnull
+  public PredictResponsePayload explanations(@Nullable final ExplanationResult explanations) {
+    this.explanations = explanations;
+    return this;
+  }
+
+  /**
+   * Explanation data containing context row and column scores.
+   *
+   * @return explanations The explanations of this {@link PredictResponsePayload} instance.
+   */
+  @Nullable
+  public ExplanationResult getExplanations() {
+    return explanations;
+  }
+
+  /**
+   * Set the explanations of this {@link PredictResponsePayload} instance.
+   *
+   * @param explanations Explanation data containing context row and column scores.
+   */
+  public void setExplanations(@Nullable final ExplanationResult explanations) {
+    this.explanations = explanations;
+  }
+
+  /**
    * Set the metadata of this {@link PredictResponsePayload} instance and return the same instance.
    *
    * @param metadata The metadata of this {@link PredictResponsePayload}
@@ -233,6 +268,7 @@ public class PredictResponsePayload
     if (id != null) declaredFields.put("id", id);
     if (status != null) declaredFields.put("status", status);
     if (predictions != null) declaredFields.put("predictions", predictions);
+    if (explanations != null) declaredFields.put("explanations", explanations);
     if (metadata != null) declaredFields.put("metadata", metadata);
     return declaredFields;
   }
@@ -250,7 +286,7 @@ public class PredictResponsePayload
   }
 
   @Override
-  public boolean equals(@Nullable final Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -262,12 +298,13 @@ public class PredictResponsePayload
         && Objects.equals(this.id, predictResponsePayload.id)
         && Objects.equals(this.status, predictResponsePayload.status)
         && Objects.equals(this.predictions, predictResponsePayload.predictions)
+        && Objects.equals(this.explanations, predictResponsePayload.explanations)
         && Objects.equals(this.metadata, predictResponsePayload.metadata);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, status, predictions, metadata, cloudSdkCustomFields);
+    return Objects.hash(id, status, predictions, explanations, metadata, cloudSdkCustomFields);
   }
 
   @Override
@@ -278,6 +315,7 @@ public class PredictResponsePayload
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    predictions: ").append(toIndentedString(predictions)).append("\n");
+    sb.append("    explanations: ").append(toIndentedString(explanations)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
@@ -289,7 +327,7 @@ public class PredictResponsePayload
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }

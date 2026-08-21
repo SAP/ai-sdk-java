@@ -384,7 +384,7 @@ public class PredictRequestPayload
   }
 
   @Override
-  public boolean equals(@Nullable final java.lang.Object o) {
+  public boolean equals(@Nullable final Object o) {
     if (this == o) {
       return true;
     }
@@ -434,7 +434,7 @@ public class PredictRequestPayload
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final java.lang.Object o) {
+  private String toIndentedString(final Object o) {
     if (o == null) {
       return "null";
     }

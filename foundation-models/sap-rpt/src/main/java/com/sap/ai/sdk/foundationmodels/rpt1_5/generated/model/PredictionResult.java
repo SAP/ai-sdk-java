@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -9,14 +9,16 @@
  * Do not edit the class manually.
  */
 
-package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
+package com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -34,6 +36,9 @@ public class PredictionResult
 
   @JsonProperty("confidence")
   private BigDecimal confidence;
+
+  @JsonProperty("confidence_interval")
+  private List<Object> confidenceInterval;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -75,7 +80,8 @@ public class PredictionResult
   /**
    * Set the confidence of this {@link PredictionResult} instance and return the same instance.
    *
-   * @param confidence The confidence of the prediction (currently not provided).
+   * @param confidence The confidence of the prediction (null for regression predictions). Minimum:
+   *     0 Maximum: 1
    * @return The same instance of this {@link PredictionResult} class
    */
   @Nonnull
@@ -85,7 +91,7 @@ public class PredictionResult
   }
 
   /**
-   * The confidence of the prediction (currently not provided).
+   * The confidence of the prediction (null for regression predictions). minimum: 0 maximum: 1
    *
    * @return confidence The confidence of this {@link PredictionResult} instance.
    */
@@ -97,10 +103,61 @@ public class PredictionResult
   /**
    * Set the confidence of this {@link PredictionResult} instance.
    *
-   * @param confidence The confidence of the prediction (currently not provided).
+   * @param confidence The confidence of the prediction (null for regression predictions). Minimum:
+   *     0 Maximum: 1
    */
   public void setConfidence(@Nullable final BigDecimal confidence) {
     this.confidence = confidence;
+  }
+
+  /**
+   * Set the confidenceInterval of this {@link PredictionResult} instance and return the same
+   * instance.
+   *
+   * @param confidenceInterval Lower and upper bounds of the prediction confidence interval (null
+   *     for classification predictions).
+   * @return The same instance of this {@link PredictionResult} class
+   */
+  @Nonnull
+  public PredictionResult confidenceInterval(@Nullable final List<Object> confidenceInterval) {
+    this.confidenceInterval = confidenceInterval;
+    return this;
+  }
+
+  /**
+   * Add one confidenceInterval instance to this {@link PredictionResult}.
+   *
+   * @param confidenceIntervalItem The confidenceInterval that should be added
+   * @return The same instance of type {@link PredictionResult}
+   */
+  @Nonnull
+  public PredictionResult addConfidenceIntervalItem(@Nonnull final Object confidenceIntervalItem) {
+    if (this.confidenceInterval == null) {
+      this.confidenceInterval = new ArrayList<>();
+    }
+    this.confidenceInterval.add(confidenceIntervalItem);
+    return this;
+  }
+
+  /**
+   * Lower and upper bounds of the prediction confidence interval (null for classification
+   * predictions).
+   *
+   * @return confidenceInterval The confidenceInterval of this {@link PredictionResult} instance.
+   */
+  @Nullable
+  public List<Object> getConfidenceInterval() {
+    return confidenceInterval;
+  }
+
+  /**
+   * Set the confidenceInterval of this {@link PredictionResult} instance.
+   *
+   * @param confidenceInterval Lower and upper bounds of the prediction confidence interval (null
+   *     for classification predictions).
+   */
+  public void setConfidenceInterval(@Nullable final List<Object> confidenceInterval) {
+    this.confidenceInterval = confidenceInterval;
   }
 
   /**
@@ -143,6 +200,7 @@ public class PredictionResult
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (prediction != null) declaredFields.put("prediction", prediction);
     if (confidence != null) declaredFields.put("confidence", confidence);
+    if (confidenceInterval != null) declaredFields.put("confidenceInterval", confidenceInterval);
     return declaredFields;
   }
 
@@ -159,7 +217,7 @@ public class PredictionResult
   }
 
   @Override
-  public boolean equals(@Nullable final Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -169,12 +227,13 @@ public class PredictionResult
     final PredictionResult predictionResult = (PredictionResult) o;
     return Objects.equals(this.cloudSdkCustomFields, predictionResult.cloudSdkCustomFields)
         && Objects.equals(this.prediction, predictionResult.prediction)
-        && Objects.equals(this.confidence, predictionResult.confidence);
+        && Objects.equals(this.confidence, predictionResult.confidence)
+        && Objects.equals(this.confidenceInterval, predictionResult.confidenceInterval);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(prediction, confidence, cloudSdkCustomFields);
+    return Objects.hash(prediction, confidence, confidenceInterval, cloudSdkCustomFields);
   }
 
   @Override
@@ -184,6 +243,7 @@ public class PredictionResult
     sb.append("class PredictionResult {\n");
     sb.append("    prediction: ").append(toIndentedString(prediction)).append("\n");
     sb.append("    confidence: ").append(toIndentedString(confidence)).append("\n");
+    sb.append("    confidenceInterval: ").append(toIndentedString(confidenceInterval)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -194,7 +254,7 @@ public class PredictionResult
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }
