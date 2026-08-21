@@ -17,9 +17,11 @@ public class OpenAiClientException extends ClientException {
   /**
    * Retrieves the {@link ErrorResponse} from the OpenAI service, if available.
    *
+   * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
+   * public signature.
+   *
    * @return The {@link ErrorResponse} object, or {@code null} if not available.
    */
-  @Beta
   @Nullable
   public ErrorResponse getErrorResponse() {
     final var clientError = super.getClientError();

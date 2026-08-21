@@ -119,10 +119,12 @@ public class OrchestrationClientException extends ClientException {
   /**
    * Retrieves the {@link ErrorResponse} from the orchestration service, if available.
    *
+   * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
+   * public signature.
+   *
    * @return The {@link ErrorResponse} object, or {@code null} if not available.
    * @since 1.10.0
    */
-  @Beta
   @Nullable
   public ErrorResponse getErrorResponse() {
     if (getClientError() instanceof OrchestrationError.Synchronous orchestrationError) {
@@ -134,10 +136,12 @@ public class OrchestrationClientException extends ClientException {
   /**
    * Retrieves the {@link ErrorResponseStreaming} from the orchestration service, if available.
    *
+   * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
+   * public signature.
+   *
    * @return The {@link ErrorResponseStreaming} object, or {@code null} if not available.
    * @since 1.10.0
    */
-  @Beta
   @Nullable
   public ErrorResponseStreaming getErrorResponseStreaming() {
     if (getClientError() instanceof OrchestrationError.Streaming orchestrationError) {
