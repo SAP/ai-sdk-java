@@ -80,7 +80,7 @@
     <httpcomponents-core5.version>5.4.3</httpcomponents-core5.version>
     <httpcomponents-client5.version>5.6.4</httpcomponents-client5.version>
     <micrometer.version>1.17.0</micrometer.version>
-    <json.version>20260719</json.version>
+    <json.version>20260814</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <!-- Formatting -->
     <spotless.version>3.9.0</spotless.version>
