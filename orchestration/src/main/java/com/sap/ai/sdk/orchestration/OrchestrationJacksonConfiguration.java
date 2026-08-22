@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
@@ -31,7 +30,6 @@ public class OrchestrationJacksonConfiguration {
    *     href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/converter/json/Jackson2ObjectMapperBuilder.html">Jackson2ObjectMapperBuilder</a>
    */
   @Nonnull
-  @Beta
   public static ObjectMapper getOrchestrationObjectMapper() {
 
     final var module =
