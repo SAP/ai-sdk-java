@@ -146,7 +146,9 @@ public class EmbeddingsModelDetails
    * Set the timeout of this {@link EmbeddingsModelDetails} instance and return the same instance.
    *
    * @param timeout Timeout for the Embeddings request in seconds. This parameter is currently
-   *     ignored for Vertex AI models. Minimum: 1 Maximum: 1200
+   *     ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure
+   *     connection limits; in practice this primarily affects non-streaming calls where the
+   *     connection may be idle while waiting for a response. Minimum: 1 Maximum: 1200
    * @return The same instance of this {@link EmbeddingsModelDetails} class
    */
   @Nonnull
@@ -157,7 +159,9 @@ public class EmbeddingsModelDetails
 
   /**
    * Timeout for the Embeddings request in seconds. This parameter is currently ignored for Vertex
-   * AI models. minimum: 1 maximum: 1200
+   * AI models. Values above 600s may not be honored due to infrastructure connection limits; in
+   * practice this primarily affects non-streaming calls where the connection may be idle while
+   * waiting for a response. minimum: 1 maximum: 1200
    *
    * @return timeout The timeout of this {@link EmbeddingsModelDetails} instance.
    */
@@ -170,7 +174,9 @@ public class EmbeddingsModelDetails
    * Set the timeout of this {@link EmbeddingsModelDetails} instance.
    *
    * @param timeout Timeout for the Embeddings request in seconds. This parameter is currently
-   *     ignored for Vertex AI models. Minimum: 1 Maximum: 1200
+   *     ignored for Vertex AI models. Values above 600s may not be honored due to infrastructure
+   *     connection limits; in practice this primarily affects non-streaming calls where the
+   *     connection may be idle while waiting for a response. Minimum: 1 Maximum: 1200
    */
   public void setTimeout(@Nullable final Integer timeout) {
     this.timeout = timeout;
