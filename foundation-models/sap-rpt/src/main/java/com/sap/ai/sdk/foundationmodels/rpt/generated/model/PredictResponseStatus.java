@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -43,7 +43,7 @@ public class PredictResponseStatus
   /**
    * Set the code of this {@link PredictResponseStatus} instance and return the same instance.
    *
-   * @param code Status code (zero means success, other status codes indicate warnings)
+   * @param code Status code (zero means success, other status codes indicate warnings or errors)
    * @return The same instance of this {@link PredictResponseStatus} class
    */
   @Nonnull
@@ -53,7 +53,7 @@ public class PredictResponseStatus
   }
 
   /**
-   * Status code (zero means success, other status codes indicate warnings)
+   * Status code (zero means success, other status codes indicate warnings or errors)
    *
    * @return code The code of this {@link PredictResponseStatus} instance.
    */
@@ -65,7 +65,7 @@ public class PredictResponseStatus
   /**
    * Set the code of this {@link PredictResponseStatus} instance.
    *
-   * @param code Status code (zero means success, other status codes indicate warnings)
+   * @param code Status code (zero means success, other status codes indicate warnings or errors)
    */
   public void setCode(@Nonnull final Integer code) {
     this.code = code;
@@ -161,7 +161,7 @@ public class PredictResponseStatus
   }
 
   @Override
-  public boolean equals(@Nullable final Object o) {
+  public boolean equals(@Nullable final java.lang.Object o) {
     if (this == o) {
       return true;
     }
@@ -196,7 +196,7 @@ public class PredictResponseStatus
   /**
    * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
-  private String toIndentedString(final Object o) {
+  private String toIndentedString(final java.lang.Object o) {
     if (o == null) {
       return "null";
     }
@@ -216,7 +216,7 @@ public class PredictResponseStatus
     /**
      * Set the code of this {@link PredictResponseStatus} instance.
      *
-     * @param code Status code (zero means success, other status codes indicate warnings)
+     * @param code Status code (zero means success, other status codes indicate warnings or errors)
      * @return The PredictResponseStatus builder.
      */
     Builder1 code(@Nonnull final Integer code);

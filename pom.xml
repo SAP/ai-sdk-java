@@ -723,7 +723,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/core/model/*</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/openai/generated/model/*</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/rpt/generated/**</exclude>
-            <exclude>com/sap/ai/sdk/foundationmodels/rpt1_5/generated/**</exclude>
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/client/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/model/*</exclude>
@@ -753,7 +752,6 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <exclude>com/sap/ai/sdk/orchestration/model/*</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/openai/generated/model/*</exclude>
             <exclude>com/sap/ai/sdk/foundationmodels/rpt/generated/**</exclude>
-            <exclude>com/sap/ai/sdk/foundationmodels/rpt1_5/generated/**</exclude>
             <exclude>com/sap/ai/sdk/grounding/client/*</exclude>
             <exclude>com/sap/ai/sdk/grounding/model/*</exclude>
             <exclude>com/sap/ai/sdk/prompt/registry/model/*</exclude>

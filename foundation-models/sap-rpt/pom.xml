@@ -190,7 +190,7 @@
             <configuration>
               <parameter>
                 <includes combine.children="append">
-                  <include>com.sap.ai.sdk.foundationmodels.rpt1_5.generated</include>
+                  <include>com.sap.ai.sdk.foundationmodels.rpt.generated</include>
                 </includes>
               </parameter>
             </configuration>
@@ -228,8 +228,8 @@
                 <phase>generate-sources</phase>
                 <configuration>
                   <inputSpec>${project.basedir}/src/main/resources/spec/sap-rpt_openapi.json</inputSpec>
-                  <modelPackage>com.sap.ai.sdk.foundationmodels.rpt1_5.generated.model</modelPackage>
-                  <apiPackage>com.sap.ai.sdk.foundationmodels.rpt1_5.generated.client</apiPackage>
+                  <modelPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.model</modelPackage>
+                  <apiPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.client</apiPackage>
                   <additionalProperties>
                     <library>apache-httpclient</library>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>

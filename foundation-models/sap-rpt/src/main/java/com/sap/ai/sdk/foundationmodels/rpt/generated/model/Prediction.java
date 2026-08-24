@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -14,7 +14,7 @@ package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
 import java.math.BigDecimal;
 import javax.annotation.Nonnull;
 
-/** The predicted value for the column. */
+/** The predicted value for the column (string for classification, number for regression). */
 public interface Prediction {
   /** Helper class to create {@code String } that implements {@link Prediction}. */
   record InnerString(@com.fasterxml.jackson.annotation.JsonValue @Nonnull String value)
