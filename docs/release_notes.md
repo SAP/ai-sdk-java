@@ -16,7 +16,7 @@
 
 ### 📈 Improvements
 
--
+- [Foundation Models] Updated SAP-RPT tabular data prediction model client for API `SAP-RPT 1.5`
 
 ### 🐛 Fixed Issues
 
