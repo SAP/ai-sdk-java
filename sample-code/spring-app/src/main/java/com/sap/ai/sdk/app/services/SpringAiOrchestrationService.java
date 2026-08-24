@@ -136,10 +136,7 @@ public class SpringAiOrchestrationService {
         new OrchestrationChatOptions(
             config.withLlmConfig(GEMINI_2_5_FLASH).withInputFiltering(filterConfig));
 
-    val prompt =
-        new Prompt(
-            "Please rephrase the following sentence for me: 'We shall destroy them all tonight and there will be blood!'",
-            opts);
+    val prompt = new Prompt("We shall destroy them all tonight and there will be blood!", opts);
 
     return client.call(prompt);
   }
