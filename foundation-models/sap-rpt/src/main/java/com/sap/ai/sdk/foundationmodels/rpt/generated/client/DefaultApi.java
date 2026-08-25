@@ -225,7 +225,7 @@ public class DefaultApi extends BaseApi {
   @Nonnull
   public PredictResponsePayload predictParquet(
       @Nonnull final File _file,
-      @Nonnull final File predictionConfig,
+      @Nonnull final String predictionConfig,
       @Nullable final String indexColumn,
       @Nullable final Boolean parseDataTypes)
       throws OpenApiRequestException {
@@ -305,7 +305,7 @@ public class DefaultApi extends BaseApi {
    */
   @Nonnull
   public PredictResponsePayload predictParquet(
-      @Nonnull final File _file, @Nonnull final File predictionConfig)
+      @Nonnull final File _file, @Nonnull final String predictionConfig)
       throws OpenApiRequestException {
     return predictParquet(_file, predictionConfig, null, null);
   }

@@ -5,9 +5,9 @@ import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnCo
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -289,18 +289,15 @@ class RptClientTest {
   @SneakyThrows
   @Test
   void testTableCompletionWithParquetThrowsIllegalArgumentException() {
-    val parquetFile = Path.of("src/test/resources/rpt/test-data.parquet").toFile();
     val predictionConfig = mock(PredictionConfig.class);
     val objectMapper = mock(JsonMapper.class);
 
     try (val mockedStatic = mockStatic(JacksonConfiguration.class)) {
       mockedStatic.when(JacksonConfiguration::getDefaultObjectMapper).thenReturn(objectMapper);
 
-      doThrow(new JsonProcessingException("Test") {})
-          .when(objectMapper)
-          .writeValue(any(File.class), any());
-
-      assertThatThrownBy(() -> client.tableCompletion(parquetFile, predictionConfig))
+      when(objectMapper.writeValueAsString(any()))
+          .thenThrow(new JsonProcessingException("Test") {});
+      assertThatThrownBy(() -> client.tableCompletion(mock(File.class), predictionConfig))
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("Failed to serialize PredictionConfig");
     }
