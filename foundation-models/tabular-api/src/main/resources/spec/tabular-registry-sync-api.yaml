@@ -1,0 +1,651 @@
+openapi: 3.0.3
+info:
+  title: Tabular Artifact API Documentation
+  description: "SAP AI Core - API Specification for Tabular Artifact"
+  version: 1.0.0
+x-sap-shortText: API for managing Tabular Artifact in SAP AI Core.
+
+tags:
+  - name: TabularArtifacts
+    description: Tag for Tabular Artifacts component
+servers:
+  - url: https://api.ai.{region}.ml.hana.ondemand.com/api/v1/tcr
+    description: Production endpoint for SAP AI Core
+    variables:
+      region:
+        enum:
+          - prod.eu-central-1.aws
+        default: prod.eu-central-1.aws
+paths:
+  "/tabularArtifacts":
+    post:
+      tags:
+        - TabularArtifacts
+      operationId: controllers.tabular_artifact.v1.endpoints.create_tabular_artifact
+      summary: Tabular Artifact Creation
+      description: Create a new Tabular Artifact with data destination and file
+      x-sap-cloud-sdk-operation-name: createTabularArtifact
+      parameters:
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTARequest"
+      responses:
+        "202":
+          description: Accepted - Tabular Artifact creation request accepted
+          headers:
+            Location:
+              description: URL to check the Tabular Artifact creation status
+              schema:
+                $ref: '#/components/schemas/Url'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Name of the Tabular Artifact being created
+                additionalProperties: false
+              example:
+                name: "customer-ta"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: '#/components/responses/ServerError'
+    get:
+      tags:
+        - TabularArtifacts
+      operationId: controllers.tabular_artifact.v1.endpoints.get_all_tabular_artifacts
+      summary: Get all Tabular Artifacts
+      description: Retrieve list of Tabular Artifacts with pagination
+      parameters:
+        - in: query
+          name: $top
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+        - in: query
+          name: $skip
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: $count
+          schema:
+            type: boolean
+            default: false
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Tabular Artifacts retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TabularArtifactListResponse"
+        "500":
+          $ref: "#/components/responses/ServerError"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  "/tabularArtifacts/cleanup":
+    post:
+      tags:
+        - TabularArtifacts
+      operationId: controllers.tabular_artifact.v1.endpoints.trigger_ta_cleanup
+      summary: Trigger Tabular Artifact cleanup
+      description: >
+        Internal endpoint to immediately trigger the cleanup cycle for
+        soft-deleted Tabular Artifacts (PENDING_DELETE=TRUE).
+        If an optional list of names is provided, only those specific artifacts
+        are cleaned up. Otherwise all pending-delete artifacts are processed.
+        Drops virtual tables, removes unused remote sources, and hard-deletes
+        the metadata rows.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                names:
+                  type: array
+                  description: >
+                    Optional list of Tabular Artifact names to clean up.
+                    When provided, only these specific names are processed.
+                    When omitted, all pending-delete artifacts are cleaned up.
+                  items:
+                    type: string
+                  example: ["customer-ta", "orders-ta"]
+              additionalProperties: false
+      responses:
+        "200":
+          description: Cleanup completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cleanup completed"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/tabularArtifacts/{tabularArtifactName}":
+    get:
+      tags:
+        - TabularArtifacts
+      operationId: controllers.tabular_artifact.v1.endpoints.get_tabular_artifact_by_name
+      summary: Get Tabular Artifact Details with Metadata
+      description: >
+        Retrieve details of a specific Tabular Artifact by name including schema metadata.
+      x-sap-cloud-sdk-operation-name: getTabularArtifactByName
+      parameters:
+        - name: tabularArtifactName
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: >
+            Unique name of the Tabular Artifact.
+            Must match allowed pattern and length constraints.
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      responses:
+        "200":
+          description: Tabular Artifact details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TabularArtifactDetails"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+    delete:
+      tags:
+        - TabularArtifacts
+      operationId: controllers.tabular_artifact.v1.endpoints.delete_tabular_artifact
+      summary: Delete Tabular Artifact
+      description: Delete a specific Tabular Artifact by name
+      x-sap-cloud-sdk-operation-name: deleteTabularArtifact
+      parameters:
+        - name: tabularArtifactName
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: >
+            Unique name of the Tabular Artifact.
+            Must match allowed pattern and length constraints.
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      responses:
+        "202":
+          description: Accepted — the Tabular Artifact has been marked for deletion and will be removed asynchronously
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          $ref: "#/components/responses/Conflict"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  "/tabularArtifacts/{tabularArtifactName}/data":
+    get:
+      tags:
+        - TabularArtifacts
+      operationId: controllers.tabular_artifact.v1.endpoints.get_tabular_artifact_data
+      summary: Get Tabular Artifact Data Preview
+      description: Retrieve a preview of data rows from the Virtual Table (first 10 records)
+      x-sap-cloud-sdk-operation-name: getTabularArtifactData
+      parameters:
+        - name: tabularArtifactName
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 80
+            pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          description: >
+            Unique name of the Tabular Artifact.
+            Must match allowed pattern and length constraints.
+        - in: header
+          name: AI-Resource-Group
+          required: true
+          schema:
+            type: string
+          description: Resource Group ID
+      responses:
+        "200":
+          description: Tabular Artifact data preview retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TabularArtifactDataPreview"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+components:
+  schemas:
+
+    # Base Enum
+    DefinitionType:
+      type: string
+      enum:
+        - DOCUMENT
+        - REFERENCE
+        - AUTO
+
+    # Document variant
+    DocumentDefinition:
+      type: object
+      required:
+        - definitionType
+        - document
+      properties:
+        definitionType:
+          $ref: '#/components/schemas/DefinitionType'
+        document:
+          type: object
+          description: "CSN document content used to create Tabular Artifact (required if definitionType is DOCUMENT)"
+      additionalProperties: false
+
+    # Reference variant
+    ReferenceDefinition:
+      type: object
+      required:
+        - definitionType
+        - documentReference
+      properties:
+        definitionType:
+          $ref: '#/components/schemas/DefinitionType'
+        documentReference:
+          type: object
+          required:
+            - path
+          properties:
+            path:
+              type: string
+              description: "Absolute path to the file on the data destination (must start with '/')"
+              pattern: '^\/.*'
+              example: "/data/ingest/customer_data/csn_metadata.json"
+          additionalProperties: false
+      additionalProperties: false
+
+    # Auto variant
+    AutoDefinition:
+      type: object
+      required:
+        - definitionType
+      properties:
+        definitionType:
+          $ref: '#/components/schemas/DefinitionType'
+        autoConfig:
+          type: object
+          description: "Optional configuration for AUTO schema derivation"
+          properties:
+            csvOptions:
+              type: object
+              description: "Optional CSV-specific options (only for CSV type files)"
+              properties:
+                columnListInFirstRow:
+                  type: boolean
+                  default: true
+                  description: "Whether CSV has column names in first row"
+                delimiter:
+                  type: string
+                  default: ","
+                  description: "CSV delimiter character"
+              additionalProperties: false
+          additionalProperties: false
+      additionalProperties: false
+
+    # OneOf with discriminator
+    CSNDefinition:
+      oneOf:
+        - $ref: '#/components/schemas/DocumentDefinition'
+        - $ref: '#/components/schemas/ReferenceDefinition'
+        - $ref: '#/components/schemas/AutoDefinition'
+      discriminator:
+        propertyName: definitionType
+        mapping:
+          DOCUMENT: '#/components/schemas/DocumentDefinition'
+          REFERENCE: '#/components/schemas/ReferenceDefinition'
+          AUTO: '#/components/schemas/AutoDefinition'
+    TabularArtifactListResponse:
+      type: object
+      required:
+        - resources
+      properties:
+        count:
+          type: integer
+          description: Total number of records
+        resources:
+          type: array
+          items:
+            $ref: "#/components/schemas/TabularArtifactDetails"
+
+      additionalProperties: false
+    # Main request object
+    CreateTARequest:
+      type: object
+      required:
+        - dataDestinationName
+        - name
+        - type
+        - path
+        - csnMetadata
+      properties:
+        dataDestinationName:
+          type: string
+          minLength: 1
+          maxLength: 127
+          description: "Identifier for the target data destination"
+        name:
+          type: string
+          minLength: 1
+          maxLength: 80
+          description: "Name for the created Tabular Artifact (1-87 characters). First character must be a letter; subsequent characters can be letters, numbers, spaces, dash, or underscores."
+          pattern: '^[a-z0-9]([-a-z0-9]*[a-z0-9])?$'
+          example: "customta1"
+        type:
+          type: string
+          enum: [CSV, PARQUET, DELTA]
+          description: "Source file format"
+          example: CSV
+        path:
+          type: string
+          description: |
+            Absolute path to the data (must start with '/').
+            - For file-based artifacts (HDL, S3, GCS, AZURE): Standard file path (e.g., /data/customers.parquet)
+            - For Delta Sharing artifacts (DELTA_SHARING): Format /<share>/<schema>/<table> (e.g., /sample_data/tpch/customer)
+          pattern: '^\/.*'
+          example: "/data/ingest/customer_data/file1.csv"
+        csnMetadata:
+          type: object
+          additionalProperties: false
+          description: "Metadata of artifact in CSN format. For AUTO definition type, entityName is optional and will be derived from the file name if not provided."
+          required:
+            - definition
+          properties:
+            entityName:
+              type: string
+              description: "Name of the entity in CSN model. Required for DOCUMENT and REFERENCE types. Optional for AUTO type (defaults to file name without extension)."
+            selectedColumns:
+              type: array
+              description: "List of selected columns from the source file to be included in the TA"
+              example: ["customer_id", "customer_name", "purchase_amount"]
+              minItems: 1
+              uniqueItems: true
+              items:
+                type: string
+                description: "Name of the column"
+            definition:
+              $ref: '#/components/schemas/CSNDefinition'
+      additionalProperties: false
+    TabularArtifactStatus:
+      type: string
+      enum:
+        - PROCESSING
+        - ERROR
+        - ACTIVE
+        - DELETING
+      description: >
+        Lifecycle status of the Tabular Artifact.
+        PROCESSING — the artifact is being created asynchronously (onboarding may be in progress).
+        ERROR — the artifact creation failed.
+        ACTIVE — the artifact is fully available.
+        DELETING — the artifact has been soft-deleted and is awaiting async cleanup.
+
+    TabularArtifactDetails:
+      type: object
+      required:
+        - id
+        - name
+        - tenantId
+        - resourceGroupId
+        - dataDestinationName
+        - path
+        - type
+        - status
+        - createdAt
+        - updatedAt
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the Tabular Artifact
+        name:
+          type: string
+          description: Name of the Tabular Artifact
+        tenantId:
+          type: string
+          description: Tenant identifier
+        resourceGroupId:
+          type: string
+          description: Resource group identifier
+        dataDestinationName:
+          type: string
+        virtualTableName:
+          type: string
+          nullable: true
+        remoteSourceName:
+          type: string
+          nullable: true
+        path:
+          type: string
+        type:
+          type: string
+          enum: [CSV, PARQUET, DELTA]
+        status:
+          $ref: '#/components/schemas/TabularArtifactStatus'
+        csnMetadata:
+          type: object
+          nullable: true
+          properties:
+            entityName:
+              type: string
+              description: Name of the entity in CSN model
+            selectedColumns:
+              type: array
+              description: List of selected columns from the source file
+              items:
+                type: string
+            definition:
+              $ref: '#/components/schemas/CSNDefinition'
+        metadata:
+          type: array
+          description: >
+            Schema metadata containing column definitions based on CSN
+          items:
+            type: object
+            required:
+              - type
+              - columns
+            properties:
+              type:
+                type: string
+                description: Type of metadata (e.g., csn)
+                example: "csn"
+              columns:
+                type: array
+                description: Array of column definitions extracted from CSN schema
+                items:
+                  type: object
+                  required:
+                    - name
+                    - cdsType
+                  properties:
+                    name:
+                      type: string
+                      description: Column name (extracted from CSN element key)
+                    cdsType:
+                      type: string
+                      description: CDS data type (e.g., cds.String, cds.Integer, cds.Decimal, cds.Boolean, cds.Date, cds.DateTime)
+                      example: "cds.String"
+                    length:
+                      type: integer
+                      minimum: 1
+                      description: Column length (for string types, from CSN element length property)
+                      example: 5000
+                    precision:
+                      type: integer
+                      minimum: 1
+                      description: Precision (for decimal types - total number of digits)
+                      example: 15
+                    scale:
+                      type: integer
+                      minimum: 0
+                      description: Scale (for decimal types - digits after decimal point)
+                      example: 2
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    TabularArtifactDataPreview:
+      type: object
+      required:
+        - name
+        - columns
+        - data
+      properties:
+        name:
+          type: string
+          description: Name of the Tabular Artifact
+        columns:
+          type: array
+          description: Array of column names in the result set
+          items:
+            type: string
+        data:
+          type: array
+          description: Array of row objects (up to 10 rows)
+          items:
+            type: object
+            additionalProperties: true
+
+    # Error objects
+    ApiError:
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          description: Descriptive error code (not http status code)
+          type: string
+        message:
+          description: plaintext error description
+          type: string
+        requestId:
+          description: id of individual request
+          type: string
+        target:
+          description: url that has been called
+          type: string
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/DetailsErrorResponse"
+
+    DetailsErrorResponse:
+      type: object
+      properties:
+        code:
+          description: Descriptive error code (not http status code)
+          type: string
+        message:
+          description: Plaintext error description
+          type: string
+
+    Url:
+      type: string
+      format: url
+
+  responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: "#/components/schemas/ApiError"
+      description: The specification of the resource was incorrect
+
+    NotFound:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: "#/components/schemas/ApiError"
+      description: The specified resource was not found
+
+    Conflict:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: "#/components/schemas/ApiError"
+      description: The resource conflicts with existing resources or has dependencies
+
+    ServerError:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                $ref: "#/components/schemas/ApiError"
+      description: Server error
+
+  parameters:
+    top:
+      name: $top
+      description: Number of results to display
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        maximum: 1000
+      example: 10
