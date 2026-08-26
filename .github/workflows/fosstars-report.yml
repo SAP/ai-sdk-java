@@ -29,6 +29,7 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
+      # The main branch cache will be used by default for all branches
       - name: 'Restore CVE Database'
         uses: actions/cache/restore@v6
         with:
@@ -60,8 +61,9 @@ jobs:
           retention-days: 7
 
       - name: 'Delete Old CVE Cache'
+        if: github.ref == 'refs/heads/main'
         run: |
-          CACHE_IDS=$(gh cache list --key "${{ env.CVE_CACHE_KEY }}" --ref "${{ env.CVE_CACHE_REF }}" --json id | jq -r '.[] | .id')
+          CACHE_IDS=$(gh cache list --key "${{ env.CVE_CACHE_KEY }}" --json id | jq -r '.[] | .id')
           for CACHE_ID in $CACHE_IDS; do
               echo "Deleting cache with ID: $CACHE_ID"
               gh cache delete "${CACHE_ID}"
@@ -70,6 +72,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 'Create Updated CVE Cache'
+        if: github.ref == 'refs/heads/main'
         uses: actions/cache/save@v6
         with:
           path: ${{ env.CVE_CACHE_DIR }}
