@@ -1,9 +1,12 @@
 package com.sap.ai.sdk.app.controllers;
 
 import com.sap.ai.sdk.app.services.RptService;
+import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictResponsePayload;
+import com.sap.ai.sdk.foundationmodels.rpt.generated.model.Prediction;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionsInnerValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,13 +28,11 @@ public class RptController {
   @GetMapping("/tableCompletion")
   public Object tableCompletion(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
+    PredictResponsePayload response = rptService.predict();
     if ("json".equals(format)) {
-      return rptService.predict();
+      return response;
     }
-    final var prediction =
-        (PredictionsInnerValue.ListOfPredictionResults)
-            rptService.predict().getPredictions().get(0).get("COSTCENTER");
-    return prediction.values().get(0).getPrediction();
+    return getResponseMessage(response);
   }
 
   /**
@@ -44,12 +45,30 @@ public class RptController {
   @GetMapping("/tableCompletionWithParquet")
   public Object tableCompletionWithParquet(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
+    PredictResponsePayload response = rptService.predictParquet();
     if ("json".equals(format)) {
-      return rptService.predictParquet();
+      return response;
     }
-    final var prediction =
-        (PredictionsInnerValue.ListOfPredictionResults)
-            rptService.predict().getPredictions().get(0).get("COSTCENTER");
-    return prediction.values().get(0).getPrediction();
+    return getResponseMessage(response);
+  }
+
+  @Nonnull
+  private static String getResponseMessage(final PredictResponsePayload response) {
+    val predictionResult =
+        ((PredictionsInnerValue.ListOfPredictionResults)
+            response.getPredictions().get(0).get("COSTCENTER"));
+    val prediction = (Prediction.InnerString) predictionResult.values().get(0).getPrediction();
+    val explanation = response.getExplanations();
+    val message = new StringBuilder().append("Prediction: ").append(prediction.value());
+    if (explanation != null
+        && explanation.getTopColumnScores() != null
+        && explanation.getTopRelevantContextRows() != null) {
+      message
+          .append("<br><br>Explanation:<br>Top Column Scores: ")
+          .append(explanation.getTopColumnScores().get(0))
+          .append("<br>Top Relevant Context Rows: ")
+          .append(explanation.getTopRelevantContextRows().get(0));
+    }
+    return message.toString();
   }
 }
