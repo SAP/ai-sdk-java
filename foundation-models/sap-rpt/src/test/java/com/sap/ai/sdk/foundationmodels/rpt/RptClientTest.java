@@ -66,14 +66,14 @@ class RptClientTest {
 
   @Test
   void testRptModels() {
-    assertThat(RptModel.SAP_RPT_1_5.name()).isEqualTo("sap-rpt-1.5");
-    assertThat(RptModel.SAP_RPT_1_5.version()).isNull();
+    assertThat(RptModel.SAP_RPT_1_SMALL.name()).isEqualTo("sap-rpt-1-small");
+    assertThat(RptModel.SAP_RPT_1_SMALL.version()).isNull();
 
-    assertThat(RptModel.SAP_RPT_1_5_LARGE.name()).isEqualTo("sap-rpt-1.5-large");
-    assertThat(RptModel.SAP_RPT_1_5_LARGE.version()).isEqualTo(null);
+    assertThat(RptModel.SAP_RPT_1_LARGE.name()).isEqualTo("sap-rpt-1-large");
+    assertThat(RptModel.SAP_RPT_1_LARGE.version()).isNull();
 
-    val modelWithVersion = RptModel.SAP_RPT_1_5.withVersion("v1.0");
-    assertThat(modelWithVersion.name()).isEqualTo("sap-rpt-1.5");
+    final var modelWithVersion = RptModel.SAP_RPT_1_SMALL.withVersion("v1.0");
+    assertThat(modelWithVersion.name()).isEqualTo("sap-rpt-1-small");
     assertThat(modelWithVersion.version()).isEqualTo("v1.0");
   }
 
