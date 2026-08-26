@@ -881,7 +881,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <artifactId>dependency-check-maven</artifactId>
         <version>13.0.0</version>
         <configuration>
-          <connectionTimeout>60000</connectionTimeout>
+          <connectionTimeout>3600000</connectionTimeout>
           <nvdMaxRetryCount>20</nvdMaxRetryCount>
           <failBuildOnCVSS>7</failBuildOnCVSS>
           <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
