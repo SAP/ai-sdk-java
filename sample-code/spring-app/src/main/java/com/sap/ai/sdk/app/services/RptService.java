@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.foundationmodels.rpt.RptModel.SAP_RPT_15;
+import static com.sap.ai.sdk.foundationmodels.rpt.RptModel.SAP_RPT_1_5;
 import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig.TaskTypeEnum.CLASSIFICATION;
 
 import com.sap.ai.sdk.foundationmodels.rpt.RptClient;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RptService {
 
-  static final RptClient rptClient = RptClient.forModel(SAP_RPT_15);
+  static final RptClient rptClient = RptClient.forModel(SAP_RPT_1_5);
 
   /**
    * Makes a prediction request to the RPT model. *
