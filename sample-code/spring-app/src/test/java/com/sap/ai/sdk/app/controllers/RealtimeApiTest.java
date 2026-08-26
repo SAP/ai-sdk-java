@@ -12,6 +12,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,24 @@ public class RealtimeApiTest {
       fail(e.getMessage());
     }
   }
+
+  @Test
+  @Timeout(value = 30, unit = TimeUnit.SECONDS)
+  void testThisThingAlwaysFails() {
+    fail("This always fails");
+  }
+
+  @Test
+  @Timeout(value = 100, unit = TimeUnit.MILLISECONDS)
+  void testThisAlwaysTimesOut() {
+    try {
+      Thread.sleep(1000L);
+    } catch (InterruptedException e) {
+      // do nothing
+    }
+  }
+
+
 
   @Test
   @Timeout(value = 30, unit = TimeUnit.SECONDS)
