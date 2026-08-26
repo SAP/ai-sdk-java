@@ -58,7 +58,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputTimestamp>2025-04-03T13:23:00Z</project.build.outputTimestamp>
     <cloud-sdk.version>5.34.0-SNAPSHOT</cloud-sdk.version>
-    <junit-jupiter.version>6.1.2</junit-jupiter.version>
+    <junit-jupiter.version>6.1.3</junit-jupiter.version>
     <wiremock.version>3.13.2</wiremock.version>
     <assertj-core.version>3.27.7</assertj-core.version>
     <slf4j.version>2.0.17</slf4j.version>
@@ -66,20 +66,21 @@
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.6</surefire.version>
     <spring-ai.version>1.1.8</spring-ai.version>
-    <reactor-core.version>3.8.6</reactor-core.version>
+    <reactor-core.version>3.8.7</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.23.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
-    <jackson.version>2.22.1</jackson.version>
+    <jackson.version>2.22.2</jackson.version>
+    <jackson3.version>3.2.2</jackson3.version>
     <logback.version>1.6.3</logback.version>
-    <commons-codec.version>1.22.0</commons-codec.version>
+    <commons-codec.version>1.22.1</commons-codec.version>
     <japicmp.version>0.26.1</japicmp.version>
-    <openai-java.version>4.45.0</openai-java.version>
+    <openai-java.version>4.52.0</openai-java.version>
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.3</httpcomponents-core5.version>
     <httpcomponents-client5.version>5.6.4</httpcomponents-client5.version>
-    <micrometer.version>1.17.0</micrometer.version>
+    <micrometer.version>1.17.1</micrometer.version>
     <json.version>20260814</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <!-- Formatting -->
@@ -131,6 +132,21 @@
         <groupId>io.github.cdimascio</groupId>
         <artifactId>dotenv-java</artifactId>
         <version>${dotenv-java.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson3.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>tools.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson3.version}</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.module</groupId>
@@ -865,7 +881,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
         <artifactId>dependency-check-maven</artifactId>
         <version>13.0.0</version>
         <configuration>
-          <connectionTimeout>60000</connectionTimeout>
+          <connectionTimeout>3600000</connectionTimeout>
           <nvdMaxRetryCount>20</nvdMaxRetryCount>
           <failBuildOnCVSS>7</failBuildOnCVSS>
           <nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>

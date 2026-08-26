@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--[Orchestration] Added `GEMINI_3_5_FLASH_LITE` to model list in `OrchestrationAiModel`.
+-[Orchestration] Added `GEMINI_3_5_FLASH_LITE` and `GEMINI_3_6_FLASH` to model list in `OrchestrationAiModel`.
 
 ### 📈 Improvements
 
