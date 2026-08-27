@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.fail;
 import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.realtime.AudioInputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.realtime.RealtimeParamSystemPrompt;
 import com.sap.ai.sdk.foundationmodels.openai.realtime.RealtimeParamTurnDetection;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -73,8 +74,9 @@ public class RealtimeApiTest {
   @Test
   @Timeout(value = 60, unit = TimeUnit.SECONDS)
   void testSpeechToSpeech() {
-    var outputBuffer = new ByteArrayOutputStream(300000);
+    var outputBuffer = new ByteArrayOutputStream(600000);
     var monitor = new CountDownLatch(1);
+    var systemPrompt = new RealtimeParamSystemPrompt("Respond concisely with shortest correct response possible");
 
     try (AudioInputChannel input =
         service.speechToSpeech(
@@ -84,7 +86,8 @@ public class RealtimeApiTest {
                 monitor.countDown();
               }
             },
-            RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN)) {
+            RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN, systemPrompt)
+    ) {
       input.inputAudio(QUESTION_FIXTURE_PCM);
       monitor.await();
     } catch (Exception e) {
