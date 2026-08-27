@@ -152,7 +152,6 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
       throw new ClientException("Error parsing JSON response from speech API", e);
     }
     final var eventType = event.get("type").asText();
-    log.warn("Received WS event from speech API: {}", eventType);
     if (handleMessageTypes.contains(eventType)) {
       onResponse(eventType, event);
     } else {
