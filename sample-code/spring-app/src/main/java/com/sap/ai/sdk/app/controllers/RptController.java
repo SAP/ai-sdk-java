@@ -28,7 +28,7 @@ public class RptController {
   @GetMapping("/tableCompletion")
   public Object tableCompletion(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    PredictResponsePayload response = rptService.predict();
+    val response = rptService.predict();
     if ("json".equals(format)) {
       return response;
     }
@@ -45,7 +45,7 @@ public class RptController {
   @GetMapping("/tableCompletionWithParquet")
   public Object tableCompletionWithParquet(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    PredictResponsePayload response = rptService.predictParquet();
+    val response = rptService.predictParquet();
     if ("json".equals(format)) {
       return response;
     }
