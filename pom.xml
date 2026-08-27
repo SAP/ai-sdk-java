@@ -72,6 +72,7 @@
     <javaparser.version>3.28.2</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
     <jackson.version>2.22.2</jackson.version>
+    <jackson-annotations.version>2.22</jackson-annotations.version>
     <jackson3.version>3.2.2</jackson3.version>
     <logback.version>1.6.3</logback.version>
     <commons-codec.version>1.22.1</commons-codec.version>
@@ -136,6 +137,26 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson-annotations.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-datatype-jsr</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.datatype</groupId>
+        <artifactId>jackson-datatype-jsr310</artifactId>
         <version>${jackson.version}</version>
       </dependency>
       <dependency>
@@ -526,6 +547,17 @@
                     <exclude>org.springframework.ai:*</exclude>
                   </excludes>
                 </bannedDependencies>
+              </rules>
+            </configuration>
+          </execution>
+          <execution>
+            <id>enforce-upper-version-bound</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireUpperBoundDeps/>
               </rules>
             </configuration>
           </execution>
