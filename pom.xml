@@ -551,8 +551,7 @@
             </goals>
             <configuration>
               <rules>
-                <requireUpperBoundDeps>
-                </requireUpperBoundDeps>
+                <requireUpperBoundDeps/>
               </rules>
             </configuration>
           </execution>
