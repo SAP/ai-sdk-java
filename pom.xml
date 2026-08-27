@@ -523,6 +523,18 @@
               </rules>
             </configuration>
           </execution>
+          <execution>
+            <id>enforce-upper-version-bound</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireUpperBoundDeps>
+                </requireUpperBoundDeps>
+              </rules>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
       <!-- phase: process-sources -->
