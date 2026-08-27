@@ -5,7 +5,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Represents an SAP RPT foundation model.
+ * Represents an SAP Relational Pre-trained Transformer foundation model.
  *
  * @param name The name of the model.
  * @param version The version of the model (optional).
@@ -13,10 +13,10 @@ import javax.annotation.Nullable;
  */
 public record RptModel(@Nonnull String name, @Nullable String version) implements AiModel {
 
-  /** SAP RPT 1 Small model. */
+  /** SAP Relational Pre-trained Transformer 1 Small model. */
   public static final RptModel SAP_RPT_1_SMALL = new RptModel("sap-rpt-1-small", null);
 
-  /** SAP RPT 1 Large model. */
+  /** SAP Relational Pre-trained Transformer 1 Large model. */
   public static final RptModel SAP_RPT_1_LARGE = new RptModel("sap-rpt-1-large", null);
 
   /** SAP Relational Pre-trained Transformer 1.5 model. */
