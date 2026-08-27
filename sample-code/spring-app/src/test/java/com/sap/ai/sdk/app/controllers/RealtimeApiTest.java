@@ -76,7 +76,8 @@ public class RealtimeApiTest {
   void testSpeechToSpeech() {
     var outputBuffer = new ByteArrayOutputStream(600000);
     var monitor = new CountDownLatch(1);
-    var systemPrompt = new RealtimeParamSystemPrompt("Respond concisely with shortest correct response possible");
+    var systemPrompt =
+        new RealtimeParamSystemPrompt("Respond concisely with shortest correct response possible");
 
     try (AudioInputChannel input =
         service.speechToSpeech(
@@ -86,8 +87,8 @@ public class RealtimeApiTest {
                 monitor.countDown();
               }
             },
-            RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN, systemPrompt)
-    ) {
+            RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN,
+            systemPrompt)) {
       input.inputAudio(QUESTION_FIXTURE_PCM);
       monitor.await();
     } catch (Exception e) {
