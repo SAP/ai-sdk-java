@@ -20,4 +20,4 @@
 
 ### 🐛 Fixed Issues
 
--
+- Fixed `kotlin-stdlib` dependency issues by removing the version management from the parent POM.
