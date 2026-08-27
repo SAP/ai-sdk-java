@@ -227,7 +227,7 @@
                 </goals>
                 <phase>generate-sources</phase>
                 <configuration>
-                  <inputSpec>${project.basedir}/src/main/resources/spec/sap-rpt-1_openapi.json</inputSpec>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/sap-rpt_openapi.json</inputSpec>
                   <modelPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.model</modelPackage>
                   <apiPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.client</apiPackage>
                   <additionalProperties>
