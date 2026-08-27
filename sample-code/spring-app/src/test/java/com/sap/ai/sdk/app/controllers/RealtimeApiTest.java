@@ -39,6 +39,7 @@ public class RealtimeApiTest {
 
   @Test
   @Timeout(value = 30, unit = TimeUnit.SECONDS)
+  @Disabled("debugging ci")
   void testTextToSpeech() {
     var outputBuffer = new ByteArrayOutputStream(300000);
     var monitor = new CountDownLatch(1);
@@ -74,8 +75,7 @@ public class RealtimeApiTest {
 
   @Test
   @Timeout(value = 60, unit = TimeUnit.SECONDS)
-  @Disabled(
-      "Works locally. Fails in CI. Temporary disabled to suppress noise and unblock release while investigating")
+  //@Disabled("Works locally. Fails in CI. Temporary disabled to suppress noise and unblock release while investigating")
   void testSpeechToSpeech() {
     var outputBuffer = new ByteArrayOutputStream(600000);
     var monitor = new CountDownLatch(1);
