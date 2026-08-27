@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -74,12 +75,13 @@ public class RealtimeApiTest {
 
   @Test
   @Timeout(value = 60, unit = TimeUnit.SECONDS)
-  @Disabled("Temporary disabled due to CI flakyness to unblock release. Further investigation needed")
+  //@Disabled("Temporary disabled due to CI flakyness to unblock release. Further investigation needed")
   void testSpeechToSpeech() {
     var outputBuffer = new ByteArrayOutputStream(600000);
     var monitor = new CountDownLatch(1);
     var systemPrompt =
         new RealtimeParamSystemPrompt("Respond concisely with shortest correct response possible");
+    var completed = false;
 
     try (AudioInputChannel input =
         service.speechToSpeech(
@@ -92,7 +94,7 @@ public class RealtimeApiTest {
             RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN,
             systemPrompt)) {
       input.inputAudio(QUESTION_FIXTURE_PCM);
-      monitor.await();
+      completed = monitor.await(55, TimeUnit.SECONDS);
     } catch (Exception e) {
       if (!(e instanceof InterruptedException)) {
         fail(e);
@@ -102,6 +104,7 @@ public class RealtimeApiTest {
       return;
     }
 
+    assertThat(completed).isTrue();
     assertThat(monitor.getCount()).isEqualTo(0);
     assertThat(outputBuffer.size()).isGreaterThan(0);
 
