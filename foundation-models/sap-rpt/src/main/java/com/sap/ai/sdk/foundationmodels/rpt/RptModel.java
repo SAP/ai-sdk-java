@@ -22,7 +22,7 @@ public record RptModel(@Nonnull String name, @Nullable String version) implement
   /** SAP Relational Pre-trained Transformer 1.5 model. */
   public static final RptModel SAP_RPT_1_5 = new RptModel("sap-rpt-1.5", null);
 
-  /** SAP Relational Pre-trained Transformer Large 1.5 model. */
+  /** SAP Relational Pre-trained Transformer 1.5 Large model. */
   public static final RptModel SAP_RPT_1_5_LARGE = new RptModel("sap-rpt-1.5-large", null);
 
   /**
