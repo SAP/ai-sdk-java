@@ -1,7 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai.spring;
 
-import static org.springframework.ai.model.tool.ToolCallingChatOptions.isInternalToolExecutionEnabled;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,7 +33,7 @@ import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.model.tool.DefaultToolCallingManager;
+import org.springframework.ai.model.tool.DefaultToolCallingChatOptions;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
 import reactor.core.publisher.Flux;
 
@@ -49,8 +47,10 @@ public class OpenAiChatModel implements ChatModel {
   private final OpenAiClient client;
 
   @Nonnull
-  private final DefaultToolCallingManager toolCallingManager =
-      DefaultToolCallingManager.builder().build();
+  @Override
+  public ChatOptions getOptions() {
+    return DefaultToolCallingChatOptions.builder().toolCallbacks(List.of()).build();
+  }
 
   @Override
   @Nonnull
@@ -66,18 +66,7 @@ public class OpenAiChatModel implements ChatModel {
     }
 
     val result = client.chatCompletion(request);
-    val response = new ChatResponse(toGenerations(result));
-
-    if (options != null && isInternalToolExecutionEnabled(options) && response.hasToolCalls()) {
-      val toolCalls =
-          response.getResult().getOutput().getToolCalls().stream().map(ToolCall::name).toList();
-      log.info("Executing {} tool call(s) - {}.", toolCalls.size(), toolCalls);
-      val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
-      // Send the tool execution result back to the model.
-      log.debug("Re-invoking model with tool execution results.");
-      return call(new Prompt(toolExecutionResult.conversationHistory(), options));
-    }
-    return response;
+    return new ChatResponse(toGenerations(result));
   }
 
   @Override

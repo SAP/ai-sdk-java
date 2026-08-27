@@ -73,8 +73,12 @@ public class ResponseJsonSchema {
                 .with(module)
                 .build());
     val jsonSchema = generator.generateSchema(classType);
-    val mapper = new ObjectMapper();
-    val schemaMap = mapper.convertValue(jsonSchema, new TypeReference<Map<String, Object>>() {});
+    final Map<String, Object> schemaMap;
+    try {
+      schemaMap = new ObjectMapper().readValue(jsonSchema.toString(), new TypeReference<>() {});
+    } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+      throw new IllegalStateException("Failed to parse generated JSON schema", e);
+    }
     val schemaName = ((Class<?>) classType).getSimpleName() + "-Schema";
     return new ResponseJsonSchema(schemaMap, schemaName, null, null);
   }

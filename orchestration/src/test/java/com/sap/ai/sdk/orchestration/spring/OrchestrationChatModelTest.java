@@ -67,6 +67,7 @@ class OrchestrationChatModelTest {
     client = new OrchestrationChatModel(new OrchestrationClient(destination));
     defaultOptions =
         new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(GPT_4O));
+    client.setDefaultOptions(defaultOptions);
     prompt = new Prompt("Hello World! Why is this phrase so famous?", defaultOptions);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
@@ -241,9 +242,13 @@ class OrchestrationChatModelTest {
     val repository = new InMemoryChatMemoryRepository();
     val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
-    val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
-    val prompt1 = new Prompt("What is the capital of France?", defaultOptions);
-    val prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
+    val cl =
+        ChatClient.builder(client)
+            .defaultAdvisors(advisor)
+            .defaultOptions(defaultOptions.mutate())
+            .build();
+    val prompt1 = new Prompt("What is the capital of France?");
+    val prompt2 = new Prompt("And what is the typical food there?");
 
     cl.prompt(prompt1)
         .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "test-conversation"))

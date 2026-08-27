@@ -86,7 +86,13 @@ public class OpenAiTool {
         name -> {
           final Function<String, Object> exec =
               s -> function.apply(deserializeArgument(inputClass, s));
-          final var schema = GENERATOR.generateSchema(inputClass);
+          final var jackson3Schema = GENERATOR.generateSchema(inputClass);
+          final ObjectNode schema;
+          try {
+            schema = (ObjectNode) JACKSON.readTree(jackson3Schema.toString());
+          } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Failed to parse generated JSON schema", e);
+          }
           return new OpenAiTool(name, exec, schema, null, null);
         };
   }

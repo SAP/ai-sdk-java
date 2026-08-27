@@ -64,6 +64,18 @@
         <artifactId>mcp-core</artifactId>
         <version>${mcp-core.version}</version>
       </dependency>
+      <!-- Pin jsonschema-module-swagger-2 to Spring AI 2.0.1 version (openai-java-core pulls 4.38.0) -->
+      <dependency>
+        <groupId>com.github.victools</groupId>
+        <artifactId>jsonschema-module-swagger-2</artifactId>
+        <version>5.0.0</version>
+      </dependency>
+      <!-- Pin json-schema-validator to Spring AI 2.0.1 version -->
+      <dependency>
+        <groupId>com.networknt</groupId>
+        <artifactId>json-schema-validator</artifactId>
+        <version>3.0.1</version>
+      </dependency>
       <!-- Enforce consistent Junit version -->
       <dependency>
         <groupId>org.junit</groupId>
