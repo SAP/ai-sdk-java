@@ -75,7 +75,6 @@ public class RealtimeApiTest {
 
   @Test
   @Timeout(value = 60, unit = TimeUnit.SECONDS)
-  //@Disabled("Temporary disabled due to CI flakyness to unblock release. Further investigation needed")
   void testSpeechToSpeech() {
     var outputBuffer = new ByteArrayOutputStream(600000);
     var monitor = new CountDownLatch(1);
