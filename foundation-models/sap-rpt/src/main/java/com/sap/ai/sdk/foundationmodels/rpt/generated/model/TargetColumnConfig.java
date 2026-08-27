@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -145,7 +145,7 @@ public class TargetColumnConfig
    */
   @Nonnull
   public TargetColumnConfig predictionPlaceholder(
-      @Nonnull final PredictionPlaceholder predictionPlaceholder) {
+      @Nullable final PredictionPlaceholder predictionPlaceholder) {
     this.predictionPlaceholder = predictionPlaceholder;
     return this;
   }
@@ -156,7 +156,7 @@ public class TargetColumnConfig
    * @return predictionPlaceholder The predictionPlaceholder of this {@link TargetColumnConfig}
    *     instance.
    */
-  @Nonnull
+  @Nullable
   public PredictionPlaceholder getPredictionPlaceholder() {
     return predictionPlaceholder;
   }
@@ -166,7 +166,8 @@ public class TargetColumnConfig
    *
    * @param predictionPlaceholder The predictionPlaceholder of this {@link TargetColumnConfig}
    */
-  public void setPredictionPlaceholder(@Nonnull final PredictionPlaceholder predictionPlaceholder) {
+  public void setPredictionPlaceholder(
+      @Nullable final PredictionPlaceholder predictionPlaceholder) {
     this.predictionPlaceholder = predictionPlaceholder;
   }
 
@@ -338,6 +339,6 @@ public class TargetColumnConfig
      * @return The TargetColumnConfig instance.
      */
     TargetColumnConfig predictionPlaceholder(
-        @Nonnull final PredictionPlaceholder predictionPlaceholder);
+        @Nullable final PredictionPlaceholder predictionPlaceholder);
   }
 }
