@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.fail;
 import com.sap.ai.sdk.app.services.OpenAiService;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import com.sap.ai.sdk.foundationmodels.openai.realtime.AudioInputChannel;
+import com.sap.ai.sdk.foundationmodels.openai.realtime.RealtimeParamSystemPrompt;
 import com.sap.ai.sdk.foundationmodels.openai.realtime.RealtimeParamTurnDetection;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -22,14 +23,14 @@ public class RealtimeApiTest {
 
   private static final double LOG_2 = Math.log(2.0);
 
-  private static byte[] QUESTION_FIXTURE_PCM;
+  private static byte[] HELLO_FIXTURE_PCM;
 
   private final OpenAiService service = new OpenAiService();
 
   @BeforeAll
   public static void setUp() {
-    try (var fis = new FileInputStream("src/test/resources/fixtures/question.pcm")) {
-      QUESTION_FIXTURE_PCM = fis.readAllBytes();
+    try (var fis = new FileInputStream("src/test/resources/fixtures/hello.pcm")) {
+      HELLO_FIXTURE_PCM = fis.readAllBytes();
     } catch (IOException e) {
       fail(e.getMessage());
     }
@@ -73,8 +74,11 @@ public class RealtimeApiTest {
   @Test
   @Timeout(value = 60, unit = TimeUnit.SECONDS)
   void testSpeechToSpeech() {
-    var outputBuffer = new ByteArrayOutputStream(300000);
+    var outputBuffer = new ByteArrayOutputStream(600000);
     var monitor = new CountDownLatch(1);
+    var systemPrompt =
+        new RealtimeParamSystemPrompt("Respond concisely with shortest correct response possible");
+    var completed = false;
 
     try (AudioInputChannel input =
         service.speechToSpeech(
@@ -84,9 +88,10 @@ public class RealtimeApiTest {
                 monitor.countDown();
               }
             },
-            RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN)) {
-      input.inputAudio(QUESTION_FIXTURE_PCM);
-      monitor.await();
+            RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN,
+            systemPrompt)) {
+      input.inputAudio(HELLO_FIXTURE_PCM);
+      completed = monitor.await(55, TimeUnit.SECONDS);
     } catch (Exception e) {
       if (!(e instanceof InterruptedException)) {
         fail(e);
@@ -96,6 +101,7 @@ public class RealtimeApiTest {
       return;
     }
 
+    assertThat(completed).isTrue();
     assertThat(monitor.getCount()).isEqualTo(0);
     assertThat(outputBuffer.size()).isGreaterThan(0);
 

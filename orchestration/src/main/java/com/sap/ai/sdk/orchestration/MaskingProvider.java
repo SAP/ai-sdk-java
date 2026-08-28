@@ -6,8 +6,8 @@ import javax.annotation.Nonnull;
 /**
  * Interface for masking configurations.
  *
- * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP
- *     AI Core: Orchestration - Data Masking</a>
+ * <p><a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
+ * Core: Orchestration - Data Masking</a>
  */
 public interface MaskingProvider {
 

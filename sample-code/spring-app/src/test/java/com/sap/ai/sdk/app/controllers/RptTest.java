@@ -18,6 +18,7 @@ class RptTest {
     assertThat(response.getMetadata().getNumQueryRows()).isEqualTo(1);
     assertThat(response.getMetadata().getNumPredictions()).isEqualTo(1);
     assertThat(response.getPredictions().get(0)).containsKey("COSTCENTER");
+    assertThat(response.getExplanations()).isNotNull();
   }
 
   @Test
@@ -30,5 +31,6 @@ class RptTest {
     assertThat(response.getMetadata().getNumQueryRows()).isEqualTo(1);
     assertThat(response.getMetadata().getNumPredictions()).isEqualTo(1);
     assertThat(response.getPredictions().get(0)).containsKey("COSTCENTER");
+    assertThat(response.getExplanations()).isNotNull();
   }
 }

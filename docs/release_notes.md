@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--[Orchestration] Added `GEMINI_3_5_FLASH_LITE` and `GEMINI_3_6_FLASH` to model list in `OrchestrationAiModel`.
+-
 
 ### 📈 Improvements
 
@@ -20,4 +20,4 @@
 
 ### 🐛 Fixed Issues
 
-- Fixed `kotlin-stdlib` dependency issues by removing the version management from the parent POM.
+-
