@@ -221,6 +221,8 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Nonnull private final OrchestrationChatOptions source;
     @Nonnull private List<ToolCallback> toolCallbacks;
     @Nonnull private Map<String, Object> toolContext;
+    @Nullable private String modelName;
+    @Nonnull private final Map<String, Object> paramOverrides = new java.util.LinkedHashMap<>();
 
     private Builder(@Nonnull final OrchestrationChatOptions source) {
       this.source = source;
@@ -242,9 +244,11 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
         this.toolCallbacks = that.toolCallbacks;
         this.toolContext = that.toolContext;
         // Use the per-request source for all OrchestrationChatOptions-specific config
-        return new Builder(that.source)
-            .toolCallbacks(this.toolCallbacks)
-            .toolContext(this.toolContext);
+        final Builder result = new Builder(that.source);
+        result.toolCallbacks(this.toolCallbacks).toolContext(this.toolContext);
+        result.modelName = that.modelName;
+        result.paramOverrides.putAll(that.paramOverrides);
+        return result;
       }
       return this;
     }
@@ -282,56 +286,77 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Override
     @Nonnull
     public Builder model(@Nullable final String model) {
+      this.modelName = model;
       return this;
     }
 
     @Override
     @Nonnull
     public Builder frequencyPenalty(@Nullable final Double v) {
+      paramOverrides.put(FREQUENCY_PENALTY.getName(), v);
       return this;
     }
 
     @Override
     @Nonnull
     public Builder maxTokens(@Nullable final Integer v) {
+      paramOverrides.put(MAX_TOKENS.getName(), v);
       return this;
     }
 
     @Override
     @Nonnull
     public Builder presencePenalty(@Nullable final Double v) {
+      paramOverrides.put(PRESENCE_PENALTY.getName(), v);
       return this;
     }
 
     @Override
     @Nonnull
     public Builder stopSequences(@Nullable final List<String> v) {
+      paramOverrides.put("stop_sequences", v);
       return this;
     }
 
     @Override
     @Nonnull
     public Builder temperature(@Nullable final Double v) {
+      paramOverrides.put(TEMPERATURE.getName(), v);
       return this;
     }
 
     @Override
     @Nonnull
     public Builder topK(@Nullable final Integer v) {
+      paramOverrides.put("top_k", v);
       return this;
     }
 
     @Override
     @Nonnull
     public Builder topP(@Nullable final Double v) {
+      paramOverrides.put(TOP_P.getName(), v);
       return this;
     }
 
     @Override
     @Nonnull
     public OrchestrationChatOptions build() {
-      @SuppressWarnings("unchecked")
-      final OrchestrationChatOptions result = source.<OrchestrationChatOptions>copy();
+      final OrchestrationChatOptions result = source.copy();
+      if (modelName != null || !paramOverrides.isEmpty()) {
+        final LLMModelDetails existingLlm = result.getLlmConfigNonNull();
+        final Map<String, Object> mergedParams = new java.util.LinkedHashMap<>();
+        if (existingLlm.getParams() != null) {
+          mergedParams.putAll(existingLlm.getParams());
+        }
+        mergedParams.putAll(paramOverrides);
+        final LLMModelDetails newLlm =
+            LLMModelDetails.create()
+                .name(modelName != null ? modelName : existingLlm.getName())
+                .version(existingLlm.getVersion())
+                .params(mergedParams);
+        result.setConfig(result.getConfig().withLlmConfig(newLlm));
+      }
       result.setToolCallbacks(toolCallbacks);
       result.setToolContext(toolContext);
       return result;
