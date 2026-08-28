@@ -83,8 +83,6 @@ class OrchestrationChatOptionsTest {
     assertCustomLLM(copy);
   }
 
-  // --- Builder scalar setters ---
-
   @Test
   void testBuilderModelOverride() {
     var built = baseOpts().mutate().model(GPT_4O.getName()).build();
@@ -192,8 +190,6 @@ class OrchestrationChatOptionsTest {
     assertThat(source.getMaxTokens()).isNull();
   }
 
-  // --- Builder tool callbacks and context ---
-
   @Test
   void testBuilderToolCallbacks() {
     var callbacks = ToolCallbacks.from(new WeatherMethod());
@@ -217,8 +213,6 @@ class OrchestrationChatOptionsTest {
 
     assertThat(built.getToolContext()).containsEntry("a", 1).containsEntry("b", 2);
   }
-
-  // --- combineWith ---
 
   @Test
   void testCombineWithOrchestrationBuilder() {
