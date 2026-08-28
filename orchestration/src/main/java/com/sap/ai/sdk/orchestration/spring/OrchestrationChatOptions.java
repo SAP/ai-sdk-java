@@ -216,7 +216,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
    * after passing through advisors; returning {@code OrchestrationChatOptions} here ensures the
    * type is not lost.
    *
-   * @since 1.3.0
+   * @since 1.25.0
    */
   public static final class Builder implements ToolCallingChatOptions.Builder<Builder> {
     @Nonnull private final OrchestrationChatOptions source;
