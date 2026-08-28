@@ -28,10 +28,8 @@
 		<!--<module name="RequireEmptyLineBeforeBlockTagGroup" />-->
 		<!--<module name="JavadocContentLocation" />-->
 
-		<module name="JavadocStyle">
-			<property name="scope" value="protected"/>
-			<property name="checkEmptyJavadoc" value="true"/>
-			<property name="checkFirstSentence" value="false"/>
+		<module name="SummaryJavadoc">
+      <property name="period" value=""/>
 			<property name="severity" value="info"/>
 		</module>
 		<module name="MissingJavadocMethod">
