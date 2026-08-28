@@ -95,6 +95,13 @@ public class OrchestrationChatModel implements ChatModel {
 
         val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
 
+        if (toolExecutionResult.returnDirect()) {
+          log.debug("Returning tool execution result directly without re-invoking LLM.");
+          return new ChatResponse(
+              org.springframework.ai.model.tool.ToolExecutionResult.buildGenerations(
+                  toolExecutionResult));
+        }
+
         // Send the tool execution result back to the model.
         log.debug("Re-invoking LLM with tool execution results.");
         return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));

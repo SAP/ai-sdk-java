@@ -118,14 +118,15 @@ public class OpenAiChatModel implements ChatModel {
 
   private static void addAssistantMessage(
       final List<OpenAiMessage> result, final AssistantMessage message) {
-    if (message.getText() != null) {
-      result.add(OpenAiMessage.assistant(message.getText()));
+    final var toolCalls = message.getToolCalls();
+    if (toolCalls != null && !toolCalls.isEmpty()) {
+      final Function<ToolCall, OpenAiToolCall> callTranslate =
+          toolCall -> OpenAiToolCall.function(toolCall.id(), toolCall.name(), toolCall.arguments());
+      val calls = toolCalls.stream().map(callTranslate).toList();
+      result.add(OpenAiMessage.assistant(calls));
       return;
     }
-    final Function<ToolCall, OpenAiToolCall> callTranslate =
-        toolCall -> OpenAiToolCall.function(toolCall.id(), toolCall.name(), toolCall.arguments());
-    val calls = message.getToolCalls().stream().map(callTranslate).toList();
-    result.add(OpenAiMessage.assistant(calls));
+    Option.of(message.getText()).peek(t -> result.add(OpenAiMessage.assistant(t)));
   }
 
   private static void addToolMessages(

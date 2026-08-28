@@ -169,6 +169,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
             .withGroundingConfig(config.getGroundingConfig());
     val result = new OrchestrationChatOptions(copyConfig);
     result.setToolCallbacks(toolCallbacks);
+    result.setToolNames(toolNames);
     result.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
     return (T) result;
   }
@@ -220,6 +221,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   public static final class Builder implements ToolCallingChatOptions.Builder<Builder> {
     @Nonnull private final OrchestrationChatOptions source;
     @Nonnull private List<ToolCallback> toolCallbacks;
+    @Nonnull private Set<String> toolNames;
     @Nonnull private Map<String, Object> toolContext;
     @Nullable private String modelName;
     @Nonnull private final Map<String, Object> paramOverrides = new java.util.LinkedHashMap<>();
@@ -227,6 +229,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     private Builder(@Nonnull final OrchestrationChatOptions source) {
       this.source = source;
       this.toolCallbacks = source.getToolCallbacks();
+      this.toolNames = source.getToolNames();
       this.toolContext = source.getToolContext();
     }
 
@@ -246,6 +249,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
         // Use the per-request source for all OrchestrationChatOptions-specific config
         final Builder result = new Builder(that.source);
         result.toolCallbacks(this.toolCallbacks).toolContext(this.toolContext);
+        result.toolNames = that.toolNames;
         result.modelName = that.modelName;
         result.paramOverrides.putAll(that.paramOverrides);
         return result;
@@ -358,6 +362,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
         result.setConfig(result.getConfig().withLlmConfig(newLlm));
       }
       result.setToolCallbacks(toolCallbacks);
+      result.setToolNames(toolNames);
       result.setToolContext(toolContext);
       return result;
     }
