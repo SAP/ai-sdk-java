@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+-[Orchestration] Spring AI support was upgraded to version `2.0.1`
 
 ### ✨ New Functionality
 
