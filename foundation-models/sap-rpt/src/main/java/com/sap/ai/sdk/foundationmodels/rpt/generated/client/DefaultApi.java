@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * SAP RPT in version 1.5.0.
+ * SAP RPT in version 1.6.0.
  *
  * <p>A REST API for in-context learning with SAP RPT models.
  */
@@ -57,7 +57,7 @@ public class DefaultApi extends BaseApi {
   }
 
   /**
-   * Health Check
+   * Health
    *
    * <p>
    *
@@ -101,7 +101,8 @@ public class DefaultApi extends BaseApi {
   }
 
   /**
-   * Make predictions from JSON (optionally gzip-compressed).
+   * Make in-context predictions for specified target columns based on provided table data JSON
+   * (optionally gzip-compressed).
    *
    * <p>
    *
@@ -119,7 +120,7 @@ public class DefaultApi extends BaseApi {
    *
    * @param predictRequestPayload (required) The value for the parameter predictRequestPayload
    * @param contentEncoding (optional) Content encoding of the request body. Use &#39;gzip&#39; for
-   *     gzip-compressed payloads. Use compression level 1.
+   *     gzip-compressed payloads (recommended compression level 1).
    * @return PredictResponsePayload
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -171,7 +172,8 @@ public class DefaultApi extends BaseApi {
   }
 
   /**
-   * Make predictions from JSON (optionally gzip-compressed).
+   * Make in-context predictions for specified target columns based on provided table data JSON
+   * (optionally gzip-compressed).
    *
    * <p>
    *

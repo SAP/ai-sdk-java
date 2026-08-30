@@ -80,8 +80,7 @@ public class PredictionResult
   /**
    * Set the confidence of this {@link PredictionResult} instance and return the same instance.
    *
-   * @param confidence The confidence of the prediction (null for regression predictions). Minimum:
-   *     0 Maximum: 1
+   * @param confidence The confidence of the prediction (null for regression predictions).
    * @return The same instance of this {@link PredictionResult} class
    */
   @Nonnull
@@ -91,7 +90,7 @@ public class PredictionResult
   }
 
   /**
-   * The confidence of the prediction (null for regression predictions). minimum: 0 maximum: 1
+   * The confidence of the prediction (null for regression predictions).
    *
    * @return confidence The confidence of this {@link PredictionResult} instance.
    */
@@ -103,8 +102,7 @@ public class PredictionResult
   /**
    * Set the confidence of this {@link PredictionResult} instance.
    *
-   * @param confidence The confidence of the prediction (null for regression predictions). Minimum:
-   *     0 Maximum: 1
+   * @param confidence The confidence of the prediction (null for regression predictions).
    */
   public void setConfidence(@Nullable final BigDecimal confidence) {
     this.confidence = confidence;
@@ -114,8 +112,8 @@ public class PredictionResult
    * Set the confidenceInterval of this {@link PredictionResult} instance and return the same
    * instance.
    *
-   * @param confidenceInterval Lower and upper bounds of the prediction confidence interval (null
-   *     for classification predictions).
+   * @param confidenceInterval Lower and upper bounds of the confidence interval (null for
+   *     classification predictions).
    * @return The same instance of this {@link PredictionResult} class
    */
   @Nonnull
@@ -140,8 +138,7 @@ public class PredictionResult
   }
 
   /**
-   * Lower and upper bounds of the prediction confidence interval (null for classification
-   * predictions).
+   * Lower and upper bounds of the confidence interval (null for classification predictions).
    *
    * @return confidenceInterval The confidenceInterval of this {@link PredictionResult} instance.
    */
@@ -153,8 +150,8 @@ public class PredictionResult
   /**
    * Set the confidenceInterval of this {@link PredictionResult} instance.
    *
-   * @param confidenceInterval Lower and upper bounds of the prediction confidence interval (null
-   *     for classification predictions).
+   * @param confidenceInterval Lower and upper bounds of the confidence interval (null for
+   *     classification predictions).
    */
   public void setConfidenceInterval(@Nullable final List<Object> confidenceInterval) {
     this.confidenceInterval = confidenceInterval;

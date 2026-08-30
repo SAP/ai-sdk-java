@@ -16,10 +16,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
 /**
- * Supported column data types for the data schema. Includes base types (string, numeric, date) and
- * additional types derived from SAP CDS (https://cap.cloud.sap/docs/cds/types#core-built-in-types).
- * Additional types are mapped to the corresponding base type internally. All values are lowercase
- * for case-insensitive matching.
+ * Supported column data types for the data schema. Includes base types (string, numeric, date,
+ * time) and additional types derived from SAP CDS
+ * (https://cap.cloud.sap/docs/cds/types#core-built-in-types). Additional types are mapped to the
+ * corresponding base type internally. All values are lowercase for case-insensitive matching.
  */
 public enum ColumnType {
   STRING("string"),
@@ -27,6 +27,8 @@ public enum ColumnType {
   NUMERIC("numeric"),
 
   DATE("date"),
+
+  TIME("time"),
 
   BOOLEAN("boolean"),
 
@@ -47,8 +49,6 @@ public enum ColumnType {
   DECIMAL("decimal"),
 
   DOUBLE("double"),
-
-  TIME("time"),
 
   DATETIME("datetime"),
 
