@@ -12,6 +12,8 @@ import com.sap.ai.sdk.grounding.model.ManualPipelineTrigger;
 import com.sap.ai.sdk.grounding.model.PatchPipeline;
 import com.sap.ai.sdk.grounding.model.PipelineDocumentResponse;
 import com.sap.ai.sdk.grounding.model.PipelineId;
+import com.sap.ai.sdk.grounding.model.PresignedUrlRequest;
+import com.sap.ai.sdk.grounding.model.PresignedUrlResponse;
 import com.sap.ai.sdk.grounding.model.SearchPipeline;
 import com.sap.ai.sdk.grounding.model.SearchPipelinesResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -207,6 +209,120 @@ public class PipelinesApi extends BaseApi {
         localVarAccept,
         localVarContentType,
         localVarReturnType);
+  }
+
+  /**
+   * Generate Presigned URL for Pipeline Document
+   *
+   * <p>Generate a presigned S3 URL for a specific document in a pipeline.
+   *
+   * <p><b>200</b> - Returns a presigned URL for the document
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>404</b> - The specification of the resource was incorrect
+   *
+   * @param aiResourceGroup (required) Resource Group ID
+   * @param pipelineId (required) The ID of the pipeline
+   * @param documentId (required) The ID of the document
+   * @param presignedUrlRequest (optional) The value for the parameter presignedUrlRequest
+   * @return PresignedUrlResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PresignedUrlResponse generateDocumentPresignedUrl(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final String pipelineId,
+      @Nonnull final String documentId,
+      @Nullable final PresignedUrlRequest presignedUrlRequest)
+      throws OpenApiRequestException {
+
+    // verify the required parameter 'aiResourceGroup' is set
+    if (aiResourceGroup == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'aiResourceGroup' when calling generateDocumentPresignedUrl")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'pipelineId' is set
+    if (pipelineId == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'pipelineId' when calling generateDocumentPresignedUrl")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'documentId' is set
+    if (documentId == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'documentId' when calling generateDocumentPresignedUrl")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath =
+        "/pipelines/{pipelineId}/documents/{documentId}/presignedUrl"
+            .replaceAll(
+                "\\{" + "pipelineId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(pipelineId)))
+            .replaceAll(
+                "\\{" + "documentId" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(documentId)));
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {"application/json"};
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<PresignedUrlResponse> localVarReturnType =
+        new TypeReference<PresignedUrlResponse>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "POST",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        presignedUrlRequest,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarReturnType);
+  }
+
+  /**
+   * Generate Presigned URL for Pipeline Document
+   *
+   * <p>Generate a presigned S3 URL for a specific document in a pipeline.
+   *
+   * <p><b>200</b> - Returns a presigned URL for the document
+   *
+   * <p><b>400</b> - The specification of the resource was incorrect
+   *
+   * <p><b>404</b> - The specification of the resource was incorrect
+   *
+   * @param aiResourceGroup Resource Group ID
+   * @param pipelineId The ID of the pipeline
+   * @param documentId The ID of the document
+   * @return PresignedUrlResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PresignedUrlResponse generateDocumentPresignedUrl(
+      @Nonnull final String aiResourceGroup,
+      @Nonnull final String pipelineId,
+      @Nonnull final String documentId)
+      throws OpenApiRequestException {
+    return generateDocumentPresignedUrl(aiResourceGroup, pipelineId, documentId, null);
   }
 
   /**
