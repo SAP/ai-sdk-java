@@ -18,7 +18,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.Timer;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import javax.annotation.Nonnull;
+
+import com.sap.ai.sdk.core.common.ClientException;
 import lombok.extern.slf4j.Slf4j;
 
 /** Implements common functionality for realtime api clients that output audio */

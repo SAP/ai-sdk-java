@@ -158,16 +158,16 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
       log.trace("Unhandled event type: {}", eventType);
     }
 
-    webSocket.request(1);
+    webSocket.request(2); // TODO: this is wrong and for debug only, decrease to 1
   }
 
   protected synchronized void sendPing(@Nonnull final WebSocket ws) {
     if (ws.isInputClosed()) {
       return;
     }
-    log.info("Skipping sending ping");
-    //ws.sendPing(ByteBuffer.wrap("ping".getBytes(StandardCharsets.UTF_8))).join();
-    //ws.request(1);
+    log.info("Sending wss ping");
+    ws.sendPing(ByteBuffer.wrap("ping".getBytes(StandardCharsets.UTF_8))).join();
+    ws.request(1);
   }
 
   private void configureSession(@Nonnull final WebSocket ws) {
