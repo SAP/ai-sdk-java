@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -39,6 +39,9 @@ public class PredictResponseMetadata
 
   @JsonProperty("num_query_rows")
   private Integer numQueryRows;
+
+  @JsonProperty("context_mode")
+  private String contextMode = "default";
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -113,7 +116,7 @@ public class PredictResponseMetadata
    * Set the numPredictions of this {@link PredictResponseMetadata} instance and return the same
    * instance.
    *
-   * @param numPredictions Number of table cells containing the specified placeholder value.
+   * @param numPredictions Number of table cells containing the specified prediction placeholder.
    * @return The same instance of this {@link PredictResponseMetadata} class
    */
   @Nonnull
@@ -123,7 +126,7 @@ public class PredictResponseMetadata
   }
 
   /**
-   * Number of table cells containing the specified placeholder value.
+   * Number of table cells containing the specified prediction placeholder.
    *
    * @return numPredictions The numPredictions of this {@link PredictResponseMetadata} instance.
    */
@@ -135,7 +138,7 @@ public class PredictResponseMetadata
   /**
    * Set the numPredictions of this {@link PredictResponseMetadata} instance.
    *
-   * @param numPredictions Number of table cells containing the specified placeholder value.
+   * @param numPredictions Number of table cells containing the specified prediction placeholder.
    */
   public void setNumPredictions(@Nonnull final Integer numPredictions) {
     this.numPredictions = numPredictions;
@@ -171,6 +174,38 @@ public class PredictResponseMetadata
    */
   public void setNumQueryRows(@Nonnull final Integer numQueryRows) {
     this.numQueryRows = numQueryRows;
+  }
+
+  /**
+   * Set the contextMode of this {@link PredictResponseMetadata} instance and return the same
+   * instance.
+   *
+   * @param contextMode The context mode used for this prediction request.
+   * @return The same instance of this {@link PredictResponseMetadata} class
+   */
+  @Nonnull
+  public PredictResponseMetadata contextMode(@Nullable final String contextMode) {
+    this.contextMode = contextMode;
+    return this;
+  }
+
+  /**
+   * The context mode used for this prediction request.
+   *
+   * @return contextMode The contextMode of this {@link PredictResponseMetadata} instance.
+   */
+  @Nonnull
+  public String getContextMode() {
+    return contextMode;
+  }
+
+  /**
+   * Set the contextMode of this {@link PredictResponseMetadata} instance.
+   *
+   * @param contextMode The context mode used for this prediction request.
+   */
+  public void setContextMode(@Nullable final String contextMode) {
+    this.contextMode = contextMode;
   }
 
   /**
@@ -216,6 +251,7 @@ public class PredictResponseMetadata
     if (numRows != null) declaredFields.put("numRows", numRows);
     if (numPredictions != null) declaredFields.put("numPredictions", numPredictions);
     if (numQueryRows != null) declaredFields.put("numQueryRows", numQueryRows);
+    if (contextMode != null) declaredFields.put("contextMode", contextMode);
     return declaredFields;
   }
 
@@ -244,12 +280,14 @@ public class PredictResponseMetadata
         && Objects.equals(this.numColumns, predictResponseMetadata.numColumns)
         && Objects.equals(this.numRows, predictResponseMetadata.numRows)
         && Objects.equals(this.numPredictions, predictResponseMetadata.numPredictions)
-        && Objects.equals(this.numQueryRows, predictResponseMetadata.numQueryRows);
+        && Objects.equals(this.numQueryRows, predictResponseMetadata.numQueryRows)
+        && Objects.equals(this.contextMode, predictResponseMetadata.contextMode);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(numColumns, numRows, numPredictions, numQueryRows, cloudSdkCustomFields);
+    return Objects.hash(
+        numColumns, numRows, numPredictions, numQueryRows, contextMode, cloudSdkCustomFields);
   }
 
   @Override
@@ -261,6 +299,7 @@ public class PredictResponseMetadata
     sb.append("    numRows: ").append(toIndentedString(numRows)).append("\n");
     sb.append("    numPredictions: ").append(toIndentedString(numPredictions)).append("\n");
     sb.append("    numQueryRows: ").append(toIndentedString(numQueryRows)).append("\n");
+    sb.append("    contextMode: ").append(toIndentedString(contextMode)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -321,7 +360,7 @@ public class PredictResponseMetadata
     /**
      * Set the numPredictions of this {@link PredictResponseMetadata} instance.
      *
-     * @param numPredictions Number of table cells containing the specified placeholder value.
+     * @param numPredictions Number of table cells containing the specified prediction placeholder.
      * @return The PredictResponseMetadata builder.
      */
     Builder3 numPredictions(@Nonnull final Integer numPredictions);

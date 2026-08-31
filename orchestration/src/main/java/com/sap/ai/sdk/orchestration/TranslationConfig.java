@@ -24,9 +24,10 @@ import lombok.val;
 /**
  * Configuration helper for SAP Document Translation.
  *
- * @link <a
- *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/sap-document-translation">SAP
- *     AI Core: Orchestration - SAP Document Translation</a>
+ * <p><a
+ * href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/sap-document-translation">SAP
+ * AI Core: Orchestration - SAP Document Translation</a>
+ *
  * @since 1.14.0
  */
 public interface TranslationConfig {
@@ -179,7 +180,7 @@ public interface TranslationConfig {
    * Create a new input translation configuration.
    *
    * @param targetLanguage The target language code
-   * @link <a
+   *     <p><a
    *     href="https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages">SAP
    *     AI Core: Orchestration - SAP Translation Hub Table with official languages</a>
    * @return A TranslationConfig configured for input translation
@@ -193,7 +194,7 @@ public interface TranslationConfig {
    * Create a new output translation configuration.
    *
    * @param targetLanguage The target language code
-   * @link <a
+   *     <p><a
    *     href="https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages">
    *     SAP AI Core: Orchestration - SAP Translation Hub Table with official languages</a>
    * @return A TranslationConfig configured for output translation

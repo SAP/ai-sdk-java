@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.24.0-SNAPSHOT</version>
+    <version>1.25.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.foundationmodels</groupId>
@@ -227,7 +227,7 @@
                 </goals>
                 <phase>generate-sources</phase>
                 <configuration>
-                  <inputSpec>${project.basedir}/src/main/resources/spec/sap-rpt-1_openapi.json</inputSpec>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/sap-rpt_openapi.json</inputSpec>
                   <modelPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.model</modelPackage>
                   <apiPackage>com.sap.ai.sdk.foundationmodels.rpt.generated.client</apiPackage>
                   <additionalProperties>

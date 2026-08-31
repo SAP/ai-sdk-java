@@ -21,8 +21,8 @@ import lombok.val;
  * processes. This data supplements the natural language processing capabilities of pre-trained
  * models, which are trained on general material.
  *
- * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP AI
- *     Core: Orchestration - Grounding</a>
+ * <p><a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP AI
+ * Core: Orchestration - Grounding</a>
  */
 @Accessors(fluent = true)
 public class Grounding implements GroundingProvider {

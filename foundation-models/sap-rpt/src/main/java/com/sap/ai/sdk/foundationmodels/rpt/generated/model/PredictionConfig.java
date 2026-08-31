@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -13,8 +13,10 @@ package com.sap.ai.sdk.foundationmodels.rpt.generated.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -33,6 +35,73 @@ public class PredictionConfig
 {
   @JsonProperty("target_columns")
   private List<TargetColumnConfig> targetColumns = new ArrayList<>();
+
+  /**
+   * Context mode for predictions. Set it to \&quot;default\&quot; for the best balance between
+   * accuracy and latency/cost. Set it to \&quot;deep\&quot; for higher accuracy with &gt;8k context
+   * rows at increased latency and cost (only for \&quot;sap-rpt-1.6-large\&quot;).
+   */
+  public enum ContextModeEnum {
+    /** The DEFAULT option of this PredictionConfig */
+    DEFAULT("default"),
+
+    /** The DEEP option of this PredictionConfig */
+    DEEP("deep"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this PredictionConfig */
+    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
+
+    private String value;
+
+    ContextModeEnum(String value) {
+      this.value = value;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return The enum value
+     */
+    @JsonValue
+    @Nonnull
+    public String getValue() {
+      return value;
+    }
+
+    /**
+     * Get the String value of the enum value.
+     *
+     * @return The enum value as String
+     */
+    @Override
+    @Nonnull
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    /**
+     * Get the enum value from a String value
+     *
+     * @param value The String value
+     * @return The enum value of type PredictionConfig
+     */
+    @JsonCreator
+    @Nonnull
+    public static ContextModeEnum fromValue(@Nonnull final String value) {
+      for (ContextModeEnum b : ContextModeEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      return UNKNOWN_DEFAULT_OPEN_API;
+    }
+  }
+
+  @JsonProperty("context_mode")
+  private ContextModeEnum contextMode = ContextModeEnum.DEFAULT;
+
+  @JsonProperty("explanations")
+  private ExplanationConfig explanations;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -88,6 +157,78 @@ public class PredictionConfig
   }
 
   /**
+   * Set the contextMode of this {@link PredictionConfig} instance and return the same instance.
+   *
+   * @param contextMode Context mode for predictions. Set it to \&quot;default\&quot; for the best
+   *     balance between accuracy and latency/cost. Set it to \&quot;deep\&quot; for higher accuracy
+   *     with &gt;8k context rows at increased latency and cost (only for
+   *     \&quot;sap-rpt-1.6-large\&quot;).
+   * @return The same instance of this {@link PredictionConfig} class
+   */
+  @Nonnull
+  public PredictionConfig contextMode(@Nullable final ContextModeEnum contextMode) {
+    this.contextMode = contextMode;
+    return this;
+  }
+
+  /**
+   * Context mode for predictions. Set it to \&quot;default\&quot; for the best balance between
+   * accuracy and latency/cost. Set it to \&quot;deep\&quot; for higher accuracy with &gt;8k context
+   * rows at increased latency and cost (only for \&quot;sap-rpt-1.6-large\&quot;).
+   *
+   * @return contextMode The contextMode of this {@link PredictionConfig} instance.
+   */
+  @Nonnull
+  public ContextModeEnum getContextMode() {
+    return contextMode;
+  }
+
+  /**
+   * Set the contextMode of this {@link PredictionConfig} instance.
+   *
+   * @param contextMode Context mode for predictions. Set it to \&quot;default\&quot; for the best
+   *     balance between accuracy and latency/cost. Set it to \&quot;deep\&quot; for higher accuracy
+   *     with &gt;8k context rows at increased latency and cost (only for
+   *     \&quot;sap-rpt-1.6-large\&quot;).
+   */
+  public void setContextMode(@Nullable final ContextModeEnum contextMode) {
+    this.contextMode = contextMode;
+  }
+
+  /**
+   * Set the explanations of this {@link PredictionConfig} instance and return the same instance.
+   *
+   * @param explanations Optional configuration for explainability outputs (column scores and
+   *     relevant context rows).
+   * @return The same instance of this {@link PredictionConfig} class
+   */
+  @Nonnull
+  public PredictionConfig explanations(@Nullable final ExplanationConfig explanations) {
+    this.explanations = explanations;
+    return this;
+  }
+
+  /**
+   * Optional configuration for explainability outputs (column scores and relevant context rows).
+   *
+   * @return explanations The explanations of this {@link PredictionConfig} instance.
+   */
+  @Nonnull
+  public ExplanationConfig getExplanations() {
+    return explanations;
+  }
+
+  /**
+   * Set the explanations of this {@link PredictionConfig} instance.
+   *
+   * @param explanations Optional configuration for explainability outputs (column scores and
+   *     relevant context rows).
+   */
+  public void setExplanations(@Nullable final ExplanationConfig explanations) {
+    this.explanations = explanations;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link PredictionConfig}.
    *
    * @return The set of properties names
@@ -126,6 +267,8 @@ public class PredictionConfig
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (targetColumns != null) declaredFields.put("targetColumns", targetColumns);
+    if (contextMode != null) declaredFields.put("contextMode", contextMode);
+    if (explanations != null) declaredFields.put("explanations", explanations);
     return declaredFields;
   }
 
@@ -151,12 +294,14 @@ public class PredictionConfig
     }
     final PredictionConfig predictionConfig = (PredictionConfig) o;
     return Objects.equals(this.cloudSdkCustomFields, predictionConfig.cloudSdkCustomFields)
-        && Objects.equals(this.targetColumns, predictionConfig.targetColumns);
+        && Objects.equals(this.targetColumns, predictionConfig.targetColumns)
+        && Objects.equals(this.contextMode, predictionConfig.contextMode)
+        && Objects.equals(this.explanations, predictionConfig.explanations);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(targetColumns, cloudSdkCustomFields);
+    return Objects.hash(targetColumns, contextMode, explanations, cloudSdkCustomFields);
   }
 
   @Override
@@ -165,6 +310,8 @@ public class PredictionConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class PredictionConfig {\n");
     sb.append("    targetColumns: ").append(toIndentedString(targetColumns)).append("\n");
+    sb.append("    contextMode: ").append(toIndentedString(contextMode)).append("\n");
+    sb.append("    explanations: ").append(toIndentedString(explanations)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -15,13 +15,44 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import javax.annotation.Nonnull;
 
-/** Gets or Sets ColumnType */
+/**
+ * Supported column data types for the data schema. Includes base types (string, numeric, date,
+ * time) and additional types derived from SAP CDS
+ * (https://cap.cloud.sap/docs/cds/types#core-built-in-types). Additional types are mapped to the
+ * corresponding base type internally. All values are lowercase for case-insensitive matching.
+ */
 public enum ColumnType {
   STRING("string"),
 
   NUMERIC("numeric"),
 
   DATE("date"),
+
+  TIME("time"),
+
+  BOOLEAN("boolean"),
+
+  LARGESTRING("largestring"),
+
+  UUID("uuid"),
+
+  INTEGER("integer"),
+
+  INT16("int16"),
+
+  INT32("int32"),
+
+  INT64("int64"),
+
+  UINT8("uint8"),
+
+  DECIMAL("decimal"),
+
+  DOUBLE("double"),
+
+  DATETIME("datetime"),
+
+  TIMESTAMP("timestamp"),
 
   UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 

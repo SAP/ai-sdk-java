@@ -1,6 +1,6 @@
 /*
- * SAP-RPT-1 Tabular AI
- * A REST API for in-context learning with the SAP-RPT-1 model.
+ * SAP RPT
+ * A REST API for in-context learning with SAP RPT models.
  *
  *
  *
@@ -15,8 +15,8 @@ import java.math.BigDecimal;
 import javax.annotation.Nonnull;
 
 /**
- * The placeholder value in any column for which to predict a value. The model will predict a value
- * for all table cells containing this value.
+ * The prediction placeholder in any column for which to predict a value. The model will predict a
+ * value for all table cells containing this value.
  */
 public interface PredictionPlaceholder {
   /** Helper class to create {@code String } that implements {@link PredictionPlaceholder}. */

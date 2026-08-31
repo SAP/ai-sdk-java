@@ -18,14 +18,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * SAP-RPT-1 Tabular AI in version 0.1.0.
+ * SAP RPT in version 1.6.0.
  *
- * <p>A REST API for in-context learning with the SAP-RPT-1 model.
+ * <p>A REST API for in-context learning with SAP RPT models.
  */
 public class DefaultApi extends BaseApi {
 
   /**
-   * Instantiates this API class to invoke operations on the SAP-RPT-1 Tabular AI.
+   * Instantiates this API class to invoke operations on the SAP RPT.
    *
    * @param httpDestination The destination that API should be used with
    */
@@ -34,8 +34,8 @@ public class DefaultApi extends BaseApi {
   }
 
   /**
-   * Instantiates this API class to invoke operations on the SAP-RPT-1 Tabular AI based on a given
-   * {@link ApiClient}.
+   * Instantiates this API class to invoke operations on the SAP RPT based on a given {@link
+   * ApiClient}.
    *
    * @param apiClient ApiClient to invoke the API on
    */
@@ -57,13 +57,54 @@ public class DefaultApi extends BaseApi {
   }
 
   /**
+   * Health
+   *
+   * <p>
+   *
+   * <p><b>200</b> - Successful Response
+   *
+   * @return Object
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public Object health() throws OpenApiRequestException {
+
+    // create path and map variables
+    final String localVarPath = "/health";
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<Object> localVarReturnType = new TypeReference<Object>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "GET",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarReturnType);
+  }
+
+  /**
    * Make in-context predictions for specified target columns based on provided table data JSON
    * (optionally gzip-compressed).
    *
-   * <p>Make in-context predictions for specified target columns. Either \&quot;rows\&quot; or
-   * \&quot;columns\&quot; must be provided and must contain both context and query rows. You can
-   * optionally send gzip-compressed JSON payloads and set a \&quot;Content-Encoding: gzip\&quot;
-   * header.
+   * <p>
    *
    * <p><b>200</b> - Successful Prediction
    *
@@ -75,12 +116,18 @@ public class DefaultApi extends BaseApi {
    *
    * <p><b>500</b> - Internal Server Error
    *
-   * @param predictRequestPayload The value for the parameter predictRequestPayload
+   * <p><b>503</b> - Service Unavailable
+   *
+   * @param predictRequestPayload (required) The value for the parameter predictRequestPayload
+   * @param contentEncoding (optional) Content encoding of the request body. Use &#39;gzip&#39; for
+   *     gzip-compressed payloads (recommended compression level 1).
    * @return PredictResponsePayload
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PredictResponsePayload predict(@Nonnull final PredictRequestPayload predictRequestPayload)
+  public PredictResponsePayload predict(
+      @Nonnull final PredictRequestPayload predictRequestPayload,
+      @Nullable final String contentEncoding)
       throws OpenApiRequestException {
 
     // verify the required parameter 'predictRequestPayload' is set
@@ -98,6 +145,9 @@ public class DefaultApi extends BaseApi {
     final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
     final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
     final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (contentEncoding != null)
+      localVarHeaderParams.put("Content-Encoding", ApiClient.parameterToString(contentEncoding));
 
     final String[] localVarAccepts = {"application/json"};
     final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
@@ -122,11 +172,10 @@ public class DefaultApi extends BaseApi {
   }
 
   /**
-   * Make in-context predictions for specified target columns based on provided table data Parquet
-   * file.
+   * Make in-context predictions for specified target columns based on provided table data JSON
+   * (optionally gzip-compressed).
    *
-   * <p>Make in-context predictions for specified target columns based on provided table data
-   * Parquet file.
+   * <p>
    *
    * <p><b>200</b> - Successful Prediction
    *
@@ -138,10 +187,40 @@ public class DefaultApi extends BaseApi {
    *
    * <p><b>500</b> - Internal Server Error
    *
-   * @param _file (required) Parquet file containing the data
-   * @param predictionConfig (required) JSON string for prediction_config
-   * @param indexColumn (optional) Optional index column name
-   * @param parseDataTypes (optional, default to true) Whether to parse data types
+   * <p><b>503</b> - Service Unavailable
+   *
+   * @param predictRequestPayload The value for the parameter predictRequestPayload
+   * @return PredictResponsePayload
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PredictResponsePayload predict(@Nonnull final PredictRequestPayload predictRequestPayload)
+      throws OpenApiRequestException {
+    return predict(predictRequestPayload, null);
+  }
+
+  /**
+   * Make predictions from Parquet file
+   *
+   * <p>
+   *
+   * <p><b>200</b> - Successful Prediction
+   *
+   * <p><b>400</b> - Bad Request - Invalid input data
+   *
+   * <p><b>413</b> - Payload Too Large
+   *
+   * <p><b>422</b> - Validation Error
+   *
+   * <p><b>500</b> - Internal Server Error
+   *
+   * <p><b>503</b> - Service Unavailable
+   *
+   * @param _file (required) The value for the parameter _file
+   * @param predictionConfig (required) JSON string containing the prediction configuration (see
+   *     PredictionConfig schema).
+   * @param indexColumn (optional) The value for the parameter indexColumn
+   * @param parseDataTypes (optional, default to false) The value for the parameter parseDataTypes
    * @return PredictResponsePayload
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -204,11 +283,9 @@ public class DefaultApi extends BaseApi {
   }
 
   /**
-   * Make in-context predictions for specified target columns based on provided table data Parquet
-   * file.
+   * Make predictions from Parquet file
    *
-   * <p>Make in-context predictions for specified target columns based on provided table data
-   * Parquet file.
+   * <p>
    *
    * <p><b>200</b> - Successful Prediction
    *
@@ -220,8 +297,11 @@ public class DefaultApi extends BaseApi {
    *
    * <p><b>500</b> - Internal Server Error
    *
-   * @param _file Parquet file containing the data
-   * @param predictionConfig JSON string for prediction_config
+   * <p><b>503</b> - Service Unavailable
+   *
+   * @param _file The value for the parameter _file
+   * @param predictionConfig JSON string containing the prediction configuration (see
+   *     PredictionConfig schema).
    * @return PredictResponsePayload
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */

@@ -8,11 +8,11 @@
 
 ### 🔧 Compatibility Notes
 
--
+- [Foundation models] SAP-RPT was updated to the newer 1.6.0 API
 
 ### ✨ New Functionality
 
--[Orchestration] Added `GEMINI_3_5_FLASH_LITE` and `GEMINI_3_6_FLASH` to model list in `OrchestrationAiModel`.
+- [Grounding] Enable presigned URL for Pipeline Documents.
 
 ### 📈 Improvements
 
