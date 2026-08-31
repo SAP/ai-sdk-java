@@ -29,7 +29,9 @@ public class RealtimeApiTest {
 
   @BeforeAll
   public static void setUp() {
-    try (var fis = new FileInputStream("src/test/resources/fixtures/what-is-the-german-word-for-chicken.pcm")) {
+    try (var fis =
+        new FileInputStream(
+            "src/test/resources/fixtures/what-is-the-german-word-for-chicken.pcm")) {
       QUESTION_FIXTURE_PCM = fis.readAllBytes();
     } catch (IOException e) {
       fail(e.getMessage());
