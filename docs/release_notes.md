@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Grounding] Enable presigned URL for Pipeline Documents.
 
 ### 📈 Improvements
 
