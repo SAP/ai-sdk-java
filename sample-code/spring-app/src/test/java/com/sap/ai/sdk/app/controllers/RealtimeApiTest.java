@@ -15,6 +15,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -29,7 +30,7 @@ public class RealtimeApiTest {
 
   @BeforeAll
   public static void setUp() {
-    try (var fis = new FileInputStream("src/test/resources/fixtures/hello.pcm")) {
+    try (var fis = new FileInputStream("src/test/resources/fixtures/question111.pcm")) {
       HELLO_FIXTURE_PCM = fis.readAllBytes();
     } catch (IOException e) {
       fail(e.getMessage());
@@ -73,6 +74,7 @@ public class RealtimeApiTest {
 
   @Test
   @Timeout(value = 60, unit = TimeUnit.SECONDS)
+  //@RepeatedTest(100)
   void testSpeechToSpeech() {
     var outputBuffer = new ByteArrayOutputStream(600000);
     var monitor = new CountDownLatch(1);

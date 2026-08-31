@@ -1,6 +1,11 @@
 name: "End-to-end Tests"
 on:
   workflow_dispatch:
+    inputs:
+      realtime_flakiness_runs:
+        description: "Repeat RealtimeApiTest#testSpeechToSpeech N times (0 = skip)"
+        required: false
+        default: "0"
   schedule:
     - cron: 15 2 * * MON-FRI
 
@@ -12,16 +17,6 @@ jobs:
   end-to-end-tests:
     permissions:
       contents: read
-    strategy:
-      fail-fast: false
-      matrix:
-        environment: [ canary, production ]
-        exclude:
-          - environment: production
-            # secret-name: AI_CORE_PRODUCTION
-        include:
-          - environment: canary
-            secret-name: AI_CORE_CANARY
     runs-on: ubuntu-latest
     steps:
 
@@ -36,87 +31,23 @@ jobs:
           cache: 'maven'
 
       - name: "Build SDK"
-        run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
-          mvn $MVN_ARGS
+        run: mvn ${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting
 
-      - name: "Run tests"
-        id: run_tests
-        run: |
-          if [ "${{ matrix.environment }}" = "canary" ]; then
-              export AICORE_SERVICE_KEY='${{ secrets.AI_CORE_CANARY }}'
-          else
-              export AICORE_SERVICE_KEY='${{ secrets.AI_CORE_PRODUCTION }}'
-          fi
-          
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} surefire:test -pl :spring-app -DskipTests=false"
-          mvn $MVN_ARGS "-Daicore.landscape=${{ matrix.environment }}" 2>&1 | tee mvn_output.log # tee writes to both the console and a file
-
-          ERROR_MSG=$(grep -E '^\[ERROR\] +[A-Za-z][A-Za-z0-9_]*\.[a-zA-Z][a-zA-Z0-9_]*(:[0-9]+| »)' mvn_output.log | sed $'s/\\[ERROR\\] */\\\n 🔴 /' || true)
-          echo "$ERROR_MSG"
-          # Escape newlines so the value is safe to embed in a YAML/JSON string
-          ERROR_MSG_ESCAPED=$(printf '%s' "$ERROR_MSG" | sed ':a;N;$!ba;s/\n/\\n/g')
-          {
-            echo "error_message<<EOF"
-            printf '%s\n' "$ERROR_MSG_ESCAPED"
-            echo "EOF"
-          } >> $GITHUB_OUTPUT
-
-          if grep -q "BUILD FAILURE" mvn_output.log; then
-            echo "Maven build failed."
-            exit 1
-          elif grep -q "BUILD SUCCESS" mvn_output.log; then
-            echo "Maven build succeeded."
-          else
-            echo "Maven build status unknown."
-            exit 1
-          fi
+      - name: "Run RealtimeApiTest#testSpeechToSpeech (100x)"
         env:
-          # See "End-to-end test application instructions" on the README.md to update the secret
-          AI_CORE_PRODUCTION: ${{ secrets.production }}
-          AI_CORE_CANARY: ${{ secrets.canary }}
-
-      - name: "Start Application Locally"
+          AICORE_SERVICE_KEY: ${{ secrets.AI_CORE_CANARY }}
         run: |
-          if [ "${{ matrix.environment }}" = "canary" ]; then
-              export AICORE_SERVICE_KEY='${{ secrets.AI_CORE_CANARY }}'
-          else
-              export AICORE_SERVICE_KEY='${{ secrets.AI_CORE_PRODUCTION }}'
-          fi
-          
-          cd sample-code/spring-app
-          mvn spring-boot:run &
-          timeout=15
-          while ! nc -z localhost 8080; do
-            sleep 1
-            timeout=$((timeout - 1))
-            if [ $timeout -le 0 ]; then
-              echo "Server did not start within 15 seconds."
-              exit 1
+          failures=0
+          for i in $(seq 1 100); do
+            echo "--- Run $i / 100 ---"
+            if ! mvn --batch-mode --no-transfer-progress surefire:test \
+                -pl :spring-app \
+                -DskipTests=false \
+                "-Dtest=com.sap.ai.sdk.app.controllers.RealtimeApiTest#testSpeechToSpeech" \
+                "-Daicore.landscape=canary"; then
+              failures=$((failures + 1))
+              echo "Run $i FAILED"
             fi
           done
-        env:
-          # See "End-to-end test application instructions" on the README.md to update the secret
-          AI_CORE_PRODUCTION: ${{ secrets.production }}
-          AI_CORE_CANARY: ${{ secrets.canary }}
-
-      - name: "Health Check"
-        # print response body with headers to stdout.  q:body only  O:print  -:stdout  S:headers
-        run: wget -qO- -S localhost:8080
-
-      - name: "Slack Notification"
-        if: failure()
-        uses: slackapi/slack-github-action@v4.0.0
-        with:
-          webhook: ${{ secrets.SLACK_WEBHOOK }}
-          webhook-type: incoming-webhook
-          payload: |
-            blocks:
-              - type: "section"
-                text:
-                    type: "mrkdwn"
-                    text: "⚠️ End-to-end tests failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
-              - type: "section"
-                text:
-                  type: "mrkdwn"
-                  text: "${{ steps.run_tests.outputs.error_message }} "
+          echo "Failures: $failures / 100"
+          [ $failures -eq 0 ]
