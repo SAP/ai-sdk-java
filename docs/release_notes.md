@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- [Foundation models] SAP-RPT was updated to the newer 1.6.0 API
 
 ### ✨ New Functionality
 

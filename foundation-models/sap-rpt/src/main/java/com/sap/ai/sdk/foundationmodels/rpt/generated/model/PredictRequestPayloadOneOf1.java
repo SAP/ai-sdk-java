@@ -55,7 +55,7 @@ public class PredictRequestPayloadOneOf1 implements PredictRequestPayload
    * Set the predictionConfig of this {@link PredictRequestPayloadOneOf1} instance and return the
    * same instance.
    *
-   * @param predictionConfig Configuration of target columns and placeholder value.
+   * @param predictionConfig Configuration of target columns and prediction placeholders.
    * @return The same instance of this {@link PredictRequestPayloadOneOf1} class
    */
   @Nonnull
@@ -66,7 +66,7 @@ public class PredictRequestPayloadOneOf1 implements PredictRequestPayload
   }
 
   /**
-   * Configuration of target columns and placeholder value.
+   * Configuration of target columns and prediction placeholders.
    *
    * @return predictionConfig The predictionConfig of this {@link PredictRequestPayloadOneOf1}
    *     instance.
@@ -79,7 +79,7 @@ public class PredictRequestPayloadOneOf1 implements PredictRequestPayload
   /**
    * Set the predictionConfig of this {@link PredictRequestPayloadOneOf1} instance.
    *
-   * @param predictionConfig Configuration of target columns and placeholder value.
+   * @param predictionConfig Configuration of target columns and prediction placeholders.
    */
   public void setPredictionConfig(@Nonnull final PredictionConfig predictionConfig) {
     this.predictionConfig = predictionConfig;
@@ -393,7 +393,7 @@ public class PredictRequestPayloadOneOf1 implements PredictRequestPayload
     /**
      * Set the predictionConfig of this {@link PredictRequestPayloadOneOf1} instance.
      *
-     * @param predictionConfig Configuration of target columns and placeholder value.
+     * @param predictionConfig Configuration of target columns and prediction placeholders.
      * @return The PredictRequestPayloadOneOf1 builder.
      */
     Builder1 predictionConfig(@Nonnull final PredictionConfig predictionConfig);

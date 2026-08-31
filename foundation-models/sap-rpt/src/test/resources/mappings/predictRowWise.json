@@ -17,7 +17,25 @@
                 "prediction_placeholder": "[PREDICT]",
                 "task_type": "classification"
               }
-            ]
+            ],
+            "context_mode" : "default"
+          },
+          "data_schema" : {
+            "PRICE" : {
+              "dtype" : "string"
+            },
+            "ID" : {
+              "dtype" : "string"
+            },
+            "PRODUCT" : {
+              "dtype" : "string"
+            },
+            "COSTCENTER" : {
+              "dtype" : "string"
+            },
+            "ORDERDATE" : {
+              "dtype" : "date"
+            }
           },
           "rows": [
             {
