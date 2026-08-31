@@ -130,7 +130,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     }
     synchronized (this) {
       try {
-        ws.sendText(JACKSON.writeValueAsString(message), true);
+        ws.sendText(JACKSON.writeValueAsString(message), true).join();
         ws.request(1);
       } catch (final JsonProcessingException e) {
         throw new ClientException("Failed to serialize message", e);
@@ -158,7 +158,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
       log.trace("Unhandled event type: {}", eventType);
     }
 
-    webSocket.request(2); // TODO: this is wrong and for debug only, decrease to 1
+    webSocket.request(1);
   }
 
   protected synchronized void sendPing(@Nonnull final WebSocket ws) {
