@@ -25,7 +25,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** GraniteGuardianFilterConfig */
+/** Filter configuration for IBM Granite Guardian filter provider. */
 // CHECKSTYLE:OFF
 public class GraniteGuardianFilterConfig implements InputFilterConfig, OutputFilterConfig
 // CHECKSTYLE:ON

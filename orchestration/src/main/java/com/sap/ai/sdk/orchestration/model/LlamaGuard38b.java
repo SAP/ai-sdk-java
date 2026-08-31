@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed [DATE].
+ * Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.
  *
  * @deprecated
  */
