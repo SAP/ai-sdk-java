@@ -19,7 +19,8 @@
                     "prediction_placeholder": "[PREDICT]",
                     "task_type": "classification"
                   }
-                ]
+                ],
+                "context_mode" : "default"
               },
               "columns": {
                 "PRICE": [
