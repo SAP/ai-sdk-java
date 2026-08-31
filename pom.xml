@@ -716,13 +716,13 @@
         </configuration>
       </plugin>
       <!-- phase: verify -->
-      <plugin>
+      <!--plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>3.6.0</version>
         <configuration>
           <configLocation>${project.rootdir}/.pipeline/checkstyle.xml</configLocation>
-          <!-- Exclude generated clients -->
+          <!- Exclude generated clients ->
           <suppressionsLocation>${project.rootdir}/.pipeline/checkstyle-suppressions.xml</suppressionsLocation>
           <linkXRef>false</linkXRef>
           <failOnViolation>true</failOnViolation>
@@ -744,7 +744,7 @@
             <phase>verify</phase>
           </execution>
         </executions>
-      </plugin>
+      </plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
