@@ -5,9 +5,7 @@ on:
       realtime_flakiness_runs:
         description: "Repeat RealtimeApiTest#testSpeechToSpeech N times (0 = skip)"
         required: false
-        default: "0"
-  schedule:
-    - cron: 15 2 * * MON-FRI
+        default: "100"
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
@@ -33,13 +31,13 @@ jobs:
       - name: "Build SDK"
         run: mvn ${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting
 
-      - name: "Run RealtimeApiTest#testSpeechToSpeech (100x)"
+      - name: "Run RealtimeApiTest#testSpeechToSpeech (${{ inputs.realtime_flakiness_runs }}x)"
         env:
           AICORE_SERVICE_KEY: ${{ secrets.AI_CORE_CANARY }}
         run: |
           failures=0
-          for i in $(seq 1 100); do
-            echo "--- Run $i / 100 ---"
+          for i in $(seq 1 ${{ inputs.realtime_flakiness_runs }}); do
+            echo "--- Run $i / ${{ inputs.realtime_flakiness_runs }} ---"
             if ! mvn --batch-mode --no-transfer-progress surefire:test \
                 -pl :spring-app \
                 -DskipTests=false \
@@ -49,5 +47,5 @@ jobs:
               echo "Run $i FAILED"
             fi
           done
-          echo "Failures: $failures / 100"
+          echo "Failures: $failures / ${{ inputs.realtime_flakiness_runs }}"
           [ $failures -eq 0 ]
