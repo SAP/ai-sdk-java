@@ -20,4 +20,4 @@
 
 ### 🐛 Fixed Issues
 
--
+- [Foundation models] Fixed possible race condition in Realtime API implementation
