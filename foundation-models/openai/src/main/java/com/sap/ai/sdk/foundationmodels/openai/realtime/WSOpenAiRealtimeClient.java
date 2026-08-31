@@ -165,7 +165,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     if (ws.isInputClosed()) {
       return;
     }
-    log.info("Sending wss ping");
+    log.trace("Sending wss ping");
     ws.sendPing(ByteBuffer.wrap("ping".getBytes(StandardCharsets.UTF_8))).join();
     ws.request(1);
   }

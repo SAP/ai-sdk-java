@@ -15,7 +15,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -24,14 +23,14 @@ public class RealtimeApiTest {
 
   private static final double LOG_2 = Math.log(2.0);
 
-  private static byte[] HELLO_FIXTURE_PCM;
+  private static byte[] QUESTION_FIXTURE_PCM;
 
   private final OpenAiService service = new OpenAiService();
 
   @BeforeAll
   public static void setUp() {
-    try (var fis = new FileInputStream("src/test/resources/fixtures/question111.pcm")) {
-      HELLO_FIXTURE_PCM = fis.readAllBytes();
+    try (var fis = new FileInputStream("src/test/resources/fixtures/what-is-the-german-word-for-chicken.pcm")) {
+      QUESTION_FIXTURE_PCM = fis.readAllBytes();
     } catch (IOException e) {
       fail(e.getMessage());
     }
@@ -74,7 +73,6 @@ public class RealtimeApiTest {
 
   @Test
   @Timeout(value = 60, unit = TimeUnit.SECONDS)
-  //@RepeatedTest(100)
   void testSpeechToSpeech() {
     var outputBuffer = new ByteArrayOutputStream(600000);
     var monitor = new CountDownLatch(1);
@@ -92,7 +90,7 @@ public class RealtimeApiTest {
             },
             RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN,
             systemPrompt)) {
-      input.inputAudio(HELLO_FIXTURE_PCM);
+      input.inputAudio(QUESTION_FIXTURE_PCM);
       completed = monitor.await(55, TimeUnit.SECONDS);
     } catch (Exception e) {
       if (!(e instanceof InterruptedException)) {
