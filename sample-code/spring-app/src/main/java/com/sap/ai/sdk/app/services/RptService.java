@@ -72,7 +72,7 @@ public class RptService {
     final var predictionConfig =
         PredictionConfig.create()
             .targetColumns(targetColumns)
-            .contextMode(null) // TODO: fix once BE API is fully migrated
+            .contextMode(null) // BE API is not fully migrated ??
             .explanations(ExplanationConfig.create().topColumnScores(3).topRelevantContextRows(3));
 
     final var request =
@@ -104,7 +104,7 @@ public class RptService {
       final var predictionConfig =
           PredictionConfig.create()
               .targetColumns(targetColumns)
-              .contextMode(null) // TODO: fix once BE API is fully migrated
+              .contextMode(null) // BE API is not fully migrated ??
               .explanations(
                   ExplanationConfig.create().topColumnScores(3).topRelevantContextRows(3));
 
