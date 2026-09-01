@@ -23,14 +23,16 @@ public class RealtimeApiTest {
 
   private static final double LOG_2 = Math.log(2.0);
 
-  private static byte[] HELLO_FIXTURE_PCM;
+  private static byte[] QUESTION_FIXTURE_PCM;
 
   private final OpenAiService service = new OpenAiService();
 
   @BeforeAll
   public static void setUp() {
-    try (var fis = new FileInputStream("src/test/resources/fixtures/hello.pcm")) {
-      HELLO_FIXTURE_PCM = fis.readAllBytes();
+    try (var fis =
+        new FileInputStream(
+            "src/test/resources/fixtures/what-is-the-german-word-for-chicken.pcm")) {
+      QUESTION_FIXTURE_PCM = fis.readAllBytes();
     } catch (IOException e) {
       fail(e.getMessage());
     }
@@ -90,7 +92,7 @@ public class RealtimeApiTest {
             },
             RealtimeParamTurnDetection.EACH_CALL_IS_A_TURN,
             systemPrompt)) {
-      input.inputAudio(HELLO_FIXTURE_PCM);
+      input.inputAudio(QUESTION_FIXTURE_PCM);
       completed = monitor.await(55, TimeUnit.SECONDS);
     } catch (Exception e) {
       if (!(e instanceof InterruptedException)) {

@@ -20,4 +20,4 @@
 
 ### 🐛 Fixed Issues
 
--
+- [Realtime] Fixed possible race condition in Realtime API implementation
