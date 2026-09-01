@@ -53,26 +53,25 @@ public class RptService {
             Map.of(
                 "PRODUCT", RowsInnerValue.create("Couch"),
                 "PRICE", RowsInnerValue.create(BigDecimal.valueOf(999.99)),
-                "ORDERDATE", RowsInnerValue.create("2025-11-28"),
+                "ORDERDATE", RowsInnerValue.create("28-11-2025"),
                 "ID", RowsInnerValue.create("35"),
                 "COSTCENTER", RowsInnerValue.create("[PREDICT]")),
             Map.of(
                 "PRODUCT", RowsInnerValue.create("Office Chair"),
                 "PRICE", RowsInnerValue.create(BigDecimal.valueOf(150.8)),
-                "ORDERDATE", RowsInnerValue.create("2025-11-02"),
+                "ORDERDATE", RowsInnerValue.create("02-11-2025"),
                 "ID", RowsInnerValue.create("44"),
                 "COSTCENTER", RowsInnerValue.create("Office Furniture")),
             Map.of(
                 "PRODUCT", RowsInnerValue.create("Server Rack"),
                 "PRICE", RowsInnerValue.create(BigDecimal.valueOf(2200.00)),
-                "ORDERDATE", RowsInnerValue.create("2025-11-01"),
+                "ORDERDATE", RowsInnerValue.create("01-11-2025"),
                 "ID", RowsInnerValue.create("104"),
                 "COSTCENTER", RowsInnerValue.create("Data Infrastructure")));
 
     final var predictionConfig =
         PredictionConfig.create()
             .targetColumns(targetColumns)
-            .contextMode(null) // BE API is not fully migrated ??
             .explanations(ExplanationConfig.create().topColumnScores(3).topRelevantContextRows(3));
 
     final var request =
@@ -104,7 +103,6 @@ public class RptService {
       final var predictionConfig =
           PredictionConfig.create()
               .targetColumns(targetColumns)
-              .contextMode(null) // BE API is not fully migrated ??
               .explanations(
                   ExplanationConfig.create().topColumnScores(3).topRelevantContextRows(3));
 
