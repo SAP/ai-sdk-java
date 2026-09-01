@@ -130,7 +130,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     }
     synchronized (this) {
       try {
-        ws.sendText(JACKSON.writeValueAsString(message), true);
+        ws.sendText(JACKSON.writeValueAsString(message), true).join();
         ws.request(1);
       } catch (final JsonProcessingException e) {
         throw new ClientException("Failed to serialize message", e);
@@ -165,6 +165,7 @@ abstract class WSOpenAiRealtimeClient implements AutoCloseable {
     if (ws.isInputClosed()) {
       return;
     }
+    log.trace("Sending wss ping");
     ws.sendPing(ByteBuffer.wrap("ping".getBytes(StandardCharsets.UTF_8))).join();
     ws.request(1);
   }
