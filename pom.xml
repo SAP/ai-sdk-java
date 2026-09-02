@@ -67,6 +67,7 @@
     <surefire.version>3.5.6</surefire.version>
     <spring-ai.version>1.1.8</spring-ai.version>
     <spring-aop.version>7.0.9</spring-aop.version>
+    <spring-context.version>7.0.9</spring-context.version>
     <spring-expressions.version>7.0.9</spring-expressions.version>
     <spring-core.version>7.0.9</spring-core.version>
     <spring-beans.version>7.0.9</spring-beans.version>
@@ -207,6 +208,11 @@
         <version>${spring-expressions.version}</version>
       </dependency>
       <!-- CVE-2026-CVE-2026-59313, CVE-2026-47892, CVE-2026-47893, CVE-2026-59283 >= 7.0.9 until we migrate to spring-ai 2 -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring-context.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-aop</artifactId>
