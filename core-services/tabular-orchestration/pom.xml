@@ -145,8 +145,8 @@
                 <phase>generate-sources</phase>
                 <configuration>
                   <inputSpec>${project.basedir}/src/main/resources/spec/tabular-orchestration.yaml</inputSpec>
-                  <modelPackage>com.sap.ai.sdk.tabular.generated.model</modelPackage>
-                  <apiPackage>com.sap.ai.sdk.tabular.generated.client</apiPackage>
+                  <modelPackage>com.sap.ai.sdk.tabular.generated.orchestration.model</modelPackage>
+                  <apiPackage>com.sap.ai.sdk.tabular.generated.orchestration.client</apiPackage>
                   <additionalProperties>
                     <library>apache-httpclient</library>
                     <pojoBuilderMethodName>create</pojoBuilderMethodName>

@@ -1,34 +1,34 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.tabular.generated.model.CreateTARequest.TypeEnum.PARQUET;
-import static com.sap.ai.sdk.tabular.generated.model.DefinitionType.DOCUMENT;
-import static com.sap.ai.sdk.tabular.generated.model.GCSDataDestinationCreateRequest.TypeEnum.GCS;
-import static com.sap.ai.sdk.tabular.generated.model.HDLDataDestinationCreateRequest.TypeEnum.HDL;
-import static com.sap.ai.sdk.tabular.generated.model.S3DataDestinationCreateRequest.TypeEnum.S3;
+import static com.sap.ai.sdk.tabular.generated.orchestration.model.CreateTARequest.TypeEnum.PARQUET;
+import static com.sap.ai.sdk.tabular.generated.orchestration.model.DefinitionType.DOCUMENT;
+import static com.sap.ai.sdk.tabular.generated.orchestration.model.GCSDataDestinationCreateRequest.TypeEnum.GCS;
+import static com.sap.ai.sdk.tabular.generated.orchestration.model.HDLDataDestinationCreateRequest.TypeEnum.HDL;
+import static com.sap.ai.sdk.tabular.generated.orchestration.model.S3DataDestinationCreateRequest.TypeEnum.S3;
 import static com.sap.ai.sdk.tabular.generated.predict.model.ContextSelectionStrategyEnum.RANDOM;
 import static com.sap.ai.sdk.tabular.generated.predict.model.TaskTypeEnum.CLASSIFICATION;
 
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.tabular.generated.client.DataDestinationsApi;
-import com.sap.ai.sdk.tabular.generated.client.ScenarioConfigurationManagerApi;
-import com.sap.ai.sdk.tabular.generated.client.TabularArtifactsApi;
-import com.sap.ai.sdk.tabular.generated.model.AsyncCreateDataDestinationResponse;
-import com.sap.ai.sdk.tabular.generated.model.ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response;
-import com.sap.ai.sdk.tabular.generated.model.CreateScenarioConfiguration;
-import com.sap.ai.sdk.tabular.generated.model.CreateTARequest;
-import com.sap.ai.sdk.tabular.generated.model.CreateTARequestCsnMetadata;
-import com.sap.ai.sdk.tabular.generated.model.DocumentDefinition;
-import com.sap.ai.sdk.tabular.generated.model.GCSConnectionConfig;
-import com.sap.ai.sdk.tabular.generated.model.GCSDataDestinationCreateRequest;
-import com.sap.ai.sdk.tabular.generated.model.GetDataDestinations;
-import com.sap.ai.sdk.tabular.generated.model.GetScenarioConfigurations;
-import com.sap.ai.sdk.tabular.generated.model.HDLConnectionConfig;
-import com.sap.ai.sdk.tabular.generated.model.HDLDataDestinationCreateRequest;
-import com.sap.ai.sdk.tabular.generated.model.S3ConnectionConfig;
-import com.sap.ai.sdk.tabular.generated.model.S3DataDestinationCreateRequest;
-import com.sap.ai.sdk.tabular.generated.model.ScenarioConfigurationNameObject;
-import com.sap.ai.sdk.tabular.generated.model.TabularArtifactConfig;
-import com.sap.ai.sdk.tabular.generated.model.TabularArtifactListResponse;
+import com.sap.ai.sdk.tabular.generated.orchestration.client.DataDestinationsApi;
+import com.sap.ai.sdk.tabular.generated.orchestration.client.ScenarioConfigurationManagerApi;
+import com.sap.ai.sdk.tabular.generated.orchestration.client.TabularArtifactsApi;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.AsyncCreateDataDestinationResponse;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.CreateScenarioConfiguration;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.CreateTARequest;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.CreateTARequestCsnMetadata;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.DocumentDefinition;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.GCSConnectionConfig;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.GCSDataDestinationCreateRequest;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.GetDataDestinations;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.GetScenarioConfigurations;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.HDLConnectionConfig;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.HDLDataDestinationCreateRequest;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.S3ConnectionConfig;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.S3DataDestinationCreateRequest;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.ScenarioConfigurationNameObject;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.TabularArtifactConfig;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.TabularArtifactListResponse;
 import com.sap.ai.sdk.tabular.generated.predict.client.PredictApi;
 import com.sap.ai.sdk.tabular.generated.predict.model.ContextSelectionConfig;
 import com.sap.ai.sdk.tabular.generated.predict.model.PredictRequest;
@@ -76,24 +76,27 @@ public class TabularService {
   static final String artifactPath = "/data/product_data_hana_lowercase.parquet";
   static final String scenarioConfigName = "product-prediction-scenario-lowercase";
 
-  /** Manage data destinations (S3, Azure, GCP, HDL) for unified data source integration. */
+  /**
+   * Manage data destinations (S3 Bucket, Google Cloud Storage, Hana Data lake) for unified data
+   * source integration.
+   */
   public static class DataDestinationService {
 
     public GetDataDestinations getAllDataDestinations() {
       return DATA_DESTINATIONS_CLIENT.getAllDataDestinations(resourceGroup);
     }
 
-    public AsyncCreateDataDestinationResponse createHDLDataDestination() {
+    public AsyncCreateDataDestinationResponse createHanaDataLakeDataDestination() {
       val request =
           HDLDataDestinationCreateRequest.create()
               .type(HDL)
               .config(HDLConnectionConfig.create().host(""))
-              .description("HDL data destination for AI Core SDK");
+              .description("Hana Data lake data destination for AI Core SDK");
       return DATA_DESTINATIONS_CLIENT.createUpdateDataDestination(
           resourceGroup, dataDestinationName, request);
     }
 
-    public AsyncCreateDataDestinationResponse createS3DataDestination() {
+    public AsyncCreateDataDestinationResponse createS3BucketDataDestination() {
       val request =
           S3DataDestinationCreateRequest.create()
               .type(S3)
@@ -103,12 +106,12 @@ public class TabularService {
                       .region("")
                       .accessKeyId("")
                       .secretAccessKey(""))
-              .description("S3 data destination for AI Core SDK");
+              .description("S3 bucket data destination for AI Core SDK");
       return DATA_DESTINATIONS_CLIENT.createUpdateDataDestination(
           resourceGroup, dataDestinationName, request);
     }
 
-    public AsyncCreateDataDestinationResponse createGCSDataDestination() {
+    public AsyncCreateDataDestinationResponse createGoogleCloudStorageDataDestination() {
       val request =
           GCSDataDestinationCreateRequest.create()
               .type(GCS)
@@ -116,7 +119,7 @@ public class TabularService {
                   GCSConnectionConfig.create()
                       .bucket("")
                       .base64EncodedPrivateKeyData("".getBytes()))
-              .description("GCS data destination for AI Core SDK");
+              .description("Google Cloud Storage data destination for AI Core SDK");
       return DATA_DESTINATIONS_CLIENT.createUpdateDataDestination(
           resourceGroup, dataDestinationName, request);
     }
