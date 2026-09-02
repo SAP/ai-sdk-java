@@ -34,9 +34,9 @@
     <module>core-services/batch</module>
     <module>core-services/document-grounding</module>
     <module>core-services/prompt-registry</module>
+    <module>core-services/tabular-orchestration</module>
     <module>foundation-models/openai</module>
     <module>foundation-models/sap-rpt</module>
-    <module>foundation-models/tabular-orchestration</module>
   </modules>
   <scm>
     <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
@@ -348,7 +348,7 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+        <groupId>com.sap.ai.sdk</groupId>
         <artifactId>tabular-orchestration</artifactId>
         <version>${project.version}</version>
       </dependency>

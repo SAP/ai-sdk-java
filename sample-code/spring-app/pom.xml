@@ -131,7 +131,7 @@
       <artifactId>sap-rpt</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+      <groupId>com.sap.ai.sdk</groupId>
       <artifactId>tabular-orchestration</artifactId>
     </dependency>
     <dependency>
