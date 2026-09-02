@@ -122,7 +122,7 @@
             "description": "Sampling strategy for context selection.",
             "default": "random"
           },
-          "strategyConfig": {
+          "strategyConfigs": {
             "anyOf": [
               {
                 "$ref": "#/components/schemas/SamplingRandomConfig"
@@ -134,7 +134,7 @@
                 "type": "null"
               }
             ],
-            "title": "Strategyconfig",
+            "title": "strategyConfigs",
             "description": "Strategy-specific configuration parameters."
           },
           "filterConditions": {

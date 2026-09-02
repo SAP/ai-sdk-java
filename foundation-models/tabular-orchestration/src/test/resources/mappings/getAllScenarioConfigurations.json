@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "url": "/v2/tcr/dataDestinations",
+    "url": "/v2/tcr/scenarioConfigurations",
     "headers": {
       "Accept": { "equalTo": "application/json" },
       "AI-Resource-Group": { "equalTo": "default" }
@@ -16,13 +16,15 @@
       "count": 1,
       "resources": [
         {
-          "name": "ai-sdk-hdl-destination",
-          "type": "HDL",
-          "description": "HDL data destination for AI Core SDK",
-          "adapterType": "File",
-          "createdAt": "2026-05-19T11:15:40.062350Z",
-          "updatedAt": "2026-08-24T08:25:35.730000Z",
-          "labels": [],
+          "name": "product-prediction-scenario-lowercase",
+          "contextSelectionStrategy": "random",
+          "tabularArtifacts": [
+            {
+              "name": "product-artifact-lowercase"
+            }
+          ],
+          "createdAt": "2026-05-22T06:49:16.596000Z",
+          "updatedAt": "2026-05-22T06:49:16.596000Z",
           "status": "ACTIVE"
         }
       ]
