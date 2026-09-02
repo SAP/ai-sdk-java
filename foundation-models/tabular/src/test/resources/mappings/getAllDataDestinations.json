@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v2/admin/tcr/dataDestinations"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "count": 1,
+      "resources": [
+        {
+          "name": "ai-sdk-hdl-destination",
+          "type": "HDL",
+          "description": "HDL data destination for AI Core SDK",
+          "adapterType": "File",
+          "createdAt": "2026-05-19T11:15:40.062350Z",
+          "updatedAt": "2026-08-24T08:25:35.730000Z",
+          "labels": [],
+          "status": "ACTIVE"
+        }
+      ]
+    }
+  }
+}
+
