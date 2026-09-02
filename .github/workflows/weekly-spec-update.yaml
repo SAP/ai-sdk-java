@@ -20,7 +20,7 @@ jobs:
           - orchestration
           - sap-rpt
           - batch
-          - tabular
+          - tabular-orchestration
 
     steps:
       - name: 'Checkout repository'
