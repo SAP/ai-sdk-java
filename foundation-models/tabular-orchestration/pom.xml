@@ -150,7 +150,7 @@
                 </goals>
                 <phase>generate-sources</phase>
                 <configuration>
-                  <inputSpec>${project.basedir}/src/main/resources/spec/tabular.yaml</inputSpec>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/tabular-orchestration.yaml</inputSpec>
                   <modelPackage>com.sap.ai.sdk.tabular.generated.model</modelPackage>
                   <apiPackage>com.sap.ai.sdk.tabular.generated.client</apiPackage>
                   <additionalProperties>
@@ -176,7 +176,7 @@
                 </goals>
                 <phase>generate-sources</phase>
                 <configuration>
-                  <inputSpec>${project.basedir}/src/main/resources/spec/tabular-api.json</inputSpec>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/tabular-predict.json</inputSpec>
                   <modelPackage>com.sap.ai.sdk.tabular.generated.predict.model</modelPackage>
                   <apiPackage>com.sap.ai.sdk.tabular.generated.predict.client</apiPackage>
                   <additionalProperties>

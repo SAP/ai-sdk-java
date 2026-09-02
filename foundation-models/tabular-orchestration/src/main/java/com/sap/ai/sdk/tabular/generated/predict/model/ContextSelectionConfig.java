@@ -34,8 +34,8 @@ public class ContextSelectionConfig
   @JsonProperty("strategy")
   private ContextSelectionStrategyEnum strategy;
 
-  @JsonProperty("strategyConfig")
-  private Strategyconfig strategyConfig;
+  @JsonProperty("strategyConfigs")
+  private StrategyConfigs strategyConfigs;
 
   @JsonProperty("filterConditions")
   private FilterConditions1 filterConditions;
@@ -115,35 +115,35 @@ public class ContextSelectionConfig
   }
 
   /**
-   * Set the strategyConfig of this {@link ContextSelectionConfig} instance and return the same
+   * Set the strategyConfigs of this {@link ContextSelectionConfig} instance and return the same
    * instance.
    *
-   * @param strategyConfig The strategyConfig of this {@link ContextSelectionConfig}
+   * @param strategyConfigs The strategyConfigs of this {@link ContextSelectionConfig}
    * @return The same instance of this {@link ContextSelectionConfig} class
    */
   @Nonnull
-  public ContextSelectionConfig strategyConfig(@Nullable final Strategyconfig strategyConfig) {
-    this.strategyConfig = strategyConfig;
+  public ContextSelectionConfig strategyConfigs(@Nullable final StrategyConfigs strategyConfigs) {
+    this.strategyConfigs = strategyConfigs;
     return this;
   }
 
   /**
-   * Get strategyConfig
+   * Get strategyConfigs
    *
-   * @return strategyConfig The strategyConfig of this {@link ContextSelectionConfig} instance.
+   * @return strategyConfigs The strategyConfigs of this {@link ContextSelectionConfig} instance.
    */
   @Nullable
-  public Strategyconfig getStrategyConfig() {
-    return strategyConfig;
+  public StrategyConfigs getStrategyConfigs() {
+    return strategyConfigs;
   }
 
   /**
-   * Set the strategyConfig of this {@link ContextSelectionConfig} instance.
+   * Set the strategyConfigs of this {@link ContextSelectionConfig} instance.
    *
-   * @param strategyConfig The strategyConfig of this {@link ContextSelectionConfig}
+   * @param strategyConfigs The strategyConfigs of this {@link ContextSelectionConfig}
    */
-  public void setStrategyConfig(@Nullable final Strategyconfig strategyConfig) {
-    this.strategyConfig = strategyConfig;
+  public void setStrategyConfigs(@Nullable final StrategyConfigs strategyConfigs) {
+    this.strategyConfigs = strategyConfigs;
   }
 
   /**
@@ -251,7 +251,7 @@ public class ContextSelectionConfig
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (numRows != null) declaredFields.put("numRows", numRows);
     if (strategy != null) declaredFields.put("strategy", strategy);
-    if (strategyConfig != null) declaredFields.put("strategyConfig", strategyConfig);
+    if (strategyConfigs != null) declaredFields.put("strategyConfigs", strategyConfigs);
     if (filterConditions != null) declaredFields.put("filterConditions", filterConditions);
     if (verbose != null) declaredFields.put("verbose", verbose);
     return declaredFields;
@@ -281,7 +281,7 @@ public class ContextSelectionConfig
     return Objects.equals(this.cloudSdkCustomFields, contextSelectionConfig.cloudSdkCustomFields)
         && Objects.equals(this.numRows, contextSelectionConfig.numRows)
         && Objects.equals(this.strategy, contextSelectionConfig.strategy)
-        && Objects.equals(this.strategyConfig, contextSelectionConfig.strategyConfig)
+        && Objects.equals(this.strategyConfigs, contextSelectionConfig.strategyConfigs)
         && Objects.equals(this.filterConditions, contextSelectionConfig.filterConditions)
         && Objects.equals(this.verbose, contextSelectionConfig.verbose);
   }
@@ -289,7 +289,7 @@ public class ContextSelectionConfig
   @Override
   public int hashCode() {
     return Objects.hash(
-        numRows, strategy, strategyConfig, filterConditions, verbose, cloudSdkCustomFields);
+        numRows, strategy, strategyConfigs, filterConditions, verbose, cloudSdkCustomFields);
   }
 
   @Override
@@ -299,7 +299,7 @@ public class ContextSelectionConfig
     sb.append("class ContextSelectionConfig {\n");
     sb.append("    numRows: ").append(toIndentedString(numRows)).append("\n");
     sb.append("    strategy: ").append(toIndentedString(strategy)).append("\n");
-    sb.append("    strategyConfig: ").append(toIndentedString(strategyConfig)).append("\n");
+    sb.append("    strategyConfigs: ").append(toIndentedString(strategyConfigs)).append("\n");
     sb.append("    filterConditions: ").append(toIndentedString(filterConditions)).append("\n");
     sb.append("    verbose: ").append(toIndentedString(verbose)).append("\n");
     cloudSdkCustomFields.forEach(

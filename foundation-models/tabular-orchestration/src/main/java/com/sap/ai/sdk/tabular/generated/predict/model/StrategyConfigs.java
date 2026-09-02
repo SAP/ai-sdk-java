@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 
 /** Strategy-specific configuration parameters. */
 // CHECKSTYLE:OFF
-public class Strategyconfig
+public class StrategyConfigs
 // CHECKSTYLE:ON
 {
   @JsonProperty("indexColumn")
@@ -53,18 +53,18 @@ public class Strategyconfig
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for Strategyconfig. */
-  protected Strategyconfig() {}
+  /** Default constructor for StrategyConfigs. */
+  protected StrategyConfigs() {}
 
   /**
-   * Set the indexColumn of this {@link Strategyconfig} instance and return the same instance.
+   * Set the indexColumn of this {@link StrategyConfigs} instance and return the same instance.
    *
    * @param indexColumn Name of the unique row-identifier column (e.g. &#39;ROW_INDEX&#39;).
    *     Required for Heuristic scoring and deduplication.
-   * @return The same instance of this {@link Strategyconfig} class
+   * @return The same instance of this {@link StrategyConfigs} class
    */
   @Nonnull
-  public Strategyconfig indexColumn(@Nonnull final String indexColumn) {
+  public StrategyConfigs indexColumn(@Nonnull final String indexColumn) {
     this.indexColumn = indexColumn;
     return this;
   }
@@ -73,7 +73,7 @@ public class Strategyconfig
    * Name of the unique row-identifier column (e.g. &#39;ROW_INDEX&#39;). Required for Heuristic
    * scoring and deduplication.
    *
-   * @return indexColumn The indexColumn of this {@link Strategyconfig} instance.
+   * @return indexColumn The indexColumn of this {@link StrategyConfigs} instance.
    */
   @Nonnull
   public String getIndexColumn() {
@@ -81,7 +81,7 @@ public class Strategyconfig
   }
 
   /**
-   * Set the indexColumn of this {@link Strategyconfig} instance.
+   * Set the indexColumn of this {@link StrategyConfigs} instance.
    *
    * @param indexColumn Name of the unique row-identifier column (e.g. &#39;ROW_INDEX&#39;).
    *     Required for Heuristic scoring and deduplication.
@@ -91,14 +91,14 @@ public class Strategyconfig
   }
 
   /**
-   * Set the deterministic of this {@link Strategyconfig} instance and return the same instance.
+   * Set the deterministic of this {@link StrategyConfigs} instance and return the same instance.
    *
    * @param deterministic When true, uses HASH_SHA256 of indexColumn for ordering instead of RAND(),
    *     producing the same row order on every call for the same data.
-   * @return The same instance of this {@link Strategyconfig} class
+   * @return The same instance of this {@link StrategyConfigs} class
    */
   @Nonnull
-  public Strategyconfig deterministic(@Nullable final Boolean deterministic) {
+  public StrategyConfigs deterministic(@Nullable final Boolean deterministic) {
     this.deterministic = deterministic;
     return this;
   }
@@ -107,7 +107,7 @@ public class Strategyconfig
    * When true, uses HASH_SHA256 of indexColumn for ordering instead of RAND(), producing the same
    * row order on every call for the same data.
    *
-   * @return deterministic The deterministic of this {@link Strategyconfig} instance.
+   * @return deterministic The deterministic of this {@link StrategyConfigs} instance.
    */
   @Nonnull
   public Boolean isDeterministic() {
@@ -115,7 +115,7 @@ public class Strategyconfig
   }
 
   /**
-   * Set the deterministic of this {@link Strategyconfig} instance.
+   * Set the deterministic of this {@link StrategyConfigs} instance.
    *
    * @param deterministic When true, uses HASH_SHA256 of indexColumn for ordering instead of RAND(),
    *     producing the same row order on every call for the same data.
@@ -125,14 +125,14 @@ public class Strategyconfig
   }
 
   /**
-   * Set the methodRatio of this {@link Strategyconfig} instance and return the same instance.
+   * Set the methodRatio of this {@link StrategyConfigs} instance and return the same instance.
    *
    * @param methodRatio Fraction of numRows filled by scoring method (remainder is random fill).
    *     Must be between 0 and 1.
-   * @return The same instance of this {@link Strategyconfig} class
+   * @return The same instance of this {@link StrategyConfigs} class
    */
   @Nonnull
-  public Strategyconfig methodRatio(@Nullable final BigDecimal methodRatio) {
+  public StrategyConfigs methodRatio(@Nullable final BigDecimal methodRatio) {
     this.methodRatio = methodRatio;
     return this;
   }
@@ -141,7 +141,7 @@ public class Strategyconfig
    * Fraction of numRows filled by scoring method (remainder is random fill). Must be between 0 and
    * 1.
    *
-   * @return methodRatio The methodRatio of this {@link Strategyconfig} instance.
+   * @return methodRatio The methodRatio of this {@link StrategyConfigs} instance.
    */
   @Nonnull
   public BigDecimal getMethodRatio() {
@@ -149,7 +149,7 @@ public class Strategyconfig
   }
 
   /**
-   * Set the methodRatio of this {@link Strategyconfig} instance.
+   * Set the methodRatio of this {@link StrategyConfigs} instance.
    *
    * @param methodRatio Fraction of numRows filled by scoring method (remainder is random fill).
    *     Must be between 0 and 1.
@@ -159,14 +159,14 @@ public class Strategyconfig
   }
 
   /**
-   * Set the fuzzyNumPct of this {@link Strategyconfig} instance and return the same instance.
+   * Set the fuzzyNumPct of this {@link StrategyConfigs} instance and return the same instance.
    *
    * @param fuzzyNumPct Fraction of numRows filled by scoring method (remainder is random fill).
    *     Must be between 0 and 1.
-   * @return The same instance of this {@link Strategyconfig} class
+   * @return The same instance of this {@link StrategyConfigs} class
    */
   @Nonnull
-  public Strategyconfig fuzzyNumPct(@Nullable final BigDecimal fuzzyNumPct) {
+  public StrategyConfigs fuzzyNumPct(@Nullable final BigDecimal fuzzyNumPct) {
     this.fuzzyNumPct = fuzzyNumPct;
     return this;
   }
@@ -175,7 +175,7 @@ public class Strategyconfig
    * Fraction of numRows filled by scoring method (remainder is random fill). Must be between 0 and
    * 1.
    *
-   * @return fuzzyNumPct The fuzzyNumPct of this {@link Strategyconfig} instance.
+   * @return fuzzyNumPct The fuzzyNumPct of this {@link StrategyConfigs} instance.
    */
   @Nonnull
   public BigDecimal getFuzzyNumPct() {
@@ -183,7 +183,7 @@ public class Strategyconfig
   }
 
   /**
-   * Set the fuzzyNumPct of this {@link Strategyconfig} instance.
+   * Set the fuzzyNumPct of this {@link StrategyConfigs} instance.
    *
    * @param fuzzyNumPct Fraction of numRows filled by scoring method (remainder is random fill).
    *     Must be between 0 and 1.
@@ -193,14 +193,14 @@ public class Strategyconfig
   }
 
   /**
-   * Set the poolSize of this {@link Strategyconfig} instance and return the same instance.
+   * Set the poolSize of this {@link StrategyConfigs} instance and return the same instance.
    *
    * @param poolSize If set, scoring runs against a random subsample of this many rows instead of
    *     the full table. None &#x3D; full table scan.
-   * @return The same instance of this {@link Strategyconfig} class
+   * @return The same instance of this {@link StrategyConfigs} class
    */
   @Nonnull
-  public Strategyconfig poolSize(@Nullable final Integer poolSize) {
+  public StrategyConfigs poolSize(@Nullable final Integer poolSize) {
     this.poolSize = poolSize;
     return this;
   }
@@ -209,7 +209,7 @@ public class Strategyconfig
    * If set, scoring runs against a random subsample of this many rows instead of the full table.
    * None &#x3D; full table scan.
    *
-   * @return poolSize The poolSize of this {@link Strategyconfig} instance.
+   * @return poolSize The poolSize of this {@link StrategyConfigs} instance.
    */
   @Nonnull
   public Integer getPoolSize() {
@@ -217,7 +217,7 @@ public class Strategyconfig
   }
 
   /**
-   * Set the poolSize of this {@link Strategyconfig} instance.
+   * Set the poolSize of this {@link StrategyConfigs} instance.
    *
    * @param poolSize If set, scoring runs against a random subsample of this many rows instead of
    *     the full table. None &#x3D; full table scan.
@@ -227,15 +227,15 @@ public class Strategyconfig
   }
 
   /**
-   * Set the fuzzyDateDays of this {@link Strategyconfig} instance and return the same instance.
+   * Set the fuzzyDateDays of this {@link StrategyConfigs} instance and return the same instance.
    *
    * @param fuzzyDateDays Day window for fuzzy date matching. A date column scores 1 if
    *     abs(DAYS_BETWEEN(row_date, query_date)) &lt;&#x3D; dateFuzzyDays. Set to 0 for exact date
    *     match.
-   * @return The same instance of this {@link Strategyconfig} class
+   * @return The same instance of this {@link StrategyConfigs} class
    */
   @Nonnull
-  public Strategyconfig fuzzyDateDays(@Nullable final Integer fuzzyDateDays) {
+  public StrategyConfigs fuzzyDateDays(@Nullable final Integer fuzzyDateDays) {
     this.fuzzyDateDays = fuzzyDateDays;
     return this;
   }
@@ -244,7 +244,7 @@ public class Strategyconfig
    * Day window for fuzzy date matching. A date column scores 1 if abs(DAYS_BETWEEN(row_date,
    * query_date)) &lt;&#x3D; dateFuzzyDays. Set to 0 for exact date match.
    *
-   * @return fuzzyDateDays The fuzzyDateDays of this {@link Strategyconfig} instance.
+   * @return fuzzyDateDays The fuzzyDateDays of this {@link StrategyConfigs} instance.
    */
   @Nonnull
   public Integer getFuzzyDateDays() {
@@ -252,7 +252,7 @@ public class Strategyconfig
   }
 
   /**
-   * Set the fuzzyDateDays of this {@link Strategyconfig} instance.
+   * Set the fuzzyDateDays of this {@link StrategyConfigs} instance.
    *
    * @param fuzzyDateDays Day window for fuzzy date matching. A date column scores 1 if
    *     abs(DAYS_BETWEEN(row_date, query_date)) &lt;&#x3D; dateFuzzyDays. Set to 0 for exact date
@@ -263,15 +263,15 @@ public class Strategyconfig
   }
 
   /**
-   * Set the allowTimeoutFallback of this {@link Strategyconfig} instance and return the same
+   * Set the allowTimeoutFallback of this {@link StrategyConfigs} instance and return the same
    * instance.
    *
    * @param allowTimeoutFallback When true, heuristic sampling falls back to random on timeout
    *     instead of raising an error. Set by the orchestrator when strategy&#x3D;AUTO.
-   * @return The same instance of this {@link Strategyconfig} class
+   * @return The same instance of this {@link StrategyConfigs} class
    */
   @Nonnull
-  public Strategyconfig allowTimeoutFallback(@Nullable final Boolean allowTimeoutFallback) {
+  public StrategyConfigs allowTimeoutFallback(@Nullable final Boolean allowTimeoutFallback) {
     this.allowTimeoutFallback = allowTimeoutFallback;
     return this;
   }
@@ -280,7 +280,7 @@ public class Strategyconfig
    * When true, heuristic sampling falls back to random on timeout instead of raising an error. Set
    * by the orchestrator when strategy&#x3D;AUTO.
    *
-   * @return allowTimeoutFallback The allowTimeoutFallback of this {@link Strategyconfig} instance.
+   * @return allowTimeoutFallback The allowTimeoutFallback of this {@link StrategyConfigs} instance.
    */
   @Nonnull
   public Boolean isAllowTimeoutFallback() {
@@ -288,7 +288,7 @@ public class Strategyconfig
   }
 
   /**
-   * Set the allowTimeoutFallback of this {@link Strategyconfig} instance.
+   * Set the allowTimeoutFallback of this {@link StrategyConfigs} instance.
    *
    * @param allowTimeoutFallback When true, heuristic sampling falls back to random on timeout
    *     instead of raising an error. Set by the orchestrator when strategy&#x3D;AUTO.
@@ -298,7 +298,7 @@ public class Strategyconfig
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link Strategyconfig}.
+   * Get the names of the unrecognizable properties of the {@link StrategyConfigs}.
    *
    * @return The set of properties names
    */
@@ -309,7 +309,7 @@ public class Strategyconfig
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link Strategyconfig} instance.
+   * Get the value of an unrecognizable property of this {@link StrategyConfigs} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -320,13 +320,13 @@ public class Strategyconfig
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("Strategyconfig has no field with name '" + name + "'.");
+      throw new NoSuchElementException("StrategyConfigs has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link Strategyconfig} instance including unrecognized
+   * Get the value of all properties of this {@link StrategyConfigs} instance including unrecognized
    * properties.
    *
    * @return The map of all properties
@@ -347,7 +347,7 @@ public class Strategyconfig
   }
 
   /**
-   * Set an unrecognizable property of this {@link Strategyconfig} instance. If the map previously
+   * Set an unrecognizable property of this {@link StrategyConfigs} instance. If the map previously
    * contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -366,15 +366,15 @@ public class Strategyconfig
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final Strategyconfig strategyconfig = (Strategyconfig) o;
-    return Objects.equals(this.cloudSdkCustomFields, strategyconfig.cloudSdkCustomFields)
-        && Objects.equals(this.indexColumn, strategyconfig.indexColumn)
-        && Objects.equals(this.deterministic, strategyconfig.deterministic)
-        && Objects.equals(this.methodRatio, strategyconfig.methodRatio)
-        && Objects.equals(this.fuzzyNumPct, strategyconfig.fuzzyNumPct)
-        && Objects.equals(this.poolSize, strategyconfig.poolSize)
-        && Objects.equals(this.fuzzyDateDays, strategyconfig.fuzzyDateDays)
-        && Objects.equals(this.allowTimeoutFallback, strategyconfig.allowTimeoutFallback);
+    final StrategyConfigs strategyConfigs = (StrategyConfigs) o;
+    return Objects.equals(this.cloudSdkCustomFields, strategyConfigs.cloudSdkCustomFields)
+        && Objects.equals(this.indexColumn, strategyConfigs.indexColumn)
+        && Objects.equals(this.deterministic, strategyConfigs.deterministic)
+        && Objects.equals(this.methodRatio, strategyConfigs.methodRatio)
+        && Objects.equals(this.fuzzyNumPct, strategyConfigs.fuzzyNumPct)
+        && Objects.equals(this.poolSize, strategyConfigs.poolSize)
+        && Objects.equals(this.fuzzyDateDays, strategyConfigs.fuzzyDateDays)
+        && Objects.equals(this.allowTimeoutFallback, strategyConfigs.allowTimeoutFallback);
   }
 
   @Override
@@ -394,7 +394,7 @@ public class Strategyconfig
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class Strategyconfig {\n");
+    sb.append("class StrategyConfigs {\n");
     sb.append("    indexColumn: ").append(toIndentedString(indexColumn)).append("\n");
     sb.append("    deterministic: ").append(toIndentedString(deterministic)).append("\n");
     sb.append("    methodRatio: ").append(toIndentedString(methodRatio)).append("\n");
@@ -422,22 +422,22 @@ public class Strategyconfig
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link Strategyconfig}
+   * Create a type-safe, fluent-api builder object to construct a new {@link StrategyConfigs}
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (indexColumn) -> new Strategyconfig().indexColumn(indexColumn);
+    return (indexColumn) -> new StrategyConfigs().indexColumn(indexColumn);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the indexColumn of this {@link Strategyconfig} instance.
+     * Set the indexColumn of this {@link StrategyConfigs} instance.
      *
      * @param indexColumn Name of the unique row-identifier column (e.g. &#39;ROW_INDEX&#39;).
      *     Required for Heuristic scoring and deduplication.
-     * @return The Strategyconfig instance.
+     * @return The StrategyConfigs instance.
      */
-    Strategyconfig indexColumn(@Nonnull final String indexColumn);
+    StrategyConfigs indexColumn(@Nonnull final String indexColumn);
   }
 }
