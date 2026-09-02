@@ -1,5 +1,9 @@
 package com.sap.ai.sdk.foundationmodels.rpt;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.ColumnType.STRING;
 import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig.TaskTypeEnum.CLASSIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -60,7 +64,7 @@ class RptClientTest {
   void setup(final WireMockRuntimeInfo server) {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    client = RptClient.forDestination(destination);
+    client = RptClient.forDestination(destination, false);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
 
@@ -301,5 +305,84 @@ class RptClientTest {
           .isInstanceOf(IllegalArgumentException.class)
           .hasMessageContaining("Failed to serialize PredictionConfig");
     }
+  }
+
+  @Test
+  void testOldModelThrowsOnUnknownPayloadType() {
+    final var oldModelClient =
+        RptClient.forDestination(DefaultHttpDestination.builder("http://localhost").build(), true);
+    final var unknownPayload = mock(PredictRequestPayload.class);
+
+    assertThatThrownBy(() -> oldModelClient.tableCompletion(unknownPayload))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Unsupported PredictRequestPayload type");
+  }
+
+  @Test
+  void testOldModelStripsContextModeFromRowWiseRequest(final WireMockRuntimeInfo server) {
+    stubFor(post(urlEqualTo("/predict")).willReturn(aResponse().withStatus(200).withBody("{}")));
+    final var oldModelClient =
+        RptClient.forDestination(
+            DefaultHttpDestination.builder(server.getHttpBaseUrl()).build(), true);
+
+    val config =
+        PredictionConfig.create()
+            .targetColumns(TARGET_COLUMN)
+            .contextMode(PredictionConfig.ContextModeEnum.DEEP);
+    val request =
+        PredictRequestPayloadOneOf.create()
+            .predictionConfig(config)
+            .rows(List.of())
+            .indexColumn("ID")
+            .dataSchema(DATA_SCHEMA)
+            .parseDataTypes(true);
+
+    assertThat(config.getContextMode()).isEqualTo(PredictionConfig.ContextModeEnum.DEEP);
+    oldModelClient.tableCompletion(request);
+    assertThat(config.getContextMode()).isNull();
+  }
+
+  @Test
+  void testOldModelStripsContextModeFromColumnWiseRequest(final WireMockRuntimeInfo server) {
+    stubFor(post(urlEqualTo("/predict")).willReturn(aResponse().withStatus(200).withBody("{}")));
+    final var oldModelClient =
+        RptClient.forDestination(
+            DefaultHttpDestination.builder(server.getHttpBaseUrl()).build(), true);
+
+    val config =
+        PredictionConfig.create()
+            .targetColumns(TARGET_COLUMN)
+            .contextMode(PredictionConfig.ContextModeEnum.DEFAULT);
+    val request =
+        PredictRequestPayloadOneOf1.create()
+            .predictionConfig(config)
+            .columns(Map.of())
+            .indexColumn("ID")
+            .dataSchema(DATA_SCHEMA)
+            .parseDataTypes(true);
+
+    assertThat(config.getContextMode()).isEqualTo(PredictionConfig.ContextModeEnum.DEFAULT);
+    oldModelClient.tableCompletion(request);
+    assertThat(config.getContextMode()).isNull();
+  }
+
+  @Test
+  void testOldModelStripsContextModeFromParquetRequest(final WireMockRuntimeInfo server) {
+    stubFor(
+        post(urlEqualTo("/predict_parquet"))
+            .willReturn(aResponse().withStatus(200).withBody("{}")));
+    final var oldModelClient =
+        RptClient.forDestination(
+            DefaultHttpDestination.builder(server.getHttpBaseUrl()).build(), true);
+
+    val parquetFile = Path.of("src/test/resources/rpt/test-data.parquet").toFile();
+    val predictionConfig =
+        PredictionConfig.create()
+            .targetColumns(TARGET_COLUMN)
+            .contextMode(PredictionConfig.ContextModeEnum.DEEP);
+
+    assertThat(predictionConfig.getContextMode()).isEqualTo(PredictionConfig.ContextModeEnum.DEEP);
+    oldModelClient.tableCompletion(parquetFile, predictionConfig);
+    assertThat(predictionConfig.getContextMode()).isNull();
   }
 }
