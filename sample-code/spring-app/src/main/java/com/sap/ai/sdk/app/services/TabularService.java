@@ -129,20 +129,18 @@ public class TabularService {
       return TABULAR_ARTIFACTS_CLIENT.getAllTabularArtifacts(resourceGroup);
     }
 
-    private static final Map<String, Object> PRODUCT_ENTITY_ELEMENTS =
-        Map.of(
-            "PRODUCT", Map.of("type", "cds.String"),
-            "PRICE", Map.of("type", "cds.Double"),
-            "PRODUCTION_DATE", Map.of("type", "cds.String"),
-            "__row_idx__", Map.of("type", "cds.String"),
-            "SALESGROUP", Map.of("type", "cds.String"));
-
     public ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response createArtifact() {
+      val productEntityElements =
+          Map.of(
+              "PRODUCT", Map.of("type", "cds.String"),
+              "PRICE", Map.of("type", "cds.Double"),
+              "PRODUCTION_DATE", Map.of("type", "cds.String"),
+              "__row_idx__", Map.of("type", "cds.String"),
+              "SALESGROUP", Map.of("type", "cds.String"));
       val definitions =
           Map.of(
               "definitions",
-              Map.of(
-                  "ProductEntity", Map.of("kind", "entity", "elements", PRODUCT_ENTITY_ELEMENTS)));
+              Map.of("ProductEntity", Map.of("kind", "entity", "elements", productEntityElements)));
       val request =
           CreateTARequest.create()
               .dataDestinationName(dataDestinationName)
@@ -155,7 +153,7 @@ public class TabularService {
                               .definitionType(DOCUMENT)
                               .document(definitions))
                       .entityName("ProductEntity")
-                      .selectedColumns(PRODUCT_ENTITY_ELEMENTS.keySet()));
+                      .selectedColumns(productEntityElements.keySet()));
       return TABULAR_ARTIFACTS_CLIENT.createTabularArtifact(resourceGroup, artifactName, request);
     }
   }
