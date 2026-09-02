@@ -8,9 +8,9 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.foundationmodels</groupId>
-  <artifactId>tabular</artifactId>
-  <name>Tabular prediction client</name>
-  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for the Tabular prediction service.</description>
+  <artifactId>tabular-orchestration</artifactId>
+  <name>Orchestration tabular prediction client</name>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for the Orchestration tabular prediction service.</description>
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
     <name>SAP SE</name>
@@ -144,7 +144,7 @@
             </configuration>
             <executions>
               <execution>
-                <id>tabular</id>
+                <id>tabular-orchestration</id>
                 <goals>
                   <goal>generate</goal>
                 </goals>
@@ -170,7 +170,7 @@
                 </configuration>
               </execution>
               <execution>
-                <id>tabular2</id>
+                <id>tabular-prediction</id>
                 <goals>
                   <goal>generate</goal>
                 </goals>

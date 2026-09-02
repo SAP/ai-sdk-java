@@ -36,7 +36,7 @@
     <module>core-services/prompt-registry</module>
     <module>foundation-models/openai</module>
     <module>foundation-models/sap-rpt</module>
-    <module>foundation-models/tabular</module>
+    <module>foundation-models/tabular-orchestration</module>
   </modules>
   <scm>
     <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
@@ -318,7 +318,7 @@
       </dependency>
       <dependency>
         <groupId>com.sap.ai.sdk.foundationmodels</groupId>
-        <artifactId>tabular</artifactId>
+        <artifactId>tabular-orchestration</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>

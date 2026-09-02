@@ -14,7 +14,7 @@ on:
           - prompt-registry
           - sap-rpt
           - batch
-          - tabular
+          - tabular-orchestration
         default: orchestration
       ref:
         description: 'Original branch or tag the branch was created from'
