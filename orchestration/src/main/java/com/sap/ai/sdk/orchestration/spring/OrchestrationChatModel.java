@@ -4,8 +4,10 @@ import static com.sap.ai.sdk.orchestration.OrchestrationClient.toCompletionPostR
 import static com.sap.ai.sdk.orchestration.model.MessageToolCall.TypeEnum.FUNCTION;
 
 import com.sap.ai.sdk.orchestration.AssistantMessage;
+import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.ToolMessage;
@@ -27,8 +29,10 @@ import org.springframework.ai.chat.messages.ToolResponseMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.ai.chat.prompt.DefaultChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
+import org.springframework.ai.model.tool.ToolExecutionResult;
 import reactor.core.publisher.Flux;
 
 /**
@@ -71,7 +75,7 @@ public class OrchestrationChatModel implements ChatModel {
     if (defaultOptions != null) {
       return defaultOptions;
     }
-    return ChatModel.super.getOptions();
+    return new OrchestrationChatOptions( new OrchestrationModuleConfig());
   }
 
   @Nonnull
@@ -97,8 +101,7 @@ public class OrchestrationChatModel implements ChatModel {
 
         if (toolExecutionResult.returnDirect()) {
           log.debug("Returning tool execution result directly without re-invoking LLM.");
-          return new ChatResponse(
-              org.springframework.ai.model.tool.ToolExecutionResult.buildGenerations(
+          return new ChatResponse(ToolExecutionResult.buildGenerations(
                   toolExecutionResult));
         }
 
@@ -108,6 +111,7 @@ public class OrchestrationChatModel implements ChatModel {
       }
       return response;
     }
+    log.warn("Options are: {}", prompt.getOptions().getClass().getCanonicalName());
     throw new IllegalArgumentException(
         "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
   }

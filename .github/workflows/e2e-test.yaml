@@ -105,7 +105,7 @@ jobs:
         run: wget -qO- -S localhost:8080
 
       - name: "Slack Notification"
-        if: failure()
+        if: github.ref_name == 'main' && failure()
         uses: slackapi/slack-github-action@v4.0.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}

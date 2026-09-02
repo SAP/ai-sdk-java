@@ -91,11 +91,16 @@ public class SpringAiOpenAiService {
    */
   @Nonnull
   public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
-    val builder = DefaultToolCallingChatOptions.builder();
+    val options =
+        DefaultToolCallingChatOptions.builder()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
+            .build();
+    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
     if (internalToolExecutionEnabled) {
-      builder.toolCallbacks(ToolCallbacks.from(new WeatherMethod()));
+      return Objects.requireNonNull(
+          ChatClient.builder(chatClient).build().prompt(prompt).call().chatResponse(),
+          "Chat response is null");
     }
-    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", builder.build());
     return chatClient.call(prompt);
   }
 
