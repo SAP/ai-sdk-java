@@ -1,10 +1,10 @@
 {
   "request": {
     "method": "GET",
-    "url": "/v2/admin/tcr/dataDestinations",
+    "url": "/v2/tcr/dataDestinations",
     "headers": {
-      "Accept": "application/json",
-      "AI-Resource-Group": "default"
+      "Accept": { "equalTo": "application/json" },
+      "AI-Resource-Group": { "equalTo": "default" }
     }
   },
   "response": {
