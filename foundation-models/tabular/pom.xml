@@ -4,12 +4,13 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.24.0-SNAPSHOT</version>
+    <version>1.25.0-SNAPSHOT</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
+  <groupId>com.sap.ai.sdk.foundationmodels</groupId>
   <artifactId>tabular</artifactId>
-  <name>Tabular ai client</name>
-  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for the Orchestration tabular prediction service.</description>
-
+  <name>Tabular prediction client</name>
+  <description>SAP Cloud SDK for AI is the official Software Development Kit (SDK) for SAP AI Core, SAP Generative AI Hub, and Orchestration Service. This is the client for the Tabular prediction service.</description>
   <url>https://github.com/SAP/ai-sdk-java?tab=readme-ov-file#documentation</url>
   <organization>
     <name>SAP SE</name>
@@ -35,51 +36,24 @@
     <url>https://github.com/SAP/ai-sdk-java/tree/main</url>
   </scm>
   <properties>
-    <project.rootdir>${project.basedir}/../</project.rootdir>
-    <coverage.complexity>82%</coverage.complexity>
-    <coverage.line>94%</coverage.line>
-    <coverage.instruction>93%</coverage.instruction>
-    <coverage.branch>75%</coverage.branch>
-    <coverage.method>94%</coverage.method>
+    <project.rootdir>${project.basedir}/../../</project.rootdir>
+    <coverage.complexity>100%</coverage.complexity>
+    <coverage.line>100%</coverage.line>
+    <coverage.instruction>100%</coverage.instruction>
+    <coverage.branch>100%</coverage.branch>
+    <coverage.method>100%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
   <dependencies>
     <!-- scope "compile" -->
     <dependency>
-      <groupId>com.sap.ai.sdk</groupId>
-      <artifactId>core</artifactId>
-    </dependency>
-    <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
-      <artifactId>connectivity-apache-httpclient5</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-model</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-commons</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>io.projectreactor</groupId>
-      <artifactId>reactor-core</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents.core5</groupId>
-      <artifactId>httpcore5</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents.client5</groupId>
-      <artifactId>httpclient5</artifactId>
+      <groupId>com.sap.cloud.sdk.datamodel</groupId>
+      <artifactId>openapi-core-apache</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -93,34 +67,6 @@
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
     </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.vavr</groupId>
-      <artifactId>vavr</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.github.victools</groupId>
-      <artifactId>jsonschema-generator</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.github.victools</groupId>
-      <artifactId>jsonschema-module-jackson</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
-      <artifactId>jackson-dataformat-yaml</artifactId>
-    </dependency>
     <!-- scope "provided" -->
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -128,6 +74,16 @@
       <scope>provided</scope>
     </dependency>
     <!-- scope "test" -->
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+      <artifactId>connectivity-apache-httpclient5</artifactId>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -141,21 +97,6 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.javaparser</groupId>
-      <artifactId>javaparser-core</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
