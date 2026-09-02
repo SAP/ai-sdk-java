@@ -245,9 +245,12 @@ public class TabularArtifactsApi extends BaseApi {
    * <p><b>400</b> - The specification of the resource was incorrect
    *
    * @param aiResourceGroup (required) Resource Group ID
-   * @param $top (optional) The value for the parameter $top
-   * @param $skip (optional) The value for the parameter $skip
-   * @param $count (optional, default to false) The value for the parameter $count
+   * @param $top (optional) Number of results to display
+   * @param $skip (optional) Number of results to be skipped from the ordered list of results
+   * @param $count (optional) When the $count field is set to false, the response contains a count
+   *     of the items present in the response. When the $count field is set to true, the response
+   *     contains a count of all the items present on the server, and not just the ones in the
+   *     response. When the $count field is not passed, it is false by default.
    * @return TabularArtifactListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */

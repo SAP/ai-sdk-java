@@ -34,7 +34,7 @@ import com.sap.ai.sdk.tabular.generated.predict.model.ContextSelectionConfig;
 import com.sap.ai.sdk.tabular.generated.predict.model.PredictRequest;
 import com.sap.ai.sdk.tabular.generated.predict.model.PredictResponse;
 import com.sap.ai.sdk.tabular.generated.predict.model.PredictionConfig;
-import com.sap.ai.sdk.tabular.generated.predict.model.Strategyconfig;
+import com.sap.ai.sdk.tabular.generated.predict.model.StrategyConfigs;
 import com.sap.ai.sdk.tabular.generated.predict.model.TFMEnum;
 import com.sap.ai.sdk.tabular.generated.predict.model.TargetColumn;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -66,15 +66,15 @@ public class TabularService {
 
   private static HttpDestination buildDestination() {
     final HttpDestination base = new AiCoreService().getBaseDestination();
-    final URI rootUri = base.getUri().resolve("/v2/admin/tcr/");
+    final URI rootUri = base.getUri().resolve("/v2/tcr/");
     return DefaultHttpDestination.fromDestination(base).uri(rootUri).build();
   }
 
   static final String resourceGroup = "default";
   static final String dataDestinationName = "ai-sdk-hdl-destination";
-  static final String artifactName = "product-artifact";
-  static final String artifactPath = "/data/product_data_hana.parquet";
-  static final String scenarioConfigName = "product-prediction-scenario";
+  static final String artifactName = "ai-sdk-tabular-artifact";
+  static final String artifactPath = "/data/product_data_hana_lowercase.parquet";
+  static final String scenarioConfigName = "product-prediction-scenario-lowercase";
 
   /** Manage data destinations (S3, Azure, GCP, HDL) for unified data source integration. */
   public static class DataDestinationService {
@@ -198,22 +198,29 @@ public class TabularService {
                   ContextSelectionConfig.create()
                       .numRows(3)
                       .strategy(RANDOM)
-                      .strategyConfig(
-                          Strategyconfig.create().indexColumn("id").deterministic(true)))
+                      .strategyConfigs(
+                          StrategyConfigs.create().indexColumn("id").deterministic(true)))
               .rows(
                   List.of(
                       Map.of(
-                          "product", "Laptop",
-                          "price", 999.99,
-                          "production_date", "2025-01-15",
-                          "__row_idx__", "prediction-1",
+                          "product", "Desktop Computer",
+                          "price", 921.5,
+                          "date", "2024-12-02",
+                          "id", "42",
                           "salesgroup", "[PREDICT]"),
                       Map.of(
-                          "product", "Office Chair",
-                          "price", 142.99,
-                          "production_date", "2025-07-13",
-                          "__row_idx__", "prediction-2",
-                          "salesgroup", "[PREDICT]")));
+                          "product", "Macbook",
+                          "price", 1220.99,
+                          "date", "2026-01-31",
+                          "id", "99",
+                          "salesgroup", "[PREDICT]"),
+                      Map.of(
+                          "product", "Office Desk",
+                          "price", 750.5,
+                          "date", "2024-12-05",
+                          "id", "689",
+                          "salesgroup", "[PREDICT]")))
+              .modelConfig(Map.of());
       return PREDICT_CLIENT.predictV1PredictPost(request);
     }
   }
