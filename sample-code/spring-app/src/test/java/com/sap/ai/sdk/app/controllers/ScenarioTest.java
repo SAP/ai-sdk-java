@@ -147,7 +147,7 @@ class ScenarioTest {
   @SneakyThrows
   void rptModelAvailability() {
 
-    // Gather AI Core's list of available OpenAI models
+    // Gather AI Core's list of available RPT models
     val aiModelList = new ScenarioController().getModels().getResources();
 
     val internalOnlyModels = Set.of("sap-rpt-1.1-preview");
@@ -161,7 +161,7 @@ class ScenarioTest {
                 (list, model) -> list.put(model.getModel(), isDeprecated(model)),
                 HashMap::putAll);
 
-    // Gather our declared OpenAI models
+    // Gather our declared RPT models
     Field[] declaredFields = RptModel.class.getFields();
 
     // get the models from the OpenAiModel class
@@ -173,7 +173,7 @@ class ScenarioTest {
       }
     }
 
-    // Assert that the declared OpenAI models match the expected list
+    // Assert that the declared RPT models match the expected list
     assertThat(declaredRptModelList.keySet()).containsAll(availableRptModels.keySet());
 
     SoftAssertions softly = new SoftAssertions();
