@@ -1,9 +1,13 @@
 package com.sap.ai.sdk.foundationmodels.rpt;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.containing;
+import static com.github.tomakehurst.wiremock.client.WireMock.not;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.ColumnType.STRING;
 import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig.TaskTypeEnum.CLASSIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -319,7 +323,7 @@ class RptClientTest {
   }
 
   @Test
-  void testOldModelStripsContextModeFromRowWiseRequest(final WireMockRuntimeInfo server) {
+  void testContextModeStrippedFromRowWiseRequest(final WireMockRuntimeInfo server) {
     stubFor(post(urlEqualTo("/predict")).willReturn(aResponse().withStatus(200).withBody("{}")));
     final var oldModelClient =
         RptClient.forDestination(
@@ -340,10 +344,11 @@ class RptClientTest {
     assertThat(config.getContextMode()).isEqualTo(PredictionConfig.ContextModeEnum.DEEP);
     oldModelClient.tableCompletion(request);
     assertThat(config.getContextMode()).isNull();
+    verify(postRequestedFor(urlEqualTo("/predict")).withRequestBody(not(containing("context_mode"))));
   }
 
   @Test
-  void testOldModelStripsContextModeFromColumnWiseRequest(final WireMockRuntimeInfo server) {
+  void testContextModeStrippedFromColumnWiseRequest(final WireMockRuntimeInfo server) {
     stubFor(post(urlEqualTo("/predict")).willReturn(aResponse().withStatus(200).withBody("{}")));
     final var oldModelClient =
         RptClient.forDestination(
@@ -364,6 +369,7 @@ class RptClientTest {
     assertThat(config.getContextMode()).isEqualTo(PredictionConfig.ContextModeEnum.DEFAULT);
     oldModelClient.tableCompletion(request);
     assertThat(config.getContextMode()).isNull();
+    verify(postRequestedFor(urlEqualTo("/predict")).withRequestBody(not(containing("context_mode"))));
   }
 
   @Test
@@ -384,5 +390,6 @@ class RptClientTest {
     assertThat(predictionConfig.getContextMode()).isEqualTo(PredictionConfig.ContextModeEnum.DEEP);
     oldModelClient.tableCompletion(parquetFile, predictionConfig);
     assertThat(predictionConfig.getContextMode()).isNull();
+    verify(postRequestedFor(urlEqualTo("/predict_parquet")).withRequestBody(not(containing("context_mode"))));
   }
 }

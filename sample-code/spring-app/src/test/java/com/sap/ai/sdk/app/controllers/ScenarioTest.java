@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.sap.ai.sdk.core.model.AiModelBaseData;
 import com.sap.ai.sdk.core.model.AiModelVersion;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
+import com.sap.ai.sdk.foundationmodels.rpt.RptModel;
 import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -131,6 +132,55 @@ class ScenarioTest {
     SoftAssertions softly = new SoftAssertions();
     for (val model : availableOrchestrationModels.entrySet()) {
       Boolean declaredDeprecated = declaredOrchestrationModelList.get(model.getKey());
+      softly
+          .assertThat(declaredDeprecated)
+          .withFailMessage(
+              "%s is deprecated:%s on AI Core but deprecated:%s in AI SDK",
+              model.getKey(), model.getValue(), declaredDeprecated)
+          .isEqualTo(model.getValue());
+    }
+    softly.assertAll();
+  }
+
+  @Test
+  @DisplayName(
+      "Declared RPT models must be superset of our AI Core account's available RPT models")
+  @SneakyThrows
+  void rptModelAvailability() {
+
+    // Gather AI Core's list of available OpenAI models
+    val aiModelList = new ScenarioController().getModels().getResources();
+
+    val internalOnlyModels =
+        Set.of("sap-rpt-1.1-preview");
+
+    val availableRptModels =
+        aiModelList.stream()
+            .filter(model -> model.getModel().contains("rpt"))
+            .filter(model -> !internalOnlyModels.contains(model.getModel()))
+            .collect(
+                () -> new HashMap<String, Boolean>(),
+                (list, model) -> list.put(model.getModel(), isDeprecated(model)),
+                HashMap::putAll);
+
+    // Gather our declared OpenAI models
+    Field[] declaredFields = RptModel.class.getFields();
+
+    // get the models from the OpenAiModel class
+    HashMap<String, Boolean> declaredRptModelList = new HashMap<>();
+    for (Field field : declaredFields) {
+      if (field.getType().equals(RptModel.class)) {
+        declaredRptModelList.put(
+            ((RptModel) field.get(null)).name(), field.isAnnotationPresent(Deprecated.class));
+      }
+    }
+
+    // Assert that the declared OpenAI models match the expected list
+    assertThat(declaredRptModelList.keySet()).containsAll(availableRptModels.keySet());
+
+    SoftAssertions softly = new SoftAssertions();
+    for (val model : availableRptModels.entrySet()) {
+      Boolean declaredDeprecated = declaredRptModelList.get(model.getKey());
       softly
           .assertThat(declaredDeprecated)
           .withFailMessage(
