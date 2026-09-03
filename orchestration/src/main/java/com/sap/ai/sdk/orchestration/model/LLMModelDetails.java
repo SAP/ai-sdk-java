@@ -47,6 +47,9 @@ public class LLMModelDetails
   @JsonProperty("max_retries")
   private Integer maxRetries = 2;
 
+  @JsonProperty("drop_unsupported_params")
+  private Boolean dropUnsupportedParams = true;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -240,6 +243,53 @@ public class LLMModelDetails
   }
 
   /**
+   * Set the dropUnsupportedParams of this {@link LLMModelDetails} instance and return the same
+   * instance.
+   *
+   * @param dropUnsupportedParams Controls behaviour when Chat Completions parameters not supported
+   *     by the Responses API are present in the request. Only applies to models that use the
+   *     Responses API (responsesApiOnly: true in the model registry). When true (default):
+   *     unsupported params are silently dropped and reported in the
+   *     X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter
+   *     causes a 400 error with an actionable message.
+   * @return The same instance of this {@link LLMModelDetails} class
+   */
+  @Nonnull
+  public LLMModelDetails dropUnsupportedParams(@Nullable final Boolean dropUnsupportedParams) {
+    this.dropUnsupportedParams = dropUnsupportedParams;
+    return this;
+  }
+
+  /**
+   * Controls behaviour when Chat Completions parameters not supported by the Responses API are
+   * present in the request. Only applies to models that use the Responses API (responsesApiOnly:
+   * true in the model registry). When true (default): unsupported params are silently dropped and
+   * reported in the X-Orchestration-Dropped-Model-Params response header. When false: any
+   * unsupported parameter causes a 400 error with an actionable message.
+   *
+   * @return dropUnsupportedParams The dropUnsupportedParams of this {@link LLMModelDetails}
+   *     instance.
+   */
+  @Nonnull
+  public Boolean isDropUnsupportedParams() {
+    return dropUnsupportedParams;
+  }
+
+  /**
+   * Set the dropUnsupportedParams of this {@link LLMModelDetails} instance.
+   *
+   * @param dropUnsupportedParams Controls behaviour when Chat Completions parameters not supported
+   *     by the Responses API are present in the request. Only applies to models that use the
+   *     Responses API (responsesApiOnly: true in the model registry). When true (default):
+   *     unsupported params are silently dropped and reported in the
+   *     X-Orchestration-Dropped-Model-Params response header. When false: any unsupported parameter
+   *     causes a 400 error with an actionable message.
+   */
+  public void setDropUnsupportedParams(@Nullable final Boolean dropUnsupportedParams) {
+    this.dropUnsupportedParams = dropUnsupportedParams;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link LLMModelDetails}.
    *
    * @return The set of properties names
@@ -282,6 +332,8 @@ public class LLMModelDetails
     if (params != null) declaredFields.put("params", params);
     if (timeout != null) declaredFields.put("timeout", timeout);
     if (maxRetries != null) declaredFields.put("maxRetries", maxRetries);
+    if (dropUnsupportedParams != null)
+      declaredFields.put("dropUnsupportedParams", dropUnsupportedParams);
     return declaredFields;
   }
 
@@ -311,12 +363,14 @@ public class LLMModelDetails
         && Objects.equals(this.version, llMModelDetails.version)
         && Objects.equals(this.params, llMModelDetails.params)
         && Objects.equals(this.timeout, llMModelDetails.timeout)
-        && Objects.equals(this.maxRetries, llMModelDetails.maxRetries);
+        && Objects.equals(this.maxRetries, llMModelDetails.maxRetries)
+        && Objects.equals(this.dropUnsupportedParams, llMModelDetails.dropUnsupportedParams);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(name, version, params, timeout, maxRetries, cloudSdkCustomFields);
+    return Objects.hash(
+        name, version, params, timeout, maxRetries, dropUnsupportedParams, cloudSdkCustomFields);
   }
 
   @Override
@@ -329,6 +383,9 @@ public class LLMModelDetails
     sb.append("    params: ").append(toIndentedString(params)).append("\n");
     sb.append("    timeout: ").append(toIndentedString(timeout)).append("\n");
     sb.append("    maxRetries: ").append(toIndentedString(maxRetries)).append("\n");
+    sb.append("    dropUnsupportedParams: ")
+        .append(toIndentedString(dropUnsupportedParams))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
