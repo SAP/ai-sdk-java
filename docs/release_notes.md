@@ -8,11 +8,12 @@
 
 ### 🔧 Compatibility Notes
 
-- [Foundation models] SAP-RPT was updated to the newer 1.6.0 API
+- [RPT] SAP-RPT was updated to the newer 1.6.0 API
 
 ### ✨ New Functionality
 
-- [Grounding] Enable presigned URL for Pipeline Documents.
+- [Grounding] Enabled presigned URL for Pipeline Documents.
+- [RPT] Added `SAP_RPT_1_6` and `SAP_RPT_1_6_LARGE` to the model list in `RptModel`.
 
 ### 📈 Improvements
 

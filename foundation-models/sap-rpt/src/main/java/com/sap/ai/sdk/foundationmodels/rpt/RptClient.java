@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.rpt;
 
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+import static com.sap.ai.sdk.foundationmodels.rpt.RptModel.SAP_RPT_1_6_LARGE;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.annotations.Beta;
@@ -31,15 +32,9 @@ import lombok.RequiredArgsConstructor;
 public class RptClient {
   @Nonnull private final DefaultApi api;
   @Nonnull private final DefaultApi apiWithGzipEncoding;
-  private final boolean usesOldModel;
+  private final boolean contextModePossible;
 
-  private static final Set<String> PRE1_6MODELS =
-      Set.of(
-          "sap-rpt-1-large",
-          "sap-rpt-1-small",
-          "sap-rpt-1.1-preview",
-          "sap-rpt-1.5",
-          "sap-rpt-1.5-large");
+  private static final Set<RptModel> MODELS_WITH_CONTEXT_MODE = Set.of(SAP_RPT_1_6_LARGE);
 
   /**
    * Creates a new RptClient for the specified foundation model.
@@ -51,9 +46,9 @@ public class RptClient {
   @Nonnull
   public static RptClient forModel(@Nonnull final RptModel foundationModel)
       throws DeploymentResolutionException {
-    final var usesOldModel = PRE1_6MODELS.contains(foundationModel.name());
+    final var contextModePossible = MODELS_WITH_CONTEXT_MODE.contains(foundationModel);
     final var destination = new AiCoreService().getInferenceDestination().forModel(foundationModel);
-    return forDestination(destination, usesOldModel);
+    return forDestination(destination, contextModePossible);
   }
 
   /**
@@ -63,11 +58,11 @@ public class RptClient {
    * @return A new instance of RptClient.
    */
   static RptClient forDestination(
-      @Nonnull final Destination destination, final boolean usesOldModel) {
+      @Nonnull final Destination destination, final boolean contextModePossible) {
     final var apiClient = ApiClient.create(destination).withObjectMapper(getDefaultObjectMapper());
     final var api = new DefaultApi(apiClient);
     return new RptClient(
-        api, api.withDefaultHeaders(Map.of("Content-Encoding", "gzip")), usesOldModel);
+        api, api.withDefaultHeaders(Map.of("Content-Encoding", "gzip")), contextModePossible);
   }
 
   /**
@@ -88,15 +83,14 @@ public class RptClient {
    *
    * @param requestBody The prediction request
    * @return prediction response from the RPT model
-   * @apiNote When used with a pre-1.6 model, the {@code contextMode} field of the embedded {@link
-   *     com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig} is set to {@code
-   *     null} on the passed-in object as a side effect.
+   * @apiNote When used with a model that does not support it, the {@code contextMode} field of the
+   *     embedded {@link com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig} is
+   *     set to {@code null} on the passed-in object as a side effect.
    */
   @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(@Nonnull final PredictRequestPayload requestBody) {
-    // contextMode has to be null for models < 1.6
-    if (usesOldModel) {
+    if (!contextModePossible) {
       configFrom(requestBody).setContextMode(null);
     }
     return apiWithGzipEncoding.predict(requestBody);
@@ -133,17 +127,16 @@ public class RptClient {
    * @param parquetFile Parquet file
    * @param predictionConfig The prediction configuration
    * @return prediction response from the RPT model
-   * @apiNote When used with a pre-1.6 model, the {@code contextMode} field of the passed-in {@link
-   *     com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig} is set to {@code
-   *     null} as a side effect.
+   * @apiNote When used with a model that does not support it, the {@code contextMode} field of the
+   *     passed-in {@link com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig} is
+   *     set to {@code null} as a side effect.
    * @since 1.16.0
    */
   @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(
       @Nonnull final File parquetFile, @Nonnull final PredictionConfig predictionConfig) {
-    // contextMode has to be null for models < 1.6
-    if (usesOldModel) {
+    if (!contextModePossible) {
       predictionConfig.setContextMode(null);
     }
     try {
