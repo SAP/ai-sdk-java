@@ -8,7 +8,7 @@ import static com.sap.ai.sdk.tabular.generated.orchestration.model.S3DataDestina
 import static com.sap.ai.sdk.tabular.generated.predict.model.ContextSelectionStrategyEnum.RANDOM;
 import static com.sap.ai.sdk.tabular.generated.predict.model.TaskTypeEnum.CLASSIFICATION;
 
-import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.tabular.TabularClient;
 import com.sap.ai.sdk.tabular.generated.orchestration.client.DataDestinationsApi;
 import com.sap.ai.sdk.tabular.generated.orchestration.client.ScenarioConfigurationManagerApi;
 import com.sap.ai.sdk.tabular.generated.orchestration.client.TabularArtifactsApi;
@@ -37,9 +37,6 @@ import com.sap.ai.sdk.tabular.generated.predict.model.PredictionConfig;
 import com.sap.ai.sdk.tabular.generated.predict.model.StrategyConfigs;
 import com.sap.ai.sdk.tabular.generated.predict.model.TFMEnum;
 import com.sap.ai.sdk.tabular.generated.predict.model.TargetColumn;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
-import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import lombok.val;
@@ -53,22 +50,13 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TabularService {
-
   static final DataDestinationsApi DATA_DESTINATIONS_CLIENT =
-      new DataDestinationsApi(buildDestination());
+      new TabularClient().dataDestinations();
   static final TabularArtifactsApi TABULAR_ARTIFACTS_CLIENT =
-      new TabularArtifactsApi(buildDestination());
+      new TabularClient().tabularArtifacts();
   static final ScenarioConfigurationManagerApi SCENARIO_CONFIG_CLIENT =
-      new ScenarioConfigurationManagerApi(buildDestination());
-  static final PredictApi PREDICT_CLIENT =
-      new PredictApi(
-          new AiCoreService().getInferenceDestination().forScenario("tabular-orchestration"));
-
-  private static HttpDestination buildDestination() {
-    final HttpDestination base = new AiCoreService().getBaseDestination();
-    final URI rootUri = base.getUri().resolve("/v2/tcr/");
-    return DefaultHttpDestination.fromDestination(base).uri(rootUri).build();
-  }
+      new TabularClient().scenarioConfiguration();
+  static final PredictApi PREDICT_CLIENT = new TabularClient().predict();
 
   static final String resourceGroup = "default";
   static final String dataDestinationName = "ai-sdk-hdl-destination";

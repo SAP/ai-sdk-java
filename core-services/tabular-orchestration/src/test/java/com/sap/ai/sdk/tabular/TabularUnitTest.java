@@ -1,5 +1,10 @@
 package com.sap.ai.sdk.tabular;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.sap.ai.sdk.tabular.generated.orchestration.model.DataDestinationStatus.ACTIVE;
 import static com.sap.ai.sdk.tabular.generated.orchestration.model.DefinitionType.DOCUMENT;
 import static com.sap.ai.sdk.tabular.generated.orchestration.model.HDLDataDestinationGetResponse.AdapterTypeEnum.FILE;
@@ -8,11 +13,10 @@ import static com.sap.ai.sdk.tabular.generated.orchestration.model.TabularArtifa
 import static com.sap.ai.sdk.tabular.generated.predict.model.TaskTypeEnum.CLASSIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
-import com.sap.ai.sdk.tabular.generated.orchestration.client.DataDestinationsApi;
-import com.sap.ai.sdk.tabular.generated.orchestration.client.ScenarioConfigurationManagerApi;
-import com.sap.ai.sdk.tabular.generated.orchestration.client.TabularArtifactsApi;
+import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.ContextSelectionStrategy;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.DocumentDefinition;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.GetDataDestination;
@@ -24,7 +28,6 @@ import com.sap.ai.sdk.tabular.generated.orchestration.model.ScenarioConfiguratio
 import com.sap.ai.sdk.tabular.generated.orchestration.model.TabularArtifactDetails;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.TabularArtifactListResponse;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.TabularArtifactStatus;
-import com.sap.ai.sdk.tabular.generated.predict.client.PredictApi;
 import com.sap.ai.sdk.tabular.generated.predict.model.ContextSelectionConfig;
 import com.sap.ai.sdk.tabular.generated.predict.model.ContextSelectionStrategyEnum;
 import com.sap.ai.sdk.tabular.generated.predict.model.PredictRequest;
@@ -44,10 +47,7 @@ import org.junit.jupiter.api.Test;
 
 @WireMockTest
 public class TabularUnitTest {
-  private static DataDestinationsApi dataDestinationClient;
-  private static TabularArtifactsApi tabularArtifactsClient;
-  private static ScenarioConfigurationManagerApi scenarioConfigClient;
-  private static PredictApi predictClient;
+  private static TabularClient client;
 
   static final String resourceGroup = "default";
   static final String dataDestinationName = "ai-sdk-hdl-destination";
@@ -55,23 +55,22 @@ public class TabularUnitTest {
   static final String artifactPath = "/data/product_data_hana_lowercase.parquet";
   static final String scenarioConfigName = "product-prediction-scenario-lowercase";
 
+  WireMockRuntimeInfo server;
+
   @BeforeEach
   void setup(final WireMockRuntimeInfo server) {
+    this.server = server;
     val base = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    val rootUri = base.getUri().resolve("/v2/tcr/");
-    val destination = DefaultHttpDestination.fromDestination(base).uri(rootUri).build();
-    dataDestinationClient = new DataDestinationsApi(destination);
-    tabularArtifactsClient = new TabularArtifactsApi(destination);
-    scenarioConfigClient = new ScenarioConfigurationManagerApi(destination);
+    val service = new AiCoreService().withBaseDestination(base);
+    client = new TabularClient(service).withPredictDestination(base);
 
-    predictClient = new PredictApi(base);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
 
   @Test
   void testGetAllDataDestinations() {
     final GetDataDestinations response =
-        dataDestinationClient.getAllDataDestinations(resourceGroup);
+        client.dataDestinations().getAllDataDestinations(resourceGroup);
     assertThat(response.getCount()).isEqualTo(1);
     final List<GetDataDestination> resources = response.getResources();
     assertThat(resources.size()).isEqualTo(1);
@@ -90,7 +89,7 @@ public class TabularUnitTest {
   @Test
   void testGetAllTabularArtifacts() {
     final TabularArtifactListResponse response =
-        tabularArtifactsClient.getAllTabularArtifacts(resourceGroup);
+        client.tabularArtifacts().getAllTabularArtifacts(resourceGroup);
     assertThat(response.getCount()).isEqualTo(1);
     final List<TabularArtifactDetails> resources = response.getResources();
     assertThat(resources.size()).isEqualTo(1);
@@ -126,7 +125,7 @@ public class TabularUnitTest {
   @Test
   void testGetAllScenarioConfigurations() {
     final GetScenarioConfigurations response =
-        scenarioConfigClient.getAllScenarioConfigurations(resourceGroup);
+        client.scenarioConfiguration().getAllScenarioConfigurations(resourceGroup);
     assertThat(response.getCount()).isEqualTo(1);
     final List<ScenarioConfigurationObject> resources = response.getResources();
     assertThat(resources.size()).isEqualTo(1);
@@ -182,7 +181,7 @@ public class TabularUnitTest {
                         "salesgroup", "[PREDICT]")))
             .modelConfig(Map.of());
 
-    final PredictResponse response = predictClient.predictV1PredictPost(request);
+    final PredictResponse response = client.predict().predictV1PredictPost(request);
     assertThat(response.getId()).isEqualTo("babec616-8085-43ad-a36a-57f0c1484202");
 
     assertThat(response.getMetadata().getNumColumns()).isEqualTo(5);
@@ -214,5 +213,29 @@ public class TabularUnitTest {
     assertThat(response.getStatus().getCode()).isEqualTo(0);
     assertThat(response.getStatus().getMessage()).isEqualTo("ok");
     assertThat(response.getAdditionalInformation()).isEmpty();
+  }
+
+  @Test
+  void testCustomHeaders() {
+    WireMock.stubFor(
+        get(anyUrl())
+            .withHeader("x-test-header", equalTo("test-value"))
+            .willReturn(
+                okJson(
+                    """
+                    {
+                      "count": 0,
+                      "resources": []
+                    }
+                    """)));
+
+    val response =
+        client
+            .withHeader("x-test-header", "test-value")
+            .dataDestinations()
+            .getAllDataDestinations(resourceGroup);
+    assertThat(response.getCount()).isEqualTo(0);
+
+    WireMock.verify(getRequestedFor(anyUrl()).withHeader("x-test-header", equalTo("test-value")));
   }
 }
