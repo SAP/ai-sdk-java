@@ -202,6 +202,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
    *
    * @return if internal tool execution enabled
    */
+  @SuppressWarnings("PMD.BooleanGetMethodName") // old interface name preserved for compatibility (no breaking changes)
   @Nullable
   public Boolean getInternalToolExecutionEnabled() {
     return this.internalToolExecutionEnabled;
