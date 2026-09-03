@@ -143,16 +143,14 @@ class ScenarioTest {
   }
 
   @Test
-  @DisplayName(
-      "Declared RPT models must be superset of our AI Core account's available RPT models")
+  @DisplayName("Declared RPT models must be superset of our AI Core account's available RPT models")
   @SneakyThrows
   void rptModelAvailability() {
 
     // Gather AI Core's list of available OpenAI models
     val aiModelList = new ScenarioController().getModels().getResources();
 
-    val internalOnlyModels =
-        Set.of("sap-rpt-1.1-preview");
+    val internalOnlyModels = Set.of("sap-rpt-1.1-preview");
 
     val availableRptModels =
         aiModelList.stream()

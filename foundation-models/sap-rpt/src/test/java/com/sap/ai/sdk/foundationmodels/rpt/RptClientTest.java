@@ -344,7 +344,8 @@ class RptClientTest {
     assertThat(config.getContextMode()).isEqualTo(PredictionConfig.ContextModeEnum.DEEP);
     oldModelClient.tableCompletion(request);
     assertThat(config.getContextMode()).isNull();
-    verify(postRequestedFor(urlEqualTo("/predict")).withRequestBody(not(containing("context_mode"))));
+    verify(
+        postRequestedFor(urlEqualTo("/predict")).withRequestBody(not(containing("context_mode"))));
   }
 
   @Test
@@ -369,7 +370,8 @@ class RptClientTest {
     assertThat(config.getContextMode()).isEqualTo(PredictionConfig.ContextModeEnum.DEFAULT);
     oldModelClient.tableCompletion(request);
     assertThat(config.getContextMode()).isNull();
-    verify(postRequestedFor(urlEqualTo("/predict")).withRequestBody(not(containing("context_mode"))));
+    verify(
+        postRequestedFor(urlEqualTo("/predict")).withRequestBody(not(containing("context_mode"))));
   }
 
   @Test
@@ -390,6 +392,8 @@ class RptClientTest {
     assertThat(predictionConfig.getContextMode()).isEqualTo(PredictionConfig.ContextModeEnum.DEEP);
     oldModelClient.tableCompletion(parquetFile, predictionConfig);
     assertThat(predictionConfig.getContextMode()).isNull();
-    verify(postRequestedFor(urlEqualTo("/predict_parquet")).withRequestBody(not(containing("context_mode"))));
+    verify(
+        postRequestedFor(urlEqualTo("/predict_parquet"))
+            .withRequestBody(not(containing("context_mode"))));
   }
 }
