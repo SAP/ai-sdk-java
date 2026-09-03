@@ -13,7 +13,7 @@ updates:
       prefix: 'chore: [DevOps] '
     cooldown:
       default-days: 4
-    ignore:
+    #ignore:
       #- dependency-name: "com.fasterxml.jackson.*:*"
       #  versions: [ ">=3.0.0" ]
       #- dependency-name: "tools.jackson.*:*"
