@@ -16,7 +16,6 @@ import com.sap.ai.sdk.orchestration.model.MessageToolCallFunction;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.Setter;
@@ -29,8 +28,6 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.model.tool.DefaultToolCallingManager;
-import org.springframework.ai.model.tool.ToolExecutionResult;
 import reactor.core.publisher.Flux;
 
 /**
@@ -43,10 +40,6 @@ public class OrchestrationChatModel implements ChatModel {
   @Nonnull private final OrchestrationClient client;
 
   @Setter @Nullable private OrchestrationChatOptions defaultOptions;
-
-  @Nonnull
-  private final DefaultToolCallingManager toolCallingManager =
-      DefaultToolCallingManager.builder().build();
 
   /**
    * Default constructor.
@@ -84,28 +77,8 @@ public class OrchestrationChatModel implements ChatModel {
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val response =
           new OrchestrationSpringChatResponse(
-              client.chatCompletion(orchestrationPrompt, options.getConfig()));
+              client.chatCompletion(orchestrationPrompt, options.getConfigWithCallbacks()));
 
-      if (!Boolean.FALSE.equals(options.getInternalToolExecutionEnabled())
-          && response.hasToolCalls()) {
-
-        if (log.isDebugEnabled()) {
-          val tools = response.getResult().getOutput().getToolCalls();
-          val toolsStr = tools.stream().map(ToolCall::name).collect(Collectors.joining(", "));
-          log.debug("Executing {} tool call(s) - {}.", tools.size(), toolsStr);
-        }
-
-        val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
-
-        if (toolExecutionResult.returnDirect()) {
-          log.debug("Returning tool execution result directly without re-invoking LLM.");
-          return new ChatResponse(ToolExecutionResult.buildGenerations(toolExecutionResult));
-        }
-
-        // Send the tool execution result back to the model.
-        log.debug("Re-invoking LLM with tool execution results.");
-        return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
-      }
       return response;
     }
     throw new IllegalArgumentException(

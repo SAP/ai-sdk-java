@@ -13,15 +13,6 @@ updates:
       prefix: 'chore: [DevOps] '
     cooldown:
       default-days: 4
-    #ignore:
-      #- dependency-name: "com.fasterxml.jackson.*:*"
-      #  versions: [ ">=3.0.0" ]
-      #- dependency-name: "tools.jackson.*:*"
-      #  versions: [ ">=3.0.0" ]
-      #- dependency-name: "com.github.victools:jsonschema-generator"
-      #  versions: [ ">=5.0.0" ]
-      #- dependency-name: "com.github.victools:jsonschema-module-jackson"
-      #  versions: [ ">=5.0.0" ]
     groups:
       production-minor-patch:
         dependency-type: "production"

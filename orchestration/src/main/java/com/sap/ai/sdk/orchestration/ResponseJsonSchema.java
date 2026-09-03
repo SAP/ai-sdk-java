@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.victools.jsonschema.generator.Option;
@@ -7,8 +8,8 @@ import com.github.victools.jsonschema.generator.OptionPreset;
 import com.github.victools.jsonschema.generator.SchemaGenerator;
 import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
 import com.github.victools.jsonschema.generator.SchemaVersion;
-import com.github.victools.jsonschema.module.jackson.JacksonModule;
 import com.github.victools.jsonschema.module.jackson.JacksonOption;
+import com.github.victools.jsonschema.module.jackson.JacksonSchemaModule;
 import java.lang.reflect.Type;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -63,7 +64,7 @@ public class ResponseJsonSchema {
   @Nonnull
   public static ResponseJsonSchema fromType(@Nonnull final Type classType) {
     val module =
-        new JacksonModule(
+        new JacksonSchemaModule(
             JacksonOption.RESPECT_JSONPROPERTY_REQUIRED, JacksonOption.RESPECT_JSONPROPERTY_ORDER);
     val generator =
         new SchemaGenerator(
@@ -76,7 +77,7 @@ public class ResponseJsonSchema {
     final Map<String, Object> schemaMap;
     try {
       schemaMap = new ObjectMapper().readValue(jsonSchema.toString(), new TypeReference<>() {});
-    } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+    } catch (JsonProcessingException e) {
       throw new IllegalStateException("Failed to parse generated JSON schema", e);
     }
     val schemaName = ((Class<?>) classType).getSimpleName() + "-Schema";

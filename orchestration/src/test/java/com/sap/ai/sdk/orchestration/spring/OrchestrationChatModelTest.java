@@ -27,7 +27,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 import lombok.val;
@@ -44,7 +43,6 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
-import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.support.ToolCallbacks;
@@ -149,38 +147,7 @@ class OrchestrationChatModelTest {
   }
 
   @Test
-  void testToolCallsWithoutExecution() throws IOException {
-    stubFor(
-        post(urlPathEqualTo("/v2/completion"))
-            .willReturn(
-                aResponse()
-                    .withBodyFile("toolCallsResponse.json")
-                    .withHeader("Content-Type", "application/json")));
-
-    defaultOptions.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
-    defaultOptions.setInternalToolExecutionEnabled(false);
-    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
-    val result = client.call(prompt);
-
-    List<ToolCall> toolCalls = result.getResult().getOutput().getToolCalls();
-    assertThat(toolCalls).hasSize(2);
-    ToolCall toolCall1 = toolCalls.get(0);
-    ToolCall toolCall2 = toolCalls.get(1);
-    assertThat(toolCall1.type()).isEqualTo("function");
-    assertThat(toolCall2.type()).isEqualTo("function");
-    assertThat(toolCall1.name()).isEqualTo("getCurrentWeather");
-    assertThat(toolCall2.name()).isEqualTo("getCurrentWeather");
-    assertThat(toolCall1.arguments()).isEqualTo("{\"arg0\": \"Potsdam\", \"arg1\": \"C\"}");
-    assertThat(toolCall2.arguments()).isEqualTo("{\"arg0\": \"Toulouse\", \"arg1\": \"C\"}");
-
-    try (var request1InputStream = fileLoader.apply("toolCallsRequest.json")) {
-      final String request1 = new String(request1InputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request1)));
-    }
-  }
-
-  @Test
-  void testToolCallsWithExecution() throws IOException {
+  void testToolCallsExecution() throws IOException {
     // https://platform.openai.com/docs/guides/function-calling
     stubFor(
         post(urlPathEqualTo("/v2/completion"))
@@ -200,10 +167,13 @@ class OrchestrationChatModelTest {
                 aResponse()
                     .withBodyFile("toolCallsResponse2.json")
                     .withHeader("Content-Type", "application/json")));
-
-    defaultOptions.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
-    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
-    val result = client.call(prompt);
+    val options =
+        defaultOptions.mutate().toolCallbacks(ToolCallbacks.from(new WeatherMethod())).build();
+    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+    val result =
+        Objects.requireNonNull(
+            ChatClient.builder(client).build().prompt(prompt).call().chatResponse(),
+            "Chat response is null");
 
     assertThat(result.getResult().getOutput().getText())
         .isEqualTo("The current temperature in Potsdam is 30°C and in Toulouse 30°C.");

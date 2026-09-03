@@ -46,9 +46,11 @@ public class SpringAiAgenticWorkflowService {
     val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
     //    Add (mocked) tools
-    val options = new OrchestrationChatOptions(config);
-    options.setToolCallbacks(
-        List.of(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod())));
+    val options =
+        new OrchestrationChatOptions(config)
+            .mutate()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod()))
+            .build();
 
     //    Prompts for the chain workflow
     final List<String> systemPrompts =

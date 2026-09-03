@@ -11,6 +11,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
+import com.sap.ai.sdk.orchestration.TemplateConfig;
+import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -64,22 +66,22 @@ class OrchestrationChatOptionsTest {
   }
 
   @Test
-  void testCopy() {
+  void testMutateAndBuild() {
     var opts =
         new OrchestrationChatOptions(
             new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH));
 
-    var copy = (OrchestrationChatOptions) opts.copy();
+    var copy = opts.mutate().build();
     assertThat(copy.getModel()).isEqualTo(GEMINI_2_5_FLASH.getName());
     assertThat(copy.getModelVersion()).isEqualTo(GEMINI_2_5_FLASH.getVersion());
   }
 
   @Test
-  void testCustomCopy() {
+  void testMutateAndBuildCustom() {
     var opts =
         new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(CUSTOM_LLM));
 
-    var copy = (OrchestrationChatOptions) opts.copy();
+    var copy = opts.mutate().build();
     assertCustomLLM(copy);
   }
 
@@ -251,5 +253,54 @@ class OrchestrationChatOptionsTest {
 
     assertThat(result).isInstanceOf(OrchestrationChatOptions.class);
     assertThat(result.getModel()).isEqualTo(GEMINI_2_5_FLASH.getName());
+  }
+
+  @Test
+  void testGetConfigWithCallbacksNoCallbacks() {
+    var opts = baseOpts();
+    var config = opts.getConfigWithCallbacks();
+
+    assertThat(config).isSameAs(opts.getConfig());
+  }
+
+  @Test
+  void testGetConfigWithCallbacksInjectsTools() {
+    var opts =
+        baseOpts().mutate().toolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod()))).build();
+    var config = opts.getConfigWithCallbacks();
+
+    assertThat(config).isNotSameAs(opts.getConfig());
+    var template = (Template) config.getTemplateConfig();
+    assertThat(template.getTools()).hasSize(1);
+    assertThat(template.getTools().get(0).getFunction().getName()).isEqualTo("getCurrentWeather");
+  }
+
+  @Test
+  void testGetConfigWithCallbacksMergesWithExistingTools() {
+    var existingTemplate = TemplateConfig.create().withTools(List.of());
+    var configWithTemplate =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(GEMINI_2_5_FLASH)
+            .withTemplateConfig(existingTemplate);
+    var opts =
+        new OrchestrationChatOptions(configWithTemplate)
+            .mutate()
+            .toolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())))
+            .build();
+
+    var config = opts.getConfigWithCallbacks();
+
+    var template = (Template) config.getTemplateConfig();
+    assertThat(template.getTools()).hasSize(1);
+    assertThat(template.getTools().get(0).getFunction().getName()).isEqualTo("getCurrentWeather");
+  }
+
+  @Test
+  void testGetConfigWithCallbacksDoesNotMutateOriginalConfig() {
+    var opts =
+        baseOpts().mutate().toolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod()))).build();
+    opts.getConfigWithCallbacks();
+
+    assertThat(opts.getConfig().getTemplateConfig()).isNull();
   }
 }

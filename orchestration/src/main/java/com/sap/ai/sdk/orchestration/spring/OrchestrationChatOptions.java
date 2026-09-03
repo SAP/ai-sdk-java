@@ -16,6 +16,7 @@ import com.sap.ai.sdk.orchestration.model.ChatCompletionTool.TypeEnum;
 import com.sap.ai.sdk.orchestration.model.FunctionObject;
 import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
 import com.sap.ai.sdk.orchestration.model.Template;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,7 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
+import lombok.Setter;
 import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
@@ -38,6 +39,7 @@ import org.springframework.ai.tool.ToolCallback;
  * @since 1.2.0
  */
 @Data
+@Setter(AccessLevel.NONE)
 public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   private static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
@@ -45,10 +47,6 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   @Nonnull private OrchestrationModuleConfig config;
 
   @Nonnull private List<ToolCallback> toolCallbacks = List.of();
-
-  @Getter(AccessLevel.NONE)
-  @Nullable
-  private Boolean internalToolExecutionEnabled;
 
   @Nonnull private Set<String> toolNames = Set.of();
 
@@ -153,59 +151,10 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     return getLlmConfigParam(TOP_P.getName());
   }
 
-  /**
-   * Returns a copy of this {@link OrchestrationChatOptions}.
-   *
-   * @param <T> option subtype
-   * @return a copy of this {@link OrchestrationChatOptions}
-   */
-  @SuppressWarnings("unchecked") // The same suppress is in DefaultChatOptions
-  @Nonnull
-  public <T extends ChatOptions> T copy() {
-    // note: this is a shallow copy
-    val copyConfig =
-        new OrchestrationModuleConfig()
-            .withTemplateConfig(config.getTemplateConfig())
-            .withFilteringConfig(config.getFilteringConfig())
-            .withLlmConfig(config.getLlmConfig())
-            .withMaskingConfig(config.getMaskingConfig())
-            .withGroundingConfig(config.getGroundingConfig());
-    val result = new OrchestrationChatOptions(copyConfig);
-    result.setToolCallbacks(toolCallbacks);
-    result.setToolNames(toolNames);
-    result.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
-    return (T) result;
-  }
-
   @SuppressWarnings("unchecked")
   @Nullable
   private <T> T getLlmConfigParam(@Nonnull final String param) {
     return ((Map<String, T>) getLlmConfigNonNull().getParams()).get(param);
-  }
-
-  /**
-   * Setter method
-   *
-   * @param toolCallbacks tool callbacks to set int template config
-   */
-  public void setToolCallbacks(@Nonnull final List<ToolCallback> toolCallbacks) {
-    this.toolCallbacks = toolCallbacks;
-    final Template template =
-        Objects.requireNonNullElse(
-            (Template) config.getTemplateConfig(), Template.create().template());
-    val tools = toolCallbacks.stream().map(OrchestrationChatOptions::toOrchestrationTool).toList();
-    config = config.withTemplateConfig(template.tools(tools));
-  }
-
-  /**
-   * Getter method
-   *
-   * @return if internal tool execution enabled
-   */
-  @SuppressWarnings("PMD.BooleanGetMethodName") // old interface name preserved for compatibility (no breaking changes)
-  @Nullable
-  public Boolean getInternalToolExecutionEnabled() {
-    return this.internalToolExecutionEnabled;
   }
 
   @Nonnull
@@ -229,12 +178,14 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Nonnull private Map<String, Object> toolContext;
     @Nullable private String modelName;
     @Nonnull private final Map<String, Object> paramOverrides = new LinkedHashMap<>();
+    @Nonnull private OrchestrationModuleConfig config;
 
     private Builder(@Nonnull final OrchestrationChatOptions source) {
       this.source = source;
       this.toolCallbacks = source.getToolCallbacks();
       this.toolNames = source.getToolNames();
       this.toolContext = source.getToolContext();
+      this.config = source.getConfig();
     }
 
     @Override
@@ -347,10 +298,28 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
       return this;
     }
 
+    private Builder toolNames(@Nonnull final Set<String> toolNames) {
+      this.toolNames = toolNames;
+      return this;
+    }
+
+    private Builder config(@Nonnull final OrchestrationModuleConfig config) {
+      this.config = config;
+      return this;
+    }
+
     @Override
     @Nonnull
     public OrchestrationChatOptions build() {
-      final OrchestrationChatOptions result = source.copy();
+      val copyConfig =
+          new OrchestrationModuleConfig()
+              .withTemplateConfig(source.config.getTemplateConfig())
+              .withFilteringConfig(source.config.getFilteringConfig())
+              .withLlmConfig(source.config.getLlmConfig())
+              .withMaskingConfig(source.config.getMaskingConfig())
+              .withGroundingConfig(source.config.getGroundingConfig());
+      val result = new OrchestrationChatOptions(copyConfig);
+
       if (modelName != null || !paramOverrides.isEmpty()) {
         final LLMModelDetails existingLlm = result.getLlmConfigNonNull();
         final Map<String, Object> mergedParams = new LinkedHashMap<>();
@@ -363,11 +332,12 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
                 .name(modelName != null ? modelName : existingLlm.getName())
                 .version(existingLlm.getVersion())
                 .params(mergedParams);
-        result.setConfig(result.getConfig().withLlmConfig(newLlm));
+        result.config = result.getConfig().withLlmConfig(newLlm);
       }
-      result.setToolCallbacks(toolCallbacks);
-      result.setToolNames(toolNames);
-      result.setToolContext(toolContext);
+
+      result.toolCallbacks = toolCallbacks;
+      result.toolContext = toolContext;
+      result.toolNames = toolNames;
       return result;
     }
   }
@@ -377,6 +347,36 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     return Objects.requireNonNull(
         config.getLlmConfig(),
         "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(...))");
+  }
+
+  /**
+   * Returns the config with any tool callbacks converted and injected into the template.
+   *
+   * @return the config enriched with tool definitions from {@link #getToolCallbacks()}
+   */
+  @Nonnull
+  public OrchestrationModuleConfig getConfigWithCallbacks() {
+    if (toolCallbacks.isEmpty()) {
+      return config;
+    }
+    final List<ChatCompletionTool> converted =
+        toolCallbacks.stream().map(OrchestrationChatOptions::toOrchestrationTool).toList();
+    final var existingTemplate = config.getTemplateConfig() instanceof Template t ? t : null;
+    final var mergedTools = new ArrayList<ChatCompletionTool>();
+    if (existingTemplate != null && existingTemplate.getTools() != null) {
+      mergedTools.addAll(existingTemplate.getTools());
+    }
+    mergedTools.addAll(converted);
+    final Template newTemplate = Template.create().template(List.of()).tools(mergedTools);
+    if (existingTemplate != null) {
+      if (existingTemplate.getTemplate() != null) {
+        newTemplate.template(existingTemplate.getTemplate());
+      }
+      if (existingTemplate.getDefaults() != null) {
+        newTemplate.defaults(existingTemplate.getDefaults());
+      }
+    }
+    return config.withTemplateConfig(newTemplate);
   }
 
   private static ChatCompletionTool toOrchestrationTool(@Nonnull final ToolCallback toolCallback) {
