@@ -1,6 +1,7 @@
 package com.sap.ai.sdk.foundationmodels.rpt;
 
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
+import static com.sap.ai.sdk.foundationmodels.rpt.RptModel.SAP_RPT_1_6_LARGE;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.annotations.Beta;
@@ -33,7 +34,7 @@ public class RptClient {
   @Nonnull private final DefaultApi apiWithGzipEncoding;
   private final boolean contextModePossible;
 
-  private static final Set<String> MODELS_WITH_CONTEXT_MODE = Set.of("sap-rpt-1.6-large");
+  private static final Set<RptModel> MODELS_WITH_CONTEXT_MODE = Set.of(SAP_RPT_1_6_LARGE);
 
   /**
    * Creates a new RptClient for the specified foundation model.
@@ -45,7 +46,7 @@ public class RptClient {
   @Nonnull
   public static RptClient forModel(@Nonnull final RptModel foundationModel)
       throws DeploymentResolutionException {
-    final var contextModePossible = MODELS_WITH_CONTEXT_MODE.contains(foundationModel.name());
+    final var contextModePossible = MODELS_WITH_CONTEXT_MODE.contains(foundationModel);
     final var destination = new AiCoreService().getInferenceDestination().forModel(foundationModel);
     return forDestination(destination, contextModePossible);
   }
