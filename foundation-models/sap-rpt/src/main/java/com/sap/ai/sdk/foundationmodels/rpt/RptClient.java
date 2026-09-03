@@ -45,7 +45,7 @@ public class RptClient {
   @Nonnull
   public static RptClient forModel(@Nonnull final RptModel foundationModel)
       throws DeploymentResolutionException {
-    final var contextModePossible = !MODELS_WITH_CONTEXT_MODE.contains(foundationModel.name());
+    final var contextModePossible = MODELS_WITH_CONTEXT_MODE.contains(foundationModel.name());
     final var destination = new AiCoreService().getInferenceDestination().forModel(foundationModel);
     return forDestination(destination, contextModePossible);
   }

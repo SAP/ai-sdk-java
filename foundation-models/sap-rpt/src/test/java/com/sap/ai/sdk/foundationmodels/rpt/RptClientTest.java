@@ -64,7 +64,7 @@ class RptClientTest {
   void setup(final WireMockRuntimeInfo server) {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    client = RptClient.forDestination(destination, false);
+    client = RptClient.forDestination(destination, true);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
 
@@ -310,7 +310,7 @@ class RptClientTest {
   @Test
   void testOldModelThrowsOnUnknownPayloadType() {
     final var oldModelClient =
-        RptClient.forDestination(DefaultHttpDestination.builder("http://localhost").build(), true);
+        RptClient.forDestination(DefaultHttpDestination.builder("http://localhost").build(), false);
     final var unknownPayload = mock(PredictRequestPayload.class);
 
     assertThatThrownBy(() -> oldModelClient.tableCompletion(unknownPayload))
@@ -323,7 +323,7 @@ class RptClientTest {
     stubFor(post(urlEqualTo("/predict")).willReturn(aResponse().withStatus(200).withBody("{}")));
     final var oldModelClient =
         RptClient.forDestination(
-            DefaultHttpDestination.builder(server.getHttpBaseUrl()).build(), true);
+            DefaultHttpDestination.builder(server.getHttpBaseUrl()).build(), false);
 
     val config =
         PredictionConfig.create()
@@ -347,7 +347,7 @@ class RptClientTest {
     stubFor(post(urlEqualTo("/predict")).willReturn(aResponse().withStatus(200).withBody("{}")));
     final var oldModelClient =
         RptClient.forDestination(
-            DefaultHttpDestination.builder(server.getHttpBaseUrl()).build(), true);
+            DefaultHttpDestination.builder(server.getHttpBaseUrl()).build(), false);
 
     val config =
         PredictionConfig.create()
@@ -373,7 +373,7 @@ class RptClientTest {
             .willReturn(aResponse().withStatus(200).withBody("{}")));
     final var oldModelClient =
         RptClient.forDestination(
-            DefaultHttpDestination.builder(server.getHttpBaseUrl()).build(), true);
+            DefaultHttpDestination.builder(server.getHttpBaseUrl()).build(), false);
 
     val parquetFile = Path.of("src/test/resources/rpt/test-data.parquet").toFile();
     val predictionConfig =
