@@ -7,6 +7,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPER
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TOP_P;
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
@@ -15,6 +16,8 @@ import com.sap.ai.sdk.orchestration.model.ChatCompletionTool.TypeEnum;
 import com.sap.ai.sdk.orchestration.model.FunctionObject;
 import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
 import com.sap.ai.sdk.orchestration.model.Template;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -200,7 +203,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
    * @return if internal tool execution enabled
    */
   @Nullable
-  public Boolean isInternalToolExecutionEnabled() {
+  public Boolean getInternalToolExecutionEnabled() {
     return this.internalToolExecutionEnabled;
   }
 
@@ -224,7 +227,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Nonnull private Set<String> toolNames;
     @Nonnull private Map<String, Object> toolContext;
     @Nullable private String modelName;
-    @Nonnull private final Map<String, Object> paramOverrides = new java.util.LinkedHashMap<>();
+    @Nonnull private final Map<String, Object> paramOverrides = new LinkedHashMap<>();
 
     private Builder(@Nonnull final OrchestrationChatOptions source) {
       this.source = source;
@@ -281,7 +284,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Override
     @Nonnull
     public Builder toolContext(@Nonnull final String key, @Nonnull final Object value) {
-      val mutable = new java.util.HashMap<>(toolContext);
+      val mutable = new HashMap<>(toolContext);
       mutable.put(key, value);
       this.toolContext = Map.copyOf(mutable);
       return this;
@@ -349,7 +352,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
       final OrchestrationChatOptions result = source.copy();
       if (modelName != null || !paramOverrides.isEmpty()) {
         final LLMModelDetails existingLlm = result.getLlmConfigNonNull();
-        final Map<String, Object> mergedParams = new java.util.LinkedHashMap<>();
+        final Map<String, Object> mergedParams = new LinkedHashMap<>();
         if (existingLlm.getParams() != null) {
           mergedParams.putAll(existingLlm.getParams());
         }
@@ -387,7 +390,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
                   .name(toolDef.name())
                   .description(toolDef.description())
                   .parameters(params));
-    } catch (com.fasterxml.jackson.core.JsonProcessingException e) {
+    } catch (JsonProcessingException e) {
       throw new IllegalArgumentException(
           "Failed to parse tool input schema for tool: " + toolDef.name(), e);
     }

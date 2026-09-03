@@ -86,7 +86,7 @@ public class OrchestrationChatModel implements ChatModel {
           new OrchestrationSpringChatResponse(
               client.chatCompletion(orchestrationPrompt, options.getConfig()));
 
-      if (!Boolean.FALSE.equals(options.isInternalToolExecutionEnabled())
+      if (!Boolean.FALSE.equals(options.getInternalToolExecutionEnabled())
           && response.hasToolCalls()) {
 
         if (log.isDebugEnabled()) {

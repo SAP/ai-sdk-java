@@ -71,13 +71,14 @@
     <mockito.version>5.23.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
     <jsonschema-generator.version>5.0.0</jsonschema-generator.version>
+    <jsonschema-module-swagger.version>5.0.0</jsonschema-module-swagger.version>
     <jackson.version>2.22.2</jackson.version>
     <jackson-annotations.version>2.22</jackson-annotations.version>
     <jackson3.version>3.2.2</jackson3.version>
     <logback.version>1.6.3</logback.version>
     <commons-codec.version>1.22.1</commons-codec.version>
     <japicmp.version>0.26.1</japicmp.version>
-    <openai-java.version>4.52.0</openai-java.version>
+    <openai-java.version>4.54.0</openai-java.version>
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.3</httpcomponents-core5.version>
     <httpcomponents-client5.version>5.6.4</httpcomponents-client5.version>
@@ -85,6 +86,7 @@
     <json.version>20260814</json.version>
     <snakeyaml.version>2.6</snakeyaml.version>
     <jspecify.version>1.0.1</jspecify.version>
+    <json-schema-validator.version>3.0.1</json-schema-validator.version>
     <!-- Formatting -->
     <spotless.version>3.10.0</spotless.version>
     <spotless.skip>false</spotless.skip>
@@ -155,6 +157,11 @@
         <version>${jackson.version}</version>
       </dependency>
       <dependency>
+        <groupId>com.networknt</groupId>
+        <artifactId>json-schema-validator</artifactId>
+        <version>${json-schema-validator.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-jsr310</artifactId>
         <version>${jackson.version}</version>
@@ -188,6 +195,11 @@
         <groupId>com.github.victools</groupId>
         <artifactId>jsonschema-module-jackson</artifactId>
         <version>${jsonschema-generator.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.victools</groupId>
+        <artifactId>jsonschema-module-swagger-2</artifactId>
+        <version>${jsonschema-module-swagger.version}</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.dataformat</groupId>
