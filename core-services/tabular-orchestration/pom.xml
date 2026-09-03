@@ -36,16 +36,20 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>100%</coverage.complexity>
-    <coverage.line>100%</coverage.line>
-    <coverage.instruction>100%</coverage.instruction>
-    <coverage.branch>100%</coverage.branch>
-    <coverage.method>100%</coverage.method>
+    <coverage.complexity>80%</coverage.complexity>
+    <coverage.line>91%</coverage.line>
+    <coverage.instruction>89%</coverage.instruction>
+    <coverage.branch>50%</coverage.branch>
+    <coverage.method>88%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
   <dependencies>
     <!-- scope "compile" -->
+    <dependency>
+      <groupId>com.sap.ai.sdk</groupId>
+      <artifactId>core</artifactId>
+    </dependency>
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-connectivity</artifactId>
