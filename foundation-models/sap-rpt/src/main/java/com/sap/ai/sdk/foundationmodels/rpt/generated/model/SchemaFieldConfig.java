@@ -40,7 +40,7 @@ public class SchemaFieldConfig
   /**
    * Set the dtype of this {@link SchemaFieldConfig} instance and return the same instance.
    *
-   * @param dtype The data type of the column. Supports base types (string, numeric, date) and
+   * @param dtype The data type of the column. Supports base types (string, numeric, date, time) and
    *     extended types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to
    *     corresponding base types internally. Case-insensitive.
    * @return The same instance of this {@link SchemaFieldConfig} class
@@ -52,9 +52,9 @@ public class SchemaFieldConfig
   }
 
   /**
-   * The data type of the column. Supports base types (string, numeric, date) and extended types
-   * (e.g., Boolean, Integer, Timestamp). Extended types are mapped to corresponding base types
-   * internally. Case-insensitive.
+   * The data type of the column. Supports base types (string, numeric, date, time) and extended
+   * types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to corresponding base
+   * types internally. Case-insensitive.
    *
    * @return dtype The dtype of this {@link SchemaFieldConfig} instance.
    */
@@ -66,7 +66,7 @@ public class SchemaFieldConfig
   /**
    * Set the dtype of this {@link SchemaFieldConfig} instance.
    *
-   * @param dtype The data type of the column. Supports base types (string, numeric, date) and
+   * @param dtype The data type of the column. Supports base types (string, numeric, date, time) and
    *     extended types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to
    *     corresponding base types internally. Case-insensitive.
    */
@@ -182,8 +182,8 @@ public class SchemaFieldConfig
     /**
      * Set the dtype of this {@link SchemaFieldConfig} instance.
      *
-     * @param dtype The data type of the column. Supports base types (string, numeric, date) and
-     *     extended types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to
+     * @param dtype The data type of the column. Supports base types (string, numeric, date, time)
+     *     and extended types (e.g., Boolean, Integer, Timestamp). Extended types are mapped to
      *     corresponding base types internally. Case-insensitive.
      * @return The SchemaFieldConfig instance.
      */

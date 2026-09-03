@@ -16,10 +16,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * Users need to specify a list of rows, which contains both the context rows and the rows for which
- * to predict a label, and a mapping of column names to placeholder values. The model will predict
- * the value for any column specified in &#x60;target_columns&#x60; for all rows that have the
- * prediction placeholder in that column. Either \&quot;rows\&quot; or \&quot;columns\&quot; must be
- * provided, but not both.
+ * to predict a label, and a mapping of column names to prediction placeholder values. The model
+ * will predict the value for any column specified in &#x60;target_columns&#x60; for all rows that
+ * have the placeholder value in that column. Either \&quot;rows\&quot; or \&quot;columns\&quot;
+ * must be provided, but not both.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({

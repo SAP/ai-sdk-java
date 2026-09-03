@@ -22,7 +22,7 @@
   <developers>
     <developer>
       <name>SAP</name>
-      <email>cloudsdk@sap.com</email>
+      <email>ai-core-sdk@sap.com</email>
       <organization>SAP SE</organization>
       <organizationUrl>https://www.sap.com</organizationUrl>
     </developer>
@@ -66,6 +66,12 @@
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.5.6</surefire.version>
     <spring-ai.version>2.0.1</spring-ai.version>
+    <spring-aop.version>7.0.9</spring-aop.version>
+    <spring-context.version>7.0.9</spring-context.version>
+    <spring-expressions.version>7.0.9</spring-expressions.version>
+    <spring-core.version>7.0.9</spring-core.version>
+    <spring-beans.version>7.0.9</spring-beans.version>
+    <spring-messaging.version>7.0.9</spring-messaging.version>
     <reactor-core.version>3.8.7</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.23.0</mockito.version>
@@ -207,6 +213,38 @@
         <version>${jackson.version}</version>
       </dependency>
       <!-- conflicts resolution scope "compile" -->
+      <!-- CVE-2026-CVE-2026-59313, 47892, 47893, 59283 pin spring deps >= 7.0.9 until we migrate to spring-ai 2 -->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-expression</artifactId>
+        <version>${spring-expressions.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>${spring-context.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-aop</artifactId>
+        <version>${spring-aop.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-beans</artifactId>
+        <version>${spring-beans.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${spring-core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-messaging</artifactId>
+        <version>${spring-messaging.version}</version>
+      </dependency>
+
       <!-- CVE-2026-54428, 54399, 71290: pin httpcore5-h2, httpcore5 >= 5.6.4 until httpclient5 (pulled via cloud-sdk openapi-core-apache) ships with fixed versions -->
       <dependency>
         <groupId>org.apache.httpcomponents.core5</groupId>
