@@ -21,6 +21,7 @@ jobs:
           - sap-rpt
           - batch
           - tabular-orchestration
+          - tabular-predict
 
     steps:
       - name: 'Checkout repository'
