@@ -49,7 +49,7 @@ public class OpenAiChatModel implements ChatModel {
   @Nonnull
   @Override
   public ChatOptions getOptions() {
-    return DefaultToolCallingChatOptions.builder().toolCallbacks(List.of()).build();
+    return DefaultToolCallingChatOptions.builder().build();
   }
 
   @Override
