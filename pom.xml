@@ -92,7 +92,7 @@
     <snakeyaml.version>2.7</snakeyaml.version>
     <jspecify.version>1.0.1</jspecify.version>
     <!-- Formatting -->
-    <spotless.version>3.10.0</spotless.version>
+    <spotless.version>3.10.1</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
