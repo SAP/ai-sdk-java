@@ -176,11 +176,18 @@ public class SpringAiOrchestrationService {
    */
   @Nonnull
   public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
-    val options = new OrchestrationChatOptions(config);
-    options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
-    options.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
+    val options =
+        new OrchestrationChatOptions(config)
+            .mutate()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
+            .build();
 
     val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+    if (internalToolExecutionEnabled) {
+      return Objects.requireNonNull(
+          ChatClient.builder(client).build().prompt(prompt).call().chatResponse(),
+          "Chat response is null");
+    }
     return client.call(prompt);
   }
 
@@ -202,8 +209,11 @@ public class SpringAiOrchestrationService {
           "No MCP clients were found. Ensure that you configured the clients correctly in the application.yaml file.");
     }
     // GPT-4o-mini doesn't work too well with the file system tool, so we use 4o here
-    val options = new OrchestrationChatOptions(config.withLlmConfig(GPT_4O));
-    options.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
+    val options =
+        new OrchestrationChatOptions(config.withLlmConfig(GPT_4O))
+            .mutate()
+            .toolCallbacks(toolCallbackProvider.getToolCallbacks())
+            .build();
 
     val sys =
         new SystemMessage(
