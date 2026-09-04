@@ -55,11 +55,8 @@ public class TabularUnitTest {
   static final String artifactPath = "/data/product_data_hana_lowercase.parquet";
   static final String scenarioConfigName = "product-prediction-scenario-lowercase";
 
-  WireMockRuntimeInfo server;
-
   @BeforeEach
   void setup(final WireMockRuntimeInfo server) {
-    this.server = server;
     val base = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     val service = new AiCoreService().withBaseDestination(base);
     client = new TabularClient(service).withPredictDestination(base);
