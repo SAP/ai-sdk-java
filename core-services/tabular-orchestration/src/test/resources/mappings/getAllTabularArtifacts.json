@@ -1,0 +1,77 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v2/tcr/tabularArtifacts",
+    "headers": {
+      "Accept": {
+        "equalTo": "application/json"
+      },
+      "AI-Resource-Group": {
+        "equalTo": "default"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "count": 1,
+      "resources": [
+        {
+          "id": "1abcd328-9701-4e21-822d-a7f93b12ce12",
+          "name": "product-artifact-lowercase",
+          "tenantId": "94bbb59e-56ff-4cf3-9787-f6b28d5e565b",
+          "resourceGroupId": "default",
+          "dataDestinationName": "ai-sdk-hdl-destination",
+          "virtualTableName": "v_fc09a120-360a-5364-b061-a43c2f3d07d3_product-artifact-lowercase",
+          "remoteSourceName": "rs_b745d23e_ff45_53db_9d66_3573fc42fc80",
+          "path": "/data/product_data_hana_lowercase.parquet",
+          "type": "PARQUET",
+          "status": "ACTIVE",
+          "csnMetadata": {
+            "entityName": "ProductEntity",
+            "selectedColumns": [
+              "product",
+              "price",
+              "date",
+              "id",
+              "salesgroup"
+            ],
+            "definition": {
+              "definitionType": "DOCUMENT",
+              "document": {
+                "definitions": {
+                  "ProductEntity": {
+                    "kind": "entity",
+                    "elements": {
+                      "product": {
+                        "type": "cds.String"
+                      },
+                      "price": {
+                        "type": "cds.Double"
+                      },
+                      "date": {
+                        "type": "cds.String"
+                      },
+                      "id": {
+                        "type": "cds.String"
+                      },
+                      "salesgroup": {
+                        "type": "cds.String"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "createdAt": "2026-05-22T06:48:54.858000Z",
+          "updatedAt": "2026-08-24T08:25:42.036000Z"
+        }
+      ]
+    }
+  }
+}
+

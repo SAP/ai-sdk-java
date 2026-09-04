@@ -25,6 +25,8 @@ on:
           - prompt-registry
           - sap-rpt
           - batch
+          - tabular-orchestration
+          - tabular-predict
         default: orchestration
       ref:
         description: 'Branch or tag to checkout the spec file from'
@@ -170,6 +172,16 @@ jobs:
               API_URL="$API_BASE_URL/AI/llm-batch-service/contents/components/llm-batch-service-api/src/spec/batch-service.yaml?ref=$REF"
               FILE_PATH='core-services/batch/src/main/resources/spec/batch-service.yaml'
               MODULE_PATH='core-services/batch'
+              ;;
+            tabular-orchestration) #https://github.tools.sap/AI/context-registry/blob/main/docs/public/business_api_hub/api_hub_merged_spec.yaml
+              API_URL="$API_BASE_URL/AI/context-registry/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
+              FILE_PATH='foundation-models/tabular-orchestration/src/main/resources/spec/tabular-orchestration.yaml'
+              MODULE_PATH='foundation-models/tabular-orchestration'
+              ;;
+            tabular-predict) #https://github.tools.sap/AI/context-registry/blob/main/docs/public/business_api_hub/api_hub_merged_spec.yaml
+              API_URL="$API_BASE_URL/AI/context-registry/contents/docs/public/business_api_hub/tabular-predict.json?ref=$REF"
+              FILE_PATH='foundation-models/tabular-orchestration/src/main/resources/spec/tabular-predict.json'
+              MODULE_PATH='foundation-models/tabular-orchestration'
               ;;
           esac
 
