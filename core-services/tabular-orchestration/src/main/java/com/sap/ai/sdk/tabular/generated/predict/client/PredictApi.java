@@ -83,13 +83,13 @@ public class PredictApi extends BaseApi {
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
   @Nonnull
-  public PredictResponse predictV1PredictPost(@Nonnull final PredictRequest predictRequest)
+  public PredictResponse predict(@Nonnull final PredictRequest predictRequest)
       throws OpenApiRequestException {
 
     // verify the required parameter 'predictRequest' is set
     if (predictRequest == null) {
       throw new OpenApiRequestException(
-              "Missing the required parameter 'predictRequest' when calling predictV1PredictPost")
+              "Missing the required parameter 'predictRequest' when calling predict")
           .statusCode(400);
     }
 

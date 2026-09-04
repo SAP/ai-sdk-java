@@ -12,7 +12,7 @@
         ],
         "summary": "Make predictions using a Tabular Foundation Model",
         "description": "Make predictions for tabular data using a deployed Tabular Foundation Model.\n\n    Required Headers:\n    - ai-main-tenant: AI Core main tenant identifier\n    - ai-resource-group: AI Core resource group identifier",
-        "operationId": "predict_v1_predict_post",
+        "operationId": "predict",
         "parameters": [],
         "requestBody": {
           "required": true,

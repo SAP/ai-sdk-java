@@ -183,9 +183,6 @@
                     <pojoBuildMethodName/>
                     <pojoConstructorVisibility>protected</pojoConstructorVisibility>
                     <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
-                    <removeOperationIdPrefix>true</removeOperationIdPrefix>
-                    <removeOperationIdPrefixDelimiter>\.</removeOperationIdPrefixDelimiter>
-                    <removeOperationIdPrefixCount>4</removeOperationIdPrefixCount>
                     <useOneOfInterfaces>true</useOneOfInterfaces>
                     <removeEnumValuePrefix>true</removeEnumValuePrefix>
                     <useOneOfCreators>true</useOneOfCreators>

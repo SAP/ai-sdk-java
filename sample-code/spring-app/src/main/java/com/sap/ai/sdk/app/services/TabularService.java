@@ -2,9 +2,7 @@ package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.tabular.generated.orchestration.model.CreateTARequest.TypeEnum.PARQUET;
 import static com.sap.ai.sdk.tabular.generated.orchestration.model.DefinitionType.DOCUMENT;
-import static com.sap.ai.sdk.tabular.generated.orchestration.model.GCSDataDestinationCreateRequest.TypeEnum.GCS;
 import static com.sap.ai.sdk.tabular.generated.orchestration.model.HDLDataDestinationCreateRequest.TypeEnum.HDL;
-import static com.sap.ai.sdk.tabular.generated.orchestration.model.S3DataDestinationCreateRequest.TypeEnum.S3;
 import static com.sap.ai.sdk.tabular.generated.predict.model.ContextSelectionStrategyEnum.RANDOM;
 import static com.sap.ai.sdk.tabular.generated.predict.model.TaskTypeEnum.CLASSIFICATION;
 
@@ -18,14 +16,10 @@ import com.sap.ai.sdk.tabular.generated.orchestration.model.CreateScenarioConfig
 import com.sap.ai.sdk.tabular.generated.orchestration.model.CreateTARequest;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.CreateTARequestCsnMetadata;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.DocumentDefinition;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.GCSConnectionConfig;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.GCSDataDestinationCreateRequest;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.GetDataDestinations;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.GetScenarioConfigurations;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.HDLConnectionConfig;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.HDLDataDestinationCreateRequest;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.S3ConnectionConfig;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.S3DataDestinationCreateRequest;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.ScenarioConfigurationNameObject;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.TabularArtifactConfig;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.TabularArtifactListResponse;
@@ -39,6 +33,7 @@ import com.sap.ai.sdk.tabular.generated.predict.model.TFMEnum;
 import com.sap.ai.sdk.tabular.generated.predict.model.TargetColumn;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
@@ -60,7 +55,7 @@ public class TabularService {
 
   static final String resourceGroup = "default";
   static final String dataDestinationName = "ai-sdk-hdl-destination";
-  static final String artifactName = "ai-sdk-tabular-artifact";
+  static final String artifactName = "product-artifact-lowercase";
   static final String artifactPath = "/data/product_data_hana_lowercase.parquet";
   static final String scenarioConfigName = "product-prediction-scenario-lowercase";
 
@@ -70,44 +65,30 @@ public class TabularService {
    */
   public static class DataDestinationService {
 
+    /**
+     * Get all data destinations for the default resource group.
+     *
+     * @return The list of data destinations.
+     */
+    @Nonnull
     public GetDataDestinations getAllDataDestinations() {
       return DATA_DESTINATIONS_CLIENT.getAllDataDestinations(resourceGroup);
     }
 
+    /**
+     * Create a new data destination for Hana Data Lake.
+     *
+     * @return The response of the data destination creation request.
+     */
+    @Nonnull
     public AsyncCreateDataDestinationResponse createHanaDataLakeDataDestination() {
       val request =
           HDLDataDestinationCreateRequest.create()
               .type(HDL)
-              .config(HDLConnectionConfig.create().host(""))
+              .config(
+                  HDLConnectionConfig.create()
+                      .host("123-456-789-abc-def123.files.hdl.prod-eu12.hanacloud.ondemand.com"))
               .description("Hana Data lake data destination for AI Core SDK");
-      return DATA_DESTINATIONS_CLIENT.createUpdateDataDestination(
-          resourceGroup, dataDestinationName, request);
-    }
-
-    public AsyncCreateDataDestinationResponse createS3BucketDataDestination() {
-      val request =
-          S3DataDestinationCreateRequest.create()
-              .type(S3)
-              .config(
-                  S3ConnectionConfig.create()
-                      .bucket("")
-                      .region("")
-                      .accessKeyId("")
-                      .secretAccessKey(""))
-              .description("S3 bucket data destination for AI Core SDK");
-      return DATA_DESTINATIONS_CLIENT.createUpdateDataDestination(
-          resourceGroup, dataDestinationName, request);
-    }
-
-    public AsyncCreateDataDestinationResponse createGoogleCloudStorageDataDestination() {
-      val request =
-          GCSDataDestinationCreateRequest.create()
-              .type(GCS)
-              .config(
-                  GCSConnectionConfig.create()
-                      .bucket("")
-                      .base64EncodedPrivateKeyData("".getBytes()))
-              .description("Google Cloud Storage data destination for AI Core SDK");
       return DATA_DESTINATIONS_CLIENT.createUpdateDataDestination(
           resourceGroup, dataDestinationName, request);
     }
@@ -116,18 +97,30 @@ public class TabularService {
   /** Manage tabular artifacts for structured files from data-destinations. */
   public static class ArtifactService {
 
+    /**
+     * Get all tabular artifacts for the default resource group.
+     *
+     * @return The list of tabular artifacts.
+     */
+    @Nonnull
     public TabularArtifactListResponse getAllArtifacts() {
       return TABULAR_ARTIFACTS_CLIENT.getAllTabularArtifacts(resourceGroup);
     }
 
+    /**
+     * Create a new tabular artifact from a Parquet file in the specified data destination.
+     *
+     * @return The response of the tabular artifact creation request.
+     */
+    @Nonnull
     public ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response createArtifact() {
       val productEntityElements =
           Map.of(
-              "PRODUCT", Map.of("type", "cds.String"),
-              "PRICE", Map.of("type", "cds.Double"),
-              "PRODUCTION_DATE", Map.of("type", "cds.String"),
-              "__row_idx__", Map.of("type", "cds.String"),
-              "SALESGROUP", Map.of("type", "cds.String"));
+              "product", Map.of("type", "cds.String"),
+              "price", Map.of("type", "cds.Double"),
+              "date", Map.of("type", "cds.String"),
+              "id", Map.of("type", "cds.String"),
+              "salesgroup", Map.of("type", "cds.String"));
       val definitions =
           Map.of(
               "definitions",
@@ -152,10 +145,23 @@ public class TabularService {
   /** Manage scenario configurations for context selection. */
   public static class ScenarioConfigurationService {
 
+    /**
+     * Get all scenario configurations for the default resource group.
+     *
+     * @return The list of scenario configurations.
+     */
+    @Nonnull
     public GetScenarioConfigurations getAllScenarioConfigurations() {
       return SCENARIO_CONFIG_CLIENT.getAllScenarioConfigurations(resourceGroup);
     }
 
+    /**
+     * Create a new scenario configuration for product prediction using the specified tabular
+     * artifact.
+     *
+     * @return The response of the scenario configuration creation request.
+     */
+    @Nonnull
     public ScenarioConfigurationNameObject createScenarioConfiguration() {
       val request =
           CreateScenarioConfiguration.create()
@@ -174,6 +180,7 @@ public class TabularService {
      *
      * @return The prediction response.
      */
+    @Nonnull
     public PredictResponse predict() {
       val request =
           PredictRequest.create()
@@ -210,7 +217,7 @@ public class TabularService {
                           "id", "689",
                           "salesgroup", "[PREDICT]")))
               .modelConfig(Map.of());
-      return PREDICT_CLIENT.predictV1PredictPost(request);
+      return PREDICT_CLIENT.predict(request);
     }
   }
 }
