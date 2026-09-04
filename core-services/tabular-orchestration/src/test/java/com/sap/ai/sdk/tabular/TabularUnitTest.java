@@ -178,7 +178,7 @@ public class TabularUnitTest {
                         "salesgroup", "[PREDICT]")))
             .modelConfig(Map.of());
 
-    final PredictResponse response = client.predict().predictV1PredictPost(request);
+    final PredictResponse response = client.predict().predict(request);
     assertThat(response.getId()).isEqualTo("babec616-8085-43ad-a36a-57f0c1484202");
 
     assertThat(response.getMetadata().getNumColumns()).isEqualTo(5);
