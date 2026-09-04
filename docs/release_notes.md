@@ -14,6 +14,7 @@
 
 - [Grounding] Enabled presigned URL for Pipeline Documents.
 - [RPT] Added `SAP_RPT_1_6` and `SAP_RPT_1_6_LARGE` to the model list in `RptModel`.
+- [Tabular Orchestration] Added `TabularClient` in `com.sap.ai.sdk:tabular-orchestration` for tabular predictions.
 
 ### 📈 Improvements
 
