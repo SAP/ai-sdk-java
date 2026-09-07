@@ -14,6 +14,7 @@ Please provide a short description of what your change does and why it is needed
 
 - [ ] Functionality scope stated & covered
 - [ ] Tests cover the scope above
+- [ ] Relevant E2E tests are green (at least locally)
 - [ ] Error handling created / updated & covered by the tests above
 - [ ] ~Aligned changes with the JavaScript SDK~
 - [ ] [Documentation](https://github.com/SAP/ai-sdk/tree/main/docs-java) updated

@@ -67,8 +67,7 @@ If you use MCP clients manually in code (instantiating `SyncMcpToolCallbackProvi
 
 ### ✨ New Functionality
 
-- [Grounding] Enabled presigned URL for Pipeline Documents.
-- [RPT] Added `SAP_RPT_1_6` and `SAP_RPT_1_6_LARGE` to the model list in `RptModel`.
+-
 
 ### 📈 Improvements
 
@@ -76,4 +75,4 @@ If you use MCP clients manually in code (instantiating `SyncMcpToolCallbackProvi
 
 ### 🐛 Fixed Issues
 
-- [Realtime] Fixed possible race condition in Realtime API implementation
+-
