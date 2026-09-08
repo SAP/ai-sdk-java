@@ -54,6 +54,8 @@ Use the builder to set per-request options such as tool callbacks:
 
 `com.github.victools:jsonschema-module-swagger-2 5.0.0`
 
+`com.networknt:json-schema-validator 3.0.1`
+
 
 *Optional*: If your project uses Spring AI MCP autoconfiguration (i.e. you had `spring-ai-autoconfigure-mcp-client` in your `pom.xml` to register MCP clients from `application.yml`), that artifact was split in Spring AI 2.0.1 — replace it:
 
