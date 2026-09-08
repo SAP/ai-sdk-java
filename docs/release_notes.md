@@ -46,6 +46,15 @@ Use the builder to set per-request options such as tool callbacks:
 
 **Dependency updates**
 
+***New required minimum versions***
+
+`com.github.victools:jsonschema-generator 5.0.0`
+
+`com.githib.victools:jsonschema-module-jackson 5.0.0`
+
+`com.github.victools:jsonschema-module-swagger-2 5.0.0`
+
+
 *Optional*: If your project uses Spring AI MCP autoconfiguration (i.e. you had `spring-ai-autoconfigure-mcp-client` in your `pom.xml` to register MCP clients from `application.yml`), that artifact was split in Spring AI 2.0.1 — replace it:
 
 ```xml

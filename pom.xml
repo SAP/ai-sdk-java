@@ -77,7 +77,6 @@
     <mockito.version>5.23.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
     <jsonschema-generator.version>5.0.0</jsonschema-generator.version>
-    <jsonschema-module-swagger.version>5.0.0</jsonschema-module-swagger.version>
     <jackson.version>2.22.2</jackson.version>
     <jackson-annotations.version>2.22</jackson-annotations.version>
     <jackson3.version>3.2.2</jackson3.version>
@@ -205,7 +204,7 @@
       <dependency>
         <groupId>com.github.victools</groupId>
         <artifactId>jsonschema-module-swagger-2</artifactId>
-        <version>${jsonschema-module-swagger.version}</version>
+        <version>${jsonschema-generator.version}</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.dataformat</groupId>
