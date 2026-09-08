@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.tabular;
 
+import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.tabular.generated.orchestration.client.DataDestinationsApi;
 import com.sap.ai.sdk.tabular.generated.orchestration.client.ScenarioConfigurationManagerApi;
@@ -27,6 +28,7 @@ import lombok.val;
  */
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter(value = AccessLevel.PROTECTED)
+@Beta
 public class TabularClient {
   @Nonnull private final AiCoreService service;
   @Nonnull private final String basePath;

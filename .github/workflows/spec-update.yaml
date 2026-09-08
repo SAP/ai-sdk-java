@@ -175,13 +175,13 @@ jobs:
               ;;
             tabular-orchestration) #https://github.tools.sap/AI/context-registry/blob/main/docs/public/business_api_hub/api_hub_merged_spec.yaml
               API_URL="$API_BASE_URL/AI/context-registry/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
-              FILE_PATH='foundation-models/tabular-orchestration/src/main/resources/spec/tabular-orchestration.yaml'
-              MODULE_PATH='foundation-models/tabular-orchestration'
+              FILE_PATH='core-services/tabular-orchestration/src/main/resources/spec/tabular-orchestration.yaml'
+              MODULE_PATH='core-services/tabular-orchestration'
               ;;
             tabular-predict) #https://github.tools.sap/AI/context-registry/blob/main/docs/public/business_api_hub/api_hub_merged_spec.yaml
               API_URL="$API_BASE_URL/AI/context-registry/contents/docs/public/business_api_hub/tabular-predict.json?ref=$REF"
-              FILE_PATH='foundation-models/tabular-orchestration/src/main/resources/spec/tabular-predict.json'
-              MODULE_PATH='foundation-models/tabular-orchestration'
+              FILE_PATH='core-services/tabular-orchestration/src/main/resources/spec/tabular-predict.json'
+              MODULE_PATH='core-services/tabular-orchestration'
               ;;
           esac
 

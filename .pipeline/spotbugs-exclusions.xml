@@ -11,7 +11,7 @@
       <Package name="com.sap.ai.sdk.foundationmodels.rpt.generated.model"/>
       <Package name="com.sap.ai.sdk.prompt.registry.model"/>
       <Package name="com.sap.ai.sdk.prompt.registry.client"/>
-      <Package name="com.sap.ai.sdk.foundationmodels.tabular.generated"/>
+      <Package name="com.sap.ai.sdk.tabular.generated"/>
     </Or>
   </Match>
   <Match>
