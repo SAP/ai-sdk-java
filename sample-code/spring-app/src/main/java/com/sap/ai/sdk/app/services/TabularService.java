@@ -11,6 +11,7 @@ import com.sap.ai.sdk.tabular.generated.orchestration.client.DataDestinationsApi
 import com.sap.ai.sdk.tabular.generated.orchestration.client.ScenarioConfigurationManagerApi;
 import com.sap.ai.sdk.tabular.generated.orchestration.client.TabularArtifactsApi;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.AsyncCreateDataDestinationResponse;
+import com.sap.ai.sdk.tabular.generated.orchestration.model.ContextSelectionStrategy;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.CreateScenarioConfiguration;
 import com.sap.ai.sdk.tabular.generated.orchestration.model.CreateTARequest;
@@ -52,13 +53,14 @@ public class TabularService {
       new TabularClient().tabularArtifacts();
   static final ScenarioConfigurationManagerApi SCENARIO_CONFIG_CLIENT =
       new TabularClient().scenarioConfiguration();
-  static final PredictApi PREDICT_CLIENT = new TabularClient().predict();
 
   public static final String resourceGroup = "ai-sdk-java-e2e";
   public static final String dataDestinationName = "ai-sdk-hdl-destination";
   public static final String artifactName = "product-artifact-lowercase";
   public static final String artifactPath = "/data/product_data_hana_lowercase.parquet";
   public static final String scenarioConfigName = "product-prediction-scenario-lowercase";
+
+  static final PredictApi PREDICT_CLIENT = new TabularClient().predict(resourceGroup);
 
   /**
    * Manage data destinations (S3 Bucket, Google Cloud Storage, Hana Data lake) for unified data
@@ -79,10 +81,12 @@ public class TabularService {
     /**
      * Create a new data destination for Hana Data Lake.
      *
+     * @param dataDestinationName The name of the data destination to create.
      * @return The response of the data destination creation request.
      */
     @Nonnull
-    public AsyncCreateDataDestinationResponse createHanaDataLakeDataDestination() {
+    public AsyncCreateDataDestinationResponse createHanaDataLakeDataDestination(
+        @Nonnull final String dataDestinationName) {
       val request =
           HDLDataDestinationCreateRequest.create()
               .type(HDL)
@@ -96,7 +100,8 @@ public class TabularService {
     }
 
     @Nonnull
-    public OpenApiResponse deleteHanaDataLakeDataDestination() {
+    public OpenApiResponse deleteHanaDataLakeDataDestination(
+        @Nonnull final String dataDestinationName) {
       return DATA_DESTINATIONS_CLIENT.deleteDataDestinationByName(
           resourceGroup, dataDestinationName);
     }
@@ -118,10 +123,12 @@ public class TabularService {
     /**
      * Create a new tabular artifact from a Parquet file in the specified data destination.
      *
+     * @param artifactName The name of the tabular artifact to create.
      * @return The response of the tabular artifact creation request.
      */
     @Nonnull
-    public ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response createArtifact() {
+    public ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response createArtifact(
+        @Nonnull final String artifactName) {
       val productEntityElements =
           Map.of(
               "product", Map.of("type", "cds.String"),
@@ -152,10 +159,11 @@ public class TabularService {
     /**
      * Delete the tabular artifact.
      *
+     * @param artifactName The name of the tabular artifact to delete.
      * @return The response of the tabular artifact deletion request.
      */
     @Nonnull
-    public OpenApiResponse deleteArtifact() {
+    public OpenApiResponse deleteArtifact(@Nonnull final String artifactName) {
       return TABULAR_ARTIFACTS_CLIENT.deleteTabularArtifact(resourceGroup, artifactName);
     }
   }
@@ -177,14 +185,17 @@ public class TabularService {
      * Create a new scenario configuration for product prediction using the specified tabular
      * artifact.
      *
+     * @param scenarioConfigName The name of the scenario configuration to create.
      * @return The response of the scenario configuration creation request.
      */
     @Nonnull
-    public ScenarioConfigurationNameObject createScenarioConfiguration() {
+    public ScenarioConfigurationNameObject createScenarioConfiguration(
+        @Nonnull final String scenarioConfigName) {
       val request =
           CreateScenarioConfiguration.create()
               .tabularArtifacts(TabularArtifactConfig.create().name(artifactName))
-              .description("Sample scenario configuration for product prediction");
+              .description("Sample scenario configuration for product prediction")
+              .contextSelectionStrategy(ContextSelectionStrategy.RANDOM);
       return SCENARIO_CONFIG_CLIENT.createScenarioConfiguration(
           resourceGroup, scenarioConfigName, request);
     }
@@ -192,10 +203,11 @@ public class TabularService {
     /**
      * Delete the scenario configuration.
      *
+     * @param scenarioConfigName The name of the scenario configuration to delete.
      * @return The response of the scenario configuration deletion request.
      */
     @Nonnull
-    public OpenApiResponse deleteScenarioConfiguration() {
+    public OpenApiResponse deleteScenarioConfiguration(@Nonnull final String scenarioConfigName) {
       return SCENARIO_CONFIG_CLIENT.deleteScenarioConfigurationByName(
           resourceGroup, scenarioConfigName);
     }

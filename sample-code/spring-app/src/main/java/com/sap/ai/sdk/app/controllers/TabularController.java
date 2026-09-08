@@ -1,5 +1,9 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.app.services.TabularService.artifactName;
+import static com.sap.ai.sdk.app.services.TabularService.dataDestinationName;
+import static com.sap.ai.sdk.app.services.TabularService.scenarioConfigName;
+
 import com.sap.ai.sdk.app.services.TabularService.ArtifactService;
 import com.sap.ai.sdk.app.services.TabularService.DataDestinationService;
 import com.sap.ai.sdk.app.services.TabularService.PredictionService;
@@ -64,7 +68,7 @@ class TabularController {
   @GetMapping("/data-destinations/create")
   Object createDataDestination(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    val response = DATA_DESTINATION_SERVICE.createHanaDataLakeDataDestination();
+    val response = DATA_DESTINATION_SERVICE.createHanaDataLakeDataDestination(dataDestinationName);
     if ("json".equals(format)) {
       return response;
     }
@@ -88,7 +92,7 @@ class TabularController {
   @GetMapping("/artifacts/create")
   Object createArtifact(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    val response = ARTIFACT_SERVICE.createArtifact();
+    val response = ARTIFACT_SERVICE.createArtifact(artifactName);
     if ("json".equals(format)) {
       return response;
     }
@@ -111,7 +115,7 @@ class TabularController {
   @GetMapping("/scenario-configurations/create")
   Object createScenarioConfiguration(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
-    val response = SCENARIO_CONFIGURATION_SERVICE.createScenarioConfiguration();
+    val response = SCENARIO_CONFIGURATION_SERVICE.createScenarioConfiguration(scenarioConfigName);
     if ("json".equals(format)) {
       return response;
     }
