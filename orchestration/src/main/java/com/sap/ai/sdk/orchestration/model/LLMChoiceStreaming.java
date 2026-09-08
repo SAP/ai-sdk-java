@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -39,6 +40,9 @@ public class LLMChoiceStreaming
 
   @JsonProperty("finish_reason")
   private String finishReason;
+
+  @JsonProperty("provider_specific_fields")
+  private Map<String, Object> providerSpecificFields = new HashMap<>();
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -171,6 +175,64 @@ public class LLMChoiceStreaming
   }
 
   /**
+   * Set the providerSpecificFields of this {@link LLMChoiceStreaming} instance and return the same
+   * instance.
+   *
+   * @param providerSpecificFields Provider-specific fields not representable in the OpenAI schema.
+   *     When not identical, includes &#39;finish_reason&#39; with the raw, unmapped finish reason
+   *     string from the provider.
+   * @return The same instance of this {@link LLMChoiceStreaming} class
+   */
+  @Nonnull
+  public LLMChoiceStreaming providerSpecificFields(
+      @Nullable final Map<String, Object> providerSpecificFields) {
+    this.providerSpecificFields = providerSpecificFields;
+    return this;
+  }
+
+  /**
+   * Put one providerSpecificFields instance to this {@link LLMChoiceStreaming} instance.
+   *
+   * @param key The String key of this providerSpecificFields instance
+   * @param providerSpecificFieldsItem The providerSpecificFields that should be added under the
+   *     given key
+   * @return The same instance of type {@link LLMChoiceStreaming}
+   */
+  @Nonnull
+  public LLMChoiceStreaming putproviderSpecificFieldsItem(
+      @Nonnull final String key, @Nullable final Object providerSpecificFieldsItem) {
+    if (this.providerSpecificFields == null) {
+      this.providerSpecificFields = new HashMap<>();
+    }
+    this.providerSpecificFields.put(key, providerSpecificFieldsItem);
+    return this;
+  }
+
+  /**
+   * Provider-specific fields not representable in the OpenAI schema. When not identical, includes
+   * &#39;finish_reason&#39; with the raw, unmapped finish reason string from the provider.
+   *
+   * @return providerSpecificFields The providerSpecificFields of this {@link LLMChoiceStreaming}
+   *     instance.
+   */
+  @Nonnull
+  public Map<String, Object> getProviderSpecificFields() {
+    return providerSpecificFields;
+  }
+
+  /**
+   * Set the providerSpecificFields of this {@link LLMChoiceStreaming} instance.
+   *
+   * @param providerSpecificFields Provider-specific fields not representable in the OpenAI schema.
+   *     When not identical, includes &#39;finish_reason&#39; with the raw, unmapped finish reason
+   *     string from the provider.
+   */
+  public void setProviderSpecificFields(
+      @Nullable final Map<String, Object> providerSpecificFields) {
+    this.providerSpecificFields = providerSpecificFields;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link LLMChoiceStreaming}.
    *
    * @return The set of properties names
@@ -212,6 +274,8 @@ public class LLMChoiceStreaming
     if (delta != null) declaredFields.put("delta", delta);
     if (logprobs != null) declaredFields.put("logprobs", logprobs);
     if (finishReason != null) declaredFields.put("finishReason", finishReason);
+    if (providerSpecificFields != null)
+      declaredFields.put("providerSpecificFields", providerSpecificFields);
     return declaredFields;
   }
 
@@ -240,12 +304,14 @@ public class LLMChoiceStreaming
         && Objects.equals(this.index, llMChoiceStreaming.index)
         && Objects.equals(this.delta, llMChoiceStreaming.delta)
         && Objects.equals(this.logprobs, llMChoiceStreaming.logprobs)
-        && Objects.equals(this.finishReason, llMChoiceStreaming.finishReason);
+        && Objects.equals(this.finishReason, llMChoiceStreaming.finishReason)
+        && Objects.equals(this.providerSpecificFields, llMChoiceStreaming.providerSpecificFields);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(index, delta, logprobs, finishReason, cloudSdkCustomFields);
+    return Objects.hash(
+        index, delta, logprobs, finishReason, providerSpecificFields, cloudSdkCustomFields);
   }
 
   @Override
@@ -257,6 +323,9 @@ public class LLMChoiceStreaming
     sb.append("    delta: ").append(toIndentedString(delta)).append("\n");
     sb.append("    logprobs: ").append(toIndentedString(logprobs)).append("\n");
     sb.append("    finishReason: ").append(toIndentedString(finishReason)).append("\n");
+    sb.append("    providerSpecificFields: ")
+        .append(toIndentedString(providerSpecificFields))
+        .append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
