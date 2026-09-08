@@ -53,14 +53,13 @@ public class TabularService {
       new TabularClient().tabularArtifacts();
   static final ScenarioConfigurationManagerApi SCENARIO_CONFIG_CLIENT =
       new TabularClient().scenarioConfiguration();
+  static final PredictApi PREDICT_CLIENT = new TabularClient().predict();
 
   public static final String resourceGroup = "ai-sdk-java-e2e";
   public static final String dataDestinationName = "ai-sdk-hdl-destination";
   public static final String artifactName = "product-artifact-lowercase";
   public static final String artifactPath = "/data/product_data_hana_lowercase.parquet";
   public static final String scenarioConfigName = "product-prediction-scenario-lowercase";
-
-  static final PredictApi PREDICT_CLIENT = new TabularClient().predict(resourceGroup);
 
   /**
    * Manage data destinations (S3 Bucket, Google Cloud Storage, Hana Data lake) for unified data
