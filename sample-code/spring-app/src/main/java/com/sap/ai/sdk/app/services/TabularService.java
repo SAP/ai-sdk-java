@@ -31,6 +31,7 @@ import com.sap.ai.sdk.tabular.generated.predict.model.PredictionConfig;
 import com.sap.ai.sdk.tabular.generated.predict.model.StrategyConfigs;
 import com.sap.ai.sdk.tabular.generated.predict.model.TFMEnum;
 import com.sap.ai.sdk.tabular.generated.predict.model.TargetColumn;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -53,11 +54,11 @@ public class TabularService {
       new TabularClient().scenarioConfiguration();
   static final PredictApi PREDICT_CLIENT = new TabularClient().predict();
 
-  static final String resourceGroup = "default";
-  static final String dataDestinationName = "ai-sdk-hdl-destination";
-  static final String artifactName = "product-artifact-lowercase";
-  static final String artifactPath = "/data/product_data_hana_lowercase.parquet";
-  static final String scenarioConfigName = "product-prediction-scenario-lowercase";
+  public static final String resourceGroup = "ai-sdk-java-e2e";
+  public static final String dataDestinationName = "ai-sdk-hdl-destination";
+  public static final String artifactName = "product-artifact-lowercase";
+  public static final String artifactPath = "/data/product_data_hana_lowercase.parquet";
+  public static final String scenarioConfigName = "product-prediction-scenario-lowercase";
 
   /**
    * Manage data destinations (S3 Bucket, Google Cloud Storage, Hana Data lake) for unified data
@@ -87,10 +88,17 @@ public class TabularService {
               .type(HDL)
               .config(
                   HDLConnectionConfig.create()
-                      .host("123-456-789-abc-def123.files.hdl.prod-eu12.hanacloud.ondemand.com"))
+                      .host(
+                          "4d37b3ed-2663-4a2d-b04a-10dbe6577e02.files.hdl.prod-eu12.hanacloud.ondemand.com"))
               .description("Hana Data lake data destination for AI Core SDK");
       return DATA_DESTINATIONS_CLIENT.createUpdateDataDestination(
           resourceGroup, dataDestinationName, request);
+    }
+
+    @Nonnull
+    public OpenApiResponse deleteHanaDataLakeDataDestination() {
+      return DATA_DESTINATIONS_CLIENT.deleteDataDestinationByName(
+          resourceGroup, dataDestinationName);
     }
   }
 
@@ -140,6 +148,16 @@ public class TabularService {
                       .selectedColumns(productEntityElements.keySet()));
       return TABULAR_ARTIFACTS_CLIENT.createTabularArtifact(resourceGroup, artifactName, request);
     }
+
+    /**
+     * Delete the tabular artifact.
+     *
+     * @return The response of the tabular artifact deletion request.
+     */
+    @Nonnull
+    public OpenApiResponse deleteArtifact() {
+      return TABULAR_ARTIFACTS_CLIENT.deleteTabularArtifact(resourceGroup, artifactName);
+    }
   }
 
   /** Manage scenario configurations for context selection. */
@@ -169,6 +187,17 @@ public class TabularService {
               .description("Sample scenario configuration for product prediction");
       return SCENARIO_CONFIG_CLIENT.createScenarioConfiguration(
           resourceGroup, scenarioConfigName, request);
+    }
+
+    /**
+     * Delete the scenario configuration.
+     *
+     * @return The response of the scenario configuration deletion request.
+     */
+    @Nonnull
+    public OpenApiResponse deleteScenarioConfiguration() {
+      return SCENARIO_CONFIG_CLIENT.deleteScenarioConfigurationByName(
+          resourceGroup, scenarioConfigName);
     }
   }
 
