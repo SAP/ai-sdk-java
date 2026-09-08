@@ -92,10 +92,22 @@ public class TabularClient {
    */
   @Nonnull
   public PredictApi predict() {
+    return predict("default");
+  }
+
+  /**
+   * Get the Predict API.
+   *
+   * @param resourceGroup The resource group to use for getting the tabular deployment and making
+   *     the prediction request.
+   * @return The Predict API.
+   */
+  @Nonnull
+  public PredictApi predict(@Nonnull final String resourceGroup) {
     final HttpDestination inferenceDestination =
         predictDestinationOverride != null
             ? predictDestinationOverride
-            : getService().getInferenceDestination().forScenario(PREDICT_SCENARIO_ID);
+            : getService().getInferenceDestination(resourceGroup).forScenario(PREDICT_SCENARIO_ID);
     val destination =
         DefaultHttpDestination.fromDestination(inferenceDestination).headers(customHeaders).build();
     return new PredictApi(ApiClient.create(destination));
