@@ -102,8 +102,7 @@ class TabularTest {
   void testCreateDeleteScenario() {
     cleanupScenarioConfigurations();
 
-    val scenarioConfigName =
-        "scenario-e2e-test-java-" + System.currentTimeMillis();
+    val scenarioConfigName = "scenario-e2e-test-java-" + System.currentTimeMillis();
     val createResponse =
         scenarioConfigurationService.createScenarioConfiguration(scenarioConfigName);
     assertThat(createResponse.getName()).isEqualTo(scenarioConfigName);
