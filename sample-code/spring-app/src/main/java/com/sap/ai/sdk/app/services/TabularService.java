@@ -55,10 +55,19 @@ public class TabularService {
       new TabularClient().scenarioConfiguration();
   static final PredictApi PREDICT_CLIENT = new TabularClient().predict();
 
+  /** The test resource group for all tabular operations. */
   public static final String resourceGroup = "ai-sdk-java-e2e";
+
+  /** The name of the data destination for the tabular artifact. */
   public static final String dataDestinationName = "ai-sdk-hdl-destination";
+
+  /** The name of the tabular artifact for product prediction. */
   public static final String artifactName = "product-artifact-lowercase";
+
+  /** The path to the Parquet file in the data destination for the tabular artifact. */
   public static final String artifactPath = "/data/product_data_hana_lowercase.parquet";
+
+  /** The name of the scenario configuration for product prediction. */
   public static final String scenarioConfigName = "product-prediction-scenario-lowercase";
 
   /**
@@ -98,6 +107,12 @@ public class TabularService {
           resourceGroup, dataDestinationName, request);
     }
 
+    /**
+     * Delete the data destination for Hana Data Lake.
+     *
+     * @param dataDestinationName The name of the data destination to delete.
+     * @return The response of the data destination deletion request.
+     */
     @Nonnull
     public OpenApiResponse deleteHanaDataLakeDataDestination(
         @Nonnull final String dataDestinationName) {
