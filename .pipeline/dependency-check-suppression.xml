@@ -6,7 +6,7 @@
   </suppress>
   <suppress>
     <notes><![CDATA[(false alarm) We do not have spring-ai-prd-reader in our dep tree. Should be fixed afte ai v2 migration.]]></notes>
-    <cve>CVE-2021-41251</cve>
+    <cve>CVE-2026-47851</cve>
   </suppress>
   <suppress>
     <notes><![CDATA[This is a JS dependency.]]></notes>
