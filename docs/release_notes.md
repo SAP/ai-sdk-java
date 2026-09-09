@@ -8,6 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
+- [Release] Disabled snapshot release to the Artifactory snapshot repository.
 - [RPT] SAP-RPT was updated to the newer 1.6.0 API
 - [Orchestration] Spring AI support was upgraded to version `2.0.1`
 
