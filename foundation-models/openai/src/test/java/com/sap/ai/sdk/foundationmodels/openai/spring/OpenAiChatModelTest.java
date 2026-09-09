@@ -134,9 +134,10 @@ public class OpenAiChatModelTest {
                     .withHeader("Content-Type", "application/json")
                     .withBodyFile("weatherToolResponse.json")));
 
-    var options = new DefaultToolCallingChatOptions();
-    options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
-    options.setInternalToolExecutionEnabled(false);
+    var options =
+        DefaultToolCallingChatOptions.builder()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
+            .build();
     val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
     val result = client.call(prompt);
 
@@ -178,10 +179,16 @@ public class OpenAiChatModelTest {
                     .withBodyFile("weatherToolResponse2.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var options = new DefaultToolCallingChatOptions();
-    options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
-    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
-    val result = client.call(prompt);
+    var options =
+        DefaultToolCallingChatOptions.builder()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
+            .build();
+    val chatClient = ChatClient.builder(client).build();
+    val result =
+        chatClient
+            .prompt(new Prompt("What is the weather in Potsdam and in Toulouse?", options))
+            .call()
+            .chatResponse();
 
     assertThat(result.getResult().getOutput().getText())
         .isEqualTo("The current temperature in Potsdam is 30°C and in Toulouse 30°C.");
