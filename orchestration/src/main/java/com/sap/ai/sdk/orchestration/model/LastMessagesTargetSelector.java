@@ -42,8 +42,9 @@ public class LastMessagesTargetSelector implements InputFilterTargetSelector
    * instance.
    *
    * @param lastMessages Number of messages from the end of the combined message list to include in
-   *     filtering. Must be &gt;&#x3D; 1 (0 is not allowed and returns 400 Bad Request). If larger
-   *     than the message list length, all messages are filtered. Minimum: 1
+   *     filtering. Must be &gt;&#x3D; 1 (0 is not allowed and returns 400 Bad Request). If
+   *     specified value is larger than the combined message list length, all messages are filtered.
+   *     Minimum: 1
    * @return The same instance of this {@link LastMessagesTargetSelector} class
    */
   @Nonnull
@@ -54,8 +55,8 @@ public class LastMessagesTargetSelector implements InputFilterTargetSelector
 
   /**
    * Number of messages from the end of the combined message list to include in filtering. Must be
-   * &gt;&#x3D; 1 (0 is not allowed and returns 400 Bad Request). If larger than the message list
-   * length, all messages are filtered. minimum: 1
+   * &gt;&#x3D; 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than
+   * the combined message list length, all messages are filtered. minimum: 1
    *
    * @return lastMessages The lastMessages of this {@link LastMessagesTargetSelector} instance.
    */
@@ -68,8 +69,9 @@ public class LastMessagesTargetSelector implements InputFilterTargetSelector
    * Set the lastMessages of this {@link LastMessagesTargetSelector} instance.
    *
    * @param lastMessages Number of messages from the end of the combined message list to include in
-   *     filtering. Must be &gt;&#x3D; 1 (0 is not allowed and returns 400 Bad Request). If larger
-   *     than the message list length, all messages are filtered. Minimum: 1
+   *     filtering. Must be &gt;&#x3D; 1 (0 is not allowed and returns 400 Bad Request). If
+   *     specified value is larger than the combined message list length, all messages are filtered.
+   *     Minimum: 1
    */
   public void setLastMessages(@Nonnull final Integer lastMessages) {
     this.lastMessages = lastMessages;
@@ -188,7 +190,8 @@ public class LastMessagesTargetSelector implements InputFilterTargetSelector
      *
      * @param lastMessages Number of messages from the end of the combined message list to include
      *     in filtering. Must be &gt;&#x3D; 1 (0 is not allowed and returns 400 Bad Request). If
-     *     larger than the message list length, all messages are filtered.
+     *     specified value is larger than the combined message list length, all messages are
+     *     filtered.
      * @return The LastMessagesTargetSelector instance.
      */
     LastMessagesTargetSelector lastMessages(@Nonnull final Integer lastMessages);

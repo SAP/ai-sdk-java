@@ -15,10 +15,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
- * Declarative selector for scoping input filtering to a subset of the combined message list
- * (messages_history prepended to template). Exactly one strategy key must be present; combining
- * keys from different strategies returns 400 Bad Request. If omitted, all configured input content
- * is filtered (backward compatible).
+ * Selector for scoping input filtering to a subset of the combined message list (messages_history
+ * prepended to template). If not present, all input content is filtered.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({

@@ -32,8 +32,7 @@ public class AfterLastRoleTargetSelector implements InputFilterTargetSelector
 {
   /**
    * Filter all messages after the last message with this role in the combined message list. If no
-   * message with this role exists, or the role is the last message, the filter is individually
-   * skipped.
+   * message is scoped after applying this filter, then the filter is skipped.
    */
   public enum AfterLastRoleEnum {
     /** The SYSTEM option of this AfterLastRoleTargetSelector */
@@ -114,8 +113,8 @@ public class AfterLastRoleTargetSelector implements InputFilterTargetSelector
    * instance.
    *
    * @param afterLastRole Filter all messages after the last message with this role in the combined
-   *     message list. If no message with this role exists, or the role is the last message, the
-   *     filter is individually skipped.
+   *     message list. If no message is scoped after applying this filter, then the filter is
+   *     skipped.
    * @return The same instance of this {@link AfterLastRoleTargetSelector} class
    */
   @Nonnull
@@ -126,8 +125,7 @@ public class AfterLastRoleTargetSelector implements InputFilterTargetSelector
 
   /**
    * Filter all messages after the last message with this role in the combined message list. If no
-   * message with this role exists, or the role is the last message, the filter is individually
-   * skipped.
+   * message is scoped after applying this filter, then the filter is skipped.
    *
    * @return afterLastRole The afterLastRole of this {@link AfterLastRoleTargetSelector} instance.
    */
@@ -140,8 +138,8 @@ public class AfterLastRoleTargetSelector implements InputFilterTargetSelector
    * Set the afterLastRole of this {@link AfterLastRoleTargetSelector} instance.
    *
    * @param afterLastRole Filter all messages after the last message with this role in the combined
-   *     message list. If no message with this role exists, or the role is the last message, the
-   *     filter is individually skipped.
+   *     message list. If no message is scoped after applying this filter, then the filter is
+   *     skipped.
    */
   public void setAfterLastRole(@Nonnull final AfterLastRoleEnum afterLastRole) {
     this.afterLastRole = afterLastRole;
@@ -259,8 +257,8 @@ public class AfterLastRoleTargetSelector implements InputFilterTargetSelector
      * Set the afterLastRole of this {@link AfterLastRoleTargetSelector} instance.
      *
      * @param afterLastRole Filter all messages after the last message with this role in the
-     *     combined message list. If no message with this role exists, or the role is the last
-     *     message, the filter is individually skipped.
+     *     combined message list. If no message is scoped after applying this filter, then the
+     *     filter is skipped.
      * @return The AfterLastRoleTargetSelector instance.
      */
     AfterLastRoleTargetSelector afterLastRole(@Nonnull final AfterLastRoleEnum afterLastRole);
