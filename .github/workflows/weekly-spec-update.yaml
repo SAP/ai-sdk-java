@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: 'Checkout repository'
         uses: actions/checkout@v7
+        with:
+          ref: v2 # spec updates are only performed on the v2 branch
 
       - name: 'Get orchestration version'
         if: matrix.service == 'orchestration'
@@ -51,6 +53,7 @@ jobs:
           echo "Using branch: $BRANCH"
 
           gh workflow run spec-update.yaml \
+            --ref v2 \
             --field service=${{ matrix.service }} \
             --field ref=$BRANCH \
             --field create-pr=true \

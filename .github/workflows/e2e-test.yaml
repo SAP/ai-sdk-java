@@ -15,6 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        branch: [ main, v2 ]
         environment: [ canary, production ]
         exclude:
           - environment: production
@@ -27,6 +28,8 @@ jobs:
 
       - name: "Checkout repository"
         uses: actions/checkout@v7
+        with:
+          ref: ${{ matrix.branch }}
 
       - name: "Setup java"
         uses: actions/setup-java@v6.0.0
@@ -115,7 +118,7 @@ jobs:
               - type: "section"
                 text:
                     type: "mrkdwn"
-                    text: "⚠️ End-to-end tests failed! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
+                    text: "⚠️ End-to-end tests failed on `${{ matrix.branch }}`! 😬 Please inspect & fix by clicking <https://github.com/SAP/ai-sdk-java/actions/runs/${{ github.run_id }}|here>"
               - type: "section"
                 text:
                   type: "mrkdwn"
