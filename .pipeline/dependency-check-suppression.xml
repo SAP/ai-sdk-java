@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
   <suppress>
+    <notes><![CDATA[(flase alarm) We do not have spring-ai-transformers in our dep tree. Should be fixed afte ai v2 migration.]]></notes>
+    <cve>CVE-2026-47852</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[(false alarm) We do not have spring-ai-prd-reader in our dep tree. Should be fixed afte ai v2 migration.]]></notes>
+    <cve>CVE-2021-41251</cve>
+  </suppress>
+  <suppress>
     <notes><![CDATA[This is a JS dependency.]]></notes>
     <cve>CVE-2021-41251</cve>
   </suppress>
