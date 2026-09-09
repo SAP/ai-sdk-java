@@ -301,7 +301,7 @@ jobs:
         run: |
           COMMIT_URL=${{ github.event.repository.html_url }}/commit/${{ needs.bump-version.outputs.release-commit }}
 
-          PR_URL=$(gh pr create --title "feat: Release ${{ needs.bump-version.outputs.release-version }}" --body "## TODOs
+          PR_URL=$(gh pr create --base "${{ github.event.inputs.branch }}" --title "feat: Release ${{ needs.bump-version.outputs.release-version }}" --body "## TODOs
           - [ ] Review the changes in [the release commit]($COMMIT_URL)
           - [ ] Review **and approve** the [Release Notes PR](${{ needs.create-release-notes-pr.outputs.pr-url }})
           - [ ] Review **and approve** the [JavaDoc PR](https://github.com/SAP/ai-sdk/pulls?q=is%3Aopen+is%3Apr+Update+JavaDocs)
