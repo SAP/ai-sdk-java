@@ -1,1717 +1,785 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Java AI SDK Application</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-          rel="stylesheet">
-    <style>
-        body {
-            background-color: #f4f6f9;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAP AI SDK — Realtime API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Design Tokens ─────────────────────────────────────────────────── */
+    :root {
+      --bg:           #000000;
+      --surface-1:    #0a0a0a;
+      --surface-2:    #0d0d0d;
+      --surface-3:    #181818;
+      --border:       #1e2a35;
+      --border-dim:   #111c24;
+      --accent-blue:  #005288;
+      --accent-blue2: #0a7fd4;
+      --accent-cyan:  #00d4ff;
+      --text-primary: #ffffff;
+      --text-secondary: #a0b4c8;
+      --text-dim:     #3a4a58;
+      --font-body:    'Inter', system-ui, sans-serif;
+      --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+      --glow-cyan:    0 0 14px rgba(0, 212, 255, 0.30);
+      --glow-blue:    0 0 20px rgba(0, 82, 136, 0.55);
+      --radius:       3px;
+    }
 
-        .max-width-container {
-            max-width: 550px;
-        }
+    /* ── Reset & Base ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .endpoint-card {
-            margin-bottom: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    html, body {
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      -webkit-font-smoothing: antialiased;
+    }
 
-        code {
-            font-family: Courier, monospace;
-            font-size: 95%;
-            color: #0d6efd;
-            padding: 0.2em 0.4em;
-            background-color: #EBEBEB;
-            border-radius: 3px;
-        }
+    button { cursor: pointer; font-family: inherit; }
+    a { text-decoration: none; }
+    svg { display: block; }
 
-        .info-tooltip {
-            position: relative;
-            cursor: help;
-        }
+    /* ── Topbar ────────────────────────────────────────────────────────── */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 48px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      background: var(--surface-1);
+      border-bottom: 1px solid var(--border);
+    }
 
-        .info-tooltip .tooltip-content {
-            visibility: hidden;
-            position: absolute;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            width: 250px;
-            bottom: 125%;
-            right: 15%;
-            transform: translateX(-50%);
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
+    .topbar__brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .info-tooltip:hover .tooltip-content {
-            visibility: visible;
-            opacity: 1;
-        }
+    .topbar__logo {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: brightness(0.9);
+    }
 
-        .footer {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-top: 1px solid #e7e7e9;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
+    .topbar__wordmark {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+    }
 
-        .footer-links {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex: 1;
-        }
+    .topbar__sep {
+      color: var(--border);
+      font-size: 16px;
+      font-weight: 300;
+      margin: 0 2px;
+    }
 
-        .endpoint {
-            background: none;
-            border: none;
-            padding: 0;
-            margin: 0;
-            text-decoration: underline;
-            cursor: pointer;
-            text-align: left;
-        }
+    .topbar__module {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+    }
 
-        #content-container pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            max-height: 500px;
-            overflow-y: auto;
-        }
+    .topbar__nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        .ws-status {
-            font-style: italic;
-            font-size: 0.8em;
-            color: #6c757d;
-        }
+    .topbar__btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: var(--radius);
+      transition: border-color 0.2s, color 0.2s;
+    }
 
-        .rt-btn {
-            border: 1px solid #dee2e6;
-            border-radius: 0.375rem;
-            padding: 0.375rem 0.75rem;
-            background: none;
-            color: #0d6efd;
-        }
+    .topbar__btn:hover {
+      border-color: var(--accent-blue2);
+      color: var(--text-primary);
+    }
 
-        #text-to-speech-input {
-            border: 1px solid #dee2e6;
-            border-radius: 0.375rem 0 0 0.375rem;
-            padding: 0.375rem 0.75rem;
-            outline: none;
-        }
+    .topbar__btn--github {
+      color: var(--text-dim);
+      border-color: transparent;
+    }
 
-        #text-to-speech-send-btn {
-            border-radius: 0 0.375rem 0.375rem 0;
-        }
+    .topbar__btn--github:hover {
+      color: var(--text-secondary);
+      border-color: transparent;
+    }
 
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            padding-top: 100px; /* Location of the box */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0, 0, 0, 0.9);
-        }
+    /* ── Workspace ─────────────────────────────────────────────────────── */
+    .workspace {
+      position: fixed;
+      top: 48px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border-dim);
+      overflow: hidden;
+    }
 
-        .modal-content {
-            margin: auto;
-            display: block;
-            width: 80%;
-            max-width: 700px;
-            animation: zoom 0.6s;
-        }
+    /* ── Panel ─────────────────────────────────────────────────────────── */
+    .panel {
+      position: relative;
+      background: var(--surface-2);
+      display: flex;
+      flex-direction: column;
+      padding: 36px 40px 32px;
+      overflow: hidden;
+    }
 
-        @keyframes zoom {
-            from {
-                transform: scale(0)
-            }
-            to {
-                transform: scale(1)
-            }
-        }
+    /* Dot-grid background texture */
+    .panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
 
-        .modal-close-button {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: #f1f1f1;
-            font-size: 40px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
+    /* Top edge accent line */
+    .panel::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-blue) 40%, var(--accent-cyan) 60%, transparent);
+      opacity: 0.6;
+    }
 
-        .modal-close-button:hover, .modal-close-button:focus {
-            color: #bbb;
-            text-decoration: none;
-            cursor: pointer;
-        }
+    .panel__header {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
 
-        @media only screen and (max-width: 700px) {
-            .modal-content {
-                width: 100%;
-            }
-        }
-    </style>
+    .panel__label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      color: var(--accent-blue2);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .panel__title {
+      font-family: var(--font-mono);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+    }
+
+    .panel__desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      letter-spacing: 0.02em;
+      line-height: 1.5;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel__body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Terminal Input Row (TTS) ──────────────────────────────────────── */
+    .terminal-row {
+      display: flex;
+      align-items: center;
+      background: var(--surface-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0 14px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .terminal-row:focus-within {
+      border-color: var(--accent-cyan);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .terminal-prompt {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--accent-cyan);
+      margin-right: 10px;
+      user-select: none;
+      opacity: 0.8;
+    }
+
+    #text-to-speech-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 13px 0;
+      caret-color: var(--accent-cyan);
+    }
+
+    #text-to-speech-input::placeholder {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    /* ── Launch Button (TTS send) ──────────────────────────────────────── */
+    #text-to-speech-send-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--accent-blue);
+      color: var(--accent-blue2);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 11px 20px;
+      border-radius: var(--radius);
+      transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 20px;
+    }
+
+    #text-to-speech-send-btn:hover {
+      background: rgba(0, 82, 136, 0.25);
+      border-color: var(--accent-cyan);
+      color: var(--text-primary);
+      box-shadow: var(--glow-cyan);
+    }
+
+    #text-to-speech-send-btn:active {
+      opacity: 0.7;
+    }
+
+    /* ── Telemetry Readout ─────────────────────────────────────────────── */
+    .telemetry-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .telemetry-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .telemetry-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      min-width: 48px;
+    }
+
+    #text-to-speech-status,
+    #speech-to-speech-websocket-status,
+    #speech-to-speech-mic-status {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      /* color managed by pcm-audio.js inline styles */
+    }
+
+    /* ── Waveform Visualizer (TTS) ─────────────────────────────────────── */
+    .waveform {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 36px;
+      margin-top: 24px;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .waveform.playing {
+      opacity: 1;
+    }
+
+    .waveform__bar {
+      width: 3px;
+      min-height: 3px;
+      background: var(--accent-cyan);
+      border-radius: 2px 2px 0 0;
+      opacity: 0.5;
+    }
+
+    .waveform.playing .waveform__bar {
+      animation: bar-wave 1.2s ease-in-out infinite;
+      opacity: 1;
+    }
+
+    @keyframes bar-wave {
+      0%, 100% { height: 3px;  opacity: 0.3; }
+      50%       { height: 28px; opacity: 0.9; }
+    }
+
+    .waveform.playing .waveform__bar:nth-child(1)  { animation-delay: 0.00s; }
+    .waveform.playing .waveform__bar:nth-child(2)  { animation-delay: 0.06s; }
+    .waveform.playing .waveform__bar:nth-child(3)  { animation-delay: 0.12s; }
+    .waveform.playing .waveform__bar:nth-child(4)  { animation-delay: 0.18s; }
+    .waveform.playing .waveform__bar:nth-child(5)  { animation-delay: 0.24s; }
+    .waveform.playing .waveform__bar:nth-child(6)  { animation-delay: 0.30s; }
+    .waveform.playing .waveform__bar:nth-child(7)  { animation-delay: 0.36s; }
+    .waveform.playing .waveform__bar:nth-child(8)  { animation-delay: 0.42s; }
+    .waveform.playing .waveform__bar:nth-child(9)  { animation-delay: 0.48s; }
+    .waveform.playing .waveform__bar:nth-child(10) { animation-delay: 0.54s; }
+    .waveform.playing .waveform__bar:nth-child(11) { animation-delay: 0.60s; }
+    .waveform.playing .waveform__bar:nth-child(12) { animation-delay: 0.54s; }
+    .waveform.playing .waveform__bar:nth-child(13) { animation-delay: 0.48s; }
+    .waveform.playing .waveform__bar:nth-child(14) { animation-delay: 0.42s; }
+    .waveform.playing .waveform__bar:nth-child(15) { animation-delay: 0.36s; }
+    .waveform.playing .waveform__bar:nth-child(16) { animation-delay: 0.30s; }
+    .waveform.playing .waveform__bar:nth-child(17) { animation-delay: 0.24s; }
+    .waveform.playing .waveform__bar:nth-child(18) { animation-delay: 0.18s; }
+    .waveform.playing .waveform__bar:nth-child(19) { animation-delay: 0.12s; }
+    .waveform.playing .waveform__bar:nth-child(20) { animation-delay: 0.06s; }
+
+    /* ── Mic Zone (S2S) ────────────────────────────────────────────────── */
+    .mic-zone {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 180px;
+      height: 180px;
+      margin: 16px auto 28px;
+    }
+
+    .mic-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid var(--accent-cyan);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s;
+    }
+
+    .mic-ring--outer { width: 168px; height: 168px; }
+    .mic-ring--inner { width: 138px; height: 138px; }
+
+    #panel-s2s.session-active .mic-ring {
+      opacity: 1;
+      animation: mic-pulse 2.2s ease-out infinite;
+    }
+
+    #panel-s2s.session-active .mic-ring--inner {
+      animation-delay: 0.5s;
+    }
+
+    @keyframes mic-pulse {
+      0%   { transform: scale(1);    opacity: 0.7; }
+      70%  { transform: scale(1.10); opacity: 0;   }
+      100% { transform: scale(1.10); opacity: 0;   }
+    }
+
+    /* Decorative mic SVG — sibling of button, not a child */
+    .mic-icon {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.18;
+      width: 36px;
+      height: 36px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+    }
+
+    #speech-to-speech-btn {
+      position: relative;
+      z-index: 1;
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      background: var(--surface-3);
+      border: 2px solid var(--accent-blue);
+      color: var(--text-secondary);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s, color 0.25s;
+    }
+
+    #speech-to-speech-btn:hover {
+      border-color: var(--accent-cyan);
+      box-shadow: var(--glow-cyan);
+      color: var(--text-primary);
+    }
+
+    #panel-s2s.session-active #speech-to-speech-btn {
+      border-color: var(--accent-cyan);
+      background: rgba(0, 212, 255, 0.07);
+      box-shadow: var(--glow-cyan);
+      color: var(--accent-cyan);
+    }
+
+    /* ── Architecture Modal ────────────────────────────────────────────── */
+    .arch-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arch-modal.open {
+      display: flex;
+    }
+
+    .arch-modal__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.90);
+      backdrop-filter: blur(6px);
+    }
+
+    .arch-modal__frame {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      width: 92%;
+      max-height: 90vh;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface-3);
+      padding: 14px;
+      overflow: auto;
+      animation: modal-in 0.22s ease-out;
+    }
+
+    @keyframes modal-in {
+      from { transform: scale(0.93); opacity: 0; }
+      to   { transform: scale(1);    opacity: 1; }
+    }
+
+    .arch-modal__close {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 2;
+      transition: color 0.15s;
+    }
+
+    .arch-modal__close:hover {
+      color: var(--text-primary);
+    }
+
+    .arch-modal__title {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .arch-modal__img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 2px;
+    }
+
+    /* ── Mobile ────────────────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      html, body { overflow: auto; }
+
+      .workspace {
+        position: static;
+        margin-top: 48px;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        gap: 1px;
+        min-height: calc(100vh - 48px);
+        overflow: visible;
+      }
+
+      .panel {
+        padding: 28px 24px;
+        min-height: 480px;
+      }
+
+      .topbar {
+        padding: 0 16px;
+      }
+    }
+
+    @media (max-height: 700px) {
+      .mic-zone {
+        width: 140px;
+        height: 140px;
+        margin: 8px auto 18px;
+      }
+      .mic-ring--outer { width: 132px; height: 132px; }
+      .mic-ring--inner { width: 108px; height: 108px; }
+      #speech-to-speech-btn { width: 86px; height: 86px; }
+      .panel { padding: 24px 32px 20px; }
+      .panel__desc { margin-bottom: 16px; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- API endpoints in containers -->
-<form method="get" action="" id="endpoint-form">
-    <div class="container-fluid py-4">
-        <div class="d-flex align-items-center mb-4 justify-content-center">
-            <img src="AI-SDK-Logo.svg" alt="AI SDK Logo" width="50" class="me-3">
-            <h1 class="text-center">Java AI SDK Application</h1>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-xl-4 max-width-container">
-                <div class="card endpoint-card">
-                    <div class="card-header">
-                        <h2>🧰 AI Core</h2>
-                        The AI Core API provides tools to manage the lifecycle of your own AI
-                        scenarios, including artifacts, pipeline execution, and scalable deployments
-                        for training and inference.
-                        For more information, check the <a
-                            href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/sap-ai-core-overview"
-                            target="_blank">AI Core documentation</a>.
-                    </div>
-                    <div class="card-body">
-                        <h5>Java Specific Deployments</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/createDelete"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/deployments/by-config/[...]/createDelete</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Create and delete a deployment with the Java specific
-                                        configuration ID.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/stop"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/deployments/by-config/[...]/stop</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Stop all deployments with the Java specific configuration
-                                        ID. Only RUNNING
-                                        deployments can be STOPPED.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/delete"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/deployments/by-config/[...]/delete</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Delete all deployments with the Java specific configuration
-                                        ID. Only UNKNOWN and
-                                        STOPPED deployments can be DELETED
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/deployments/by-config/67e8d039-c7f1-4179-9f8f-60d158a36b0e/getAll"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/deployments/by-config/[...]/getAll</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Get all deployments with the Java specific configuration ID.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <br>
-                        <h5>All Deployments</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/deployments/getAll"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/deployments/getAll</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Get all deployments, including non-Java specific
-                                        deployments.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <br>
-                        <h5>Scenarios</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/scenarios"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/scenarios</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Get the list of available scenarios.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/models"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/models</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Get the list of available models.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <br>
-                        <h5>Configurations</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/configurations"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/configurations</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Get the list of configurations.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 max-width-container">
-                <div class="card endpoint-card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <img src="Orchestration-Logo.png" alt="Orchestration Logo" width="35"
-                                 class="me-1 mb-2">
-                            <h2>Orchestration</h2>
-                        </div>
-                        The Orchestration API offers functionality for enhancing your LLM calls with
-                        Templating,
-                        Filtering, Data Masking, Grounding and more.
-                        For more information, check the <a
-                            href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/orchestration"
-                            target="_blank">Orchestration documentation</a>
-                    </div>
-                    <div class="card-body">
-                        <details open>
-                            <summary><h5 style="display:inline-block">Chat completion</h5></summary>
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit" formaction="/orchestration/completion"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/completion</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            with a simple prompt.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/streamChatCompletion"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/streamChatCompletion</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Asynchronous stream of an LLM chat request.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/reasoning"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/reasoning</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request against a reasoning-capable model. Returns
-                                            both the final answer and its reasoning.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/streamReasoning"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/streamReasoning</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Streaming variant that both answer and reasoning chunks.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/multiTurnReasoning"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/multiTurnReasoning</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Two-turn conversation demonstrating re-submission of
-                                            reasoning_content in messages_history.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/completionWithFallback"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/completionWithFallback</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request with a list of LLM modules to call. If the
-                                            first fails (which will happen here), the next module is
-                                            called.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit" formaction="/orchestration/template"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/template</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            with a template.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/messagesHistory"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/messageHistory</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            using message history.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit" formaction="/orchestration/image"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/image</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            with image as input.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/multiString"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/multiString</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            with multiple texts.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/fileInputUrl"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/fileInputUrl</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            with file input from a URL.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/fileInputLocalPath"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/fileInputLocalPath</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            with file input from a local path.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/fileInputBase64"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/fileInputBase64</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            with base64-encoded file input.
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- citation -->
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/citations"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/citations</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            with citations from Perplexity Sonar.
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </details>
-                        <br>
-                        <details>
-                            <summary><h5 style="display:inline-block">Filtering and Masking</h5>
-                            </summary>
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/inputFiltering/ALLOW_ALL"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/inputFiltering/ALLOW_ALL</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Apply lenient input filtering for a request to
-                                            orchestration.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/outputFiltering/ALLOW_ALL/false"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/outputFiltering/ALLOW_ALL/false</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Apply lenient output filtering for a request to
-                                            orchestration.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/llamaGuardFilter/false"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/llamaGuardFilter/false</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Apply lenient input filtering for a request to
-                                            orchestration.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/maskingAnonymization"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/maskingAnonymization</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Let the orchestration service evaluate the feedback on
-                                            the AI SDK provided by a
-                                            hypothetical
-                                            user. Anonymize any names given as they are not relevant
-                                            for judging the
-                                            sentiment of the
-                                            feedback.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/maskingRegex"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/maskingRegex</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Let the LLM respond with a masked repeated phrase of
-                                            patient IDs.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/maskingPseudonymization"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/maskingPseudonymization</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Let the orchestration service a response to a
-                                            hypothetical user who provided
-                                            feedback on the AI
-                                            SDK. Pseudonymize the user's name and location to
-                                            protect their privacy.
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </details>
-                        <br>
-                        <details>
-                            <summary><h5 style="display:inline-block">Grounding</h5></summary>
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/grounding/false"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/grounding</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Using grounding to provide additional context to the AI
-                                            model.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/grounding/true"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/
-                                                <wbr>
-                                                maskGroundingInput</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            The request to the grounding service will be masked.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/groundingSharepoint"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/groundingSharepoint</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Using grounding via a sharepoint repository to provide
-                                            additional context to the AI model.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/groundingHelpSapCom"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/groundingHelpSapCom</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Using grounding via *help.sap.com* to provide additional
-                                            SAP-specific context to the AI model.
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </details>
-                        <br>
-                        <details>
-                            <summary><h5 style="display:inline-block">Response format</h5></summary>
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/responseFormatJsonSchema"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/responseFormatJsonSchema</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            where the output will adhere to a given JSON schema.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/responseFormatJsonObject"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/responseFormatJsonObject</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            where the output will consist of valid JSON.
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </details>
-                        <br>
-                        <details>
-                            <summary><h5 style="display:inline-block">Template and Config
-                                Reference</h5>
-                            </summary>
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/templateFromPromptRegistryByIdTenant"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/templateFromPromptRegistryByIdTenant</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            in tenant scope
-                                            using a template from the prompt registry identified by
-                                            ID.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/templateFromPromptRegistryByIdResourceGroup"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/templateFromPromptRegistryByIdResourceGroup</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            in resource group
-                                            scope
-                                            using a template from the prompt registry identified by
-                                            ID.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/templateFromPromptRegistryByScenarioTenant"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/templateFromPromptRegistryByScenarioTenant</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            in tenant scope
-                                            using a template from the prompt registry identified by
-                                            Scenario, name, and version.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/templateFromPromptRegistryByScenarioResourceGroup"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/templateFromPromptRegistryByScenarioResourceGroup</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            in resource group
-                                            scope
-                                            using a template from the prompt registry identified by
-                                            Scenario, name, and version.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/localPromptTemplate"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/localPromptTemplate</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM through the Orchestration service
-                                            using a local template file.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/configFromRegistry"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/configFromRegistry</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to an LLM using an Orchestration config
-                                            stored in prompt registry.
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </details>
-                        <br>
-                        <details>
-                            <summary><h5 style="display:inline-block">Translation</h5>
-                            </summary>
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/translation"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/translation</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            French question translated to English, sent to LLM, then
-                                            translated to German.
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </details>
-                        <br>
-                        <details>
-                            <summary><h5 style="display:inline-block">Embedding</h5>
-                            </summary>
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/orchestration/embedding"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/orchestration/embedding</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Get the embedding of a text after masking using the
-                                            Orchestration
-                                            service.
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </details>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 max-width-container">
-                <div class="card endpoint-card">
-                    <div class="card-header">
-                        <h2>🧑‍🔬 Foundation Models</h2>
-                        The Foundation Models API offers functionality for directly calling a
-                        foundation model and using
-                        the features provided by its own API.
-                        For more information, check the <a
-                            href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/consume-generative-ai-models-using-sap-ai-core"
-                            target="_blank">Foundation Models documentation</a>.
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <img src="Open-AI-Logo.svg" alt="OpenAI Logo" class="me-1 mb-1">
-                            <h5 class="mb-1">OpenAI</h5>
-                        </div>
-                        <details open>
-                            <summary><h5 style="display:inline-block">Chat completion</h5></summary>
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit" formaction="/chatCompletion"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/chatCompletion</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to OpenAI.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit" formaction="/streamChatCompletion"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/streamChatCompletion</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Asynchronous stream of an OpenAI chat request.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/streamChatCompletionDeltas"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/streamChatCompletionDeltas</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Asynchronous stream of an OpenAI chat request and
-                                            provision
-                                            of complete
-                                            response.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/chatCompletionToolExecution"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/chatCompletionToolExecution</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to OpenAI with an executed tool call.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit" formaction="/chatCompletionImage"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/chatCompletionImage</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to OpenAI with an image.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit" formaction="/embedding"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/embedding</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Get the embedding of a text.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/chatCompletion/ai-sdk-java-e2e"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/chatCompletion/resourceGroup</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Chat request to OpenAI filtering by resource group.
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </details>
-                        <br>
-                        <details>
-                            <summary><h5 style="display:inline-block">Responses</h5></summary>
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/responses"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/responses</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Create a response using Responses API
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/streamResponses"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/streamResponses</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Create a streaming response using Responses API
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/responses/persistent"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/responses/persistent</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Create a persistent response and return its ID.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/responses/background"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/responses/background</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Create a background (async) persistent response.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/responses/retrieve/[responseId]"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/responses/retrieve/[responseId]</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Retrieve a stored response by ID.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/responses/[responseId]/cancel"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/responses/cancel/[responseId]</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Cancel a background response by ID.
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item">
-                                    <div class="info-tooltip">
-                                        <button type="submit"
-                                                formaction="/responses/delete/[responseId]"
-                                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                            <code>/responses/delete/[responseId]</code>
-                                        </button>
-                                        <div class="tooltip-content">
-                                            Delete a stored response by ID.
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </details>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <img src="SAP.svg" alt="SAP Logo" width="35" class="me-1 mb-1">
-                            <h5 class="mb-1">SAP RPT</h5>
-                        </div>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/tableCompletion"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/tableCompletion</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Predict request to SAP RPT.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/tableCompletionWithParquet"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/tableCompletionWithParquet</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Predict request to SAP RPT with Parquet file input.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 max-width-container">
-                <div class="card endpoint-card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <img src="https://spring.io/favicon-32x32.png" alt="Spring Logo"
-                                 class="me-2 mb-2">
-                            <h2>Spring AI</h2>
-                        </div>
-                        Our clients are <a
-                            href="https://sap.github.io/ai-sdk/docs/java/guides/spring-ai-integration"
-                            target="_blank">integrated</a> within the Spring AI framework
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <img src="Orchestration-Logo.png" alt="Orchestration Logo" width="35"
-                                 class="me-1 mb-2">
-                            <h5 class="mb-1">Orchestration Integration</h5>
-                        </div>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-orchestration/embed/string"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-orchestration/embed/string</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Embedding request to an embedding model through the
-                                        Orchestration service
-                                        with a simple prompt.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-orchestration/completion"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-orchestration/completion</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service
-                                        with a simple prompt.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-orchestration/streamChatCompletion"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-orchestration/streamChatCompletion</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Asynchronous stream of an LLM chat request through the
-                                        Orchestration service.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-orchestration/template"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-orchestration/template</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat request to an LLM through the Orchestration service
-                                        with a Spring AI
-                                        template.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-orchestration/masking"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-orchestration/masking</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Let the orchestration service evaluate the feedback on the
-                                        AI SDK provided by a hypothetical user. Anonymize any names
-                                        given as they are not relevant for judging the sentiment of
-                                        the feedback.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-orchestration/inputFiltering/ALLOW_SAFE"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-orchestration/inputFiltering/ALLOW_SAFE</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Apply strict input filtering for a request to orchestration
-                                        using the SpringAI integration.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-orchestration/outputFiltering/ALLOW_SAFE"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-orchestration/outputFiltering/ALLOW_SAFE</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Apply strict output filtering for a request to orchestration
-                                        using the SpringAI integration.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-orchestration/toolCalling"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-orchestration/toolCalling</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Register a function that will be called when the user asks
-                                        for the weather.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-orchestration/mcp"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-orchestration/mcp</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Use an MCP file system server as tool to answer questions
-                                        about the SDK itself.
-                                        ⚠️ Only works if the server is started with the "mcp" Spring
-                                        profile ⚠️.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-orchestration/chatMemory"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-orchestration/chatMemory</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        The user firsts asks the capital of France, then the typical
-                                        for there, chat memory will remember that the user is
-                                        inquiring about France.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <h5 class="mb-1">🤖 Agentic Workflows</h5>
-                        </div>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-agentic/chain"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-agentic/chain</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Make a call to a simple chain-like agentic workflow.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <img src="Open-AI-Logo.svg" alt="OpenAI Logo" class="me-1 mb-1">
-                            <h5 class="mb-1">OpenAI</h5>
-                        </div>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-openai/embed/strings"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-openai/embed/strings</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Get the embedding for a given string using OpenAI.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-openai/completion"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-openai/completion</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Chat Request with a simple prompt using OpenAI.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-openai/streamChatCompletion"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-openai/streamChatCompletion</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Asynchronous stream of a request using OpenAI.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-openai/toolCalling"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-openai/toolCalling</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Register a function that will be called when the user asks
-                                        for the weather using
-                                        OpenAI.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/spring-ai-openai/chatMemory"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/spring-ai-openai/chatMemory</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        The user firsts asks the capital of France, then the typical
-                                        for there, chat memory will remember that the user is
-                                        inquiring about France using OpenAI.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 max-width-container">
-                <div class="card endpoint-card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <img src="grounding.png" alt="Grounding Logo" width="35"
-                                 class="me-1 mb-2">
-                            <h2>Document Grounding</h2>
-                        </div>
-                        The Document Grounding API offers additional context for enhancing your
-                        Orchestration LLM calls.
-                        For more information, check the <a
-                            href="https://wiki.one.int.sap/wiki/display/AI/Consume+Grounding+via+GenAI+Hub"
-                            target="_blank">Wiki</a>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <input type="hidden" name="resource-group"
-                                           value="ai-sdk-js-e2e">
-                                    <button type="submit" formaction="/grounding/pipelines/list"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/grounding/pipelines/list</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        List all active pipelines in the document grounding module.
-                                        They can be used to index document storages like Sharepoint
-                                        pages or SFTP servers.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/grounding/vector/collections"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/grounding/vector/collections</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Show all available document collections.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/grounding/retrieval/search"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/grounding/retrieval/search</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Search in current document collections for a prompt.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 max-width-container">
-                <div class="card endpoint-card">
-                    <div class="card-header">
-                        <h2>📚 Prompt Registry</h2>
-                        Manage the life cycle of your prompts, from design to runtime.
-                        Can be used in combination with Orchestration.
-                        For more information, check the <a
-                            href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/prompt-registry"
-                            target="_blank">Prompt Registry documentation</a>.
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/prompt-registry/listTemplates"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/prompt-registry/listTemplates</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        List of all templates
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/prompt-registry/createTemplate"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/prompt-registry/createTemplate</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Create a template in the prompt registry.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/prompt-registry/updateTemplate"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/prompt-registry/updateTemplate</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Create a template in the prompt registry then update it.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/prompt-registry/history"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/prompt-registry/history</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Get the history of a template for a specific version only.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/prompt-registry/importTemplate"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/prompt-registry/importTemplate</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Import a template from a YAML file.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/prompt-registry/useTemplate"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/prompt-registry/useTemplate</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Substitute the user input param
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/prompt-registry/deleteTemplate"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/prompt-registry/deleteTemplate</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Delete all Java templates in the prompt registry.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/prompt-registry/promptRegistryToSpringAi"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/prompt-registry/promptRegistryToSpringAi</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Get a SpringAI list of messages from a Prompt Registry
-                                        Response.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit"
-                                            formaction="/prompt-registry/listOrchConfigs"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/prompt-registry/listOrchConfigs</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        List all Orchestration Configs.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 max-width-container">
-                <div class="card endpoint-card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <h2>📂 Batch API</h2>
-                        </div>
-                        Batch API calls together to reduce the number of HTTP connections your
-                        client has to make.
-                        For more information, check the <a
-                            href="https://github.tools.sap/AI/llm-batch-service"
-                            target="_blank">Batch API Documentation</a>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/batch/create"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/batch/create</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Upload the input and create a new batch job.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/batch/list"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/batch/list</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        List all batch jobs.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/batch/get/[id]"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/batch/get/[id]</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Get a batch job for an id.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/batch/delete/[id]"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/batch/delete/[id]</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Delete a batch job for an id.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/batch/read/[id]"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/batch/read/[id]</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Read the content of a batch output in the S3 bucket.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/batch/uploadInput"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/batch/uploadInput</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Upload the input.jsonl file to the S3 bucket.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 max-width-container">
-                <div class="card endpoint-card">
-                    <div class="card-header">
-                        <div class="d-flex align-items-center">
-                            <h2>⏰ Realtime API</h2>
-                        </div>
-                        Realtime API allows for various real time interactions <a
-                            href="https://developers.openai.com/api/docs/guides/realtime"
-                            target="_blank">Voice agents and speech generation scenarios are
-                        currently supported</a>.
-                        <br>
-                        In these examples, web socket sessions are created and used
-                        to send text/audio to the local server and receive audio back.
-                        <br>
-                        <br>
-                        <button type="button"
-                                class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint"
-                                onclick="document.getElementById('show-realtime-scheme').style.display='block';document.getElementById('realtime-scheme').src='realtime-api-scheme.svg'">
-                            <code>architecture diagram</code>
-                        </button>
-                        <div id="show-realtime-scheme" class="modal">
-                            <span class="modal-close-button"
-                                  onclick="this.parentElement.style.display='none'">&times;</span>
-                            <img class="modal-content" id="realtime-scheme"
-                                 alt="Realtime API architecture">
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/realtime/textToSpeech"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/realtime/textToSpeech</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Send text to the Realtime API and receive a PCM audio file
-                                        back.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <button type="submit" formaction="/realtime/speechToSpeech"
-                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
-                                        <code>/realtime/speechToSpeech</code>
-                                    </button>
-                                    <div class="tooltip-content">
-                                        Send audio to the Realtime API and receive a PCM audio file
-                                        back.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <h5>Text to speech</h5>
-                                    <span id="text-to-speech-status"
-                                          class="ws-status">disabled</span>
-                                    <div class="input-group">
-                                        <label for="text-to-speech-input" class="visually-hidden">Text
-                                            to speak</label>
-                                        <input type="text" id="text-to-speech-input"
-                                               placeholder="enter text">
-                                        <button id="text-to-speech-send-btn" class="rt-btn"
-                                                type="button">Send
-                                        </button>
-                                    </div>
-                                    <div class="tooltip-content">Translate input text into output
-                                        sound (speech).
-                                    </div>
-                                </div>
-                                <script src="pcm-audio.js"></script>
-                                <script src="text-to-speech.js"></script>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="info-tooltip">
-                                    <h5>Speech to speech</h5>
-                                    <span id="speech-to-speech-websocket-status" class="ws-status">socket: disconnected</span><br>
-                                    <span id="speech-to-speech-mic-status" class="ws-status">microphone: disabled</span>
-                                    <div class="input-group">
-                                        <button id="speech-to-speech-btn" class="rt-btn"
-                                                type="button">Start
-                                        </button>
-                                    </div>
-                                    <div class="tooltip-content">Speak with an AI assistant.</div>
-                                </div>
-                                <script src="speech-to-speech.js"></script>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- ── Topbar ──────────────────────────────────────────────────────────── -->
+  <header class="topbar">
+    <div class="topbar__brand">
+      <img src="AI-SDK-Logo.svg" alt="SAP AI SDK" class="topbar__logo">
+      <span class="topbar__wordmark">SAP AI SDK</span>
+      <span class="topbar__sep">|</span>
+      <span class="topbar__module">Realtime API</span>
     </div>
+    <nav class="topbar__nav">
+      <a href="https://github.com/SAP/ai-sdk-java" target="_blank" rel="noopener" class="topbar__btn topbar__btn--github" aria-label="GitHub repository">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.54 7.54 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        GitHub
+      </a>
+      <button class="topbar__btn" id="arch-btn" type="button" aria-haspopup="dialog">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <rect x="1" y="1" width="6" height="5" rx="1"/>
+          <rect x="9" y="1" width="6" height="5" rx="1"/>
+          <rect x="1" y="10" width="6" height="5" rx="1"/>
+          <rect x="9" y="10" width="6" height="5" rx="1"/>
+          <line x1="4" y1="6" x2="4" y2="10"/>
+          <line x1="12" y1="6" x2="12" y2="10"/>
+          <line x1="4" y1="8" x2="12" y2="8"/>
+        </svg>
+        Architecture
+      </button>
+    </nav>
+  </header>
 
-    <footer class="footer">
-        <div>
-            <input type="radio" name="format" value="message" id="message-format" checked>
-            <label for="message-format">Message</label>
-            <input type="radio" name="format" value="json" id="json-format">
-            <label for="json-format">JSON</label>
+  <!-- ── Workspace ───────────────────────────────────────────────────────── -->
+  <main class="workspace">
+
+    <!-- Panel A: Text-to-Speech -->
+    <section class="panel" id="panel-tts">
+      <div class="panel__header">
+        <span class="panel__label">Module 01</span>
+        <h1 class="panel__title">Text-to-Speech</h1>
+      </div>
+      <p class="panel__desc">Synthesize speech from text over a Realtime WebSocket connection.</p>
+
+      <div class="panel__body">
+        <div class="terminal-row">
+          <span class="terminal-prompt">&gt;_</span>
+          <input
+            id="text-to-speech-input"
+            type="text"
+            placeholder="enter transmission text…"
+            aria-label="Text to speak"
+            autocomplete="off"
+            spellcheck="false"
+          >
         </div>
-        <div class="footer-links">
-            <a href="https://github.com/SAP/ai-sdk-java">GitHub</a>
+
+        <button id="text-to-speech-send-btn" type="button">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11z"/>
+          </svg>
+          Transmit
+        </button>
+
+        <div class="telemetry-grid">
+          <div class="telemetry-row">
+            <span class="telemetry-label">Status</span>
+            <span id="text-to-speech-status">ready</span>
+          </div>
         </div>
-        <div class="info-tooltip">
-            ❓
-            <div class="tooltip-content">
-                Welcome to the Java AI SDK Application. In this Demo and End-to-End Test App you can
-                test several endpoints of our API. For more information, check our GitHub repository
-                linked at the bottom.
-            </div>
+
+        <div class="waveform" id="tts-waveform" aria-hidden="true">
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
+          <div class="waveform__bar"></div>
         </div>
-    </footer>
-</form>
+      </div>
+    </section>
+
+    <!-- Panel B: Speech-to-Speech -->
+    <section class="panel" id="panel-s2s">
+      <div class="panel__header">
+        <span class="panel__label">Module 02</span>
+        <h1 class="panel__title">Speech-to-Speech</h1>
+      </div>
+      <p class="panel__desc">Live bidirectional voice conversation with the AI assistant.</p>
+
+      <div class="panel__body">
+        <div class="mic-zone">
+          <div class="mic-ring mic-ring--outer" aria-hidden="true"></div>
+          <div class="mic-ring mic-ring--inner" aria-hidden="true"></div>
+
+          <!-- Decorative mic icon — sibling of button, not a child, so speech-to-speech.js textContent writes don't wipe it -->
+          <svg class="mic-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm0 2a2 2 0 0 0-2 2v6a2 2 0 0 0 4 0V5a2 2 0 0 0-2-2zm-7 8a1 1 0 0 1 1 1 6 6 0 0 0 12 0 1 1 0 1 1 2 0 8 8 0 0 1-7 7.93V21h2a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2h2v-2.07A8 8 0 0 1 4 12a1 1 0 0 1 1-1z"/>
+          </svg>
+
+          <button id="speech-to-speech-btn" type="button" aria-label="Start speech session">Start</button>
+        </div>
+
+        <div class="telemetry-grid">
+          <div class="telemetry-row">
+            <span class="telemetry-label">Socket</span>
+            <span id="speech-to-speech-websocket-status">disconnected</span>
+          </div>
+          <div class="telemetry-row">
+            <span class="telemetry-label">Mic</span>
+            <span id="speech-to-speech-mic-status">disabled</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Architecture Modal ──────────────────────────────────────────────── -->
+  <div id="arch-modal" class="arch-modal" role="dialog" aria-modal="true" aria-label="Realtime API architecture diagram">
+    <div class="arch-modal__backdrop" id="arch-backdrop"></div>
+    <div class="arch-modal__frame">
+      <button class="arch-modal__close" id="arch-close" type="button" aria-label="Close diagram">&times;</button>
+      <p class="arch-modal__title">Realtime API — Architecture Overview</p>
+      <img id="arch-img" src="" alt="Realtime API architecture diagram" class="arch-modal__img">
+    </div>
+  </div>
+
+  <!-- ── Scripts ─────────────────────────────────────────────────────────── -->
+  <script src="pcm-audio.js"></script>
+
+  <!-- Patch playPcmAudio to drive the waveform — must run after pcm-audio.js, before text-to-speech.js -->
+  <script>
+    (function () {
+      var _orig = window.playPcmAudio;
+      window.playPcmAudio = function (ctx, buf, state) {
+        _orig(ctx, buf, state);
+        var wf = document.getElementById('tts-waveform');
+        wf.classList.add('playing');
+        clearTimeout(wf._hideTimer);
+        wf._hideTimer = setTimeout(function () { wf.classList.remove('playing'); }, 3500);
+      };
+    })();
+  </script>
+
+  <script src="text-to-speech.js"></script>
+  <script src="speech-to-speech.js"></script>
+
+  <!-- UI interactions: modal, session-active state, Enter key on TTS input -->
+  <script>
+    (function () {
+      // Architecture modal
+      var modal    = document.getElementById('arch-modal');
+      var archImg  = document.getElementById('arch-img');
+      var archBtn  = document.getElementById('arch-btn');
+      var archClose = document.getElementById('arch-close');
+      var backdrop  = document.getElementById('arch-backdrop');
+
+      function openModal() {
+        if (!archImg.getAttribute('src')) archImg.src = 'realtime-api-scheme.svg';
+        modal.classList.add('open');
+        archClose.focus();
+      }
+      function closeModal() {
+        modal.classList.remove('open');
+        archBtn.focus();
+      }
+
+      archBtn.addEventListener('click', openModal);
+      archClose.addEventListener('click', closeModal);
+      backdrop.addEventListener('click', closeModal);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+
+      // Toggle session-active on S2S panel when speech button text changes (Stop/Start)
+      var s2sBtn   = document.getElementById('speech-to-speech-btn');
+      var s2sPanel = document.getElementById('panel-s2s');
+
+      new MutationObserver(function () {
+        var active = s2sBtn.textContent.trim().toLowerCase() === 'stop';
+        s2sPanel.classList.toggle('session-active', active);
+        s2sBtn.setAttribute('aria-label', active ? 'Stop speech session' : 'Start speech session');
+      }).observe(s2sBtn, { childList: true, subtree: true, characterData: true });
+
+      // Enter key submits TTS
+      document.getElementById('text-to-speech-input').addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') document.getElementById('text-to-speech-send-btn').click();
+      });
+    })();
+  </script>
 
 </body>
 </html>
