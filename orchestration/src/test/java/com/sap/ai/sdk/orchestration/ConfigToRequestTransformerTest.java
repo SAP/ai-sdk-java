@@ -30,6 +30,17 @@ class ConfigToRequestTransformerTest {
   }
 
   @Test
+  void testThrowsOnTemplateRefWithMessages() {
+    var prompt = new OrchestrationPrompt("Foo bar");
+    var templateRef =
+        TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16").toLowLevel();
+
+    assertThatThrownBy(() -> ConfigToRequestTransformer.toTemplateModuleConfig(prompt, templateRef))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessageContaining("Prompt must not contain messages when using a template reference");
+  }
+
+  @Test
   void testEmptyTemplateConfig() {
     var systemMessage = new SystemMessage("foo");
     var userMessage = new UserMessage("Hello");
