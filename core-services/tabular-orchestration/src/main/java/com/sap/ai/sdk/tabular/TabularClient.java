@@ -86,7 +86,7 @@ public class TabularClient {
   }
 
   /**
-   * Get the Predict API.
+   * Get the Predict API. This uses the resource group "default".
    *
    * @return The Predict API.
    */
