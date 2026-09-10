@@ -85,9 +85,10 @@ jobs:
 
       - name: 'Determine PR base'
         id: pr_base
-        # If updating orchestration and orchestration-staging exists on remote, use it as PR base.
+        # Spec updates are always based on the v2 branch.
+        # If updating orchestration and orchestration-staging exists on remote, use it as PR base instead.
         run: |
-          BASE=main
+          BASE=v2
           if [ "${{ env.SERVICE }}" = "orchestration" ] && [ -n "$(git ls-remote --heads origin orchestration-staging)" ]; then
             BASE=orchestration-staging
           fi
@@ -205,7 +206,7 @@ jobs:
             # Get the most recent completed run of this workflow with respect to the same feature branch
             PREVIOUS_RUN=$(gh run list \
             --workflow "${{ github.workflow }}" \
-            --branch main \
+            --branch v2 \
             --json databaseId,status,conclusion,displayTitle \
             --jq "map(select(.databaseId != ${CURRENT_RUN} and (.displayTitle | contains(\"${RUN_NAME}\")))) | .[0]")
 
