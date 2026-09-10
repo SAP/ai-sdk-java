@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v2/lm/scenarios/MyScenario/promptTemplates/prompt_template_name/versions/1.0.0/history"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "count": 1,
+      "resources": [
+        {
+          "id": "312a9b9c-a532-4c1c-8852-bf75de887d74",
+          "name": "prompt_template_name",
+          "version": "1.0.0",
+          "scenario": "MyScenario",
+          "creationTimestamp": "2025-02-26T12:29:55.875000",
+          "managedBy": "imperative",
+          "isVersionHead": true
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "DELETE",
+    "url": "/v2/lm/promptTemplates/312a9b9c-a532-4c1c-8852-bf75de887d74"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "message": "Prompt template deleted successfully"
+    }
+  }
+}

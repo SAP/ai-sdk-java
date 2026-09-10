@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v2/lm/promptTemplates/312a9b9c-a532-4c1c-8852-bf75de887d74/export"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/octet-stream"
+    },
+    "base64Body": "dGVzdC1leHBvcnQtY29udGVudA=="
+  }
+}

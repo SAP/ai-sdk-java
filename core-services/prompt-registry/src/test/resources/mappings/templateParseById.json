@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/v2/lm/promptTemplates/312a9b9c-a532-4c1c-8852-bf75de887d74/substitution?metadata=false"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "parsedPrompt": [
+        {
+          "role": "system",
+          "content": "You are a helpful assistant."
+        },
+        {
+          "role": "user",
+          "content": "What is the capital of France?"
+        }
+      ]
+    }
+  }
+}
