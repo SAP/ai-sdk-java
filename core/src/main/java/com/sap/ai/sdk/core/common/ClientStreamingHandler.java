@@ -3,7 +3,6 @@ package com.sap.ai.sdk.core.common;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import java.io.IOException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -30,7 +29,7 @@ public class ClientStreamingHandler<
    * @return the current instance of {@link ClientStreamingHandler} with the changed object mapper
    */
   @Nonnull
-  @Beta
+  // @Beta
   public ClientStreamingHandler<D, R, E> objectMapper(@Nonnull final ObjectMapper jackson) {
     super.objectMapper(jackson);
     return this;

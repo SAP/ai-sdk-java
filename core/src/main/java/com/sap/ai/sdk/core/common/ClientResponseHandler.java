@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import io.vavr.control.Try;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -49,7 +48,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
    * @param jackson The {@link ObjectMapper} to use
    * @return the current instance of {@link ClientResponseHandler} with the changed object mapper
    */
-  @Beta
+  // @Beta
   @Nonnull
   public ClientResponseHandler<T, R, E> objectMapper(@Nonnull final ObjectMapper jackson) {
     objectMapper = jackson;

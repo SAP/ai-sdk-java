@@ -3,7 +3,6 @@ package com.sap.ai.sdk.core;
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.google.common.annotations.Beta;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
@@ -139,7 +138,7 @@ public class AiCoreService {
    *
    * @param resourceGroup the resource group of the deleted deployment, usually "default".
    */
-  @Beta
+  // @Beta
   public void reloadCachedDeployments(@Nonnull final String resourceGroup) {
     deploymentResolver.reloadDeployments(resourceGroup);
   }

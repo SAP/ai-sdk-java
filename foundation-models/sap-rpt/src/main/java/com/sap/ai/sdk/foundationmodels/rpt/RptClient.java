@@ -87,7 +87,7 @@ public class RptClient {
    *     embedded {@link com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig} is
    *     set to {@code null} on the passed-in object as a side effect.
    */
-  @Beta
+  // @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(@Nonnull final PredictRequestPayload requestBody) {
     if (!contextModePossible) {
@@ -132,7 +132,7 @@ public class RptClient {
    *     set to {@code null} as a side effect.
    * @since 1.16.0
    */
-  @Beta
+  // @Beta
   @Nonnull
   public PredictResponsePayload tableCompletion(
       @Nonnull final File parquetFile, @Nonnull final PredictionConfig predictionConfig) {

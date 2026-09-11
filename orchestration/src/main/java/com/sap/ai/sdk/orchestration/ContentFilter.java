@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.InputFilterConfig;
 import com.sap.ai.sdk.orchestration.model.OutputFilterConfig;
 import javax.annotation.Nonnull;
@@ -23,7 +22,7 @@ public interface ContentFilter {
    *
    * @return the corresponding {@link InputFilterConfig} object.
    */
-  @Beta
+  // @Beta
   @Nonnull
   InputFilterConfig createInputFilterConfig();
 
@@ -33,7 +32,7 @@ public interface ContentFilter {
    *
    * @return the corresponding {@link OutputFilterConfig} object.
    */
-  @Beta
+  // @Beta
   @Nonnull
   OutputFilterConfig createOutputFilterConfig();
 }

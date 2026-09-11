@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.Embedding;
 import com.sap.ai.sdk.orchestration.model.EmbeddingMultiFormat;
 import java.io.IOException;
@@ -15,7 +14,7 @@ import javax.annotation.Nonnull;
  * {@code @JsonCreator} annotations by intelligently detecting the JSON structure and choosing the
  * appropriate implementation.
  */
-@Beta
+// @Beta
 class EmbeddingDeserializer extends JsonDeserializer<Embedding> {
 
   /**

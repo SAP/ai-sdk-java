@@ -1,19 +1,18 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
-import com.google.common.annotations.Beta;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** Allows to configure model output voice */
-@Beta
+// @Beta
 public final class RealtimeParamVoice implements RealtimeParam {
 
   /** Standard voice 1 */
-  @Beta public static final RealtimeParamVoice DEFAULT_1 = new RealtimeParamVoice("DEFAULT_1");
+  /*@Beta*/ public static final RealtimeParamVoice DEFAULT_1 = new RealtimeParamVoice("DEFAULT_1");
 
   /** Standard voice 2 */
-  @Beta public static final RealtimeParamVoice DEFAULT_2 = new RealtimeParamVoice("DEFAULT_2");
+  /*@Beta*/ public static final RealtimeParamVoice DEFAULT_2 = new RealtimeParamVoice("DEFAULT_2");
 
   private final String voice;
 
@@ -31,25 +30,24 @@ public final class RealtimeParamVoice implements RealtimeParam {
    * @return typed voice client configuration param
    */
   @Nonnull
-  @Beta
+  // @Beta
   public static RealtimeParamVoice withExplicitVoice(@Nonnull final String voiceName) {
     return new RealtimeParamVoice(voiceName);
   }
 
   @Override
-  @Beta
+  // @Beta
   public @Nonnull ParamName getParamName() {
     return ParamName.OUTPUT_VOICE;
   }
 
   @Override
-  @Beta
+  // @Beta
   public @Nonnull String getValueAsString() {
     return voice;
   }
 
   @Override
-  @Beta
   public boolean equals(@Nullable final Object o) {
     if (o == null || getClass() != o.getClass()) {
       return false;
@@ -59,7 +57,6 @@ public final class RealtimeParamVoice implements RealtimeParam {
   }
 
   @Override
-  @Beta
   public int hashCode() {
     return Objects.hashCode(voice);
   }

@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.prompt.registry.client.OrchestrationConfigsApi;
 import com.sap.ai.sdk.prompt.registry.model.AzureContentSafetyInputFilterConfig;
@@ -23,7 +22,7 @@ import lombok.val;
  *
  * @since 1.15.0
  */
-@Beta
+// @Beta
 public class OrchestrationConfigClient extends OrchestrationConfigsApi {
 
   /**

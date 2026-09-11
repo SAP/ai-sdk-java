@@ -7,7 +7,7 @@ import com.google.common.annotations.Beta;
  *
  * <p>Should be closed by application (try-with-resources) when not needed anymore
  */
-@Beta
+// @Beta
 public interface AudioInputChannel extends AutoCloseable {
 
   /**

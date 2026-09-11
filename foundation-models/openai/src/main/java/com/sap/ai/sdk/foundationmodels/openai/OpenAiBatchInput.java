@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionRequest;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ public class OpenAiBatchInput {
    *
    * @param chatCompletionRequests the list of chat completion requests to include in the batch
    */
-  @Beta
+  // @Beta
   public OpenAiBatchInput(@Nonnull final OpenAiChatCompletionRequest... chatCompletionRequests) {
     for (int i = 0; i < chatCompletionRequests.length; i++) {
       val request = chatCompletionRequests[i];
