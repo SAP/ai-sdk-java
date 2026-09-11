@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/v2/lm/promptTemplates/import"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "message": "Prompt template imported successfully",
+      "id": "912bda62-ae87-4e73-ab53-08e9a10e2813",
+      "scenario": "e2e-test",
+      "name": "get-capital",
+      "version": "0.0.1"
+    }
+  }
+}

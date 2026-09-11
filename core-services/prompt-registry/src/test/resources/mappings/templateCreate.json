@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/v2/lm/promptTemplates"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "message": "Prompt template created successfully",
+      "id": "312a9b9c-a532-4c1c-8852-bf75de887d74",
+      "scenario": "MyScenario",
+      "name": "prompt_template_name",
+      "version": "1.0.0"
+    }
+  }
+}

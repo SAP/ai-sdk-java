@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/v2/registry/v2/orchestrationConfigs"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "message": "Orchestration config created successfully",
+      "id": "62e8638a-ae87-4bd5-9027-a0bc67db1609",
+      "scenario": "sdk-test-scenario",
+      "name": "test-config-for-OrchestrationTest",
+      "version": "0.0.1"
+    }
+  }
+}

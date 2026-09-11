@@ -11,11 +11,19 @@ import com.sap.ai.sdk.prompt.registry.model.AzureContentSafetyInputFilterConfig;
 import com.sap.ai.sdk.prompt.registry.model.AzureContentSafetyOutputFilterConfig;
 import com.sap.ai.sdk.prompt.registry.model.InputFilterConfig;
 import com.sap.ai.sdk.prompt.registry.model.LlamaGuard38bFilterConfig;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigDeleteResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigListResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
 import com.sap.ai.sdk.prompt.registry.model.OutputFilterConfig;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException;
+import java.util.UUID;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Tolerate;
 import lombok.val;
 
 /**
@@ -24,11 +32,15 @@ import lombok.val;
  * @since 1.15.0
  */
 @Beta
-public class OrchestrationConfigClient extends OrchestrationConfigsApi {
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+public class OrchestrationConfigClient {
+
+  private final OrchestrationConfigsApi configsApi;
 
   /**
    * Instantiates a client to manage Orchestration Configurations on the Prompt Registry service.
    */
+  @Tolerate
   public OrchestrationConfigClient() {
     this(new AiCoreService());
   }
@@ -38,8 +50,73 @@ public class OrchestrationConfigClient extends OrchestrationConfigsApi {
    *
    * @param aiCoreService The configured connectivity instance to AI Core
    */
+  @Tolerate
   public OrchestrationConfigClient(@Nonnull final AiCoreService aiCoreService) {
-    super(addMixin(aiCoreService));
+    this.configsApi = new OrchestrationConfigsApi(addMixin(aiCoreService));
+  }
+
+  /**
+   * Create or update an orchestration config
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>400</b> - Bad Request
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param request The value for the parameter orchestrationConfigPostRequest
+   * @return OrchestrationConfigPostResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OrchestrationConfigPostResponse createUpdateOrchestrationConfig(
+      @Nonnull final OrchestrationConfigPostRequest request) throws OpenApiRequestException {
+    return this.configsApi.createUpdateOrchestrationConfig(request);
+  }
+
+  /**
+   * List orchestration configs
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>400</b> - Bad Request
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>413</b> - Payload Too Large — result set exceeds maximum allowed rows; use $top and $skip
+   * to paginate
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @return OrchestrationConfigListResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OrchestrationConfigListResponse listOrchestrationConfigs() throws OpenApiRequestException {
+    return configsApi.listOrchestrationConfigs();
+  }
+
+  /**
+   * Delete orchestration config
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param id The value for the parameter orchestrationConfigId
+   * @return OrchestrationConfigDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OrchestrationConfigDeleteResponse deleteOrchestrationConfig(@Nonnull final UUID id)
+      throws OpenApiRequestException {
+    return configsApi.deleteOrchestrationConfig(id);
   }
 
   @Nonnull

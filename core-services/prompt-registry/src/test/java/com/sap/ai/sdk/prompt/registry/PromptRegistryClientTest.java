@@ -8,6 +8,8 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.prompt.registry.model.MultiChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateGetResponse;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostRequest;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSpec;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonSchema;
@@ -16,6 +18,9 @@ import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.TextContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,7 +42,7 @@ class PromptRegistryClientTest {
   }
 
   @Test
-  void testPipelines() {
+  void testListPromptTemplates() {
     final var result = client.listPromptTemplates();
     assertThat(result.getCount()).isEqualTo(2);
     assertThat(result.getResources()).hasSize(2);
@@ -162,5 +167,90 @@ class PromptRegistryClientTest {
     final var userTemplate = (SingleChatTemplate) response.getParsedPrompt().get(1);
     assertThat(userTemplate.getRole()).isEqualTo("user");
     assertThat(userTemplate.getContent()).isEqualTo("I love football");
+  }
+
+  @Test
+  void testCreateUpdatePromptTemplate() {
+    final var spec =
+        PromptTemplateSpec.create()
+            .template(SingleChatTemplate.create().role("user").content("Hello"));
+    final var request =
+        PromptTemplatePostRequest.create()
+            .name("prompt_template_name")
+            .version("1.0.0")
+            .scenario("MyScenario")
+            .spec(spec);
+
+    final var result = client.createUpdatePromptTemplate(request);
+
+    assertThat(result.getMessage()).isEqualTo("Prompt template created successfully");
+    assertThat(result.getId()).isEqualTo(UUID.fromString("312a9b9c-a532-4c1c-8852-bf75de887d74"));
+    assertThat(result.getScenario()).isEqualTo("MyScenario");
+    assertThat(result.getName()).isEqualTo("prompt_template_name");
+    assertThat(result.getVersion()).isEqualTo("1.0.0");
+  }
+
+  @Test
+  void testDeletePromptTemplate() {
+    final var id = UUID.fromString("312a9b9c-a532-4c1c-8852-bf75de887d74");
+
+    final var result = client.deletePromptTemplate(id);
+
+    assertThat(result.getMessage()).isEqualTo("Prompt template deleted successfully");
+  }
+
+  @Test
+  void testExportPromptTemplate() {
+    final var id = UUID.fromString("312a9b9c-a532-4c1c-8852-bf75de887d74");
+
+    final byte[] result = client.exportPromptTemplate(id);
+
+    assertThat(result).isEqualTo("test-export-content".getBytes());
+  }
+
+  @Test
+  void testImportPromptTemplate() throws IOException {
+    final File tempFile = Files.createTempFile("template-import", ".json").toFile();
+    tempFile.deleteOnExit();
+
+    final var result = client.importPromptTemplate(null, null, tempFile);
+
+    assertThat(result.getMessage()).isEqualTo("Prompt template imported successfully");
+    assertThat(result.getId()).isEqualTo(UUID.fromString("912bda62-ae87-4e73-ab53-08e9a10e2813"));
+    assertThat(result.getScenario()).isEqualTo("e2e-test");
+    assertThat(result.getName()).isEqualTo("get-capital");
+    assertThat(result.getVersion()).isEqualTo("0.0.1");
+  }
+
+  @Test
+  void testListPromptTemplateHistory() {
+    final var result =
+        client.listPromptTemplateHistory("MyScenario", "1.0.0", "prompt_template_name");
+
+    assertThat(result.getCount()).isEqualTo(1);
+    assertThat(result.getResources()).hasSize(1);
+    final var entry = result.getResources().get(0);
+    assertThat(entry.getId()).isEqualTo(UUID.fromString("312a9b9c-a532-4c1c-8852-bf75de887d74"));
+    assertThat(entry.getName()).isEqualTo("prompt_template_name");
+    assertThat(entry.getVersion()).isEqualTo("1.0.0");
+    assertThat(entry.getScenario()).isEqualTo("MyScenario");
+    assertThat(entry.getCreationTimestamp()).isEqualTo("2025-02-26T12:29:55.875000");
+    assertThat(entry.isIsVersionHead()).isTrue();
+  }
+
+  @Test
+  void testParsePromptTemplateById() {
+    final var id = UUID.fromString("312a9b9c-a532-4c1c-8852-bf75de887d74");
+    final var request = PromptTemplateSubstitutionRequest.create().inputParams(Map.of());
+
+    final var result = client.parsePromptTemplateById(id, null, null, false, request);
+
+    assertThat(result.getParsedPrompt()).hasSize(2);
+    final var system = (SingleChatTemplate) result.getParsedPrompt().get(0);
+    assertThat(system.getRole()).isEqualTo("system");
+    assertThat(system.getContent()).isEqualTo("You are a helpful assistant.");
+    final var user = (SingleChatTemplate) result.getParsedPrompt().get(1);
+    assertThat(user.getRole()).isEqualTo("user");
+    assertThat(user.getContent()).isEqualTo("What is the capital of France?");
   }
 }
