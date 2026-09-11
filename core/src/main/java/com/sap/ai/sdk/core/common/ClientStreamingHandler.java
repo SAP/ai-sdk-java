@@ -3,7 +3,6 @@ package com.sap.ai.sdk.core.common;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import java.io.IOException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;

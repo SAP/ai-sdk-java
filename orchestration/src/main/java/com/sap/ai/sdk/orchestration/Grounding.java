@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
