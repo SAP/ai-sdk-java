@@ -7,7 +7,7 @@ import javax.annotation.Nonnull;
  * Allows to input (send) text to the open channel, must be closed when not needed anymore (e.g.
  * try-with-resources)
  */
-@Beta
+// @Beta
 public interface TextInputChannel extends AutoCloseable {
 
   /**

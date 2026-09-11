@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** Allows to configure model system prompt */
-@Beta
+// @Beta
 public final class RealtimeParamSystemPrompt implements RealtimeParam {
 
   private final String systemPrompt;
@@ -16,25 +16,24 @@ public final class RealtimeParamSystemPrompt implements RealtimeParam {
    *
    * @param systemPrompt system prompt to use
    */
-  @Beta
+  // @Beta
   public RealtimeParamSystemPrompt(@Nonnull final String systemPrompt) {
     this.systemPrompt = systemPrompt;
   }
 
   @Override
-  @Beta
+  // @Beta
   public @Nonnull ParamName getParamName() {
     return ParamName.SYSTEM_PROMPT;
   }
 
   @Override
-  @Beta
+  // @Beta
   public @Nonnull String getValueAsString() {
     return systemPrompt;
   }
 
   @Override
-  @Beta
   public boolean equals(@Nullable final Object o) {
     if (o == null || getClass() != o.getClass()) {
       return false;
@@ -44,7 +43,6 @@ public final class RealtimeParamSystemPrompt implements RealtimeParam {
   }
 
   @Override
-  @Beta
   public int hashCode() {
     return Objects.hashCode(systemPrompt);
   }

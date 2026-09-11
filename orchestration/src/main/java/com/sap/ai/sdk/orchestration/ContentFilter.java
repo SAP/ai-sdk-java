@@ -23,7 +23,7 @@ public interface ContentFilter {
    *
    * @return the corresponding {@link InputFilterConfig} object.
    */
-  @Beta
+  // @Beta
   @Nonnull
   InputFilterConfig createInputFilterConfig();
 
@@ -33,7 +33,7 @@ public interface ContentFilter {
    *
    * @return the corresponding {@link OutputFilterConfig} object.
    */
-  @Beta
+  // @Beta
   @Nonnull
   OutputFilterConfig createOutputFilterConfig();
 }

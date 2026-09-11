@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-@Beta
+// @Beta
 public class AiCoreOpenAiClient {
 
   private final HttpDestination destination;

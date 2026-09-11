@@ -82,7 +82,7 @@ public final class OpenAiClient {
    *
    * @return created client
    */
-  @Beta
+  // @Beta
   @Nonnull
   public static OpenAiRealtimeClient realtimeClient() {
     final var withResolvedDestination = OpenAiClient.forModel(OpenAiModel.GPT_REALTIME);
@@ -95,7 +95,7 @@ public final class OpenAiClient {
    * @param apiVersion the API version to target.
    * @return a new client.
    */
-  @Beta
+  // @Beta
   @Nonnull
   public OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
     final var newDestination =

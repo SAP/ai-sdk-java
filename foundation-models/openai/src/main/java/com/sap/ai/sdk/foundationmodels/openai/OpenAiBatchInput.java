@@ -37,7 +37,7 @@ public class OpenAiBatchInput {
    *
    * @param chatCompletionRequests the list of chat completion requests to include in the batch
    */
-  @Beta
+  // @Beta
   public OpenAiBatchInput(@Nonnull final OpenAiChatCompletionRequest... chatCompletionRequests) {
     for (int i = 0; i < chatCompletionRequests.length; i++) {
       val request = chatCompletionRequests[i];

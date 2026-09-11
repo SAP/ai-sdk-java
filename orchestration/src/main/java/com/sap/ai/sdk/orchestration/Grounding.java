@@ -33,7 +33,7 @@ public class Grounding implements GroundingProvider {
 
   @Nullable private List<String> metadataParams = null;
 
-  @Setter(onMethod_ = {@Nonnull, @Beta})
+  @Setter(onMethod_ = {@Nonnull /*, @Beta*/})
   private TypeEnum documentGroundingService = TypeEnum.DOCUMENT_GROUNDING_SERVICE;
 
   /**

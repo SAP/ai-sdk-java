@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
  * @since 1.2.0
  * @param <T> The base type for deserialization.
  */
-@Beta
+// @Beta
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 class PolymorphicFallbackDeserializer<T> extends JsonDeserializer<T> {
 

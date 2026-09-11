@@ -205,7 +205,7 @@ public class OrchestrationClient {
    * @return The completion response.
    * @throws OrchestrationClientException If the request fails.
    */
-  @Beta
+  // @Beta
   @Nonnull
   public OrchestrationChatResponse executeRequestFromJsonModuleConfig(
       @Nonnull final OrchestrationPrompt prompt, @Nonnull final String moduleConfig)
