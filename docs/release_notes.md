@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Tabular Orchestration] Added `TabularClient` in `com.sap.ai.sdk:tabular-orchestration` for tabular predictions.
 
 ### 📈 Improvements
 

@@ -1689,6 +1689,117 @@
                     </div>
                 </div>
             </div>
+
+
+            <div class="col-xl-4 max-width-container">
+                <div class="card endpoint-card">
+                    <div class="card-header">
+                        <div class="d-flex align-items-center">
+                            <h2>🗄️ Tabular Orchestration</h2>
+                        </div>
+                        Context Registry is a service for managing tabular data contexts for AI
+                        applications.
+                        <br>It provides capabilities to register data destinations (object
+                        stores and data sharing platforms), create tabular artifacts from various
+                        file formats (CSV, Parquet, Delta), and configure scenarios for context
+                        selection in AI-driven business solutions.
+                        For more information, check the <a
+                            href="https://github.tools.sap/AI/context-registry"
+                            target="_blank">Context Registry GitHub Repository</a>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/tabular/data-destinations/list"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/tabular/data-destinations/list</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        List all data destinations (e.g. Hana Data Lake, S3,
+                                        Google Cloud Storage) for the default resource group.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/tabular/data-destinations/create"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/tabular/data-destinations/create</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Create a new Hana Data Lake data destination.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/tabular/artifacts/list"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/tabular/artifacts/list</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        List all tabular artifacts for the default resource
+                                        group.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/tabular/artifacts/create"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/tabular/artifacts/create</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Create a new tabular artifact from a Parquet file in a
+                                        registered data destination.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/tabular/scenario-configurations/list"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/tabular/scenario-configurations/list</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        List all scenario configurations for the default
+                                        resource group.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit"
+                                            formaction="/tabular/scenario-configurations/create"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/tabular/scenario-configurations/create</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Create a new scenario configuration for product
+                                        prediction using a tabular artifact.
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="info-tooltip">
+                                    <button type="submit" formaction="/tabular/predict"
+                                            class="link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover endpoint">
+                                        <code>/tabular/predict</code>
+                                    </button>
+                                    <div class="tooltip-content">
+                                        Run a prediction using a deployed Tabular Foundation
+                                        Model and a scenario configuration.
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
