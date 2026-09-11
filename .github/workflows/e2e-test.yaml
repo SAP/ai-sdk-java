@@ -2,7 +2,8 @@ name: "End-to-end Tests"
 on:
   workflow_dispatch:
   schedule:
-    - cron: 15 2 * * MON-FRI
+    - cron: 15 1 * * MON-FRI # main, runs one hour before v2
+    - cron: 15 2 * * MON-FRI # v2
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
@@ -12,6 +13,10 @@ jobs:
   end-to-end-tests:
     permissions:
       contents: read
+    if: |
+      github.event_name != 'schedule' ||
+      (matrix.branch == 'main' && github.event.schedule == '15 1 * * MON-FRI') ||
+      (matrix.branch == 'v2' && github.event.schedule == '15 2 * * MON-FRI')
     strategy:
       fail-fast: false
       matrix:
