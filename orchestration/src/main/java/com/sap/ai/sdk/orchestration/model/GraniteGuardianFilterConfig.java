@@ -90,6 +90,9 @@ public class GraniteGuardianFilterConfig implements InputFilterConfig, OutputFil
   @JsonProperty("config")
   private GraniteGuardian41 config;
 
+  @JsonProperty("target_selector")
+  private InputFilterTargetSelector targetSelector;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -160,6 +163,39 @@ public class GraniteGuardianFilterConfig implements InputFilterConfig, OutputFil
   }
 
   /**
+   * Set the targetSelector of this {@link GraniteGuardianFilterConfig} instance and return the same
+   * instance.
+   *
+   * @param targetSelector The targetSelector of this {@link GraniteGuardianFilterConfig}
+   * @return The same instance of this {@link GraniteGuardianFilterConfig} class
+   */
+  @Nonnull
+  public GraniteGuardianFilterConfig targetSelector(
+      @Nullable final InputFilterTargetSelector targetSelector) {
+    this.targetSelector = targetSelector;
+    return this;
+  }
+
+  /**
+   * Get targetSelector
+   *
+   * @return targetSelector The targetSelector of this {@link GraniteGuardianFilterConfig} instance.
+   */
+  @Nonnull
+  public InputFilterTargetSelector getTargetSelector() {
+    return targetSelector;
+  }
+
+  /**
+   * Set the targetSelector of this {@link GraniteGuardianFilterConfig} instance.
+   *
+   * @param targetSelector The targetSelector of this {@link GraniteGuardianFilterConfig}
+   */
+  public void setTargetSelector(@Nullable final InputFilterTargetSelector targetSelector) {
+    this.targetSelector = targetSelector;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link GraniteGuardianFilterConfig}.
    *
    * @return The set of properties names
@@ -201,6 +237,7 @@ public class GraniteGuardianFilterConfig implements InputFilterConfig, OutputFil
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
     if (config != null) declaredFields.put("config", config);
+    if (targetSelector != null) declaredFields.put("targetSelector", targetSelector);
     return declaredFields;
   }
 
@@ -228,12 +265,13 @@ public class GraniteGuardianFilterConfig implements InputFilterConfig, OutputFil
     return Objects.equals(
             this.cloudSdkCustomFields, graniteGuardianFilterConfig.cloudSdkCustomFields)
         && Objects.equals(this.type, graniteGuardianFilterConfig.type)
-        && Objects.equals(this.config, graniteGuardianFilterConfig.config);
+        && Objects.equals(this.config, graniteGuardianFilterConfig.config)
+        && Objects.equals(this.targetSelector, graniteGuardianFilterConfig.targetSelector);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, config, cloudSdkCustomFields);
+    return Objects.hash(type, config, targetSelector, cloudSdkCustomFields);
   }
 
   @Override
@@ -243,6 +281,7 @@ public class GraniteGuardianFilterConfig implements InputFilterConfig, OutputFil
     sb.append("class GraniteGuardianFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
+    sb.append("    targetSelector: ").append(toIndentedString(targetSelector)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
