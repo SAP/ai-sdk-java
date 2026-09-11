@@ -6,7 +6,7 @@ function createAudioContext() {
 
 function setStatus(element, text, active) {
     element.textContent = text;
-    element.style.color = active ? '#198754' : '#6c757d';
+    element.style.color = active ? '#00d4ff' : '#3a4a58';
 }
 
 function playPcmAudio(audioContext, arrayBuffer, state) {
