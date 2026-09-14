@@ -20,9 +20,10 @@ public class PromptRegistryClient {
 
   /** Constructs default PromptRegistryClient */
   public PromptRegistryClient() {
-    promptTemplatesApi = new PromptTemplatesApi(PromptClientMixin.addMixin(new AiCoreService()));
+    final var aiCoreService = new AiCoreService();
+    promptTemplatesApi = new PromptTemplatesApi(PromptClientMixin.addMixin(aiCoreService));
     orchestrationConfigsApi =
-        new OrchestrationConfigsApi(OrchestrationConfigMixin.addMixin(new AiCoreService()));
+        new OrchestrationConfigsApi(OrchestrationConfigMixin.addMixin(aiCoreService));
   }
 
   /**
