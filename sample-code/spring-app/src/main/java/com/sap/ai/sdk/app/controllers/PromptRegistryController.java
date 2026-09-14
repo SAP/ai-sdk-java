@@ -3,8 +3,7 @@ package com.sap.ai.sdk.app.controllers;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatModel;
-import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
-import com.sap.ai.sdk.prompt.registry.PromptClient;
+import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigListResponse;
@@ -49,24 +48,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/prompt-registry")
 class PromptRegistryController {
   static final String NAME = "java-e2e-test";
-  private static final PromptClient promptClient = new PromptClient();
-  private static final OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
+  private static final PromptRegistryClient unifiedClient = new PromptRegistryClient();
 
   @GetMapping("/listTemplates")
   PromptTemplateListResponse listTemplates() {
-    return promptClient.listPromptTemplates();
+    return unifiedClient.prompt().listPromptTemplates();
   }
 
   @GetMapping("/createTemplate")
   PromptTemplatePostResponse createTemplate() {
-    return promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
+    return unifiedClient.prompt().createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
   }
 
   @GetMapping("/updateTemplate")
   PromptTemplatePostResponse updateTemplate() {
     // create template then update
-    promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
-    return promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports, Politics"));
+    unifiedClient.prompt().createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
+    return unifiedClient
+        .prompt()
+        .createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports, Politics"));
   }
 
   private PromptTemplatePostRequest getTemplate(final String categories) {
@@ -89,40 +89,42 @@ class PromptRegistryController {
 
   @GetMapping("/history")
   PromptTemplateListResponse history() {
-    return promptClient.listPromptTemplateHistory("categorization", "0.0.1", NAME);
+    return unifiedClient.prompt().listPromptTemplateHistory("categorization", "0.0.1", NAME);
   }
 
   @GetMapping("/importTemplate")
   PromptTemplatePostResponse importTemplate() throws IOException {
     val template = new ClassPathResource("prompt-template.yaml").getFile();
-    return promptClient.importPromptTemplate("default", null, template);
+    return unifiedClient.prompt().importPromptTemplate("default", null, template);
   }
 
   @GetMapping("/exportTemplate")
   byte[] exportTemplate() throws IOException {
     final var template = importTemplate();
-    return promptClient.exportPromptTemplate(template.getId());
+    return unifiedClient.prompt().exportPromptTemplate(template.getId());
   }
 
   @GetMapping("/useTemplate")
   PromptTemplateSubstitutionResponse useTemplate() {
     final var template = createTemplate();
-    return promptClient.parsePromptTemplateById(
-        template.getId(),
-        "default",
-        null,
-        false,
-        PromptTemplateSubstitutionRequest.create()
-            .inputParams(Map.of("inputExample", "I love football")));
+    return unifiedClient
+        .prompt()
+        .parsePromptTemplateById(
+            template.getId(),
+            "default",
+            null,
+            false,
+            PromptTemplateSubstitutionRequest.create()
+                .inputParams(Map.of("inputExample", "I love football")));
   }
 
   @GetMapping("/deleteTemplate")
   List<PromptTemplateDeleteResponse> deleteTemplate() {
-    final PromptTemplateListResponse templates = promptClient.listPromptTemplates();
+    final PromptTemplateListResponse templates = unifiedClient.prompt().listPromptTemplates();
 
     return templates.getResources().stream()
         .filter(template -> NAME.equals(template.getName()))
-        .map(template -> promptClient.deletePromptTemplate(template.getId()))
+        .map(template -> unifiedClient.prompt().deletePromptTemplate(template.getId()))
         .toList();
   }
 
@@ -135,7 +137,8 @@ class PromptRegistryController {
     val cl = ChatClient.builder(openAiClient).defaultAdvisors(advisor).build();
 
     val promptResponse =
-        new PromptClient()
+        new PromptRegistryClient()
+            .prompt()
             .parsePromptTemplateByNameVersion(
                 "categorization",
                 "0.0.1",
@@ -158,7 +161,7 @@ class PromptRegistryController {
 
   @GetMapping("/listOrchConfigs")
   OrchestrationConfigListResponse listOrchConfigs() {
-    return orchConfigClient.listOrchestrationConfigs();
+    return unifiedClient.orchestration().listOrchestrationConfigs();
   }
 
   @GetMapping("/createOrchConfig")
@@ -184,16 +187,17 @@ class PromptRegistryController {
             .version("0.0.1")
             .scenario("sdk-test-scenario")
             .spec(orchestrationConfig);
-    return orchConfigClient.createUpdateOrchestrationConfig(postRequest);
+    return unifiedClient.orchestration().createUpdateOrchestrationConfig(postRequest);
   }
 
   @GetMapping("/deleteOrchConfig")
   List<OrchestrationConfigDeleteResponse> deleteOrchConfig() {
-    final OrchestrationConfigListResponse configs = orchConfigClient.listOrchestrationConfigs();
+    final OrchestrationConfigListResponse configs =
+        unifiedClient.orchestration().listOrchestrationConfigs();
 
     return configs.getResources().stream()
         .filter(config -> NAME.equals(config.getName()))
-        .map(config -> orchConfigClient.deleteOrchestrationConfig(config.getId()))
+        .map(config -> unifiedClient.orchestration().deleteOrchestrationConfig(config.getId()))
         .toList();
   }
 }

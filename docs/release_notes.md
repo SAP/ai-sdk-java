@@ -10,6 +10,30 @@
 
 - [RPT] SAP-RPT was updated to the newer 1.6.0 API
 - [Orchestration] Spring AI support was upgraded to version `2.0.1`
+- [Core] OrchestrationConfigClient and PromptClient were reworked into unified PromptRegistryClient,
+   see migration guide below for additional information
+
+#### Prompt registry client Migration Guide
+
+OrchestrationConfigClient and PromptClient were replaced with unified PromptRegistryClient,
+
+OrchestrationConfigClient:
+```diff
+-var orchestrationConfigClient = new OrchestrationConfigClient();
+-var configs = orchestrationConfigClient.listOrchestrationConfigs();
+
++var promptRegistryClient = new PromptRegistryClient();
++var configs = promptRegistryClient.orchestration().listOrchestrationConfigs();
+```
+
+PromptRegistryClient:
+```diff
+-var promptClient = new PromptClient();
+-var templates = promptClient.listPromptTemplates();
+
++var promptRegistryClient = new PromptRegistryClient();
++var templates = promptRegistryClient.prompt().listPromptTemplates();
+```
 
 #### Spring AI 2.0.1 Migration Guide
 

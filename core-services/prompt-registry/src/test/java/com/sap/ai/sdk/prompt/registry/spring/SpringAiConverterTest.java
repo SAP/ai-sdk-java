@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.prompt.registry.PromptClient;
+import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
 import com.sap.ai.sdk.prompt.registry.model.MultiChatContent;
 import com.sap.ai.sdk.prompt.registry.model.MultiChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
@@ -33,17 +33,19 @@ public class SpringAiConverterTest {
 
   @Test
   void testPromptRegistryToSpringAi() {
-    var client = new PromptClient(SERVICE);
+    var client = new PromptRegistryClient(SERVICE);
     val promptResponse =
-        client.parsePromptTemplateByNameVersion(
-            "categorization",
-            "0.0.1",
-            "java-e2e-test",
-            "default",
-            null,
-            false,
-            PromptTemplateSubstitutionRequest.create()
-                .inputParams(Map.of("inputExample", "I love football")));
+        client
+            .prompt()
+            .parsePromptTemplateByNameVersion(
+                "categorization",
+                "0.0.1",
+                "java-e2e-test",
+                "default",
+                null,
+                false,
+                PromptTemplateSubstitutionRequest.create()
+                    .inputParams(Map.of("inputExample", "I love football")));
 
     List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
     assertThat(messages)
@@ -56,17 +58,19 @@ public class SpringAiConverterTest {
 
   @Test
   void testInvalidRoleThrowsException() {
-    var client = new PromptClient(SERVICE);
+    var client = new PromptRegistryClient(SERVICE);
     val errorPrompt =
-        client.parsePromptTemplateByNameVersion(
-            "categorization",
-            "0.0.1",
-            "error",
-            "default",
-            null,
-            false,
-            PromptTemplateSubstitutionRequest.create()
-                .inputParams(Map.of("inputExample", "I love football")));
+        client
+            .prompt()
+            .parsePromptTemplateByNameVersion(
+                "categorization",
+                "0.0.1",
+                "error",
+                "default",
+                null,
+                false,
+                PromptTemplateSubstitutionRequest.create()
+                    .inputParams(Map.of("inputExample", "I love football")));
 
     assertThatThrownBy(() -> SpringAiConverter.promptTemplateToMessages(errorPrompt))
         .isInstanceOf(IllegalArgumentException.class)
@@ -75,17 +79,19 @@ public class SpringAiConverterTest {
 
   @Test
   void testMultiChatTemplateTextContentToSpringAi() {
-    var client = new PromptClient(SERVICE);
+    var client = new PromptRegistryClient(SERVICE);
     val promptResponse =
-        client.parsePromptTemplateByNameVersion(
-            "categorization",
-            "0.0.1",
-            "multi-text",
-            "default",
-            null,
-            false,
-            PromptTemplateSubstitutionRequest.create()
-                .inputParams(Map.of("inputExample", "I love football")));
+        client
+            .prompt()
+            .parsePromptTemplateByNameVersion(
+                "categorization",
+                "0.0.1",
+                "multi-text",
+                "default",
+                null,
+                false,
+                PromptTemplateSubstitutionRequest.create()
+                    .inputParams(Map.of("inputExample", "I love football")));
 
     List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
     assertThat(messages)
@@ -94,17 +100,19 @@ public class SpringAiConverterTest {
 
   @Test
   void testMultiChatTemplateImageContentThrowsException() {
-    var client = new PromptClient(SERVICE);
+    var client = new PromptRegistryClient(SERVICE);
     val promptResponse =
-        client.parsePromptTemplateByNameVersion(
-            "categorization",
-            "0.0.1",
-            "multi-image",
-            "default",
-            null,
-            false,
-            PromptTemplateSubstitutionRequest.create()
-                .inputParams(Map.of("inputExample", "I love football")));
+        client
+            .prompt()
+            .parsePromptTemplateByNameVersion(
+                "categorization",
+                "0.0.1",
+                "multi-image",
+                "default",
+                null,
+                false,
+                PromptTemplateSubstitutionRequest.create()
+                    .inputParams(Map.of("inputExample", "I love football")));
 
     assertThatThrownBy(() -> SpringAiConverter.promptTemplateToMessages(promptResponse))
         .isInstanceOf(UnsupportedOperationException.class)

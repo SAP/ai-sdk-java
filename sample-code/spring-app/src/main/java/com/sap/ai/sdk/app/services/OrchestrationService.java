@@ -46,7 +46,7 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
-import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
+import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
 import com.sap.ai.sdk.prompt.registry.model.PartialModuleConfigs;
@@ -888,21 +888,21 @@ public class OrchestrationService {
   }
 
   private void ensureOrchestrationConfigExists(final String scenario, final String name) {
-    final OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
-    if (!orchConfigExists("test-config-for-OrchestrationTest", orchConfigClient)) {
+    final PromptRegistryClient unifiedClient = new PromptRegistryClient();
+    if (!orchConfigExists("test-config-for-OrchestrationTest", unifiedClient)) {
       final OrchestrationConfigPostRequest postRequest =
           OrchestrationConfigPostRequest.create()
               .name(name)
               .version("0.0.1")
               .scenario(scenario)
               .spec(buildOrchestrationConfig());
-      orchConfigClient.createUpdateOrchestrationConfig(postRequest);
+      unifiedClient.orchestration().createUpdateOrchestrationConfig(postRequest);
     }
   }
 
   private boolean orchConfigExists(
-      final String configName, final OrchestrationConfigClient orchConfigClient) {
-    return orchConfigClient.listOrchestrationConfigs().getResources().stream()
+      final String configName, final PromptRegistryClient unifiedClient) {
+    return unifiedClient.orchestration().listOrchestrationConfigs().getResources().stream()
         .anyMatch(resp -> resp.getName().equals(configName));
   }
 
@@ -975,9 +975,9 @@ public class OrchestrationService {
   public Stream<OrchestrationChatCompletionDelta> streamDeltasWithReferenceById() {
     // get a valid id
     ensureOrchestrationConfigExists("sdk-test-paraphrase", "create-3-paraphrases-of-sentence");
-    val orchConfigClient = new OrchestrationConfigClient();
+    val unifiedClient = new PromptRegistryClient();
     val id =
-        orchConfigClient.listOrchestrationConfigs().getResources().stream()
+        unifiedClient.orchestration().listOrchestrationConfigs().getResources().stream()
             .filter(r -> r.getName().equals("test-config-for-OrchestrationTest"))
             .findFirst()
             .orElseThrow()

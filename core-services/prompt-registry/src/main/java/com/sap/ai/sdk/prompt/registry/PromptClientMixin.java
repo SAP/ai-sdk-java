@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
 import com.sap.ai.sdk.prompt.registry.model.MultiChatContent;
 import com.sap.ai.sdk.prompt.registry.model.MultiChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplate;
@@ -28,34 +27,10 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
 
-/**
- * Client for the Prompt Registry service.
- *
- * @since 1.6.0
- */
-public class PromptClient extends PromptTemplatesApi {
-
-  /**
-   * Instantiates this a client to invoke operations on the Prompt Registry service.
-   *
-   * @since 1.6.0
-   */
-  public PromptClient() {
-    this(new AiCoreService());
-  }
-
-  /**
-   * Instantiates this a client to invoke operations on the Prompt Registry service.
-   *
-   * @param aiCoreService The configured connectivity instance to AI Core
-   * @since 1.6.0
-   */
-  public PromptClient(@Nonnull final AiCoreService aiCoreService) {
-    super(addMixin(aiCoreService));
-  }
+class PromptClientMixin {
 
   @Nonnull
-  private static ApiClient addMixin(@Nonnull final AiCoreService service) {
+  static ApiClient addMixin(@Nonnull final AiCoreService service) {
     final var destination = service.getBaseDestination();
 
     val objectMapper =
@@ -66,8 +41,8 @@ public class PromptClient extends PromptTemplatesApi {
     return ApiClient.create(destination).withObjectMapper(objectMapper);
   }
 
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  private static class JacksonMixin {
+  @NoArgsConstructor(access = AccessLevel.PACKAGE)
+  static class JacksonMixin {
     @JsonTypeInfo(use = JsonTypeInfo.Id.NONE)
     @JsonDeserialize(using = PromptTemplateDeserializer.class)
     interface TemplateMixIn {}
@@ -85,7 +60,7 @@ public class PromptClient extends PromptTemplatesApi {
     interface ResponseFormat {}
   }
 
-  private static class PromptTemplateDeserializer extends JsonDeserializer<PromptTemplate> {
+  static class PromptTemplateDeserializer extends JsonDeserializer<PromptTemplate> {
 
     @Override
     public PromptTemplate deserialize(
