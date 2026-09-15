@@ -4,26 +4,19 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.prompt.registry.client.OrchestrationConfigsApi;
 import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
 import javax.annotation.Nonnull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 
 /**
  * Unified client to use Prompt Registry API
  *
  * @since 2.0
  */
-@AllArgsConstructor(access = AccessLevel.PACKAGE)
 public class PromptRegistryClient {
 
-  private final PromptTemplatesApi promptTemplatesApi;
-  private final OrchestrationConfigsApi orchestrationConfigsApi;
+  private final AiCoreService aiCoreService;
 
   /** Constructs default PromptRegistryClient */
   public PromptRegistryClient() {
-    final var aiCoreService = new AiCoreService();
-    promptTemplatesApi = new PromptTemplatesApi(PromptClientMixin.addMixin(aiCoreService));
-    orchestrationConfigsApi =
-        new OrchestrationConfigsApi(OrchestrationConfigMixin.addMixin(aiCoreService));
+    this(new AiCoreService());
   }
 
   /**
@@ -32,28 +25,26 @@ public class PromptRegistryClient {
    * @param service customized AiCoreService
    */
   public PromptRegistryClient(@Nonnull final AiCoreService service) {
-    promptTemplatesApi = new PromptTemplatesApi(PromptClientMixin.addMixin(service));
-    orchestrationConfigsApi =
-        new OrchestrationConfigsApi(OrchestrationConfigMixin.addMixin(service));
+    aiCoreService = service;
   }
 
   /**
-   * Provides caller with PromptTemplatesAPI client
+   * Get the prompt templates client
    *
    * @return the client
    */
   @Nonnull
   public PromptTemplatesApi prompt() {
-    return promptTemplatesApi;
+    return new PromptTemplatesApi(PromptClientMixin.addMixin(aiCoreService));
   }
 
   /**
-   * Provides caller with OrchestrationConfigsAPI client
+   * Get the orchestration configs client
    *
    * @return the client
    */
   @Nonnull
   public OrchestrationConfigsApi orchestration() {
-    return orchestrationConfigsApi;
+    return new OrchestrationConfigsApi(OrchestrationConfigMixin.addMixin(aiCoreService));
   }
 }
