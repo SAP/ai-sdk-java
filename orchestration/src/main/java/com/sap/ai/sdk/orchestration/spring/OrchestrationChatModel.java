@@ -6,6 +6,7 @@ import static com.sap.ai.sdk.orchestration.model.MessageToolCall.TypeEnum.FUNCTI
 import com.sap.ai.sdk.orchestration.AssistantMessage;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
+import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.ToolMessage;
@@ -69,7 +70,10 @@ public class OrchestrationChatModel implements ChatModel {
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val response =
           new OrchestrationSpringChatResponse(
-              client.chatCompletion(orchestrationPrompt, options.getConfig()));
+              client.chatCompletion(
+                  orchestrationPrompt,
+                  options.getConfig(),
+                  options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new)));
 
       if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
           && response.hasToolCalls()) {
@@ -99,7 +103,11 @@ public class OrchestrationChatModel implements ChatModel {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
-      val request = toCompletionPostRequest(orchestrationPrompt, options.getConfig());
+      val request =
+          toCompletionPostRequest(
+              orchestrationPrompt,
+              options.getConfig(),
+              options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new));
       val stream = client.streamChatCompletionDeltas(request);
 
       final Flux<OrchestrationChatCompletionDelta> flux =
