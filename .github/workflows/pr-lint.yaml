@@ -30,7 +30,8 @@ jobs:
             Grounding
             RPT
             Batch
-            Tabular
+            TabularOrchestration
+            ContextRegistry
           headerPattern: '^(\w.+): (?:\[(\w.+)\] )?(.+)$'
           headerPatternCorrespondence: type, scope, subject
           # for available types, check:
