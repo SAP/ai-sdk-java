@@ -172,4 +172,19 @@ class SpringAiOrchestrationTest {
     assertThat(embeddings).isInstanceOf(float[].class);
     assertThat(embeddings.length).isGreaterThan(0);
   }
+
+  @Test
+  void testCompletionWithFallback() {
+    var response = service.completionWithFallback();
+    assertThat(response).isNotNull();
+    assertThat(response.getResult().getOutput().getText()).isNotEmpty();
+    var intermediateFailures =
+        ((OrchestrationSpringChatResponse) response)
+            .getOrchestrationResponse()
+            .getOriginalResponse()
+            .getIntermediateFailures();
+    assertThat(intermediateFailures).hasSize(1);
+    assertThat(intermediateFailures.get(0).getCode()).isEqualTo(400);
+    assertThat(intermediateFailures.get(0).getMessage()).contains("broken_name");
+  }
 }
