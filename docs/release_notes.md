@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Spring AI] Chat completion calls via the Spring AI integration now can have multiple module configs to support fallback modules as well.
 
 ### 📈 Improvements
 
