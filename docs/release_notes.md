@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
--
+- [Release] Disabled snapshot release to the Artifactory snapshot repository.
 
 ### ✨ New Functionality
 
