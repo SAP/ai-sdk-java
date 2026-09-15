@@ -34,12 +34,14 @@ import java.util.Objects;
 import java.util.function.Function;
 import lombok.val;
 import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -299,6 +301,49 @@ class OrchestrationChatModelTest {
       final String request = new String(requestInputStream.readAllBytes());
       verify(
           postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testStreamFallbackModules() throws IOException {
+    try (val inputStream = spy(fileLoader.apply("streamFallbackChatCompletion.txt"))) {
+
+      val httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+
+      val mockResponse = new BasicClassicHttpResponse(200, "OK");
+      mockResponse.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
+      mockResponse.setHeader("Content-Type", "text/event-flux");
+
+      val requestCaptor = ArgumentCaptor.forClass(ClassicHttpRequest.class);
+      doReturn(mockResponse).when(httpClient).executeOpen(any(), requestCaptor.capture(), any());
+
+      val brokenConfig =
+          new OrchestrationModuleConfig()
+              .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+      val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+
+      val options = new OrchestrationChatOptions(brokenConfig);
+      options.setFallbackConfigs(List.of(workingConfig));
+
+      Flux<ChatResponse> flux =
+          client.stream(new Prompt("Hello World! Why is this phrase so famous?", options));
+      val deltaList = flux.toStream().toList();
+
+      assertThat(deltaList).hasSize(3);
+      assertThat(deltaList.get(0).getResult().getOutput().getText()).isEqualTo("");
+      assertThat(deltaList.get(1).getResult().getOutput().getText()).isEqualTo("Sure");
+      assertThat(deltaList.get(2).getResult().getOutput().getText()).isEqualTo("!");
+      assertThat(deltaList.get(2).getResult().getMetadata().getFinishReason()).isEqualTo("stop");
+
+      try (var requestInputStream = fileLoader.apply("springFallbackStreamRequest.json")) {
+        final String expectedBody = new String(requestInputStream.readAllBytes());
+        final String actualBody =
+            new String(requestCaptor.getValue().getEntity().getContent().readAllBytes());
+        assertThat(actualBody).isEqualToIgnoringWhitespace(expectedBody);
+      }
+
+      Mockito.verify(inputStream, times(1)).close();
     }
   }
 }

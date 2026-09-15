@@ -1,0 +1,47 @@
+{
+  "config" : {
+    "modules" : [ {
+      "prompt_templating" : {
+        "prompt" : {
+          "template" : [ {
+            "content" : "Hello World! Why is this phrase so famous?",
+            "role" : "user"
+          } ],
+          "defaults" : { },
+          "tools" : [ ]
+        },
+        "model" : {
+          "name" : "broken_name",
+          "version" : "latest",
+          "params" : { },
+          "timeout" : 600,
+          "max_retries" : 2
+        }
+      }
+    }, {
+      "prompt_templating" : {
+        "prompt" : {
+          "template" : [ {
+            "content" : "Hello World! Why is this phrase so famous?",
+            "role" : "user"
+          } ],
+          "defaults" : { },
+          "tools" : [ ]
+        },
+        "model" : {
+          "name" : "gpt-4o",
+          "version" : "latest",
+          "params" : { },
+          "timeout" : 600,
+          "max_retries" : 2
+        }
+      }
+    } ],
+    "stream" : {
+      "enabled" : true,
+      "chunk_size" : 100
+    }
+  },
+  "placeholder_values" : { },
+  "messages_history" : [ ]
+}

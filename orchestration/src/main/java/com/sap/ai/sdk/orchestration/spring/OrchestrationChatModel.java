@@ -73,7 +73,7 @@ public class OrchestrationChatModel implements ChatModel {
               client.chatCompletion(
                   orchestrationPrompt,
                   options.getConfig(),
-                  options.getFallbackConfigs().toArray(new OrchestrationModuleConfig[0])));
+                  options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new)));
 
       if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
           && response.hasToolCalls()) {
@@ -107,7 +107,7 @@ public class OrchestrationChatModel implements ChatModel {
           toCompletionPostRequest(
               orchestrationPrompt,
               options.getConfig(),
-              options.getFallbackConfigs().toArray(new OrchestrationModuleConfig[0]));
+              options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new));
       val stream = client.streamChatCompletionDeltas(request);
 
       final Flux<OrchestrationChatCompletionDelta> flux =
