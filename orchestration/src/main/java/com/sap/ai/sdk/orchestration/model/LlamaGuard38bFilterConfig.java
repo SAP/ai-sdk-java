@@ -95,6 +95,9 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   @JsonProperty("config")
   private LlamaGuard38b config;
 
+  @JsonProperty("target_selector")
+  private InputFilterTargetSelector targetSelector;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -166,6 +169,39 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
   }
 
   /**
+   * Set the targetSelector of this {@link LlamaGuard38bFilterConfig} instance and return the same
+   * instance.
+   *
+   * @param targetSelector The targetSelector of this {@link LlamaGuard38bFilterConfig}
+   * @return The same instance of this {@link LlamaGuard38bFilterConfig} class
+   */
+  @Nonnull
+  public LlamaGuard38bFilterConfig targetSelector(
+      @Nullable final InputFilterTargetSelector targetSelector) {
+    this.targetSelector = targetSelector;
+    return this;
+  }
+
+  /**
+   * Get targetSelector
+   *
+   * @return targetSelector The targetSelector of this {@link LlamaGuard38bFilterConfig} instance.
+   */
+  @Nonnull
+  public InputFilterTargetSelector getTargetSelector() {
+    return targetSelector;
+  }
+
+  /**
+   * Set the targetSelector of this {@link LlamaGuard38bFilterConfig} instance.
+   *
+   * @param targetSelector The targetSelector of this {@link LlamaGuard38bFilterConfig}
+   */
+  public void setTargetSelector(@Nullable final InputFilterTargetSelector targetSelector) {
+    this.targetSelector = targetSelector;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link LlamaGuard38bFilterConfig}.
    *
    * @return The set of properties names
@@ -206,6 +242,7 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
     if (config != null) declaredFields.put("config", config);
+    if (targetSelector != null) declaredFields.put("targetSelector", targetSelector);
     return declaredFields;
   }
 
@@ -232,12 +269,13 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
     final LlamaGuard38bFilterConfig llamaGuard38bFilterConfig = (LlamaGuard38bFilterConfig) o;
     return Objects.equals(this.cloudSdkCustomFields, llamaGuard38bFilterConfig.cloudSdkCustomFields)
         && Objects.equals(this.type, llamaGuard38bFilterConfig.type)
-        && Objects.equals(this.config, llamaGuard38bFilterConfig.config);
+        && Objects.equals(this.config, llamaGuard38bFilterConfig.config)
+        && Objects.equals(this.targetSelector, llamaGuard38bFilterConfig.targetSelector);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, config, cloudSdkCustomFields);
+    return Objects.hash(type, config, targetSelector, cloudSdkCustomFields);
   }
 
   @Override
@@ -247,6 +285,7 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
     sb.append("class LlamaGuard38bFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
+    sb.append("    targetSelector: ").append(toIndentedString(targetSelector)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));

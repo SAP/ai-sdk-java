@@ -90,6 +90,9 @@ public class AzureContentSafetyInputFilterConfig implements InputFilterConfig
   @JsonProperty("config")
   private AzureContentSafetyInput config;
 
+  @JsonProperty("target_selector")
+  private InputFilterTargetSelector targetSelector;
+
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
@@ -162,6 +165,40 @@ public class AzureContentSafetyInputFilterConfig implements InputFilterConfig
   }
 
   /**
+   * Set the targetSelector of this {@link AzureContentSafetyInputFilterConfig} instance and return
+   * the same instance.
+   *
+   * @param targetSelector The targetSelector of this {@link AzureContentSafetyInputFilterConfig}
+   * @return The same instance of this {@link AzureContentSafetyInputFilterConfig} class
+   */
+  @Nonnull
+  public AzureContentSafetyInputFilterConfig targetSelector(
+      @Nullable final InputFilterTargetSelector targetSelector) {
+    this.targetSelector = targetSelector;
+    return this;
+  }
+
+  /**
+   * Get targetSelector
+   *
+   * @return targetSelector The targetSelector of this {@link AzureContentSafetyInputFilterConfig}
+   *     instance.
+   */
+  @Nonnull
+  public InputFilterTargetSelector getTargetSelector() {
+    return targetSelector;
+  }
+
+  /**
+   * Set the targetSelector of this {@link AzureContentSafetyInputFilterConfig} instance.
+   *
+   * @param targetSelector The targetSelector of this {@link AzureContentSafetyInputFilterConfig}
+   */
+  public void setTargetSelector(@Nullable final InputFilterTargetSelector targetSelector) {
+    this.targetSelector = targetSelector;
+  }
+
+  /**
    * Get the names of the unrecognizable properties of the {@link
    * AzureContentSafetyInputFilterConfig}.
    *
@@ -204,6 +241,7 @@ public class AzureContentSafetyInputFilterConfig implements InputFilterConfig
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
     if (config != null) declaredFields.put("config", config);
+    if (targetSelector != null) declaredFields.put("targetSelector", targetSelector);
     return declaredFields;
   }
 
@@ -233,12 +271,13 @@ public class AzureContentSafetyInputFilterConfig implements InputFilterConfig
     return Objects.equals(
             this.cloudSdkCustomFields, azureContentSafetyInputFilterConfig.cloudSdkCustomFields)
         && Objects.equals(this.type, azureContentSafetyInputFilterConfig.type)
-        && Objects.equals(this.config, azureContentSafetyInputFilterConfig.config);
+        && Objects.equals(this.config, azureContentSafetyInputFilterConfig.config)
+        && Objects.equals(this.targetSelector, azureContentSafetyInputFilterConfig.targetSelector);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, config, cloudSdkCustomFields);
+    return Objects.hash(type, config, targetSelector, cloudSdkCustomFields);
   }
 
   @Override
@@ -248,6 +287,7 @@ public class AzureContentSafetyInputFilterConfig implements InputFilterConfig
     sb.append("class AzureContentSafetyInputFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
+    sb.append("    targetSelector: ").append(toIndentedString(targetSelector)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
