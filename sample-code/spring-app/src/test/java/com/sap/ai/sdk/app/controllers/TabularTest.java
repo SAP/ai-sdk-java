@@ -1,13 +1,13 @@
 package com.sap.ai.sdk.app.controllers;
 
-import static com.sap.ai.sdk.tabular.generated.orchestration.model.HDLDataDestinationGetResponse.TypeEnum.HDL;
+import static com.sap.ai.sdk.context.registry.generated.model.HDLDataDestinationGetResponse.TypeEnum.HDL;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.app.services.TabularService.ArtifactService;
 import com.sap.ai.sdk.app.services.TabularService.DataDestinationService;
 import com.sap.ai.sdk.app.services.TabularService.PredictionService;
 import com.sap.ai.sdk.app.services.TabularService.ScenarioConfigurationService;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.HDLDataDestinationGetResponse;
+import com.sap.ai.sdk.context.registry.generated.model.HDLDataDestinationGetResponse;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.junit.jupiter.api.Test;
