@@ -20,8 +20,8 @@ jobs:
           - orchestration
           - sap-rpt
           - batch
-          - tabular-orchestration
-          - tabular-predict
+          - tabular-ai-orchestration
+          - context-registry
 
     steps:
       - name: 'Checkout repository'

@@ -12,7 +12,8 @@
 
 ### ✨ New Functionality
 
-- [Tabular Orchestration] Added `TabularClient` in `com.sap.ai.sdk:tabular-orchestration` for tabular predictions.
+- [Tabular AI Orchestration] Added `ContextRegistryClient` in `com.sap.ai.sdk:tabular-ai-orchestration` for tabular predictions.
+- [Context Registry] Added `ContextRegistryClient` in `com.sap.ai.sdk:context-registry` for setting up tabular predictions.
 
 ### 📈 Improvements
 

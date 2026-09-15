@@ -25,8 +25,8 @@ on:
           - prompt-registry
           - sap-rpt
           - batch
-          - tabular-orchestration
-          - tabular-predict
+          - tabular-ai-orchestration
+          - context-registry
         default: orchestration
       ref:
         description: 'Branch or tag to checkout the spec file from'
@@ -174,15 +174,15 @@ jobs:
               FILE_PATH='core-services/batch/src/main/resources/spec/batch-service.yaml'
               MODULE_PATH='core-services/batch'
               ;;
-            tabular-orchestration) #https://github.tools.sap/AI/context-registry/blob/main/docs/public/business_api_hub/api_hub_merged_spec.yaml
-              API_URL="$API_BASE_URL/AI/context-registry/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
-              FILE_PATH='core-services/tabular-orchestration/src/main/resources/spec/tabular-orchestration.yaml'
-              MODULE_PATH='core-services/tabular-orchestration'
+            tabular-ai-orchestration) #https://github.tools.sap/AI/tabular-ai-orchestration/blob/main/src/spec/spec.yaml
+              API_URL="$API_BASE_URL/AI/tabular-ai-orchestration/contents/src/spec/spec.yaml?ref=$REF"
+              FILE_PATH='core-services/tabular-ai-orchestration/src/main/resources/spec/tabular-ai-orchestration.yaml'
+              MODULE_PATH='core-services/tabular-ai-orchestration'
               ;;
-            tabular-predict) #https://github.tools.sap/AI/context-registry/blob/main/docs/public/business_api_hub/api_hub_merged_spec.yaml
-              API_URL="$API_BASE_URL/AI/context-registry/contents/docs/public/business_api_hub/tabular-predict.json?ref=$REF"
-              FILE_PATH='core-services/tabular-orchestration/src/main/resources/spec/tabular-predict.json'
-              MODULE_PATH='core-services/tabular-orchestration'
+            context-registry) #https://github.tools.sap/AI/context-registry/blob/main/docs/public/business_api_hub/api_hub_merged_spec.yaml
+              API_URL="$API_BASE_URL/AI/context-registry/contents/docs/public/business_api_hub/api_hub_merged_spec.yaml?ref=$REF"
+              FILE_PATH='core-services/context-registry/src/main/resources/spec/context-registry.yaml'
+              MODULE_PATH='core-services/context-registry'
               ;;
           esac
 

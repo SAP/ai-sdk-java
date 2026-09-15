@@ -1,37 +1,38 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.tabular.generated.orchestration.model.CreateTARequest.TypeEnum.PARQUET;
-import static com.sap.ai.sdk.tabular.generated.orchestration.model.DefinitionType.DOCUMENT;
-import static com.sap.ai.sdk.tabular.generated.orchestration.model.HDLDataDestinationCreateRequest.TypeEnum.HDL;
-import static com.sap.ai.sdk.tabular.generated.predict.model.ContextSelectionStrategyEnum.RANDOM;
-import static com.sap.ai.sdk.tabular.generated.predict.model.TaskTypeEnum.CLASSIFICATION;
+import static com.sap.ai.sdk.context.registry.generated.model.CreateTARequest.TypeEnum.PARQUET;
+import static com.sap.ai.sdk.context.registry.generated.model.DefinitionType.DOCUMENT;
+import static com.sap.ai.sdk.context.registry.generated.model.HDLDataDestinationCreateRequest.TypeEnum.HDL;
+import static com.sap.ai.sdk.tabular.orchestration.generated.model.ContextSelectionStrategyEnum.RANDOM;
+import static com.sap.ai.sdk.tabular.orchestration.generated.model.TaskTypeEnum.CLASSIFICATION;
 
-import com.sap.ai.sdk.tabular.TabularClient;
-import com.sap.ai.sdk.tabular.generated.orchestration.client.DataDestinationsApi;
-import com.sap.ai.sdk.tabular.generated.orchestration.client.ScenarioConfigurationManagerApi;
-import com.sap.ai.sdk.tabular.generated.orchestration.client.TabularArtifactsApi;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.AsyncCreateDataDestinationResponse;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.ContextSelectionStrategy;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.CreateScenarioConfiguration;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.CreateTARequest;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.CreateTARequestCsnMetadata;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.DocumentDefinition;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.GetDataDestinations;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.GetScenarioConfigurations;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.HDLConnectionConfig;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.HDLDataDestinationCreateRequest;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.ScenarioConfigurationNameObject;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.TabularArtifactConfig;
-import com.sap.ai.sdk.tabular.generated.orchestration.model.TabularArtifactListResponse;
-import com.sap.ai.sdk.tabular.generated.predict.client.PredictApi;
-import com.sap.ai.sdk.tabular.generated.predict.model.ContextSelectionConfig;
-import com.sap.ai.sdk.tabular.generated.predict.model.PredictRequest;
-import com.sap.ai.sdk.tabular.generated.predict.model.PredictResponse;
-import com.sap.ai.sdk.tabular.generated.predict.model.PredictionConfig;
-import com.sap.ai.sdk.tabular.generated.predict.model.StrategyConfigs;
-import com.sap.ai.sdk.tabular.generated.predict.model.TFMEnum;
-import com.sap.ai.sdk.tabular.generated.predict.model.TargetColumn;
+import com.sap.ai.sdk.context.registry.ContextRegistryClient;
+import com.sap.ai.sdk.context.registry.generated.client.DataDestinationsApi;
+import com.sap.ai.sdk.context.registry.generated.client.ScenarioConfigurationManagerApi;
+import com.sap.ai.sdk.context.registry.generated.client.TabularArtifactsApi;
+import com.sap.ai.sdk.context.registry.generated.model.AsyncCreateDataDestinationResponse;
+import com.sap.ai.sdk.context.registry.generated.model.ContextSelectionStrategy;
+import com.sap.ai.sdk.context.registry.generated.model.ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response;
+import com.sap.ai.sdk.context.registry.generated.model.CreateScenarioConfiguration;
+import com.sap.ai.sdk.context.registry.generated.model.CreateTARequest;
+import com.sap.ai.sdk.context.registry.generated.model.CreateTARequestCsnMetadata;
+import com.sap.ai.sdk.context.registry.generated.model.DocumentDefinition;
+import com.sap.ai.sdk.context.registry.generated.model.GetDataDestinations;
+import com.sap.ai.sdk.context.registry.generated.model.GetScenarioConfigurations;
+import com.sap.ai.sdk.context.registry.generated.model.HDLConnectionConfig;
+import com.sap.ai.sdk.context.registry.generated.model.HDLDataDestinationCreateRequest;
+import com.sap.ai.sdk.context.registry.generated.model.ScenarioConfigurationNameObject;
+import com.sap.ai.sdk.context.registry.generated.model.TabularArtifactConfig;
+import com.sap.ai.sdk.context.registry.generated.model.TabularArtifactListResponse;
+import com.sap.ai.sdk.tabular.orchestration.TabularOrchestrationClient;
+import com.sap.ai.sdk.tabular.orchestration.generated.client.PredictApi;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.ContextSelectionConfig;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictRequest;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictResponse;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictionConfig;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.StrategyConfigs;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.TFMEnum;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.TargetColumn;
 import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse;
 import java.util.List;
 import java.util.Map;
@@ -48,12 +49,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class TabularService {
   static final DataDestinationsApi DATA_DESTINATIONS_CLIENT =
-      new TabularClient().dataDestinations();
+      new ContextRegistryClient().dataDestinations();
   static final TabularArtifactsApi TABULAR_ARTIFACTS_CLIENT =
-      new TabularClient().tabularArtifacts();
+      new ContextRegistryClient().tabularArtifacts();
   static final ScenarioConfigurationManagerApi SCENARIO_CONFIG_CLIENT =
-      new TabularClient().scenarioConfiguration();
-  static final PredictApi PREDICT_CLIENT = new TabularClient().predict();
+      new ContextRegistryClient().scenarioConfiguration();
+  static final PredictApi PREDICT_CLIENT = new TabularOrchestrationClient().predict();
 
   /** The test resource group for all tabular operations. */
   public static final String resourceGroup = "ai-sdk-java-e2e";
@@ -231,7 +232,7 @@ public class TabularService {
   public static class PredictionService {
 
     /**
-     * Run a prediction using a running tabular-orchestration deployment.
+     * Run a prediction using a running tabular-ai-orchestration deployment.
      *
      * @return The prediction response.
      */
