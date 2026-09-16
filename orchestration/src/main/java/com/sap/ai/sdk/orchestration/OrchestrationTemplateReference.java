@@ -5,10 +5,13 @@ import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import com.sap.ai.sdk.orchestration.model.TemplateRefTemplateRef;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Value;
 import lombok.With;
 
@@ -27,6 +30,48 @@ public class OrchestrationTemplateReference extends TemplateConfig {
 
   /** The scope of the template reference. */
   @With @Nonnull ScopeEnum scope;
+
+  @Getter(AccessLevel.PACKAGE)
+  @Nonnull
+  List<Message> messagesHistory;
+
+  @Getter(AccessLevel.PACKAGE)
+  @Nonnull
+  Map<String, String> templateParameters;
+
+  /**
+   * Build a template reference with scope only.
+   */
+  OrchestrationTemplateReference(
+      @Nonnull final TemplateRefTemplateRef reference, @Nonnull final ScopeEnum scope) {
+    this(reference, scope, List.of(), Map.of());
+  }
+
+  /**
+   * Set the chat history.
+   *
+   * @param messagesHistory The chat history to set.
+   * @return A new instance with the specified chat history.
+   */
+  @Nonnull
+  public OrchestrationTemplateReference withMessageHistory(
+      @Nonnull final List<Message> messagesHistory) {
+    return new OrchestrationTemplateReference(
+        reference, scope, messagesHistory, templateParameters);
+  }
+
+  /**
+   * Set the template parameters.
+   *
+   * @param templateParameters The template parameters to set.
+   * @return A new instance with the specified template parameters.
+   */
+  @Nonnull
+  public OrchestrationTemplateReference withTemplateParameters(
+      @Nonnull final Map<String, String> templateParameters) {
+    return new OrchestrationTemplateReference(
+        reference, scope, messagesHistory, templateParameters);
+  }
 
   /**
    * Create a low-level representation of the template.

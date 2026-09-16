@@ -14,7 +14,6 @@ import com.sap.ai.sdk.orchestration.model.OrchestrationConfigModules.InnerModule
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.Template;
-import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ import lombok.val;
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ConfigToRequestTransformer {
   @Nonnull
-  static CompletionRequestConfiguration toCompletionPostRequest(
+  static CompletionRequestConfiguration fromTemplateRefToCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
@@ -81,9 +80,6 @@ final class ConfigToRequestTransformer {
      * In this case, the request will fail, since the templating module will try to resolve the parameter.
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
-    if (config instanceof TemplateRef) {
-      return config;
-    }
 
     val template = config instanceof Template t ? t : Template.create().template();
     val messages = template.getTemplate();
@@ -248,5 +244,26 @@ final class ConfigToRequestTransformer {
       request.setPlaceholderValues(placeholders);
       return request;
     }
+  }
+
+  @Nonnull
+  static CompletionRequestConfiguration fromTemplateRefToCompletionPostRequest(
+      @Nonnull final OrchestrationModuleConfigWithRef configWithRef) {
+    final OrchestrationTemplateReference templateRef = configWithRef.getTemplateRef();
+    final var messageHistory =
+        templateRef.getMessagesHistory().stream().map(Message::createChatMessage).toList();
+    final var placeholders = templateRef.getTemplateParameters();
+
+    final OrchestrationModuleConfig inner =
+        configWithRef.getInner().withTemplateConfig(templateRef.toLowLevel());
+
+    val requestConfig =
+        OrchestrationConfig.create().modules(toModuleConfigs(inner)).stream(
+            configWithRef.getInner().getGlobalStreamOptions());
+
+    return CompletionRequestConfiguration.create()
+        .config(requestConfig)
+        .placeholderValues(placeholders)
+        .messagesHistory(messageHistory);
   }
 }

@@ -84,7 +84,8 @@ public class OrchestrationClient {
       @Nonnull final OrchestrationPrompt prompt,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
-    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config, fallbackConfigs);
+    return ConfigToRequestTransformer.fromTemplateRefToCompletionPostRequest(
+        prompt, config, fallbackConfigs);
   }
 
   /**
@@ -188,6 +189,24 @@ public class OrchestrationClient {
   public OrchestrationChatResponse chatCompletionUsingReference(
       @Nonnull final OrchestrationConfigReference reference) {
     val request = ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(reference);
+    val response = executeRequest(request);
+    return new OrchestrationChatResponse(response);
+  }
+
+  /**
+   * Generate a completion using a module configuration containing a template reference Per-request
+   * history and parameters must be set on the template reference via {@link
+   * OrchestrationTemplateReference#withMessageHistory} and {@link
+   * OrchestrationTemplateReference#withTemplateParameters}.
+   *
+   * @param config A module configuration wrapping an {@link OrchestrationTemplateReference}.
+   * @return The completion output.
+   * @since 1.26.0
+   */
+  @Nonnull
+  public OrchestrationChatResponse chatCompletion(
+      @Nonnull final OrchestrationModuleConfigWithRef config) {
+    val request = ConfigToRequestTransformer.fromTemplateRefToCompletionPostRequest(config);
     val response = executeRequest(request);
     return new OrchestrationChatResponse(response);
   }
