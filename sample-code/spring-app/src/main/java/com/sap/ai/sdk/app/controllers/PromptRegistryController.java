@@ -52,8 +52,7 @@ class PromptRegistryController {
   static final String NAME = "java-e2e-test";
   private static final OrchestrationConfigsApi orchConfigClient =
       new PromptRegistryClient().orchestrationConfig();
-  private static final PromptTemplatesApi promptClient =
-      new PromptRegistryClient().prompt();
+  private static final PromptTemplatesApi promptClient = new PromptRegistryClient().prompt();
 
   @GetMapping("/listTemplates")
   PromptTemplateListResponse listTemplates() {
@@ -69,8 +68,7 @@ class PromptRegistryController {
   PromptTemplatePostResponse updateTemplate() {
     // create template then update
     promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
-    return promptClient.createUpdatePromptTemplate(
-        getTemplate("Finance, Tech, Sports, Politics"));
+    return promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports, Politics"));
   }
 
   private PromptTemplatePostRequest getTemplate(final String categories) {
@@ -194,8 +192,7 @@ class PromptRegistryController {
 
   @GetMapping("/deleteOrchConfig")
   List<OrchestrationConfigDeleteResponse> deleteOrchConfig() {
-    final OrchestrationConfigListResponse configs =
-        orchConfigClient.listOrchestrationConfigs();
+    final OrchestrationConfigListResponse configs = orchConfigClient.listOrchestrationConfigs();
 
     return configs.getResources().stream()
         .filter(config -> NAME.equals(config.getName()))
