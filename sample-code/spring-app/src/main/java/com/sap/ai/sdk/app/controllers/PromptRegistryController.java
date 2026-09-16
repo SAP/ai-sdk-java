@@ -138,10 +138,7 @@ class PromptRegistryController {
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
     val cl = ChatClient.builder(openAiClient).defaultAdvisors(advisor).build();
 
-    val promptResponse =
-        new PromptRegistryClient()
-            .prompt()
-            .parsePromptTemplateByNameVersion(
+    val promptResponse = promptClient.parsePromptTemplateByNameVersion(
                 "categorization",
                 "0.0.1",
                 "java-e2e-test",

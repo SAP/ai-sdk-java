@@ -889,15 +889,15 @@ public class OrchestrationService {
   }
 
   private void ensureOrchestrationConfigExists(final String scenario, final String name) {
-    final OrchestrationConfigsApi client = new PromptRegistryClient().orchestrationConfig();
-    if (!orchConfigExists("test-config-for-OrchestrationTest", client)) {
+    final OrchestrationConfigsApi orchConfigClient = new PromptRegistryClient().orchestrationConfig();
+    if (!orchConfigExists("test-config-for-OrchestrationTest", orchConfigClient)) {
       final OrchestrationConfigPostRequest postRequest =
           OrchestrationConfigPostRequest.create()
               .name(name)
               .version("0.0.1")
               .scenario(scenario)
               .spec(buildOrchestrationConfig());
-      client.createUpdateOrchestrationConfig(postRequest);
+      orchConfigClient.createUpdateOrchestrationConfig(postRequest);
     }
   }
 
@@ -976,9 +976,9 @@ public class OrchestrationService {
   public Stream<OrchestrationChatCompletionDelta> streamDeltasWithReferenceById() {
     // get a valid id
     ensureOrchestrationConfigExists("sdk-test-paraphrase", "create-3-paraphrases-of-sentence");
-    val orchestrationConfigsClient = new PromptRegistryClient().orchestrationConfig();
+    val orchConfigClient = new PromptRegistryClient().orchestrationConfig();
     val id =
-        orchestrationConfigsClient.listOrchestrationConfigs().getResources().stream()
+            orchConfigClient.listOrchestrationConfigs().getResources().stream()
             .filter(r -> r.getName().equals("test-config-for-OrchestrationTest"))
             .findFirst()
             .orElseThrow()
