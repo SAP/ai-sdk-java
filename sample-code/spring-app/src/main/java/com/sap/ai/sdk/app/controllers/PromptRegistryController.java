@@ -50,26 +50,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/prompt-registry")
 class PromptRegistryController {
   static final String NAME = "java-e2e-test";
-  private static final OrchestrationConfigsApi orchestrationConfigsClient =
+  private static final OrchestrationConfigsApi orchConfigClient =
       new PromptRegistryClient().orchestrationConfig();
-  private static final PromptTemplatesApi promptTemplatesClient =
+  private static final PromptTemplatesApi promptClient =
       new PromptRegistryClient().prompt();
 
   @GetMapping("/listTemplates")
   PromptTemplateListResponse listTemplates() {
-    return promptTemplatesClient.listPromptTemplates();
+    return promptClient.listPromptTemplates();
   }
 
   @GetMapping("/createTemplate")
   PromptTemplatePostResponse createTemplate() {
-    return promptTemplatesClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
+    return promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
   }
 
   @GetMapping("/updateTemplate")
   PromptTemplatePostResponse updateTemplate() {
     // create template then update
-    promptTemplatesClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
-    return promptTemplatesClient.createUpdatePromptTemplate(
+    promptClient.createUpdatePromptTemplate(getTemplate("Finance, Tech, Sports"));
+    return promptClient.createUpdatePromptTemplate(
         getTemplate("Finance, Tech, Sports, Politics"));
   }
 
@@ -93,25 +93,25 @@ class PromptRegistryController {
 
   @GetMapping("/history")
   PromptTemplateListResponse history() {
-    return promptTemplatesClient.listPromptTemplateHistory("categorization", "0.0.1", NAME);
+    return promptClient.listPromptTemplateHistory("categorization", "0.0.1", NAME);
   }
 
   @GetMapping("/importTemplate")
   PromptTemplatePostResponse importTemplate() throws IOException {
     val template = new ClassPathResource("prompt-template.yaml").getFile();
-    return promptTemplatesClient.importPromptTemplate("default", null, template);
+    return promptClient.importPromptTemplate("default", null, template);
   }
 
   @GetMapping("/exportTemplate")
   byte[] exportTemplate() throws IOException {
     final var template = importTemplate();
-    return promptTemplatesClient.exportPromptTemplate(template.getId());
+    return promptClient.exportPromptTemplate(template.getId());
   }
 
   @GetMapping("/useTemplate")
   PromptTemplateSubstitutionResponse useTemplate() {
     final var template = createTemplate();
-    return promptTemplatesClient.parsePromptTemplateById(
+    return promptClient.parsePromptTemplateById(
         template.getId(),
         "default",
         null,
@@ -122,11 +122,11 @@ class PromptRegistryController {
 
   @GetMapping("/deleteTemplate")
   List<PromptTemplateDeleteResponse> deleteTemplate() {
-    final PromptTemplateListResponse templates = promptTemplatesClient.listPromptTemplates();
+    final PromptTemplateListResponse templates = promptClient.listPromptTemplates();
 
     return templates.getResources().stream()
         .filter(template -> NAME.equals(template.getName()))
-        .map(template -> promptTemplatesClient.deletePromptTemplate(template.getId()))
+        .map(template -> promptClient.deletePromptTemplate(template.getId()))
         .toList();
   }
 
@@ -163,7 +163,7 @@ class PromptRegistryController {
 
   @GetMapping("/listOrchConfigs")
   OrchestrationConfigListResponse listOrchConfigs() {
-    return orchestrationConfigsClient.listOrchestrationConfigs();
+    return orchConfigClient.listOrchestrationConfigs();
   }
 
   @GetMapping("/createOrchConfig")
@@ -189,17 +189,17 @@ class PromptRegistryController {
             .version("0.0.1")
             .scenario("sdk-test-scenario")
             .spec(orchestrationConfig);
-    return orchestrationConfigsClient.createUpdateOrchestrationConfig(postRequest);
+    return orchConfigClient.createUpdateOrchestrationConfig(postRequest);
   }
 
   @GetMapping("/deleteOrchConfig")
   List<OrchestrationConfigDeleteResponse> deleteOrchConfig() {
     final OrchestrationConfigListResponse configs =
-        orchestrationConfigsClient.listOrchestrationConfigs();
+        orchConfigClient.listOrchestrationConfigs();
 
     return configs.getResources().stream()
         .filter(config -> NAME.equals(config.getName()))
-        .map(config -> orchestrationConfigsClient.deleteOrchestrationConfig(config.getId()))
+        .map(config -> orchConfigClient.deleteOrchestrationConfig(config.getId()))
         .toList();
   }
 }
