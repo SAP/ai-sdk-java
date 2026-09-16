@@ -42,7 +42,7 @@ public class OpenAiController {
 
   private final Resource sampleQuestionPcm = new ClassPathResource("static/question.pcm");
 
-  @GetMapping("/chatCompletionUsingTemplateRef")
+  @GetMapping("/chatCompletion")
   @Nonnull
   Object chatCompletion(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
