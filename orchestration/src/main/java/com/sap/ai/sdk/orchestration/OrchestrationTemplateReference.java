@@ -39,9 +39,7 @@ public class OrchestrationTemplateReference extends TemplateConfig {
   @Nonnull
   Map<String, String> templateParameters;
 
-  /**
-   * Build a template reference with scope only.
-   */
+  /** Build a template reference with scope only. */
   OrchestrationTemplateReference(
       @Nonnull final TemplateRefTemplateRef reference, @Nonnull final ScopeEnum scope) {
     this(reference, scope, List.of(), Map.of());
