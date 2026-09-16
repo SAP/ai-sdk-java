@@ -42,7 +42,7 @@ public class OpenAiController {
 
   private final Resource sampleQuestionPcm = new ClassPathResource("static/question.pcm");
 
-  @GetMapping("/chatCompletion")
+  @GetMapping("/chatCompletionUsingTemplateRef")
   @Nonnull
   Object chatCompletion(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
@@ -216,7 +216,7 @@ public class OpenAiController {
     return service.embedding("Hello world");
   }
 
-  @GetMapping("/chatCompletion/{resourceGroup}")
+  @GetMapping("/chatCompletionUsingTemplateRef/{resourceGroup}")
   @Nonnull
   Object chatCompletionWithResource(
       @Nullable @RequestParam(value = "format", required = false) final String format,

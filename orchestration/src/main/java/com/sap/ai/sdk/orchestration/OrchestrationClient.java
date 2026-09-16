@@ -203,7 +203,7 @@ public class OrchestrationClient {
    * @since 1.26.0
    */
   @Nonnull
-  public OrchestrationChatResponse chatCompletion(
+  public OrchestrationChatResponse chatCompletionUsingTemplateRef(
       @Nonnull final OrchestrationModuleConfigWithRef config) {
     val request = ConfigToRequestTransformer.fromTemplateRefToCompletionPostRequest(config);
     val response = executeRequest(request);

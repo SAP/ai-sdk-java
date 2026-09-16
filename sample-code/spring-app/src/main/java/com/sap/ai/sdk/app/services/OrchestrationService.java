@@ -702,7 +702,7 @@ public class OrchestrationService {
             .withTemplateParameters(inputParams);
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
 
-    return client.chatCompletion(configWithTemplate);
+    return client.chatCompletionUsingTemplateRef(configWithTemplate);
   }
 
   /**
@@ -729,7 +729,7 @@ public class OrchestrationService {
             .withTemplateParameters(inputParams);
     val configWithTemplate = config.withTemplateConfig(template);
 
-    return clientWithResourceGroup.chatCompletion(configWithTemplate);
+    return clientWithResourceGroup.chatCompletionUsingTemplateRef(configWithTemplate);
   }
 
   /**
@@ -753,7 +753,7 @@ public class OrchestrationService {
             .withTemplateParameters(inputParams);
     val configWithTemplate = config.withTemplateConfig(template);
 
-    return client.chatCompletion(configWithTemplate);
+    return client.chatCompletionUsingTemplateRef(configWithTemplate);
   }
 
   /**
@@ -782,7 +782,7 @@ public class OrchestrationService {
             .withTemplateParameters(inputParams);
     val configWithTemplate = config.withTemplateConfig(template);
 
-    return clientWithResourceGroup.chatCompletion(configWithTemplate);
+    return clientWithResourceGroup.chatCompletionUsingTemplateRef(configWithTemplate);
   }
 
   /**

@@ -1463,7 +1463,7 @@ class OrchestrationUnitTest {
             .withTemplateParameters(inputParams);
     var configWithTemplate = config.withTemplateConfig(template);
 
-    final var response = client.chatCompletion(configWithTemplate);
+    final var response = client.chatCompletionUsingTemplateRef(configWithTemplate);
     assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
@@ -1495,7 +1495,7 @@ class OrchestrationUnitTest {
         new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
     var configWithTemplate = config.withTemplateConfig(template);
 
-    final var response = client.chatCompletion(configWithTemplate);
+    final var response = client.chatCompletionUsingTemplateRef(configWithTemplate);
     assertThat(response.getContent()).startsWith("Finance");
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
@@ -1521,7 +1521,7 @@ class OrchestrationUnitTest {
             .withTemplateParameters(inputParams);
     var configWithTemplate = config.withTemplateConfig(template);
 
-    final var response = client.chatCompletion(configWithTemplate);
+    final var response = client.chatCompletionUsingTemplateRef(configWithTemplate);
     assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
@@ -1555,7 +1555,7 @@ class OrchestrationUnitTest {
         new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
     var configWithTemplate = config.withTemplateConfig(template);
 
-    final var response = client.chatCompletion(configWithTemplate);
+    final var response = client.chatCompletionUsingTemplateRef(configWithTemplate);
     assertThat(response.getContent()).startsWith("Finance");
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
@@ -1865,7 +1865,7 @@ class OrchestrationUnitTest {
             .withTemplateParameters(Map.of("language", "Italian", "input", "Cloud ERP systems"));
     var configWithRef = config.withTemplateConfig(ref);
 
-    final var response = client.chatCompletion(configWithRef);
+    final var response = client.chatCompletionUsingTemplateRef(configWithRef);
     assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
 
     final String expectedRequest = fileLoaderStr.apply("templateReferenceByIdRequest.json");
