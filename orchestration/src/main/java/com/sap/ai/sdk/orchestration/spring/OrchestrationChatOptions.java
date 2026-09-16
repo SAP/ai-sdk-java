@@ -41,6 +41,8 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   @Nonnull private OrchestrationModuleConfig config;
 
+  @Nonnull private List<OrchestrationModuleConfig> fallbackConfigs = List.of();
+
   @Nonnull private List<ToolCallback> toolCallbacks = List.of();
 
   @Getter(AccessLevel.NONE)
@@ -169,6 +171,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
             .withGroundingConfig(config.getGroundingConfig());
     val result = new OrchestrationChatOptions(copyConfig);
     result.setToolCallbacks(toolCallbacks);
+    result.setFallbackConfigs(fallbackConfigs);
     result.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
     return (T) result;
   }

@@ -2,7 +2,8 @@ name: "End-to-end Tests"
 on:
   workflow_dispatch:
   schedule:
-    - cron: 15 2 * * MON-FRI
+    - cron: 15 1 * * MON-FRI # main, runs one hour before v2
+    - cron: 15 2 * * MON-FRI # v2
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
@@ -26,12 +27,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: "Check schedule filter"
+        id: filter
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            if [ "${{ matrix.branch }}" = "main" ] && [ "${{ github.event.schedule }}" = "15 1 * * MON-FRI" ]; then
+              echo "run=true" >> $GITHUB_OUTPUT
+            elif [ "${{ matrix.branch }}" = "v2" ] && [ "${{ github.event.schedule }}" = "15 2 * * MON-FRI" ]; then
+              echo "run=true" >> $GITHUB_OUTPUT
+            else
+              echo "run=false" >> $GITHUB_OUTPUT
+              echo "Skipping: branch '${{ matrix.branch }}' does not match schedule '${{ github.event.schedule }}'"
+            fi
+          else
+            echo "run=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: "Checkout repository"
+        if: steps.filter.outputs.run == 'true'
         uses: actions/checkout@v7
         with:
           ref: ${{ matrix.branch }}
 
       - name: "Setup java"
+        if: steps.filter.outputs.run == 'true'
         uses: actions/setup-java@v6.0.0
         with:
           distribution: "sapmachine"
@@ -39,11 +58,13 @@ jobs:
           cache: 'maven'
 
       - name: "Build SDK"
+        if: steps.filter.outputs.run == 'true'
         run: |
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
 
       - name: "Run tests"
+        if: steps.filter.outputs.run == 'true'
         id: run_tests
         run: |
           if [ "${{ matrix.environment }}" = "canary" ]; then
@@ -80,6 +101,7 @@ jobs:
           AI_CORE_CANARY: ${{ secrets.canary }}
 
       - name: "Start Application Locally"
+        if: steps.filter.outputs.run == 'true'
         run: |
           if [ "${{ matrix.environment }}" = "canary" ]; then
               export AICORE_SERVICE_KEY='${{ secrets.AI_CORE_CANARY }}'
@@ -104,11 +126,12 @@ jobs:
           AI_CORE_CANARY: ${{ secrets.canary }}
 
       - name: "Health Check"
+        if: steps.filter.outputs.run == 'true'
         # print response body with headers to stdout.  q:body only  O:print  -:stdout  S:headers
         run: wget -qO- -S localhost:8080
 
       - name: "Slack Notification"
-        if: failure()
+        if: failure() && steps.filter.outputs.run == 'true'
         uses: slackapi/slack-github-action@v4.0.0
         with:
           webhook: ${{ secrets.SLACK_WEBHOOK }}
