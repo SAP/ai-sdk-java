@@ -348,7 +348,7 @@ public class OrchestrationModuleConfig {
    * only source of prompt input
    *
    * @param templateRef The template reference to use.
-   * @return A new {@link OrchestrationModuleConfigWithRef} wrapping this config.
+   * @return A new {@link OrchestrationModuleConfig} wrapping this config.
    * @since 1.26.0
    */
   @Tolerate

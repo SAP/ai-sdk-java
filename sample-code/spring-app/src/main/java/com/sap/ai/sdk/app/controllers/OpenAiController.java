@@ -216,7 +216,7 @@ public class OpenAiController {
     return service.embedding("Hello world");
   }
 
-  @GetMapping("/chatCompletionUsingTemplateRef/{resourceGroup}")
+  @GetMapping("/chatCompletion/{resourceGroup}")
   @Nonnull
   Object chatCompletionWithResource(
       @Nullable @RequestParam(value = "format", required = false) final String format,
