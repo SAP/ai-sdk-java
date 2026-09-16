@@ -23,7 +23,7 @@ OrchestrationConfigClient:
 -var configs = orchestrationConfigClient.listOrchestrationConfigs();
 
 +var promptRegistryClient = new PromptRegistryClient();
-+var configs = promptRegistryClient.orchestration().listOrchestrationConfigs();
++var configs = promptRegistryClient.orchestrationConfig().listOrchestrationConfigs();
 ```
 
 PromptRegistryClient:

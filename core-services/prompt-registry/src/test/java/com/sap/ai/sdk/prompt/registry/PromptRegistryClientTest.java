@@ -7,6 +7,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
 import com.sap.ai.sdk.prompt.registry.model.MultiChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateGetResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -34,15 +35,16 @@ class PromptRegistryClientTest {
   private static final WireMockExtension WM =
       WireMockExtension.newInstance().options(wireMockConfig().dynamicPort()).build();
 
-  private static PromptRegistryClient client;
-  private ServiceBindingAccessor originalAccessor;
+  private static PromptTemplatesApi promptClient;
+  private static ServiceBindingAccessor originalAccessor;
 
-  @BeforeEach
-  void setup() {
+  @BeforeAll
+  static void setup() {
     originalAccessor = DefaultServiceBindingAccessor.getInstance();
     final HttpDestination destination = DefaultHttpDestination.builder(WM.baseUrl()).build();
     final AiCoreService service = new AiCoreService().withBaseDestination(destination);
-    client = new PromptRegistryClient(service);
+    PromptRegistryClient client = new PromptRegistryClient(service);
+    promptClient = client.prompt();
   }
 
   @AfterEach
@@ -70,7 +72,7 @@ class PromptRegistryClientTest {
 
   @Test
   void testPipelines() {
-    final var result = client.prompt().listPromptTemplates();
+    final var result = promptClient.listPromptTemplates();
     assertThat(result.getCount()).isEqualTo(2);
     assertThat(result.getResources()).hasSize(2);
     final var template = result.getResources().get(0);
@@ -87,7 +89,7 @@ class PromptRegistryClientTest {
   @Test
   void testGetTemplateWithResponseFormatText() {
     final var uuid = UUID.fromString("22117a64-9f2c-481b-9402-8acb66eeb707");
-    final PromptTemplateGetResponse response = client.prompt().getPromptTemplateByUuid(uuid);
+    final PromptTemplateGetResponse response = promptClient.getPromptTemplateByUuid(uuid);
 
     assertThat(response.getName()).isEqualTo("test");
     assertThat(response.getVersion()).isEqualTo("0.0.1");
@@ -102,7 +104,7 @@ class PromptRegistryClientTest {
   @Test
   void testGetTemplateWithResponseFormatJsonObject() {
     final var uuid = UUID.fromString("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
-    final var response = client.prompt().getPromptTemplateByUuid(uuid);
+    final var response = promptClient.getPromptTemplateByUuid(uuid);
 
     assertThat(response.getName()).isEqualTo("test");
     assertThat(response.getVersion()).isEqualTo("0.0.1");
@@ -117,7 +119,7 @@ class PromptRegistryClientTest {
   @Test
   void testGetTemplateWithResponseFormatJsonSchema() {
     final var uuid = UUID.fromString("0f79fec4-ae07-4c35-96e3-df7f4a3f1df5");
-    final var response = client.prompt().getPromptTemplateByUuid(uuid);
+    final var response = promptClient.getPromptTemplateByUuid(uuid);
 
     assertThat(response.getName()).isEqualTo("test");
     assertThat(response.getVersion()).isEqualTo("0.0.1");
@@ -137,7 +139,7 @@ class PromptRegistryClientTest {
   @Test
   void testGetTemplateWithMultiChatTemplate() {
     final var uuid = UUID.fromString("8f79fec4-ae07-4c35-96e3-df7f4a3f1df5");
-    final var response = client.prompt().getPromptTemplateByUuid(uuid);
+    final var response = promptClient.getPromptTemplateByUuid(uuid);
 
     assertThat(response.getSpec()).isNotNull();
     assertThat(response.getSpec().getTemplate()).hasSize(2);
@@ -158,7 +160,7 @@ class PromptRegistryClientTest {
   void testGetTemplateWithInvalidRoleType() {
     final var uuid = UUID.fromString("45cb1358-0bf1-4f43-870b-00f14d0f9f16");
 
-    assertThatThrownBy(() -> client.prompt().getPromptTemplateByUuid(uuid))
+    assertThatThrownBy(() -> promptClient.getPromptTemplateByUuid(uuid))
         .hasStackTraceContaining("PromptTemplate requires textual 'role' property.");
   }
 
@@ -166,7 +168,7 @@ class PromptRegistryClientTest {
   void testGetTemplateWithInvalidContentType() {
     final var uuid = UUID.fromString("55cb1358-0bf1-4f43-870b-00f14d0f9f16");
 
-    assertThatThrownBy(() -> client.prompt().getPromptTemplateByUuid(uuid))
+    assertThatThrownBy(() -> promptClient.getPromptTemplateByUuid(uuid))
         .hasStackTraceContaining(
             "PromptTemplate content must be either a string or an array, but found: BOOLEAN");
   }
@@ -178,10 +180,8 @@ class PromptRegistryClientTest {
             .inputParams(Map.of("inputExample", "I love football"));
 
     final var response =
-        client
-            .prompt()
-            .parsePromptTemplateByNameVersion(
-                "categorization", "0.0.1", "hotpath-serde", "default", null, false, request);
+        promptClient.parsePromptTemplateByNameVersion(
+            "categorization", "0.0.1", "hotpath-serde", "default", null, false, request);
 
     assertThat(response.getParsedPrompt()).hasSize(2);
     assertThat(response.getParsedPrompt().get(0)).isInstanceOf(SingleChatTemplate.class);

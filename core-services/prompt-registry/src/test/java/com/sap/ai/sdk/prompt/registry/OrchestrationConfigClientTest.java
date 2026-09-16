@@ -5,10 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.prompt.registry.client.OrchestrationConfigsApi;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -17,18 +18,19 @@ public class OrchestrationConfigClientTest {
   private static final WireMockExtension WM =
       WireMockExtension.newInstance().options(wireMockConfig().dynamicPort()).build();
 
-  private static PromptRegistryClient client;
+  private static OrchestrationConfigsApi orchestrationConfigsClient;
 
-  @BeforeEach
-  void setup() {
+  @BeforeAll
+  static void setup() {
     final HttpDestination destination = DefaultHttpDestination.builder(WM.baseUrl()).build();
     final AiCoreService service = new AiCoreService().withBaseDestination(destination);
-    client = new PromptRegistryClient(service);
+    final var client = new PromptRegistryClient(service);
+    orchestrationConfigsClient = client.orchestrationConfig();
   }
 
   @Test
   void testPipelines() {
-    final var result = client.orchestration().listOrchestrationConfigs();
+    final var result = orchestrationConfigsClient.listOrchestrationConfigs();
     assertThat(result.getCount()).isEqualTo(2);
     assertThat(result.getResources()).hasSize(2);
     final var template = result.getResources().get(0);

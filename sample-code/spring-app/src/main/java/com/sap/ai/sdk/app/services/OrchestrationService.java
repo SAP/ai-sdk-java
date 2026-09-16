@@ -896,13 +896,13 @@ public class OrchestrationService {
               .version("0.0.1")
               .scenario(scenario)
               .spec(buildOrchestrationConfig());
-      unifiedClient.orchestration().createUpdateOrchestrationConfig(postRequest);
+      unifiedClient.orchestrationConfig().createUpdateOrchestrationConfig(postRequest);
     }
   }
 
   private boolean orchConfigExists(
       final String configName, final PromptRegistryClient unifiedClient) {
-    return unifiedClient.orchestration().listOrchestrationConfigs().getResources().stream()
+    return unifiedClient.orchestrationConfig().listOrchestrationConfigs().getResources().stream()
         .anyMatch(resp -> resp.getName().equals(configName));
   }
 
@@ -977,7 +977,7 @@ public class OrchestrationService {
     ensureOrchestrationConfigExists("sdk-test-paraphrase", "create-3-paraphrases-of-sentence");
     val unifiedClient = new PromptRegistryClient();
     val id =
-        unifiedClient.orchestration().listOrchestrationConfigs().getResources().stream()
+        unifiedClient.orchestrationConfig().listOrchestrationConfigs().getResources().stream()
             .filter(r -> r.getName().equals("test-config-for-OrchestrationTest"))
             .findFirst()
             .orElseThrow()

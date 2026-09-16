@@ -44,7 +44,7 @@ public class PromptRegistryClient {
    * @return the client
    */
   @Nonnull
-  public OrchestrationConfigsApi orchestration() {
+  public OrchestrationConfigsApi orchestrationConfig() {
     return new OrchestrationConfigsApi(OrchestrationConfigMixin.addMixin(aiCoreService));
   }
 }
