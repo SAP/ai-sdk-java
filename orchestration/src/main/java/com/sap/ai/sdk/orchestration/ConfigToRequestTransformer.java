@@ -248,18 +248,18 @@ final class ConfigToRequestTransformer {
 
   @Nonnull
   static CompletionRequestConfiguration fromTemplateRefToCompletionPostRequest(
-      @Nonnull final OrchestrationModuleConfigWithRef configWithRef) {
+      @Nonnull final OrchestrationModuleConfig configWithRef) {
     final OrchestrationTemplateReference templateRef = configWithRef.getTemplateRef();
     final var messageHistory =
         templateRef.getMessagesHistory().stream().map(Message::createChatMessage).toList();
     final var placeholders = templateRef.getTemplateParameters();
 
     final OrchestrationModuleConfig inner =
-        configWithRef.getInner().withTemplateConfig(templateRef.toLowLevel());
+        configWithRef.withTemplateConfig(templateRef.toLowLevel());
 
     val requestConfig =
         OrchestrationConfig.create().modules(toModuleConfigs(inner)).stream(
-            configWithRef.getInner().getGlobalStreamOptions());
+            configWithRef.getGlobalStreamOptions());
 
     return CompletionRequestConfiguration.create()
         .config(requestConfig)

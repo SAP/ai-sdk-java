@@ -204,7 +204,7 @@ public class OrchestrationClient {
    */
   @Nonnull
   public OrchestrationChatResponse chatCompletionUsingTemplateRef(
-      @Nonnull final OrchestrationModuleConfigWithRef config) {
+      @Nonnull final OrchestrationModuleConfig config) {
     val request = ConfigToRequestTransformer.fromTemplateRefToCompletionPostRequest(config);
     val response = executeRequest(request);
     return new OrchestrationChatResponse(response);
