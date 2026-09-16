@@ -14,11 +14,13 @@ package com.sap.ai.sdk.orchestration.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-/** OutputFilterConfig */
+/**
+ * Selector for scoping input filtering to a subset of the combined message list (messages_history
+ * prepended to template). If not present, all input content is filtered.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = AzureContentSafetyOutputFilterConfig.class),
-  @JsonSubTypes.Type(value = GraniteGuardianFilterConfig.class),
-  @JsonSubTypes.Type(value = LlamaGuard38bFilterConfig.class),
+  @JsonSubTypes.Type(value = AfterLastRoleTargetSelector.class),
+  @JsonSubTypes.Type(value = LastMessagesTargetSelector.class),
 })
-public interface OutputFilterConfig {}
+public interface InputFilterTargetSelector {}

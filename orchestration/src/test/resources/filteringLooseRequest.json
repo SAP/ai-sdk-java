@@ -14,7 +14,8 @@
           },
           "version": "latest",
           "timeout": 600,
-          "max_retries": 2
+          "max_retries": 2,
+          "drop_unsupported_params": true
         },
         "prompt": {
           "template": [
