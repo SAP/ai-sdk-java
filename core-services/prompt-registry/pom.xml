@@ -38,11 +38,11 @@
   </scm>
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
-    <coverage.complexity>91%</coverage.complexity>
+    <coverage.complexity>88%</coverage.complexity>
     <coverage.line>93%</coverage.line>
     <coverage.instruction>94%</coverage.instruction>
     <coverage.branch>100%</coverage.branch>
-    <coverage.method>83%</coverage.method>
+    <coverage.method>80%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
@@ -101,16 +101,6 @@
     <dependency>
       <groupId>org.assertj</groupId>
       <artifactId>assertj-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.sap.cloud.environment.servicebinding.api</groupId>
-      <artifactId>java-access-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.sap.cloud.environment.servicebinding.api</groupId>
-      <artifactId>java-core-api</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

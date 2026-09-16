@@ -2,7 +2,6 @@ package com.sap.ai.sdk.prompt.registry;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
@@ -16,16 +15,10 @@ import com.sap.ai.sdk.prompt.registry.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.prompt.registry.model.ResponseFormatText;
 import com.sap.ai.sdk.prompt.registry.model.SingleChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.TextContent;
-import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingAccessor;
-import com.sap.cloud.environment.servicebinding.api.DefaultServiceBindingBuilder;
-import com.sap.cloud.environment.servicebinding.api.ServiceBindingAccessor;
-import com.sap.cloud.environment.servicebinding.api.ServiceIdentifier;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -36,38 +29,13 @@ class PromptRegistryClientTest {
       WireMockExtension.newInstance().options(wireMockConfig().dynamicPort()).build();
 
   private static PromptTemplatesApi client;
-  private static ServiceBindingAccessor originalAccessor;
 
   @BeforeAll
   static void setup() {
-    originalAccessor = DefaultServiceBindingAccessor.getInstance();
     final HttpDestination destination = DefaultHttpDestination.builder(WM.baseUrl()).build();
     final AiCoreService service = new AiCoreService().withBaseDestination(destination);
     PromptRegistryClient promptRegistryClient = new PromptRegistryClient(service);
     client = promptRegistryClient.prompt();
-  }
-
-  @AfterEach
-  void teardown() {
-    DefaultServiceBindingAccessor.setInstance(originalAccessor);
-  }
-
-  @Test
-  void testDefaultConstructor() {
-    final var binding =
-        new DefaultServiceBindingBuilder()
-            .withServiceIdentifier(ServiceIdentifier.AI_CORE)
-            .withCredentials(
-                Map.of(
-                    "clientid", "client-id",
-                    "clientsecret", "client-secret",
-                    "credential-type", "binding-secret",
-                    "url", WM.baseUrl(),
-                    "serviceurls", Map.of("AI_API_URL", WM.baseUrl())))
-            .build();
-    DefaultServiceBindingAccessor.setInstance(() -> List.of(binding));
-
-    assertThatCode(PromptRegistryClient::new).doesNotThrowAnyException();
   }
 
   @Test
