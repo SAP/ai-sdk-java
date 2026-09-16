@@ -136,15 +136,16 @@ class PromptRegistryController {
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
     val cl = ChatClient.builder(openAiClient).defaultAdvisors(advisor).build();
 
-    val promptResponse = promptClient.parsePromptTemplateByNameVersion(
-                "categorization",
-                "0.0.1",
-                "java-e2e-test",
-                "default",
-                null,
-                false,
-                PromptTemplateSubstitutionRequest.create()
-                    .inputParams(Map.of("inputExample", "I love football")));
+    val promptResponse =
+        promptClient.parsePromptTemplateByNameVersion(
+            "categorization",
+            "0.0.1",
+            "java-e2e-test",
+            "default",
+            null,
+            false,
+            PromptTemplateSubstitutionRequest.create()
+                .inputParams(Map.of("inputExample", "I love football")));
 
     final List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
     val prompt = new Prompt(messages);

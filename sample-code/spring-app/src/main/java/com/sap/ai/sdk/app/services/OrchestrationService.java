@@ -889,7 +889,8 @@ public class OrchestrationService {
   }
 
   private void ensureOrchestrationConfigExists(final String scenario, final String name) {
-    final OrchestrationConfigsApi orchConfigClient = new PromptRegistryClient().orchestrationConfig();
+    final OrchestrationConfigsApi orchConfigClient =
+        new PromptRegistryClient().orchestrationConfig();
     if (!orchConfigExists("test-config-for-OrchestrationTest", orchConfigClient)) {
       final OrchestrationConfigPostRequest postRequest =
           OrchestrationConfigPostRequest.create()
@@ -978,7 +979,7 @@ public class OrchestrationService {
     ensureOrchestrationConfigExists("sdk-test-paraphrase", "create-3-paraphrases-of-sentence");
     val orchConfigClient = new PromptRegistryClient().orchestrationConfig();
     val id =
-            orchConfigClient.listOrchestrationConfigs().getResources().stream()
+        orchConfigClient.listOrchestrationConfigs().getResources().stream()
             .filter(r -> r.getName().equals("test-config-for-OrchestrationTest"))
             .findFirst()
             .orElseThrow()
