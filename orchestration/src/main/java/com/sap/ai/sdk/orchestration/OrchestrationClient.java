@@ -84,8 +84,7 @@ public class OrchestrationClient {
       @Nonnull final OrchestrationPrompt prompt,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
-    return ConfigToRequestTransformer.fromTemplateRefToCompletionPostRequest(
-        prompt, config, fallbackConfigs);
+    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config, fallbackConfigs);
   }
 
   /**

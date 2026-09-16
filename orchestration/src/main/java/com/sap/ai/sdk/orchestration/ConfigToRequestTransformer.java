@@ -31,7 +31,7 @@ import lombok.val;
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ConfigToRequestTransformer {
   @Nonnull
-  static CompletionRequestConfiguration fromTemplateRefToCompletionPostRequest(
+  static CompletionRequestConfiguration toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
