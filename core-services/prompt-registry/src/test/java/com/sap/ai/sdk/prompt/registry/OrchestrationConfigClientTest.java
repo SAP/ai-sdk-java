@@ -18,19 +18,19 @@ public class OrchestrationConfigClientTest {
   private static final WireMockExtension WM =
       WireMockExtension.newInstance().options(wireMockConfig().dynamicPort()).build();
 
-  private static OrchestrationConfigsApi orchestrationConfigsClient;
+  private static OrchestrationConfigsApi client;
 
   @BeforeAll
   static void setup() {
     final HttpDestination destination = DefaultHttpDestination.builder(WM.baseUrl()).build();
     final AiCoreService service = new AiCoreService().withBaseDestination(destination);
-    final var client = new PromptRegistryClient(service);
-    orchestrationConfigsClient = client.orchestrationConfig();
+    final var promptRegistryClient = new PromptRegistryClient(service);
+    client = promptRegistryClient.orchestrationConfig();
   }
 
   @Test
   void testPipelines() {
-    final var result = orchestrationConfigsClient.listOrchestrationConfigs();
+    final var result = client.listOrchestrationConfigs();
     assertThat(result.getCount()).isEqualTo(2);
     assertThat(result.getResources()).hasSize(2);
     final var template = result.getResources().get(0);

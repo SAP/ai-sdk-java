@@ -19,11 +19,11 @@ OrchestrationConfigClient and PromptClient were replaced with unified PromptRegi
 
 OrchestrationConfigClient:
 ```diff
--var orchestrationConfigClient = new OrchestrationConfigClient();
--var configs = orchestrationConfigClient.listOrchestrationConfigs();
+-var orchestrationConfigsClient = new OrchestrationConfigClient();
+-var configs = orchestrationConfigsClient.listOrchestrationConfigs();
 
-+var promptRegistryClient = new PromptRegistryClient();
-+var configs = promptRegistryClient.orchestrationConfig().listOrchestrationConfigs();
++var orchestractionConfigsClient = new PromptRegistryClient().orchestrationConfig();
++var configs = orchestractionConfigsClient.listOrchestrationConfigs();
 ```
 
 PromptRegistryClient:
@@ -31,8 +31,8 @@ PromptRegistryClient:
 -var promptClient = new PromptClient();
 -var templates = promptClient.listPromptTemplates();
 
-+var promptRegistryClient = new PromptRegistryClient();
-+var templates = promptRegistryClient.prompt().listPromptTemplates();
++var promptClient = new PromptRegistryClient().prompt();
++var templates = promptClient.listPromptTemplates();
 ```
 
 #### Spring AI 2.0.1 Migration Guide
