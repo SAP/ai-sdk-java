@@ -7,7 +7,6 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;

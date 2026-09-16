@@ -41,10 +41,23 @@ import lombok.val;
 import org.springframework.stereotype.Service;
 
 /**
- * Context Registry is a service for managing tabular data contexts for AI applications. It provides
- * capabilities to register data destinations (object stores and data sharing platforms), create
- * tabular artifacts from various file formats (CSV, Parquet, Delta), and configure scenarios for
- * context selection in AI-driven business solutions.
+ * <b>Design time: Context Registry</b>
+ *
+ * <p>Context Registry is a service for managing tabular data contexts for AI applications. It
+ * provides capabilities to register data destinations (object stores and data sharing platforms),
+ * create tabular artifacts from various file formats (CSV, Parquet, Delta), and configure scenarios
+ * for context selection in AI-driven business solutions.
+ *
+ * <p><b>Runtime: Tabular Orchestration</b>
+ *
+ * <p>The Tabular AI Orchestration service acts as the unified tabular inference layer for the AI
+ * Core platform, exposing a single prediction endpoint that handles request validation, context
+ * selection, and Tabular Foundation Model interface harmonization automatically. It leverages
+ * Tabular Foundation Models to generate predictions from structured enterprise data using
+ * in-context learning, eliminating the need for dataset-specific training. By abstracting the
+ * complexity of data connectivity and schema interpretation, this service allows developers to
+ * seamlessly integrate predictive AI capabilities into business processes through a standardized
+ * invocation interface.
  */
 @Service
 public class TabularService {
