@@ -13,7 +13,8 @@ import javax.annotation.Nonnull;
  * threading and exposes business-level operations (high level interface)
  *
  * <p>Note: This class and multiple its methods are marked as {@link Beta} because they represent
- * newly introduced API which has not yet been sufficiently stabilized and has significant risk of changes
+ * newly introduced API which has not yet been sufficiently stabilized and has significant risk of
+ * changes
  */
 @Beta
 public class OpenAiRealtimeClient {

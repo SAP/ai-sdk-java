@@ -5,9 +5,13 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Allows to configure turn detection (how model responds).
+/**
+ * Allows to configure turn detection (how model responds).
+ *
  * <p>Note: This class and multiple its methods are marked as {@link Beta} because they represent
- * newly introduced API which has not yet been sufficiently stabilized and has significant risk of changes */
+ * newly introduced API which has not yet been sufficiently stabilized and has significant risk of
+ * changes
+ */
 @Beta
 public final class RealtimeParamTurnDetection implements RealtimeParam {
 
