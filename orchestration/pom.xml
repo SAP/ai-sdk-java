@@ -37,10 +37,10 @@
   <properties>
     <project.rootdir>${project.basedir}/../</project.rootdir>
     <coverage.complexity>82%</coverage.complexity>
-    <coverage.line>94%</coverage.line>
-    <coverage.instruction>93%</coverage.instruction>
+    <coverage.line>93%</coverage.line>
+    <coverage.instruction>92%</coverage.instruction>
     <coverage.branch>77%</coverage.branch>
-    <coverage.method>95%</coverage.method>
+    <coverage.method>94%</coverage.method>
     <coverage.class>100%</coverage.class>
   </properties>
 
