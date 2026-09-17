@@ -138,7 +138,6 @@ public class AiCoreService {
    *
    * @param resourceGroup the resource group of the deleted deployment, usually "default".
    */
-  // @Beta
   public void reloadCachedDeployments(@Nonnull final String resourceGroup) {
     deploymentResolver.reloadDeployments(resourceGroup);
   }
