@@ -80,8 +80,8 @@ public final class OpenAiClient {
   /**
    * Creates and configures OpenAI Realtime API client
    *
-   * <p>Note: This method is marked as {@link Beta} because it represents
-   * newly introduced API which has not yet been sufficiently stabilized and has significant risk of changes
+   * <p>Note: This method is marked as {@link Beta} because it represents newly introduced API which
+   * has not yet been sufficiently stabilized and has significant risk of changes
    *
    * @return created client
    */
