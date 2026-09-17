@@ -7,7 +7,7 @@ import com.google.common.annotations.Beta;
  *
  * <p>Should be closed by application (try-with-resources) when not needed anymore
  */
-// @Beta
+@Beta
 public interface AudioInputChannel extends AutoCloseable {
 
   /**
@@ -16,7 +16,7 @@ public interface AudioInputChannel extends AutoCloseable {
    * context
    *
    * @param rawBytesChunk binary data in the depending on the use case format
-   */
+   */§§
   @Beta
   void inputAudio(byte[] rawBytesChunk);
 }

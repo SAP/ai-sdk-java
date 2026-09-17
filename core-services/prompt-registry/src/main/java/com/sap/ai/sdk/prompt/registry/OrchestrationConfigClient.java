@@ -22,7 +22,6 @@ import lombok.val;
  *
  * @since 1.15.0
  */
-// @Beta
 public class OrchestrationConfigClient extends OrchestrationConfigsApi {
 
   /**

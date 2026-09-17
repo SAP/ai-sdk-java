@@ -1,15 +1,17 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
+import com.google.common.annotations.Beta;
+
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** Allows to configure turn detection (how model responds). */
-// @Beta
+@Beta
 public final class RealtimeParamTurnDetection implements RealtimeParam {
 
   /** Model tries to recognize if/when it should respond automatically */
-  // @Beta
+  @Beta
   public static final RealtimeParamTurnDetection BY_MODEL_AUTO =
       new RealtimeParamTurnDetection("BY_MODEL_AUTO");
 
@@ -18,7 +20,7 @@ public final class RealtimeParamTurnDetection implements RealtimeParam {
    * Less convenient than the automatic option but may give lower latency in some cases (model does
    * not need to perform additional turn detection analysis).
    */
-  // @Beta
+  @Beta
   public static final RealtimeParamTurnDetection EACH_CALL_IS_A_TURN =
       new RealtimeParamTurnDetection("EACH_CALL_IS_A_TURN");
 
@@ -29,13 +31,13 @@ public final class RealtimeParamTurnDetection implements RealtimeParam {
   }
 
   @Override
-  // @Beta
+  @Beta
   public @Nonnull ParamName getParamName() {
     return ParamName.TURN_DETECTION;
   }
 
   @Override
-  // @Beta
+  @Beta
   public @Nonnull String getValueAsString() {
     return turnDetectionKind;
   }
