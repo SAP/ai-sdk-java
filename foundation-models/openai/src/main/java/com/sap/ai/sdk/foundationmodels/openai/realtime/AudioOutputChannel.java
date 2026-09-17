@@ -2,7 +2,9 @@ package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
 import com.google.common.annotations.Beta;
 
-/** Functional interface representing audio output channel (audio data consumer) */
+/** Functional interface representing audio output channel (audio data consumer)
+ * <p>Note: This class is marked as {@link Beta} because it represents
+ * newly introduced API which has not yet been sufficiently stabilized and has significant risk of changes*/
 @Beta
 public interface AudioOutputChannel {
 
