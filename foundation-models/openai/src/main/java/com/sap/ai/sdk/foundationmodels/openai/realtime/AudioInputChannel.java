@@ -16,7 +16,7 @@ public interface AudioInputChannel extends AutoCloseable {
    * context
    *
    * @param rawBytesChunk binary data in the depending on the use case format
-   */§§
+   */
   @Beta
   void inputAudio(byte[] rawBytesChunk);
 }

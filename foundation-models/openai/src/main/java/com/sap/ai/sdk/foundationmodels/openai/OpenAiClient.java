@@ -95,7 +95,6 @@ public final class OpenAiClient {
    * @param apiVersion the API version to target.
    * @return a new client.
    */
-  // @Beta
   @Nonnull
   public OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
     final var newDestination =
