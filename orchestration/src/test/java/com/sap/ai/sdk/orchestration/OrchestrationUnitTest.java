@@ -1449,58 +1449,65 @@ class OrchestrationUnitTest {
 
   @Test
   void testTemplateFromPromptRegistryByIdTenant() throws IOException {
-    stubFor(
-        post(anyUrl())
-            .willReturn(
-                aResponse()
-                    .withBodyFile("templateReferenceResponse.json")
-                    .withHeader("Content-Type", "application/json")));
+    {
+      stubFor(
+          post(anyUrl())
+              .willReturn(
+                  aResponse()
+                      .withBodyFile("templateReferenceResponse.json")
+                      .withHeader("Content-Type", "application/json")));
 
-    var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
-    var template =
-        TemplateConfig.reference()
-            .byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16")
-            .withTemplateParameters(inputParams);
-    var configWithTemplate = config.withTemplateConfig(template);
+      var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+      var configWithTemplate = config.withTemplateConfig(template);
 
-    final var response = client.chatCompletionUsingTemplateRef(configWithTemplate);
-    assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
-    assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
+      var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
+      var prompt = new OrchestrationPrompt(inputParams);
 
-    final String request = fileLoaderStr.apply("templateReferenceByIdRequest.json");
-    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+      final var response = client.chatCompletion(prompt, configWithTemplate);
+      assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
+      assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating())
+          .hasSize(2);
+
+      final String request = fileLoaderStr.apply("templateReferenceByIdRequest.json");
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
   }
 
   @Test
   void testTemplateFromPromptRegistryByIdResourceGroup() throws IOException {
-    stubFor(
-        post(anyUrl())
-            .willReturn(
-                aResponse()
-                    .withBodyFile("templateReferenceResourceGroupResponse.json")
-                    .withHeader("Content-Type", "application/json")));
+    {
+      stubFor(
+          post(anyUrl())
+              .willReturn(
+                  aResponse()
+                      .withBodyFile("templateReferenceResourceGroupResponse.json")
+                      .withHeader("Content-Type", "application/json")));
 
-    var inputParams =
-        Map.of(
-            "categories",
-            "Finance, Tech, Sports",
-            "inputExample",
-            "What's the latest news on the stock market?");
-    var template =
-        TemplateConfig.reference()
-            .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
-            .withScope(RESOURCE_GROUP)
-            .withTemplateParameters(inputParams);
-    var config =
-        new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
-    var configWithTemplate = config.withTemplateConfig(template);
+      var template =
+          TemplateConfig.reference()
+              .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
+              .withScope(RESOURCE_GROUP);
+      var config =
+          new OrchestrationModuleConfig()
+              .withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      var configWithTemplate = config.withTemplateConfig(template);
 
-    final var response = client.chatCompletionUsingTemplateRef(configWithTemplate);
-    assertThat(response.getContent()).startsWith("Finance");
-    assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
+      var inputParams =
+          Map.of(
+              "categories",
+              "Finance, Tech, Sports",
+              "inputExample",
+              "What's the latest news on the stock market?");
+      var prompt = new OrchestrationPrompt(inputParams);
 
-    final String request = fileLoaderStr.apply("templateReferenceResourceGroupByIdRequest.json");
-    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+      final var response = client.chatCompletion(prompt, configWithTemplate);
+      assertThat(response.getContent()).startsWith("Finance");
+      assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating())
+          .hasSize(2);
+
+      final String request = fileLoaderStr.apply("templateReferenceResourceGroupByIdRequest.json");
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
   }
 
   @Test
@@ -1512,16 +1519,13 @@ class OrchestrationUnitTest {
                     .withBodyFile("templateReferenceResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
-    var template =
-        TemplateConfig.reference()
-            .byScenario("test")
-            .name("test")
-            .version("0.0.1")
-            .withTemplateParameters(inputParams);
+    var template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
     var configWithTemplate = config.withTemplateConfig(template);
 
-    final var response = client.chatCompletionUsingTemplateRef(configWithTemplate);
+    var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
+    var prompt = new OrchestrationPrompt(inputParams);
+
+    final var response = client.chatCompletion(prompt, configWithTemplate);
     assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
@@ -1538,24 +1542,25 @@ class OrchestrationUnitTest {
                     .withBodyFile("templateReferenceResourceGroupResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
+    var template =
+        TemplateConfig.reference()
+            .byScenario("categorization")
+            .name("example-prompt-template")
+            .version("0.0.1")
+            .withScope(RESOURCE_GROUP);
+    var config =
+        new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+    var configWithTemplate = config.withTemplateConfig(template);
+
     var inputParams =
         Map.of(
             "categories",
             "Finance, Tech, Sports",
             "inputExample",
             "What's the latest news on the stock market?");
-    var template =
-        TemplateConfig.reference()
-            .byScenario("categorization")
-            .name("example-prompt-template")
-            .version("0.0.1")
-            .withScope(RESOURCE_GROUP)
-            .withTemplateParameters(inputParams);
-    var config =
-        new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
-    var configWithTemplate = config.withTemplateConfig(template);
+    var prompt = new OrchestrationPrompt(inputParams);
 
-    final var response = client.chatCompletionUsingTemplateRef(configWithTemplate);
+    final var response = client.chatCompletion(prompt, configWithTemplate);
     assertThat(response.getContent()).startsWith("Finance");
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
@@ -1848,27 +1853,5 @@ class OrchestrationUnitTest {
     verify(
         postRequestedFor(urlPathEqualTo("/v2/completion"))
             .withRequestBody(equalToJson(expectedTurn2Request, true, true)));
-  }
-
-  @Test
-  void testChatCompletionWithRefConfigOnly() throws IOException {
-    stubFor(
-        post(anyUrl())
-            .willReturn(
-                aResponse()
-                    .withBodyFile("templateReferenceResponse.json")
-                    .withHeader("Content-Type", "application/json")));
-
-    var ref =
-        TemplateConfig.reference()
-            .byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16")
-            .withTemplateParameters(Map.of("language", "Italian", "input", "Cloud ERP systems"));
-    var configWithRef = config.withTemplateConfig(ref);
-
-    final var response = client.chatCompletionUsingTemplateRef(configWithRef);
-    assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
-
-    final String expectedRequest = fileLoaderStr.apply("templateReferenceByIdRequest.json");
-    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
   }
 }

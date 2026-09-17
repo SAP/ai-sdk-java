@@ -205,22 +205,4 @@ class ConfigToRequestTransformerTest {
 
     assertThat(actual.getMessagesHistory()).containsExactly(userMessage.createChatMessage());
   }
-
-  @Test
-  void testToCompletionPostRequestWithRef() {
-    var ref =
-        TemplateConfig.reference()
-            .byId("test-id")
-            .withTemplateParameters(Map.of("lang", "DE"))
-            .withMessageHistory(List.of(new UserMessage("prev")));
-    var config =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(OrchestrationAiModel.GPT_4O)
-            .withTemplateConfig(ref);
-
-    var request = ConfigToRequestTransformer.fromTemplateRefToCompletionPostRequest(config);
-
-    assertThat(request.getPlaceholderValues()).containsEntry("lang", "DE");
-    assertThat(request.getMessagesHistory()).hasSize(1);
-  }
 }

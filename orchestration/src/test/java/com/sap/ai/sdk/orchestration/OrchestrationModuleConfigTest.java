@@ -375,27 +375,4 @@ class OrchestrationModuleConfigTest {
             TemplateRef.create().templateRef(TemplateRefByID.create().id("123")));
     assertThat(config.getTemplateConfig()).isInstanceOf(TemplateRef.class);
   }
-
-  @Test
-  void withTemplateConfigReturnsWrapperWithRef() {
-    var ref = TemplateConfig.reference().byId("abc");
-    OrchestrationModuleConfig withRef =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(OrchestrationAiModel.GPT_4O)
-            .withTemplateConfig(ref);
-
-    assertThat(withRef.getTemplateRef()).isSameAs(ref);
-  }
-
-  @Test
-  void templateRefCarriesHistoryAndParams() {
-    var ref =
-        TemplateConfig.reference()
-            .byId("abc")
-            .withMessageHistory(List.of(new UserMessage("hi")))
-            .withTemplateParameters(Map.of("k", "v"));
-
-    assertThat(ref.getMessagesHistory()).hasSize(1);
-    assertThat(ref.getTemplateParameters()).containsEntry("k", "v");
-  }
 }

@@ -14,6 +14,7 @@ import com.sap.ai.sdk.orchestration.model.OrchestrationConfigModules.InnerModule
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
@@ -80,6 +81,10 @@ final class ConfigToRequestTransformer {
      * In this case, the request will fail, since the templating module will try to resolve the parameter.
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
+
+    if (config instanceof TemplateRef) {
+      return config;
+    }
 
     val template = config instanceof Template t ? t : Template.create().template();
     val messages = template.getTemplate();

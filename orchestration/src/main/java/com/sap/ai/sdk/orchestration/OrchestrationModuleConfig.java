@@ -344,31 +344,6 @@ public class OrchestrationModuleConfig {
   }
 
   /**
-   * Creates a new configuration with the given template reference. The template reference is the
-   * only source of prompt input
-   *
-   * @param templateRef The template reference to use.
-   * @return A new {@link OrchestrationModuleConfig} wrapping this config.
-   * @since 1.26.0
-   */
-  @Tolerate
-  @Nonnull
-  public OrchestrationModuleConfig withTemplateConfig(
-      @Nonnull final OrchestrationTemplateReference templateRef) {
-    return new OrchestrationModuleConfig(
-        this.llmConfig,
-        this.templateConfig,
-        this.maskingConfig,
-        this.filteringConfig,
-        this.groundingConfig,
-        this.inputTranslationConfig,
-        this.outputTranslationConfig,
-        templateRef,
-        outputFilteringStreamOptions,
-        this.globalStreamOptions);
-  }
-
-  /**
    * Configure input translation using a high-level TranslationConfig.
    *
    * @param translationConfig The translation configuration
