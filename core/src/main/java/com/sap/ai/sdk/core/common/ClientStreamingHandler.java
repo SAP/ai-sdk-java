@@ -29,7 +29,6 @@ public class ClientStreamingHandler<
    * @return the current instance of {@link ClientStreamingHandler} with the changed object mapper
    */
   @Nonnull
-  // @Beta
   public ClientStreamingHandler<D, R, E> objectMapper(@Nonnull final ObjectMapper jackson) {
     super.objectMapper(jackson);
     return this;
