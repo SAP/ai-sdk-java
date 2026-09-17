@@ -15,7 +15,7 @@
 
 #### Prompt registry client Migration Guide
 
-OrchestrationConfigClient and PromptClient were replaced with unified PromptRegistryClient,
+`OrchestrationConfigClient` and `PromptClient` were replaced with unified `PromptRegistryClient`,
 
 OrchestrationConfigClient:
 ```diff
