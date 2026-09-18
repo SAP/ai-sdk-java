@@ -200,6 +200,12 @@
         <artifactId>jackson-dataformat-yaml</artifactId>
         <version>${jackson.version}</version>
       </dependency>
+      <!-- Align dependency version with upper bound -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.jr</groupId>
+        <artifactId>jackson-jr-objects</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
       <!-- conflicts resolution scope "compile" -->
       <!-- CVE-2026-CVE-2026-59313, 47892, 47893, 59283 pin spring deps >= 7.0.9 until we migrate to spring-ai 2 -->
       <dependency>
@@ -595,6 +601,7 @@
             </goals>
             <configuration>
               <rules>
+                <!-- Please ensure to build with dependencies of the highest versions among all modules -->
                 <requireUpperBoundDeps/>
               </rules>
             </configuration>
