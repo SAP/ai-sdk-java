@@ -64,7 +64,7 @@
       <!-- Temporary fix for CVE-2025-48988 -->
       <dependency>
         <groupId>org.bouncycastle</groupId>
-        <artifactId>bcpkix-jdk18on</artifactId>
+        <artifactId>bcprov-jdk18on</artifactId>
         <version>${bouncycastle.version}</version>
       </dependency>
       <!-- Pin mcp-core to align with spring-ai-client-chat transitive dependency -->
