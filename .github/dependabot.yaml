@@ -22,8 +22,6 @@ updates:
         versions: [ ">=5.0.0" ]
       - dependency-name: "com.github.victools:jsonschema-module-jackson"
         versions: [ ">=5.0.0" ]
-      - dependency-name: "org.springframework.ai:spring-ai-bom"
-        versions: [ ">=2.0.0" ]
     groups:
       production-minor-patch:
         dependency-type: "production"
