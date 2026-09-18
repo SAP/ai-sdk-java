@@ -3,7 +3,13 @@ package com.sap.ai.sdk.foundationmodels.openai.realtime;
 import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 
-/** Represents possible configuration params of realtime client */
+/**
+ * Represents possible configuration params of realtime client
+ *
+ * <p>Note: This class and multiple its methods are marked as {@link Beta} because they represent
+ * newly introduced API which has not yet been sufficiently stabilized and has significant risk of
+ * changes
+ */
 @Beta
 public interface RealtimeParam {
   /** Represents configurable options */

@@ -80,6 +80,9 @@ public final class OpenAiClient {
   /**
    * Creates and configures OpenAI Realtime API client
    *
+   * <p>Note: This method is marked as {@link Beta} because it represents newly introduced API which
+   * has not yet been sufficiently stabilized and has significant risk of changes
+   *
    * @return created client
    */
   @Beta
@@ -95,7 +98,6 @@ public final class OpenAiClient {
    * @param apiVersion the API version to target.
    * @return a new client.
    */
-  @Beta
   @Nonnull
   public OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
     final var newDestination =

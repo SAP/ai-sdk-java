@@ -21,6 +21,9 @@ public interface ContentFilter {
    * A method that produces the serializable equivalent {@link InputFilterConfig} object from data
    * encapsulated in the {@link ContentFilter} object.
    *
+   * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
+   * public signature.
+   *
    * @return the corresponding {@link InputFilterConfig} object.
    */
   @Beta
@@ -30,6 +33,9 @@ public interface ContentFilter {
   /**
    * A method that produces the serializable equivalent {@link OutputFilterConfig} object from data
    * encapsulated in the {@link ContentFilter} object.
+   *
+   * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
+   * public signature.
    *
    * @return the corresponding {@link OutputFilterConfig} object.
    */

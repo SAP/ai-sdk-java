@@ -5,7 +5,13 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Allows to configure model system prompt */
+/**
+ * Allows to configure model system prompt
+ *
+ * <p>Note: This class and multiple its methods are marked as {@link Beta} because they represent
+ * newly introduced API which has not yet been sufficiently stabilized and has significant risk of
+ * changes
+ */
 @Beta
 public final class RealtimeParamSystemPrompt implements RealtimeParam {
 
@@ -34,7 +40,6 @@ public final class RealtimeParamSystemPrompt implements RealtimeParam {
   }
 
   @Override
-  @Beta
   public boolean equals(@Nullable final Object o) {
     if (o == null || getClass() != o.getClass()) {
       return false;
@@ -44,7 +49,6 @@ public final class RealtimeParamSystemPrompt implements RealtimeParam {
   }
 
   @Override
-  @Beta
   public int hashCode() {
     return Objects.hashCode(systemPrompt);
   }
