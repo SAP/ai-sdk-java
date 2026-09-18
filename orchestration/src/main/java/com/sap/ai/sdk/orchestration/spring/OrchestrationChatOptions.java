@@ -46,6 +46,8 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   @Nonnull private OrchestrationModuleConfig config;
 
+  @Nonnull private List<OrchestrationModuleConfig> fallbackConfigs = List.of();
+
   @Nonnull private List<ToolCallback> toolCallbacks = List.of();
 
   @Nonnull private Set<String> toolNames = Set.of();
@@ -261,6 +263,13 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     public Builder maxTokens(@Nullable final Integer v) {
       paramOverrides.put(MAX_TOKENS.getName(), v);
       return this;
+    }
+
+    @Override
+    @Nonnull
+    public Builder fallbackConfigs(@Nullable final Object configs) {
+        paramOverrides.put(FALLBACK_CONFIGS.getName(), configs);
+        return this;
     }
 
     @Override
