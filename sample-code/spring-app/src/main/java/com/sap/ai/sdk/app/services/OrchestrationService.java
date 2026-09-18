@@ -46,7 +46,8 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.orchestration.model.Template;
-import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
+import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
+import com.sap.ai.sdk.prompt.registry.client.OrchestrationConfigsApi;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
 import com.sap.ai.sdk.prompt.registry.model.PartialModuleConfigs;
@@ -888,7 +889,8 @@ public class OrchestrationService {
   }
 
   private void ensureOrchestrationConfigExists(final String scenario, final String name) {
-    final OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
+    final OrchestrationConfigsApi orchConfigClient =
+        new PromptRegistryClient().orchestrationConfig();
     if (!orchConfigExists("test-config-for-OrchestrationTest", orchConfigClient)) {
       final OrchestrationConfigPostRequest postRequest =
           OrchestrationConfigPostRequest.create()
@@ -901,8 +903,8 @@ public class OrchestrationService {
   }
 
   private boolean orchConfigExists(
-      final String configName, final OrchestrationConfigClient orchConfigClient) {
-    return orchConfigClient.listOrchestrationConfigs().getResources().stream()
+      final String configName, final OrchestrationConfigsApi orchestrationConfigsClient) {
+    return orchestrationConfigsClient.listOrchestrationConfigs().getResources().stream()
         .anyMatch(resp -> resp.getName().equals(configName));
   }
 
@@ -975,7 +977,7 @@ public class OrchestrationService {
   public Stream<OrchestrationChatCompletionDelta> streamDeltasWithReferenceById() {
     // get a valid id
     ensureOrchestrationConfigExists("sdk-test-paraphrase", "create-3-paraphrases-of-sentence");
-    val orchConfigClient = new OrchestrationConfigClient();
+    val orchConfigClient = new PromptRegistryClient().orchestrationConfig();
     val id =
         orchConfigClient.listOrchestrationConfigs().getResources().stream()
             .filter(r -> r.getName().equals("test-config-for-OrchestrationTest"))

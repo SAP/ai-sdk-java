@@ -3,8 +3,9 @@ package com.sap.ai.sdk.app.controllers;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiClient;
 import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import com.sap.ai.sdk.foundationmodels.openai.spring.OpenAiChatModel;
-import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
-import com.sap.ai.sdk.prompt.registry.PromptClient;
+import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
+import com.sap.ai.sdk.prompt.registry.client.OrchestrationConfigsApi;
+import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigListResponse;
@@ -49,8 +50,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/prompt-registry")
 class PromptRegistryController {
   static final String NAME = "java-e2e-test";
-  private static final PromptClient promptClient = new PromptClient();
-  private static final OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
+  private static final OrchestrationConfigsApi orchConfigClient =
+      new PromptRegistryClient().orchestrationConfig();
+  private static final PromptTemplatesApi promptClient = new PromptRegistryClient().prompt();
 
   @GetMapping("/listTemplates")
   PromptTemplateListResponse listTemplates() {
@@ -135,16 +137,15 @@ class PromptRegistryController {
     val cl = ChatClient.builder(openAiClient).defaultAdvisors(advisor).build();
 
     val promptResponse =
-        new PromptClient()
-            .parsePromptTemplateByNameVersion(
-                "categorization",
-                "0.0.1",
-                "java-e2e-test",
-                "default",
-                null,
-                false,
-                PromptTemplateSubstitutionRequest.create()
-                    .inputParams(Map.of("inputExample", "I love football")));
+        promptClient.parsePromptTemplateByNameVersion(
+            "categorization",
+            "0.0.1",
+            "java-e2e-test",
+            "default",
+            null,
+            false,
+            PromptTemplateSubstitutionRequest.create()
+                .inputParams(Map.of("inputExample", "I love football")));
 
     final List<Message> messages = SpringAiConverter.promptTemplateToMessages(promptResponse);
     val prompt = new Prompt(messages);

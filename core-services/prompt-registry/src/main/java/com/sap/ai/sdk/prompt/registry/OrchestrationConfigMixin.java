@@ -4,9 +4,7 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
-import com.sap.ai.sdk.prompt.registry.client.OrchestrationConfigsApi;
 import com.sap.ai.sdk.prompt.registry.model.AzureContentSafetyInputFilterConfig;
 import com.sap.ai.sdk.prompt.registry.model.AzureContentSafetyOutputFilterConfig;
 import com.sap.ai.sdk.prompt.registry.model.InputFilterConfig;
@@ -18,32 +16,10 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.val;
 
-/**
- * Client for managing Orchestration Configurations in the Prompt Registry service.
- *
- * @since 1.15.0
- */
-@Beta
-public class OrchestrationConfigClient extends OrchestrationConfigsApi {
-
-  /**
-   * Instantiates a client to manage Orchestration Configurations on the Prompt Registry service.
-   */
-  public OrchestrationConfigClient() {
-    this(new AiCoreService());
-  }
-
-  /**
-   * Instantiates a client to manage Orchestration Configurations on the Prompt Registry service.
-   *
-   * @param aiCoreService The configured connectivity instance to AI Core
-   */
-  public OrchestrationConfigClient(@Nonnull final AiCoreService aiCoreService) {
-    super(addMixin(aiCoreService));
-  }
+class OrchestrationConfigMixin {
 
   @Nonnull
-  private static ApiClient addMixin(@Nonnull final AiCoreService service) {
+  static ApiClient addMixin(@Nonnull final AiCoreService service) {
     final var destination = service.getBaseDestination();
 
     val objectMapper =
@@ -54,8 +30,8 @@ public class OrchestrationConfigClient extends OrchestrationConfigsApi {
     return ApiClient.create(destination).withObjectMapper(objectMapper);
   }
 
-  @NoArgsConstructor(access = AccessLevel.PRIVATE)
-  private static class JacksonMixin {
+  @NoArgsConstructor(access = AccessLevel.PACKAGE)
+  static class JacksonMixin {
 
     @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
