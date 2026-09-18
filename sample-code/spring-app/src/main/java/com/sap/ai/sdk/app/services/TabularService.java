@@ -1,0 +1,292 @@
+package com.sap.ai.sdk.app.services;
+
+import static com.sap.ai.sdk.context.registry.generated.model.CreateTARequest.TypeEnum.PARQUET;
+import static com.sap.ai.sdk.context.registry.generated.model.DefinitionType.DOCUMENT;
+import static com.sap.ai.sdk.context.registry.generated.model.HDLDataDestinationCreateRequest.TypeEnum.HDL;
+import static com.sap.ai.sdk.tabular.orchestration.generated.model.ContextSelectionStrategyEnum.RANDOM;
+import static com.sap.ai.sdk.tabular.orchestration.generated.model.TaskTypeEnum.CLASSIFICATION;
+
+import com.sap.ai.sdk.context.registry.ContextRegistryClient;
+import com.sap.ai.sdk.context.registry.generated.client.DataDestinationsApi;
+import com.sap.ai.sdk.context.registry.generated.client.ScenarioConfigurationManagerApi;
+import com.sap.ai.sdk.context.registry.generated.client.TabularArtifactsApi;
+import com.sap.ai.sdk.context.registry.generated.model.AsyncCreateDataDestinationResponse;
+import com.sap.ai.sdk.context.registry.generated.model.ContextSelectionStrategy;
+import com.sap.ai.sdk.context.registry.generated.model.ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response;
+import com.sap.ai.sdk.context.registry.generated.model.CreateScenarioConfiguration;
+import com.sap.ai.sdk.context.registry.generated.model.CreateTARequest;
+import com.sap.ai.sdk.context.registry.generated.model.CreateTARequestCsnMetadata;
+import com.sap.ai.sdk.context.registry.generated.model.DocumentDefinition;
+import com.sap.ai.sdk.context.registry.generated.model.GetDataDestinations;
+import com.sap.ai.sdk.context.registry.generated.model.GetScenarioConfigurations;
+import com.sap.ai.sdk.context.registry.generated.model.HDLConnectionConfig;
+import com.sap.ai.sdk.context.registry.generated.model.HDLDataDestinationCreateRequest;
+import com.sap.ai.sdk.context.registry.generated.model.ScenarioConfigurationNameObject;
+import com.sap.ai.sdk.context.registry.generated.model.TabularArtifactConfig;
+import com.sap.ai.sdk.context.registry.generated.model.TabularArtifactListResponse;
+import com.sap.ai.sdk.tabular.orchestration.TabularOrchestrationClient;
+import com.sap.ai.sdk.tabular.orchestration.generated.client.PredictApi;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.ContextSelectionConfig;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictRequest;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictResponse;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictionConfig;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.StrategyConfigs;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.TFMEnum;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.TargetColumn;
+import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Nonnull;
+import lombok.val;
+import org.springframework.stereotype.Service;
+
+/**
+ * <b>Design time: Context Registry</b>
+ *
+ * <p>Context Registry is a service for managing tabular data contexts for AI applications. It
+ * provides capabilities to register data destinations (object stores and data sharing platforms),
+ * create tabular artifacts from various file formats (CSV, Parquet, Delta), and configure scenarios
+ * for context selection in AI-driven business solutions.
+ *
+ * <p><b>Runtime: Tabular Orchestration</b>
+ *
+ * <p>The Tabular AI Orchestration service acts as the unified tabular inference layer for the AI
+ * Core platform, exposing a single prediction endpoint that handles request validation, context
+ * selection, and Tabular Foundation Model interface harmonization automatically. It leverages
+ * Tabular Foundation Models to generate predictions from structured enterprise data using
+ * in-context learning, eliminating the need for dataset-specific training. By abstracting the
+ * complexity of data connectivity and schema interpretation, this service allows developers to
+ * seamlessly integrate predictive AI capabilities into business processes through a standardized
+ * invocation interface.
+ */
+@Service
+public class TabularService {
+  static final DataDestinationsApi DATA_DESTINATIONS_CLIENT =
+      new ContextRegistryClient().dataDestinations();
+  static final TabularArtifactsApi TABULAR_ARTIFACTS_CLIENT =
+      new ContextRegistryClient().tabularArtifacts();
+  static final ScenarioConfigurationManagerApi SCENARIO_CONFIG_CLIENT =
+      new ContextRegistryClient().scenarioConfiguration();
+  static final PredictApi PREDICT_CLIENT = new TabularOrchestrationClient().predict();
+
+  /** The test resource group for all tabular operations. */
+  public static final String resourceGroup = "ai-sdk-java-e2e";
+
+  /** The name of the data destination for the tabular artifact. */
+  public static final String dataDestinationName = "ai-sdk-hdl-destination";
+
+  /** The name of the tabular artifact for product prediction. */
+  public static final String artifactName = "product-artifact-lowercase";
+
+  /** The path to the Parquet file in the data destination for the tabular artifact. */
+  public static final String artifactPath = "/data/product_data_hana_lowercase.parquet";
+
+  /** The name of the scenario configuration for product prediction. */
+  public static final String scenarioConfigName = "product-prediction-scenario-lowercase";
+
+  /**
+   * Manage data destinations (S3 Bucket, Google Cloud Storage, Hana Data lake) for unified data
+   * source integration.
+   */
+  public static class DataDestinationService {
+
+    /**
+     * Get all data destinations for the default resource group.
+     *
+     * @return The list of data destinations.
+     */
+    @Nonnull
+    public GetDataDestinations getAllDataDestinations() {
+      return DATA_DESTINATIONS_CLIENT.getAllDataDestinations(resourceGroup);
+    }
+
+    /**
+     * Create a new data destination for Hana Data Lake.
+     *
+     * @param dataDestinationName The name of the data destination to create.
+     * @return The response of the data destination creation request.
+     */
+    @Nonnull
+    public AsyncCreateDataDestinationResponse createHanaDataLakeDataDestination(
+        @Nonnull final String dataDestinationName) {
+      val request =
+          HDLDataDestinationCreateRequest.create()
+              .type(HDL)
+              .config(
+                  HDLConnectionConfig.create()
+                      .host(
+                          "4d37b3ed-2663-4a2d-b04a-10dbe6577e02.files.hdl.prod-eu12.hanacloud.ondemand.com"))
+              .description("Hana Data lake data destination for AI Core SDK");
+      return DATA_DESTINATIONS_CLIENT.createUpdateDataDestination(
+          resourceGroup, dataDestinationName, request);
+    }
+
+    /**
+     * Delete the data destination for Hana Data Lake.
+     *
+     * @param dataDestinationName The name of the data destination to delete.
+     * @return The response of the data destination deletion request.
+     */
+    @Nonnull
+    public OpenApiResponse deleteHanaDataLakeDataDestination(
+        @Nonnull final String dataDestinationName) {
+      return DATA_DESTINATIONS_CLIENT.deleteDataDestinationByName(
+          resourceGroup, dataDestinationName);
+    }
+  }
+
+  /** Manage tabular artifacts for structured files from data-destinations. */
+  public static class ArtifactService {
+
+    /**
+     * Get all tabular artifacts for the default resource group.
+     *
+     * @return The list of tabular artifacts.
+     */
+    @Nonnull
+    public TabularArtifactListResponse getAllArtifacts() {
+      return TABULAR_ARTIFACTS_CLIENT.getAllTabularArtifacts(resourceGroup);
+    }
+
+    /**
+     * Create a new tabular artifact from a Parquet file in the specified data destination.
+     *
+     * @param artifactName The name of the tabular artifact to create.
+     * @return The response of the tabular artifact creation request.
+     */
+    @Nonnull
+    public ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response createArtifact(
+        @Nonnull final String artifactName) {
+      val productEntityElements =
+          Map.of(
+              "product", Map.of("type", "cds.String"),
+              "price", Map.of("type", "cds.Double"),
+              "date", Map.of("type", "cds.String"),
+              "id", Map.of("type", "cds.String"),
+              "salesgroup", Map.of("type", "cds.String"));
+      val definitions =
+          Map.of(
+              "definitions",
+              Map.of("ProductEntity", Map.of("kind", "entity", "elements", productEntityElements)));
+      val request =
+          CreateTARequest.create()
+              .dataDestinationName(dataDestinationName)
+              .type(PARQUET)
+              .path(artifactPath)
+              .csnMetadata(
+                  CreateTARequestCsnMetadata.create()
+                      .definition(
+                          DocumentDefinition.create()
+                              .definitionType(DOCUMENT)
+                              .document(definitions))
+                      .entityName("ProductEntity")
+                      .selectedColumns(productEntityElements.keySet()));
+      return TABULAR_ARTIFACTS_CLIENT.createTabularArtifact(resourceGroup, artifactName, request);
+    }
+
+    /**
+     * Delete the tabular artifact.
+     *
+     * @param artifactName The name of the tabular artifact to delete.
+     * @return The response of the tabular artifact deletion request.
+     */
+    @Nonnull
+    public OpenApiResponse deleteArtifact(@Nonnull final String artifactName) {
+      return TABULAR_ARTIFACTS_CLIENT.deleteTabularArtifact(resourceGroup, artifactName);
+    }
+  }
+
+  /** Manage scenario configurations for context selection. */
+  public static class ScenarioConfigurationService {
+
+    /**
+     * Get all scenario configurations for the default resource group.
+     *
+     * @return The list of scenario configurations.
+     */
+    @Nonnull
+    public GetScenarioConfigurations getAllScenarioConfigurations() {
+      return SCENARIO_CONFIG_CLIENT.getAllScenarioConfigurations(resourceGroup);
+    }
+
+    /**
+     * Create a new scenario configuration for product prediction using the specified tabular
+     * artifact.
+     *
+     * @param scenarioConfigName The name of the scenario configuration to create.
+     * @return The response of the scenario configuration creation request.
+     */
+    @Nonnull
+    public ScenarioConfigurationNameObject createScenarioConfiguration(
+        @Nonnull final String scenarioConfigName) {
+      val request =
+          CreateScenarioConfiguration.create()
+              .tabularArtifacts(TabularArtifactConfig.create().name(artifactName))
+              .description("Sample scenario configuration for product prediction")
+              .contextSelectionStrategy(ContextSelectionStrategy.RANDOM);
+      return SCENARIO_CONFIG_CLIENT.createScenarioConfiguration(
+          resourceGroup, scenarioConfigName, request);
+    }
+
+    /**
+     * Delete the scenario configuration.
+     *
+     * @param scenarioConfigName The name of the scenario configuration to delete.
+     * @return The response of the scenario configuration deletion request.
+     */
+    @Nonnull
+    public OpenApiResponse deleteScenarioConfiguration(@Nonnull final String scenarioConfigName) {
+      return SCENARIO_CONFIG_CLIENT.deleteScenarioConfigurationByName(
+          resourceGroup, scenarioConfigName);
+    }
+  }
+
+  /** Make predictions for tabular data using a deployed Tabular Foundation Model. */
+  public static class PredictionService {
+
+    /**
+     * Run a prediction using a running tabular-ai-orchestration deployment.
+     *
+     * @return The prediction response.
+     */
+    @Nonnull
+    public PredictResponse predict() {
+      val request =
+          PredictRequest.create()
+              .modelName(TFMEnum._1_5)
+              .scenarioConfigName(scenarioConfigName)
+              .predictionConfig(
+                  PredictionConfig.create()
+                      .targetColumns(
+                          TargetColumn.create().name("salesgroup").taskType(CLASSIFICATION)))
+              .contextSelectionConfig(
+                  ContextSelectionConfig.create()
+                      .numRows(3)
+                      .strategy(RANDOM)
+                      .strategyConfigs(
+                          StrategyConfigs.create().indexColumn("id").deterministic(true)))
+              .rows(
+                  List.of(
+                      Map.of(
+                          "product", "Desktop Computer",
+                          "price", 921.5,
+                          "date", "2024-12-02",
+                          "id", "42",
+                          "salesgroup", "[PREDICT]"),
+                      Map.of(
+                          "product", "Macbook",
+                          "price", 1220.99,
+                          "date", "2026-01-31",
+                          "id", "99",
+                          "salesgroup", "[PREDICT]"),
+                      Map.of(
+                          "product", "Office Desk",
+                          "price", 750.5,
+                          "date", "2024-12-05",
+                          "id", "689",
+                          "salesgroup", "[PREDICT]")))
+              .modelConfig(Map.of());
+      return PREDICT_CLIENT.predict(request);
+    }
+  }
+}
