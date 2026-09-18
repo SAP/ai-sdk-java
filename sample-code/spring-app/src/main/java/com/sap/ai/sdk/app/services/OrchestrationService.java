@@ -696,13 +696,14 @@ public class OrchestrationService {
       @Nonnull final String topic) {
     final var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
 
-    val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+    val inputParams = Map.of("language", "Italian", "input", topic);
+    val template =
+        TemplateConfig.reference()
+            .byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16")
+            .withTemplateParameters(inputParams);
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
 
-    val inputParams = Map.of("language", "Italian", "input", topic);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletionUsingTemplateRef(configWithTemplate);
   }
 
   /**
@@ -721,16 +722,15 @@ public class OrchestrationService {
     final var clientWithResourceGroup =
         client.withResourceGroup("ai-sdk-java-e2e", "orchestration");
 
+    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
     val template =
         TemplateConfig.reference()
             .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
-            .withScope(RESOURCE_GROUP);
+            .withScope(RESOURCE_GROUP)
+            .withTemplateParameters(inputParams);
     val configWithTemplate = config.withTemplateConfig(template);
 
-    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
+    return clientWithResourceGroup.chatCompletionUsingTemplateRef(configWithTemplate);
   }
 
   /**
@@ -745,13 +745,16 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenarioTenant(
       @Nonnull final String topic) {
-    val template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
+    val inputParams = Map.of("language", "Italian", "input", topic);
+    val template =
+        TemplateConfig.reference()
+            .byScenario("test")
+            .name("test")
+            .version("0.0.1")
+            .withTemplateParameters(inputParams);
     val configWithTemplate = config.withTemplateConfig(template);
 
-    val inputParams = Map.of("language", "Italian", "input", topic);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletionUsingTemplateRef(configWithTemplate);
   }
 
   /**
@@ -770,18 +773,17 @@ public class OrchestrationService {
     final var clientWithResourceGroup =
         client.withResourceGroup("ai-sdk-java-e2e", "orchestration");
 
+    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
     val template =
         TemplateConfig.reference()
             .byScenario("categorization")
             .name("example-prompt-template")
             .version("0.0.1")
-            .withScope(RESOURCE_GROUP);
+            .withScope(RESOURCE_GROUP)
+            .withTemplateParameters(inputParams);
     val configWithTemplate = config.withTemplateConfig(template);
 
-    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
+    return clientWithResourceGroup.chatCompletionUsingTemplateRef(configWithTemplate);
   }
 
   /**

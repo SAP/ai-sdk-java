@@ -193,6 +193,24 @@ public class OrchestrationClient {
   }
 
   /**
+   * Generate a completion using a module configuration containing a template reference Per-request
+   * history and parameters must be set on the template reference via {@link
+   * OrchestrationTemplateReference#withMessageHistory} and {@link
+   * OrchestrationTemplateReference#withTemplateParameters}.
+   *
+   * @param config A module configuration wrapping an {@link OrchestrationTemplateReference}.
+   * @return The completion output.
+   * @since 1.26.0
+   */
+  @Nonnull
+  public OrchestrationChatResponse chatCompletionUsingTemplateRef(
+      @Nonnull final OrchestrationModuleConfig config) {
+    val request = ConfigToRequestTransformer.fromTemplateRefToCompletionPostRequest(config);
+    val response = executeRequest(request);
+    return new OrchestrationChatResponse(response);
+  }
+
+  /**
    * Perform a request to the orchestration service using a module configuration provided as JSON
    * string. This can be useful when building a configuration in the AI Launchpad UI and exporting
    * it as JSON. Furthermore, this allows for using features that are not yet supported natively by
