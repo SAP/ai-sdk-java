@@ -25,7 +25,12 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** LlamaGuard38bFilterConfig */
+/**
+ * Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.
+ *
+ * @deprecated
+ */
+@Deprecated
 // CHECKSTYLE:OFF
 public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilterConfig
 // CHECKSTYLE:ON
@@ -143,7 +148,9 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
    * Get config
    *
    * @return config The config of this {@link LlamaGuard38bFilterConfig} instance.
+   * @deprecated
    */
+  @Deprecated
   @Nonnull
   public LlamaGuard38b getConfig() {
     return config;
