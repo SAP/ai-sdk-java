@@ -3,9 +3,11 @@ package com.sap.ai.sdk.prompt.registry.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigGetResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigHistoryDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigListResponse;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigScenarioDeleteResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
@@ -234,6 +236,209 @@ public class OrchestrationConfigsApi extends BaseApi {
   public OrchestrationConfigDeleteResponse deleteOrchestrationConfig(
       @Nonnull final UUID orchestrationConfigId) throws OpenApiRequestException {
     return deleteOrchestrationConfig(orchestrationConfigId, null);
+  }
+
+  /**
+   * Delete all non-current versions (history) for the given orchestration config
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario (required) The value for the parameter scenario
+   * @param version (required) The value for the parameter version
+   * @param name (required) The value for the parameter name
+   * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @return OrchestrationConfigHistoryDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OrchestrationConfigHistoryDeleteResponse deleteOrchestrationConfigHistory(
+      @Nonnull final String scenario,
+      @Nonnull final String version,
+      @Nonnull final String name,
+      @Nullable final String aiResourceGroup)
+      throws OpenApiRequestException {
+
+    // verify the required parameter 'scenario' is set
+    if (scenario == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'scenario' when calling deleteOrchestrationConfigHistory")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'version' is set
+    if (version == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'version' when calling deleteOrchestrationConfigHistory")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'name' is set
+    if (name == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'name' when calling deleteOrchestrationConfigHistory")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath =
+        "/registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/history"
+            .replaceAll(
+                "\\{" + "scenario" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(scenario)))
+            .replaceAll(
+                "\\{" + "version" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(version)))
+            .replaceAll(
+                "\\{" + "name" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(name)));
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<OrchestrationConfigHistoryDeleteResponse> localVarReturnType =
+        new TypeReference<OrchestrationConfigHistoryDeleteResponse>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "DELETE",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarReturnType);
+  }
+
+  /**
+   * Delete all non-current versions (history) for the given orchestration config
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario The value for the parameter scenario
+   * @param version The value for the parameter version
+   * @param name The value for the parameter name
+   * @return OrchestrationConfigHistoryDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OrchestrationConfigHistoryDeleteResponse deleteOrchestrationConfigHistory(
+      @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
+      throws OpenApiRequestException {
+    return deleteOrchestrationConfigHistory(scenario, version, name, null);
+  }
+
+  /**
+   * Delete all imperative orchestration configs in the given scenario.
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario (required) The value for the parameter scenario
+   * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @return OrchestrationConfigScenarioDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OrchestrationConfigScenarioDeleteResponse deleteOrchestrationConfigsByScenario(
+      @Nonnull final String scenario, @Nullable final String aiResourceGroup)
+      throws OpenApiRequestException {
+
+    // verify the required parameter 'scenario' is set
+    if (scenario == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'scenario' when calling deleteOrchestrationConfigsByScenario")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath =
+        "/registry/v2/scenarios/{scenario}/orchestrationConfigs"
+            .replaceAll(
+                "\\{" + "scenario" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(scenario)));
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<OrchestrationConfigScenarioDeleteResponse> localVarReturnType =
+        new TypeReference<OrchestrationConfigScenarioDeleteResponse>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "DELETE",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarReturnType);
+  }
+
+  /**
+   * Delete all imperative orchestration configs in the given scenario.
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario The value for the parameter scenario
+   * @return OrchestrationConfigScenarioDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OrchestrationConfigScenarioDeleteResponse deleteOrchestrationConfigsByScenario(
+      @Nonnull final String scenario) throws OpenApiRequestException {
+    return deleteOrchestrationConfigsByScenario(scenario, null);
   }
 
   /**
