@@ -23,12 +23,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/**
- * Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.
- *
- * @deprecated
- */
-@Deprecated
+/** Filter configuration for Llama Guard 3 8B */
 // CHECKSTYLE:OFF
 public class LlamaGuard38b
 // CHECKSTYLE:ON
