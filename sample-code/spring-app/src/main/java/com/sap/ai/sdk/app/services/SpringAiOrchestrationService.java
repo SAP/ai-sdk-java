@@ -267,8 +267,11 @@ public class SpringAiOrchestrationService {
         new OrchestrationModuleConfig()
             .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
     val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_41);
-    val options = new OrchestrationChatOptions(brokenConfig);
-    options.setFallbackConfigs(List.of(workingConfig));
+    val options =
+        new OrchestrationChatOptions(brokenConfig)
+            .mutate()
+            .fallbackConfigs(List.of(workingConfig))
+            .build();
     val prompt = new Prompt("Why is 'Hello World' so famous?", options);
     return client.call(prompt);
   }

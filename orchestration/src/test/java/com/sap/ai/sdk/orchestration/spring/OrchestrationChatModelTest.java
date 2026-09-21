@@ -255,8 +255,11 @@ class OrchestrationChatModelTest {
             .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
     val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
 
-    val options = new OrchestrationChatOptions(brokenConfig);
-    options.setFallbackConfigs(List.of(workingConfig));
+    val options =
+        new OrchestrationChatOptions(brokenConfig)
+            .mutate()
+            .fallbackConfigs(List.of(workingConfig))
+            .build();
 
     val result = client.call(new Prompt("Hello World! Why is this phrase so famous?", options));
 
@@ -299,8 +302,11 @@ class OrchestrationChatModelTest {
               .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
       val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
 
-      val options = new OrchestrationChatOptions(brokenConfig);
-      options.setFallbackConfigs(List.of(workingConfig));
+      val options =
+          new OrchestrationChatOptions(brokenConfig)
+              .mutate()
+              .fallbackConfigs(List.of(workingConfig))
+              .build();
 
       Flux<ChatResponse> flux =
           client.stream(new Prompt("Hello World! Why is this phrase so famous?", options));

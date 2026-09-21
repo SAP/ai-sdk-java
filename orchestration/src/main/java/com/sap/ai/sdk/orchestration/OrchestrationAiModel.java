@@ -2,6 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -591,6 +592,9 @@ public class OrchestrationAiModel {
 
     /** The reasoning effort for reasoning-capable models. */
     Parameter<String> REASONING_EFFORT = () -> "reasoning_effort";
+
+    /** Lower priority configs if main ones do not work */
+    Parameter<List<OrchestrationModuleConfig>> FALLBACK_CONFIGS = () -> "fallback_configs";
 
     /**
      * The name of the parameter.

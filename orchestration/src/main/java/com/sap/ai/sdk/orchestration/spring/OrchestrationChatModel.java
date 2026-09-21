@@ -79,12 +79,8 @@ public class OrchestrationChatModel implements ChatModel {
           new OrchestrationSpringChatResponse(
               client.chatCompletion(
                   orchestrationPrompt,
-                  options.getConfig(),
+                  options.getConfigWithCallbacks(),
                   options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new)));
-
-      if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
-          && response.hasToolCalls()) {
-              client.chatCompletion(orchestrationPrompt, options.getConfigWithCallbacks()));
 
       return response;
     }

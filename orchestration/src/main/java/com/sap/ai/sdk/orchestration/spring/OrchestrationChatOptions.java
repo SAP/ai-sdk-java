@@ -181,6 +181,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Nullable private String modelName;
     @Nonnull private final Map<String, Object> paramOverrides = new LinkedHashMap<>();
     @Nonnull private OrchestrationModuleConfig config;
+    @Nullable private List<OrchestrationModuleConfig> fallbackConfigs;
 
     private Builder(@Nonnull final OrchestrationChatOptions source) {
       this.source = source;
@@ -188,6 +189,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
       this.toolNames = source.getToolNames();
       this.toolContext = source.getToolContext();
       this.config = source.getConfig();
+      this.fallbackConfigs = source.getFallbackConfigs();
     }
 
     @Override
@@ -265,11 +267,16 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
       return this;
     }
 
-    @Override
+    /**
+     * Sets fallback configs to be used if main config is non-functional
+     *
+     * @param configs prioritized list of fallback configs
+     * @return this builder
+     */
     @Nonnull
-    public Builder fallbackConfigs(@Nullable final Object configs) {
-        paramOverrides.put(FALLBACK_CONFIGS.getName(), configs);
-        return this;
+    public Builder fallbackConfigs(@Nullable final List<OrchestrationModuleConfig> configs) {
+      this.fallbackConfigs = configs;
+      return this;
     }
 
     @Override
@@ -347,6 +354,9 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
       result.toolCallbacks = toolCallbacks;
       result.toolContext = toolContext;
       result.toolNames = toolNames;
+      if (fallbackConfigs != null) {
+        result.fallbackConfigs = fallbackConfigs;
+      }
       return result;
     }
   }
