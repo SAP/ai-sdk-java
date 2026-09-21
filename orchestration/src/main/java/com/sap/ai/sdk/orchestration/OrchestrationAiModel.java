@@ -593,9 +593,6 @@ public class OrchestrationAiModel {
     /** The reasoning effort for reasoning-capable models. */
     Parameter<String> REASONING_EFFORT = () -> "reasoning_effort";
 
-    /** Lower priority configs if main ones do not work */
-    Parameter<List<OrchestrationModuleConfig>> FALLBACK_CONFIGS = () -> "fallback_configs";
-
     /**
      * The name of the parameter.
      *
