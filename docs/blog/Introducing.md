@@ -65,7 +65,7 @@ The Orchestration Service streamlines AI interactions while ensuring adherence t
 
 ```java
 var client = new OrchestrationClient();
-var config = new OrchestrationModuleConfig().withLlmConfig(OrchestrationAiModel.GPT_4O);
+var config = new OrchestrationModuleConfig(OrchestrationAiModel.GPT_4O);
 var prompt = new OrchestrationPrompt("Hello world! Why is this phrase so famous?");
 var result = client.chatCompletion(prompt, config);
 

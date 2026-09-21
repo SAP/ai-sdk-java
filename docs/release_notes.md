@@ -100,6 +100,16 @@ Use the builder to set per-request options such as tool callbacks:
 
 If you use MCP clients manually in code (instantiating `SyncMcpToolCallbackProvider` directly), no change is needed — `spring-ai-mcp` already provides those classes.
 
+### Orchestration
+
+- The model name is now required when creating a new `OrchestrationModuleConfig`
+
+```diff
+-new OrchestrationModuleConfig().withLlmConfig(GPT_5);
+
++new OrchestrationModuleConfig(GPT_5);
+```
+
 ### ✨ New Functionality
 
 - [Orchestration] Added `GEMINI_3_8_FLASH` and `GPT_51` to model list in `OrchestrationAiModel`.

@@ -68,8 +68,7 @@ class OrchestrationChatModelTest {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = new OrchestrationChatModel(new OrchestrationClient(destination));
-    defaultOptions =
-        new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(GPT_4O));
+    defaultOptions = new OrchestrationChatOptions(new OrchestrationModuleConfig(GPT_4O));
     client.setDefaultOptions(defaultOptions);
     prompt = new Prompt("Hello World! Why is this phrase so famous?", defaultOptions);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
@@ -103,19 +102,6 @@ class OrchestrationChatModelTest {
     assertThatThrownBy(() -> client.stream(new Prompt("test")))
         .isExactlyInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Please add OrchestrationChatOptions to the Prompt");
-  }
-
-  @Test
-  void testThrowsOnMissingLlmConfig() {
-    OrchestrationChatOptions emptyConfig =
-        new OrchestrationChatOptions(new OrchestrationModuleConfig());
-
-    assertThatThrownBy(() -> client.call(new Prompt("test", emptyConfig)))
-        .isExactlyInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("LLM config is required");
-    assertThatThrownBy(() -> client.stream(new Prompt("test", emptyConfig)))
-        .isExactlyInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("LLM config is required");
   }
 
   @Test
@@ -251,9 +237,9 @@ class OrchestrationChatModelTest {
                     .withHeader("Content-Type", "application/json")));
 
     val brokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+
+    val workingConfig = new OrchestrationModuleConfig(GPT_4O);
 
     val options =
         new OrchestrationChatOptions(brokenConfig)
@@ -298,9 +284,9 @@ class OrchestrationChatModelTest {
       doReturn(mockResponse).when(httpClient).executeOpen(any(), requestCaptor.capture(), any());
 
       val brokenConfig =
-          new OrchestrationModuleConfig()
-              .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-      val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+          new OrchestrationModuleConfig(
+              new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+      val workingConfig = new OrchestrationModuleConfig(GPT_4O);
 
       val options =
           new OrchestrationChatOptions(brokenConfig)

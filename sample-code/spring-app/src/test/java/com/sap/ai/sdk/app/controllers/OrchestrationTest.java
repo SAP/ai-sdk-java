@@ -69,7 +69,7 @@ class OrchestrationTest {
 
   private final OrchestrationClient client = new OrchestrationClient();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
   OrchestrationService service;
 
   @BeforeEach
@@ -114,7 +114,7 @@ class OrchestrationTest {
             new UserMessage(PROMPT_FIXTURE, new CacheControl("5m")),
             new UserMessage(
                 "Does this license permit free of charge commercial use of the library licensed under it?"));
-    val cfgCacheSupportingModel = new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_6_SONNET);
+    val cfgCacheSupportingModel = new OrchestrationModuleConfig(CLAUDE_4_6_SONNET);
     val res = new OrchestrationClient().chatCompletion(prompt, cfgCacheSupportingModel);
 
     val readFromCacheOrJustCached =
@@ -132,7 +132,7 @@ class OrchestrationTest {
             new SystemMessage(PROMPT_FIXTURE, new CacheControl("5m")),
             new UserMessage(
                 "Does this license permit free of charge commercial use of the library licensed under it?"));
-    val cfgCacheSupportingModel = new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_6_SONNET);
+    val cfgCacheSupportingModel = new OrchestrationModuleConfig(CLAUDE_4_6_SONNET);
     val res = new OrchestrationClient().chatCompletion(prompt, cfgCacheSupportingModel);
 
     val readFromCacheOrJustCached =
@@ -152,7 +152,7 @@ class OrchestrationTest {
                 new CacheControl("5m")),
             new UserMessage(
                 "Will we see advanced home robots like cooking humanoids in foreseeable future?"));
-    val cfgCacheSupportingModel = new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_6_SONNET);
+    val cfgCacheSupportingModel = new OrchestrationModuleConfig(CLAUDE_4_6_SONNET);
     val res = new OrchestrationClient().chatCompletion(prompt, cfgCacheSupportingModel);
 
     val readFromCacheOrJustCached =
@@ -169,7 +169,7 @@ class OrchestrationTest {
             new UserMessage(PROMPT_FIXTURE, new CacheControl("0s")),
             new UserMessage(
                 "Does this license permit free of charge commercial use of the library licensed under it?"));
-    val cfgCacheSupportingModel = new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_6_SONNET);
+    val cfgCacheSupportingModel = new OrchestrationModuleConfig(CLAUDE_4_6_SONNET);
     val res = new OrchestrationClient().chatCompletion(prompt, cfgCacheSupportingModel);
 
     val readFromCacheOrJustCached =
@@ -667,7 +667,7 @@ class OrchestrationTest {
   @Test
   void wrongModelVersion() {
     val filterConfig =
-        new OrchestrationModuleConfig()
+        new OrchestrationModuleConfig(GPT_5)
             .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
     val prompt = new OrchestrationPrompt("HelloWorld!");
 
@@ -806,8 +806,8 @@ class OrchestrationTest {
   @Test
   void testMultiTurnReasoning() {
     val reasoningConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+        new OrchestrationModuleConfig(
+            CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     val orchestrationClient = new OrchestrationClient();
     val firstPrompt = new OrchestrationPrompt("What is 6 times 7?");
     val firstResponse = orchestrationClient.chatCompletion(firstPrompt, reasoningConfig);

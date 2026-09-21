@@ -26,8 +26,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SpringAiAgenticWorkflowService {
   private final ChatModel client = new OrchestrationChatModel();
-  private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_5_HAIKU);
+  private final OrchestrationModuleConfig config = new OrchestrationModuleConfig(CLAUDE_4_5_HAIKU);
 
   /**
    * Simple agentic workflow using chain-like structure. The agent is generating a travel itinerary

@@ -195,7 +195,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Override
     @Nonnull
     public Builder clone() {
-      return new Builder(source);
+        return new Builder(source);
     }
 
     @Override
@@ -327,13 +327,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Override
     @Nonnull
     public OrchestrationChatOptions build() {
-      val copyConfig =
-          new OrchestrationModuleConfig()
-              .withTemplateConfig(source.config.getTemplateConfig())
-              .withFilteringConfig(source.config.getFilteringConfig())
-              .withLlmConfig(source.config.getLlmConfig())
-              .withMaskingConfig(source.config.getMaskingConfig())
-              .withGroundingConfig(source.config.getGroundingConfig());
+      val copyConfig = source.config.copy();
       val result = new OrchestrationChatOptions(copyConfig);
 
       if (modelName != null || !paramOverrides.isEmpty()) {
@@ -365,7 +359,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   private LLMModelDetails getLlmConfigNonNull() {
     return Objects.requireNonNull(
         config.getLlmConfig(),
-        "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(...))");
+        "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig(...))");
   }
 
   /**

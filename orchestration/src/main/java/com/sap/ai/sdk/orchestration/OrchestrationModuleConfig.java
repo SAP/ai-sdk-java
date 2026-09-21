@@ -20,7 +20,6 @@ import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.With;
 import lombok.experimental.Tolerate;
@@ -49,7 +48,6 @@ import lombok.val;
 @Value
 @With
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(force = true)
 public class OrchestrationModuleConfig {
   /**
    * The configured language model settings. This configuration is required when executing requests.
@@ -59,7 +57,7 @@ public class OrchestrationModuleConfig {
    * AI Core: Orchestration - Model Configuration</a>
    */
   @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
-  @Nullable
+  @Nonnull
   LLMModelDetails llmConfig;
 
   /**
@@ -147,6 +145,23 @@ public class OrchestrationModuleConfig {
   @Getter(AccessLevel.PACKAGE)
   @Nullable
   GlobalStreamOptions globalStreamOptions;
+
+  /**
+   * Creates a new OrchestrationModuleConfig with only the AI Model as parameter.
+   *
+   * @param aiModel name of the AI Model
+   */
+  public OrchestrationModuleConfig(@Nonnull final OrchestrationAiModel aiModel) {
+    this.llmConfig = aiModel.createConfig();
+    this.filteringConfig = null;
+    this.templateConfig = null;
+    this.maskingConfig = null;
+    this.inputTranslationConfig = null;
+    this.outputFilteringStreamOptions = null;
+    this.globalStreamOptions = null;
+    this.outputTranslationConfig = null;
+    this.groundingConfig = null;
+  }
 
   /**
    * Creates a new configuration with the given LLM configuration.
@@ -364,5 +379,24 @@ public class OrchestrationModuleConfig {
   public OrchestrationModuleConfig withOutputTranslationConfig(
       @Nonnull final TranslationConfig.Output translationConfig) {
     return this.withOutputTranslationConfig(translationConfig.createSAPDocumentTranslationOutput());
+  }
+
+  /**
+   * Creates a copy of the OrchestrationModuleConfig
+   *
+   * @return a copy of the OrchestrationModuleConfig
+   */
+  @Nonnull
+  public OrchestrationModuleConfig copy() {
+    return new OrchestrationModuleConfig(
+        this.llmConfig,
+        this.templateConfig,
+        this.maskingConfig,
+        this.filteringConfig,
+        this.groundingConfig,
+        this.inputTranslationConfig,
+        this.outputTranslationConfig,
+        this.outputFilteringStreamOptions,
+        this.globalStreamOptions);
   }
 }
