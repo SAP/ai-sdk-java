@@ -195,7 +195,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Override
     @Nonnull
     public Builder clone() {
-        return new Builder(source);
+      return new Builder(source);
     }
 
     @Override
