@@ -91,6 +91,8 @@
     <json.version>20260814</json.version>
     <snakeyaml.version>2.7</snakeyaml.version>
     <jspecify.version>1.0.1</jspecify.version>
+    <!-- CVE fixes -->
+    <bouncycastle.version>1.86</bouncycastle.version>
     <!-- Formatting -->
     <spotless.version>3.10.2</spotless.version>
     <spotless.skip>false</spotless.skip>
@@ -279,6 +281,12 @@
         <groupId>org.jspecify</groupId>
         <artifactId>jspecify</artifactId>
         <version>${jspecify.version}</version>
+      </dependency>
+      <!-- Temporary fix for CVE-2025-48988 -->
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcprov-jdk18on</artifactId>
+        <version>${bouncycastle.version}</version>
       </dependency>
       <!-- scope "test" -->
       <dependency>
