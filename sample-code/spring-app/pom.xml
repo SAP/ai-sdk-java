@@ -34,10 +34,12 @@
   <properties>
     <project.rootdir>${project.basedir}/../../</project.rootdir>
     <spring-boot.version>4.1.1</spring-boot.version>
-    <cf-logging.version>4.2.0</cf-logging.version>
-    <apache-tomcat-embed.version>11.0.25</apache-tomcat-embed.version>
+    <cf-logging.version>4.3.0</cf-logging.version>
     <mcp-core.version>2.0.1</mcp-core.version>
     <jackson-annotations.version>2.22</jackson-annotations.version>
+    <!-- CVE fixes -->
+    <apache-tomcat-embed.version>11.0.26</apache-tomcat-embed.version>
+    <bouncycastle.version>1.86</bouncycastle.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
     <!-- Allow logging frameworks because this module is not released -->
@@ -58,6 +60,12 @@
         <groupId>org.apache.tomcat.embed</groupId>
         <artifactId>tomcat-embed-websocket</artifactId>
         <version>${apache-tomcat-embed.version}</version>
+      </dependency>
+      <!-- Temporary fix for CVE-2025-48988 -->
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcprov-jdk18on</artifactId>
+        <version>${bouncycastle.version}</version>
       </dependency>
       <!-- Pin mcp-core to align with spring-ai-client-chat transitive dependency -->
       <dependency>
