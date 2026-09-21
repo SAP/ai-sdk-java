@@ -102,7 +102,9 @@ If you use MCP clients manually in code (instantiating `SyncMcpToolCallbackProvi
 
 ### ✨ New Functionality
 
--
+- [Orchestration] Added `GEMINI_3_8_FLASH` and `GPT_51` to model list in `OrchestrationAiModel`.
+- [OpenAI] Added `GPT_51` to model list in `OpenAiModel`.
+- [Spring AI] Chat completion calls via the Spring AI integration now can have multiple module configs to support fallback modules as well.
 
 ### 📈 Improvements
 

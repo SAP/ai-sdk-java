@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
@@ -160,7 +161,7 @@ public class SpringAiOrchestrationService {
 
     val prompt =
         new Prompt(
-            "Please rephrase the following sentence for me: 'We shall spill blood tonight', said the operator in-charge.",
+            "Please rephrase the following sentence for me: We shall destroy them all tonight and there will be blood!",
             opts);
 
     return client.call(prompt);
@@ -252,6 +253,27 @@ public class SpringAiOrchestrationService {
             .call()
             .chatResponse(),
         "Chat response is null");
+  }
+
+  /**
+   * Chat request using the Spring AI integration with fallback configs. The first config uses an
+   * invalid model name, so the orchestration service falls back to the second config.
+   *
+   * @return the assistant response object
+   */
+  @Nonnull
+  public ChatResponse completionWithFallback() {
+    val brokenConfig =
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_41);
+    val options =
+        new OrchestrationChatOptions(brokenConfig)
+            .mutate()
+            .fallbackConfigs(List.of(workingConfig))
+            .build();
+    val prompt = new Prompt("Why is 'Hello World' so famous?", options);
+    return client.call(prompt);
   }
 
   /**

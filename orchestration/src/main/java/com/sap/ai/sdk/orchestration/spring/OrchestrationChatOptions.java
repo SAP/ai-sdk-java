@@ -46,6 +46,8 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   @Nonnull private OrchestrationModuleConfig config;
 
+  @Nonnull private List<OrchestrationModuleConfig> fallbackConfigs = List.of();
+
   @Nonnull private List<ToolCallback> toolCallbacks = List.of();
 
   @Nonnull private Set<String> toolNames = Set.of();
@@ -179,6 +181,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Nullable private String modelName;
     @Nonnull private final Map<String, Object> paramOverrides = new LinkedHashMap<>();
     @Nonnull private OrchestrationModuleConfig config;
+    @Nullable private List<OrchestrationModuleConfig> fallbackConfigs;
 
     private Builder(@Nonnull final OrchestrationChatOptions source) {
       this.source = source;
@@ -186,6 +189,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
       this.toolNames = source.getToolNames();
       this.toolContext = source.getToolContext();
       this.config = source.getConfig();
+      this.fallbackConfigs = source.getFallbackConfigs();
     }
 
     @Override
@@ -260,6 +264,18 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Nonnull
     public Builder maxTokens(@Nullable final Integer v) {
       paramOverrides.put(MAX_TOKENS.getName(), v);
+      return this;
+    }
+
+    /**
+     * Sets fallback configs to be used if main config is non-functional
+     *
+     * @param configs prioritized list of fallback configs
+     * @return this builder
+     */
+    @Nonnull
+    public Builder fallbackConfigs(@Nullable final List<OrchestrationModuleConfig> configs) {
+      this.fallbackConfigs = configs;
       return this;
     }
 
@@ -338,6 +354,9 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
       result.toolCallbacks = toolCallbacks;
       result.toolContext = toolContext;
       result.toolNames = toolNames;
+      if (fallbackConfigs != null) {
+        result.fallbackConfigs = fallbackConfigs;
+      }
       return result;
     }
   }

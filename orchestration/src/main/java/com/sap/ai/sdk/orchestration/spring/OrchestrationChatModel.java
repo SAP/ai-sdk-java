@@ -77,7 +77,10 @@ public class OrchestrationChatModel implements ChatModel {
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
       val response =
           new OrchestrationSpringChatResponse(
-              client.chatCompletion(orchestrationPrompt, options.getConfigWithCallbacks()));
+              client.chatCompletion(
+                  orchestrationPrompt,
+                  options.getConfigWithCallbacks(),
+                  options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new)));
 
       return response;
     }
@@ -92,7 +95,11 @@ public class OrchestrationChatModel implements ChatModel {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
-      val request = toCompletionPostRequest(orchestrationPrompt, options.getConfig());
+      val request =
+          toCompletionPostRequest(
+              orchestrationPrompt,
+              options.getConfig(),
+              options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new));
       val stream = client.streamChatCompletionDeltas(request);
 
       final Flux<OrchestrationChatCompletionDelta> flux =
