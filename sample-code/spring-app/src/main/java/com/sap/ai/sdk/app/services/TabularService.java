@@ -162,8 +162,8 @@ public class TabularService {
               "product", Map.of("type", "cds.String"),
               "price", Map.of("type", "cds.Double"),
               "date", Map.of("type", "cds.String"),
-              "id", Map.of("type", "cds.String"),
-              "salesgroup", Map.of("type", "cds.String"));
+              "salesgroup", Map.of("type", "cds.String"),
+              "id", Map.of("type", "cds.String"));
       val definitions =
           Map.of(
               "definitions",
