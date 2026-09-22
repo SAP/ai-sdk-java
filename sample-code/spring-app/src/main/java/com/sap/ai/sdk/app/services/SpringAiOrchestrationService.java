@@ -137,7 +137,8 @@ public class SpringAiOrchestrationService {
         new OrchestrationChatOptions(
             config.withLlmConfig(GEMINI_2_5_FLASH).withInputFiltering(filterConfig));
 
-    val prompt = new Prompt("We shall destroy them all tonight and there will be blood!", opts);
+    // no mercy to cheese
+    val prompt = new Prompt("Punch and rierce it to death! Squash its remains on a bread slice and eat.", opts);
 
     return client.call(prompt);
   }
@@ -159,9 +160,10 @@ public class SpringAiOrchestrationService {
         new OrchestrationChatOptions(
             config.withLlmConfig(GEMINI_2_5_FLASH).withOutputFiltering(filterConfig));
 
+    // no mercy for cheese!
     val prompt =
         new Prompt(
-            "Please rephrase the following sentence for me: We shall destroy them all tonight and there will be blood!",
+            "Please output three copies of this sentence: Punch and rierce it to death! Squash its remains on a bread slice and eat.",
             opts);
 
     return client.call(prompt);
