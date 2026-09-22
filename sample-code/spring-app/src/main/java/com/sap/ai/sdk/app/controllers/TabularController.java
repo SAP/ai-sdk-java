@@ -107,7 +107,10 @@ class TabularController {
     if ("json".equals(format)) {
       return Map.of("statusCode", response.getStatusCode());
     }
-    return "Deleted tabular artifact: " + artifactName + ", status code: " +response.getStatusCode();
+    return "Deleted tabular artifact: "
+        + artifactName
+        + ", status code: "
+        + response.getStatusCode();
   }
 
   /** List all scenario configurations for the default resource group. */
@@ -141,7 +144,10 @@ class TabularController {
     if ("json".equals(format)) {
       return Map.of("statusCode", response.getStatusCode());
     }
-    return "Deleted scenario configuration: " + scenarioConfigName + ", status code: " +response.getStatusCode();
+    return "Deleted scenario configuration: "
+        + scenarioConfigName
+        + ", status code: "
+        + response.getStatusCode();
   }
 
   /** Run a prediction using a deployed Tabular Foundation Model. */
