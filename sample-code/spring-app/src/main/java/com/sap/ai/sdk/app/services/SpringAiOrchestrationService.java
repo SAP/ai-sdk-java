@@ -138,7 +138,9 @@ public class SpringAiOrchestrationService {
             config.withLlmConfig(GEMINI_2_5_FLASH).withInputFiltering(filterConfig));
 
     // no mercy to cheese
-    val prompt = new Prompt("Punch and rierce it to death! Squash its remains on a bread slice and eat.", opts);
+    val prompt =
+        new Prompt(
+            "Punch and rierce it to death! Squash its remains on a bread slice and eat.", opts);
 
     return client.call(prompt);
   }

@@ -305,7 +305,8 @@ public class OrchestrationService {
       throws OrchestrationClientException {
     // no mercy to cheese!
     val prompt =
-        new OrchestrationPrompt("Punch and rierce it to death! Squash its remains on a bread slice and eat.");
+        new OrchestrationPrompt(
+            "Punch and rierce it to death! Squash its remains on a bread slice and eat.");
     val filterConfig =
         new AzureContentFilter()
             .hate(policy)
@@ -336,7 +337,8 @@ public class OrchestrationService {
     val systemMessage = Message.system("Give three copies of the following sentence");
     // no mercy to cheese!
     val prompt =
-        new OrchestrationPrompt("Punch and rierce it to death! Squash its remains on a bread slice and eat.")
+        new OrchestrationPrompt(
+                "Punch and rierce it to death! Squash its remains on a bread slice and eat.")
             .messageHistory(List.of(systemMessage));
     val filterConfig =
         new AzureContentFilter()
