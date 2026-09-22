@@ -303,8 +303,10 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
+    // no mercy to cheese!
     val prompt =
-        new OrchestrationPrompt("We shall destroy them all tonight and there will be blood!");
+        new OrchestrationPrompt(
+            "Punch and rierce it to death! Squash its remains on a bread slice and eat.");
     val filterConfig =
         new AzureContentFilter()
             .hate(policy)
@@ -332,11 +334,11 @@ public class OrchestrationService {
   public OrchestrationChatResponse outputFiltering(
       @Nonnull final AzureFilterThreshold policy, @Nonnull final Boolean isProtected) {
 
-    val systemMessage = Message.system("Give three paraphrases for the following sentence");
-    // Reliably triggering the content filter of models fine-tuned for ethical compliance
-    // is difficult. The prompt below may be rendered ineffective in the future.
+    val systemMessage = Message.system("Give three copies of the following sentence");
+    // no mercy to cheese!
     val prompt =
-        new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.")
+        new OrchestrationPrompt(
+                "Punch and rierce it to death! Squash its remains on a bread slice and eat.")
             .messageHistory(List.of(systemMessage));
     val filterConfig =
         new AzureContentFilter()
