@@ -252,6 +252,12 @@
         <artifactId>jspecify</artifactId>
         <version>${jspecify.version}</version>
       </dependency>
+      <!-- Temporary fix for CVE-2026-71889 -->
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcpkix-jdk18on</artifactId>
+        <version>${bouncycastle.version}</version>
+      </dependency>
       <!-- scope "test" -->
       <dependency>
         <groupId>org.junit.jupiter</groupId>
