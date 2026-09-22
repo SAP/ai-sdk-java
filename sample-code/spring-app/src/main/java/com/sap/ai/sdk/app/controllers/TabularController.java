@@ -99,6 +99,17 @@ class TabularController {
     return "Created tabular artifact: " + response.getName();
   }
 
+  /** Delete a tabular artifact. */
+  @GetMapping("/artifacts/delete")
+  Object deleteArtifact(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    val response = ARTIFACT_SERVICE.deleteArtifact(artifactName);
+    if ("json".equals(format)) {
+      return Map.of("statusCode", response.getStatusCode());
+    }
+    return "Deleted tabular artifact: " + artifactName + ", status code: " +response.getStatusCode();
+  }
+
   /** List all scenario configurations for the default resource group. */
   @GetMapping("/scenario-configurations/list")
   Object getAllScenarioConfigurations(
@@ -120,6 +131,17 @@ class TabularController {
       return response;
     }
     return "Created scenario configuration: " + response.getName();
+  }
+
+  /** Delete a scenario configuration. */
+  @GetMapping("/scenario-configurations/delete")
+  Object deleteScenarioConfiguration(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    val response = SCENARIO_CONFIGURATION_SERVICE.deleteScenarioConfiguration(scenarioConfigName);
+    if ("json".equals(format)) {
+      return Map.of("statusCode", response.getStatusCode());
+    }
+    return "Deleted scenario configuration: " + scenarioConfigName + ", status code: " +response.getStatusCode();
   }
 
   /** Run a prediction using a deployed Tabular Foundation Model. */
