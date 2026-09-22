@@ -45,8 +45,7 @@ import reactor.core.publisher.Flux;
 @Service
 public class SpringAiOrchestrationService {
   private final ChatModel client = new OrchestrationChatModel();
-  private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_41);
+  private final OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_41);
   private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);
 
   @Nullable
@@ -264,9 +263,8 @@ public class SpringAiOrchestrationService {
   @Nonnull
   public ChatResponse completionWithFallback() {
     val brokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_41);
+        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    val workingConfig = new OrchestrationModuleConfig(GPT_41);
     val options =
         new OrchestrationChatOptions(brokenConfig)
             .mutate()

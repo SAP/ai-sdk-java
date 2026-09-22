@@ -37,7 +37,7 @@ final class ConfigToRequestTransformer {
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
 
-    final var cachingConfig = resolveCachingConfig(config, fallbackConfigs);
+    final var cachingConfig = ModelPromptCachingSupport.forModel(config.getLlmConfig().getName());
     final UnaryOperator<OrchestrationModuleConfig> copyWithImmutableTemplateConfig =
         c ->
             c.withTemplateConfig(
@@ -110,32 +110,13 @@ final class ConfigToRequestTransformer {
     return result;
   }
 
-  static ModelPromptCachingSupport resolveCachingConfig(
-      @Nonnull final OrchestrationModuleConfig config,
-      @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
-
-    var modelName = "unknown";
-    if (config.getLlmConfig() != null) {
-      modelName = config.getLlmConfig().getName();
-    } else {
-      for (final var fallbackConfig : fallbackConfigs) {
-        if (fallbackConfig.getLlmConfig() != null) {
-          modelName = fallbackConfig.getLlmConfig().getName();
-          break;
-        }
-      }
-    }
-    return ModelPromptCachingSupport.forModel(modelName);
-  }
-
   static List<Message> withCachingConstraintsApplied(
       @Nonnull final List<Message> promptMessages,
       @Nonnull final ModelPromptCachingSupport cachingConfig) {
     final var outputMessages = new ArrayList<Message>(promptMessages.size());
     @SuppressWarnings("PMD.LocalVariableShouldBeFinal") // it is a variable, cannot be final
     var remainingCacheableCheckpoints = cachingConfig.getMaxCheckpointsPerRequest();
-    for (int i = 0; i < promptMessages.size(); i++) {
-      var message = promptMessages.get(i);
+    for (Message message : promptMessages) {
       final var contentItems = new ArrayList<ContentItem>(message.content().items().size());
       final var messageSupportsCache =
           message instanceof UserMessage
@@ -192,11 +173,8 @@ final class ConfigToRequestTransformer {
 
   @Nonnull
   private static ModuleConfigs setupModuleConfigs(@Nonnull final OrchestrationModuleConfig config) {
-    val llmConfig =
-        Option.of(config.getLlmConfig())
-            .getOrElseThrow(() -> new IllegalStateException("LLM config is required."));
+    val llmConfig = config.getLlmConfig();
 
-    //noinspection DataFlowIssue the template is always non-null here
     val moduleConfig =
         ModuleConfigs.create()
             .promptTemplating(
