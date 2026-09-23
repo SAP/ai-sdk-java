@@ -134,6 +134,8 @@ public class OrchestrationModuleConfig {
   @Nullable
   SAPDocumentTranslationOutput outputTranslationConfig;
 
+  @Nullable OrchestrationTemplateReference templateRef;
+
   /** Configuration of optional streaming options for output filtering. */
   @With(AccessLevel.NONE) // may be exposed to public in the future
   @Getter(AccessLevel.PACKAGE)
@@ -319,6 +321,7 @@ public class OrchestrationModuleConfig {
         this.groundingConfig,
         this.inputTranslationConfig,
         this.outputTranslationConfig,
+        this.templateRef,
         outputFilteringStreamOptions,
         this.globalStreamOptions);
   }
