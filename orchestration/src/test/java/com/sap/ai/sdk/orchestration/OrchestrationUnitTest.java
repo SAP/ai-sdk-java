@@ -130,7 +130,7 @@ class OrchestrationUnitTest {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = new OrchestrationClient(destination);
-    config = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_4O);
+    config = new OrchestrationModuleConfig(CUSTOM_GPT_4O);
     prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
@@ -979,8 +979,7 @@ class OrchestrationUnitTest {
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
       val wrongConfig =
-          new OrchestrationModuleConfig()
-              .withLlmConfig(GPT_5_MINI.withVersion("wrong-version"))
+          new OrchestrationModuleConfig(GPT_5_MINI.withVersion("wrong-version"))
               .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
       val prompt = new OrchestrationPrompt("HelloWorld!");
 
@@ -1099,7 +1098,7 @@ class OrchestrationUnitTest {
   }
 
   private static Stream<CompletionPostRequest> streamChatCompletionDeltasRequests() {
-    var localConfig = new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_4O);
+    var localConfig = new OrchestrationModuleConfig(CUSTOM_GPT_4O);
     var localPrompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
     var requestConfig = OrchestrationClient.toCompletionPostRequest(localPrompt, localConfig);
     var requestById =
@@ -1183,7 +1182,7 @@ class OrchestrationUnitTest {
         post("/v2/completion")
             .willReturn(aResponse().withStatus(SC_OK).withBodyFile("multiMessageResponse.json")));
 
-    var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    var llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
 
     final Path filePath = Files.createTempFile("orchestration-test", ".pdf");
     Files.writeString(filePath, "%PDF-1.7\n%%EOF");
@@ -1282,7 +1281,7 @@ class OrchestrationUnitTest {
 
     final String fileUrl =
         "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
-    final var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    final var llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
     final var prompt =
         new OrchestrationPrompt(
             Message.user("What is the title of the topic discussed here?")
@@ -1312,7 +1311,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonSchemaResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val config = new OrchestrationModuleConfig(GPT_5_MINI);
 
     val schema =
         ResponseJsonSchema.fromType(Translation.class)
@@ -1398,7 +1397,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("jsonObjectResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val config = new OrchestrationModuleConfig(GPT_5_MINI);
 
     val configWithJsonResponse =
         config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
@@ -1425,7 +1424,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("responseFormatTextResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    val llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
 
     val template = Message.user("What is 'apple' in German?");
     val templatingConfig =
@@ -1487,9 +1486,7 @@ class OrchestrationUnitTest {
           TemplateConfig.reference()
               .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
               .withScope(RESOURCE_GROUP);
-      var config =
-          new OrchestrationModuleConfig()
-              .withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      var config = new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
       var configWithTemplate = config.withTemplateConfig(template);
 
       var inputParams =
@@ -1548,8 +1545,7 @@ class OrchestrationUnitTest {
             .name("example-prompt-template")
             .version("0.0.1")
             .withScope(RESOURCE_GROUP);
-    var config =
-        new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+    var config = new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
     var configWithTemplate = config.withTemplateConfig(template);
 
     var inputParams =
@@ -1713,8 +1709,7 @@ class OrchestrationUnitTest {
                     .dataRepositoryType(DataRepositoryType.HELP_SAP_COM));
 
     final var workingConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(GPT_5_MINI.withParam(TEMPERATURE, 0.0))
+        new OrchestrationModuleConfig(GPT_5_MINI.withParam(TEMPERATURE, 0.0))
             .withInputFiltering(llamaFilter)
             .withGrounding(groundingConfig);
     final var brokenConfig =
@@ -1748,9 +1743,8 @@ class OrchestrationUnitTest {
             .willReturn(aResponse().withBody(body).withHeader("Content-Type", "application/json")));
 
     final var reasoningConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(
-                OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+        new OrchestrationModuleConfig(
+            OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     final var reasoningPrompt =
         new OrchestrationPrompt("Think carefully and explain step by step: Why is the sky blue?");
     final var request =
@@ -1790,9 +1784,8 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     final var reasoningConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(
-                OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+        new OrchestrationModuleConfig(
+            OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     final var reasoningPrompt =
         new OrchestrationPrompt("Think carefully and explain step by step: Why is the sky blue?");
 
@@ -1828,9 +1821,8 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     final var reasoningConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(
-                OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+        new OrchestrationModuleConfig(
+            OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     final var firstResponse =
         client.chatCompletion(new OrchestrationPrompt("What is 6 times 7?"), reasoningConfig);
 

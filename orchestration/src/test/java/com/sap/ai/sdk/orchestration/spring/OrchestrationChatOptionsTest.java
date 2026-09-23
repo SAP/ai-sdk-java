@@ -43,15 +43,12 @@ class OrchestrationChatOptionsTest {
   }
 
   private static OrchestrationChatOptions baseOpts() {
-    return new OrchestrationChatOptions(
-        new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH));
+    return new OrchestrationChatOptions(new OrchestrationModuleConfig(GEMINI_2_5_FLASH));
   }
 
   @Test
   void testParametersAreInherited() {
-    var opts =
-        new OrchestrationChatOptions(
-            new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH));
+    var opts = new OrchestrationChatOptions(new OrchestrationModuleConfig(GEMINI_2_5_FLASH));
 
     assertThat(opts.getModel()).isEqualTo(GEMINI_2_5_FLASH.getName());
     assertThat(opts.getModelVersion()).isEqualTo(GEMINI_2_5_FLASH.getVersion());
@@ -59,17 +56,14 @@ class OrchestrationChatOptionsTest {
 
   @Test
   void testCustomParametersAreInherited() {
-    var opts =
-        new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(CUSTOM_LLM));
+    var opts = new OrchestrationChatOptions(new OrchestrationModuleConfig(CUSTOM_LLM));
 
     assertCustomLLM(opts);
   }
 
   @Test
   void testMutateAndBuild() {
-    var opts =
-        new OrchestrationChatOptions(
-            new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH));
+    var opts = new OrchestrationChatOptions(new OrchestrationModuleConfig(GEMINI_2_5_FLASH));
 
     var copy = opts.mutate().build();
     assertThat(copy.getModel()).isEqualTo(GEMINI_2_5_FLASH.getName());
@@ -78,8 +72,7 @@ class OrchestrationChatOptionsTest {
 
   @Test
   void testMutateAndBuildCustom() {
-    var opts =
-        new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(CUSTOM_LLM));
+    var opts = new OrchestrationChatOptions(new OrchestrationModuleConfig(CUSTOM_LLM));
 
     var copy = opts.mutate().build();
     assertCustomLLM(copy);
@@ -171,8 +164,7 @@ class OrchestrationChatOptionsTest {
   @Test
   void testBuilderOverridesPreserveExistingParams() {
     // Source already has all params; builder should override only the ones specified
-    var source =
-        new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(CUSTOM_LLM));
+    var source = new OrchestrationChatOptions(new OrchestrationModuleConfig(CUSTOM_LLM));
     var built = source.mutate().temperature(0.99).build();
 
     assertThat(built.getTemperature()).isEqualTo(0.99);
@@ -219,8 +211,7 @@ class OrchestrationChatOptionsTest {
   @Test
   void testCombineWithOrchestrationBuilder() {
     var base = baseOpts();
-    var perRequest =
-        new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(GPT_4O));
+    var perRequest = new OrchestrationChatOptions(new OrchestrationModuleConfig(GPT_4O));
 
     // Simulate what Spring AI does: starts from base.mutate(), then combines with
     // per-request.mutate()
@@ -279,9 +270,7 @@ class OrchestrationChatOptionsTest {
   void testGetConfigWithCallbacksMergesWithExistingTools() {
     var existingTemplate = TemplateConfig.create().withTools(List.of());
     var configWithTemplate =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(GEMINI_2_5_FLASH)
-            .withTemplateConfig(existingTemplate);
+        new OrchestrationModuleConfig(GEMINI_2_5_FLASH).withTemplateConfig(existingTemplate);
     var opts =
         new OrchestrationChatOptions(configWithTemplate)
             .mutate()

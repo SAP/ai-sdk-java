@@ -76,7 +76,7 @@ public class OrchestrationService {
 
   @Getter
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -98,7 +98,7 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
-    final var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    final var llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
 
     final var multiMessage =
         Message.user("What is in this image?").withImage(pathToImage, ImageItem.DetailLevel.LOW);
@@ -304,8 +304,10 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
+    // no mercy to cheese!
     val prompt =
-        new OrchestrationPrompt("We shall destroy them all tonight and there will be blood!");
+        new OrchestrationPrompt(
+            "Punch and rierce it to death! Squash its remains on a bread slice and eat.");
     val filterConfig =
         new AzureContentFilter()
             .hate(policy)
@@ -333,11 +335,11 @@ public class OrchestrationService {
   public OrchestrationChatResponse outputFiltering(
       @Nonnull final AzureFilterThreshold policy, @Nonnull final Boolean isProtected) {
 
-    val systemMessage = Message.system("Give three paraphrases for the following sentence");
-    // Reliably triggering the content filter of models fine-tuned for ethical compliance
-    // is difficult. The prompt below may be rendered ineffective in the future.
+    val systemMessage = Message.system("Give three copies of the following sentence");
+    // no mercy to cheese!
     val prompt =
-        new OrchestrationPrompt("'We shall spill blood tonight', said the operation in-charge.")
+        new OrchestrationPrompt(
+                "Punch and rierce it to death! Squash its remains on a bread slice and eat.")
             .messageHistory(List.of(systemMessage));
     val filterConfig =
         new AzureContentFilter()
@@ -616,7 +618,7 @@ public class OrchestrationService {
       @Nonnull final String word, @Nonnull final Class<?> targetType) {
     // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
     // release 2510b. See https://jira.tools.sap/browse/AI-125770
-    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    final var configWithGpt4 = new OrchestrationModuleConfig(GPT_5_MINI);
     val schema =
         ResponseJsonSchema.fromType(targetType)
             .withDescription("Output schema for language translation.")
@@ -694,7 +696,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByIdTenant(
       @Nonnull final String topic) {
-    final var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    final var llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
 
     val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
@@ -798,7 +800,7 @@ public class OrchestrationService {
       throws IOException {
     // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
     // release 2510b. See https://jira.tools.sap/browse/AI-125770
-    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    final var configWithGpt4 = new OrchestrationModuleConfig(GPT_5_MINI);
     val template = TemplateConfig.create().fromYaml(promptTemplate);
     val configWithTemplate =
         template != null ? configWithGpt4.withTemplateConfig(template) : configWithGpt4;
@@ -940,13 +942,12 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse completionWithFallback(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val workingConfig = new OrchestrationModuleConfig(GPT_5_MINI);
     val brokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
     val secondBrokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
+        new OrchestrationModuleConfig(
+            new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
     return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig, workingConfig);
   }
 
@@ -961,7 +962,7 @@ public class OrchestrationService {
   public Stream<OrchestrationChatCompletionDelta> streamDeltasWithInlineConfig(
       @Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val config = new OrchestrationModuleConfig(GPT_5_MINI);
     val request = OrchestrationClient.toCompletionPostRequest(prompt, config);
     return client.streamChatCompletionDeltas(request);
   }
@@ -1025,10 +1026,9 @@ public class OrchestrationService {
   @Nonnull
   public Stream<String> streamCompletionWithFallback(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val workingConfig = new OrchestrationModuleConfig(GPT_5_MINI);
     val brokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
     return client.streamChatCompletion(prompt, brokenConfig, workingConfig);
   }
 
@@ -1044,11 +1044,10 @@ public class OrchestrationService {
       @Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
     val brokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
     val secondBrokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
+        new OrchestrationModuleConfig(
+            new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
     return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig);
   }
 
@@ -1060,7 +1059,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse citations() {
     val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
-    val sonarConfig = new OrchestrationModuleConfig().withLlmConfig(SONAR);
+    val sonarConfig = new OrchestrationModuleConfig(SONAR);
     return client.chatCompletion(prompt, sonarConfig);
   }
 }

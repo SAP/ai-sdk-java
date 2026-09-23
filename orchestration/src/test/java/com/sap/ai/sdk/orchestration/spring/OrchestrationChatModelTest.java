@@ -20,6 +20,7 @@ import static org.mockito.Mockito.times;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -27,16 +28,20 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import lombok.val;
 import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
@@ -63,8 +68,7 @@ class OrchestrationChatModelTest {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = new OrchestrationChatModel(new OrchestrationClient(destination));
-    defaultOptions =
-        new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(GPT_4O));
+    defaultOptions = new OrchestrationChatOptions(new OrchestrationModuleConfig(GPT_4O));
     client.setDefaultOptions(defaultOptions);
     prompt = new Prompt("Hello World! Why is this phrase so famous?", defaultOptions);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
@@ -98,19 +102,6 @@ class OrchestrationChatModelTest {
     assertThatThrownBy(() -> client.stream(new Prompt("test")))
         .isExactlyInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Please add OrchestrationChatOptions to the Prompt");
-  }
-
-  @Test
-  void testThrowsOnMissingLlmConfig() {
-    OrchestrationChatOptions emptyConfig =
-        new OrchestrationChatOptions(new OrchestrationModuleConfig());
-
-    assertThatThrownBy(() -> client.call(new Prompt("test", emptyConfig)))
-        .isExactlyInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("LLM config is required");
-    assertThatThrownBy(() -> client.stream(new Prompt("test", emptyConfig)))
-        .isExactlyInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("LLM config is required");
   }
 
   @Test
@@ -233,6 +224,94 @@ class OrchestrationChatModelTest {
     try (var requestInputStream = fileLoader.apply("chatMemory.json")) {
       final String request = new String(requestInputStream.readAllBytes());
       verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testFallbackModules() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("fallbackResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val brokenConfig =
+        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+
+    val workingConfig = new OrchestrationModuleConfig(GPT_4O);
+
+    val options =
+        new OrchestrationChatOptions(brokenConfig)
+            .mutate()
+            .fallbackConfigs(List.of(workingConfig))
+            .build();
+
+    val result = client.call(new Prompt("Hello World! Why is this phrase so famous?", options));
+
+    assertThat(result).isNotNull();
+    assertThat(result.getResult().getOutput().getText()).isNotEmpty();
+    assertThat(result).isInstanceOf(OrchestrationSpringChatResponse.class);
+
+    val intermediateFailures =
+        ((OrchestrationSpringChatResponse) result)
+            .getOrchestrationResponse()
+            .getOriginalResponse()
+            .getIntermediateFailures();
+    assertThat(intermediateFailures).hasSize(1);
+    assertThat(intermediateFailures.get(0).getCode()).isEqualTo(400);
+    assertThat(intermediateFailures.get(0).getMessage()).contains("broken_name");
+
+    try (var requestInputStream = fileLoader.apply("springFallbackRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(
+          postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testStreamFallbackModules() throws IOException {
+    try (val inputStream = spy(fileLoader.apply("streamFallbackChatCompletion.txt"))) {
+
+      val httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+
+      val mockResponse = new BasicClassicHttpResponse(200, "OK");
+      mockResponse.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
+      mockResponse.setHeader("Content-Type", "text/event-flux");
+
+      val requestCaptor = ArgumentCaptor.forClass(ClassicHttpRequest.class);
+      doReturn(mockResponse).when(httpClient).executeOpen(any(), requestCaptor.capture(), any());
+
+      val brokenConfig =
+          new OrchestrationModuleConfig(
+              new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+      val workingConfig = new OrchestrationModuleConfig(GPT_4O);
+
+      val options =
+          new OrchestrationChatOptions(brokenConfig)
+              .mutate()
+              .fallbackConfigs(List.of(workingConfig))
+              .build();
+
+      Flux<ChatResponse> flux =
+          client.stream(new Prompt("Hello World! Why is this phrase so famous?", options));
+      val deltaList = flux.toStream().toList();
+
+      assertThat(deltaList).hasSize(3);
+      assertThat(deltaList.get(0).getResult().getOutput().getText()).isEqualTo("");
+      assertThat(deltaList.get(1).getResult().getOutput().getText()).isEqualTo("Sure");
+      assertThat(deltaList.get(2).getResult().getOutput().getText()).isEqualTo("!");
+      assertThat(deltaList.get(2).getResult().getMetadata().getFinishReason()).isEqualTo("stop");
+
+      try (var requestInputStream = fileLoader.apply("springFallbackStreamRequest.json")) {
+        final String expectedBody = new String(requestInputStream.readAllBytes());
+        final String actualBody =
+            new String(requestCaptor.getValue().getEntity().getContent().readAllBytes());
+        assertThat(actualBody).isEqualToIgnoringWhitespace(expectedBody);
+      }
+
+      Mockito.verify(inputStream, times(1)).close();
     }
   }
 }

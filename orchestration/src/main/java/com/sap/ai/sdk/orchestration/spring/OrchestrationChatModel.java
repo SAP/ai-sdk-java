@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration.spring;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationClient.toCompletionPostRequest;
 import static com.sap.ai.sdk.orchestration.model.MessageToolCall.TypeEnum.FUNCTION;
 
@@ -66,7 +67,7 @@ public class OrchestrationChatModel implements ChatModel {
     if (defaultOptions != null) {
       return defaultOptions;
     }
-    return new OrchestrationChatOptions(new OrchestrationModuleConfig());
+    return new OrchestrationChatOptions(new OrchestrationModuleConfig(GPT_4O));
   }
 
   @Nonnull
@@ -75,11 +76,12 @@ public class OrchestrationChatModel implements ChatModel {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
-      val response =
-          new OrchestrationSpringChatResponse(
-              client.chatCompletion(orchestrationPrompt, options.getConfigWithCallbacks()));
 
-      return response;
+      return new OrchestrationSpringChatResponse(
+          client.chatCompletion(
+              orchestrationPrompt,
+              options.getConfigWithCallbacks(),
+              options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new)));
     }
     throw new IllegalArgumentException(
         "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
@@ -92,7 +94,11 @@ public class OrchestrationChatModel implements ChatModel {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
-      val request = toCompletionPostRequest(orchestrationPrompt, options.getConfig());
+      val request =
+          toCompletionPostRequest(
+              orchestrationPrompt,
+              options.getConfig(),
+              options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new));
       val stream = client.streamChatCompletionDeltas(request);
 
       final Flux<OrchestrationChatCompletionDelta> flux =

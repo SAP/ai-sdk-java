@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
 import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.TENANT;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
@@ -204,13 +205,13 @@ public class OrchestrationConvenienceUnitTest {
     val schemaMap = generateSchemaMap();
 
     var configWithResponseSchemaFromClass =
-        new OrchestrationModuleConfig()
+        new OrchestrationModuleConfig(GPT_4O)
             .withTemplateConfig(
                 TemplateConfig.create()
                     .withJsonSchemaResponse(
                         schemaFromClass.withDescription("Description").withStrict(true)));
     var configWithResponseSchemaLowLevel =
-        new OrchestrationModuleConfig()
+        new OrchestrationModuleConfig(GPT_4O)
             .withTemplateConfig(
                 Template.create()
                     .template(List.of())

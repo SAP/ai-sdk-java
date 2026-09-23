@@ -13,14 +13,6 @@ import org.junit.jupiter.api.Test;
 class ConfigToRequestTransformerTest {
 
   @Test
-  void testThrowsOnMissingLlmConfig() {
-    var config = new OrchestrationModuleConfig();
-    assertThatThrownBy(() -> ConfigToRequestTransformer.toModuleConfigs(config))
-        .isInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("LLM config is required");
-  }
-
-  @Test
   void testThrowsOnMissingMessages() {
     var prompt = new OrchestrationPrompt(Map.of());
 
@@ -85,7 +77,7 @@ class ConfigToRequestTransformerTest {
     var prompt = new OrchestrationPrompt("bar").messageHistory(List.of(systemMessage));
     var actual =
         ConfigToRequestTransformer.toCompletionPostRequest(
-            prompt, new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_4O));
+            prompt, new OrchestrationModuleConfig(CUSTOM_GPT_4O));
 
     assertThat(actual.getMessagesHistory()).containsExactly(systemMessage.createChatMessage());
   }
@@ -201,7 +193,7 @@ class ConfigToRequestTransformerTest {
     var prompt = new OrchestrationPrompt("bar").messageHistory(List.of(userMessage));
     var actual =
         ConfigToRequestTransformer.toCompletionPostRequest(
-            prompt, new OrchestrationModuleConfig().withLlmConfig(CUSTOM_GPT_4O));
+            prompt, new OrchestrationModuleConfig(CUSTOM_GPT_4O));
 
     assertThat(actual.getMessagesHistory()).containsExactly(userMessage.createChatMessage());
   }

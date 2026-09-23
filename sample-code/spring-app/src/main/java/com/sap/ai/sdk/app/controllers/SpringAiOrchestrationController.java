@@ -164,4 +164,17 @@ class SpringAiOrchestrationController {
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     return service.embed("Hello, world!");
   }
+
+  @GetMapping("/completionWithFallback")
+  Object completionWithFallback(
+      @Nullable @RequestParam(value = "format", required = false) final String format) {
+    val response = service.completionWithFallback();
+
+    if ("json".equals(format)) {
+      return ((OrchestrationSpringChatResponse) response)
+          .getOrchestrationResponse()
+          .getOriginalResponse();
+    }
+    return response.getResult().getOutput().getText();
+  }
 }

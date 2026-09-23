@@ -348,6 +348,9 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-5-nano model */
   public static final OrchestrationAiModel GPT_5_NANO = new OrchestrationAiModel("gpt-5-nano");
 
+  /** Azure OpenAI GPT-5.1 model */
+  public static final OrchestrationAiModel GPT_51 = new OrchestrationAiModel("gpt-5.1");
+
   /** Azure OpenAI GPT-5.2 model */
   public static final OrchestrationAiModel GPT_52 = new OrchestrationAiModel("gpt-5.2");
 
@@ -452,6 +455,10 @@ public class OrchestrationAiModel {
   /** Google Cloud Platform Gemini 3.6 Flash model */
   public static final OrchestrationAiModel GEMINI_3_6_FLASH =
       new OrchestrationAiModel("gemini-3.6-flash");
+
+  /** Google Cloud Platform Gemini 3.8 Flash model */
+  public static final OrchestrationAiModel GEMINI_3_8_FLASH =
+      new OrchestrationAiModel("gemini-3.8-flash");
 
   /**
    * Alephalpha-pharia-1-7b-control model
