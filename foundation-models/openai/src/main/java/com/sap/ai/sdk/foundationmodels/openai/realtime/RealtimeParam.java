@@ -1,17 +1,9 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
-import com.google.common.annotations.Beta;
 import javax.annotation.Nonnull;
 
-/**
- * Represents possible configuration params of realtime client
- *
- * <p>Note: This class and multiple its methods are marked as {@link Beta} because they represent
- * newly introduced API which has not yet been sufficiently stabilized and has significant risk of
- * changes
- */
-@Beta
-public interface RealtimeParam {
+/** Represents possible configuration params of realtime client Internal sdk usage only */
+public abstract class RealtimeParam {
   /** Represents configurable options */
   enum ParamName {
     /** Voice name to use to produce sound */
@@ -25,13 +17,16 @@ public interface RealtimeParam {
     SYSTEM_PROMPT,
   }
 
+  /** Internal use only. Can only be extended or constructed in the same package. */
+  RealtimeParam() {}
+
   /**
    * Returns param name
    *
    * @return name
    */
   @Nonnull
-  ParamName getParamName();
+  abstract ParamName getParamName();
 
   /**
    * Returns string value representation of the param
@@ -39,5 +34,5 @@ public interface RealtimeParam {
    * @return string value
    */
   @Nonnull
-  String getValueAsString();
+  abstract String getValueAsString();
 }

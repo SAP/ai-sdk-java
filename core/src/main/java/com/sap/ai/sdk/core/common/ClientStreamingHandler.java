@@ -10,7 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 
 /**
- * Parse incoming JSON responses and handles any errors. For internal use only.
+ * For internal SDK usage only. Parse incoming JSON responses and handles any errors. For internal
+ * use only.
  *
  * @param <D> The type of the response.
  * @param <E> The type of the exception to throw.
@@ -23,7 +24,7 @@ public class ClientStreamingHandler<
     extends ClientResponseHandler<D, R, E> {
 
   /**
-   * Set the {@link ObjectMapper} to use for parsing JSON responses.
+   * For internal SDK usage only. Set the {@link ObjectMapper} to use for parsing JSON responses.
    *
    * @param jackson The {@link ObjectMapper} to use
    * @return the current instance of {@link ClientStreamingHandler} with the changed object mapper
@@ -35,7 +36,7 @@ public class ClientStreamingHandler<
   }
 
   /**
-   * Creates a new instance of the {@link ClientStreamingHandler}.
+   * For internal SDK usage only. Creates a new instance of the {@link ClientStreamingHandler}.
    *
    * @param deltaType The type of the response.
    * @param errorType The type of the error.
@@ -49,8 +50,8 @@ public class ClientStreamingHandler<
   }
 
   /**
-   * Processes a {@link ClassicHttpResponse} and returns a {@link Stream} of deltas corresponding to
-   * that response.
+   * For internal SDK usage only. Processes a {@link ClassicHttpResponse} and returns a {@link
+   * Stream} of deltas corresponding to that response.
    *
    * @param response The response to process
    * @return A {@link Stream} of a model class instantiated from the response

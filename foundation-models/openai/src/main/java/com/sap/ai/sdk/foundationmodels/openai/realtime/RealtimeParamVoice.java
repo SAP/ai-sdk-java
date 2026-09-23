@@ -5,21 +5,14 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/**
- * Allows to configure model output voice
- *
- * <p>Note: This class and multiple its methods are marked as {@link Beta} because they represent
- * newly introduced API which has not yet been sufficiently stabilized and has significant risk of
- * changes
- */
-@Beta
-public final class RealtimeParamVoice implements RealtimeParam {
+/** Allows to configure model output voice */
+public final class RealtimeParamVoice extends RealtimeParam {
 
   /** Standard voice 1 */
-  @Beta public static final RealtimeParamVoice DEFAULT_1 = new RealtimeParamVoice("DEFAULT_1");
+  public static final RealtimeParamVoice DEFAULT_1 = new RealtimeParamVoice("DEFAULT_1");
 
   /** Standard voice 2 */
-  @Beta public static final RealtimeParamVoice DEFAULT_2 = new RealtimeParamVoice("DEFAULT_2");
+  public static final RealtimeParamVoice DEFAULT_2 = new RealtimeParamVoice("DEFAULT_2");
 
   private final String voice;
 
@@ -43,14 +36,14 @@ public final class RealtimeParamVoice implements RealtimeParam {
   }
 
   @Override
-  @Beta
-  public @Nonnull ParamName getParamName() {
+  @Nonnull
+  ParamName getParamName() {
     return ParamName.OUTPUT_VOICE;
   }
 
   @Override
-  @Beta
-  public @Nonnull String getValueAsString() {
+  @Nonnull
+  String getValueAsString() {
     return voice;
   }
 

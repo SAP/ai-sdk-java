@@ -8,7 +8,6 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObject
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
@@ -80,12 +79,8 @@ public final class OpenAiClient {
   /**
    * Creates and configures OpenAI Realtime API client
    *
-   * <p>Note: This method is marked as {@link Beta} because it represents newly introduced API which
-   * has not yet been sufficiently stabilized and has significant risk of changes
-   *
    * @return created client
    */
-  @Beta
   @Nonnull
   public static OpenAiRealtimeClient realtimeClient() {
     final var withResolvedDestination = OpenAiClient.forModel(OpenAiModel.GPT_REALTIME);
