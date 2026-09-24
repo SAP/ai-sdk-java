@@ -41,6 +41,13 @@ public class AssistantMessage extends Message {
   @Nullable
   List<ReasoningBlock> reasoningContent;
 
+  @Deprecated
+  public AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
+    content = new MessageContent(List.of());
+    this.toolCalls = toolCalls;
+    reasoningContent = null;
+  }
+
   /**
    * Creates a new assistant message with the given single message.
    *
