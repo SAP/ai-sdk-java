@@ -118,7 +118,7 @@ public abstract class Message {
    * @return the role.
    */
   @Nonnull
-  abstract String role();
+  public abstract String role();
 
   /**
    * Returns the content of the message.
@@ -126,5 +126,5 @@ public abstract class Message {
    * @return the content.
    */
   @Nonnull
-  abstract MessageContent content();
+  public abstract MessageContent content();
 }

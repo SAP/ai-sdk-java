@@ -28,6 +28,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.ReasoningEffort;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.TemplateConfig;
+import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.InputTranslationModuleResult;
@@ -188,6 +189,9 @@ class OrchestrationTest {
     val response = result.getOriginalResponse();
 
     assertThat(response.getRequestId()).isNotEmpty();
+    assertThat(((TextItem) result.getAllMessages().get(0).content().items().get(0)).text())
+            .isEqualTo("Reply with 'Orchestration Service is working!' in German");
+    assertThat(result.getAllMessages().get(0).role()).isEqualTo("user");
     var llm = response.getIntermediateResults().getLlm();
     assertThat(llm.getId()).isEmpty();
     assertThat(llm.getObject()).isEqualTo("chat.completion");

@@ -17,7 +17,7 @@
 - [Orchestration] Internal AI SDK methods `createInputFilterConfig` and `createOutputFilterConfig` were removed
   from public API
 - [Orchestration] Internal AI SDK methods `createConfig` were removed from `GroundingProvider` and `MaskingProvider`
-- [Orchestration] Internal AI SDK methods `role`, `createChatMessage` and `content` were removed from public API
+- [Orchestration] Internal AI SDK method `content` was removed from public API
   of `Message` class.
 
 #### Prompt registry client Migration Guide
