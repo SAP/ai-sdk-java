@@ -128,8 +128,8 @@ public class OpenAiService {
    * any other input). When input channel is closed, output channel will be closed automatically and
    * output consumer will not be called anymore.
    *
-   * @param audioOutputConsumer audio consumer of raw PCM mono 24000 Hz little endian output, 16
-   *     bit depth.
+   * @param audioOutputConsumer audio consumer of raw PCM mono 24000 Hz little endian output, 16 bit
+   *     depth.
    * @param realtimeParams optional additional configuration params.
    * @return input channel, allowing for audio data input (bytes, PCM mono 24000 Hz little endian 16
    *     bit).

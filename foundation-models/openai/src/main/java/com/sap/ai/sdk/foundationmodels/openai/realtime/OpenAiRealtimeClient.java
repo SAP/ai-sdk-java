@@ -51,8 +51,8 @@ public class OpenAiRealtimeClient {
    * need to send any other input). When the input channel is closed, the output channel will be
    * closed automatically and the output consumer will not be called anymore.
    *
-   * @param audioOutputConsumer audio consumer of raw PCM mono 24000 Hz little endian output, 16
-   *     bit depth.
+   * @param audioOutputConsumer audio consumer of raw PCM mono 24000 Hz little endian output, 16 bit
+   *     depth.
    * @param params allows for various additional features (e.g. voice configuration or conversation
    *     turn recognition options).
    * @return input channel, allowing for text input.
@@ -81,14 +81,14 @@ public class OpenAiRealtimeClient {
    * }
    * }</pre>
    *
-   * <p>This API implements full duplex (input + output) communication channels. An application should
-   * logically synchronize their state and close the input channel when it is appropriate (e.g. the
-   * last part of the response has been received via the output channel and the application does not
-   * need to send any other input). When the input channel is closed, the output channel will be
-   * closed automatically and the output consumer will not be called anymore.
+   * <p>This API implements full duplex (input + output) communication channels. An application
+   * should logically synchronize their state and close the input channel when it is appropriate
+   * (e.g. the last part of the response has been received via the output channel and the
+   * application does not need to send any other input). When the input channel is closed, the
+   * output channel will be closed automatically and the output consumer will not be called anymore.
    *
-   * @param audioOutputConsumer audio consumer of raw PCM mono 24000 Hz little endian output, 16
-   *     bit depth.
+   * @param audioOutputConsumer audio consumer of raw PCM mono 24000 Hz little endian output, 16 bit
+   *     depth.
    * @param params optional configuration params.
    * @return input channel, allowing for audio data input (bytes, PCM mono 24000 Hz little endian 16
    *     bit).

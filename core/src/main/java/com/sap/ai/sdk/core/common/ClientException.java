@@ -62,7 +62,8 @@ public class ClientException extends RuntimeException {
   /**
    * Sets the original HTTP request that caused this exception.
    *
-   * @param httpResponse the original HTTP response that caused this exception. Can be {@code null} if not available.
+   * @param httpResponse the original HTTP response that caused this exception. Can be {@code null}
+   *     if not available.
    * @param <T> the type of the exception, typically a subclass of {@link ClientException}.
    * @return the current instance of {@link ClientException} with the changed HTTP response.
    */
@@ -77,7 +78,8 @@ public class ClientException extends RuntimeException {
   /**
    * Sets the original HTTP request that caused this exception.
    *
-   * @param httpRequest the original HTTP request that caused this exception. Can be {@code null} if not available.
+   * @param httpRequest the original HTTP request that caused this exception. Can be {@code null} if
+   *     not available.
    * @param <T> the type of the exception, typically a subclass of {@link ClientException}.
    * @return the current instance of {@link ClientException} with the changed HTTP request.
    */
