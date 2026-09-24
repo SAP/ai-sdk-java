@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.exactly;
+import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
@@ -605,5 +606,74 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     assertThat(toolCall.getId()).isEqualTo("call_CUYGJf2j7FRWJMHT3PN3aGxK");
     assertThat(toolCall.getName()).isEqualTo("fibonacci");
     assertThat(toolCall.getArguments()).isEqualTo("{\"N\":12}");
+  }
+
+  @Test
+  void testCustomHeaders() {
+    stubForChatCompletion();
+    final var request =
+        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+    final var clientWithHeader = client.withHeader("Header-For-Both", "value");
+
+    final var result = clientWithHeader.withHeader("foo", "bar").chatCompletion(request);
+    assertThat(result).isNotNull();
+
+    var streamResult =
+        clientWithHeader
+            .withHeader("foot", "baz")
+            .streamChatCompletion("Hello World! Why is this phrase so famous?");
+    assertThat(streamResult).isNotNull();
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foo", equalTo("bar")));
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foot", equalTo("baz")));
+  }
+
+  @Test
+  void testWithHeaderPreservesSystemPrompt() {
+    stubForChatCompletion();
+
+    final var request =
+        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+    client
+        .withSystemPrompt("You are a helpful AI")
+        .withHeader("foo", "bar")
+        .chatCompletion(request);
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("foo", equalTo("bar"))
+            .withRequestBody(
+                matchingJsonPath("$.messages[0].role", equalTo("system"))
+                    .and(
+                        matchingJsonPath(
+                            "$.messages[0].content", equalTo("You are a helpful AI")))));
+  }
+
+  @Test
+  void testMultipleCustomHeaders() {
+    stubForChatCompletion();
+
+    final var request =
+        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+    client
+        .withSystemPrompt("You are a helpful AI")
+        .withHeaders(Map.of("foo", "bar", "baz", "qux"))
+        .chatCompletion(request);
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("foo", equalTo("bar"))
+            .withHeader("baz", equalTo("qux"))
+            .withRequestBody(
+                matchingJsonPath("$.messages[0].role", equalTo("system"))
+                    .and(
+                        matchingJsonPath(
+                            "$.messages[0].content", equalTo("You are a helpful AI")))));
   }
 }
