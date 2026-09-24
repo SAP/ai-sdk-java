@@ -15,7 +15,9 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.BinaryWebSocketHandler;
 
-/** Implements handler (Web Socket messages handling) for speech to speech realtime api operation. */
+/**
+ * Implements handler (Web Socket messages handling) for speech to speech realtime api operation.
+ */
 @Component
 @Slf4j
 public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {

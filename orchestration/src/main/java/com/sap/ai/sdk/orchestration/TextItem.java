@@ -22,7 +22,8 @@ public final class TextItem implements ContentItem, CacheablePrompt {
    * Constructs text item.
    *
    * @param text text content.
-   * @param cacheControl optional cache control configuration. Can be {@code null} if not applicable.
+   * @param cacheControl optional cache control configuration. Can be {@code null} if not
+   *     applicable.
    */
   public TextItem(@Nonnull final String text, @Nullable final CacheControl cacheControl) {
     this.text = text;

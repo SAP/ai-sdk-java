@@ -18,7 +18,8 @@ import lombok.NoArgsConstructor;
 public final class JacksonConfiguration {
 
   /**
-   * Default object mapper used for JSON de-/serialization. Largely follows the defaults set by Spring.
+   * Default object mapper used for JSON de-/serialization. Largely follows the defaults set by
+   * Spring.
    *
    * <p>For internal use only.
    *
