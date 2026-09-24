@@ -5,9 +5,18 @@ import java.nio.file.Path;
 import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import lombok.EqualsAndHashCode;
 
-/** Interface representing convenience wrappers of chat message to the orchestration service. */
-public sealed interface Message permits AssistantMessage, SystemMessage, ToolMessage, UserMessage {
+/**
+ * Contract-representing class for convenience wrappers of chat message to the orchestration
+ * service.
+ */
+@EqualsAndHashCode
+public abstract class Message {
+
+  /** Internal SDK usage only. Limit inheritance visibility to package-local scope */
+  Message() {}
+  ;
 
   /**
    * A convenience method to create a user message from a string.
@@ -16,7 +25,7 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @return the user message.
    */
   @Nonnull
-  static UserMessage user(@Nonnull final String message) {
+  public static UserMessage user(@Nonnull final String message) {
     return user(message, null);
   }
 
@@ -29,7 +38,7 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @return the user message.
    */
   @Nonnull
-  static UserMessage user(
+  public static UserMessage user(
       @Nonnull final String message, @Nullable final CacheControl cacheControl) {
     return new UserMessage(message, cacheControl);
   }
@@ -42,7 +51,7 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @since 1.3.0
    */
   @Nonnull
-  static UserMessage user(@Nonnull final ImageItem imageItem) {
+  public static UserMessage user(@Nonnull final ImageItem imageItem) {
     return new UserMessage(new MessageContent(List.of(imageItem)));
   }
 
@@ -54,7 +63,7 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @since 1.18.0
    */
   @Nonnull
-  static UserMessage user(@Nonnull final Path filePath) {
+  public static UserMessage user(@Nonnull final Path filePath) {
     return new UserMessage(new MessageContent(List.of())).withFile(filePath);
   }
 
@@ -65,7 +74,7 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @return the assistant message.
    */
   @Nonnull
-  static AssistantMessage assistant(@Nonnull final String message) {
+  public static AssistantMessage assistant(@Nonnull final String message) {
     return new AssistantMessage(message);
   }
 
@@ -76,7 +85,7 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @return the system message.
    */
   @Nonnull
-  static SystemMessage system(@Nonnull final String message) {
+  public static SystemMessage system(@Nonnull final String message) {
     return system(message, null);
   }
 
@@ -90,7 +99,7 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @return the system message
    */
   @Nonnull
-  static SystemMessage system(
+  public static SystemMessage system(
       @Nonnull final String message, @Nullable final CacheControl cacheControl) {
     return new SystemMessage(message, cacheControl);
   }
@@ -101,7 +110,7 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @return the corresponding {@code ChatMessage} object.
    */
   @Nonnull
-  ChatMessage createChatMessage();
+  abstract ChatMessage createChatMessage();
 
   /**
    * Returns the role of the assistant.
@@ -109,7 +118,7 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @return the role.
    */
   @Nonnull
-  String role();
+  abstract String role();
 
   /**
    * Returns the content of the message.
@@ -117,5 +126,5 @@ public sealed interface Message permits AssistantMessage, SystemMessage, ToolMes
    * @return the content.
    */
   @Nonnull
-  MessageContent content();
+  abstract MessageContent content();
 }

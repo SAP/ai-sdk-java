@@ -99,7 +99,10 @@ public class OrchestrationChatResponse {
         val toolCalls = assistantChatMessage.getToolCalls();
         AssistantMessage assistantMessage;
         if (!toolCalls.isEmpty()) {
-          assistantMessage = new AssistantMessage(toolCalls);
+          assistantMessage =
+              new AssistantMessage(
+                      MessageContent.fromChatMessageContent(assistantChatMessage.getContent()))
+                  .withToolCalls(toolCalls);
         } else {
           assistantMessage =
               new AssistantMessage(
