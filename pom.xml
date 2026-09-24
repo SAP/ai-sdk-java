@@ -77,9 +77,9 @@
     <mockito.version>5.23.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
-    <jackson.version>2.22.2</jackson.version>
+    <jackson.version>2.22.3</jackson.version>
     <jackson-annotations.version>2.22</jackson-annotations.version>
-    <jackson3.version>3.2.2</jackson3.version>
+    <jackson3.version>3.2.3</jackson3.version>
     <logback.version>1.6.3</logback.version>
     <commons-codec.version>1.22.1</commons-codec.version>
     <japicmp.version>0.26.2</japicmp.version>
