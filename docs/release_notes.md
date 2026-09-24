@@ -12,6 +12,48 @@
 - [Orchestration] Spring AI support was upgraded to version `2.0.1`
 - [Prompt Registry] `OrchestrationConfigClient` and `PromptClient` were reworked into unified `PromptRegistryClient`,
    see migration guide below for additional information
+- [Orchestration] Removed deprecated models:
+  - ibm--granite-13b-chat
+  - mistralai--mistral-large-instruct
+  - mistralai--mistral-small-instruct
+  - mistralai--mixtral-8x7b-instruct-v01
+  - meta--llama3-70b-instruct
+  - meta--llama3.1-70b-instruct
+  - anthropic--claude-3-sonnet
+  - anthropic--claude-3-haiku
+  - anthropic--claude-3-opus
+  - anthropic--claude-3.5-sonnet
+  - anthropic--claude-3.7-sonnet
+  - anthropic--claude-4-sonnet
+  - amazon--titan-text-lite
+  - amazon--titan-text-express
+  - gpt-35-turbo
+  - gpt-35-turbo-16k
+  - gpt-35-turbo-0125
+  - gpt-4
+  - gpt-4-32k
+  - gpt-4-0613
+  - gpt-4o-mini
+  - o1
+  - o3-mini
+  - gemini-1.0-pro
+  - gemini-1.5-pro
+  - gemini-1.5-flash
+  - gemini-2.0-flash
+  - gemini-2.0-flash-lite
+  - alephalpha-pharia-1-7b-control
+  - deepseek-ai--deepseek-r1
+- [OpenAi] Removed deprecated models:
+  - dall-e-3
+  - gpt-35-turbo
+  - gpt-35-turbo-0125
+  - gpt-35-turbo-16k
+  - gpt-4
+  - gpt-4-32k
+  - gpt-4o-mini
+  - o3-mini
+  - o1
+  - text-embedding-ada-002
 
 #### Prompt registry client Migration Guide
 
