@@ -41,6 +41,12 @@ public class AssistantMessage extends Message {
   @Nullable
   List<ReasoningBlock> reasoningContent;
 
+  /**
+   * Creates a new assistant message with the given tool calls.
+   *
+   * @param toolCalls list of tool call objects
+   * @deprecated Please use {@link #withToolCalls(List)} instead.
+   */
   @Deprecated
   public AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
     content = new MessageContent(List.of());
