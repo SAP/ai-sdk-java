@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -30,9 +31,10 @@ import lombok.val;
  * Core: Orchestration - Data Masking</a>
  */
 @Value
+@EqualsAndHashCode(callSuper = true)
 @Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class DpiMasking implements MaskingProvider {
+public class DpiMasking extends MaskingProvider {
   @Nonnull DPIConfig.MethodEnum maskingMethod;
   @Nonnull List<DPIEntityConfig> entitiesConfig;
   @With boolean maskGroundingInput;
@@ -140,7 +142,7 @@ public class DpiMasking implements MaskingProvider {
 
   @Nonnull
   @Override
-  public DPIConfig createConfig() {
+  DPIConfig createConfig() {
     return DPIConfig.create()
         .type(SAP_DATA_PRIVACY_INTEGRATION)
         .method(maskingMethod)

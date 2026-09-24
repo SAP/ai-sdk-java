@@ -16,6 +16,7 @@
 - [OpenAi] `OpenAi.withApiVersion` was removed from public API and deprecated
 - [Orchestration] Internal AI SDK methods `createInputFilterConfig` and `createOutputFilterConfig` were removed
   from public API
+- [Orchestration] Internal AI SDK methods `createConfig` were removed from `GroundingProvider` and `MaskingProvider`
 
 #### Prompt registry client Migration Guide
 
