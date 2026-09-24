@@ -29,18 +29,18 @@ public class OrchestrationPrompt {
   /**
    * Initialize a prompt with the given user message.
    *
-   * @param message A user message.
+   * @param message a user message.
    */
   public OrchestrationPrompt(@Nonnull final String message) {
     this(message, null);
   }
 
   /**
-   * Initialize a prompt with the given user message with optional cache checkpoint configuration
+   * Initialize a prompt with the given user message with optional cache checkpoint configuration.
    *
+   * @param message a user message.
+   * @param cacheControl optional cache checkpoint configuration.
    * @since 1.23.0
-   * @param message A user message.
-   * @param cacheControl optional cache checkpoint configuration
    */
   public OrchestrationPrompt(
       @Nonnull final String message, @Nullable final CacheControl cacheControl) {
@@ -50,8 +50,8 @@ public class OrchestrationPrompt {
   /**
    * Initialize a prompt from the given messages.
    *
-   * @param message The first message.
-   * @param messages Optionally, more messages.
+   * @param message the first message.
+   * @param messages optionally, more messages.
    */
   public OrchestrationPrompt(@Nonnull final Message message, @Nonnull final Message... messages) {
     this.messages.add(message);
@@ -61,8 +61,8 @@ public class OrchestrationPrompt {
   /**
    * Initialize a prompt based on template variables.
    *
-   * @param inputParams The input parameters as entries of template variables and their contents.
-   * @param messages The messages to be sent to the orchestration service.
+   * @param inputParams the input parameters as entries of template variables and their contents.
+   * @param messages the messages to be sent to the orchestration service.
    */
   public OrchestrationPrompt(
       @Nonnull final Map<String, String> inputParams, @Nonnull final Message... messages) {
@@ -73,8 +73,8 @@ public class OrchestrationPrompt {
   /**
    * Set the chat history of this prompt.
    *
-   * @param messagesHistory The chat history to add.
-   * @return The current instance of {@link OrchestrationPrompt} with the changed chat history.
+   * @param messagesHistory the chat history to add.
+   * @return the current instance of {@link OrchestrationPrompt} with the changed chat history.
    */
   @Nonnull
   public OrchestrationPrompt messageHistory(@Nonnull final List<Message> messagesHistory) {
@@ -86,8 +86,8 @@ public class OrchestrationPrompt {
   /**
    * Set the template parameters of this prompt.
    *
-   * @param templateParameters The template parameters to add.
-   * @return The current instance of {@link OrchestrationPrompt} with the changed template
+   * @param templateParameters the template parameters to add.
+   * @return the current instance of {@link OrchestrationPrompt} with the changed template
    *     parameters.
    */
   @Nonnull

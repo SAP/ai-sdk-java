@@ -155,8 +155,8 @@ public class OrchestrationModuleConfig {
    * href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/model-configuration">SAP
    * AI Core: Orchestration - Model Configuration</a>
    *
-   * @param aiModel The LLM configuration to use.
-   * @return A new configuration with the given LLM configuration.
+   * @param aiModel the LLM configuration to use.
+   * @return a new configuration with the given LLM configuration.
    */
   @Tolerate
   @Nonnull
@@ -167,8 +167,8 @@ public class OrchestrationModuleConfig {
   /**
    * Creates a new configuration with the given stream configuration.
    *
-   * @param config The stream configuration to use.
-   * @return A new configuration with the given stream configuration.
+   * @param config the stream configuration to use.
+   * @return a new configuration with the given stream configuration.
    * @since 1.12.0
    */
   @Nonnull
@@ -184,9 +184,9 @@ public class OrchestrationModuleConfig {
    * <p><a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP
    * AI Core: Orchestration - Data Masking</a>
    *
-   * @param maskingProvider The Data Masking configuration to use.
-   * @param maskingProviders Additional Data Masking configurations to use.
-   * @return A new configuration with the given Data Masking configuration.
+   * @param maskingProvider the Data Masking configuration to use.
+   * @param maskingProviders additional Data Masking configurations to use.
+   * @return a new configuration with the given Data Masking configuration.
    */
   @Tolerate
   @Nonnull
@@ -284,11 +284,11 @@ public class OrchestrationModuleConfig {
   /**
    * Creates a new configuration with the given output filtering stream options.
    *
+   * @param outputFilteringStreamOptions the output filtering stream options to use.
+   * @return a new configuration with the given output filtering stream options.
    * @see <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/streaming">Orchestration
    *     documentation on streaming.</a>
-   * @param outputFilteringStreamOptions The output filtering stream options to use.
-   * @return A new configuration with the given output filtering stream options.
    */
   @Nonnull
   OrchestrationModuleConfig withOutputFilteringStreamOptions(
@@ -314,8 +314,8 @@ public class OrchestrationModuleConfig {
    * <p><a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP AI
    * Core: Orchestration - Grounding</a>
    *
-   * @param groundingProvider The grounding configuration to use.
-   * @return A new configuration with the given grounding configuration.
+   * @param groundingProvider the grounding configuration to use.
+   * @return a new configuration with the given grounding configuration.
    */
   @Nonnull
   public OrchestrationModuleConfig withGrounding(
@@ -329,8 +329,8 @@ public class OrchestrationModuleConfig {
    * <p><a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP AI
    * Core: Orchestration - Templating</a>
    *
-   * @param templateConfig The template configuration to use.
-   * @return A new configuration with the given template configuration.
+   * @param templateConfig the template configuration to use.
+   * @return a new configuration with the given template configuration.
    * @since 1.4.0
    */
   @Tolerate
@@ -343,8 +343,8 @@ public class OrchestrationModuleConfig {
   /**
    * Configure input translation using a high-level TranslationConfig.
    *
-   * @param translationConfig The translation configuration
-   * @return A new OrchestrationModuleConfig with input translation configured
+   * @param translationConfig the translation configuration.
+   * @return a new OrchestrationModuleConfig with input translation configured.
    */
   @Tolerate
   @Nonnull
@@ -356,8 +356,8 @@ public class OrchestrationModuleConfig {
   /**
    * Configure output translation using a high-level TranslationConfig.
    *
-   * @param translationConfig The translation configuration
-   * @return A new OrchestrationModuleConfig with output translation configured
+   * @param translationConfig the translation configuration.
+   * @return a new OrchestrationModuleConfig with output translation configured.
    */
   @Tolerate
   @Nonnull

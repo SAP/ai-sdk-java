@@ -41,7 +41,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
-/** Service class for the Orchestration service */
+/** Service class for the Orchestration service. */
 @Service
 public class SpringAiOrchestrationService {
   private final ChatModel client = new OrchestrationChatModel();
@@ -59,7 +59,7 @@ public class SpringAiOrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
    *
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse completion() {
@@ -69,9 +69,9 @@ public class SpringAiOrchestrationService {
   }
 
   /**
-   * Asynchronous stream of an OpenAI chat request
+   * Asynchronous stream of an OpenAI chat request.
    *
-   * @return a stream of assistant message responses
+   * @return a stream of assistant message responses.
    */
   @Nonnull
   public Flux<ChatResponse> streamChatCompletion() {
@@ -84,7 +84,7 @@ public class SpringAiOrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with a template.
    *
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse template() {
@@ -102,7 +102,7 @@ public class SpringAiOrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse masking() {
@@ -125,8 +125,8 @@ public class SpringAiOrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
-   * @param policy the explicitness of content that should be allowed through the filter
-   * @return the assistant response object
+   * @param policy the explicitness of content that should be allowed through the filter.
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
@@ -151,8 +151,8 @@ public class SpringAiOrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
-   * @param policy the explicitness of content that should be allowed through the filter
-   * @return the assistant response object
+   * @param policy the explicitness of content that should be allowed through the filter.
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
@@ -176,8 +176,8 @@ public class SpringAiOrchestrationService {
    * href="https://docs.spring.io/spring-ai/reference/api/tools.html#_methods_as_tools">Spring AI
    * Tool Method Declarative Specification</a>
    *
-   * @param internalToolExecutionEnabled whether the internal tool execution is enabled
-   * @return the assistant response object
+   * @param internalToolExecutionEnabled whether the internal tool execution is enabled.
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
@@ -193,7 +193,7 @@ public class SpringAiOrchestrationService {
    * Example using an MCP client to use a file system tool. Enabled via dedicated Spring profile,
    * since it requires an actual MCP server to run.
    *
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse toolCallingMcp() {
@@ -226,7 +226,7 @@ public class SpringAiOrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service using chat memory.
    *
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse chatMemory() {
@@ -253,7 +253,7 @@ public class SpringAiOrchestrationService {
    * Chat request using the Spring AI integration with fallback configs. The first config uses an
    * invalid model name, so the orchestration service falls back to the second config.
    *
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse completionWithFallback() {
@@ -270,8 +270,8 @@ public class SpringAiOrchestrationService {
   /**
    * A simple record to demonstrate the response format feature of the orchestration service.
    *
-   * @param translation the translated text
-   * @param language the language of the translation
+   * @param translation the translated text.
+   * @param language the language of the translation.
    */
   public record Translation(
       @JsonProperty(required = true) String translation,
@@ -283,7 +283,7 @@ public class SpringAiOrchestrationService {
    *
    * <p>In this case, we expect a {@code Translation} of the input text into Dutch.
    *
-   * @return The translated text.
+   * @return the translated text.
    */
   @Nullable
   public Translation responseFormat() {
@@ -298,8 +298,8 @@ public class SpringAiOrchestrationService {
   /**
    * Create an embedding for a given text using the Orchestration service.
    *
-   * @param inputText the text to embed
-   * @return the embedding as a float array
+   * @param inputText the text to embed.
+   * @return the embedding as a float array.
    */
   @Nonnull
   public float[] embed(@Nonnull final String inputText) {

@@ -122,7 +122,7 @@ public class OrchestrationClientException extends ClientException {
    * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
    * public signature.
    *
-   * @return The {@link ErrorResponse} object, or {@code null} if not available.
+   * @return the {@link ErrorResponse} object, or {@code null} if not available.
    * @since 1.10.0
    */
   @Beta
@@ -140,7 +140,7 @@ public class OrchestrationClientException extends ClientException {
    * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
    * public signature.
    *
-   * @return The {@link ErrorResponseStreaming} object, or {@code null} if not available.
+   * @return the {@link ErrorResponseStreaming} object, or {@code null} if not available.
    * @since 1.10.0
    */
   @Beta
@@ -155,7 +155,7 @@ public class OrchestrationClientException extends ClientException {
   /**
    * Retrieves the HTTP status code from the original error response, if available.
    *
-   * @return the HTTP status code, or {@code null} if not available
+   * @return the HTTP status code, or {@code null} if not available.
    * @since 1.10.0
    */
   @Nullable

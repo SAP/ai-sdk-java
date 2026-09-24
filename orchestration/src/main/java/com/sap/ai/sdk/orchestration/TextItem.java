@@ -19,10 +19,10 @@ public final class TextItem implements ContentItem, CacheablePrompt {
   private final CacheControl cacheControl;
 
   /**
-   * Constructs text item
+   * Constructs text item.
    *
-   * @param text - text content
-   * @param cacheControl - nullable cache control param
+   * @param text text content.
+   * @param cacheControl optional cache control configuration. Can be {@code null} if not applicable.
    */
   public TextItem(@Nonnull final String text, @Nullable final CacheControl cacheControl) {
     this.text = text;
@@ -30,9 +30,9 @@ public final class TextItem implements ContentItem, CacheablePrompt {
   }
 
   /**
-   * Compatibility constructor conforming with the previous API to avoid breaking changes
+   * Compatibility constructor conforming with the previous API to avoid breaking changes.
    *
-   * @param text value of the item
+   * @param text value of the item.
    */
   public TextItem(@Nonnull final String text) {
     this(text, null);
@@ -40,9 +40,9 @@ public final class TextItem implements ContentItem, CacheablePrompt {
 
   /**
    * Compatibility method to support conversion from record to class without breaking changes, the
-   * same as {@link #getText()}
+   * same as {@link #getText()}.
    *
-   * @return text
+   * @return text.
    */
   @Nonnull
   public String text() {

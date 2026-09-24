@@ -8,20 +8,20 @@ import lombok.val;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
 
-/** Mock tool for agentic workflow */
+/** Mock tool for agentic workflow. */
 class RestaurantMethod {
 
   /**
-   * Request for list of restaurants
+   * Request for list of restaurants.
    *
-   * @param location the city
+   * @param location the city.
    */
   record Request(String location) {}
 
   /**
-   * Response for restaurant recommendations
+   * Response for restaurant recommendations.
    *
-   * @param restaurants the list of restaurants
+   * @param restaurants the list of restaurants.
    */
   record Response(List<String> restaurants) {}
 

@@ -53,8 +53,8 @@ public class OrchestrationEmbeddingRequest {
    * OrchestrationEmbeddingRequest.forModel(myModel).forInputs("text to embed");
    * }</pre>
    *
-   * @param model the embedding model to use
-   * @return a step for specifying inputs
+   * @param model the embedding model to use.
+   * @return a step for specifying inputs.
    */
   @Nonnull
   public static InputStep forModel(@Nonnull final OrchestrationEmbeddingModel model) {
@@ -68,8 +68,8 @@ public class OrchestrationEmbeddingRequest {
     /**
      * Specifies text inputs to be embedded.
      *
-     * @param inputs the text strings to embed
-     * @return a new embedding request instance
+     * @param inputs the text strings to embed.
+     * @return a new embedding request instance.
      */
     @Nonnull
     OrchestrationEmbeddingRequest forInputs(@Nonnull final List<String> inputs);
@@ -77,9 +77,9 @@ public class OrchestrationEmbeddingRequest {
     /**
      * Specifies multiple text inputs using variable arguments.
      *
-     * @param firstInput string to embed
-     * @param inputs optional additional strings to embed
-     * @return a new embedding request instance
+     * @param firstInput string to embed.
+     * @param inputs optional additional strings to embed.
+     * @return a new embedding request instance.
      */
     @Nonnull
     default OrchestrationEmbeddingRequest forInputs(
@@ -91,9 +91,9 @@ public class OrchestrationEmbeddingRequest {
   /**
    * Adds data masking providers to enable detection and masking of sensitive information.
    *
-   * @param maskingProvider the primary masking provider
-   * @param maskingProviders additional masking providers
-   * @return a new request instance with the specified masking providers
+   * @param maskingProvider the primary masking provider.
+   * @param maskingProviders additional masking providers.
+   * @return a new request instance with the specified masking providers.
    * @see MaskingProvider
    */
   @Tolerate
@@ -107,7 +107,7 @@ public class OrchestrationEmbeddingRequest {
   /**
    * Configures this request to optimize embeddings for document content.
    *
-   * @return a new request instance configured for document embedding
+   * @return a new request instance configured for document embedding.
    */
   @Nonnull
   public OrchestrationEmbeddingRequest asDocument() {
@@ -117,7 +117,7 @@ public class OrchestrationEmbeddingRequest {
   /**
    * Configures this request to optimize embeddings for general text content.
    *
-   * @return a new request instance configured for text embedding
+   * @return a new request instance configured for text embedding.
    */
   @Nonnull
   public OrchestrationEmbeddingRequest asText() {
@@ -127,7 +127,7 @@ public class OrchestrationEmbeddingRequest {
   /**
    * Configures this request to optimize embeddings for query content.
    *
-   * @return a new request instance configured for query embedding
+   * @return a new request instance configured for query embedding.
    */
   @Nonnull
   public OrchestrationEmbeddingRequest asQuery() {

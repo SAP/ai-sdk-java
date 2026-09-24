@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
-/** Endpoints for OpenAI Responses API operations */
+/** Endpoints for OpenAI Responses API operations. */
 @Slf4j
 @RestController
 @SuppressWarnings("unused")

@@ -64,8 +64,8 @@ public class AssistantMessage implements Message {
   /**
    * Creates a new assistant message with the given tool calls.
    *
-   * @param toolCalls list of tool call objects
-   * @deprecated Please use {@link #withToolCalls(List)} instead.
+   * @param toolCalls list of tool call objects.
+   * @deprecated Use {@link #withToolCalls(List)} instead.
    */
   @Deprecated
   public AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {

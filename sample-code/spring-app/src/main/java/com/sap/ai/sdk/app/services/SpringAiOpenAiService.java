@@ -25,7 +25,7 @@ import org.springframework.ai.support.ToolCallbacks;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
-/** Service class for Spring AI integration with OpenAI */
+/** Service class for Spring AI integration with OpenAI. */
 @Service
 public class SpringAiOpenAiService {
 
@@ -37,7 +37,7 @@ public class SpringAiOpenAiService {
   /**
    * Embeds a list of strings using the OpenAI embedding model.
    *
-   * @return an {@code EmbeddingResponse} containing the embeddings and metadata
+   * @return an {@code EmbeddingResponse} containing the embeddings and metadata.
    */
   @Nonnull
   public EmbeddingResponse embedStrings() {
@@ -51,7 +51,7 @@ public class SpringAiOpenAiService {
   /**
    * Embeds the content of a document using the OpenAI embedding model.
    *
-   * @return a float array representing the embedding of the document's content
+   * @return a float array representing the embedding of the document's content.
    */
   @Nonnull
   public float[] embedDocument() {
@@ -62,7 +62,7 @@ public class SpringAiOpenAiService {
   /**
    * Chat request to OpenAI through the OpenAI service with a simple prompt.
    *
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse completion() {
@@ -71,9 +71,9 @@ public class SpringAiOpenAiService {
   }
 
   /**
-   * Asynchronous stream of an OpenAI chat request
+   * Asynchronous stream of an OpenAI chat request.
    *
-   * @return a stream of assistant message responses
+   * @return a stream of assistant message responses.
    */
   @Nonnull
   public Flux<ChatResponse> streamChatCompletion() {
@@ -86,8 +86,8 @@ public class SpringAiOpenAiService {
    * href="https://docs.spring.io/spring-ai/reference/api/tools.html#_methods_as_tools">Spring AI
    * Tool Method Declarative Specification</a>
    *
-   * @param internalToolExecutionEnabled whether the internal tool execution is enabled
-   * @return the assistant response object
+   * @param internalToolExecutionEnabled whether the internal tool execution is enabled.
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
@@ -102,7 +102,7 @@ public class SpringAiOpenAiService {
   /**
    * Chat request to OpenAI through the OpenAI service using chat memory.
    *
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public ChatResponse chatMemory() {

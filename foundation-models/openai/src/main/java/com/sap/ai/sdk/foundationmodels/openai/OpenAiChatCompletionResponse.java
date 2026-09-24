@@ -40,7 +40,7 @@ public class OpenAiChatCompletionResponse {
   /**
    * Gets the token usage from the original response.
    *
-   * @return the token usage
+   * @return the token usage.
    */
   @Nonnull
   public CompletionUsage getTokenUsage() {
@@ -50,7 +50,7 @@ public class OpenAiChatCompletionResponse {
   /**
    * Gets the first choice from the original response.
    *
-   * @return the first choice
+   * @return the first choice.
    */
   @Nonnull
   public CreateChatCompletionResponseChoicesInner getChoice() {
@@ -63,8 +63,8 @@ public class OpenAiChatCompletionResponse {
    * <p>The content may be empty {@code ""} if the assistant did not return any content i.e. when
    * tool calls are present.
    *
-   * @return the content of the first choice
-   * @throws OpenAiClientException if the content is filtered by the content filter
+   * @return the content of the first choice.
+   * @throws OpenAiClientException if the content is filtered by the content filter.
    */
   @Nonnull
   public String getContent() {
@@ -78,8 +78,8 @@ public class OpenAiChatCompletionResponse {
   /**
    * Gets the {@code OpenAiAssistantMessage} for the first choice.
    *
-   * @return the assistant message
-   * @throws OpenAiClientException if the content is filtered by the content filter
+   * @return the assistant message.
+   * @throws OpenAiClientException if the content is filtered by the content filter.
    * @since 1.6.0
    */
   @Nonnull

@@ -20,34 +20,36 @@ import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 
 /**
- * Parse incoming JSON responses and handles any errors. For internal use only.
+ * Parses incoming JSON responses and handles any errors.
  *
- * @param <T> The type of the successful response.
- * @param <E> The type of the exception to throw.
- * @param <R> The type of the error response.
+ * <p>For internal use only.
+ *
+ * @param <T> the type of the successful response.
+ * @param <E> the type of the exception to throw.
+ * @param <R> the type of the error response.
  * @since 1.1.0
  */
 @Slf4j
 @RequiredArgsConstructor
 public class ClientResponseHandler<T, R extends ClientError, E extends ClientException>
     implements HttpClientResponseHandler<T> {
-  /** The HTTP success response type */
+  /** The HTTP success response type. */
   @Nonnull final Class<T> successType;
 
-  /** The HTTP error response type */
+  /** The HTTP error response type. */
   @Nonnull final Class<? extends R> errorType;
 
   /** The factory to create exceptions for Http 4xx/5xx responses. */
   @Nonnull final ClientExceptionFactory<E, R> exceptionFactory;
 
-  /** The parses for JSON responses, will be private once we can remove mixins */
+  /** The parses for JSON responses, will be private once we can remove mixins. */
   @Nonnull ObjectMapper objectMapper = getDefaultObjectMapper();
 
   /**
    * Set the {@link ObjectMapper} to use for parsing JSON responses.
    *
-   * @param jackson The {@link ObjectMapper} to use
-   * @return the current instance of {@link ClientResponseHandler} with the changed object mapper
+   * @param jackson the {@link ObjectMapper} to use.
+   * @return the current instance of {@link ClientResponseHandler} with the changed object mapper.
    */
   @Beta
   @Nonnull
@@ -59,9 +61,9 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   /**
    * Processes a {@link ClassicHttpResponse} and returns some value corresponding to that response.
    *
-   * @param response The response to process
-   * @return A model class instantiated from the response
-   * @throws E in case of a problem or the connection was aborted
+   * @param response the response to process.
+   * @return a model class instantiated from the response.
+   * @throws E in case of a problem or the connection was aborted.
    */
   @Nonnull
   @Override
@@ -103,8 +105,8 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   /**
    * Process the error response and throw an exception.
    *
-   * @param httpResponse The response to process
-   * @throws ClientException if the response is an error (4xx/5xx)
+   * @param httpResponse the response to process.
+   * @throws ClientException if the response is an error (4xx/5xx).
    */
   @SuppressWarnings("PMD.CloseResource")
   protected void buildAndThrowException(@Nonnull final ClassicHttpResponse httpResponse) throws E {
@@ -144,9 +146,9 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   /**
    * Parses the JSON content of an error response and throws a module specific exception.
    *
-   * @param content The JSON content of the error response.
-   * @param httpResponse The HTTP response that contains the error.
-   * @throws ClientException if the response is an error (4xx/5xx)
+   * @param content the JSON content of the error response.
+   * @param httpResponse the HTTP response that contains the error.
+   * @throws ClientException if the response is an error (4xx/5xx).
    */
   protected void parseErrorResponseAndThrow(
       @Nonnull final String content, @Nonnull final ClassicHttpResponse httpResponse) throws E {

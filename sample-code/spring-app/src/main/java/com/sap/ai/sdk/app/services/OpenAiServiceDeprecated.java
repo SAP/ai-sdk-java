@@ -29,7 +29,7 @@ import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-/** Service class for OpenAI service */
+/** Service class for OpenAI service. */
 @Service
 @Slf4j
 @Deprecated
@@ -37,10 +37,10 @@ public class OpenAiServiceDeprecated {
   private static final ObjectMapper JACKSON = new ObjectMapper();
 
   /**
-   * Chat request to OpenAI
+   * Chat request to OpenAI.
    *
-   * @param prompt The prompt to send to the assistant
-   * @return the assistant message response
+   * @param prompt the prompt to send to the assistant.
+   * @return the assistant message response.
    */
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt) {
@@ -48,10 +48,10 @@ public class OpenAiServiceDeprecated {
   }
 
   /**
-   * Asynchronous stream of an OpenAI chat request
+   * Asynchronous stream of an OpenAI chat request.
    *
-   * @param message The message to send to the assistant
-   * @return the emitter that streams the assistant message response
+   * @param message the message to send to the assistant.
+   * @return the emitter that streams the assistant message response.
    */
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
@@ -64,10 +64,10 @@ public class OpenAiServiceDeprecated {
   }
 
   /**
-   * Asynchronous stream of an OpenAI chat request
+   * Asynchronous stream of an OpenAI chat request.
    *
-   * @param message The message to send to the assistant
-   * @return the emitter that streams the assistant message response
+   * @param message the message to send to the assistant.
+   * @return the emitter that streams the assistant message response.
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String message) {
@@ -77,10 +77,10 @@ public class OpenAiServiceDeprecated {
   }
 
   /**
-   * Chat request to OpenAI with an image
+   * Chat request to OpenAI with an image.
    *
-   * @param linkToImage The link to the image
-   * @return the assistant message response
+   * @param linkToImage the link to the image.
+   * @return the assistant message response.
    */
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletionImage(@Nonnull final String linkToImage) {
@@ -99,9 +99,9 @@ public class OpenAiServiceDeprecated {
   /**
    * Executes a chat completion request to OpenAI with a tool that calculates the weather.
    *
-   * @param location The location to get the weather for.
-   * @param unit The unit of temperature to use.
-   * @return The assistant message response.
+   * @param location the location to get the weather for.
+   * @param unit the unit of temperature to use.
+   * @return the assistant message response.
    */
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletionToolExecution(
@@ -174,10 +174,10 @@ public class OpenAiServiceDeprecated {
   }
 
   /**
-   * Get the embedding of a text
+   * Get the embedding of a text.
    *
-   * @param input The text to embed
-   * @return the embedding response
+   * @param input the text to embed.
+   * @return the embedding response.
    */
   @Nonnull
   public OpenAiEmbeddingOutput embedding(@Nonnull final String input) {
@@ -187,11 +187,11 @@ public class OpenAiServiceDeprecated {
   }
 
   /**
-   * Chat request to OpenAI filtering by resource group
+   * Chat request to OpenAI filtering by resource group.
    *
-   * @param resourceGroup The resource group to use
-   * @param prompt The prompt to send to the assistant
-   * @return the assistant message response
+   * @param resourceGroup the resource group, usually {@code "default"}.
+   * @param prompt the prompt to send to the assistant.
+   * @return the assistant message response.
    */
   @Nonnull
   public OpenAiChatCompletionOutput chatCompletionWithResource(

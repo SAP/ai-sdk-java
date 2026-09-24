@@ -20,7 +20,7 @@ public class OpenAiClientException extends ClientException {
    * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
    * public signature.
    *
-   * @return The {@link ErrorResponse} object, or {@code null} if not available.
+   * @return the {@link ErrorResponse} object, or {@code null} if not available.
    */
   @Beta
   @Nullable
