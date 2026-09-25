@@ -15,7 +15,7 @@ public interface GroundingProvider {
   /**
    * Create a grounding configuration.
    *
-   * @return the grounding configuration
+   * @return the grounding configuration.
    */
   @Nonnull
   GroundingModuleConfig createConfig();

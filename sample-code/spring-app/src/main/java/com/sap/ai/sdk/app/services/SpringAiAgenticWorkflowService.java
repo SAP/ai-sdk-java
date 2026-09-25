@@ -21,7 +21,7 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.support.ToolCallbacks;
 import org.springframework.stereotype.Service;
 
-/** Service class for the AgenticWorkflow service */
+/** Service class for the AgenticWorkflow service. */
 @Service
 @Slf4j
 public class SpringAiAgenticWorkflowService {
@@ -33,8 +33,8 @@ public class SpringAiAgenticWorkflowService {
    * Simple agentic workflow using chain-like structure. The agent is generating a travel itinerary
    * for a given city.
    *
-   * @param userInput the user input including the target city
-   * @return a short travel itinerary
+   * @param userInput the user input including the target city.
+   * @return a short travel itinerary.
    */
   @Nonnull
   public ChatResponse runAgent(@Nonnull final String userInput) {

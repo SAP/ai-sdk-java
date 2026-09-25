@@ -67,7 +67,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
-/** Service class for the Orchestration service */
+/** Service class for the Orchestration service. */
 @Service
 @Slf4j
 public class OrchestrationService {
@@ -80,8 +80,8 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
    *
-   * @param famousPhrase the phrase to send to the assistant
-   * @return the assistant response object
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
@@ -92,8 +92,8 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with an image.
    *
-   * @param pathToImage the path to the image
-   * @return the assistant response object
+   * @param pathToImage the path to the image.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
@@ -108,8 +108,8 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with multiple strings.
    *
-   * @param questions the list of questions to send to the assistant
-   * @return the assistant response object
+   * @param questions the list of questions to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
@@ -122,9 +122,9 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with a file.
    *
-   * @param fileUrl the URL to a PDF file
-   * @param filename optional filename for the file
-   * @return the assistant response object
+   * @param fileUrl the URL to a PDF file.
+   * @param filename optional filename for the file.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse fileInput(
@@ -139,8 +139,8 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with a local file.
    *
-   * @param filePath the path to a local PDF file
-   * @return the assistant response object
+   * @param filePath the path to a local PDF file.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse fileInput(@Nonnull final Path filePath) {
@@ -153,9 +153,9 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with base64 input string.
    *
-   * @param base64Data base64-encoded payload
-   * @param filename the filename
-   * @return the assistant response object
+   * @param base64Data base64-encoded payload.
+   * @param filename the filename.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse fileInputBase64(
@@ -168,10 +168,10 @@ public class OrchestrationService {
   }
 
   /**
-   * Asynchronous stream of an OpenAI chat request
+   * Asynchronous stream of an OpenAI chat request.
    *
-   * @param topic the topic to send to the assistant
-   * @return a stream of assistant message responses
+   * @param topic the topic to send to the assistant.
+   * @return a stream of assistant message responses.
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String topic) {
@@ -255,8 +255,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param language the language to use in the template
-   * @return the assistant response object
+   * @param language the language to use in the template.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse template(@Nonnull final String language) {
@@ -273,8 +273,8 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service using message history.
    *
-   * @param prevMessage the previous message to send to the assistant
-   * @return the assistant response object
+   * @param prevMessage the previous message to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse messagesHistory(@Nonnull final String prevMessage) {
@@ -296,9 +296,9 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
-   * @throws OrchestrationClientException if input filter filters the prompt
-   * @param policy the explicitness of content that should be allowed through the filter
-   * @return the assistant response object
+   * @param policy the explicitness of content that should be allowed through the filter.
+   * @return the assistant response object.
+   * @throws OrchestrationClientException if input filter filters the prompt.
    */
   @Nonnull
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
@@ -326,9 +326,9 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
-   * @param policy the explicitness of content that should be allowed through the filter
-   * @param isProtected activates the protected material code filtering module when set to true
-   * @return the assistant response object
+   * @param policy the explicitness of content that should be allowed through the filter.
+   * @param isProtected activates the protected material code filtering module when set to true.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse outputFiltering(
@@ -358,9 +358,9 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
-   * @throws OrchestrationClientException if input filter filters the prompt
-   * @param filter enable or disable the filter
-   * @return the assistant response object
+   * @param filter enable or disable the filter.
+   * @return the assistant response object.
+   * @throws OrchestrationClientException if input filter filters the prompt.
    */
   @Nonnull
   public OrchestrationChatResponse llamaGuardInputFilter(final boolean filter)
@@ -400,8 +400,8 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
-   * @param entity the entity to be masked
-   * @return the assistant response object
+   * @param entity the entity to be masked.
+   * @return the assistant response object.
    */
   @Nonnull
   @SuppressWarnings("PMD.PublicApiExposesModelType")
@@ -429,7 +429,7 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse maskingRegex() {
@@ -448,9 +448,9 @@ public class OrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration deployment under a specific resource group.
    *
-   * @param resourceGroup the resource group to use
-   * @param famousPhrase the phrase to send to the assistant
-   * @return the assistant response object
+   * @param resourceGroup the resource group, usually {@code "default"}.
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse completionWithResourceGroup(
@@ -471,8 +471,8 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
-   * @param entity the entity to be pseudonymized
-   * @return the assistant response object
+   * @param entity the entity to be pseudonymized.
+   * @return the assistant response object.
    */
   @Nonnull
   @SuppressWarnings("PMD.PublicApiExposesModelType")
@@ -506,9 +506,9 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
    *     AI Core: Orchestration - Grounding</a>
-   * @param userMessage the user message to provide grounding for
-   * @param maskGroundingInput whether to mask the request sent to the Grounding Service
-   * @return the assistant response object
+   * @param userMessage the user message to provide grounding for.
+   * @param maskGroundingInput whether to mask the request sent to the Grounding Service.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse grounding(
@@ -548,8 +548,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
    *     AI Core: Orchestration - Grounding</a>
-   * @param userMessage the user message to provide grounding for
-   * @return the assistant response object
+   * @param userMessage the user message to provide grounding for.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse groundingSharepoint(@Nonnull final String userMessage) {
@@ -576,8 +576,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
    *     AI Core: Orchestration - Grounding</a>
-   * @param userMessage the user message to provide grounding for
-   * @return the assistant response object
+   * @param userMessage the user message to provide grounding for.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse groundingHelpSapCom(@Nonnull final String userMessage) {
@@ -594,8 +594,8 @@ public class OrchestrationService {
   /**
    * A simple record to demonstrate the response format feature of the orchestration service.
    *
-   * @param translation the translated text
-   * @param language the language of the translation
+   * @param translation the translated text.
+   * @param language the language of the translation.
    */
   public record Translation(
       @JsonProperty(required = true) String translation,
@@ -605,9 +605,9 @@ public class OrchestrationService {
    * Chat request to OpenAI through the Orchestration service using response format with JSON
    * schema.
    *
-   * @param word the word to translate
-   * @param targetType the class type to use for the JSON schema
-   * @return the assistant response object
+   * @param word the word to translate.
+   * @param targetType the class type to use for the JSON schema.
+   * @return the assistant response object.
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
@@ -640,8 +640,8 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
-   * @param word the word to translate
-   * @return the assistant response object
+   * @param word the word to translate.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonObject(@Nonnull final String word) {
@@ -664,8 +664,8 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
-   * @param word the word to translate
-   * @return the assistant response object
+   * @param word the word to translate.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatText(@Nonnull final String word) {
@@ -689,8 +689,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param topic the topic to send to the assistant
-   * @return the assistant response object
+   * @param topic the topic to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByIdTenant(
@@ -712,8 +712,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param inputExample the example to send to the assistant
-   * @return the assistant response object
+   * @param inputExample the example to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByIdResourceGroup(
@@ -740,8 +740,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param topic the topic to send to the assistant
-   * @return the assistant response object
+   * @param topic the topic to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenarioTenant(
@@ -761,8 +761,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param inputExample the example to send to the assistant
-   * @return the assistant response object
+   * @param inputExample the example to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenarioResourceGroup(
@@ -790,9 +790,9 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param promptTemplate the YAML prompt template to use
-   * @throws IOException if the YAML cannot be parsed
-   * @return the assistant response object
+   * @param promptTemplate the YAML prompt template to use.
+   * @return the assistant response object.
+   * @throws IOException if the YAML cannot be parsed.
    */
   @Nonnull
   public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
@@ -813,7 +813,7 @@ public class OrchestrationService {
   /**
    * Chat request to an LLM through the Orchestration service using translation.
    *
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse translation() {
@@ -850,8 +850,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/embeddings">AI
    *     Core: Orchestration - Embedding</a>
-   * @param texts the list of texts to embed
-   * @return the embedding response object
+   * @param texts the list of texts to embed.
+   * @return the embedding response object.
    */
   @Nonnull
   public OrchestrationEmbeddingResponse embed(@Nonnull final List<String> texts) {
@@ -871,7 +871,7 @@ public class OrchestrationService {
    * Chat request to an LLM through the Orchestration service using a template from the prompt
    * registry identified by a reference.
    *
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse executeConfigFromReference() {
@@ -934,8 +934,8 @@ public class OrchestrationService {
    * Chat request to OpenAI through the Orchestration service with a list of modules. If the first
    * request fails (which will happen here), the next module is used as a fallback.
    *
-   * @param famousPhrase the phrase to send to the assistant
-   * @return the assistant response object
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse completionWithFallback(@Nonnull final String famousPhrase) {
@@ -954,8 +954,8 @@ public class OrchestrationService {
    * Streaming chat completion using a {@link
    * com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration} (inline config).
    *
-   * @param famousPhrase the phrase to send to the assistant
-   * @return a stream of chat completion deltas
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return a stream of chat completion deltas.
    */
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamDeltasWithInlineConfig(
@@ -971,7 +971,7 @@ public class OrchestrationService {
    * com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById} (config
    * referenced by ID from the orchestration config registry).
    *
-   * @return a stream of chat completion deltas
+   * @return a stream of chat completion deltas.
    */
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamDeltasWithReferenceById() {
@@ -998,7 +998,7 @@ public class OrchestrationService {
    * com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByNameScenarioVersion}
    * (config referenced by scenario, name, and version).
    *
-   * @return a stream of chat completion deltas
+   * @return a stream of chat completion deltas.
    */
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamDeltasWithReferenceByScenario() {
@@ -1019,8 +1019,8 @@ public class OrchestrationService {
    * modules. If the first request fails (which will happen here), the next module is used as a
    * fallback.
    *
-   * @param famousPhrase the phrase to send to the assistant
-   * @return a stream of assistant message responses
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return a stream of assistant message responses.
    */
   @Nonnull
   public Stream<String> streamCompletionWithFallback(@Nonnull final String famousPhrase) {
@@ -1036,8 +1036,8 @@ public class OrchestrationService {
    * Chat request to OpenAI through the Orchestration service with a list of modules. Here, both the
    * original and the fallback request fail.
    *
-   * @param famousPhrase the phrase to send to the assistant
-   * @return the assistant response object
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse completionWithFallbackAllFail(
@@ -1055,7 +1055,7 @@ public class OrchestrationService {
   /**
    * Chat request using the SONAR model which provides citations.
    *
-   * @return the assistant response object with citations
+   * @return the assistant response object with citations.
    */
   @Nonnull
   public OrchestrationChatResponse citations() {

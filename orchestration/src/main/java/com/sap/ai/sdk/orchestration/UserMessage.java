@@ -55,10 +55,10 @@ public class UserMessage implements Message {
   }
 
   /**
-   * Creates a new user message from a string with a cache checkpoint
+   * Creates a new user message from a string with a cache checkpoint.
    *
-   * @param message the first message
-   * @param cacheControl caching checkpoint configuration
+   * @param message the first message.
+   * @param cacheControl caching checkpoint configuration.
    */
   @SuppressWarnings(
       "PMD.PublicApiExposesModelType") // false positive: the two CacheControl classes are mixed up
@@ -82,7 +82,7 @@ public class UserMessage implements Message {
   }
 
   /**
-   * Add text to the message with optional cache checkpoint configuration
+   * Add text to the message with optional cache checkpoint configuration.
    *
    * @param message the text to add.
    * @param cacheControl optional cache checkpoint configuration.

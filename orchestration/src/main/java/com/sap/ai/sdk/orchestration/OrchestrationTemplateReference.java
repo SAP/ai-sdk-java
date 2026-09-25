@@ -31,7 +31,7 @@ public class OrchestrationTemplateReference extends TemplateConfig {
   /**
    * Create a low-level representation of the template.
    *
-   * @return The low-level representation of the template.
+   * @return the low-level representation of the template.
    */
   @Nonnull
   @Override

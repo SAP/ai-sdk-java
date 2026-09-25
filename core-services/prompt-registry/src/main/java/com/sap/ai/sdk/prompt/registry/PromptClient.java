@@ -47,7 +47,7 @@ public class PromptClient extends PromptTemplatesApi {
   /**
    * Instantiates this a client to invoke operations on the Prompt Registry service.
    *
-   * @param aiCoreService The configured connectivity instance to AI Core
+   * @param aiCoreService the configured connectivity instance to AI Core.
    * @since 1.6.0
    */
   public PromptClient(@Nonnull final AiCoreService aiCoreService) {

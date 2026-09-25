@@ -29,7 +29,7 @@ public class OrchestrationEmbeddingResponse {
   /**
    * Extracts embedding vectors as float arrays.
    *
-   * @return list of embedding vectors, never {@code null}
+   * @return list of embedding vectors, never {@code null}.
    */
   @Nonnull
   public List<float[]> getEmbeddingVectors() {

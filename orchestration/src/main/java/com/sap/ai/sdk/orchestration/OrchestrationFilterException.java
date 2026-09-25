@@ -29,7 +29,7 @@ public class OrchestrationFilterException extends OrchestrationClientException {
   /**
    * Retrieves LlamaGuard 3.8b details from {@code filterDetails}, if present.
    *
-   * @return The LlamaGuard38b object, or {@code null} if not found or conversion fails.
+   * @return the LlamaGuard38b object, or {@code null} if not found or conversion fails.
    * @throws IllegalArgumentException if the conversion of filter details to {@link LlamaGuard38b}
    *     fails due to invalid content.
    */
@@ -47,7 +47,7 @@ public class OrchestrationFilterException extends OrchestrationClientException {
     /**
      * Retrieves Azure Content Safety input details from {@code filterDetails}, if present.
      *
-     * @return The AzureContentSafetyInput object, or {@code null} if not found or conversion fails.
+     * @return the AzureContentSafetyInput object, or {@code null} if not found or conversion fails.
      * @throws IllegalArgumentException if the conversion of filter details to {@link
      *     AzureContentSafetyInput} fails due to invalid content.
      */
@@ -71,7 +71,7 @@ public class OrchestrationFilterException extends OrchestrationClientException {
     /**
      * Retrieves Azure Content Safety output details from {@code filterDetails}, if present.
      *
-     * @return The AzureContentSafetyOutput object, or {@code null} if not found or conversion
+     * @return the AzureContentSafetyOutput object, or {@code null} if not found or conversion
      *     fails.
      * @throws IllegalArgumentException if the conversion of filter details to {@link
      *     AzureContentSafetyOutput} fails due to invalid content.

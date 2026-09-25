@@ -5,15 +5,15 @@ import javax.annotation.Nonnull;
 
 /**
  * Allows to input (send) text to the open channel, must be closed when not needed anymore (e.g.
- * try-with-resources)
+ * try-with-resources).
  */
 @Beta
 public interface TextInputChannel extends AutoCloseable {
 
   /**
-   * Sends input text
+   * Sends input text.
    *
-   * @param text text to send
+   * @param text text to send.
    */
   @Beta
   void sendText(@Nonnull final String text);

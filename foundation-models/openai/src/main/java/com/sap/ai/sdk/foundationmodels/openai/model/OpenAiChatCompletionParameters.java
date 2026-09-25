@@ -85,7 +85,7 @@ public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
   @Nullable
   private ToolChoice toolChoice;
 
-  /** "response_format": { "type": "json_object" } */
+  /** "response_format": { "type": "json_object" }. */
   @JsonFormat(shape = JsonFormat.Shape.OBJECT)
   @RequiredArgsConstructor
   public enum ResponseFormat {
@@ -136,7 +136,7 @@ public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
    * Controls which (if any) function is called by the model. Specifying a particular function
    * forces the model to call that function.
    *
-   * @param functionName The name of the function to call.
+   * @param functionName the name of the function to call.
    * @return ${code this} instance for chaining.
    */
   @Nonnull
@@ -190,7 +190,7 @@ public class OpenAiChatCompletionParameters extends OpenAiCompletionParameters {
   /**
    * Add messages to the conversation.
    *
-   * @param messages The messages to add.
+   * @param messages the messages to add.
    * @return this instance for chaining.
    */
   @Nonnull

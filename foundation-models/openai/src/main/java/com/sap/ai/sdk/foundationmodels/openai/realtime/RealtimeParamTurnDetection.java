@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 @Beta
 public final class RealtimeParamTurnDetection implements RealtimeParam {
 
-  /** Model tries to recognize if/when it should respond automatically */
+  /** Model tries to recognize if/when it should respond automatically. */
   @Beta
   public static final RealtimeParamTurnDetection BY_MODEL_AUTO =
       new RealtimeParamTurnDetection("BY_MODEL_AUTO");
