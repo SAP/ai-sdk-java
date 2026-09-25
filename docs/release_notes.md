@@ -12,6 +12,13 @@
 - [Orchestration] Spring AI support was upgraded to version `2.0.1`
 - [Prompt Registry] `OrchestrationConfigClient` and `PromptClient` were reworked into unified `PromptRegistryClient`,
    see migration guide below for additional information
+- [Orchestration] `OrchestrationClient.executeRequestFromJsonModuleConfig` method was removed from SDK without a replacement
+- [OpenAi] `OpenAi.withApiVersion` was removed from public API and deprecated
+- [Orchestration] Internal AI SDK methods `createInputFilterConfig` and `createOutputFilterConfig` were removed
+  from public API
+- [Orchestration] Internal AI SDK methods `createConfig` were removed from `GroundingProvider` and `MaskingProvider`
+- [Orchestration] Internal AI SDK method `content` was removed from public API
+  of `Message` class.
 
 #### Prompt registry client Migration Guide
 

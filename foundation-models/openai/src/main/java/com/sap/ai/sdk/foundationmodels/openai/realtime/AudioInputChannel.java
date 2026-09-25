@@ -1,16 +1,10 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
-import com.google.common.annotations.Beta;
-
 /**
  * Functional interface representing audio input channel (used by audio data producer)
  *
- * <p>Note: This class is marked as {@link Beta} because it represents newly introduced API which
- * has not yet been sufficiently stabilized and has significant risk of changes
- *
  * <p>Should be closed by application (try-with-resources) when not needed anymore
  */
-@Beta
 public interface AudioInputChannel extends AutoCloseable {
 
   /**
@@ -20,6 +14,5 @@ public interface AudioInputChannel extends AutoCloseable {
    *
    * @param rawBytesChunk binary data in the depending on the use case format
    */
-  @Beta
   void inputAudio(byte[] rawBytesChunk);
 }

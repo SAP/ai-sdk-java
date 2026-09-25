@@ -24,7 +24,7 @@ import lombok.val;
  * Core: Orchestration - Grounding</a>
  */
 @Accessors(fluent = true)
-public class Grounding implements GroundingProvider {
+public class Grounding extends GroundingProvider {
 
   @Nonnull
   private List<GroundingModuleConfigConfigFiltersInner> filters =
@@ -94,7 +94,7 @@ public class Grounding implements GroundingProvider {
 
   @Nonnull
   @Override
-  public GroundingModuleConfig createConfig() {
+  GroundingModuleConfig createConfig() {
     val groundingConfigConfig =
         GroundingModuleConfigConfig.create()
             .placeholders(

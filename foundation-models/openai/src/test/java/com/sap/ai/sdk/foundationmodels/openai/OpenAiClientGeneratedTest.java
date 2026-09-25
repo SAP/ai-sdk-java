@@ -88,14 +88,6 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         exactly(1),
         postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
 
-    Try.of(
-        () -> client.withApiVersion("fooBar").chatCompletion(new OpenAiChatCompletionRequest("")));
-    verify(exactly(1), postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("fooBar")));
-
-    assertThat(client)
-        .describedAs(
-            "withApiVersion should return a new object, the sut object should remain unchanged")
-        .isNotSameAs(client.withApiVersion("fooBar"));
     Try.of(() -> client.chatCompletion(new OpenAiChatCompletionRequest("")));
     verify(
         exactly(2),

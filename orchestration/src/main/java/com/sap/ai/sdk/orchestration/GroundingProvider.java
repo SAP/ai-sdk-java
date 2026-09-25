@@ -4,13 +4,18 @@ import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import javax.annotation.Nonnull;
 
 /**
- * Interface for grounding configurations.
+ * API Contract for grounding configurations.
  *
  * <p><a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP AI
  * Core: Orchestration - Grounding</a>
  */
-@FunctionalInterface
-public interface GroundingProvider {
+public abstract class GroundingProvider {
+
+  /**
+   * Internal class. Package-local inheritance only. Not supposed to be implemented outside of AI
+   * SDK.
+   */
+  GroundingProvider() {}
 
   /**
    * Create a grounding configuration.
@@ -18,5 +23,5 @@ public interface GroundingProvider {
    * @return the grounding configuration
    */
   @Nonnull
-  GroundingModuleConfig createConfig();
+  abstract GroundingModuleConfig createConfig();
 }
