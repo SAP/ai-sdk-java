@@ -33,10 +33,10 @@ public final class ToolMessage extends Message {
   @Nullable final CacheControl cacheControl;
 
   /**
-   * Constructs ToolMessage object
+   * Constructs ToolMessage object.
    *
-   * @param id tool call id
-   * @param content message content
+   * @param id tool call id.
+   * @param content message content.
    */
   public ToolMessage(@Nonnull final String id, @Nonnull final String content) {
     this(id, content, null);

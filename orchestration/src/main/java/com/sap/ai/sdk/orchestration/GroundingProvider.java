@@ -20,7 +20,7 @@ public abstract class GroundingProvider {
   /**
    * Create a grounding configuration.
    *
-   * @return the grounding configuration
+   * @return the grounding configuration.
    */
   @Nonnull
   abstract GroundingModuleConfig createConfig();

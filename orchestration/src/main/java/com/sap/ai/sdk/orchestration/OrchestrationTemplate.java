@@ -64,8 +64,8 @@ public class OrchestrationTemplate extends TemplateConfig {
   /**
    * Create a new template with the given messages.
    *
-   * @param messages The messages to use in the template.
-   * @return The updated template.
+   * @param messages the messages to use in the template.
+   * @return the updated template.
    */
   @Nonnull
   public OrchestrationTemplate withMessages(@Nonnull final Message... messages) {
@@ -75,7 +75,7 @@ public class OrchestrationTemplate extends TemplateConfig {
   /**
    * Create a low-level representation of the template.
    *
-   * @return The low-level representation of the template.
+   * @return the low-level representation of the template.
    */
   @Override
   @Nonnull
@@ -93,8 +93,8 @@ public class OrchestrationTemplate extends TemplateConfig {
   /**
    * Set the response format to the given JSON schema.
    *
-   * @param schema The JSON schema to use.
-   * @return The updated template.
+   * @param schema the JSON schema to use.
+   * @return the updated template.
    */
   @Nonnull
   public OrchestrationTemplate withJsonSchemaResponse(@Nonnull final ResponseJsonSchema schema) {
@@ -113,7 +113,7 @@ public class OrchestrationTemplate extends TemplateConfig {
   /**
    * Set the response format to JSON object.
    *
-   * @return The updated template.
+   * @return the updated template.
    */
   @Nonnull
   public OrchestrationTemplate withJsonResponse() {
@@ -125,9 +125,9 @@ public class OrchestrationTemplate extends TemplateConfig {
   /**
    * Create a {@link Template} object from a JSON provided as String.
    *
-   * @throws IOException if the JSON cannot be deserialized
-   * @param inputString the provided JSON
-   * @return A Template object representing the provided JSON
+   * @param inputString the provided JSON.
+   * @return a Template object representing the provided JSON.
+   * @throws IOException if the JSON cannot be deserialized.
    * @since 1.7.0
    */
   @Nullable
@@ -141,9 +141,9 @@ public class OrchestrationTemplate extends TemplateConfig {
   /**
    * Create a {@link Template} object from a YAML provided as String.
    *
-   * @throws IOException if the YAML cannot be parsed or deserialized
-   * @param inputYaml the provided YAML
-   * @return A Template object representing the provided YAML
+   * @param inputYaml the provided YAML.
+   * @return a Template object representing the provided YAML.
+   * @throws IOException if the YAML cannot be parsed or deserialized.
    * @since 1.7.0
    */
   @Nullable

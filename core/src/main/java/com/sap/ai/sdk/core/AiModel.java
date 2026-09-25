@@ -9,7 +9,7 @@ public interface AiModel {
   /**
    * Get the model's name.
    *
-   * @return The name of the model.
+   * @return the name of the model.
    */
   @Nonnull
   String name();
@@ -17,7 +17,7 @@ public interface AiModel {
   /**
    * Get the model's version.
    *
-   * @return The version of the model, or null if not specified.
+   * @return the version of the model, or null if not specified.
    */
   @Nullable
   String version();

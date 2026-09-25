@@ -10,12 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 
 /**
- * For internal SDK usage only. Parse incoming JSON responses and handles any errors. For internal
- * use only.
+ * Parses incoming JSON responses and handles any errors.
  *
- * @param <D> The type of the response.
- * @param <E> The type of the exception to throw.
- * @param <R> The type of the error.
+ * <p>For internal use only.
+ *
+ * @param <D> the type of the response.
+ * @param <E> the type of the exception to throw.
+ * @param <R> the type of the error.
  * @since 1.2.0
  */
 @Slf4j
@@ -26,8 +27,8 @@ public class ClientStreamingHandler<
   /**
    * For internal SDK usage only. Set the {@link ObjectMapper} to use for parsing JSON responses.
    *
-   * @param jackson The {@link ObjectMapper} to use
-   * @return the current instance of {@link ClientStreamingHandler} with the changed object mapper
+   * @param jackson the {@link ObjectMapper} to use.
+   * @return the current instance of {@link ClientStreamingHandler} with the changed object mapper.
    */
   @Nonnull
   public ClientStreamingHandler<D, R, E> objectMapper(@Nonnull final ObjectMapper jackson) {
@@ -38,9 +39,9 @@ public class ClientStreamingHandler<
   /**
    * For internal SDK usage only. Creates a new instance of the {@link ClientStreamingHandler}.
    *
-   * @param deltaType The type of the response.
-   * @param errorType The type of the error.
-   * @param exceptionFactory The factory to create exceptions.
+   * @param deltaType the type of the response.
+   * @param errorType the type of the error.
+   * @param exceptionFactory the factory to create exceptions.
    */
   public ClientStreamingHandler(
       @Nonnull final Class<D> deltaType,
@@ -53,9 +54,9 @@ public class ClientStreamingHandler<
    * For internal SDK usage only. Processes a {@link ClassicHttpResponse} and returns a {@link
    * Stream} of deltas corresponding to that response.
    *
-   * @param response The response to process
-   * @return A {@link Stream} of a model class instantiated from the response
-   * @throws E in case of a problem or the connection was aborted
+   * @param response the response to process.
+   * @return a {@link Stream} of a model class instantiated from the response.
+   * @throws E in case of a problem or the connection was aborted.
    */
   @SuppressWarnings("PMD.CloseResource") // Stream is closed automatically when consumed
   @Nonnull

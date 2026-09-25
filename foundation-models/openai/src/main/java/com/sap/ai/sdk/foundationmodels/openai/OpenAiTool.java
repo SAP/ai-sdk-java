@@ -77,8 +77,8 @@ public class OpenAiTool {
    * Instantiates a OpenAiTool builder instance on behalf of an executable function.
    *
    * @param function the function to be executed.
-   * @return an OpenAiTool builder instance.
    * @param <InputT> the type of the function input-argument class.
+   * @return an OpenAiTool builder instance.
    */
   @Nonnull
   public static <InputT> Builder1<InputT> forFunction(@Nonnull final Function<InputT, ?> function) {
@@ -118,8 +118,8 @@ public class OpenAiTool {
     /**
      * Sets the name of the function.
      *
-     * @param name the name of the function
-     * @return a new OpenAiTool instance with the specified name
+     * @param name the name of the function.
+     * @return a new OpenAiTool instance with the specified name.
      */
     @Nonnull
     OpenAiTool withName(@Nonnull final String name);
@@ -165,9 +165,9 @@ public class OpenAiTool {
    * Returns a list of {@link OpenAiToolMessage} objects, each containing the execution result
    * encoded as a JSON string.
    *
-   * @param tools the list of tools to execute
-   * @param msg the assistant message containing a list of tool calls with arguments
-   * @return The list of tool messages with the results.
+   * @param tools the list of tools to execute.
+   * @param msg the assistant message containing a list of tool calls with arguments.
+   * @return the list of tool messages with the results.
    */
   @Nonnull
   static List<OpenAiToolMessage> execute(
@@ -186,8 +186,8 @@ public class OpenAiTool {
    * Executes each tool call found in the specified assistant message using the provided tools.
    * Returns a map that links each executed tool call to its corresponding result.
    *
-   * @param tools the list of tools to execute
-   * @param msg the assistant message containing a list of tool calls with arguments
+   * @param tools the list of tools to execute.
+   * @param msg the assistant message containing a list of tool calls with arguments.
    * @return a map that contains the function calls and their respective tool results.
    */
   @Nonnull

@@ -29,7 +29,17 @@
 		<!--<module name="JavadocContentLocation" />-->
 
 		<module name="SummaryJavadoc">
-      <property name="period" value=""/>
+			<property name="period" value="."/>
+			<property name="severity" value="info"/>
+		</module>
+		<module name="AtclauseOrder">
+			<property name="tagOrder" value="@param, @return, @throws, @see, @since, @deprecated"/>
+			<property name="severity" value="info"/>
+		</module>
+		<module name="NonEmptyAtclauseDescription">
+			<property name="severity" value="info"/>
+		</module>
+		<module name="JavadocParagraph">
 			<property name="severity" value="info"/>
 		</module>
 		<module name="MissingJavadocMethod">

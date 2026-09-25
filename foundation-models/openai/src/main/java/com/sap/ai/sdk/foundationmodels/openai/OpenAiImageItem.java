@@ -6,8 +6,8 @@ import javax.annotation.Nonnull;
 /**
  * Represents an image item in a {@link OpenAiMessageContent} object.
  *
- * @param imageUrl the URL of the image
- * @param detailLevel the detail level of the image (optional)
+ * @param imageUrl the URL of the image.
+ * @param detailLevel the detail level of the image (optional).
  * @since 1.4.0
  */
 public record OpenAiImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel detailLevel)
@@ -16,7 +16,7 @@ public record OpenAiImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel det
   /**
    * Creates a new image item with the given image URL.
    *
-   * @param imageUrl the URL of the image
+   * @param imageUrl the URL of the image.
    */
   public OpenAiImageItem(@Nonnull final String imageUrl) {
     this(imageUrl, DetailLevel.AUTO);
@@ -36,8 +36,8 @@ public record OpenAiImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel det
     /**
      * Converts a string to a detail level.
      *
-     * @param str the string to convert
-     * @return the detail level
+     * @param str the string to convert.
+     * @return the detail level.
      */
     @Nonnull
     static DetailLevel fromString(@Nonnull final String str) {
@@ -45,9 +45,9 @@ public record OpenAiImageItem(@Nonnull String imageUrl, @Nonnull DetailLevel det
     }
 
     /**
-     * Get the string representation of the DetailLevel
+     * Get the string representation of the DetailLevel.
      *
-     * @return the DetailLevel as string
+     * @return the DetailLevel as string.
      */
     @Nonnull
     public String toString() {

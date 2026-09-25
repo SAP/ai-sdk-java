@@ -213,6 +213,12 @@
         <artifactId>jackson-jr-objects</artifactId>
         <version>${jackson.version}</version>
       </dependency>
+      <!-- Align dependency version with upper bound -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.jr</groupId>
+        <artifactId>jackson-jr-objects</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
       <!-- CVE-2026-54428, 54399, 71290: pin httpcore5-h2, httpcore5 >= 5.6.4 until httpclient5 (pulled via cloud-sdk openapi-core-apache) ships with fixed versions -->
       <dependency>
         <groupId>org.apache.httpcomponents.core5</groupId>

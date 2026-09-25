@@ -20,7 +20,7 @@ public abstract class MaskingProvider {
   /**
    * Create a masking configuration.
    *
-   * @return the masking configuration
+   * @return the masking configuration.
    */
   @Nonnull
   abstract DPIConfig createConfig();

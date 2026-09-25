@@ -118,7 +118,7 @@ public class OrchestrationClientException extends ClientException {
   /**
    * Retrieves the {@link ErrorResponse} from the orchestration service, if available.
    *
-   * @return The {@link ErrorResponse} object, or {@code null} if not available.
+   * @return the {@link ErrorResponse} object, or {@code null} if not available.
    * @since 1.10.0
    */
   @Nullable
@@ -132,7 +132,7 @@ public class OrchestrationClientException extends ClientException {
   /**
    * Retrieves the {@link ErrorResponseStreaming} from the orchestration service, if available.
    *
-   * @return The {@link ErrorResponseStreaming} object, or {@code null} if not available.
+   * @return the {@link ErrorResponseStreaming} object, or {@code null} if not available.
    * @since 1.10.0
    */
   @Nullable
@@ -146,7 +146,7 @@ public class OrchestrationClientException extends ClientException {
   /**
    * Retrieves the HTTP status code from the original error response, if available.
    *
-   * @return the HTTP status code, or {@code null} if not available
+   * @return the HTTP status code, or {@code null} if not available.
    * @since 1.10.0
    */
   @Nullable

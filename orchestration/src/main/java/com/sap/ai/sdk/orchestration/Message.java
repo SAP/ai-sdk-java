@@ -32,10 +32,10 @@ public abstract class Message {
   /**
    * A convenience method to create a user message from a string.
    *
-   * @since 1.23.0
    * @param message the message content.
-   * @param cacheControl cache checkpoint configuration
+   * @param cacheControl cache checkpoint configuration.
    * @return the user message.
+   * @since 1.23.0
    */
   @Nonnull
   public static UserMessage user(
@@ -91,12 +91,12 @@ public abstract class Message {
 
   /**
    * A convenience method to create a system message from a string allowing to configure cache
-   * checkpoint
+   * checkpoint.
    *
+   * @param message the message content.
+   * @param cacheControl optional cache checkpoint configuration.
+   * @return the system message.
    * @since 1.23.0
-   * @param message the message content
-   * @param cacheControl optional cache checkpoint configuration
-   * @return the system message
    */
   @Nonnull
   public static SystemMessage system(

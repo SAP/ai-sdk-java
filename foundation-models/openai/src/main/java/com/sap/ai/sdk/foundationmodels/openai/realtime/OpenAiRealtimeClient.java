@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
 
 /**
  * OpenAI client implementation of Realtime API. Abstracts technical implementation, transport and
- * threading and exposes business-level operations (high level interface)
+ * threading and exposes business-level operations (high level interface).
  */
 public class OpenAiRealtimeClient {
 
@@ -19,16 +19,16 @@ public class OpenAiRealtimeClient {
   final Destination destination;
 
   /**
-   * Created OpenAI Realtime client for a specific destination
+   * Created OpenAI Realtime client for a specific destination.
    *
-   * @param destination - destination to use
+   * @param destination destination to use.
    */
   public OpenAiRealtimeClient(@Nonnull final Destination destination) {
     this.destination = destination;
   }
 
   /**
-   * Creates a realtime channel allowing to input text and voice it (receive audio output)
+   * Creates a realtime channel allowing to input text and voice it (receive audio output).
    *
    * <p>The input channel should be used with a try-with-resources block to ensure that the
    * underlying connection is closed.
@@ -42,17 +42,17 @@ public class OpenAiRealtimeClient {
    * }
    * }</pre>
    *
-   * This API implements full duplex (input + output) communication channels. Application should
+   * <p>This API implements full duplex (input + output) communication channels. Application should
    * logically synchronize their state and close the input channel when it is appropriate (e.g. the
    * last part of the response has been received via the output channel and the application does not
    * need to send any other input). When the input channel is closed, the output channel will be
    * closed automatically and the output consumer will not be called anymore.
    *
-   * @param audioOutputConsumer - audio consumer of raw PCM mono 24000 Hz little endian output, 16
-   *     bit depth
-   * @param params - allows for various additional features (e.g. voice configuration or
-   *     conversation turn recognition options)
-   * @return input channel, allowing for text input
+   * @param audioOutputConsumer audio consumer of raw PCM mono 24000 Hz little endian output, 16 bit
+   *     depth.
+   * @param params allows for various additional features (e.g. voice configuration or conversation
+   *     turn recognition options).
+   * @return input channel, allowing for text input.
    */
   @Nonnull
   public TextInputChannel textToSpeech(
@@ -77,17 +77,17 @@ public class OpenAiRealtimeClient {
    * }
    * }</pre>
    *
-   * This API implements full duplex (input + output) communication channels. An application should
-   * logically synchronize their state and close the input channel when it is appropriate (e.g. the
-   * last part of the response has been received via the output channel and the application does not
-   * need to send any other input). When the input channel is closed, the output channel will be
-   * closed automatically and the output consumer will not be called anymore.
+   * <p>This API implements full duplex (input + output) communication channels. An application
+   * should logically synchronize their state and close the input channel when it is appropriate
+   * (e.g. the last part of the response has been received via the output channel and the
+   * application does not need to send any other input). When the input channel is closed, the
+   * output channel will be closed automatically and the output consumer will not be called anymore.
    *
-   * @param audioOutputConsumer - audio consumer of raw PCM mono 24000 Hz little endian output, 16
-   *     bit depth
-   * @param params - optional configuration params
+   * @param audioOutputConsumer audio consumer of raw PCM mono 24000 Hz little endian output, 16 bit
+   *     depth.
+   * @param params optional configuration params.
    * @return input channel, allowing for audio data input (bytes, PCM mono 24000 Hz little endian 16
-   *     bit)
+   *     bit).
    */
   @Nonnull
   public AudioInputChannel speechToSpeech(

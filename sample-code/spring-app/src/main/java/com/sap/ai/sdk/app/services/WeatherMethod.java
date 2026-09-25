@@ -6,29 +6,29 @@ import org.springframework.ai.tool.annotation.ToolParam;
 
 class WeatherMethod {
 
-  /** Unit of temperature */
+  /** Unit of temperature. */
   enum Unit {
-    /** Celsius */
+    /** Celsius. */
     @SuppressWarnings("unused")
     C,
-    /** Fahrenheit */
+    /** Fahrenheit. */
     @SuppressWarnings("unused")
     F
   }
 
   /**
-   * Request for the weather
+   * Request for the weather.
    *
-   * @param location the city
-   * @param unit the unit of temperature
+   * @param location the city.
+   * @param unit the unit of temperature.
    */
   record Request(String location, Unit unit) {}
 
   /**
-   * Response for the weather
+   * Response for the weather.
    *
-   * @param temp the temperature
-   * @param unit the unit of temperature
+   * @param temp the temperature.
+   * @param unit the unit of temperature.
    */
   record Response(double temp, Unit unit) {}
 

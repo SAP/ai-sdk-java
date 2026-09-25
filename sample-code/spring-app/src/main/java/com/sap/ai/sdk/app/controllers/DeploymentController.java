@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** Endpoints for AI Core AiDeployment operations */
+/** Endpoints for AI Core AiDeployment operations. */
 @Slf4j
 @RestController
 @SuppressWarnings("unused")
@@ -132,7 +132,7 @@ class DeploymentController {
         .toList();
   }
 
-  /** Get all deployments, including non-Java specific deployments */
+  /** Get all deployments, including non-Java specific deployments. */
   @GetMapping("/getAll")
   Object getAll(@Nullable @RequestParam(value = "format", required = false) final String format) {
     final var deployments = getAll();
@@ -148,7 +148,7 @@ class DeploymentController {
     return "The following deployments are available: %s.".formatted(items);
   }
 
-  /** Get all deployments */
+  /** Get all deployments. */
   @Nullable
   AiDeploymentList getAll() {
     return CLIENT.query(RESOURCE_GROUP);
