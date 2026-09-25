@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 /** Allows to configure turn detection (how model responds). */
 public final class RealtimeParamTurnDetection extends RealtimeParam {
 
-  /** Model tries to recognize if/when it should respond automatically */
+  /** Model tries to recognize if/when it should respond automatically. */
   public static final RealtimeParamTurnDetection BY_MODEL_AUTO =
       new RealtimeParamTurnDetection("BY_MODEL_AUTO");
 

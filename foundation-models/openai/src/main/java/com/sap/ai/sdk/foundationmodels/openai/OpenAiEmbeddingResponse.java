@@ -32,7 +32,7 @@ public class OpenAiEmbeddingResponse {
   /**
    * Read the embeddings from the response as a list of float arrays.
    *
-   * @return a list of float arrays
+   * @return a list of float arrays.
    */
   @Nonnull
   public List<float[]> getEmbeddingVectors() {

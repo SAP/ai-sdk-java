@@ -52,8 +52,8 @@ public class AiCoreService {
    * base path set. But for special cases a different base path may be required (e.g. when consuming
    * AI Core via some proxy that expects a different base path).
    *
-   * @param destination The base destination to be used for AI Core service calls.
-   * @return A new AI Core Service object using the provided destination as basis.
+   * @param destination the base destination to be used for AI Core service calls.
+   * @return a new AI Core Service object using the provided destination as basis.
    */
   @Nonnull
   public AiCoreService withBaseDestination(@Nonnull final HttpDestination destination) {
@@ -64,10 +64,10 @@ public class AiCoreService {
    * Get the base destination for AI Core service calls. This destination won't have any resource
    * group set.
    *
-   * @return The base destination.
-   * @throws DestinationAccessException If there was an issue creating the base destination, e.g. in
+   * @return the base destination.
+   * @throws DestinationAccessException if there was an issue creating the base destination, e.g. in
    *     case of invalid credentials.
-   * @throws DestinationNotFoundException If there was an issue creating the base destination, e.g.
+   * @throws DestinationNotFoundException if there was an issue creating the base destination, e.g.
    *     in case of missing credentials.
    * @see #withBaseDestination(HttpDestination)
    */
@@ -81,10 +81,10 @@ public class AiCoreService {
    * Get a destination to perform inference calls against a deployment under the default resource
    * group on AI Core.
    *
-   * @return The destination pointing to the specific deployment ID.
-   * @throws DestinationAccessException If there was an issue creating the base destination, e.g. in
+   * @return the destination pointing to the specific deployment ID.
+   * @throws DestinationAccessException if there was an issue creating the base destination, e.g. in
    *     case of invalid credentials.
-   * @throws DestinationNotFoundException If there was an issue creating the base destination, e.g.
+   * @throws DestinationNotFoundException if there was an issue creating the base destination, e.g.
    *     in case of missing credentials.
    * @see #getInferenceDestination(String) for specifying a custom resource group.
    */
@@ -98,8 +98,8 @@ public class AiCoreService {
    * Get a destination to perform inference calls against a deployment for the given resource group
    * on AI Core.
    *
-   * @param resourceGroup The resource group to be used for the new endpoint.
-   * @return The destination pointing to the specific deployment ID.
+   * @param resourceGroup the resource group to be used for the new endpoint.
+   * @return the destination pointing to the specific deployment ID.
    * @see #getInferenceDestination() for using the default resource group.
    */
   @Nonnull
@@ -111,7 +111,7 @@ public class AiCoreService {
    * Get an {@link ApiClient} to execute requests based on clients generated from OpenAPI
    * specifications.
    *
-   * @return A new client object based on {@link #getBaseDestination()}.
+   * @return a new client object based on {@link #getBaseDestination()}.
    */
   @Nonnull
   public ApiClient getApiClient() {
@@ -123,8 +123,8 @@ public class AiCoreService {
    * The result of this together with the base path defined on the destination will be used for
    * inference calls towards this deployment.
    *
-   * @param deploymentId The deployment ID to be used for the path.
-   * @return The path to the deployment.
+   * @param deploymentId the deployment ID to be used for the path.
+   * @return the path to the deployment.
    */
   @Nonnull
   protected String buildDeploymentPath(@Nonnull final String deploymentId) {
@@ -150,11 +150,11 @@ public class AiCoreService {
     /**
      * Use a fixed deployment ID to identify the deployment.
      *
-     * @param deploymentId The ID of the deployment to target.
-     * @return A new destination targeting the specified deployment.
-     * @throws DestinationAccessException If there was an issue creating the base destination, e.g.
+     * @param deploymentId the ID of the deployment to target.
+     * @return a new destination targeting the specified deployment.
+     * @throws DestinationAccessException if there was an issue creating the base destination, e.g.
      *     in case of invalid credentials.
-     * @throws DestinationNotFoundException If there was an issue creating the base destination,
+     * @throws DestinationNotFoundException if there was an issue creating the base destination,
      *     e.g. in case of missing credentials.
      * @see #forModel(AiModel)
      * @see #forScenario(String)
@@ -169,9 +169,9 @@ public class AiCoreService {
      * Lookup a deployment based on the given {@link AiModel}. If there are multiple deployments for
      * the given model, the first one is returned.
      *
-     * @param model The model to be used for inference calls.
-     * @return A new destination targeting a deployment for the given model.
-     * @throws DeploymentResolutionException If no running deployment is found for the model.
+     * @param model the model to be used for inference calls.
+     * @return a new destination targeting a deployment for the given model.
+     * @throws DeploymentResolutionException if no running deployment is found for the model.
      * @see #forScenario(String)
      * @see #usingDeploymentId(String)
      */
@@ -186,9 +186,9 @@ public class AiCoreService {
      * Lookup a deployment based on the given scenario. If there are multiple deployments within the
      * same scenario, the first one is returned.
      *
-     * @param scenarioId The scenario to discover deployments for.
-     * @return A new destination targeting a deployment within the given scenario.
-     * @throws DeploymentResolutionException If no running deployment is found within the scenario.
+     * @param scenarioId the scenario to discover deployments for.
+     * @return a new destination targeting a deployment within the given scenario.
+     * @throws DeploymentResolutionException if no running deployment is found within the scenario.
      * @see #forModel(AiModel)
      * @see #usingDeploymentId(String)
      */

@@ -133,10 +133,10 @@ class DeploymentResolver {
   }
 
   /**
-   * This exists because getBackendDetails() is broken
+   * This exists because getBackendDetails() is broken.
    *
-   * @param targetModel The target model object.
-   * @param deployment The deployment.
+   * @param targetModel the target model object.
+   * @param deployment the deployment.
    * @return true if the deployment is of the model.
    */
   protected static boolean isDeploymentOfModel(

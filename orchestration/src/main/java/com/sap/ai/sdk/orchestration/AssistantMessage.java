@@ -44,7 +44,7 @@ public class AssistantMessage extends Message {
   /**
    * Creates a new assistant message with the given tool calls.
    *
-   * @param toolCalls list of tool call objects
+   * @param toolCalls list of tool call objects.
    */
   AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
     content = new MessageContent(List.of());

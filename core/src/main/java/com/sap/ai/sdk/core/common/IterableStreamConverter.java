@@ -23,15 +23,14 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 /**
  * Internal utility class to convert from a reading handler to {@link Iterable} and {@link Stream}.
  *
- * <p><strong>Note:</strong> All operations are sequential in nature. Thread safety is not
- * guaranteed.
+ * <p><b>Note:</b> All operations are sequential in nature. Thread safety is not guaranteed.
  *
- * @param <T> Iterated item type.
+ * @param <T> iterated item type.
  */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 class IterableStreamConverter<T> implements Iterator<T> {
-  /** see DEFAULT_CHAR_BUFFER_SIZE in {@link BufferedReader} * */
+  /** See DEFAULT_CHAR_BUFFER_SIZE in {@link BufferedReader}. */
   static final int BUFFER_SIZE = 8192;
 
   private static final String ERR_CONTENT = "Failed to read response content.";
@@ -90,9 +89,9 @@ class IterableStreamConverter<T> implements Iterator<T> {
    * java.io.InputStream} is closed, when the resulting Stream is closed (e.g. via
    * try-with-resources) or when an exception occurred.
    *
-   * @param response The HTTP response object.
-   * @param exceptionFactory The exception factory to use for creating exceptions.
-   * @return A sequential Stream object.
+   * @param response the HTTP response object.
+   * @param exceptionFactory the exception factory to use for creating exceptions.
+   * @return a sequential Stream object.
    * @throws ClientException if the provided HTTP entity object is {@code null} or empty.
    */
   @SuppressWarnings("PMD.CloseResource") // Stream is closed automatically when consumed

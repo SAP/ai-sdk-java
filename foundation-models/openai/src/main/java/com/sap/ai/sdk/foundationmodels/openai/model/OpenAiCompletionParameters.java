@@ -120,7 +120,7 @@ public class OpenAiCompletionParameters {
   @JsonProperty("stream_options")
   private OpenAiStreamOptions streamOptions;
 
-  /** "stream_options": { "include_usage": "true" } */
+  /** "stream_options": { "include_usage": "true" }. */
   @RequiredArgsConstructor
   @Setter
   @JsonFormat(shape = JsonFormat.Shape.OBJECT)
@@ -153,7 +153,7 @@ public class OpenAiCompletionParameters {
    * Up to four sequences where the API will stop generating further tokens. The returned text won't
    * contain the stop sequence.
    *
-   * @param values The stop sequences.
+   * @param values the stop sequences.
    * @return ${code this} instance for chaining.
    */
   @Nonnull

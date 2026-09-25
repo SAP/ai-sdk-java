@@ -39,7 +39,7 @@ public class GroundingClient {
   /**
    * Constructor with custom AI Core service instance.
    *
-   * @param service The instance of AI Core service
+   * @param service the instance of AI Core service.
    */
   public GroundingClient(final @Nonnull AiCoreService service) {
     this(service, DEFAULT_BASE_PATH);
@@ -48,7 +48,7 @@ public class GroundingClient {
   /**
    * Get the Pipelines API.
    *
-   * @return The Pipelines API.
+   * @return the Pipelines API.
    */
   @Nonnull
   public PipelinesApi pipelines() {
@@ -58,7 +58,7 @@ public class GroundingClient {
   /**
    * Get the Vector API.
    *
-   * @return The Vector API.
+   * @return the Vector API.
    */
   @Nonnull
   public VectorApi vector() {
@@ -68,7 +68,7 @@ public class GroundingClient {
   /**
    * Get the Retrieval API.
    *
-   * @return The Retrieval API.
+   * @return the Retrieval API.
    */
   @Nonnull
   public RetrievalApi retrieval() {
@@ -76,10 +76,10 @@ public class GroundingClient {
   }
 
   /**
-   * Create a new OpenAI client with a custom header added to every call made with this client
+   * Create a new OpenAI client with a custom header added to every call made with this client.
    *
-   * @param key the key of the custom header to add
-   * @param value the value of the custom header to add
+   * @param key the key of the custom header to add.
+   * @param value the value of the custom header to add.
    * @return a new client.
    * @since 1.17.0
    */

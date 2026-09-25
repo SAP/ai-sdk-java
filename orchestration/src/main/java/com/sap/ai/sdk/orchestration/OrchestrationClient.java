@@ -59,7 +59,7 @@ public class OrchestrationClient {
    * new OrchestrationClient(new AiCoreService().getInferenceDestination("custom-rg").forScenario("orchestration"));
    * }</pre>
    *
-   * @param destination The specific {@link HttpDestination} to use.
+   * @param destination the specific {@link HttpDestination} to use.
    * @see AiCoreService#getInferenceDestination(String)
    */
   public OrchestrationClient(@Nonnull final HttpDestination destination) {
@@ -70,10 +70,10 @@ public class OrchestrationClient {
    * Convert the given prompt and config into a low-level request data object. The data object
    * allows for further customization before sending the request.
    *
-   * @param prompt The {@link OrchestrationPrompt} to generate a completion for.
-   * @param config The {@link OrchestrationConfig } configuration to use for the completion.
-   * @param fallbackConfigs Fallback configurations to use.
-   * @return The low-level request data object to send to orchestration.
+   * @param prompt the {@link OrchestrationPrompt} to generate a completion for.
+   * @param config the {@link OrchestrationConfig } configuration to use for the completion.
+   * @param fallbackConfigs fallback configurations to use.
+   * @return the low-level request data object to send to orchestration.
    */
   @Nonnull
   public static CompletionRequestConfiguration toCompletionPostRequest(
@@ -86,10 +86,10 @@ public class OrchestrationClient {
   /**
    * Generate a completion for the given prompt.
    *
-   * @param prompt The {@link OrchestrationPrompt} to send to orchestration.
-   * @param config the configuration to use
-   * @param fallbackConfigs fallback configurations
-   * @return the completion output
+   * @param prompt the {@link OrchestrationPrompt} to send to orchestration.
+   * @param config the configuration to use.
+   * @param fallbackConfigs fallback configurations.
+   * @return the completion output.
    * @throws OrchestrationClientException if the request fails.
    */
   @Nonnull
@@ -107,11 +107,11 @@ public class OrchestrationClient {
    * Generate a completion for the given prompt.
    *
    * @param prompt a text message.
-   * @param config the configuration to use
-   * @param fallbackConfigs fallback configurations
-   * @return a stream of message deltas
+   * @param config the configuration to use.
+   * @param fallbackConfigs fallback configurations.
+   * @return a stream of message deltas.
    * @throws OrchestrationClientException if the request fails or if the finish reason is
-   *     content_filter
+   *     content_filter.
    * @since 1.1.0
    */
   @Nonnull
@@ -161,9 +161,9 @@ public class OrchestrationClient {
    *
    * <p>Alternatively, you can call this method directly with a fully custom request object.
    *
-   * @param request The request data object to send to orchestration.
-   * @return The response data object from orchestration.
-   * @throws OrchestrationClientException If the request fails.
+   * @param request the request data object to send to orchestration.
+   * @return the response data object from orchestration.
+   * @throws OrchestrationClientException if the request fails.
    */
   @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
@@ -176,8 +176,8 @@ public class OrchestrationClient {
   /**
    * Generate a completion using a referenced Orchestration config.
    *
-   * @param reference A reference to an Orchestration config stored in prompt registry
-   * @return The completion output
+   * @param reference a reference to an Orchestration config stored in prompt registry.
+   * @return the completion output.
    * @since 1.15.0
    */
   @Nonnull
@@ -194,8 +194,8 @@ public class OrchestrationClient {
    * <p>Note, that streaming will get enabled on the request object as a side effect.
    *
    * @param request the prompt, including messages and other parameters.
-   * @return A stream of chat completion delta elements.
-   * @throws OrchestrationClientException if the request fails
+   * @return a stream of chat completion delta elements.
+   * @throws OrchestrationClientException if the request fails.
    * @since 1.1.0
    */
   @SuppressWarnings("PMD.PublicApiExposesModelType")
@@ -250,7 +250,7 @@ public class OrchestrationClient {
    *
    * @param request the request containing the input text and other parameters.
    * @return the response containing the embeddings.
-   * @throws OrchestrationClientException if the request fails
+   * @throws OrchestrationClientException if the request fails.
    * @since 1.12.0
    */
   @Nonnull
@@ -266,11 +266,11 @@ public class OrchestrationClient {
    * <p>This method provides direct access to the underlying API for advanced use cases. For most
    * scenarios, prefer {@link #embed(OrchestrationEmbeddingRequest)}.
    *
-   * @param request the low-level API request
-   * @return the low level response object
-   * @throws OrchestrationClientException if the request fails
-   * @since 1.12.0
+   * @param request the low-level API request.
+   * @return the low level response object.
+   * @throws OrchestrationClientException if the request fails.
    * @see #embed(OrchestrationEmbeddingRequest)
+   * @since 1.12.0
    */
   @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
@@ -281,10 +281,10 @@ public class OrchestrationClient {
 
   /**
    * Create a new orchestration client with a custom header added to every call made with this
-   * client
+   * client.
    *
-   * @param key the key of the custom header to add
-   * @param value the value of the custom header to add
+   * @param key the key of the custom header to add.
+   * @param value the value of the custom header to add.
    * @return a new client.
    * @since 1.11.0
    */
@@ -298,9 +298,9 @@ public class OrchestrationClient {
 
   /**
    * Create a new orchestration client with multiple custom headers added to every call made with
-   * this client
+   * this client.
    *
-   * @param headers a map of key value pairs for the custom headers to add
+   * @param headers a map of key value pairs for the custom headers to add.
    * @return a new client.
    * @since 1.22.0
    */
@@ -317,8 +317,8 @@ public class OrchestrationClient {
   /**
    * Create a new orchestration client for the given resource group and scenario.
    *
-   * @param resourceGroup the resource group
-   * @param scenario the scenario
+   * @param resourceGroup the resource group, usually {@code "default"}.
+   * @param scenario the scenario.
    * @return a new client configured with the resolved destination.
    */
   @Nonnull

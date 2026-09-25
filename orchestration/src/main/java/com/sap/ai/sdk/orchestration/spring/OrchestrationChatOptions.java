@@ -57,7 +57,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   /**
    * Returns the model to use for the chat.
    *
-   * @return the model to use for the chat
+   * @return the model to use for the chat.
    * @see com.sap.ai.sdk.orchestration.OrchestrationAiModel
    */
   @Nonnull
@@ -79,7 +79,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   /**
    * Returns the frequency penalty to use for the chat.
    *
-   * @return the frequency penalty to use for the chat
+   * @return the frequency penalty to use for the chat.
    */
   @Nullable
   @Override
@@ -90,7 +90,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   /**
    * Returns the maximum number of tokens to use for the chat.
    *
-   * @return the maximum number of tokens to use for the chat
+   * @return the maximum number of tokens to use for the chat.
    */
   @Nullable
   @Override
@@ -101,7 +101,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   /**
    * Returns the presence penalty to use for the chat.
    *
-   * @return the presence penalty to use for the chat
+   * @return the presence penalty to use for the chat.
    */
   @Nullable
   @Override
@@ -112,7 +112,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   /**
    * Returns the stop sequences to use for the chat.
    *
-   * @return the stop sequences to use for the chat
+   * @return the stop sequences to use for the chat.
    */
   @Nullable
   @Override
@@ -123,7 +123,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   /**
    * Returns the temperature to use for the chat.
    *
-   * @return the temperature to use for the chat
+   * @return the temperature to use for the chat.
    */
   @Nullable
   @Override
@@ -134,7 +134,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   /**
    * Returns the top K to use for the chat.
    *
-   * @return the top K to use for the chat
+   * @return the top K to use for the chat.
    */
   @Nullable
   @Override
@@ -145,7 +145,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   /**
    * Returns the top P to use for the chat.
    *
-   * @return the top P to use for the chat
+   * @return the top P to use for the chat.
    */
   @Nullable
   @Override
@@ -268,10 +268,10 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     }
 
     /**
-     * Sets fallback configs to be used if main config is non-functional
+     * Sets fallback configs to be used if main config is non-functional.
      *
-     * @param configs prioritized list of fallback configs
-     * @return this builder
+     * @param configs prioritized list of fallback configs.
+     * @return this builder.
      */
     @Nonnull
     public Builder fallbackConfigs(@Nullable final List<OrchestrationModuleConfig> configs) {

@@ -32,9 +32,9 @@ public class AiCoreOpenAiClient {
    * Create an OpenAI client for a deployment serving the specified model using the default resource
    * group.
    *
-   * @param model The AI model to target.
-   * @return A configured OpenAI client instance.
-   * @throws DeploymentResolutionException If no running deployment is found for the model.
+   * @param model the AI model to target.
+   * @return a configured OpenAI client instance.
+   * @throws DeploymentResolutionException if no running deployment is found for the model.
    */
   @Nonnull
   public static AiCoreOpenAiClient forModel(@Nonnull final OpenAiModel model) {
@@ -45,10 +45,10 @@ public class AiCoreOpenAiClient {
    * Create an OpenAI client for a deployment serving the specified model in the given resource
    * group.
    *
-   * @param model The AI model to target.
-   * @param resourceGroup The resource group containing the deployment.
-   * @return A configured OpenAI client instance.
-   * @throws DeploymentResolutionException If no running deployment is found for the model.
+   * @param model the AI model to target.
+   * @param resourceGroup the resource group containing the deployment.
+   * @return a configured OpenAI client instance.
+   * @throws DeploymentResolutionException if no running deployment is found for the model.
    */
   @Nonnull
   public static AiCoreOpenAiClient forModel(
@@ -75,7 +75,7 @@ public class AiCoreOpenAiClient {
   /**
    * Get a synchronous ResponseService client for the configured model and resource group.
    *
-   * @return A configured synchronous OpenAI ResponseService client.
+   * @return a configured synchronous OpenAI ResponseService client.
    */
   @Nonnull
   public ResponseService responses() {
@@ -85,7 +85,7 @@ public class AiCoreOpenAiClient {
   /**
    * Get an asynchronous client factory for the configured model and resource group.
    *
-   * @return An Async factory for creating asynchronous OpenAI clients.
+   * @return an Async factory for creating asynchronous OpenAI clients.
    */
   @Nonnull
   public Async async() {
@@ -103,7 +103,7 @@ public class AiCoreOpenAiClient {
     /**
      * Get an asynchronous ResponseService client for the configured model and resource group.
      *
-     * @return A configured OpenAI ResponseServiceAsync client.
+     * @return a configured OpenAI ResponseServiceAsync client.
      */
     @Nonnull
     public ResponseServiceAsync responses() {
