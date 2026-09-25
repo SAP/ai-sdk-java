@@ -41,11 +41,11 @@ public class AssistantMessage extends Message {
   @Nullable
   List<ReasoningBlock> reasoningContent;
 
-    /**
-     * Creates a new assistant message with the given tool calls.
-     *
-     * @param toolCalls list of tool call objects.
-     */
+  /**
+   * Creates a new assistant message with the given tool calls.
+   *
+   * @param toolCalls list of tool call objects.
+   */
   AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
     content = new MessageContent(List.of());
     this.toolCalls = toolCalls;

@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 
 /** Represents possible configuration params of realtime client. */
 public abstract class RealtimeParam {
-  /** Represents configurable options */
+  /** Represents configurable options. */
   enum ParamName {
     /** Voice name to use to produce sound. */
     OUTPUT_VOICE,

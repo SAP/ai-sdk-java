@@ -268,10 +268,10 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     }
 
     /**
-     * Sets fallback configs to be used if main config is non-functional
+     * Sets fallback configs to be used if main config is non-functional.
      *
-     * @param configs prioritized list of fallback configs
-     * @return this builder
+     * @param configs prioritized list of fallback configs.
+     * @return this builder.
      */
     @Nonnull
     public Builder fallbackConfigs(@Nullable final List<OrchestrationModuleConfig> configs) {

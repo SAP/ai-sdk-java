@@ -382,9 +382,9 @@ public class OrchestrationModuleConfig {
   }
 
   /**
-   * Creates a copy of the OrchestrationModuleConfig
+   * Creates a copy of this OrchestrationModuleConfig.
    *
-   * @return a copy of the OrchestrationModuleConfig
+   * @return a copy of this OrchestrationModuleConfig.
    */
   @Nonnull
   public OrchestrationModuleConfig copy() {
