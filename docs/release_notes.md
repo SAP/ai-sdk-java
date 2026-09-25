@@ -18,6 +18,7 @@
   from public API
 - [Orchestration] Internal AI SDK methods `createConfig` were removed from `GroundingProvider` and `MaskingProvider`
 - [Orchestration] Internal AI SDK method `createMessage` was removed from `Message` class.
+- [Orchestration] Removed internal `AssistantMessage(List<MessageToolCall> toolCalls)` please use `AssistantMessage.withToolCalls(List)` instead.
 - [Orchestration] Removed deprecated models:
   - `OrchestrationAiModel.IBM_GRANITE_13B_CHAT`
   - `OrchestrationAiModel.MISTRAL_LARGE_INSTRUCT`
