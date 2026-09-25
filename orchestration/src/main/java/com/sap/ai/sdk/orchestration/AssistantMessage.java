@@ -47,8 +47,7 @@ public class AssistantMessage extends Message {
    * @param toolCalls list of tool call objects
    * @deprecated Please use {@link #withToolCalls(List)} instead.
    */
-  @Deprecated
-  public AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
+  AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
     content = new MessageContent(List.of());
     this.toolCalls = toolCalls;
     reasoningContent = null;
@@ -73,17 +72,6 @@ public class AssistantMessage extends Message {
   AssistantMessage(@Nonnull final MessageContent content) {
     this.content = content;
     toolCalls = null;
-    reasoningContent = null;
-  }
-
-  /**
-   * Creates a new assistant message with the given tool calls.
-   *
-   * @param toolCalls list of tool call objects
-   */
-  AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
-    content = new MessageContent(List.of());
-    this.toolCalls = toolCalls;
     reasoningContent = null;
   }
 
