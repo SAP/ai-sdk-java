@@ -8,7 +8,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
-import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.okXml;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
@@ -827,64 +826,6 @@ class OrchestrationUnitTest {
         .hasMessageContaining("HTTP Response is empty");
 
     softly.assertAll();
-  }
-
-  @Test
-  void testExecuteRequestFromJson() {
-    stubFor(post(anyUrl()).willReturn(okJson("{}")));
-
-    prompt =
-        new OrchestrationPrompt(Map.of("foo", "bar"))
-            .messageHistory(List.of(new UserMessage("Hello World!")));
-    final var configJson =
-        """
-        {
-          "module_configurations": {
-            "llm_module_config": {
-              "model_name": "mistralai--mistral-large-instruct",
-              "model_params": {}
-            }
-          }
-        }
-        """;
-
-    final var expectedJson =
-        """
-        {
-          "messages_history": [{
-            "role" : "user",
-            "content" : "Hello World!"
-          }],
-          "input_params": {
-            "foo" : "bar"
-          },
-          "orchestration_config": {
-            "module_configurations": {
-              "llm_module_config": {
-                "model_name": "mistralai--mistral-large-instruct",
-                "model_params": {}
-              }
-            }
-          }
-        }
-        """;
-
-    var result = client.executeRequestFromJsonModuleConfig(prompt, configJson);
-    assertThat(result).isNotNull();
-
-    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedJson)));
-  }
-
-  @Test
-  void testExecuteRequestFromJsonThrows() {
-    assertThatThrownBy(() -> client.executeRequestFromJsonModuleConfig(prompt, "{}"))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("messages");
-
-    prompt = new OrchestrationPrompt(Map.of());
-    assertThatThrownBy(() -> client.executeRequestFromJsonModuleConfig(prompt, "{ foo"))
-        .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining("not valid JSON");
   }
 
   @Test

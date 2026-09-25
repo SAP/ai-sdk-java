@@ -1,13 +1,11 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
-import com.google.common.annotations.Beta;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** Allows to configure model system prompt */
-@Beta
-public final class RealtimeParamSystemPrompt implements RealtimeParam {
+public final class RealtimeParamSystemPrompt extends RealtimeParam {
 
   private final String systemPrompt;
 
@@ -16,25 +14,23 @@ public final class RealtimeParamSystemPrompt implements RealtimeParam {
    *
    * @param systemPrompt system prompt to use
    */
-  @Beta
   public RealtimeParamSystemPrompt(@Nonnull final String systemPrompt) {
     this.systemPrompt = systemPrompt;
   }
 
   @Override
-  @Beta
-  public @Nonnull ParamName getParamName() {
+  @Nonnull
+  ParamName getParamName() {
     return ParamName.SYSTEM_PROMPT;
   }
 
   @Override
-  @Beta
-  public @Nonnull String getValueAsString() {
+  @Nonnull
+  String getValueAsString() {
     return systemPrompt;
   }
 
   @Override
-  @Beta
   public boolean equals(@Nullable final Object o) {
     if (o == null || getClass() != o.getClass()) {
       return false;
@@ -44,7 +40,6 @@ public final class RealtimeParamSystemPrompt implements RealtimeParam {
   }
 
   @Override
-  @Beta
   public int hashCode() {
     return Objects.hashCode(systemPrompt);
   }

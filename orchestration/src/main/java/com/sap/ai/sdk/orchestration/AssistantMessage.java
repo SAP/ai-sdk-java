@@ -13,6 +13,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -21,9 +22,10 @@ import lombok.val;
 
 /** Represents a chat message as 'assistant' to the orchestration service. */
 @Value
+@EqualsAndHashCode(callSuper = true)
 @Accessors(fluent = true)
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public class AssistantMessage implements Message {
+public class AssistantMessage extends Message {
 
   /** The role of the assistant. */
   @Nonnull String role = "assistant";
@@ -38,6 +40,19 @@ public class AssistantMessage implements Message {
   @Getter(AccessLevel.NONE)
   @Nullable
   List<ReasoningBlock> reasoningContent;
+
+  /**
+   * Creates a new assistant message with the given tool calls.
+   *
+   * @param toolCalls list of tool call objects
+   * @deprecated Please use {@link #withToolCalls(List)} instead.
+   */
+  @Deprecated
+  public AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
+    content = new MessageContent(List.of());
+    this.toolCalls = toolCalls;
+    reasoningContent = null;
+  }
 
   /**
    * Creates a new assistant message with the given single message.
@@ -58,19 +73,6 @@ public class AssistantMessage implements Message {
   AssistantMessage(@Nonnull final MessageContent content) {
     this.content = content;
     toolCalls = null;
-    reasoningContent = null;
-  }
-
-  /**
-   * Creates a new assistant message with the given tool calls.
-   *
-   * @param toolCalls list of tool call objects
-   * @deprecated Please use {@link #withToolCalls(List)} instead.
-   */
-  @Deprecated
-  public AssistantMessage(@Nonnull final List<MessageToolCall> toolCalls) {
-    content = new MessageContent(List.of());
-    this.toolCalls = toolCalls;
     reasoningContent = null;
   }
 
