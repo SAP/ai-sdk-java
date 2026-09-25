@@ -33,7 +33,7 @@ class ScenarioTest {
     val availableOpenAiModels =
         aiModelList.stream()
             .filter(model -> model.getExecutableId().equals("azure-openai"))
-            .filter(aiModelBaseData ->  !servedDeprecatedModels.contains(aiModelBaseData.getModel()))
+            .filter(aiModelBaseData -> !servedDeprecatedModels.contains(aiModelBaseData.getModel()))
             .collect(
                 () -> new HashMap<String, Boolean>(),
                 (list, model) -> list.put(model.getModel(), isDeprecated(model)),
@@ -81,14 +81,13 @@ class ScenarioTest {
 
     val servedDeprecatedModels =
         Set.of(
-                "mistralai--mistral-small-instruct",
-                "anthropic--claude-4-sonnet",
-                "gpt-4o-mini",
-                "o1",
-                "anthropic--claude-3-haiku",
-                "mistralai--mistral-large-instruct",
-                "o3-mini"
-        );
+            "mistralai--mistral-small-instruct",
+            "anthropic--claude-4-sonnet",
+            "gpt-4o-mini",
+            "o1",
+            "anthropic--claude-3-haiku",
+            "mistralai--mistral-large-instruct",
+            "o3-mini");
 
     val availableOrchestrationModels =
         aiModelList.stream()
