@@ -38,17 +38,22 @@ jobs:
         id: determine-branch-names
         run: |
           CODE_BRANCH_NAME=$(gh pr view ${{github.event.inputs.release_pr_number}} --repo ${{github.repository}} --json headRefName --jq '.headRefName')
-          RELEASE_VERSION=$(echo $CODE_BRANCH_NAME | cut -d '-' -f2)
-          RELEASE_TAG=rel/$RELEASE_VERSION
-          RELEASE_COMMIT=$(gh release view $RELEASE_TAG --repo ${{github.repository}} --json targetCommitish --jq '.targetCommitish')
-          RELEASE_NOTES_BRANCH_NAME=java/release-notes-$RELEASE_VERSION
-          JAVADOC_BRANCH_NAME=java/release-docs-$RELEASE_VERSION
-
           echo "CODE_BRANCH_NAME=$CODE_BRANCH_NAME" >> $GITHUB_OUTPUT
+
+          # RELEASE-2.0.0-M1 → -f2- → 2.0.0-M1
+          RELEASE_VERSION=$(echo $CODE_BRANCH_NAME | cut -d '-' -f2-)
           echo "RELEASE_VERSION=$RELEASE_VERSION" >> $GITHUB_OUTPUT
+
+          RELEASE_TAG=rel/$RELEASE_VERSION
           echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
+
+          RELEASE_COMMIT=$(gh release view $RELEASE_TAG --repo ${{github.repository}} --json targetCommitish --jq '.targetCommitish')
           echo "RELEASE_COMMIT=$RELEASE_COMMIT" >> $GITHUB_OUTPUT
+
+          RELEASE_NOTES_BRANCH_NAME=java/release-notes-$RELEASE_VERSION
           echo "RELEASE_NOTES_BRANCH_NAME=$RELEASE_NOTES_BRANCH_NAME" >> $GITHUB_OUTPUT
+
+          JAVADOC_BRANCH_NAME=java/release-docs-$RELEASE_VERSION
           echo "JAVADOC_BRANCH_NAME=$JAVADOC_BRANCH_NAME" >> $GITHUB_OUTPUT
 
           echo -e "[DEBUG] Current GITHUB_OUTPUT:\n$(cat $GITHUB_OUTPUT)"
@@ -112,7 +117,7 @@ jobs:
 
   release:
     name: 'Release'
-    needs: [prerequisites]
+    needs: [ prerequisites ]
     runs-on: ubuntu-latest
     environment: release
     permissions:
