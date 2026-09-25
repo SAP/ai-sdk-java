@@ -6,14 +6,13 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /** Allows to configure model output voice */
-@Beta
-public final class RealtimeParamVoice implements RealtimeParam {
+public final class RealtimeParamVoice extends RealtimeParam {
 
   /** Standard voice 1 */
-  @Beta public static final RealtimeParamVoice DEFAULT_1 = new RealtimeParamVoice("DEFAULT_1");
+  public static final RealtimeParamVoice DEFAULT_1 = new RealtimeParamVoice("DEFAULT_1");
 
   /** Standard voice 2 */
-  @Beta public static final RealtimeParamVoice DEFAULT_2 = new RealtimeParamVoice("DEFAULT_2");
+  public static final RealtimeParamVoice DEFAULT_2 = new RealtimeParamVoice("DEFAULT_2");
 
   private final String voice;
 
@@ -37,19 +36,18 @@ public final class RealtimeParamVoice implements RealtimeParam {
   }
 
   @Override
-  @Beta
-  public @Nonnull ParamName getParamName() {
+  @Nonnull
+  ParamName getParamName() {
     return ParamName.OUTPUT_VOICE;
   }
 
   @Override
-  @Beta
-  public @Nonnull String getValueAsString() {
+  @Nonnull
+  String getValueAsString() {
     return voice;
   }
 
   @Override
-  @Beta
   public boolean equals(@Nullable final Object o) {
     if (o == null || getClass() != o.getClass()) {
       return false;
@@ -59,7 +57,6 @@ public final class RealtimeParamVoice implements RealtimeParam {
   }
 
   @Override
-  @Beta
   public int hashCode() {
     return Objects.hashCode(voice);
   }

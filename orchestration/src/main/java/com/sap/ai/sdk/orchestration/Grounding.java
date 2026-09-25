@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
@@ -25,7 +24,7 @@ import lombok.val;
  * Core: Orchestration - Grounding</a>
  */
 @Accessors(fluent = true)
-public class Grounding implements GroundingProvider {
+public class Grounding extends GroundingProvider {
 
   @Nonnull
   private List<GroundingModuleConfigConfigFiltersInner> filters =
@@ -33,7 +32,7 @@ public class Grounding implements GroundingProvider {
 
   @Nullable private List<String> metadataParams = null;
 
-  @Setter(onMethod_ = {@Nonnull, @Beta})
+  @Setter(onMethod_ = {@Nonnull})
   private TypeEnum documentGroundingService = TypeEnum.DOCUMENT_GROUNDING_SERVICE;
 
   /**
@@ -95,7 +94,7 @@ public class Grounding implements GroundingProvider {
 
   @Nonnull
   @Override
-  public GroundingModuleConfig createConfig() {
+  GroundingModuleConfig createConfig() {
     val groundingConfigConfig =
         GroundingModuleConfigConfig.create()
             .placeholders(

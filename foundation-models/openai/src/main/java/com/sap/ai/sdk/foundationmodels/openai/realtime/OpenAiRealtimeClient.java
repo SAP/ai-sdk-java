@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.foundationmodels.openai.TextInputChannel;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
@@ -12,7 +11,6 @@ import javax.annotation.Nonnull;
  * OpenAI client implementation of Realtime API. Abstracts technical implementation, transport and
  * threading and exposes business-level operations (high level interface)
  */
-@Beta
 public class OpenAiRealtimeClient {
 
   static final int PATH_BUFFER_SIZE =
@@ -25,7 +23,6 @@ public class OpenAiRealtimeClient {
    *
    * @param destination - destination to use
    */
-  @Beta
   public OpenAiRealtimeClient(@Nonnull final Destination destination) {
     this.destination = destination;
   }
@@ -58,7 +55,6 @@ public class OpenAiRealtimeClient {
    * @return input channel, allowing for text input
    */
   @Nonnull
-  @Beta
   public TextInputChannel textToSpeech(
       @Nonnull final AudioOutputChannel audioOutputConsumer,
       @Nonnull final RealtimeParam... params) {
@@ -94,7 +90,6 @@ public class OpenAiRealtimeClient {
    *     bit)
    */
   @Nonnull
-  @Beta
   public AudioInputChannel speechToSpeech(
       @Nonnull final AudioOutputChannel audioOutputConsumer,
       @Nonnull final RealtimeParam... params) {
