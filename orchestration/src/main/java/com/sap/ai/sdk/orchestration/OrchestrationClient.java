@@ -2,11 +2,7 @@ package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
@@ -190,49 +186,6 @@ public class OrchestrationClient {
     val request = ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(reference);
     val response = executeRequest(request);
     return new OrchestrationChatResponse(response);
-  }
-
-  /**
-   * Perform a request to the orchestration service using a module configuration provided as JSON
-   * string. This can be useful when building a configuration in the AI Launchpad UI and exporting
-   * it as JSON. Furthermore, this allows for using features that are not yet supported natively by
-   * the API.
-   *
-   * <p><b>NOTE:</b> This method does not support streaming.
-   *
-   * @param prompt The input parameters and optionally message history to use for prompt execution.
-   * @param moduleConfig The module configuration in JSON format.
-   * @return The completion response.
-   * @throws OrchestrationClientException If the request fails.
-   */
-  @Beta
-  @Nonnull
-  public OrchestrationChatResponse executeRequestFromJsonModuleConfig(
-      @Nonnull final OrchestrationPrompt prompt, @Nonnull final String moduleConfig)
-      throws OrchestrationClientException {
-    if (!prompt.getMessages().isEmpty()) {
-      throw new IllegalArgumentException(
-          "Prompt must not contain any messages when using a JSON module configuration, as the template is already defined in the JSON.");
-    }
-
-    final ObjectNode requestJson = JACKSON.createObjectNode();
-    final var chatMessageHistory =
-        prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
-    requestJson.set("messages_history", JACKSON.valueToTree(chatMessageHistory));
-    requestJson.set("input_params", JACKSON.valueToTree(prompt.getTemplateParameters()));
-
-    final JsonNode moduleConfigJson;
-    try {
-      moduleConfigJson = JACKSON.readTree(moduleConfig);
-    } catch (JsonProcessingException e) {
-      throw new IllegalArgumentException(
-          "The provided module configuration is not valid JSON: " + moduleConfig, e);
-    }
-    requestJson.set("orchestration_config", moduleConfigJson);
-
-    return new OrchestrationChatResponse(
-        executor.execute(
-            COMPLETION_ENDPOINT, requestJson, CompletionPostResponse.class, customHeaders));
   }
 
   /**

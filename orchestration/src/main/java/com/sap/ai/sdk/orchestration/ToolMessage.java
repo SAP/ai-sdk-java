@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Getter
 @Accessors(fluent = true)
-public final class ToolMessage implements Message {
+public final class ToolMessage extends Message {
 
   /** The role of the assistant. */
   @Nonnull final String role = "tool";
