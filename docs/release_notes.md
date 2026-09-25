@@ -13,47 +13,47 @@
 - [Prompt Registry] `OrchestrationConfigClient` and `PromptClient` were reworked into unified `PromptRegistryClient`,
    see migration guide below for additional information
 - [Orchestration] Removed deprecated models:
-  - ibm--granite-13b-chat
-  - mistralai--mistral-large-instruct
-  - mistralai--mistral-small-instruct
-  - mistralai--mixtral-8x7b-instruct-v01
-  - meta--llama3-70b-instruct
-  - meta--llama3.1-70b-instruct
-  - anthropic--claude-3-sonnet
-  - anthropic--claude-3-haiku
-  - anthropic--claude-3-opus
-  - anthropic--claude-3.5-sonnet
-  - anthropic--claude-3.7-sonnet
-  - anthropic--claude-4-sonnet
-  - amazon--titan-text-lite
-  - amazon--titan-text-express
-  - gpt-35-turbo
-  - gpt-35-turbo-16k
-  - gpt-35-turbo-0125
-  - gpt-4
-  - gpt-4-32k
-  - gpt-4-0613
-  - gpt-4o-mini
-  - o1
-  - o3-mini
-  - gemini-1.0-pro
-  - gemini-1.5-pro
-  - gemini-1.5-flash
-  - gemini-2.0-flash
-  - gemini-2.0-flash-lite
-  - alephalpha-pharia-1-7b-control
-  - deepseek-ai--deepseek-r1
+  - `OrchestrationAiModel.IBM_GRANITE_13B_CHAT`
+  - `OrchestrationAiModel.MISTRAL_LARGE_INSTRUCT`
+  - `OrchestrationAiModel.MISTRAL_SMALL_INSTRUCT`
+  - `OrchestrationAiModel.MIXTRAL_8X7B_INSTRUCT_V01`
+  - `OrchestrationAiModel.LLAMA3_70B_INSTRUCT`
+  - `OrchestrationAiModel.LLAMA3_1_70B_INSTRUCT`
+  - `OrchestrationAiModel.CLAUDE_3_SONNET`
+  - `OrchestrationAiModel.CLAUDE_3_HAIKU`
+  - `OrchestrationAiModel.CLAUDE_3_OPUS`
+  - `OrchestrationAiModel.CLAUDE_3_5_SONNET`
+  - `OrchestrationAiModel.CLAUDE_3_7_SONNET`
+  - `OrchestrationAiModel.CLAUDE_4_SONNET`
+  - `OrchestrationAiModel.TITAN_TEXT_LITE`
+  - `OrchestrationAiModel.TITAN_TEXT_EXPRESS`
+  - `OrchestrationAiModel.GPT_35_TURBO`
+  - `OrchestrationAiModel.GPT_35_TURBO_16K`
+  - `OrchestrationAiModel.GPT_35_TURBO_0125`
+  - `OrchestrationAiModel.GPT_4`
+  - `OrchestrationAiModel.GPT_4_32K`
+  - `OrchestrationAiModel.GPT_4_0613`
+  - `OrchestrationAiModel.GPT_4O_MINI`
+  - `OrchestrationAiModel.OPENAI_O1`
+  - `OrchestrationAiModel.OPENAI_O3_MINI`
+  - `OrchestrationAiModel.GEMINI_1_0_PRO`
+  - `OrchestrationAiModel.GEMINI_1_5_PRO`
+  - `OrchestrationAiModel.GEMINI_1_5_FLASH`
+  - `OrchestrationAiModel.GEMINI_2_0_FLASH`
+  - `OrchestrationAiModel.GEMINI_2_0_FLASH_LITE`
+  - `OrchestrationAiModel.ALEPHALPHA_PHARIA_1_7B_CONTROL`
+  - `OrchestrationAiModel.DEEPSEEK_R1`
 - [OpenAi] Removed deprecated models:
-  - dall-e-3
-  - gpt-35-turbo
-  - gpt-35-turbo-0125
-  - gpt-35-turbo-16k
-  - gpt-4
-  - gpt-4-32k
-  - gpt-4o-mini
-  - o3-mini
-  - o1
-  - text-embedding-ada-002
+  - `OpenAiModel.DALL_E_3`
+  - `OpenAiModel.GPT_35_TURBO`
+  - `OpenAiModel.GPT_35_TURBO_1025`
+  - `OpenAiModel.GPT_35_TURBO_16K`
+  - `OpenAiModel.GPT_4`
+  - `OpenAiModel.GPT_4_32K`
+  - `OpenAiModel.GPT_4O_MINI`
+  - `OpenAiModel.O3_MINI`
+  - `OpenAiModel.O1`
+  - `OpenAiModel.TEXT_EMBEDDING_ADA_002`
 
 #### Prompt registry client Migration Guide
 
