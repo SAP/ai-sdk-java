@@ -82,6 +82,10 @@ final class ConfigToRequestTransformer {
      * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
      */
     if (config instanceof TemplateRef) {
+      if (!prompt.getMessages().isEmpty()) {
+        throw new IllegalArgumentException(
+            "Prompt must not contain messages when using a template reference");
+      }
       return config;
     }
 
