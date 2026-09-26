@@ -3,9 +3,11 @@ package com.sap.ai.sdk.prompt.registry.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateGetResponse;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplateHistoryDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateListResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplatePostResponse;
+import com.sap.ai.sdk.prompt.registry.model.PromptTemplateScenarioDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
@@ -245,6 +247,220 @@ public class PromptTemplatesApi extends BaseApi {
   public PromptTemplateDeleteResponse deletePromptTemplate(@Nonnull final UUID promptTemplateId)
       throws OpenApiRequestException {
     return deletePromptTemplate(promptTemplateId, null, null);
+  }
+
+  /**
+   * Delete all non-current versions (history) for the given prompt template
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario (required) The value for the parameter scenario
+   * @param version (required) The value for the parameter version
+   * @param name (required) The value for the parameter name
+   * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
+   * @return PromptTemplateHistoryDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PromptTemplateHistoryDeleteResponse deletePromptTemplateHistory(
+      @Nonnull final String scenario,
+      @Nonnull final String version,
+      @Nonnull final String name,
+      @Nullable final String aiResourceGroup,
+      @Nullable final String aiResourceGroupScope)
+      throws OpenApiRequestException {
+
+    // verify the required parameter 'scenario' is set
+    if (scenario == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'scenario' when calling deletePromptTemplateHistory")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'version' is set
+    if (version == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'version' when calling deletePromptTemplateHistory")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'name' is set
+    if (name == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'name' when calling deletePromptTemplateHistory")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath =
+        "/lm/scenarios/{scenario}/promptTemplates/{name}/versions/{version}/history"
+            .replaceAll(
+                "\\{" + "scenario" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(scenario)))
+            .replaceAll(
+                "\\{" + "version" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(version)))
+            .replaceAll(
+                "\\{" + "name" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(name)));
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
+    if (aiResourceGroupScope != null)
+      localVarHeaderParams.put(
+          "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<PromptTemplateHistoryDeleteResponse> localVarReturnType =
+        new TypeReference<PromptTemplateHistoryDeleteResponse>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "DELETE",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarReturnType);
+  }
+
+  /**
+   * Delete all non-current versions (history) for the given prompt template
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario The value for the parameter scenario
+   * @param version The value for the parameter version
+   * @param name The value for the parameter name
+   * @return PromptTemplateHistoryDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PromptTemplateHistoryDeleteResponse deletePromptTemplateHistory(
+      @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
+      throws OpenApiRequestException {
+    return deletePromptTemplateHistory(scenario, version, name, null, null);
+  }
+
+  /**
+   * Delete all imperative prompt templates in the given scenario.
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario (required) The value for the parameter scenario
+   * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @param aiResourceGroupScope (optional) Specify whether the resource group scope is to be used
+   * @return PromptTemplateScenarioDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PromptTemplateScenarioDeleteResponse deletePromptTemplatesByScenario(
+      @Nonnull final String scenario,
+      @Nullable final String aiResourceGroup,
+      @Nullable final String aiResourceGroupScope)
+      throws OpenApiRequestException {
+
+    // verify the required parameter 'scenario' is set
+    if (scenario == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'scenario' when calling deletePromptTemplatesByScenario")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath =
+        "/lm/scenarios/{scenario}/promptTemplates"
+            .replaceAll(
+                "\\{" + "scenario" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(scenario)));
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
+    if (aiResourceGroupScope != null)
+      localVarHeaderParams.put(
+          "AI-Resource-Group-Scope", ApiClient.parameterToString(aiResourceGroupScope));
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<PromptTemplateScenarioDeleteResponse> localVarReturnType =
+        new TypeReference<PromptTemplateScenarioDeleteResponse>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "DELETE",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarReturnType);
+  }
+
+  /**
+   * Delete all imperative prompt templates in the given scenario.
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario The value for the parameter scenario
+   * @return PromptTemplateScenarioDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public PromptTemplateScenarioDeleteResponse deletePromptTemplatesByScenario(
+      @Nonnull final String scenario) throws OpenApiRequestException {
+    return deletePromptTemplatesByScenario(scenario, null, null);
   }
 
   /**
