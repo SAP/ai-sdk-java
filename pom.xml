@@ -63,6 +63,8 @@
     <assertj-core.version>3.27.7</assertj-core.version>
     <slf4j.version>2.0.17</slf4j.version>
     <checkstyle.version>14.1.0</checkstyle.version>
+    <!-- Pin PMD to fix StackOverflowError in 7.17.0 type resolution (pmd/pmd#5721, fixed in 7.25.0) -->
+    <pmd.version>7.25.0</pmd.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.6.0</surefire.version>
     <spring-ai.version>2.0.1</spring-ai.version>
@@ -780,6 +782,18 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.28.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>net.sourceforge.pmd</groupId>
+            <artifactId>pmd-core</artifactId>
+            <version>${pmd.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>net.sourceforge.pmd</groupId>
+            <artifactId>pmd-java</artifactId>
+            <version>${pmd.version}</version>
+          </dependency>
+        </dependencies>
         <configuration>
           <rulesets>
             <ruleset>${project.rootdir}/.pipeline/pmd.xml</ruleset>
