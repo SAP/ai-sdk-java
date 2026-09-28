@@ -627,15 +627,15 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
   }
 
   @Test
+  @DisplayName("withHeader keeps the request's system message in the payload")
   void testWithHeaderPreservesSystemPrompt() {
     stubForChatCompletion();
 
     final var request =
-        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
-    client
-        .withSystemPrompt("You are a helpful AI")
-        .withHeader("foo", "bar")
-        .chatCompletion(request);
+        new OpenAiChatCompletionRequest(
+            OpenAiMessage.system("You are a helpful AI"),
+            OpenAiMessage.user("Hello World! Why is this phrase so famous?"));
+    client.withHeader("foo", "bar").chatCompletion(request);
 
     verify(
         postRequestedFor(anyUrl())
@@ -648,15 +648,15 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
   }
 
   @Test
+  @DisplayName("withHeaders adds every header while keeping the request's system message")
   void testMultipleCustomHeaders() {
     stubForChatCompletion();
 
     final var request =
-        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
-    client
-        .withSystemPrompt("You are a helpful AI")
-        .withHeaders(Map.of("foo", "bar", "baz", "qux"))
-        .chatCompletion(request);
+        new OpenAiChatCompletionRequest(
+            OpenAiMessage.system("You are a helpful AI"),
+            OpenAiMessage.user("Hello World! Why is this phrase so famous?"));
+    client.withHeaders(Map.of("foo", "bar", "baz", "qux")).chatCompletion(request);
 
     verify(
         postRequestedFor(anyUrl())
