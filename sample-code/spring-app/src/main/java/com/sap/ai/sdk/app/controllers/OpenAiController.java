@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
-/** Endpoints for OpenAI operations */
+/** Endpoints for OpenAI operations. */
 @Slf4j
 @RestController
 @SuppressWarnings("unused")
@@ -170,10 +170,10 @@ public class OpenAiController {
   }
 
   /**
-   * Send a chunk to the emitter
+   * Send a chunk to the emitter.
    *
-   * @param emitter The emitter to send the chunk to
-   * @param chunk The chunk to send
+   * @param emitter the emitter to send the chunk to.
+   * @param chunk the chunk to send.
    */
   public static void send(@Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
     try {

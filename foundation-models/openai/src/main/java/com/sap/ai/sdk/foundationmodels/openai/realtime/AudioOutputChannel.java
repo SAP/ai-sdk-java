@@ -1,26 +1,17 @@
 package com.sap.ai.sdk.foundationmodels.openai.realtime;
 
-import com.google.common.annotations.Beta;
-
-/**
- * Functional interface representing audio output channel (audio data consumer)
- *
- * <p>Note: This class is marked as {@link Beta} because it represents newly introduced API which
- * has not yet been sufficiently stabilized and has significant risk of changes
- */
-@Beta
+/** Functional interface representing audio output channel (audio data consumer). */
 public interface AudioOutputChannel {
 
   /**
    * This method is sequentially invoked by audio data provider to supply implementer (consumer)
    * with the audio data. Exact audio format (encoding, sampling rate, etc.) depends on the usage
-   * context
+   * context.
    *
-   * @param rawBytesChunk binary data in the depending on the use case format
+   * @param rawBytesChunk binary data in the depending on the use case format.
    * @param isLast true if this call logically concludes previous and this passed bytes data into a
    *     single logical entity (e.g. gets called at the end when all byte parts of a single message
-   *     get passed)
+   *     get passed).
    */
-  @Beta
   void outputAudio(byte[] rawBytesChunk, boolean isLast);
 }

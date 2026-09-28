@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
-/** Endpoints for the Orchestration service */
+/** Endpoints for the Orchestration service. */
 @RestController
 @Slf4j
 @SuppressWarnings("unused")

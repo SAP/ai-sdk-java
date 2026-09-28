@@ -4,15 +4,15 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Allows to configure model system prompt */
+/** Allows to configure model system prompt. */
 public final class RealtimeParamSystemPrompt extends RealtimeParam {
 
   private final String systemPrompt;
 
   /**
-   * Constructs RealtimeParamSystemPrompt object
+   * Constructs RealtimeParamSystemPrompt object.
    *
-   * @param systemPrompt system prompt to use
+   * @param systemPrompt system prompt to use.
    */
   public RealtimeParamSystemPrompt(@Nonnull final String systemPrompt) {
     this.systemPrompt = systemPrompt;

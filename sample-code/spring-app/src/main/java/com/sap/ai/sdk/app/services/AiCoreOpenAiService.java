@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
-/** Service class for the OpenAI Responses API */
+/** Service class for the OpenAI Responses API. */
 @Service
 @Slf4j
 public class AiCoreOpenAiService {
@@ -37,10 +37,10 @@ public class AiCoreOpenAiService {
       AiCoreOpenAiClient.forModel(GPT_5, "ai-sdk-java-e2e").responses();
 
   /**
-   * Create a simple non-persistent response using the Responses API
+   * Create a simple non-persistent response using the Responses API.
    *
-   * @param input the input text to send to the model
-   * @return the response object from the Responses API
+   * @param input the input text to send to the model.
+   * @return the response object from the Responses API.
    */
   @Nonnull
   public Response createResponse(@Nonnull final String input) {
@@ -49,10 +49,10 @@ public class AiCoreOpenAiService {
   }
 
   /**
-   * Create a non-persistent streaming response using the Responses API
+   * Create a non-persistent streaming response using the Responses API.
    *
-   * @param input the input text to send to the model
-   * @return the streaming response object from the Responses API
+   * @param input the input text to send to the model.
+   * @return the streaming response object from the Responses API.
    */
   @Nonnull
   public StreamResponse<ResponseStreamEvent> createStreamingResponse(@Nonnull final String input) {
@@ -64,9 +64,9 @@ public class AiCoreOpenAiService {
   /**
    * Create a persistent response so it can be retrieved, cancelled, or deleted later.
    *
-   * @param input the input text to send to the model
-   * @param background if true, the response runs asynchronously
-   * @return the response object from the Responses API
+   * @param input the input text to send to the model.
+   * @param background if true, the response runs asynchronously.
+   * @return the response object from the Responses API.
    */
   @Nonnull
   public Response createPersistentResponse(@Nonnull final String input, final boolean background) {
@@ -78,8 +78,8 @@ public class AiCoreOpenAiService {
   /**
    * Retrieve a previously created response by its id.
    *
-   * @param responseId the id returned by the created persistent response call
-   * @return the stored response
+   * @param responseId the id returned by the created persistent response call.
+   * @return the stored response.
    */
   @Nonnull
   public Response retrieveResponse(@Nonnull final String responseId) {
@@ -90,7 +90,7 @@ public class AiCoreOpenAiService {
   /**
    * Cancel a background response by its id.
    *
-   * @param responseId the id of the background response to cancel
+   * @param responseId the id of the background response to cancel.
    * @return the response with the new status.
    */
   @Nonnull
@@ -102,7 +102,7 @@ public class AiCoreOpenAiService {
   /**
    * Delete a stored response by its id.
    *
-   * @param responseId the id of the response to delete
+   * @param responseId the id of the response to delete.
    */
   public void deleteResponse(@Nonnull final String responseId) {
     val params = ResponseDeleteParams.builder().responseId(responseId).build();
@@ -112,8 +112,8 @@ public class AiCoreOpenAiService {
   /**
    * Create a background response and poll until it reaches a terminal status.
    *
-   * @param input the prompt to run asynchronously
-   * @return the completed (or failed) response
+   * @param input the prompt to run asynchronously.
+   * @return the completed (or failed) response.
    */
   @Nonnull
   public Response createBackgroundResponseAndPoll(@Nonnull final String input)
@@ -132,9 +132,9 @@ public class AiCoreOpenAiService {
   /**
    * Create a multi-turn follow-up response using a previous response id. *
    *
-   * @param input the follow-up question
-   * @param previousResponseId the id of the prior response to continue from
-   * @return the response object
+   * @param input the follow-up question.
+   * @param previousResponseId the id of the prior response to continue from.
+   * @return the response object.
    */
   @Nonnull
   public Response createMultiTurnResponse(
@@ -151,8 +151,8 @@ public class AiCoreOpenAiService {
   /**
    * Create a response with tool calling enabled.
    *
-   * @param input the user question that may trigger a tool call
-   * @return the response object
+   * @param input the user question that may trigger a tool call.
+   * @return the response object.
    */
   @Nonnull
   public Response createResponseWithTools(@Nonnull final String input) {
@@ -196,9 +196,9 @@ public class AiCoreOpenAiService {
   /**
    * Create a response with a specific reasoning effort level.
    *
-   * @param input the prompt to send
-   * @param effort the reasoning effort level
-   * @return the response object
+   * @param input the prompt to send.
+   * @param effort the reasoning effort level.
+   * @return the response object.
    */
   @Nonnull
   public Response createResponseWithReasoning(
@@ -213,8 +213,8 @@ public class AiCoreOpenAiService {
   /**
    * Create a response with structured JSON output conforming to a given schema.
    *
-   * @param input the extraction prompt
-   * @return the response object whose output text is valid JSON matching the schema
+   * @param input the extraction prompt.
+   * @return the response object whose output text is valid JSON matching the schema.
    */
   @Nonnull
   public Response createStructuredResponse(@Nonnull final String input) {
@@ -242,8 +242,8 @@ public class AiCoreOpenAiService {
   /**
    * Create a stateless multi-turn response by passing the full conversation history as input.
    *
-   * @param messages the full conversation history
-   * @return the response object
+   * @param messages the full conversation history.
+   * @return the response object.
    */
   @Nonnull
   public Response createStatelessMultiTurnResponse(
@@ -255,9 +255,9 @@ public class AiCoreOpenAiService {
   /**
    * Create a response with truncation enabled so long conversations are automatically trimmed.
    *
-   * @param input the follow-up prompt
-   * @param previousResponseId the id of the prior response
-   * @return the response object
+   * @param input the follow-up prompt.
+   * @param previousResponseId the id of the prior response.
+   * @return the response object.
    */
   @SuppressWarnings("deprecation")
   @Nonnull
@@ -277,9 +277,9 @@ public class AiCoreOpenAiService {
   /**
    * Create a response using a prompt cache key to maximize cache reuse across calls.
    *
-   * @param input the prompt
-   * @param cacheKey an arbitrary cache key shared across related requests
-   * @return the response object
+   * @param input the prompt.
+   * @param cacheKey an arbitrary cache key shared across related requests.
+   * @return the response object.
    */
   @Nonnull
   public Response createCachedResponse(

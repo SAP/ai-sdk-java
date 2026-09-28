@@ -71,21 +71,23 @@
     <mockito.version>5.23.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
     <jsonschema-generator.version>5.0.0</jsonschema-generator.version>
-    <jackson.version>2.22.2</jackson.version>
+    <jackson.version>2.22.3</jackson.version>
     <jackson-annotations.version>2.22</jackson-annotations.version>
-    <jackson3.version>3.2.2</jackson3.version>
+    <jackson3.version>3.2.3</jackson3.version>
     <logback.version>1.6.3</logback.version>
     <commons-codec.version>1.22.1</commons-codec.version>
     <japicmp.version>0.26.2</japicmp.version>
-    <openai-java.version>4.63.1</openai-java.version>
+    <openai-java.version>4.65.0</openai-java.version>
     <!-- conflicts resolution -->
-    <httpcomponents-core5.version>5.4.3</httpcomponents-core5.version>
+    <httpcomponents-core5.version>5.4.4</httpcomponents-core5.version>
     <httpcomponents-client5.version>5.6.4</httpcomponents-client5.version>
     <micrometer.version>1.17.1</micrometer.version>
     <json.version>20260814</json.version>
     <snakeyaml.version>2.7</snakeyaml.version>
     <jspecify.version>1.0.1</jspecify.version>
     <json-schema-validator.version>3.0.7</json-schema-validator.version>
+    <!-- CVE fixes -->
+    <bouncycastle.version>1.86</bouncycastle.version>
     <!-- Formatting -->
     <spotless.version>3.10.2</spotless.version>
     <spotless.skip>false</spotless.skip>
@@ -251,6 +253,18 @@
         <groupId>org.jspecify</groupId>
         <artifactId>jspecify</artifactId>
         <version>${jspecify.version}</version>
+      </dependency>
+      <!-- Temporary fix for CVE-2025-48988 -->
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcprov-jdk18on</artifactId>
+        <version>${bouncycastle.version}</version>
+      </dependency>
+      <!-- Temporary fix for CVE-2026-71889 -->
+      <dependency>
+        <groupId>org.bouncycastle</groupId>
+        <artifactId>bcpkix-jdk18on</artifactId>
+        <version>${bouncycastle.version}</version>
       </dependency>
       <!-- scope "test" -->
       <dependency>

@@ -23,7 +23,7 @@ public class OpenAiEmbeddingRequest {
   /**
    * Constructs an OpenAiEmbeddingRequest from a list of strings.
    *
-   * @param tokens a list of tokens to be embedded
+   * @param tokens a list of tokens to be embedded.
    */
   public OpenAiEmbeddingRequest(@Nonnull final List<String> tokens) {
     this.tokens = Collections.unmodifiableList(tokens);
@@ -32,7 +32,7 @@ public class OpenAiEmbeddingRequest {
   /**
    * Converts this request to an EmbeddingsCreateRequest.
    *
-   * @return an EmbeddingsCreateRequest with the tokens to be embedded
+   * @return an EmbeddingsCreateRequest with the tokens to be embedded.
    */
   @Nonnull
   EmbeddingsCreateRequest createEmbeddingsCreateRequest() {

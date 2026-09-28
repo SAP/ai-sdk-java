@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Getter
 @Accessors(fluent = true)
-public final class ToolMessage implements Message {
+public final class ToolMessage extends Message {
 
   /** The role of the assistant. */
   @Nonnull final String role = "tool";
@@ -33,10 +33,10 @@ public final class ToolMessage implements Message {
   @Nullable final CacheControl cacheControl;
 
   /**
-   * Constructs ToolMessage object
+   * Constructs ToolMessage object.
    *
-   * @param id tool call id
-   * @param content message content
+   * @param id tool call id.
+   * @param content message content.
    */
   public ToolMessage(@Nonnull final String id, @Nonnull final String content) {
     this(id, content, null);

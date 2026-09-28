@@ -6,7 +6,7 @@ import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
 import javax.annotation.Nonnull;
 
 /**
- * Unified client to use Prompt Registry API
+ * Unified client to use Prompt Registry API.
  *
  * @since 2.0
  */
@@ -14,24 +14,24 @@ public class PromptRegistryClient {
 
   private final AiCoreService aiCoreService;
 
-  /** Constructs default PromptRegistryClient */
+  /** Constructs default PromptRegistryClient. */
   public PromptRegistryClient() {
     this(new AiCoreService());
   }
 
   /**
-   * Constructs PromptRegistryClient with customized AiCoreService
+   * Constructs PromptRegistryClient with customized AiCoreService.
    *
-   * @param service customized AiCoreService
+   * @param service customized AiCoreService.
    */
   public PromptRegistryClient(@Nonnull final AiCoreService service) {
     aiCoreService = service;
   }
 
   /**
-   * Get the prompt templates client
+   * Get the prompt templates' client.
    *
-   * @return the client
+   * @return the client.
    */
   @Nonnull
   public PromptTemplatesApi prompt() {
@@ -39,9 +39,9 @@ public class PromptRegistryClient {
   }
 
   /**
-   * Get the orchestration configs client
+   * Get the orchestration configs client.
    *
-   * @return the client
+   * @return the client.
    */
   @Nonnull
   public OrchestrationConfigsApi orchestrationConfig() {

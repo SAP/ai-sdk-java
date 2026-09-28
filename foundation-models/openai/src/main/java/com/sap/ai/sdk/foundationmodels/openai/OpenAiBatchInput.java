@@ -28,13 +28,13 @@ import lombok.val;
 public class OpenAiBatchInput {
   private static final ObjectMapper mapper = getDefaultObjectMapper();
 
-  /** The list of individual batch requests */
+  /** The list of individual batch requests. */
   private final List<SingleRequest> requests = new ArrayList<>();
 
   /**
    * Constructs an OpenAiBatchInput from a list of OpenAiChatCompletionRequest objects.
    *
-   * @param chatCompletionRequests the list of chat completion requests to include in the batch
+   * @param chatCompletionRequests the list of chat completion requests to include in the batch.
    */
   public OpenAiBatchInput(@Nonnull final OpenAiChatCompletionRequest... chatCompletionRequests) {
     for (int i = 0; i < chatCompletionRequests.length; i++) {
@@ -61,10 +61,10 @@ public class OpenAiBatchInput {
   /**
    * Represents a single batch request in OpenAI batch format.
    *
-   * @param customId a custom identifier for the request, used for tracking in batch processing
-   * @param body the body of the request, which is a CreateChatCompletionRequest
-   * @param method the HTTP method for the request, e.g., "POST"
-   * @param url the endpoint URL for the request, e.g., "/v1/chat/completions"
+   * @param customId a custom identifier for the request, used for tracking in batch processing.
+   * @param body the body of the request, which is a CreateChatCompletionRequest.
+   * @param method the HTTP method for the request, e.g., "POST".
+   * @param url the endpoint URL for the request, e.g., "/v1/chat/completions".
    * @since 1.20.0
    */
   public record SingleRequest(

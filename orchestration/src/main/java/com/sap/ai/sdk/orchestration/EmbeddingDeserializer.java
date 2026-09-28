@@ -18,7 +18,7 @@ class EmbeddingDeserializer extends JsonDeserializer<Embedding> {
 
   /**
    * Deserializes JSON into the appropriate {@link Embedding} implementation based on the JSON
-   * structure:
+   * structure.
    *
    * <ul>
    *   <li>JSON array → {@link Embedding.ArrayOfFloats}
@@ -26,11 +26,11 @@ class EmbeddingDeserializer extends JsonDeserializer<Embedding> {
    *   <li>JSON object → {@link Embedding.InnerEmbeddingMultiFormat}
    * </ul>
    *
-   * @param jsonParser The parser providing the JSON.
-   * @param deserializationContext The deserialization context.
-   * @return The deserialized {@link Embedding} object.
-   * @throws JsonMappingException If the JSON structure is not recognized or deserialization fails.
-   * @throws IOException If JSON content cannot be consumed.
+   * @param jsonParser the parser providing the JSON.
+   * @param deserializationContext the deserialization context.
+   * @return the deserialized {@link Embedding} object.
+   * @throws JsonMappingException if the JSON structure is not recognized or deserialization fails.
+   * @throws IOException if JSON content cannot be consumed.
    */
   @Nonnull
   @Override

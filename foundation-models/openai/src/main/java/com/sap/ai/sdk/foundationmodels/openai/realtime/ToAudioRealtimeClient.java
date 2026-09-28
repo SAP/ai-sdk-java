@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
 import javax.annotation.Nonnull;
 import lombok.extern.slf4j.Slf4j;
 
-/** Implements common functionality for realtime api clients that output audio */
+/** Implements common functionality for realtime api clients that output audio. */
 @Slf4j
 abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
 
@@ -40,20 +40,20 @@ abstract class ToAudioRealtimeClient extends WSOpenAiRealtimeClient {
   final AudioOutputChannel outputConsumer;
   final RealtimeAudioConfigOutput.Voice.UnionMember1 voice;
 
-  /** defines if every call to the client should be considered conversation turn */
+  /** Defines if every call to the client should be considered conversation turn. */
   protected final boolean eagerTurnDetection;
 
   final String systemPrompt;
 
   /**
-   * Constructs the object
+   * Constructs the object.
    *
-   * @param url - realtime api endpoint url
-   * @param httpHeaders - http headers (key - value) for client to use
-   * @param outputConsumer - consumer of audio bytes in pcm 24000 Hz mono little endian format
-   * @param defaultTurnDetectionEager - if explicit cfg for turn detection was not specified, this
-   *     turn detection eagerness flag will be used (true results in EACH_CALL_IS_A_TURN handling)
-   * @param params - possible overrides for default params (e.g. voice, system prompt, etc.)
+   * @param url realtime api endpoint url.
+   * @param httpHeaders http headers (key - value) for client to use.
+   * @param outputConsumer consumer of audio bytes in pcm 24000 Hz mono little endian format.
+   * @param defaultTurnDetectionEager if explicit cfg for turn detection was not specified, this
+   *     turn detection eagerness flag will be used (true results in EACH_CALL_IS_A_TURN handling).
+   * @param params possible overrides for default params (e.g. voice, system prompt, etc.).
    */
   public ToAudioRealtimeClient(
       @Nonnull final String url,

@@ -12,7 +12,7 @@ public interface ClientError {
   /**
    * Get the error message.
    *
-   * @return The error message
+   * @return the error message.
    */
   @Nullable
   String getMessage();

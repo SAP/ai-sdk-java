@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** Endpoints for RPT model operations */
+/** Endpoints for RPT model operations. */
 @RestController
 public class RptController {
 
@@ -21,8 +21,8 @@ public class RptController {
   /**
    * Endpoint to get table completion predictions from the RPT model.
    *
-   * @param format optional query parameter to specify the response format (e.g., "json")
-   * @return the prediction result in the specified format
+   * @param format optional query parameter to specify the response format (e.g., "json").
+   * @return the prediction result in the specified format.
    */
   @Nonnull
   @GetMapping("/tableCompletion")
@@ -38,8 +38,8 @@ public class RptController {
   /**
    * Endpoint to get table completion predictions from the RPT model with Parquet file input.
    *
-   * @param format optional query parameter to specify the response format (e.g., "json")
-   * @return the prediction result in the specified format
+   * @param format optional query parameter to specify the response format (e.g., "json").
+   * @return the prediction result in the specified format.
    */
   @Nonnull
   @GetMapping("/tableCompletionWithParquet")

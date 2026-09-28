@@ -24,7 +24,7 @@ import lombok.val;
  * Core: Orchestration - Grounding</a>
  */
 @Accessors(fluent = true)
-public class Grounding implements GroundingProvider {
+public class Grounding extends GroundingProvider {
 
   @Nonnull
   private List<GroundingModuleConfigConfigFiltersInner> filters =
@@ -40,7 +40,7 @@ public class Grounding implements GroundingProvider {
    *
    * <p>It is by default a document grounding service with a vector data repository.
    *
-   * @return The grounding provider.
+   * @return the grounding provider.
    */
   @Nonnull
   public static Grounding create() {
@@ -50,8 +50,8 @@ public class Grounding implements GroundingProvider {
   /**
    * Set filters for grounding.
    *
-   * @param filters List of filters to set.
-   * @return The modified grounding configuration.
+   * @param filters list of filters to set.
+   * @return the modified grounding configuration.
    */
   @Nonnull
   @SuppressWarnings("PMD.PublicApiExposesModelType")
@@ -65,8 +65,8 @@ public class Grounding implements GroundingProvider {
   /**
    * Set which metadataParams are used in the grounding response.
    *
-   * @param metadataParams List of metadataParams to set.
-   * @return The modified grounding configuration.
+   * @param metadataParams list of metadataParams to set.
+   * @return the modified grounding configuration.
    * @since 1.13.0
    */
   @Nonnull
@@ -81,8 +81,8 @@ public class Grounding implements GroundingProvider {
    * <p>It uses the inputParams {@code userMessage} for the user message and {@code
    * groundingContext} for the grounding context.
    *
-   * @param message The user message.
-   * @return The prompt with grounding.
+   * @param message the user message.
+   * @return the prompt with grounding.
    */
   @Nonnull
   public OrchestrationPrompt createGroundingPrompt(@Nonnull final String message) {
@@ -94,7 +94,7 @@ public class Grounding implements GroundingProvider {
 
   @Nonnull
   @Override
-  public GroundingModuleConfig createConfig() {
+  GroundingModuleConfig createConfig() {
     val groundingConfigConfig =
         GroundingModuleConfigConfig.create()
             .placeholders(

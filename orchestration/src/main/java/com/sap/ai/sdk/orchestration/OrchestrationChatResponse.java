@@ -36,7 +36,7 @@ public class OrchestrationChatResponse {
   /**
    * Get the message content from the output.
    *
-   * <p>Note: If there are multiple choices only the first one is returned
+   * <p><b>Note:</b> If there are multiple choices only the first one is returned.
    *
    * @return the message content or empty string.
    * @throws OrchestrationFilterException.Output if the content filter filtered the output.
@@ -62,7 +62,7 @@ public class OrchestrationChatResponse {
   /**
    * Get the token usage.
    *
-   * @return The token usage.
+   * @return the token usage.
    */
   @Nonnull
   public TokenUsage getTokenUsage() {
@@ -87,8 +87,8 @@ public class OrchestrationChatResponse {
   /**
    * Get all messages. This can be used for subsequent prompts as a message history.
    *
+   * @return a list of all messages.
    * @throws IllegalArgumentException if the MultiChatMessage type message in chat.
-   * @return A list of all messages.
    */
   @Nonnull
   public List<Message> getAllMessages() throws IllegalArgumentException {
@@ -141,7 +141,7 @@ public class OrchestrationChatResponse {
   /**
    * Get the LLM response. Useful for accessing the finish reason or further data like logprobs.
    *
-   * @return The (first, in case of multiple) {@link LLMChoice}.
+   * @return the (first, in case of multiple) {@link LLMChoice}.
    */
   @Nonnull
   public LLMChoice getChoice() {
@@ -156,10 +156,10 @@ public class OrchestrationChatResponse {
    * configured into {@link OrchestrationModuleConfig#withTemplateConfig}.
    *
    * @param type the class type to deserialize the JSON content into.
-   * @return the deserialized entity of type T.
    * @param <T> the type of the entity to deserialize to.
+   * @return the deserialized entity of type T.
    * @throws OrchestrationClientException if the model refused to answer the question or if the
-   *     content
+   *     content.
    */
   @Nonnull
   public <T> T asEntity(@Nonnull final Class<T> type) throws OrchestrationClientException {
@@ -191,7 +191,7 @@ public class OrchestrationChatResponse {
   /**
    * Get the last message in the response, which is the assistant's reply.
    *
-   * @return The assistant's reply message.
+   * @return the assistant's reply message.
    */
   @Nonnull
   public Message getLastMessage() {

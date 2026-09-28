@@ -15,7 +15,7 @@ import org.slf4j.MDC;
 /**
  * Utility for managing MDC (Mapped Diagnostic Context) for logging of AI Core requests.
  *
- * <p>This class is intended for internal use only.
+ * <p>For internal use only.
  */
 @Slf4j
 @UtilityClass
@@ -28,7 +28,7 @@ public class RequestLogContext {
   /**
    * Set the endpoint for the current request context.
    *
-   * @param endpoint the endpoint URL
+   * @param endpoint the endpoint URL.
    */
   public static void setEndpoint(@Nonnull final String endpoint) {
     MDC.put(MdcKeys.ENDPOINT, endpoint);
@@ -37,7 +37,7 @@ public class RequestLogContext {
   /**
    * Set the destination for the current request context.
    *
-   * @param destination the destination name
+   * @param destination the destination name.
    */
   public static void setDestination(@Nonnull final String destination) {
     MDC.put(MdcKeys.DESTINATION, destination);
@@ -46,7 +46,7 @@ public class RequestLogContext {
   /**
    * Set the mode for the current request context.
    *
-   * @param mode the request mode
+   * @param mode the request mode.
    */
   public static void setMode(@Nonnull final Mode mode) {
     MDC.put(MdcKeys.MODE, mode.getValue());
@@ -55,7 +55,7 @@ public class RequestLogContext {
   /**
    * Set the service for the current request context.
    *
-   * @param service the service type
+   * @param service the service type.
    */
   public static void setService(@Nonnull final Service service) {
     MDC.put(MdcKeys.SERVICE, service.getValue());
@@ -88,7 +88,7 @@ public class RequestLogContext {
   /**
    * Log successful response with duration and size information.
    *
-   * @param response the HTTP response
+   * @param response the HTTP response.
    */
   public static void logResponseSuccess(@Nonnull final ClassicHttpResponse response) {
     if (!log.isDebugEnabled()) {
@@ -119,9 +119,9 @@ public class RequestLogContext {
   /** Request execution modes. */
   @RequiredArgsConstructor
   public enum Mode {
-    /** Synchronous request mode */
+    /** Synchronous request mode. */
     SYNCHRONOUS("synchronous"),
-    /** Streaming request mode */
+    /** Streaming request mode. */
     STREAMING("streaming");
     @Getter private final String value;
   }
@@ -129,9 +129,9 @@ public class RequestLogContext {
   /** AI service types. */
   @RequiredArgsConstructor
   public enum Service {
-    /** OpenAI service */
+    /** OpenAI service. */
     OPENAI("OpenAI"),
-    /** Orchestration service */
+    /** Orchestration service. */
     ORCHESTRATION("Orchestration");
     @Getter private final String value;
   }

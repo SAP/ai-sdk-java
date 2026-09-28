@@ -150,7 +150,7 @@ public class OpenAiChatCompletionRequest {
   /**
    * Creates an OpenAiChatCompletionPrompt with string as user message.
    *
-   * @param message the message to be added to the prompt
+   * @param message the message to be added to the prompt.
    */
   @Tolerate
   public OpenAiChatCompletionRequest(@Nonnull final String message) {
@@ -160,8 +160,8 @@ public class OpenAiChatCompletionRequest {
   /**
    * Creates an OpenAiChatCompletionPrompt with a multiple unpacked messages.
    *
-   * @param message the primary message to be added to the prompt
-   * @param messages additional messages to be added to the prompt
+   * @param message the primary message to be added to the prompt.
+   * @param messages additional messages to be added to the prompt.
    */
   @Tolerate
   public OpenAiChatCompletionRequest(
@@ -172,7 +172,7 @@ public class OpenAiChatCompletionRequest {
   /**
    * Creates an OpenAiChatCompletionPrompt with a list of messages.
    *
-   * @param messages the list of messages to be added to the prompt
+   * @param messages the list of messages to be added to the prompt.
    * @since 1.6.0
    */
   @Tolerate
@@ -203,9 +203,9 @@ public class OpenAiChatCompletionRequest {
   /**
    * Adds stop sequences to the request.
    *
-   * @param sequence the primary stop sequence
-   * @param sequences additional stop sequences
-   * @return a new OpenAiChatCompletionRequest instance with the specified stop sequences
+   * @param sequence the primary stop sequence.
+   * @param sequences additional stop sequences.
+   * @return a new OpenAiChatCompletionRequest instance with the specified stop sequences.
    */
   @Tolerate
   @Nonnull
@@ -217,8 +217,8 @@ public class OpenAiChatCompletionRequest {
   /**
    * Sets the parallel tool calls option.
    *
-   * @param parallelToolCalls Whether to allow parallel tool calls.
-   * @return A new instance with the specified option.
+   * @param parallelToolCalls whether to allow parallel tool calls.
+   * @return a new instance with the specified option.
    */
   @Nonnull
   public OpenAiChatCompletionRequest withParallelToolCalls(
@@ -251,8 +251,8 @@ public class OpenAiChatCompletionRequest {
   /**
    * Sets the log probabilities option.
    *
-   * @param logprobs Whether to include log probabilities in the response.
-   * @return A new instance with the specified option.
+   * @param logprobs whether to include log probabilities in the response.
+   * @return a new instance with the specified option.
    */
   @Nonnull
   public OpenAiChatCompletionRequest withLogprobs(@Nonnull final Boolean logprobs) {
@@ -305,7 +305,7 @@ public class OpenAiChatCompletionRequest {
   /**
    * Converts the request to a generated model class CreateChatCompletionRequest.
    *
-   * @return the CreateChatCompletionRequest
+   * @return the CreateChatCompletionRequest.
    */
   CreateChatCompletionRequest createCreateChatCompletionRequest() {
     final var request = new CreateChatCompletionRequest();

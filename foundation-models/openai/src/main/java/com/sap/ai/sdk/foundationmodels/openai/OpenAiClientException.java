@@ -16,7 +16,7 @@ public class OpenAiClientException extends ClientException {
   /**
    * Retrieves the {@link ErrorResponse} from the OpenAI service, if available.
    *
-   * @return The {@link ErrorResponse} object, or {@code null} if not available.
+   * @return the {@link ErrorResponse} object, or {@code null} if not available.
    */
   @Nullable
   public ErrorResponse getErrorResponse() {

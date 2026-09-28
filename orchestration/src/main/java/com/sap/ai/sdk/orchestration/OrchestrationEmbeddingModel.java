@@ -35,34 +35,34 @@ public class OrchestrationEmbeddingModel implements AiModel {
   /** Whether to normalize the embedding vectors. */
   @Nullable Boolean normalize;
 
-  /** Azure OpenAI Text Embedding 3 Small model */
+  /** Azure OpenAI Text Embedding 3 Small model. */
   public static final OrchestrationEmbeddingModel TEXT_EMBEDDING_3_SMALL =
       new OrchestrationEmbeddingModel("text-embedding-3-small");
 
-  /** Azure OpenAI Text Embedding 3 Large model */
+  /** Azure OpenAI Text Embedding 3 Large model. */
   public static final OrchestrationEmbeddingModel TEXT_EMBEDDING_3_LARGE =
       new OrchestrationEmbeddingModel("text-embedding-3-large");
 
-  /** Amazon Titan Embed Text model */
+  /** Amazon Titan Embed Text model. */
   public static final OrchestrationEmbeddingModel AMAZON_TITAN_EMBED_TEXT =
       new OrchestrationEmbeddingModel("amazon--titan-embed-text");
 
-  /** NVIDIA LLaMA 3.2 7B NV EmbedQA model */
+  /** NVIDIA LLaMA 3.2 7B NV EmbedQA model. */
   public static final OrchestrationEmbeddingModel NVIDIA_LLAMA_32_NV_EMBEDQA_1B =
       new OrchestrationEmbeddingModel("nvidia--llama-3.2-nv-embedqa-1b");
 
-  /** Google Cloud Platform Gemini Embedding model */
+  /** Google Cloud Platform Gemini Embedding model. */
   public static final OrchestrationEmbeddingModel GEMINI_EMBEDDING =
       new OrchestrationEmbeddingModel("gemini-embedding");
 
-  /** Alibaba text-embedding-4 model */
+  /** Alibaba text-embedding-4 model. */
   public static final OrchestrationEmbeddingModel ALIBABA_TEXT_EMBEDDING_4 =
       new OrchestrationEmbeddingModel("text-embedding-4");
 
   /**
    * Creates a new embedding model configuration with the specified name.
    *
-   * @param name the model name
+   * @param name the model name.
    */
   public OrchestrationEmbeddingModel(@Nonnull final String name) {
     this(name, null, null, null);

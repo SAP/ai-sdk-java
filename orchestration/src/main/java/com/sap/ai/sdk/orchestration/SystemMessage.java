@@ -13,6 +13,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -21,10 +22,11 @@ import lombok.experimental.Tolerate;
 import lombok.val;
 
 /** Represents a chat message as 'system' to the orchestration service. */
+@EqualsAndHashCode(callSuper = true)
 @Value
 @Accessors(fluent = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class SystemMessage implements Message {
+public class SystemMessage extends Message {
 
   /** The role of the assistant. */
   @Nonnull String role = "system";
@@ -43,11 +45,11 @@ public class SystemMessage implements Message {
   }
 
   /**
-   * Creates a new system message from a string, allows for cache checkpoint configuration
+   * Creates a new system message from a string, allows for cache checkpoint configuration.
    *
-   * @since 1.23.0
    * @param message the first message.
-   * @param cacheControl prompt caching configuration to use, nullable
+   * @param cacheControl prompt caching configuration to use. Can be {@code null} if not applicable.
+   * @since 1.23.0
    */
   public SystemMessage(
       @Nonnull final String message,
@@ -68,12 +70,12 @@ public class SystemMessage implements Message {
   }
 
   /**
-   * Add text to the message
+   * Add text to the message.
    *
+   * @param message the text to add.
+   * @param cacheControl optional cache checkpoint configuration.
+   * @return the new message.
    * @since 1.23.0
-   * @param message the text to add
-   * @param cacheControl optional cache checkpoint configuration
-   * @return the new message
    */
   @SuppressWarnings(
       "PMD.PublicApiExposesModelType") // false positive: the two CacheControl classes are mixed up

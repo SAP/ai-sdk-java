@@ -23,7 +23,7 @@ public class OpenAiError implements ClientError {
   /**
    * Gets the error message from the contained original response.
    *
-   * @return the error message
+   * @return the error message.
    */
   @Nonnull
   public String getMessage() {

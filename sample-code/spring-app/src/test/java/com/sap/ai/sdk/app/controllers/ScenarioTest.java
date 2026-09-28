@@ -28,10 +28,12 @@ class ScenarioTest {
 
     // Gather AI Core's list of available OpenAI models
     val aiModelList = new ScenarioController().getModels().getResources();
+    val servedDeprecatedModels = Set.of("o1", "o3-mini", "gpt-4o-mini", "text-embedding-ada-002");
 
     val availableOpenAiModels =
         aiModelList.stream()
             .filter(model -> model.getExecutableId().equals("azure-openai"))
+            .filter(aiModelBaseData -> !servedDeprecatedModels.contains(aiModelBaseData.getModel()))
             .collect(
                 () -> new HashMap<String, Boolean>(),
                 (list, model) -> list.put(model.getModel(), isDeprecated(model)),
@@ -77,6 +79,16 @@ class ScenarioTest {
     val internalOnlyModels =
         Set.of("abap-codestral", "abap-starcoder2-7b", "qwen3.8-27b-dev-preview");
 
+    val servedDeprecatedModels =
+        Set.of(
+            "mistralai--mistral-small-instruct",
+            "anthropic--claude-4-sonnet",
+            "gpt-4o-mini",
+            "o1",
+            "anthropic--claude-3-haiku",
+            "mistralai--mistral-large-instruct",
+            "o3-mini");
+
     val availableOrchestrationModels =
         aiModelList.stream()
             .filter(
@@ -85,6 +97,7 @@ class ScenarioTest {
                         .anyMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
             .filter(model -> !model.getModel().contains("embed"))
             .filter(model -> !internalOnlyModels.contains(model.getModel()))
+            .filter(model -> !servedDeprecatedModels.contains(model.getModel()))
             .collect(
                 () -> new HashMap<String, Boolean>(),
                 (list, model) -> list.put(model.getModel(), isDeprecated(model)),
