@@ -57,8 +57,7 @@ class SpringAiOpenAiTest {
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
-  //@Test
-  @RepeatedTest(20)
+  @Test
   void testToolCallingWithExecution() {
     ChatResponse response = service.toolCalling(true);
     assertThat(response.getResult().getOutput().getText()).contains("Potsdam", "Toulouse", "°C");
