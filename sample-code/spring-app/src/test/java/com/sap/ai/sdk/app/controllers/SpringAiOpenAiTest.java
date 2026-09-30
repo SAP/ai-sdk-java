@@ -7,7 +7,6 @@ import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.model.ChatResponse;
