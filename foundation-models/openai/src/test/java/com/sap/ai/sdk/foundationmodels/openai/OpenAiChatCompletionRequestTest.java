@@ -118,6 +118,46 @@ class OpenAiChatCompletionRequestTest {
   }
 
   @Test
+  void allScalarParametersArePropagated() {
+    var request =
+        new OpenAiChatCompletionRequest(OpenAiMessage.user("Hello, world"))
+            .withTopP(BigDecimal.valueOf(0.9))
+            .withMaxTokens(100)
+            .withMaxCompletionTokens(200)
+            .withPresencePenalty(BigDecimal.valueOf(1.5))
+            .withFrequencyPenalty(BigDecimal.valueOf(-1.5))
+            .withLogitBias(Map.of("50256", -100))
+            .withUser("user-123")
+            .withLogprobs(true)
+            .withTopLogprobs(5)
+            .withN(2)
+            .withParallelToolCalls(false);
+
+    var lowLevelRequest = request.createCreateChatCompletionRequest();
+
+    assertThat(lowLevelRequest.getTopP()).isEqualTo(BigDecimal.valueOf(0.9));
+    assertThat(lowLevelRequest.getMaxTokens()).isEqualTo(100);
+    assertThat(lowLevelRequest.getMaxCompletionTokens()).isEqualTo(200);
+    assertThat(lowLevelRequest.getPresencePenalty()).isEqualTo(BigDecimal.valueOf(1.5));
+    assertThat(lowLevelRequest.getFrequencyPenalty()).isEqualTo(BigDecimal.valueOf(-1.5));
+    assertThat(lowLevelRequest.getLogitBias()).isEqualTo(Map.of("50256", -100));
+    assertThat(lowLevelRequest.getUser()).isEqualTo("user-123");
+    assertThat(lowLevelRequest.isLogprobs()).isTrue();
+    assertThat(lowLevelRequest.getTopLogprobs()).isEqualTo(5);
+    assertThat(lowLevelRequest.getN()).isEqualTo(2);
+    assertThat(lowLevelRequest.isParallelToolCalls()).isFalse();
+  }
+
+  @Test
+  void withSameValueReturnsSameInstance() {
+    var request = new OpenAiChatCompletionRequest("message").withParallelToolCalls(true);
+    assertThat(request.withParallelToolCalls(true)).isSameAs(request);
+
+    var withLogprobs = new OpenAiChatCompletionRequest("message").withLogprobs(true);
+    assertThat(withLogprobs.withLogprobs(true)).isSameAs(withLogprobs);
+  }
+
+  @Test
   void withOpenAiTools() {
     record DummyRequest(String param1, int param2) {}
 
