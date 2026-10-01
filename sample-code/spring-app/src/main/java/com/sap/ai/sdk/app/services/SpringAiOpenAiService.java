@@ -95,7 +95,7 @@ public class SpringAiOpenAiService {
     options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
     options.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
 
-    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+    val prompt = new Prompt("What is the temperature (°C) in Potsdam and in Toulouse?", options);
     return chatClient.call(prompt);
   }
 
