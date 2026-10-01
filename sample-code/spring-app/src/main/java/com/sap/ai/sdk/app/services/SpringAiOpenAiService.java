@@ -95,7 +95,7 @@ public class SpringAiOpenAiService {
         DefaultToolCallingChatOptions.builder()
             .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
             .build();
-    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+    val prompt = new Prompt("What is the temperature (°C) in Potsdam and in Toulouse?", options);
     if (callTools) {
       return Objects.requireNonNull(
           ChatClient.builder(chatClient).build().prompt(prompt).call().chatResponse(),
