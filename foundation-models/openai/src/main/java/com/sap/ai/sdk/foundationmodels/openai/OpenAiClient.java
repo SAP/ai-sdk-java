@@ -66,8 +66,12 @@ public final class OpenAiClient {
       throws DeploymentResolutionException {
     final var destination = new AiCoreService().getInferenceDestination().forModel(foundationModel);
 
-    final var client = new OpenAiClient(destination);
-    return client.withApiVersion(DEFAULT_API_VERSION);
+    final var newDestination =
+        DefaultHttpDestination.fromDestination(destination)
+            // set the API version as URL query parameter
+            .property("URL.queries.api-version", DEFAULT_API_VERSION)
+            .build();
+    return new OpenAiClient(newDestination);
   }
 
   /**
@@ -79,23 +83,6 @@ public final class OpenAiClient {
   public static OpenAiRealtimeClient realtimeClient() {
     final var withResolvedDestination = OpenAiClient.forModel(OpenAiModel.GPT_REALTIME);
     return new OpenAiRealtimeClient(withResolvedDestination.destination);
-  }
-
-  /**
-   * Create a new OpenAI client targeting the specified API version.
-   *
-   * @param apiVersion the API version to target.
-   * @return a new client.
-   */
-  @Deprecated // does not align with the target state of the SDK, is planned for removal
-  @Nonnull
-  private OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
-    final var newDestination =
-        DefaultHttpDestination.fromDestination(this.destination)
-            // set the API version as URL query parameter
-            .property("URL.queries.api-version", apiVersion)
-            .build();
-    return new OpenAiClient(newDestination);
   }
 
   /**
@@ -117,13 +104,17 @@ public final class OpenAiClient {
    */
   @Nonnull
   public static OpenAiClient withCustomDestination(@Nonnull final Destination destination) {
-    final OpenAiClient client = new OpenAiClient(destination);
 
     if (destination.get("URL.queries.api-version").isDefined()) {
-      return client;
+      return new OpenAiClient(destination);
     }
 
-    return client.withApiVersion(DEFAULT_API_VERSION);
+    final var newDestination =
+        DefaultHttpDestination.fromDestination(destination)
+            // set the API version as URL query parameter
+            .property("URL.queries.api-version", DEFAULT_API_VERSION)
+            .build();
+    return new OpenAiClient(newDestination);
   }
 
   /**
