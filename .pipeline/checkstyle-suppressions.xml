@@ -8,14 +8,12 @@
   <!-- Suppress generated clients -->
   <suppress files="[/\\]core[/\\]client[/\\]" checks=".*"/>
   <suppress files="[/\\]core[/\\]model[/\\]" checks=".*"/>
-  <suppress files="[/\\]openai[/\\]generated[/\\]model[/\\]" checks=".*"/>
-  <suppress files="[/\\]rpt[/\\]generated[/\\]" checks=".*"/>
   <suppress files="[/\\]orchestration[/\\]model[/\\]" checks=".*"/>
   <suppress files="[/\\]grounding[/\\]client[/\\]" checks=".*"/>
   <suppress files="[/\\]grounding[/\\]model[/\\]" checks=".*"/>
   <suppress files="[/\\]registry[/\\]client[/\\]" checks=".*"/>
   <suppress files="[/\\]registry[/\\]model[/\\]" checks=".*"/>
-  <suppress files="[/\\]batch[/\\]generated[/\\]" checks=".*"/>
+  <suppress files="[/\\]generated[/\\]" checks=".*"/>
   <!-- Suppress TODOs -->
   <suppress files="OpenAiChatMessage.java" checks="TodoComment" lines="261,7" />
   <suppress files="ChatCompletionResponseMessage.java" checks="TodoComment" lines="53,34" />

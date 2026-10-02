@@ -1,0 +1,116 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/predict",
+    "bodyPatterns": [
+      {
+        "equalToJson": {
+          "modelName": "sap-rpt-1.5",
+          "scenarioConfigName": "product-prediction-scenario-lowercase",
+          "contextSelectionConfig": {
+            "numRows": 3,
+            "strategy": "random",
+            "strategyConfigs": {
+              "indexColumn": "id",
+              "deterministic": true,
+              "methodRatio": null,
+              "fuzzyNumPct": null,
+              "poolSize": null,
+              "fuzzyDateDays": null,
+              "allowTimeoutFallback": false
+            },
+            "filterConditions": null,
+            "verbose": false
+          },
+          "predictionConfig": {
+            "targetColumns": [
+              {
+                "name": "salesgroup",
+                "prediction_placeholder": "[PREDICT]",
+                "task_type": "classification",
+                "top_k": 1
+              }
+            ]
+          },
+          "modelConfig": {},
+          "columns": null,
+          "contextColumns": null,
+          "rows": [
+            {
+              "price": 921.5,
+              "salesgroup": "[PREDICT]",
+              "date": "2024-12-02",
+              "product": "Desktop Computer",
+              "id": "42"
+            },
+            {
+              "price": 1220.99,
+              "salesgroup": "[PREDICT]",
+              "date": "2026-01-31",
+              "product": "Macbook",
+              "id": "99"
+            },
+            {
+              "price": 750.5,
+              "salesgroup": "[PREDICT]",
+              "date": "2024-12-05",
+              "product": "Office Desk",
+              "id": "689"
+            }
+          ],
+          "contextRows": null
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": "babec616-8085-43ad-a36a-57f0c1484202",
+      "metadata": {
+        "num_columns": 5,
+        "num_rows": 6,
+        "num_predictions": 3,
+        "num_query_rows": 3
+      },
+      "predictions": [
+        {
+          "salesgroup": [
+            {
+              "confidence": 1.0,
+              "confidence_interval": null,
+              "prediction": "Electronics"
+            }
+          ]
+        },
+        {
+          "salesgroup": [
+            {
+              "confidence": 1.0,
+              "confidence_interval": null,
+              "prediction": "Electronics"
+            }
+          ]
+        },
+        {
+          "salesgroup": [
+            {
+              "confidence": 1.0,
+              "confidence_interval": null,
+              "prediction": "Furniture"
+            }
+          ]
+        }
+      ],
+      "status": {
+        "code": 0,
+        "message": "ok"
+      },
+      "additional_information": []
+    }
+  }
+}
+
