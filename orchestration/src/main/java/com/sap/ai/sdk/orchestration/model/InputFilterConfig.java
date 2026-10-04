@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 @JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
   @JsonSubTypes.Type(value = AzureContentSafetyInputFilterConfig.class),
-  @JsonSubTypes.Type(value = GraniteGuardianFilterConfig.class),
   @JsonSubTypes.Type(value = LlamaGuard38bFilterConfig.class),
 })
 public interface InputFilterConfig {}
