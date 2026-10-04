@@ -25,22 +25,37 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseFormatText */
+/** AfterLastRoleTargetSelector */
 // CHECKSTYLE:OFF
-public class ResponseFormatText implements PromptTemplateSpecResponseFormat, TemplateResponseFormat
+public class AfterLastRoleTargetSelector implements InputFilterTargetSelector
 // CHECKSTYLE:ON
 {
-  /** The type of response format being defined: &#x60;text&#x60; */
-  public enum TypeEnum {
-    /** The TEXT option of this ResponseFormatText */
-    TEXT("text"),
+  /**
+   * Filter all messages after the last message with this role in the combined message list. If no
+   * message is scoped after applying this filter, then the filter is skipped.
+   */
+  public enum AfterLastRoleEnum {
+    /** The SYSTEM option of this AfterLastRoleTargetSelector */
+    SYSTEM("system"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatText */
+    /** The USER option of this AfterLastRoleTargetSelector */
+    USER("user"),
+
+    /** The ASSISTANT option of this AfterLastRoleTargetSelector */
+    ASSISTANT("assistant"),
+
+    /** The DEVELOPER option of this AfterLastRoleTargetSelector */
+    DEVELOPER("developer"),
+
+    /** The TOOL option of this AfterLastRoleTargetSelector */
+    TOOL("tool"),
+
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this AfterLastRoleTargetSelector */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
 
-    TypeEnum(String value) {
+    AfterLastRoleEnum(String value) {
       this.value = value;
     }
 
@@ -70,12 +85,12 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type ResponseFormatText
+     * @return The enum value of type AfterLastRoleTargetSelector
      */
     @JsonCreator
     @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
-      for (TypeEnum b : TypeEnum.values()) {
+    public static AfterLastRoleEnum fromValue(@Nonnull final String value) {
+      for (AfterLastRoleEnum b : AfterLastRoleEnum.values()) {
         if (b.value.equals(value)) {
           return b;
         }
@@ -84,48 +99,54 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
     }
   }
 
-  @JsonProperty("type")
-  private TypeEnum type;
+  @JsonProperty("after_last_role")
+  private AfterLastRoleEnum afterLastRole;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseFormatText. */
-  protected ResponseFormatText() {}
+  /** Default constructor for AfterLastRoleTargetSelector. */
+  protected AfterLastRoleTargetSelector() {}
 
   /**
-   * Set the type of this {@link ResponseFormatText} instance and return the same instance.
+   * Set the afterLastRole of this {@link AfterLastRoleTargetSelector} instance and return the same
+   * instance.
    *
-   * @param type The type of response format being defined: &#x60;text&#x60;
-   * @return The same instance of this {@link ResponseFormatText} class
+   * @param afterLastRole Filter all messages after the last message with this role in the combined
+   *     message list. If no message is scoped after applying this filter, then the filter is
+   *     skipped.
+   * @return The same instance of this {@link AfterLastRoleTargetSelector} class
    */
   @Nonnull
-  public ResponseFormatText type(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public AfterLastRoleTargetSelector afterLastRole(@Nonnull final AfterLastRoleEnum afterLastRole) {
+    this.afterLastRole = afterLastRole;
     return this;
   }
 
   /**
-   * The type of response format being defined: &#x60;text&#x60;
+   * Filter all messages after the last message with this role in the combined message list. If no
+   * message is scoped after applying this filter, then the filter is skipped.
    *
-   * @return type The type of this {@link ResponseFormatText} instance.
+   * @return afterLastRole The afterLastRole of this {@link AfterLastRoleTargetSelector} instance.
    */
   @Nonnull
-  public TypeEnum getType() {
-    return type;
+  public AfterLastRoleEnum getAfterLastRole() {
+    return afterLastRole;
   }
 
   /**
-   * Set the type of this {@link ResponseFormatText} instance.
+   * Set the afterLastRole of this {@link AfterLastRoleTargetSelector} instance.
    *
-   * @param type The type of response format being defined: &#x60;text&#x60;
+   * @param afterLastRole Filter all messages after the last message with this role in the combined
+   *     message list. If no message is scoped after applying this filter, then the filter is
+   *     skipped.
    */
-  public void setType(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public void setAfterLastRole(@Nonnull final AfterLastRoleEnum afterLastRole) {
+    this.afterLastRole = afterLastRole;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseFormatText}.
+   * Get the names of the unrecognizable properties of the {@link AfterLastRoleTargetSelector}.
    *
    * @return The set of properties names
    */
@@ -136,7 +157,8 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseFormatText} instance.
+   * Get the value of an unrecognizable property of this {@link AfterLastRoleTargetSelector}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -147,13 +169,14 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ResponseFormatText has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "AfterLastRoleTargetSelector has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseFormatText} instance including
+   * Get the value of all properties of this {@link AfterLastRoleTargetSelector} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -162,12 +185,12 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (type != null) declaredFields.put("type", type);
+    if (afterLastRole != null) declaredFields.put("afterLastRole", afterLastRole);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseFormatText} instance. If the map
+   * Set an unrecognizable property of this {@link AfterLastRoleTargetSelector} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -186,22 +209,23 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseFormatText responseFormatText = (ResponseFormatText) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseFormatText.cloudSdkCustomFields)
-        && Objects.equals(this.type, responseFormatText.type);
+    final AfterLastRoleTargetSelector afterLastRoleTargetSelector = (AfterLastRoleTargetSelector) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, afterLastRoleTargetSelector.cloudSdkCustomFields)
+        && Objects.equals(this.afterLastRole, afterLastRoleTargetSelector.afterLastRole);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, cloudSdkCustomFields);
+    return Objects.hash(afterLastRole, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseFormatText {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("class AfterLastRoleTargetSelector {\n");
+    sb.append("    afterLastRole: ").append(toIndentedString(afterLastRole)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -220,21 +244,23 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ResponseFormatText}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * AfterLastRoleTargetSelector} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new ResponseFormatText().type(type);
+    return (afterLastRole) -> new AfterLastRoleTargetSelector().afterLastRole(afterLastRole);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ResponseFormatText} instance.
+     * Set the afterLastRole of this {@link AfterLastRoleTargetSelector} instance.
      *
-     * @param type The type of response format being defined: &#x60;text&#x60;
-     * @return The ResponseFormatText instance.
+     * @param afterLastRole Filter all messages after the last message with this role in the
+     *     combined message list. If no message is scoped after applying this filter, then the
+     *     filter is skipped.
+     * @return The AfterLastRoleTargetSelector instance.
      */
-    ResponseFormatText type(@Nonnull final TypeEnum type);
+    AfterLastRoleTargetSelector afterLastRole(@Nonnull final AfterLastRoleEnum afterLastRole);
   }
 }

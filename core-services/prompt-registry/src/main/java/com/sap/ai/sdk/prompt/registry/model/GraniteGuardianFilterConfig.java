@@ -25,17 +25,17 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** SchemasChatCompletionTool */
+/** Filter configuration for IBM Granite Guardian filter provider. */
 // CHECKSTYLE:OFF
-public class SchemasChatCompletionTool
+public class GraniteGuardianFilterConfig implements InputFilterConfig, OutputFilterConfig
 // CHECKSTYLE:ON
 {
-  /** The type of the tool. Currently, only &#x60;function&#x60; is supported. */
+  /** Name of the filter provider type */
   public enum TypeEnum {
-    /** The FUNCTION option of this SchemasChatCompletionTool */
-    FUNCTION("function"),
+    /** The GRANITE_GUARDIAN_4_1 option of this GraniteGuardianFilterConfig */
+    GRANITE_GUARDIAN_4_1("granite_guardian_4_1"),
 
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this SchemasChatCompletionTool */
+    /** The UNKNOWN_DEFAULT_OPEN_API option of this GraniteGuardianFilterConfig */
     UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
 
     private String value;
@@ -70,7 +70,7 @@ public class SchemasChatCompletionTool
      * Get the enum value from a String value
      *
      * @param value The String value
-     * @return The enum value of type SchemasChatCompletionTool
+     * @return The enum value of type GraniteGuardianFilterConfig
      */
     @JsonCreator
     @Nonnull
@@ -87,34 +87,34 @@ public class SchemasChatCompletionTool
   @JsonProperty("type")
   private TypeEnum type;
 
-  @JsonProperty("function")
-  private FunctionObject function;
+  @JsonProperty("config")
+  private GraniteGuardian41 config;
 
-  @JsonProperty("cache_control")
-  private CacheControl cacheControl;
+  @JsonProperty("target_selector")
+  private InputFilterTargetSelector targetSelector;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for SchemasChatCompletionTool. */
-  protected SchemasChatCompletionTool() {}
+  /** Default constructor for GraniteGuardianFilterConfig. */
+  protected GraniteGuardianFilterConfig() {}
 
   /**
-   * Set the type of this {@link SchemasChatCompletionTool} instance and return the same instance.
+   * Set the type of this {@link GraniteGuardianFilterConfig} instance and return the same instance.
    *
-   * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
-   * @return The same instance of this {@link SchemasChatCompletionTool} class
+   * @param type Name of the filter provider type
+   * @return The same instance of this {@link GraniteGuardianFilterConfig} class
    */
   @Nonnull
-  public SchemasChatCompletionTool type(@Nonnull final TypeEnum type) {
+  public GraniteGuardianFilterConfig type(@Nonnull final TypeEnum type) {
     this.type = type;
     return this;
   }
 
   /**
-   * The type of the tool. Currently, only &#x60;function&#x60; is supported.
+   * Name of the filter provider type
    *
-   * @return type The type of this {@link SchemasChatCompletionTool} instance.
+   * @return type The type of this {@link GraniteGuardianFilterConfig} instance.
    */
   @Nonnull
   public TypeEnum getType() {
@@ -122,80 +122,81 @@ public class SchemasChatCompletionTool
   }
 
   /**
-   * Set the type of this {@link SchemasChatCompletionTool} instance.
+   * Set the type of this {@link GraniteGuardianFilterConfig} instance.
    *
-   * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
+   * @param type Name of the filter provider type
    */
   public void setType(@Nonnull final TypeEnum type) {
     this.type = type;
   }
 
   /**
-   * Set the function of this {@link SchemasChatCompletionTool} instance and return the same
+   * Set the config of this {@link GraniteGuardianFilterConfig} instance and return the same
    * instance.
    *
-   * @param function The function of this {@link SchemasChatCompletionTool}
-   * @return The same instance of this {@link SchemasChatCompletionTool} class
+   * @param config The config of this {@link GraniteGuardianFilterConfig}
+   * @return The same instance of this {@link GraniteGuardianFilterConfig} class
    */
   @Nonnull
-  public SchemasChatCompletionTool function(@Nonnull final FunctionObject function) {
-    this.function = function;
+  public GraniteGuardianFilterConfig config(@Nonnull final GraniteGuardian41 config) {
+    this.config = config;
     return this;
   }
 
   /**
-   * Get function
+   * Get config
    *
-   * @return function The function of this {@link SchemasChatCompletionTool} instance.
+   * @return config The config of this {@link GraniteGuardianFilterConfig} instance.
    */
   @Nonnull
-  public FunctionObject getFunction() {
-    return function;
+  public GraniteGuardian41 getConfig() {
+    return config;
   }
 
   /**
-   * Set the function of this {@link SchemasChatCompletionTool} instance.
+   * Set the config of this {@link GraniteGuardianFilterConfig} instance.
    *
-   * @param function The function of this {@link SchemasChatCompletionTool}
+   * @param config The config of this {@link GraniteGuardianFilterConfig}
    */
-  public void setFunction(@Nonnull final FunctionObject function) {
-    this.function = function;
+  public void setConfig(@Nonnull final GraniteGuardian41 config) {
+    this.config = config;
   }
 
   /**
-   * Set the cacheControl of this {@link SchemasChatCompletionTool} instance and return the same
+   * Set the targetSelector of this {@link GraniteGuardianFilterConfig} instance and return the same
    * instance.
    *
-   * @param cacheControl The cacheControl of this {@link SchemasChatCompletionTool}
-   * @return The same instance of this {@link SchemasChatCompletionTool} class
+   * @param targetSelector The targetSelector of this {@link GraniteGuardianFilterConfig}
+   * @return The same instance of this {@link GraniteGuardianFilterConfig} class
    */
   @Nonnull
-  public SchemasChatCompletionTool cacheControl(@Nullable final CacheControl cacheControl) {
-    this.cacheControl = cacheControl;
+  public GraniteGuardianFilterConfig targetSelector(
+      @Nullable final InputFilterTargetSelector targetSelector) {
+    this.targetSelector = targetSelector;
     return this;
   }
 
   /**
-   * Get cacheControl
+   * Get targetSelector
    *
-   * @return cacheControl The cacheControl of this {@link SchemasChatCompletionTool} instance.
+   * @return targetSelector The targetSelector of this {@link GraniteGuardianFilterConfig} instance.
    */
   @Nonnull
-  public CacheControl getCacheControl() {
-    return cacheControl;
+  public InputFilterTargetSelector getTargetSelector() {
+    return targetSelector;
   }
 
   /**
-   * Set the cacheControl of this {@link SchemasChatCompletionTool} instance.
+   * Set the targetSelector of this {@link GraniteGuardianFilterConfig} instance.
    *
-   * @param cacheControl The cacheControl of this {@link SchemasChatCompletionTool}
+   * @param targetSelector The targetSelector of this {@link GraniteGuardianFilterConfig}
    */
-  public void setCacheControl(@Nullable final CacheControl cacheControl) {
-    this.cacheControl = cacheControl;
+  public void setTargetSelector(@Nullable final InputFilterTargetSelector targetSelector) {
+    this.targetSelector = targetSelector;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link SchemasChatCompletionTool}.
+   * Get the names of the unrecognizable properties of the {@link GraniteGuardianFilterConfig}.
    *
    * @return The set of properties names
    */
@@ -206,7 +207,8 @@ public class SchemasChatCompletionTool
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link SchemasChatCompletionTool} instance.
+   * Get the value of an unrecognizable property of this {@link GraniteGuardianFilterConfig}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -218,13 +220,13 @@ public class SchemasChatCompletionTool
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
       throw new NoSuchElementException(
-          "SchemasChatCompletionTool has no field with name '" + name + "'.");
+          "GraniteGuardianFilterConfig has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link SchemasChatCompletionTool} instance including
+   * Get the value of all properties of this {@link GraniteGuardianFilterConfig} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -234,13 +236,13 @@ public class SchemasChatCompletionTool
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
-    if (function != null) declaredFields.put("function", function);
-    if (cacheControl != null) declaredFields.put("cacheControl", cacheControl);
+    if (config != null) declaredFields.put("config", config);
+    if (targetSelector != null) declaredFields.put("targetSelector", targetSelector);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link SchemasChatCompletionTool} instance. If the map
+   * Set an unrecognizable property of this {@link GraniteGuardianFilterConfig} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -259,26 +261,27 @@ public class SchemasChatCompletionTool
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final SchemasChatCompletionTool schemasChatCompletionTool = (SchemasChatCompletionTool) o;
-    return Objects.equals(this.cloudSdkCustomFields, schemasChatCompletionTool.cloudSdkCustomFields)
-        && Objects.equals(this.type, schemasChatCompletionTool.type)
-        && Objects.equals(this.function, schemasChatCompletionTool.function)
-        && Objects.equals(this.cacheControl, schemasChatCompletionTool.cacheControl);
+    final GraniteGuardianFilterConfig graniteGuardianFilterConfig = (GraniteGuardianFilterConfig) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, graniteGuardianFilterConfig.cloudSdkCustomFields)
+        && Objects.equals(this.type, graniteGuardianFilterConfig.type)
+        && Objects.equals(this.config, graniteGuardianFilterConfig.config)
+        && Objects.equals(this.targetSelector, graniteGuardianFilterConfig.targetSelector);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, function, cacheControl, cloudSdkCustomFields);
+    return Objects.hash(type, config, targetSelector, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class SchemasChatCompletionTool {\n");
+    sb.append("class GraniteGuardianFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    sb.append("    function: ").append(toIndentedString(function)).append("\n");
-    sb.append("    cacheControl: ").append(toIndentedString(cacheControl)).append("\n");
+    sb.append("    config: ").append(toIndentedString(config)).append("\n");
+    sb.append("    targetSelector: ").append(toIndentedString(targetSelector)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -298,19 +301,19 @@ public class SchemasChatCompletionTool
 
   /**
    * Create a type-safe, fluent-api builder object to construct a new {@link
-   * SchemasChatCompletionTool} instance with all required arguments.
+   * GraniteGuardianFilterConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (function) -> new SchemasChatCompletionTool().type(type).function(function);
+    return (type) -> (config) -> new GraniteGuardianFilterConfig().type(type).config(config);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link SchemasChatCompletionTool} instance.
+     * Set the type of this {@link GraniteGuardianFilterConfig} instance.
      *
-     * @param type The type of the tool. Currently, only &#x60;function&#x60; is supported.
-     * @return The SchemasChatCompletionTool builder.
+     * @param type Name of the filter provider type
+     * @return The GraniteGuardianFilterConfig builder.
      */
     Builder1 type(@Nonnull final TypeEnum type);
   }
@@ -318,11 +321,11 @@ public class SchemasChatCompletionTool
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the function of this {@link SchemasChatCompletionTool} instance.
+     * Set the config of this {@link GraniteGuardianFilterConfig} instance.
      *
-     * @param function The function of this {@link SchemasChatCompletionTool}
-     * @return The SchemasChatCompletionTool instance.
+     * @param config The config of this {@link GraniteGuardianFilterConfig}
+     * @return The GraniteGuardianFilterConfig instance.
      */
-    SchemasChatCompletionTool function(@Nonnull final FunctionObject function);
+    GraniteGuardianFilterConfig config(@Nonnull final GraniteGuardian41 config);
   }
 }

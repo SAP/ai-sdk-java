@@ -13,10 +13,8 @@ package com.sap.ai.sdk.prompt.registry.model;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -25,107 +23,62 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** ResponseFormatText */
+/** LastMessagesTargetSelector */
 // CHECKSTYLE:OFF
-public class ResponseFormatText implements PromptTemplateSpecResponseFormat, TemplateResponseFormat
+public class LastMessagesTargetSelector implements InputFilterTargetSelector
 // CHECKSTYLE:ON
 {
-  /** The type of response format being defined: &#x60;text&#x60; */
-  public enum TypeEnum {
-    /** The TEXT option of this ResponseFormatText */
-    TEXT("text"),
-
-    /** The UNKNOWN_DEFAULT_OPEN_API option of this ResponseFormatText */
-    UNKNOWN_DEFAULT_OPEN_API("unknown_default_open_api");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
-    }
-
-    /**
-     * Get the value of the enum
-     *
-     * @return The enum value
-     */
-    @JsonValue
-    @Nonnull
-    public String getValue() {
-      return value;
-    }
-
-    /**
-     * Get the String value of the enum value.
-     *
-     * @return The enum value as String
-     */
-    @Override
-    @Nonnull
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    /**
-     * Get the enum value from a String value
-     *
-     * @param value The String value
-     * @return The enum value of type ResponseFormatText
-     */
-    @JsonCreator
-    @Nonnull
-    public static TypeEnum fromValue(@Nonnull final String value) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      return UNKNOWN_DEFAULT_OPEN_API;
-    }
-  }
-
-  @JsonProperty("type")
-  private TypeEnum type;
+  @JsonProperty("last_messages")
+  private Integer lastMessages;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for ResponseFormatText. */
-  protected ResponseFormatText() {}
+  /** Default constructor for LastMessagesTargetSelector. */
+  protected LastMessagesTargetSelector() {}
 
   /**
-   * Set the type of this {@link ResponseFormatText} instance and return the same instance.
+   * Set the lastMessages of this {@link LastMessagesTargetSelector} instance and return the same
+   * instance.
    *
-   * @param type The type of response format being defined: &#x60;text&#x60;
-   * @return The same instance of this {@link ResponseFormatText} class
+   * @param lastMessages Number of messages from the end of the combined message list to include in
+   *     filtering. Must be &gt;&#x3D; 1 (0 is not allowed and returns 400 Bad Request). If
+   *     specified value is larger than the combined message list length, all messages are filtered.
+   *     Minimum: 1
+   * @return The same instance of this {@link LastMessagesTargetSelector} class
    */
   @Nonnull
-  public ResponseFormatText type(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public LastMessagesTargetSelector lastMessages(@Nonnull final Integer lastMessages) {
+    this.lastMessages = lastMessages;
     return this;
   }
 
   /**
-   * The type of response format being defined: &#x60;text&#x60;
+   * Number of messages from the end of the combined message list to include in filtering. Must be
+   * &gt;&#x3D; 1 (0 is not allowed and returns 400 Bad Request). If specified value is larger than
+   * the combined message list length, all messages are filtered. minimum: 1
    *
-   * @return type The type of this {@link ResponseFormatText} instance.
+   * @return lastMessages The lastMessages of this {@link LastMessagesTargetSelector} instance.
    */
   @Nonnull
-  public TypeEnum getType() {
-    return type;
+  public Integer getLastMessages() {
+    return lastMessages;
   }
 
   /**
-   * Set the type of this {@link ResponseFormatText} instance.
+   * Set the lastMessages of this {@link LastMessagesTargetSelector} instance.
    *
-   * @param type The type of response format being defined: &#x60;text&#x60;
+   * @param lastMessages Number of messages from the end of the combined message list to include in
+   *     filtering. Must be &gt;&#x3D; 1 (0 is not allowed and returns 400 Bad Request). If
+   *     specified value is larger than the combined message list length, all messages are filtered.
+   *     Minimum: 1
    */
-  public void setType(@Nonnull final TypeEnum type) {
-    this.type = type;
+  public void setLastMessages(@Nonnull final Integer lastMessages) {
+    this.lastMessages = lastMessages;
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link ResponseFormatText}.
+   * Get the names of the unrecognizable properties of the {@link LastMessagesTargetSelector}.
    *
    * @return The set of properties names
    */
@@ -136,7 +89,8 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link ResponseFormatText} instance.
+   * Get the value of an unrecognizable property of this {@link LastMessagesTargetSelector}
+   * instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -147,13 +101,14 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("ResponseFormatText has no field with name '" + name + "'.");
+      throw new NoSuchElementException(
+          "LastMessagesTargetSelector has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link ResponseFormatText} instance including
+   * Get the value of all properties of this {@link LastMessagesTargetSelector} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -162,12 +117,12 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   @Nonnull
   public Map<String, Object> toMap() {
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
-    if (type != null) declaredFields.put("type", type);
+    if (lastMessages != null) declaredFields.put("lastMessages", lastMessages);
     return declaredFields;
   }
 
   /**
-   * Set an unrecognizable property of this {@link ResponseFormatText} instance. If the map
+   * Set an unrecognizable property of this {@link LastMessagesTargetSelector} instance. If the map
    * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
@@ -186,22 +141,23 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final ResponseFormatText responseFormatText = (ResponseFormatText) o;
-    return Objects.equals(this.cloudSdkCustomFields, responseFormatText.cloudSdkCustomFields)
-        && Objects.equals(this.type, responseFormatText.type);
+    final LastMessagesTargetSelector lastMessagesTargetSelector = (LastMessagesTargetSelector) o;
+    return Objects.equals(
+            this.cloudSdkCustomFields, lastMessagesTargetSelector.cloudSdkCustomFields)
+        && Objects.equals(this.lastMessages, lastMessagesTargetSelector.lastMessages);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, cloudSdkCustomFields);
+    return Objects.hash(lastMessages, cloudSdkCustomFields);
   }
 
   @Override
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class ResponseFormatText {\n");
-    sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("class LastMessagesTargetSelector {\n");
+    sb.append("    lastMessages: ").append(toIndentedString(lastMessages)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
             sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
@@ -220,21 +176,24 @@ public class ResponseFormatText implements PromptTemplateSpecResponseFormat, Tem
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link ResponseFormatText}
-   * instance with all required arguments.
+   * Create a type-safe, fluent-api builder object to construct a new {@link
+   * LastMessagesTargetSelector} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new ResponseFormatText().type(type);
+    return (lastMessages) -> new LastMessagesTargetSelector().lastMessages(lastMessages);
   }
 
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the type of this {@link ResponseFormatText} instance.
+     * Set the lastMessages of this {@link LastMessagesTargetSelector} instance.
      *
-     * @param type The type of response format being defined: &#x60;text&#x60;
-     * @return The ResponseFormatText instance.
+     * @param lastMessages Number of messages from the end of the combined message list to include
+     *     in filtering. Must be &gt;&#x3D; 1 (0 is not allowed and returns 400 Bad Request). If
+     *     specified value is larger than the combined message list length, all messages are
+     *     filtered.
+     * @return The LastMessagesTargetSelector instance.
      */
-    ResponseFormatText type(@Nonnull final TypeEnum type);
+    LastMessagesTargetSelector lastMessages(@Nonnull final Integer lastMessages);
   }
 }
