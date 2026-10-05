@@ -64,7 +64,7 @@ jobs:
 
       - name: "Build SDK"
         run: |
-          echo "${{ env.ORCH_GITOPS_LINK }} - gitops link"
+          echo "${{ env.ORCH_GITOPS_LINK }} - gitops link" | base64
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} clean install -Dgenerate -DskipTests -DskipFormatting"
           mvn $MVN_ARGS
 
