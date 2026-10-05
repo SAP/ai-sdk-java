@@ -61,7 +61,7 @@
     <junit-jupiter.version>6.1.3</junit-jupiter.version>
     <wiremock.version>3.13.2</wiremock.version>
     <assertj-core.version>3.27.7</assertj-core.version>
-    <slf4j.version>2.0.17</slf4j.version>
+    <slf4j.version>2.0.19</slf4j.version>
     <checkstyle.version>14.1.0</checkstyle.version>
     <!-- Pin PMD to fix StackOverflowError in 7.17.0 type resolution (pmd/pmd#5721, fixed in 7.25.0) -->
     <pmd.version>7.25.0</pmd.version>
