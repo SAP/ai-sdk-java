@@ -7,9 +7,9 @@ on:
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
   JAVA_VERSION: 21
-  CVE_CACHE_KEY: cve-db
-  CVE_CACHE_DIR: ~/.m2/repository/org/owasp/dependency-check-data
-  CVE_CACHE_REF: refs/heads/main
+  CVE_DATA_DIR: ~/.m2/repository/org/owasp/dependency-check-data
+  CVE_RELEASE_TAG: cve-db
+  CVE_ASSET_NAME: dependency-check-data.tar.gz
 
 jobs:
   create_fosstars_report:
@@ -35,13 +35,39 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           cache: 'maven'
 
-      # The main branch cache will be used by default for all branches
-      - name: 'Restore CVE Database'
-        uses: actions/cache/restore@v6
-        with:
-          path: ${{ env.CVE_CACHE_DIR }}
-          key: ${{ env.CVE_CACHE_KEY }}
-          # fail-on-cache-miss: true
+      # The persistent CVE DB is produced by the 'Update CVE Database' workflow
+      # and stored as a release asset. The scan never contacts the NVD API itself.
+      - name: 'Restore CVE Database from Release Asset'
+        run: |
+          mkdir -p "${CVE_DATA_DIR/#\~/$HOME}"
+          for attempt in 1 2 3; do
+            if gh release download "$CVE_RELEASE_TAG" --repo "${{ github.repository }}" --pattern "$CVE_ASSET_NAME" --dir .; then
+              tar -xzf "$CVE_ASSET_NAME" -C "${CVE_DATA_DIR/#\~/$HOME}"
+              rm -f "$CVE_ASSET_NAME"
+              exit 0
+            fi
+            echo "Download attempt $attempt/3 failed."
+            sleep $((attempt * 15))
+          done
+          echo "::error::Could not download CVE database asset '$CVE_ASSET_NAME' from release '$CVE_RELEASE_TAG'."
+          echo "::error::Unlike a cache miss, this is a real failure - the 'Update CVE Database' workflow must run successfully first, and the release asset must not have been deleted."
+          exit 1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Warn (do not fail) if the DB is stale, which signals the update workflow has not run recently.
+      - name: 'Check CVE Database Freshness'
+        run: |
+          DB_FILE=$(find "${CVE_DATA_DIR/#\~/$HOME}" -name '*.mv.db' -print -quit)
+          if [ -z "$DB_FILE" ]; then
+            echo "::warning::No H2 database file found after restore."
+            exit 0
+          fi
+          AGE_DAYS=$(( ( $(date +%s) - $(date -r "$DB_FILE" +%s) ) / 86400 ))
+          echo "CVE database is $AGE_DAYS day(s) old."
+          if [ "$AGE_DAYS" -gt 7 ]; then
+            echo "::warning::CVE database is older than 7 days - the 'Update CVE Database' workflow may be failing."
+          fi
 
       - name: 'Build SDK'
         run: |
@@ -53,11 +79,10 @@ jobs:
           echo '${{ secrets.OSS_INDEX_SETTINGS_XML }}' > settings.xml
 
       - name: 'CVE Scan'
-        env:
-          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: >
           mvn -T1 --no-transfer-progress -s settings.xml
           --batch-mode org.owasp:dependency-check-maven:check org.owasp:dependency-check-maven:aggregate
+          -Ddependency-check.autoupdate=false
 
       - name: 'Archive CVE Report'
         uses: actions/upload-artifact@v7
@@ -65,24 +90,6 @@ jobs:
           name: cve-report
           path: target/dependency-check-report.html
           retention-days: 7
-
-      - name: 'Delete Old CVE Cache'
-        if: matrix.branch == 'main'
-        run: |
-          CACHE_IDS=$(gh cache list --key "${{ env.CVE_CACHE_KEY }}" --json id | jq -r '.[] | .id')
-          for CACHE_ID in $CACHE_IDS; do
-              echo "Deleting cache with ID: $CACHE_ID"
-              gh cache delete "${CACHE_ID}"
-          done
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: 'Create Updated CVE Cache'
-        if: matrix.branch == 'main'
-        uses: actions/cache/save@v6
-        with:
-          path: ${{ env.CVE_CACHE_DIR }}
-          key: ${{ env.CVE_CACHE_KEY }}
 
       # This action changes the active branch!
       - name: 'Fosstars Rating'
