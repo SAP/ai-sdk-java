@@ -25,9 +25,9 @@ import java.util.Objects;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
@@ -38,21 +38,44 @@ import org.springframework.ai.tool.ToolCallback;
  *
  * @since 1.2.0
  */
-@Data
-@Setter(AccessLevel.NONE)
+@Getter
+@EqualsAndHashCode
+@ToString
 public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   private static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
-  @Nonnull private OrchestrationModuleConfig config;
+  @Nonnull private final OrchestrationModuleConfig config;
 
-  @Nonnull private List<OrchestrationModuleConfig> fallbackConfigs = List.of();
+  @Nonnull private final List<OrchestrationModuleConfig> fallbackConfigs;
 
-  @Nonnull private List<ToolCallback> toolCallbacks = List.of();
+  @Nonnull private final List<ToolCallback> toolCallbacks;
 
-  @Nonnull private Set<String> toolNames = Set.of();
+  @Nonnull private final Set<String> toolNames;
 
-  @Nonnull private Map<String, Object> toolContext = Map.of();
+  @Nonnull private final Map<String, Object> toolContext;
+
+  /**
+   * Creates options from an orchestration config, with no tools or fallback configs.
+   *
+   * @param config the orchestration module config to use.
+   */
+  public OrchestrationChatOptions(@Nonnull final OrchestrationModuleConfig config) {
+    this(config, List.of(), List.of(), Set.of(), Map.of());
+  }
+
+  private OrchestrationChatOptions(
+      @Nonnull final OrchestrationModuleConfig config,
+      @Nonnull final List<OrchestrationModuleConfig> fallbackConfigs,
+      @Nonnull final List<ToolCallback> toolCallbacks,
+      @Nonnull final Set<String> toolNames,
+      @Nonnull final Map<String, Object> toolContext) {
+    this.config = config;
+    this.fallbackConfigs = fallbackConfigs;
+    this.toolCallbacks = toolCallbacks;
+    this.toolNames = toolNames;
+    this.toolContext = toolContext;
+  }
 
   /**
    * Returns the model to use for the chat.
@@ -180,16 +203,14 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Nonnull private Map<String, Object> toolContext;
     @Nullable private String modelName;
     @Nonnull private final Map<String, Object> paramOverrides = new LinkedHashMap<>();
-    @Nonnull private OrchestrationModuleConfig config;
     @Nullable private List<OrchestrationModuleConfig> fallbackConfigs;
 
     private Builder(@Nonnull final OrchestrationChatOptions source) {
       this.source = source;
-      this.toolCallbacks = source.getToolCallbacks();
-      this.toolNames = source.getToolNames();
-      this.toolContext = source.getToolContext();
-      this.config = source.getConfig();
-      this.fallbackConfigs = source.getFallbackConfigs();
+      this.toolCallbacks = List.copyOf(source.getToolCallbacks());
+      this.toolNames = Set.copyOf(source.getToolNames());
+      this.toolContext = Map.copyOf(source.getToolContext());
+      this.fallbackConfigs = List.copyOf(source.getFallbackConfigs());
     }
 
     @Override
@@ -314,44 +335,33 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
       return this;
     }
 
-    private Builder toolNames(@Nonnull final Set<String> toolNames) {
-      this.toolNames = toolNames;
-      return this;
-    }
-
-    private Builder config(@Nonnull final OrchestrationModuleConfig config) {
-      this.config = config;
-      return this;
-    }
-
     @Override
     @Nonnull
     public OrchestrationChatOptions build() {
-      val copyConfig = source.config.copy();
-      val result = new OrchestrationChatOptions(copyConfig);
+      OrchestrationModuleConfig finalConfig = source.config.copy();
+
+      final LLMModelDetails existingLlm =
+          Objects.requireNonNull(
+              finalConfig.getLlmConfig(),
+              "LLM config is not set. Please set it: new OrchestrationChatOptions(new OrchestrationModuleConfig(...))");
 
       if (modelName != null || !paramOverrides.isEmpty()) {
-        final LLMModelDetails existingLlm = result.getLlmConfigNonNull();
-        final Map<String, Object> mergedParams = new LinkedHashMap<>();
-        if (existingLlm.getParams() != null) {
-          mergedParams.putAll(existingLlm.getParams());
-        }
+        final Map<String, Object> mergedParams = new LinkedHashMap<>(existingLlm.getParams());
         mergedParams.putAll(paramOverrides);
         final LLMModelDetails newLlm =
             LLMModelDetails.create()
                 .name(modelName != null ? modelName : existingLlm.getName())
                 .version(existingLlm.getVersion())
                 .params(mergedParams);
-        result.config = result.getConfig().withLlmConfig(newLlm);
+        finalConfig = finalConfig.withLlmConfig(newLlm);
       }
 
-      result.toolCallbacks = toolCallbacks;
-      result.toolContext = toolContext;
-      result.toolNames = toolNames;
-      if (fallbackConfigs != null) {
-        result.fallbackConfigs = fallbackConfigs;
-      }
-      return result;
+      return new OrchestrationChatOptions(
+          finalConfig,
+          fallbackConfigs != null ? fallbackConfigs : source.getFallbackConfigs(),
+          toolCallbacks,
+          toolNames,
+          toolContext);
     }
   }
 
