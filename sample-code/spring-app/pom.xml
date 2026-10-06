@@ -82,6 +82,12 @@
         <artifactId>logback-core</artifactId>
         <version>${logback.version}</version>
       </dependency>
+      <!-- Override Spring Boot BOM's slf4j-api version to align with logback-classic 1.6.4 -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
       <!-- Fix NoClassDefFoundError for JsonApplyView -->
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
