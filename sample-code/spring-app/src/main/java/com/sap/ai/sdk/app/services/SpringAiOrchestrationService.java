@@ -196,6 +196,27 @@ public class SpringAiOrchestrationService {
   }
 
   /**
+   * Demonstrate {@code @Tool(returnDirect=true)}: the tool result is returned straight to the
+   * caller without a second LLM call. Spring AI's {@link ChatClient} handles this automatically via
+   * its {@code ToolCallingAdvisor} with no custom loop needed.
+   *
+   * @return the tool result wrapped as a chat response, containing the raw tool output.
+   */
+  @Nonnull
+  public ChatResponse toolCallingReturnDirect() {
+    val options =
+        new OrchestrationChatOptions(config)
+            .mutate()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethodReturnDirect()))
+            .build();
+
+    val prompt = new Prompt("What is the weather in Berlin?", options);
+    return Objects.requireNonNull(
+        ChatClient.builder(client).build().prompt(prompt).call().chatResponse(),
+        "Chat response is null");
+  }
+
+  /**
    * Example using an MCP client to use a file system tool. Enabled via dedicated Spring profile,
    * since it requires an actual MCP server to run.
    *
