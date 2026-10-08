@@ -79,6 +79,15 @@ class SpringAiOpenAiTest {
   }
 
   @Test
+  void testToolCallingReturnDirect() {
+    ChatResponse response = service.toolCallingReturnDirect();
+    String text = response.getResult().getOutput().getText();
+    // returnDirect=true: tool result is returned in json format, no second LLM call to summarize it
+    assertThat(text).contains("temp", "unit");
+    assertThat(text).doesNotContain("Berlin");
+  }
+
+  @Test
   void testChatMemory() {
     ChatResponse response = service.chatMemory();
     assertThat(response).isNotNull();
