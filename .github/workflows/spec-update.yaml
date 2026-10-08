@@ -118,8 +118,8 @@ jobs:
         run: |
           BRANCH="spec-update/$SERVICE/$REF"
 
-          # try to fetch the base and the target branch (ignore failures if missing)
-          git fetch --no-tags --depth=1 origin "$BASE" || true
+          # fetch full history of BASE for accurate spec diffing
+          git fetch --unshallow origin "$BASE" || git fetch --no-tags origin "$BASE" || true
           git fetch origin "$BRANCH" || true
 
           # if remote target branch exists, base the local branch on it
@@ -175,6 +175,7 @@ jobs:
           esac
 
           echo "module_path=$MODULE_PATH" >> "$GITHUB_OUTPUT"
+          echo "file_path=$FILE_PATH" >> "$GITHUB_OUTPUT"
           echo "Downloading $SERVICE specification file from $API_URL ..."
 
           gh api "$API_URL" -H "Accept: application/vnd.github.raw" > $FILE_PATH
@@ -183,10 +184,12 @@ jobs:
         id: spec_diff
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          BASE: ${{ steps.pr_base.outputs.BASE }}
+          FILE_PATH: ${{ steps.download.outputs.file_path }}
         run: |
-          # if there are no spec changes in this commit and this is not run during the weekly update,
-          # check if the previous run on this branch is red. If it is red, exit 1; if it is green, exit 0.
-          if [[ `git status --porcelain` ]]; then
+          # Compare downloaded spec against BASE (not feature branch HEAD).
+          # This correctly detects changes even when the feature branch already has a newer spec than BASE.
+          if ! git diff --quiet "origin/$BASE" -- "$FILE_PATH"; then
             echo "Spec changes detected, continuing with generation."
             echo "spec_diff=true" >> "$GITHUB_OUTPUT"
           elif [[ "${{ github.event.inputs.is-weekly }}" == "true" ]]; then
