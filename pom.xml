@@ -78,7 +78,7 @@
     <jackson3.version>3.2.3</jackson3.version>
     <logback.version>1.6.5</logback.version>
     <commons-codec.version>1.22.1</commons-codec.version>
-    <japicmp.version>0.26.2</japicmp.version>
+    <japicmp.version>0.26.3</japicmp.version>
     <openai-java.version>4.76.0</openai-java.version>
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.4</httpcomponents-core5.version>
