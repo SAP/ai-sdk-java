@@ -13,7 +13,9 @@
 
 ### ✨ New Functionality
 
--
+- [OpenAI] Added new models `GPT_6_ASTRA`, `GPT_6_LUNA`, `GPT_61_SOL` to `OpenAiModel`.
+- [Orchestration] Added new models `GPT_6_ASTRA`, `GPT_6_LUNA`, `GPT_61_SOL` and `NOVA_CORE` to `OrchestrationModel`.
+- [RPT] Added new model `SAP_RPT_TS` for Time Series for forecasting to `RptModel`.
 
 ### 📈 Improvements
 
