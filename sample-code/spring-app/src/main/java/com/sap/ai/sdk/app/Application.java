@@ -22,7 +22,7 @@ public class Application {
   /**
    * Changes Spring Boot's default object mapper to fix serialization issues.
    *
-   * @return a modified object mapper
+   * @return a modified object mapper.
    */
   @Bean
   @Primary
@@ -35,7 +35,7 @@ public class Application {
   /**
    * Main method to start the Spring Boot application.
    *
-   * @param args Command line arguments.
+   * @param args command line arguments.
    */
   public static void main(final String[] args) {
     SpringApplication.run(Application.class, args);

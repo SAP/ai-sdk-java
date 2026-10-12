@@ -43,7 +43,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/** Endpoint for Prompt Registry operations */
+/** Endpoint for Prompt Registry operations. */
 @SuppressWarnings("unused") // debug class that doesn't need to be tested
 @RestController
 @RequestMapping("/prompt-registry")

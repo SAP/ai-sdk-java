@@ -44,7 +44,7 @@ public interface OpenAiChatMessage {
   /**
    * The role of the messages author.
    *
-   * @return The role of the messages author.
+   * @return the role of the messages author.
    */
   @Nonnull
   String getRole();
@@ -52,7 +52,7 @@ public interface OpenAiChatMessage {
   /**
    * The contents of the message.
    *
-   * @return The contents of the message.
+   * @return the contents of the message.
    */
   @Nullable
   Object getContent();
@@ -91,8 +91,8 @@ public interface OpenAiChatMessage {
     /**
      * Add text to the user message.
      *
-     * @param content The text content.
-     * @return The user message.
+     * @param content the text content.
+     * @return the user message.
      */
     @Nonnull
     public OpenAiChatUserMessage addText(@Nonnull final String content) {
@@ -103,8 +103,8 @@ public interface OpenAiChatMessage {
     /**
      * Add an image to the user message.
      *
-     * @param content The image URL.
-     * @return The user message.
+     * @param content the image URL.
+     * @return the user message.
      */
     @Nonnull
     public OpenAiChatUserMessage addImage(@Nonnull final String content) {
@@ -114,9 +114,9 @@ public interface OpenAiChatMessage {
     /**
      * Add an image to the user message.
      *
-     * @param content The image URL.
-     * @param detail The detail level of the image.
-     * @return The user message.
+     * @param content the image URL.
+     * @param detail the detail level of the image.
+     * @return the user message.
      */
     @Nonnull
     public OpenAiChatUserMessage addImage(
@@ -128,8 +128,8 @@ public interface OpenAiChatMessage {
     /**
      * Add images or text to the user message.
      *
-     * @param content The content(s) to add.
-     * @return The user message.
+     * @param content the content(s) to add.
+     * @return the user message.
      */
     @Nonnull
     public OpenAiChatUserMessage addContent(@Nonnull final ContentPart... content) {
@@ -148,7 +148,7 @@ public interface OpenAiChatMessage {
       /**
        * Get the type of the content part.
        *
-       * @return The type of the content part as string.
+       * @return the type of the content part as string.
        */
       @Nonnull
       String getType();
@@ -183,8 +183,8 @@ public interface OpenAiChatMessage {
       /**
        * Set the URL of the image.
        *
-       * @param url The URL of the image.
-       * @return The image URL.
+       * @param url the URL of the image.
+       * @return the image URL.
        */
       @Nonnull
       public ContentPartImage setUrl(@Nonnull final String url) {
@@ -194,9 +194,9 @@ public interface OpenAiChatMessage {
       /**
        * Set the URL of the image.
        *
-       * @param url The URL of the image.
-       * @param detailLevel The detail level of the image.
-       * @return The image URL.
+       * @param url the URL of the image.
+       * @param detailLevel the detail level of the image.
+       * @return the image URL.
        */
       @Nonnull
       public ContentPartImage setUrl(

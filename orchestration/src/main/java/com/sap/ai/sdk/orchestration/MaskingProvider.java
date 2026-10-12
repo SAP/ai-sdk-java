@@ -14,7 +14,7 @@ public interface MaskingProvider {
   /**
    * Create a masking configuration.
    *
-   * @return the masking configuration
+   * @return the masking configuration.
    */
   @Nonnull
   DPIConfig createConfig();

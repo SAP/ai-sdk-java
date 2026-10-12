@@ -56,7 +56,7 @@ public class OpenAiChatCompletionDelta implements StreamedDelta {
   /**
    * Retrieves the completion usage from the response, or null if it is not available.
    *
-   * @return The completion usage or null.
+   * @return the completion usage or null.
    */
   @Nullable
   public CompletionUsage getCompletionUsage() {

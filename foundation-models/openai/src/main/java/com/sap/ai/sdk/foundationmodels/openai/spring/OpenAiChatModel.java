@@ -181,9 +181,9 @@ public class OpenAiChatModel implements ChatModel {
   /**
    * Adds options to the request.
    *
-   * @param request the request to modify
-   * @param options the options to extract
-   * @return the modified request with options applied
+   * @param request the request to modify.
+   * @param options the options to extract.
+   * @return the modified request with options applied.
    */
   @Nonnull
   protected static OpenAiChatCompletionRequest extractOptions(

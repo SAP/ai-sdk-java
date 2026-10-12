@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/** Endpoints for AI Core Grounding operations */
+/** Endpoints for AI Core Grounding operations. */
 @Slf4j
 @RestController
 @SuppressWarnings("unused")

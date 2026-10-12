@@ -41,9 +41,9 @@ public class ResponseJsonSchema {
   /**
    * Create a new instance of {@link ResponseJsonSchema} with the given schema map and name.
    *
-   * @param schemaMap The schema map
-   * @param name The name of the schema
-   * @return The new instance of {@link ResponseJsonSchema}
+   * @param schemaMap the schema map.
+   * @param name the name of the schema.
+   * @return the new instance of {@link ResponseJsonSchema}.
    */
   @Nonnull
   public static ResponseJsonSchema fromMap(
@@ -57,8 +57,8 @@ public class ResponseJsonSchema {
    * <p>⚠️ Fields of the schema class should be annotated with {@code @JsonProperty(required =
    * true)}.
    *
-   * @param classType The class to generate the schema from
-   * @return The new instance of {@link ResponseJsonSchema}
+   * @param classType the class to generate the schema from.
+   * @return the new instance of {@link ResponseJsonSchema}.
    */
   @Nonnull
   public static ResponseJsonSchema fromType(@Nonnull final Type classType) {

@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 /**
  * Utility class for handling OpenAI module.
  *
- * <p><b>Only intended for internal usage within this SDK</b>.
+ * <p>For internal use only.
  *
  * @since 1.4.0
  */
@@ -19,9 +19,9 @@ class OpenAiUtils {
   /**
    * Converts an OpenAiMessage to a ChatCompletionRequestMessage.
    *
-   * @param message the OpenAiMessage to convert
-   * @return the corresponding ChatCompletionRequestMessage
-   * @throws IllegalArgumentException if the message type is unknown
+   * @param message the OpenAiMessage to convert.
+   * @return the corresponding ChatCompletionRequestMessage.
+   * @throws IllegalArgumentException if the message type is unknown.
    */
   @Nonnull
   static ChatCompletionRequestMessage createChatCompletionRequestMessage(
@@ -42,7 +42,7 @@ class OpenAiUtils {
   /**
    * Default object mapper used for JSON de-/serialization.
    *
-   * @return A new object mapper with the default configuration.
+   * @return a new object mapper with the default configuration.
    */
   @Nonnull
   static ObjectMapper getOpenAiObjectMapper() {

@@ -21,7 +21,7 @@ import lombok.With;
 @With
 @AllArgsConstructor
 public class OrchestrationAiModel {
-  /** The name of the model */
+  /** The name of the model. */
   String name;
 
   /**
@@ -44,7 +44,7 @@ public class OrchestrationAiModel {
   String version;
 
   /**
-   * IBM Granite 13B Chat model
+   * IBM Granite 13B Chat model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement not earlier than
    *     2025-09-30.
@@ -54,7 +54,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("ibm--granite-13b-chat");
 
   /**
-   * MistralAI Mistral Large Instruct model
+   * MistralAI Mistral Large Instruct model.
    *
    * @deprecated This model is deprecated on AI Core.
    */
@@ -63,7 +63,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("mistralai--mistral-large-instruct");
 
   /**
-   * MistralAI Mistral Small Instruct model
+   * MistralAI Mistral Small Instruct model.
    *
    * @deprecated This model is deprecated on AI Core.
    */
@@ -71,12 +71,12 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel MISTRAL_SMALL_INSTRUCT =
       new OrchestrationAiModel("mistralai--mistral-small-instruct");
 
-  /** MistralAI Mistral Medium Instruct model */
+  /** MistralAI Mistral Medium Instruct model. */
   public static final OrchestrationAiModel MISTRAL_MEDIUM_INSTRUCT =
       new OrchestrationAiModel("mistralai--mistral-medium-instruct");
 
   /**
-   * MistralAI Mixtral 8x7B Instruct v01 model
+   * MistralAI Mixtral 8x7B Instruct v01 model.
    *
    * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
    *     OrchestrationAiModel#MISTRAL_SMALL_INSTRUCT}.
@@ -85,16 +85,16 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel MIXTRAL_8X7B_INSTRUCT_V01 =
       new OrchestrationAiModel("mistralai--mixtral-8x7b-instruct-v01");
 
-  /** MistralAI Mistral Small model */
+  /** MistralAI Mistral Small model. */
   public static final OrchestrationAiModel MISTRAL_SMALL =
       new OrchestrationAiModel("mistralai--mistral-small");
 
-  /** MistralAI Mistral Medium model */
+  /** MistralAI Mistral Medium model. */
   public static final OrchestrationAiModel MISTRAL_MEDIUM =
       new OrchestrationAiModel("mistralai--mistral-medium");
 
   /**
-   * Meta Llama3 70B Instruct model
+   * Meta Llama3 70B Instruct model.
    *
    * @deprecated This model is deprecated on AI Core.
    */
@@ -103,7 +103,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("meta--llama3-70b-instruct");
 
   /**
-   * Meta Llama3.1 70B Instruct model
+   * Meta Llama3.1 70B Instruct model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-07-30.
    */
@@ -111,16 +111,16 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel LLAMA3_1_70B_INSTRUCT =
       new OrchestrationAiModel("meta--llama3.1-70b-instruct");
 
-  /** Meta Llama Cinderella DN model */
+  /** Meta Llama Cinderella DN model. */
   public static final OrchestrationAiModel LLAMA_CINDERELLA_DN =
       new OrchestrationAiModel("llama-cinderella-dn");
 
-  /** Cohere Command a Reasoning model */
+  /** Cohere Command a Reasoning model. */
   public static final OrchestrationAiModel COHERE_COMMAND_A_REASONING =
       new OrchestrationAiModel("cohere--command-a-reasoning");
 
   /**
-   * Anthropic Claude 3 Sonnet model
+   * Anthropic Claude 3 Sonnet model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-07-21. The
    *     suggested replacement model is {@link OrchestrationAiModel#CLAUDE_4_SONNET}.
@@ -130,7 +130,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("anthropic--claude-3-sonnet");
 
   /**
-   * Anthropic Claude 3 Haiku model
+   * Anthropic Claude 3 Haiku model.
    *
    * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
    *     OrchestrationAiModel#CLAUDE_4_5_HAIKU}.
@@ -140,7 +140,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("anthropic--claude-3-haiku");
 
   /**
-   * Anthropic Claude 3 Opus model
+   * Anthropic Claude 3 Opus model.
    *
    * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
    *     OrchestrationAiModel#CLAUDE_4_OPUS}.
@@ -150,7 +150,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("anthropic--claude-3-opus");
 
   /**
-   * Anthropic Claude 3.5 Sonnet model
+   * Anthropic Claude 3.5 Sonnet model.
    *
    * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
    *     OrchestrationAiModel#CLAUDE_4_SONNET}.
@@ -160,7 +160,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("anthropic--claude-3.5-sonnet");
 
   /**
-   * Anthropic Claude 3.7 Sonnet model
+   * Anthropic Claude 3.7 Sonnet model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-04-28.
    */
@@ -168,16 +168,16 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_3_7_SONNET =
       new OrchestrationAiModel("anthropic--claude-3.7-sonnet");
 
-  /** Anthropic Claude 4 Opus model */
+  /** Anthropic Claude 4 Opus model. */
   public static final OrchestrationAiModel CLAUDE_4_OPUS =
       new OrchestrationAiModel("anthropic--claude-4-opus");
 
-  /** Anthropic Claude 4.5 Opus model */
+  /** Anthropic Claude 4.5 Opus model. */
   public static final OrchestrationAiModel CLAUDE_4_5_OPUS =
       new OrchestrationAiModel("anthropic--claude-4.5-opus");
 
   /**
-   * Anthropic Claude 4 Sonnet model
+   * Anthropic Claude 4 Sonnet model.
    *
    * @deprecated This model is deprecated on AI Core. The suggested replacement model is {@link
    *     OrchestrationAiModel#CLAUDE_4_5_SONNET}.
@@ -186,32 +186,32 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel CLAUDE_4_SONNET =
       new OrchestrationAiModel("anthropic--claude-4-sonnet");
 
-  /** Anthropic Claude 4.5 Sonnet model */
+  /** Anthropic Claude 4.5 Sonnet model. */
   public static final OrchestrationAiModel CLAUDE_4_5_SONNET =
       new OrchestrationAiModel("anthropic--claude-4.5-sonnet");
 
-  /** Anthropic Claude 4.5 Haiku model */
+  /** Anthropic Claude 4.5 Haiku model. */
   public static final OrchestrationAiModel CLAUDE_4_5_HAIKU =
       new OrchestrationAiModel("anthropic--claude-4.5-haiku");
 
-  /** Anthropic Claude 4.6 Opus model */
+  /** Anthropic Claude 4.6 Opus model. */
   public static final OrchestrationAiModel CLAUDE_4_6_OPUS =
       new OrchestrationAiModel("anthropic--claude-4.6-opus");
 
-  /** Anthropic Claude 4.6 Sonnet model */
+  /** Anthropic Claude 4.6 Sonnet model. */
   public static final OrchestrationAiModel CLAUDE_4_6_SONNET =
       new OrchestrationAiModel("anthropic--claude-4.6-sonnet");
 
-  /** Anthropic Claude 4.7 Opus model */
+  /** Anthropic Claude 4.7 Opus model. */
   public static final OrchestrationAiModel CLAUDE_4_7_OPUS =
       new OrchestrationAiModel("anthropic--claude-4.7-opus");
 
-  /** Anthropic Claude 4.8 Opus model */
+  /** Anthropic Claude 4.8 Opus model. */
   public static final OrchestrationAiModel CLAUDE_4_8_OPUS =
       new OrchestrationAiModel("anthropic--claude-4.8-opus");
 
   /**
-   * Amazon Titan Text Lite model
+   * Amazon Titan Text Lite model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-08-15.
    */
@@ -220,7 +220,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("amazon--titan-text-lite");
 
   /**
-   * Amazon Titan Text Express model
+   * Amazon Titan Text Express model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-08-15.
    */
@@ -228,23 +228,23 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel TITAN_TEXT_EXPRESS =
       new OrchestrationAiModel("amazon--titan-text-express");
 
-  /** Amazon Nova Pro model */
+  /** Amazon Nova Pro model. */
   public static final OrchestrationAiModel NOVA_PRO = new OrchestrationAiModel("amazon--nova-pro");
 
-  /** Amazon Nova Lite model */
+  /** Amazon Nova Lite model. */
   public static final OrchestrationAiModel NOVA_LITE =
       new OrchestrationAiModel("amazon--nova-lite");
 
-  /** Amazon Nova Micro model */
+  /** Amazon Nova Micro model. */
   public static final OrchestrationAiModel NOVA_MICRO =
       new OrchestrationAiModel("amazon--nova-micro");
 
-  /** Amazon Nova Premier model */
+  /** Amazon Nova Premier model. */
   public static final OrchestrationAiModel NOVA_PREMIER =
       new OrchestrationAiModel("amazon--nova-premier");
 
   /**
-   * Azure OpenAI GPT-3.5 Turbo model
+   * Azure OpenAI GPT-3.5 Turbo model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-09-01. The
    *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O_MINI}.
@@ -253,7 +253,7 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GPT_35_TURBO = new OrchestrationAiModel("gpt-35-turbo");
 
   /**
-   * Azure OpenAI GPT-3.5 Turbo model
+   * Azure OpenAI GPT-3.5 Turbo model.
    *
    * @deprecated This model is deprecated on AI Core.
    */
@@ -262,7 +262,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("gpt-35-turbo-16k");
 
   /**
-   * Azure OpenAI GPT-3.5 Turbo model
+   * Azure OpenAI GPT-3.5 Turbo model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-09-01. The
    *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O_MINI}.
@@ -272,7 +272,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("gpt-35-turbo-0125");
 
   /**
-   * Azure OpenAI GPT-4 model
+   * Azure OpenAI GPT-4 model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-09-01. The
    *     suggested replacement model is {@link OrchestrationAiModel#GPT_4O} or {@link
@@ -280,17 +280,17 @@ public class OrchestrationAiModel {
    */
   @Deprecated public static final OrchestrationAiModel GPT_4 = new OrchestrationAiModel("gpt-4");
 
-  /** Azure OpenAI GPT-4.1-mini model */
+  /** Azure OpenAI GPT-4.1-mini model. */
   public static final OrchestrationAiModel GPT_41_MINI = new OrchestrationAiModel("gpt-4.1-mini");
 
-  /** Azure OpenAI GPT-4.1 model */
+  /** Azure OpenAI GPT-4.1 model. */
   public static final OrchestrationAiModel GPT_41 = new OrchestrationAiModel("gpt-4.1");
 
-  /** Azure OpenAI GPT-4.1-nano model */
+  /** Azure OpenAI GPT-4.1-nano model. */
   public static final OrchestrationAiModel GPT_41_NANO = new OrchestrationAiModel("gpt-4.1-nano");
 
   /**
-   * Azure OpenAI GPT-4 model
+   * Azure OpenAI GPT-4 model.
    *
    * @deprecated This model is deprecated on AI Core.
    */
@@ -298,7 +298,7 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GPT_4_32K = new OrchestrationAiModel("gpt-4-32k");
 
   /**
-   * Azure OpenAI GPT-4 version 0613 model
+   * Azure OpenAI GPT-4 version 0613 model.
    *
    * @deprecated This model is deprecated on AI Core.The suggested replacement model is {@link
    *     OrchestrationAiModel#GPT_4O} or {@link OrchestrationAiModel#GPT_41}.
@@ -306,11 +306,11 @@ public class OrchestrationAiModel {
   @Deprecated
   public static final OrchestrationAiModel GPT_4_0613 = new OrchestrationAiModel("gpt-4-0613");
 
-  /** Azure OpenAI GPT-4o model */
+  /** Azure OpenAI GPT-4o model. */
   public static final OrchestrationAiModel GPT_4O = new OrchestrationAiModel("gpt-4o");
 
   /**
-   * Azure OpenAI GPT-4o-mini model
+   * Azure OpenAI GPT-4o-mini model.
    *
    * @deprecated This model is deprecated on AI Core.The suggested replacement model is {@link
    *     OrchestrationAiModel#GPT_5_MINI}.
@@ -319,64 +319,64 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GPT_4O_MINI = new OrchestrationAiModel("gpt-4o-mini");
 
   /**
-   * Azure OpenAI o1 model
+   * Azure OpenAI o1 model.
    *
    * @deprecated This model is deprecated on AI Core.
    */
   @Deprecated public static final OrchestrationAiModel OPENAI_O1 = new OrchestrationAiModel("o1");
 
   /**
-   * Azure OpenAI o3-mini model
+   * Azure OpenAI o3-mini model.
    *
    * @deprecated This model is deprecated on AI Core.
    */
   @Deprecated
   public static final OrchestrationAiModel OPENAI_O3_MINI = new OrchestrationAiModel("o3-mini");
 
-  /** Azure OpenAI o4-mini model */
+  /** Azure OpenAI o4-mini model. */
   public static final OrchestrationAiModel OPENAI_O4_MINI = new OrchestrationAiModel("o4-mini");
 
-  /** Azure OpenAI o3 model */
+  /** Azure OpenAI o3 model. */
   public static final OrchestrationAiModel OPENAI_O3 = new OrchestrationAiModel("o3");
 
-  /** Azure OpenAI GPT-5 model */
+  /** Azure OpenAI GPT-5 model. */
   public static final OrchestrationAiModel GPT_5 = new OrchestrationAiModel("gpt-5");
 
-  /** Azure OpenAI GPT-5-mini model */
+  /** Azure OpenAI GPT-5-mini model. */
   public static final OrchestrationAiModel GPT_5_MINI = new OrchestrationAiModel("gpt-5-mini");
 
-  /** Azure OpenAI GPT-5-nano model */
+  /** Azure OpenAI GPT-5-nano model. */
   public static final OrchestrationAiModel GPT_5_NANO = new OrchestrationAiModel("gpt-5-nano");
 
-  /** Azure OpenAI GPT-5.1 model */
+  /** Azure OpenAI GPT-5.1 model. */
   public static final OrchestrationAiModel GPT_51 = new OrchestrationAiModel("gpt-5.1");
 
-  /** Azure OpenAI GPT-5.2 model */
+  /** Azure OpenAI GPT-5.2 model. */
   public static final OrchestrationAiModel GPT_52 = new OrchestrationAiModel("gpt-5.2");
 
-  /** Azure OpenAI GPT-5.3-codex model */
+  /** Azure OpenAI GPT-5.3-codex model. */
   public static final OrchestrationAiModel GPT_53_CODEX = new OrchestrationAiModel("gpt-5.3-codex");
 
-  /** Azure OpenAI GPT-5.4 model */
+  /** Azure OpenAI GPT-5.4 model. */
   public static final OrchestrationAiModel GPT_54 = new OrchestrationAiModel("gpt-5.4");
 
-  /** Azure OpenAI GPT-5.4-nano model */
+  /** Azure OpenAI GPT-5.4-nano model. */
   public static final OrchestrationAiModel GPT_54_NANO = new OrchestrationAiModel("gpt-5.4-nano");
 
-  /** Azure OpenAI GPT-5.5 model */
+  /** Azure OpenAI GPT-5.5 model. */
   public static final OrchestrationAiModel GPT_55 = new OrchestrationAiModel("gpt-5.5");
 
-  /** Azure OpenAI GPT-5.6-sol model */
+  /** Azure OpenAI GPT-5.6-sol model. */
   public static final OrchestrationAiModel GPT_56_SOL = new OrchestrationAiModel("gpt-5.6-sol");
 
-  /** Azure OpenAI GPT-5.6-luna model */
+  /** Azure OpenAI GPT-5.6-luna model. */
   public static final OrchestrationAiModel GPT_56_LUNA = new OrchestrationAiModel("gpt-5.6-luna");
 
-  /** Azure OpenAI GPT-5.6-terra model */
+  /** Azure OpenAI GPT-5.6-terra model. */
   public static final OrchestrationAiModel GPT_56_TERRA = new OrchestrationAiModel("gpt-5.6-terra");
 
   /**
-   * Google Cloud Platform Gemini 1.0 Pro model
+   * Google Cloud Platform Gemini 1.0 Pro model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-04-09. The
    *     suggested replacement model is {@link OrchestrationAiModel#GEMINI_2_0_FLASH} or {@link
@@ -387,7 +387,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("gemini-1.0-pro");
 
   /**
-   * Google Cloud Platform Gemini 1.5 Pro model
+   * Google Cloud Platform Gemini 1.5 Pro model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-09-24. The
    *     suggested replacement model is {@link OrchestrationAiModel#GEMINI_2_5_PRO}.
@@ -397,7 +397,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("gemini-1.5-pro");
 
   /**
-   * Google Cloud Platform Gemini 1.5 Flash model
+   * Google Cloud Platform Gemini 1.5 Flash model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-09-24. The
    *     suggested replacement model is {@link OrchestrationAiModel#GEMINI_2_5_FLASH}.
@@ -407,7 +407,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("gemini-1.5-flash");
 
   /**
-   * Google Cloud Platform Gemini 2.0 Flash model
+   * Google Cloud Platform Gemini 2.0 Flash model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2026-02-05.
    */
@@ -416,7 +416,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("gemini-2.0-flash");
 
   /**
-   * Google Cloud Platform Gemini 2.0 Flash-Lite model
+   * Google Cloud Platform Gemini 2.0 Flash-Lite model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2026-02-25.
    */
@@ -424,44 +424,44 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel GEMINI_2_0_FLASH_LITE =
       new OrchestrationAiModel("gemini-2.0-flash-lite");
 
-  /** Google Cloud Platform Gemini 2.5 Flash model */
+  /** Google Cloud Platform Gemini 2.5 Flash model. */
   public static final OrchestrationAiModel GEMINI_2_5_FLASH =
       new OrchestrationAiModel("gemini-2.5-flash");
 
-  /** Google Cloud Platform Gemini 2.5 Flash Lite model */
+  /** Google Cloud Platform Gemini 2.5 Flash Lite model. */
   public static final OrchestrationAiModel GEMINI_2_5_FLASH_LITE =
       new OrchestrationAiModel("gemini-2.5-flash-lite");
 
-  /** Google Cloud Platform Gemini 2.5 Pro model */
+  /** Google Cloud Platform Gemini 2.5 Pro model. */
   public static final OrchestrationAiModel GEMINI_2_5_PRO =
       new OrchestrationAiModel("gemini-2.5-pro");
 
-  /** Google Cloud Platform Gemini 3.1 Flash Lite model */
+  /** Google Cloud Platform Gemini 3.1 Flash Lite model. */
   public static final OrchestrationAiModel GEMINI_3_1_FLASH_LITE =
       new OrchestrationAiModel("gemini-3.1-flash-lite");
 
-  /** Google Cloud Platform Gemini 3.5 Flash model */
+  /** Google Cloud Platform Gemini 3.5 Flash model. */
   public static final OrchestrationAiModel GEMINI_3_5_FLASH =
       new OrchestrationAiModel("gemini-3.5-flash");
 
-  /** Google Cloud Platform Gemini 3.1 Pro preview early access model */
+  /** Google Cloud Platform Gemini 3.1 Pro preview early access model. */
   public static final OrchestrationAiModel GEMINI_3_1_PRO_PREVIEW_EA =
       new OrchestrationAiModel("gemini-3.1-pro-preview-ea");
 
-  /** Google Cloud Platform Gemini 3.5 Flash Lite model */
+  /** Google Cloud Platform Gemini 3.5 Flash Lite model. */
   public static final OrchestrationAiModel GEMINI_3_5_FLASH_LITE =
       new OrchestrationAiModel("gemini-3.5-flash-lite");
 
-  /** Google Cloud Platform Gemini 3.6 Flash model */
+  /** Google Cloud Platform Gemini 3.6 Flash model. */
   public static final OrchestrationAiModel GEMINI_3_6_FLASH =
       new OrchestrationAiModel("gemini-3.6-flash");
 
-  /** Google Cloud Platform Gemini 3.8 Flash model */
+  /** Google Cloud Platform Gemini 3.8 Flash model. */
   public static final OrchestrationAiModel GEMINI_3_8_FLASH =
       new OrchestrationAiModel("gemini-3.8-flash");
 
   /**
-   * Alephalpha-pharia-1-7b-control model
+   * Alephalpha-pharia-1-7b-control model.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-10-31. The
    *     suggested replacement model is {@link OrchestrationAiModel#MISTRAL_SMALL_INSTRUCT}.
@@ -471,7 +471,7 @@ public class OrchestrationAiModel {
       new OrchestrationAiModel("alephalpha-pharia-1-7b-control");
 
   /**
-   * DeepSeek-R1
+   * DeepSeek-R1.
    *
    * @deprecated This model is deprecated on AI Core with a planned retirement on 2025-11-31.
    */
@@ -479,33 +479,33 @@ public class OrchestrationAiModel {
   public static final OrchestrationAiModel DEEPSEEK_R1 =
       new OrchestrationAiModel("deepseek-ai--deepseek-r1");
 
-  /** Perplexity AI Sonar model */
+  /** Perplexity AI Sonar model. */
   public static final OrchestrationAiModel SONAR = new OrchestrationAiModel("sonar");
 
-  /** Perplexity AI Sonar Pro model */
+  /** Perplexity AI Sonar Pro model. */
   public static final OrchestrationAiModel SONAR_PRO = new OrchestrationAiModel("sonar-pro");
 
-  /** Perplexity AI Sonar Deep Research model */
+  /** Perplexity AI Sonar Deep Research model. */
   public static final OrchestrationAiModel SONAR_DEEP_RESEARCH =
       new OrchestrationAiModel("sonar-deep-research");
 
-  /** SAP ABAP 1 model */
+  /** SAP ABAP 1 model. */
   public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
 
-  /** Alibaba Qwen 3 max model */
+  /** Alibaba Qwen 3 max model. */
   public static final OrchestrationAiModel QWEN_3_MAX = new OrchestrationAiModel("qwen3-max");
 
-  /** Alibaba Qwen 3.6 plus model */
+  /** Alibaba Qwen 3.6 plus model. */
   public static final OrchestrationAiModel QWEN_3_6_PLUS = new OrchestrationAiModel("qwen3.6-plus");
 
-  /** Alibaba Qwen 3.6 flash model */
+  /** Alibaba Qwen 3.6 flash model. */
   public static final OrchestrationAiModel QWEN_3_6_FLASH =
       new OrchestrationAiModel("qwen3.6-flash");
 
-  /** Alibaba Qwen 3.7 max model */
+  /** Alibaba Qwen 3.7 max model. */
   public static final OrchestrationAiModel QWEN_3_7_MAX = new OrchestrationAiModel("qwen3.7-max");
 
-  /** Alibaba Qwen 3.7 plus model */
+  /** Alibaba Qwen 3.7 plus model. */
   public static final OrchestrationAiModel QWEN_3_7_PLUS = new OrchestrationAiModel("qwen3.7-plus");
 
   OrchestrationAiModel(@Nonnull final String name) {
@@ -521,8 +521,8 @@ public class OrchestrationAiModel {
    * Additional parameter on this model.
    *
    * @param key the parameter key.
-   * @param value the parameter value, nullable.
-   * @return A new model with the additional parameter.
+   * @param value the parameter value. Can be {@code null} if not applicable.
+   * @return a new model with the additional parameter.
    *     <p><a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api">SAP
    *     AI Core: Orchestration - Harmonized API</a>
@@ -538,9 +538,9 @@ public class OrchestrationAiModel {
    * Additional parameter on this model.
    *
    * @param param the parameter key.
-   * @param value the parameter value, nullable.
+   * @param value the parameter value. Can be {@code null} if not applicable.
    * @param <ValueT> the parameter value type.
-   * @return A new model with the additional parameter.
+   * @return a new model with the additional parameter.
    *     <p><a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/harmonized-api">SAP
    *     AI Core: Orchestration - Harmonized API</a>

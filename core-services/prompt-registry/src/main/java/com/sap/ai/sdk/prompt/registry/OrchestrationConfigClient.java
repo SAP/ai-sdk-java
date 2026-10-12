@@ -36,7 +36,7 @@ public class OrchestrationConfigClient extends OrchestrationConfigsApi {
   /**
    * Instantiates a client to manage Orchestration Configurations on the Prompt Registry service.
    *
-   * @param aiCoreService The configured connectivity instance to AI Core
+   * @param aiCoreService the configured connectivity instance to AI Core.
    */
   public OrchestrationConfigClient(@Nonnull final AiCoreService aiCoreService) {
     super(addMixin(aiCoreService));

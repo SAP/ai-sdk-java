@@ -47,7 +47,7 @@ public class OrchestrationSpringEmbeddingModel implements EmbeddingModel {
    * Constructs an instance with default options, a new {@link OrchestrationClient}, and sets the
    * metadata mode to {@link MetadataMode#EMBED}.
    *
-   * @param defaultOptions Default embedding options.
+   * @param defaultOptions default embedding options.
    */
   public OrchestrationSpringEmbeddingModel(@Nonnull final EmbeddingOptions defaultOptions) {
     this(defaultOptions, new OrchestrationClient(), MetadataMode.EMBED);
@@ -58,8 +58,8 @@ public class OrchestrationSpringEmbeddingModel implements EmbeddingModel {
    *
    * <p>Note: The request's options takes precedence over the defaultOptions.
    *
-   * @param request The embedding request containing input texts and options.
-   * @return The embedding response containing results and metadata.
+   * @param request the embedding request containing input texts and options.
+   * @return the embedding response containing results and metadata.
    */
   @Override
   @Nonnull

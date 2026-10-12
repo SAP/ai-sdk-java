@@ -41,7 +41,7 @@ public class DpiMasking implements MaskingProvider {
   /**
    * Build a configuration applying anonymization.
    *
-   * @return A builder configured for anonymization
+   * @return a builder configured for anonymization.
    */
   @Nonnull
   public static Builder anonymization() {
@@ -51,7 +51,7 @@ public class DpiMasking implements MaskingProvider {
   /**
    * Build a configuration applying pseudonymization.
    *
-   * @return A builder configured for pseudonymization
+   * @return a builder configured for pseudonymization.
    */
   @Nonnull
   public static Builder pseudonymization() {
@@ -69,9 +69,9 @@ public class DpiMasking implements MaskingProvider {
     /**
      * Specifies which entities should be masked in the input text.
      *
-     * @param entity An entity type to mask (required)
-     * @param entities Additional entity types to mask (optional)
-     * @return A new {@link DpiMasking} instance
+     * @param entity an entity type to mask (required).
+     * @param entities additional entity types to mask (optional).
+     * @return a new {@link DpiMasking} instance.
      * @see DPIEntities
      */
     @Nonnull
@@ -88,9 +88,9 @@ public class DpiMasking implements MaskingProvider {
     /**
      * Adds a custom regex pattern for masking.
      *
-     * @param regex The regex pattern to match
-     * @param replacement The replacement string
-     * @return A new {@link DpiMasking} instance
+     * @param regex the regex pattern to match.
+     * @param replacement the replacement string.
+     * @return a new {@link DpiMasking} instance.
      */
     @Nonnull
     public DpiMasking withRegex(@Nonnull final String regex, @Nonnull final String replacement) {
@@ -109,9 +109,9 @@ public class DpiMasking implements MaskingProvider {
   /**
    * Specifies a custom regex pattern for masking.
    *
-   * @param regex The regex pattern to match
-   * @param replacement The replacement string
-   * @return A new {@link DpiMasking} instance
+   * @param regex the regex pattern to match.
+   * @param replacement the replacement string.
+   * @return a new {@link DpiMasking} instance.
    */
   @Nonnull
   public DpiMasking withRegex(@Nonnull final String regex, @Nonnull final String replacement) {
@@ -130,8 +130,8 @@ public class DpiMasking implements MaskingProvider {
   /**
    * Set words that should not be masked.
    *
-   * @param allowList List of strings that should not be masked
-   * @return A new {@link DpiMasking} instance
+   * @param allowList list of strings that should not be masked.
+   * @return a new {@link DpiMasking} instance.
    */
   @Nonnull
   public DpiMasking withAllowList(@Nonnull final List<String> allowList) {

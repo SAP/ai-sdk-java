@@ -49,8 +49,8 @@ public class ClientException extends RuntimeException {
    *
    * @param clientError the original structured error payload received from the remote service, can
    *     be null if not available.
-   * @return the current instance of {@link ClientException} with the changed ClientError data
-   * @param <T> the type of the exception, typically a subclass of {@link ClientException}
+   * @param <T> the type of the exception, typically a subclass of {@link ClientException}.
+   * @return the current instance of {@link ClientException} with the changed ClientError data.
    */
   @SuppressWarnings("unchecked")
   @Nonnull
@@ -62,10 +62,10 @@ public class ClientException extends RuntimeException {
   /**
    * Sets the original HTTP request that caused this exception.
    *
-   * @param httpResponse the original HTTP response that caused this exception, can be null if not
-   *     available.
-   * @return the current instance of {@link ClientException} with the changed HTTP response
-   * @param <T> the type of the exception, typically a subclass of {@link ClientException}
+   * @param httpResponse the original HTTP response that caused this exception. Can be {@code null}
+   *     if not available.
+   * @param <T> the type of the exception, typically a subclass of {@link ClientException}.
+   * @return the current instance of {@link ClientException} with the changed HTTP response.
    */
   @SuppressWarnings("unchecked")
   @Nonnull
@@ -78,10 +78,10 @@ public class ClientException extends RuntimeException {
   /**
    * Sets the original HTTP request that caused this exception.
    *
-   * @param httpRequest the original HTTP request that caused this exception, can be null if not
-   *     available.
-   * @return the current instance of {@link ClientException} with the changed HTTP request
-   * @param <T> the type of the exception, typically a subclass of {@link ClientException}
+   * @param httpRequest the original HTTP request that caused this exception. Can be {@code null} if
+   *     not available.
+   * @param <T> the type of the exception, typically a subclass of {@link ClientException}.
+   * @return the current instance of {@link ClientException} with the changed HTTP request.
    */
   @SuppressWarnings("unchecked")
   @Nonnull

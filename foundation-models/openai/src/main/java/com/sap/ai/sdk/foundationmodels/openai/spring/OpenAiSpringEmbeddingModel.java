@@ -35,7 +35,7 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
    * Constructs an {@code OpenAiSpringEmbeddingModel} with the specified {@link OpenAiClient} of
    * some model.
    *
-   * @param client the OpenAI client
+   * @param client the OpenAI client.
    */
   public OpenAiSpringEmbeddingModel(@Nonnull final OpenAiClient client) {
     this(client, MetadataMode.EMBED);
@@ -49,8 +49,8 @@ public class OpenAiSpringEmbeddingModel implements EmbeddingModel {
    * resulting content. Currently, the formatter is only effective for calls to {@link
    * #embed(Document)}.
    *
-   * @param client the OpenAI client
-   * @param metadataMode the metadata mode
+   * @param client the OpenAI client.
+   * @param metadataMode the metadata mode.
    */
   public OpenAiSpringEmbeddingModel(
       @Nonnull final OpenAiClient client, @Nonnull final MetadataMode metadataMode) {

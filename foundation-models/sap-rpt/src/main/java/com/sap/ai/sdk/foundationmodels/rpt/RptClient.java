@@ -39,9 +39,9 @@ public class RptClient {
   /**
    * Creates a new RptClient for the specified foundation model.
    *
-   * @param foundationModel The foundation model to use.
-   * @return A new instance of RptClient.
-   * @throws DeploymentResolutionException If there is an error resolving the deployment.
+   * @param foundationModel the foundation model to use.
+   * @return a new instance of RptClient.
+   * @throws DeploymentResolutionException if there is an error resolving the deployment.
    */
   @Nonnull
   public static RptClient forModel(@Nonnull final RptModel foundationModel)
@@ -54,8 +54,8 @@ public class RptClient {
   /**
    * Creates a new RptClient for the specified destination.
    *
-   * @param destination The destination to use.
-   * @return A new instance of RptClient.
+   * @param destination the destination to use.
+   * @return a new instance of RptClient.
    */
   static RptClient forDestination(
       @Nonnull final Destination destination, final boolean contextModePossible) {
@@ -81,8 +81,8 @@ public class RptClient {
    *
    * <p><b>500</b> - Internal Server Error
    *
-   * @param requestBody The prediction request
-   * @return prediction response from the RPT model
+   * @param requestBody the prediction request.
+   * @return prediction response from the RPT model.
    * @apiNote When used with a model that does not support it, the {@code contextMode} field of the
    *     embedded {@link com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig} is
    *     set to {@code null} on the passed-in object as a side effect.
@@ -124,9 +124,9 @@ public class RptClient {
    *
    * <p><b>500</b> - Internal Server Error
    *
-   * @param parquetFile Parquet file
-   * @param predictionConfig The prediction configuration
-   * @return prediction response from the RPT model
+   * @param parquetFile Parquet file.
+   * @param predictionConfig the prediction configuration.
+   * @return prediction response from the RPT model.
    * @apiNote When used with a model that does not support it, the {@code contextMode} field of the
    *     passed-in {@link com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig} is
    *     set to {@code null} as a side effect.

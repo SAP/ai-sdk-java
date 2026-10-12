@@ -11,7 +11,7 @@ import lombok.val;
 /**
  * Represents the content of a chat message.
  *
- * @param items a list of the content items
+ * @param items a list of the content items.
  * @since 1.3.0
  */
 public record MessageContent(@Nonnull List<ContentItem> items) {

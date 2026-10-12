@@ -78,9 +78,9 @@ public final class OpenAiClient {
   }
 
   /**
-   * Creates and configures OpenAI Realtime API client
+   * Creates and configures OpenAI Realtime API client.
    *
-   * @return created client
+   * @return created client.
    */
   @Beta
   @Nonnull
@@ -119,9 +119,9 @@ public final class OpenAiClient {
    * OpenAiClient.withCustomDestination(destination);
    * }</pre>
    *
-   * @param destination The specific {@link HttpDestination} to use.
-   * @see AiCoreService#getInferenceDestination(String)
+   * @param destination the specific {@link HttpDestination} to use.
    * @return a new OpenAI client.
+   * @see AiCoreService#getInferenceDestination(String)
    */
   @Nonnull
   public static OpenAiClient withCustomDestination(@Nonnull final Destination destination) {
@@ -137,11 +137,11 @@ public final class OpenAiClient {
   /**
    * Add a system prompt before user prompts.
    *
-   * <p>Note: The system prompt is ignored on chat completions invoked with
+   * <p><b>Note:</b> The system prompt is ignored on chat completions invoked with
    * OpenAiChatCompletionPrompt.
    *
-   * @param systemPrompt the system prompt
-   * @return the client
+   * @param systemPrompt the system prompt.
+   * @return the client.
    */
   @Nonnull
   public OpenAiClient withSystemPrompt(@Nonnull final String systemPrompt) {
@@ -150,10 +150,10 @@ public final class OpenAiClient {
   }
 
   /**
-   * Create a new OpenAI client with a custom header added to every call made with this client
+   * Create a new OpenAI client with a custom header added to every call made with this client.
    *
-   * @param key the key of the custom header to add
-   * @param value the value of the custom header to add
+   * @param key the key of the custom header to add.
+   * @param value the value of the custom header to add.
    * @return a new client.
    * @since 1.11.0
    */
@@ -168,9 +168,9 @@ public final class OpenAiClient {
 
   /**
    * Create a new openAI client with multiple custom headers added to every call made with this
-   * client
+   * client.
    *
-   * @param headers a map of key value pairs for the custom headers to add
+   * @param headers a map of key value pairs for the custom headers to add.
    * @return a new client.
    * @since 1.22.0
    */
@@ -189,8 +189,8 @@ public final class OpenAiClient {
    * Generate a completion for the given string prompt as user.
    *
    * @param prompt a text message.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
+   * @return the completion output.
+   * @throws OpenAiClientException if the request fails.
    * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
    */
   @Nonnull
@@ -209,8 +209,8 @@ public final class OpenAiClient {
    * Generate a completion for the given conversation and request parameters.
    *
    * @param request the completion request.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
+   * @return the completion output.
+   * @throws OpenAiClientException if the request fails.
    * @since 1.4.0
    */
   @Nonnull
@@ -225,8 +225,8 @@ public final class OpenAiClient {
    * Generate a completion for the given low-level request object.
    *
    * @param request the completion request.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
+   * @return the completion output.
+   * @throws OpenAiClientException if the request fails.
    * @since 1.4.0
    */
   @Nonnull
@@ -240,8 +240,8 @@ public final class OpenAiClient {
    * Generate a completion for the given conversation and request parameters.
    *
    * @param parameters the completion request.
-   * @return the completion output
-   * @throws OpenAiClientException if the request fails
+   * @return the completion output.
+   * @throws OpenAiClientException if the request fails.
    * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
    */
   @Nonnull
@@ -275,8 +275,8 @@ public final class OpenAiClient {
    * Stream#parallel()} on this stream is not supported.
    *
    * @param prompt a text message.
-   * @return A stream of text chunks
-   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @return a stream of text chunks.
+   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter.
    * @see #streamChatCompletionDeltas(OpenAiChatCompletionRequest)
    */
   @Nonnull
@@ -325,9 +325,9 @@ public final class OpenAiClient {
    * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
    * Stream#parallel()} on this stream is not supported.
    *
-   * @param request The prompt, including a list of messages.
-   * @return A stream of message deltas
-   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @param request the prompt, including a list of messages.
+   * @return a stream of message deltas.
+   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter.
    * @see #streamChatCompletion(String)
    * @since 1.4.0
    */
@@ -341,9 +341,9 @@ public final class OpenAiClient {
    * Stream a completion for the given low-level request object. Returns a <b>lazily</b> populated
    * stream of delta objects.
    *
-   * @param request The completion request.
-   * @return A stream of message deltas
-   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @param request the completion request.
+   * @return a stream of message deltas.
+   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter.
    * @see #streamChatCompletionDeltas(OpenAiChatCompletionRequest) for a higher-level API
    * @since 1.4.0
    */
@@ -379,9 +379,9 @@ public final class OpenAiClient {
    * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
    * Stream#parallel()} on this stream is not supported.
    *
-   * @param parameters The prompt, including a list of messages.
-   * @return A stream of message deltas
-   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter
+   * @param parameters the prompt, including a list of messages.
+   * @return a stream of message deltas.
+   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter.
    * @deprecated Use {@link #streamChatCompletionDeltas(OpenAiChatCompletionRequest)} instead.
    */
   @Nonnull
@@ -410,8 +410,8 @@ public final class OpenAiClient {
    * models and algorithms using high-level request object.
    *
    * @param request the request with input text.
-   * @return the embedding response convenience object
-   * @throws OpenAiClientException if the request fails
+   * @return the embedding response convenience object.
+   * @throws OpenAiClientException if the request fails.
    * @see #embedding(EmbeddingsCreateRequest) for full confgurability.
    * @since 1.4.0
    */
@@ -425,8 +425,8 @@ public final class OpenAiClient {
    * Get a vector representation of a given inputs using low-level request.
    *
    * @param request the request with input text.
-   * @return the embedding output
-   * @throws OpenAiClientException if the request fails
+   * @return the embedding output.
+   * @throws OpenAiClientException if the request fails.
    * @see #embedding(OpenAiEmbeddingRequest) for conveninece api
    * @since 1.4.0
    */
@@ -442,8 +442,8 @@ public final class OpenAiClient {
    * models and algorithms.
    *
    * @param parameters the input text.
-   * @return the embedding output
-   * @throws OpenAiClientException if the request fails
+   * @return the embedding output.
+   * @throws OpenAiClientException if the request fails.
    */
   @Nonnull
   @Deprecated

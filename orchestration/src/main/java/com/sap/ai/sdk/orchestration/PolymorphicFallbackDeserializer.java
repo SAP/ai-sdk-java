@@ -21,8 +21,8 @@ import lombok.AllArgsConstructor;
  * explicitly. If deserialization fails for all candidates, a {@link JsonMappingException} is thrown
  * with suppressed exceptions.
  *
+ * @param <T> the base type for deserialization.
  * @since 1.2.0
- * @param <T> The base type for deserialization.
  */
 @Beta
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,8 +34,8 @@ class PolymorphicFallbackDeserializer<T> extends JsonDeserializer<T> {
   /**
    * Constructs the deserializer using candidates inferred from the {@link JsonSubTypes} annotation.
    *
-   * @param baseClass The base class or interface to be resolved.
-   * @throws IllegalStateException If no subtypes are found.
+   * @param baseClass the base class or interface to be resolved.
+   * @throws IllegalStateException if no subtypes are found.
    */
   @Nonnull
   protected static <T> PolymorphicFallbackDeserializer<T> fromJsonSubTypes(
@@ -56,8 +56,8 @@ class PolymorphicFallbackDeserializer<T> extends JsonDeserializer<T> {
   /**
    * Constructs the deserializer with an explicit given list of candidate types.
    *
-   * @param baseClass The base class or interface to be resolved.
-   * @param candidates A list of candidate classes to try deserialization.
+   * @param baseClass the base class or interface to be resolved.
+   * @param candidates a list of candidate classes to try deserialization.
    */
   @Nonnull
   protected static <T> PolymorphicFallbackDeserializer<T> fromCandidates(
@@ -68,11 +68,11 @@ class PolymorphicFallbackDeserializer<T> extends JsonDeserializer<T> {
   /**
    * Deserializes the JSON into the first matching candidate type.
    *
-   * @param jsonParser The parser providing the JSON.
-   * @param deserializationContext The deserialization context.
-   * @return The deserialized object of a matching candidate type.
-   * @throws JsonMappingException If deserialization fails for all candidates.
-   * @throws IOException If json content cannot be consumed.
+   * @param jsonParser the parser providing the JSON.
+   * @param deserializationContext the deserialization context.
+   * @return the deserialized object of a matching candidate type.
+   * @throws JsonMappingException if deserialization fails for all candidates.
+   * @throws IOException if json content cannot be consumed.
    */
   @Nonnull
   @Override

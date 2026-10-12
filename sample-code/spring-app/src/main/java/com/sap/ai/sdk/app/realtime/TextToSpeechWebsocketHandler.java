@@ -16,7 +16,7 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.BinaryWebSocketHandler;
 
-/** Implements handler (Web Socket messages handling) for text to speech realtime api operation */
+/** Implements handler (Web Socket messages handling) for text to speech realtime api operation. */
 @Component
 @Slf4j
 public class TextToSpeechWebsocketHandler extends BinaryWebSocketHandler {
@@ -25,9 +25,9 @@ public class TextToSpeechWebsocketHandler extends BinaryWebSocketHandler {
   private final Map<String, TextInputChannel> channels;
 
   /**
-   * Constructs handler object
+   * Constructs handler object.
    *
-   * @param service - handling service
+   * @param service handling service.
    */
   @Autowired
   public TextToSpeechWebsocketHandler(@Nonnull final OpenAiService service) {

@@ -31,7 +31,7 @@ public class RptService {
   /**
    * Makes a prediction request to the RPT model. *
    *
-   * @return the prediction response payload from the RPT model
+   * @return the prediction response payload from the RPT model.
    */
   @Nonnull
   public PredictResponsePayload predict() {
@@ -87,7 +87,7 @@ public class RptService {
   /**
    * Makes a prediction request to the RPT model using a Parquet file as input.
    *
-   * @return the prediction response payload from the RPT model
+   * @return the prediction response payload from the RPT model.
    */
   @Nonnull
   public PredictResponsePayload predictParquet() {

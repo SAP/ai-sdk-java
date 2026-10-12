@@ -88,9 +88,9 @@ public interface TranslationConfig {
     /**
      * Start an {@code apply_to} selector for placeholder names in {@code placeholder_values}.
      *
-     * @param name The first placeholder name to translate.
-     * @param additionalNames Additional placeholder names to translate.
-     * @return A selector with {@code category=placeholders} and the given items.
+     * @param name the first placeholder name to translate.
+     * @param additionalNames additional placeholder names to translate.
+     * @return a selector with {@code category=placeholders} and the given items.
      */
     @Nonnull
     public Input applyToPlaceholders(
@@ -105,9 +105,9 @@ public interface TranslationConfig {
     /**
      * Start an {@code apply_to} selector for prompt template message roles.
      *
-     * @param role The first template role to translate.
-     * @param roles The template roles to translate.
-     * @return A selector with {@code category=template_roles} and the given items.
+     * @param role the first template role to translate.
+     * @param roles the template roles to translate.
+     * @return a selector with {@code category=template_roles} and the given items.
      */
     @Nonnull
     public Input applyToTemplateRoles(
@@ -133,8 +133,8 @@ public interface TranslationConfig {
      * <strong>Important Note:</strong> If no selectors are used, this applies to the whole message.
      * If selectors are used, this applies to the most recently added selector.
      *
-     * @param sourceLanguage The source language code
-     * @return A new Input with the given source language applied.
+     * @param sourceLanguage the source language code.
+     * @return a new Input with the given source language applied.
      */
     @Nonnull
     public Input withSourceLanguage(@Nonnull final String sourceLanguage) {
@@ -179,11 +179,11 @@ public interface TranslationConfig {
   /**
    * Create a new input translation configuration.
    *
-   * @param targetLanguage The target language code
+   * @param targetLanguage the target language code.
    *     <p><a
    *     href="https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages">SAP
    *     AI Core: Orchestration - SAP Translation Hub Table with official languages</a>
-   * @return A TranslationConfig configured for input translation
+   * @return a TranslationConfig configured for input translation.
    */
   @Nonnull
   static TranslationConfig.Input translateInputTo(@Nonnull final String targetLanguage) {
@@ -193,11 +193,11 @@ public interface TranslationConfig {
   /**
    * Create a new output translation configuration.
    *
-   * @param targetLanguage The target language code
+   * @param targetLanguage the target language code.
    *     <p><a
    *     href="https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages">
    *     SAP AI Core: Orchestration - SAP Translation Hub Table with official languages</a>
-   * @return A TranslationConfig configured for output translation
+   * @return a TranslationConfig configured for output translation.
    */
   @Nonnull
   static TranslationConfig.Output translateOutputTo(@Nonnull final String targetLanguage) {

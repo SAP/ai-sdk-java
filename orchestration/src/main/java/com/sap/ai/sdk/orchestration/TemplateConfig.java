@@ -19,7 +19,7 @@ public abstract class TemplateConfig {
   /**
    * Create a low-level representation of the template.
    *
-   * @return The low-level representation of the template.
+   * @return the low-level representation of the template.
    */
   @Nonnull
   protected abstract PromptTemplatingModuleConfigPrompt toLowLevel();
@@ -27,7 +27,7 @@ public abstract class TemplateConfig {
   /**
    * Build a template.
    *
-   * @return A new empty template.
+   * @return a new empty template.
    */
   @Nonnull
   public static OrchestrationTemplate create() {
@@ -37,7 +37,7 @@ public abstract class TemplateConfig {
   /**
    * Build a template reference with tenant level scope.
    *
-   * @return An intermediate object to build the template reference.
+   * @return an intermediate object to build the template reference.
    */
   @Nonnull
   public static ReferenceBuilder reference() {
@@ -56,8 +56,8 @@ public abstract class TemplateConfig {
     /**
      * Build a template reference with the given id for tenant scope.
      *
-     * @param id The id of the template.
-     * @return A template reference with the given id.
+     * @param id the id of the template.
+     * @return a template reference with the given id.
      */
     @Nonnull
     default OrchestrationTemplateReference byId(@Nonnull final String id) {
@@ -67,8 +67,8 @@ public abstract class TemplateConfig {
     /**
      * Build a template reference with the given scenario, name, and version.
      *
-     * @param scenario The scenario of the template.
-     * @return An intermediate object to build the template reference.
+     * @param scenario the scenario of the template.
+     * @return an intermediate object to build the template reference.
      */
     @Nonnull
     ReferenceBuilder1 byScenario(@Nonnull final String scenario);
@@ -83,8 +83,8 @@ public abstract class TemplateConfig {
     /**
      * Build a template reference with the given scenario, name, and version.
      *
-     * @param name The name of the template.
-     * @return An intermediate object to build the template reference.
+     * @param name the name of the template.
+     * @return an intermediate object to build the template reference.
      */
     @Nonnull
     ReferenceBuilder2 name(@Nonnull final String name);
@@ -98,8 +98,8 @@ public abstract class TemplateConfig {
     /**
      * Build a template reference with the given scenario, name, and version.
      *
-     * @param version The version of the template.
-     * @return A template reference with the given scenario, name, and version.
+     * @param version the version of the template.
+     * @return a template reference with the given scenario, name, and version.
      */
     @Nonnull
     OrchestrationTemplateReference version(@Nonnull final String version);

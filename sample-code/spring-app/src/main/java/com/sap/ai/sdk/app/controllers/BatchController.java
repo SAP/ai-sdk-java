@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/** LLM Batch Service API for managing LLM batch processing jobs */
+/** LLM Batch Service API for managing LLM batch processing jobs. */
 @RestController
 @SuppressWarnings("unused")
 @RequestMapping("/batch")
@@ -34,26 +34,26 @@ public class BatchController {
 
   private static final BatchesApi CLIENT = new BatchesApi();
 
-  /** For reading S3 bucket file contents */
+  /** For reading S3 bucket file contents. */
   public static FileApi FILE_CLIENT =
       new FileApi().withDefaultHeaders(Map.of("Content-Type", "text/csv"));
 
-  /** Resource group that the S3 Bucket Object store is on */
+  /** Resource group that the S3 Bucket Object store is on. */
   public static final String RESOURCE_GROUP = "ai-sdk-java-e2e";
 
-  /** Input file for batch request */
+  /** Input file for batch request. */
   public static final String S_3_INPUT_FILE = "s3secret/input-batch.jsonl";
 
-  /** Directory path for batch output files in the object store */
+  /** Directory path for batch output files in the object store. */
   public static final String S3_OUTPUT_DIRECTORY = "s3secret/batch-output/";
 
-  /** Batch output file name */
+  /** Batch output file name. */
   public static final String OUTPUT_JSONL = "/output.jsonl";
 
   /**
-   * Upload the input and create a new batch job
+   * Upload the input and create a new batch job.
    *
-   * @return response object
+   * @return response object.
    */
   @GetMapping("/create")
   @Nonnull
@@ -71,9 +71,9 @@ public class BatchController {
   }
 
   /**
-   * List all batch jobs
+   * List all batch jobs.
    *
-   * @return response object
+   * @return response object.
    */
   @GetMapping("list")
   @Nonnull
@@ -82,10 +82,10 @@ public class BatchController {
   }
 
   /**
-   * Get batch job for an id
+   * Get batch job for an id.
    *
-   * @param id the id of the batch job
-   * @return the response object
+   * @param id the id of the batch job.
+   * @return the response object.
    */
   @GetMapping("/get/{id}")
   @Nonnull
@@ -94,10 +94,10 @@ public class BatchController {
   }
 
   /**
-   * Delete batch job for an id
+   * Delete batch job for an id.
    *
-   * @param id the id of the batch job
-   * @return the response object
+   * @param id the id of the batch job.
+   * @return the response object.
    */
   @GetMapping("delete/{id}")
   @Nonnull
@@ -106,10 +106,10 @@ public class BatchController {
   }
 
   /**
-   * Read the content of a batch output in the S3 bucket
+   * Read the content of a batch output in the S3 bucket.
    *
-   * @param id the id of the batch job
-   * @return the content of the batch output file
+   * @param id the id of the batch job.
+   * @return the content of the batch output file.
    */
   @GetMapping("/read/{id}")
   @Nonnull
@@ -136,9 +136,9 @@ public class BatchController {
   }
 
   /**
-   * Upload the input.jsonl file to the S3 bucket
+   * Upload the input.jsonl file to the S3 bucket.
    *
-   * @return response message
+   * @return response message.
    */
   @GetMapping("/uploadInput")
   @Nonnull

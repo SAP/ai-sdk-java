@@ -26,15 +26,15 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
-/** Service class for OpenAI service using latest convenience api */
+/** Service class for OpenAI service using latest convenience api. */
 @Service
 @Slf4j
 public class OpenAiService {
   /**
-   * Chat request to OpenAI
+   * Chat request to OpenAI.
    *
-   * @param prompt The prompt to send to the assistant
-   * @return the assistant message response
+   * @param prompt the prompt to send to the assistant.
+   * @return the assistant message response.
    */
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletion(@Nonnull final String prompt) {
@@ -43,10 +43,10 @@ public class OpenAiService {
   }
 
   /**
-   * Chat requests to OpenAI and updating the messages history
+   * Chat requests to OpenAI and updating the messages history.
    *
-   * @param previousMessage The request to send to the assistant
-   * @return the assistant message response
+   * @param previousMessage the request to send to the assistant.
+   * @return the assistant message response.
    */
   @Nonnull
   public OpenAiChatCompletionResponse messagesHistory(@Nonnull final String previousMessage) {
@@ -65,10 +65,10 @@ public class OpenAiService {
   }
 
   /**
-   * Asynchronous stream of an OpenAI chat request
+   * Asynchronous stream of an OpenAI chat request.
    *
-   * @param message The message to send to the assistant
-   * @return the emitter that streams the assistant message response
+   * @param message the message to send to the assistant.
+   * @return the emitter that streams the assistant message response.
    */
   @Nonnull
   public Stream<OpenAiChatCompletionDelta> streamChatCompletionDeltas(
@@ -79,7 +79,7 @@ public class OpenAiService {
   }
 
   /**
-   * Creates realtime channel allowing to input text and voice it (receive audio output)
+   * Creates realtime channel allowing to input text and voice it (receive audio output).
    *
    * <p>The input channel should be used with a try-with-resources block to ensure that the
    * underlying connection is closed.
@@ -93,14 +93,14 @@ public class OpenAiService {
    * }
    * }</pre>
    *
-   * This API implements full duplex (input + output) communication channels. Application should
+   * <p>This API implements full duplex (input + output) communication channels. Application should
    * logically synchronize their state and close input channel when it is appropriate (e.g. last
    * part of the response has been received via output channel and application does not need to send
    * any other input). When input channel is closed, output channel will be closed automatically and
    * output consumer will not be called anymore.
    *
-   * @param audioOutputConsumer - audio consumer of raw PCM mono 24000 Hz little endian output
-   * @return input channel, allowing for text input
+   * @param audioOutputConsumer audio consumer of raw PCM mono 24000 Hz little endian output.
+   * @return input channel, allowing for text input.
    */
   @Nonnull
   public TextInputChannel textToSpeech(@Nonnull final AudioOutputChannel audioOutputConsumer) {
@@ -108,7 +108,7 @@ public class OpenAiService {
   }
 
   /**
-   * Creates realtime channel allowing for audio conversation with a model
+   * Creates realtime channel allowing for audio conversation with a model.
    *
    * <p>The input channel should be used with a try-with-resources block to ensure that the
    * underlying connection is closed.
@@ -122,17 +122,17 @@ public class OpenAiService {
    * }
    * }</pre>
    *
-   * This API implements full duplex (input + output) communication channels. Application should
+   * <p>This API implements full duplex (input + output) communication channels. Application should
    * logically synchronize their state and close input channel when it is appropriate (e.g. last
    * part of the response has been received via output channel and application does not need to send
    * any other input). When input channel is closed, output channel will be closed automatically and
    * output consumer will not be called anymore.
    *
-   * @param audioOutputConsumer - audio consumer of raw PCM mono 24000 Hz little endian output, 16
-   *     bit depth
-   * @param realtimeParams - optional additional configuration params
+   * @param audioOutputConsumer audio consumer of raw PCM mono 24000 Hz little endian output, 16 bit
+   *     depth.
+   * @param realtimeParams optional additional configuration params.
    * @return input channel, allowing for audio data input (bytes, PCM mono 24000 Hz little endian 16
-   *     bit)
+   *     bit).
    */
   @Nonnull
   public AudioInputChannel speechToSpeech(
@@ -142,10 +142,10 @@ public class OpenAiService {
   }
 
   /**
-   * Asynchronous stream of an OpenAI chat request
+   * Asynchronous stream of an OpenAI chat request.
    *
-   * @param message The message to send to the assistant
-   * @return the emitter that streams the assistant message response
+   * @param message the message to send to the assistant.
+   * @return the emitter that streams the assistant message response.
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String message) {
@@ -155,10 +155,10 @@ public class OpenAiService {
   }
 
   /**
-   * Chat request to OpenAI with an image
+   * Chat request to OpenAI with an image.
    *
-   * @param linkToImage The link to the image
-   * @return the assistant message response
+   * @param linkToImage the link to the image.
+   * @return the assistant message response.
    */
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletionImage(@Nonnull final String linkToImage) {
@@ -175,9 +175,9 @@ public class OpenAiService {
    * Chat request to OpenAI with tool that gets the weather for a given location and unit. The tool
    * executed and the result is sent back to the assistant.
    *
-   * @param location The location to get the weather for.
-   * @param unit The unit of temperature to use.
-   * @return The assistant message response.
+   * @param location the location to get the weather for.
+   * @param unit the unit of temperature to use.
+   * @return the assistant message response.
    */
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletionToolExecution(
@@ -210,10 +210,10 @@ public class OpenAiService {
   }
 
   /**
-   * Get the embedding of a text
+   * Get the embedding of a text.
    *
-   * @param input The text to embed
-   * @return the embedding response
+   * @param input the text to embed.
+   * @return the embedding response.
    */
   @Nonnull
   public OpenAiEmbeddingResponse embedding(@Nonnull final String input) {
@@ -223,11 +223,11 @@ public class OpenAiService {
   }
 
   /**
-   * Chat request to OpenAI filtering by resource group
+   * Chat request to OpenAI filtering by resource group.
    *
-   * @param resourceGroup The resource group to use
-   * @param prompt The prompt to send to the assistant
-   * @return the assistant message response
+   * @param resourceGroup the resource group, usually {@code "default"}.
+   * @param prompt the prompt to send to the assistant.
+   * @return the assistant message response.
    */
   @Nonnull
   public OpenAiChatCompletionResponse chatCompletionWithResource(

@@ -27,8 +27,8 @@ public class OrchestrationConfigReference {
   /**
    * Set the chat history.
    *
-   * @param messagesHistory The chat history to set.
-   * @return A new instance of {@link OrchestrationConfigReference} with the specified chat history.
+   * @param messagesHistory the chat history to set.
+   * @return a new instance of {@link OrchestrationConfigReference} with the specified chat history.
    */
   @Nonnull
   public OrchestrationConfigReference withMessageHistory(
@@ -47,8 +47,8 @@ public class OrchestrationConfigReference {
   /**
    * Set the template parameters.
    *
-   * @param templateParameters The template parameters to set.
-   * @return A new instance of {@link OrchestrationConfigReference} with the specified chat history.
+   * @param templateParameters the template parameters to set.
+   * @return a new instance of {@link OrchestrationConfigReference} with the specified chat history.
    */
   @Nonnull
   public OrchestrationConfigReference withTemplateParameters(
@@ -67,8 +67,8 @@ public class OrchestrationConfigReference {
   /**
    * Build a reference from an ID.
    *
-   * @param id The id of the reference
-   * @return A reference object with the specified id
+   * @param id the id of the reference.
+   * @return a reference object with the specified id.
    */
   @Nonnull
   public static OrchestrationConfigReference fromId(@Nonnull final String id) {
@@ -78,8 +78,8 @@ public class OrchestrationConfigReference {
   /**
    * Build a reference from a scenario, name, and version.
    *
-   * @param scenario The scenario of the reference
-   * @return A builder object with the specified scenario
+   * @param scenario the scenario of the reference.
+   * @return a builder object with the specified scenario.
    */
   @Nonnull
   public static Builder fromScenario(@Nonnull final String scenario) {
@@ -96,8 +96,8 @@ public class OrchestrationConfigReference {
     /**
      * Build a reference from a scenario, name, and version.
      *
-     * @param name The name of the reference
-     * @return A builder object with the specified scenario and name
+     * @param name the name of the reference.
+     * @return a builder object with the specified scenario and name.
      */
     @Nonnull
     Builder1 name(@Nonnull final String name);
@@ -113,8 +113,8 @@ public class OrchestrationConfigReference {
     /**
      * Build a reference from a scenario, name, and version.
      *
-     * @param version The version of the reference
-     * @return A reference object with the specified scenario, name, and version
+     * @param version the version of the reference.
+     * @return a reference object with the specified scenario, name, and version.
      */
     @Nonnull
     OrchestrationConfigReference version(@Nonnull final String version);

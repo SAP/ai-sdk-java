@@ -47,7 +47,7 @@ public class OpenAiEmbeddingParameters {
    * newlines (\n) in your input with a single space, as we have observed inferior results when
    * newlines are present.
    *
-   * @param input Input text to get embeddings for, encoded as a string.
+   * @param input input text to get embeddings for, encoded as a string.
    * @return ${code this} instance for chaining.
    */
   @Nonnull

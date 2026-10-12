@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 /**
  * Represents an SAP Relational Pre-trained Transformer foundation model.
  *
- * @param name The name of the model.
- * @param version The version of the model (optional).
+ * @param name the name of the model.
+ * @param version the version of the model (optional).
  * @since 1.16.0
  */
 public record RptModel(@Nonnull String name, @Nullable String version) implements AiModel {
@@ -34,8 +34,8 @@ public record RptModel(@Nonnull String name, @Nullable String version) implement
   /**
    * Create a new instance of RptModel with the provided version.
    *
-   * @param version The version of the model.
-   * @return The new instance of RptModel.
+   * @param version the version of the model.
+   * @return the new instance of RptModel.
    */
   @Nonnull
   public RptModel withVersion(@Nonnull final String version) {
