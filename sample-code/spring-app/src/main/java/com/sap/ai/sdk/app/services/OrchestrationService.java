@@ -87,7 +87,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    return client.chatCompletion(prompt, config);
+    return client.chatCompletion().config(config).prompt(prompt).execute();
   }
 
   /**
@@ -103,7 +103,7 @@ public class OrchestrationService {
     final var multiMessage =
         Message.user("What is in this image?").withImage(pathToImage, ImageItem.DetailLevel.LOW);
     final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, llmWithImageSupportConfig);
+    return client.chatCompletion().config(llmWithImageSupportConfig).prompt(prompt).execute();
   }
 
   /**
@@ -117,7 +117,7 @@ public class OrchestrationService {
     final var multiMessage =
         Message.user(questions.get(0)).withText(questions.get(1)).withText(questions.get(2));
     final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    return client.chatCompletion().config(config).prompt(prompt).execute();
   }
 
   /**
@@ -134,7 +134,7 @@ public class OrchestrationService {
         Message.user("What is the title of the topic discussed here?")
             .withFileUrl(fileUrl, filename);
     final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    return client.chatCompletion().config(config).prompt(prompt).execute();
   }
 
   /**
@@ -148,7 +148,7 @@ public class OrchestrationService {
     final var multiMessage =
         Message.user("What is the title of the topic discussed here?").withFile(filePath);
     final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    return client.chatCompletion().config(config).prompt(prompt).execute();
   }
 
   /**
@@ -165,7 +165,7 @@ public class OrchestrationService {
         Message.user("What is the title of the topic discussed here?")
             .withFileBase64(base64Data, filename);
     final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    return client.chatCompletion().config(config).prompt(prompt).execute();
   }
 
   /**
@@ -179,7 +179,7 @@ public class OrchestrationService {
     val prompt =
         new OrchestrationPrompt(
             "Please create a small story about " + topic + " with around 700 words.");
-    return client.streamChatCompletion(prompt, config);
+    return client.chatCompletion().config(config).prompt(prompt).executeStream();
   }
 
   /**
@@ -194,7 +194,7 @@ public class OrchestrationService {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
-    val response = client.chatCompletion(prompt, reasoningConfig);
+    val response = client.chatCompletion().config(reasoningConfig).prompt(prompt).execute();
     return new ReasoningOutput(response.getContent(), response.getReasoningText());
   }
 
@@ -240,13 +240,13 @@ public class OrchestrationService {
 
     // Turn 1
     val firstPrompt = new OrchestrationPrompt(firstQuestion);
-    val firstResponse = client.chatCompletion(firstPrompt, reasoningConfig);
+    val firstResponse = client.chatCompletion().config(reasoningConfig).prompt(firstPrompt).execute();
 
     // Turn 2 feeds the whole history back. getAllMessages() already carries the reasoning content
     // on the final assistant message.
     val followUpPrompt =
         new OrchestrationPrompt(followUp).messageHistory(firstResponse.getAllMessages());
-    val followUpResponse = client.chatCompletion(followUpPrompt, reasoningConfig);
+    val followUpResponse = client.chatCompletion().config(reasoningConfig).prompt(followUpPrompt).execute();
 
     return new ReasoningOutput(followUpResponse.getContent(), followUpResponse.getReasoningText());
   }
@@ -268,7 +268,7 @@ public class OrchestrationService {
     val inputParams = Map.of("language", language);
     val prompt = new OrchestrationPrompt(inputParams);
 
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(config).prompt(prompt).inputParams(inputParams).execute();
   }
 
   /**
@@ -281,14 +281,14 @@ public class OrchestrationService {
   public OrchestrationChatResponse messagesHistory(@Nonnull final String prevMessage) {
     val prompt = new OrchestrationPrompt(Message.user(prevMessage));
 
-    val result = client.chatCompletion(prompt, config);
+    val result = client.chatCompletion().config(config).prompt(prompt).execute();
 
     // Let's presume a user asks the following follow-up question
     val nextPrompt =
         new OrchestrationPrompt(Message.user("What is the typical food there?"))
             .messageHistory(result.getAllMessages());
 
-    return client.chatCompletion(nextPrompt, config);
+    return client.chatCompletion().config(config).prompt(nextPrompt).execute();
   }
 
   /**
@@ -318,7 +318,7 @@ public class OrchestrationService {
 
     val configWithFilter = config.withInputFiltering(filterConfig);
 
-    return client.chatCompletion(prompt, configWithFilter);
+    return client.chatCompletion().config(configWithFilter).prompt(prompt).execute();
   }
 
   /**
@@ -350,7 +350,7 @@ public class OrchestrationService {
             .protectedMaterialCode(isProtected);
 
     val configWithFilter = config.withOutputFiltering(filterConfig);
-    return client.chatCompletion(prompt, configWithFilter);
+    return client.chatCompletion().config(configWithFilter).prompt(prompt).execute();
   }
 
   /**
@@ -390,7 +390,7 @@ public class OrchestrationService {
 
     val configWithFilter = this.config.withInputFiltering(filterConfig);
 
-    return client.chatCompletion(prompt, configWithFilter);
+    return client.chatCompletion().config(configWithFilter).prompt(prompt).execute();
   }
 
   /**
@@ -421,7 +421,7 @@ public class OrchestrationService {
     val maskingConfig = DpiMasking.anonymization().withEntities(entity);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithMasking);
+    return client.chatCompletion().config(configWithMasking).prompt(prompt).execute();
   }
 
   /**
@@ -443,7 +443,7 @@ public class OrchestrationService {
     val maskingConfig = DpiMasking.anonymization().withRegex(regex, replacement);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithMasking);
+    return client.chatCompletion().config(configWithMasking).prompt(prompt).execute();
   }
 
   /**
@@ -462,7 +462,7 @@ public class OrchestrationService {
 
     val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
 
-    return clientWithResourceGroup.chatCompletion(prompt, config);
+    return clientWithResourceGroup.chatCompletion().config(config).prompt(prompt).execute();
   }
 
   /**
@@ -499,7 +499,7 @@ public class OrchestrationService {
     val maskingConfig = DpiMasking.pseudonymization().withEntities(entity, DPIEntities.EMAIL);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithMasking);
+    return client.chatCompletion().config(configWithMasking).prompt(prompt).execute();
   }
 
   /**
@@ -541,7 +541,7 @@ public class OrchestrationService {
     val configWithGrounding =
         config.withGrounding(groundingConfig).withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithGrounding);
+    return client.chatCompletion().config(configWithGrounding).prompt(prompt).execute();
   }
 
   /**
@@ -569,7 +569,7 @@ public class OrchestrationService {
     val groundingConfig = Grounding.create().filters(filter);
     val prompt = groundingConfig.createGroundingPrompt(userMessage);
     val configWithGrounding = config.withGrounding(groundingConfig);
-    return customClient.chatCompletion(prompt, configWithGrounding);
+    return customClient.chatCompletion().config(configWithGrounding).prompt(prompt).execute();
   }
 
   /**
@@ -589,7 +589,7 @@ public class OrchestrationService {
 
     val prompt = groundingConfig.createGroundingPrompt(userMessage);
 
-    return client.chatCompletion(prompt, configWithGrounding);
+    return client.chatCompletion().config(configWithGrounding).prompt(prompt).execute();
   }
 
   /**
@@ -631,7 +631,7 @@ public class OrchestrationService {
             Message.user("Whats '%s' in German?".formatted(word)),
             Message.system("You are a language translator."));
 
-    return client.chatCompletion(prompt, configWithResponseSchema);
+    return client.chatCompletion().config(configWithResponseSchema).prompt(prompt).execute();
   }
 
   /**
@@ -655,7 +655,7 @@ public class OrchestrationService {
             Message.system(
                 "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
 
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(configWithTemplate).prompt(prompt).execute();
   }
 
   /**
@@ -681,7 +681,7 @@ public class OrchestrationService {
         new OrchestrationPrompt(
             Message.system("You are a language translator. Answer using JSON."));
 
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(configWithTemplate).prompt(prompt).execute();
   }
 
   /**
@@ -698,13 +698,14 @@ public class OrchestrationService {
       @Nonnull final String topic) {
     final var llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
 
-    val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+    val template = TemplateConfig.create().reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+    val brokenTemplate = TemplateConfig.create();
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
 
     val inputParams = Map.of("language", "Italian", "input", topic);
     val prompt = new OrchestrationPrompt(inputParams);
 
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(llmWithImageSupportConfig).templateReference(template).inputParams(inputParams).execute();
   }
 
   /**
@@ -732,7 +733,7 @@ public class OrchestrationService {
     val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
     val prompt = new OrchestrationPrompt(inputParams);
 
-    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
+    return clientWithResourceGroup.chatCompletion().config(configWithTemplate).prompt(prompt).execute();
   }
 
   /**
@@ -753,7 +754,7 @@ public class OrchestrationService {
     val inputParams = Map.of("language", "Italian", "input", topic);
     val prompt = new OrchestrationPrompt(inputParams);
 
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(configWithTemplate).prompt(prompt).execute();
   }
 
   /**
@@ -783,7 +784,7 @@ public class OrchestrationService {
     val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
     val prompt = new OrchestrationPrompt(inputParams);
 
-    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
+    return clientWithResourceGroup.chatCompletion().config(configWithTemplate).prompt(prompt).execute();
   }
 
   /**
@@ -808,7 +809,7 @@ public class OrchestrationService {
     val inputParams = Map.of("language", "German");
     val prompt = new OrchestrationPrompt(inputParams);
 
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(configWithTemplate).prompt(prompt).execute();
   }
 
   /**
@@ -843,7 +844,7 @@ public class OrchestrationService {
             .withOutputTranslationConfig(
                 TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
 
-    return client.chatCompletion(prompt, configWithTranslation);
+    return client.chatCompletion().config(configWithTranslation).prompt(prompt).execute();
   }
 
   /**
@@ -887,7 +888,7 @@ public class OrchestrationService {
             .version("0.0.1")
             .withMessageHistory(history)
             .withTemplateParameters(params);
-    return client.chatCompletionUsingReference(testReference);
+    return client.chatCompletion().configRefence(testReference).inputParams(params).execute();
   }
 
   private void ensureOrchestrationConfigExists(final String scenario, final String name) {
@@ -1060,6 +1061,6 @@ public class OrchestrationService {
   public OrchestrationChatResponse citations() {
     val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
     val sonarConfig = new OrchestrationModuleConfig(SONAR);
-    return client.chatCompletion(prompt, sonarConfig);
+    return client.chatCompletion().config(sonarConfig).prompt(prompt).execute();
   }
 }

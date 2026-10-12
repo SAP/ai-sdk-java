@@ -19,6 +19,7 @@ import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
 import io.vavr.control.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.UnaryOperator;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,6 +32,16 @@ import lombok.val;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ConfigToRequestTransformer {
+
+  // TODO
+  static CompletionRequestConfiguration toCompletionPostRequest(
+      OrchestrationTemplateReference templateRef,
+      Map<String, String> inputParams,
+      OrchestrationModuleConfig config,
+      OrchestrationModuleConfig[] fallbackConfigs) {
+    return null;
+  }
+
   @Nonnull
   static CompletionRequestConfiguration toCompletionPostRequest(
       @Nonnull final OrchestrationPrompt prompt,

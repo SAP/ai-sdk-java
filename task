@@ -1,0 +1,12 @@
+1. OrchestrationTemplate is not type-safe, you can create an empty template:
+  val brokenTemplate = TemplateConfig.create();
+  - should maybe be merged with OrchestrationPrompt?
+
+2. OrchestrationConfigReference is not type safe, plus, the class has to fit in the existing builder API redesign and be type safe:
+  final var failingReference =
+          OrchestrationConfigReference.fromScenario("sdk-test-scenario")
+              .name("test-config-for-OrchestrationTest")
+              .version("0.0.1")
+
+
+3. TODO in ConfigToRequestTransformer

@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -83,48 +84,109 @@ public class OrchestrationClient {
     return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config, fallbackConfigs);
   }
 
-  /**
-   * Generate a completion for the given prompt.
-   *
-   * @param prompt the {@link OrchestrationPrompt} to send to orchestration.
-   * @param config the configuration to use.
-   * @param fallbackConfigs fallback configurations.
-   * @return the completion output.
-   * @throws OrchestrationClientException if the request fails.
-   */
-  @Nonnull
-  public OrchestrationChatResponse chatCompletion(
-      @Nonnull final OrchestrationPrompt prompt,
-      @Nonnull final OrchestrationModuleConfig config,
-      @Nonnull final OrchestrationModuleConfig... fallbackConfigs)
-      throws OrchestrationClientException {
-    val request = toCompletionPostRequest(prompt, config, fallbackConfigs);
-    val response = executeRequest(request);
-    return new OrchestrationChatResponse(response);
+  
+  
+  
+  
+  
+  
+  
+  
+  public OrchestrationChatCompletionBuilder chatCompletion() {
+    return new OrchestrationChatCompletionBuilder(this);
   }
 
-  /**
-   * Generate a completion for the given prompt.
-   *
-   * @param prompt a text message.
-   * @param config the configuration to use.
-   * @param fallbackConfigs fallback configurations.
-   * @return a stream of message deltas.
-   * @throws OrchestrationClientException if the request fails or if the finish reason is
-   *     content_filter.
-   * @since 1.1.0
-   */
-  @Nonnull
-  public Stream<String> streamChatCompletion(
-      @Nonnull final OrchestrationPrompt prompt,
-      @Nonnull final OrchestrationModuleConfig config,
-      @Nonnull final OrchestrationModuleConfig... fallbackConfigs)
-      throws OrchestrationClientException {
+  
+  
+  
+  
+  
+  @AllArgsConstructor
+  public class OrchestrationChatCompletionBuilder {
+    OrchestrationClient orchestrationClient;
 
-    val request = toCompletionPostRequest(prompt, config, fallbackConfigs);
-    return streamChatCompletionDeltas(request)
-        .peek(OrchestrationClient::throwOnContentFilter)
-        .map(OrchestrationChatCompletionDelta::getDeltaContent);
+    public BuilderWithConfig config(OrchestrationModuleConfig config) {
+      return new BuilderWithConfig(config);
+    }
+  }
+
+  @AllArgsConstructor
+  public class BuilderWithConfig {
+    OrchestrationModuleConfig config;
+
+    public OrchestrationChatCompletionClient prompt(OrchestrationPrompt prompt) {
+      OrchestrationModuleConfig[] fallbackConfigs = {};
+      val request =
+          ConfigToRequestTransformer.toCompletionPostRequest(prompt, config, fallbackConfigs);
+      return new OrchestrationChatCompletionClient(request);
+    }
+
+    public BuilderWithTemplateRef templateReference(OrchestrationTemplateReference templateRef) {
+      return new BuilderWithTemplateRef(config, templateRef);
+    }
+  }
+
+  @AllArgsConstructor
+  public class BuilderWithTemplateRef {
+    OrchestrationModuleConfig config;
+    OrchestrationTemplateReference templateRef;
+
+    public OrchestrationChatCompletionClient inputParams(Map<String, String> inputParams) {
+      OrchestrationModuleConfig[] fallbackConfigs = {};
+      // TODO: 
+      val request =
+          ConfigToRequestTransformer.toCompletionPostRequest(
+              templateRef, inputParams, config, fallbackConfigs);
+
+      return new OrchestrationChatCompletionClient(request);
+    }
+  }
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  @AllArgsConstructor
+  public class OrchestrationChatCompletionClient {
+
+    private @Nonnull final CompletionPostRequest request;
+
+    /**
+     * Generate a completion for the given prompt.
+     *
+     * @return the completion output
+     * @throws OrchestrationClientException if the request fails.
+     */
+    @Nonnull
+    public OrchestrationChatResponse execute() throws OrchestrationClientException {
+      val response = executeRequest(request);
+      return new OrchestrationChatResponse(response);
+    }
+
+    /**
+     * Generate a completion for the given prompt.
+     *
+     * @return a stream of message deltas
+     * @throws OrchestrationClientException if the request fails or if the finish reason is
+     *     content_filter
+     * @since 1.1.0
+     */
+    @Nonnull
+    public Stream<String> executeStream() throws OrchestrationClientException {
+      return streamChatCompletionDeltas(request)
+          .peek(OrchestrationClient::throwOnContentFilter)
+          .map(OrchestrationChatCompletionDelta::getDeltaContent);
+    }
+
+    public OrchestrationChatCompletionClient inputParams( Map<String, String> inputParams )
+    {
+    }
   }
 
   private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)
