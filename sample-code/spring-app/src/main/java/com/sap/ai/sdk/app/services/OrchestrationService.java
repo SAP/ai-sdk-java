@@ -28,6 +28,7 @@ import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.OrchestrationTemplate;
 import com.sap.ai.sdk.orchestration.ReasoningEffort;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
@@ -262,7 +263,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse template(@Nonnull final String language) {
     val template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-    val templatingConfig = TemplateConfig.create().withMessages(template);
+    val templatingConfig = TemplateConfig.messages(template);
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val inputParams = Map.of("language", language);
@@ -624,7 +625,7 @@ public class OrchestrationService {
             .withDescription("Output schema for language translation.")
             .withStrict(true);
     val configWithResponseSchema =
-        configWithGpt4.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+        configWithGpt4.withTemplateConfig(TemplateConfig.messages().withJsonSchemaResponse(schema));
 
     val prompt =
         new OrchestrationPrompt(
@@ -647,7 +648,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonObject(@Nonnull final String word) {
     val template = Message.user("What is '%s' in German?".formatted(word));
-    val templatingConfig = TemplateConfig.create().withMessages(template).withJsonResponse();
+    val templatingConfig = TemplateConfig.messages(template).withJsonResponse();
     val configWithTemplate = config.withTemplateConfig(templatingConfig);
 
     val prompt =
@@ -698,8 +699,7 @@ public class OrchestrationService {
       @Nonnull final String topic) {
     final var llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
 
-    val template = TemplateConfig.create().reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
-    val brokenTemplate = TemplateConfig.create();
+    val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
     val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
 
     val inputParams = Map.of("language", "Italian", "input", topic);
@@ -802,7 +802,7 @@ public class OrchestrationService {
     // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
     // release 2510b. See https://jira.tools.sap/browse/AI-125770
     final var configWithGpt4 = new OrchestrationModuleConfig(GPT_5_MINI);
-    val template = TemplateConfig.create().fromYaml(promptTemplate);
+    val template = TemplateConfig.fromYaml(promptTemplate);
     val configWithTemplate =
         template != null ? configWithGpt4.withTemplateConfig(template) : configWithGpt4;
 
@@ -828,7 +828,7 @@ public class OrchestrationService {
     val userMessage =
         Message.user(
             "Generate a study guide for the {{?exam_type}} exam on {{?topic}}.\n\nInclude {{?num_questions}} practice questions.");
-    val templatingConfig = TemplateConfig.create().withMessages(systemMessage, userMessage);
+    val templatingConfig = TemplateConfig.messages(systemMessage, userMessage);
 
     val prompt = new OrchestrationPrompt(inputParams);
     // list of supported language pairs

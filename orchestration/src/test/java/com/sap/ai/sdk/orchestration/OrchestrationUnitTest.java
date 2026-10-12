@@ -1259,7 +1259,7 @@ class OrchestrationUnitTest {
             .withDescription("Output schema for language translation.")
             .withStrict(true);
     val configWithResponseSchema =
-        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
+        config.withTemplateConfig(TemplateConfig.messages().withJsonSchemaResponse(schema));
 
     val prompt =
         new OrchestrationPrompt(
@@ -1341,7 +1341,7 @@ class OrchestrationUnitTest {
     val config = new OrchestrationModuleConfig(GPT_5_MINI);
 
     val configWithJsonResponse =
-        config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
+        config.withTemplateConfig(TemplateConfig.messages().withJsonResponse());
 
     val prompt =
         new OrchestrationPrompt(
@@ -1518,7 +1518,7 @@ class OrchestrationUnitTest {
     var promptTemplateYaml =
         Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
 
-    var template = TemplateConfig.create().fromYaml(promptTemplateYaml);
+    var template = TemplateConfig.fromYaml(promptTemplateYaml);
     var configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
 
     var inputParams = Map.of("language", "German");
@@ -1532,16 +1532,15 @@ class OrchestrationUnitTest {
 
   @Test
   void testTemplateFromInputThrows() {
-    assertThatThrownBy(() -> TemplateConfig.create().fromYaml(": what?"))
+    assertThatThrownBy(() -> TemplateConfig.fromYaml(": what?"))
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to parse");
 
     prompt = new OrchestrationPrompt(Map.of());
     assertThatThrownBy(
             () ->
-                TemplateConfig.create()
-                    .fromYaml(
-                        "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
+                TemplateConfig.fromYaml(
+                    "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to deserialize");
   }

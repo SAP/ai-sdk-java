@@ -268,7 +268,7 @@ class OrchestrationChatOptionsTest {
 
   @Test
   void testGetConfigWithCallbacksMergesWithExistingTools() {
-    var existingTemplate = TemplateConfig.create().withTools(List.of());
+    var existingTemplate = TemplateConfig.messages().withTools(List.of());
     var configWithTemplate =
         new OrchestrationModuleConfig(GEMINI_2_5_FLASH).withTemplateConfig(existingTemplate);
     var opts =

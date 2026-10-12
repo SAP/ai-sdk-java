@@ -84,23 +84,10 @@ public class OrchestrationClient {
     return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config, fallbackConfigs);
   }
 
-  
-  
-  
-  
-  
-  
-  
-  
   public OrchestrationChatCompletionBuilder chatCompletion() {
     return new OrchestrationChatCompletionBuilder(this);
   }
 
-  
-  
-  
-  
-  
   @AllArgsConstructor
   public class OrchestrationChatCompletionBuilder {
     OrchestrationClient orchestrationClient;
@@ -133,7 +120,7 @@ public class OrchestrationClient {
 
     public OrchestrationChatCompletionClient inputParams(Map<String, String> inputParams) {
       OrchestrationModuleConfig[] fallbackConfigs = {};
-      // TODO: 
+      // TODO:
       val request =
           ConfigToRequestTransformer.toCompletionPostRequest(
               templateRef, inputParams, config, fallbackConfigs);
@@ -142,16 +129,6 @@ public class OrchestrationClient {
     }
   }
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   @AllArgsConstructor
   public class OrchestrationChatCompletionClient {
 
@@ -184,9 +161,7 @@ public class OrchestrationClient {
           .map(OrchestrationChatCompletionDelta::getDeltaContent);
     }
 
-    public OrchestrationChatCompletionClient inputParams( Map<String, String> inputParams )
-    {
-    }
+    public OrchestrationChatCompletionClient inputParams(Map<String, String> inputParams) {}
   }
 
   private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)

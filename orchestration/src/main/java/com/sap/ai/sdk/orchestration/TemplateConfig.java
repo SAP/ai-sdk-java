@@ -2,10 +2,17 @@ package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.TENANT;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
+import java.io.IOException;
+import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -25,13 +32,56 @@ public abstract class TemplateConfig {
   protected abstract PromptTemplatingModuleConfigPrompt toLowLevel();
 
   /**
-   * Build a template.
+   * Build a template from the given messages.
    *
-   * @return a new empty template.
+   * @param messages the messages to use in the template.
+   * @return a new template containing the given messages.
    */
   @Nonnull
-  public static OrchestrationTemplate create() {
-    return new OrchestrationTemplate();
+  public static OrchestrationTemplate messages(@Nonnull final Message... messages) {
+    return new OrchestrationTemplate(
+        Stream.of(messages).map(Message::createChatMessage).toList(), null, null, null);
+  }
+
+  /**
+   * Create an {@link OrchestrationTemplate} from a JSON provided as String.
+   *
+   * @param inputJson the provided JSON.
+   * @return a template representing the provided JSON.
+   * @throws IOException if the JSON cannot be deserialized.
+   * @since 1.7.0
+   */
+  @Nullable
+  public static OrchestrationTemplate fromJson(@Nonnull final String inputJson) throws IOException {
+    final ObjectMapper objectMapper =
+        OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
+    final JsonNode rootNode = objectMapper.readTree(inputJson);
+    return objectMapper.treeToValue(rootNode.get("spec"), OrchestrationTemplate.class);
+  }
+
+  /**
+   * Create an {@link OrchestrationTemplate} from a YAML provided as String.
+   *
+   * @param inputYaml the provided YAML.
+   * @return a template representing the provided YAML.
+   * @throws IOException if the YAML cannot be parsed or deserialized.
+   * @since 1.7.0
+   */
+  @Nullable
+  public static OrchestrationTemplate fromYaml(@Nonnull final String inputYaml) throws IOException {
+    final Object obj;
+    try {
+      final ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
+      obj = yamlReader.readValue(inputYaml, Object.class);
+    } catch (JsonProcessingException ex) {
+      throw new IOException("Failed to parse the YAML input: " + ex.getMessage(), ex);
+    }
+    try {
+      final ObjectMapper jsonWriter = new ObjectMapper();
+      return fromJson(jsonWriter.writeValueAsString(obj));
+    } catch (JsonProcessingException ex) {
+      throw new IOException("Failed to deserialize the input: " + ex.getMessage(), ex);
+    }
   }
 
   /**

@@ -207,7 +207,7 @@ public class OrchestrationConvenienceUnitTest {
     var configWithResponseSchemaFromClass =
         new OrchestrationModuleConfig(GPT_4O)
             .withTemplateConfig(
-                TemplateConfig.create()
+                TemplateConfig.messages()
                     .withJsonSchemaResponse(
                         schemaFromClass.withDescription("Description").withStrict(true)));
     var configWithResponseSchemaLowLevel =
@@ -240,8 +240,7 @@ public class OrchestrationConvenienceUnitTest {
                 .type(ChatCompletionTool.TypeEnum.FUNCTION)
                 .function(FunctionObject.create().name("func")));
     var template =
-        TemplateConfig.create()
-            .withMessages(templateMessages)
+        TemplateConfig.messages(templateMessages)
             .withDefaults(defaults)
             .withTools(tools)
             .withJsonResponse();
@@ -334,7 +333,7 @@ public class OrchestrationConvenienceUnitTest {
   void testTemplateFromLocalFileWithJsonSchemaAndTools() throws IOException {
     String promptTemplateYaml =
         Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
-    var templateWithJsonSchemaTools = TemplateConfig.create().fromYaml(promptTemplateYaml);
+    var templateWithJsonSchemaTools = TemplateConfig.fromYaml(promptTemplateYaml);
     var schema =
         Map.of(
             "type",
@@ -348,8 +347,7 @@ public class OrchestrationConvenienceUnitTest {
             "additionalProperties",
             false);
     var expectedTemplateWithJsonSchemaTools =
-        OrchestrationTemplate.create()
-            .withMessages(
+        TemplateConfig.messages(
                 Message.system("You are a language translator."),
                 Message.user("Whats {{ ?word }} in {{ ?language }}?"))
             .withDefaults(Map.of("word", "apple"))
@@ -406,10 +404,9 @@ public class OrchestrationConvenienceUnitTest {
   response_format:
     type: json_object
  """;
-    var templateWithJsonObject = TemplateConfig.create().fromYaml(promptTemplateWithJsonObject);
+    var templateWithJsonObject = TemplateConfig.fromYaml(promptTemplateWithJsonObject);
     var expectedTemplateWithJsonObject =
-        OrchestrationTemplate.create()
-            .withMessages(
+        TemplateConfig.messages(
                 Message.system("You are a language translator."),
                 Message.user("Whats {{ ?word }} in {{ ?language }}?"))
             .withDefaults(Map.of("word", "apple"))
