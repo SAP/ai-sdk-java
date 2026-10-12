@@ -76,7 +76,11 @@ jobs:
 
       - name: 'Create settings.xml'
         run: |
-          echo '${{ secrets.OSS_INDEX_SETTINGS_XML }}' > settings.xml
+          if [ -n '${{ secrets.OSS_INDEX_SETTINGS_XML }}' ]; then
+            echo '${{ secrets.OSS_INDEX_SETTINGS_XML }}' > settings.xml
+          else
+            echo '<settings/>' > settings.xml
+          fi
 
       - name: 'CVE Scan'
         run: >
