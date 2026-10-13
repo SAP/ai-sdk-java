@@ -93,24 +93,23 @@ public class OrchestrationClient {
 
 
   public OrchestrationChatCompletionBuilder chatCompletion() {
-    return new OrchestrationChatCompletionBuilder(this);
+    return new OrchestrationChatCompletionBuilder();
   }
 
   @AllArgsConstructor
   public class OrchestrationChatCompletionBuilder {
-    OrchestrationClient orchestrationClient;
 
-    public BuilderWithConfig config(OrchestrationModuleConfig config) {
-      return new BuilderWithConfig(config);
+    public BuilderWithConfig config(OrchestrationModuleConfig config, OrchestrationModuleConfig... fallbackConfigs) {
+      return new BuilderWithConfig(config, fallbackConfigs);
     }
   }
 
   @AllArgsConstructor
   public class BuilderWithConfig {
     OrchestrationModuleConfig config;
+    OrchestrationModuleConfig[] fallbackConfigs;
 
     public OrchestrationChatCompletionClient templateReference(OrchestrationTemplateReference templateRef) {
-      OrchestrationModuleConfig[] fallbackConfigs = {};
       val request =
           ConfigToRequestTransformer.toCompletionPostRequest(
               templateRef, config, fallbackConfigs);
@@ -118,12 +117,21 @@ public class OrchestrationClient {
     }
 
     public OrchestrationChatCompletionClient template( TemplateConfig template ) {
-      OrchestrationModuleConfig[] fallbackConfigs = {};
       val request =
           ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
       return new OrchestrationChatCompletionClient(request);
     }
   }
+
+
+
+
+
+
+
+
+
+
 
 
   @AllArgsConstructor
@@ -158,6 +166,18 @@ public class OrchestrationClient {
           .map(OrchestrationChatCompletionDelta::getDeltaContent);
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+
 
   private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)
       throws OrchestrationFilterException.Output {

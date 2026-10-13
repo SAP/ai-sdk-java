@@ -41,10 +41,8 @@ import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
-import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
 import com.sap.ai.sdk.prompt.registry.client.OrchestrationConfigsApi;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
@@ -669,8 +667,10 @@ public class OrchestrationService {
       @Nonnull final String topic) {
     final var llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
 
-    val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16")
-        .withInputParameters(Map.of("language", "Italian", "input", topic));
+    val template =
+        TemplateConfig.reference()
+            .byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16")
+            .withInputParameters(Map.of("language", "Italian", "input", topic));
 
     return client
         .chatCompletion()
@@ -699,13 +699,10 @@ public class OrchestrationService {
         TemplateConfig.reference()
             .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
             .withScope(RESOURCE_GROUP)
-            .withInputParameters(Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample));
+            .withInputParameters(
+                Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample));
 
-    return clientWithResourceGroup
-        .chatCompletion()
-        .config(config)
-        .template(template)
-        .execute();
+    return clientWithResourceGroup.chatCompletion().config(config).template(template).execute();
   }
 
   /**
@@ -720,8 +717,12 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenarioTenant(
       @Nonnull final String topic) {
-    val template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1")
-        .withInputParameters(Map.of("language", "Italian", "input", topic));
+    val template =
+        TemplateConfig.reference()
+            .byScenario("test")
+            .name("test")
+            .version("0.0.1")
+            .withInputParameters(Map.of("language", "Italian", "input", topic));
 
     return client.chatCompletion().config(config).template(template).execute();
   }
@@ -748,14 +749,10 @@ public class OrchestrationService {
             .name("example-prompt-template")
             .version("0.0.1")
             .withScope(RESOURCE_GROUP)
-            .withInputParameters(Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample));
+            .withInputParameters(
+                Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample));
 
-
-    return clientWithResourceGroup
-        .chatCompletion()
-        .config(config)
-        .template(template)
-        .execute();
+    return clientWithResourceGroup.chatCompletion().config(config).template(template).execute();
   }
 
   /**
@@ -773,14 +770,10 @@ public class OrchestrationService {
     // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
     // release 2510b. See https://jira.tools.sap/browse/AI-125770
     final var configWithGpt4 = new OrchestrationModuleConfig(GPT_5_MINI);
-    val template = TemplateConfig.fromYaml(promptTemplate);
-    val configWithTemplate =
-        template != null ? configWithGpt4.withTemplateConfig(template) : configWithGpt4;
+    val template = TemplateConfig.fromYaml(promptTemplate)
+        .withInputParameters(Map.of("language", "German"));
 
-    val inputParams = Map.of("language", "German");
-    val prompt = TemplateConfig.template(inputParams);
-
-    return client.chatCompletion().config(configWithTemplate).template(prompt).execute();
+    return client.chatCompletion().config(configWithGpt4).template(template).execute();
   }
 
   /**
@@ -799,15 +792,13 @@ public class OrchestrationService {
     val userMessage =
         Message.user(
             "Generate a study guide for the {{?exam_type}} exam on {{?topic}}.\n\nInclude {{?num_questions}} practice questions.");
-    val templatingConfig = TemplateConfig.template(systemMessage, userMessage);
+    val prompt =
+        TemplateConfig.template(systemMessage, userMessage).withInputParameters(inputParams);
 
-    val prompt = TemplateConfig.template(inputParams);
     // list of supported language pairs
     // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
-
     val configWithTranslation =
         config
-            .withTemplateConfig(templatingConfig)
             .withInputTranslationConfig(
                 TranslationConfig.translateInputTo("en-US")
                     .applyToPlaceholders("exam_type", "topic")
@@ -858,8 +849,8 @@ public class OrchestrationService {
             .name("test-config-for-OrchestrationTest")
             .version("0.0.1")
             .withMessageHistory(history)
-            .withTemplateParameters(params);
-    return client.chatCompletion().configRefence(testReference).inputParams(params).execute();
+            .withInputParameters(params);
+    return client.chatCompletion().configReference(testReference).execute();
   }
 
   private void ensureOrchestrationConfigExists(final String scenario, final String name) {
@@ -896,7 +887,7 @@ public class OrchestrationService {
     final var moduleConfig =
         PartialPromptTemplatingModuleConfig.create()
             .model(LLMModelDetails.create().name(GPT_41_NANO.getName()))
-            .template(prompt);
+            .prompt(prompt);
 
     return PromptRegistryOrchestrationConfig.create()
         .modules(
@@ -920,7 +911,7 @@ public class OrchestrationService {
     val secondBrokenConfig =
         new OrchestrationModuleConfig(
             new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
-    return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig, workingConfig);
+    return client.chatCompletion().config(brokenConfig, secondBrokenConfig, workingConfig).template(prompt).execute();
   }
 
   /**
@@ -1001,7 +992,7 @@ public class OrchestrationService {
     val workingConfig = new OrchestrationModuleConfig(GPT_5_MINI);
     val brokenConfig =
         new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    return client.streamChatCompletion(prompt, brokenConfig, workingConfig);
+    return client.chatCompletion().config(brokenConfig, workingConfig).template(prompt).executeStream();
   }
 
   /**
@@ -1020,7 +1011,7 @@ public class OrchestrationService {
     val secondBrokenConfig =
         new OrchestrationModuleConfig(
             new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
-    return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig);
+    return client.chatCompletion().config(brokenConfig, secondBrokenConfig).template(prompt).execute();
   }
 
   /**

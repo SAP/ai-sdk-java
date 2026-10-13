@@ -68,7 +68,7 @@ public abstract class TemplateConfig {
    * @throws IOException if the JSON cannot be deserialized.
    * @since 1.7.0
    */
-  @Nullable
+  @Nonnull
   public static OrchestrationTemplate fromJson(@Nonnull final String inputJson) throws IOException {
     final ObjectMapper objectMapper =
         OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
@@ -84,7 +84,7 @@ public abstract class TemplateConfig {
    * @throws IOException if the YAML cannot be parsed or deserialized.
    * @since 1.7.0
    */
-  @Nullable
+  @Nonnull
   public static OrchestrationTemplate fromYaml(@Nonnull final String inputYaml) throws IOException {
     final Object obj;
     try {

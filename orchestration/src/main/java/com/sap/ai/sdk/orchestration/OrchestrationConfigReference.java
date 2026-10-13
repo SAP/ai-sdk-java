@@ -21,8 +21,7 @@ public class OrchestrationConfigReference {
   String scenario;
   String name;
   String version;
-
-  OrchestrationPrompt prompt = new OrchestrationPrompt(Map.of());
+  OrchestrationTemplate prompt;
 
   /**
    * Set the chat history.
@@ -36,32 +35,26 @@ public class OrchestrationConfigReference {
     if (prompt.getMessagesHistory().equals(messagesHistory)) {
       return this;
     }
-    final var reference = new OrchestrationConfigReference(id, scenario, name, version);
-    reference
-        .prompt
-        .templateParameters(this.prompt.getTemplateParameters())
-        .messageHistory(messagesHistory);
-    return reference;
+      return new OrchestrationConfigReference(id, scenario, name, version, prompt
+          .withInputParameters(this.prompt.getInputParameters())
+          .withMessagesHistory(messagesHistory));
   }
 
   /**
    * Set the template parameters.
    *
-   * @param templateParameters the template parameters to set.
+   * @param inputParameters the template parameters to set.
    * @return a new instance of {@link OrchestrationConfigReference} with the specified chat history.
    */
   @Nonnull
-  public OrchestrationConfigReference withTemplateParameters(
-      @Nonnull final Map<String, String> templateParameters) {
-    if (prompt.getTemplateParameters().equals(templateParameters)) {
+  public OrchestrationConfigReference withInputParameters(
+      @Nonnull final Map<String, String> inputParameters) {
+    if (prompt.getInputParameters().equals(inputParameters)) {
       return this;
     }
-    final var reference = new OrchestrationConfigReference(id, scenario, name, version);
-    reference
-        .prompt
-        .templateParameters(templateParameters)
-        .messageHistory(this.prompt.getMessagesHistory());
-    return reference;
+    return new OrchestrationConfigReference(id, scenario, name, version, prompt
+        .withInputParameters(this.prompt.getInputParameters())
+        .withMessagesHistory(this.prompt.getMessagesHistory()));
   }
 
   /**
@@ -72,7 +65,7 @@ public class OrchestrationConfigReference {
    */
   @Nonnull
   public static OrchestrationConfigReference fromId(@Nonnull final String id) {
-    return new OrchestrationConfigReference(id, null, null, null);
+    return new OrchestrationConfigReference(id, null, null, null, null);
   }
 
   /**
@@ -83,7 +76,7 @@ public class OrchestrationConfigReference {
    */
   @Nonnull
   public static Builder fromScenario(@Nonnull final String scenario) {
-    return (name) -> (version) -> new OrchestrationConfigReference(null, scenario, name, version);
+    return (name) -> (version) -> new OrchestrationConfigReference(null, scenario, name, version, null);
   }
 
   /**
