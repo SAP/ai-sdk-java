@@ -238,12 +238,6 @@ public class OrchestrationAiModel {
   /** Alibaba Qwen 3.7 plus model. */
   public static final OrchestrationAiModel QWEN_3_7_PLUS = new OrchestrationAiModel("qwen3.7-plus");
 
-  /**
-   * SAP Nova Core model. Nova is deeply trained on SAP's internal codebases, APIs, architecture,
-   * and design documents.
-   */
-  public static final OrchestrationAiModel NOVA_CORE = new OrchestrationAiModel("nova-core");
-
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");
   }
