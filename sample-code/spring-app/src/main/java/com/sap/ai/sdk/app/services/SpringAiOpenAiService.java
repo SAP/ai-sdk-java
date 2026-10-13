@@ -105,6 +105,25 @@ public class SpringAiOpenAiService {
   }
 
   /**
+   * Demonstrate {@code @Tool(returnDirect=true)}: the tool result is returned straight to the
+   * caller without a second LLM call. Spring AI's {@link ChatClient} handles this automatically via
+   * its {@code ToolCallingAdvisor} with no custom loop needed.
+   *
+   * @return the tool result wrapped as a chat response, containing the raw tool output.
+   */
+  @Nonnull
+  public ChatResponse toolCallingReturnDirect() {
+    val options =
+        DefaultToolCallingChatOptions.builder()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethodReturnDirect()))
+            .build();
+    val prompt = new Prompt("What is the weather in Berlin?", options);
+    return Objects.requireNonNull(
+        ChatClient.builder(chatClient).build().prompt(prompt).call().chatResponse(),
+        "Chat response is null");
+  }
+
+  /**
    * Chat request to OpenAI through the OpenAI service using chat memory.
    *
    * @return the assistant response object.
