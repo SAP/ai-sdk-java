@@ -13,7 +13,7 @@
 
 ### ✨ New Functionality
 
--
+- [Foundation models] Added Anthropics models support. See sample app in `sample-code/spring-app` for usage and documentation for more information.
 
 ### 📈 Improvements
 
