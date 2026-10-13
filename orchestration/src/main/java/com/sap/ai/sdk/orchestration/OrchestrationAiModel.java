@@ -164,6 +164,15 @@ public class OrchestrationAiModel {
   /** Azure OpenAI GPT-5.6-terra model. */
   public static final OrchestrationAiModel GPT_56_TERRA = new OrchestrationAiModel("gpt-5.6-terra");
 
+  /** Azure OpenAI GPT-6-astra model. */
+  public static final OrchestrationAiModel GPT_6_ASTRA = new OrchestrationAiModel("gpt-6-astra");
+
+  /** Azure OpenAI GPT-6-luna model. */
+  public static final OrchestrationAiModel GPT_6_LUNA = new OrchestrationAiModel("gpt-6-luna");
+
+  /** Azure OpenAI GPT-6.1-sol model. */
+  public static final OrchestrationAiModel GPT_61_SOL = new OrchestrationAiModel("gpt-6.1-sol");
+
   /** Google Cloud Platform Gemini 2.5 Flash model. */
   public static final OrchestrationAiModel GEMINI_2_5_FLASH =
       new OrchestrationAiModel("gemini-2.5-flash");

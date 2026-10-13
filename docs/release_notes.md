@@ -13,7 +13,8 @@
 
 ### ✨ New Functionality
 
--
+- [Orchestration] Added new models `GPT_51`, `GPT_6_ASTRA`, `GPT_6_LUNA`, `GPT_61_SOL` to `OrchestrationModel`.
+- [OpenAI] Added new models `GPT_51`, `GPT_6_ASTRA`, `GPT_6_LUNA`, `GPT_61_SOL` to `OpenAiModel`.
 
 ### 📈 Improvements
 
