@@ -84,14 +84,29 @@ public class OrchestrationClient {
     return ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
   }
 
-
-
-
-
-
-
-
-
+  /**
+   * Create a builder to configure and execute a chat completion.
+   *
+   * <pre>{@code
+   * chatCompletion()
+   * │
+   * ├── config(config, fallbackConfigs...)
+   * │   │
+   * │   ├── template(template)
+   * │   │   ├── execute()
+   * │   │   └── executeStream()
+   * │   │
+   * │   └── templateReference(templateRef)
+   * │       ├── execute()
+   * │       └── executeStream()
+   * │
+   * └── configReference(configRef)
+   *     ├── execute()
+   *     └── executeStream()
+   * }</pre>
+   *
+   * @return a builder to configure the chat completion
+   */
   public OrchestrationChatCompletionBuilder chatCompletion() {
     return new OrchestrationChatCompletionBuilder();
   }
@@ -99,8 +114,16 @@ public class OrchestrationClient {
   @AllArgsConstructor
   public class OrchestrationChatCompletionBuilder {
 
-    public BuilderWithConfig config(OrchestrationModuleConfig config, OrchestrationModuleConfig... fallbackConfigs) {
+    public BuilderWithConfig config(
+        OrchestrationModuleConfig config, OrchestrationModuleConfig... fallbackConfigs) {
       return new BuilderWithConfig(config, fallbackConfigs);
+    }
+
+    public OrchestrationChatCompletionClient configReference(
+        OrchestrationConfigReference configReference) {
+      val request =
+          ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(configReference);
+      return new OrchestrationChatCompletionClient(request);
     }
   }
 
@@ -109,30 +132,19 @@ public class OrchestrationClient {
     OrchestrationModuleConfig config;
     OrchestrationModuleConfig[] fallbackConfigs;
 
-    public OrchestrationChatCompletionClient templateReference(OrchestrationTemplateReference templateRef) {
+    public OrchestrationChatCompletionClient templateReference(
+        OrchestrationTemplateReference templateRef) {
       val request =
-          ConfigToRequestTransformer.toCompletionPostRequest(
-              templateRef, config, fallbackConfigs);
+          ConfigToRequestTransformer.toCompletionPostRequest(templateRef, config, fallbackConfigs);
       return new OrchestrationChatCompletionClient(request);
     }
 
-    public OrchestrationChatCompletionClient template( TemplateConfig template ) {
+    public OrchestrationChatCompletionClient template(TemplateConfig template) {
       val request =
           ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
       return new OrchestrationChatCompletionClient(request);
     }
   }
-
-
-
-
-
-
-
-
-
-
-
 
   @AllArgsConstructor
   public class OrchestrationChatCompletionClient {
@@ -166,18 +178,6 @@ public class OrchestrationClient {
           .map(OrchestrationChatCompletionDelta::getDeltaContent);
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
 
   private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)
       throws OrchestrationFilterException.Output {
