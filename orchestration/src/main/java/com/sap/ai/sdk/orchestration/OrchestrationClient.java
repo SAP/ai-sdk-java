@@ -71,18 +71,26 @@ public class OrchestrationClient {
    * Convert the given prompt and config into a low-level request data object. The data object
    * allows for further customization before sending the request.
    *
-   * @param prompt the {@link OrchestrationPrompt} to generate a completion for.
+   * @param template the {@link OrchestrationPrompt} to generate a completion for.
    * @param config the {@link OrchestrationConfig } configuration to use for the completion.
    * @param fallbackConfigs fallback configurations to use.
    * @return the low-level request data object to send to orchestration.
    */
   @Nonnull
   public static CompletionRequestConfiguration toCompletionPostRequest(
-      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final OrchestrationTemplate template,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
-    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config, fallbackConfigs);
+    return ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
   }
+
+
+
+
+
+
+
+
 
   public OrchestrationChatCompletionBuilder chatCompletion() {
     return new OrchestrationChatCompletionBuilder(this);
@@ -101,33 +109,22 @@ public class OrchestrationClient {
   public class BuilderWithConfig {
     OrchestrationModuleConfig config;
 
-    public OrchestrationChatCompletionClient prompt(OrchestrationPrompt prompt) {
+    public OrchestrationChatCompletionClient templateReference(OrchestrationTemplateReference templateRef) {
       OrchestrationModuleConfig[] fallbackConfigs = {};
-      val request =
-          ConfigToRequestTransformer.toCompletionPostRequest(prompt, config, fallbackConfigs);
-      return new OrchestrationChatCompletionClient(request);
-    }
-
-    public BuilderWithTemplateRef templateReference(OrchestrationTemplateReference templateRef) {
-      return new BuilderWithTemplateRef(config, templateRef);
-    }
-  }
-
-  @AllArgsConstructor
-  public class BuilderWithTemplateRef {
-    OrchestrationModuleConfig config;
-    OrchestrationTemplateReference templateRef;
-
-    public OrchestrationChatCompletionClient inputParams(Map<String, String> inputParams) {
-      OrchestrationModuleConfig[] fallbackConfigs = {};
-      // TODO:
       val request =
           ConfigToRequestTransformer.toCompletionPostRequest(
-              templateRef, inputParams, config, fallbackConfigs);
+              templateRef, config, fallbackConfigs);
+      return new OrchestrationChatCompletionClient(request);
+    }
 
+    public OrchestrationChatCompletionClient template( TemplateConfig template ) {
+      OrchestrationModuleConfig[] fallbackConfigs = {};
+      val request =
+          ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
       return new OrchestrationChatCompletionClient(request);
     }
   }
+
 
   @AllArgsConstructor
   public class OrchestrationChatCompletionClient {
@@ -160,8 +157,6 @@ public class OrchestrationClient {
           .peek(OrchestrationClient::throwOnContentFilter)
           .map(OrchestrationChatCompletionDelta::getDeltaContent);
     }
-
-    public OrchestrationChatCompletionClient inputParams(Map<String, String> inputParams) {}
   }
 
   private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)

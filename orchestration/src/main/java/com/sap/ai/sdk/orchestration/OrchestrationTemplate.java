@@ -39,8 +39,12 @@ public class OrchestrationTemplate extends TemplateConfig {
   /** Please use {@link #withMessages(Message...)} instead. */
   @JsonProperty("template")
   @Nullable
-  @With(onMethod_ = {@Deprecated})
-  List<ChatMessage> template;
+  @With(AccessLevel.PRIVATE)
+  List<ChatMessage> chatMessages;
+
+  @Nonnull List<Message> messagesHistory;
+
+  @Nonnull Map<String, String> inputParameters;
 
   @JsonProperty("defaults")
   @Nullable
@@ -64,7 +68,7 @@ public class OrchestrationTemplate extends TemplateConfig {
    */
   @Nonnull
   public OrchestrationTemplate withMessages(@Nonnull final Message... messages) {
-    return this.withTemplate(Stream.of(messages).map(Message::createChatMessage).toList());
+    return this.withChatMessages(Stream.of(messages).map(Message::createChatMessage).toList());
   }
 
   /**
@@ -75,7 +79,7 @@ public class OrchestrationTemplate extends TemplateConfig {
   @Override
   @Nonnull
   protected PromptTemplatingModuleConfigPrompt toLowLevel() {
-    final List<ChatMessage> template = this.template != null ? this.template : List.of();
+    final List<ChatMessage> template = this.chatMessages != null ? this.chatMessages : List.of();
     final Map<String, String> defaults = this.defaults != null ? this.defaults : new HashMap<>();
     final List<ChatCompletionTool> tools = this.tools != null ? this.tools : new ArrayList<>();
     return Template.create()

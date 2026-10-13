@@ -6,10 +6,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,6 +35,14 @@ public abstract class TemplateConfig {
   @Nonnull
   protected abstract PromptTemplatingModuleConfigPrompt toLowLevel();
 
+  public static OrchestrationPrompt prompt(@Nonnull final Message message) {
+    return new OrchestrationPrompt(message);
+  }
+
+  public static OrchestrationTemplate template(String message) {
+    return template(Message.user(message));
+  }
+
   /**
    * Build a template from the given messages.
    *
@@ -38,9 +50,14 @@ public abstract class TemplateConfig {
    * @return a new template containing the given messages.
    */
   @Nonnull
-  public static OrchestrationTemplate messages(@Nonnull final Message... messages) {
+  public static OrchestrationTemplate template(@Nonnull final Message... messages) {
     return new OrchestrationTemplate(
-        Stream.of(messages).map(Message::createChatMessage).toList(), null, null, null);
+        Stream.of(messages).map(Message::createChatMessage).toList(),
+        List.of(),
+        new TreeMap<>(),
+        null,
+        null,
+        null);
   }
 
   /**
@@ -97,7 +114,7 @@ public abstract class TemplateConfig {
         name ->
             version ->
                 new OrchestrationTemplateReference(
-                    templ.scenario(scenario).name(name).version(version), TENANT);
+                    templ.scenario(scenario).name(name).version(version), TENANT, new TreeMap<>());
   }
 
   /** Intermediate object to build a template reference. */
@@ -111,7 +128,7 @@ public abstract class TemplateConfig {
      */
     @Nonnull
     default OrchestrationTemplateReference byId(@Nonnull final String id) {
-      return new OrchestrationTemplateReference(TemplateRefByID.create().id(id), TENANT);
+      return new OrchestrationTemplateReference(TemplateRefByID.create().id(id), TENANT, new TreeMap<>());
     }
 
     /**

@@ -9,4 +9,16 @@
               .version("0.0.1")
 
 
-3. TODO in ConfigToRequestTransformer
+3. TODO in ConfigToRequestTransformer, without code duplication
+
+4. TemplateConfig -> PromptTemplate?
+Also, merge OrchestrationPrompt and TemplateConfig into a single class, as they are both used to define the template for orchestration.
+And, remove input parameters out of prompts and templates, they should be set in the builder API instead.
+
+5. Remove template from config, it has to be set from the builder now
+    A template to be populated with input parameters. Upon request execution, this template will be enhanced with any messages and parameter values from {@link OrchestrationPrompt} or TemplateConfig.
+    <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP AI Core: Orchestration - Templating</a>
+
+6. Move Grounding.createGroundingPrompt() to TemplateConfig, or think about it really hard...
+
+7. Make createChatMessage protected in another BLI

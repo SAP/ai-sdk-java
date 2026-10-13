@@ -207,7 +207,7 @@ public class OrchestrationConvenienceUnitTest {
     var configWithResponseSchemaFromClass =
         new OrchestrationModuleConfig(GPT_4O)
             .withTemplateConfig(
-                TemplateConfig.messages()
+                TemplateConfig.template()
                     .withJsonSchemaResponse(
                         schemaFromClass.withDescription("Description").withStrict(true)));
     var configWithResponseSchemaLowLevel =
@@ -240,7 +240,7 @@ public class OrchestrationConvenienceUnitTest {
                 .type(ChatCompletionTool.TypeEnum.FUNCTION)
                 .function(FunctionObject.create().name("func")));
     var template =
-        TemplateConfig.messages(templateMessages)
+        TemplateConfig.template(templateMessages)
             .withDefaults(defaults)
             .withTools(tools)
             .withJsonResponse();
@@ -347,7 +347,7 @@ public class OrchestrationConvenienceUnitTest {
             "additionalProperties",
             false);
     var expectedTemplateWithJsonSchemaTools =
-        TemplateConfig.messages(
+        TemplateConfig.template(
                 Message.system("You are a language translator."),
                 Message.user("Whats {{ ?word }} in {{ ?language }}?"))
             .withDefaults(Map.of("word", "apple"))
@@ -406,7 +406,7 @@ public class OrchestrationConvenienceUnitTest {
  """;
     var templateWithJsonObject = TemplateConfig.fromYaml(promptTemplateWithJsonObject);
     var expectedTemplateWithJsonObject =
-        TemplateConfig.messages(
+        TemplateConfig.template(
                 Message.system("You are a language translator."),
                 Message.user("Whats {{ ?word }} in {{ ?language }}?"))
             .withDefaults(Map.of("word", "apple"))

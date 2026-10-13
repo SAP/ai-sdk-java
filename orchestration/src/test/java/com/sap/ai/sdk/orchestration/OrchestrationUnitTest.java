@@ -1259,7 +1259,7 @@ class OrchestrationUnitTest {
             .withDescription("Output schema for language translation.")
             .withStrict(true);
     val configWithResponseSchema =
-        config.withTemplateConfig(TemplateConfig.messages().withJsonSchemaResponse(schema));
+        config.withTemplateConfig(TemplateConfig.template().withJsonSchemaResponse(schema));
 
     val prompt =
         new OrchestrationPrompt(
@@ -1341,7 +1341,7 @@ class OrchestrationUnitTest {
     val config = new OrchestrationModuleConfig(GPT_5_MINI);
 
     val configWithJsonResponse =
-        config.withTemplateConfig(TemplateConfig.messages().withJsonResponse());
+        config.withTemplateConfig(TemplateConfig.template().withJsonResponse());
 
     val prompt =
         new OrchestrationPrompt(

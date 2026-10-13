@@ -5,6 +5,7 @@ import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import com.sap.ai.sdk.orchestration.model.TemplateRefTemplateRef;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,14 +20,18 @@ import lombok.With;
  */
 @EqualsAndHashCode(callSuper = true)
 @Value
+@With
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrchestrationTemplateReference extends TemplateConfig {
   @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
   @Nonnull
+      @With(AccessLevel.PRIVATE)
   TemplateRefTemplateRef reference;
 
   /** The scope of the template reference. */
-  @With @Nonnull ScopeEnum scope;
+  @Nonnull ScopeEnum scope;
+
+  @Nonnull Map<String, String> inputParameters;
 
   /**
    * Create a low-level representation of the template.

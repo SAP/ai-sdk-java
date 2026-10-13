@@ -33,18 +33,9 @@ import lombok.val;
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ConfigToRequestTransformer {
 
-  // TODO
-  static CompletionRequestConfiguration toCompletionPostRequest(
-      OrchestrationTemplateReference templateRef,
-      Map<String, String> inputParams,
-      OrchestrationModuleConfig config,
-      OrchestrationModuleConfig[] fallbackConfigs) {
-    return null;
-  }
-
   @Nonnull
   static CompletionRequestConfiguration toCompletionPostRequest(
-      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final TemplateConfig template,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
 
@@ -52,12 +43,12 @@ final class ConfigToRequestTransformer {
     final UnaryOperator<OrchestrationModuleConfig> copyWithImmutableTemplateConfig =
         c ->
             c.withTemplateConfig(
-                toTemplateModuleConfig(prompt, cachingConfig, c.getTemplateConfig()));
+                toTemplateModuleConfig(template, cachingConfig, c.getTemplateConfig()));
     val configList = Lists.asList(config, fallbackConfigs);
     val configsCopy = Lists.transform(configList, copyWithImmutableTemplateConfig::apply);
 
     val messageHistory =
-        prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
+        template.getMessagesHistory().stream().map(Message::createChatMessage).toList();
 
     final OrchestrationConfigModules moduleConfigs =
         configsCopy.size() == 1
@@ -69,7 +60,7 @@ final class ConfigToRequestTransformer {
 
     return CompletionRequestConfiguration.create()
         .config(requestConfig)
-        .placeholderValues(prompt.getTemplateParameters())
+        .placeholderValues(template.getTemplateParameters())
         .messagesHistory(messageHistory);
   }
 

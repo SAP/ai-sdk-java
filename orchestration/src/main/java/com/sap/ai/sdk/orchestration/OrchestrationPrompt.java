@@ -23,7 +23,6 @@ import lombok.Value;
 @Getter(AccessLevel.PACKAGE)
 public class OrchestrationPrompt {
   @Nonnull List<Message> messages = new ArrayList<>();
-  @Nonnull Map<String, String> templateParameters = new TreeMap<>();
   @Nonnull List<Message> messagesHistory = new ArrayList<>();
 
   /**
@@ -59,18 +58,6 @@ public class OrchestrationPrompt {
   }
 
   /**
-   * Initialize a prompt based on template variables.
-   *
-   * @param inputParams the input parameters as entries of template variables and their contents.
-   * @param messages the messages to be sent to the orchestration service.
-   */
-  public OrchestrationPrompt(
-      @Nonnull final Map<String, String> inputParams, @Nonnull final Message... messages) {
-    this.templateParameters.putAll(inputParams);
-    this.messages.addAll(Arrays.asList(messages));
-  }
-
-  /**
    * Set the chat history of this prompt.
    *
    * @param messagesHistory the chat history to add.
@@ -80,20 +67,6 @@ public class OrchestrationPrompt {
   public OrchestrationPrompt messageHistory(@Nonnull final List<Message> messagesHistory) {
     this.messagesHistory.clear();
     this.messagesHistory.addAll(messagesHistory);
-    return this;
-  }
-
-  /**
-   * Set the template parameters of this prompt.
-   *
-   * @param templateParameters the template parameters to add.
-   * @return the current instance of {@link OrchestrationPrompt} with the changed template
-   *     parameters.
-   */
-  @Nonnull
-  OrchestrationPrompt templateParameters(@Nonnull final Map<String, String> templateParameters) {
-    this.templateParameters.clear();
-    this.templateParameters.putAll(templateParameters);
     return this;
   }
 }
