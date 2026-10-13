@@ -31,9 +31,6 @@ public record RptModel(@Nonnull String name, @Nullable String version) implement
   /** SAP Relational Pre-trained Transformer 1.6 Large model. */
   public static final RptModel SAP_RPT_1_6_LARGE = new RptModel("sap-rpt-1.6-large", null);
 
-  /** SAP Relational Pre-trained Transformer Time Series model. */
-  public static final RptModel SAP_RPT_TS = new RptModel("sap-rpt-ts", null);
-
   /**
    * Create a new instance of RptModel with the provided version.
    *
