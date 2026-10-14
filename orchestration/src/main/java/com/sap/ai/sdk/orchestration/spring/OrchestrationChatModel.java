@@ -88,7 +88,9 @@ public class OrchestrationChatModel implements ChatModel {
 
         // Send the tool execution result back to the model.
         log.debug("Re-invoking LLM with tool execution results.");
-        return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
+        final var nextResponse =
+            call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
+        return response.withCumulativeUsage(nextResponse);
       }
       return response;
     }
