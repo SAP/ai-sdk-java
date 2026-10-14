@@ -114,6 +114,11 @@
     <!--  Binary compatibility check old/new version file -->
     <japicmp.oldVersion.file>/tmp/baseline.jar</japicmp.oldVersion.file>
     <japicmp.newVersion.file>${project.build.directory}/${project.build.finalName}.jar</japicmp.newVersion.file>
+    <!-- Minimum supported versions of consumer-facing dependencies, verified by the 'floor-deps' profile -->
+    <floor.cloud-sdk.version>5.28.0</floor.cloud-sdk.version>
+    <floor.jackson.version>2.18.0</floor.jackson.version>
+    <floor.httpcomponents-core5.version>5.2.1</floor.httpcomponents-core5.version>
+    <floor.httpcomponents-client5.version>5.2.1</floor.httpcomponents-client5.version>
   </properties>
 
   <dependencyManagement>
@@ -975,6 +980,52 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
     </plugins>
   </build>
   <profiles>
+    <profile>
+      <!-- Verify the SDK still compiles against the minimum supported dependency versions (floor.* properties).
+           Run with: mvn test-compile -P floor-deps -->
+      <id>floor-deps</id>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>com.sap.cloud.sdk</groupId>
+            <artifactId>sdk-bom</artifactId>
+            <version>${floor.cloud-sdk.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+          </dependency>
+          <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${floor.jackson.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${floor.jackson.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${floor.jackson.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5</artifactId>
+            <version>${floor.httpcomponents-core5.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5-h2</artifactId>
+            <version>${floor.httpcomponents-core5.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>${floor.httpcomponents-client5.version}</version>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+    </profile>
     <profile>
       <id>non-release</id>
       <activation>
