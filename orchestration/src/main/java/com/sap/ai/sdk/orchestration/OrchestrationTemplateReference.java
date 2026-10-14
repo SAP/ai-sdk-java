@@ -25,7 +25,7 @@ import lombok.With;
 public class OrchestrationTemplateReference extends TemplateConfig {
   @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
   @Nonnull
-      @With(AccessLevel.PRIVATE)
+  @With(AccessLevel.PRIVATE)
   TemplateRefTemplateRef reference;
 
   /** The scope of the template reference. */

@@ -6,13 +6,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -20,7 +18,11 @@ import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 
 /**
- * Template configuration for the {@link OrchestrationModuleConfig}.
+ * A template to be populated with input parameters. Upon request execution, this template will be
+ * enhanced with any messages and parameter values from {@link OrchestrationPrompt} or
+ * TemplateConfig. <a
+ * href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP AI Core:
+ * Orchestration - Templating</a>
  *
  * @since 1.4.0
  */
@@ -35,10 +37,6 @@ public abstract class TemplateConfig {
   @Nonnull
   protected abstract PromptTemplatingModuleConfigPrompt toLowLevel();
 
-  public static OrchestrationPrompt prompt(@Nonnull final Message message) {
-    return new OrchestrationPrompt(message);
-  }
-
   public static OrchestrationTemplate template(String message) {
     return template(Message.user(message));
   }
@@ -46,13 +44,17 @@ public abstract class TemplateConfig {
   /**
    * Build a template from the given messages.
    *
-   * @param messages the messages to use in the template.
+   * @param message the first message to use in the template.
+   * @param moreMessages additional messages to use in the template.
    * @return a new template containing the given messages.
    */
   @Nonnull
-  public static OrchestrationTemplate template(@Nonnull final Message... messages) {
+  public static OrchestrationTemplate template(
+      @Nonnull final Message message, @Nonnull final Message... moreMessages) {
     return new OrchestrationTemplate(
-        Stream.of(messages).map(Message::createChatMessage).toList(),
+        Stream.concat(Stream.of(message), Stream.of(moreMessages))
+            .map(Message::createChatMessage)
+            .toList(),
         List.of(),
         new TreeMap<>(),
         null,
@@ -68,7 +70,7 @@ public abstract class TemplateConfig {
    * @throws IOException if the JSON cannot be deserialized.
    * @since 1.7.0
    */
-  @Nonnull
+  @Nullable
   public static OrchestrationTemplate fromJson(@Nonnull final String inputJson) throws IOException {
     final ObjectMapper objectMapper =
         OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
@@ -84,7 +86,7 @@ public abstract class TemplateConfig {
    * @throws IOException if the YAML cannot be parsed or deserialized.
    * @since 1.7.0
    */
-  @Nonnull
+  @Nullable
   public static OrchestrationTemplate fromYaml(@Nonnull final String inputYaml) throws IOException {
     final Object obj;
     try {
@@ -128,7 +130,8 @@ public abstract class TemplateConfig {
      */
     @Nonnull
     default OrchestrationTemplateReference byId(@Nonnull final String id) {
-      return new OrchestrationTemplateReference(TemplateRefByID.create().id(id), TENANT, new TreeMap<>());
+      return new OrchestrationTemplateReference(
+          TemplateRefByID.create().id(id), TENANT, new TreeMap<>());
     }
 
     /**

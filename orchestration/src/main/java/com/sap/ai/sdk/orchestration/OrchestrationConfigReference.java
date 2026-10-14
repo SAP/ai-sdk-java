@@ -35,9 +35,14 @@ public class OrchestrationConfigReference {
     if (prompt.getMessagesHistory().equals(messagesHistory)) {
       return this;
     }
-      return new OrchestrationConfigReference(id, scenario, name, version, prompt
-          .withInputParameters(this.prompt.getInputParameters())
-          .withMessagesHistory(messagesHistory));
+    return new OrchestrationConfigReference(
+        id,
+        scenario,
+        name,
+        version,
+        prompt
+            .withInputParameters(this.prompt.getInputParameters())
+            .withMessagesHistory(messagesHistory));
   }
 
   /**
@@ -52,9 +57,14 @@ public class OrchestrationConfigReference {
     if (prompt.getInputParameters().equals(inputParameters)) {
       return this;
     }
-    return new OrchestrationConfigReference(id, scenario, name, version, prompt
-        .withInputParameters(this.prompt.getInputParameters())
-        .withMessagesHistory(this.prompt.getMessagesHistory()));
+    return new OrchestrationConfigReference(
+        id,
+        scenario,
+        name,
+        version,
+        prompt
+            .withInputParameters(this.prompt.getInputParameters())
+            .withMessagesHistory(this.prompt.getMessagesHistory()));
   }
 
   /**
@@ -76,7 +86,8 @@ public class OrchestrationConfigReference {
    */
   @Nonnull
   public static Builder fromScenario(@Nonnull final String scenario) {
-    return (name) -> (version) -> new OrchestrationConfigReference(null, scenario, name, version, null);
+    return (name) ->
+        (version) -> new OrchestrationConfigReference(null, scenario, name, version, null);
   }
 
   /**

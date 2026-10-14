@@ -57,6 +57,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -604,6 +605,23 @@ public class OrchestrationService {
       @JsonProperty(required = true) String language) {}
 
   /**
+   * Chat request to OpenAI through the Orchestration service using the response format option
+   * 'text'.
+   *
+   * @param word the word to translate.
+   * @return the assistant response object.
+   */
+  @Nonnull
+  public OrchestrationChatResponse responseFormatText(@Nonnull final String word) {
+    val prompt =
+        TemplateConfig.template(
+            Message.system("You are a language translator."),
+            Message.user("What is '%s' in German?".formatted(word)));
+
+    return client.chatCompletion().config(config).template(prompt).execute();
+  }
+
+  /**
    * Chat request to OpenAI through the Orchestration service using response format with JSON
    * schema.
    *
@@ -767,13 +785,11 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
       throws IOException {
-    // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
-    // release 2510b. See https://jira.tools.sap/browse/AI-125770
-    final var configWithGpt4 = new OrchestrationModuleConfig(GPT_5_MINI);
-    val template = TemplateConfig.fromYaml(promptTemplate)
-        .withInputParameters(Map.of("language", "German"));
+    val template =
+        Objects.requireNonNull(TemplateConfig.fromYaml(promptTemplate))
+            .withInputParameters(Map.of("language", "German"));
 
-    return client.chatCompletion().config(configWithGpt4).template(template).execute();
+    return client.chatCompletion().config(config).template(template).execute();
   }
 
   /**
@@ -911,7 +927,11 @@ public class OrchestrationService {
     val secondBrokenConfig =
         new OrchestrationModuleConfig(
             new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
-    return client.chatCompletion().config(brokenConfig, secondBrokenConfig, workingConfig).template(prompt).execute();
+    return client
+        .chatCompletion()
+        .config(brokenConfig, secondBrokenConfig, workingConfig)
+        .template(prompt)
+        .execute();
   }
 
   /**
@@ -992,7 +1012,11 @@ public class OrchestrationService {
     val workingConfig = new OrchestrationModuleConfig(GPT_5_MINI);
     val brokenConfig =
         new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    return client.chatCompletion().config(brokenConfig, workingConfig).template(prompt).executeStream();
+    return client
+        .chatCompletion()
+        .config(brokenConfig, workingConfig)
+        .template(prompt)
+        .executeStream();
   }
 
   /**
@@ -1011,7 +1035,11 @@ public class OrchestrationService {
     val secondBrokenConfig =
         new OrchestrationModuleConfig(
             new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
-    return client.chatCompletion().config(brokenConfig, secondBrokenConfig).template(prompt).execute();
+    return client
+        .chatCompletion()
+        .config(brokenConfig, secondBrokenConfig)
+        .template(prompt)
+        .execute();
   }
 
   /**
