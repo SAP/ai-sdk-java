@@ -15,11 +15,10 @@ import com.sap.ai.sdk.orchestration.model.ResponseChatMessage;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.junit.jupiter.api.Test;
-import org.springframework.ai.chat.messages.AssistantMessage;
-import org.springframework.ai.chat.metadata.ChatResponseMetadata;
 import org.springframework.ai.chat.metadata.DefaultUsage;
-import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.ai.chat.model.Generation;
 
 class OrchestrationChatResponseTest {
@@ -53,7 +52,7 @@ class OrchestrationChatResponseTest {
             .choices(List.of())
             .usage(TokenUsage.create().completionTokens(20).promptTokens(10).totalTokens(30));
 
-    var metadata = OrchestrationSpringChatResponse.toChatResponseMetadata(moduleResult);
+    var metadata = OrchestrationSpringChatResponse.toChatResponseMetadata(moduleResult, null);
 
     assertThat(metadata.getId()).isEqualTo("test-id");
     assertThat(metadata.getModel()).isEqualTo("test-model");
@@ -68,27 +67,9 @@ class OrchestrationChatResponseTest {
   }
 
   @Test
-  void testGenericFinalResponseKeepsItsGenerationsAndMetadata() {
-    var metadata =
-        ChatResponseMetadata.builder()
-            .id("final-id")
-            .model("final-model")
-            .usage(new DefaultUsage(7, 3, 10))
-            .keyValue("object", "chat.completion")
-            .keyValue("created", 123)
-            .keyValue("custom", "keep")
-            .build();
-    var last =
-        new ChatResponse(List.of(new Generation(new AssistantMessage("final answer"))), metadata);
-    var result = response(counts(11, 5, 16)).withCumulativeUsage(last);
-    assertThat(result.getResults()).containsExactlyElementsOf(last.getResults());
-    assertThat(result.getMetadata().getId()).isEqualTo("final-id");
-    assertThat(result.getMetadata().getModel()).isEqualTo("final-model");
-    assertThat(result.getMetadata().<String>get("object")).isEqualTo("chat.completion");
-    assertThat(result.getMetadata().<Integer>get("created")).isEqualTo(123);
-    assertThat(result.getMetadata().<String>get("custom")).isEqualTo("keep");
-    assertThat(result.getMetadata().getRateLimit()).isSameAs(metadata.getRateLimit());
-    assertThat(result.getMetadata().getPromptMetadata()).isSameAs(metadata.getPromptMetadata());
+  void testCumulativeUsageIsAddedOnConstruction() {
+    var previousUsage = new DefaultUsage(7, 3, 10);
+    var result = response(counts(11, 5, 16), previousUsage);
     assertThat(result.getMetadata().getUsage().getPromptTokens()).isEqualTo(18);
     assertThat(result.getMetadata().getUsage().getCompletionTokens()).isEqualTo(8);
     assertThat(result.getMetadata().getUsage().getTotalTokens()).isEqualTo(26);
@@ -109,6 +90,11 @@ class OrchestrationChatResponseTest {
   }
 
   private static OrchestrationSpringChatResponse response(TokenUsage usage) {
+    return response(usage, null);
+  }
+
+  private static OrchestrationSpringChatResponse response(
+      TokenUsage usage, @Nullable Usage previousUsage) {
     var module = module(usage);
     var dto =
         CompletionPostResponse.create()
@@ -125,7 +111,7 @@ class OrchestrationChatResponseTest {
         };
     return new OrchestrationSpringChatResponse(
         client.chatCompletion(
-            new OrchestrationPrompt("test"),
-            new OrchestrationModuleConfig().withLlmConfig(GPT_4O)));
+            new OrchestrationPrompt("test"), new OrchestrationModuleConfig().withLlmConfig(GPT_4O)),
+        previousUsage);
   }
 }

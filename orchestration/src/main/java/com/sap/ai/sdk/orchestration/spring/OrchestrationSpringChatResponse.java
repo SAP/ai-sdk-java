@@ -6,6 +6,7 @@ import com.sap.ai.sdk.orchestration.model.LLMModuleResult;
 import com.sap.ai.sdk.orchestration.model.TokenUsage;
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 import lombok.val;
@@ -14,9 +15,9 @@ import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.metadata.ChatGenerationMetadata;
 import org.springframework.ai.chat.metadata.ChatResponseMetadata;
 import org.springframework.ai.chat.metadata.DefaultUsage;
+import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
-import org.springframework.ai.support.UsageCalculator;
 
 /**
  * Response from the orchestration service in a Spring AI {@link ChatResponse}.
@@ -34,38 +35,17 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
   OrchestrationChatResponse orchestrationResponse;
 
   OrchestrationSpringChatResponse(@Nonnull final OrchestrationChatResponse orchestrationResponse) {
+    this(orchestrationResponse, null);
+  }
+
+  OrchestrationSpringChatResponse(
+      @Nonnull final OrchestrationChatResponse orchestrationResponse,
+      @Nullable final Usage previousUsage) {
     super(
         toGenerations(orchestrationResponse.getOriginalResponse().getFinalResult()),
-        toChatResponseMetadata(orchestrationResponse.getOriginalResponse().getFinalResult()));
+        toChatResponseMetadata(
+            orchestrationResponse.getOriginalResponse().getFinalResult(), previousUsage));
     this.orchestrationResponse = orchestrationResponse;
-  }
-
-  private OrchestrationSpringChatResponse(
-      @Nonnull final OrchestrationSpringChatResponse response,
-      @Nonnull final ChatResponseMetadata metadata) {
-    super(response.getResults(), metadata);
-    this.orchestrationResponse = response.getOrchestrationResponse();
-  }
-
-  /**
-   * Returns the response that followed this response's tool calls, with this response's usage added
-   * to its usage.
-   */
-  @Nonnull
-  ChatResponse withCumulativeUsage(@Nonnull final ChatResponse nextResponse) {
-    val metadata = nextResponse.getMetadata();
-    val builder =
-        ChatResponseMetadata.builder()
-            .id(metadata.getId())
-            .model(metadata.getModel())
-            .rateLimit(metadata.getRateLimit())
-            .promptMetadata(metadata.getPromptMetadata())
-            .usage(UsageCalculator.getCumulativeUsage(metadata.getUsage(), this));
-    metadata.entrySet().forEach(entry -> builder.keyValue(entry.getKey(), entry.getValue()));
-    if (nextResponse instanceof OrchestrationSpringChatResponse response) {
-      return new OrchestrationSpringChatResponse(response, builder.build());
-    }
-    return new ChatResponse(nextResponse.getResults(), builder.build());
   }
 
   @Nonnull
@@ -101,7 +81,7 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
 
   @Nonnull
   static ChatResponseMetadata toChatResponseMetadata(
-      @Nonnull final LLMModuleResult orchestrationResult) {
+      @Nonnull final LLMModuleResult orchestrationResult, @Nullable final Usage previousUsage) {
     val metadataBuilder = ChatResponseMetadata.builder();
 
     metadataBuilder
@@ -109,9 +89,21 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
         .model(orchestrationResult.getModel())
         .keyValue("object", orchestrationResult.getObject())
         .keyValue("created", orchestrationResult.getCreated())
-        .usage(toDefaultUsage(orchestrationResult.getUsage()));
+        .usage(addUsage(toDefaultUsage(orchestrationResult.getUsage()), previousUsage));
 
     return metadataBuilder.build();
+  }
+
+  @Nonnull
+  private static DefaultUsage addUsage(
+      @Nonnull final DefaultUsage current, @Nullable final Usage previous) {
+    if (previous == null) {
+      return current;
+    }
+    return new DefaultUsage(
+        current.getPromptTokens() + previous.getPromptTokens(),
+        current.getCompletionTokens() + previous.getCompletionTokens(),
+        current.getTotalTokens() + previous.getTotalTokens());
   }
 
   @Nonnull
