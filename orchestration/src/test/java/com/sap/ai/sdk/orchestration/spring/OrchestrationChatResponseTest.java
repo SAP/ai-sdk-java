@@ -89,10 +89,6 @@ class OrchestrationChatResponseTest {
         .usage(usage);
   }
 
-  private static OrchestrationSpringChatResponse response(TokenUsage usage) {
-    return response(usage, null);
-  }
-
   private static OrchestrationSpringChatResponse response(
       TokenUsage usage, @Nullable Usage previousUsage) {
     var module = module(usage);
