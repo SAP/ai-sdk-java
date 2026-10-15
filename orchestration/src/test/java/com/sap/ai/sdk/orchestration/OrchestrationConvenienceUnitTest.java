@@ -1,8 +1,8 @@
 package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
-import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
-import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.TENANT;
+import static com.sap.ai.sdk.orchestration.PromptTemplateReference.ScopeEnum.RESOURCE_GROUP;
+import static com.sap.ai.sdk.orchestration.PromptTemplateReference.ScopeEnum.TENANT;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessageContentItem.TypeEnum.FILE;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -207,7 +207,7 @@ public class OrchestrationConvenienceUnitTest {
     var configWithResponseSchemaFromClass =
         new OrchestrationModuleConfig(GPT_4O)
             .withTemplateConfig(
-                TemplateConfig.template()
+                PromptTemplate.template()
                     .withJsonSchemaResponse(
                         schemaFromClass.withDescription("Description").withStrict(true)));
     var configWithResponseSchemaLowLevel =
@@ -240,7 +240,7 @@ public class OrchestrationConvenienceUnitTest {
                 .type(ChatCompletionTool.TypeEnum.FUNCTION)
                 .function(FunctionObject.create().name("func")));
     var template =
-        TemplateConfig.template(templateMessages)
+        PromptTemplate.create(templateMessages)
             .withDefaults(defaults)
             .withTools(tools)
             .withJsonResponse();
@@ -258,17 +258,19 @@ public class OrchestrationConvenienceUnitTest {
 
   @Test
   void testTemplateReferenceConstruction() {
-    var templateReferenceId = TemplateConfig.reference().byId("id");
+    var templateReferenceId = PromptTemplate.reference().byId("id")
+.andInputParameters(Map.of());
     var expectedTemplateReferenceId =
-        new OrchestrationTemplateReference(TemplateRefByID.create().id("id"), TENANT);
+        new PromptTemplateReference(TemplateRefByID.create().id("id"), TENANT);
     var templateReferenceIdLowLevel =
         TemplateRef.create().templateRef(TemplateRefByID.create().id("id"));
     assertThat(templateReferenceId).isEqualTo(expectedTemplateReferenceId);
     assertThat(templateReferenceId.toLowLevel()).isEqualTo(templateReferenceIdLowLevel);
 
-    templateReferenceId = TemplateConfig.reference().byId("id").withScope(RESOURCE_GROUP);
+    templateReferenceId = PromptTemplate.reference().byId("id")
+.andInputParameters(Map.of()).withScope(RESOURCE_GROUP);
     expectedTemplateReferenceId =
-        new OrchestrationTemplateReference(TemplateRefByID.create().id("id"), RESOURCE_GROUP);
+        new PromptTemplateReference(TemplateRefByID.create().id("id"), RESOURCE_GROUP);
     templateReferenceIdLowLevel =
         TemplateRef.create()
             .templateRef(
@@ -277,13 +279,13 @@ public class OrchestrationConvenienceUnitTest {
     assertThat(templateReferenceId.toLowLevel()).isEqualTo(templateReferenceIdLowLevel);
 
     var templateReferenceScenarioNameVersion =
-        TemplateConfig.reference()
+        PromptTemplate.reference()
             .byScenario("scenario")
             .name("name")
             .version("version")
             .withScope(TENANT);
     var expectedTemplateReferenceScenarioNameVersion =
-        new OrchestrationTemplateReference(
+        new PromptTemplateReference(
             TemplateRefByScenarioNameVersion.create()
                 .scenario("scenario")
                 .name("name")
@@ -302,14 +304,14 @@ public class OrchestrationConvenienceUnitTest {
         .isEqualTo(templateReferenceScenarioNameVersionLowLevel);
 
     templateReferenceScenarioNameVersion =
-        TemplateConfig.reference()
+        PromptTemplate.reference()
             .byScenario("scenario")
             .name("name")
             .version("version")
             .withScope(RESOURCE_GROUP);
     var scopeScenario = TemplateRefByScenarioNameVersion.ScopeEnum.RESOURCE_GROUP;
     expectedTemplateReferenceScenarioNameVersion =
-        new OrchestrationTemplateReference(
+        new PromptTemplateReference(
             TemplateRefByScenarioNameVersion.create()
                 .scenario("scenario")
                 .name("name")
@@ -333,7 +335,7 @@ public class OrchestrationConvenienceUnitTest {
   void testTemplateFromLocalFileWithJsonSchemaAndTools() throws IOException {
     String promptTemplateYaml =
         Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
-    var templateWithJsonSchemaTools = TemplateConfig.fromYaml(promptTemplateYaml);
+    var templateWithJsonSchemaTools = PromptTemplate.fromYaml(promptTemplateYaml);
     var schema =
         Map.of(
             "type",
@@ -347,7 +349,7 @@ public class OrchestrationConvenienceUnitTest {
             "additionalProperties",
             false);
     var expectedTemplateWithJsonSchemaTools =
-        TemplateConfig.template(
+        PromptTemplate.create(
                 Message.system("You are a language translator."),
                 Message.user("Whats {{ ?word }} in {{ ?language }}?"))
             .withDefaults(Map.of("word", "apple"))
@@ -404,9 +406,9 @@ public class OrchestrationConvenienceUnitTest {
   response_format:
     type: json_object
  """;
-    var templateWithJsonObject = TemplateConfig.fromYaml(promptTemplateWithJsonObject);
+    var templateWithJsonObject = PromptTemplate.fromYaml(promptTemplateWithJsonObject);
     var expectedTemplateWithJsonObject =
-        TemplateConfig.template(
+        PromptTemplate.create(
                 Message.system("You are a language translator."),
                 Message.user("Whats {{ ?word }} in {{ ?language }}?"))
             .withDefaults(Map.of("word", "apple"))

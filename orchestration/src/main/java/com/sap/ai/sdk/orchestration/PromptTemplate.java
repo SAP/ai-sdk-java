@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.TENANT;
+import static com.sap.ai.sdk.orchestration.PromptTemplateReference.ScopeEnum.TENANT;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -11,6 +11,7 @@ import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -18,16 +19,15 @@ import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 
 /**
- * A template to be populated with input parameters. Upon request execution, this template will be
- * enhanced with any messages and parameter values from {@link OrchestrationPrompt} or
- * TemplateConfig. <a
- * href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP AI Core:
- * Orchestration - Templating</a>
+ * Create a prompt template locally or reference an existing prompt template stored in context
+ * registry. Upon request execution, this template will be enhanced with any messages and parameter
+ * values. <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
+ * AI Core: Orchestration - Templating</a>
  *
- * @since 1.4.0
+ * @since 2.0.0
  */
 @EqualsAndHashCode
-public abstract class TemplateConfig {
+public abstract class PromptTemplate {
 
   /**
    * Create a low-level representation of the template.
@@ -37,8 +37,8 @@ public abstract class TemplateConfig {
   @Nonnull
   protected abstract PromptTemplatingModuleConfigPrompt toLowLevel();
 
-  public static OrchestrationTemplate template(String message) {
-    return template(Message.user(message));
+  public static LocalPromptTemplate create(String message) {
+    return create(Message.user(message));
   }
 
   /**
@@ -49,9 +49,9 @@ public abstract class TemplateConfig {
    * @return a new template containing the given messages.
    */
   @Nonnull
-  public static OrchestrationTemplate template(
+  public static LocalPromptTemplate create(
       @Nonnull final Message message, @Nonnull final Message... moreMessages) {
-    return new OrchestrationTemplate(
+    return new LocalPromptTemplate(
         Stream.concat(Stream.of(message), Stream.of(moreMessages))
             .map(Message::createChatMessage)
             .toList(),
@@ -63,7 +63,7 @@ public abstract class TemplateConfig {
   }
 
   /**
-   * Create an {@link OrchestrationTemplate} from a JSON provided as String.
+   * Create an {@link LocalPromptTemplate} from a JSON provided as String.
    *
    * @param inputJson the provided JSON.
    * @return a template representing the provided JSON.
@@ -71,15 +71,15 @@ public abstract class TemplateConfig {
    * @since 1.7.0
    */
   @Nullable
-  public static OrchestrationTemplate fromJson(@Nonnull final String inputJson) throws IOException {
+  public static LocalPromptTemplate fromJson(@Nonnull final String inputJson) throws IOException {
     final ObjectMapper objectMapper =
         OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
     final JsonNode rootNode = objectMapper.readTree(inputJson);
-    return objectMapper.treeToValue(rootNode.get("spec"), OrchestrationTemplate.class);
+    return objectMapper.treeToValue(rootNode.get("spec"), LocalPromptTemplate.class);
   }
 
   /**
-   * Create an {@link OrchestrationTemplate} from a YAML provided as String.
+   * Create an {@link LocalPromptTemplate} from a YAML provided as String.
    *
    * @param inputYaml the provided YAML.
    * @return a template representing the provided YAML.
@@ -87,7 +87,7 @@ public abstract class TemplateConfig {
    * @since 1.7.0
    */
   @Nullable
-  public static OrchestrationTemplate fromYaml(@Nonnull final String inputYaml) throws IOException {
+  public static LocalPromptTemplate fromYaml(@Nonnull final String inputYaml) throws IOException {
     final Object obj;
     try {
       final ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
@@ -110,13 +110,16 @@ public abstract class TemplateConfig {
    */
   @Nonnull
   public static ReferenceBuilder reference() {
-    final var templ = TemplateRefByScenarioNameVersion.create();
+    final var temp = TemplateRefByScenarioNameVersion.create();
 
     return scenario ->
         name ->
             version ->
-                new OrchestrationTemplateReference(
-                    templ.scenario(scenario).name(name).version(version), TENANT, new TreeMap<>());
+                inputParameters ->
+                    new PromptTemplateReference(
+                        temp.scenario(scenario).name(name).version(version),
+                        TENANT,
+                        inputParameters);
   }
 
   /** Intermediate object to build a template reference. */
@@ -129,9 +132,9 @@ public abstract class TemplateConfig {
      * @return a template reference with the given id.
      */
     @Nonnull
-    default OrchestrationTemplateReference byId(@Nonnull final String id) {
-      return new OrchestrationTemplateReference(
-          TemplateRefByID.create().id(id), TENANT, new TreeMap<>());
+    default ReferenceBuilder3 byId(@Nonnull final String id) {
+      return inputParameters ->
+          new PromptTemplateReference(TemplateRefByID.create().id(id), TENANT, inputParameters);
     }
 
     /**
@@ -172,6 +175,21 @@ public abstract class TemplateConfig {
      * @return a template reference with the given scenario, name, and version.
      */
     @Nonnull
-    OrchestrationTemplateReference version(@Nonnull final String version);
+    ReferenceBuilder3 version(@Nonnull final String version);
+  }
+
+  /**
+   * Intermediate object to build a template reference with the given scenario, name, and version.
+   */
+  @FunctionalInterface
+  public interface ReferenceBuilder3 {
+    /**
+     * Build a template reference with the given scenario, name, and version.
+     *
+     * @param inputParameters the input parameters of the template.
+     * @return a template reference with the given scenario, name, and version.
+     */
+    @Nonnull
+    PromptTemplateReference andInputParameters(@Nonnull final Map<String, String> inputParameters);
   }
 }

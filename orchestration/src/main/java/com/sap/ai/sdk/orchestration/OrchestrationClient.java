@@ -78,7 +78,7 @@ public class OrchestrationClient {
    */
   @Nonnull
   public static CompletionRequestConfiguration toCompletionPostRequest(
-      @Nonnull final OrchestrationTemplate template,
+      @Nonnull final LocalPromptTemplate template,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
     return ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
@@ -132,14 +132,7 @@ public class OrchestrationClient {
     OrchestrationModuleConfig config;
     OrchestrationModuleConfig[] fallbackConfigs;
 
-    public OrchestrationChatCompletionClient templateReference(
-        OrchestrationTemplateReference templateRef) {
-      val request =
-          ConfigToRequestTransformer.toCompletionPostRequest(templateRef, config, fallbackConfigs);
-      return new OrchestrationChatCompletionClient(request);
-    }
-
-    public OrchestrationChatCompletionClient template(TemplateConfig template) {
+    public OrchestrationChatCompletionClient promptTemplate( PromptTemplate template) {
       val request =
           ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
       return new OrchestrationChatCompletionClient(request);

@@ -21,7 +21,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
-import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
+import static com.sap.ai.sdk.orchestration.PromptTemplateReference.ScopeEnum.RESOURCE_GROUP;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_4;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_6;
@@ -1259,7 +1259,7 @@ class OrchestrationUnitTest {
             .withDescription("Output schema for language translation.")
             .withStrict(true);
     val configWithResponseSchema =
-        config.withTemplateConfig(TemplateConfig.template().withJsonSchemaResponse(schema));
+        config.withTemplateConfig(PromptTemplate.template().withJsonSchemaResponse(schema));
 
     val prompt =
         new OrchestrationPrompt(
@@ -1308,7 +1308,7 @@ class OrchestrationUnitTest {
     assertThatThrownBy(() -> response.asEntity(Translation.class))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Please configure an OrchestrationTemplate with format set to JSON schema into your OrchestrationModuleConfig")
+            "Please configure an LocalPromptTemplate with format set to JSON schema into your OrchestrationModuleConfig")
         .hasMessageContaining("JSON content: Le service d'orchestration fonctionne!");
   }
 
@@ -1341,7 +1341,7 @@ class OrchestrationUnitTest {
     val config = new OrchestrationModuleConfig(GPT_5_MINI);
 
     val configWithJsonResponse =
-        config.withTemplateConfig(TemplateConfig.template().withJsonResponse());
+        config.withTemplateConfig(PromptTemplate.template().withJsonResponse());
 
     val prompt =
         new OrchestrationPrompt(
@@ -1397,7 +1397,8 @@ class OrchestrationUnitTest {
                       .withBodyFile("templateReferenceResponse.json")
                       .withHeader("Content-Type", "application/json")));
 
-      var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
+      var template = PromptTemplate.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16")
+.andInputParameters(Map.of());
       var configWithTemplate = config.withTemplateConfig(template);
 
       var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
@@ -1424,8 +1425,9 @@ class OrchestrationUnitTest {
                       .withHeader("Content-Type", "application/json")));
 
       var template =
-          TemplateConfig.reference()
+          PromptTemplate.reference()
               .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
+.andInputParameters(Map.of())
               .withScope(RESOURCE_GROUP);
       var config = new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
       var configWithTemplate = config.withTemplateConfig(template);
@@ -1457,7 +1459,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("templateReferenceResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
+    var template = PromptTemplate.reference().byScenario("test").name("test").version("0.0.1");
     var configWithTemplate = config.withTemplateConfig(template);
 
     var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
@@ -1481,7 +1483,7 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     var template =
-        TemplateConfig.reference()
+        PromptTemplate.reference()
             .byScenario("categorization")
             .name("example-prompt-template")
             .version("0.0.1")
@@ -1518,7 +1520,7 @@ class OrchestrationUnitTest {
     var promptTemplateYaml =
         Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
 
-    var template = TemplateConfig.fromYaml(promptTemplateYaml);
+    var template = PromptTemplate.fromYaml(promptTemplateYaml);
     var configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
 
     var inputParams = Map.of("language", "German");
@@ -1532,14 +1534,14 @@ class OrchestrationUnitTest {
 
   @Test
   void testTemplateFromInputThrows() {
-    assertThatThrownBy(() -> TemplateConfig.fromYaml(": what?"))
+    assertThatThrownBy(() -> PromptTemplate.fromYaml(": what?"))
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to parse");
 
     prompt = new OrchestrationPrompt(Map.of());
     assertThatThrownBy(
             () ->
-                TemplateConfig.fromYaml(
+                PromptTemplate.fromYaml(
                     "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to deserialize");
@@ -1593,8 +1595,8 @@ class OrchestrationUnitTest {
         OrchestrationConfigReference.fromScenario("scenario")
             .name("name")
             .version("0.0.1")
-            .withMessageHistory(history)
-            .withTemplateParameters(params);
+            .andInputParameters(params)
+            .withMessageHistory(history);
     final var response = client.chatCompletionUsingReference(reference);
 
     final String expectedRequest = fileLoaderStr.apply("orchConfigByRequestHistoryParams.json");

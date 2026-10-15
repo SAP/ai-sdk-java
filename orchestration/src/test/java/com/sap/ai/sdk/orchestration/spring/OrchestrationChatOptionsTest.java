@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
-import com.sap.ai.sdk.orchestration.TemplateConfig;
+import com.sap.ai.sdk.orchestration.PromptTemplate;
 import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.List;
 import java.util.Map;
@@ -268,7 +268,7 @@ class OrchestrationChatOptionsTest {
 
   @Test
   void testGetConfigWithCallbacksMergesWithExistingTools() {
-    var existingTemplate = TemplateConfig.template().withTools(List.of());
+    var existingTemplate = PromptTemplate.template().withTools(List.of());
     var configWithTemplate =
         new OrchestrationModuleConfig(GEMINI_2_5_FLASH).withTemplateConfig(existingTemplate);
     var opts =

@@ -34,7 +34,8 @@ import lombok.val;
 @With
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class OrchestrationTemplate extends TemplateConfig {
+public class LocalPromptTemplate extends PromptTemplate
+{
 
   /** Please use {@link #withMessages(Message...)} instead. */
   @JsonProperty("template")
@@ -42,7 +43,7 @@ public class OrchestrationTemplate extends TemplateConfig {
   @With(AccessLevel.PRIVATE)
   List<ChatMessage> chatMessages;
 
-  @Nonnull List<Message> messagesHistory;
+  @Nonnull List<Message> messageHistory;
 
   @Nonnull Map<String, String> inputParameters;
 
@@ -67,7 +68,7 @@ public class OrchestrationTemplate extends TemplateConfig {
    * @return the updated template.
    */
   @Nonnull
-  public OrchestrationTemplate withMessages(@Nonnull final Message... messages) {
+  public LocalPromptTemplate withMessages(@Nonnull final Message... messages) {
     return this.withChatMessages(Stream.of(messages).map(Message::createChatMessage).toList());
   }
 
@@ -96,7 +97,7 @@ public class OrchestrationTemplate extends TemplateConfig {
    * @return the updated template.
    */
   @Nonnull
-  public OrchestrationTemplate withJsonSchemaResponse(@Nonnull final ResponseJsonSchema schema) {
+  public LocalPromptTemplate withJsonSchemaResponse(@Nonnull final ResponseJsonSchema schema) {
     val responseFormatJsonSchema =
         ResponseFormatJsonSchema.create()
             .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
@@ -115,7 +116,7 @@ public class OrchestrationTemplate extends TemplateConfig {
    * @return the updated template.
    */
   @Nonnull
-  public OrchestrationTemplate withJsonResponse() {
+  public LocalPromptTemplate withJsonResponse() {
     val responseFormatJsonObject =
         ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT);
     return this.withResponseFormat(responseFormatJsonObject);

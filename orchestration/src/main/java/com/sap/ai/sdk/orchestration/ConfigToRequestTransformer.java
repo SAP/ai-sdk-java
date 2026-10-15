@@ -34,7 +34,7 @@ final class ConfigToRequestTransformer {
 
   @Nonnull
   static CompletionRequestConfiguration toCompletionPostRequest(
-      @Nonnull final TemplateConfig template,
+      @Nonnull final PromptTemplate template,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
 
@@ -47,7 +47,7 @@ final class ConfigToRequestTransformer {
     val configsCopy = Lists.transform(configList, copyWithImmutableTemplateConfig::apply);
 
     val messageHistory =
-        template.getMessagesHistory().stream().map(Message::createChatMessage).toList();
+        template.getMessageHistory().stream().map(Message::createChatMessage).toList();
 
     final OrchestrationConfigModules moduleConfigs =
         configsCopy.size() == 1
@@ -59,7 +59,7 @@ final class ConfigToRequestTransformer {
 
     return CompletionRequestConfiguration.create()
         .config(requestConfig)
-        .placeholderValues(template.getTemplateParameters())
+        .placeholderValues(template.getInputParameters())
         .messagesHistory(messageHistory);
   }
 
@@ -201,10 +201,9 @@ final class ConfigToRequestTransformer {
   @Nonnull
   static CompletionPostRequest fromReferenceToCompletionPostRequest(
       @Nonnull final OrchestrationConfigReference reference) {
-    final OrchestrationPrompt prompt = reference.getPrompt();
     final var messageHistory =
-        prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
-    final var placeholders = prompt.getTemplateParameters();
+        reference.getMessageHistory().stream().map(Message::createChatMessage).toList();
+    final var placeholders = reference.getInputParameters();
 
     if (reference.getId() != null) {
       final CompletionRequestConfigurationReferenceById request =

@@ -24,9 +24,9 @@ import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationClientException;
 import com.sap.ai.sdk.orchestration.OrchestrationFilterException;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
+import com.sap.ai.sdk.orchestration.PromptTemplate;
 import com.sap.ai.sdk.orchestration.ReasoningEffort;
 import com.sap.ai.sdk.orchestration.SystemMessage;
-import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TextItem;
 import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
@@ -92,7 +92,7 @@ class OrchestrationTest {
         new OrchestrationClient()
             .chatCompletion()
             .config(service.getConfig())
-            .template(TemplateConfig.template("Who is the prettiest?"))
+            .promptTemplate(PromptTemplate.create("Who is the prettiest?"))
             .executeStream();
 
     val filledDeltaCount = new AtomicInteger(0);
@@ -113,7 +113,7 @@ class OrchestrationTest {
   @Test
   void testPromptCaching() {
     val template =
-        TemplateConfig.template(
+        PromptTemplate.create(
             new UserMessage(PROMPT_FIXTURE, new CacheControl("5m")),
             new UserMessage(
                 "Does this license permit free of charge commercial use of the library licensed under it?"));
@@ -122,7 +122,7 @@ class OrchestrationTest {
         new OrchestrationClient()
             .chatCompletion()
             .config(cfgCacheSupportingModel)
-            .template(template)
+            .promptTemplate(template)
             .execute();
 
     val readFromCacheOrJustCached =
@@ -136,7 +136,7 @@ class OrchestrationTest {
   @Test
   void testPromptCachingSystemMessageCanBeCached() {
     val template =
-        TemplateConfig.template(
+        PromptTemplate.create(
             new SystemMessage(PROMPT_FIXTURE, new CacheControl("5m")),
             new UserMessage(
                 "Does this license permit free of charge commercial use of the library licensed under it?"));
@@ -145,7 +145,7 @@ class OrchestrationTest {
         new OrchestrationClient()
             .chatCompletion()
             .config(cfgCacheSupportingModel)
-            .template(template)
+            .promptTemplate(template)
             .execute();
 
     val readFromCacheOrJustCached =
@@ -159,7 +159,7 @@ class OrchestrationTest {
   @Test
   void testPromptCachingIgnoredForShortInput() {
     val template =
-        TemplateConfig.template(
+        PromptTemplate.create(
             new UserMessage(
                 "Recent developments in production automation and robotics are spectacular",
                 new CacheControl("5m")),
@@ -170,7 +170,7 @@ class OrchestrationTest {
         new OrchestrationClient()
             .chatCompletion()
             .config(cfgCacheSupportingModel)
-            .template(template)
+            .promptTemplate(template)
             .execute();
 
     val readFromCacheOrJustCached =
@@ -183,7 +183,7 @@ class OrchestrationTest {
   @Test
   void testPromptCachingInvalidTTLGetsResetToDefault() {
     val template =
-        TemplateConfig.template(
+        PromptTemplate.create(
             new UserMessage(PROMPT_FIXTURE, new CacheControl("0s")),
             new UserMessage(
                 "Does this license permit free of charge commercial use of the library licensed under it?"));
@@ -192,7 +192,7 @@ class OrchestrationTest {
         new OrchestrationClient()
             .chatCompletion()
             .config(cfgCacheSupportingModel)
-            .template(template)
+            .promptTemplate(template)
             .execute();
 
     val readFromCacheOrJustCached =
@@ -609,7 +609,7 @@ class OrchestrationTest {
   @Test
   void testStreamingErrorHandlingTemplate() {
     val template =
-        TemplateConfig.template(Message.user("Bad template: {{?language!@#$}}"))
+        PromptTemplate.create(Message.user("Bad template: {{?language!@#$}}"))
             .withInputParameters(Map.of("language", "German"));
 
     assertThatThrownBy(
@@ -617,7 +617,7 @@ class OrchestrationTest {
                 client
                     .chatCompletion()
                     .config(config)
-                    .template(template)
+                    .promptTemplate(template)
                     .executeStream()
                     .forEach(s -> {}))
         .isInstanceOf(OrchestrationClientException.class)
@@ -637,7 +637,7 @@ class OrchestrationTest {
                 client
                     .chatCompletion()
                     .config(configWithFilter)
-                    .template(TemplateConfig.template(msg))
+                    .promptTemplate(PromptTemplate.create(msg))
                     .executeStream()
                     .forEach(s -> {}))
         .isInstanceOf(OrchestrationFilterException.Input.class)
@@ -656,7 +656,7 @@ class OrchestrationTest {
                 client
                     .chatCompletion()
                     .config(configWithMasking)
-                    .template(TemplateConfig.template("Some message."))
+                    .promptTemplate(PromptTemplate.create("Some message."))
                     .executeStream()
                     .forEach(s -> {}))
         .isInstanceOf(OrchestrationClientException.class)
@@ -703,14 +703,14 @@ class OrchestrationTest {
     val filterConfig =
         new OrchestrationModuleConfig(GPT_5)
             .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
-    val template = TemplateConfig.template("HelloWorld!");
+    val template = PromptTemplate.create("HelloWorld!");
 
     assertThatThrownBy(
             () ->
                 client
                     .chatCompletion()
                     .config(filterConfig.withLlmConfig(GPT_5.withName("wrong-model")))
-                    .template(template)
+                    .promptTemplate(template)
                     .execute())
         .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400")
@@ -721,7 +721,7 @@ class OrchestrationTest {
                 client
                     .chatCompletion()
                     .config(filterConfig.withLlmConfig(GPT_5.withVersion("wrong-version")))
-                    .template(template)
+                    .promptTemplate(template)
                     .executeStream()
                     .forEach(System.out::println))
         .isExactlyInstanceOf(OrchestrationClientException.class)
@@ -852,7 +852,7 @@ class OrchestrationTest {
         orchestrationClient
             .chatCompletion()
             .config(reasoningConfig)
-            .template(TemplateConfig.template("What is 6 times 7?"))
+            .promptTemplate(PromptTemplate.create("What is 6 times 7?"))
             .execute();
 
     assertThat(firstResponse.getReasoningText()).isNotEmpty();
@@ -860,13 +860,13 @@ class OrchestrationTest {
     // Feed the whole history (which carries the previous reasoning content internally) into the
     // follow-up turn.
     val followUpTemplate =
-        TemplateConfig.template("Are you sure?")
-            .withMessagesHistory(firstResponse.getAllMessages());
+        PromptTemplate.create("Are you sure?")
+            .withMessageHistory(firstResponse.getAllMessages());
     val followUp =
         orchestrationClient
             .chatCompletion()
             .config(reasoningConfig)
-            .template(followUpTemplate)
+            .promptTemplate(followUpTemplate)
             .execute();
 
     assertThat(followUp.getContent()).isNotEmpty();

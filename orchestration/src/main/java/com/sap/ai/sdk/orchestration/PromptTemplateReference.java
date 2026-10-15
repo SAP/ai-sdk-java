@@ -22,7 +22,8 @@ import lombok.With;
 @Value
 @With
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrchestrationTemplateReference extends TemplateConfig {
+public class PromptTemplateReference extends PromptTemplate
+{
   @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
   @Nonnull
   @With(AccessLevel.PRIVATE)

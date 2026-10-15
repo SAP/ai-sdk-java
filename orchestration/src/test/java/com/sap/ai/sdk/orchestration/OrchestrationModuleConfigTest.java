@@ -332,7 +332,7 @@ class OrchestrationModuleConfigTest {
     var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
     var config =
         new OrchestrationModuleConfig(GPT_4O)
-            .withTemplateConfig(TemplateConfig.template().withJsonSchemaResponse(schema));
+            .withTemplateConfig(PromptTemplate.template().withJsonSchemaResponse(schema));
     assertThat(((Template) config.getTemplateConfig())).isNotNull();
     assertThat(
             ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
@@ -345,7 +345,7 @@ class OrchestrationModuleConfigTest {
   void testResponseFormatObject() {
     var config =
         new OrchestrationModuleConfig(GPT_4O)
-            .withTemplateConfig(TemplateConfig.template().withJsonResponse());
+            .withTemplateConfig(PromptTemplate.template().withJsonResponse());
     assertThat(((Template) config.getTemplateConfig())).isNotNull();
     assertThat(
             ((ResponseFormatJsonObject)
@@ -358,7 +358,7 @@ class OrchestrationModuleConfigTest {
     var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
     var config =
         new OrchestrationModuleConfig(GPT_4O)
-            .withTemplateConfig(TemplateConfig.template().withJsonSchemaResponse(schema));
+            .withTemplateConfig(PromptTemplate.template().withJsonSchemaResponse(schema));
     assertThat(((Template) config.getTemplateConfig())).isNotNull();
     assertThat(
             ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
