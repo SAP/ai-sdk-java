@@ -1,7 +1,6 @@
 package com.sap.ai.sdk.orchestration.spring;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
-import static com.sap.ai.sdk.orchestration.OrchestrationClient.toCompletionPostRequest;
 import static com.sap.ai.sdk.orchestration.model.MessageToolCall.TypeEnum.FUNCTION;
 
 import com.sap.ai.sdk.orchestration.AssistantMessage;
@@ -98,24 +97,16 @@ public class OrchestrationChatModel implements ChatModel {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
       val orchestrationPrompt = options.withCallbacks(toPromptTemplate(prompt));
-      val request =
-          toCompletionPostRequest(
-              orchestrationPrompt,
-              options.getConfig(),
-              options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new));
-      val stream = client.streamChatCompletionDeltas(request);
-
       final Flux<OrchestrationChatCompletionDelta> flux =
-          Flux.generate(
-              stream::iterator,
-              (iterator, sink) -> {
-                if (iterator.hasNext()) {
-                  sink.next(iterator.next());
-                } else {
-                  sink.complete();
-                }
-                return iterator;
-              });
+          Flux.fromStream(
+              () ->
+                  client
+                      .chatCompletion()
+                      .config(
+                          options.getConfig(),
+                          options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new))
+                      .promptTemplate(orchestrationPrompt)
+                      .executeStreamDeltas());
       return flux.map(OrchestrationSpringChatDelta::new);
     }
     throw new IllegalArgumentException(

@@ -23,6 +23,10 @@
 | `OrchestrationPrompt.messageHistory(...)`                                     | `LocalPromptTemplate.withMessageHistory(...)`                                   |
 | `OrchestrationConfigReference.withTemplateParameters(...)`                    | `withInputParameters(...)` on a completed reference                             |
 | `OrchestrationChatOptions.getConfigWithCallbacks()`                           | `withCallbacks(LocalPromptTemplate)`, returning an enriched template            |
+| `client.executeRequest(request)`                                            | `client.chatCompletion().lowLevel().request(request).execute()`                 |
+| `client.streamChatCompletionDeltas(request)`                                 | `client.chatCompletion().lowLevel().request(request).executeStreamDeltas()`     |
+| `client.embed(orchestrationEmbeddingRequest)`                                | `client.embeddings().request(orchestrationEmbeddingRequest).execute()`          |
+| `client.embed(embeddingsPostRequest)`                                        | `client.embeddings().lowLevel().request(embeddingsPostRequest).execute()`        |
 
 **Templates and execution**
 
@@ -44,7 +48,7 @@ Templates are no longer stored in `OrchestrationModuleConfig`. Combine the forme
 +    .execute();
 ```
 
-- Replace `streamChatCompletion(prompt, config)` with the same builder ending in `executeStream()` (`Stream<String>`); close streams with try-with-resources. `streamChatCompletionDeltas(CompletionPostRequest)` remains available for full deltas.
+- Replace `streamChatCompletion(prompt, config)` with the same builder ending in `executeStream()` (`Stream<String>`). Use `executeStreamDeltas()` for full deltas, including reasoning, tool calls, usage, and intermediate results. Close both kinds of streams with try-with-resources.
 - Pass fallback configs to `.config(primaryConfig, fallbackConfig, ...)`.
 - Set defaults, tools, and response formats on the local template using `withDefaults(...)`, `withTools(...)`, `withJsonResponse()`, or `withJsonSchemaResponse(...)`. All `with...` methods return updated instances; retain their results.
 - Supply at least one template message. Import templates with `PromptTemplate.fromJson(...)` or `fromYaml(...)`, handling `IOException` and nullable results.
@@ -74,7 +78,7 @@ For a stored orchestration configuration, replace `chatCompletionUsingReference(
 +var response = client.chatCompletion().configReference(reference).execute();
 ```
 
-For ID-based configs, use `OrchestrationConfigReference.fromId(id).withInputParameters(parameters)`. Both config-reference forms support `withMessageHistory(...)` and `executeStream()`.
+For ID-based configs, use `OrchestrationConfigReference.fromId(id).withInputParameters(parameters)`. Both config-reference forms support `withMessageHistory(...)`, `executeStream()`, and `executeStreamDeltas()`.
 
 **Spring AI callbacks**
 

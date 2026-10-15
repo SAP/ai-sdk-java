@@ -7,6 +7,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
 import static com.github.tomakehurst.wiremock.client.WireMock.okXml;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
@@ -117,7 +118,12 @@ class OrchestrationUnitTest {
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
   private final Function<String, String> fileLoaderStr =
-      filename -> new String(Try.of(() -> fileLoader.apply(filename).readAllBytes()).get());
+      filename ->
+          Try.withResources(() -> fileLoader.apply(filename))
+              .of(
+                  stream ->
+                      new String(stream.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8))
+              .get();
 
   private static OrchestrationClient client;
   private static OrchestrationModuleConfig config;
@@ -875,8 +881,12 @@ class OrchestrationUnitTest {
 
   @Test
   void testThrowsOnContentFilter() {
-    var mock = mock(OrchestrationClient.class);
-    when(mock.chatCompletion()).thenCallRealMethod();
+    var execution =
+        spy(
+            client
+                .chatCompletion()
+                .lowLevel()
+                .request(OrchestrationClient.toCompletionPostRequest(prompt, config)));
 
     var deltaWithContentFilter = mock(OrchestrationChatCompletionDelta.class);
     when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
@@ -892,19 +902,16 @@ class OrchestrationUnitTest {
             "choices", List.of(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0))));
     when(outputFiltering.getData()).thenReturn(filterData);
 
-    when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
+    doReturn(Stream.of(deltaWithContentFilter)).when(execution).executeStreamDeltas();
 
     // this must not throw, since the stream is lazily evaluated
-    var stream =
-        mock.chatCompletion()
-            .config(config)
-            .promptTemplate(PromptTemplate.create(""))
-            .executeStream();
-    assertThatThrownBy(stream::toList)
-        .isInstanceOf(OrchestrationFilterException.Output.class)
-        .hasMessage("Content filter filtered the output.")
-        .extracting(e -> ((OrchestrationFilterException.Output) e).getFilterDetails())
-        .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
+    try (var stream = execution.executeStream()) {
+      assertThatThrownBy(stream::toList)
+          .isInstanceOf(OrchestrationFilterException.Output.class)
+          .hasMessage("Content filter filtered the output.")
+          .extracting(e -> ((OrchestrationFilterException.Output) e).getFilterDetails())
+          .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
+    }
   }
 
   @Test
@@ -1009,7 +1016,7 @@ class OrchestrationUnitTest {
       var request = OrchestrationClient.toCompletionPostRequest(prompt, config);
 
       try (Stream<OrchestrationChatCompletionDelta> stream =
-          client.streamChatCompletionDeltas(request)) {
+          client.chatCompletion().lowLevel().request(request).executeStreamDeltas()) {
         var deltaList = stream.toList();
 
         assertThat(deltaList).hasSize(3);
@@ -1116,31 +1123,29 @@ class OrchestrationUnitTest {
   @MethodSource("streamChatCompletionDeltasRequests")
   void testEnableStreamingOnAllRequestTypes(@Nonnull final CompletionPostRequest request)
       throws IOException {
-    try (var inputStream = fileLoader.apply("streamChatCompletion.txt")) {
-      final var httpClient = mock(HttpClient.class);
-      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
-      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
-      mockResponse.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
-      mockResponse.setHeader("Content-Type", "text/event-stream");
-      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
-
-      client.streamChatCompletionDeltas(request).toList();
+    var before = OrchestrationClient.JACKSON.writeValueAsString(request);
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBody(fileLoaderStr.apply("streamChatCompletion.txt"))
+                    .withHeader("Content-Type", "text/event-stream")));
+    try (var stream = client.chatCompletion().lowLevel().request(request).executeStreamDeltas()) {
+      assertThat(stream.toList()).hasSize(3);
     }
-
-    if (request instanceof CompletionRequestConfiguration r) {
-      assertThat(r.getConfig().getStream().isEnabled()).isTrue();
-    } else if (request instanceof CompletionRequestConfigurationReferenceById r) {
-      assertThat(r.getConfig().getStream().isEnabled()).isTrue();
-    } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion r) {
-      assertThat(r.getConfig().getStream().isEnabled()).isTrue();
-    }
+    assertThat(OrchestrationClient.JACKSON.writeValueAsString(request)).isEqualTo(before);
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(matchingJsonPath("$.config.stream.enabled", equalTo("true"))));
   }
 
   @ParameterizedTest
   @MethodSource("streamChatCompletionDeltasRequests")
   void testEnableStreamingPreservesExistingStreamOptions(
-      @Nonnull final CompletionPostRequest request) throws IOException {
-    var existingStream = GlobalStreamOptions.create().enabled(false).chunkSize(42);
+      @Nonnull final CompletionPostRequest request) {
+    var existingStream =
+        GlobalStreamOptions.create().enabled(false).chunkSize(42).delimiters(List.of("\n"));
+    existingStream.setCustomField("custom_option", "preserved");
     if (request instanceof CompletionRequestConfiguration r) {
       r.getConfig().setStream(existingStream);
     } else if (request instanceof CompletionRequestConfigurationReferenceById r) {
@@ -1149,27 +1154,168 @@ class OrchestrationUnitTest {
       r.getConfig().setStream(existingStream);
     }
 
-    try (var inputStream = fileLoader.apply("streamChatCompletion.txt")) {
-      final var httpClient = mock(HttpClient.class);
-      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
-      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
-      mockResponse.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
-      mockResponse.setHeader("Content-Type", "text/event-stream");
-      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
-
-      client.streamChatCompletionDeltas(request).toList();
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBody(fileLoaderStr.apply("streamChatCompletion.txt"))
+                    .withHeader("Content-Type", "text/event-stream")));
+    try (var stream = client.chatCompletion().lowLevel().request(request).executeStreamDeltas()) {
+      stream.toList();
     }
 
-    assertThat(existingStream.isEnabled()).isTrue();
+    assertThat(existingStream.isEnabled()).isFalse();
     assertThat(existingStream.getChunkSize()).isEqualTo(42);
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(matchingJsonPath("$.config.stream.enabled", equalTo("true")))
+            .withRequestBody(matchingJsonPath("$.config.stream.chunk_size", equalTo("42")))
+            .withRequestBody(matchingJsonPath("$.config.stream.delimiters[0]", equalTo("\n")))
+            .withRequestBody(
+                matchingJsonPath("$.config.stream.custom_option", equalTo("preserved"))));
   }
 
   @Test
   void testStreamChatCompletionDeltasThrowsOnUnsupportedRequestType() {
     final CompletionPostRequest unknownRequest = new CompletionPostRequest() {};
-    assertThatThrownBy(() -> client.streamChatCompletionDeltas(unknownRequest))
+    assertThatThrownBy(
+            () -> client.chatCompletion().lowLevel().request(unknownRequest).executeStreamDeltas())
         .isExactlyInstanceOf(IllegalStateException.class)
         .hasMessageContaining("Unsupported request type");
+  }
+
+  @Test
+  void testLowLevelCompletion() {
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    var request = OrchestrationClient.toCompletionPostRequest(prompt, config);
+    request.setCustomField("custom_request_option", "preserved");
+    var response =
+        client
+            .withHeader("X-Custom", "completion")
+            .chatCompletion()
+            .lowLevel()
+            .request(request)
+            .execute();
+    assertThat(response.getFinalResult()).isNotNull();
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("X-Custom", equalTo("completion"))
+            .withRequestBody(matchingJsonPath("$.custom_request_option", equalTo("preserved"))));
+  }
+
+  @ParameterizedTest
+  @org.junit.jupiter.params.provider.ValueSource(booleans = {false, true})
+  void testDetailedStreamsRetainContentFilterReason(boolean lowLevel) {
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBody(fileLoaderStr.apply("streamChatCompletionOutputFilter.txt"))
+                    .withHeader("Content-Type", "text/event-stream")));
+    try (var stream =
+        lowLevel
+            ? client
+                .chatCompletion()
+                .lowLevel()
+                .request(OrchestrationClient.toCompletionPostRequest(prompt, config))
+                .executeStreamDeltas()
+            : client.chatCompletion().config(config).promptTemplate(prompt).executeStreamDeltas()) {
+      assertThat(stream.toList())
+          .anySatisfy(delta -> assertThat(delta.getFinishReason()).isEqualTo("content_filter"));
+    }
+  }
+
+  @Test
+  void testStreamingThenRegularExecutionDoesNotLeakStreamOptions() {
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    stubFor(
+        post("/v2/completion")
+            .withRequestBody(matchingJsonPath("$.config.stream.enabled", equalTo("true")))
+            .willReturn(
+                aResponse()
+                    .withBody(fileLoaderStr.apply("streamChatCompletion.txt"))
+                    .withHeader("Content-Type", "text/event-stream")));
+    var sharedConfig = config.withStreamConfig(new OrchestrationStreamConfig().withChunkSize(42));
+    var options = sharedConfig.getGlobalStreamOptions().enabled(false);
+    var execution = client.chatCompletion().config(sharedConfig).promptTemplate(prompt);
+    try (var stream = execution.executeStream()) {
+      assertThat(stream.toList()).contains("Sure", "!");
+    }
+    assertThat(execution.execute().getContent()).isNotEmpty();
+    assertThat(
+            client
+                .chatCompletion()
+                .config(sharedConfig)
+                .promptTemplate(prompt)
+                .execute()
+                .getContent())
+        .isNotEmpty();
+    assertThat(options.isEnabled()).isFalse();
+    assertThat(options.getChunkSize()).isEqualTo(42);
+  }
+
+  @ParameterizedTest
+  @org.junit.jupiter.params.provider.ValueSource(booleans = {false, true})
+  void testLowLevelStreamingThenRegularExecution(boolean byId) {
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    stubFor(
+        post("/v2/completion")
+            .withRequestBody(matchingJsonPath("$.config.stream.enabled", equalTo("true")))
+            .willReturn(
+                aResponse()
+                    .withBody(fileLoaderStr.apply("streamChatCompletion.txt"))
+                    .withHeader("Content-Type", "text/event-stream")));
+    CompletionPostRequest request =
+        byId
+            ? CompletionRequestConfigurationReferenceById.create()
+                .configRef(
+                    CompletionRequestConfigurationReferenceByIdConfigRef.create().id("test-id"))
+            : CompletionRequestConfigurationReferenceByNameScenarioVersion.create()
+                .configRef(
+                    CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef.create()
+                        .scenario("scenario")
+                        .name("name")
+                        .version("0.0.1"));
+    var execution = client.chatCompletion().lowLevel().request(request);
+    try (var stream = execution.executeStreamDeltas()) {
+      assertThat(stream.toList()).hasSize(3);
+    }
+    if (request instanceof CompletionRequestConfigurationReferenceById r) {
+      assertThat(r.getConfig()).isNull();
+    } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion r) {
+      assertThat(r.getConfig()).isNull();
+    }
+    assertThat(execution.execute().getFinalResult()).isNotNull();
+    var reference =
+        byId
+            ? OrchestrationConfigReference.fromId("test-id")
+            : OrchestrationConfigReference.fromScenario("scenario")
+                .name("name")
+                .version("0.0.1")
+                .andInputParameters(Map.of());
+    var highLevelExecution = client.chatCompletion().configReference(reference);
+    try (var stream = highLevelExecution.executeStream()) {
+      assertThat(stream.toList()).contains("Sure", "!");
+    }
+    assertThat(highLevelExecution.execute().getContent()).isNotEmpty();
+    try (var stream = highLevelExecution.executeStreamDeltas()) {
+      assertThat(stream.toList()).hasSize(3);
+    }
   }
 
   @Test
@@ -1602,25 +1748,6 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testChatCompletionUsingReference() {
-    stubFor(
-        post(urlPathEqualTo("/v2/completion"))
-            .willReturn(
-                aResponse()
-                    .withBodyFile("templatingResponse.json")
-                    .withHeader("Content-Type", "application/json")));
-
-    final var reference = OrchestrationConfigReference.fromId("test-id");
-    final var response = client.chatCompletionUsingReference(reference);
-
-    assertThat(response.getContent()).isEqualTo("Le service d'orchestration fonctionne!");
-    final String expectedRequest = fileLoaderStr.apply("orchConfigByIdRequest.json");
-    verify(
-        postRequestedFor(urlPathEqualTo("/v2/completion"))
-            .withRequestBody(equalToJson(expectedRequest)));
-  }
-
-  @Test
   void testExecuteFromReferenceById() {
     stubFor(
         post(anyUrl())
@@ -1785,7 +1912,7 @@ class OrchestrationUnitTest {
 
     final var answerChunks = new ArrayList<String>();
     final var reasoningChunks = new ArrayList<String>();
-    try (var stream = client.streamChatCompletionDeltas(request)) {
+    try (var stream = client.chatCompletion().lowLevel().request(request).executeStreamDeltas()) {
       stream.forEach(
           delta -> {
             if (!delta.getDeltaContent().isEmpty()) {

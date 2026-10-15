@@ -221,9 +221,11 @@ public class OrchestrationService {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     val prompt = PromptTemplate.create("Think carefully and explain step by step: " + topic);
-    val request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
     return client
-        .streamChatCompletionDeltas(request)
+        .chatCompletion()
+        .config(reasoningConfig)
+        .promptTemplate(prompt)
+        .executeStreamDeltas()
         .map(delta -> new ReasoningOutput(delta.getDeltaContent(), delta.getDeltaReasoningText()));
   }
 
@@ -843,7 +845,7 @@ public class OrchestrationService {
         OrchestrationEmbeddingRequest.forModel(TEXT_EMBEDDING_3_SMALL)
             .forInputs(texts)
             .withMasking(masking);
-    return client.embed(request);
+    return client.embeddings().request(request).execute();
   }
 
   /**
@@ -946,7 +948,7 @@ public class OrchestrationService {
     val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
     val config = new OrchestrationModuleConfig(GPT_5_MINI);
     val request = OrchestrationClient.toCompletionPostRequest(prompt, config);
-    return client.streamChatCompletionDeltas(request);
+    return client.chatCompletion().lowLevel().request(request).executeStreamDeltas();
   }
 
   /**
@@ -973,7 +975,7 @@ public class OrchestrationService {
         CompletionRequestConfigurationReferenceById.create()
             .configRef(CompletionRequestConfigurationReferenceByIdConfigRef.create().id(id))
             .placeholderValues(Map.of("phrase", "Hello World"));
-    return client.streamChatCompletionDeltas(request);
+    return client.chatCompletion().lowLevel().request(request).executeStreamDeltas();
   }
 
   /**
@@ -994,7 +996,7 @@ public class OrchestrationService {
                     .name("test-config-for-OrchestrationTest")
                     .version("0.0.1"))
             .placeholderValues(Map.of("phrase", "Hello World"));
-    return client.streamChatCompletionDeltas(request);
+    return client.chatCompletion().lowLevel().request(request).executeStreamDeltas();
   }
 
   /**
