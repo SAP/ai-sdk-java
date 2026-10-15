@@ -2,44 +2,47 @@ package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.foundationmodels.anthropic.AnthropicModel.CLAUDE_45_HAIKU;
 
-import com.sap.ai.sdk.foundationmodels.anthropic.AnthropicChatCompletionDelta;
-import com.sap.ai.sdk.foundationmodels.anthropic.AnthropicChatCompletionRequest;
-import com.sap.ai.sdk.foundationmodels.anthropic.AnthropicChatCompletionResponse;
-import com.sap.ai.sdk.foundationmodels.anthropic.AnthropicClient;
-import java.util.stream.Stream;
+import com.anthropic.core.http.StreamResponse;
+import com.anthropic.models.messages.Message;
+import com.anthropic.models.messages.MessageCreateParams;
+import com.anthropic.models.messages.RawMessageStreamEvent;
+import com.sap.ai.sdk.foundationmodels.anthropic.AiCoreAnthropicClient;
 import javax.annotation.Nonnull;
 import org.springframework.stereotype.Service;
 
-/** Service to interact with the Anthropic Claude model. */
+/** Service class for Anthropic service using latest convenience api. */
 @Service
 public class AnthropicService {
 
-  static final AnthropicClient client = AnthropicClient.forModel(CLAUDE_45_HAIKU);
+  private static final MessageCreateParams.Builder BASE_PARAMS =
+      MessageCreateParams.builder().model(CLAUDE_45_HAIKU.name()).maxTokens(1000);
 
   /**
-   * Performs a synchronous chat completion request.
+   * Chat request to Anthropic.
    *
-   * @param userMessage the user's message
-   * @return the chat completion response
+   * @param userMessage the prompt to send to the assistant.
+   * @return the assistant message response.
    */
   @Nonnull
-  public AnthropicChatCompletionResponse chatCompletion(@Nonnull final String userMessage) {
-    final var request =
-        new AnthropicChatCompletionRequest().withUserMessage(userMessage).withMaxTokens(1000);
-    return client.chatCompletion(request);
+  public Message chatCompletion(@Nonnull final String userMessage) {
+    return AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
+        .client()
+        .messages()
+        .create(BASE_PARAMS.addUserMessage(userMessage).build());
   }
 
   /**
-   * Performs a streaming chat completion request.
+   * Asynchronous stream of an OpenAI chat request.
    *
-   * @param userMessage the user's message
-   * @return a stream of chat completion deltas
+   * @param userMessage the message to send to the assistant.
+   * @return the emitter that streams the assistant message response.
    */
   @Nonnull
-  public Stream<AnthropicChatCompletionDelta> streamChatCompletion(
+  public StreamResponse<RawMessageStreamEvent> streamChatCompletion(
       @Nonnull final String userMessage) {
-    final var request =
-        new AnthropicChatCompletionRequest().withUserMessage(userMessage).withMaxTokens(1000);
-    return client.streamChatCompletion(request);
+    return AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
+        .client()
+        .messages()
+        .createStreaming(BASE_PARAMS.addUserMessage(userMessage).build());
   }
 }

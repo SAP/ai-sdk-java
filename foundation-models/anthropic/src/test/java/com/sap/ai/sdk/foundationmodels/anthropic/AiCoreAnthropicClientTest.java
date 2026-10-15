@@ -15,15 +15,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 
+import com.anthropic.errors.AnthropicException;
+import com.anthropic.models.messages.MessageCreateParams;
+import com.anthropic.models.messages.RawContentBlockDeltaEvent;
+import com.anthropic.models.messages.StopReason;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.apache.hc.client5.http.classic.HttpClient;
@@ -35,14 +37,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 @WireMockTest
-class AnthropicClientTest {
+class AiCoreAnthropicClientTest {
 
-  private AnthropicClient client;
+  private AiCoreAnthropicClient client;
 
   @BeforeEach
   void setup(final WireMockRuntimeInfo server) {
     final var destination = DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
-    client = AnthropicClient.forDestination(destination);
+    client = AiCoreAnthropicClient.forDestination(destination);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
 
@@ -65,7 +67,7 @@ class AnthropicClientTest {
   }
 
   @Test
-  void testChatCompletion(final WireMockRuntimeInfo server) {
+  void testChatCompletion() {
     stubFor(
         post(urlPathEqualTo("/invoke"))
             .willReturn(
@@ -73,23 +75,27 @@ class AnthropicClientTest {
                     .withBodyFile("invokeResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var request =
-        new AnthropicChatCompletionRequest().withUserMessage("Hello!").withMaxTokens(256);
+    final var params =
+        MessageCreateParams.builder()
+            .model("claude-3-haiku-20240307")
+            .maxTokens(256)
+            .addUserMessage("Hello!")
+            .build();
 
-    final var response = client.chatCompletion(request);
+    final var response = client.client().messages().create(params);
 
     assertThat(response).isNotNull();
-    assertThat(response.getId()).isEqualTo("msg_01XFDUDYJgAACzvnptvVoYEL");
-    assertThat(response.getRole()).isEqualTo("assistant");
-    assertThat(response.getStopReason()).isEqualTo("end_turn");
-    assertThat(response.getContent()).isEqualTo("Hello! How can I assist you today?");
-    assertThat(response.getUsage()).isNotNull();
-    assertThat(response.getUsage().getInputTokens()).isEqualTo(10);
-    assertThat(response.getUsage().getOutputTokens()).isEqualTo(9);
+    assertThat(response.id()).isEqualTo("msg_01XFDUDYJgAACzvnptvVoYEL");
+    assertThat(response.stopReason()).hasValue(StopReason.END_TURN);
+    assertThat(response.content()).hasSize(1);
+    assertThat(response.content().get(0).text().map(t -> t.text()))
+        .hasValue("Hello! How can I assist you today?");
+    assertThat(response.usage().inputTokens()).isEqualTo(10);
+    assertThat(response.usage().outputTokens()).isEqualTo(9);
   }
 
   @Test
-  void testChatCompletionRequestFormat(final WireMockRuntimeInfo server) {
+  void testChatCompletionRequestFormat() {
     stubFor(
         post(urlPathEqualTo("/invoke"))
             .willReturn(
@@ -97,31 +103,32 @@ class AnthropicClientTest {
                     .withBodyFile("invokeResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var request =
-        new AnthropicChatCompletionRequest()
-            .withSystemPrompt("You are a helpful assistant.")
-            .withUserMessage("What is 2+2?")
-            .withMaxTokens(100)
-            .withTemperature(0.7);
+    final var params =
+        MessageCreateParams.builder()
+            .model("claude-3-haiku-20240307")
+            .maxTokens(100)
+            .addSystemMessage("You are a helpful assistant.")
+            .addUserMessage("What is 2+2?")
+            .build();
 
-    client.chatCompletion(request);
+    client.client().messages().create(params);
 
     verify(
         postRequestedFor(urlPathEqualTo("/invoke"))
-            .withHeader("Content-Type", equalTo("application/json; charset=UTF-8"))
+            .withHeader("Content-Type", equalTo("application/json"))
             .withRequestBody(
                 com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath(
                     "$.anthropic_version", equalTo("bedrock-2023-05-31")))
             .withRequestBody(
                 com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath(
-                    "$.messages[0].role", equalTo("user")))
+                    "$.messages[1].role", equalTo("user")))
             .withRequestBody(
                 com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath(
-                    "$.system", equalTo("You are a helpful assistant."))));
+                    "$.messages[0].content", equalTo("You are a helpful assistant."))));
   }
 
   @Test
-  void testChatCompletionMultiTurn(final WireMockRuntimeInfo server) {
+  void testModelFieldRemovedFromRequest() {
     stubFor(
         post(urlPathEqualTo("/invoke"))
             .willReturn(
@@ -129,31 +136,26 @@ class AnthropicClientTest {
                     .withBodyFile("invokeResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var request =
-        new AnthropicChatCompletionRequest()
-            .withUserMessage("Hello!")
-            .withAssistantMessage("Hi there! How can I help?")
-            .withUserMessage("What is the capital of France?")
-            .withMaxTokens(256);
+    final var params =
+        MessageCreateParams.builder()
+            .model("claude-3-haiku-20240307")
+            .maxTokens(256)
+            .addUserMessage("Hello!")
+            .build();
 
-    final var response = client.chatCompletion(request);
+    client.client().messages().create(params);
 
-    assertThat(response).isNotNull();
-    assertThat(request.getMessages()).hasSize(3);
-    assertThat(request.getMessages().get(0).getRole()).isEqualTo(AnthropicChatMessage.Role.USER);
-    assertThat(request.getMessages().get(1).getRole())
-        .isEqualTo(AnthropicChatMessage.Role.ASSISTANT);
-    assertThat(request.getMessages().get(2).getRole()).isEqualTo(AnthropicChatMessage.Role.USER);
+    verify(
+        postRequestedFor(urlPathEqualTo("/invoke"))
+            .withRequestBody(
+                com.github.tomakehurst.wiremock.client.WireMock.notMatching(".*\"model\".*")));
   }
 
   @Test
   void testStreamChatCompletion() throws IOException {
     final var inputStream =
-        spy(
-            Objects.requireNonNull(
-                getClass()
-                    .getClassLoader()
-                    .getResourceAsStream("__files/invokeStreamResponse.txt")));
+        Objects.requireNonNull(
+            getClass().getClassLoader().getResourceAsStream("__files/invokeStreamResponse.txt"));
 
     final var httpClient = mock(HttpClient.class);
     ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
@@ -165,14 +167,21 @@ class AnthropicClientTest {
 
     doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
-    final var request =
-        new AnthropicChatCompletionRequest().withUserMessage("Hello!").withMaxTokens(256);
+    final var params =
+        MessageCreateParams.builder()
+            .model("claude-3-haiku-20240307")
+            .maxTokens(256)
+            .addUserMessage("Hello!")
+            .build();
 
-    try (var stream = client.streamChatCompletion(request)) {
+    try (var stream = client.client().messages().createStreaming(params)) {
       final var chunks =
-          stream
-              .map(AnthropicChatCompletionDelta::getDeltaContent)
-              .filter(s -> !s.isEmpty())
+          stream.stream()
+              .filter(e -> e.isContentBlockDelta())
+              .map(e -> e.asContentBlockDelta())
+              .map(RawContentBlockDeltaEvent::delta)
+              .filter(d -> d.isText())
+              .map(d -> d.asText().text())
               .collect(Collectors.toList());
 
       assertThat(chunks).containsExactly("Hello", "!", " How can I", " assist", " you today?");
@@ -182,11 +191,8 @@ class AnthropicClientTest {
   @Test
   void testStreamChatCompletionReturnsStopReason() throws IOException {
     final var inputStream =
-        spy(
-            Objects.requireNonNull(
-                getClass()
-                    .getClassLoader()
-                    .getResourceAsStream("__files/invokeStreamResponse.txt")));
+        Objects.requireNonNull(
+            getClass().getClassLoader().getResourceAsStream("__files/invokeStreamResponse.txt"));
 
     final var httpClient = mock(HttpClient.class);
     ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
@@ -198,33 +204,47 @@ class AnthropicClientTest {
 
     doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
-    final var request =
-        new AnthropicChatCompletionRequest().withUserMessage("Hello!").withMaxTokens(256);
+    final var params =
+        MessageCreateParams.builder()
+            .model("claude-3-haiku-20240307")
+            .maxTokens(256)
+            .addUserMessage("Hello!")
+            .build();
 
-    try (var stream = client.streamChatCompletion(request)) {
-      final var allDeltas = stream.collect(Collectors.toList());
-      final var stopDelta = allDeltas.stream().filter(d -> d.getStopReason() != null).findFirst();
+    try (var stream = client.client().messages().createStreaming(params)) {
+      final var stopReason =
+          stream.stream()
+              .filter(e -> e.isMessageDelta())
+              .map(e -> e.asMessageDelta().delta().stopReason())
+              .filter(r -> r.isPresent())
+              .map(r -> r.get())
+              .findFirst();
 
-      assertThat(stopDelta).isPresent();
-      assertThat(stopDelta.get().getStopReason()).isEqualTo("end_turn");
+      assertThat(stopReason).hasValue(StopReason.END_TURN);
     }
   }
 
   @Test
   void testErrorHandling() {
-    final var errorJson =
-        """
-        {"type":"error","error":{"type":"invalid_request_error","message":"max_tokens is required"}}
-        """;
     stubFor(
         post(anyUrl())
             .willReturn(
-                badRequest().withBody(errorJson).withHeader("Content-Type", "application/json")));
+                badRequest()
+                    .withBody(
+                        """
+                        {"type":"error","error":{"type":"invalid_request_error","message":"max_tokens is required"}}
+                        """)
+                    .withHeader("Content-Type", "application/json")));
 
-    final var request = new AnthropicChatCompletionRequest().withUserMessage("Hello!");
+    final var params =
+        MessageCreateParams.builder()
+            .model("claude-3-haiku-20240307")
+            .maxTokens(256)
+            .addUserMessage("Hello!")
+            .build();
 
-    assertThatThrownBy(() -> client.chatCompletion(request))
-        .isInstanceOf(AnthropicClientException.class)
+    assertThatThrownBy(() -> client.client().messages().create(params))
+        .isInstanceOf(AnthropicException.class)
         .hasMessageContaining("400");
   }
 
@@ -232,49 +252,15 @@ class AnthropicClientTest {
   void testServerError() {
     stubFor(post(anyUrl()).willReturn(serverError()));
 
-    final var request = new AnthropicChatCompletionRequest().withUserMessage("Hello!");
+    final var params =
+        MessageCreateParams.builder()
+            .model("claude-3-haiku-20240307")
+            .maxTokens(256)
+            .addUserMessage("Hello!")
+            .build();
 
-    assertThatThrownBy(() -> client.chatCompletion(request))
-        .isInstanceOf(AnthropicClientException.class)
+    assertThatThrownBy(() -> client.client().messages().create(params))
+        .isInstanceOf(AnthropicException.class)
         .hasMessageContaining("500");
-  }
-
-  @Test
-  void testAnthropicMessage() {
-    final var userMsg = AnthropicChatMessage.ofUser("Hello");
-    assertThat(userMsg.getRole()).isEqualTo(AnthropicChatMessage.Role.USER);
-    assertThat(userMsg.getContent()).hasSize(1);
-    assertThat(userMsg.getContent().get(0).getText()).isEqualTo("Hello");
-
-    final var assistantMsg = AnthropicChatMessage.ofAssistant("Hi there");
-    assertThat(assistantMsg.getRole()).isEqualTo(AnthropicChatMessage.Role.ASSISTANT);
-    assertThat(assistantMsg.getContent().get(0).getText()).isEqualTo("Hi there");
-  }
-
-  @Test
-  void testAnthropicDeltaGetContent() {
-    final var delta = new AnthropicChatCompletionDelta();
-    assertThat(delta.getDeltaContent()).isEmpty();
-    assertThat(delta.getStopReason()).isNull();
-
-    final var innerDelta = new AnthropicChatCompletionDelta.Delta().setText("Hello");
-    delta.setDelta(innerDelta);
-    assertThat(delta.getDeltaContent()).isEqualTo("Hello");
-  }
-
-  @Test
-  void testEmptyContentResponse() {
-    final var response = new AnthropicChatCompletionResponse();
-    assertThat(response.getContent()).isEmpty();
-
-    final var responseWithEmptyList = new AnthropicChatCompletionResponse();
-    responseWithEmptyList.setContent(List.of());
-    assertThat(responseWithEmptyList.getContent()).isEmpty();
-  }
-
-  @Test
-  void testRequestAnthropicVersionDefault() {
-    final var request = new AnthropicChatCompletionRequest();
-    assertThat(request.getAnthropicVersion()).isEqualTo("bedrock-2023-05-31");
   }
 }

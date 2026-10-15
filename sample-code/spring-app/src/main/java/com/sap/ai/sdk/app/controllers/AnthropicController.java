@@ -20,7 +20,11 @@ public class AnthropicController {
   @GetMapping("/anthropic/chatCompletion")
   @Nonnull
   String chatCompletion() {
-    return service.chatCompletion("What is the capital of France?").getContent();
+    final var message = service.chatCompletion("What is the capital of France?");
+    return message.content().stream()
+        .filter(block -> block.isText())
+        .map(block -> block.text().map(t -> t.text()).orElse(""))
+        .reduce("", String::concat);
   }
 
   /** Streaming chat completion request to Anthropic Claude. */
@@ -31,18 +35,20 @@ public class AnthropicController {
     final var stream = service.streamChatCompletion("What is the capital of France?");
     new Thread(
             () -> {
-              try {
-                stream.forEach(
-                    delta -> {
-                      final var content = delta.getDeltaContent();
-                      if (!content.isEmpty()) {
-                        try {
-                          emitter.send(content);
-                        } catch (final Exception e) {
-                          emitter.completeWithError(e);
-                        }
-                      }
-                    });
+              try (stream) {
+                stream.stream()
+                    .filter(event -> event.isContentBlockDelta())
+                    .map(event -> event.asContentBlockDelta().delta())
+                    .filter(delta -> delta.isText())
+                    .map(delta -> delta.asText().text())
+                    .forEach(
+                        text -> {
+                          try {
+                            emitter.send(text);
+                          } catch (final Exception e) {
+                            emitter.completeWithError(e);
+                          }
+                        });
                 emitter.complete();
               } catch (final Exception e) {
                 emitter.completeWithError(e);
