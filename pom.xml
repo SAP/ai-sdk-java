@@ -36,6 +36,7 @@
     <module>core-services/prompt-registry</module>
     <module>foundation-models/openai</module>
     <module>foundation-models/sap-rpt</module>
+    <module>foundation-models/anthropic</module>
   </modules>
   <scm>
     <connection>scm:git:git://github.com/SAP/ai-sdk-java.git</connection>
@@ -80,6 +81,7 @@
     <commons-codec.version>1.22.1</commons-codec.version>
     <japicmp.version>0.26.3</japicmp.version>
     <openai-java.version>4.76.0</openai-java.version>
+    <anthropic-java.version>2.72.0</anthropic-java.version>
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.4</httpcomponents-core5.version>
     <httpcomponents-client5.version>5.6.4</httpcomponents-client5.version>
@@ -348,6 +350,11 @@
       </dependency>
       <dependency>
         <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+        <artifactId>anthropic</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.sap.ai.sdk.foundationmodels</groupId>
         <artifactId>sap-rpt</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -365,6 +372,17 @@
         <groupId>com.openai</groupId>
         <artifactId>openai-java-core</artifactId>
         <version>${openai-java.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.anthropic</groupId>
+        <artifactId>anthropic-java-core</artifactId>
+        <version>${anthropic-java.version}</version>
+      </dependency>
+      <!-- Align swagger-annotations between openai-java-core and anthropic-java-core -->
+      <dependency>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>2.2.50</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
