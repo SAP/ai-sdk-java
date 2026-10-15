@@ -37,7 +37,6 @@ import lombok.val;
 public class LocalPromptTemplate extends PromptTemplate
 {
 
-  /** Please use {@link #withMessages(Message...)} instead. */
   @JsonProperty("template")
   @Nullable
   @With(AccessLevel.PRIVATE)
