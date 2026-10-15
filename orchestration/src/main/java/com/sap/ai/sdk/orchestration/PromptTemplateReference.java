@@ -22,8 +22,7 @@ import lombok.With;
 @Value
 @With
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class PromptTemplateReference extends PromptTemplate
-{
+public class PromptTemplateReference extends PromptTemplate {
   @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
   @Nonnull
   @With(AccessLevel.PRIVATE)
@@ -44,12 +43,17 @@ public class PromptTemplateReference extends PromptTemplate
   protected PromptTemplatingModuleConfigPrompt toLowLevel() {
     if (reference instanceof TemplateRefByID idRef) {
       final var valueById = TemplateRefByID.ScopeEnum.valueOf(scope.name());
-      idRef.setScope(valueById);
-      return TemplateRef.create().templateRef(idRef);
+      return TemplateRef.create()
+          .templateRef(TemplateRefByID.create().id(idRef.getId()).scope(valueById));
     } else if (reference instanceof TemplateRefByScenarioNameVersion scenarioRef) {
       final var valueByScenario = TemplateRefByScenarioNameVersion.ScopeEnum.valueOf(scope.name());
-      scenarioRef.setScope(valueByScenario);
-      return TemplateRef.create().templateRef(scenarioRef);
+      return TemplateRef.create()
+          .templateRef(
+              TemplateRefByScenarioNameVersion.create()
+                  .scenario(scenarioRef.getScenario())
+                  .name(scenarioRef.getName())
+                  .version(scenarioRef.getVersion())
+                  .scope(valueByScenario));
     } else {
       throw new IllegalStateException(
           "Unsupported template reference type: " + reference.getClass());

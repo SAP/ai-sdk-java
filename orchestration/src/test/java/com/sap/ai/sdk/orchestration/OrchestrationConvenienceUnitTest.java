@@ -1,6 +1,5 @@
 package com.sap.ai.sdk.orchestration;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.PromptTemplateReference.ScopeEnum.RESOURCE_GROUP;
 import static com.sap.ai.sdk.orchestration.PromptTemplateReference.ScopeEnum.TENANT;
 import static com.sap.ai.sdk.orchestration.model.UserChatMessage.RoleEnum.USER;
@@ -205,26 +204,23 @@ public class OrchestrationConvenienceUnitTest {
     val schemaMap = generateSchemaMap();
 
     var configWithResponseSchemaFromClass =
-        new OrchestrationModuleConfig(GPT_4O)
-            .withTemplateConfig(
-                PromptTemplate.template()
-                    .withJsonSchemaResponse(
-                        schemaFromClass.withDescription("Description").withStrict(true)));
+        PromptTemplate.create("Hello")
+            .withJsonSchemaResponse(
+                schemaFromClass.withDescription("Description").withStrict(true));
     var configWithResponseSchemaLowLevel =
-        new OrchestrationModuleConfig(GPT_4O)
-            .withTemplateConfig(
-                Template.create()
-                    .template(List.of())
-                    .responseFormat(
-                        ResponseFormatJsonSchema.create()
-                            .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
-                            .jsonSchema(
-                                ResponseFormatJsonSchemaJsonSchema.create()
-                                    .name("TestClassForSchemaGeneration-Schema")
-                                    .schema(schemaMap)
-                                    .strict(true)
-                                    .description("Description"))));
-    assertThat(configWithResponseSchemaFromClass).isEqualTo(configWithResponseSchemaLowLevel);
+        Template.create()
+            .template(List.of(Message.user("Hello").createChatMessage()))
+            .responseFormat(
+                ResponseFormatJsonSchema.create()
+                    .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
+                    .jsonSchema(
+                        ResponseFormatJsonSchemaJsonSchema.create()
+                            .name("TestClassForSchemaGeneration-Schema")
+                            .schema(schemaMap)
+                            .strict(true)
+                            .description("Description")));
+    assertThat(configWithResponseSchemaFromClass.toLowLevel())
+        .isEqualTo(configWithResponseSchemaLowLevel);
   }
 
   @Test
@@ -258,19 +254,21 @@ public class OrchestrationConvenienceUnitTest {
 
   @Test
   void testTemplateReferenceConstruction() {
-    var templateReferenceId = PromptTemplate.reference().byId("id")
-.andInputParameters(Map.of());
+    var templateReferenceId = PromptTemplate.reference().byId("id").andInputParameters(Map.of());
     var expectedTemplateReferenceId =
-        new PromptTemplateReference(TemplateRefByID.create().id("id"), TENANT);
+        new PromptTemplateReference(TemplateRefByID.create().id("id"), TENANT, Map.of());
     var templateReferenceIdLowLevel =
         TemplateRef.create().templateRef(TemplateRefByID.create().id("id"));
     assertThat(templateReferenceId).isEqualTo(expectedTemplateReferenceId);
     assertThat(templateReferenceId.toLowLevel()).isEqualTo(templateReferenceIdLowLevel);
 
-    templateReferenceId = PromptTemplate.reference().byId("id")
-.andInputParameters(Map.of()).withScope(RESOURCE_GROUP);
+    templateReferenceId =
+        PromptTemplate.reference()
+            .byId("id")
+            .andInputParameters(Map.of())
+            .withScope(RESOURCE_GROUP);
     expectedTemplateReferenceId =
-        new PromptTemplateReference(TemplateRefByID.create().id("id"), RESOURCE_GROUP);
+        new PromptTemplateReference(TemplateRefByID.create().id("id"), RESOURCE_GROUP, Map.of());
     templateReferenceIdLowLevel =
         TemplateRef.create()
             .templateRef(
@@ -283,6 +281,7 @@ public class OrchestrationConvenienceUnitTest {
             .byScenario("scenario")
             .name("name")
             .version("version")
+            .andInputParameters(Map.of())
             .withScope(TENANT);
     var expectedTemplateReferenceScenarioNameVersion =
         new PromptTemplateReference(
@@ -290,7 +289,8 @@ public class OrchestrationConvenienceUnitTest {
                 .scenario("scenario")
                 .name("name")
                 .version("version"),
-            TENANT);
+            TENANT,
+            Map.of());
     var templateReferenceScenarioNameVersionLowLevel =
         TemplateRef.create()
             .templateRef(
@@ -308,6 +308,7 @@ public class OrchestrationConvenienceUnitTest {
             .byScenario("scenario")
             .name("name")
             .version("version")
+            .andInputParameters(Map.of())
             .withScope(RESOURCE_GROUP);
     var scopeScenario = TemplateRefByScenarioNameVersion.ScopeEnum.RESOURCE_GROUP;
     expectedTemplateReferenceScenarioNameVersion =
@@ -316,7 +317,8 @@ public class OrchestrationConvenienceUnitTest {
                 .scenario("scenario")
                 .name("name")
                 .version("version"),
-            RESOURCE_GROUP);
+            RESOURCE_GROUP,
+            Map.of());
     templateReferenceScenarioNameVersionLowLevel =
         TemplateRef.create()
             .templateRef(

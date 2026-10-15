@@ -37,12 +37,7 @@ public class OrchestrationConfigReference {
       return this;
     }
     return new OrchestrationConfigReference(
-        id,
-        scenario,
-        name,
-        version,
-        inputParameters,
-        messagesHistory);
+        id, scenario, name, version, inputParameters, messagesHistory);
   }
 
   /**
@@ -58,11 +53,7 @@ public class OrchestrationConfigReference {
       return this;
     }
     return new OrchestrationConfigReference(
-        id,
-        scenario,
-        name,
-        version,
-        inputParameters, messageHistory);
+        id, scenario, name, version, inputParameters, messageHistory);
   }
 
   /**
@@ -73,7 +64,7 @@ public class OrchestrationConfigReference {
    */
   @Nonnull
   public static OrchestrationConfigReference fromId(@Nonnull final String id) {
-    return new OrchestrationConfigReference(id, null, null, null, null, null);
+    return new OrchestrationConfigReference(id, null, null, null, Map.of(), List.of());
   }
 
   /**
@@ -85,7 +76,10 @@ public class OrchestrationConfigReference {
   @Nonnull
   public static Builder fromScenario(@Nonnull final String scenario) {
     return name ->
-        version -> inputParameters -> new OrchestrationConfigReference(null, scenario, name, version, inputParameters, List.of());
+        version ->
+            inputParameters ->
+                new OrchestrationConfigReference(
+                    null, scenario, name, version, inputParameters, List.of());
   }
 
   /**
@@ -122,18 +116,17 @@ public class OrchestrationConfigReference {
     Builder2 version(@Nonnull final String version);
   }
 
-  /**
-   * Intermediate object to build a config reference with the given scenario, name, and version.
-   */
+  /** Intermediate object to build a config reference with the given scenario, name, and version. */
   @FunctionalInterface
   public interface Builder2 {
     /**
      * Build a config reference with the given scenario, name, and version.
      *
-     * @param inputParameters the input parameters of the config.
+     * @param inputParameters the placeholder values for the config.
      * @return a config reference with the given scenario, name, and version.
      */
     @Nonnull
-    OrchestrationConfigReference andInputParameters(@Nonnull final Map<String, String> inputParameters);
+    OrchestrationConfigReference andInputParameters(
+        @Nonnull final Map<String, String> inputParameters);
   }
 }

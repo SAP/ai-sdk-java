@@ -12,7 +12,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.PromptTemplate;
-import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
+import com.sap.ai.sdk.orchestration.model.FunctionObject;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -247,49 +248,46 @@ class OrchestrationChatOptionsTest {
   }
 
   @Test
-  void testGetConfigWithCallbacksNoCallbacks() {
+  void testWithCallbacksNoCallbacks() {
     var opts = baseOpts();
-    var config = opts.getConfigWithCallbacks();
+    var template = PromptTemplate.create("Hello");
 
-    assertThat(config).isSameAs(opts.getConfig());
+    assertThat(opts.withCallbacks(template)).isSameAs(template);
   }
 
   @Test
-  void testGetConfigWithCallbacksInjectsTools() {
+  void testWithCallbacksInjectsTools() {
     var opts =
         baseOpts().mutate().toolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod()))).build();
-    var config = opts.getConfigWithCallbacks();
-
-    assertThat(config).isNotSameAs(opts.getConfig());
-    var template = (Template) config.getTemplateConfig();
+    var template = opts.withCallbacks(PromptTemplate.create("Hello"));
     assertThat(template.getTools()).hasSize(1);
     assertThat(template.getTools().get(0).getFunction().getName()).isEqualTo("getCurrentWeather");
   }
 
   @Test
-  void testGetConfigWithCallbacksMergesWithExistingTools() {
-    var existingTemplate = PromptTemplate.template().withTools(List.of());
-    var configWithTemplate =
-        new OrchestrationModuleConfig(GEMINI_2_5_FLASH).withTemplateConfig(existingTemplate);
+  void testWithCallbacksMergesWithExistingTools() {
+    var tool =
+        ChatCompletionTool.create()
+            .type(ChatCompletionTool.TypeEnum.FUNCTION)
+            .function(FunctionObject.create().name("existing"));
+    var existingTemplate =
+        PromptTemplate.create("Hello").withTools(List.of(tool)).withJsonResponse();
     var opts =
-        new OrchestrationChatOptions(configWithTemplate)
-            .mutate()
-            .toolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())))
-            .build();
+        baseOpts().mutate().toolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod()))).build();
 
-    var config = opts.getConfigWithCallbacks();
-
-    var template = (Template) config.getTemplateConfig();
-    assertThat(template.getTools()).hasSize(1);
-    assertThat(template.getTools().get(0).getFunction().getName()).isEqualTo("getCurrentWeather");
+    var template = opts.withCallbacks(existingTemplate);
+    assertThat(template.getTools()).hasSize(2).startsWith(tool);
+    assertThat(template.getTools().get(1).getFunction().getName()).isEqualTo("getCurrentWeather");
+    assertThat(template.getChatMessages()).isEqualTo(existingTemplate.getChatMessages());
+    assertThat(template.getResponseFormat()).isEqualTo(existingTemplate.getResponseFormat());
   }
 
   @Test
-  void testGetConfigWithCallbacksDoesNotMutateOriginalConfig() {
+  void testWithCallbacksDoesNotMutateOriginalTemplate() {
     var opts =
         baseOpts().mutate().toolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod()))).build();
-    opts.getConfigWithCallbacks();
-
-    assertThat(opts.getConfig().getTemplateConfig()).isNull();
+    var template = PromptTemplate.create("Hello").withTools(List.of());
+    opts.withCallbacks(template);
+    assertThat(template.getTools()).isEmpty();
   }
 }

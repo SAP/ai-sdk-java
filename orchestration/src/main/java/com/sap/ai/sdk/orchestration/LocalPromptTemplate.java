@@ -19,7 +19,6 @@ import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.With;
 import lombok.val;
@@ -33,10 +32,7 @@ import lombok.val;
 @Value
 @With
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-public class LocalPromptTemplate extends PromptTemplate
-{
-
+public class LocalPromptTemplate extends PromptTemplate {
   @JsonProperty("template")
   @Nullable
   @With(AccessLevel.PRIVATE)
@@ -59,6 +55,12 @@ public class LocalPromptTemplate extends PromptTemplate
   @JsonProperty("tools")
   @Nullable
   List<ChatCompletionTool> tools;
+
+  /** Fixes a bug where messageHistory is set to null in lombok's generated constructor. */
+  @SuppressWarnings("unused")
+  private LocalPromptTemplate() {
+    this(null, List.of(), Map.of(), null, null, null);
+  }
 
   /**
    * Create a new template with the given messages.

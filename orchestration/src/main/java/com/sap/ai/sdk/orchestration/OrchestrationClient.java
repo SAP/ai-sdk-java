@@ -71,14 +71,14 @@ public class OrchestrationClient {
    * Convert the given prompt and config into a low-level request data object. The data object
    * allows for further customization before sending the request.
    *
-   * @param template the {@link OrchestrationPrompt} to generate a completion for.
+   * @param template the {@link PromptTemplate} to generate a completion for.
    * @param config the {@link OrchestrationConfig } configuration to use for the completion.
    * @param fallbackConfigs fallback configurations to use.
    * @return the low-level request data object to send to orchestration.
    */
   @Nonnull
   public static CompletionRequestConfiguration toCompletionPostRequest(
-      @Nonnull final LocalPromptTemplate template,
+      @Nonnull final PromptTemplate template,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
     return ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
@@ -92,11 +92,7 @@ public class OrchestrationClient {
    * │
    * ├── config(config, fallbackConfigs...)
    * │   │
-   * │   ├── template(template)
-   * │   │   ├── execute()
-   * │   │   └── executeStream()
-   * │   │
-   * │   └── templateReference(templateRef)
+   * │   └── promptTemplate(templateOrReference)
    * │       ├── execute()
    * │       └── executeStream()
    * │
@@ -107,38 +103,66 @@ public class OrchestrationClient {
    *
    * @return a builder to configure the chat completion
    */
+  @Nonnull
   public OrchestrationChatCompletionBuilder chatCompletion() {
     return new OrchestrationChatCompletionBuilder();
   }
 
+  /** Builder to select a local or referenced orchestration configuration for a chat completion. */
   @AllArgsConstructor
   public class OrchestrationChatCompletionBuilder {
 
+    /**
+     * Configure the chat completion using a local orchestration configuration.
+     *
+     * @param config the primary orchestration configuration.
+     * @param fallbackConfigs fallback configurations to use.
+     * @return a builder to select the prompt template.
+     */
+    @Nonnull
     public BuilderWithConfig config(
-        OrchestrationModuleConfig config, OrchestrationModuleConfig... fallbackConfigs) {
+        @Nonnull final OrchestrationModuleConfig config,
+        @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
       return new BuilderWithConfig(config, fallbackConfigs);
     }
 
+    /**
+     * Configure the chat completion using a stored orchestration configuration.
+     *
+     * @param configReference the reference to the stored orchestration configuration.
+     * @return a client to execute the configured chat completion.
+     */
+    @Nonnull
     public OrchestrationChatCompletionClient configReference(
-        OrchestrationConfigReference configReference) {
+        @Nonnull final OrchestrationConfigReference configReference) {
       val request =
           ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(configReference);
       return new OrchestrationChatCompletionClient(request);
     }
   }
 
+  /** Intermediate builder to select a prompt template for a local orchestration configuration. */
   @AllArgsConstructor
   public class BuilderWithConfig {
     OrchestrationModuleConfig config;
     OrchestrationModuleConfig[] fallbackConfigs;
 
-    public OrchestrationChatCompletionClient promptTemplate( PromptTemplate template) {
+    /**
+     * Set the prompt template for the chat completion.
+     *
+     * @param template the local prompt template or prompt template reference.
+     * @return a client to execute the configured chat completion.
+     */
+    @Nonnull
+    public OrchestrationChatCompletionClient promptTemplate(
+        @Nonnull final PromptTemplate template) {
       val request =
           ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
       return new OrchestrationChatCompletionClient(request);
     }
   }
 
+  /** Client to execute a configured chat completion with a regular or streaming response. */
   @AllArgsConstructor
   public class OrchestrationChatCompletionClient {
 

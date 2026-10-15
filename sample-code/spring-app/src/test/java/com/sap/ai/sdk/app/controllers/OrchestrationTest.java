@@ -860,8 +860,7 @@ class OrchestrationTest {
     // Feed the whole history (which carries the previous reasoning content internally) into the
     // follow-up turn.
     val followUpTemplate =
-        PromptTemplate.create("Are you sure?")
-            .withMessageHistory(firstResponse.getAllMessages());
+        PromptTemplate.create("Are you sure?").withMessageHistory(firstResponse.getAllMessages());
     val followUp =
         orchestrationClient
             .chatCompletion()

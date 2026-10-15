@@ -152,8 +152,9 @@ public class OrchestrationChatResponse {
   /**
    * Transform a JSON response into an entity of the given type.
    *
-   * <p>This is possible on a request with a {@link LocalPromptTemplate#withJsonSchemaResponse}
-   * configured into {@link OrchestrationModuleConfig#withTemplateConfig}.
+   * <p>This is possible on a request using a {@link LocalPromptTemplate#withJsonSchemaResponse}
+   * template passed to {@link
+   * OrchestrationClient.BuilderWithConfig#promptTemplate(PromptTemplate)}.
    *
    * @param type the class type to deserialize the JSON content into.
    * @param <T> the type of the entity to deserialize to.

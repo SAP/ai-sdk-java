@@ -10,12 +10,12 @@ import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.get
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sap.ai.sdk.orchestration.LocalPromptTemplate;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool.TypeEnum;
 import com.sap.ai.sdk.orchestration.model.FunctionObject;
 import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
-import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -373,33 +373,24 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
   }
 
   /**
-   * Returns the config with any tool callbacks converted and injected into the template.
+   * Returns the template with tool callbacks converted and injected.
    *
-   * @return the config enriched with tool definitions from {@link #getToolCallbacks()}
+   * @param template the prompt template to enrich
+   * @return the template enriched with tool definitions from {@link #getToolCallbacks()}
    */
   @Nonnull
-  public OrchestrationModuleConfig getConfigWithCallbacks() {
+  public LocalPromptTemplate withCallbacks(@Nonnull final LocalPromptTemplate template) {
     if (toolCallbacks.isEmpty()) {
-      return config;
+      return template;
     }
     final List<ChatCompletionTool> converted =
         toolCallbacks.stream().map(OrchestrationChatOptions::toOrchestrationTool).toList();
-    final var existingTemplate = config.getTemplateConfig() instanceof Template t ? t : null;
     final var mergedTools = new ArrayList<ChatCompletionTool>();
-    if (existingTemplate != null && existingTemplate.getTools() != null) {
-      mergedTools.addAll(existingTemplate.getTools());
+    if (template.getTools() != null) {
+      mergedTools.addAll(template.getTools());
     }
     mergedTools.addAll(converted);
-    final Template newTemplate = Template.create().template(List.of()).tools(mergedTools);
-    if (existingTemplate != null) {
-      if (existingTemplate.getTemplate() != null) {
-        newTemplate.template(existingTemplate.getTemplate());
-      }
-      if (existingTemplate.getDefaults() != null) {
-        newTemplate.defaults(existingTemplate.getDefaults());
-      }
-    }
-    return config.withTemplateConfig(newTemplate);
+    return template.withTools(mergedTools);
   }
 
   private static ChatCompletionTool toOrchestrationTool(@Nonnull final ToolCallback toolCallback) {

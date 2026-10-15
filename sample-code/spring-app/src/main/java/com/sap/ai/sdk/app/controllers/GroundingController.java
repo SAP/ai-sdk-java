@@ -27,11 +27,8 @@ import com.sap.ai.sdk.grounding.model.S3PipelineGetResponse;
 import com.sap.ai.sdk.grounding.model.SFTPPipelineGetResponse;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunk;
 import com.sap.ai.sdk.grounding.model.TextOnlyBaseChunkCreate;
-import com.sap.ai.sdk.grounding.model.TextSearchRequest;
 import com.sap.ai.sdk.grounding.model.VectorDocumentKeyValueListPair;
 import com.sap.ai.sdk.grounding.model.VectorKeyValueListPair;
-import com.sap.ai.sdk.grounding.model.VectorSearchConfiguration;
-import com.sap.ai.sdk.grounding.model.VectorSearchFilter;
 import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
@@ -131,18 +128,6 @@ class GroundingController {
   Object getAllCollections(
       @Nullable @RequestParam(value = "format", required = false) final String format) {
     final var collections = CLIENT_VECTOR.getAllCollections(RESOURCE_GROUP);
-
-    final var collId = collections.getResources().get(0).getId();
-    var filter =
-        VectorSearchFilter.create()
-            .id(UUID.randomUUID().toString())
-            .collectionIds(List.of("*"))
-            ._configuration(VectorSearchConfiguration.create().maxDocumentCount(5));
-
-    var request = TextSearchRequest.create().query("some query").filters(filter);
-
-    CLIENT_VECTOR.search(RESOURCE_GROUP, request);
-
     if ("json".equals(format)) {
       return collections;
     }

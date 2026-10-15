@@ -30,6 +30,14 @@ import lombok.EqualsAndHashCode;
 public abstract class PromptTemplate {
 
   /**
+   * Get the placeholder values supplied for this template.
+   *
+   * @return the placeholder values supplied for this template.
+   */
+  @Nonnull
+  public abstract Map<String, String> getInputParameters();
+
+  /**
    * Create a low-level representation of the template.
    *
    * @return the low-level representation of the template.
@@ -37,7 +45,14 @@ public abstract class PromptTemplate {
   @Nonnull
   protected abstract PromptTemplatingModuleConfigPrompt toLowLevel();
 
-  public static LocalPromptTemplate create(String message) {
+  /**
+   * Build a template containing a single user message.
+   *
+   * @param message the text of the user message.
+   * @return a new template containing the user message.
+   */
+  @Nonnull
+  public static LocalPromptTemplate create(@Nonnull final String message) {
     return create(Message.user(message));
   }
 
@@ -110,14 +125,15 @@ public abstract class PromptTemplate {
    */
   @Nonnull
   public static ReferenceBuilder reference() {
-    final var temp = TemplateRefByScenarioNameVersion.create();
-
     return scenario ->
         name ->
             version ->
                 inputParameters ->
                     new PromptTemplateReference(
-                        temp.scenario(scenario).name(name).version(version),
+                        TemplateRefByScenarioNameVersion.create()
+                            .scenario(scenario)
+                            .name(name)
+                            .version(version),
                         TENANT,
                         inputParameters);
   }
@@ -186,7 +202,7 @@ public abstract class PromptTemplate {
     /**
      * Build a template reference with the given scenario, name, and version.
      *
-     * @param inputParameters the input parameters of the template.
+     * @param inputParameters the placeholder values for the template.
      * @return a template reference with the given scenario, name, and version.
      */
     @Nonnull
