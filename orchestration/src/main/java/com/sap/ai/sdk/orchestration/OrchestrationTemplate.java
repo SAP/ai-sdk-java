@@ -41,10 +41,9 @@ import lombok.val;
 @NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
 public class OrchestrationTemplate extends TemplateConfig {
 
-  /** Please use {@link #withMessages(Message...)} instead. */
   @JsonProperty("template")
   @Nullable
-  @With(onMethod_ = {@Deprecated})
+  @With(AccessLevel.NONE)
   List<ChatMessage> template;
 
   @JsonProperty("defaults")
@@ -69,7 +68,8 @@ public class OrchestrationTemplate extends TemplateConfig {
    */
   @Nonnull
   public OrchestrationTemplate withMessages(@Nonnull final Message... messages) {
-    return this.withTemplate(Stream.of(messages).map(Message::createChatMessage).toList());
+    final var chatMessages = Stream.of(messages).map(Message::createChatMessage).toList();
+    return new OrchestrationTemplate(chatMessages, this.defaults, this.responseFormat, this.tools);
   }
 
   /**
