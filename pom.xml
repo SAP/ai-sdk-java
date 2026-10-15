@@ -115,7 +115,7 @@
     <japicmp.oldVersion.file>/tmp/baseline.jar</japicmp.oldVersion.file>
     <japicmp.newVersion.file>${project.build.directory}/${project.build.finalName}.jar</japicmp.newVersion.file>
     <!-- Minimum supported versions of consumer-facing dependencies, verified by the 'floor-deps' profile -->
-    <floor.cloud-sdk.version>5.28.0</floor.cloud-sdk.version>
+    <floor.cloud-sdk.version>5.27.0</floor.cloud-sdk.version>
     <floor.jackson.version>2.18.0</floor.jackson.version>
     <floor.httpcomponents-core5.version>5.2.1</floor.httpcomponents-core5.version>
     <floor.httpcomponents-client5.version>5.2.1</floor.httpcomponents-client5.version>
