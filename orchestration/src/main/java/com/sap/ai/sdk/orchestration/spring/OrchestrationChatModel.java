@@ -18,11 +18,13 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
+import org.springframework.ai.chat.metadata.Usage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -65,6 +67,12 @@ public class OrchestrationChatModel implements ChatModel {
   @Nonnull
   @Override
   public ChatResponse call(@Nonnull final Prompt prompt) {
+    return callWithAccumulatedUsage(prompt, null);
+  }
+
+  @Nonnull
+  private ChatResponse callWithAccumulatedUsage(
+      @Nonnull final Prompt prompt, @Nullable final Usage previousUsage) {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
       val orchestrationPrompt = toOrchestrationPrompt(prompt);
@@ -73,7 +81,8 @@ public class OrchestrationChatModel implements ChatModel {
               client.chatCompletion(
                   orchestrationPrompt,
                   options.getConfig(),
-                  options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new)));
+                  options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new)),
+              previousUsage);
 
       if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
           && response.hasToolCalls()) {
@@ -86,9 +95,10 @@ public class OrchestrationChatModel implements ChatModel {
 
         val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
 
-        // Send the tool execution result back to the model.
         log.debug("Re-invoking LLM with tool execution results.");
-        return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
+        return callWithAccumulatedUsage(
+            new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()),
+            response.getMetadata().getUsage());
       }
       return response;
     }
