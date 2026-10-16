@@ -19,7 +19,7 @@
 
 ### 📈 Improvements
 
--
+- [Core] Added `AiCoreService.queryModels()` convenience methods to make model discovery more visible. Both the scenario ID (`"foundation-models"`) and resource group (`"default"`) are pre-filled by default. Use `queryModels(scenarioId, resourceGroup)` to specify custom values.
 
 ### 🐛 Fixed Issues
 

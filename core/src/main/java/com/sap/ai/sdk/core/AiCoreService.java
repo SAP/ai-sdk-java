@@ -3,6 +3,8 @@ package com.sap.ai.sdk.core;
 import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.sap.ai.sdk.core.client.ScenarioApi;
+import com.sap.ai.sdk.core.model.AiModelList;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessException;
@@ -116,6 +118,31 @@ public class AiCoreService {
   @Nonnull
   public ApiClient getApiClient() {
     return ApiClient.create(getBaseDestination()).withObjectMapper(objectMapper);
+  }
+
+  /**
+   * Query all foundation models available in SAP AI Core Gen AI Hub for the given scenario id and
+   * resource group.
+   *
+   * @param scenarioId Scenario identifier
+   * @param resourceGroup the resource group to query models for.
+   * @return the list of available models.
+   */
+  @Nonnull
+  public AiModelList queryModels(
+      @Nonnull final String scenarioId, @Nonnull final String resourceGroup) {
+    return new ScenarioApi(this).queryModels(scenarioId, resourceGroup);
+  }
+
+  /**
+   * Query all foundation models available in SAP AI Core Gen AI Hub for the default scenario id and
+   * resource group.
+   *
+   * @return the list of available models.
+   */
+  @Nonnull
+  public AiModelList queryModels() {
+    return queryModels("foundation-models", DEFAULT_RESOURCE_GROUP);
   }
 
   /**
