@@ -16,9 +16,13 @@ import org.springframework.ai.chat.metadata.ChatResponseMetadata;
 import org.springframework.ai.chat.metadata.DefaultUsage;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
+import org.springframework.ai.support.UsageCalculator;
 
 /**
  * Response from the orchestration service in a Spring AI {@link ChatResponse}.
+ *
+ * <p>For blocking calls that execute tools internally, the usage metadata covers every request made
+ * for the call, while {@link #getOrchestrationResponse()} describes the final request only.
  *
  * @since 1.2.0
  */
@@ -34,6 +38,34 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
         toGenerations(orchestrationResponse.getOriginalResponse().getFinalResult()),
         toChatResponseMetadata(orchestrationResponse.getOriginalResponse().getFinalResult()));
     this.orchestrationResponse = orchestrationResponse;
+  }
+
+  private OrchestrationSpringChatResponse(
+      @Nonnull final OrchestrationSpringChatResponse response,
+      @Nonnull final ChatResponseMetadata metadata) {
+    super(response.getResults(), metadata);
+    this.orchestrationResponse = response.getOrchestrationResponse();
+  }
+
+  /**
+   * Returns the response that followed this response's tool calls, with this response's usage added
+   * to its usage.
+   */
+  @Nonnull
+  ChatResponse withCumulativeUsage(@Nonnull final ChatResponse nextResponse) {
+    val metadata = nextResponse.getMetadata();
+    val builder =
+        ChatResponseMetadata.builder()
+            .id(metadata.getId())
+            .model(metadata.getModel())
+            .rateLimit(metadata.getRateLimit())
+            .promptMetadata(metadata.getPromptMetadata())
+            .usage(UsageCalculator.getCumulativeUsage(metadata.getUsage(), this));
+    metadata.entrySet().forEach(entry -> builder.keyValue(entry.getKey(), entry.getValue()));
+    if (nextResponse instanceof OrchestrationSpringChatResponse response) {
+      return new OrchestrationSpringChatResponse(response, builder.build());
+    }
+    return new ChatResponse(nextResponse.getResults(), builder.build());
   }
 
   @Nonnull
