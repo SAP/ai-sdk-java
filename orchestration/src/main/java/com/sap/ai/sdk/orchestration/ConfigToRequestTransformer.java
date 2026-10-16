@@ -1,6 +1,9 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.google.common.collect.Lists;
+import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessage;
+import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
@@ -10,14 +13,16 @@ import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenc
 import com.sap.ai.sdk.orchestration.model.ModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfigModules;
-import com.sap.ai.sdk.orchestration.model.OrchestrationConfigModules.InnerModuleConfigs;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
+import com.sap.ai.sdk.orchestration.model.SystemChatMessage;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
+import com.sap.ai.sdk.orchestration.model.ToolChatMessage;
 import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import io.vavr.control.Option;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 import javax.annotation.Nonnull;
@@ -31,156 +36,152 @@ import lombok.val;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.NONE)
 final class ConfigToRequestTransformer {
+
   @Nonnull
   static CompletionRequestConfiguration toCompletionPostRequest(
-      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final PromptTemplate template,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
 
-    final var cachingConfig = ModelPromptCachingSupport.forModel(config.getLlmConfig().getName());
-    final UnaryOperator<OrchestrationModuleConfig> copyWithImmutableTemplateConfig =
-        c ->
-            c.withTemplateConfig(
-                toTemplateModuleConfig(prompt, cachingConfig, c.getTemplateConfig()));
-    val configList = Lists.asList(config, fallbackConfigs);
-    val configsCopy = Lists.transform(configList, copyWithImmutableTemplateConfig::apply);
-
+    val modules =
+        Lists.asList(config, fallbackConfigs).stream()
+            .map(
+                c ->
+                    setupModuleConfigs(
+                        c,
+                        toTemplateModuleConfig(
+                            template,
+                            ModelPromptCachingSupport.forModel(c.getLlmConfig().getName()))))
+            .toList();
     val messageHistory =
-        prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
+        template instanceof LocalPromptTemplate local
+            ? local.getMessageHistory().stream().map(Message::createChatMessage).toList()
+            : List.<ChatMessage>of();
 
     final OrchestrationConfigModules moduleConfigs =
-        configsCopy.size() == 1
-            ? toModuleConfigs(configsCopy.get(0))
-            : toListOfModuleConfigs(configsCopy);
+        modules.size() == 1
+            ? OrchestrationConfigModules.createInnerModuleConfigs(modules.get(0))
+            : OrchestrationConfigModules.createListOfModuleConfigss(modules);
 
     val requestConfig =
         OrchestrationConfig.create().modules(moduleConfigs).stream(config.getGlobalStreamOptions());
 
     return CompletionRequestConfiguration.create()
         .config(requestConfig)
-        .placeholderValues(prompt.getTemplateParameters())
+        .placeholderValues(template.getInputParameters())
         .messagesHistory(messageHistory);
   }
 
   @Nonnull
   static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
-      @Nonnull final OrchestrationPrompt prompt,
-      @Nullable final PromptTemplatingModuleConfigPrompt config) {
-    return toTemplateModuleConfig(prompt, ModelPromptCachingSupport.noCaching(), config);
+      @Nonnull final PromptTemplate prompt) {
+    return toTemplateModuleConfig(prompt, ModelPromptCachingSupport.noCaching());
   }
 
   @Nonnull
   static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
-      @Nonnull final OrchestrationPrompt prompt,
-      @Nonnull final ModelPromptCachingSupport cachingConfig,
-      @Nullable final PromptTemplatingModuleConfigPrompt config) {
-    /*
-     * Currently, we have to merge the prompt into the template configuration.
-     * This works around the limitation that the template config is required.
-     * This comes at the risk that the prompt unintentionally contains the templating pattern "{{? .. }}".
-     * In this case, the request will fail, since the templating module will try to resolve the parameter.
-     * To be fixed with https://github.tools.sap/AI/llm-orchestration/issues/662
-     */
+      @Nonnull final PromptTemplate prompt,
+      @Nonnull final ModelPromptCachingSupport cachingConfig) {
+    val config = prompt.toLowLevel();
     if (config instanceof TemplateRef) {
       return config;
     }
-
-    val template = config instanceof Template t ? t : Template.create().template();
-    val messages = template.getTemplate();
-    val messagesWithPrompt = new ArrayList<>(messages);
-
-    final var promptMessages = withCachingConstraintsApplied(prompt.getMessages(), cachingConfig);
-
-    messagesWithPrompt.addAll(promptMessages.stream().map(Message::createChatMessage).toList());
-    if (messagesWithPrompt.isEmpty()) {
+    if (!(config instanceof Template template)) {
+      throw new IllegalArgumentException("Unsupported prompt template: " + config.getClass());
+    }
+    if (template.getTemplate() == null || template.getTemplate().isEmpty()) {
       throw new IllegalStateException(
           "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
     }
-
+    // Copy the entire template, including custom fields, before adjusting cache checkpoints.
     val result =
-        Template.create()
-            .template(messagesWithPrompt)
-            .tools(template.getTools())
-            .defaults(template.getDefaults())
-            .responseFormat(template.getResponseFormat());
-
-    for (val customFieldName : template.getCustomFieldNames()) {
-      result.setCustomField(customFieldName, template.toMap().get(customFieldName));
+        OrchestrationJacksonConfiguration.getOrchestrationObjectMapper()
+            .convertValue(template, Template.class);
+    val constraints = cachingConstraints(cachingConfig);
+    for (val message : result.getTemplate()) {
+      if (message instanceof UserChatMessage user
+          && user.getContent()
+              instanceof UserChatMessageContent.ListOfUserChatMessageContentItems items) {
+        for (val item : items.values()) {
+          item.setCacheControl(
+              adjustCacheControl(item.getText(), item.getCacheControl(), constraints));
+        }
+      } else {
+        final ChatMessageContent content =
+            message instanceof SystemChatMessage system
+                ? system.getContent()
+                : message instanceof ToolChatMessage tool
+                    ? tool.getContent()
+                    : message instanceof AssistantChatMessage assistant
+                        ? assistant.getContent()
+                        : null;
+        if (content instanceof ChatMessageContent.ListOfTextContents items) {
+          for (val item : items.values()) {
+            item.setCacheControl(
+                message instanceof AssistantChatMessage
+                    ? null
+                    : adjustCacheControl(item.getText(), item.getCacheControl(), constraints));
+          }
+        }
+      }
     }
     return result;
   }
 
-  static List<Message> withCachingConstraintsApplied(
-      @Nonnull final List<Message> promptMessages,
-      @Nonnull final ModelPromptCachingSupport cachingConfig) {
-    final var outputMessages = new ArrayList<Message>(promptMessages.size());
-    @SuppressWarnings("PMD.LocalVariableShouldBeFinal") // it is a variable, cannot be final
-    var remainingCacheableCheckpoints = cachingConfig.getMaxCheckpointsPerRequest();
-    for (Message message : promptMessages) {
-      final var contentItems = new ArrayList<ContentItem>(message.content().items().size());
-      final var messageSupportsCache =
-          message instanceof UserMessage
-              || message instanceof SystemMessage
-              || message instanceof ToolMessage;
-      for (int j = 0; j < message.content().items().size(); j++) {
-        var contentItem = message.content().items().get(j);
-        if (contentItem instanceof TextItem textItem) {
-          final var existingCacheControl = textItem.getCacheControl();
-          if (existingCacheControl != null) {
-            if (remainingCacheableCheckpoints <= 0 || !messageSupportsCache) {
-              // skipping text control if there is already too many cache checkpoints
-              contentItem = new TextItem(textItem.text());
-            } else if (cachingConfig.getMinTokensPerCheckpoint()
-                > textItem.getText().chars().filter(c -> c == ' ').count() + 1) {
-              // too few tokens to cache, skipping to respect model limitation
-              contentItem = new TextItem(textItem.text());
-            } else {
-              remainingCacheableCheckpoints--;
-              if (!cachingConfig.supportsTTLValue(existingCacheControl.getTtl())) {
-                contentItem =
-                    new TextItem(
-                        textItem.text(), new CacheControl(cachingConfig.getDefaultTTLValue()));
-              }
-            }
-          }
-        }
-        contentItems.add(contentItem);
-      }
-      if (message instanceof UserMessage) {
-        message = new UserMessage(new MessageContent(contentItems));
-      } else if (message instanceof SystemMessage) {
-        message = new SystemMessage(new MessageContent(contentItems));
-      } else if (message instanceof ToolMessage toolMessage) {
-        message = new ToolMessage(toolMessage.id, toolMessage.content);
-      }
-
-      outputMessages.add(message);
+  @Nullable
+  private static com.sap.ai.sdk.orchestration.model.CacheControl adjustCacheControl(
+      final String text,
+      final com.sap.ai.sdk.orchestration.model.CacheControl cache,
+      final UnaryOperator<TextItem> constraints) {
+    if (cache == null) {
+      return null;
     }
-    return outputMessages;
+    val adjusted =
+        constraints
+            .apply(
+                new TextItem(
+                    text,
+                    new CacheControl(cache.getTtl() == null ? "5m" : cache.getTtl().toString())))
+            .getCacheControl();
+    return adjusted == null
+        ? null
+        : com.sap.ai.sdk.orchestration.model.CacheControl.create()
+            .type(cache.getType())
+            .ttl(
+                com.sap.ai.sdk.orchestration.model.CacheControl.TtlEnum.fromValue(
+                    adjusted.getTtl()));
+  }
+
+  private static UnaryOperator<TextItem> cachingConstraints(
+      final ModelPromptCachingSupport config) {
+    final int[] remaining = {config.getMaxCheckpointsPerRequest()};
+    return item -> {
+      val cache = item.getCacheControl();
+      if (cache == null) {
+        return item;
+      }
+      if (remaining[0] <= 0
+          || config.getMinTokensPerCheckpoint()
+              > item.getText().chars().filter(c -> c == ' ').count() + 1) {
+        return new TextItem(item.text());
+      }
+      remaining[0]--;
+      return config.supportsTTLValue(cache.getTtl())
+          ? item
+          : new TextItem(item.text(), new CacheControl(config.getDefaultTTLValue()));
+    };
   }
 
   @Nonnull
-  static InnerModuleConfigs toModuleConfigs(@Nonnull final OrchestrationModuleConfig config) {
-    return OrchestrationConfigModules.createInnerModuleConfigs(setupModuleConfigs(config));
-  }
-
-  @Nonnull
-  static OrchestrationConfigModules.ListOfModuleConfigss toListOfModuleConfigs(
-      @Nonnull final List<OrchestrationModuleConfig> configs) {
-    return OrchestrationConfigModules.createListOfModuleConfigss(
-        configs.stream().map(ConfigToRequestTransformer::setupModuleConfigs).toList());
-  }
-
-  @Nonnull
-  private static ModuleConfigs setupModuleConfigs(@Nonnull final OrchestrationModuleConfig config) {
+  private static ModuleConfigs setupModuleConfigs(
+      @Nonnull final OrchestrationModuleConfig config,
+      @Nonnull final PromptTemplatingModuleConfigPrompt template) {
     val llmConfig = config.getLlmConfig();
 
     val moduleConfig =
         ModuleConfigs.create()
             .promptTemplating(
-                PromptTemplatingModuleConfig.create()
-                    .model(llmConfig)
-                    .prompt(config.getTemplateConfig()));
+                PromptTemplatingModuleConfig.create().model(llmConfig).prompt(template));
 
     Option.of(config.getFilteringConfig()).forEach(moduleConfig::filtering);
     Option.of(config.getMaskingConfig()).forEach(moduleConfig::masking);
@@ -200,31 +201,25 @@ final class ConfigToRequestTransformer {
   @Nonnull
   static CompletionPostRequest fromReferenceToCompletionPostRequest(
       @Nonnull final OrchestrationConfigReference reference) {
-    final OrchestrationPrompt prompt = reference.getPrompt();
     final var messageHistory =
-        prompt.getMessagesHistory().stream().map(Message::createChatMessage).toList();
-    final var placeholders = prompt.getTemplateParameters();
+        reference.getMessageHistory().stream().map(Message::createChatMessage).toList();
+    final var placeholders = reference.getInputParameters();
 
     if (reference.getId() != null) {
-      final CompletionRequestConfigurationReferenceById request =
-          CompletionRequestConfigurationReferenceById.create()
-              .configRef(
-                  CompletionRequestConfigurationReferenceByIdConfigRef.create()
-                      .id(reference.getId()));
-      request.setMessagesHistory(messageHistory);
-      request.setPlaceholderValues(placeholders);
-      return request;
+      return CompletionRequestConfigurationReferenceById.create()
+          .configRef(
+              CompletionRequestConfigurationReferenceByIdConfigRef.create().id(reference.getId()))
+          .messagesHistory(messageHistory)
+          .placeholderValues(placeholders);
     } else {
-      final CompletionRequestConfigurationReferenceByNameScenarioVersion request =
-          CompletionRequestConfigurationReferenceByNameScenarioVersion.create()
-              .configRef(
-                  CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef.create()
-                      .scenario(reference.getScenario())
-                      .name(reference.getName())
-                      .version(reference.getVersion()));
-      request.setMessagesHistory(messageHistory);
-      request.setPlaceholderValues(placeholders);
-      return request;
+      return CompletionRequestConfigurationReferenceByNameScenarioVersion.create()
+          .configRef(
+              CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef.create()
+                  .scenario(reference.getScenario())
+                  .name(reference.getName())
+                  .version(reference.getVersion()))
+          .messagesHistory(messageHistory)
+          .placeholderValues(placeholders);
     }
   }
 }

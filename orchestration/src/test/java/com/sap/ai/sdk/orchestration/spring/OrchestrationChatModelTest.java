@@ -41,6 +41,8 @@ import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.ai.chat.client.ChatClient;
@@ -133,6 +135,46 @@ class OrchestrationChatModelTest {
       assertThat(deltaList.get(1).getResult().getMetadata().getFinishReason()).isEqualTo("");
       assertThat(deltaList.get(2).getResult().getMetadata().getFinishReason()).isEqualTo("stop");
 
+      Mockito.verify(inputStream, times(1)).close();
+    }
+  }
+
+  @Test
+  void testStreamCancellationClosesResponse() throws IOException {
+    try (var inputStream = spy(fileLoader.apply("streamChatCompletion.txt"))) {
+      var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+      var response = new BasicClassicHttpResponse(200, "OK");
+      response.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
+      response.setHeader("Content-Type", "text/event-stream");
+      doReturn(response).when(httpClient).executeOpen(any(), any(), any());
+
+      assertThat(client.stream(prompt).take(1).collectList().block()).hasSize(1);
+      Mockito.verify(inputStream, times(1)).close();
+    }
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {"streamError.txt", "streamChatCompletionOutputFilter.txt"})
+  void testStreamErrorsAndFilteringCloseResponse(String fixture) throws IOException {
+    try (var inputStream = spy(fileLoader.apply(fixture))) {
+      var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+      var response = new BasicClassicHttpResponse(200, "OK");
+      response.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
+      response.setHeader("Content-Type", "text/event-stream");
+      doReturn(response).when(httpClient).executeOpen(any(), any(), any());
+
+      if (fixture.equals("streamError.txt")) {
+        assertThatThrownBy(() -> client.stream(prompt).collectList().block())
+            .isInstanceOf(com.sap.ai.sdk.orchestration.OrchestrationClientException.class);
+      } else {
+        assertThat(client.stream(prompt).collectList().block())
+            .anySatisfy(
+                delta ->
+                    assertThat(delta.getResult().getMetadata().getFinishReason())
+                        .isEqualTo("content_filter"));
+      }
       Mockito.verify(inputStream, times(1)).close();
     }
   }

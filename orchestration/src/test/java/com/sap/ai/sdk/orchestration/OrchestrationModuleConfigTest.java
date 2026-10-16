@@ -20,12 +20,12 @@ import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfigProviders;
+import com.sap.ai.sdk.orchestration.model.OrchestrationConfigModules;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
-import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -320,22 +320,20 @@ class OrchestrationModuleConfigTest {
   @Test
   void testGroundingPrompt() {
     var prompt = Grounding.create().createGroundingPrompt("Hello, World!");
-    assertThat(prompt.getMessages()).hasSize(1);
-    var message = prompt.getMessages().get(0);
-    assertThat(((TextItem) message.content().items().get(0)).text())
-        .isEqualTo(
-            "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}");
+    assertThat(prompt.getChatMessages())
+        .containsExactly(
+            Message.user(
+                    "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}")
+                .createChatMessage());
+    assertThat(prompt.getInputParameters()).containsEntry("userMessage", "Hello, World!");
   }
 
   @Test
   void testResponseFormatSchema() {
     var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
-    var config =
-        new OrchestrationModuleConfig(GPT_4O)
-            .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
+    var template = PromptTemplate.create("Hello").withJsonSchemaResponse(schema);
     assertThat(
-            ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
+            ((ResponseFormatJsonSchema) ((Template) template.toLowLevel()).getResponseFormat())
                 .getJsonSchema()
                 .getSchema())
         .isEqualTo(schema.getSchemaMap());
@@ -343,32 +341,27 @@ class OrchestrationModuleConfigTest {
 
   @Test
   void testResponseFormatObject() {
-    var config =
-        new OrchestrationModuleConfig(GPT_4O)
-            .withTemplateConfig(TemplateConfig.create().withJsonResponse());
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
-    assertThat(
-            ((ResponseFormatJsonObject)
-                ((Template) config.getTemplateConfig()).getResponseFormat()))
+    var template = PromptTemplate.create("Hello").withJsonResponse();
+    assertThat(((Template) template.toLowLevel()).getResponseFormat())
         .isInstanceOf(ResponseFormatJsonObject.class);
   }
 
   @Test
-  void testResponseFormatOverwrittenByNewTemplateRef() {
+  void testConfigReusedWithDifferentTemplates() {
     var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
-    var config =
-        new OrchestrationModuleConfig(GPT_4O)
-            .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
+    var config = new OrchestrationModuleConfig(GPT_4O);
+    var template = PromptTemplate.create("Hello").withJsonSchemaResponse(schema);
     assertThat(
-            ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
+            ((ResponseFormatJsonSchema) ((Template) template.toLowLevel()).getResponseFormat())
                 .getJsonSchema()
                 .getSchema())
         .isEqualTo(schema.getSchemaMap());
 
-    config =
-        config.withTemplateConfig(
-            TemplateRef.create().templateRef(TemplateRefByID.create().id("123")));
-    assertThat(config.getTemplateConfig()).isInstanceOf(TemplateRef.class);
+    var reference = PromptTemplate.reference().byId("123").andInputParameters(Map.of());
+    var request = OrchestrationClient.toCompletionPostRequest(reference, config);
+    var modules = (OrchestrationConfigModules.InnerModuleConfigs) request.getConfig().getModules();
+    assertThat(modules.value().getPromptTemplating().getPrompt()).isInstanceOf(TemplateRef.class);
+    assertThat(((Template) template.toLowLevel()).getResponseFormat())
+        .isInstanceOf(ResponseFormatJsonSchema.class);
   }
 }

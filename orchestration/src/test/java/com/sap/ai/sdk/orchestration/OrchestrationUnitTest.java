@@ -7,6 +7,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
 import static com.github.tomakehurst.wiremock.client.WireMock.okXml;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
@@ -21,7 +22,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
-import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
+import static com.sap.ai.sdk.orchestration.PromptTemplateReference.ScopeEnum.RESOURCE_GROUP;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_4;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_6;
@@ -69,7 +70,6 @@ import com.sap.ai.sdk.orchestration.model.PartialOrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
-import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.UserChatMessage;
 import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
@@ -118,11 +118,16 @@ class OrchestrationUnitTest {
   private final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
   private final Function<String, String> fileLoaderStr =
-      filename -> new String(Try.of(() -> fileLoader.apply(filename).readAllBytes()).get());
+      filename ->
+          Try.withResources(() -> fileLoader.apply(filename))
+              .of(
+                  stream ->
+                      new String(stream.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8))
+              .get();
 
   private static OrchestrationClient client;
   private static OrchestrationModuleConfig config;
-  private static OrchestrationPrompt prompt;
+  private static LocalPromptTemplate prompt;
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
@@ -130,7 +135,7 @@ class OrchestrationUnitTest {
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = new OrchestrationClient(destination);
     config = new OrchestrationModuleConfig(CUSTOM_GPT_4O);
-    prompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
+    prompt = PromptTemplate.create("Hello World! Why is this phrase so famous?");
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
 
@@ -148,7 +153,7 @@ class OrchestrationUnitTest {
                 aResponse()
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
-    final var result = client.chatCompletion(prompt, config);
+    final var result = client.chatCompletion().config(config).promptTemplate(prompt).execute();
 
     assertThat(result).isNotNull();
     assertThat(result.getContent()).isNotEmpty();
@@ -164,7 +169,8 @@ class OrchestrationUnitTest {
                     .withBodyFile("error500Response.json")
                     .withHeader("Content-Type", "application/json")));
 
-    assertThatThrownBy(() -> client.chatCompletion(prompt, config))
+    assertThatThrownBy(
+            () -> client.chatCompletion().config(config).promptTemplate(prompt).execute())
         .hasMessage(
             "Request failed with status 500 (Server Error): Internal Server Error located in Masking Module - Masking");
   }
@@ -179,11 +185,22 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     final var clientWithHeader = client.withHeader("Header-For-Both", "value");
-    final var result = clientWithHeader.withHeader("foo", "bar").chatCompletion(prompt, config);
+    final var result =
+        clientWithHeader
+            .withHeader("foo", "bar")
+            .chatCompletion()
+            .config(config)
+            .promptTemplate(prompt)
+            .execute();
     assertThat(result).isNotNull();
 
     var streamResult =
-        clientWithHeader.withHeader("foot", "baz").streamChatCompletion(prompt, config);
+        clientWithHeader
+            .withHeader("foot", "baz")
+            .chatCompletion()
+            .config(config)
+            .promptTemplate(prompt)
+            .executeStream();
     assertThat(streamResult).isNotNull();
 
     verify(
@@ -208,7 +225,10 @@ class OrchestrationUnitTest {
     final var result =
         client
             .withHeaders(Map.of("x-custom-one", "value1", "x-custom-two", "value2"))
-            .chatCompletion(prompt, config);
+            .chatCompletion()
+            .config(config)
+            .promptTemplate(prompt)
+            .execute();
     assertThat(result).isNotNull();
 
     verify(
@@ -229,7 +249,10 @@ class OrchestrationUnitTest {
     client
         .withHeader("x-existing", "existing-value")
         .withHeaders(Map.of("x-new", "new-value"))
-        .chatCompletion(prompt, config);
+        .chatCompletion()
+        .config(config)
+        .promptTemplate(prompt)
+        .execute();
 
     verify(
         postRequestedFor(urlPathEqualTo("/v2/completion"))
@@ -247,13 +270,13 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     client.withHeaders(Map.of("x-should-not-appear", "value"));
-    client.chatCompletion(prompt, config);
+    client.chatCompletion().config(config).promptTemplate(prompt).execute();
 
     verify(postRequestedFor(urlPathEqualTo("/v2/completion")).withoutHeader("x-should-not-appear"));
   }
 
   @Test
-  void testGrounding() throws IOException {
+  void testGrounding() {
     stubFor(
         post(urlPathEqualTo("/v2/completion"))
             .willReturn(
@@ -294,11 +317,12 @@ class OrchestrationUnitTest {
     final Map<String, String> inputParams =
         Map.of("query", "String used for similarity search in database");
     final var prompt =
-        new OrchestrationPrompt(
-            inputParams,
-            Message.system("Context message with embedded grounding results. {{?results}}"));
+        PromptTemplate.create(
+                Message.system("Context message with embedded grounding results. {{?results}}"))
+            .withInputParameters(inputParams);
 
-    final var response = client.chatCompletion(prompt, configWithGrounding);
+    final var response =
+        client.chatCompletion().config(configWithGrounding).promptTemplate(prompt).execute();
 
     assertThat(response).isNotNull();
     assertThat(response.getOriginalResponse().getRequestId())
@@ -337,7 +361,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testGroundingWithConvenience() throws IOException {
+  void testGroundingWithConvenience() {
     stubFor(
         post(urlPathEqualTo("/v2/completion"))
             .willReturn(
@@ -351,7 +375,8 @@ class OrchestrationUnitTest {
     var prompt = groundingConfig.createGroundingPrompt("Hello, what do you know?");
     var configWithGrounding = config.withGrounding(groundingConfig);
 
-    final var response = client.chatCompletion(prompt, configWithGrounding);
+    final var response =
+        client.chatCompletion().config(configWithGrounding).promptTemplate(prompt).execute();
 
     final String request = fileLoaderStr.apply("groundingRequestMetadata.json");
     verify(
@@ -359,7 +384,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testGroundingWithHelpSapCom() throws IOException {
+  void testGroundingWithHelpSapCom() {
     stubFor(
         post(urlPathEqualTo("/v2/completion"))
             .willReturn(
@@ -372,7 +397,8 @@ class OrchestrationUnitTest {
     val configWithGrounding = config.withGrounding(groundingConfig);
 
     val prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
-    val response = client.chatCompletion(prompt, configWithGrounding);
+    val response =
+        client.chatCompletion().config(configWithGrounding).promptTemplate(prompt).execute();
 
     assertThat(
             response
@@ -392,7 +418,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplating() throws IOException {
+  void testTemplating() {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -405,7 +431,11 @@ class OrchestrationUnitTest {
         Map.of("input", "Reply with 'Orchestration Service is working!' in German");
 
     final var result =
-        client.chatCompletion(new OrchestrationPrompt(inputParams, template), config);
+        client
+            .chatCompletion()
+            .config(config)
+            .promptTemplate(PromptTemplate.create(template).withInputParameters(inputParams))
+            .execute();
 
     final var response = result.getOriginalResponse();
     assertThat(response.getRequestId()).isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
@@ -477,7 +507,8 @@ class OrchestrationUnitTest {
                     """,
                     SC_BAD_REQUEST)));
 
-    assertThatThrownBy(() -> client.chatCompletion(prompt, config))
+    assertThatThrownBy(
+            () -> client.chatCompletion().config(config).promptTemplate(prompt).execute())
         .isInstanceOfSatisfying(
             OrchestrationClientException.class,
             e -> {
@@ -495,7 +526,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void filteringLoose() throws IOException {
+  void filteringLoose() {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -513,9 +544,12 @@ class OrchestrationUnitTest {
 
     final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
 
-    client.chatCompletion(
-        prompt,
-        config.withInputFiltering(azureFilter, llamaFilter).withOutputFiltering(azureFilter));
+    client
+        .chatCompletion()
+        .config(
+            config.withInputFiltering(azureFilter, llamaFilter).withOutputFiltering(azureFilter))
+        .promptTemplate(prompt)
+        .execute();
     // the result is asserted in the verify step below
 
     // verify that null fields are absent from the sent request
@@ -546,7 +580,8 @@ class OrchestrationUnitTest {
             .withOutputFiltering(azureFilter)
             .withOutputFilteringStreamOptions(FilteringStreamOptions.create().overlap(1_000));
 
-    Stream<String> result = client.streamChatCompletion(prompt, myConfig);
+    Stream<String> result =
+        client.chatCompletion().config(myConfig).promptTemplate(prompt).executeStream();
     assertThat(result).containsExactly("", "Sure", "!");
     // the result is asserted in the verify step below
 
@@ -598,7 +633,8 @@ class OrchestrationUnitTest {
         new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
     final var configWithFilter = config.withInputFiltering(azureFilter, llamaFilter);
 
-    assertThatThrownBy(() -> client.chatCompletion(prompt, configWithFilter))
+    assertThatThrownBy(
+            () -> client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute())
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
             e -> {
@@ -654,7 +690,9 @@ class OrchestrationUnitTest {
         new LlamaGuardFilter().config(LlamaGuard38b.create().violentCrimes(true));
     final var configWithFilter = config.withOutputFiltering(azureFilter, llamaFilter);
 
-    assertThatThrownBy(client.chatCompletion(prompt, configWithFilter)::getContent)
+    assertThatThrownBy(
+            client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute()
+                ::getContent)
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Output.class,
             e -> {
@@ -689,7 +727,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void messagesHistory() throws IOException {
+  void messagesHistory() {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -707,9 +745,9 @@ class OrchestrationUnitTest {
                         new TextItem("Paris is known for its art, fashion, and culture.")))));
     final var message = new UserMessage("What is the typical food there?");
 
-    prompt = new OrchestrationPrompt(message).messageHistory(messagesHistory);
+    prompt = PromptTemplate.create(message).withMessageHistory(messagesHistory);
 
-    final var result = client.chatCompletion(prompt, config);
+    final var result = client.chatCompletion().config(config).promptTemplate(prompt).execute();
 
     assertThat(result.getOriginalResponse().getRequestId())
         .isEqualTo("26ea36b5-c196-4806-a9a6-a686f0c6ad91");
@@ -720,7 +758,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void maskingPseudonymization() throws IOException {
+  void maskingPseudonymization() {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -730,7 +768,12 @@ class OrchestrationUnitTest {
 
     final var maskingConfig = DpiMasking.pseudonymization().withEntities(DPIEntities.PHONE);
 
-    final var result = client.chatCompletion(prompt, config.withMaskingConfig(maskingConfig));
+    final var result =
+        client
+            .chatCompletion()
+            .config(config.withMaskingConfig(maskingConfig))
+            .promptTemplate(prompt)
+            .execute();
     final var response = result.getOriginalResponse();
 
     assertThat(response).isNotNull();
@@ -747,10 +790,18 @@ class OrchestrationUnitTest {
 
   private static Runnable[] errorHandlingCalls() {
     return new Runnable[] {
-      () -> client.chatCompletion(new OrchestrationPrompt(""), config),
       () ->
           client
-              .streamChatCompletion(new OrchestrationPrompt(""), config)
+              .chatCompletion()
+              .config(config)
+              .promptTemplate(PromptTemplate.create(""))
+              .execute(),
+      () ->
+          client
+              .chatCompletion()
+              .config(config)
+              .promptTemplate(PromptTemplate.create(""))
+              .executeStream()
               // the stream needs to be consumed to parse the response
               .forEach(System.out::println)
     };
@@ -830,8 +881,12 @@ class OrchestrationUnitTest {
 
   @Test
   void testThrowsOnContentFilter() {
-    var mock = mock(OrchestrationClient.class);
-    when(mock.streamChatCompletion(any(), any())).thenCallRealMethod();
+    var execution =
+        spy(
+            client
+                .chatCompletion()
+                .lowLevel()
+                .request(OrchestrationClient.toCompletionPostRequest(prompt, config)));
 
     var deltaWithContentFilter = mock(OrchestrationChatCompletionDelta.class);
     when(deltaWithContentFilter.getFinishReason()).thenReturn("content_filter");
@@ -847,15 +902,16 @@ class OrchestrationUnitTest {
             "choices", List.of(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0))));
     when(outputFiltering.getData()).thenReturn(filterData);
 
-    when(mock.streamChatCompletionDeltas(any())).thenReturn(Stream.of(deltaWithContentFilter));
+    doReturn(Stream.of(deltaWithContentFilter)).when(execution).executeStreamDeltas();
 
     // this must not throw, since the stream is lazily evaluated
-    var stream = mock.streamChatCompletion(new OrchestrationPrompt(""), config);
-    assertThatThrownBy(stream::toList)
-        .isInstanceOf(OrchestrationFilterException.Output.class)
-        .hasMessage("Content filter filtered the output.")
-        .extracting(e -> ((OrchestrationFilterException.Output) e).getFilterDetails())
-        .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
+    try (var stream = execution.executeStream()) {
+      assertThatThrownBy(stream::toList)
+          .isInstanceOf(OrchestrationFilterException.Output.class)
+          .hasMessage("Content filter filtered the output.")
+          .extracting(e -> ((OrchestrationFilterException.Output) e).getFilterDetails())
+          .isEqualTo(Map.of("azure_content_safety", Map.of("hate", 0, "self_harm", 0)));
+    }
   }
 
   @Test
@@ -874,7 +930,8 @@ class OrchestrationUnitTest {
       // Configure the HttpClient mock to return the mock response
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
-      try (Stream<String> stream = client.streamChatCompletion(prompt, config)) {
+      try (Stream<String> stream =
+          client.chatCompletion().config(config).promptTemplate(prompt).executeStream()) {
         assertThatThrownBy(() -> stream.forEach(System.out::println))
             .hasMessage("Content filter filtered the output.")
             .isInstanceOfSatisfying(
@@ -922,10 +979,16 @@ class OrchestrationUnitTest {
       val wrongConfig =
           new OrchestrationModuleConfig(GPT_5_MINI.withVersion("wrong-version"))
               .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
-      val prompt = new OrchestrationPrompt("HelloWorld!");
+      val prompt = PromptTemplate.create("HelloWorld!");
 
       assertThatThrownBy(
-              () -> client.streamChatCompletion(prompt, wrongConfig).forEach(System.out::println))
+              () ->
+                  client
+                      .chatCompletion()
+                      .config(wrongConfig)
+                      .promptTemplate(prompt)
+                      .executeStream()
+                      .forEach(System.out::println))
           .isExactlyInstanceOf(OrchestrationClientException.class)
           .hasMessageContaining("400")
           .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
@@ -949,12 +1012,11 @@ class OrchestrationUnitTest {
       doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
       var prompt =
-          new OrchestrationPrompt(
-              "Can you give me the first 100 numbers of the Fibonacci sequence?");
+          PromptTemplate.create("Can you give me the first 100 numbers of the Fibonacci sequence?");
       var request = OrchestrationClient.toCompletionPostRequest(prompt, config);
 
       try (Stream<OrchestrationChatCompletionDelta> stream =
-          client.streamChatCompletionDeltas(request)) {
+          client.chatCompletion().lowLevel().request(request).executeStreamDeltas()) {
         var deltaList = stream.toList();
 
         assertThat(deltaList).hasSize(3);
@@ -1040,7 +1102,7 @@ class OrchestrationUnitTest {
 
   private static Stream<CompletionPostRequest> streamChatCompletionDeltasRequests() {
     var localConfig = new OrchestrationModuleConfig(CUSTOM_GPT_4O);
-    var localPrompt = new OrchestrationPrompt("Hello World! Why is this phrase so famous?");
+    var localPrompt = PromptTemplate.create("Hello World! Why is this phrase so famous?");
     var requestConfig = OrchestrationClient.toCompletionPostRequest(localPrompt, localConfig);
     var requestById =
         CompletionRequestConfigurationReferenceById.create()
@@ -1061,31 +1123,29 @@ class OrchestrationUnitTest {
   @MethodSource("streamChatCompletionDeltasRequests")
   void testEnableStreamingOnAllRequestTypes(@Nonnull final CompletionPostRequest request)
       throws IOException {
-    try (var inputStream = fileLoader.apply("streamChatCompletion.txt")) {
-      final var httpClient = mock(HttpClient.class);
-      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
-      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
-      mockResponse.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
-      mockResponse.setHeader("Content-Type", "text/event-stream");
-      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
-
-      client.streamChatCompletionDeltas(request).toList();
+    var before = OrchestrationClient.JACKSON.writeValueAsString(request);
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBody(fileLoaderStr.apply("streamChatCompletion.txt"))
+                    .withHeader("Content-Type", "text/event-stream")));
+    try (var stream = client.chatCompletion().lowLevel().request(request).executeStreamDeltas()) {
+      assertThat(stream.toList()).hasSize(3);
     }
-
-    if (request instanceof CompletionRequestConfiguration r) {
-      assertThat(r.getConfig().getStream().isEnabled()).isTrue();
-    } else if (request instanceof CompletionRequestConfigurationReferenceById r) {
-      assertThat(r.getConfig().getStream().isEnabled()).isTrue();
-    } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion r) {
-      assertThat(r.getConfig().getStream().isEnabled()).isTrue();
-    }
+    assertThat(OrchestrationClient.JACKSON.writeValueAsString(request)).isEqualTo(before);
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(matchingJsonPath("$.config.stream.enabled", equalTo("true"))));
   }
 
   @ParameterizedTest
   @MethodSource("streamChatCompletionDeltasRequests")
   void testEnableStreamingPreservesExistingStreamOptions(
-      @Nonnull final CompletionPostRequest request) throws IOException {
-    var existingStream = GlobalStreamOptions.create().enabled(false).chunkSize(42);
+      @Nonnull final CompletionPostRequest request) {
+    var existingStream =
+        GlobalStreamOptions.create().enabled(false).chunkSize(42).delimiters(List.of("\n"));
+    existingStream.setCustomField("custom_option", "preserved");
     if (request instanceof CompletionRequestConfiguration r) {
       r.getConfig().setStream(existingStream);
     } else if (request instanceof CompletionRequestConfigurationReferenceById r) {
@@ -1094,27 +1154,168 @@ class OrchestrationUnitTest {
       r.getConfig().setStream(existingStream);
     }
 
-    try (var inputStream = fileLoader.apply("streamChatCompletion.txt")) {
-      final var httpClient = mock(HttpClient.class);
-      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
-      final var mockResponse = new BasicClassicHttpResponse(200, "OK");
-      mockResponse.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
-      mockResponse.setHeader("Content-Type", "text/event-stream");
-      doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
-
-      client.streamChatCompletionDeltas(request).toList();
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBody(fileLoaderStr.apply("streamChatCompletion.txt"))
+                    .withHeader("Content-Type", "text/event-stream")));
+    try (var stream = client.chatCompletion().lowLevel().request(request).executeStreamDeltas()) {
+      stream.toList();
     }
 
-    assertThat(existingStream.isEnabled()).isTrue();
+    assertThat(existingStream.isEnabled()).isFalse();
     assertThat(existingStream.getChunkSize()).isEqualTo(42);
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(matchingJsonPath("$.config.stream.enabled", equalTo("true")))
+            .withRequestBody(matchingJsonPath("$.config.stream.chunk_size", equalTo("42")))
+            .withRequestBody(matchingJsonPath("$.config.stream.delimiters[0]", equalTo("\n")))
+            .withRequestBody(
+                matchingJsonPath("$.config.stream.custom_option", equalTo("preserved"))));
   }
 
   @Test
   void testStreamChatCompletionDeltasThrowsOnUnsupportedRequestType() {
     final CompletionPostRequest unknownRequest = new CompletionPostRequest() {};
-    assertThatThrownBy(() -> client.streamChatCompletionDeltas(unknownRequest))
+    assertThatThrownBy(
+            () -> client.chatCompletion().lowLevel().request(unknownRequest).executeStreamDeltas())
         .isExactlyInstanceOf(IllegalStateException.class)
         .hasMessageContaining("Unsupported request type");
+  }
+
+  @Test
+  void testLowLevelCompletion() {
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    var request = OrchestrationClient.toCompletionPostRequest(prompt, config);
+    request.setCustomField("custom_request_option", "preserved");
+    var response =
+        client
+            .withHeader("X-Custom", "completion")
+            .chatCompletion()
+            .lowLevel()
+            .request(request)
+            .execute();
+    assertThat(response.getFinalResult()).isNotNull();
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withHeader("X-Custom", equalTo("completion"))
+            .withRequestBody(matchingJsonPath("$.custom_request_option", equalTo("preserved"))));
+  }
+
+  @ParameterizedTest
+  @org.junit.jupiter.params.provider.ValueSource(booleans = {false, true})
+  void testDetailedStreamsRetainContentFilterReason(boolean lowLevel) {
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBody(fileLoaderStr.apply("streamChatCompletionOutputFilter.txt"))
+                    .withHeader("Content-Type", "text/event-stream")));
+    try (var stream =
+        lowLevel
+            ? client
+                .chatCompletion()
+                .lowLevel()
+                .request(OrchestrationClient.toCompletionPostRequest(prompt, config))
+                .executeStreamDeltas()
+            : client.chatCompletion().config(config).promptTemplate(prompt).executeStreamDeltas()) {
+      assertThat(stream.toList())
+          .anySatisfy(delta -> assertThat(delta.getFinishReason()).isEqualTo("content_filter"));
+    }
+  }
+
+  @Test
+  void testStreamingThenRegularExecutionDoesNotLeakStreamOptions() {
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    stubFor(
+        post("/v2/completion")
+            .withRequestBody(matchingJsonPath("$.config.stream.enabled", equalTo("true")))
+            .willReturn(
+                aResponse()
+                    .withBody(fileLoaderStr.apply("streamChatCompletion.txt"))
+                    .withHeader("Content-Type", "text/event-stream")));
+    var sharedConfig = config.withStreamConfig(new OrchestrationStreamConfig().withChunkSize(42));
+    var options = sharedConfig.getGlobalStreamOptions().enabled(false);
+    var execution = client.chatCompletion().config(sharedConfig).promptTemplate(prompt);
+    try (var stream = execution.executeStream()) {
+      assertThat(stream.toList()).contains("Sure", "!");
+    }
+    assertThat(execution.execute().getContent()).isNotEmpty();
+    assertThat(
+            client
+                .chatCompletion()
+                .config(sharedConfig)
+                .promptTemplate(prompt)
+                .execute()
+                .getContent())
+        .isNotEmpty();
+    assertThat(options.isEnabled()).isFalse();
+    assertThat(options.getChunkSize()).isEqualTo(42);
+  }
+
+  @ParameterizedTest
+  @org.junit.jupiter.params.provider.ValueSource(booleans = {false, true})
+  void testLowLevelStreamingThenRegularExecution(boolean byId) {
+    stubFor(
+        post("/v2/completion")
+            .willReturn(
+                aResponse()
+                    .withBodyFile("templatingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    stubFor(
+        post("/v2/completion")
+            .withRequestBody(matchingJsonPath("$.config.stream.enabled", equalTo("true")))
+            .willReturn(
+                aResponse()
+                    .withBody(fileLoaderStr.apply("streamChatCompletion.txt"))
+                    .withHeader("Content-Type", "text/event-stream")));
+    CompletionPostRequest request =
+        byId
+            ? CompletionRequestConfigurationReferenceById.create()
+                .configRef(
+                    CompletionRequestConfigurationReferenceByIdConfigRef.create().id("test-id"))
+            : CompletionRequestConfigurationReferenceByNameScenarioVersion.create()
+                .configRef(
+                    CompletionRequestConfigurationReferenceByNameScenarioVersionConfigRef.create()
+                        .scenario("scenario")
+                        .name("name")
+                        .version("0.0.1"));
+    var execution = client.chatCompletion().lowLevel().request(request);
+    try (var stream = execution.executeStreamDeltas()) {
+      assertThat(stream.toList()).hasSize(3);
+    }
+    if (request instanceof CompletionRequestConfigurationReferenceById r) {
+      assertThat(r.getConfig()).isNull();
+    } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion r) {
+      assertThat(r.getConfig()).isNull();
+    }
+    assertThat(execution.execute().getFinalResult()).isNotNull();
+    var reference =
+        byId
+            ? OrchestrationConfigReference.fromId("test-id")
+            : OrchestrationConfigReference.fromScenario("scenario")
+                .name("name")
+                .version("0.0.1")
+                .andInputParameters(Map.of());
+    var highLevelExecution = client.chatCompletion().configReference(reference);
+    try (var stream = highLevelExecution.executeStream()) {
+      assertThat(stream.toList()).contains("Sure", "!");
+    }
+    assertThat(highLevelExecution.execute().getContent()).isNotEmpty();
+    try (var stream = highLevelExecution.executeStreamDeltas()) {
+      assertThat(stream.toList()).hasSize(3);
+    }
   }
 
   @Test
@@ -1142,12 +1343,13 @@ class OrchestrationUnitTest {
         Message.user("What is the title of the topic discussed here?").withFile(filePath);
 
     var prompt =
-        new OrchestrationPrompt(messageWithFile)
-            .messageHistory(List.of(messageWithTwoTexts, messageWithImage));
+        PromptTemplate.create(messageWithFile)
+            .withMessageHistory(List.of(messageWithTwoTexts, messageWithImage));
 
     final var expectedPdfAnswer =
         "Well, this image features the logo of SAP, a software company, set against a gradient blue background transitioning from light to dark. The main color in the image is blue. The title of the topic discussed in the PDF is \"SAP AI SDK Orchestration\".";
-    var result = client.chatCompletion(prompt, llmWithImageSupportConfig);
+    var result =
+        client.chatCompletion().config(llmWithImageSupportConfig).promptTemplate(prompt).execute();
     var response = result.getOriginalResponse();
 
     assertThat(result.getContent()).isEqualTo(expectedPdfAnswer);
@@ -1224,11 +1426,12 @@ class OrchestrationUnitTest {
         "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
     final var llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
     final var prompt =
-        new OrchestrationPrompt(
+        PromptTemplate.create(
             Message.user("What is the title of the topic discussed here?")
                 .withFileUrl(fileUrl, null));
 
-    final var response = client.chatCompletion(prompt, llmWithImageSupportConfig);
+    final var response =
+        client.chatCompletion().config(llmWithImageSupportConfig).promptTemplate(prompt).execute();
     assertThat(response.getContent()).isNotEmpty();
 
     verify(postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(containing(fileUrl)));
@@ -1244,7 +1447,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testResponseFormatJsonSchema() throws IOException {
+  void testResponseFormatJsonSchema() {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -1258,15 +1461,13 @@ class OrchestrationUnitTest {
         ResponseJsonSchema.fromType(Translation.class)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
-    val configWithResponseSchema =
-        config.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
-
     val prompt =
-        new OrchestrationPrompt(
-            Message.user("Whats 'apple' in German?"),
-            Message.system("You are a language translator."));
+        PromptTemplate.create(
+                Message.user("Whats 'apple' in German?"),
+                Message.system("You are a language translator."))
+            .withJsonSchemaResponse(schema);
 
-    val response = client.chatCompletion(prompt, configWithResponseSchema);
+    val response = client.chatCompletion().config(config).promptTemplate(prompt).execute();
     assertThat(response.getContent())
         .isEqualTo("{\"translation\":\"Apfel\",\"language\":\"German\"}");
 
@@ -1302,13 +1503,13 @@ class OrchestrationUnitTest {
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    val response = client.chatCompletion(prompt, config);
+    val response = client.chatCompletion().config(config).promptTemplate(prompt).execute();
 
     // no config and wrong response
     assertThatThrownBy(() -> response.asEntity(Translation.class))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining(
-            "Please configure an OrchestrationTemplate with format set to JSON schema into your OrchestrationModuleConfig")
+            "Please configure an LocalPromptTemplate with format set to JSON schema into your OrchestrationModuleConfig")
         .hasMessageContaining("JSON content: Le service d'orchestration fonctionne!");
   }
 
@@ -1321,7 +1522,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("errorJsonSchemaResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    val response = client.chatCompletion(prompt, config);
+    val response = client.chatCompletion().config(config).promptTemplate(prompt).execute();
 
     assertThatThrownBy(() -> response.asEntity(Translation.class))
         .isInstanceOf(OrchestrationClientException.class)
@@ -1330,7 +1531,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testResponseFormatJsonObject() throws IOException {
+  void testResponseFormatJsonObject() {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -1340,16 +1541,15 @@ class OrchestrationUnitTest {
 
     val config = new OrchestrationModuleConfig(GPT_5_MINI);
 
-    val configWithJsonResponse =
-        config.withTemplateConfig(TemplateConfig.create().withJsonResponse());
-
     val prompt =
-        new OrchestrationPrompt(
-            Message.user("What is 'apple' in German?"),
-            Message.system(
-                "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
+        PromptTemplate.create(
+                Message.user("What is 'apple' in German?"),
+                Message.system(
+                    "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"))
+            .withJsonResponse();
 
-    final var message = client.chatCompletion(prompt, configWithJsonResponse).getContent();
+    final var message =
+        client.chatCompletion().config(config).promptTemplate(prompt).execute().getContent();
     assertThat(message).isEqualTo("{\"language\": \"German\", \"translation\": \"Apfel\"}");
 
     final String request = fileLoaderStr.apply("jsonObjectRequest.json");
@@ -1357,7 +1557,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testResponseFormatText() throws IOException {
+  void testResponseFormatText() {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -1368,17 +1568,25 @@ class OrchestrationUnitTest {
     val llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
 
     val template = Message.user("What is 'apple' in German?");
-    val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT));
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(templatingConfig);
-
     val prompt =
-        new OrchestrationPrompt(
-            Message.system("You are a language translator. Answer using JSON."));
+        new LocalPromptTemplate(
+            List.of(
+                template.createChatMessage(),
+                Message.system("You are a language translator. Answer using JSON.")
+                    .createChatMessage()),
+            List.of(),
+            Map.of(),
+            null,
+            ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT),
+            null);
 
-    final var message = client.chatCompletion(prompt, configWithTemplate).getContent();
+    final var message =
+        client
+            .chatCompletion()
+            .config(llmWithImageSupportConfig)
+            .promptTemplate(prompt)
+            .execute()
+            .getContent();
     assertThat(message)
         .isEqualTo(
             "```json\n{\n  \"word\": \"apple\",\n  \"translation\": \"Apfel\",\n  \"language\": \"German\"\n}\n```");
@@ -1388,7 +1596,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryByIdTenant() throws IOException {
+  void testTemplateFromPromptRegistryByIdTenant() {
     {
       stubFor(
           post(anyUrl())
@@ -1397,13 +1605,14 @@ class OrchestrationUnitTest {
                       .withBodyFile("templateReferenceResponse.json")
                       .withHeader("Content-Type", "application/json")));
 
-      var template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
-      var configWithTemplate = config.withTemplateConfig(template);
-
+      var template =
+          PromptTemplate.reference()
+              .byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16")
+              .andInputParameters(Map.of());
       var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
-      var prompt = new OrchestrationPrompt(inputParams);
+      var prompt = template.withInputParameters(inputParams);
 
-      final var response = client.chatCompletion(prompt, configWithTemplate);
+      final var response = client.chatCompletion().config(config).promptTemplate(prompt).execute();
       assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
       assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating())
           .hasSize(2);
@@ -1414,7 +1623,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryByIdResourceGroup() throws IOException {
+  void testTemplateFromPromptRegistryByIdResourceGroup() {
     {
       stubFor(
           post(anyUrl())
@@ -1424,21 +1633,20 @@ class OrchestrationUnitTest {
                       .withHeader("Content-Type", "application/json")));
 
       var template =
-          TemplateConfig.reference()
+          PromptTemplate.reference()
               .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
+              .andInputParameters(Map.of())
               .withScope(RESOURCE_GROUP);
       var config = new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
-      var configWithTemplate = config.withTemplateConfig(template);
-
       var inputParams =
           Map.of(
               "categories",
               "Finance, Tech, Sports",
               "inputExample",
               "What's the latest news on the stock market?");
-      var prompt = new OrchestrationPrompt(inputParams);
+      var prompt = template.withInputParameters(inputParams);
 
-      final var response = client.chatCompletion(prompt, configWithTemplate);
+      final var response = client.chatCompletion().config(config).promptTemplate(prompt).execute();
       assertThat(response.getContent()).startsWith("Finance");
       assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating())
           .hasSize(2);
@@ -1449,7 +1657,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryByScenarioTenant() throws IOException {
+  void testTemplateFromPromptRegistryByScenarioTenant() {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -1457,13 +1665,11 @@ class OrchestrationUnitTest {
                     .withBodyFile("templateReferenceResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    var template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
-    var configWithTemplate = config.withTemplateConfig(template);
-
+    var template = PromptTemplate.reference().byScenario("test").name("test").version("0.0.1");
     var inputParams = Map.of("language", "Italian", "input", "Cloud ERP systems");
-    var prompt = new OrchestrationPrompt(inputParams);
+    var prompt = template.andInputParameters(inputParams);
 
-    final var response = client.chatCompletion(prompt, configWithTemplate);
+    final var response = client.chatCompletion().config(config).promptTemplate(prompt).execute();
     assertThat(response.getContent()).startsWith("I sistemi ERP (Enterprise Resource Planning)");
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
@@ -1472,7 +1678,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testTemplateFromPromptRegistryByScenarioResourceGroup() throws IOException {
+  void testTemplateFromPromptRegistryByScenarioResourceGroup() {
     stubFor(
         post(anyUrl())
             .willReturn(
@@ -1481,23 +1687,22 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     var template =
-        TemplateConfig.reference()
+        PromptTemplate.reference()
             .byScenario("categorization")
             .name("example-prompt-template")
             .version("0.0.1")
+            .andInputParameters(Map.of())
             .withScope(RESOURCE_GROUP);
     var config = new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
-    var configWithTemplate = config.withTemplateConfig(template);
-
     var inputParams =
         Map.of(
             "categories",
             "Finance, Tech, Sports",
             "inputExample",
             "What's the latest news on the stock market?");
-    var prompt = new OrchestrationPrompt(inputParams);
+    var prompt = template.withInputParameters(inputParams);
 
-    final var response = client.chatCompletion(prompt, configWithTemplate);
+    final var response = client.chatCompletion().config(config).promptTemplate(prompt).execute();
     assertThat(response.getContent()).startsWith("Finance");
     assertThat(response.getOriginalResponse().getIntermediateResults().getTemplating()).hasSize(2);
 
@@ -1518,13 +1723,11 @@ class OrchestrationUnitTest {
     var promptTemplateYaml =
         Files.readString(Path.of("src/test/resources/promptTemplateExample.yaml"));
 
-    var template = TemplateConfig.create().fromYaml(promptTemplateYaml);
-    var configWithTemplate = template != null ? config.withTemplateConfig(template) : config;
-
+    var template = PromptTemplate.fromYaml(promptTemplateYaml);
     var inputParams = Map.of("language", "German");
-    var prompt = new OrchestrationPrompt(inputParams);
+    var prompt = Objects.requireNonNull(template).withInputParameters(inputParams);
 
-    final var response = client.chatCompletion(prompt, configWithTemplate);
+    final var response = client.chatCompletion().config(config).promptTemplate(prompt).execute();
 
     final String request = fileLoaderStr.apply("localTemplateRequest.json");
     verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
@@ -1532,16 +1735,14 @@ class OrchestrationUnitTest {
 
   @Test
   void testTemplateFromInputThrows() {
-    assertThatThrownBy(() -> TemplateConfig.create().fromYaml(": what?"))
+    assertThatThrownBy(() -> PromptTemplate.fromYaml(": what?"))
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to parse");
 
-    prompt = new OrchestrationPrompt(Map.of());
     assertThatThrownBy(
             () ->
-                TemplateConfig.create()
-                    .fromYaml(
-                        "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
+                PromptTemplate.fromYaml(
+                    "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to deserialize");
   }
@@ -1556,7 +1757,7 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     var reference = OrchestrationConfigReference.fromId("test-id");
-    final var response = client.chatCompletionUsingReference(reference);
+    final var response = client.chatCompletion().configReference(reference).execute();
 
     final String expectedRequest = fileLoaderStr.apply("orchConfigByIdRequest.json");
     verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
@@ -1572,8 +1773,11 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     var reference =
-        OrchestrationConfigReference.fromScenario("scenario").name("name").version("0.0.1");
-    final var response = client.chatCompletionUsingReference(reference);
+        OrchestrationConfigReference.fromScenario("scenario")
+            .name("name")
+            .version("0.0.1")
+            .andInputParameters(Map.of());
+    final var response = client.chatCompletion().configReference(reference).execute();
 
     final String expectedRequest = fileLoaderStr.apply("orchConfigBySNVRequest.json");
     verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
@@ -1594,23 +1798,28 @@ class OrchestrationUnitTest {
         OrchestrationConfigReference.fromScenario("scenario")
             .name("name")
             .version("0.0.1")
-            .withMessageHistory(history)
-            .withTemplateParameters(params);
-    final var response = client.chatCompletionUsingReference(reference);
+            .andInputParameters(params)
+            .withMessageHistory(history);
+    final var response = client.chatCompletion().configReference(reference).execute();
 
     final String expectedRequest = fileLoaderStr.apply("orchConfigByRequestHistoryParams.json");
     verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(expectedRequest)));
   }
 
   @Test
-  void testGetAllMessages() throws IOException {
+  void testGetAllMessages() {
     stubFor(
         post(anyUrl())
             .willReturn(
                 aResponse()
                     .withBodyFile("templatingResponse.json")
                     .withHeader("Content-Type", "application/json")));
-    final var resultTemplating = client.chatCompletion(new OrchestrationPrompt("Hello"), config);
+    final var resultTemplating =
+        client
+            .chatCompletion()
+            .config(config)
+            .promptTemplate(PromptTemplate.create("Hello"))
+            .execute();
     final var messageListTemplating = resultTemplating.getAllMessages();
     assertThat(messageListTemplating.get(0)).isInstanceOf(SystemMessage.class);
     assertThat(messageListTemplating.get(1)).isInstanceOf(UserMessage.class);
@@ -1625,7 +1834,12 @@ class OrchestrationUnitTest {
                 aResponse()
                     .withBodyFile("toolCallsResponse2.json")
                     .withHeader("Content-Type", "application/json")));
-    final var resultTools = client.chatCompletion(new OrchestrationPrompt("Hello"), config);
+    final var resultTools =
+        client
+            .chatCompletion()
+            .config(config)
+            .promptTemplate(PromptTemplate.create("Hello"))
+            .execute();
     final var messageListTools = resultTools.getAllMessages();
     assertThat(messageListTools.get(0)).isInstanceOf(UserMessage.class);
     assertThat(messageListTools.get(1)).isInstanceOf(AssistantMessage.class);
@@ -1633,7 +1847,7 @@ class OrchestrationUnitTest {
   }
 
   @Test
-  void testFallbackModules() throws IOException {
+  void testFallbackModules() {
     stubFor(
         post(urlPathEqualTo("/v2/completion"))
             .willReturn(
@@ -1641,7 +1855,7 @@ class OrchestrationUnitTest {
                     .withBodyFile("fallbackResponse.json")
                     .withHeader("Content-Type", "application/json")));
 
-    final var prompt = new OrchestrationPrompt("HelloWorld! Why is this phrase so famous?");
+    final var prompt = PromptTemplate.create("HelloWorld! Why is this phrase so famous?");
     final var llamaFilter = new LlamaGuardFilter().config(LlamaGuard38b.create().selfHarm(true));
     val groundingConfig =
         Grounding.create()
@@ -1656,7 +1870,12 @@ class OrchestrationUnitTest {
     final var brokenConfig =
         workingConfig.withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
 
-    final var response = client.chatCompletion(prompt, brokenConfig, workingConfig);
+    final var response =
+        client
+            .chatCompletion()
+            .config(brokenConfig, workingConfig)
+            .promptTemplate(prompt)
+            .execute();
 
     var intermediateFailure = response.getOriginalResponse().getIntermediateFailures().get(0);
     assertThat(intermediateFailure.getCode()).isEqualTo(400);
@@ -1687,13 +1906,13 @@ class OrchestrationUnitTest {
         new OrchestrationModuleConfig(
             OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     final var reasoningPrompt =
-        new OrchestrationPrompt("Think carefully and explain step by step: Why is the sky blue?");
+        PromptTemplate.create("Think carefully and explain step by step: Why is the sky blue?");
     final var request =
         OrchestrationClient.toCompletionPostRequest(reasoningPrompt, reasoningConfig);
 
     final var answerChunks = new ArrayList<String>();
     final var reasoningChunks = new ArrayList<String>();
-    try (var stream = client.streamChatCompletionDeltas(request)) {
+    try (var stream = client.chatCompletion().lowLevel().request(request).executeStreamDeltas()) {
       stream.forEach(
           delta -> {
             if (!delta.getDeltaContent().isEmpty()) {
@@ -1728,9 +1947,10 @@ class OrchestrationUnitTest {
         new OrchestrationModuleConfig(
             OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     final var reasoningPrompt =
-        new OrchestrationPrompt("Think carefully and explain step by step: Why is the sky blue?");
+        PromptTemplate.create("Think carefully and explain step by step: Why is the sky blue?");
 
-    final var response = client.chatCompletion(reasoningPrompt, reasoningConfig);
+    final var response =
+        client.chatCompletion().config(reasoningConfig).promptTemplate(reasoningPrompt).execute();
 
     assertThat(response.getContent()).startsWith("# Why the Sky is Blue");
     assertThat(response.getReasoningText())
@@ -1765,7 +1985,11 @@ class OrchestrationUnitTest {
         new OrchestrationModuleConfig(
             OrchestrationAiModel.CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
     final var firstResponse =
-        client.chatCompletion(new OrchestrationPrompt("What is 6 times 7?"), reasoningConfig);
+        client
+            .chatCompletion()
+            .config(reasoningConfig)
+            .promptTemplate(PromptTemplate.create("What is 6 times 7?"))
+            .execute();
 
     // Turn 1 assertions: reasoning text parsed correctly.
     assertThat(firstResponse.getContent()).isEqualTo("6 times 7 is 42.");
@@ -1773,8 +1997,8 @@ class OrchestrationUnitTest {
 
     // Turn 2: send a follow-up carrying the whole history (which includes turn 1's reasoning).
     final var followUp =
-        new OrchestrationPrompt("Are you sure?").messageHistory(firstResponse.getAllMessages());
-    client.chatCompletion(followUp, reasoningConfig);
+        PromptTemplate.create("Are you sure?").withMessageHistory(firstResponse.getAllMessages());
+    client.chatCompletion().config(reasoningConfig).promptTemplate(followUp).execute();
 
     // The outgoing request for turn 2 must contain the reasoning_content from turn 1 (content +
     // signature) in the messages_history array. This is the multi-turn round-trip contract.
