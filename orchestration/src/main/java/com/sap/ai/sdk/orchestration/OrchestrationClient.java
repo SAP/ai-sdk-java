@@ -211,7 +211,7 @@ public class OrchestrationClient {
      * @param request the request to execute.
      */
     @SuppressWarnings("PMD.PublicApiExposesModelType")
-    public OrchestrationChatCompletionClient(@Nonnull final CompletionPostRequest request) {
+    private OrchestrationChatCompletionClient(@Nonnull final CompletionPostRequest request) {
       this.delegate = new LowLevelChatCompletionClient(request);
     }
 

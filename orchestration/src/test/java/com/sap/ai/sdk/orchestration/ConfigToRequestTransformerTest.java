@@ -2,7 +2,6 @@ package com.sap.ai.sdk.orchestration;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationUnitTest.CUSTOM_GPT_4O;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.ArrayList;
@@ -11,16 +10,6 @@ import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class ConfigToRequestTransformerTest {
-
-  @Test
-  void testThrowsOnMissingMessages() {
-    var prompt = PromptTemplate.create("unused").withMessages();
-
-    assertThatThrownBy(() -> ConfigToRequestTransformer.toTemplateModuleConfig(prompt))
-        .isInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("A prompt is required");
-  }
-
   @Test
   void testEmptyTemplateConfig() {
     var systemMessage = new SystemMessage("foo");

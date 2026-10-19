@@ -65,12 +65,17 @@ public class LocalPromptTemplate extends PromptTemplate {
   /**
    * Create a new template with the given messages.
    *
-   * @param messages the messages to use in the template.
+   * @param message the first message to use in the template.
+   * @param moreMessages additional messages to use in the template.
    * @return the updated template.
    */
   @Nonnull
-  public LocalPromptTemplate withMessages(@Nonnull final Message... messages) {
-    return this.withChatMessages(Stream.of(messages).map(Message::createChatMessage).toList());
+  public LocalPromptTemplate withMessages(
+      @Nonnull final Message message, @Nonnull final Message... moreMessages) {
+    return this.withChatMessages(
+        Stream.concat(Stream.of(message), Stream.of(moreMessages))
+            .map(Message::createChatMessage)
+            .toList());
   }
 
   /**
