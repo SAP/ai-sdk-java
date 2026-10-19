@@ -49,10 +49,8 @@ Templates are no longer stored in `OrchestrationModuleConfig`. Combine the forme
 ```
 
 - Replace `streamChatCompletion(prompt, config)` with the same builder ending in `executeStream()` (`Stream<String>`). Use `executeStreamDeltas()` for full deltas, including reasoning, tool calls, usage, and intermediate results. Close both kinds of streams with try-with-resources.
-- Pass fallback configs to `.config(primaryConfig, fallbackConfig, ...)`.
 - Set defaults, tools, and response formats on the local template using `withDefaults(...)`, `withTools(...)`, `withJsonResponse()`, or `withJsonSchemaResponse(...)`. All `with...` methods return updated instances; retain their results.
 - Supply at least one template message. Import templates with `PromptTemplate.fromJson(...)` or `fromYaml(...)`, handling `IOException` and nullable results.
-- For the former cached-message constructor, use `PromptTemplate.create(Message.user(message, cacheControl))`.
 
 **Registry references**
 
