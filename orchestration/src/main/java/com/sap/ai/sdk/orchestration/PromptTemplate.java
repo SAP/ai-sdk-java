@@ -27,7 +27,7 @@ import lombok.EqualsAndHashCode;
  * @since 2.0.0
  */
 @EqualsAndHashCode
-public abstract class PromptTemplate {
+public abstract sealed class PromptTemplate permits LocalPromptTemplate, PromptTemplateReference {
 
   /**
    * Get the placeholder values supplied for this template.
