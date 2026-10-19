@@ -38,6 +38,14 @@ public abstract sealed class PromptTemplate permits LocalPromptTemplate, PromptT
   public abstract Map<String, String> getInputParameters();
 
   /**
+   * Get the message history to prepend to the conversation for this template.
+   *
+   * @return the message history for this template.
+   */
+  @Nonnull
+  public abstract List<Message> getMessageHistory();
+
+  /**
    * Create a low-level representation of the template.
    *
    * @return the low-level representation of the template.
@@ -135,7 +143,8 @@ public abstract sealed class PromptTemplate permits LocalPromptTemplate, PromptT
                             .name(name)
                             .version(version),
                         TENANT,
-                        inputParameters);
+                        inputParameters,
+                        List.of());
   }
 
   /** Intermediate object to build a template reference. */
@@ -150,7 +159,8 @@ public abstract sealed class PromptTemplate permits LocalPromptTemplate, PromptT
     @Nonnull
     default ReferenceBuilder3 byId(@Nonnull final String id) {
       return inputParameters ->
-          new PromptTemplateReference(TemplateRefByID.create().id(id), TENANT, inputParameters);
+          new PromptTemplateReference(
+              TemplateRefByID.create().id(id), TENANT, inputParameters, List.of());
     }
 
     /**

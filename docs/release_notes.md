@@ -63,7 +63,7 @@ var template = PromptTemplate.reference().byId("template-id")
 //     .version("0.0.1").andInputParameters(parameters)
 ```
 
-Use `Map.of()` when no parameters are needed. Tenant scope is the default; set `.withScope(PromptTemplateReference.ScopeEnum.RESOURCE_GROUP)` after completing the reference if required. Prompt-template references currently do not support message history.
+Use `Map.of()` when no parameters are needed. Tenant scope is the default; set `.withScope(PromptTemplateReference.ScopeEnum.RESOURCE_GROUP)` after completing the reference if required.
 
 For a stored orchestration configuration, replace `chatCompletionUsingReference(...)` with `configReference(...)`; no separate config or template is needed:
 

@@ -256,7 +256,7 @@ public class OrchestrationConvenienceUnitTest {
   void testTemplateReferenceConstruction() {
     var templateReferenceId = PromptTemplate.reference().byId("id").andInputParameters(Map.of());
     var expectedTemplateReferenceId =
-        new PromptTemplateReference(TemplateRefByID.create().id("id"), TENANT, Map.of());
+        new PromptTemplateReference(TemplateRefByID.create().id("id"), TENANT, Map.of(), List.of());
     var templateReferenceIdLowLevel =
         TemplateRef.create().templateRef(TemplateRefByID.create().id("id"));
     assertThat(templateReferenceId).isEqualTo(expectedTemplateReferenceId);
@@ -268,7 +268,8 @@ public class OrchestrationConvenienceUnitTest {
             .andInputParameters(Map.of())
             .withScope(RESOURCE_GROUP);
     expectedTemplateReferenceId =
-        new PromptTemplateReference(TemplateRefByID.create().id("id"), RESOURCE_GROUP, Map.of());
+        new PromptTemplateReference(
+            TemplateRefByID.create().id("id"), RESOURCE_GROUP, Map.of(), List.of());
     templateReferenceIdLowLevel =
         TemplateRef.create()
             .templateRef(
@@ -290,7 +291,8 @@ public class OrchestrationConvenienceUnitTest {
                 .name("name")
                 .version("version"),
             TENANT,
-            Map.of());
+            Map.of(),
+            List.of());
     var templateReferenceScenarioNameVersionLowLevel =
         TemplateRef.create()
             .templateRef(
@@ -318,7 +320,8 @@ public class OrchestrationConvenienceUnitTest {
                 .name("name")
                 .version("version"),
             RESOURCE_GROUP,
-            Map.of());
+            Map.of(),
+            List.of());
     templateReferenceScenarioNameVersionLowLevel =
         TemplateRef.create()
             .templateRef(

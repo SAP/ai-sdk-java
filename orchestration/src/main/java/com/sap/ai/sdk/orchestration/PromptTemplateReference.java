@@ -5,6 +5,7 @@ import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import com.sap.ai.sdk.orchestration.model.TemplateRefTemplateRef;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
@@ -32,6 +33,8 @@ public class PromptTemplateReference extends PromptTemplate {
   @Nonnull ScopeEnum scope;
 
   @Nonnull Map<String, String> inputParameters;
+
+  @Nonnull List<Message> messageHistory;
 
   /**
    * Create a low-level representation of the template.
