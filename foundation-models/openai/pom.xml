@@ -115,13 +115,6 @@
       <groupId>org.springframework.ai</groupId>
       <artifactId>spring-ai-model</artifactId>
       <optional>true</optional>
-      <!-- victools 5.0.0 migrated to Jackson 3; SDK stays on 4.38.0 + Jackson 2 -->
-      <exclusions>
-        <exclusion>
-          <groupId>com.github.victools</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
@@ -132,13 +125,6 @@
       <groupId>com.openai</groupId>
       <artifactId>openai-java-core</artifactId>
       <optional>true</optional>
-      <!-- victools 5.0.0 migrated to Jackson 3; SDK stays on 4.38.0 + Jackson 2 -->
-      <exclusions>
-        <exclusion>
-          <groupId>com.github.victools</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <!-- scope "provided" -->
     <dependency>
@@ -182,13 +168,6 @@
       <artifactId>spring-ai-client-chat</artifactId>
       <scope>test</scope>
       <optional>true</optional>
-      <!-- victools 5.0.0 migrated to Jackson 3; SDK stays on 4.38.0 + Jackson 2 -->
-      <exclusions>
-        <exclusion>
-          <groupId>com.github.victools</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
 

@@ -60,13 +60,6 @@
       <groupId>org.springframework.ai</groupId>
       <artifactId>spring-ai-model</artifactId>
       <optional>true</optional>
-      <!-- victools 5.0.0 migrated to Jackson 3; SDK stays on 4.38.0 + Jackson 2 -->
-      <exclusions>
-        <exclusion>
-          <groupId>com.github.victools</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
