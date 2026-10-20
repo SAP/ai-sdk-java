@@ -2,7 +2,6 @@ package com.sap.ai.sdk.orchestration;
 
 import com.google.common.collect.Lists;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
-import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration;
@@ -23,7 +22,6 @@ import com.sap.ai.sdk.orchestration.model.TranslationModuleConfig;
 import com.sap.ai.sdk.orchestration.model.UserChatMessage;
 import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import io.vavr.control.Option;
-import java.util.List;
 import java.util.function.UnaryOperator;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -54,9 +52,7 @@ final class ConfigToRequestTransformer {
                             ModelPromptCachingSupport.forModel(c.getLlmConfig().getName()))))
             .toList();
     val messageHistory =
-        template instanceof LocalPromptTemplate local
-            ? local.getMessageHistory().stream().map(Message::createChatMessage).toList()
-            : List.<ChatMessage>of();
+        template.getMessageHistory().stream().map(Message::createChatMessage).toList();
 
     final OrchestrationConfigModules moduleConfigs =
         modules.size() == 1
@@ -82,16 +78,13 @@ final class ConfigToRequestTransformer {
   static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
       @Nonnull final PromptTemplate prompt,
       @Nonnull final ModelPromptCachingSupport cachingConfig) {
-    val config = prompt.toLowLevel();
-    if (config instanceof TemplateRef) {
-      return config;
+    val templateModuleConfig = prompt.toLowLevel();
+    if (templateModuleConfig instanceof TemplateRef) {
+      return templateModuleConfig;
     }
-    if (!(config instanceof Template template)) {
-      throw new IllegalArgumentException("Unsupported prompt template: " + config.getClass());
-    }
-    if (template.getTemplate() == null || template.getTemplate().isEmpty()) {
-      throw new IllegalStateException(
-          "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
+    if (!(templateModuleConfig instanceof Template template)) {
+      throw new IllegalArgumentException(
+          "Unsupported prompt template: " + templateModuleConfig.getClass());
     }
     // Copy the entire template, including custom fields, before adjusting cache checkpoints.
     val result =
