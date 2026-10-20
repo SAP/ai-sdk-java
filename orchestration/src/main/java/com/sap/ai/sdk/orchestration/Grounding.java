@@ -85,7 +85,7 @@ public class Grounding extends GroundingProvider {
    * @return the prompt with grounding.
    */
   @Nonnull
-  public LocalPromptTemplate createGroundingPrompt(@Nonnull final String message) {
+  public static LocalPromptTemplate createGroundingPrompt(@Nonnull final String message) {
     return PromptTemplate.create(
             Message.user(
                 "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}"))

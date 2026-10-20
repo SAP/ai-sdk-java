@@ -537,7 +537,7 @@ public class OrchestrationService {
 
     val groundingConfig = Grounding.create().filters(databaseFilter).metadataParams("*");
     val prompt =
-        groundingConfig
+        Grounding
             .createGroundingPrompt(userMessage)
             .withMessageHistory(
                 List.of(Message.system("Add in the response all metadata from grounding.")));
@@ -575,7 +575,7 @@ public class OrchestrationService {
             .dataRepositories(List.of(dataRepositoryId))
             .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1));
     val groundingConfig = Grounding.create().filters(filter);
-    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+    val prompt = Grounding.createGroundingPrompt(userMessage);
     val configWithGrounding = config.withGrounding(groundingConfig);
     return customClient
         .chatCompletion()

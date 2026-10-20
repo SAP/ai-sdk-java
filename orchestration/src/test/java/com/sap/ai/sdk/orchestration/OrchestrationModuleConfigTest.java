@@ -319,7 +319,7 @@ class OrchestrationModuleConfigTest {
 
   @Test
   void testGroundingPrompt() {
-    var prompt = Grounding.create().createGroundingPrompt("Hello, World!");
+    var prompt = Grounding.createGroundingPrompt("Hello, World!");
     assertThat(prompt.getChatMessages())
         .containsExactly(
             Message.user(

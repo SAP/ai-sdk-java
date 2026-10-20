@@ -372,7 +372,7 @@ class OrchestrationUnitTest {
     var dbFilters = DocumentGroundingFilter.create().dataRepositoryType(DataRepositoryType.VECTOR);
 
     var groundingConfig = Grounding.create().metadataParams("foo", "bar").filters(dbFilters);
-    var prompt = groundingConfig.createGroundingPrompt("Hello, what do you know?");
+    var prompt = Grounding.createGroundingPrompt("Hello, what do you know?");
     var configWithGrounding = config.withGrounding(groundingConfig);
 
     final var response =
@@ -396,7 +396,7 @@ class OrchestrationUnitTest {
     val groundingConfig = Grounding.create().filters(groundingHelpSapCom);
     val configWithGrounding = config.withGrounding(groundingConfig);
 
-    val prompt = groundingConfig.createGroundingPrompt("What is a fuzzy search?");
+    val prompt = Grounding.createGroundingPrompt("What is a fuzzy search?");
     val response =
         client.chatCompletion().config(configWithGrounding).promptTemplate(prompt).execute();
 
