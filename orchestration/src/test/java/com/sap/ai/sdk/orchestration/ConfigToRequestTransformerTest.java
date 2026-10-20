@@ -7,6 +7,9 @@ import com.sap.ai.sdk.orchestration.model.Template;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import org.junit.jupiter.api.Test;
 
 class ConfigToRequestTransformerTest {
@@ -158,6 +161,12 @@ class ConfigToRequestTransformerTest {
             """
         {"spec":{"template":[{"role":"user","content":"Hello"}]}}
         """);
+    var messages = template.getChatMessages();
+    assertThat(messages).isNotEmpty();
+    assertThat(messages.get(0)).isExactlyInstanceOf(UserChatMessage.class);
+    if(messages.get(0) instanceof UserChatMessage userMessage) {
+      assertThat(((UserChatMessageContent.InnerString) userMessage.getContent()).value()).isEqualTo("Hello");
+    }
     var request =
         ConfigToRequestTransformer.toCompletionPostRequest(
             template, new OrchestrationModuleConfig(CUSTOM_GPT_4O));
