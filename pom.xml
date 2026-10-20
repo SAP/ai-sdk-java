@@ -91,6 +91,7 @@
     <caffeine.version>3.3.0</caffeine.version>
     <!-- CVE fixes -->
     <bouncycastle.version>1.86</bouncycastle.version>
+    <kotlin.version>2.4.21</kotlin.version>
     <!-- Formatting -->
     <spotless.version>3.10.4</spotless.version>
     <spotless.skip>false</spotless.skip>
@@ -278,6 +279,27 @@
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcpkix-jdk18on</artifactId>
         <version>${bouncycastle.version}</version>
+      </dependency>
+      <!-- Temporary fix for CVE-2026-53914 -->
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib</artifactId>
+        <version>${kotlin.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-jdk8</artifactId>
+        <version>${kotlin.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-jdk7</artifactId>
+        <version>${kotlin.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-stdlib-common</artifactId>
+        <version>${kotlin.version}</version>
       </dependency>
       <!-- scope "test" -->
       <dependency>
