@@ -110,23 +110,15 @@ jobs:
           fi
           
           cd sample-code/spring-app
-          mvn spring-boot:run > spring-boot-run.log 2>&1 &
-          app_pid=$!
-
+          mvn spring-boot:run &
           # mvn spring-boot:run first resolves/compiles before the app boots, so the
           # wait budget must cover Maven startup, not just the ~5s application boot.
           timeout=90
           while ! nc -z localhost 8080; do
-            if ! kill -0 "$app_pid" 2>/dev/null; then
-              echo "Application process exited before opening port 8080."
-              cat spring-boot-run.log
-              exit 1
-            fi
             sleep 1
             timeout=$((timeout - 1))
             if [ $timeout -le 0 ]; then
               echo "Server did not start within 90 seconds."
-              cat spring-boot-run.log
               exit 1
             fi
           done
