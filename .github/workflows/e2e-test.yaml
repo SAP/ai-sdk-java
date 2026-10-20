@@ -111,8 +111,6 @@ jobs:
           
           cd sample-code/spring-app
           mvn spring-boot:run &
-          # mvn spring-boot:run first resolves/compiles before the app boots, so the
-          # wait budget must cover Maven startup, not just the ~5s application boot.
           timeout=90
           while ! nc -z localhost 8080; do
             sleep 1
