@@ -60,6 +60,14 @@
         <artifactId>tomcat-embed-websocket</artifactId>
         <version>${apache-tomcat-embed.version}</version>
       </dependency>
+      <!-- Temporary fix for CVE-2026-53914 -->
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-bom</artifactId>
+        <version>${kotlin.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <!-- Enforce consistent Junit version -->
       <dependency>
         <groupId>org.junit</groupId>
