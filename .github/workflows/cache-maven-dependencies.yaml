@@ -33,7 +33,7 @@ jobs:
 
       - name: 'Delete Existing Caches'
         run: |
-          CACHE_IDS=$(gh cache list --key "${{ env.MAVEN_CACHE_KEY }}" --ref "${{ env.MAVEN_CACHE_REF }}" --json id | jq -r '.[] | .id')
+          CACHE_IDS=$(gh cache list --key "${{ env.MAVEN_CACHE_KEY }}" --json id | jq -r '.[] | .id')
           for CACHE_ID in $CACHE_IDS; do
               echo "Deleting cache with ID: $CACHE_ID"
               gh cache delete "${CACHE_ID}"
