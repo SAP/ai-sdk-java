@@ -111,6 +111,8 @@ jobs:
           
           cd sample-code/spring-app
           mvn spring-boot:run &
+          APP_PID=$!
+          echo "APP_PID=$APP_PID" >> $GITHUB_ENV
           timeout=60
           while ! nc -z localhost 8080; do
             sleep 1
@@ -129,6 +131,10 @@ jobs:
         if: steps.filter.outputs.run == 'true'
         # print response body with headers to stdout.  q:body only  O:print  -:stdout  S:headers
         run: wget -qO- -S localhost:8080
+
+      - name: "Stop Application"
+        if: steps.filter.outputs.run == 'true' && env.APP_PID != ''
+        run: kill $APP_PID || true
 
       - name: "Slack Notification"
         if: failure() && steps.filter.outputs.run == 'true'
