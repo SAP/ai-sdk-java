@@ -84,7 +84,7 @@ For ID-based configs, use `OrchestrationConfigReference.fromId(id).withInputPara
 
 ### ✨ New Functionality
 
-- [Orchestration] Added new models `GPT_51`, `GPT_6_ASTRA`, `GPT_6_LUNA`, `GPT_61_SOL` to `OrchestrationModel`.
+- [Orchestration] Added new models `GPT_51`, `GPT_6_ASTRA`, `GPT_6_LUNA`, `GPT_61_SOL`, and `QWEN_3_8_MAX` to `OrchestrationModel`.
 - [OpenAI] Added new models `GPT_51`, `GPT_6_ASTRA`, `GPT_6_LUNA`, `GPT_61_SOL` to `OpenAiModel`.
 
 ### 📈 Improvements

@@ -238,6 +238,9 @@ public class OrchestrationAiModel {
   /** Alibaba Qwen 3.7 plus model. */
   public static final OrchestrationAiModel QWEN_3_7_PLUS = new OrchestrationAiModel("qwen3.7-plus");
 
+  /** Alibaba Qwen 3.8 max model. */
+  public static final OrchestrationAiModel QWEN_3_8_MAX = new OrchestrationAiModel("qwen3.8-max");
+
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");
   }
