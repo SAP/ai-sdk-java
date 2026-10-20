@@ -7,7 +7,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.SONAR;
 import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
-import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
+import static com.sap.ai.sdk.orchestration.PromptTemplateReference.ScopeEnum.RESOURCE_GROUP;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -27,11 +27,10 @@ import com.sap.ai.sdk.orchestration.OrchestrationConfigReference;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
-import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.PromptTemplate;
 import com.sap.ai.sdk.orchestration.ReasoningEffort;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
-import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TranslationConfig;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByIdConfigRef;
@@ -42,10 +41,8 @@ import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
-import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
 import com.sap.ai.sdk.prompt.registry.client.OrchestrationConfigsApi;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
@@ -86,8 +83,8 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    return client.chatCompletion(prompt, config);
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
@@ -102,8 +99,12 @@ public class OrchestrationService {
 
     final var multiMessage =
         Message.user("What is in this image?").withImage(pathToImage, ImageItem.DetailLevel.LOW);
-    final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, llmWithImageSupportConfig);
+    final var prompt = PromptTemplate.create(multiMessage);
+    return client
+        .chatCompletion()
+        .config(llmWithImageSupportConfig)
+        .promptTemplate(prompt)
+        .execute();
   }
 
   /**
@@ -116,8 +117,8 @@ public class OrchestrationService {
   public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
     final var multiMessage =
         Message.user(questions.get(0)).withText(questions.get(1)).withText(questions.get(2));
-    final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    final var prompt = PromptTemplate.create(multiMessage);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
@@ -133,8 +134,8 @@ public class OrchestrationService {
     final var multiMessage =
         Message.user("What is the title of the topic discussed here?")
             .withFileUrl(fileUrl, filename);
-    final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    final var prompt = PromptTemplate.create(multiMessage);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
@@ -147,8 +148,8 @@ public class OrchestrationService {
   public OrchestrationChatResponse fileInput(@Nonnull final Path filePath) {
     final var multiMessage =
         Message.user("What is the title of the topic discussed here?").withFile(filePath);
-    final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    final var prompt = PromptTemplate.create(multiMessage);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
@@ -164,8 +165,8 @@ public class OrchestrationService {
     final var multiMessage =
         Message.user("What is the title of the topic discussed here?")
             .withFileBase64(base64Data, filename);
-    final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    final var prompt = PromptTemplate.create(multiMessage);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
@@ -177,9 +178,9 @@ public class OrchestrationService {
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String topic) {
     val prompt =
-        new OrchestrationPrompt(
+        PromptTemplate.create(
             "Please create a small story about " + topic + " with around 700 words.");
-    return client.streamChatCompletion(prompt, config);
+    return client.chatCompletion().config(config).promptTemplate(prompt).executeStream();
   }
 
   /**
@@ -193,8 +194,8 @@ public class OrchestrationService {
   public ReasoningOutput reasoning(@Nonnull final String topic) {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
-    val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
-    val response = client.chatCompletion(prompt, reasoningConfig);
+    val prompt = PromptTemplate.create("Think carefully and explain step by step: " + topic);
+    val response = client.chatCompletion().config(reasoningConfig).promptTemplate(prompt).execute();
     return new ReasoningOutput(response.getContent(), response.getReasoningText());
   }
 
@@ -218,10 +219,12 @@ public class OrchestrationService {
   public Stream<ReasoningOutput> streamReasoning(@Nonnull final String topic) {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
-    val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
-    val request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
+    val prompt = PromptTemplate.create("Think carefully and explain step by step: " + topic);
     return client
-        .streamChatCompletionDeltas(request)
+        .chatCompletion()
+        .config(reasoningConfig)
+        .promptTemplate(prompt)
+        .executeStreamDeltas()
         .map(delta -> new ReasoningOutput(delta.getDeltaContent(), delta.getDeltaReasoningText()));
   }
 
@@ -239,14 +242,16 @@ public class OrchestrationService {
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
 
     // Turn 1
-    val firstPrompt = new OrchestrationPrompt(firstQuestion);
-    val firstResponse = client.chatCompletion(firstPrompt, reasoningConfig);
+    val firstPrompt = PromptTemplate.create(firstQuestion);
+    val firstResponse =
+        client.chatCompletion().config(reasoningConfig).promptTemplate(firstPrompt).execute();
 
     // Turn 2 feeds the whole history back. getAllMessages() already carries the reasoning content
     // on the final assistant message.
     val followUpPrompt =
-        new OrchestrationPrompt(followUp).messageHistory(firstResponse.getAllMessages());
-    val followUpResponse = client.chatCompletion(followUpPrompt, reasoningConfig);
+        PromptTemplate.create(followUp).withMessageHistory(firstResponse.getAllMessages());
+    val followUpResponse =
+        client.chatCompletion().config(reasoningConfig).promptTemplate(followUpPrompt).execute();
 
     return new ReasoningOutput(followUpResponse.getContent(), followUpResponse.getReasoningText());
   }
@@ -261,14 +266,16 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse template(@Nonnull final String language) {
-    val template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-    val templatingConfig = TemplateConfig.create().withMessages(template);
-    val configWithTemplate = config.withTemplateConfig(templatingConfig);
-
+    val message = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
     val inputParams = Map.of("language", language);
-    val prompt = new OrchestrationPrompt(inputParams);
 
-    return client.chatCompletion(prompt, configWithTemplate);
+    val filledTemplate =
+        PromptTemplate.create(message)
+            .withMessages(message)
+            .withMessageHistory(List.of())
+            .withInputParameters(inputParams);
+
+    return client.chatCompletion().config(config).promptTemplate(filledTemplate).execute();
   }
 
   /**
@@ -279,16 +286,16 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse messagesHistory(@Nonnull final String prevMessage) {
-    val prompt = new OrchestrationPrompt(Message.user(prevMessage));
+    val prompt = PromptTemplate.create(Message.user(prevMessage));
 
-    val result = client.chatCompletion(prompt, config);
+    val result = client.chatCompletion().config(config).promptTemplate(prompt).execute();
 
     // Let's presume a user asks the following follow-up question
     val nextPrompt =
-        new OrchestrationPrompt(Message.user("What is the typical food there?"))
-            .messageHistory(result.getAllMessages());
+        PromptTemplate.create(Message.user("What is the typical food there?"))
+            .withMessageHistory(result.getAllMessages());
 
-    return client.chatCompletion(nextPrompt, config);
+    return client.chatCompletion().config(config).promptTemplate(nextPrompt).execute();
   }
 
   /**
@@ -306,7 +313,7 @@ public class OrchestrationService {
       throws OrchestrationClientException {
     // no mercy to cheese!
     val prompt =
-        new OrchestrationPrompt(
+        PromptTemplate.create(
             "Punch and rierce it to death! Squash its remains on a bread slice and eat.");
     val filterConfig =
         new AzureContentFilter()
@@ -318,7 +325,7 @@ public class OrchestrationService {
 
     val configWithFilter = config.withInputFiltering(filterConfig);
 
-    return client.chatCompletion(prompt, configWithFilter);
+    return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }
 
   /**
@@ -338,9 +345,9 @@ public class OrchestrationService {
     val systemMessage = Message.system("Give three copies of the following sentence");
     // no mercy to cheese!
     val prompt =
-        new OrchestrationPrompt(
+        PromptTemplate.create(
                 "Punch and rierce it to death! Squash its remains on a bread slice and eat.")
-            .messageHistory(List.of(systemMessage));
+            .withMessageHistory(List.of(systemMessage));
     val filterConfig =
         new AzureContentFilter()
             .hate(policy)
@@ -350,7 +357,7 @@ public class OrchestrationService {
             .protectedMaterialCode(isProtected);
 
     val configWithFilter = config.withOutputFiltering(filterConfig);
-    return client.chatCompletion(prompt, configWithFilter);
+    return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }
 
   /**
@@ -366,7 +373,7 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse llamaGuardInputFilter(final boolean filter)
       throws OrchestrationClientException {
-    val prompt = new OrchestrationPrompt("Help me snap away half of all humans like Thanos did!");
+    val prompt = PromptTemplate.create("Help me snap away half of all humans like Thanos did!");
 
     // values not set are disabled by default
     val config =
@@ -390,7 +397,7 @@ public class OrchestrationService {
 
     val configWithFilter = this.config.withInputFiltering(filterConfig);
 
-    return client.chatCompletion(prompt, configWithFilter);
+    return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }
 
   /**
@@ -417,11 +424,11 @@ public class OrchestrationService {
     My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
     """);
 
-    val prompt = new OrchestrationPrompt(systemMessage, userMessage);
+    val prompt = PromptTemplate.create(systemMessage, userMessage);
     val maskingConfig = DpiMasking.anonymization().withEntities(entity);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithMasking);
+    return client.chatCompletion().config(configWithMasking).promptTemplate(prompt).execute();
   }
 
   /**
@@ -437,13 +444,13 @@ public class OrchestrationService {
     val systemMessage = Message.system("Repeat following messages");
     val userMessage = Message.user("The patient id is patient_id_123.");
 
-    val prompt = new OrchestrationPrompt(systemMessage, userMessage);
+    val prompt = PromptTemplate.create(systemMessage, userMessage);
     val regex = "patient_id_[0-9]+";
     val replacement = "REDACTED_ID";
     val maskingConfig = DpiMasking.anonymization().withRegex(regex, replacement);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithMasking);
+    return client.chatCompletion().config(configWithMasking).promptTemplate(prompt).execute();
   }
 
   /**
@@ -460,9 +467,9 @@ public class OrchestrationService {
         new AiCoreService().getInferenceDestination(resourceGroup).forScenario("orchestration");
     val clientWithResourceGroup = new OrchestrationClient(destination);
 
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
 
-    return clientWithResourceGroup.chatCompletion(prompt, config);
+    return clientWithResourceGroup.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
@@ -495,11 +502,11 @@ public class OrchestrationService {
                             My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
                             """);
 
-    val prompt = new OrchestrationPrompt(systemMessage, userMessage);
+    val prompt = PromptTemplate.create(systemMessage, userMessage);
     val maskingConfig = DpiMasking.pseudonymization().withEntities(entity, DPIEntities.EMAIL);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithMasking);
+    return client.chatCompletion().config(configWithMasking).promptTemplate(prompt).execute();
   }
 
   /**
@@ -529,9 +536,8 @@ public class OrchestrationService {
 
     val groundingConfig = Grounding.create().filters(databaseFilter).metadataParams("*");
     val prompt =
-        groundingConfig
-            .createGroundingPrompt(userMessage)
-            .messageHistory(
+        Grounding.createGroundingPrompt(userMessage)
+            .withMessageHistory(
                 List.of(Message.system("Add in the response all metadata from grounding.")));
     val maskingConfig = // optional masking configuration
         DpiMasking.anonymization()
@@ -541,7 +547,7 @@ public class OrchestrationService {
     val configWithGrounding =
         config.withGrounding(groundingConfig).withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithGrounding);
+    return client.chatCompletion().config(configWithGrounding).promptTemplate(prompt).execute();
   }
 
   /**
@@ -567,9 +573,13 @@ public class OrchestrationService {
             .dataRepositories(List.of(dataRepositoryId))
             .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1));
     val groundingConfig = Grounding.create().filters(filter);
-    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+    val prompt = Grounding.createGroundingPrompt(userMessage);
     val configWithGrounding = config.withGrounding(groundingConfig);
-    return customClient.chatCompletion(prompt, configWithGrounding);
+    return customClient
+        .chatCompletion()
+        .config(configWithGrounding)
+        .promptTemplate(prompt)
+        .execute();
   }
 
   /**
@@ -587,9 +597,9 @@ public class OrchestrationService {
     val groundingConfig = Grounding.create().filters(groundingHelpSapCom);
     val configWithGrounding = config.withGrounding(groundingConfig);
 
-    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+    val prompt = Grounding.createGroundingPrompt(userMessage);
 
-    return client.chatCompletion(prompt, configWithGrounding);
+    return client.chatCompletion().config(configWithGrounding).promptTemplate(prompt).execute();
   }
 
   /**
@@ -616,22 +626,18 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(
       @Nonnull final String word, @Nonnull final Class<?> targetType) {
-    // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
-    // release 2510b. See https://jira.tools.sap/browse/AI-125770
-    final var configWithGpt4 = new OrchestrationModuleConfig(GPT_5_MINI);
     val schema =
         ResponseJsonSchema.fromType(targetType)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
-    val configWithResponseSchema =
-        configWithGpt4.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
     val prompt =
-        new OrchestrationPrompt(
-            Message.user("Whats '%s' in German?".formatted(word)),
-            Message.system("You are a language translator."));
+        PromptTemplate.create(
+                Message.user("Whats '%s' in German?".formatted(word)),
+                Message.system("You are a language translator."))
+            .withJsonSchemaResponse(schema);
 
-    return client.chatCompletion(prompt, configWithResponseSchema);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
@@ -646,42 +652,14 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonObject(@Nonnull final String word) {
-    val template = Message.user("What is '%s' in German?".formatted(word));
-    val templatingConfig = TemplateConfig.create().withMessages(template).withJsonResponse();
-    val configWithTemplate = config.withTemplateConfig(templatingConfig);
-
     val prompt =
-        new OrchestrationPrompt(
-            Message.system(
-                "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
+        PromptTemplate.create(
+                Message.system(
+                    "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"),
+                Message.user("What is '%s' in German?".formatted(word)))
+            .withJsonResponse();
 
-    return client.chatCompletion(prompt, configWithTemplate);
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration service using the response format option
-   * 'text'.
-   *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
-   *     AI Core: Orchestration - Structured Output</a>
-   * @param word the word to translate.
-   * @return the assistant response object.
-   */
-  @Nonnull
-  public OrchestrationChatResponse responseFormatText(@Nonnull final String word) {
-    val template = Message.user("Whats '%s' in German?".formatted(word));
-    val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT));
-    val configWithTemplate = config.withTemplateConfig(templatingConfig);
-
-    val prompt =
-        new OrchestrationPrompt(
-            Message.system("You are a language translator. Answer using JSON."));
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
@@ -698,13 +676,16 @@ public class OrchestrationService {
       @Nonnull final String topic) {
     final var llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
 
-    val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
+    val template =
+        PromptTemplate.reference()
+            .byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16")
+            .andInputParameters(Map.of("language", "Italian", "input", topic));
 
-    val inputParams = Map.of("language", "Italian", "input", topic);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client
+        .chatCompletion()
+        .config(llmWithImageSupportConfig)
+        .promptTemplate(template)
+        .execute();
   }
 
   /**
@@ -724,15 +705,17 @@ public class OrchestrationService {
         client.withResourceGroup("ai-sdk-java-e2e", "orchestration");
 
     val template =
-        TemplateConfig.reference()
+        PromptTemplate.reference()
             .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
+            .andInputParameters(
+                Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample))
             .withScope(RESOURCE_GROUP);
-    val configWithTemplate = config.withTemplateConfig(template);
 
-    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
+    return clientWithResourceGroup
+        .chatCompletion()
+        .config(config)
+        .promptTemplate(template)
+        .execute();
   }
 
   /**
@@ -747,13 +730,14 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenarioTenant(
       @Nonnull final String topic) {
-    val template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
-    val configWithTemplate = config.withTemplateConfig(template);
+    val template =
+        PromptTemplate.reference()
+            .byScenario("test")
+            .name("test")
+            .version("0.0.1")
+            .andInputParameters(Map.of("language", "Italian", "input", topic));
 
-    val inputParams = Map.of("language", "Italian", "input", topic);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(config).promptTemplate(template).execute();
   }
 
   /**
@@ -773,17 +757,19 @@ public class OrchestrationService {
         client.withResourceGroup("ai-sdk-java-e2e", "orchestration");
 
     val template =
-        TemplateConfig.reference()
+        PromptTemplate.reference()
             .byScenario("categorization")
             .name("example-prompt-template")
             .version("0.0.1")
+            .andInputParameters(
+                Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample))
             .withScope(RESOURCE_GROUP);
-    val configWithTemplate = config.withTemplateConfig(template);
 
-    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
+    return clientWithResourceGroup
+        .chatCompletion()
+        .config(config)
+        .promptTemplate(template)
+        .execute();
   }
 
   /**
@@ -798,17 +784,10 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
       throws IOException {
-    // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
-    // release 2510b. See https://jira.tools.sap/browse/AI-125770
-    final var configWithGpt4 = new OrchestrationModuleConfig(GPT_5_MINI);
-    val template = TemplateConfig.create().fromYaml(promptTemplate);
-    val configWithTemplate =
-        template != null ? configWithGpt4.withTemplateConfig(template) : configWithGpt4;
+    val template =
+        PromptTemplate.fromYaml(promptTemplate).withInputParameters(Map.of("language", "German"));
 
-    val inputParams = Map.of("language", "German");
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(config).promptTemplate(template).execute();
   }
 
   /**
@@ -827,15 +806,12 @@ public class OrchestrationService {
     val userMessage =
         Message.user(
             "Generate a study guide for the {{?exam_type}} exam on {{?topic}}.\n\nInclude {{?num_questions}} practice questions.");
-    val templatingConfig = TemplateConfig.create().withMessages(systemMessage, userMessage);
+    val prompt = PromptTemplate.create(systemMessage, userMessage).withInputParameters(inputParams);
 
-    val prompt = new OrchestrationPrompt(inputParams);
     // list of supported language pairs
     // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
-
     val configWithTranslation =
         config
-            .withTemplateConfig(templatingConfig)
             .withInputTranslationConfig(
                 TranslationConfig.translateInputTo("en-US")
                     .applyToPlaceholders("exam_type", "topic")
@@ -843,7 +819,7 @@ public class OrchestrationService {
             .withOutputTranslationConfig(
                 TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
 
-    return client.chatCompletion(prompt, configWithTranslation);
+    return client.chatCompletion().config(configWithTranslation).promptTemplate(prompt).execute();
   }
 
   /**
@@ -865,7 +841,7 @@ public class OrchestrationService {
         OrchestrationEmbeddingRequest.forModel(TEXT_EMBEDDING_3_SMALL)
             .forInputs(texts)
             .withMasking(masking);
-    return client.embed(request);
+    return client.embeddings().request(request).execute();
   }
 
   /**
@@ -879,15 +855,15 @@ public class OrchestrationService {
     val scenario = "sdk-test-paraphrase";
     val name = "create-3-paraphrases-of-sentence";
     ensureOrchestrationConfigExists(scenario, name);
-    final List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
-    final var params = Map.of("phrase", "Hello World");
-    final var testReference =
+
+    final var configReference =
         OrchestrationConfigReference.fromScenario("sdk-test-scenario")
             .name("test-config-for-OrchestrationTest")
             .version("0.0.1")
-            .withMessageHistory(history)
-            .withTemplateParameters(params);
-    return client.chatCompletionUsingReference(testReference);
+            .andInputParameters(Map.of("phrase", "Hello World"))
+            .withMessageHistory(List.of(new SystemMessage("Start every sentence with an emoji.")));
+
+    return client.chatCompletion().configReference(configReference).execute();
   }
 
   private void ensureOrchestrationConfigExists(final String scenario, final String name) {
@@ -941,14 +917,18 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse completionWithFallback(@Nonnull final String famousPhrase) {
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
     val workingConfig = new OrchestrationModuleConfig(GPT_5_MINI);
     val brokenConfig =
         new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
     val secondBrokenConfig =
         new OrchestrationModuleConfig(
             new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
-    return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig, workingConfig);
+    return client
+        .chatCompletion()
+        .config(brokenConfig, secondBrokenConfig, workingConfig)
+        .promptTemplate(prompt)
+        .execute();
   }
 
   /**
@@ -961,10 +941,10 @@ public class OrchestrationService {
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamDeltasWithInlineConfig(
       @Nonnull final String famousPhrase) {
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
     val config = new OrchestrationModuleConfig(GPT_5_MINI);
     val request = OrchestrationClient.toCompletionPostRequest(prompt, config);
-    return client.streamChatCompletionDeltas(request);
+    return client.chatCompletion().lowLevel().request(request).executeStreamDeltas();
   }
 
   /**
@@ -991,7 +971,7 @@ public class OrchestrationService {
         CompletionRequestConfigurationReferenceById.create()
             .configRef(CompletionRequestConfigurationReferenceByIdConfigRef.create().id(id))
             .placeholderValues(Map.of("phrase", "Hello World"));
-    return client.streamChatCompletionDeltas(request);
+    return client.chatCompletion().lowLevel().request(request).executeStreamDeltas();
   }
 
   /**
@@ -1012,7 +992,7 @@ public class OrchestrationService {
                     .name("test-config-for-OrchestrationTest")
                     .version("0.0.1"))
             .placeholderValues(Map.of("phrase", "Hello World"));
-    return client.streamChatCompletionDeltas(request);
+    return client.chatCompletion().lowLevel().request(request).executeStreamDeltas();
   }
 
   /**
@@ -1025,11 +1005,15 @@ public class OrchestrationService {
    */
   @Nonnull
   public Stream<String> streamCompletionWithFallback(@Nonnull final String famousPhrase) {
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
     val workingConfig = new OrchestrationModuleConfig(GPT_5_MINI);
     val brokenConfig =
         new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    return client.streamChatCompletion(prompt, brokenConfig, workingConfig);
+    return client
+        .chatCompletion()
+        .config(brokenConfig, workingConfig)
+        .promptTemplate(prompt)
+        .executeStream();
   }
 
   /**
@@ -1042,13 +1026,17 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse completionWithFallbackAllFail(
       @Nonnull final String famousPhrase) {
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
     val brokenConfig =
         new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
     val secondBrokenConfig =
         new OrchestrationModuleConfig(
             new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
-    return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig);
+    return client
+        .chatCompletion()
+        .config(brokenConfig, secondBrokenConfig)
+        .promptTemplate(prompt)
+        .execute();
   }
 
   /**
@@ -1058,8 +1046,8 @@ public class OrchestrationService {
    */
   @Nonnull
   public OrchestrationChatResponse citations() {
-    val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
+    val prompt = PromptTemplate.create("Where does \"Hello World\" come from?");
     val sonarConfig = new OrchestrationModuleConfig(SONAR);
-    return client.chatCompletion(prompt, sonarConfig);
+    return client.chatCompletion().config(sonarConfig).promptTemplate(prompt).execute();
   }
 }

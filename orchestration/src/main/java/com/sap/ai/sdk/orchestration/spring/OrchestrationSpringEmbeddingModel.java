@@ -65,7 +65,7 @@ public class OrchestrationSpringEmbeddingModel implements EmbeddingModel {
   @Nonnull
   public EmbeddingResponse call(@Nonnull final EmbeddingRequest request) {
     final var orchestrationRequest = createOrchestrationEmbeddingRequest(request);
-    final var orchestrationResponse = client.embed(orchestrationRequest);
+    final var orchestrationResponse = client.embeddings().request(orchestrationRequest).execute();
     return createSpringAiEmbeddingResponse(orchestrationResponse);
   }
 

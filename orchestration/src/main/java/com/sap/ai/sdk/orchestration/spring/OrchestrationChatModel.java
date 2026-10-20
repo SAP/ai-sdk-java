@@ -1,21 +1,21 @@
 package com.sap.ai.sdk.orchestration.spring;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
-import static com.sap.ai.sdk.orchestration.OrchestrationClient.toCompletionPostRequest;
 import static com.sap.ai.sdk.orchestration.model.MessageToolCall.TypeEnum.FUNCTION;
 
 import com.sap.ai.sdk.orchestration.AssistantMessage;
+import com.sap.ai.sdk.orchestration.LocalPromptTemplate;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
-import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.PromptTemplate;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.ToolMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.MessageToolCall;
 import com.sap.ai.sdk.orchestration.model.MessageToolCallFunction;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -75,13 +75,16 @@ public class OrchestrationChatModel implements ChatModel {
   public ChatResponse call(@Nonnull final Prompt prompt) {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
-      val orchestrationPrompt = toOrchestrationPrompt(prompt);
+      val orchestrationPrompt = options.withCallbacks(toPromptTemplate(prompt));
 
       return new OrchestrationSpringChatResponse(
-          client.chatCompletion(
-              orchestrationPrompt,
-              options.getConfigWithCallbacks(),
-              options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new)));
+          client
+              .chatCompletion()
+              .config(
+                  options.getConfig(),
+                  options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new))
+              .promptTemplate(orchestrationPrompt)
+              .execute());
     }
     throw new IllegalArgumentException(
         "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
@@ -93,25 +96,17 @@ public class OrchestrationChatModel implements ChatModel {
 
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
-      val orchestrationPrompt = toOrchestrationPrompt(prompt);
-      val request =
-          toCompletionPostRequest(
-              orchestrationPrompt,
-              options.getConfig(),
-              options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new));
-      val stream = client.streamChatCompletionDeltas(request);
-
+      val orchestrationPrompt = options.withCallbacks(toPromptTemplate(prompt));
       final Flux<OrchestrationChatCompletionDelta> flux =
-          Flux.generate(
-              stream::iterator,
-              (iterator, sink) -> {
-                if (iterator.hasNext()) {
-                  sink.next(iterator.next());
-                } else {
-                  sink.complete();
-                }
-                return iterator;
-              });
+          Flux.fromStream(
+              () ->
+                  client
+                      .chatCompletion()
+                      .config(
+                          options.getConfig(),
+                          options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new))
+                      .promptTemplate(orchestrationPrompt)
+                      .executeStreamDeltas());
       return flux.map(OrchestrationSpringChatDelta::new);
     }
     throw new IllegalArgumentException(
@@ -119,9 +114,12 @@ public class OrchestrationChatModel implements ChatModel {
   }
 
   @Nonnull
-  private OrchestrationPrompt toOrchestrationPrompt(@Nonnull final Prompt prompt) {
+  private LocalPromptTemplate toPromptTemplate(@Nonnull final Prompt prompt) {
     val messages = toOrchestrationMessages(prompt.getInstructions());
-    return new OrchestrationPrompt(Map.of(), messages);
+    if (messages.length == 0) {
+      throw new IllegalArgumentException("A prompt is required. Pass at least one message.");
+    }
+    return PromptTemplate.create(messages[0], Arrays.copyOfRange(messages, 1, messages.length));
   }
 
   @Nonnull

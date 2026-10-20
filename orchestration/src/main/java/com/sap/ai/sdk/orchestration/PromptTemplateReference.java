@@ -5,6 +5,8 @@ import com.sap.ai.sdk.orchestration.model.TemplateRef;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import com.sap.ai.sdk.orchestration.model.TemplateRefTemplateRef;
+import java.util.List;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,14 +21,20 @@ import lombok.With;
  */
 @EqualsAndHashCode(callSuper = true)
 @Value
+@With
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrchestrationTemplateReference extends TemplateConfig {
+public class PromptTemplateReference extends PromptTemplate {
   @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
   @Nonnull
+  @With(AccessLevel.PRIVATE)
   TemplateRefTemplateRef reference;
 
   /** The scope of the template reference. */
-  @With @Nonnull ScopeEnum scope;
+  @Nonnull ScopeEnum scope;
+
+  @Nonnull Map<String, String> inputParameters;
+
+  @Nonnull List<Message> messageHistory;
 
   /**
    * Create a low-level representation of the template.
@@ -38,12 +46,17 @@ public class OrchestrationTemplateReference extends TemplateConfig {
   protected PromptTemplatingModuleConfigPrompt toLowLevel() {
     if (reference instanceof TemplateRefByID idRef) {
       final var valueById = TemplateRefByID.ScopeEnum.valueOf(scope.name());
-      idRef.setScope(valueById);
-      return TemplateRef.create().templateRef(idRef);
+      return TemplateRef.create()
+          .templateRef(TemplateRefByID.create().id(idRef.getId()).scope(valueById));
     } else if (reference instanceof TemplateRefByScenarioNameVersion scenarioRef) {
       final var valueByScenario = TemplateRefByScenarioNameVersion.ScopeEnum.valueOf(scope.name());
-      scenarioRef.setScope(valueByScenario);
-      return TemplateRef.create().templateRef(scenarioRef);
+      return TemplateRef.create()
+          .templateRef(
+              TemplateRefByScenarioNameVersion.create()
+                  .scenario(scenarioRef.getScenario())
+                  .name(scenarioRef.getName())
+                  .version(scenarioRef.getVersion())
+                  .scope(valueByScenario));
     } else {
       throw new IllegalStateException(
           "Unsupported template reference type: " + reference.getClass());

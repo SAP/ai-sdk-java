@@ -85,11 +85,11 @@ public class Grounding extends GroundingProvider {
    * @return the prompt with grounding.
    */
   @Nonnull
-  public OrchestrationPrompt createGroundingPrompt(@Nonnull final String message) {
-    return new OrchestrationPrompt(
-        Map.of("userMessage", message),
-        Message.user(
-            "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}"));
+  public static LocalPromptTemplate createGroundingPrompt(@Nonnull final String message) {
+    return PromptTemplate.create(
+            Message.user(
+                "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}"))
+        .withInputParameters(Map.of("userMessage", message));
   }
 
   @Nonnull

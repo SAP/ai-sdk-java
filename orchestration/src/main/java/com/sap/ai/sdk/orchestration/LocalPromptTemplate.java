@@ -1,10 +1,6 @@
 package com.sap.ai.sdk.orchestration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
@@ -13,7 +9,6 @@ import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchemaJsonSchema;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateResponseFormat;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +19,6 @@ import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.With;
 import lombok.val;
@@ -37,14 +31,16 @@ import lombok.val;
 @EqualsAndHashCode(callSuper = true)
 @Value
 @With
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(force = true, access = AccessLevel.PACKAGE)
-public class OrchestrationTemplate extends TemplateConfig {
-
+@AllArgsConstructor(access = AccessLevel.PACKAGE)
+public class LocalPromptTemplate extends PromptTemplate {
   @JsonProperty("template")
   @Nullable
-  @With(AccessLevel.NONE)
-  List<ChatMessage> template;
+  @With(AccessLevel.PRIVATE)
+  List<ChatMessage> chatMessages;
+
+  @Nonnull List<Message> messageHistory;
+
+  @Nonnull Map<String, String> inputParameters;
 
   @JsonProperty("defaults")
   @Nullable
@@ -60,16 +56,26 @@ public class OrchestrationTemplate extends TemplateConfig {
   @Nullable
   List<ChatCompletionTool> tools;
 
+  /** Fixes a bug where messageHistory is set to null in lombok's generated constructor. */
+  @SuppressWarnings("unused")
+  private LocalPromptTemplate() {
+    this(null, List.of(), Map.of(), null, null, null);
+  }
+
   /**
    * Create a new template with the given messages.
    *
-   * @param messages the messages to use in the template.
+   * @param message the first message to use in the template.
+   * @param moreMessages additional messages to use in the template.
    * @return the updated template.
    */
   @Nonnull
-  public OrchestrationTemplate withMessages(@Nonnull final Message... messages) {
-    final var chatMessages = Stream.of(messages).map(Message::createChatMessage).toList();
-    return new OrchestrationTemplate(chatMessages, this.defaults, this.responseFormat, this.tools);
+  public LocalPromptTemplate withMessages(
+      @Nonnull final Message message, @Nonnull final Message... moreMessages) {
+    return this.withChatMessages(
+        Stream.concat(Stream.of(message), Stream.of(moreMessages))
+            .map(Message::createChatMessage)
+            .toList());
   }
 
   /**
@@ -80,7 +86,7 @@ public class OrchestrationTemplate extends TemplateConfig {
   @Override
   @Nonnull
   protected PromptTemplatingModuleConfigPrompt toLowLevel() {
-    final List<ChatMessage> template = this.template != null ? this.template : List.of();
+    final List<ChatMessage> template = this.chatMessages != null ? this.chatMessages : List.of();
     final Map<String, String> defaults = this.defaults != null ? this.defaults : new HashMap<>();
     final List<ChatCompletionTool> tools = this.tools != null ? this.tools : new ArrayList<>();
     return Template.create()
@@ -97,7 +103,7 @@ public class OrchestrationTemplate extends TemplateConfig {
    * @return the updated template.
    */
   @Nonnull
-  public OrchestrationTemplate withJsonSchemaResponse(@Nonnull final ResponseJsonSchema schema) {
+  public LocalPromptTemplate withJsonSchemaResponse(@Nonnull final ResponseJsonSchema schema) {
     val responseFormatJsonSchema =
         ResponseFormatJsonSchema.create()
             .type(ResponseFormatJsonSchema.TypeEnum.JSON_SCHEMA)
@@ -116,50 +122,9 @@ public class OrchestrationTemplate extends TemplateConfig {
    * @return the updated template.
    */
   @Nonnull
-  public OrchestrationTemplate withJsonResponse() {
+  public LocalPromptTemplate withJsonResponse() {
     val responseFormatJsonObject =
         ResponseFormatJsonObject.create().type(ResponseFormatJsonObject.TypeEnum.JSON_OBJECT);
     return this.withResponseFormat(responseFormatJsonObject);
-  }
-
-  /**
-   * Create a {@link Template} object from a JSON provided as String.
-   *
-   * @param inputString the provided JSON.
-   * @return a Template object representing the provided JSON.
-   * @throws IOException if the JSON cannot be deserialized.
-   * @since 1.7.0
-   */
-  @Nullable
-  private OrchestrationTemplate fromJson(@Nonnull final String inputString) throws IOException {
-    final ObjectMapper objectMapper =
-        OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
-    final JsonNode rootNode = objectMapper.readTree(inputString);
-    return objectMapper.treeToValue(rootNode.get("spec"), OrchestrationTemplate.class);
-  }
-
-  /**
-   * Create a {@link Template} object from a YAML provided as String.
-   *
-   * @param inputYaml the provided YAML.
-   * @return a Template object representing the provided YAML.
-   * @throws IOException if the YAML cannot be parsed or deserialized.
-   * @since 1.7.0
-   */
-  @Nullable
-  public OrchestrationTemplate fromYaml(@Nonnull final String inputYaml) throws IOException {
-    final Object obj;
-    try {
-      final ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
-      obj = yamlReader.readValue(inputYaml, Object.class);
-    } catch (JsonProcessingException ex) {
-      throw new IOException("Failed to parse the YAML input: " + ex.getMessage(), ex);
-    }
-    try {
-      final ObjectMapper jsonWriter = new ObjectMapper();
-      return fromJson(jsonWriter.writeValueAsString(obj));
-    } catch (JsonProcessingException ex) {
-      throw new IOException("Failed to deserialize the input: " + ex.getMessage(), ex);
-    }
   }
 }

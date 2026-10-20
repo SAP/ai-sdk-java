@@ -9,7 +9,6 @@ import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfigProviders;
 import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
-import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInput;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
 import java.util.ArrayList;
@@ -59,17 +58,6 @@ public class OrchestrationModuleConfig {
   @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
   @Nonnull
   LLMModelDetails llmConfig;
-
-  /**
-   * A template to be populated with input parameters. Upon request execution, this template will be
-   * enhanced with any messages and parameter values from {@link OrchestrationPrompt}.
-   *
-   * <p><a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP AI
-   * Core: Orchestration - Templating</a>
-   */
-  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
-  @Nullable
-  PromptTemplatingModuleConfigPrompt templateConfig;
 
   /**
    * A masking configuration to pseudonymous or anonymize sensitive data in the input.
@@ -154,7 +142,6 @@ public class OrchestrationModuleConfig {
   public OrchestrationModuleConfig(@Nonnull final OrchestrationAiModel aiModel) {
     this.llmConfig = aiModel.createConfig();
     this.filteringConfig = null;
-    this.templateConfig = null;
     this.maskingConfig = null;
     this.inputTranslationConfig = null;
     this.outputFilteringStreamOptions = null;
@@ -313,7 +300,6 @@ public class OrchestrationModuleConfig {
     }
     return new OrchestrationModuleConfig(
         this.llmConfig,
-        this.templateConfig,
         this.maskingConfig,
         this.filteringConfig,
         this.groundingConfig,
@@ -336,23 +322,6 @@ public class OrchestrationModuleConfig {
   public OrchestrationModuleConfig withGrounding(
       @Nonnull final GroundingProvider groundingProvider) {
     return this.withGroundingConfig(groundingProvider.createConfig());
-  }
-
-  /**
-   * Creates a new configuration with the given template configuration as {@link TemplateConfig}.
-   *
-   * <p><a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP AI
-   * Core: Orchestration - Templating</a>
-   *
-   * @param templateConfig the template configuration to use.
-   * @return a new configuration with the given template configuration.
-   * @since 1.4.0
-   */
-  @Tolerate
-  @Nonnull
-  public OrchestrationModuleConfig withTemplateConfig(
-      @Nonnull final TemplateConfig templateConfig) {
-    return this.withTemplateConfig(templateConfig.toLowLevel());
   }
 
   /**
@@ -390,7 +359,6 @@ public class OrchestrationModuleConfig {
   public OrchestrationModuleConfig copy() {
     return new OrchestrationModuleConfig(
         this.llmConfig,
-        this.templateConfig,
         this.maskingConfig,
         this.filteringConfig,
         this.groundingConfig,
