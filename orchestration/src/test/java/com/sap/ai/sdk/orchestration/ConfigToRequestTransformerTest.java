@@ -4,12 +4,11 @@ import static com.sap.ai.sdk.orchestration.OrchestrationUnitTest.CUSTOM_GPT_4O;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.orchestration.model.Template;
+import com.sap.ai.sdk.orchestration.model.UserChatMessage;
+import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.sap.ai.sdk.orchestration.model.UserChatMessage;
-import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import org.junit.jupiter.api.Test;
 
 class ConfigToRequestTransformerTest {
@@ -164,8 +163,9 @@ class ConfigToRequestTransformerTest {
     var messages = template.getChatMessages();
     assertThat(messages).isNotEmpty();
     assertThat(messages.get(0)).isExactlyInstanceOf(UserChatMessage.class);
-    if(messages.get(0) instanceof UserChatMessage userMessage) {
-      assertThat(((UserChatMessageContent.InnerString) userMessage.getContent()).value()).isEqualTo("Hello");
+    if (messages.get(0) instanceof UserChatMessage userMessage) {
+      assertThat(((UserChatMessageContent.InnerString) userMessage.getContent()).value())
+          .isEqualTo("Hello");
     }
     var request =
         ConfigToRequestTransformer.toCompletionPostRequest(
