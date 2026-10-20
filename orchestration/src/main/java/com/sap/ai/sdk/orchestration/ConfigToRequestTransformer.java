@@ -78,16 +78,13 @@ final class ConfigToRequestTransformer {
   static PromptTemplatingModuleConfigPrompt toTemplateModuleConfig(
       @Nonnull final PromptTemplate prompt,
       @Nonnull final ModelPromptCachingSupport cachingConfig) {
-    val config = prompt.toLowLevel();
-    if (config instanceof TemplateRef) {
-      return config;
+    val templateModuleConfig = prompt.toLowLevel();
+    if (templateModuleConfig instanceof TemplateRef) {
+      return templateModuleConfig;
     }
-    if (!(config instanceof Template template)) {
-      throw new IllegalArgumentException("Unsupported prompt template: " + config.getClass());
-    }
-    if (template.getTemplate() == null || template.getTemplate().isEmpty()) {
-      throw new IllegalStateException(
-          "A prompt is required. Pass at least one message or configure a template with messages or a template reference.");
+    if (!(templateModuleConfig instanceof Template template)) {
+      throw new IllegalArgumentException(
+          "Unsupported prompt template: " + templateModuleConfig.getClass());
     }
     // Copy the entire template, including custom fields, before adjusting cache checkpoints.
     val result =
