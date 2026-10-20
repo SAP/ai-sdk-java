@@ -537,8 +537,7 @@ public class OrchestrationService {
 
     val groundingConfig = Grounding.create().filters(databaseFilter).metadataParams("*");
     val prompt =
-        Grounding
-            .createGroundingPrompt(userMessage)
+        Grounding.createGroundingPrompt(userMessage)
             .withMessageHistory(
                 List.of(Message.system("Add in the response all metadata from grounding.")));
     val maskingConfig = // optional masking configuration
