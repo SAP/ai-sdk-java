@@ -5,6 +5,7 @@ import static lombok.AccessLevel.PACKAGE;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.sap.ai.sdk.orchestration.OrchestrationClient.ChatCompletionWithConfig;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
@@ -154,7 +155,7 @@ public class OrchestrationChatResponse {
    *
    * <p>This is possible on a request using a {@link LocalPromptTemplate#withJsonSchemaResponse}
    * template passed to {@link
-   * OrchestrationClient.BuilderWithConfig#promptTemplate(PromptTemplate)}.
+   * ChatCompletionWithConfig#promptTemplate(PromptTemplate)}.
    *
    * @param type the class type to deserialize the JSON content into.
    * @param <T> the type of the entity to deserialize to.

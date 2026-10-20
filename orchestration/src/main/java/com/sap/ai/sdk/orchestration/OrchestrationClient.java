@@ -132,13 +132,13 @@ public class OrchestrationClient {
    * @return a builder to configure the chat completion
    */
   @Nonnull
-  public OrchestrationChatCompletionBuilder chatCompletion() {
-    return new OrchestrationChatCompletionBuilder();
+  public ChatCompletionBuilder chatCompletion() {
+    return new ChatCompletionBuilder();
   }
 
   /** Builder to select a local or referenced orchestration configuration for a chat completion. */
   @AllArgsConstructor
-  public class OrchestrationChatCompletionBuilder {
+  public class ChatCompletionBuilder {
 
     /**
      * Select the low-level API for a custom completion request.
@@ -158,10 +158,10 @@ public class OrchestrationClient {
      * @return a builder to select the prompt template.
      */
     @Nonnull
-    public BuilderWithConfig config(
+    public ChatCompletionWithConfig config(
         @Nonnull final OrchestrationModuleConfig config,
         @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
-      return new BuilderWithConfig(config, fallbackConfigs);
+      return new ChatCompletionWithConfig(config, fallbackConfigs);
     }
 
     /**
@@ -171,17 +171,17 @@ public class OrchestrationClient {
      * @return a client to execute the configured chat completion.
      */
     @Nonnull
-    public OrchestrationChatCompletionClient configReference(
+    public ChatCompletionExecutor configReference(
         @Nonnull final OrchestrationConfigReference configReference) {
       val request =
           ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(configReference);
-      return new OrchestrationChatCompletionClient(request);
+      return new ChatCompletionExecutor(request);
     }
   }
 
   /** Intermediate builder to select a prompt template for a local orchestration configuration. */
   @AllArgsConstructor
-  public class BuilderWithConfig {
+  public class ChatCompletionWithConfig {
     OrchestrationModuleConfig config;
     OrchestrationModuleConfig[] fallbackConfigs;
 
@@ -192,27 +192,25 @@ public class OrchestrationClient {
      * @return a client to execute the configured chat completion.
      */
     @Nonnull
-    public OrchestrationChatCompletionClient promptTemplate(
-        @Nonnull final PromptTemplate template) {
+    public ChatCompletionExecutor promptTemplate(@Nonnull final PromptTemplate template) {
       val request =
           ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
-      return new OrchestrationChatCompletionClient(request);
+      return new ChatCompletionExecutor(request);
     }
   }
 
   /** Client to execute a configured chat completion with a regular or streaming response. */
-  public class OrchestrationChatCompletionClient {
+  public class ChatCompletionExecutor {
 
-    private final LowLevelChatCompletionClient delegate;
+    private final LowLevelChatCompletionExecutor delegate;
 
     /**
      * Create a client for a configured chat completion request.
      *
      * @param request the request to execute.
      */
-    @SuppressWarnings("PMD.PublicApiExposesModelType")
-    private OrchestrationChatCompletionClient(@Nonnull final CompletionPostRequest request) {
-      this.delegate = new LowLevelChatCompletionClient(request);
+    private ChatCompletionExecutor(@Nonnull final CompletionPostRequest request) {
+      this.delegate = new LowLevelChatCompletionExecutor(request);
     }
 
     /**
@@ -268,14 +266,14 @@ public class OrchestrationClient {
      */
     @SuppressWarnings("PMD.PublicApiExposesModelType")
     @Nonnull
-    public LowLevelChatCompletionClient request(@Nonnull final CompletionPostRequest request) {
-      return new LowLevelChatCompletionClient(request);
+    public LowLevelChatCompletionExecutor request(@Nonnull final CompletionPostRequest request) {
+      return new LowLevelChatCompletionExecutor(request);
     }
   }
 
   /** Client to execute a custom low-level chat completion request. */
   @AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-  public class LowLevelChatCompletionClient {
+  public class LowLevelChatCompletionExecutor {
 
     private @Nonnull final CompletionPostRequest request;
 
@@ -302,7 +300,7 @@ public class OrchestrationClient {
     @Nonnull
     public Stream<String> executeStream() throws OrchestrationClientException {
       return executeStreamDeltas()
-          .peek(LowLevelChatCompletionClient::throwOnContentFilter)
+          .peek(LowLevelChatCompletionExecutor::throwOnContentFilter)
           .map(OrchestrationChatCompletionDelta::getDeltaContent);
     }
 
@@ -392,13 +390,13 @@ public class OrchestrationClient {
    * @return a builder to supply an embedding request or select the low-level API.
    */
   @Nonnull
-  public OrchestrationEmbeddingsBuilder embeddings() {
-    return new OrchestrationEmbeddingsBuilder();
+  public EmbeddingsBuilder embeddings() {
+    return new EmbeddingsBuilder();
   }
 
   /** Builder to select a high-level or low-level embedding request. */
   @AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-  public class OrchestrationEmbeddingsBuilder {
+  public class EmbeddingsBuilder {
 
     /**
      * Set the embedding request.
@@ -407,9 +405,8 @@ public class OrchestrationClient {
      * @return a client to execute the embedding request.
      */
     @Nonnull
-    public OrchestrationEmbeddingsClient request(
-        @Nonnull final OrchestrationEmbeddingRequest request) {
-      return new OrchestrationEmbeddingsClient(request);
+    public EmbeddingsExecutor request(@Nonnull final OrchestrationEmbeddingRequest request) {
+      return new EmbeddingsExecutor(request);
     }
 
     /**
@@ -425,7 +422,7 @@ public class OrchestrationClient {
 
   /** Client to execute a high-level embedding request. */
   @AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-  public class OrchestrationEmbeddingsClient {
+  public class EmbeddingsExecutor {
 
     private @Nonnull final OrchestrationEmbeddingRequest request;
 
@@ -438,7 +435,7 @@ public class OrchestrationClient {
     @Nonnull
     public OrchestrationEmbeddingResponse execute() throws OrchestrationClientException {
       return new OrchestrationEmbeddingResponse(
-          new LowLevelEmbeddingsClient(request.createEmbeddingsPostRequest()).execute());
+          new LowLevelEmbeddingsExecutor(request.createEmbeddingsPostRequest()).execute());
     }
   }
 
@@ -454,14 +451,14 @@ public class OrchestrationClient {
      */
     @SuppressWarnings("PMD.PublicApiExposesModelType")
     @Nonnull
-    public LowLevelEmbeddingsClient request(@Nonnull final EmbeddingsPostRequest request) {
-      return new LowLevelEmbeddingsClient(request);
+    public LowLevelEmbeddingsExecutor request(@Nonnull final EmbeddingsPostRequest request) {
+      return new LowLevelEmbeddingsExecutor(request);
     }
   }
 
   /** Client to execute a custom low-level embedding request. */
   @AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-  public class LowLevelEmbeddingsClient {
+  public class LowLevelEmbeddingsExecutor {
 
     private @Nonnull final EmbeddingsPostRequest request;
 

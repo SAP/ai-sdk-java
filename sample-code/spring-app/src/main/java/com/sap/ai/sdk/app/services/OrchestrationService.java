@@ -598,7 +598,7 @@ public class OrchestrationService {
     val groundingConfig = Grounding.create().filters(groundingHelpSapCom);
     val configWithGrounding = config.withGrounding(groundingConfig);
 
-    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+    val prompt = Grounding.createGroundingPrompt(userMessage);
 
     return client.chatCompletion().config(configWithGrounding).promptTemplate(prompt).execute();
   }
@@ -708,10 +708,9 @@ public class OrchestrationService {
     val template =
         PromptTemplate.reference()
             .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
-            .andInputParameters(Map.of())
-            .withScope(RESOURCE_GROUP)
-            .withInputParameters(
-                Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample));
+            .andInputParameters(
+                Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample))
+            .withScope(RESOURCE_GROUP);
 
     return clientWithResourceGroup
         .chatCompletion()
