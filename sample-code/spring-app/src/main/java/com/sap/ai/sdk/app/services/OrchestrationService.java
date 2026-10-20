@@ -57,7 +57,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -786,8 +785,7 @@ public class OrchestrationService {
   public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
       throws IOException {
     val template =
-        Objects.requireNonNull(PromptTemplate.fromYaml(promptTemplate))
-            .withInputParameters(Map.of("language", "German"));
+        PromptTemplate.fromYaml(promptTemplate).withInputParameters(Map.of("language", "German"));
 
     return client.chatCompletion().config(config).promptTemplate(template).execute();
   }

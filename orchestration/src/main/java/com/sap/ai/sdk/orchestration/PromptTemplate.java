@@ -12,10 +12,10 @@ import com.sap.ai.sdk.orchestration.model.TemplateRefByScenarioNameVersion;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -93,12 +93,14 @@ public abstract sealed class PromptTemplate permits LocalPromptTemplate, PromptT
    * @throws IOException if the JSON cannot be deserialized.
    * @since 1.7.0
    */
-  @Nullable
+  @Nonnull
   public static LocalPromptTemplate fromJson(@Nonnull final String inputJson) throws IOException {
     final ObjectMapper objectMapper =
         OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
     final JsonNode rootNode = objectMapper.readTree(inputJson);
-    return objectMapper.treeToValue(rootNode.get("spec"), LocalPromptTemplate.class);
+    return Objects.requireNonNull(
+        objectMapper.treeToValue(rootNode.get("spec"), LocalPromptTemplate.class),
+        "Invalid JSON input: 'spec' field is missing or cannot be deserialized into LocalPromptTemplate");
   }
 
   /**
@@ -109,7 +111,7 @@ public abstract sealed class PromptTemplate permits LocalPromptTemplate, PromptT
    * @throws IOException if the YAML cannot be parsed or deserialized.
    * @since 1.7.0
    */
-  @Nullable
+  @Nonnull
   public static LocalPromptTemplate fromYaml(@Nonnull final String inputYaml) throws IOException {
     final Object obj;
     try {
