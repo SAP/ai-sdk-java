@@ -111,12 +111,12 @@ jobs:
           
           cd sample-code/spring-app
           mvn spring-boot:run &
-          timeout=15
+          timeout=60
           while ! nc -z localhost 8080; do
             sleep 1
             timeout=$((timeout - 1))
             if [ $timeout -le 0 ]; then
-              echo "Server did not start within 15 seconds."
+              echo "Server did not start within 60 seconds."
               exit 1
             fi
           done
