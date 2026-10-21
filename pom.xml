@@ -92,6 +92,8 @@
     <!-- CVE fixes -->
     <bouncycastle.version>1.86</bouncycastle.version>
     <kotlin.version>2.4.21</kotlin.version>
+    <guava.version>33.7.2-jre</guava.version>
+    <java-jwt.version>4.6.2</java-jwt.version>
     <!-- Formatting -->
     <spotless.version>3.10.4</spotless.version>
     <spotless.skip>false</spotless.skip>
@@ -287,6 +289,18 @@
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcpkix-jdk18on</artifactId>
         <version>${bouncycastle.version}</version>
+      </dependency>
+      <!-- CVE-2026-102554: pin guava >= 33.7.2-jre -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+      <!-- CVE-2026-85473: pin java-jwt >= 4.6.2 -->
+      <dependency>
+        <groupId>com.auth0</groupId>
+        <artifactId>java-jwt</artifactId>
+        <version>${java-jwt.version}</version>
       </dependency>
       <!-- scope "test" -->
       <dependency>
