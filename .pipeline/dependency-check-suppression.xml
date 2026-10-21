@@ -16,4 +16,19 @@
     <notes><![CDATA[CVE-2026-110879 does not exist in NVD yet. Check again later.]]></notes>
     <cve>CVE-2026-110879</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[CVE-2026-53914 is a false positive: OWASP misidentifies this jackson-databind CVE against kotlin-stdlib via CPE matching. kotlin-stdlib is not affected; jackson-databind fix is already applied (2.22.4).]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlin/kotlin-stdlib.*$</packageUrl>
+    <cve>CVE-2026-53914</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[CVE-2026-14683 and CVE-2026-14686 affect HdrHistogram 2.2.2. No patched version is available; HdrHistogram 2.2.2 is the latest release. This is an optional/runtime transitive dependency pulled by micrometer-core.]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.hdrhistogram/HdrHistogram.*$</packageUrl>
+    <cve>CVE-2026-14683</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[See above — same artifact, no fix available.]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.hdrhistogram/HdrHistogram.*$</packageUrl>
+    <cve>CVE-2026-14686</cve>
+  </suppress>
 </suppressions>
