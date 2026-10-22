@@ -166,6 +166,7 @@ class OrchestrationChatModelTest {
     val result = client.call(prompt);
 
     List<ToolCall> toolCalls = result.getResult().getOutput().getToolCalls();
+    assertThat(result.getMetadata().getUsage().getTotalTokens()).isEqualTo(121);
     assertThat(toolCalls).hasSize(2);
     ToolCall toolCall1 = toolCalls.get(0);
     ToolCall toolCall2 = toolCalls.get(1);
@@ -211,6 +212,17 @@ class OrchestrationChatModelTest {
     assertThat(result.getResult().getOutput().getText())
         .isEqualTo("The current temperature in Potsdam is 30°C and in Toulouse 30°C.");
 
+    assertThat(result.getMetadata().getUsage().getPromptTokens()).isEqualTo(134);
+    assertThat(result.getMetadata().getUsage().getCompletionTokens()).isEqualTo(108);
+    assertThat(result.getMetadata().getUsage().getTotalTokens()).isEqualTo(242);
+    assertThat(
+            ((OrchestrationSpringChatResponse) result)
+                .getOrchestrationResponse()
+                .getTokenUsage()
+                .getTotalTokens())
+        .isEqualTo(121);
+    verify(2, postRequestedFor(urlPathEqualTo("/v2/completion")));
+
     try (var request1InputStream = fileLoader.apply("toolCallsRequest.json")) {
       try (var request2InputStream = fileLoader.apply("toolCallsRequest2.json")) {
         final String request1 = new String(request1InputStream.readAllBytes());
@@ -218,6 +230,51 @@ class OrchestrationChatModelTest {
         verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request1)));
         verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request2)));
       }
+    }
+  }
+
+  @Test
+  void testThreeToolRoundsReportCumulativeUsage() {
+    stubToolRounds(3);
+    defaultOptions.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+    var result = client.call(prompt);
+    assertThat(result.getMetadata().getUsage().getPromptTokens()).isEqualTo(201);
+    assertThat(result.getMetadata().getUsage().getCompletionTokens()).isEqualTo(162);
+    assertThat(result.getMetadata().getUsage().getTotalTokens()).isEqualTo(363);
+    assertThat(
+            ((OrchestrationSpringChatResponse) result)
+                .getOrchestrationResponse()
+                .getTokenUsage()
+                .getTotalTokens())
+        .isEqualTo(121);
+    verify(3, postRequestedFor(urlPathEqualTo("/v2/completion")));
+  }
+
+  @Test
+  void testChatClientRetainsCumulativeUsage() {
+    stubToolRounds(2);
+    defaultOptions.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+    var result = ChatClient.builder(client).build().prompt(prompt).call().chatResponse();
+    assertThat(result.getMetadata().getUsage().getPromptTokens()).isEqualTo(134);
+    assertThat(result.getMetadata().getUsage().getCompletionTokens()).isEqualTo(108);
+    assertThat(result.getMetadata().getUsage().getTotalTokens()).isEqualTo(242);
+    verify(2, postRequestedFor(urlPathEqualTo("/v2/completion")));
+  }
+
+  private static void stubToolRounds(int rounds) {
+    for (int round = 0; round < rounds; round++) {
+      stubFor(
+          post(urlPathEqualTo("/v2/completion"))
+              .inScenario("Usage Rounds")
+              .whenScenarioStateIs(round == 0 ? STARTED : "Round " + round)
+              .willReturn(
+                  aResponse()
+                      .withHeader("Content-Type", "application/json")
+                      .withBodyFile(
+                          round == rounds - 1
+                              ? "toolCallsResponse2.json"
+                              : "toolCallsResponse.json"))
+              .willSetStateTo(round == rounds - 1 ? STARTED : "Round " + (round + 1)));
     }
   }
 

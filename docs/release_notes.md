@@ -22,4 +22,4 @@
 
 ### 🐛 Fixed Issues
 
--
+- [Orchestration] Token usage reported in `ChatResponse` metadata now correctly accumulates across all internal tool-call rounds when using `OrchestrationChatModel`.
