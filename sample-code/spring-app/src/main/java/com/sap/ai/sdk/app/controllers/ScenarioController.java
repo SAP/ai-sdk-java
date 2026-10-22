@@ -1,5 +1,6 @@
 package com.sap.ai.sdk.app.controllers;
 
+import com.sap.ai.sdk.core.CoreApi;
 import com.sap.ai.sdk.core.client.ScenarioApi;
 import com.sap.ai.sdk.core.model.AiModelBaseData;
 import com.sap.ai.sdk.core.model.AiModelList;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SuppressWarnings("unused") // debug method that doesn't need to be tested
 class ScenarioController {
 
+  private static final CoreApi CORE_API = new CoreApi();
   private static final ScenarioApi CLIENT = new ScenarioApi();
 
   @GetMapping("/scenarios")
@@ -35,7 +37,7 @@ class ScenarioController {
 
   @Nonnull
   AiModelList getModels() {
-    return CLIENT.queryModels("foundation-models", "default");
+    return CORE_API.availableAiModels();
   }
 
   @GetMapping("/models")

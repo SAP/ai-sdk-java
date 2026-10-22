@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration;
 import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.model.CompletionPostRequest;
 import com.sap.ai.sdk.orchestration.model.CompletionPostResponse;
@@ -13,22 +14,64 @@ import com.sap.ai.sdk.orchestration.model.EmbeddingsPostRequest;
 import com.sap.ai.sdk.orchestration.model.EmbeddingsPostResponse;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.OrchestrationConfig;
-import com.sap.ai.sdk.orchestration.model.PartialOrchestrationConfig;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import io.vavr.control.Try;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 
-/** Client to execute requests to the orchestration service. */
+/**
+ * Client to execute requests to the orchestration service.
+ *
+ * <pre>{@code
+ * chatCompletion()
+ * │
+ * ├── config(config, fallbackConfigs...)
+ * │   │
+ * │   └── promptTemplate(templateOrReference)
+ * │       ├── execute()
+ * │       ├── executeStream()
+ * │       └── executeStreamDeltas()
+ * │
+ * ├── configReference(configRef)
+ * │   ├── execute()
+ * │   ├── executeStream()
+ * │   └── executeStreamDeltas()
+ * │
+ * └── lowLevel()
+ *     └── request(completionPostRequest)
+ *         ├── execute()
+ *         ├── executeStream()
+ *         └── executeStreamDeltas()
+ *
+ * embeddings()
+ * │
+ * ├── request(orchestrationEmbeddingRequest)
+ * │   └── execute()
+ * │
+ * └── lowLevel()
+ *     └── request(embeddingsPostRequest)
+ *         └── execute()
+ * }</pre>
+ *
+ * <p>High-level chat execution returns {@link OrchestrationChatResponse}; low-level execution
+ * returns {@link CompletionPostResponse}. Embedding execution similarly returns {@link
+ * OrchestrationEmbeddingResponse} or {@link EmbeddingsPostResponse}. Use {@code lowLevel()} only
+ * when supplying a custom generated request object.
+ *
+ * <p>Both chat APIs support text streaming and detailed deltas. Text streaming throws on an output
+ * content-filter finish reason; detailed streaming exposes that reason in the deltas. Close
+ * returned streams with try-with-resources. Streaming does not modify the configured request or
+ * shared stream options, so the same execution client can also be used for non-streaming calls.
+ */
 @Slf4j
 @RequiredArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class OrchestrationClient {
@@ -70,79 +113,248 @@ public class OrchestrationClient {
    * Convert the given prompt and config into a low-level request data object. The data object
    * allows for further customization before sending the request.
    *
-   * @param prompt the {@link OrchestrationPrompt} to generate a completion for.
+   * @param template the {@link PromptTemplate} to generate a completion for.
    * @param config the {@link OrchestrationConfig } configuration to use for the completion.
    * @param fallbackConfigs fallback configurations to use.
    * @return the low-level request data object to send to orchestration.
    */
   @Nonnull
   public static CompletionRequestConfiguration toCompletionPostRequest(
-      @Nonnull final OrchestrationPrompt prompt,
+      @Nonnull final PromptTemplate template,
       @Nonnull final OrchestrationModuleConfig config,
       @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
-    return ConfigToRequestTransformer.toCompletionPostRequest(prompt, config, fallbackConfigs);
+    return ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
   }
 
   /**
-   * Generate a completion for the given prompt.
+   * Create a builder to configure and execute a chat completion.
    *
-   * @param prompt the {@link OrchestrationPrompt} to send to orchestration.
-   * @param config the configuration to use.
-   * @param fallbackConfigs fallback configurations.
-   * @return the completion output.
-   * @throws OrchestrationClientException if the request fails.
+   * @return a builder to configure the chat completion
    */
   @Nonnull
-  public OrchestrationChatResponse chatCompletion(
-      @Nonnull final OrchestrationPrompt prompt,
-      @Nonnull final OrchestrationModuleConfig config,
-      @Nonnull final OrchestrationModuleConfig... fallbackConfigs)
-      throws OrchestrationClientException {
-    val request = toCompletionPostRequest(prompt, config, fallbackConfigs);
-    val response = executeRequest(request);
-    return new OrchestrationChatResponse(response);
+  public ChatCompletionBuilder chatCompletion() {
+    return new ChatCompletionBuilder();
   }
 
-  /**
-   * Generate a completion for the given prompt.
-   *
-   * @param prompt a text message.
-   * @param config the configuration to use.
-   * @param fallbackConfigs fallback configurations.
-   * @return a stream of message deltas.
-   * @throws OrchestrationClientException if the request fails or if the finish reason is
-   *     content_filter.
-   * @since 1.1.0
-   */
-  @Nonnull
-  public Stream<String> streamChatCompletion(
-      @Nonnull final OrchestrationPrompt prompt,
-      @Nonnull final OrchestrationModuleConfig config,
-      @Nonnull final OrchestrationModuleConfig... fallbackConfigs)
-      throws OrchestrationClientException {
+  /** Builder to select a local or referenced orchestration configuration for a chat completion. */
+  @AllArgsConstructor
+  public class ChatCompletionBuilder {
 
-    val request = toCompletionPostRequest(prompt, config, fallbackConfigs);
-    return streamChatCompletionDeltas(request)
-        .peek(OrchestrationClient::throwOnContentFilter)
-        .map(OrchestrationChatCompletionDelta::getDeltaContent);
-  }
+    /**
+     * Select the low-level API for a custom completion request.
+     *
+     * @return a builder to supply the low-level request.
+     */
+    @Nonnull
+    public LowLevelChatCompletionBuilder lowLevel() {
+      return new LowLevelChatCompletionBuilder();
+    }
 
-  private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)
-      throws OrchestrationFilterException.Output {
-    final String finishReason = delta.getFinishReason();
-    if (finishReason != null && finishReason.equals("content_filter")) {
-      final var filterDetails =
-          Try.of(() -> getOutputFilteringChoices(delta)).getOrElseGet(e -> Map.of());
-      final var message = "Content filter filtered the output.";
-      throw new OrchestrationFilterException.Output(message).setFilterDetails(filterDetails);
+    /**
+     * Configure the chat completion using a local orchestration configuration.
+     *
+     * @param config the primary orchestration configuration.
+     * @param fallbackConfigs fallback configurations to use.
+     * @return a builder to select the prompt template.
+     */
+    @Nonnull
+    public ChatCompletionWithConfig config(
+        @Nonnull final OrchestrationModuleConfig config,
+        @Nonnull final OrchestrationModuleConfig... fallbackConfigs) {
+      return new ChatCompletionWithConfig(config, fallbackConfigs);
+    }
+
+    /**
+     * Configure the chat completion using a stored orchestration configuration.
+     *
+     * @param configReference the reference to the stored orchestration configuration.
+     * @return a client to execute the configured chat completion.
+     */
+    @Nonnull
+    public ChatCompletionExecutor configReference(
+        @Nonnull final OrchestrationConfigReference configReference) {
+      val request =
+          ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(configReference);
+      return new ChatCompletionExecutor(request);
     }
   }
 
-  @SuppressWarnings("unchecked")
-  private static Map<String, Object> getOutputFilteringChoices(
-      @Nonnull final OrchestrationChatCompletionDelta delta) {
-    final var f = delta.getIntermediateResults().getOutputFiltering();
-    return ((List<Map<String, Object>>) ((Map<String, Object>) f.getData()).get("choices")).get(0);
+  /** Intermediate builder to select a prompt template for a local orchestration configuration. */
+  @AllArgsConstructor
+  public class ChatCompletionWithConfig {
+    OrchestrationModuleConfig config;
+    OrchestrationModuleConfig[] fallbackConfigs;
+
+    /**
+     * Set the prompt template for the chat completion.
+     *
+     * @param template the local prompt template or prompt template reference.
+     * @return a client to execute the configured chat completion.
+     */
+    @Nonnull
+    public ChatCompletionExecutor promptTemplate(@Nonnull final PromptTemplate template) {
+      val request =
+          ConfigToRequestTransformer.toCompletionPostRequest(template, config, fallbackConfigs);
+      return new ChatCompletionExecutor(request);
+    }
+  }
+
+  /** Client to execute a configured chat completion with a regular or streaming response. */
+  public class ChatCompletionExecutor {
+
+    private final LowLevelChatCompletionExecutor delegate;
+
+    /**
+     * Create a client for a configured chat completion request.
+     *
+     * @param request the request to execute.
+     */
+    private ChatCompletionExecutor(@Nonnull final CompletionPostRequest request) {
+      this.delegate = new LowLevelChatCompletionExecutor(request);
+    }
+
+    /**
+     * Generate a completion for the given prompt.
+     *
+     * @return the completion output
+     * @throws OrchestrationClientException if the request fails.
+     */
+    @Nonnull
+    public OrchestrationChatResponse execute() throws OrchestrationClientException {
+      return new OrchestrationChatResponse(delegate.execute());
+    }
+
+    /**
+     * Generate a completion for the given prompt.
+     *
+     * @return a stream of message deltas
+     * @throws OrchestrationClientException if the request fails or if the finish reason is
+     *     content_filter
+     * @since 1.1.0
+     */
+    @Nonnull
+    public Stream<String> executeStream() throws OrchestrationClientException {
+      return delegate.executeStream();
+    }
+
+    /**
+     * Generate a completion with detailed streaming deltas, including metadata.
+     *
+     * <p>Streaming is enabled on a copy of the configured request. The caller must close the
+     * returned stream. Content-filter finish reasons are available in the deltas rather than
+     * converted to exceptions.
+     *
+     * @return a stream of chat completion deltas.
+     * @throws OrchestrationClientException if the request fails.
+     */
+    @Nonnull
+    public Stream<OrchestrationChatCompletionDelta> executeStreamDeltas()
+        throws OrchestrationClientException {
+      return delegate.executeStreamDeltas();
+    }
+  }
+
+  /** Builder to supply a custom low-level chat completion request. */
+  @AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+  public class LowLevelChatCompletionBuilder {
+
+    /**
+     * Set the low-level completion request.
+     *
+     * @param request the request to send to orchestration.
+     * @return a client to execute the request.
+     */
+    @SuppressWarnings("PMD.PublicApiExposesModelType")
+    @Nonnull
+    public LowLevelChatCompletionExecutor request(@Nonnull final CompletionPostRequest request) {
+      return new LowLevelChatCompletionExecutor(request);
+    }
+  }
+
+  /** Client to execute a custom low-level chat completion request. */
+  @AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+  public class LowLevelChatCompletionExecutor {
+
+    private @Nonnull final CompletionPostRequest request;
+
+    /**
+     * Execute the request and return the low-level response.
+     *
+     * @return the response data object from orchestration.
+     * @throws OrchestrationClientException if the request fails.
+     */
+    @SuppressWarnings("PMD.PublicApiExposesModelType")
+    @Nonnull
+    public CompletionPostResponse execute() throws OrchestrationClientException {
+      return executeRequest(request);
+    }
+
+    /**
+     * Execute the request with text streaming.
+     *
+     * <p>The caller must close the returned stream.
+     *
+     * @return a stream of message text deltas.
+     * @throws OrchestrationClientException if the request fails or the output is filtered.
+     */
+    @Nonnull
+    public Stream<String> executeStream() throws OrchestrationClientException {
+      return executeStreamDeltas()
+          .peek(LowLevelChatCompletionExecutor::throwOnContentFilter)
+          .map(OrchestrationChatCompletionDelta::getDeltaContent);
+    }
+
+    private static void throwOnContentFilter(@Nonnull final OrchestrationChatCompletionDelta delta)
+        throws OrchestrationFilterException.Output {
+      final String finishReason = delta.getFinishReason();
+      if (finishReason != null && finishReason.equals("content_filter")) {
+        final var filterDetails =
+            Try.of(() -> getOutputFilteringChoices(delta)).getOrElseGet(e -> Map.of());
+        final var message = "Content filter filtered the output.";
+        throw new OrchestrationFilterException.Output(message).setFilterDetails(filterDetails);
+      }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map<String, Object> getOutputFilteringChoices(
+        @Nonnull final OrchestrationChatCompletionDelta delta) {
+      final var f = delta.getIntermediateResults().getOutputFiltering();
+      return ((List<Map<String, Object>>) ((Map<String, Object>) f.getData()).get("choices"))
+          .get(0);
+    }
+
+    /**
+     * Execute the request with detailed streaming deltas.
+     *
+     * <p>Streaming is enabled on a copy of the supplied request. The caller must close the returned
+     * stream. Content-filter finish reasons are available in the deltas rather than converted to
+     * exceptions.
+     *
+     * @return a stream of chat completion deltas.
+     * @throws OrchestrationClientException if the request fails.
+     */
+    @Nonnull
+    public Stream<OrchestrationChatCompletionDelta> executeStreamDeltas()
+        throws OrchestrationClientException {
+      if (!(request instanceof CompletionRequestConfiguration)
+          && !(request instanceof CompletionRequestConfigurationReferenceById)
+          && !(request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion)) {
+        throw new IllegalStateException(
+            "Unsupported request type: " + request.getClass().getName());
+      }
+      // Copy the serialized payload, not generated models whose polymorphic types can be ambiguous.
+      // Only the outgoing copy is changed; caller-owned requests and stream options stay untouched.
+      final ObjectNode streamingRequest = JACKSON.valueToTree(request);
+      final var config = streamingRequest.withObject("/config");
+      if (!config.hasNonNull("stream")) {
+        config.set(
+            "stream",
+            JACKSON.valueToTree(GlobalStreamOptions.create().enabled(true).delimiters(null)));
+      } else {
+        config.withObject("/stream").put("enabled", true);
+      }
+      return executor.stream(COMPLETION_ENDPOINT, streamingRequest, customHeaders);
+    }
   }
 
   /**
@@ -165,118 +377,103 @@ public class OrchestrationClient {
    * @return the response data object from orchestration.
    * @throws OrchestrationClientException if the request fails.
    */
-  @SuppressWarnings("PMD.PublicApiExposesModelType")
   @Nonnull
-  public CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
+  CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
     return executor.execute(
         COMPLETION_ENDPOINT, request, CompletionPostResponse.class, customHeaders);
   }
 
   /**
-   * Generate a completion using a referenced Orchestration config.
+   * Create a builder to configure and execute an embedding request.
    *
-   * @param reference a reference to an Orchestration config stored in prompt registry.
-   * @return the completion output.
-   * @since 1.15.0
+   * @return a builder to supply an embedding request or select the low-level API.
    */
   @Nonnull
-  public OrchestrationChatResponse chatCompletionUsingReference(
-      @Nonnull final OrchestrationConfigReference reference) {
-    val request = ConfigToRequestTransformer.fromReferenceToCompletionPostRequest(reference);
-    val response = executeRequest(request);
-    return new OrchestrationChatResponse(response);
+  public EmbeddingsBuilder embeddings() {
+    return new EmbeddingsBuilder();
   }
 
-  /**
-   * Generate a completion for the given request object.
-   *
-   * <p>Note, that streaming will get enabled on the request object as a side effect.
-   *
-   * @param request the prompt, including messages and other parameters.
-   * @return a stream of chat completion delta elements.
-   * @throws OrchestrationClientException if the request fails.
-   * @since 1.1.0
-   */
-  @SuppressWarnings("PMD.PublicApiExposesModelType")
-  @Nonnull
-  public Stream<OrchestrationChatCompletionDelta> streamChatCompletionDeltas(
-      @Nonnull final CompletionPostRequest request) throws OrchestrationClientException {
-    // since CompletionPostRequest is an empty and generated interface, we have to access the stream
-    // options explicitly for each type
-    if (request instanceof CompletionRequestConfiguration r) {
-      enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
-    } else if (request instanceof CompletionRequestConfigurationReferenceById r) {
-      if (r.getConfig() == null) {
-        r.setConfig(PartialOrchestrationConfig.create());
-      }
-      enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
-    } else if (request instanceof CompletionRequestConfigurationReferenceByNameScenarioVersion r) {
-      if (r.getConfig() == null) {
-        r.setConfig(PartialOrchestrationConfig.create());
-      }
-      enableStreaming(r.getConfig()::getStream, r.getConfig()::setStream);
-    } else {
-      throw new IllegalStateException(
-          "Unsupported request type: "
-              + request.getClass().getName()
-              + ". This method only supports "
-              + CompletionRequestConfiguration.class.getName()
-              + ", "
-              + CompletionRequestConfigurationReferenceById.class.getName()
-              + ", and "
-              + CompletionRequestConfigurationReferenceByNameScenarioVersion.class.getName());
+  /** Builder to select a high-level or low-level embedding request. */
+  @AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+  public class EmbeddingsBuilder {
+
+    /**
+     * Set the embedding request.
+     *
+     * @param request the input text, model and optional masking configuration.
+     * @return a client to execute the embedding request.
+     */
+    @Nonnull
+    public EmbeddingsExecutor request(@Nonnull final OrchestrationEmbeddingRequest request) {
+      return new EmbeddingsExecutor(request);
     }
-    return executor.stream(COMPLETION_ENDPOINT, request, customHeaders);
-  }
 
-  // getStream reads the current GlobalStreamOptions from the request config (which may be null).
-  // setStream writes a GlobalStreamOptions back into the request config.
-  // Both are passed as lambdas because the config types (OrchestrationConfig vs
-  // PartialOrchestrationConfig) share no common usable supertype, so a single generic method is not
-  // possible without reflection.
-  private static void enableStreaming(
-      @Nonnull final Supplier<GlobalStreamOptions> getStream,
-      @Nonnull final Consumer<GlobalStreamOptions> setStream) {
-    if (getStream.get() == null) {
-      setStream.accept(GlobalStreamOptions.create().enabled(true).delimiters(null));
-    } else {
-      getStream.get().enabled(true);
+    /**
+     * Select the low-level API for a custom embedding request.
+     *
+     * @return a builder to supply the low-level request.
+     */
+    @Nonnull
+    public LowLevelEmbeddingsBuilder lowLevel() {
+      return new LowLevelEmbeddingsBuilder();
     }
   }
 
-  /**
-   * Generate embeddings for a {@code OrchestrationEmbeddingRequest} request.
-   *
-   * @param request the request containing the input text and other parameters.
-   * @return the response containing the embeddings.
-   * @throws OrchestrationClientException if the request fails.
-   * @since 1.12.0
-   */
-  @Nonnull
-  public OrchestrationEmbeddingResponse embed(@Nonnull final OrchestrationEmbeddingRequest request)
-      throws OrchestrationClientException {
-    final var response = embed(request.createEmbeddingsPostRequest());
-    return new OrchestrationEmbeddingResponse(response);
+  /** Client to execute a high-level embedding request. */
+  @AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+  public class EmbeddingsExecutor {
+
+    private @Nonnull final OrchestrationEmbeddingRequest request;
+
+    /**
+     * Generate embeddings for the configured request.
+     *
+     * @return the response containing the embeddings.
+     * @throws OrchestrationClientException if the request fails.
+     */
+    @Nonnull
+    public OrchestrationEmbeddingResponse execute() throws OrchestrationClientException {
+      return new OrchestrationEmbeddingResponse(
+          new LowLevelEmbeddingsExecutor(request.createEmbeddingsPostRequest()).execute());
+    }
   }
 
-  /**
-   * Generates embeddings using the low-level API request.
-   *
-   * <p>This method provides direct access to the underlying API for advanced use cases. For most
-   * scenarios, prefer {@link #embed(OrchestrationEmbeddingRequest)}.
-   *
-   * @param request the low-level API request.
-   * @return the low level response object.
-   * @throws OrchestrationClientException if the request fails.
-   * @see #embed(OrchestrationEmbeddingRequest)
-   * @since 1.12.0
-   */
-  @SuppressWarnings("PMD.PublicApiExposesModelType")
-  @Nonnull
-  public EmbeddingsPostResponse embed(@Nonnull final EmbeddingsPostRequest request)
-      throws OrchestrationClientException {
-    return executor.execute("/v2/embeddings", request, EmbeddingsPostResponse.class, customHeaders);
+  /** Builder to supply a custom low-level embedding request. */
+  @AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+  public class LowLevelEmbeddingsBuilder {
+
+    /**
+     * Set the low-level embedding request.
+     *
+     * @param request the request to send to orchestration.
+     * @return a client to execute the request.
+     */
+    @SuppressWarnings("PMD.PublicApiExposesModelType")
+    @Nonnull
+    public LowLevelEmbeddingsExecutor request(@Nonnull final EmbeddingsPostRequest request) {
+      return new LowLevelEmbeddingsExecutor(request);
+    }
+  }
+
+  /** Client to execute a custom low-level embedding request. */
+  @AllArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+  public class LowLevelEmbeddingsExecutor {
+
+    private @Nonnull final EmbeddingsPostRequest request;
+
+    /**
+     * Execute the request and return the low-level response.
+     *
+     * @return the response data object from orchestration.
+     * @throws OrchestrationClientException if the request fails.
+     */
+    @SuppressWarnings("PMD.PublicApiExposesModelType")
+    @Nonnull
+    public EmbeddingsPostResponse execute() throws OrchestrationClientException {
+      return executor.execute(
+          "/v2/embeddings", request, EmbeddingsPostResponse.class, customHeaders);
+    }
   }
 
   /**

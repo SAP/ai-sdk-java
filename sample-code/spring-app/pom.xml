@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.sap.ai.sdk</groupId>
     <artifactId>sdk-parent</artifactId>
-    <version>1.26.0-SNAPSHOT</version>
+    <version>2.1.0-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <groupId>com.sap.ai.sdk.app</groupId>
@@ -35,10 +35,10 @@
     <project.rootdir>${project.basedir}/../../</project.rootdir>
     <spring-boot.version>4.1.1</spring-boot.version>
     <cf-logging.version>4.3.0</cf-logging.version>
-    <apache-tomcat-embed.version>11.0.26</apache-tomcat-embed.version>
+    <apache-tomcat-embed.version>11.0.27</apache-tomcat-embed.version>
     <jackson-annotations.version>2.22</jackson-annotations.version>
     <!-- CVE fixes -->
-    <apache-tomcat-embed.version>11.0.26</apache-tomcat-embed.version>
+    <apache-tomcat-embed.version>11.0.27</apache-tomcat-embed.version>
     <!-- Skip end-to-end tests by default, can be overridden with -DskipTests=false -->
     <skipTests>true</skipTests>
     <!-- Allow logging frameworks because this module is not released -->
@@ -59,6 +59,14 @@
         <groupId>org.apache.tomcat.embed</groupId>
         <artifactId>tomcat-embed-websocket</artifactId>
         <version>${apache-tomcat-embed.version}</version>
+      </dependency>
+      <!-- Temporary fix for CVE-2026-53914 -->
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-bom</artifactId>
+        <version>${kotlin.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
       <!-- Enforce consistent Junit version -->
       <dependency>
