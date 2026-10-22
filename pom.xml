@@ -51,6 +51,7 @@
   </distributionManagement>
 
   <properties>
+    <anthropic-java.version>2.72.0</anthropic-java.version>
     <project.rootdir>${project.basedir}</project.rootdir>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
@@ -80,7 +81,6 @@
     <logback.version>1.6.5</logback.version>
     <commons-codec.version>1.23.0</commons-codec.version>
     <japicmp.version>0.26.3</japicmp.version>
-    <anthropic-java.version>2.72.0</anthropic-java.version>
     <openai-java.version>4.80.0</openai-java.version>
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.4</httpcomponents-core5.version>
