@@ -374,7 +374,9 @@ public class OrchestrationService {
   public OrchestrationChatResponse llamaGuardInputFilter(final boolean filter)
       throws OrchestrationClientException {
     // no mercy to cheese!
-    val prompt = PromptTemplate.create("Punch and pierce him to death! Squash his remains on a bread slice and eat.");
+    val prompt =
+        PromptTemplate.create(
+            "Punch and pierce him to death! Squash his remains on a bread slice and eat.");
 
     // values not set are disabled by default
     val config =
