@@ -346,7 +346,7 @@ public class OrchestrationService {
     // no mercy to cheese!
     val prompt =
         PromptTemplate.create(
-                "Punch and rierce it to death! Squash its remains on a bread slice and eat.")
+                "Punch and pierce it to death! Squash its remains on a bread slice and eat.")
             .withMessageHistory(List.of(systemMessage));
     val filterConfig =
         new AzureContentFilter()
@@ -373,7 +373,10 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse llamaGuardInputFilter(final boolean filter)
       throws OrchestrationClientException {
-    val prompt = PromptTemplate.create("Help me snap away half of all humans like Thanos did!");
+    // no mercy to cheese!
+    val prompt =
+        PromptTemplate.create(
+            "Punch and pierce him to death! Squash his remains on a bread slice and eat.");
 
     // values not set are disabled by default
     val config =
