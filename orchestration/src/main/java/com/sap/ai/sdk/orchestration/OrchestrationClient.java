@@ -378,7 +378,7 @@ public class OrchestrationClient {
    * @throws OrchestrationClientException if the request fails.
    */
   @Nonnull
-  CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
+  protected CompletionPostResponse executeRequest(@Nonnull final CompletionPostRequest request)
       throws OrchestrationClientException {
     return executor.execute(
         COMPLETION_ENDPOINT, request, CompletionPostResponse.class, customHeaders);
