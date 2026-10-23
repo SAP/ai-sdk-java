@@ -81,10 +81,10 @@
     <jackson-annotations.version>2.22</jackson-annotations.version>
     <jackson3.version>3.2.3</jackson3.version>
     <logback.version>1.6.5</logback.version>
-    <caffeine.version>3.3.0</caffeine.version>
+    <caffeine.version>3.3.1</caffeine.version>
     <commons-codec.version>1.23.0</commons-codec.version>
     <japicmp.version>0.26.5</japicmp.version>
-    <openai-java.version>4.80.0</openai-java.version>
+    <openai-java.version>4.86.0</openai-java.version>
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.4</httpcomponents-core5.version>
     <httpcomponents-client5.version>5.6.5</httpcomponents-client5.version>
