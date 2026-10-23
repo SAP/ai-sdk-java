@@ -78,7 +78,7 @@
     <jackson3.version>3.2.3</jackson3.version>
     <logback.version>1.6.5</logback.version>
     <commons-codec.version>1.23.0</commons-codec.version>
-    <japicmp.version>0.26.3</japicmp.version>
+    <japicmp.version>0.26.5</japicmp.version>
     <openai-java.version>4.80.0</openai-java.version>
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.4</httpcomponents-core5.version>
@@ -947,7 +947,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.10.4.1</version>
+        <version>4.10.5.0</version>
         <configuration>
           <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
