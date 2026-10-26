@@ -77,25 +77,28 @@
     <mockito.version>5.24.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
-    <jackson.version>2.22.3</jackson.version>
+    <jackson.version>2.22.4</jackson.version>
     <jackson-annotations.version>2.22</jackson-annotations.version>
     <jackson3.version>3.2.3</jackson3.version>
     <logback.version>1.6.5</logback.version>
-    <caffeine.version>3.3.0</caffeine.version>
-    <commons-codec.version>1.22.1</commons-codec.version>
-    <japicmp.version>0.26.3</japicmp.version>
-    <openai-java.version>4.76.0</openai-java.version>
+    <caffeine.version>3.3.1</caffeine.version>
+    <commons-codec.version>1.23.0</commons-codec.version>
+    <japicmp.version>0.26.5</japicmp.version>
+    <openai-java.version>4.86.0</openai-java.version>
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.4</httpcomponents-core5.version>
-    <httpcomponents-client5.version>5.6.4</httpcomponents-client5.version>
+    <httpcomponents-client5.version>5.6.5</httpcomponents-client5.version>
     <micrometer.version>1.17.1</micrometer.version>
     <json.version>20260814</json.version>
     <snakeyaml.version>2.7</snakeyaml.version>
     <jspecify.version>1.0.1</jspecify.version>
     <!-- CVE fixes -->
     <bouncycastle.version>1.86</bouncycastle.version>
+    <kotlin.version>2.4.21</kotlin.version>
+    <guava.version>33.7.2-jre</guava.version>
+    <java-jwt.version>4.6.2</java-jwt.version>
     <!-- Formatting -->
-    <spotless.version>3.10.3</spotless.version>
+    <spotless.version>3.10.4</spotless.version>
     <spotless.skip>false</spotless.skip>
     <!--  Quality assurance  -->
     <enforcer.skip>false</enforcer.skip>
@@ -129,6 +132,14 @@
         <groupId>org.springframework.ai</groupId>
         <artifactId>spring-ai-bom</artifactId>
         <version>${spring-ai.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- CVE-2020-29582: pin kotlin >= 2.4.21 -->
+      <dependency>
+        <groupId>org.jetbrains.kotlin</groupId>
+        <artifactId>kotlin-bom</artifactId>
+        <version>${kotlin.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -304,6 +315,18 @@
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcpkix-jdk18on</artifactId>
         <version>${bouncycastle.version}</version>
+      </dependency>
+      <!-- CVE-2026-102554: pin guava >= 33.7.2-jre -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+      <!-- CVE-2026-85473: pin java-jwt >= 4.6.2 -->
+      <dependency>
+        <groupId>com.auth0</groupId>
+        <artifactId>java-jwt</artifactId>
+        <version>${java-jwt.version}</version>
       </dependency>
       <!-- scope "test" -->
       <dependency>
@@ -938,7 +961,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.10.4.1</version>
+        <version>4.10.5.0</version>
         <configuration>
           <includeFilterFile>${project.rootdir}/.pipeline/spotbugs.xml</includeFilterFile>
           <!-- Exclude generated clients -->
@@ -1106,7 +1129,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
             <plugin>
               <groupId>org.sonatype.central</groupId>
               <artifactId>central-publishing-maven-plugin</artifactId>
-              <version>0.11.0</version>
+              <version>0.12.0</version>
               <extensions>true</extensions>
               <configuration>
                 <deploymentName>SAP AI SDK ${project.version}</deploymentName>

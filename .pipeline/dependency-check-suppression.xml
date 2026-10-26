@@ -32,4 +32,23 @@
     <notes><![CDATA[AI SDK 2.0.0-ALPHA will contain the update to Spring AI 2]]></notes>
     <cve>CVE-2026-59318</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[CVE-2026-59294 affects Spring AI < 2.0. Resolved in most recent SDK releases.]]></notes>
+    <cve>CVE-2026-59294</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[CVE-2026-110879 false positive: OWASP maps tools.jackson.core:jackson-databind to the fasterxml:jackson-databind CPE and flags the Jackson 2.x CVE against Jackson 3.x. No jackson3 fix version exists yet.]]></notes>
+    <packageUrl regex="true">^pkg:maven/tools\.jackson\.core/jackson-databind.*$</packageUrl>
+    <cve>CVE-2026-110879</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[CVE-2026-14683 and CVE-2026-14686 affect HdrHistogram 2.2.2. No patched version is available; 2.2.2 is the latest release. Optional/runtime transitive via micrometer-core.]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.hdrhistogram/HdrHistogram.*$</packageUrl>
+    <cve>CVE-2026-14683</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[See above — same artifact, no fix available.]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.hdrhistogram/HdrHistogram.*$</packageUrl>
+    <cve>CVE-2026-14686</cve>
+  </suppress>
 </suppressions>

@@ -75,7 +75,7 @@ class ScenarioTest {
     val aiModelList = new ScenarioController().getModels().getResources();
 
     val internalOnlyModels =
-        Set.of("abap-codestral", "abap-starcoder2-7b", "qwen3.8-27b-dev-preview");
+        Set.of("abap-codestral", "abap-starcoder2-7b", "qwen3.8-27b-dev-preview", "nova-core");
 
     val availableOrchestrationModels =
         aiModelList.stream()
@@ -150,7 +150,7 @@ class ScenarioTest {
     // Gather AI Core's list of available RPT models
     val aiModelList = new ScenarioController().getModels().getResources();
 
-    val internalOnlyModels = Set.of("sap-rpt-1.1-preview");
+    val internalOnlyModels = Set.of("sap-rpt-1.1-preview", "sap-rpt-ts");
 
     val availableRptModels =
         aiModelList.stream()
