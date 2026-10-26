@@ -26,8 +26,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Cache control directive for Anthropic prompt caching. Only applicable to Anthropic Claude models.
- * When set, marks the content block as a cache breakpoint.
+ * Cache control directive for prompt caching. When set on a content block, marks it as a cache
+ * breakpoint. Supported on Anthropic Claude models and Azure OpenAI GPT-5.6+ Standard PAYG
+ * deployments (Responses API path).
  */
 // CHECKSTYLE:OFF
 public class CacheControl
