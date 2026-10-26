@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: [ main, v2 ]
+        branch: [ v1, main ]
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v7
