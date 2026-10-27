@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/invoke"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "id": "msg_01XFDUDYJgAACzvnptvVoYEL",
+      "type": "message",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "text",
+          "text": "Hello! How can I assist you today?"
+        }
+      ],
+      "model": "claude-3-haiku-20240307",
+      "stop_reason": "end_turn",
+      "stop_sequence": null,
+      "usage": {
+        "input_tokens": 10,
+        "output_tokens": 9
+      }
+    }
+  }
+}
