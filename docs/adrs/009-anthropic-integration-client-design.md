@@ -1,6 +1,6 @@
 # Anthropic Integration: Client Design
 
-Status: Decided (2026-10-27).
+Status: Proposed (2026-10-27).
 
 ## Background
 
