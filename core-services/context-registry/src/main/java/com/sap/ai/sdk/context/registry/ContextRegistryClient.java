@@ -22,7 +22,7 @@ import lombok.val;
 /**
  * Service class for the Tabular Orchestration APIs.
  *
- * @since 1.26.0
+ * @since 2.1.0
  */
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter(value = AccessLevel.PROTECTED)
@@ -80,7 +80,7 @@ public class ContextRegistryClient {
   }
 
   /**
-   * Create a new Tabular client with a custom header added to every call made with this client
+   * Create a new Tabular client with a custom header added to every call made with this client.
    *
    * @param key the key of the custom header to add
    * @param value the value of the custom header to add

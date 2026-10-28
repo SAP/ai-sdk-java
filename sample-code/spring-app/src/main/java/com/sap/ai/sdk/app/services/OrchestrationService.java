@@ -7,7 +7,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.SONAR;
 import static com.sap.ai.sdk.orchestration.OrchestrationEmbeddingModel.TEXT_EMBEDDING_3_SMALL;
-import static com.sap.ai.sdk.orchestration.OrchestrationTemplateReference.ScopeEnum.RESOURCE_GROUP;
+import static com.sap.ai.sdk.orchestration.PromptTemplateReference.ScopeEnum.RESOURCE_GROUP;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.ai.sdk.core.AiCoreService;
@@ -27,11 +27,10 @@ import com.sap.ai.sdk.orchestration.OrchestrationConfigReference;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingRequest;
 import com.sap.ai.sdk.orchestration.OrchestrationEmbeddingResponse;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
-import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
+import com.sap.ai.sdk.orchestration.PromptTemplate;
 import com.sap.ai.sdk.orchestration.ReasoningEffort;
 import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
-import com.sap.ai.sdk.orchestration.TemplateConfig;
 import com.sap.ai.sdk.orchestration.TranslationConfig;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById;
 import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByIdConfigRef;
@@ -42,11 +41,10 @@ import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
-import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
-import com.sap.ai.sdk.orchestration.model.Template;
-import com.sap.ai.sdk.prompt.registry.OrchestrationConfigClient;
+import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
+import com.sap.ai.sdk.prompt.registry.client.OrchestrationConfigsApi;
 import com.sap.ai.sdk.prompt.registry.model.LLMModelDetails;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
 import com.sap.ai.sdk.prompt.registry.model.PartialModuleConfigs;
@@ -67,7 +65,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.stereotype.Service;
 
-/** Service class for the Orchestration service */
+/** Service class for the Orchestration service. */
 @Service
 @Slf4j
 public class OrchestrationService {
@@ -75,56 +73,60 @@ public class OrchestrationService {
 
   @Getter
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
    *
-   * @param famousPhrase the phrase to send to the assistant
-   * @return the assistant response object
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse completion(@Nonnull final String famousPhrase) {
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    return client.chatCompletion(prompt, config);
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
    * Chat request to OpenAI through the Orchestration service with an image.
    *
-   * @param pathToImage the path to the image
-   * @return the assistant response object
+   * @param pathToImage the path to the image.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse imageInput(@Nonnull final String pathToImage) {
-    final var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    final var llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
 
     final var multiMessage =
         Message.user("What is in this image?").withImage(pathToImage, ImageItem.DetailLevel.LOW);
-    final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, llmWithImageSupportConfig);
+    final var prompt = PromptTemplate.create(multiMessage);
+    return client
+        .chatCompletion()
+        .config(llmWithImageSupportConfig)
+        .promptTemplate(prompt)
+        .execute();
   }
 
   /**
    * Chat request to OpenAI through the Orchestration service with multiple strings.
    *
-   * @param questions the list of questions to send to the assistant
-   * @return the assistant response object
+   * @param questions the list of questions to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse multiStringInput(@Nonnull final List<String> questions) {
     final var multiMessage =
         Message.user(questions.get(0)).withText(questions.get(1)).withText(questions.get(2));
-    final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    final var prompt = PromptTemplate.create(multiMessage);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
    * Chat request to OpenAI through the Orchestration service with a file.
    *
-   * @param fileUrl the URL to a PDF file
-   * @param filename optional filename for the file
-   * @return the assistant response object
+   * @param fileUrl the URL to a PDF file.
+   * @param filename optional filename for the file.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse fileInput(
@@ -132,30 +134,30 @@ public class OrchestrationService {
     final var multiMessage =
         Message.user("What is the title of the topic discussed here?")
             .withFileUrl(fileUrl, filename);
-    final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    final var prompt = PromptTemplate.create(multiMessage);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
    * Chat request to OpenAI through the Orchestration service with a local file.
    *
-   * @param filePath the path to a local PDF file
-   * @return the assistant response object
+   * @param filePath the path to a local PDF file.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse fileInput(@Nonnull final Path filePath) {
     final var multiMessage =
         Message.user("What is the title of the topic discussed here?").withFile(filePath);
-    final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    final var prompt = PromptTemplate.create(multiMessage);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
    * Chat request to OpenAI through the Orchestration service with base64 input string.
    *
-   * @param base64Data base64-encoded payload
-   * @param filename the filename
-   * @return the assistant response object
+   * @param base64Data base64-encoded payload.
+   * @param filename the filename.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse fileInputBase64(
@@ -163,22 +165,22 @@ public class OrchestrationService {
     final var multiMessage =
         Message.user("What is the title of the topic discussed here?")
             .withFileBase64(base64Data, filename);
-    final var prompt = new OrchestrationPrompt(multiMessage);
-    return client.chatCompletion(prompt, config);
+    final var prompt = PromptTemplate.create(multiMessage);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
-   * Asynchronous stream of an OpenAI chat request
+   * Asynchronous stream of an OpenAI chat request.
    *
-   * @param topic the topic to send to the assistant
-   * @return a stream of assistant message responses
+   * @param topic the topic to send to the assistant.
+   * @return a stream of assistant message responses.
    */
   @Nonnull
   public Stream<String> streamChatCompletion(@Nonnull final String topic) {
     val prompt =
-        new OrchestrationPrompt(
+        PromptTemplate.create(
             "Please create a small story about " + topic + " with around 700 words.");
-    return client.streamChatCompletion(prompt, config);
+    return client.chatCompletion().config(config).promptTemplate(prompt).executeStream();
   }
 
   /**
@@ -192,8 +194,8 @@ public class OrchestrationService {
   public ReasoningOutput reasoning(@Nonnull final String topic) {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
-    val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
-    val response = client.chatCompletion(prompt, reasoningConfig);
+    val prompt = PromptTemplate.create("Think carefully and explain step by step: " + topic);
+    val response = client.chatCompletion().config(reasoningConfig).promptTemplate(prompt).execute();
     return new ReasoningOutput(response.getContent(), response.getReasoningText());
   }
 
@@ -217,10 +219,12 @@ public class OrchestrationService {
   public Stream<ReasoningOutput> streamReasoning(@Nonnull final String topic) {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
-    val prompt = new OrchestrationPrompt("Think carefully and explain step by step: " + topic);
-    val request = OrchestrationClient.toCompletionPostRequest(prompt, reasoningConfig);
+    val prompt = PromptTemplate.create("Think carefully and explain step by step: " + topic);
     return client
-        .streamChatCompletionDeltas(request)
+        .chatCompletion()
+        .config(reasoningConfig)
+        .promptTemplate(prompt)
+        .executeStreamDeltas()
         .map(delta -> new ReasoningOutput(delta.getDeltaContent(), delta.getDeltaReasoningText()));
   }
 
@@ -238,14 +242,16 @@ public class OrchestrationService {
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
 
     // Turn 1
-    val firstPrompt = new OrchestrationPrompt(firstQuestion);
-    val firstResponse = client.chatCompletion(firstPrompt, reasoningConfig);
+    val firstPrompt = PromptTemplate.create(firstQuestion);
+    val firstResponse =
+        client.chatCompletion().config(reasoningConfig).promptTemplate(firstPrompt).execute();
 
     // Turn 2 feeds the whole history back. getAllMessages() already carries the reasoning content
     // on the final assistant message.
     val followUpPrompt =
-        new OrchestrationPrompt(followUp).messageHistory(firstResponse.getAllMessages());
-    val followUpResponse = client.chatCompletion(followUpPrompt, reasoningConfig);
+        PromptTemplate.create(followUp).withMessageHistory(firstResponse.getAllMessages());
+    val followUpResponse =
+        client.chatCompletion().config(reasoningConfig).promptTemplate(followUpPrompt).execute();
 
     return new ReasoningOutput(followUpResponse.getContent(), followUpResponse.getReasoningText());
   }
@@ -255,39 +261,41 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param language the language to use in the template
-   * @return the assistant response object
+   * @param language the language to use in the template.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse template(@Nonnull final String language) {
-    val template = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
-    val templatingConfig = TemplateConfig.create().withMessages(template);
-    val configWithTemplate = config.withTemplateConfig(templatingConfig);
-
+    val message = Message.user("Reply with 'Orchestration Service is working!' in {{?language}}");
     val inputParams = Map.of("language", language);
-    val prompt = new OrchestrationPrompt(inputParams);
 
-    return client.chatCompletion(prompt, configWithTemplate);
+    val filledTemplate =
+        PromptTemplate.create(message)
+            .withMessages(message)
+            .withMessageHistory(List.of())
+            .withInputParameters(inputParams);
+
+    return client.chatCompletion().config(config).promptTemplate(filledTemplate).execute();
   }
 
   /**
    * Chat request to OpenAI through the Orchestration service using message history.
    *
-   * @param prevMessage the previous message to send to the assistant
-   * @return the assistant response object
+   * @param prevMessage the previous message to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse messagesHistory(@Nonnull final String prevMessage) {
-    val prompt = new OrchestrationPrompt(Message.user(prevMessage));
+    val prompt = PromptTemplate.create(Message.user(prevMessage));
 
-    val result = client.chatCompletion(prompt, config);
+    val result = client.chatCompletion().config(config).promptTemplate(prompt).execute();
 
     // Let's presume a user asks the following follow-up question
     val nextPrompt =
-        new OrchestrationPrompt(Message.user("What is the typical food there?"))
-            .messageHistory(result.getAllMessages());
+        PromptTemplate.create(Message.user("What is the typical food there?"))
+            .withMessageHistory(result.getAllMessages());
 
-    return client.chatCompletion(nextPrompt, config);
+    return client.chatCompletion().config(config).promptTemplate(nextPrompt).execute();
   }
 
   /**
@@ -296,16 +304,16 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
-   * @throws OrchestrationClientException if input filter filters the prompt
-   * @param policy the explicitness of content that should be allowed through the filter
-   * @return the assistant response object
+   * @param policy the explicitness of content that should be allowed through the filter.
+   * @return the assistant response object.
+   * @throws OrchestrationClientException if input filter filters the prompt.
    */
   @Nonnull
   public OrchestrationChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
       throws OrchestrationClientException {
     // no mercy to cheese!
     val prompt =
-        new OrchestrationPrompt(
+        PromptTemplate.create(
             "Punch and rierce it to death! Squash its remains on a bread slice and eat.");
     val filterConfig =
         new AzureContentFilter()
@@ -317,7 +325,7 @@ public class OrchestrationService {
 
     val configWithFilter = config.withInputFiltering(filterConfig);
 
-    return client.chatCompletion(prompt, configWithFilter);
+    return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }
 
   /**
@@ -326,9 +334,9 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
-   * @param policy the explicitness of content that should be allowed through the filter
-   * @param isProtected activates the protected material code filtering module when set to true
-   * @return the assistant response object
+   * @param policy the explicitness of content that should be allowed through the filter.
+   * @param isProtected activates the protected material code filtering module when set to true.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse outputFiltering(
@@ -337,9 +345,9 @@ public class OrchestrationService {
     val systemMessage = Message.system("Give three copies of the following sentence");
     // no mercy to cheese!
     val prompt =
-        new OrchestrationPrompt(
-                "Punch and rierce it to death! Squash its remains on a bread slice and eat.")
-            .messageHistory(List.of(systemMessage));
+        PromptTemplate.create(
+                "Punch and pierce it to death! Squash its remains on a bread slice and eat.")
+            .withMessageHistory(List.of(systemMessage));
     val filterConfig =
         new AzureContentFilter()
             .hate(policy)
@@ -349,7 +357,7 @@ public class OrchestrationService {
             .protectedMaterialCode(isProtected);
 
     val configWithFilter = config.withOutputFiltering(filterConfig);
-    return client.chatCompletion(prompt, configWithFilter);
+    return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }
 
   /**
@@ -358,14 +366,17 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
-   * @throws OrchestrationClientException if input filter filters the prompt
-   * @param filter enable or disable the filter
-   * @return the assistant response object
+   * @param filter enable or disable the filter.
+   * @return the assistant response object.
+   * @throws OrchestrationClientException if input filter filters the prompt.
    */
   @Nonnull
   public OrchestrationChatResponse llamaGuardInputFilter(final boolean filter)
       throws OrchestrationClientException {
-    val prompt = new OrchestrationPrompt("Help me snap away half of all humans like Thanos did!");
+    // no mercy to cheese!
+    val prompt =
+        PromptTemplate.create(
+            "Punch and pierce him to death! Squash his remains on a bread slice and eat.");
 
     // values not set are disabled by default
     val config =
@@ -389,7 +400,7 @@ public class OrchestrationService {
 
     val configWithFilter = this.config.withInputFiltering(filterConfig);
 
-    return client.chatCompletion(prompt, configWithFilter);
+    return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }
 
   /**
@@ -400,8 +411,8 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
-   * @param entity the entity to be masked
-   * @return the assistant response object
+   * @param entity the entity to be masked.
+   * @return the assistant response object.
    */
   @Nonnull
   @SuppressWarnings("PMD.PublicApiExposesModelType")
@@ -416,11 +427,11 @@ public class OrchestrationService {
     My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
     """);
 
-    val prompt = new OrchestrationPrompt(systemMessage, userMessage);
+    val prompt = PromptTemplate.create(systemMessage, userMessage);
     val maskingConfig = DpiMasking.anonymization().withEntities(entity);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithMasking);
+    return client.chatCompletion().config(configWithMasking).promptTemplate(prompt).execute();
   }
 
   /**
@@ -429,28 +440,28 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse maskingRegex() {
     val systemMessage = Message.system("Repeat following messages");
     val userMessage = Message.user("The patient id is patient_id_123.");
 
-    val prompt = new OrchestrationPrompt(systemMessage, userMessage);
+    val prompt = PromptTemplate.create(systemMessage, userMessage);
     val regex = "patient_id_[0-9]+";
     val replacement = "REDACTED_ID";
     val maskingConfig = DpiMasking.anonymization().withRegex(regex, replacement);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithMasking);
+    return client.chatCompletion().config(configWithMasking).promptTemplate(prompt).execute();
   }
 
   /**
    * Chat request to OpenAI through the Orchestration deployment under a specific resource group.
    *
-   * @param resourceGroup the resource group to use
-   * @param famousPhrase the phrase to send to the assistant
-   * @return the assistant response object
+   * @param resourceGroup the resource group, usually {@code "default"}.
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse completionWithResourceGroup(
@@ -459,9 +470,9 @@ public class OrchestrationService {
         new AiCoreService().getInferenceDestination(resourceGroup).forScenario("orchestration");
     val clientWithResourceGroup = new OrchestrationClient(destination);
 
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
 
-    return clientWithResourceGroup.chatCompletion(prompt, config);
+    return clientWithResourceGroup.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
@@ -471,8 +482,8 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
-   * @param entity the entity to be pseudonymized
-   * @return the assistant response object
+   * @param entity the entity to be pseudonymized.
+   * @return the assistant response object.
    */
   @Nonnull
   @SuppressWarnings("PMD.PublicApiExposesModelType")
@@ -494,11 +505,11 @@ public class OrchestrationService {
                             My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
                             """);
 
-    val prompt = new OrchestrationPrompt(systemMessage, userMessage);
+    val prompt = PromptTemplate.create(systemMessage, userMessage);
     val maskingConfig = DpiMasking.pseudonymization().withEntities(entity, DPIEntities.EMAIL);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithMasking);
+    return client.chatCompletion().config(configWithMasking).promptTemplate(prompt).execute();
   }
 
   /**
@@ -506,9 +517,9 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
    *     AI Core: Orchestration - Grounding</a>
-   * @param userMessage the user message to provide grounding for
-   * @param maskGroundingInput whether to mask the request sent to the Grounding Service
-   * @return the assistant response object
+   * @param userMessage the user message to provide grounding for.
+   * @param maskGroundingInput whether to mask the request sent to the Grounding Service.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse grounding(
@@ -528,9 +539,8 @@ public class OrchestrationService {
 
     val groundingConfig = Grounding.create().filters(databaseFilter).metadataParams("*");
     val prompt =
-        groundingConfig
-            .createGroundingPrompt(userMessage)
-            .messageHistory(
+        Grounding.createGroundingPrompt(userMessage)
+            .withMessageHistory(
                 List.of(Message.system("Add in the response all metadata from grounding.")));
     val maskingConfig = // optional masking configuration
         DpiMasking.anonymization()
@@ -540,7 +550,7 @@ public class OrchestrationService {
     val configWithGrounding =
         config.withGrounding(groundingConfig).withMaskingConfig(maskingConfig);
 
-    return client.chatCompletion(prompt, configWithGrounding);
+    return client.chatCompletion().config(configWithGrounding).promptTemplate(prompt).execute();
   }
 
   /**
@@ -548,8 +558,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
    *     AI Core: Orchestration - Grounding</a>
-   * @param userMessage the user message to provide grounding for
-   * @return the assistant response object
+   * @param userMessage the user message to provide grounding for.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse groundingSharepoint(@Nonnull final String userMessage) {
@@ -566,9 +576,13 @@ public class OrchestrationService {
             .dataRepositories(List.of(dataRepositoryId))
             .searchConfig(GroundingFilterSearchConfiguration.create().maxChunkCount(1));
     val groundingConfig = Grounding.create().filters(filter);
-    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+    val prompt = Grounding.createGroundingPrompt(userMessage);
     val configWithGrounding = config.withGrounding(groundingConfig);
-    return customClient.chatCompletion(prompt, configWithGrounding);
+    return customClient
+        .chatCompletion()
+        .config(configWithGrounding)
+        .promptTemplate(prompt)
+        .execute();
   }
 
   /**
@@ -576,8 +590,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/grounding">SAP
    *     AI Core: Orchestration - Grounding</a>
-   * @param userMessage the user message to provide grounding for
-   * @return the assistant response object
+   * @param userMessage the user message to provide grounding for.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse groundingHelpSapCom(@Nonnull final String userMessage) {
@@ -586,16 +600,16 @@ public class OrchestrationService {
     val groundingConfig = Grounding.create().filters(groundingHelpSapCom);
     val configWithGrounding = config.withGrounding(groundingConfig);
 
-    val prompt = groundingConfig.createGroundingPrompt(userMessage);
+    val prompt = Grounding.createGroundingPrompt(userMessage);
 
-    return client.chatCompletion(prompt, configWithGrounding);
+    return client.chatCompletion().config(configWithGrounding).promptTemplate(prompt).execute();
   }
 
   /**
    * A simple record to demonstrate the response format feature of the orchestration service.
    *
-   * @param translation the translated text
-   * @param language the language of the translation
+   * @param translation the translated text.
+   * @param language the language of the translation.
    */
   public record Translation(
       @JsonProperty(required = true) String translation,
@@ -605,9 +619,9 @@ public class OrchestrationService {
    * Chat request to OpenAI through the Orchestration service using response format with JSON
    * schema.
    *
-   * @param word the word to translate
-   * @param targetType the class type to use for the JSON schema
-   * @return the assistant response object
+   * @param word the word to translate.
+   * @param targetType the class type to use for the JSON schema.
+   * @return the assistant response object.
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
@@ -615,22 +629,18 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonSchema(
       @Nonnull final String word, @Nonnull final Class<?> targetType) {
-    // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
-    // release 2510b. See https://jira.tools.sap/browse/AI-125770
-    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
     val schema =
         ResponseJsonSchema.fromType(targetType)
             .withDescription("Output schema for language translation.")
             .withStrict(true);
-    val configWithResponseSchema =
-        configWithGpt4.withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
 
     val prompt =
-        new OrchestrationPrompt(
-            Message.user("Whats '%s' in German?".formatted(word)),
-            Message.system("You are a language translator."));
+        PromptTemplate.create(
+                Message.user("Whats '%s' in German?".formatted(word)),
+                Message.system("You are a language translator."))
+            .withJsonSchemaResponse(schema);
 
-    return client.chatCompletion(prompt, configWithResponseSchema);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
@@ -640,47 +650,19 @@ public class OrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
    *     AI Core: Orchestration - Structured Output</a>
-   * @param word the word to translate
-   * @return the assistant response object
+   * @param word the word to translate.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse responseFormatJsonObject(@Nonnull final String word) {
-    val template = Message.user("What is '%s' in German?".formatted(word));
-    val templatingConfig = TemplateConfig.create().withMessages(template).withJsonResponse();
-    val configWithTemplate = config.withTemplateConfig(templatingConfig);
-
     val prompt =
-        new OrchestrationPrompt(
-            Message.system(
-                "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"));
+        PromptTemplate.create(
+                Message.system(
+                    "You are a language translator. Answer using the following JSON format: {\"language\": ..., \"translation\": ...}"),
+                Message.user("What is '%s' in German?".formatted(word)))
+            .withJsonResponse();
 
-    return client.chatCompletion(prompt, configWithTemplate);
-  }
-
-  /**
-   * Chat request to OpenAI through the Orchestration service using the response format option
-   * 'text'.
-   *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/structured-output">SAP
-   *     AI Core: Orchestration - Structured Output</a>
-   * @param word the word to translate
-   * @return the assistant response object
-   */
-  @Nonnull
-  public OrchestrationChatResponse responseFormatText(@Nonnull final String word) {
-    val template = Message.user("Whats '%s' in German?".formatted(word));
-    val templatingConfig =
-        Template.create()
-            .template(List.of(template.createChatMessage()))
-            .responseFormat(ResponseFormatText.create().type(ResponseFormatText.TypeEnum.TEXT));
-    val configWithTemplate = config.withTemplateConfig(templatingConfig);
-
-    val prompt =
-        new OrchestrationPrompt(
-            Message.system("You are a language translator. Answer using JSON."));
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(config).promptTemplate(prompt).execute();
   }
 
   /**
@@ -689,21 +671,24 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param topic the topic to send to the assistant
-   * @return the assistant response object
+   * @param topic the topic to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByIdTenant(
       @Nonnull final String topic) {
-    final var llmWithImageSupportConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    final var llmWithImageSupportConfig = new OrchestrationModuleConfig(GPT_5_MINI);
 
-    val template = TemplateConfig.reference().byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16");
-    val configWithTemplate = llmWithImageSupportConfig.withTemplateConfig(template);
+    val template =
+        PromptTemplate.reference()
+            .byId("21cb1358-0bf1-4f43-870b-00f14d0f9f16")
+            .andInputParameters(Map.of("language", "Italian", "input", topic));
 
-    val inputParams = Map.of("language", "Italian", "input", topic);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client
+        .chatCompletion()
+        .config(llmWithImageSupportConfig)
+        .promptTemplate(template)
+        .execute();
   }
 
   /**
@@ -712,8 +697,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param inputExample the example to send to the assistant
-   * @return the assistant response object
+   * @param inputExample the example to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByIdResourceGroup(
@@ -723,15 +708,17 @@ public class OrchestrationService {
         client.withResourceGroup("ai-sdk-java-e2e", "orchestration");
 
     val template =
-        TemplateConfig.reference()
+        PromptTemplate.reference()
             .byId("8bf72116-11ab-41bb-8933-8be56f59cb67")
+            .andInputParameters(
+                Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample))
             .withScope(RESOURCE_GROUP);
-    val configWithTemplate = config.withTemplateConfig(template);
 
-    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
+    return clientWithResourceGroup
+        .chatCompletion()
+        .config(config)
+        .promptTemplate(template)
+        .execute();
   }
 
   /**
@@ -740,19 +727,20 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param topic the topic to send to the assistant
-   * @return the assistant response object
+   * @param topic the topic to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenarioTenant(
       @Nonnull final String topic) {
-    val template = TemplateConfig.reference().byScenario("test").name("test").version("0.0.1");
-    val configWithTemplate = config.withTemplateConfig(template);
+    val template =
+        PromptTemplate.reference()
+            .byScenario("test")
+            .name("test")
+            .version("0.0.1")
+            .andInputParameters(Map.of("language", "Italian", "input", topic));
 
-    val inputParams = Map.of("language", "Italian", "input", topic);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(config).promptTemplate(template).execute();
   }
 
   /**
@@ -761,8 +749,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param inputExample the example to send to the assistant
-   * @return the assistant response object
+   * @param inputExample the example to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse templateFromPromptRegistryByScenarioResourceGroup(
@@ -772,17 +760,19 @@ public class OrchestrationService {
         client.withResourceGroup("ai-sdk-java-e2e", "orchestration");
 
     val template =
-        TemplateConfig.reference()
+        PromptTemplate.reference()
             .byScenario("categorization")
             .name("example-prompt-template")
             .version("0.0.1")
+            .andInputParameters(
+                Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample))
             .withScope(RESOURCE_GROUP);
-    val configWithTemplate = config.withTemplateConfig(template);
 
-    val inputParams = Map.of("categories", "Finance, Tech, Sports", "inputExample", inputExample);
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return clientWithResourceGroup.chatCompletion(prompt, configWithTemplate);
+    return clientWithResourceGroup
+        .chatCompletion()
+        .config(config)
+        .promptTemplate(template)
+        .execute();
   }
 
   /**
@@ -790,30 +780,23 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
-   * @param promptTemplate the YAML prompt template to use
-   * @throws IOException if the YAML cannot be parsed
-   * @return the assistant response object
+   * @param promptTemplate the YAML prompt template to use.
+   * @return the assistant response object.
+   * @throws IOException if the YAML cannot be parsed.
    */
   @Nonnull
   public OrchestrationChatResponse localPromptTemplate(@Nonnull final String promptTemplate)
       throws IOException {
-    // Gemini cannot be used here. This is a known issue that should be resolved with AI Core
-    // release 2510b. See https://jira.tools.sap/browse/AI-125770
-    final var configWithGpt4 = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
-    val template = TemplateConfig.create().fromYaml(promptTemplate);
-    val configWithTemplate =
-        template != null ? configWithGpt4.withTemplateConfig(template) : configWithGpt4;
+    val template =
+        PromptTemplate.fromYaml(promptTemplate).withInputParameters(Map.of("language", "German"));
 
-    val inputParams = Map.of("language", "German");
-    val prompt = new OrchestrationPrompt(inputParams);
-
-    return client.chatCompletion(prompt, configWithTemplate);
+    return client.chatCompletion().config(config).promptTemplate(template).execute();
   }
 
   /**
    * Chat request to an LLM through the Orchestration service using translation.
    *
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse translation() {
@@ -826,15 +809,12 @@ public class OrchestrationService {
     val userMessage =
         Message.user(
             "Generate a study guide for the {{?exam_type}} exam on {{?topic}}.\n\nInclude {{?num_questions}} practice questions.");
-    val templatingConfig = TemplateConfig.create().withMessages(systemMessage, userMessage);
+    val prompt = PromptTemplate.create(systemMessage, userMessage).withInputParameters(inputParams);
 
-    val prompt = new OrchestrationPrompt(inputParams);
     // list of supported language pairs
     // https://help.sap.com/docs/translation-hub/sap-translation-hub/supported-languages?version=Cloud#translation-provider-sap-machine-translation
-
     val configWithTranslation =
         config
-            .withTemplateConfig(templatingConfig)
             .withInputTranslationConfig(
                 TranslationConfig.translateInputTo("en-US")
                     .applyToPlaceholders("exam_type", "topic")
@@ -842,7 +822,7 @@ public class OrchestrationService {
             .withOutputTranslationConfig(
                 TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US"));
 
-    return client.chatCompletion(prompt, configWithTranslation);
+    return client.chatCompletion().config(configWithTranslation).promptTemplate(prompt).execute();
   }
 
   /**
@@ -850,8 +830,8 @@ public class OrchestrationService {
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/embeddings">AI
    *     Core: Orchestration - Embedding</a>
-   * @param texts the list of texts to embed
-   * @return the embedding response object
+   * @param texts the list of texts to embed.
+   * @return the embedding response object.
    */
   @Nonnull
   public OrchestrationEmbeddingResponse embed(@Nonnull final List<String> texts) {
@@ -864,33 +844,34 @@ public class OrchestrationService {
         OrchestrationEmbeddingRequest.forModel(TEXT_EMBEDDING_3_SMALL)
             .forInputs(texts)
             .withMasking(masking);
-    return client.embed(request);
+    return client.embeddings().request(request).execute();
   }
 
   /**
    * Chat request to an LLM through the Orchestration service using a template from the prompt
    * registry identified by a reference.
    *
-   * @return the assistant response object
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse executeConfigFromReference() {
     val scenario = "sdk-test-paraphrase";
     val name = "create-3-paraphrases-of-sentence";
     ensureOrchestrationConfigExists(scenario, name);
-    final List<Message> history = List.of(new SystemMessage("Start every sentence with an emoji."));
-    final var params = Map.of("phrase", "Hello World");
-    final var testReference =
+
+    final var configReference =
         OrchestrationConfigReference.fromScenario("sdk-test-scenario")
             .name("test-config-for-OrchestrationTest")
             .version("0.0.1")
-            .withMessageHistory(history)
-            .withTemplateParameters(params);
-    return client.chatCompletionUsingReference(testReference);
+            .andInputParameters(Map.of("phrase", "Hello World"))
+            .withMessageHistory(List.of(new SystemMessage("Start every sentence with an emoji.")));
+
+    return client.chatCompletion().configReference(configReference).execute();
   }
 
   private void ensureOrchestrationConfigExists(final String scenario, final String name) {
-    final OrchestrationConfigClient orchConfigClient = new OrchestrationConfigClient();
+    final OrchestrationConfigsApi orchConfigClient =
+        new PromptRegistryClient().orchestrationConfig();
     if (!orchConfigExists("test-config-for-OrchestrationTest", orchConfigClient)) {
       final OrchestrationConfigPostRequest postRequest =
           OrchestrationConfigPostRequest.create()
@@ -903,8 +884,8 @@ public class OrchestrationService {
   }
 
   private boolean orchConfigExists(
-      final String configName, final OrchestrationConfigClient orchConfigClient) {
-    return orchConfigClient.listOrchestrationConfigs().getResources().stream()
+      final String configName, final OrchestrationConfigsApi orchestrationConfigsClient) {
+    return orchestrationConfigsClient.listOrchestrationConfigs().getResources().stream()
         .anyMatch(resp -> resp.getName().equals(configName));
   }
 
@@ -934,36 +915,39 @@ public class OrchestrationService {
    * Chat request to OpenAI through the Orchestration service with a list of modules. If the first
    * request fails (which will happen here), the next module is used as a fallback.
    *
-   * @param famousPhrase the phrase to send to the assistant
-   * @return the assistant response object
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse completionWithFallback(@Nonnull final String famousPhrase) {
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
+    val workingConfig = new OrchestrationModuleConfig(GPT_5_MINI);
     val brokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
     val secondBrokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
-    return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig, workingConfig);
+        new OrchestrationModuleConfig(
+            new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
+    return client
+        .chatCompletion()
+        .config(brokenConfig, secondBrokenConfig, workingConfig)
+        .promptTemplate(prompt)
+        .execute();
   }
 
   /**
    * Streaming chat completion using a {@link
    * com.sap.ai.sdk.orchestration.model.CompletionRequestConfiguration} (inline config).
    *
-   * @param famousPhrase the phrase to send to the assistant
-   * @return a stream of chat completion deltas
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return a stream of chat completion deltas.
    */
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamDeltasWithInlineConfig(
       @Nonnull final String famousPhrase) {
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    val config = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
+    val config = new OrchestrationModuleConfig(GPT_5_MINI);
     val request = OrchestrationClient.toCompletionPostRequest(prompt, config);
-    return client.streamChatCompletionDeltas(request);
+    return client.chatCompletion().lowLevel().request(request).executeStreamDeltas();
   }
 
   /**
@@ -971,13 +955,13 @@ public class OrchestrationService {
    * com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceById} (config
    * referenced by ID from the orchestration config registry).
    *
-   * @return a stream of chat completion deltas
+   * @return a stream of chat completion deltas.
    */
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamDeltasWithReferenceById() {
     // get a valid id
     ensureOrchestrationConfigExists("sdk-test-paraphrase", "create-3-paraphrases-of-sentence");
-    val orchConfigClient = new OrchestrationConfigClient();
+    val orchConfigClient = new PromptRegistryClient().orchestrationConfig();
     val id =
         orchConfigClient.listOrchestrationConfigs().getResources().stream()
             .filter(r -> r.getName().equals("test-config-for-OrchestrationTest"))
@@ -990,7 +974,7 @@ public class OrchestrationService {
         CompletionRequestConfigurationReferenceById.create()
             .configRef(CompletionRequestConfigurationReferenceByIdConfigRef.create().id(id))
             .placeholderValues(Map.of("phrase", "Hello World"));
-    return client.streamChatCompletionDeltas(request);
+    return client.chatCompletion().lowLevel().request(request).executeStreamDeltas();
   }
 
   /**
@@ -998,7 +982,7 @@ public class OrchestrationService {
    * com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenceByNameScenarioVersion}
    * (config referenced by scenario, name, and version).
    *
-   * @return a stream of chat completion deltas
+   * @return a stream of chat completion deltas.
    */
   @Nonnull
   public Stream<OrchestrationChatCompletionDelta> streamDeltasWithReferenceByScenario() {
@@ -1011,7 +995,7 @@ public class OrchestrationService {
                     .name("test-config-for-OrchestrationTest")
                     .version("0.0.1"))
             .placeholderValues(Map.of("phrase", "Hello World"));
-    return client.streamChatCompletionDeltas(request);
+    return client.chatCompletion().lowLevel().request(request).executeStreamDeltas();
   }
 
   /**
@@ -1019,48 +1003,54 @@ public class OrchestrationService {
    * modules. If the first request fails (which will happen here), the next module is used as a
    * fallback.
    *
-   * @param famousPhrase the phrase to send to the assistant
-   * @return a stream of assistant message responses
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return a stream of assistant message responses.
    */
   @Nonnull
   public Stream<String> streamCompletionWithFallback(@Nonnull final String famousPhrase) {
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
-    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_5_MINI);
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
+    val workingConfig = new OrchestrationModuleConfig(GPT_5_MINI);
     val brokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    return client.streamChatCompletion(prompt, brokenConfig, workingConfig);
+        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    return client
+        .chatCompletion()
+        .config(brokenConfig, workingConfig)
+        .promptTemplate(prompt)
+        .executeStream();
   }
 
   /**
    * Chat request to OpenAI through the Orchestration service with a list of modules. Here, both the
    * original and the fallback request fail.
    *
-   * @param famousPhrase the phrase to send to the assistant
-   * @return the assistant response object
+   * @param famousPhrase the phrase to send to the assistant.
+   * @return the assistant response object.
    */
   @Nonnull
   public OrchestrationChatResponse completionWithFallbackAllFail(
       @Nonnull final String famousPhrase) {
-    val prompt = new OrchestrationPrompt(famousPhrase + " Why is this phrase so famous?");
+    val prompt = PromptTemplate.create(famousPhrase + " Why is this phrase so famous?");
     val brokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
     val secondBrokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
-    return client.chatCompletion(prompt, brokenConfig, secondBrokenConfig);
+        new OrchestrationModuleConfig(
+            new OrchestrationAiModel("broken_name_2", Map.of(), "latest"));
+    return client
+        .chatCompletion()
+        .config(brokenConfig, secondBrokenConfig)
+        .promptTemplate(prompt)
+        .execute();
   }
 
   /**
    * Chat request using the SONAR model which provides citations.
    *
-   * @return the assistant response object with citations
+   * @return the assistant response object with citations.
    */
   @Nonnull
   public OrchestrationChatResponse citations() {
-    val prompt = new OrchestrationPrompt("Where does \"Hello World\" come from?");
-    val sonarConfig = new OrchestrationModuleConfig().withLlmConfig(SONAR);
-    return client.chatCompletion(prompt, sonarConfig);
+    val prompt = PromptTemplate.create("Where does \"Hello World\" come from?");
+    val sonarConfig = new OrchestrationModuleConfig(SONAR);
+    return client.chatCompletion().config(sonarConfig).promptTemplate(prompt).execute();
   }
 }

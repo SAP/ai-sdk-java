@@ -41,6 +41,8 @@ import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.ai.chat.client.ChatClient;
@@ -48,7 +50,6 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
-import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.support.ToolCallbacks;
@@ -69,8 +70,8 @@ class OrchestrationChatModelTest {
     final DefaultHttpDestination destination =
         DefaultHttpDestination.builder(server.getHttpBaseUrl()).build();
     client = new OrchestrationChatModel(new OrchestrationClient(destination));
-    defaultOptions =
-        new OrchestrationChatOptions(new OrchestrationModuleConfig().withLlmConfig(GPT_4O));
+    defaultOptions = new OrchestrationChatOptions(new OrchestrationModuleConfig(GPT_4O));
+    client.setDefaultOptions(defaultOptions);
     prompt = new Prompt("Hello World! Why is this phrase so famous?", defaultOptions);
     ApacheHttpClient5Accessor.setHttpClientCache(ApacheHttpClient5Cache.DISABLED);
   }
@@ -103,19 +104,6 @@ class OrchestrationChatModelTest {
     assertThatThrownBy(() -> client.stream(new Prompt("test")))
         .isExactlyInstanceOf(IllegalArgumentException.class)
         .hasMessageContaining("Please add OrchestrationChatOptions to the Prompt");
-  }
-
-  @Test
-  void testThrowsOnMissingLlmConfig() {
-    OrchestrationChatOptions emptyConfig =
-        new OrchestrationChatOptions(new OrchestrationModuleConfig());
-
-    assertThatThrownBy(() -> client.call(new Prompt("test", emptyConfig)))
-        .isExactlyInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("LLM config is required");
-    assertThatThrownBy(() -> client.stream(new Prompt("test", emptyConfig)))
-        .isExactlyInstanceOf(IllegalStateException.class)
-        .hasMessageContaining("LLM config is required");
   }
 
   @Test
@@ -152,38 +140,47 @@ class OrchestrationChatModelTest {
   }
 
   @Test
-  void testToolCallsWithoutExecution() throws IOException {
-    stubFor(
-        post(urlPathEqualTo("/v2/completion"))
-            .willReturn(
-                aResponse()
-                    .withBodyFile("toolCallsResponse.json")
-                    .withHeader("Content-Type", "application/json")));
+  void testStreamCancellationClosesResponse() throws IOException {
+    try (var inputStream = spy(fileLoader.apply("streamChatCompletion.txt"))) {
+      var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+      var response = new BasicClassicHttpResponse(200, "OK");
+      response.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
+      response.setHeader("Content-Type", "text/event-stream");
+      doReturn(response).when(httpClient).executeOpen(any(), any(), any());
 
-    defaultOptions.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
-    defaultOptions.setInternalToolExecutionEnabled(false);
-    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
-    val result = client.call(prompt);
+      assertThat(client.stream(prompt).take(1).collectList().block()).hasSize(1);
+      Mockito.verify(inputStream, times(1)).close();
+    }
+  }
 
-    List<ToolCall> toolCalls = result.getResult().getOutput().getToolCalls();
-    assertThat(toolCalls).hasSize(2);
-    ToolCall toolCall1 = toolCalls.get(0);
-    ToolCall toolCall2 = toolCalls.get(1);
-    assertThat(toolCall1.type()).isEqualTo("function");
-    assertThat(toolCall2.type()).isEqualTo("function");
-    assertThat(toolCall1.name()).isEqualTo("getCurrentWeather");
-    assertThat(toolCall2.name()).isEqualTo("getCurrentWeather");
-    assertThat(toolCall1.arguments()).isEqualTo("{\"arg0\": \"Potsdam\", \"arg1\": \"C\"}");
-    assertThat(toolCall2.arguments()).isEqualTo("{\"arg0\": \"Toulouse\", \"arg1\": \"C\"}");
+  @ParameterizedTest
+  @ValueSource(strings = {"streamError.txt", "streamChatCompletionOutputFilter.txt"})
+  void testStreamErrorsAndFilteringCloseResponse(String fixture) throws IOException {
+    try (var inputStream = spy(fileLoader.apply(fixture))) {
+      var httpClient = mock(HttpClient.class);
+      ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
+      var response = new BasicClassicHttpResponse(200, "OK");
+      response.setEntity(new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN));
+      response.setHeader("Content-Type", "text/event-stream");
+      doReturn(response).when(httpClient).executeOpen(any(), any(), any());
 
-    try (var request1InputStream = fileLoader.apply("toolCallsRequest.json")) {
-      final String request1 = new String(request1InputStream.readAllBytes());
-      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request1)));
+      if (fixture.equals("streamError.txt")) {
+        assertThatThrownBy(() -> client.stream(prompt).collectList().block())
+            .isInstanceOf(com.sap.ai.sdk.orchestration.OrchestrationClientException.class);
+      } else {
+        assertThat(client.stream(prompt).collectList().block())
+            .anySatisfy(
+                delta ->
+                    assertThat(delta.getResult().getMetadata().getFinishReason())
+                        .isEqualTo("content_filter"));
+      }
+      Mockito.verify(inputStream, times(1)).close();
     }
   }
 
   @Test
-  void testToolCallsWithExecution() throws IOException {
+  void testToolCallsExecution() throws IOException {
     // https://platform.openai.com/docs/guides/function-calling
     stubFor(
         post(urlPathEqualTo("/v2/completion"))
@@ -203,10 +200,13 @@ class OrchestrationChatModelTest {
                 aResponse()
                     .withBodyFile("toolCallsResponse2.json")
                     .withHeader("Content-Type", "application/json")));
-
-    defaultOptions.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
-    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", defaultOptions);
-    val result = client.call(prompt);
+    val options =
+        defaultOptions.mutate().toolCallbacks(ToolCallbacks.from(new WeatherMethod())).build();
+    val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+    val result =
+        Objects.requireNonNull(
+            ChatClient.builder(client).build().prompt(prompt).call().chatResponse(),
+            "Chat response is null");
 
     assertThat(result.getResult().getOutput().getText())
         .isEqualTo("The current temperature in Potsdam is 30°C and in Toulouse 30°C.");
@@ -245,9 +245,13 @@ class OrchestrationChatModelTest {
     val repository = new InMemoryChatMemoryRepository();
     val memory = MessageWindowChatMemory.builder().chatMemoryRepository(repository).build();
     val advisor = MessageChatMemoryAdvisor.builder(memory).build();
-    val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
-    val prompt1 = new Prompt("What is the capital of France?", defaultOptions);
-    val prompt2 = new Prompt("And what is the typical food there?", defaultOptions);
+    val cl =
+        ChatClient.builder(client)
+            .defaultAdvisors(advisor)
+            .defaultOptions(defaultOptions.mutate())
+            .build();
+    val prompt1 = new Prompt("What is the capital of France?");
+    val prompt2 = new Prompt("And what is the typical food there?");
 
     cl.prompt(prompt1)
         .advisors(spec -> spec.param(ChatMemory.CONVERSATION_ID, "test-conversation"))
@@ -275,12 +279,15 @@ class OrchestrationChatModelTest {
                     .withHeader("Content-Type", "application/json")));
 
     val brokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
 
-    val options = new OrchestrationChatOptions(brokenConfig);
-    options.setFallbackConfigs(List.of(workingConfig));
+    val workingConfig = new OrchestrationModuleConfig(GPT_4O);
+
+    val options =
+        new OrchestrationChatOptions(brokenConfig)
+            .mutate()
+            .fallbackConfigs(List.of(workingConfig))
+            .build();
 
     val result = client.call(new Prompt("Hello World! Why is this phrase so famous?", options));
 
@@ -319,12 +326,15 @@ class OrchestrationChatModelTest {
       doReturn(mockResponse).when(httpClient).executeOpen(any(), requestCaptor.capture(), any());
 
       val brokenConfig =
-          new OrchestrationModuleConfig()
-              .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-      val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+          new OrchestrationModuleConfig(
+              new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+      val workingConfig = new OrchestrationModuleConfig(GPT_4O);
 
-      val options = new OrchestrationChatOptions(brokenConfig);
-      options.setFallbackConfigs(List.of(workingConfig));
+      val options =
+          new OrchestrationChatOptions(brokenConfig)
+              .mutate()
+              .fallbackConfigs(List.of(workingConfig))
+              .build();
 
       Flux<ChatResponse> flux =
           client.stream(new Prompt("Hello World! Why is this phrase so famous?", options));
