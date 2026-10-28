@@ -1,25 +1,23 @@
 package com.sap.ai.sdk.orchestration.spring;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
+import static com.sap.ai.sdk.orchestration.OrchestrationClient.toCompletionPostRequest;
 import static com.sap.ai.sdk.orchestration.model.MessageToolCall.TypeEnum.FUNCTION;
 
 import com.sap.ai.sdk.orchestration.AssistantMessage;
-import com.sap.ai.sdk.orchestration.LocalPromptTemplate;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
-import com.sap.ai.sdk.orchestration.PromptTemplate;
+import com.sap.ai.sdk.orchestration.OrchestrationPrompt;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.ToolMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.MessageToolCall;
 import com.sap.ai.sdk.orchestration.model.MessageToolCallFunction;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.ai.chat.messages.AssistantMessage.ToolCall;
@@ -27,8 +25,9 @@ import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.ToolResponseMessage;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.model.tool.DefaultToolCallingManager;
+import org.springframework.ai.model.tool.ToolCallingChatOptions;
 import reactor.core.publisher.Flux;
 
 /**
@@ -40,7 +39,9 @@ import reactor.core.publisher.Flux;
 public class OrchestrationChatModel implements ChatModel {
   @Nonnull private final OrchestrationClient client;
 
-  @Setter @Nullable private OrchestrationChatOptions defaultOptions;
+  @Nonnull
+  private final DefaultToolCallingManager toolCallingManager =
+      DefaultToolCallingManager.builder().build();
 
   /**
    * Default constructor.
@@ -54,7 +55,7 @@ public class OrchestrationChatModel implements ChatModel {
   /**
    * Constructor with a custom client.
    *
-   * @param client the custom client to use.
+   * @param client The custom client to use.
    * @since 1.2.0
    */
   public OrchestrationChatModel(@Nonnull final OrchestrationClient client) {
@@ -63,28 +64,33 @@ public class OrchestrationChatModel implements ChatModel {
 
   @Nonnull
   @Override
-  public ChatOptions getOptions() {
-    if (defaultOptions != null) {
-      return defaultOptions;
-    }
-    return new OrchestrationChatOptions(new OrchestrationModuleConfig(GPT_4O));
-  }
-
-  @Nonnull
-  @Override
   public ChatResponse call(@Nonnull final Prompt prompt) {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
-      val orchestrationPrompt = options.withCallbacks(toPromptTemplate(prompt));
-
-      return new OrchestrationSpringChatResponse(
-          client
-              .chatCompletion()
-              .config(
+      val orchestrationPrompt = toOrchestrationPrompt(prompt);
+      val response =
+          new OrchestrationSpringChatResponse(
+              client.chatCompletion(
+                  orchestrationPrompt,
                   options.getConfig(),
-                  options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new))
-              .promptTemplate(orchestrationPrompt)
-              .execute());
+                  options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new)));
+
+      if (ToolCallingChatOptions.isInternalToolExecutionEnabled(prompt.getOptions())
+          && response.hasToolCalls()) {
+
+        if (log.isDebugEnabled()) {
+          val tools = response.getResult().getOutput().getToolCalls();
+          val toolsStr = tools.stream().map(ToolCall::name).collect(Collectors.joining(", "));
+          log.debug("Executing {} tool call(s) - {}.", tools.size(), toolsStr);
+        }
+
+        val toolExecutionResult = toolCallingManager.executeToolCalls(prompt, response);
+
+        // Send the tool execution result back to the model.
+        log.debug("Re-invoking LLM with tool execution results.");
+        return call(new Prompt(toolExecutionResult.conversationHistory(), prompt.getOptions()));
+      }
+      return response;
     }
     throw new IllegalArgumentException(
         "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
@@ -96,17 +102,25 @@ public class OrchestrationChatModel implements ChatModel {
 
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
-      val orchestrationPrompt = options.withCallbacks(toPromptTemplate(prompt));
+      val orchestrationPrompt = toOrchestrationPrompt(prompt);
+      val request =
+          toCompletionPostRequest(
+              orchestrationPrompt,
+              options.getConfig(),
+              options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new));
+      val stream = client.streamChatCompletionDeltas(request);
+
       final Flux<OrchestrationChatCompletionDelta> flux =
-          Flux.fromStream(
-              () ->
-                  client
-                      .chatCompletion()
-                      .config(
-                          options.getConfig(),
-                          options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new))
-                      .promptTemplate(orchestrationPrompt)
-                      .executeStreamDeltas());
+          Flux.generate(
+              stream::iterator,
+              (iterator, sink) -> {
+                if (iterator.hasNext()) {
+                  sink.next(iterator.next());
+                } else {
+                  sink.complete();
+                }
+                return iterator;
+              });
       return flux.map(OrchestrationSpringChatDelta::new);
     }
     throw new IllegalArgumentException(
@@ -114,12 +128,9 @@ public class OrchestrationChatModel implements ChatModel {
   }
 
   @Nonnull
-  private LocalPromptTemplate toPromptTemplate(@Nonnull final Prompt prompt) {
+  private OrchestrationPrompt toOrchestrationPrompt(@Nonnull final Prompt prompt) {
     val messages = toOrchestrationMessages(prompt.getInstructions());
-    if (messages.length == 0) {
-      throw new IllegalArgumentException("A prompt is required. Pass at least one message.");
-    }
-    return PromptTemplate.create(messages[0], Arrays.copyOfRange(messages, 1, messages.length));
+    return new OrchestrationPrompt(Map.of(), messages);
   }
 
   @Nonnull

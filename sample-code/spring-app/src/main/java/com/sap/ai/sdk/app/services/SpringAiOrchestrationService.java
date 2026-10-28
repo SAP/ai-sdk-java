@@ -41,11 +41,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
-/** Service class for the Orchestration service. */
+/** Service class for the Orchestration service */
 @Service
 public class SpringAiOrchestrationService {
   private final ChatModel client = new OrchestrationChatModel();
-  private final OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_41);
+  private final OrchestrationModuleConfig config =
+      new OrchestrationModuleConfig().withLlmConfig(GPT_41);
   private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);
 
   @Nullable
@@ -58,7 +59,7 @@ public class SpringAiOrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
    *
-   * @return the assistant response object.
+   * @return the assistant response object
    */
   @Nonnull
   public ChatResponse completion() {
@@ -68,9 +69,9 @@ public class SpringAiOrchestrationService {
   }
 
   /**
-   * Asynchronous stream of an OpenAI chat request.
+   * Asynchronous stream of an OpenAI chat request
    *
-   * @return a stream of assistant message responses.
+   * @return a stream of assistant message responses
    */
   @Nonnull
   public Flux<ChatResponse> streamChatCompletion() {
@@ -83,7 +84,7 @@ public class SpringAiOrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service with a template.
    *
-   * @return the assistant response object.
+   * @return the assistant response object
    */
   @Nonnull
   public ChatResponse template() {
@@ -101,7 +102,7 @@ public class SpringAiOrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/data-masking">SAP AI
    *     Core: Orchestration - Data Masking</a>
-   * @return the assistant response object.
+   * @return the assistant response object
    */
   @Nonnull
   public ChatResponse masking() {
@@ -124,8 +125,8 @@ public class SpringAiOrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
    *     AI Core: Orchestration - Input Filtering</a>
-   * @param policy the explicitness of content that should be allowed through the filter.
-   * @return the assistant response object.
+   * @param policy the explicitness of content that should be allowed through the filter
+   * @return the assistant response object
    */
   @Nonnull
   public ChatResponse inputFiltering(@Nonnull final AzureFilterThreshold policy)
@@ -150,8 +151,8 @@ public class SpringAiOrchestrationService {
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
    *     AI Core: Orchestration - Output Filtering</a>
-   * @param policy the explicitness of content that should be allowed through the filter.
-   * @return the assistant response object.
+   * @param policy the explicitness of content that should be allowed through the filter
+   * @return the assistant response object
    */
   @Nonnull
   public ChatResponse outputFiltering(@Nonnull final AzureFilterThreshold policy) {
@@ -175,52 +176,24 @@ public class SpringAiOrchestrationService {
    * href="https://docs.spring.io/spring-ai/reference/api/tools.html#_methods_as_tools">Spring AI
    * Tool Method Declarative Specification</a>
    *
-   * @param internalToolExecutionEnabled whether the internal tool execution is enabled.
-   * @return the assistant response object.
+   * @param internalToolExecutionEnabled whether the internal tool execution is enabled
+   * @return the assistant response object
    */
   @Nonnull
   public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
-    val options =
-        new OrchestrationChatOptions(config)
-            .mutate()
-            .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
-            .build();
+    val options = new OrchestrationChatOptions(config);
+    options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
+    options.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
 
     val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
-    if (internalToolExecutionEnabled) {
-      return Objects.requireNonNull(
-          ChatClient.builder(client).build().prompt(prompt).call().chatResponse(),
-          "Chat response is null");
-    }
     return client.call(prompt);
-  }
-
-  /**
-   * Demonstrate {@code @Tool(returnDirect=true)}: the tool result is returned straight to the
-   * caller without a second LLM call. Spring AI's {@link ChatClient} handles this automatically via
-   * its {@code ToolCallingAdvisor} with no custom loop needed.
-   *
-   * @return the tool result wrapped as a chat response, containing the raw tool output.
-   */
-  @Nonnull
-  public ChatResponse toolCallingReturnDirect() {
-    val options =
-        new OrchestrationChatOptions(config)
-            .mutate()
-            .toolCallbacks(ToolCallbacks.from(new WeatherMethodReturnDirect()))
-            .build();
-
-    val prompt = new Prompt("What is the weather in Berlin?", options);
-    return Objects.requireNonNull(
-        ChatClient.builder(client).build().prompt(prompt).call().chatResponse(),
-        "Chat response is null");
   }
 
   /**
    * Example using an MCP client to use a file system tool. Enabled via dedicated Spring profile,
    * since it requires an actual MCP server to run.
    *
-   * @return the assistant response object.
+   * @return the assistant response object
    */
   @Nonnull
   public ChatResponse toolCallingMcp() {
@@ -234,11 +207,8 @@ public class SpringAiOrchestrationService {
           "No MCP clients were found. Ensure that you configured the clients correctly in the application.yaml file.");
     }
     // GPT-4o-mini doesn't work too well with the file system tool, so we use 4o here
-    val options =
-        new OrchestrationChatOptions(config.withLlmConfig(GPT_4O))
-            .mutate()
-            .toolCallbacks(toolCallbackProvider.getToolCallbacks())
-            .build();
+    val options = new OrchestrationChatOptions(config.withLlmConfig(GPT_4O));
+    options.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
 
     val sys =
         new SystemMessage(
@@ -256,7 +226,7 @@ public class SpringAiOrchestrationService {
   /**
    * Chat request to OpenAI through the Orchestration service using chat memory.
    *
-   * @return the assistant response object.
+   * @return the assistant response object
    */
   @Nonnull
   public ChatResponse chatMemory() {
@@ -283,18 +253,16 @@ public class SpringAiOrchestrationService {
    * Chat request using the Spring AI integration with fallback configs. The first config uses an
    * invalid model name, so the orchestration service falls back to the second config.
    *
-   * @return the assistant response object.
+   * @return the assistant response object
    */
   @Nonnull
   public ChatResponse completionWithFallback() {
     val brokenConfig =
-        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    val workingConfig = new OrchestrationModuleConfig(GPT_41);
-    val options =
-        new OrchestrationChatOptions(brokenConfig)
-            .mutate()
-            .fallbackConfigs(List.of(workingConfig))
-            .build();
+        new OrchestrationModuleConfig()
+            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_41);
+    val options = new OrchestrationChatOptions(brokenConfig);
+    options.setFallbackConfigs(List.of(workingConfig));
     val prompt = new Prompt("Why is 'Hello World' so famous?", options);
     return client.call(prompt);
   }
@@ -302,8 +270,8 @@ public class SpringAiOrchestrationService {
   /**
    * A simple record to demonstrate the response format feature of the orchestration service.
    *
-   * @param translation the translated text.
-   * @param language the language of the translation.
+   * @param translation the translated text
+   * @param language the language of the translation
    */
   public record Translation(
       @JsonProperty(required = true) String translation,
@@ -315,7 +283,7 @@ public class SpringAiOrchestrationService {
    *
    * <p>In this case, we expect a {@code Translation} of the input text into Dutch.
    *
-   * @return the translated text.
+   * @return The translated text.
    */
   @Nullable
   public Translation responseFormat() {
@@ -330,8 +298,8 @@ public class SpringAiOrchestrationService {
   /**
    * Create an embedding for a given text using the Orchestration service.
    *
-   * @param inputText the text to embed.
-   * @return the embedding as a float array.
+   * @param inputText the text to embed
+   * @return the embedding as a float array
    */
   @Nonnull
   public float[] embed(@Nonnull final String inputText) {

@@ -8,18 +8,20 @@
 
 ### 🔧 Compatibility Notes
 
--
+- [Release] Disabled snapshot release to the Artifactory snapshot repository.
 
 ### ✨ New Functionality
 
+- [Orchestration] Added `GEMINI_3_8_FLASH` and `GPT_51` to model list in `OrchestrationAiModel`.
+- [OpenAI] Added `GPT_51` to model list in `OpenAiModel`.
+- [Spring AI] Chat completion calls via the Spring AI integration now can have multiple module configs to support fallback modules as well.
 - [Tabular AI Orchestration] Added `ContextRegistryClient` in `com.sap.ai.sdk:tabular-ai-orchestration` for tabular predictions.
 - [Context Registry] Added `ContextRegistryClient` in `com.sap.ai.sdk:context-registry` for setting up tabular predictions.
 
 ### 📈 Improvements
 
-- [Core] Added `CoreApi.availableAiModels()` convenience methods to make model discovery more visible. Both the scenario ID (`"foundation-models"`) and resource group (`"default"`) are pre-filled by default. Use `availableAiModels(scenarioId, resourceGroup)` to specify custom values.
+-
 
 ### 🐛 Fixed Issues
 
-- [Orchestration] Token usage reported in `ChatResponse` metadata now correctly accumulates across all internal tool-call rounds when using `OrchestrationChatModel`.
-- [Orchestration] `OrchestrationClient.executeRequest()` is now `protected` instead of `package-private`. It was `public` in v1.
+-
