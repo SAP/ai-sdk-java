@@ -19,6 +19,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationAccessE
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.DestinationNotFoundException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.exception.HttpClientInstantiationException;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -66,6 +67,10 @@ class OrchestrationHttpExecutor {
 
     } catch (JsonProcessingException e) {
       throw new OrchestrationClientException("Failed to serialize request payload for " + path, e);
+    } catch (SocketTimeoutException e) {
+      throw new OrchestrationClientException(
+          "Request to Orchestration service took longer than 2 minutes. Please shorten your request or use streaming.",
+          e);
     } catch (DeploymentResolutionException
         | DestinationAccessException
         | DestinationNotFoundException

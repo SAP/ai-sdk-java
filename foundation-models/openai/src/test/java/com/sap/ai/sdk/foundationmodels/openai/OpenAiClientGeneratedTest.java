@@ -64,7 +64,17 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
 
   private static Runnable[] errorHandlingCalls() {
     return new Runnable[] {
-      () -> client.chatCompletion(new OpenAiChatCompletionRequest("")),
+      () -> {
+        try {
+          client.chatCompletion(new OpenAiChatCompletionRequest(""));
+        } catch (OpenAiClientException e) {
+          var httpRequest = e.getHttpRequest();
+          var httpResponse = e.getHttpResponse();
+          var errorResponse = e.getErrorResponse();
+          var clientError = e.getClientError();
+          throw e;
+        }
+      },
       () ->
           client
               .streamChatCompletionDeltas(new OpenAiChatCompletionRequest(""))

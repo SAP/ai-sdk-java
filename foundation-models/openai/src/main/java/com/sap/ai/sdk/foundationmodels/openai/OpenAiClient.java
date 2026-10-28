@@ -26,6 +26,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -387,6 +388,11 @@ public final class OpenAiClient {
       RequestLogContext.logRequestStart();
       return client.execute(
           request, new ClientResponseHandler<>(responseType, OpenAiError.class, FACTORY));
+    } catch (SocketTimeoutException e) {
+      throw new OpenAiClientException(
+              "Request to OpenAI model took longer than 2 minutes. Please shorten your request or use streaming.",
+              e)
+          .setHttpRequest(request);
     } catch (final IOException e) {
       throw new OpenAiClientException("Request to OpenAI model failed", e).setHttpRequest(request);
     } finally {
