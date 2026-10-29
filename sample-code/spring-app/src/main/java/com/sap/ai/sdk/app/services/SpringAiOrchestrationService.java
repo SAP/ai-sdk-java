@@ -324,7 +324,9 @@ public class SpringAiOrchestrationService {
     val prompt =
         new Prompt(
             "How do I say 'AI is going to revolutionize the world' in dutch?", defaultOptions);
-    return cl.prompt(prompt).call().entity(Translation.class);
+    return cl.prompt(prompt)
+        .call()
+        .entity(Translation.class, spec -> spec.useProviderStructuredOutput().validateSchema());
   }
 
   /**
