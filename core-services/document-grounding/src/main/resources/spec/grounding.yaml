@@ -3325,7 +3325,6 @@ components:
           anyOf:
             - $ref: '#/components/schemas/BinaryBooleanFilter'
             - $ref: '#/components/schemas/ScopedKeyValueListPair'
-          nullable: true
       type: object
       required:
         - id

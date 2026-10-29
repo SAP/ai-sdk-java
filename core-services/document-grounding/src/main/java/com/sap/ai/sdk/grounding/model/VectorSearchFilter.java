@@ -338,7 +338,7 @@ public class VectorSearchFilter
    *
    * @return filter The filter of this {@link VectorSearchFilter} instance.
    */
-  @Nullable
+  @Nonnull
   public Filter getFilter() {
     return filter;
   }
