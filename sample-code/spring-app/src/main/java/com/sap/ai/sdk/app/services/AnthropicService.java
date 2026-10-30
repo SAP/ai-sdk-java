@@ -26,7 +26,6 @@ public class AnthropicService {
   @Nonnull
   public Message chatCompletion(@Nonnull final String userMessage) {
     return AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
-        .client()
         .messages()
         .create(BASE_PARAMS.addUserMessage(userMessage).build());
   }
@@ -41,7 +40,6 @@ public class AnthropicService {
   public StreamResponse<RawMessageStreamEvent> streamChatCompletion(
       @Nonnull final String userMessage) {
     return AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
-        .client()
         .messages()
         .createStreaming(BASE_PARAMS.addUserMessage(userMessage).build());
   }

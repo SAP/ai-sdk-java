@@ -3,6 +3,7 @@ package com.sap.ai.sdk.foundationmodels.anthropic;
 import com.anthropic.client.AnthropicClient;
 import com.anthropic.client.AnthropicClientImpl;
 import com.anthropic.core.ClientOptions;
+import com.anthropic.services.blocking.MessageService;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -73,6 +74,16 @@ public class AiCoreAnthropicClient {
   }
 
   /**
+   * Returns configured client for Anthropic messages API.
+   *
+   * @return client implementation
+   */
+  @Nonnull
+  public MessageService messages() {
+    return forDestination(destination).client().messages();
+  }
+
+  /**
    * Get a configured {@link AnthropicClient} for the deployment.
    *
    * <p>The client uses SAP Cloud SDK's Apache HttpClient for all HTTP communication. Anthropic API
@@ -82,7 +93,7 @@ public class AiCoreAnthropicClient {
    * @return a ready-to-use Anthropic client.
    */
   @Nonnull
-  public AnthropicClient client() {
+  private AnthropicClient client() {
     final var options =
         ClientOptions.builder()
             .httpClient(new SapAnthropicHttpClient(destination))

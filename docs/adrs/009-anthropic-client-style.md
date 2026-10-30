@@ -8,7 +8,7 @@ SAP AI Core exposes Anthropic Claude models via a Bedrock-compatible HTTP API.
 This document covers two design decisions about how `AiCoreAnthropicClient` exposes the official Anthropic Java SDK to users.
 
 Both decisions assume **Option C (official Anthropic Java SDK)** from
-[008-anthropic-integration-approach.md](008-anthropic-integration-approach.md).
+[008-anthropic-integration-approach.md](008-anthropic-foundation-models.md).
 
 ---
 

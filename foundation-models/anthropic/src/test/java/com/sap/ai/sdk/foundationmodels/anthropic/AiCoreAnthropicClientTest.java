@@ -82,7 +82,7 @@ class AiCoreAnthropicClientTest {
             .addUserMessage("Hello!")
             .build();
 
-    final var response = client.client().messages().create(params);
+    final var response = client.messages().create(params);
 
     assertThat(response).isNotNull();
     assertThat(response.id()).isEqualTo("msg_01XFDUDYJgAACzvnptvVoYEL");
@@ -111,7 +111,7 @@ class AiCoreAnthropicClientTest {
             .addUserMessage("What is 2+2?")
             .build();
 
-    client.client().messages().create(params);
+    client.messages().create(params);
 
     verify(
         postRequestedFor(urlPathEqualTo("/invoke"))
@@ -143,7 +143,7 @@ class AiCoreAnthropicClientTest {
             .addUserMessage("Hello!")
             .build();
 
-    client.client().messages().create(params);
+    client.messages().create(params);
 
     verify(
         postRequestedFor(urlPathEqualTo("/invoke"))
@@ -174,7 +174,7 @@ class AiCoreAnthropicClientTest {
             .addUserMessage("Hello!")
             .build();
 
-    try (var stream = client.client().messages().createStreaming(params)) {
+    try (var stream = client.messages().createStreaming(params)) {
       final var chunks =
           stream.stream()
               .filter(e -> e.isContentBlockDelta())
@@ -211,7 +211,7 @@ class AiCoreAnthropicClientTest {
             .addUserMessage("Hello!")
             .build();
 
-    try (var stream = client.client().messages().createStreaming(params)) {
+    try (var stream = client.messages().createStreaming(params)) {
       final var stopReason =
           stream.stream()
               .filter(e -> e.isMessageDelta())
@@ -243,7 +243,7 @@ class AiCoreAnthropicClientTest {
             .addUserMessage("Hello!")
             .build();
 
-    assertThatThrownBy(() -> client.client().messages().create(params))
+    assertThatThrownBy(() -> client.messages().create(params))
         .isInstanceOf(AnthropicException.class)
         .hasMessageContaining("400");
   }
@@ -259,7 +259,7 @@ class AiCoreAnthropicClientTest {
             .addUserMessage("Hello!")
             .build();
 
-    assertThatThrownBy(() -> client.client().messages().create(params))
+    assertThatThrownBy(() -> client.messages().create(params))
         .isInstanceOf(AnthropicException.class)
         .hasMessageContaining("500");
   }
