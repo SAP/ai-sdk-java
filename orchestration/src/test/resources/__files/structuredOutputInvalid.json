@@ -1,0 +1,24 @@
+{
+  "request_id": "11111111-1111-1111-1111-111111111111",
+  "final_result": {
+    "id": "chatcmpl-invalid",
+    "object": "chat.completion",
+    "created": 1721224505,
+    "model": "gpt-4o",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "this is not valid json"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 7,
+      "prompt_tokens": 19,
+      "total_tokens": 26
+    }
+  }
+}

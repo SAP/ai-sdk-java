@@ -1,0 +1,24 @@
+{
+  "request_id": "22222222-2222-2222-2222-222222222222",
+  "final_result": {
+    "id": "chatcmpl-valid",
+    "object": "chat.completion",
+    "created": 1721224505,
+    "model": "gpt-4o",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\"translation\":\"AI gaat de wereld revolutioneren\",\"language\":\"Dutch\"}"
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 7,
+      "prompt_tokens": 19,
+      "total_tokens": 26
+    }
+  }
+}
