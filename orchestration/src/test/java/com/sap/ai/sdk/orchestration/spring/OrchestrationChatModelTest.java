@@ -3,6 +3,8 @@ package com.sap.ai.sdk.orchestration.spring;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.exactly;
+import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -220,6 +222,68 @@ class OrchestrationChatModelTest {
       }
     }
   }
+
+  @Test
+  void testUseProviderStructuredOutputPopulatesSchema() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("structuredOutputValid.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    ChatClient.builder(client)
+        .build()
+        .prompt(new Prompt("How do I say 'hello' in dutch?", defaultOptions))
+        .call()
+        .entity(Translation.class, ChatClient.EntityParamSpec::useProviderStructuredOutput);
+
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion"))
+            .withRequestBody(
+                matchingJsonPath("$.config.modules.prompt_templating.prompt.response_format.type"))
+            .withRequestBody(
+                matchingJsonPath(
+                    "$.config.modules.prompt_templating.prompt.response_format.json_schema.schema.properties.translation")));
+  }
+
+  @Test
+  void testStructuredOutputValidationRetries() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .inScenario("Schema Validation Retry")
+            .whenScenarioStateIs(STARTED)
+            .willReturn(
+                aResponse()
+                    .withBodyFile("structuredOutputInvalid.json")
+                    .withHeader("Content-Type", "application/json"))
+            .willSetStateTo("Second Call"));
+
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .inScenario("Schema Validation Retry")
+            .whenScenarioStateIs("Second Call")
+            .willReturn(
+                aResponse()
+                    .withBodyFile("structuredOutputValid.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val translation =
+        ChatClient.builder(client)
+            .build()
+            .prompt(new Prompt("How do I say 'hello' in dutch?", defaultOptions))
+            .call()
+            .entity(Translation.class, ChatClient.EntityParamSpec::validateSchema);
+
+    assertThat(translation).isNotNull();
+    assertThat(translation.translation()).isNotEmpty();
+    assertThat(translation.language()).containsIgnoringCase("dutch");
+    // First response was malformed, so validateSchema re-prompted: exactly two completion calls.
+    verify(exactly(2), postRequestedFor(urlPathEqualTo("/v2/completion")));
+  }
+
+  /** Target type for structured output tests. */
+  public record Translation(String translation, String language) {}
 
   @Test
   void testChatMemory() throws IOException {

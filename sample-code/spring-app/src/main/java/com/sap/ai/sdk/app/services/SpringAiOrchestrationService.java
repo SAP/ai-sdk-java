@@ -315,12 +315,16 @@ public class SpringAiOrchestrationService {
    *
    * <p>In this case, we expect a {@code Translation} of the input text into Dutch.
    *
+   * <p>{@code useProviderStructuredOutput()} sends the schema to the orchestration service as an
+   * API-level constraint, while {@code validateSchema()} adds a self-correcting retry loop: if the
+   * response does not match the schema, Spring AI appends the validation error to the prompt and
+   * retries up to 3 times.
+   *
    * @return the translated text.
    */
   @Nullable
   public Translation responseFormat() {
     val cl = ChatClient.builder(new OrchestrationChatModel()).build();
-
     val prompt =
         new Prompt(
             "How do I say 'AI is going to revolutionize the world' in dutch?", defaultOptions);

@@ -30,6 +30,7 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.val;
 import org.springframework.ai.chat.prompt.ChatOptions;
+import org.springframework.ai.model.tool.StructuredOutputChatOptions;
 import org.springframework.ai.model.tool.ToolCallingChatOptions;
 import org.springframework.ai.tool.ToolCallback;
 
@@ -41,7 +42,8 @@ import org.springframework.ai.tool.ToolCallback;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class OrchestrationChatOptions implements ToolCallingChatOptions {
+public class OrchestrationChatOptions
+    implements ToolCallingChatOptions, StructuredOutputChatOptions {
 
   private static final ObjectMapper JACKSON = getOrchestrationObjectMapper();
 
@@ -55,13 +57,15 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
 
   @Nonnull private final Map<String, Object> toolContext;
 
+  @Nullable private final String outputSchema;
+
   /**
    * Creates options from an orchestration config, with no tools or fallback configs.
    *
    * @param config the orchestration module config to use.
    */
   public OrchestrationChatOptions(@Nonnull final OrchestrationModuleConfig config) {
-    this(config, List.of(), List.of(), Set.of(), Map.of());
+    this(config, List.of(), List.of(), Set.of(), Map.of(), null);
   }
 
   private OrchestrationChatOptions(
@@ -69,12 +73,14 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
       @Nonnull final List<OrchestrationModuleConfig> fallbackConfigs,
       @Nonnull final List<ToolCallback> toolCallbacks,
       @Nonnull final Set<String> toolNames,
-      @Nonnull final Map<String, Object> toolContext) {
+      @Nonnull final Map<String, Object> toolContext,
+      @Nullable final String outputSchema) {
     this.config = config;
     this.fallbackConfigs = fallbackConfigs;
     this.toolCallbacks = toolCallbacks;
     this.toolNames = toolNames;
     this.toolContext = toolContext;
+    this.outputSchema = outputSchema;
   }
 
   /**
@@ -196,7 +202,9 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
    *
    * @since 1.25.0
    */
-  public static final class Builder implements ToolCallingChatOptions.Builder<Builder> {
+  public static final class Builder
+      implements ToolCallingChatOptions.Builder<Builder>,
+          StructuredOutputChatOptions.Builder<Builder> {
     @Nonnull private final OrchestrationChatOptions source;
     @Nonnull private List<ToolCallback> toolCallbacks;
     @Nonnull private Set<String> toolNames;
@@ -204,6 +212,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Nullable private String modelName;
     @Nonnull private final Map<String, Object> paramOverrides = new LinkedHashMap<>();
     @Nullable private List<OrchestrationModuleConfig> fallbackConfigs;
+    @Nullable private String outputSchema;
 
     private Builder(@Nonnull final OrchestrationChatOptions source) {
       this.source = source;
@@ -211,6 +220,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
       this.toolNames = Set.copyOf(source.getToolNames());
       this.toolContext = Map.copyOf(source.getToolContext());
       this.fallbackConfigs = List.copyOf(source.getFallbackConfigs());
+      this.outputSchema = source.getOutputSchema();
     }
 
     @Override
@@ -232,6 +242,7 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
         result.toolNames = that.toolNames;
         result.modelName = that.modelName;
         result.paramOverrides.putAll(that.paramOverrides);
+        result.outputSchema = that.outputSchema;
         return result;
       }
       return this;
@@ -271,6 +282,13 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
     @Nonnull
     public Builder model(@Nullable final String model) {
       this.modelName = model;
+      return this;
+    }
+
+    @Override
+    @Nonnull
+    public Builder outputSchema(@Nullable final String schema) {
+      this.outputSchema = schema;
       return this;
     }
 
@@ -361,7 +379,8 @@ public class OrchestrationChatOptions implements ToolCallingChatOptions {
           fallbackConfigs != null ? fallbackConfigs : source.getFallbackConfigs(),
           toolCallbacks,
           toolNames,
-          toolContext);
+          toolContext,
+          outputSchema);
     }
   }
 
