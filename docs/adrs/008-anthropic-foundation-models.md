@@ -25,6 +25,8 @@ not exist. Few solution options exist, the optimal option is to be identified.
 Client, configuration and operation payload classes (requests, responses and their parts) are written by
 hands for every functionality we want to support:
 
+![](images/option_a.drawio.svg)
+
 ```java
 // Hypothetical convenience classes approach
 AnthropicChatCompletionResponse response =
@@ -48,6 +50,8 @@ Stream<AnthropicChatCompletionDelta> stream =
 #### Option B: Raw Bedrock invoke API
 
 Expose the AWS Bedrock SDK `BedrockRuntimeClient` configured for SAP AI Core, with all serialization and response parsing left to the user.
+
+![](images/option_b.drawio.svg)
 
 ```java
 // Chat completion — user owns request serialization and response parsing
@@ -100,6 +104,8 @@ Use `com.anthropic:anthropic-java-core` as the typed API layer.
 Replace its HTTP transport (`com.anthropic.core.http.HttpClient`) with SAP's authenticated Apache HTTP client.
 Expose parts of official anthropic api we support (sub-clients implemented by anthropic)
 
+![](images/option_c.drawio.svg)
+
 ```java
 // Chat completion
 Message response =
@@ -146,6 +152,8 @@ Use `com.anthropic:anthropic-java-core` as the typed API layer.
 Replace its HTTP transport (`com.anthropic.core.http.HttpClient`) with SAP's authenticated Apache HTTP client.
 Expose parts of official anthropic api we support (sub-clients implemented by anthropic)
 
+![](images/option_d.drawio.svg)
+
 ```java
 // Chat completion
 Message response =
@@ -191,6 +199,8 @@ try (var stream =
 Use `software.amazon.awssdk:bedrockruntime` as the typed API layer.
 Configure `BedrockRuntimeClient` with SAP's authenticated HTTP credentials and endpoint override pointing to SAP AI Core's gateway.
 The Converse API provides a model-agnostic typed interface — all request/response types (`ConverseRequest`, `ConverseResponse`, `Message`, `ContentBlock`, etc.) are owned by AWS.
+
+![](images/option_e.drawio.svg)
 
 ```java
 // Build SAP-authenticated BedrockRuntimeClient
@@ -244,7 +254,7 @@ bedrockClient.converseStream(
 | Maintenance effort     | Low for AWS SDK changes — typed classes are SDK-owned; but Anthropic-specific features (extended thinking, tool use variants) may lag behind the native Anthropic API                             |
 | Code footprint         | Small — bridge only: SAP endpoint/credential wiring; no request/response mapping needed                                                                                                           |
 | User value             | Medium — familiar AWS SDK patterns for teams already using Bedrock; but Anthropic-specific parameters (e.g. `betas`, prompt caching) are not exposed (against the purpose of "foundation models") |
-| API stability          | Moderate — AWS Converse API is stable and model-agnostic; Anthropic-specific capabilities limited to what Converse supports                                                                       |
+| API stability          | High — AWS Converse API is stable and model-agnostic; Anthropic-specific capabilities limited to what Converse supports                                                                           |
 | Backend replaceability | Moderate — switching to a non-Bedrock backend requires replacing the AWS SDK dependency; Converse API types are AWS-specific                                                                      |
 
 
@@ -253,21 +263,17 @@ Official Anthropic Java SDK with Invoke AWS Bedrock Backend (Option C) is propos
 
 ## Rationale
 
+Every aspect value is scored between 1 and 5 points
+Every option receives result as a sum of its aspect values.
+
+| Aspect                 | A: Convenience classes | B: Raw Bedrock Invoke | __C: Anthropic SDK + Invoke__ | D: Anthropic SDK + Converse | E: AWS Converse SDK |
+|------------------------|------------------------|-----------------------|-------------------------------|-----------------------------|---------------------|
+| Maintenance effort     | High (2)               | Near zero (5)         | __Low (4)__                   | Very high (1)               | Low (4)             |
+| Code footprint         | Large (2)              | Minimal (5)           | __Small (4)__                 | Large (1)                   | Small (4)           |
+| User value             | Moderate (3)           | Low (1)               | __High (5)__                  | Moderate (3)                | Moderate (3)        |
+| API stability          | Moderate–high (3.5)    | Low (payload) (1)     | __High (5)__                  | Low (1)                     | Moderate (3)        |
+| Backend replaceability | Hard (1)               | Impossible (1)        | __Easy (5)__                  | Difficult (2)               | High (4)            |
+| Score                  | 12.5                   | 13                    | __23__                        | 8                           | 18                  |
 
 ## Consequences, New Dependencies, Open Points, Next Steps
 <!-- Describe anything else that needs to be done and lists dependencies to other services that need to be introduced. -->
-
-## Self Check
-
-The ADR...
-- [ ] in `Status`, specifiies the correct ADR status, contributors, and reviewers requried
-- [ ] in `Context`, refers to a Jira item describing the business requirement / backlog item and describes the context for AI Core architects and POs that are not deep experts for the ADR's topic
-- [ ] in `Context`, specifies non-functional requirements that need to be fulfilled; in the solution options these non-functional requirements are considered
-- [ ] in `Context`, presents more than 1 solution option; each with pros and cons
-- [ ] in `Decision`, captures the clear single architecture decision at this point in time
-- [ ] in `Consequences`, points out all identified open points, plans to proceed with them, and where input is required from reviewers
-- [ ] in `Consequences`, enumerates all new introduced dependencies to external services
-- [ ] considers aspects that are sometimes forgotten; discussion with the experts on these in early stages have been conducted (only if applicable):
-    - AI Launchpad
-    - SDKs
-    - Content as a service
