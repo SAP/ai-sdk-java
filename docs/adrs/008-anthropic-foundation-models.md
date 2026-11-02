@@ -55,9 +55,7 @@ Expose the AWS Bedrock SDK `BedrockRuntimeClient` configured for SAP AI Core, wi
 
 ```java
 // Chat completion — user owns request serialization and response parsing
-BedrockRuntimeClient bedrockClient = BedrockRuntimeClient.builder()
-    .httpClient(SapBedrockHttpClient.forModel(CLAUDE_45_HAIKU))
-    .build();
+BedrockRuntimeClient bedrockClient = AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU);
 
 String requestBody = """
     {
@@ -110,7 +108,6 @@ Expose parts of official anthropic api we support (sub-clients implemented by an
 // Chat completion
 Message response =
     AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
-        .client()
         .messages()
         .create(
             MessageCreateParams.builder()
@@ -125,11 +122,7 @@ String text = response.content().stream()
     .collect(joining());
 
 // Streaming
-try (var stream =
-    AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
-        .client()
-        .messages()
-        .createStreaming(params)) {
+try (var stream = AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU).messages().createStreaming(params)) {
   stream.stream()
       .filter(RawMessageStreamEvent::isContentBlockDelta)
       .map(e -> e.asContentBlockDelta().delta().asTextDelta().text())
@@ -158,7 +151,6 @@ Expose parts of official anthropic api we support (sub-clients implemented by an
 // Chat completion
 Message response =
     AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
-        .client()
         .messages()
         .create(
             MessageCreateParams.builder()
@@ -175,7 +167,6 @@ String text = response.content().stream()
 // Streaming
 try (var stream =
     AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
-        .client()
         .messages()
         .createStreaming(params)) {
   stream.stream()
