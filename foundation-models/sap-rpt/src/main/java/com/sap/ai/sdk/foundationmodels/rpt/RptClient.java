@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 import static com.sap.ai.sdk.foundationmodels.rpt.RptModel.SAP_RPT_1_6_LARGE;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.JacksonConfiguration;
@@ -68,9 +67,6 @@ public class RptClient {
   /**
    * Predict targets using SAP RPT model with structured data.
    *
-   * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
-   * public signature.
-   *
    * <p><b>200</b> - Successful Prediction
    *
    * <p><b>400</b> - Bad Request - Invalid input data
@@ -87,8 +83,8 @@ public class RptClient {
    *     embedded {@link com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictionConfig} is
    *     set to {@code null} on the passed-in object as a side effect.
    */
-  @Beta
   @Nonnull
+  @SuppressWarnings("PMD.PublicApiExposesModelType") // we consider model class stable
   public PredictResponsePayload tableCompletion(@Nonnull final PredictRequestPayload requestBody) {
     if (!contextModePossible) {
       configFrom(requestBody).setContextMode(null);
@@ -111,9 +107,6 @@ public class RptClient {
    * Make in-context predictions for specified target columns based on provided table data Parquet
    * file.
    *
-   * <p>Note: This method is marked as {@link Beta} because it uses generated API types in its
-   * public signature.
-   *
    * <p><b>200</b> - Successful Prediction
    *
    * <p><b>400</b> - Bad Request - Invalid input data
@@ -132,7 +125,7 @@ public class RptClient {
    *     set to {@code null} as a side effect.
    * @since 1.16.0
    */
-  @Beta
+  @SuppressWarnings("PMD.PublicApiExposesModelType") // we consider model class stable
   @Nonnull
   public PredictResponsePayload tableCompletion(
       @Nonnull final File parquetFile, @Nonnull final PredictionConfig predictionConfig) {

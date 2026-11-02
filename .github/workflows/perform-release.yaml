@@ -38,7 +38,7 @@ jobs:
         id: determine-branch-names
         run: |
           CODE_BRANCH_NAME=$(gh pr view ${{github.event.inputs.release_pr_number}} --repo ${{github.repository}} --json headRefName --jq '.headRefName')
-          RELEASE_VERSION=$(echo $CODE_BRANCH_NAME | cut -d '-' -f2)
+          RELEASE_VERSION=$(echo $CODE_BRANCH_NAME | cut -d '-' -f2-)
           RELEASE_TAG=rel/$RELEASE_VERSION
           RELEASE_COMMIT=$(gh release view $RELEASE_TAG --repo ${{github.repository}} --json targetCommitish --jq '.targetCommitish')
           RELEASE_NOTES_BRANCH_NAME=java/release-notes-$RELEASE_VERSION
@@ -112,7 +112,7 @@ jobs:
 
   release:
     name: 'Release'
-    needs: [prerequisites]
+    needs: [ prerequisites ]
     runs-on: ubuntu-latest
     environment: release
     permissions:

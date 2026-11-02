@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [ "*" ]
   push:
-    branches: [ main, v2 ]
+    branches: [ v1, main ]
   workflow_dispatch: # triggered by the prepare-release workflow
 
 env:

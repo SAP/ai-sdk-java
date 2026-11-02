@@ -20,12 +20,12 @@ import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigFiltersInner;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfigProviders;
+import com.sap.ai.sdk.orchestration.model.OrchestrationConfigModules;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonObject;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatJsonSchema;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutputTargetLanguage;
 import com.sap.ai.sdk.orchestration.model.Template;
 import com.sap.ai.sdk.orchestration.model.TemplateRef;
-import com.sap.ai.sdk.orchestration.model.TemplateRefByID;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ class OrchestrationModuleConfigTest {
 
   @Test
   void testStackingInputAndOutputFilter() {
-    final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+    final var config = new OrchestrationModuleConfig(GPT_4O);
 
     final var filter =
         new AzureContentFilter()
@@ -73,7 +73,7 @@ class OrchestrationModuleConfigTest {
   @Test
   void testThrowOnEmptyFilterConfig() {
 
-    final var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O);
+    final var config = new OrchestrationModuleConfig(GPT_4O);
 
     assertThatThrownBy(() -> config.withInputFiltering(new AzureContentFilter()))
         .isInstanceOf(IllegalArgumentException.class)
@@ -90,8 +90,7 @@ class OrchestrationModuleConfigTest {
             .withEntities(DPIEntities.ADDRESS)
             .withMaskGroundingInput(true)
             .withAllowList(List.of("Alice"));
-    var config =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withMaskingConfig(maskingConfig);
+    var config = new OrchestrationModuleConfig(GPT_4O).withMaskingConfig(maskingConfig);
 
     assertThat(config.getMaskingConfig()).isNotNull();
     assertThat(((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders())
@@ -118,7 +117,7 @@ class OrchestrationModuleConfigTest {
         DpiMasking.anonymization()
             .withRegex("\\d{3}-\\d{2}-\\d{4}", "***-**-****")
             .withRegex("\\d{2}-\\d{2}-\\d{5}", "**-**-*****");
-    var config = new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withMaskingConfig(masking);
+    var config = new OrchestrationModuleConfig(GPT_4O).withMaskingConfig(masking);
     assertThat(config.getMaskingConfig()).isNotNull();
     assertThat(((MaskingModuleConfigProviders) config.getMaskingConfig()).getProviders())
         .hasSize(1);
@@ -208,8 +207,7 @@ class OrchestrationModuleConfigTest {
         TranslationConfig.translateOutputTo("de-DE").withSourceLanguage("en-US");
 
     final var config =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(GPT_4O)
+        new OrchestrationModuleConfig(GPT_4O)
             .withInputTranslationConfig(inputTranslation)
             .withOutputTranslationConfig(outputTranslation);
 
@@ -272,7 +270,7 @@ class OrchestrationModuleConfigTest {
     Map<String, Object> params = Map.of("foo", "bar");
     String version = "2024-05-13";
     OrchestrationAiModel aiModel = GPT_4O.withParams(params).withVersion(version);
-    var config = new OrchestrationModuleConfig().withLlmConfig(aiModel);
+    var config = new OrchestrationModuleConfig(aiModel);
 
     assertThat(config.getLlmConfig()).isNotNull();
     assertThat(config.getLlmConfig().getName()).isEqualTo(GPT_4O.getName());
@@ -288,8 +286,7 @@ class OrchestrationModuleConfigTest {
   @Test
   void testGroundingConfig() {
     var groundingConfig = Grounding.create();
-    var config =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGrounding(groundingConfig);
+    var config = new OrchestrationModuleConfig(GPT_4O).withGrounding(groundingConfig);
 
     assertThat(config.getGroundingConfig()).isNotNull();
     assertThat(config.getGroundingConfig().getType()).isEqualTo(DOCUMENT_GROUNDING_SERVICE);
@@ -311,8 +308,7 @@ class OrchestrationModuleConfigTest {
     var filter1 = DocumentGroundingFilter.create().dataRepositoryType(VECTOR).id("123");
     var filter2 = DocumentGroundingFilter.create().dataRepositoryType(VECTOR).id("234");
     var groundingConfig = Grounding.create().filters(filter1, filter2);
-    var config =
-        new OrchestrationModuleConfig().withLlmConfig(GPT_4O).withGrounding(groundingConfig);
+    var config = new OrchestrationModuleConfig(GPT_4O).withGrounding(groundingConfig);
 
     assertThat(config.getGroundingConfig()).isNotNull();
     var configConfig = config.getGroundingConfig().getConfig();
@@ -323,23 +319,21 @@ class OrchestrationModuleConfigTest {
 
   @Test
   void testGroundingPrompt() {
-    var prompt = Grounding.create().createGroundingPrompt("Hello, World!");
-    assertThat(prompt.getMessages()).hasSize(1);
-    var message = prompt.getMessages().get(0);
-    assertThat(((TextItem) message.content().items().get(0)).text())
-        .isEqualTo(
-            "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}");
+    var prompt = Grounding.createGroundingPrompt("Hello, World!");
+    assertThat(prompt.getChatMessages())
+        .containsExactly(
+            Message.user(
+                    "{{?userMessage}} Use the following information as additional context: {{?groundingContext}}")
+                .createChatMessage());
+    assertThat(prompt.getInputParameters()).containsEntry("userMessage", "Hello, World!");
   }
 
   @Test
   void testResponseFormatSchema() {
     var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
-    var config =
-        new OrchestrationModuleConfig()
-            .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
+    var template = PromptTemplate.create("Hello").withJsonSchemaResponse(schema);
     assertThat(
-            ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
+            ((ResponseFormatJsonSchema) ((Template) template.toLowLevel()).getResponseFormat())
                 .getJsonSchema()
                 .getSchema())
         .isEqualTo(schema.getSchemaMap());
@@ -347,32 +341,27 @@ class OrchestrationModuleConfigTest {
 
   @Test
   void testResponseFormatObject() {
-    var config =
-        new OrchestrationModuleConfig()
-            .withTemplateConfig(TemplateConfig.create().withJsonResponse());
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
-    assertThat(
-            ((ResponseFormatJsonObject)
-                ((Template) config.getTemplateConfig()).getResponseFormat()))
+    var template = PromptTemplate.create("Hello").withJsonResponse();
+    assertThat(((Template) template.toLowLevel()).getResponseFormat())
         .isInstanceOf(ResponseFormatJsonObject.class);
   }
 
   @Test
-  void testResponseFormatOverwrittenByNewTemplateRef() {
+  void testConfigReusedWithDifferentTemplates() {
     var schema = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
-    var config =
-        new OrchestrationModuleConfig()
-            .withTemplateConfig(TemplateConfig.create().withJsonSchemaResponse(schema));
-    assertThat(((Template) config.getTemplateConfig())).isNotNull();
+    var config = new OrchestrationModuleConfig(GPT_4O);
+    var template = PromptTemplate.create("Hello").withJsonSchemaResponse(schema);
     assertThat(
-            ((ResponseFormatJsonSchema) ((Template) config.getTemplateConfig()).getResponseFormat())
+            ((ResponseFormatJsonSchema) ((Template) template.toLowLevel()).getResponseFormat())
                 .getJsonSchema()
                 .getSchema())
         .isEqualTo(schema.getSchemaMap());
 
-    config =
-        config.withTemplateConfig(
-            TemplateRef.create().templateRef(TemplateRefByID.create().id("123")));
-    assertThat(config.getTemplateConfig()).isInstanceOf(TemplateRef.class);
+    var reference = PromptTemplate.reference().byId("123").andInputParameters(Map.of());
+    var request = OrchestrationClient.toCompletionPostRequest(reference, config);
+    var modules = (OrchestrationConfigModules.InnerModuleConfigs) request.getConfig().getModules();
+    assertThat(modules.value().getPromptTemplating().getPrompt()).isInstanceOf(TemplateRef.class);
+    assertThat(((Template) template.toLowLevel()).getResponseFormat())
+        .isInstanceOf(ResponseFormatJsonSchema.class);
   }
 }

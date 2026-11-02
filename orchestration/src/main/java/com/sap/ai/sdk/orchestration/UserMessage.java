@@ -23,6 +23,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -31,11 +32,12 @@ import lombok.experimental.Tolerate;
 import lombok.extern.slf4j.Slf4j;
 
 /** Represents a chat message as 'user' to the orchestration service. */
+@EqualsAndHashCode(callSuper = true)
 @Slf4j
 @Value
 @Accessors(fluent = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class UserMessage implements Message {
+public class UserMessage extends Message {
   private static final String PDF_DATA_URI_PREFIX = "data:application/pdf;base64,";
 
   /** The role of the assistant. */

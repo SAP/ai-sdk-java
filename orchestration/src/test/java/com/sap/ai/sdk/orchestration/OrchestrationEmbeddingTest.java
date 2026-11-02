@@ -117,7 +117,7 @@ class OrchestrationEmbeddingTest {
             .forInputs(List.of("Hi SAP Orchestration Service", "I am John Doe"))
             .withMasking(masking);
 
-    final var response = client.embed(request);
+    final var response = client.embeddings().request(request).execute();
 
     assertThat(response.getEmbeddingVectors())
         .isNotNull()
@@ -162,6 +162,37 @@ class OrchestrationEmbeddingTest {
       verify(
           postRequestedFor(urlEqualTo("/v2/embeddings")).withRequestBody(equalToJson(requestJson)));
     }
+  }
+
+  @Test
+  @SneakyThrows
+  void testLowLevelEmbeddingRequest() {
+    stubFor(
+        post(urlPathEqualTo("/v2/embeddings"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("embeddingResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+    final var request =
+        OrchestrationEmbeddingRequest.forModel(TEXT_EMBEDDING_3_SMALL)
+            .forInputs("Hello World")
+            .asQuery()
+            .createEmbeddingsPostRequest();
+
+    final var response =
+        client
+            .withHeader("X-Custom", "embedding")
+            .embeddings()
+            .lowLevel()
+            .request(request)
+            .execute();
+
+    assertThat(response.getRequestId()).isEqualTo("62935941-7c2d-4c16-8a35-0b9dce7c8c9e");
+    assertThat(response.getFinalResult().getData()).hasSize(2);
+    verify(
+        postRequestedFor(urlEqualTo("/v2/embeddings"))
+            .withHeader("X-Custom", equalTo("embedding"))
+            .withRequestBody(equalToJson(JACKSON.writeValueAsString(request))));
   }
 
   @Test

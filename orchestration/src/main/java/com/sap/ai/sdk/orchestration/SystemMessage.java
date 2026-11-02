@@ -13,6 +13,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -21,10 +22,11 @@ import lombok.experimental.Tolerate;
 import lombok.val;
 
 /** Represents a chat message as 'system' to the orchestration service. */
+@EqualsAndHashCode(callSuper = true)
 @Value
 @Accessors(fluent = true)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-public class SystemMessage implements Message {
+public class SystemMessage extends Message {
 
   /** The role of the assistant. */
   @Nonnull String role = "system";

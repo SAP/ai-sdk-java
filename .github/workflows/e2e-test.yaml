@@ -2,8 +2,8 @@ name: "End-to-end Tests"
 on:
   workflow_dispatch:
   schedule:
-    - cron: 15 1 * * MON-FRI # main, runs one hour before v2
-    - cron: 15 2 * * MON-FRI # v2
+    - cron: 15 1 * * MON-FRI # v1, runs one hour before main
+    - cron: 15 2 * * MON-FRI # main
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        branch: [ main, v2 ]
+        branch: [ v1, main ]
         environment: [ canary, production ]
         exclude:
           - environment: production
@@ -31,9 +31,9 @@ jobs:
         id: filter
         run: |
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            if [ "${{ matrix.branch }}" = "main" ] && [ "${{ github.event.schedule }}" = "15 1 * * MON-FRI" ]; then
+            if [ "${{ matrix.branch }}" = "v1" ] && [ "${{ github.event.schedule }}" = "15 1 * * MON-FRI" ]; then
               echo "run=true" >> $GITHUB_OUTPUT
-            elif [ "${{ matrix.branch }}" = "v2" ] && [ "${{ github.event.schedule }}" = "15 2 * * MON-FRI" ]; then
+            elif [ "${{ matrix.branch }}" = "main" ] && [ "${{ github.event.schedule }}" = "15 2 * * MON-FRI" ]; then
               echo "run=true" >> $GITHUB_OUTPUT
             else
               echo "run=false" >> $GITHUB_OUTPUT

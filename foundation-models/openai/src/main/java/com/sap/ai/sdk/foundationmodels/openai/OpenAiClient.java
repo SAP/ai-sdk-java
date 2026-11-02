@@ -8,7 +8,6 @@ import static com.sap.ai.sdk.foundationmodels.openai.OpenAiUtils.getOpenAiObject
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.common.ClientResponseHandler;
@@ -20,12 +19,6 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompleti
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionResponse;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreate200Response;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.EmbeddingsCreateRequest;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionOutput;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionParameters;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatSystemMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatMessage.OpenAiChatUserMessage;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingOutput;
-import com.sap.ai.sdk.foundationmodels.openai.model.OpenAiEmbeddingParameters;
 import com.sap.ai.sdk.foundationmodels.openai.realtime.OpenAiRealtimeClient;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
@@ -73,8 +66,12 @@ public final class OpenAiClient {
       throws DeploymentResolutionException {
     final var destination = new AiCoreService().getInferenceDestination().forModel(foundationModel);
 
-    final var client = new OpenAiClient(destination);
-    return client.withApiVersion(DEFAULT_API_VERSION);
+    final var newDestination =
+        DefaultHttpDestination.fromDestination(destination)
+            // set the API version as URL query parameter
+            .property("URL.queries.api-version", DEFAULT_API_VERSION)
+            .build();
+    return new OpenAiClient(newDestination);
   }
 
   /**
@@ -82,28 +79,10 @@ public final class OpenAiClient {
    *
    * @return created client.
    */
-  @Beta
   @Nonnull
   public static OpenAiRealtimeClient realtimeClient() {
     final var withResolvedDestination = OpenAiClient.forModel(OpenAiModel.GPT_REALTIME);
     return new OpenAiRealtimeClient(withResolvedDestination.destination);
-  }
-
-  /**
-   * Create a new OpenAI client targeting the specified API version.
-   *
-   * @param apiVersion the API version to target.
-   * @return a new client.
-   */
-  @Beta
-  @Nonnull
-  public OpenAiClient withApiVersion(@Nonnull final String apiVersion) {
-    final var newDestination =
-        DefaultHttpDestination.fromDestination(this.destination)
-            // set the API version as URL query parameter
-            .property("URL.queries.api-version", apiVersion)
-            .build();
-    return new OpenAiClient(newDestination);
   }
 
   /**
@@ -125,13 +104,17 @@ public final class OpenAiClient {
    */
   @Nonnull
   public static OpenAiClient withCustomDestination(@Nonnull final Destination destination) {
-    final OpenAiClient client = new OpenAiClient(destination);
 
     if (destination.get("URL.queries.api-version").isDefined()) {
-      return client;
+      return new OpenAiClient(destination);
     }
 
-    return client.withApiVersion(DEFAULT_API_VERSION);
+    final var newDestination =
+        DefaultHttpDestination.fromDestination(destination)
+            // set the API version as URL query parameter
+            .property("URL.queries.api-version", DEFAULT_API_VERSION)
+            .build();
+    return new OpenAiClient(newDestination);
   }
 
   /**
@@ -186,26 +169,6 @@ public final class OpenAiClient {
   }
 
   /**
-   * Generate a completion for the given string prompt as user.
-   *
-   * @param prompt a text message.
-   * @return the completion output.
-   * @throws OpenAiClientException if the request fails.
-   * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
-   */
-  @Nonnull
-  @Deprecated
-  public OpenAiChatCompletionOutput chatCompletion(@Nonnull final String prompt)
-      throws OpenAiClientException {
-    final OpenAiChatCompletionParameters parameters = new OpenAiChatCompletionParameters();
-    if (systemPrompt != null) {
-      parameters.addMessages(new OpenAiChatSystemMessage().setContent(systemPrompt));
-    }
-    parameters.addMessages(new OpenAiChatUserMessage().addText(prompt));
-    return chatCompletion(parameters);
-  }
-
-  /**
    * Generate a completion for the given conversation and request parameters.
    *
    * @param request the completion request.
@@ -234,23 +197,6 @@ public final class OpenAiClient {
   public CreateChatCompletionResponse chatCompletion(
       @Nonnull final CreateChatCompletionRequest request) throws OpenAiClientException {
     return execute("/chat/completions", request, CreateChatCompletionResponse.class);
-  }
-
-  /**
-   * Generate a completion for the given conversation and request parameters.
-   *
-   * @param parameters the completion request.
-   * @return the completion output.
-   * @throws OpenAiClientException if the request fails.
-   * @deprecated Use {@link #chatCompletion(OpenAiChatCompletionRequest)} instead.
-   */
-  @Nonnull
-  @Deprecated
-  @SuppressWarnings("PMD.PublicApiExposesModelType")
-  public OpenAiChatCompletionOutput chatCompletion(
-      @Nonnull final OpenAiChatCompletionParameters parameters) throws OpenAiClientException {
-    warnIfUnsupportedUsage();
-    return execute("/chat/completions", parameters, OpenAiChatCompletionOutput.class);
   }
 
   /**
@@ -355,49 +301,6 @@ public final class OpenAiClient {
     return executeStream("/chat/completions", request, OpenAiChatCompletionDelta.class);
   }
 
-  /**
-   * Stream a completion for the given conversation and request parameters.
-   *
-   * <p>Returns a <b>lazily</b> populated stream of delta objects. To simply stream the text chunks
-   * use {@link #streamChatCompletion(String)}
-   *
-   * <p>The stream should be consumed using a try-with-resources block to ensure that the underlying
-   * HTTP connection is closed.
-   *
-   * <p>Example:
-   *
-   * <pre>{@code
-   * try (var stream = client.streamChatCompletionDeltas(request)) {
-   *       stream
-   *           .peek(delta -> System.out.println(delta.getUsage()))
-   *           .map(com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta::getDeltaContent)
-   *           .forEach(System.out::println);
-   * }
-   * }</pre>
-   *
-   * <p>Please keep in mind that using a terminal stream operation like {@link Stream#forEach} will
-   * block until all chunks are consumed. Also, for obvious reasons, invoking {@link
-   * Stream#parallel()} on this stream is not supported.
-   *
-   * @param parameters the prompt, including a list of messages.
-   * @return a stream of message deltas.
-   * @throws OpenAiClientException if the request fails or if the finish reason is content_filter.
-   * @deprecated Use {@link #streamChatCompletionDeltas(OpenAiChatCompletionRequest)} instead.
-   */
-  @Nonnull
-  @Deprecated
-  @SuppressWarnings("PMD.PublicApiExposesModelType")
-  public Stream<com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta>
-      streamChatCompletionDeltas(@Nonnull final OpenAiChatCompletionParameters parameters)
-          throws OpenAiClientException {
-    warnIfUnsupportedUsage();
-    parameters.enableStreaming();
-    return executeStream(
-        "/chat/completions",
-        parameters,
-        com.sap.ai.sdk.foundationmodels.openai.model.OpenAiChatCompletionDelta.class);
-  }
-
   private void warnIfUnsupportedUsage() {
     if (systemPrompt != null) {
       log.warn(
@@ -435,22 +338,6 @@ public final class OpenAiClient {
   public EmbeddingsCreate200Response embedding(@Nonnull final EmbeddingsCreateRequest request)
       throws OpenAiClientException {
     return execute("/embeddings", request, EmbeddingsCreate200Response.class);
-  }
-
-  /**
-   * Get a vector representation of a given input that can be easily consumed by machine learning
-   * models and algorithms.
-   *
-   * @param parameters the input text.
-   * @return the embedding output.
-   * @throws OpenAiClientException if the request fails.
-   */
-  @Nonnull
-  @Deprecated
-  @SuppressWarnings("PMD.PublicApiExposesModelType")
-  public OpenAiEmbeddingOutput embedding(@Nonnull final OpenAiEmbeddingParameters parameters)
-      throws OpenAiClientException {
-    return execute("/embeddings", parameters, OpenAiEmbeddingOutput.class);
   }
 
   @Nonnull

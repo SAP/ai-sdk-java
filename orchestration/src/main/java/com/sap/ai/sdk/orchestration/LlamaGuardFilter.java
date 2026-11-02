@@ -33,20 +33,20 @@ import lombok.experimental.Accessors;
  */
 @Accessors(fluent = true)
 @Setter
-public class LlamaGuardFilter implements ContentFilter {
+public class LlamaGuardFilter extends ContentFilter {
 
   @SuppressWarnings("PMD.LombokGetterSetterExposesModelType")
   private LlamaGuard38b config = LlamaGuard38b.create();
 
   @Nonnull
   @Override
-  public LlamaGuard38bFilterConfig createInputFilterConfig() {
+  LlamaGuard38bFilterConfig createInputFilterConfig() {
     return LlamaGuard38bFilterConfig.create().type(LLAMA_GUARD_3_8B).config(config);
   }
 
   @Nonnull
   @Override
-  public LlamaGuard38bFilterConfig createOutputFilterConfig() {
+  LlamaGuard38bFilterConfig createOutputFilterConfig() {
     return createInputFilterConfig();
   }
 }

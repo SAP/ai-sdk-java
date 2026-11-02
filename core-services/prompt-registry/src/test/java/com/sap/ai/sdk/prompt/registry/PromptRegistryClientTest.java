@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.prompt.registry.client.PromptTemplatesApi;
 import com.sap.ai.sdk.prompt.registry.model.MultiChatTemplate;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateGetResponse;
 import com.sap.ai.sdk.prompt.registry.model.PromptTemplateSubstitutionRequest;
@@ -18,7 +19,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.util.Map;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -27,13 +28,14 @@ class PromptRegistryClientTest {
   private static final WireMockExtension WM =
       WireMockExtension.newInstance().options(wireMockConfig().dynamicPort()).build();
 
-  private static PromptClient client;
+  private static PromptTemplatesApi client;
 
-  @BeforeEach
-  void setup() {
+  @BeforeAll
+  static void setup() {
     final HttpDestination destination = DefaultHttpDestination.builder(WM.baseUrl()).build();
     final AiCoreService service = new AiCoreService().withBaseDestination(destination);
-    client = new PromptClient(service);
+    PromptRegistryClient promptRegistryClient = new PromptRegistryClient(service);
+    client = promptRegistryClient.prompt();
   }
 
   @Test

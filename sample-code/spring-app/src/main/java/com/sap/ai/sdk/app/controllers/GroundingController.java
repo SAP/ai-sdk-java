@@ -17,7 +17,6 @@ import com.sap.ai.sdk.grounding.model.DataRepositoryType;
 import com.sap.ai.sdk.grounding.model.DocumentCreateRequest;
 import com.sap.ai.sdk.grounding.model.DocumentWithoutChunks;
 import com.sap.ai.sdk.grounding.model.EmbeddingConfig;
-import com.sap.ai.sdk.grounding.model.FilterMatchModeEnum;
 import com.sap.ai.sdk.grounding.model.FiltersInner;
 import com.sap.ai.sdk.grounding.model.GetPipeline;
 import com.sap.ai.sdk.grounding.model.MSSharePointPipelineGetResponse;
@@ -175,11 +174,7 @@ class GroundingController {
     final var chunkMeta = VectorKeyValueListPair.create().key("context").value("day-of-week");
     final var chunk =
         TextOnlyBaseChunkCreate.create().content(documentContent).addMetadataItem(chunkMeta);
-    final var docMeta =
-        VectorDocumentKeyValueListPair.create()
-            .key("purpose")
-            .value("testing")
-            .matchMode(FilterMatchModeEnum.ANY);
+    final var docMeta = VectorDocumentKeyValueListPair.create().key("purpose").value("testing");
     final var doc = BaseDocument.create().chunks(chunk).addMetadataItem(docMeta);
     final var request = DocumentCreateRequest.create().documents(doc);
     final var response = CLIENT_VECTOR.createDocuments(RESOURCE_GROUP, collectionId, request);

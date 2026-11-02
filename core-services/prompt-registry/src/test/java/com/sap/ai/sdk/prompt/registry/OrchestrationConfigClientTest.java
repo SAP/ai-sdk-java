@@ -5,10 +5,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import com.sap.ai.sdk.core.AiCoreService;
+import com.sap.ai.sdk.prompt.registry.client.OrchestrationConfigsApi;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.util.UUID;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
@@ -17,13 +18,14 @@ public class OrchestrationConfigClientTest {
   private static final WireMockExtension WM =
       WireMockExtension.newInstance().options(wireMockConfig().dynamicPort()).build();
 
-  private static OrchestrationConfigClient client;
+  private static OrchestrationConfigsApi client;
 
-  @BeforeEach
-  void setup() {
+  @BeforeAll
+  static void setup() {
     final HttpDestination destination = DefaultHttpDestination.builder(WM.baseUrl()).build();
     final AiCoreService service = new AiCoreService().withBaseDestination(destination);
-    client = new OrchestrationConfigClient(service);
+    final var promptRegistryClient = new PromptRegistryClient(service);
+    client = promptRegistryClient.orchestrationConfig();
   }
 
   @Test

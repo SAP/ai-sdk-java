@@ -86,17 +86,41 @@ public class SpringAiOpenAiService {
    * href="https://docs.spring.io/spring-ai/reference/api/tools.html#_methods_as_tools">Spring AI
    * Tool Method Declarative Specification</a>
    *
-   * @param internalToolExecutionEnabled whether the internal tool execution is enabled.
+   * @param callTools whether the internal tool execution is enabled.
    * @return the assistant response object.
    */
   @Nonnull
-  public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
-    val options = new DefaultToolCallingChatOptions();
-    options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
-    options.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
-
+  public ChatResponse toolCalling(final boolean callTools) {
+    val options =
+        DefaultToolCallingChatOptions.builder()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
+            .build();
     val prompt = new Prompt("What is the temperature (°C) in Potsdam and in Toulouse?", options);
+    if (callTools) {
+      return Objects.requireNonNull(
+          ChatClient.builder(chatClient).build().prompt(prompt).call().chatResponse(),
+          "Chat response is null");
+    }
     return chatClient.call(prompt);
+  }
+
+  /**
+   * Demonstrate {@code @Tool(returnDirect=true)}: the tool result is returned straight to the
+   * caller without a second LLM call. Spring AI's {@link ChatClient} handles this automatically via
+   * its {@code ToolCallingAdvisor} with no custom loop needed.
+   *
+   * @return the tool result wrapped as a chat response, containing the raw tool output.
+   */
+  @Nonnull
+  public ChatResponse toolCallingReturnDirect() {
+    val options =
+        DefaultToolCallingChatOptions.builder()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethodReturnDirect()))
+            .build();
+    val prompt = new Prompt("What is the weather in Berlin?", options);
+    return Objects.requireNonNull(
+        ChatClient.builder(chatClient).build().prompt(prompt).call().chatResponse(),
+        "Chat response is null");
   }
 
   /**

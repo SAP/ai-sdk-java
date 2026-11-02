@@ -33,7 +33,7 @@ import lombok.experimental.Accessors;
 @Setter
 @NoArgsConstructor
 @Accessors(fluent = true)
-public class AzureContentFilter implements ContentFilter {
+public class AzureContentFilter extends ContentFilter {
 
   /** The filter category for hate content. */
   @Nullable AzureFilterThreshold hate;
@@ -66,7 +66,7 @@ public class AzureContentFilter implements ContentFilter {
    */
   @Override
   @Nonnull
-  public AzureContentSafetyInputFilterConfig createInputFilterConfig() {
+  AzureContentSafetyInputFilterConfig createInputFilterConfig() {
     if (hate == null && selfHarm == null && sexual == null && violence == null) {
       throw new IllegalArgumentException("At least one filter category must be set");
     }
@@ -91,7 +91,7 @@ public class AzureContentFilter implements ContentFilter {
    */
   @Override
   @Nonnull
-  public AzureContentSafetyOutputFilterConfig createOutputFilterConfig() {
+  AzureContentSafetyOutputFilterConfig createOutputFilterConfig() {
     if (hate == null
         && selfHarm == null
         && sexual == null

@@ -12,8 +12,8 @@ import com.github.victools.jsonschema.generator.OptionPreset;
 import com.github.victools.jsonschema.generator.SchemaGenerator;
 import com.github.victools.jsonschema.generator.SchemaGeneratorConfigBuilder;
 import com.github.victools.jsonschema.generator.SchemaVersion;
-import com.github.victools.jsonschema.module.jackson.JacksonModule;
 import com.github.victools.jsonschema.module.jackson.JacksonOption;
+import com.github.victools.jsonschema.module.jackson.JacksonSchemaModule;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ChatCompletionTool;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import java.util.ArrayList;
@@ -86,7 +86,13 @@ public class OpenAiTool {
         name -> {
           final Function<String, Object> exec =
               s -> function.apply(deserializeArgument(inputClass, s));
-          final var schema = GENERATOR.generateSchema(inputClass);
+          final var jackson3Schema = GENERATOR.generateSchema(inputClass);
+          final ObjectNode schema;
+          try {
+            schema = (ObjectNode) JACKSON.readTree(jackson3Schema.toString());
+          } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Failed to parse generated JSON schema", e);
+          }
           return new OpenAiTool(name, exec, schema, null, null);
         };
   }
@@ -145,7 +151,7 @@ public class OpenAiTool {
 
   private static SchemaGenerator createSchemaGenerator() {
     final var module =
-        new JacksonModule(
+        new JacksonSchemaModule(
             JacksonOption.RESPECT_JSONPROPERTY_REQUIRED, JacksonOption.RESPECT_JSONPROPERTY_ORDER);
     return new SchemaGenerator(
         new SchemaGeneratorConfigBuilder(SchemaVersion.DRAFT_2020_12, OptionPreset.PLAIN_JSON)

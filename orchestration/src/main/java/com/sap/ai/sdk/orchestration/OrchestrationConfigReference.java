@@ -21,8 +21,8 @@ public class OrchestrationConfigReference {
   String scenario;
   String name;
   String version;
-
-  OrchestrationPrompt prompt = new OrchestrationPrompt(Map.of());
+  Map<String, String> inputParameters;
+  List<Message> messageHistory;
 
   /**
    * Set the chat history.
@@ -33,35 +33,27 @@ public class OrchestrationConfigReference {
   @Nonnull
   public OrchestrationConfigReference withMessageHistory(
       @Nonnull final List<Message> messagesHistory) {
-    if (prompt.getMessagesHistory().equals(messagesHistory)) {
+    if (this.messageHistory.equals(messagesHistory)) {
       return this;
     }
-    final var reference = new OrchestrationConfigReference(id, scenario, name, version);
-    reference
-        .prompt
-        .templateParameters(this.prompt.getTemplateParameters())
-        .messageHistory(messagesHistory);
-    return reference;
+    return new OrchestrationConfigReference(
+        id, scenario, name, version, inputParameters, messagesHistory);
   }
 
   /**
    * Set the template parameters.
    *
-   * @param templateParameters the template parameters to set.
+   * @param inputParameters the template parameters to set.
    * @return a new instance of {@link OrchestrationConfigReference} with the specified chat history.
    */
   @Nonnull
-  public OrchestrationConfigReference withTemplateParameters(
-      @Nonnull final Map<String, String> templateParameters) {
-    if (prompt.getTemplateParameters().equals(templateParameters)) {
+  public OrchestrationConfigReference withInputParameters(
+      @Nonnull final Map<String, String> inputParameters) {
+    if (this.inputParameters.equals(inputParameters)) {
       return this;
     }
-    final var reference = new OrchestrationConfigReference(id, scenario, name, version);
-    reference
-        .prompt
-        .templateParameters(templateParameters)
-        .messageHistory(this.prompt.getMessagesHistory());
-    return reference;
+    return new OrchestrationConfigReference(
+        id, scenario, name, version, inputParameters, messageHistory);
   }
 
   /**
@@ -72,7 +64,7 @@ public class OrchestrationConfigReference {
    */
   @Nonnull
   public static OrchestrationConfigReference fromId(@Nonnull final String id) {
-    return new OrchestrationConfigReference(id, null, null, null);
+    return new OrchestrationConfigReference(id, null, null, null, Map.of(), List.of());
   }
 
   /**
@@ -83,7 +75,11 @@ public class OrchestrationConfigReference {
    */
   @Nonnull
   public static Builder fromScenario(@Nonnull final String scenario) {
-    return (name) -> (version) -> new OrchestrationConfigReference(null, scenario, name, version);
+    return name ->
+        version ->
+            inputParameters ->
+                new OrchestrationConfigReference(
+                    null, scenario, name, version, inputParameters, List.of());
   }
 
   /**
@@ -111,12 +107,26 @@ public class OrchestrationConfigReference {
   public interface Builder1 {
 
     /**
-     * Build a reference from a scenario, name, and version.
+     * Build a config reference from a scenario, name, and version.
      *
      * @param version the version of the reference.
      * @return a reference object with the specified scenario, name, and version.
      */
     @Nonnull
-    OrchestrationConfigReference version(@Nonnull final String version);
+    Builder2 version(@Nonnull final String version);
+  }
+
+  /** Intermediate object to build a config reference with the given scenario, name, and version. */
+  @FunctionalInterface
+  public interface Builder2 {
+    /**
+     * Build a config reference with the given scenario, name, and version.
+     *
+     * @param inputParameters the placeholder values for the config.
+     * @return a config reference with the given scenario, name, and version.
+     */
+    @Nonnull
+    OrchestrationConfigReference andInputParameters(
+        @Nonnull final Map<String, String> inputParameters);
   }
 }

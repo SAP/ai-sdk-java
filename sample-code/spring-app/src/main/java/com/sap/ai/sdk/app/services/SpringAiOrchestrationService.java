@@ -45,8 +45,7 @@ import reactor.core.publisher.Flux;
 @Service
 public class SpringAiOrchestrationService {
   private final ChatModel client = new OrchestrationChatModel();
-  private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GPT_41);
+  private final OrchestrationModuleConfig config = new OrchestrationModuleConfig(GPT_41);
   private final OrchestrationChatOptions defaultOptions = new OrchestrationChatOptions(config);
 
   @Nullable
@@ -181,12 +180,40 @@ public class SpringAiOrchestrationService {
    */
   @Nonnull
   public ChatResponse toolCalling(final boolean internalToolExecutionEnabled) {
-    val options = new OrchestrationChatOptions(config);
-    options.setToolCallbacks(List.of(ToolCallbacks.from(new WeatherMethod())));
-    options.setInternalToolExecutionEnabled(internalToolExecutionEnabled);
+    val options =
+        new OrchestrationChatOptions(config)
+            .mutate()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethod()))
+            .build();
 
     val prompt = new Prompt("What is the weather in Potsdam and in Toulouse?", options);
+    if (internalToolExecutionEnabled) {
+      return Objects.requireNonNull(
+          ChatClient.builder(client).build().prompt(prompt).call().chatResponse(),
+          "Chat response is null");
+    }
     return client.call(prompt);
+  }
+
+  /**
+   * Demonstrate {@code @Tool(returnDirect=true)}: the tool result is returned straight to the
+   * caller without a second LLM call. Spring AI's {@link ChatClient} handles this automatically via
+   * its {@code ToolCallingAdvisor} with no custom loop needed.
+   *
+   * @return the tool result wrapped as a chat response, containing the raw tool output.
+   */
+  @Nonnull
+  public ChatResponse toolCallingReturnDirect() {
+    val options =
+        new OrchestrationChatOptions(config)
+            .mutate()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethodReturnDirect()))
+            .build();
+
+    val prompt = new Prompt("What is the weather in Berlin?", options);
+    return Objects.requireNonNull(
+        ChatClient.builder(client).build().prompt(prompt).call().chatResponse(),
+        "Chat response is null");
   }
 
   /**
@@ -207,8 +234,11 @@ public class SpringAiOrchestrationService {
           "No MCP clients were found. Ensure that you configured the clients correctly in the application.yaml file.");
     }
     // GPT-4o-mini doesn't work too well with the file system tool, so we use 4o here
-    val options = new OrchestrationChatOptions(config.withLlmConfig(GPT_4O));
-    options.setToolCallbacks(List.of(toolCallbackProvider.getToolCallbacks()));
+    val options =
+        new OrchestrationChatOptions(config.withLlmConfig(GPT_4O))
+            .mutate()
+            .toolCallbacks(toolCallbackProvider.getToolCallbacks())
+            .build();
 
     val sys =
         new SystemMessage(
@@ -258,11 +288,13 @@ public class SpringAiOrchestrationService {
   @Nonnull
   public ChatResponse completionWithFallback() {
     val brokenConfig =
-        new OrchestrationModuleConfig()
-            .withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
-    val workingConfig = new OrchestrationModuleConfig().withLlmConfig(GPT_41);
-    val options = new OrchestrationChatOptions(brokenConfig);
-    options.setFallbackConfigs(List.of(workingConfig));
+        new OrchestrationModuleConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+    val workingConfig = new OrchestrationModuleConfig(GPT_41);
+    val options =
+        new OrchestrationChatOptions(brokenConfig)
+            .mutate()
+            .fallbackConfigs(List.of(workingConfig))
+            .build();
     val prompt = new Prompt("Why is 'Hello World' so famous?", options);
     return client.call(prompt);
   }

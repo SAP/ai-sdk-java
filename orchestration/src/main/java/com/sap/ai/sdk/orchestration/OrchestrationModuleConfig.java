@@ -9,7 +9,6 @@ import com.sap.ai.sdk.orchestration.model.LLMModelDetails;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.MaskingModuleConfigProviders;
 import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
-import com.sap.ai.sdk.orchestration.model.PromptTemplatingModuleConfigPrompt;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationInput;
 import com.sap.ai.sdk.orchestration.model.SAPDocumentTranslationOutput;
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ import javax.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 import lombok.With;
 import lombok.experimental.Tolerate;
@@ -49,7 +47,6 @@ import lombok.val;
 @Value
 @With
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(force = true)
 public class OrchestrationModuleConfig {
   /**
    * The configured language model settings. This configuration is required when executing requests.
@@ -59,19 +56,8 @@ public class OrchestrationModuleConfig {
    * AI Core: Orchestration - Model Configuration</a>
    */
   @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
-  @Nullable
+  @Nonnull
   LLMModelDetails llmConfig;
-
-  /**
-   * A template to be populated with input parameters. Upon request execution, this template will be
-   * enhanced with any messages and parameter values from {@link OrchestrationPrompt}.
-   *
-   * <p><a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP AI
-   * Core: Orchestration - Templating</a>
-   */
-  @SuppressWarnings({"PMD.LombokGetterSetterExposesModelType", "PMD.LombokWithExposesModelType"})
-  @Nullable
-  PromptTemplatingModuleConfigPrompt templateConfig;
 
   /**
    * A masking configuration to pseudonymous or anonymize sensitive data in the input.
@@ -147,6 +133,22 @@ public class OrchestrationModuleConfig {
   @Getter(AccessLevel.PACKAGE)
   @Nullable
   GlobalStreamOptions globalStreamOptions;
+
+  /**
+   * Creates a new OrchestrationModuleConfig with only the AI Model as parameter.
+   *
+   * @param aiModel name of the AI Model
+   */
+  public OrchestrationModuleConfig(@Nonnull final OrchestrationAiModel aiModel) {
+    this.llmConfig = aiModel.createConfig();
+    this.filteringConfig = null;
+    this.maskingConfig = null;
+    this.inputTranslationConfig = null;
+    this.outputFilteringStreamOptions = null;
+    this.globalStreamOptions = null;
+    this.outputTranslationConfig = null;
+    this.groundingConfig = null;
+  }
 
   /**
    * Creates a new configuration with the given LLM configuration.
@@ -298,7 +300,6 @@ public class OrchestrationModuleConfig {
     }
     return new OrchestrationModuleConfig(
         this.llmConfig,
-        this.templateConfig,
         this.maskingConfig,
         this.filteringConfig,
         this.groundingConfig,
@@ -321,23 +322,6 @@ public class OrchestrationModuleConfig {
   public OrchestrationModuleConfig withGrounding(
       @Nonnull final GroundingProvider groundingProvider) {
     return this.withGroundingConfig(groundingProvider.createConfig());
-  }
-
-  /**
-   * Creates a new configuration with the given template configuration as {@link TemplateConfig}.
-   *
-   * <p><a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP AI
-   * Core: Orchestration - Templating</a>
-   *
-   * @param templateConfig the template configuration to use.
-   * @return a new configuration with the given template configuration.
-   * @since 1.4.0
-   */
-  @Tolerate
-  @Nonnull
-  public OrchestrationModuleConfig withTemplateConfig(
-      @Nonnull final TemplateConfig templateConfig) {
-    return this.withTemplateConfig(templateConfig.toLowLevel());
   }
 
   /**
@@ -364,5 +348,23 @@ public class OrchestrationModuleConfig {
   public OrchestrationModuleConfig withOutputTranslationConfig(
       @Nonnull final TranslationConfig.Output translationConfig) {
     return this.withOutputTranslationConfig(translationConfig.createSAPDocumentTranslationOutput());
+  }
+
+  /**
+   * Creates a copy of this OrchestrationModuleConfig.
+   *
+   * @return a copy of this OrchestrationModuleConfig.
+   */
+  @Nonnull
+  public OrchestrationModuleConfig copy() {
+    return new OrchestrationModuleConfig(
+        this.llmConfig,
+        this.maskingConfig,
+        this.filteringConfig,
+        this.groundingConfig,
+        this.inputTranslationConfig,
+        this.outputTranslationConfig,
+        this.outputFilteringStreamOptions,
+        this.globalStreamOptions);
   }
 }

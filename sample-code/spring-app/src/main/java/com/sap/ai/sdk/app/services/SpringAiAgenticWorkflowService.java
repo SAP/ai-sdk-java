@@ -26,8 +26,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SpringAiAgenticWorkflowService {
   private final ChatModel client = new OrchestrationChatModel();
-  private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(CLAUDE_4_5_HAIKU);
+  private final OrchestrationModuleConfig config = new OrchestrationModuleConfig(CLAUDE_4_5_HAIKU);
 
   /**
    * Simple agentic workflow using chain-like structure. The agent is generating a travel itinerary
@@ -46,9 +45,11 @@ public class SpringAiAgenticWorkflowService {
     val cl = ChatClient.builder(client).defaultAdvisors(advisor).build();
 
     //    Add (mocked) tools
-    val options = new OrchestrationChatOptions(config);
-    options.setToolCallbacks(
-        List.of(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod())));
+    val options =
+        new OrchestrationChatOptions(config)
+            .mutate()
+            .toolCallbacks(ToolCallbacks.from(new WeatherMethod(), new RestaurantMethod()))
+            .build();
 
     //    Prompts for the chain workflow
     final List<String> systemPrompts =

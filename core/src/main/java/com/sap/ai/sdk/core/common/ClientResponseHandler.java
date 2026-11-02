@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.core.JacksonConfiguration.getDefaultObjectMapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import io.vavr.control.Try;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
@@ -46,12 +45,11 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   @Nonnull ObjectMapper objectMapper = getDefaultObjectMapper();
 
   /**
-   * Set the {@link ObjectMapper} to use for parsing JSON responses.
+   * Internal SDK usage only. Set the {@link ObjectMapper} to use for parsing JSON responses.
    *
    * @param jackson the {@link ObjectMapper} to use.
    * @return the current instance of {@link ClientResponseHandler} with the changed object mapper.
    */
-  @Beta
   @Nonnull
   public ClientResponseHandler<T, R, E> objectMapper(@Nonnull final ObjectMapper jackson) {
     objectMapper = jackson;
@@ -59,7 +57,8 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   }
 
   /**
-   * Processes a {@link ClassicHttpResponse} and returns some value corresponding to that response.
+   * Internal SDK usage only. Processes a {@link ClassicHttpResponse} and returns some value
+   * corresponding to that response.
    *
    * @param response the response to process.
    * @return a model class instantiated from the response.
@@ -103,7 +102,7 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   }
 
   /**
-   * Process the error response and throw an exception.
+   * For internal SDK usage only. Process the error response and throw an exception.
    *
    * @param httpResponse the response to process.
    * @throws ClientException if the response is an error (4xx/5xx).
@@ -144,7 +143,8 @@ public class ClientResponseHandler<T, R extends ClientError, E extends ClientExc
   }
 
   /**
-   * Parses the JSON content of an error response and throws a module specific exception.
+   * For internal SDK usage only. Parses the JSON content of an error response and throws a module
+   * specific exception.
    *
    * @param content the JSON content of the error response.
    * @param httpResponse the HTTP response that contains the error.

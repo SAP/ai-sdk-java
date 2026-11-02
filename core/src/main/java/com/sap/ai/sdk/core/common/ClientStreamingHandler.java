@@ -3,7 +3,6 @@ package com.sap.ai.sdk.core.common;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.annotations.Beta;
 import java.io.IOException;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -26,20 +25,19 @@ public class ClientStreamingHandler<
     extends ClientResponseHandler<D, R, E> {
 
   /**
-   * Set the {@link ObjectMapper} to use for parsing JSON responses.
+   * For internal SDK usage only. Set the {@link ObjectMapper} to use for parsing JSON responses.
    *
    * @param jackson the {@link ObjectMapper} to use.
    * @return the current instance of {@link ClientStreamingHandler} with the changed object mapper.
    */
   @Nonnull
-  @Beta
   public ClientStreamingHandler<D, R, E> objectMapper(@Nonnull final ObjectMapper jackson) {
     super.objectMapper(jackson);
     return this;
   }
 
   /**
-   * Creates a new instance of the {@link ClientStreamingHandler}.
+   * For internal SDK usage only. Creates a new instance of the {@link ClientStreamingHandler}.
    *
    * @param deltaType the type of the response.
    * @param errorType the type of the error.
@@ -53,8 +51,8 @@ public class ClientStreamingHandler<
   }
 
   /**
-   * Processes a {@link ClassicHttpResponse} and returns a {@link Stream} of deltas corresponding to
-   * that response.
+   * For internal SDK usage only. Processes a {@link ClassicHttpResponse} and returns a {@link
+   * Stream} of deltas corresponding to that response.
    *
    * @param response the response to process.
    * @return a {@link Stream} of a model class instantiated from the response.

@@ -5,6 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.exactly;
+import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
@@ -88,14 +89,6 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         exactly(1),
         postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("2024-02-01")));
 
-    Try.of(
-        () -> client.withApiVersion("fooBar").chatCompletion(new OpenAiChatCompletionRequest("")));
-    verify(exactly(1), postRequestedFor(anyUrl()).withQueryParam("api-version", equalTo("fooBar")));
-
-    assertThat(client)
-        .describedAs(
-            "withApiVersion should return a new object, the sut object should remain unchanged")
-        .isNotSameAs(client.withApiVersion("fooBar"));
     Try.of(() -> client.chatCompletion(new OpenAiChatCompletionRequest("")));
     verify(
         exactly(2),
@@ -380,7 +373,7 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         assertThat(delta2.getCustomFieldNames()).doesNotContain("prompt_filter_results");
         assertThat(delta3.getCustomFieldNames()).doesNotContain("prompt_filter_results");
         assertThat(delta4.getCustomFieldNames()).doesNotContain("prompt_filter_results");
-        var promptFilterResults = (List<?>) delta0.getCustomField("prompt_filter_results");
+        var promptFilterResults = (List<?>) delta0.toMap().get("prompt_filter_results");
         final var promptFilter0 =
             MAPPER.convertValue(promptFilterResults.get(0), PromptFilterResult.class);
         assertThat(promptFilter0).isNotNull();
@@ -399,8 +392,8 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         assertThat(choice1.getIndex()).isZero();
         assertThat(choice1.getDelta().getContent()).isEmpty();
         assertThat(choice1.getDelta().getRole()).isEqualTo(ASSISTANT);
-        assertThat(choice1.getCustomField("content_filter_results")).isNotNull();
-        assertThat(choice1.getCustomField("content_filter_results")).isEqualTo(Map.of());
+        assertThat(choice1.toMap().get("content_filter_results")).isNotNull();
+        assertThat(choice1.toMap().get("content_filter_results")).isEqualTo(Map.of());
 
         // delta2.choices
         assertThat(delta2.getChoices()).hasSize(1);
@@ -409,10 +402,10 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         assertThat(choice2.getIndex()).isZero();
         assertThat(choice2.getDelta().getContent()).isEqualTo("Sure");
         assertThat(choice2.getDelta().getRole()).isNull();
-        assertThat(choice2.getCustomField("content_filter_results")).isNotNull();
+        assertThat(choice2.toMap().get("content_filter_results")).isNotNull();
         final var contentFilter2 =
             MAPPER.convertValue(
-                choice2.getCustomField("content_filter_results"), ContentFilterPromptResults.class);
+                choice2.toMap().get("content_filter_results"), ContentFilterPromptResults.class);
         assertThat(contentFilter2).isNotNull();
         assertFilter(contentFilter2);
 
@@ -423,10 +416,10 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         assertThat(choice3.getIndex()).isZero();
         assertThat(choice3.getDelta().getContent()).isEqualTo("!");
         assertThat(choice3.getDelta().getRole()).isNull();
-        assertThat(choice3.getCustomField("content_filter_results")).isNotNull();
+        assertThat(choice3.toMap().get("content_filter_results")).isNotNull();
         var contentFilter3 =
             MAPPER.convertValue(
-                choice3.getCustomField("content_filter_results"), ContentFilterPromptResults.class);
+                choice3.toMap().get("content_filter_results"), ContentFilterPromptResults.class);
         assertThat(contentFilter3).isNotNull();
         assertFilter(contentFilter3);
 
@@ -438,7 +431,7 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
         assertThat(choice4.getIndex()).isZero();
         assertThat(choice4.getDelta().getContent()).isNull();
         assertThat(choice4.getDelta().getRole()).isNull();
-        assertThat(choice4.getCustomField("content_filter_results")).isEqualTo(Map.of());
+        assertThat(choice4.toMap().get("content_filter_results")).isEqualTo(Map.of());
       }
 
       Mockito.verify(inputStream, times(1)).close();
@@ -605,5 +598,74 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
     assertThat(toolCall.getId()).isEqualTo("call_CUYGJf2j7FRWJMHT3PN3aGxK");
     assertThat(toolCall.getName()).isEqualTo("fibonacci");
     assertThat(toolCall.getArguments()).isEqualTo("{\"N\":12}");
+  }
+
+  @Test
+  void testCustomHeaders() {
+    stubForChatCompletion();
+    final var request =
+        new OpenAiChatCompletionRequest("Hello World! Why is this phrase so famous?");
+    final var clientWithHeader = client.withHeader("Header-For-Both", "value");
+
+    final var result = clientWithHeader.withHeader("foo", "bar").chatCompletion(request);
+    assertThat(result).isNotNull();
+
+    var streamResult =
+        clientWithHeader
+            .withHeader("foot", "baz")
+            .streamChatCompletion("Hello World! Why is this phrase so famous?");
+    assertThat(streamResult).isNotNull();
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foo", equalTo("bar")));
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("Header-For-Both", equalTo("value"))
+            .withHeader("foot", equalTo("baz")));
+  }
+
+  @Test
+  @DisplayName("withHeader keeps the request's system message in the payload")
+  void testWithHeaderPreservesSystemPrompt() {
+    stubForChatCompletion();
+
+    final var request =
+        new OpenAiChatCompletionRequest(
+            OpenAiMessage.system("You are a helpful AI"),
+            OpenAiMessage.user("Hello World! Why is this phrase so famous?"));
+    client.withHeader("foo", "bar").chatCompletion(request);
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("foo", equalTo("bar"))
+            .withRequestBody(
+                matchingJsonPath("$.messages[0].role", equalTo("system"))
+                    .and(
+                        matchingJsonPath(
+                            "$.messages[0].content", equalTo("You are a helpful AI")))));
+  }
+
+  @Test
+  @DisplayName("withHeaders adds every header while keeping the request's system message")
+  void testMultipleCustomHeaders() {
+    stubForChatCompletion();
+
+    final var request =
+        new OpenAiChatCompletionRequest(
+            OpenAiMessage.system("You are a helpful AI"),
+            OpenAiMessage.user("Hello World! Why is this phrase so famous?"));
+    client.withHeaders(Map.of("foo", "bar", "baz", "qux")).chatCompletion(request);
+
+    verify(
+        postRequestedFor(anyUrl())
+            .withHeader("foo", equalTo("bar"))
+            .withHeader("baz", equalTo("qux"))
+            .withRequestBody(
+                matchingJsonPath("$.messages[0].role", equalTo("system"))
+                    .and(
+                        matchingJsonPath(
+                            "$.messages[0].content", equalTo("You are a helpful AI")))));
   }
 }

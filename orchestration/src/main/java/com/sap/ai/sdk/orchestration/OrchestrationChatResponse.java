@@ -5,6 +5,7 @@ import static lombok.AccessLevel.PACKAGE;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.sap.ai.sdk.orchestration.OrchestrationClient.ChatCompletionWithConfig;
 import com.sap.ai.sdk.orchestration.model.AssistantChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessage;
 import com.sap.ai.sdk.orchestration.model.ChatMessageContent;
@@ -152,8 +153,8 @@ public class OrchestrationChatResponse {
   /**
    * Transform a JSON response into an entity of the given type.
    *
-   * <p>This is possible on a request with a {@link OrchestrationTemplate#withJsonSchemaResponse}
-   * configured into {@link OrchestrationModuleConfig#withTemplateConfig}.
+   * <p>This is possible on a request using a {@link LocalPromptTemplate#withJsonSchemaResponse}
+   * template passed to {@link ChatCompletionWithConfig#promptTemplate(PromptTemplate)}.
    *
    * @param type the class type to deserialize the JSON content into.
    * @param <T> the type of the entity to deserialize to.
@@ -180,7 +181,7 @@ public class OrchestrationChatResponse {
           e);
     } catch (JsonProcessingException e) {
       throw new OrchestrationClientException(
-          "Failed to deserialize the JSON content. Please configure an OrchestrationTemplate with format set to JSON schema into your OrchestrationModuleConfig: "
+          "Failed to deserialize the JSON content. Please configure an LocalPromptTemplate with format set to JSON schema into your OrchestrationModuleConfig: "
               + e.getMessage()
               + "\nJSON content: "
               + getContent(),
