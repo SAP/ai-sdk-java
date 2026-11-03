@@ -244,15 +244,13 @@ public class OrchestrationService {
 
     // Turn 1
     val firstPrompt = PromptTemplate.create(firstQuestion);
-    val firstResponse =
-        chatCompWithReasoningConfig.promptTemplate(firstPrompt).execute();
+    val firstResponse = chatCompWithReasoningConfig.promptTemplate(firstPrompt).execute();
 
     // Turn 2 feeds the whole history back. getAllMessages() already carries the reasoning content
     // on the final assistant message.
     val followUpPrompt =
         PromptTemplate.create(followUp).withMessageHistory(firstResponse.getAllMessages());
-    val followUpResponse =
-        chatCompWithReasoningConfig.promptTemplate(followUpPrompt).execute();
+    val followUpResponse = chatCompWithReasoningConfig.promptTemplate(followUpPrompt).execute();
 
     return new ReasoningOutput(followUpResponse.getContent(), followUpResponse.getReasoningText());
   }
