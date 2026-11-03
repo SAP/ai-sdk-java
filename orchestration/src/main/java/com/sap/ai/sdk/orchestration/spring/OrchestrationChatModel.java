@@ -129,7 +129,10 @@ public class OrchestrationChatModel implements ChatModel {
     if (schema == null) {
       return template;
     }
-    return template.withJsonSchemaResponse(ResponseJsonSchema.fromString(schema, "response"));
+    // Spring AI's useProviderStructuredOutput() provides the schema as a bare JSON string without
+    // a name, so a fixed name is used for the orchestration response format.
+    return template.withJsonSchemaResponse(
+        ResponseJsonSchema.fromString(schema, "structured_output"));
   }
 
   @Nonnull

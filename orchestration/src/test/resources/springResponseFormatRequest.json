@@ -1,0 +1,51 @@
+{
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "model": {
+          "name": "gpt-4o",
+          "params": {},
+          "version": "latest",
+          "timeout": 600,
+          "max_retries": 2
+        },
+        "prompt": {
+          "template": [
+            {
+              "role": "user",
+              "content": "Whats 'apple' in German?"
+            }
+          ],
+          "defaults": {},
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "structured_output",
+              "schema": {
+                "$schema": "https://json-schema.org/draft/2020-12/schema",
+                "type": "object",
+                "properties": {
+                  "language": {
+                    "type": "string"
+                  },
+                  "translation": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "language",
+                  "translation"
+                ],
+                "additionalProperties": false
+              },
+              "strict": false
+            }
+          },
+          "tools": []
+        }
+      }
+    }
+  },
+  "placeholder_values": {},
+  "messages_history": []
+}
