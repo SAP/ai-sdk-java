@@ -18,13 +18,13 @@ public class AnthropicService {
       MessageCreateParams.builder().model(CLAUDE_45_HAIKU.name()).maxTokens(1000);
 
   /**
-   * Chat request to Anthropic.
+   * Send message into a new chat to Anthropic assistant.
    *
    * @param userMessage the prompt to send to the assistant.
    * @return the assistant message response.
    */
   @Nonnull
-  public Message chatCompletion(@Nonnull final String userMessage) {
+  public Message sendMessage(@Nonnull final String userMessage) {
     return AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
         .messages()
         .create(BASE_PARAMS.addUserMessage(userMessage).build());
@@ -37,7 +37,7 @@ public class AnthropicService {
    * @return the emitter that streams the assistant message response.
    */
   @Nonnull
-  public StreamResponse<RawMessageStreamEvent> streamChatCompletion(
+  public StreamResponse<RawMessageStreamEvent> sendMessageStreamResponse(
       @Nonnull final String userMessage) {
     return AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
         .messages()

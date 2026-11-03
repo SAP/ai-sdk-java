@@ -8,7 +8,7 @@
 - Next expected status change date: 02.11.2026
 
 ##  Context
-AI SDK needs to provide users with direct access to Anthropic models. This document enumerates different implementation
+AI SDK needs to provide users with direct access to Anthropic model classes. This document enumerates different implementation
 approaches with pros and cons for each option.
 
 ### Business Requirements
@@ -16,7 +16,7 @@ This ADR is required in the context of the backlog items:
 - https://github.com/SAP/ai-sdk-java-backlog/issues/449
 
 ### Problem Description
-AI SDK needs to provide users with direct access to Anthropic models. Currently, the corresponding solution does
+AI SDK needs to provide users with direct access to Anthropic model classes. Currently, the corresponding solution does
 not exist. Few solution options exist, the optimal option is to be identified.
 
 ### Solution Options

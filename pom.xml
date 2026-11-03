@@ -51,7 +51,7 @@
   </distributionManagement>
 
   <properties>
-    <anthropic-java.version>2.72.0</anthropic-java.version>
+    <anthropic-sdk.version>2.72.0</anthropic-sdk.version>
     <project.rootdir>${project.basedir}</project.rootdir>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
@@ -91,6 +91,7 @@
     <jspecify.version>1.0.1</jspecify.version>
     <json-schema-validator.version>3.0.8</json-schema-validator.version>
     <caffeine.version>3.3.1</caffeine.version>
+    <swagger-annotations.version>2.2.50</swagger-annotations.version>
     <!-- CVE fixes -->
     <bouncycastle.version>1.86</bouncycastle.version>
     <kotlin.version>2.4.21</kotlin.version>
@@ -144,6 +145,11 @@
       </dependency>
       <!-- scope "compile" -->
       <dependency>
+        <groupId>com.anthropic</groupId>
+        <artifactId>anthropic-java-core</artifactId>
+        <version>${anthropic-sdk.version}</version>
+      </dependency>
+      <dependency>
         <groupId>io.projectreactor</groupId>
         <artifactId>reactor-core</artifactId>
         <version>${reactor-core.version}</version>
@@ -182,6 +188,12 @@
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-jsr310</artifactId>
         <version>${jackson.version}</version>
+      </dependency>
+      <!-- Align swagger-annotations between openai-java-core and anthropic-java-core -->
+      <dependency>
+        <groupId>io.swagger.core.v3</groupId>
+        <artifactId>swagger-annotations</artifactId>
+        <version>${swagger-annotations.version}</version>
       </dependency>
       <dependency>
         <groupId>tools.jackson.core</groupId>
@@ -395,17 +407,6 @@
         <groupId>com.openai</groupId>
         <artifactId>openai-java-core</artifactId>
         <version>${openai-java.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.anthropic</groupId>
-        <artifactId>anthropic-java-core</artifactId>
-        <version>${anthropic-java.version}</version>
-      </dependency>
-      <!-- Align swagger-annotations between openai-java-core and anthropic-java-core -->
-      <dependency>
-        <groupId>io.swagger.core.v3</groupId>
-        <artifactId>swagger-annotations</artifactId>
-        <version>2.2.50</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

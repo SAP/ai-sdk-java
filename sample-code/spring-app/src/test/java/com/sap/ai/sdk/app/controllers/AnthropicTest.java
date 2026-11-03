@@ -12,7 +12,7 @@ class AnthropicTest {
 
   @Test
   void chatCompletion() {
-    final var message = service.chatCompletion("What is the capital of France?");
+    final var message = service.sendMessage("What is the capital of France?");
 
     assertThat(message).isNotNull();
     assertThat(message.content()).isNotEmpty();
@@ -30,7 +30,7 @@ class AnthropicTest {
   void streamChatCompletion() {
     final var fullResponse = new AtomicReference<>("");
 
-    try (var stream = service.streamChatCompletion("What is the capital of France?")) {
+    try (var stream = service.sendMessageStreamResponse("What is the capital of France?")) {
       stream.stream()
           .filter(event -> event.isContentBlockDelta())
           .map(event -> event.asContentBlockDelta().delta())

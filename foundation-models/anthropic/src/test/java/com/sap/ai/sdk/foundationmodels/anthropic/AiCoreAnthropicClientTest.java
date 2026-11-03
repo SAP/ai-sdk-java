@@ -224,6 +224,18 @@ class AiCoreAnthropicClientTest {
     }
   }
 
+    @Test
+  void testBuilderErrorHandling() {
+    final var params =
+        MessageCreateParams.builder()
+            .model("claude-3-haiku-20240307")
+            .addUserMessage("Hello!");
+
+    assertThatThrownBy(params::build)
+        .isInstanceOf(IllegalStateException.class)
+        .hasMessageContaining("`maxTokens` is required");
+  }
+
   @Test
   void testErrorHandling() {
     stubFor(
@@ -232,7 +244,7 @@ class AiCoreAnthropicClientTest {
                 badRequest()
                     .withBody(
                         """
-                        {"type":"error","error":{"type":"invalid_request_error","message":"max_tokens is required"}}
+                        {"type":"error","error":{"type":"invalid_request_error","message":"field_x is required"}}
                         """)
                     .withHeader("Content-Type", "application/json")));
 
@@ -245,7 +257,8 @@ class AiCoreAnthropicClientTest {
 
     assertThatThrownBy(() -> client.messages().create(params))
         .isInstanceOf(AnthropicException.class)
-        .hasMessageContaining("400");
+        .hasMessageContaining("400")
+        .hasMessageContaining("field_x is required");
   }
 
   @Test
