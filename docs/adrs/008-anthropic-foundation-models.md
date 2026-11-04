@@ -47,11 +47,100 @@ Stream<AnthropicChatCompletionDelta> stream =
 | Backend replaceability | Hard — POJOs tightly coupled to Bedrock wire format, almost entire codebase will have to be re-written                                                                                |
 
 
-#### Option B: Raw Bedrock invoke API
+#### Option B: Anthropic SDK with AWS Converse
+
+Expose parts of official anthropic api we support (sub-clients implemented by anthropic).
+Map operations into AWS Converse API
+Use AWS Converse client to perform converse API operations
+Replace its HTTP transport (`com.anthropic.core.http.HttpClient`) with SAP's authenticated Apache HTTP client and
+make it call SAP gateway.
+
+![](images/option_b.drawio.svg)
+
+```java
+// Chat completion
+Message response =
+    AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
+        .messages()
+        .create(
+            MessageCreateParams.builder()
+                .model(CLAUDE_45_HAIKU.name())
+                .maxTokens(1000)
+                .addUserMessage("What is the capital of France?")
+                .build());
+
+String text = response.content().stream()
+    .filter(ContentBlock::isText)
+    .map(b -> b.asText().text())
+    .collect(joining());
+
+// Streaming
+try (var stream =
+    AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
+        .messages()
+        .createStreaming(params)) {
+  stream.stream()
+      .filter(RawMessageStreamEvent::isContentBlockDelta)
+      .map(e -> e.asContentBlockDelta().delta().asTextDelta().text())
+      .forEach(System.out::print);
+}
+```
+
+| Aspect                 | Value                                                                                                                     |
+|------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| Maintenance effort     | Very high - implementation depends not only on Anthropic API changes but also on Converse AWS API changes                 |
+| Code footprint         | Large — high level mapping between the APIs is needed. some features might be impossible to map                           |
+| User value             | Medium — official, fully-typed, well-documented Anthropic API but scope is limited by not all operations supported/mapped |
+| API stability          | Low — glue (mapping) between Anthropics API and Converse API is brittle                                                   |
+| Backend replaceability | Difficult — implementation will have to be redone                                                                         |
+
+#### Option C: Wrapped Anthropic client with AWS Invoke
+
+Use `com.anthropic:anthropic-java-core` as the typed API layer.
+Replace its HTTP transport (`com.anthropic.core.http.HttpClient`) with SAP's authenticated Apache HTTP client.
+Expose parts of official anthropic api we support (sub-clients implemented by anthropic)
+
+![](images/option_c.drawio.svg)
+
+```java
+// Chat completion
+Message response =
+    AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
+        .messages()
+        .create(
+            MessageCreateParams.builder()
+                .model(CLAUDE_45_HAIKU.name())
+                .maxTokens(1000)
+                .addUserMessage("What is the capital of France?")
+                .build());
+
+String text = response.content().stream()
+    .filter(ContentBlock::isText)
+    .map(b -> b.asText().text())
+    .collect(joining());
+
+// Streaming
+try (var stream = AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU).messages().createStreaming(params)) {
+  stream.stream()
+      .filter(RawMessageStreamEvent::isContentBlockDelta)
+      .map(e -> e.asContentBlockDelta().delta().asTextDelta().text())
+      .forEach(System.out::print);
+}
+```
+
+| Aspect                 | Value                                                                           |
+|------------------------|---------------------------------------------------------------------------------|
+| Maintenance effort     | Low — SDK absorbs upstream changes |
+| Code footprint         | Small — bridge only: `AiCoreAnthropicClient`, `SapAnthropicHttpClient` |
+| User value             | High — official, fully-typed, well-documented Anthropic API |
+| API stability          | Stable — Anthropic owns and maintains the contract |
+| Backend replaceability | Easy — transport is swappable without breaking user code |
+
+#### Option D: AWS Invoke SDK
 
 Expose the AWS Bedrock SDK `BedrockRuntimeClient` configured for SAP AI Core, with all serialization and response parsing left to the user.
 
-![](images/option_b.drawio.svg)
+![](images/option_d.drawio.svg)
 
 ```java
 // Chat completion — user owns request serialization and response parsing
@@ -96,100 +185,11 @@ bedrockClient.invokeModelWithResponseStream(
 | API stability | Stable at transport level; unstable at payload level — user owns the wire format   |
 | Backend replaceability | Virtually impossible — user code is tightly coupled to Bedrock wire format|
 
-### Option C: Official Anthropic Java SDK with Invoke AWS Bedrock Backend
+#### Option E: AWS Converse SDK
 
-Use `com.anthropic:anthropic-java-core` as the typed API layer.
-Replace its HTTP transport (`com.anthropic.core.http.HttpClient`) with SAP's authenticated Apache HTTP client.
-Expose parts of official anthropic api we support (sub-clients implemented by anthropic)
-
-![](images/option_c.drawio.svg)
-
-```java
-// Chat completion
-Message response =
-    AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
-        .messages()
-        .create(
-            MessageCreateParams.builder()
-                .model(CLAUDE_45_HAIKU.name())
-                .maxTokens(1000)
-                .addUserMessage("What is the capital of France?")
-                .build());
-
-String text = response.content().stream()
-    .filter(ContentBlock::isText)
-    .map(b -> b.asText().text())
-    .collect(joining());
-
-// Streaming
-try (var stream = AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU).messages().createStreaming(params)) {
-  stream.stream()
-      .filter(RawMessageStreamEvent::isContentBlockDelta)
-      .map(e -> e.asContentBlockDelta().delta().asTextDelta().text())
-      .forEach(System.out::print);
-}
-```
-
-| Aspect                 | Value                                                                           |
-|------------------------|---------------------------------------------------------------------------------|
-| Maintenance effort     | Low — SDK absorbs upstream changes |
-| Code footprint         | Small — bridge only: `AiCoreAnthropicClient`, `SapAnthropicHttpClient` |
-| User value             | High — official, fully-typed, well-documented Anthropic API |
-| API stability          | Stable — Anthropic owns and maintains the contract |
-| Backend replaceability | Easy — transport is swappable without breaking user code |
-
-
-### Option D: Official Anthropic Java SDK with Converse AWS Bedrock Backend
-
-Use `com.anthropic:anthropic-java-core` as the typed API layer.
-Replace its HTTP transport (`com.anthropic.core.http.HttpClient`) with SAP's authenticated Apache HTTP client.
-Expose parts of official anthropic api we support (sub-clients implemented by anthropic)
-
-![](images/option_d.drawio.svg)
-
-```java
-// Chat completion
-Message response =
-    AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
-        .messages()
-        .create(
-            MessageCreateParams.builder()
-                .model(CLAUDE_45_HAIKU.name())
-                .maxTokens(1000)
-                .addUserMessage("What is the capital of France?")
-                .build());
-
-String text = response.content().stream()
-    .filter(ContentBlock::isText)
-    .map(b -> b.asText().text())
-    .collect(joining());
-
-// Streaming
-try (var stream =
-    AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU)
-        .messages()
-        .createStreaming(params)) {
-  stream.stream()
-      .filter(RawMessageStreamEvent::isContentBlockDelta)
-      .map(e -> e.asContentBlockDelta().delta().asTextDelta().text())
-      .forEach(System.out::print);
-}
-```
-
-| Aspect                 | Value                                                                                                                     |
-|------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| Maintenance effort     | Very high - implementation depends not only on Anthropic API changes but also on Converse AWS API changes                 |
-| Code footprint         | Large — high level mapping between the APIs is needed. some features might be impossible to map                           |
-| User value             | Medium — official, fully-typed, well-documented Anthropic API but scope is limited by not all operations supported/mapped |
-| API stability          | Low — glue (mapping) between Anthropics API and Converse API is brittle                                                   |
-| Backend replaceability | Difficult — implementation will have to be redone                                                                         |
-
-
-### Option E: Official Converse AWS Bedrock Java API with Anthropic models via SAP gateway
-
-Use `software.amazon.awssdk:bedrockruntime` as the typed API layer.
+Expose `software.amazon.awssdk:bedrockruntime` classes as our API.
 Configure `BedrockRuntimeClient` with SAP's authenticated HTTP credentials and endpoint override pointing to SAP AI Core's gateway.
-The Converse API provides a model-agnostic typed interface — all request/response types (`ConverseRequest`, `ConverseResponse`, `Message`, `ContentBlock`, etc.) are owned by AWS.
+AWS Converse API provides a model-agnostic typed interface — all request/response types (`ConverseRequest`, `ConverseResponse`, `Message`, `ContentBlock`, etc.) are owned by AWS.
 
 ![](images/option_e.drawio.svg)
 
@@ -257,14 +257,16 @@ Official Anthropic Java SDK with Invoke AWS Bedrock Backend (Option C) is propos
 Every aspect value is scored between 1 and 5 points
 Every option receives result as a sum of its aspect values.
 
-| Aspect                 | A: Convenience classes | B: Raw Bedrock Invoke | __C: Anthropic SDK + Invoke__ | D: Anthropic SDK + Converse | E: AWS Converse SDK |
-|------------------------|------------------------|-----------------------|-------------------------------|-----------------------------|---------------------|
-| Maintenance effort     | High (2)               | Near zero (5)         | __Low (4)__                   | Very high (1)               | Low (4)             |
-| Code footprint         | Large (2)              | Minimal (5)           | __Small (4)__                 | Large (1)                   | Small (4)           |
-| User value             | Moderate (3)           | Low (1)               | __High (5)__                  | Moderate (3)                | Moderate (3)        |
-| API stability          | Moderate–high (3.5)    | Low (payload) (1)     | __High (5)__                  | Low (1)                     | Moderate (3)        |
-| Backend replaceability | Hard (1)               | Impossible (1)        | __Easy (5)__                  | Difficult (2)               | High (4)            |
-| Score                  | 12.5                   | 13                    | __23__                        | 8                           | 18                  |
+| Aspect                 | A: Convenience classes | B: Anthropic SDK + Converse | __C: Anthropic SDK + Invoke__ | D: AWS Invoke SDK | E: AWS Converse SDK |
+|------------------------|------------------------|-----------------------------|-------------------------------|-------------------|---------------------|
+| Maintenance effort     | High (2)               | Very high (1)               | __Low (4)__                   | Near zero (5)     | Low (4)             |
+| Code footprint         | Large (2)              | Large (1)                   | __Small (4)__                 | Minimal (5)       | Small (4)           |
+| User value             | Moderate (3)           | Moderate (3)                | __High (5)__                  | Low (1)           | Moderate (3)        |
+| API stability          | Moderate–high (3.5)    | Low (1)                     | __High (5)__                  | Low (payload) (1) | Moderate (3)        |
+| Backend replaceability | Hard (1)               | Difficult (2)               | __Easy (5)__                  | Impossible (1)    | High (4)            |
+| Score                  | 12.5                   | 8                           | __23__                        | 13                | 18                  |
 
 ## Consequences, New Dependencies, Open Points, Next Steps
-<!-- Describe anything else that needs to be done and lists dependencies to other services that need to be introduced. -->
+Further related decisions are to be made:
+- [Client api subset](./009-anthropic-client-api-subset.md)
+- [Client configuration](./010-anthropic-client-configuration.md)

@@ -1,15 +1,9 @@
 package com.sap.ai.sdk.foundationmodels.anthropic;
 
 import com.anthropic.client.AnthropicClient;
-import com.anthropic.client.AnthropicClientAsync;
 import com.anthropic.client.AnthropicClientImpl;
 import com.anthropic.core.ClientOptions;
-import com.anthropic.services.blocking.CompletionService;
-import com.anthropic.services.blocking.FileService;
 import com.anthropic.services.blocking.MessageService;
-import com.anthropic.services.blocking.ModelService;
-import com.anthropic.services.blocking.OrganizationService;
-import com.anthropic.services.blocking.SkillService;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
@@ -108,14 +102,4 @@ public class AiCoreAnthropicClient {
     return new AnthropicClientImpl(options);
   }
 
-  private void ff() {
-    var client = client();
-    CompletionService completionsApi = client.completions();
-    ModelService modelsApi = client.models();
-    FileService filesApi = client.files();
-    SkillService skillsApi = client.skills();
-    OrganizationService organizationApi = client.organization();
-    AnthropicClientAsync asyncClient = client.async();
-    // ...
-  }
 }

@@ -1,78 +1,82 @@
+#  Anthropic client configuration
 
-::::::TODO::::
+##  Status
 
+- Status: `proposed` <!-- [draft | proposed | rejected | accepted | deprecated | superseded by ...] -->
+- Contributors: Vladimir Aseev
+- Reviewers: Zhongpin Wang
+- Next expected status change date: 06.11.2026
 
-WIP
-WIP
-WIP
+##  Context
+Anthropic foundation models client will be implemented according to [008-anthropic-integration-approach.md](008-anthropic-foundation-models.md).
+Exposed by the client configuration is to be decided.
 
+### Business Requirements
+This ADR is required in the context of the backlog items:
+- https://github.com/SAP/ai-sdk-java-backlog/issues/449
 
-# Anthropic Integration: Client Design
+### Problem Description
+Anthropic client and its sub-clients (services) expose ways to configure them:
+```java
+    MessageService messagesClient = AiCoreAnthropicClient.forModel(AnthropicModel.CLAUDE_48_OPUS).messages();
+    // messagesClient.withOptions(...) // client can be reconfigured here
+```
 
-Status: Proposed (2026-10-27).
+Changing pre-configured client settings may lead to its inability to work with SAP gateway or issues in general.
 
-## Background
+Options on how and if at all we address this challenge are listed in this document. 
 
-SAP AI Core exposes Anthropic Claude models via a Bedrock-compatible HTTP API.
-This document covers two design decisions about how `AiCoreAnthropicClient` exposes the official Anthropic Java SDK to users.
+### Solution Options
+#### Option A: Override implementation
+For every sub-api we expose (e.g. `messages`) we expose not original Antropic implementation but a wrapped or
+extended our implementation which delegates all necessary methods to the original client but does nothing or throws error
+on attempt to call `.withOptions(...)`.
 
-Decision assumes **Option C (official Anthropic Java SDK)** from
-[008-anthropic-integration-approach.md](008-anthropic-foundation-models.md).
+| Aspect                  | Value                                                                                                                                  |
+|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| Implementation effort   | Maximum - we will need to implement relatively large codebase and tests                                                                |                             
+| Maintenance effort      | Maximum - all changes in the Anthropics API will have to be manually implemented in the proxy classes                                  |
+| Safety provided         | Maximum - we can configure and enforce any safety guarantees and configuration we need                                                 |
+| Flexibility             | Minimum - we can cut off many non standard use cases we cannot foresee or verify now (e.g. usage with proxies and internet gateways)   | 
 
----
+#### Option B: Override interface
+For every sub-api we expose (e.g. `messages`) we expose not original Anthropic interface but our copy, exposing all
+operations exactly as they are in the original interface but not exposing the `.withOptions(...)` method.
 
-## Decision 1: Sub-APIs exposed
+| Aspect                  | Value                                                                                                                                |
+|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| Implementation effort   | Medium - we will need to create one interface per sub-api                                                                            |                             
+| Maintenance effort      | Medium - all changes in the Anthropics API will have to be reflected in the interfaces classes (one per sub-api)                     |
+| Safety provided         | Maximum - we can configure and enforce any safety guarantees and configuration we need                                               |
+| Flexibility             | Minimum - we can cut off many non standard use cases we cannot foresee or verify now (e.g. usage with proxies and internet gateways) | 
 
-The official Anthropic Java SDK exposes multiple sub-APIs (`messages()`, `completions()`, `batches()`, `files()`, `models()`, …).
-SAP AI Core's router currently only supports two of these: **messages** and **completions**.
+#### Option C: Do nothing
+We do nothing about configuration. We expose Anthropic sub-api (e.g. `messages`) with its original unaltered interface
+and original implementation (just configured correctly to call SAP gateway)
 
-### Options considered
+| Aspect                  | Value                                                                                             |
+|-------------------------|---------------------------------------------------------------------------------------------------|
+| Implementation effort   | None (nothing to implement)                                                                       |                             
+| Maintenance effort      | Minimum - nothing to maintain beyond the minimum necessary for system functioning                 |
+| Safety provided         | Medium - we pre-configure all clients, but users can break things if they re-configure them       |
+| Flexibility             | High - we still pre-configure all clients, but users can tweak configs for non-standard use cases | 
 
-| Option | Description |
-|---|---|
-| **Expose everything** | Return the full `AnthropicClient` interface with no restrictions or documentation caveats |
-| **Expose only supported sub-APIs (chosen)** | Return the full `AnthropicClient` but document that only `messages()` and `completions()` are supported by SAP AI Core |
+## Decision
+Do nothing (option C)
 
-### Arguments
+We pre-configure all clients, but users can break things if they explicitly re-configure them
 
-| | Expose everything | Expose only supported sub-APIs |
-|---|---|---|
-| Available functionality | Same — unsupported sub-APIs fail at runtime either way | Same |
-| User experience | May cause confusion when unsupported calls fail with opaque errors | Clearly scoped; failures on unsupported APIs are expected and documented |
-| Maintenance when SAP router adds sub-APIs | None | Documentation update only — no code change needed |
-| Code footprint | None | None |
+## Rationale
+Every aspect value is scored between 1 and 5 points
+Every option receives result as a sum of its aspect values.
 
-### Decision
+| Aspect                | A: Override implementation | B: Override interface | __C: Do nothing__ |
+|-----------------------|----------------------------|-----------------------|-------------------|
+| Implementation effort | Maximum (1)                | Medium (3)            | __None (5)__      |
+| Maintenance effort    | Maximum (1)                | Medium (3)            | __Minimum (5)__   |
+| Safety provided       | Maximum (5)                | Maximum (5)           | __Medium (3)__    |
+| Flexibility           | Minimum (1)                | Minimum (1)           | __High (4)__      |
+| Score                 | 8                          | 12                    | __17__            |
 
-**Expose only the supported sub-APIs** (`messages()` and `completions()`) by documenting the supported scope on `AiCoreAnthropicClient.client()`.
-When SAP AI Core's router adds support for further sub-APIs, the SDK change is a documentation update only.
-
----
-
-## Decision 2: Client URL and configuration
-
-The official Anthropic SDK allows users to further configure the returned `AnthropicClient` — overriding the base URL, adding custom headers, changing timeouts, etc.
-The question is whether the SDK should prevent or validate such overrides.
-
-### Options considered
-
-| Option | Description |
-|---|---|
-| **Restrict / redefine the interface** | Wrap or re-implement `messages()` and related services to prevent users from altering internal transport settings |
-| **Do nothing (chosen)** | Return the standard `AnthropicClient` as-is; document that overriding internals is unsupported |
-
-### Arguments
-
-| | Restrict interface | Do nothing |
-|---|---|---|
-| Maintenance effort | High — requires re-implementing SDK interfaces; breaks on every upstream SDK update | Near zero |
-| Code footprint | Large | None |
-| User flexibility | Reduced — legitimate advanced use cases blocked | Full — power users can reconfigure if needed |
-| Risk of misconfiguration | Accepted — consistent with SDK philosophy: bad input does not guarantee good output | Eliminated |
-| Alignment with SDK principles | Against minimalistic design goal | Consistent |
-
-### Decision
-
-**Do nothing.** The `AnthropicClient` is returned as-is.
-Users who override base URLs, headers, or other transport internals do so at their own risk.
-This is consistent with the SDK's general design principle of minimal footprint and minimal maintenance overhead.
+## Consequences, New Dependencies, Open Points, Next Steps
+<!-- Describe anything else that needs to be done and lists dependencies to other services that need to be introduced. -->

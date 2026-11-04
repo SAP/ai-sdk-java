@@ -22,7 +22,7 @@ SAP gateway or low demand and not worth supporting for set of reasons.
 This document compares different options with their tradeoffs, attempts to identify and propose the optimal solution. 
 
 ### Solution Options
-### Option A: Expose entire Anthropic API client
+#### Option A: Expose entire Anthropic API client
 
 We expose official Anthropics client (configured to use SAP gateway) "as is":
 
@@ -46,7 +46,7 @@ AnthropicClientAsync asyncClient = client.async();
 | User value                  | Maximum - users can use virtually any relevant Anthropics APIs available via SAP gateway                                                               |
 | Flexibility                 | Minimum - if we expose entire official Anthropics client "as is" we barely have any control on the operations level unless we reimplement it ourselves |
 
-### Option B: Expose `messages` sub-api, proceed with other APIs on demand
+#### Option B: Expose `messages` sub-api, proceed with other APIs on demand
 
 We implement a small wrapper, which only exposes (delegates) sub-APIs of official Anthropic client; We start with `messages`:
 
@@ -81,4 +81,6 @@ Every option receives result as a sum of its aspect values.
 | Score                      | 13             | __19__          |
 
 ## Consequences, New Dependencies, Open Points, Next Steps
-<!-- Describe anything else that needs to be done and lists dependencies to other services that need to be introduced. -->
+If starting with just `messages` option is chosen, the following further work is to be done:
+- Investigate other sub-apis needed to be exposed
+- Scope and plan further work on other needed sub-apis
