@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.ai.sdk.orchestration.LocalPromptTemplate;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
+import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool;
 import com.sap.ai.sdk.orchestration.model.ChatCompletionTool.TypeEnum;
 import com.sap.ai.sdk.orchestration.model.FunctionObject;
@@ -410,6 +411,36 @@ public class OrchestrationChatOptions
     }
     mergedTools.addAll(converted);
     return template.withTools(mergedTools);
+  }
+
+  /**
+   * Adds the tool callbacks and, if {@code useProviderStructuredOutput()} was used, the JSON schema
+   * response format to the prompt template.
+   *
+   * @param template the prompt template
+   * @return the updated template
+   */
+  @Nonnull
+  public LocalPromptTemplate applyTo(@Nonnull final LocalPromptTemplate template) {
+    return withStructuredOutput(withCallbacks(template));
+  }
+
+  /**
+   * Adds the JSON schema response format to the prompt template, if one was set via Spring AI's
+   * {@code useProviderStructuredOutput()}.
+   *
+   * @param template the prompt template
+   * @return the updated template, or unchanged if no schema was set
+   */
+  @Nonnull
+  private LocalPromptTemplate withStructuredOutput(@Nonnull final LocalPromptTemplate template) {
+    if (outputSchema == null) {
+      return template;
+    }
+    // Spring AI's useProviderStructuredOutput() provides the schema as a bare JSON string without
+    // a name, so a fixed name is used for the orchestration response format.
+    return template.withJsonSchemaResponse(
+        ResponseJsonSchema.fromString(outputSchema, "structured_output"));
   }
 
   private static ChatCompletionTool toOrchestrationTool(@Nonnull final ToolCallback toolCallback) {

@@ -9,7 +9,6 @@ import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
 import com.sap.ai.sdk.orchestration.OrchestrationClient;
 import com.sap.ai.sdk.orchestration.OrchestrationModuleConfig;
 import com.sap.ai.sdk.orchestration.PromptTemplate;
-import com.sap.ai.sdk.orchestration.ResponseJsonSchema;
 import com.sap.ai.sdk.orchestration.SystemMessage;
 import com.sap.ai.sdk.orchestration.ToolMessage;
 import com.sap.ai.sdk.orchestration.UserMessage;
@@ -76,8 +75,7 @@ public class OrchestrationChatModel implements ChatModel {
   public ChatResponse call(@Nonnull final Prompt prompt) {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
-      val orchestrationPrompt =
-          withStructuredOutput(options.withCallbacks(toPromptTemplate(prompt)), options);
+      val orchestrationPrompt = options.applyTo(toPromptTemplate(prompt));
 
       return new OrchestrationSpringChatResponse(
           client
@@ -98,8 +96,7 @@ public class OrchestrationChatModel implements ChatModel {
 
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
-      val orchestrationPrompt =
-          withStructuredOutput(options.withCallbacks(toPromptTemplate(prompt)), options);
+      val orchestrationPrompt = options.applyTo(toPromptTemplate(prompt));
       final Flux<OrchestrationChatCompletionDelta> flux =
           Flux.fromStream(
               () ->
@@ -114,25 +111,6 @@ public class OrchestrationChatModel implements ChatModel {
     }
     throw new IllegalArgumentException(
         "Please add OrchestrationChatOptions to the Prompt: new Prompt(\"message\", new OrchestrationChatOptions(config))");
-  }
-
-  /**
-   * Applies the native structured output schema to the prompt template, if one was set via Spring
-   * AI's {@code useProviderStructuredOutput()}.
-   */
-  @Nonnull
-  private static LocalPromptTemplate withStructuredOutput(
-      @Nonnull final LocalPromptTemplate template,
-      @Nonnull final OrchestrationChatOptions options) {
-
-    val schema = options.getOutputSchema();
-    if (schema == null) {
-      return template;
-    }
-    // Spring AI's useProviderStructuredOutput() provides the schema as a bare JSON string without
-    // a name, so a fixed name is used for the orchestration response format.
-    return template.withJsonSchemaResponse(
-        ResponseJsonSchema.fromString(schema, "structured_output"));
   }
 
   @Nonnull
