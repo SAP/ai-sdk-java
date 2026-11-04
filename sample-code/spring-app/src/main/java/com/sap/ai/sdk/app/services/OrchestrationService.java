@@ -256,7 +256,7 @@ public class OrchestrationService {
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template.
+   * Chat request to OpenAI through the Orchestration service using a template.
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
