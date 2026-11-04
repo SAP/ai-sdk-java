@@ -9,6 +9,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
+import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.okXml;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
@@ -74,12 +75,14 @@ import com.sap.ai.sdk.orchestration.model.UserChatMessage;
 import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5FactoryBuilder;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import io.vavr.control.Try;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -173,6 +176,30 @@ class OrchestrationUnitTest {
             () -> client.chatCompletion().config(config).promptTemplate(prompt).execute())
         .hasMessage(
             "Request failed with status 500 (Server Error): Internal Server Error located in Masking Module - Masking");
+  }
+
+  @Test
+  void testChatCompletionTimeoutErrorHandling() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                ok()
+                    .withFixedDelay(122_000) // 2 minutes + 2 seconds
+                    .withHeader("Content-Type", "application/json")));
+
+    // set timeout to 1 second instead of 2 minutes to avoid waiting for the full timeout in the test
+    ApacheHttpClient5Accessor.setHttpClientFactory(
+        destination ->
+            new ApacheHttpClient5FactoryBuilder()
+                .timeout(Duration.ofSeconds(1))
+                .build()
+                .createHttpClient(destination));
+
+    assertThatThrownBy(() -> client.chatCompletion().config(config).promptTemplate(prompt).execute())
+        .describedAs("Timeouts should be handled")
+        .isInstanceOf(OrchestrationClientException.class)
+        .hasMessageContaining(
+            "Request to Orchestration service took longer than 2 minutes. Please shorten your request or use streaming.");
   }
 
   @Test

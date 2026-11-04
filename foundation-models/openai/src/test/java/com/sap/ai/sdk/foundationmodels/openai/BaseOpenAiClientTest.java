@@ -29,6 +29,9 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import lombok.SneakyThrows;
+import lombok.val;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.io.entity.InputStreamEntity;
@@ -44,6 +47,15 @@ abstract class BaseOpenAiClientTest {
   protected static OpenAiClient client;
   protected final Function<String, InputStream> fileLoader =
       filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
+
+  static final String REQUEST_JSON = "{\"messages\":[{\"content\":\"\",\"role\":\"user\"}]}";
+  static final String STREAMING_REQUEST_JSON =
+      """
+      {"stream":true,"messages":[{"content":"","role":"user"}],"stream_options":{"include_usage":true}}""";
+  static final String ERROR_JSON =
+      """
+      { "error": { "code": null, "message": "foo", "type": "invalid stuff" } }
+      """;
 
   static void stubForChatCompletion() {
 
@@ -75,10 +87,6 @@ abstract class BaseOpenAiClientTest {
   }
 
   static void stubForErrorHandling() {
-    final var errorJson =
-        """
-        { "error": { "code": null, "message": "foo", "type": "invalid stuff" } }
-        """;
     stubFor(
         post(anyUrl())
             .inScenario("Errors")
@@ -90,7 +98,7 @@ abstract class BaseOpenAiClientTest {
             .inScenario("Errors")
             .whenScenarioStateIs("1")
             .willReturn(
-                badRequest().withBody(errorJson).withHeader("Content-type", "application/json"))
+                badRequest().withBody(ERROR_JSON).withHeader("Content-type", "application/json"))
             .willSetStateTo("2"));
     stubFor(
         post(anyUrl())
@@ -105,7 +113,7 @@ abstract class BaseOpenAiClientTest {
         post(anyUrl())
             .inScenario("Errors")
             .whenScenarioStateIs("3")
-            .willReturn(okXml("<xml></xml>"))
+            .willReturn(okXml("<xml/>"))
             .willSetStateTo("4"));
     stubFor(post(anyUrl()).inScenario("Errors").whenScenarioStateIs("4").willReturn(noContent()));
   }
@@ -119,19 +127,26 @@ abstract class BaseOpenAiClientTest {
         .describedAs("Server errors should be handled")
         .isInstanceOf(OpenAiClientException.class)
         .hasMessageContaining("500")
-        .satisfies(e -> assertThat(((OpenAiClientException) e).getHttpResponse()).isNotNull());
-
+        .satisfies(
+            e ->
+                assertException(
+                    (OpenAiClientException) e, null, new Response(500, "Server Error")));
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Error objects from OpenAI should be interpreted")
         .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("400 (Bad Request): foo");
-
+        .hasMessageContaining("400 (Bad Request): foo")
+        .satisfies(
+            e ->
+                assertException(
+                    (OpenAiClientException) e, "foo", new Response(400, "Bad Request")));
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Failures while parsing error message should be handled")
         .isInstanceOf(OpenAiClientException.class)
         .hasMessageContaining("400")
+        .satisfies(
+            e -> assertException((OpenAiClientException) e, null, new Response(400, "Bad Request")))
         .extracting(e -> e.getSuppressed()[0])
         .isInstanceOf(JsonParseException.class);
 
@@ -139,15 +154,47 @@ abstract class BaseOpenAiClientTest {
         .assertThatThrownBy(request::run)
         .describedAs("Non-JSON responses should be handled")
         .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("Failed to parse");
+        .hasMessageContaining("Failed to parse")
+        .satisfies(e -> assertException((OpenAiClientException) e, null, new Response(200, "OK")));
 
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Empty responses should be handled")
         .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("is empty");
+        .hasMessageContaining("is empty")
+        .satisfies(
+            e -> assertException((OpenAiClientException) e, null, new Response(204, "No Content")));
 
     softly.assertAll();
+  }
+
+  record Response(Integer code, String reasonPhrase) {}
+
+  @SneakyThrows
+  static void assertException(
+      OpenAiClientException e, @Nullable String errorMessage, @Nullable Response response) {
+
+    val httpRequest = e.getHttpRequest();
+    assertThat(httpRequest).isNotNull();
+    assertThat(new String(httpRequest.getEntity().getContent().readAllBytes()))
+        .isIn(REQUEST_JSON, STREAMING_REQUEST_JSON);
+
+    val clientError = e.getClientError();
+    if (errorMessage != null) {
+      assertThat(clientError).isNotNull();
+      assertThat(clientError.getMessage()).isEqualTo(errorMessage);
+    } else {
+      assertThat(clientError).isNull();
+    }
+
+    val httpResponse = e.getHttpResponse();
+    if (response != null) {
+      assertThat(httpResponse).isNotNull();
+      assertThat(httpResponse.getCode()).isEqualTo(response.code());
+      assertThat(httpResponse.getReasonPhrase()).isEqualTo(response.reasonPhrase());
+    } else {
+      assertThat(httpResponse).isNull();
+    }
   }
 
   @BeforeEach

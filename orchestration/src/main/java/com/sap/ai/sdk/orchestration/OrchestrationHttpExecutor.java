@@ -48,16 +48,21 @@ class OrchestrationHttpExecutor {
       @Nonnull final Object payload,
       @Nonnull final Class<T> responseType,
       @Nonnull final List<Header> customHeaders) {
+    String json;
     try {
-      val json = JACKSON.writeValueAsString(payload);
-      val request = new HttpPost(path);
-      request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
-      customHeaders.forEach(h -> request.addHeader(h.getName(), h.getValue()));
-
+      json = JACKSON.writeValueAsString(payload);
+    } catch (JsonProcessingException e) {
+      throw new OrchestrationClientException("Failed to serialize request payload for " + path, e);
+    }
+    val request = new HttpPost(path);
+    request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+    customHeaders.forEach(h -> request.addHeader(h.getName(), h.getValue()));
+    try {
       val client = getHttpClient();
 
       val handler =
-          new ClientResponseHandler<>(responseType, OrchestrationError.Synchronous.class, FACTORY)
+          new ClientResponseHandler<>(
+                  responseType, OrchestrationError.Synchronous.class, FACTORY.apply(request))
               .objectMapper(JACKSON);
       RequestLogContext.setEndpoint(path);
       RequestLogContext.setMode(SYNCHRONOUS);
@@ -65,19 +70,23 @@ class OrchestrationHttpExecutor {
       RequestLogContext.logRequestStart();
       return client.execute(request, handler);
 
-    } catch (JsonProcessingException e) {
-      throw new OrchestrationClientException("Failed to serialize request payload for " + path, e);
     } catch (SocketTimeoutException e) {
-      throw new OrchestrationClientException(
-          "Request to Orchestration service took longer than 2 minutes. Please shorten your request or use streaming.",
-          e);
+      throw FACTORY
+          .apply(request)
+          .build(
+              "Request to Orchestration service took longer than 2 minutes. Please shorten your request or use streaming.",
+              e);
+      //      throw new OrchestrationClientException(
+      //          "Request to Orchestration service took longer than 2 minutes. Please shorten your request or use streaming.",
+      //          e).setHttpRequest(request);
     } catch (DeploymentResolutionException
         | DestinationAccessException
         | DestinationNotFoundException
         | HttpClientInstantiationException
         | IOException e) {
-      throw new OrchestrationClientException(
-          "Request to Orchestration service failed for " + path, e);
+      throw FACTORY.apply(request).build("Request to Orchestration service failed for " + path, e);
+      //      throw new OrchestrationClientException(
+      //          "Request to Orchestration service failed for " + path, e).setHttpRequest(request);
     } finally {
       RequestLogContext.clear();
     }
@@ -100,7 +109,9 @@ class OrchestrationHttpExecutor {
       RequestLogContext.setService(ORCHESTRATION);
       RequestLogContext.logRequestStart();
       return new ClientStreamingHandler<>(
-              OrchestrationChatCompletionDelta.class, OrchestrationError.Streaming.class, FACTORY)
+              OrchestrationChatCompletionDelta.class,
+              OrchestrationError.Streaming.class,
+              FACTORY.apply(request))
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
 
