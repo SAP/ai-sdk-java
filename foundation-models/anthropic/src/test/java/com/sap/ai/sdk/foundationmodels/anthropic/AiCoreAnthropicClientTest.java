@@ -224,12 +224,10 @@ class AiCoreAnthropicClientTest {
     }
   }
 
-    @Test
+  @Test
   void testBuilderErrorHandling() {
     final var params =
-        MessageCreateParams.builder()
-            .model("claude-3-haiku-20240307")
-            .addUserMessage("Hello!");
+        MessageCreateParams.builder().model("claude-3-haiku-20240307").addUserMessage("Hello!");
 
     assertThatThrownBy(params::build)
         .isInstanceOf(IllegalStateException.class)

@@ -101,5 +101,4 @@ public class AiCoreAnthropicClient {
             .build();
     return new AnthropicClientImpl(options);
   }
-
 }
