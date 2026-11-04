@@ -51,7 +51,8 @@ abstract class BaseOpenAiClientTest {
   static final String REQUEST_JSON = "{\"messages\":[{\"content\":\"\",\"role\":\"user\"}]}";
   static final String STREAMING_REQUEST_JSON =
       """
-      {"stream":true,"messages":[{"content":"","role":"user"}],"stream_options":{"include_usage":true}}""";
+      {"stream":true,"messages":[{"content":"","role":"user"}],"stream_options":{"include_usage":true}}\
+      """;
   static final String ERROR_JSON =
       """
       { "error": { "code": null, "message": "foo", "type": "invalid stuff" } }
@@ -125,45 +126,42 @@ abstract class BaseOpenAiClientTest {
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Server errors should be handled")
-        .isInstanceOf(OpenAiClientException.class)
+        .isInstanceOfSatisfying(
+            OpenAiClientException.class,
+            e -> assertException(e, null, new Response(500, "Server Error")))
         .hasMessageContaining("500")
-        .satisfies(
-            e ->
-                assertException(
-                    (OpenAiClientException) e, null, new Response(500, "Server Error")));
+        .satisfies();
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Error objects from OpenAI should be interpreted")
-        .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("400 (Bad Request): foo")
-        .satisfies(
-            e ->
-                assertException(
-                    (OpenAiClientException) e, "foo", new Response(400, "Bad Request")));
+        .isInstanceOfSatisfying(
+            OpenAiClientException.class,
+            e -> assertException(e, "foo", new Response(400, "Bad Request")))
+        .hasMessageContaining("400 (Bad Request): foo");
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Failures while parsing error message should be handled")
-        .isInstanceOf(OpenAiClientException.class)
+        .isInstanceOfSatisfying(
+            OpenAiClientException.class,
+            e -> assertException(e, null, new Response(400, "Bad Request")))
         .hasMessageContaining("400")
-        .satisfies(
-            e -> assertException((OpenAiClientException) e, null, new Response(400, "Bad Request")))
         .extracting(e -> e.getSuppressed()[0])
         .isInstanceOf(JsonParseException.class);
 
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Non-JSON responses should be handled")
-        .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("Failed to parse")
-        .satisfies(e -> assertException((OpenAiClientException) e, null, new Response(200, "OK")));
+        .isInstanceOfSatisfying(
+            OpenAiClientException.class, e -> assertException(e, null, new Response(200, "OK")))
+        .hasMessageContaining("Failed to parse");
 
     softly
         .assertThatThrownBy(request::run)
         .describedAs("Empty responses should be handled")
-        .isInstanceOf(OpenAiClientException.class)
-        .hasMessageContaining("is empty")
-        .satisfies(
-            e -> assertException((OpenAiClientException) e, null, new Response(204, "No Content")));
+        .isInstanceOfSatisfying(
+            OpenAiClientException.class,
+            e -> assertException(e, null, new Response(204, "No Content")))
+        .hasMessageContaining("is empty");
 
     softly.assertAll();
   }

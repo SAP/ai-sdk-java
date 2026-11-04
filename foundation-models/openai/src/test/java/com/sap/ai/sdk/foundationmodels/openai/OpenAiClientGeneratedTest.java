@@ -93,19 +93,17 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
                     .withHeader("Content-Type", "application/json")));
 
     // set timeout to 1 second instead of 2 minutes to avoid waiting for the full timeout
-    ApacheHttpClient5Accessor.setHttpClientFactory(
-        destination ->
-            new ApacheHttpClient5FactoryBuilder()
-                .timeout(Duration.ofSeconds(1))
-                .build()
-                .createHttpClient(destination));
+    ApacheHttpClient5Accessor.setHttpClientFactory(destination ->
+        new ApacheHttpClient5FactoryBuilder()
+            .timeout(Duration.ofSeconds(1))
+            .build()
+            .createHttpClient(destination));
 
     assertThatThrownBy(() -> client.chatCompletion(new OpenAiChatCompletionRequest("")))
         .describedAs("Timeouts should be handled")
-        .isInstanceOf(OpenAiClientException.class)
+        .isInstanceOfSatisfying(OpenAiClientException.class, e -> assertException(e, null, null))
         .hasMessageContaining(
-            "Request to OpenAI model took longer than 2 minutes. Please shorten your request or use streaming.")
-        .satisfies(e -> assertException((OpenAiClientException) e, null, null));
+            "Request to OpenAI model took longer than 2 minutes. Please shorten your request or use streaming.");
   }
 
   @Test

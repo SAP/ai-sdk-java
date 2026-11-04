@@ -97,12 +97,16 @@ class OrchestrationHttpExecutor {
       @Nonnull final String path,
       @Nonnull final Object payload,
       @Nonnull final List<Header> customHeaders) {
+    String json;
     try {
-      val json = JACKSON.writeValueAsString(payload);
-      val request = new HttpPost(path);
-      request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
-      customHeaders.forEach(h -> request.addHeader(h.getName(), h.getValue()));
-
+      json = JACKSON.writeValueAsString(payload);
+    } catch (JsonProcessingException e) {
+      throw new OrchestrationClientException("Failed to serialize request payload for " + path, e);
+    }
+    val request = new HttpPost(path);
+    request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+    customHeaders.forEach(h -> request.addHeader(h.getName(), h.getValue()));
+    try {
       val client = getHttpClient();
       RequestLogContext.setEndpoint(path);
       RequestLogContext.setMode(STREAMING);
@@ -117,10 +121,10 @@ class OrchestrationHttpExecutor {
 
     } catch (JsonProcessingException e) {
       throw new OrchestrationClientException(
-          "Failed to serialize payload for streaming request", e);
+          "Failed to serialize payload for streaming request", e).setHttpRequest(request);
     } catch (IOException e) {
       throw new OrchestrationClientException(
-          "Streaming request to the Orchestration service failed", e);
+          "Streaming request to the Orchestration service failed", e).setHttpRequest(request);
     } finally {
       RequestLogContext.clear();
     }

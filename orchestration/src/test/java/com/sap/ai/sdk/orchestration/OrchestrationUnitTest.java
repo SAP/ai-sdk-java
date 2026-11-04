@@ -90,6 +90,8 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import lombok.SneakyThrows;
 import lombok.val;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
@@ -123,14 +125,15 @@ class OrchestrationUnitTest {
   private final Function<String, String> fileLoaderStr =
       filename ->
           Try.withResources(() -> fileLoader.apply(filename))
-              .of(
-                  stream ->
-                      new String(stream.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8))
+              .of(stream ->
+                  new String(stream.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8))
               .get();
 
   private static OrchestrationClient client;
   private static OrchestrationModuleConfig config;
   private static LocalPromptTemplate prompt;
+
+  private static final String REQUEST_START_JSON = "{\"config\":{\"modules\":{";
 
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
@@ -162,6 +165,35 @@ class OrchestrationUnitTest {
     assertThat(result.getContent()).isNotEmpty();
   }
 
+  record Response(Integer code, String reasonPhrase) {}
+
+  @SneakyThrows
+  static void assertException(
+      OrchestrationClientException e, @Nullable String errorMessage, @Nullable Response response) {
+
+    val httpRequest = e.getHttpRequest();
+    assertThat(httpRequest).isNotNull();
+    assertThat(new String(httpRequest.getEntity().getContent().readAllBytes()))
+        .startsWith(REQUEST_START_JSON);
+
+    val clientError = e.getClientError();
+    if (errorMessage != null) {
+      assertThat(clientError).isNotNull();
+      assertThat(clientError.getMessage()).isEqualTo(errorMessage);
+    } else {
+      assertThat(clientError).isNull();
+    }
+
+    val httpResponse = e.getHttpResponse();
+    if (response != null) {
+      assertThat(httpResponse).isNotNull();
+      assertThat(httpResponse.getCode()).isEqualTo(response.code());
+      assertThat(httpResponse.getReasonPhrase()).isEqualTo(response.reasonPhrase());
+    } else {
+      assertThat(httpResponse).isNull();
+    }
+  }
+
   @Test
   void testCompletionError() {
     stubFor(
@@ -174,6 +206,14 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(
             () -> client.chatCompletion().config(config).promptTemplate(prompt).execute())
+        .describedAs("Server errors should be handled")
+        .isInstanceOfSatisfying(
+            OrchestrationClientException.class,
+            e ->
+                assertException(
+                    e,
+                    "Internal Server Error located in Masking Module - Masking",
+                    new Response(500, "Server Error")))
         .hasMessage(
             "Request failed with status 500 (Server Error): Internal Server Error located in Masking Module - Masking");
   }
@@ -183,21 +223,21 @@ class OrchestrationUnitTest {
     stubFor(
         post(anyUrl())
             .willReturn(
-                ok()
-                    .withFixedDelay(122_000) // 2 minutes + 2 seconds
+                ok().withFixedDelay(122_000) // 2 minutes + 2 seconds
                     .withHeader("Content-Type", "application/json")));
 
-    // set timeout to 1 second instead of 2 minutes to avoid waiting for the full timeout in the test
-    ApacheHttpClient5Accessor.setHttpClientFactory(
-        destination ->
-            new ApacheHttpClient5FactoryBuilder()
-                .timeout(Duration.ofSeconds(1))
-                .build()
-                .createHttpClient(destination));
+    // set timeout to 1 second instead of 2 minutes to avoid waiting for the full timeout
+    ApacheHttpClient5Accessor.setHttpClientFactory(destination ->
+        new ApacheHttpClient5FactoryBuilder()
+            .timeout(Duration.ofSeconds(1))
+            .build()
+            .createHttpClient(destination));
 
-    assertThatThrownBy(() -> client.chatCompletion().config(config).promptTemplate(prompt).execute())
+    assertThatThrownBy(
+            () -> client.chatCompletion().config(config).promptTemplate(prompt).execute())
         .describedAs("Timeouts should be handled")
-        .isInstanceOf(OrchestrationClientException.class)
+        .isInstanceOfSatisfying(
+            OrchestrationClientException.class, e -> assertException(e, null, null))
         .hasMessageContaining(
             "Request to Orchestration service took longer than 2 minutes. Please shorten your request or use streaming.");
   }
@@ -549,6 +589,8 @@ class OrchestrationUnitTest {
               assertThat(error.getCode()).isEqualTo(SC_BAD_REQUEST);
               assertThat(error.getRequestId()).isEqualTo("51043a32-01f5-429a-b0e7-3a99432e43a4");
               assertThat(error.getLocation()).isEqualTo("Module: Templating");
+              assertException(
+                  e, "Missing required parameters: ['input']", new Response(400, "Bad Request"));
             });
   }
 
@@ -698,6 +740,10 @@ class OrchestrationUnitTest {
 
               assertThat(e.getLlamaGuard38b()).isNotNull();
               assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
+              assertException(
+                  e,
+                  "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.",
+                  new Response(SC_BAD_REQUEST, "Bad Request"));
             });
   }
 
@@ -750,6 +796,7 @@ class OrchestrationUnitTest {
 
               assertThat(e.getLlamaGuard38b()).isNotNull();
               assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
+              // assertException(e, "Content filter filtered the output.", null);
             });
   }
 
@@ -1008,14 +1055,13 @@ class OrchestrationUnitTest {
               .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
       val prompt = PromptTemplate.create("HelloWorld!");
 
-      assertThatThrownBy(
-              () ->
-                  client
-                      .chatCompletion()
-                      .config(wrongConfig)
-                      .promptTemplate(prompt)
-                      .executeStream()
-                      .forEach(System.out::println))
+      assertThatThrownBy(() ->
+              client
+                  .chatCompletion()
+                  .config(wrongConfig)
+                  .promptTemplate(prompt)
+                  .executeStream()
+                  .forEach(System.out::println))
           .isExactlyInstanceOf(OrchestrationClientException.class)
           .hasMessageContaining("400")
           .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
@@ -1766,10 +1812,9 @@ class OrchestrationUnitTest {
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to parse");
 
-    assertThatThrownBy(
-            () ->
-                PromptTemplate.fromYaml(
-                    "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
+    assertThatThrownBy(() ->
+            PromptTemplate.fromYaml(
+                "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to deserialize");
   }
@@ -1940,15 +1985,14 @@ class OrchestrationUnitTest {
     final var answerChunks = new ArrayList<String>();
     final var reasoningChunks = new ArrayList<String>();
     try (var stream = client.chatCompletion().lowLevel().request(request).executeStreamDeltas()) {
-      stream.forEach(
-          delta -> {
-            if (!delta.getDeltaContent().isEmpty()) {
-              answerChunks.add(delta.getDeltaContent());
-            }
-            if (!delta.getDeltaReasoningText().isEmpty()) {
-              reasoningChunks.add(delta.getDeltaReasoningText());
-            }
-          });
+      stream.forEach(delta -> {
+        if (!delta.getDeltaContent().isEmpty()) {
+          answerChunks.add(delta.getDeltaContent());
+        }
+        if (!delta.getDeltaReasoningText().isEmpty()) {
+          reasoningChunks.add(delta.getDeltaReasoningText());
+        }
+      });
     }
 
     assertThat(answerChunks).containsExactly("42");
