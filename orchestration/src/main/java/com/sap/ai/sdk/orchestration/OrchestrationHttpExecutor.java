@@ -77,7 +77,8 @@ class OrchestrationHttpExecutor {
               "Request to Orchestration service took longer than 2 minutes. Please shorten your request or use streaming.",
               e);
       //      throw new OrchestrationClientException(
-      //          "Request to Orchestration service took longer than 2 minutes. Please shorten your request or use streaming.",
+      //          "Request to Orchestration service took longer than 2 minutes. Please shorten your
+      // request or use streaming.",
       //          e).setHttpRequest(request);
     } catch (DeploymentResolutionException
         | DestinationAccessException
@@ -120,11 +121,12 @@ class OrchestrationHttpExecutor {
           .handleStreamingResponse(client.executeOpen(null, request, null));
 
     } catch (JsonProcessingException e) {
-      throw new OrchestrationClientException(
-          "Failed to serialize payload for streaming request", e).setHttpRequest(request);
+      throw new OrchestrationClientException("Failed to serialize payload for streaming request", e)
+          .setHttpRequest(request);
     } catch (IOException e) {
       throw new OrchestrationClientException(
-          "Streaming request to the Orchestration service failed", e).setHttpRequest(request);
+              "Streaming request to the Orchestration service failed", e)
+          .setHttpRequest(request);
     } finally {
       RequestLogContext.clear();
     }

@@ -28,19 +28,25 @@ import org.apache.hc.core5.http.ClassicHttpRequest;
 @StandardException
 public class OrchestrationClientException extends ClientException {
 
-  static final Function<ClassicHttpRequest, ClientExceptionFactory<OrchestrationClientException, OrchestrationError>> FACTORY =
-      request -> (message, clientError, cause) -> {
-        if (isInputFilterError(clientError)) {
-          return new Input(message, cause)
-              .setFilterDetails(extractInputFilterDetails(clientError))
-              .setHttpRequest(request)
-              .setClientError(clientError);
-        } else if (message.contains("No Prompt Template found in the Prompt Registry.")) {
-          message +=
-              "\n Please make sure to provide a resource group id and verify that it matches the provided template reference details if the template is referenced from a resource-group scope, otherwise use the tenant scope without providing resource group id.";
-        }
-        return new OrchestrationClientException(message, cause).setHttpRequest(request).setClientError(clientError);
-      };
+  static final Function<
+          ClassicHttpRequest,
+          ClientExceptionFactory<OrchestrationClientException, OrchestrationError>>
+      FACTORY =
+          request ->
+              (message, clientError, cause) -> {
+                if (isInputFilterError(clientError)) {
+                  return new Input(message, cause)
+                      .setFilterDetails(extractInputFilterDetails(clientError))
+                      .setHttpRequest(request)
+                      .setClientError(clientError);
+                } else if (message.contains("No Prompt Template found in the Prompt Registry.")) {
+                  message +=
+                      "\n Please make sure to provide a resource group id and verify that it matches the provided template reference details if the template is referenced from a resource-group scope, otherwise use the tenant scope without providing resource group id.";
+                }
+                return new OrchestrationClientException(message, cause)
+                    .setHttpRequest(request)
+                    .setClientError(clientError);
+              };
 
   static boolean isInputFilterError(@Nullable final OrchestrationError error) {
     if (error instanceof OrchestrationError.Synchronous synchronousError) {
