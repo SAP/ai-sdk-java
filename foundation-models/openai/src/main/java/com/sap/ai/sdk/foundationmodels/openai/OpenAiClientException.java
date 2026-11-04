@@ -3,18 +3,23 @@ package com.sap.ai.sdk.foundationmodels.openai;
 import com.sap.ai.sdk.core.common.ClientException;
 import com.sap.ai.sdk.core.common.ClientExceptionFactory;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.ErrorResponse;
+import java.util.function.Function;
 import javax.annotation.Nullable;
 import lombok.experimental.StandardException;
 import org.apache.hc.core5.http.ClassicHttpRequest;
-
-import java.util.function.Function;
 
 /** Generic exception for errors occurring when using OpenAI foundation models. */
 @StandardException
 public class OpenAiClientException extends ClientException {
 
-  static final Function<ClassicHttpRequest, ClientExceptionFactory<OpenAiClientException, OpenAiError>> FACTORY =
-      request -> (message, error, cause) -> new OpenAiClientException(message, cause).setHttpRequest(request).setClientError(error);
+  static final Function<
+          ClassicHttpRequest, ClientExceptionFactory<OpenAiClientException, OpenAiError>>
+      FACTORY =
+          request ->
+              (message, error, cause) ->
+                  new OpenAiClientException(message, cause)
+                      .setHttpRequest(request)
+                      .setClientError(error);
 
   /**
    * Retrieves the {@link ErrorResponse} from the OpenAI service, if available.
