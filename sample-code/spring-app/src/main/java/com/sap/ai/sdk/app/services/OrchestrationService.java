@@ -39,7 +39,12 @@ import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenc
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
+import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
+import com.sap.ai.sdk.orchestration.model.GraniteGuardian41;
+import com.sap.ai.sdk.orchestration.model.GraniteGuardian41Categories;
+import com.sap.ai.sdk.orchestration.model.GraniteGuardianFilterConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
+import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -399,6 +404,48 @@ public class OrchestrationService {
     val filterConfig = new LlamaGuardFilter().config(config);
 
     val configWithFilter = this.config.withInputFiltering(filterConfig);
+
+    return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
+  }
+
+  /**
+   * Apply the Granite Guardian filter.
+   *
+   * @link <a
+   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
+   *     AI Core: Orchestration - Input Filtering</a>
+   * @param filter enable or disable the filter.
+   * @return the assistant response object.
+   * @throws OrchestrationClientException if input filter filters the prompt.
+   */
+  @Nonnull
+  public OrchestrationChatResponse graniteGuardianInputFilter(final boolean filter)
+      throws OrchestrationClientException {
+    // no mercy to cheese!
+    val prompt =
+        PromptTemplate.create(
+            "Punch and pierce him to death! Squash his remains on a bread slice and eat.");
+
+    val categories =
+        GraniteGuardian41Categories.create()
+            .harm(filter)
+            .violence(filter)
+            .jailbreak(filter)
+            .socialBias(filter)
+            .profanity(filter)
+            .sexualContent(filter)
+            .unethicalBehavior(filter);
+
+    val graniteFilter =
+        GraniteGuardianFilterConfig.create()
+            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
+            .config(GraniteGuardian41.create().categories(categories));
+
+    val filteringConfig =
+        FilteringModuleConfig.create()
+            .input(InputFilteringConfig.create().filters(List.of(graniteFilter)));
+
+    val configWithFilter = this.config.withFilteringConfig(filteringConfig);
 
     return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }

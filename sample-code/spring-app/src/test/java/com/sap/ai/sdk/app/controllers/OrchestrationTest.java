@@ -453,6 +453,31 @@ class OrchestrationTest {
   }
 
   @Test
+  void testGraniteGuardianEnabled() {
+    assertThatThrownBy(() -> service.graniteGuardianInputFilter(true))
+        .isInstanceOf(OrchestrationFilterException.Input.class)
+        .hasMessageContainingAll("Filtering", "blocked")
+        .hasMessageContaining("400 (Bad Request)")
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Input.class,
+            e -> {
+              var graniteDetails = e.getFilterDetails().get("granite_guardian_4_1");
+              assertThat(graniteDetails).isNull();
+            });
+  }
+
+  @Test
+  void testGraniteGuardianDisabled() {
+    var response = service.graniteGuardianInputFilter(false);
+
+    assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
+    assertThat(response.getContent()).isNotEmpty();
+
+    var filterResult = response.getOriginalResponse().getIntermediateResults().getInputFiltering();
+    assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
+  }
+
+  @Test
   void testImageInput() {
     val result =
         service

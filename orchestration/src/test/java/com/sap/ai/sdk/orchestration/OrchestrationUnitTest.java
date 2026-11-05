@@ -22,6 +22,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
+import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 import static com.sap.ai.sdk.orchestration.PromptTemplateReference.ScopeEnum.RESOURCE_GROUP;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_4;
@@ -56,16 +57,22 @@ import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import com.sap.ai.sdk.orchestration.model.ErrorResponseError;
+import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
+import com.sap.ai.sdk.orchestration.model.GraniteGuardian41;
+import com.sap.ai.sdk.orchestration.model.GraniteGuardian41Categories;
+import com.sap.ai.sdk.orchestration.model.GraniteGuardianFilterConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigPlaceholders;
+import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
+import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.PartialOrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
@@ -2010,5 +2017,282 @@ class OrchestrationUnitTest {
     verify(
         postRequestedFor(urlPathEqualTo("/v2/completion"))
             .withRequestBody(equalToJson(expectedTurn2Request, true, true)));
+  }
+
+  @Test
+  void filteringLooseGraniteGuardian() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("filteringLooseResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var azureFilter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE_LOW_MEDIUM)
+            .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+            .sexual(ALLOW_SAFE_LOW_MEDIUM)
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(false);
+
+    final var graniteFilter =
+        GraniteGuardianFilterConfig.create()
+            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
+            .config(
+                GraniteGuardian41.create()
+                    .categories(GraniteGuardian41Categories.create().harm(true)));
+
+    final var filteringConfig =
+        FilteringModuleConfig.create()
+            .input(
+                InputFilteringConfig.create()
+                    .filters(List.of(azureFilter.createInputFilterConfig(), graniteFilter)))
+            .output(
+                OutputFilteringConfig.create()
+                    .filters(List.of(azureFilter.createOutputFilterConfig())));
+
+    client
+        .chatCompletion()
+        .config(config.withFilteringConfig(filteringConfig))
+        .promptTemplate(prompt)
+        .execute();
+
+    final String request = fileLoaderStr.apply("filteringLooseRequestGraniteGuardian.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, true)));
+  }
+
+  @Test
+  void filteringLooseStreamGraniteGuardian() throws IOException {
+    final var res = new String(fileLoader.apply("streamChatCompletion.txt").readAllBytes());
+    stubFor(
+        post(anyUrl())
+            .willReturn(aResponse().withBody(res).withHeader("Content-Type", "application/json")));
+
+    final var azureFilter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE_LOW_MEDIUM)
+            .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+            .sexual(ALLOW_SAFE_LOW_MEDIUM)
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(false);
+
+    final var graniteFilter =
+        GraniteGuardianFilterConfig.create()
+            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
+            .config(
+                GraniteGuardian41.create()
+                    .categories(GraniteGuardian41Categories.create().harm(true)));
+
+    final var outputFilteringConfig =
+        OutputFilteringConfig.create()
+            .filters(List.of(azureFilter.createOutputFilterConfig()))
+            .streamOptions(FilteringStreamOptions.create().overlap(1_000));
+    final var filteringConfig =
+        FilteringModuleConfig.create()
+            .input(
+                InputFilteringConfig.create()
+                    .filters(List.of(azureFilter.createInputFilterConfig(), graniteFilter)))
+            .output(outputFilteringConfig);
+
+    OrchestrationModuleConfig myConfig = config.withFilteringConfig(filteringConfig);
+
+    Stream<String> result =
+        client.chatCompletion().config(myConfig).promptTemplate(prompt).executeStream();
+    assertThat(result).containsExactly("", "Sure", "!");
+
+    final String request = fileLoaderStr.apply("filteringLooseRequestStreamGraniteGuardian.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, false)));
+  }
+
+  @Test
+  void inputFilteringStrictGraniteGuardian() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("strictInputFilterResponseGraniteGuardian.json")
+                    .withHeader("Content-Type", "application/json")
+                    .withStatus(SC_BAD_REQUEST)));
+
+    final var azureFilter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE)
+            .selfHarm(ALLOW_SAFE)
+            .sexual(ALLOW_SAFE)
+            .violence(ALLOW_SAFE);
+
+    final var graniteFilter =
+        GraniteGuardianFilterConfig.create()
+            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
+            .config(
+                GraniteGuardian41.create()
+                    .categories(GraniteGuardian41Categories.create().violence(true)));
+
+    final var filteringConfig =
+        FilteringModuleConfig.create()
+            .input(
+                InputFilteringConfig.create()
+                    .filters(List.of(azureFilter.createInputFilterConfig(), graniteFilter)));
+    final var configWithFilter = config.withFilteringConfig(filteringConfig);
+
+    assertThatThrownBy(
+            () -> client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute())
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Input.class,
+            e -> {
+              assertThat(e.getMessage())
+                  .isEqualTo(
+                      "Request failed with status 400 (Bad Request): 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
+              assertThat(e.getStatusCode()).isEqualTo(SC_BAD_REQUEST);
+              assertThat(e.getFilterDetails())
+                  .isEqualTo(
+                      Map.of(
+                          "azure_content_safety",
+                              Map.of(
+                                  "Hate", 6,
+                                  "SelfHarm", 0,
+                                  "Sexual", 0,
+                                  "Violence", 6,
+                                  "userPromptAnalysis", Map.of("attackDetected", false)),
+                          "granite_guardian_4_1", Map.of("violence", true)));
+
+              assertThat(e.getAzureContentSafetyInput()).isNotNull();
+              assertThat(e.getAzureContentSafetyInput().getHate()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyInput().getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyInput().getSexual()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyInput().getViolence()).isEqualTo(NUMBER_6);
+
+              final var graniteDetails =
+                  getOrchestrationObjectMapper()
+                      .convertValue(
+                          e.getFilterDetails().get("granite_guardian_4_1"),
+                          GraniteGuardian41Categories.class);
+              assertThat(graniteDetails).isNotNull();
+              assertThat(graniteDetails.isViolence()).isTrue();
+            });
+  }
+
+  @Test
+  void outputFilteringStrictGraniteGuardian() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(aResponse().withBodyFile("outputFilteringStrictGraniteGuardian.json")));
+
+    final var azureFilter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE)
+            .selfHarm(ALLOW_SAFE)
+            .sexual(ALLOW_SAFE)
+            .violence(ALLOW_SAFE)
+            .protectedMaterialCode(true);
+
+    final var graniteFilter =
+        GraniteGuardianFilterConfig.create()
+            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
+            .config(
+                GraniteGuardian41.create()
+                    .categories(GraniteGuardian41Categories.create().violence(true)));
+
+    final var filteringConfig =
+        FilteringModuleConfig.create()
+            .output(
+                OutputFilteringConfig.create()
+                    .filters(List.of(azureFilter.createOutputFilterConfig(), graniteFilter)));
+    final var configWithFilter = config.withFilteringConfig(filteringConfig);
+
+    assertThatThrownBy(
+            client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute()
+                ::getContent)
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Output.class,
+            e -> {
+              assertThat(e.getMessage()).isEqualTo("Content filter filtered the output.");
+              assertThat(e.getFilterDetails())
+                  .isEqualTo(
+                      Map.of(
+                          "index",
+                          0,
+                          "azure_content_safety",
+                          Map.of(
+                              "Hate", 6,
+                              "SelfHarm", 0,
+                              "Sexual", 0,
+                              "Violence", 6,
+                              "ProtectedMaterialCode", false),
+                          "granite_guardian_4_1",
+                          Map.of("violence", true)));
+              assertThat(e.getErrorResponse()).isNull();
+              assertThat(e.getStatusCode()).isNull();
+
+              assertThat(e.getAzureContentSafetyOutput()).isNotNull();
+              assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput().isProtectedMaterialCode()).isFalse();
+
+              final var graniteDetails =
+                  getOrchestrationObjectMapper()
+                      .convertValue(
+                          e.getFilterDetails().get("granite_guardian_4_1"),
+                          GraniteGuardian41Categories.class);
+              assertThat(graniteDetails).isNotNull();
+              assertThat(graniteDetails.isViolence()).isTrue();
+            });
+  }
+
+  @Test
+  void testFallbackModulesGraniteGuardian() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("fallbackResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var prompt = PromptTemplate.create("HelloWorld! Why is this phrase so famous?");
+    final var graniteFilter =
+        GraniteGuardianFilterConfig.create()
+            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
+            .config(
+                GraniteGuardian41.create()
+                    .categories(GraniteGuardian41Categories.create().harm(true)));
+    val groundingConfig =
+        Grounding.create()
+            .filters(
+                DocumentGroundingFilter.create()
+                    .dataRepositoryType(DataRepositoryType.HELP_SAP_COM));
+
+    final var filteringConfig =
+        FilteringModuleConfig.create()
+            .input(InputFilteringConfig.create().filters(List.of(graniteFilter)));
+
+    final var workingConfig =
+        new OrchestrationModuleConfig(GPT_5_MINI.withParam(TEMPERATURE, 0.0))
+            .withFilteringConfig(filteringConfig)
+            .withGrounding(groundingConfig);
+    final var brokenConfig =
+        workingConfig.withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+
+    final var response =
+        client
+            .chatCompletion()
+            .config(brokenConfig, workingConfig)
+            .promptTemplate(prompt)
+            .execute();
+
+    var intermediateFailure = response.getOriginalResponse().getIntermediateFailures().get(0);
+    assertThat(intermediateFailure.getCode()).isEqualTo(400);
+    assertThat(intermediateFailure.getLocation()).isEqualTo("Request Body");
+    assertThat(intermediateFailure.getRequestId())
+        .isEqualTo("a562703b-7fe5-97ba-b417-e8140a25fb7c");
+    assertThat(intermediateFailure.getMessage())
+        .isEqualTo("400 - Request Body: Model broken_name not supported.");
+    assertThat(intermediateFailure.getHeaders().get("Content-Type")).isEqualTo("application/json");
+
+    final String request = fileLoaderStr.apply("fallbackRequestGraniteGuardian.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
   }
 }

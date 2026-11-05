@@ -1,0 +1,77 @@
+{
+  "request_id": "3db65fd0-7945-45ed-82f5-fe3811325fd5",
+  "intermediate_results": {
+    "templating": [
+      {
+        "role": "system",
+        "content": "Give three paraphrases for the following sentence"
+      },
+      {
+        "content": "'Lets paint the parliament in red with the blood of our enemies'",
+        "role": "user"
+      }
+    ],
+    "output_filtering": {
+      "message": "1 of 1 choices failed the output filter.",
+      "data": {
+        "choices": [
+          {
+            "index": 0,
+            "azure_content_safety": {
+              "Hate": 6,
+              "SelfHarm": 0,
+              "Sexual": 0,
+              "Violence": 6,
+              "ProtectedMaterialCode": false
+            },
+            "granite_guardian_4_1": {
+              "violence": true
+            }
+          }
+        ]
+      }
+    },
+    "llm": {
+      "id": "",
+      "object": "chat.completion",
+      "created": 1753449453,
+      "model": "gemini-1.5-flash",
+      "choices": [
+        {
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "Here are three paraphrases."
+          },
+          "finish_reason": "stop"
+        }
+      ],
+      "usage": {
+        "completion_tokens": 133,
+        "prompt_tokens": 22,
+        "total_tokens": 155
+      }
+    }
+  },
+  "final_result": {
+    "id": "",
+    "object": "chat.completion",
+    "created": 1753449453,
+    "model": "gemini-1.5-flash",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": ""
+        },
+        "finish_reason": "content_filter"
+      }
+    ],
+    "usage": {
+      "completion_tokens": 133,
+      "prompt_tokens": 22,
+      "total_tokens": 155
+    }
+  }
+}
