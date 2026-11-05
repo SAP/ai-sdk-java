@@ -150,7 +150,7 @@ class ScenarioTest {
     // Gather AI Core's list of available RPT models
     val aiModelList = new ScenarioController().getModels().getResources();
 
-    val internalOnlyModels = Set.of("sap-rpt-1.1-preview", "sap-rpt-ts");
+    val internalOnlyModels = Set.of("sap-rpt-1.1-preview", "sap-rpt-decisions", "sap-rpt-ts");
 
     val availableRptModels =
         aiModelList.stream()

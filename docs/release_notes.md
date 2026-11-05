@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
--
+- [Orchestration] Added new model `SAP_ABAP_2` to `OrchestrationAiModel`.
 
 ### 📈 Improvements
 

@@ -501,6 +501,9 @@ public class OrchestrationAiModel {
   /** SAP ABAP 1 model. */
   public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
 
+  /** SAP ABAP 2 model. */
+  public static final OrchestrationAiModel SAP_ABAP_2 = new OrchestrationAiModel("sap-abap-2");
+
   /** Alibaba Qwen 3 max model. */
   public static final OrchestrationAiModel QWEN_3_MAX = new OrchestrationAiModel("qwen3-max");
 
