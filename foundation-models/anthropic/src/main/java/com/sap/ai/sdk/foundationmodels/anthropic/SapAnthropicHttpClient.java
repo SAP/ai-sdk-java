@@ -97,7 +97,8 @@ class SapAnthropicHttpClient implements HttpClient {
   private ClassicHttpRequest toApacheRequest(
       @Nonnull final HttpRequest request, final boolean isStreaming) {
     final var targetPath = isStreaming ? INVOKE_STREAM_PATH : INVOKE_PATH;
-    final var apacheRequest = new BasicClassicHttpRequest(request.method().name(), targetPath);
+    final var targetUri = destination.getUri().resolve(targetPath);
+    final var apacheRequest = new BasicClassicHttpRequest(request.method().name(), targetUri);
 
     for (final var name : request.headers().names()) {
       if (shouldSkipHeader(name)) {

@@ -4,6 +4,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.badRequest;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.notMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
@@ -26,7 +28,9 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
@@ -40,6 +44,8 @@ import org.junit.jupiter.api.Test;
 class AiCoreAnthropicClientTest {
 
   private AiCoreAnthropicClient client;
+  private final Function<String, InputStream> fileLoader =
+      filename -> Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(filename));
 
   @BeforeEach
   void setup(final WireMockRuntimeInfo server) {
@@ -67,35 +73,7 @@ class AiCoreAnthropicClientTest {
   }
 
   @Test
-  void testChatCompletion() {
-    stubFor(
-        post(urlPathEqualTo("/invoke"))
-            .willReturn(
-                aResponse()
-                    .withBodyFile("invokeResponse.json")
-                    .withHeader("Content-Type", "application/json")));
-
-    final var params =
-        MessageCreateParams.builder()
-            .model("claude-3-haiku-20240307")
-            .maxTokens(256)
-            .addUserMessage("Hello!")
-            .build();
-
-    final var response = client.messages().create(params);
-
-    assertThat(response).isNotNull();
-    assertThat(response.id()).isEqualTo("msg_01XFDUDYJgAACzvnptvVoYEL");
-    assertThat(response.stopReason()).hasValue(StopReason.END_TURN);
-    assertThat(response.content()).hasSize(1);
-    assertThat(response.content().get(0).text().map(t -> t.text()))
-        .hasValue("Hello! How can I assist you today?");
-    assertThat(response.usage().inputTokens()).isEqualTo(10);
-    assertThat(response.usage().outputTokens()).isEqualTo(9);
-  }
-
-  @Test
-  void testChatCompletionRequestFormat() {
+  void testChatCompletion() throws IOException {
     stubFor(
         post(urlPathEqualTo("/invoke"))
             .willReturn(
@@ -108,23 +86,29 @@ class AiCoreAnthropicClientTest {
             .model("claude-3-haiku-20240307")
             .maxTokens(100)
             .addSystemMessage("You are a helpful assistant.")
-            .addUserMessage("What is 2+2?")
+            .addUserMessage("Hello!")
             .build();
 
     client.messages().create(params);
 
-    verify(
-        postRequestedFor(urlPathEqualTo("/invoke"))
-            .withHeader("Content-Type", equalTo("application/json"))
-            .withRequestBody(
-                com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath(
-                    "$.anthropic_version", equalTo("bedrock-2023-05-31")))
-            .withRequestBody(
-                com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath(
-                    "$.messages[1].role", equalTo("user")))
-            .withRequestBody(
-                com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath(
-                    "$.messages[0].content", equalTo("You are a helpful assistant."))));
+    try (var requestStream = fileLoader.apply("chatCompletionRequest.json")) {
+      final var expectedRequest = new String(requestStream.readAllBytes());
+      verify(
+          postRequestedFor(urlPathEqualTo("/invoke"))
+              .withHeader("Content-Type", equalTo("application/json"))
+              .withRequestBody(equalToJson(expectedRequest)));
+    }
+
+    final var response = client.messages().create(params);
+
+    assertThat(response).isNotNull();
+    assertThat(response.id()).isEqualTo("msg_01XFDUDYJgAACzvnptvVoYEL");
+    assertThat(response.stopReason()).hasValue(StopReason.END_TURN);
+    assertThat(response.content()).hasSize(1);
+    assertThat(response.content().get(0).text().map(t -> t.text()))
+        .hasValue("Hello! How can I assist you today?");
+    assertThat(response.usage().inputTokens()).isEqualTo(10);
+    assertThat(response.usage().outputTokens()).isEqualTo(9);
   }
 
   @Test
@@ -146,25 +130,21 @@ class AiCoreAnthropicClientTest {
     client.messages().create(params);
 
     verify(
-        postRequestedFor(urlPathEqualTo("/invoke"))
-            .withRequestBody(
-                com.github.tomakehurst.wiremock.client.WireMock.notMatching(".*\"model\".*")));
+        postRequestedFor(urlPathEqualTo("/invoke")).withRequestBody(notMatching(".*\"model\".*")));
   }
 
   @Test
   void testStreamChatCompletion() throws IOException {
-    final var inputStream =
-        Objects.requireNonNull(
-            getClass().getClassLoader().getResourceAsStream("__files/invokeStreamResponse.txt"));
-
     final var httpClient = mock(HttpClient.class);
     ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
 
     final var mockResponse = new BasicClassicHttpResponse(200, "OK");
-    final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_EVENT_STREAM);
-    mockResponse.setEntity(entity);
+    mockResponse.setEntity(
+        new InputStreamEntity(
+            Objects.requireNonNull(
+                getClass().getClassLoader().getResourceAsStream("invokeStreamResponse.txt")),
+            ContentType.TEXT_EVENT_STREAM));
     mockResponse.setHeader("Content-Type", "text/event-stream");
-
     doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
 
     final var params =
@@ -175,8 +155,10 @@ class AiCoreAnthropicClientTest {
             .build();
 
     try (var stream = client.messages().createStreaming(params)) {
+      final var events = stream.stream().collect(Collectors.toList());
+
       final var chunks =
-          stream.stream()
+          events.stream()
               .filter(e -> e.isContentBlockDelta())
               .map(e -> e.asContentBlockDelta())
               .map(RawContentBlockDeltaEvent::delta)
@@ -185,35 +167,9 @@ class AiCoreAnthropicClientTest {
               .collect(Collectors.toList());
 
       assertThat(chunks).containsExactly("Hello", "!", " How can I", " assist", " you today?");
-    }
-  }
 
-  @Test
-  void testStreamChatCompletionReturnsStopReason() throws IOException {
-    final var inputStream =
-        Objects.requireNonNull(
-            getClass().getClassLoader().getResourceAsStream("__files/invokeStreamResponse.txt"));
-
-    final var httpClient = mock(HttpClient.class);
-    ApacheHttpClient5Accessor.setHttpClientFactory(destination -> httpClient);
-
-    final var mockResponse = new BasicClassicHttpResponse(200, "OK");
-    final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_EVENT_STREAM);
-    mockResponse.setEntity(entity);
-    mockResponse.setHeader("Content-Type", "text/event-stream");
-
-    doReturn(mockResponse).when(httpClient).executeOpen(any(), any(), any());
-
-    final var params =
-        MessageCreateParams.builder()
-            .model("claude-3-haiku-20240307")
-            .maxTokens(256)
-            .addUserMessage("Hello!")
-            .build();
-
-    try (var stream = client.messages().createStreaming(params)) {
       final var stopReason =
-          stream.stream()
+          events.stream()
               .filter(e -> e.isMessageDelta())
               .map(e -> e.asMessageDelta().delta().stopReason())
               .filter(r -> r.isPresent())

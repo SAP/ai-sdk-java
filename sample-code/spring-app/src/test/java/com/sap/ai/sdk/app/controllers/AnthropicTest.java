@@ -1,7 +1,11 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static java.util.stream.Collectors.joining;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.anthropic.models.messages.ContentBlock;
+import com.anthropic.models.messages.RawContentBlockDelta;
+import com.anthropic.models.messages.RawMessageStreamEvent;
 import com.anthropic.models.messages.StopReason;
 import com.sap.ai.sdk.app.services.AnthropicService;
 import java.util.concurrent.atomic.AtomicReference;
@@ -18,9 +22,9 @@ class AnthropicTest {
     assertThat(message.content()).isNotEmpty();
     final var text =
         message.content().stream()
-            .filter(b -> b.isText())
-            .map(b -> b.text().map(t -> t.text()).orElse(""))
-            .reduce("", String::concat);
+            .filter(ContentBlock::isText)
+            .map(b -> b.asText().text())
+            .collect(joining());
     assertThat(text).containsIgnoringCase("paris");
     assertThat(message.stopReason()).hasValue(StopReason.END_TURN);
     assertThat(message.usage().outputTokens()).isGreaterThan(0);
@@ -32,9 +36,9 @@ class AnthropicTest {
 
     try (var stream = service.sendMessageStreamResponse("What is the capital of France?")) {
       stream.stream()
-          .filter(event -> event.isContentBlockDelta())
+          .filter(RawMessageStreamEvent::isContentBlockDelta)
           .map(event -> event.asContentBlockDelta().delta())
-          .filter(delta -> delta.isText())
+          .filter(RawContentBlockDelta::isText)
           .map(delta -> delta.asText().text())
           .forEach(text -> fullResponse.accumulateAndGet(text, String::concat));
     }

@@ -1,8 +1,9 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static java.util.stream.Collectors.joining;
+
 import com.anthropic.models.messages.ContentBlock;
 import com.anthropic.models.messages.RawMessageStreamEvent;
-import com.anthropic.models.messages.TextBlock;
 import com.anthropic.models.messages.TextDelta;
 import com.sap.ai.sdk.app.services.AnthropicService;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
@@ -31,8 +32,8 @@ public class AnthropicController {
     final var message = service.sendMessage("What is the capital of France?");
     return message.content().stream()
         .filter(ContentBlock::isText)
-        .map(block -> block.text().map(TextBlock::text).orElse(""))
-        .reduce("", String::concat);
+        .map(b -> b.asText().text())
+        .collect(joining());
   }
 
   /** Initiate new chat by sending message to Anthropic Claude. Stream response. */

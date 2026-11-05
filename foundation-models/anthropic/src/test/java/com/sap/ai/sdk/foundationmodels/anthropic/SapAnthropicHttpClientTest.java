@@ -183,9 +183,7 @@ class SapAnthropicHttpClientTest {
     final var brokenStream =
         spy(
             Objects.requireNonNull(
-                getClass()
-                    .getClassLoader()
-                    .getResourceAsStream("__files/invokeStreamResponse.txt")));
+                getClass().getClassLoader().getResourceAsStream("invokeStreamResponse.txt")));
 
     final var mockApacheResponse = mock(ClassicHttpResponse.class);
     doReturn(200).when(mockApacheResponse).getCode();
