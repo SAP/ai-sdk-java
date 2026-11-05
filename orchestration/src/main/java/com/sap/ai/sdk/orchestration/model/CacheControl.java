@@ -27,8 +27,14 @@ import javax.annotation.Nullable;
 
 /**
  * Cache control directive for prompt caching. When set on a content block, marks it as a cache
- * breakpoint. Supported on Anthropic Claude models and Azure OpenAI GPT-5.6+ Standard PAYG
- * deployments (Responses API path).
+ * breakpoint. **Note:** this field has no equivalent in the standard OpenAI Chat Completions API.
+ * It is modelled on Anthropic&#39;s prompt caching API and is a custom extension introduced by this
+ * service. Supported providers: - **Anthropic Claude models** — maps to Anthropic&#39;s native
+ * &#x60;cache_control&#x60; header. - **Azure OpenAI GPT-5.6+ Standard PAYG deployments** —
+ * translated to &#x60;prompt_cache_breakpoint: {mode: explicit}&#x60; on the wire. Supported on
+ * user message content blocks (text, image, file) on both the Responses API path (GPT-6+ models)
+ * and the Chat Completions path (GPT-5.6 models). System message cache breakpoints are not
+ * supported on Azure. Not supported on PTU-M deployments.
  */
 // CHECKSTYLE:OFF
 public class CacheControl
