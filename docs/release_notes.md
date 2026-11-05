@@ -13,10 +13,12 @@
 ### ✨ New Functionality
 
 - [Orchestration] Added new model `SAP_ABAP_2` to `OrchestrationAiModel`.
+- [Orchestration] `OrchestrationChatModel` now supports Spring AI's native structured output via `useProviderStructuredOutput()`, sending the response schema to the orchestration service as a `json_schema` response format.
 
 ### 📈 Improvements
 
 - [Core] Added `CoreApi.availableAiModels()` convenience methods to make model discovery more visible. Both the scenario ID (`"foundation-models"`) and resource group (`"default"`) are pre-filled by default. Use `availableAiModels(scenarioId, resourceGroup)` to specify custom values.
+- [Orchestration] Added `ResponseJsonSchema.fromString(String jsonSchema, String name)` to build a response schema from a raw JSON schema string.
 
 ### 🐛 Fixed Issues
 
