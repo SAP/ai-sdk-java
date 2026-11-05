@@ -3,9 +3,11 @@ package com.sap.ai.sdk.prompt.registry.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigGetResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigHistoryDeleteResponse;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigListResponse;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostRequest;
 import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigPostResponse;
+import com.sap.ai.sdk.prompt.registry.model.OrchestrationConfigScenarioDeleteResponse;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.ApiClient;
 import com.sap.cloud.sdk.services.openapi.apache.apiclient.BaseApi;
@@ -22,14 +24,19 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Prompt Registry API in version 0.0.1.
+ * Prompt Registry in version 0.14.4.
  *
- * <p>Prompt Storage service for Design time & Runtime prompt templates.
+ * <p>The Prompt Registry simplifies the lifecycle management of prompt templates across design and
+ * runtime environments. It comes with an imperative and declarative interface. This API
+ * specification describes the imperative API for managing prompt templates and also allows the
+ * retrieval of declarative managed prompt templates. A prompt template consists of chat messages
+ * where placeholders can be defined together with default values. Additional information such as
+ * metadata tags can be added to the resource as well.
  */
 public class OrchestrationConfigsApi extends BaseApi {
 
   /**
-   * Instantiates this API class to invoke operations on the Prompt Registry API.
+   * Instantiates this API class to invoke operations on the Prompt Registry.
    *
    * @param httpDestination The destination that API should be used with
    */
@@ -38,8 +45,8 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * Instantiates this API class to invoke operations on the Prompt Registry API based on a given
-   * {@link ApiClient}.
+   * Instantiates this API class to invoke operations on the Prompt Registry based on a given {@link
+   * ApiClient}.
    *
    * @param apiClient ApiClient to invoke the API on
    */
@@ -62,7 +69,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * Create or update an orchestration config
+   * Orchestration config create
+   *
+   * <p>Create or update an imperatively managed orchestration config
    *
    * <p><b>200</b> - Successful response
    *
@@ -126,7 +135,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * Create or update an orchestration config
+   * Orchestration config create
+   *
+   * <p>Create or update an imperatively managed orchestration config
    *
    * <p><b>200</b> - Successful response
    *
@@ -149,7 +160,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * Delete orchestration config
+   * Orchestration config delete
+   *
+   * <p>Delete an imperatively managed orchestration config
    *
    * <p><b>200</b> - Successful response
    *
@@ -159,7 +172,7 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param orchestrationConfigId (required) The value for the parameter orchestrationConfigId
+   * @param orchestrationConfigId (required) UUID of the resource.
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @return OrchestrationConfigDeleteResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
@@ -216,7 +229,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * Delete orchestration config
+   * Orchestration config delete
+   *
+   * <p>Delete an imperatively managed orchestration config
    *
    * <p><b>200</b> - Successful response
    *
@@ -226,7 +241,7 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param orchestrationConfigId The value for the parameter orchestrationConfigId
+   * @param orchestrationConfigId UUID of the resource.
    * @return OrchestrationConfigDeleteResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -237,7 +252,220 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * Export orchestration config
+   * Orchestration config history delete
+   *
+   * <p>Delete the version history of an imperatively managed orchestration config
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario (required) Scenario field of the resource.
+   * @param version (required) Version field of the resource.
+   * @param name (required) Name field of the resource.
+   * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @return OrchestrationConfigHistoryDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OrchestrationConfigHistoryDeleteResponse deleteOrchestrationConfigHistory(
+      @Nonnull final String scenario,
+      @Nonnull final String version,
+      @Nonnull final String name,
+      @Nullable final String aiResourceGroup)
+      throws OpenApiRequestException {
+
+    // verify the required parameter 'scenario' is set
+    if (scenario == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'scenario' when calling deleteOrchestrationConfigHistory")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'version' is set
+    if (version == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'version' when calling deleteOrchestrationConfigHistory")
+          .statusCode(400);
+    }
+
+    // verify the required parameter 'name' is set
+    if (name == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'name' when calling deleteOrchestrationConfigHistory")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath =
+        "/registry/v2/scenarios/{scenario}/orchestrationConfigs/{name}/versions/{version}/history"
+            .replaceAll(
+                "\\{" + "scenario" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(scenario)))
+            .replaceAll(
+                "\\{" + "version" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(version)))
+            .replaceAll(
+                "\\{" + "name" + "\\}", ApiClient.escapeString(ApiClient.parameterToString(name)));
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<OrchestrationConfigHistoryDeleteResponse> localVarReturnType =
+        new TypeReference<OrchestrationConfigHistoryDeleteResponse>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "DELETE",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarReturnType);
+  }
+
+  /**
+   * Orchestration config history delete
+   *
+   * <p>Delete the version history of an imperatively managed orchestration config
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario Scenario field of the resource.
+   * @param version Version field of the resource.
+   * @param name Name field of the resource.
+   * @return OrchestrationConfigHistoryDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OrchestrationConfigHistoryDeleteResponse deleteOrchestrationConfigHistory(
+      @Nonnull final String scenario, @Nonnull final String version, @Nonnull final String name)
+      throws OpenApiRequestException {
+    return deleteOrchestrationConfigHistory(scenario, version, name, null);
+  }
+
+  /**
+   * Orchestration config scenario delete
+   *
+   * <p>Delete all imperatively managed orchestration configs in a scenario
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario (required) Scenario field of the resource.
+   * @param aiResourceGroup (optional) Specify a resource group id to use
+   * @return OrchestrationConfigScenarioDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OrchestrationConfigScenarioDeleteResponse deleteOrchestrationConfigsByScenario(
+      @Nonnull final String scenario, @Nullable final String aiResourceGroup)
+      throws OpenApiRequestException {
+
+    // verify the required parameter 'scenario' is set
+    if (scenario == null) {
+      throw new OpenApiRequestException(
+              "Missing the required parameter 'scenario' when calling deleteOrchestrationConfigsByScenario")
+          .statusCode(400);
+    }
+
+    // create path and map variables
+    final String localVarPath =
+        "/registry/v2/scenarios/{scenario}/orchestrationConfigs"
+            .replaceAll(
+                "\\{" + "scenario" + "\\}",
+                ApiClient.escapeString(ApiClient.parameterToString(scenario)));
+
+    final StringJoiner localVarQueryStringJoiner = new StringJoiner("&");
+    final List<Pair> localVarQueryParams = new ArrayList<Pair>();
+    final List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+    final Map<String, String> localVarHeaderParams = new HashMap<String, String>(defaultHeaders);
+    final Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+    if (aiResourceGroup != null)
+      localVarHeaderParams.put("AI-Resource-Group", ApiClient.parameterToString(aiResourceGroup));
+
+    final String[] localVarAccepts = {"application/json"};
+    final String localVarAccept = ApiClient.selectHeaderAccept(localVarAccepts);
+    final String[] localVarContentTypes = {};
+
+    final String localVarContentType = ApiClient.selectHeaderContentType(localVarContentTypes);
+
+    final TypeReference<OrchestrationConfigScenarioDeleteResponse> localVarReturnType =
+        new TypeReference<OrchestrationConfigScenarioDeleteResponse>() {};
+
+    return apiClient.invokeAPI(
+        localVarPath,
+        "DELETE",
+        localVarQueryParams,
+        localVarCollectionQueryParams,
+        localVarQueryStringJoiner.toString(),
+        null,
+        localVarHeaderParams,
+        localVarFormParams,
+        localVarAccept,
+        localVarContentType,
+        localVarReturnType);
+  }
+
+  /**
+   * Orchestration config scenario delete
+   *
+   * <p>Delete all imperatively managed orchestration configs in a scenario
+   *
+   * <p><b>200</b> - Successful response
+   *
+   * <p><b>403</b> - Forbidden Error
+   *
+   * <p><b>404</b> - Bad Request
+   *
+   * <p><b>0</b> - Common Error
+   *
+   * @param scenario Scenario field of the resource.
+   * @return OrchestrationConfigScenarioDeleteResponse
+   * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
+   */
+  @Nonnull
+  public OrchestrationConfigScenarioDeleteResponse deleteOrchestrationConfigsByScenario(
+      @Nonnull final String scenario) throws OpenApiRequestException {
+    return deleteOrchestrationConfigsByScenario(scenario, null);
+  }
+
+  /**
+   * Orchestration config export
+   *
+   * <p>Download an orchestration config as a file
    *
    * <p><b>200</b> - Successful response
    *
@@ -245,7 +473,7 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param orchestrationConfigId (required) The value for the parameter orchestrationConfigId
+   * @param orchestrationConfigId (required) UUID of the resource.
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @return byte[]
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
@@ -301,7 +529,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * Export orchestration config
+   * Orchestration config export
+   *
+   * <p>Download an orchestration config as a file
    *
    * <p><b>200</b> - Successful response
    *
@@ -309,7 +539,7 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param orchestrationConfigId The value for the parameter orchestrationConfigId
+   * @param orchestrationConfigId UUID of the resource.
    * @return byte[]
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -320,7 +550,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * Get orchestration config by UUID
+   * Orchestration config get
+   *
+   * <p>Retrieve a orchestration config by its UUID
    *
    * <p><b>200</b> - Successful response
    *
@@ -330,11 +562,11 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param orchestrationConfigId (required) The value for the parameter orchestrationConfigId
+   * @param orchestrationConfigId (required) UUID of the resource.
    * @param aiResourceGroup (optional) Specify a resource group id to use
    * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
-   *     instead
-   * @param resolveTemplateRef2 (optional) The value for the parameter resolveTemplateRef2
+   *     instead.
+   * @param resolveTemplateRef2 (optional) Whether a template reference should be resolved
    * @return OrchestrationConfigGetResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -397,7 +629,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * Get orchestration config by UUID
+   * Orchestration config get
+   *
+   * <p>Retrieve a orchestration config by its UUID
    *
    * <p><b>200</b> - Successful response
    *
@@ -407,7 +641,7 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param orchestrationConfigId The value for the parameter orchestrationConfigId
+   * @param orchestrationConfigId UUID of the resource.
    * @return OrchestrationConfigGetResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -418,7 +652,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * Import orchestration config
+   * Orchestration config create
+   *
+   * <p>Create an imperatively managed orchestration config from a file
    *
    * <p><b>200</b> - Successful response
    *
@@ -472,7 +708,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * Import orchestration config
+   * Orchestration config create
+   *
+   * <p>Create an imperatively managed orchestration config from a file
    *
    * <p><b>200</b> - Successful response
    *
@@ -490,7 +728,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * List orchestration config history
+   * Orchestration config history
+   *
+   * <p>Obtain the history of edits of a particular imperatively managed orchestration config
    *
    * <p><b>200</b> - Successful response
    *
@@ -503,15 +743,15 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param scenario (required) The value for the parameter scenario
-   * @param version (required) The value for the parameter version
-   * @param name (required) The value for the parameter name
+   * @param scenario (required) Scenario field of the resource.
+   * @param version (required) Version field of the resource.
+   * @param name (required) Name field of the resource.
    * @param aiResourceGroup (optional) Specify a resource group id to use
-   * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead
-   * @param includeSpec2 (optional) The value for the parameter includeSpec2
+   * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead.
+   * @param includeSpec2 (optional) Whether include the spec section or not.
    * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
-   *     instead
-   * @param resolveTemplateRef2 (optional) The value for the parameter resolveTemplateRef2
+   *     instead.
+   * @param resolveTemplateRef2 (optional) Whether a template reference should be resolved
    * @param $top (optional) Number of results to return (1–500). When omitted the full result set is
    *     returned (up to the server limit).
    * @param $skip (optional, default to 0) Number of results to skip before returning the page.
@@ -606,7 +846,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * List orchestration config history
+   * Orchestration config history
+   *
+   * <p>Obtain the history of edits of a particular imperatively managed orchestration config
    *
    * <p><b>200</b> - Successful response
    *
@@ -619,9 +861,9 @@ public class OrchestrationConfigsApi extends BaseApi {
    *
    * <p><b>0</b> - Common Error
    *
-   * @param scenario The value for the parameter scenario
-   * @param version The value for the parameter version
-   * @param name The value for the parameter name
+   * @param scenario Scenario field of the resource.
+   * @param version Version field of the resource.
+   * @param name Name field of the resource.
    * @return OrchestrationConfigListResponse
    * @throws OpenApiRequestException if an error occurs while attempting to invoke the API
    */
@@ -634,7 +876,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * List orchestration configs
+   * Orchestration config list
+   *
+   * <p>List imperatively and declaratively managed orchestration config
    *
    * <p><b>200</b> - Successful response
    *
@@ -648,15 +892,16 @@ public class OrchestrationConfigsApi extends BaseApi {
    * <p><b>0</b> - Common Error
    *
    * @param aiResourceGroup (optional) Specify a resource group id to use
-   * @param scenario (optional) The value for the parameter scenario
-   * @param name (optional) The value for the parameter name
-   * @param version (optional) The value for the parameter version
-   * @param retrieve (optional, default to both) The value for the parameter retrieve
-   * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead
-   * @param includeSpec2 (optional) The value for the parameter includeSpec2
+   * @param scenario (optional) Scenario field of the resource.
+   * @param name (optional) Name field of the resource.
+   * @param version (optional) Version field of the resource.
+   * @param retrieve (optional, default to both) Whether to retrieve &#39;imperative&#39;,
+   *     &#39;declarative&#39;, or &#39;both&#39;.
+   * @param includeSpec (optional, default to false) DEPRECATED: Use includeSpec instead.
+   * @param includeSpec2 (optional) Whether the spec should be included in the response.
    * @param resolveTemplateRef (optional, default to false) DEPRECATED: Use resolveTemplateRef
-   *     instead
-   * @param resolveTemplateRef2 (optional) The value for the parameter resolveTemplateRef2
+   *     instead.
+   * @param resolveTemplateRef2 (optional) Whether a template reference should be resolved
    * @param $top (optional) Number of results to return (1–500). When omitted the full result set is
    *     returned (up to the server limit).
    * @param $skip (optional, default to 0) Number of results to skip before returning the page.
@@ -726,7 +971,9 @@ public class OrchestrationConfigsApi extends BaseApi {
   }
 
   /**
-   * List orchestration configs
+   * Orchestration config list
+   *
+   * <p>List imperatively and declaratively managed orchestration config
    *
    * <p><b>200</b> - Successful response
    *
