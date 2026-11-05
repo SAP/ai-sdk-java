@@ -51,4 +51,8 @@
     <packageUrl regex="true">^pkg:maven/org\.hdrhistogram/HdrHistogram.*$</packageUrl>
     <cve>CVE-2026-14686</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[CVE-2026-118042 has no official record yet on cve.org. The flagged dependency (guava-33.7.2-jre) also has no newer version at the moment.]]></notes>
+    <cve>CVE-2026-118042</cve>
+  </suppress>
 </suppressions>
