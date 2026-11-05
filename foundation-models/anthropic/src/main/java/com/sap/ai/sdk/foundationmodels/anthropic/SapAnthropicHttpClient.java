@@ -45,8 +45,8 @@ import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
  */
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-@SuppressWarnings(
-    "PMD.CloseResource") // Apache HttpClient lifecycle is managed by Cloud SDK's ApacheHttpClient5Cache
+@SuppressWarnings("PMD.CloseResource") // Apache HttpClient lifecycle is managed by Cloud SDK's
+// ApacheHttpClient5Cache
 class SapAnthropicHttpClient implements HttpClient {
 
   private static final String INVOKE_PATH = "invoke";
