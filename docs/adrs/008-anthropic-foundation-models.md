@@ -267,6 +267,11 @@ Every option receives result as a sum of its aspect values.
 | Score                  | 12.5                   | 8                           | __23__                        | 13                | 18                  |
 
 ## Consequences, New Dependencies, Open Points, Next Steps
+All options are prone to breaking changes from provider SDK. With every option we will have some
+technical means to postpone most of the breaking changes (defend our users). This can only be a temporary solution and
+eventually breaking changes will have to be reflected in our API.
+Otherwise, two APIs would eventually diverge to an unmanageable state.
+
 Further related decisions are to be made:
 - [Client api subset](./009-anthropic-client-api-subset.md)
 - [Client configuration](./010-anthropic-client-configuration.md)

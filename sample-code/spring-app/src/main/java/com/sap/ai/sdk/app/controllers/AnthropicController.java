@@ -1,6 +1,8 @@
 package com.sap.ai.sdk.app.controllers;
 
+import com.anthropic.models.messages.ContentBlock;
 import com.anthropic.models.messages.RawMessageStreamEvent;
+import com.anthropic.models.messages.TextBlock;
 import com.anthropic.models.messages.TextDelta;
 import com.sap.ai.sdk.app.services.AnthropicService;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
@@ -28,8 +30,8 @@ public class AnthropicController {
   String sendMessage() {
     final var message = service.sendMessage("What is the capital of France?");
     return message.content().stream()
-        .filter(block -> block.isText())
-        .map(block -> block.text().map(t -> t.text()).orElse(""))
+        .filter(ContentBlock::isText)
+        .map(block -> block.text().map(TextBlock::text).orElse(""))
         .reduce("", String::concat);
   }
 
