@@ -240,24 +240,23 @@ public class OrchestrationService {
       @Nonnull final String firstQuestion, @Nonnull final String followUp) {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    val clientWithConfig = client.chatCompletion().config(reasoningConfig);
 
     // Turn 1
     val firstPrompt = PromptTemplate.create(firstQuestion);
-    val firstResponse =
-        client.chatCompletion().config(reasoningConfig).promptTemplate(firstPrompt).execute();
+    val firstResponse = clientWithConfig.promptTemplate(firstPrompt).execute();
 
     // Turn 2 feeds the whole history back. getAllMessages() already carries the reasoning content
     // on the final assistant message.
     val followUpPrompt =
         PromptTemplate.create(followUp).withMessageHistory(firstResponse.getAllMessages());
-    val followUpResponse =
-        client.chatCompletion().config(reasoningConfig).promptTemplate(followUpPrompt).execute();
+    val followUpResponse = clientWithConfig.promptTemplate(followUpPrompt).execute();
 
     return new ReasoningOutput(followUpResponse.getContent(), followUpResponse.getReasoningText());
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template.
+   * Chat request to OpenAI through the Orchestration service using a template.
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
@@ -287,15 +286,16 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse messagesHistory(@Nonnull final String prevMessage) {
     val prompt = PromptTemplate.create(Message.user(prevMessage));
+    val clientWithConfig = client.chatCompletion().config(config);
 
-    val result = client.chatCompletion().config(config).promptTemplate(prompt).execute();
+    val result = clientWithConfig.promptTemplate(prompt).execute();
 
     // Let's presume a user asks the following follow-up question
     val nextPrompt =
         PromptTemplate.create(Message.user("What is the typical food there?"))
             .withMessageHistory(result.getAllMessages());
 
-    return client.chatCompletion().config(config).promptTemplate(nextPrompt).execute();
+    return clientWithConfig.promptTemplate(nextPrompt).execute();
   }
 
   /**
