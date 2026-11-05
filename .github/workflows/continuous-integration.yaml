@@ -82,6 +82,11 @@ jobs:
           MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} org.jacoco:jacoco-maven-plugin:prepare-agent surefire:test org.jacoco:jacoco-maven-plugin:report org.jacoco:jacoco-maven-plugin:check@default-check"
           mvn $MVN_ARGS
 
+      - name: "Check Minimal Dependencies"
+        run: |
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} ${{ env.MVN_SKIP_CI_PLUGINS }} test-compile -P floor-deps"
+          mvn $MVN_ARGS
+
       - name: "Slack Notification"
         if: ${{ github.ref == 'refs/heads/main' && failure() }}
         uses: slackapi/slack-github-action@v4.0.0
