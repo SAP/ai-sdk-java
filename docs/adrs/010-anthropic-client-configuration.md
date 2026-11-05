@@ -62,7 +62,7 @@ and original implementation (just configured correctly to call SAP gateway)
 | Flexibility             | High - we still pre-configure all clients, but users can tweak configs for non-standard use cases | 
 
 ## Decision
-Do nothing (option C)
+Do nothing (option C) is proposed.
 
 We pre-configure all clients, but users can break things if they explicitly re-configure them
 

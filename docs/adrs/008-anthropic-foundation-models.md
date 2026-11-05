@@ -41,7 +41,7 @@ Stream<AnthropicChatCompletionDelta> stream =
 | Aspect                 | Value                                                                                                                                                                                 |
 |------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Maintenance effort     | High — every upstream API change requires SDK updates                                                                                                                                 |
-| Code footprint         | Large. In order to provide typed API many classes will have to be written, covered with tests and documented                                                                          |
+| Codebase size          | Large. In order to provide typed API many classes will have to be written, covered with tests and documented                                                                          |
 | User value             | Moderate. All new functionality from Antropics won't be supported immediately (lag). Most/much of functionality won't be supported at all given the development capacity constraints. |
 | API stability          | Moderade to high — SAP owns the contract but on upstream API changes we may have to introduce breaking changes to our API                                                             |
 | Backend replaceability | Hard — POJOs tightly coupled to Bedrock wire format, almost entire codebase will have to be re-written                                                                                |
@@ -89,7 +89,7 @@ try (var stream =
 | Aspect                 | Value                                                                                                                     |
 |------------------------|---------------------------------------------------------------------------------------------------------------------------|
 | Maintenance effort     | Very high - implementation depends not only on Anthropic API changes but also on Converse AWS API changes                 |
-| Code footprint         | Large — high level mapping between the APIs is needed. some features might be impossible to map                           |
+| Codebase size          | Large — high level mapping between the APIs is needed. some features might be impossible to map                           |
 | User value             | Medium — official, fully-typed, well-documented Anthropic API but scope is limited by not all operations supported/mapped |
 | API stability          | Low — glue (mapping) between Anthropics API and Converse API is brittle                                                   |
 | Backend replaceability | Difficult — implementation will have to be redone                                                                         |
@@ -131,7 +131,7 @@ try (var stream = AiCoreAnthropicClient.forModel(CLAUDE_45_HAIKU).messages().cre
 | Aspect                 | Value                                                                           |
 |------------------------|---------------------------------------------------------------------------------|
 | Maintenance effort     | Low — SDK absorbs upstream changes |
-| Code footprint         | Small — bridge only: `AiCoreAnthropicClient`, `SapAnthropicHttpClient` |
+| Codebase size          | Small — bridge only: `AiCoreAnthropicClient`, `SapAnthropicHttpClient` |
 | User value             | High — official, fully-typed, well-documented Anthropic API |
 | API stability          | Stable — Anthropic owns and maintains the contract |
 | Backend replaceability | Easy — transport is swappable without breaking user code |
@@ -177,12 +177,12 @@ bedrockClient.invokeModelWithResponseStream(
         .build());
 ```
 
-| Aspect          | Value                                                                            |
-|-----------------|----------------------------------------------------------------------------------|
-| Maintenance effort | Near zero — no types owned                                                    |
-| Code footprint | Minimal                                                                           |
-| User value | Low — user owns JSON serialization, response parsing, and SSE chunk handling          |
-| API stability | Stable at transport level; unstable at payload level — user owns the wire format   |
+| Aspect                 | Value                                                                            |
+|------------------------|----------------------------------------------------------------------------------|
+| Maintenance effort     | Near zero — no types owned                                                    |
+| Codebase size          | Minimal                                                                           |
+| User value             | Low — user owns JSON serialization, response parsing, and SSE chunk handling          |
+| API stability          | Stable at transport level; unstable at payload level — user owns the wire format   |
 | Backend replaceability | Virtually impossible — user code is tightly coupled to Bedrock wire format|
 
 #### Option E: AWS Converse SDK
@@ -243,7 +243,7 @@ bedrockClient.converseStream(
 | Aspect                 | Value                                                                                                                                                                                             |
 |------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Maintenance effort     | Low for AWS SDK changes — typed classes are SDK-owned; but Anthropic-specific features (extended thinking, tool use variants) may lag behind the native Anthropic API                             |
-| Code footprint         | Small — bridge only: SAP endpoint/credential wiring; no request/response mapping needed                                                                                                           |
+| Codebase size          | Small — bridge only: SAP endpoint/credential wiring; no request/response mapping needed                                                                                                           |
 | User value             | Medium — familiar AWS SDK patterns for teams already using Bedrock; but Anthropic-specific parameters (e.g. `betas`, prompt caching) are not exposed (against the purpose of "foundation models") |
 | API stability          | High — AWS Converse API is stable and model-agnostic; Anthropic-specific capabilities limited to what Converse supports                                                                           |
 | Backend replaceability | Moderate — switching to a non-Bedrock backend requires replacing the AWS SDK dependency; Converse API types are AWS-specific                                                                      |
@@ -260,7 +260,7 @@ Every option receives result as a sum of its aspect values.
 | Aspect                 | A: Convenience classes | B: Anthropic SDK + Converse | __C: Anthropic SDK + Invoke__ | D: AWS Invoke SDK | E: AWS Converse SDK |
 |------------------------|------------------------|-----------------------------|-------------------------------|-------------------|---------------------|
 | Maintenance effort     | High (2)               | Very high (1)               | __Low (4)__                   | Near zero (5)     | Low (4)             |
-| Code footprint         | Large (2)              | Large (1)                   | __Small (4)__                 | Minimal (5)       | Small (4)           |
+| Codebase size          | Large (2)              | Large (1)                   | __Small (4)__                 | Minimal (5)       | Small (4)           |
 | User value             | Moderate (3)           | Moderate (3)                | __High (5)__                  | Low (1)           | Moderate (3)        |
 | API stability          | Moderate–high (3.5)    | Low (1)                     | __High (5)__                  | Low (payload) (1) | Moderate (3)        |
 | Backend replaceability | Hard (1)               | Difficult (2)               | __Easy (5)__                  | Impossible (1)    | High (4)            |
