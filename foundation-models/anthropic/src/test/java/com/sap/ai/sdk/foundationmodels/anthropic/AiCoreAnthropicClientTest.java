@@ -105,7 +105,7 @@ class AiCoreAnthropicClientTest {
     assertThat(response.id()).isEqualTo("msg_01XFDUDYJgAACzvnptvVoYEL");
     assertThat(response.stopReason()).hasValue(StopReason.END_TURN);
     assertThat(response.content()).hasSize(1);
-    assertThat(response.content().get(0).text().map(t -> t.text()))
+    assertThat(response.content().get(0).text().map(TextBlock::text))
         .hasValue("Hello! How can I assist you today?");
     assertThat(response.usage().inputTokens()).isEqualTo(10);
     assertThat(response.usage().outputTokens()).isEqualTo(9);
@@ -155,25 +155,25 @@ class AiCoreAnthropicClientTest {
             .build();
 
     try (var stream = client.messages().createStreaming(params)) {
-      final var events = stream.stream().collect(Collectors.toList());
+      final var events = stream.stream().toList();
 
       final var chunks =
           events.stream()
-              .filter(e -> e.isContentBlockDelta())
-              .map(e -> e.asContentBlockDelta())
+              .filter(RawMessageStreamEvent::isContentBlockDelta)
+              .map(RawMessageStreamEvent::asContentBlockDelta)
               .map(RawContentBlockDeltaEvent::delta)
-              .filter(d -> d.isText())
+              .filter(RawContentBlockDelta::isText)
               .map(d -> d.asText().text())
-              .collect(Collectors.toList());
+              .toList();
 
       assertThat(chunks).containsExactly("Hello", "!", " How can I", " assist", " you today?");
 
       final var stopReason =
           events.stream()
-              .filter(e -> e.isMessageDelta())
+              .filter(RawMessageStreamEvent::isMessageDelta)
               .map(e -> e.asMessageDelta().delta().stopReason())
-              .filter(r -> r.isPresent())
-              .map(r -> r.get())
+              .filter(Optional::isPresent)
+              .map(Optional::get)
               .findFirst();
 
       assertThat(stopReason).hasValue(StopReason.END_TURN);

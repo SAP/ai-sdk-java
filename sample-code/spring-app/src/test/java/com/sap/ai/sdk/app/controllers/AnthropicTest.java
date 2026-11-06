@@ -18,7 +18,6 @@ class AnthropicTest {
   void chatCompletion() {
     final var message = service.sendMessage("What is the capital of France?");
 
-    assertThat(message).isNotNull();
     assertThat(message.content()).isNotEmpty();
     final var text =
         message.content().stream()

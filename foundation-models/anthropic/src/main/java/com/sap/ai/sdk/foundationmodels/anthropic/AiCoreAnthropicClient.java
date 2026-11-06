@@ -80,7 +80,7 @@ public class AiCoreAnthropicClient {
    */
   @Nonnull
   public MessageService messages() {
-    return forDestination(destination).client().messages();
+    return client().messages();
   }
 
   /**
