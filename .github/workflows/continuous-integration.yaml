@@ -84,7 +84,7 @@ jobs:
 
       - name: "Check Minimal Dependencies"
         run: |
-          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} ${{ env.MVN_SKIP_CI_PLUGINS }} test-compile -P floor-deps"
+          MVN_ARGS="${{ env.MVN_MULTI_THREADED_ARGS }} ${{ env.MVN_SKIP_CI_PLUGINS }} clean test -P floor-deps"
           mvn $MVN_ARGS
 
       - name: "Slack Notification"
