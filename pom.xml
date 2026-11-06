@@ -114,6 +114,16 @@
     <!--  Binary compatibility check old/new version file -->
     <japicmp.oldVersion.file>/tmp/baseline.jar</japicmp.oldVersion.file>
     <japicmp.newVersion.file>${project.build.directory}/${project.build.finalName}.jar</japicmp.newVersion.file>
+    <!-- Minimum supported versions of consumer-facing dependencies, verified by the 'floor-deps' profile -->
+    <floor.cloud-sdk.version>5.28.0</floor.cloud-sdk.version>
+    <floor.jackson.version>2.18.0</floor.jackson.version>
+    <!-- jackson-annotations versions independently from databind/core; Jackson 3 / Spring AI 2.0 needs >= 2.22 (JsonApplyView) -->
+    <floor.jackson-annotations.version>2.22</floor.jackson-annotations.version>
+    <!-- Coupled to the Cloud SDK floor: SAP Cloud SDK 5.28.0 calls HttpClient5 5.4+ APIs at runtime -->
+    <floor.httpcomponents-core5.version>5.4.2</floor.httpcomponents-core5.version>
+    <floor.httpcomponents-client5.version>5.6</floor.httpcomponents-client5.version>
+    <floor.slf4j.version>2.0.0</floor.slf4j.version>
+    <floor.spring-ai.version>2.0.0</floor.spring-ai.version>
   </properties>
 
   <dependencyManagement>
@@ -984,6 +994,65 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
     </plugins>
   </build>
   <profiles>
+    <profile>
+      <!-- Verify the SDK still compiles against the minimum supported dependency versions (floor.* properties).
+           Run with: mvn test -P floor-deps -->
+      <id>floor-deps</id>
+      <dependencyManagement>
+        <dependencies>
+          <dependency>
+            <groupId>com.sap.cloud.sdk</groupId>
+            <artifactId>sdk-bom</artifactId>
+            <version>${floor.cloud-sdk.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+          </dependency>
+          <!-- optional integration: spring-ai is declared optional in module poms, but still compiled -->
+          <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-bom</artifactId>
+            <version>${floor.spring-ai.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+          </dependency>
+          <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${floor.jackson.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${floor.jackson.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${floor.jackson-annotations.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5</artifactId>
+            <version>${floor.httpcomponents-core5.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5-h2</artifactId>
+            <version>${floor.httpcomponents-core5.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>${floor.httpcomponents-client5.version}</version>
+          </dependency>
+          <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${floor.slf4j.version}</version>
+          </dependency>
+        </dependencies>
+      </dependencyManagement>
+    </profile>
     <profile>
       <id>non-release</id>
       <activation>
