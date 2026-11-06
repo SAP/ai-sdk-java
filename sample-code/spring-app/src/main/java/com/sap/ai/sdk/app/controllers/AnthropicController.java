@@ -1,0 +1,112 @@
+package com.sap.ai.sdk.app.controllers;
+
+import static com.openai.core.ObjectMappers.jsonMapper;
+import static java.util.stream.Collectors.joining;
+
+import com.anthropic.models.messages.ContentBlock;
+import com.anthropic.models.messages.Message;
+import com.anthropic.models.messages.RawMessageStreamEvent;
+import com.anthropic.models.messages.TextDelta;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.sap.ai.sdk.app.services.AnthropicService;
+import com.sap.ai.sdk.core.common.ClientException;
+import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
+import java.io.IOException;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+
+/** Endpoints for Anthropic Claude operations. */
+@Slf4j
+@RestController
+@SuppressWarnings("unused")
+public class AnthropicController {
+
+  @Autowired private AnthropicService service;
+
+  /** Initiate new chat by sending message to Anthropic Claude. */
+  @GetMapping("/anthropic/sendMessage")
+  @Nonnull
+  Object sendMessage(
+      @Nullable @RequestParam(value = "format", required = false) final String format)
+      throws JsonProcessingException {
+    final var message = service.sendMessage("What is the capital of France?");
+    if ("json".equals(format)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(jsonMapper().writeValueAsString(message));
+    }
+    return extractText(message);
+  }
+
+  /** Initiate new chat by sending message to Anthropic Claude. Stream response. */
+  @GetMapping("/anthropic/sendMessageStreamResponse")
+  @Nonnull
+  ResponseEntity<ResponseBodyEmitter> sendMessageStreamResponse() {
+    final var message = "Can you give me the first 100 numbers of the Fibonacci sequence?";
+    ;
+    final var emitter = new ResponseBodyEmitter();
+    send(emitter, "Model response:\n\n");
+    final Runnable consumeStream =
+        () -> {
+          try (var stream = service.sendMessageStreamResponse(message)) {
+            stream.stream()
+                .filter(RawMessageStreamEvent::isContentBlockDelta)
+                .forEach(
+                    deltaMessage -> {
+                      send(
+                          emitter,
+                          deltaMessage
+                              .asContentBlockDelta()
+                              .delta()
+                              .text()
+                              .orElseGet(() -> TextDelta.of(""))
+                              .text());
+                      try {
+                        Thread.sleep(
+                            20); // adding artificial slowdown to demonstrate api actually streams
+                      } catch (InterruptedException e) {
+                        throw new ClientException(e);
+                      }
+                    });
+          } finally {
+            emitter.complete();
+          }
+        };
+    ThreadContextExecutors.getExecutor().execute(consumeStream);
+
+    // TEXT_EVENT_STREAM allows the browser to display the content as it is streamed
+    return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).body(emitter);
+  }
+
+  /**
+   * Send a chunk to the emitter.
+   *
+   * @param emitter the emitter to send the chunk to.
+   * @param chunk the chunk to send.
+   */
+  public static void send(@Nonnull final ResponseBodyEmitter emitter, @Nonnull final String chunk) {
+    try {
+      log.warn("sending message to anthropic: {}", chunk);
+      emitter.send(chunk);
+    } catch (final IOException e) {
+      log.error("Failed to send chunk: {}", e.getMessage(), e);
+      emitter.completeWithError(e);
+    }
+  }
+
+  @Nonnull
+  private static String extractText(@Nonnull final Message message) {
+    return message.content().stream()
+        .filter(ContentBlock::isText)
+        .map(b -> b.asText().text())
+        .collect(joining());
+  }
+}
