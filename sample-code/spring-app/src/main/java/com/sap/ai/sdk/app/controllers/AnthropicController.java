@@ -6,6 +6,7 @@ import com.anthropic.models.messages.ContentBlock;
 import com.anthropic.models.messages.RawMessageStreamEvent;
 import com.anthropic.models.messages.TextDelta;
 import com.sap.ai.sdk.app.services.AnthropicService;
+import com.sap.ai.sdk.core.common.ClientException;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import javax.annotation.Nonnull;
@@ -50,15 +51,22 @@ public class AnthropicController {
             stream.stream()
                 .filter(RawMessageStreamEvent::isContentBlockDelta)
                 .forEach(
-                    deltaMessage ->
-                        send(
-                            emitter,
-                            deltaMessage
-                                .asContentBlockDelta()
-                                .delta()
-                                .text()
-                                .orElseGet(() -> TextDelta.of(""))
-                                .text()));
+                    deltaMessage -> {
+                      send(
+                          emitter,
+                          deltaMessage
+                              .asContentBlockDelta()
+                              .delta()
+                              .text()
+                              .orElseGet(() -> TextDelta.of(""))
+                              .text());
+                      try {
+                        Thread.sleep(
+                            20); // adding artificial slowdown to demonstrate api actually streams
+                      } catch (InterruptedException e) {
+                        throw new ClientException(e);
+                      }
+                    });
           } finally {
             emitter.complete();
           }
