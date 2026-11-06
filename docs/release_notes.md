@@ -8,7 +8,7 @@
 
 ### 🔧 Compatibility Notes
 
-- The SDK is verified to build against these minimum supported dependency versions: SAP Cloud SDK `5.28.0`, Jackson `2.18.0`, Apache HttpComponents `5.2.1`, SLF4J `2.0.0`, Spring AI `1.1.0` (optional).
+- The SDK is verified to build against these minimum supported dependency versions: SAP Cloud SDK `5.28.0`, Jackson `2.18.0`, Apache HttpComponents `5.4.2`, SLF4J `2.0.0`, Spring AI `1.1.0` (optional).
 
 ### ✨ New Functionality
 
