@@ -14,7 +14,6 @@ import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -32,18 +31,18 @@ public class AnthropicController {
 
   @Autowired private AnthropicService service;
 
-  /**
-   * Initiate new chat by sending message to Anthropic Claude.
-   */
+  /** Initiate new chat by sending message to Anthropic Claude. */
   @GetMapping("/anthropic/sendMessage")
   @Nonnull
-  Object sendMessage(@Nullable @RequestParam(value = "format", required = false) final String format) throws JsonProcessingException {
+  Object sendMessage(
+      @Nullable @RequestParam(value = "format", required = false) final String format)
+      throws JsonProcessingException {
     final var message = service.sendMessage("What is the capital of France?");
-      if ("json".equals(format)) {
-          return ResponseEntity.ok()
-                  .contentType(MediaType.APPLICATION_JSON)
-                  .body(jsonMapper().writeValueAsString(message));
-      }
+    if ("json".equals(format)) {
+      return ResponseEntity.ok()
+          .contentType(MediaType.APPLICATION_JSON)
+          .body(jsonMapper().writeValueAsString(message));
+    }
     return extractText(message);
   }
 
@@ -103,11 +102,11 @@ public class AnthropicController {
     }
   }
 
-    @Nonnull
-    private static String extractText(@Nonnull final Message message) {
-        return message.content().stream()
-                .filter(ContentBlock::isText)
-                .map(b -> b.asText().text())
-                .collect(joining());
-    }
+  @Nonnull
+  private static String extractText(@Nonnull final Message message) {
+    return message.content().stream()
+        .filter(ContentBlock::isText)
+        .map(b -> b.asText().text())
+        .collect(joining());
+  }
 }
