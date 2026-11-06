@@ -117,8 +117,11 @@
     <!-- Minimum supported versions of consumer-facing dependencies, verified by the 'floor-deps' profile -->
     <floor.cloud-sdk.version>5.28.0</floor.cloud-sdk.version>
     <floor.jackson.version>2.18.0</floor.jackson.version>
-    <floor.httpcomponents-core5.version>5.2.1</floor.httpcomponents-core5.version>
-    <floor.httpcomponents-client5.version>5.2.1</floor.httpcomponents-client5.version>
+    <!-- jackson-annotations versions independently from databind/core; Jackson 3 / Spring AI 2.0 needs >= 2.22 (JsonApplyView) -->
+    <floor.jackson-annotations.version>2.22</floor.jackson-annotations.version>
+    <!-- Coupled to the Cloud SDK floor: SAP Cloud SDK 5.28.0 calls HttpClient5 5.4+ APIs at runtime -->
+    <floor.httpcomponents-core5.version>5.4.2</floor.httpcomponents-core5.version>
+    <floor.httpcomponents-client5.version>5.6</floor.httpcomponents-client5.version>
     <floor.slf4j.version>2.0.0</floor.slf4j.version>
     <floor.spring-ai.version>2.0.0</floor.spring-ai.version>
   </properties>
@@ -1025,7 +1028,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
           <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>${floor.jackson.version}</version>
+            <version>${floor.jackson-annotations.version}</version>
           </dependency>
           <dependency>
             <groupId>org.apache.httpcomponents.core5</groupId>
