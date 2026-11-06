@@ -320,6 +320,10 @@ jobs:
           git config --global user.name "SAP Cloud SDK Bot"
           git add --all
           git status
+          if git diff --cached --quiet; then
+            echo "Nothing to commit, skipping commit and push."
+            exit 0
+          fi
           git commit -m "Update $SERVICE based on $REF"
           git push --set-upstream origin ${{ steps.branch.outputs.branch }}
 
