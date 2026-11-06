@@ -33,7 +33,9 @@ public class OrchestrationFilterException extends OrchestrationClientException {
    * @return the LlamaGuard38b object, or {@code null} if not found or conversion fails.
    * @throws IllegalArgumentException if the conversion of filter details to {@link LlamaGuard38b}
    *     fails due to invalid content.
+   * @deprecated Use {@link GraniteGuardianFilter} and {@link #getGraniteGuardian41()} instead.
    */
+  @Deprecated
   @Nullable
   public LlamaGuard38b getLlamaGuard38b() {
     return Optional.ofNullable(filterDetails.get("llama_guard_3_8b"))
@@ -50,7 +52,7 @@ public class OrchestrationFilterException extends OrchestrationClientException {
    *     GraniteGuardian41Categories} fails due to invalid content.
    */
   @Nullable
-  public GraniteGuardian41Categories getGraniteGuardian() {
+  public GraniteGuardian41Categories getGraniteGuardian41() {
     return Optional.ofNullable(filterDetails.get("granite_guardian_4_1"))
         .map(
             obj ->

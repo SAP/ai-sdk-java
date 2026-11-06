@@ -2135,8 +2135,8 @@ class OrchestrationUnitTest {
               assertThat(e.getAzureContentSafetyInput().getSexual()).isEqualTo(NUMBER_0);
               assertThat(e.getAzureContentSafetyInput().getViolence()).isEqualTo(NUMBER_6);
 
-              assertThat(e.getGraniteGuardian()).isNotNull();
-              assertThat(e.getGraniteGuardian().isViolence()).isTrue();
+              assertThat(e.getGraniteGuardian41()).isNotNull();
+              assertThat(e.getGraniteGuardian41().isViolence()).isTrue();
             });
   }
 
@@ -2193,8 +2193,8 @@ class OrchestrationUnitTest {
               assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
               assertThat(e.getAzureContentSafetyOutput().isProtectedMaterialCode()).isFalse();
 
-              assertThat(e.getGraniteGuardian()).isNotNull();
-              assertThat(e.getGraniteGuardian().isViolence()).isTrue();
+              assertThat(e.getGraniteGuardian41()).isNotNull();
+              assertThat(e.getGraniteGuardian41().isViolence()).isTrue();
             });
   }
 

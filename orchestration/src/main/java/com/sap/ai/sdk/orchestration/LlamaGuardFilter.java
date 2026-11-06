@@ -30,7 +30,10 @@ import lombok.experimental.Accessors;
  *
  * <p><a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/output-filtering">SAP
  * AI Core: Orchestration - Output Filtering</a>
+ *
+ * @deprecated Use {@link GraniteGuardianFilter} instead.
  */
+@Deprecated
 @Accessors(fluent = true)
 @Setter
 public class LlamaGuardFilter extends ContentFilter {
