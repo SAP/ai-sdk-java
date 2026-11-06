@@ -4,6 +4,7 @@ import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.get
 
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
+import com.sap.ai.sdk.orchestration.model.GraniteGuardian41Categories;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import java.util.Map;
 import java.util.Optional;
@@ -37,6 +38,23 @@ public class OrchestrationFilterException extends OrchestrationClientException {
   public LlamaGuard38b getLlamaGuard38b() {
     return Optional.ofNullable(filterDetails.get("llama_guard_3_8b"))
         .map(obj -> getOrchestrationObjectMapper().convertValue(obj, LlamaGuard38b.class))
+        .orElse(null);
+  }
+
+  /**
+   * Retrieves Granite Guardian 4.1 details from {@code filterDetails}, if present.
+   *
+   * @return the GraniteGuardian41Categories object, or {@code null} if not found or conversion
+   *     fails.
+   * @throws IllegalArgumentException if the conversion of filter details to {@link
+   *     GraniteGuardian41Categories} fails due to invalid content.
+   */
+  @Nullable
+  public GraniteGuardian41Categories getGraniteGuardian() {
+    return Optional.ofNullable(filterDetails.get("granite_guardian_4_1"))
+        .map(
+            obj ->
+                getOrchestrationObjectMapper().convertValue(obj, GraniteGuardian41Categories.class))
         .orElse(null);
   }
 

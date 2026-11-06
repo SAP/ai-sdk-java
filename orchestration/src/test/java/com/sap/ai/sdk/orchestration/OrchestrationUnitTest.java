@@ -22,7 +22,6 @@ import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.*;
-import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.getOrchestrationObjectMapper;
 import static com.sap.ai.sdk.orchestration.PromptTemplateReference.ScopeEnum.RESOURCE_GROUP;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_0;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.NUMBER_4;
@@ -57,22 +56,18 @@ import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.ErrorResponse;
 import com.sap.ai.sdk.orchestration.model.ErrorResponseError;
-import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GraniteGuardian41;
 import com.sap.ai.sdk.orchestration.model.GraniteGuardian41Categories;
-import com.sap.ai.sdk.orchestration.model.GraniteGuardianFilterConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfigPlaceholders;
-import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.KeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.ModuleResultsStreaming;
-import com.sap.ai.sdk.orchestration.model.OutputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.PartialOrchestrationConfig;
 import com.sap.ai.sdk.orchestration.model.ResponseFormatText;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
@@ -2037,24 +2032,15 @@ class OrchestrationUnitTest {
             .protectedMaterialCode(false);
 
     final var graniteFilter =
-        GraniteGuardianFilterConfig.create()
-            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
+        new GraniteGuardianFilter()
             .config(
                 GraniteGuardian41.create()
                     .categories(GraniteGuardian41Categories.create().harm(true)));
 
-    final var filteringConfig =
-        FilteringModuleConfig.create()
-            .input(
-                InputFilteringConfig.create()
-                    .filters(List.of(azureFilter.createInputFilterConfig(), graniteFilter)))
-            .output(
-                OutputFilteringConfig.create()
-                    .filters(List.of(azureFilter.createOutputFilterConfig())));
-
     client
         .chatCompletion()
-        .config(config.withFilteringConfig(filteringConfig))
+        .config(
+            config.withInputFiltering(azureFilter, graniteFilter).withOutputFiltering(azureFilter))
         .promptTemplate(prompt)
         .execute();
 
@@ -2078,24 +2064,16 @@ class OrchestrationUnitTest {
             .protectedMaterialCode(false);
 
     final var graniteFilter =
-        GraniteGuardianFilterConfig.create()
-            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
+        new GraniteGuardianFilter()
             .config(
                 GraniteGuardian41.create()
                     .categories(GraniteGuardian41Categories.create().harm(true)));
 
-    final var outputFilteringConfig =
-        OutputFilteringConfig.create()
-            .filters(List.of(azureFilter.createOutputFilterConfig()))
-            .streamOptions(FilteringStreamOptions.create().overlap(1_000));
-    final var filteringConfig =
-        FilteringModuleConfig.create()
-            .input(
-                InputFilteringConfig.create()
-                    .filters(List.of(azureFilter.createInputFilterConfig(), graniteFilter)))
-            .output(outputFilteringConfig);
-
-    OrchestrationModuleConfig myConfig = config.withFilteringConfig(filteringConfig);
+    OrchestrationModuleConfig myConfig =
+        config
+            .withInputFiltering(azureFilter, graniteFilter)
+            .withOutputFiltering(azureFilter)
+            .withOutputFilteringStreamOptions(FilteringStreamOptions.create().overlap(1_000));
 
     Stream<String> result =
         client.chatCompletion().config(myConfig).promptTemplate(prompt).executeStream();
@@ -2123,18 +2101,12 @@ class OrchestrationUnitTest {
             .violence(ALLOW_SAFE);
 
     final var graniteFilter =
-        GraniteGuardianFilterConfig.create()
-            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
+        new GraniteGuardianFilter()
             .config(
                 GraniteGuardian41.create()
                     .categories(GraniteGuardian41Categories.create().violence(true)));
 
-    final var filteringConfig =
-        FilteringModuleConfig.create()
-            .input(
-                InputFilteringConfig.create()
-                    .filters(List.of(azureFilter.createInputFilterConfig(), graniteFilter)));
-    final var configWithFilter = config.withFilteringConfig(filteringConfig);
+    final var configWithFilter = config.withInputFiltering(azureFilter, graniteFilter);
 
     assertThatThrownBy(
             () -> client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute())
@@ -2163,13 +2135,8 @@ class OrchestrationUnitTest {
               assertThat(e.getAzureContentSafetyInput().getSexual()).isEqualTo(NUMBER_0);
               assertThat(e.getAzureContentSafetyInput().getViolence()).isEqualTo(NUMBER_6);
 
-              final var graniteDetails =
-                  getOrchestrationObjectMapper()
-                      .convertValue(
-                          e.getFilterDetails().get("granite_guardian_4_1"),
-                          GraniteGuardian41Categories.class);
-              assertThat(graniteDetails).isNotNull();
-              assertThat(graniteDetails.isViolence()).isTrue();
+              assertThat(e.getGraniteGuardian()).isNotNull();
+              assertThat(e.getGraniteGuardian().isViolence()).isTrue();
             });
   }
 
@@ -2188,18 +2155,12 @@ class OrchestrationUnitTest {
             .protectedMaterialCode(true);
 
     final var graniteFilter =
-        GraniteGuardianFilterConfig.create()
-            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
+        new GraniteGuardianFilter()
             .config(
                 GraniteGuardian41.create()
                     .categories(GraniteGuardian41Categories.create().violence(true)));
 
-    final var filteringConfig =
-        FilteringModuleConfig.create()
-            .output(
-                OutputFilteringConfig.create()
-                    .filters(List.of(azureFilter.createOutputFilterConfig(), graniteFilter)));
-    final var configWithFilter = config.withFilteringConfig(filteringConfig);
+    final var configWithFilter = config.withOutputFiltering(azureFilter, graniteFilter);
 
     assertThatThrownBy(
             client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute()
@@ -2232,13 +2193,8 @@ class OrchestrationUnitTest {
               assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
               assertThat(e.getAzureContentSafetyOutput().isProtectedMaterialCode()).isFalse();
 
-              final var graniteDetails =
-                  getOrchestrationObjectMapper()
-                      .convertValue(
-                          e.getFilterDetails().get("granite_guardian_4_1"),
-                          GraniteGuardian41Categories.class);
-              assertThat(graniteDetails).isNotNull();
-              assertThat(graniteDetails.isViolence()).isTrue();
+              assertThat(e.getGraniteGuardian()).isNotNull();
+              assertThat(e.getGraniteGuardian().isViolence()).isTrue();
             });
   }
 
@@ -2253,8 +2209,7 @@ class OrchestrationUnitTest {
 
     final var prompt = PromptTemplate.create("HelloWorld! Why is this phrase so famous?");
     final var graniteFilter =
-        GraniteGuardianFilterConfig.create()
-            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
+        new GraniteGuardianFilter()
             .config(
                 GraniteGuardian41.create()
                     .categories(GraniteGuardian41Categories.create().harm(true)));
@@ -2264,13 +2219,9 @@ class OrchestrationUnitTest {
                 DocumentGroundingFilter.create()
                     .dataRepositoryType(DataRepositoryType.HELP_SAP_COM));
 
-    final var filteringConfig =
-        FilteringModuleConfig.create()
-            .input(InputFilteringConfig.create().filters(List.of(graniteFilter)));
-
     final var workingConfig =
         new OrchestrationModuleConfig(GPT_5_MINI.withParam(TEMPERATURE, 0.0))
-            .withFilteringConfig(filteringConfig)
+            .withInputFiltering(graniteFilter)
             .withGrounding(groundingConfig);
     final var brokenConfig =
         workingConfig.withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));

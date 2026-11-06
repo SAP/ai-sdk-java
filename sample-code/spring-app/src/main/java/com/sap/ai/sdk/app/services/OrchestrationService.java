@@ -14,6 +14,7 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.GraniteGuardianFilter;
 import com.sap.ai.sdk.orchestration.Grounding;
 import com.sap.ai.sdk.orchestration.ImageItem;
 import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
@@ -39,12 +40,9 @@ import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenc
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
-import com.sap.ai.sdk.orchestration.model.FilteringModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GraniteGuardian41;
 import com.sap.ai.sdk.orchestration.model.GraniteGuardian41Categories;
-import com.sap.ai.sdk.orchestration.model.GraniteGuardianFilterConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
-import com.sap.ai.sdk.orchestration.model.InputFilteringConfig;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
@@ -436,16 +434,10 @@ public class OrchestrationService {
             .sexualContent(filter)
             .unethicalBehavior(filter);
 
-    val graniteFilter =
-        GraniteGuardianFilterConfig.create()
-            .type(GraniteGuardianFilterConfig.TypeEnum.GRANITE_GUARDIAN_4_1)
-            .config(GraniteGuardian41.create().categories(categories));
+    val filterConfig =
+        new GraniteGuardianFilter().config(GraniteGuardian41.create().categories(categories));
 
-    val filteringConfig =
-        FilteringModuleConfig.create()
-            .input(InputFilteringConfig.create().filters(List.of(graniteFilter)));
-
-    val configWithFilter = this.config.withFilteringConfig(filteringConfig);
+    val configWithFilter = this.config.withInputFiltering(filterConfig);
 
     return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }
