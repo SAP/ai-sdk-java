@@ -50,9 +50,10 @@ operations exactly as they are in the original interface but not exposing the `.
 | Safety provided         | Maximum - we can configure and enforce any safety guarantees and configuration we need                                               |
 | Flexibility             | Minimum - we can cut off many non standard use cases we cannot foresee or verify now (e.g. usage with proxies and internet gateways) | 
 
-#### Option C: Do nothing
+#### Option C: No override, document warning
 We do nothing about configuration. We expose Anthropic sub-api (e.g. `messages`) with its original unaltered interface
-and original implementation (just configured correctly to call SAP gateway)
+and original implementation (just configured correctly to call SAP gateway).
+We document clearly to the users which parts of the configuration they should not change.
 
 | Aspect                  | Value                                                                                             |
 |-------------------------|---------------------------------------------------------------------------------------------------|
