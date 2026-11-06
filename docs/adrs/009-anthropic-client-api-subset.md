@@ -65,9 +65,17 @@ MessagesService messagesApi = client.messages();
 | Flexibility                 | Maximum - if we expose entire official Anthropics client "as is" we barely have any control on the operations level unless we reimplement it ourselves            |
 
 ## Decision
-Expose `messages` sub-api, proceed with other APIs on demand (Option B) is proposed.
+
+Expose `messages` sub-api, proceed with other APIs gradually added until all features supported by SAP gateway are covered.
 
 ## Rationale
+
+Option A (expose original client fully) was discarded mainly because of it relative inflexibility. If SAP gateway
+won't support some of the original APIs functions, with full original client exposure AI SDK could not limit these
+unsupported API functions.
+
+Additional supporting evidence with aspect analysis for every option is given below.
+
 Every aspect value is scored between 1 and 5 points
 Every option receives result as a sum of its aspect values.
 

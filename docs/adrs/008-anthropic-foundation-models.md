@@ -254,6 +254,12 @@ Official Anthropic Java SDK with Invoke AWS Bedrock Backend (Option C) is propos
 
 ## Rationale
 
+Team held multiple discussions on the topic and came to conclusion that Option C represent the most balanced approach.
+Option C is best aligned with our resources, AI-SDK strategy and foundation-models API positioning (lower-level feature
+access to provider functionality)
+
+Additional supporting evidence with aspect analysis for every option is given below.
+
 Every aspect value is scored between 1 and 5 points
 Every option receives result as a sum of its aspect values.
 

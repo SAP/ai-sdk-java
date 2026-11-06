@@ -1,20 +1,26 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.openai.core.ObjectMappers.jsonMapper;
 import static java.util.stream.Collectors.joining;
 
 import com.anthropic.models.messages.ContentBlock;
+import com.anthropic.models.messages.Message;
 import com.anthropic.models.messages.RawMessageStreamEvent;
 import com.anthropic.models.messages.TextDelta;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sap.ai.sdk.app.services.AnthropicService;
 import com.sap.ai.sdk.core.common.ClientException;
 import com.sap.cloud.sdk.cloudplatform.thread.ThreadContextExecutors;
 import java.io.IOException;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
@@ -26,15 +32,19 @@ public class AnthropicController {
 
   @Autowired private AnthropicService service;
 
-  /** Initiate new chat by sending message to Anthropic Claude. */
+  /**
+   * Initiate new chat by sending message to Anthropic Claude.
+   */
   @GetMapping("/anthropic/sendMessage")
   @Nonnull
-  String sendMessage() {
+  Object sendMessage(@Nullable @RequestParam(value = "format", required = false) final String format) throws JsonProcessingException {
     final var message = service.sendMessage("What is the capital of France?");
-    return message.content().stream()
-        .filter(ContentBlock::isText)
-        .map(b -> b.asText().text())
-        .collect(joining());
+      if ("json".equals(format)) {
+          return ResponseEntity.ok()
+                  .contentType(MediaType.APPLICATION_JSON)
+                  .body(jsonMapper().writeValueAsString(message));
+      }
+    return extractText(message);
   }
 
   /** Initiate new chat by sending message to Anthropic Claude. Stream response. */
@@ -92,4 +102,12 @@ public class AnthropicController {
       emitter.completeWithError(e);
     }
   }
+
+    @Nonnull
+    private static String extractText(@Nonnull final Message message) {
+        return message.content().stream()
+                .filter(ContentBlock::isText)
+                .map(b -> b.asText().text())
+                .collect(joining());
+    }
 }

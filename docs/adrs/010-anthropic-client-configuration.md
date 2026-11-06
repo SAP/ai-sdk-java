@@ -63,21 +63,37 @@ We document clearly to the users which parts of the configuration they should no
 | Flexibility             | High - we still pre-configure all clients, but users can tweak configs for non-standard use cases | 
 
 ## Decision
-Do nothing (option C) is proposed.
+No override (option C) is proposed.
 
 We pre-configure all clients, but users can break things if they explicitly re-configure them
 
 ## Rationale
+
+Options with override were discarded as they bloat codebase, increase maintenance effort not providing (or even
+limiting) user value.
+
+Potential use cases of AI SDK may include network configurations with DMZ and internet gateways or additional proxies.
+For such cases API URL customization might be needed. Hiding this option in our SDK would make such use cases
+virtually impossible.
+
+Overriding does not provide full safety either. At least some of the configuration will have to be exposed. Even
+with a limited configuration being exposed, there is always a possibility to misconfigure SDK client.
+
+Given the above, override options were discarded in favor of "no override" (option C) and addition of warning
+in documentation.
+
+Additional supporting evidence with aspect analysis for every option is given below.
+
 Every aspect value is scored between 1 and 5 points
 Every option receives result as a sum of its aspect values.
 
-| Aspect                | A: Override implementation | B: Override interface | __C: Do nothing__ |
-|-----------------------|----------------------------|-----------------------|-------------------|
-| Implementation effort | Maximum (1)                | Medium (3)            | __None (5)__      |
-| Maintenance effort    | Maximum (1)                | Medium (3)            | __Minimum (5)__   |
-| Safety provided       | Maximum (5)                | Maximum (5)           | __Medium (3)__    |
-| Flexibility           | Minimum (1)                | Minimum (1)           | __High (4)__      |
-| Score                 | 8                          | 12                    | __17__            |
+| Aspect                | A: Override implementation | B: Override interface | __C: No override__ |
+|-----------------------|----------------------------|-----------------------|--------------------|
+| Implementation effort | Maximum (1)                | Medium (3)            | __None (5)__       |
+| Maintenance effort    | Maximum (1)                | Medium (3)            | __Minimum (5)__    |
+| Safety provided       | Maximum (5)                | Maximum (5)           | __Medium (3)__     |
+| Flexibility           | Minimum (1)                | Minimum (1)           | __High (4)__       |
+| Score                 | 8                          | 12                    | __17__             |
 
 ## Consequences, New Dependencies, Open Points, Next Steps
 <!-- Describe anything else that needs to be done and lists dependencies to other services that need to be introduced. -->
