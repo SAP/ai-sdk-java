@@ -9,6 +9,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.jsonResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
 import static com.github.tomakehurst.wiremock.client.WireMock.noContent;
+import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.okXml;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
@@ -74,12 +75,14 @@ import com.sap.ai.sdk.orchestration.model.UserChatMessage;
 import com.sap.ai.sdk.orchestration.model.UserChatMessageContent;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5FactoryBuilder;
 import com.sap.cloud.sdk.cloudplatform.connectivity.DefaultHttpDestination;
 import io.vavr.control.Try;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -87,6 +90,8 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import lombok.SneakyThrows;
 import lombok.val;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
@@ -129,6 +134,8 @@ class OrchestrationUnitTest {
   private static OrchestrationModuleConfig config;
   private static LocalPromptTemplate prompt;
 
+  private static final String REQUEST_START_JSON = "{\"config\":{\"modules\":{";
+
   @BeforeEach
   void setup(WireMockRuntimeInfo server) {
     final DefaultHttpDestination destination =
@@ -159,6 +166,35 @@ class OrchestrationUnitTest {
     assertThat(result.getContent()).isNotEmpty();
   }
 
+  record Response(Integer code, String reasonPhrase) {}
+
+  @SneakyThrows
+  static void assertException(
+      OrchestrationClientException e, @Nullable String errorMessage, @Nullable Response response) {
+
+    val httpRequest = e.getHttpRequest();
+    assertThat(httpRequest).isNotNull();
+    assertThat(new String(httpRequest.getEntity().getContent().readAllBytes()))
+        .startsWith(REQUEST_START_JSON);
+
+    val clientError = e.getClientError();
+    if (errorMessage != null) {
+      assertThat(clientError).isNotNull();
+      assertThat(clientError.getMessage()).isEqualTo(errorMessage);
+    } else {
+      assertThat(clientError).isNull();
+    }
+
+    val httpResponse = e.getHttpResponse();
+    if (response != null) {
+      assertThat(httpResponse).isNotNull();
+      assertThat(httpResponse.getCode()).isEqualTo(response.code());
+      assertThat(httpResponse.getReasonPhrase()).isEqualTo(response.reasonPhrase());
+    } else {
+      assertThat(httpResponse).isNull();
+    }
+  }
+
   @Test
   void testCompletionError() {
     stubFor(
@@ -171,8 +207,41 @@ class OrchestrationUnitTest {
 
     assertThatThrownBy(
             () -> client.chatCompletion().config(config).promptTemplate(prompt).execute())
+        .describedAs("Server errors should be handled")
+        .isInstanceOfSatisfying(
+            OrchestrationClientException.class,
+            e ->
+                assertException(
+                    e,
+                    "Internal Server Error located in Masking Module - Masking",
+                    new Response(500, "Server Error")))
         .hasMessage(
             "Request failed with status 500 (Server Error): Internal Server Error located in Masking Module - Masking");
+  }
+
+  @Test
+  void testChatCompletionTimeoutErrorHandling() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                ok().withFixedDelay(122_000) // 2 minutes + 2 seconds
+                    .withHeader("Content-Type", "application/json")));
+
+    // set timeout to 1 second instead of 2 minutes to avoid waiting for the full timeout
+    ApacheHttpClient5Accessor.setHttpClientFactory(
+        destination ->
+            new ApacheHttpClient5FactoryBuilder()
+                .timeout(Duration.ofSeconds(1))
+                .build()
+                .createHttpClient(destination));
+
+    assertThatThrownBy(
+            () -> client.chatCompletion().config(config).promptTemplate(prompt).execute())
+        .describedAs("Timeouts should be handled")
+        .isInstanceOfSatisfying(
+            OrchestrationClientException.class, e -> assertException(e, null, null))
+        .hasMessageContaining(
+            "Request to Orchestration service took longer than 2 minutes. Please shorten your request or use streaming.");
   }
 
   @Test
@@ -522,6 +591,8 @@ class OrchestrationUnitTest {
               assertThat(error.getCode()).isEqualTo(SC_BAD_REQUEST);
               assertThat(error.getRequestId()).isEqualTo("51043a32-01f5-429a-b0e7-3a99432e43a4");
               assertThat(error.getLocation()).isEqualTo("Module: Templating");
+              assertException(
+                  e, "Missing required parameters: ['input']", new Response(400, "Bad Request"));
             });
   }
 
@@ -671,6 +742,10 @@ class OrchestrationUnitTest {
 
               assertThat(e.getLlamaGuard38b()).isNotNull();
               assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
+              assertException(
+                  e,
+                  "400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.",
+                  new Response(SC_BAD_REQUEST, "Bad Request"));
             });
   }
 
@@ -723,6 +798,7 @@ class OrchestrationUnitTest {
 
               assertThat(e.getLlamaGuard38b()).isNotNull();
               assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
+              // assertException(e, "Content filter filtered the output.", null);
             });
   }
 

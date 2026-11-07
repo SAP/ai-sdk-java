@@ -26,6 +26,7 @@ import com.sap.cloud.sdk.cloudplatform.connectivity.Destination;
 import com.sap.cloud.sdk.cloudplatform.connectivity.Header;
 import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -386,9 +387,23 @@ public final class OpenAiClient {
       RequestLogContext.setService(OPENAI);
       RequestLogContext.logRequestStart();
       return client.execute(
-          request, new ClientResponseHandler<>(responseType, OpenAiError.class, FACTORY));
+          request,
+          new ClientResponseHandler<>(responseType, OpenAiError.class, FACTORY.apply(request)));
+    } catch (SocketTimeoutException e) {
+      throw FACTORY
+          .apply(request)
+          .build(
+              "Request to OpenAI model took longer than 2 minutes. Please shorten your request or use streaming.",
+              e);
+      //      new OpenAiClientException(
+      //              "Request to OpenAI model took longer than 2 minutes. Please shorten your
+      // request or use streaming.",
+      //              e)
+      //          .setHttpRequest(request);
     } catch (final IOException e) {
-      throw new OpenAiClientException("Request to OpenAI model failed", e).setHttpRequest(request);
+      throw FACTORY.apply(request).build("Request to OpenAI model failed", e);
+      // throw new OpenAiClientException("Request to OpenAI model failed",
+      // e).setHttpRequest(request);
     } finally {
       RequestLogContext.clear();
     }
@@ -403,7 +418,7 @@ public final class OpenAiClient {
       RequestLogContext.setMode(STREAMING);
       RequestLogContext.setService(OPENAI);
       RequestLogContext.logRequestStart();
-      return new ClientStreamingHandler<>(deltaType, OpenAiError.class, FACTORY)
+      return new ClientStreamingHandler<>(deltaType, OpenAiError.class, FACTORY.apply(request))
           .objectMapper(JACKSON)
           .handleStreamingResponse(client.executeOpen(null, request, null));
     } catch (final IOException e) {
