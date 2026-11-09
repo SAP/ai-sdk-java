@@ -43,6 +43,37 @@ updates:
           - "*-plugin"
       test:
         dependency-type: "development"
+  - package-ecosystem: maven
+    target-branch: v1
+    directory: '/'
+    schedule:
+      interval: weekly
+      time: '23:00'
+      timezone: 'Europe/Berlin'
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore: [DevOps] '
+    cooldown:
+      default-days: 4
+    groups:
+      production-minor-patch:
+        dependency-type: "production"
+        update-types: [ "minor", "patch" ]
+        exclude-patterns:
+          - "*-plugin"
+      production-major:
+        dependency-type: "production"
+        update-types: [ "major" ]
+        exclude-patterns:
+          - "*-plugin"
+      plugins:
+        dependency-type: "production"
+        patterns:
+          - "*-plugin"
+      test:
+        dependency-type: "development"
+
+
   - package-ecosystem: github-actions
     target-branch: main
     directory: "/"
