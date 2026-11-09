@@ -481,9 +481,8 @@ public class MetaAiApiCapabilities
     sb.append("    executionSchedules: ").append(toIndentedString(executionSchedules)).append("\n");
     sb.append("    logs: ").append(toIndentedString(logs)).append("\n");
     sb.append("    bulkUpdates: ").append(toIndentedString(bulkUpdates)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

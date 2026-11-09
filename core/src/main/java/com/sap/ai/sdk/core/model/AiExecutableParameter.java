@@ -315,9 +315,8 @@ public class AiExecutableParameter
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    _default: ").append(toIndentedString(_default)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -337,7 +336,7 @@ public class AiExecutableParameter
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> new AiExecutableParameter().name(name);
+    return name -> new AiExecutableParameter().name(name);
   }
 
   /** Builder helper class. */

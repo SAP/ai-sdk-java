@@ -258,9 +258,8 @@ public class RetrievalSearchInput
     sb.append("    query: ").append(toIndentedString(query)).append("\n");
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
     sb.append("    postProcessing: ").append(toIndentedString(postProcessing)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -280,7 +279,7 @@ public class RetrievalSearchInput
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (query) -> (filters) -> new RetrievalSearchInput().query(query).filters(filters);
+    return query -> filters -> new RetrievalSearchInput().query(query).filters(filters);
   }
 
   /** Builder helper class. */

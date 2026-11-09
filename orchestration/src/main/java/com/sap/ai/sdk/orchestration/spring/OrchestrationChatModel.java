@@ -98,15 +98,14 @@ public class OrchestrationChatModel implements ChatModel {
 
       val orchestrationPrompt = options.withCallbacks(toPromptTemplate(prompt));
       final Flux<OrchestrationChatCompletionDelta> flux =
-          Flux.fromStream(
-              () ->
-                  client
-                      .chatCompletion()
-                      .config(
-                          options.getConfig(),
-                          options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new))
-                      .promptTemplate(orchestrationPrompt)
-                      .executeStreamDeltas());
+          Flux.fromStream(() ->
+              client
+                  .chatCompletion()
+                  .config(
+                      options.getConfig(),
+                      options.getFallbackConfigs().toArray(OrchestrationModuleConfig[]::new))
+                  .promptTemplate(orchestrationPrompt)
+                  .executeStreamDeltas());
       return flux.map(OrchestrationSpringChatDelta::new);
     }
     throw new IllegalArgumentException(
@@ -147,10 +146,9 @@ public class OrchestrationChatModel implements ChatModel {
               case TOOL:
                 val toolResponses = ((ToolResponseMessage) msg).getResponses();
                 yield toolResponses.stream()
-                    .map(
-                        r ->
-                            (com.sap.ai.sdk.orchestration.Message)
-                                new ToolMessage(r.id(), r.responseData()))
+                    .map(r ->
+                        (com.sap.ai.sdk.orchestration.Message)
+                            new ToolMessage(r.id(), r.responseData()))
                     .toList();
             };
     return messages.stream()

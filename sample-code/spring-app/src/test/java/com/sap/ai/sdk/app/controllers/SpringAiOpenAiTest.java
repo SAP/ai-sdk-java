@@ -42,8 +42,7 @@ class SpringAiOpenAiTest {
     final var filledDeltaCount = new AtomicInteger(0);
     stream
         // foreach consumes all elements, closing the stream at the end
-        .forEach(
-        delta -> {
+        .forEach(delta -> {
           String text = delta.getResult().getOutput().getText();
           if (text != null && !text.isEmpty()) {
             filledDeltaCount.incrementAndGet();

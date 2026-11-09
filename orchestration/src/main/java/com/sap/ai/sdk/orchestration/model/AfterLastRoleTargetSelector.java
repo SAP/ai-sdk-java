@@ -226,9 +226,8 @@ public class AfterLastRoleTargetSelector implements InputFilterTargetSelector
     final StringBuilder sb = new StringBuilder();
     sb.append("class AfterLastRoleTargetSelector {\n");
     sb.append("    afterLastRole: ").append(toIndentedString(afterLastRole)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -248,7 +247,7 @@ public class AfterLastRoleTargetSelector implements InputFilterTargetSelector
    * AfterLastRoleTargetSelector} instance with all required arguments.
    */
   public static Builder create() {
-    return (afterLastRole) -> new AfterLastRoleTargetSelector().afterLastRole(afterLastRole);
+    return afterLastRole -> new AfterLastRoleTargetSelector().afterLastRole(afterLastRole);
   }
 
   /** Builder helper class. */

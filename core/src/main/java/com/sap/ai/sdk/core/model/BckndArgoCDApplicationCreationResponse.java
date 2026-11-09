@@ -191,9 +191,8 @@ public class BckndArgoCDApplicationCreationResponse
     sb.append("class BckndArgoCDApplicationCreationResponse {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -213,8 +212,7 @@ public class BckndArgoCDApplicationCreationResponse
    * BckndArgoCDApplicationCreationResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (message) -> new BckndArgoCDApplicationCreationResponse().id(id).message(message);
+    return id -> message -> new BckndArgoCDApplicationCreationResponse().id(id).message(message);
   }
 
   /** Builder helper class. */

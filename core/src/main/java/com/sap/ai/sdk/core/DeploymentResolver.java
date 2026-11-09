@@ -78,10 +78,9 @@ class DeploymentResolver {
       throws DeploymentResolutionException {
     final Predicate<AiDeployment> predicate = deployment -> isDeploymentOfModel(model, deployment);
     return resolveDeployment(resourceGroup, predicate)
-        .orElseThrow(
-            () ->
-                new DeploymentResolutionException(
-                    "No running deployment found for model: " + model.name()));
+        .orElseThrow(() ->
+            new DeploymentResolutionException(
+                "No running deployment found for model: " + model.name()));
   }
 
   /**
@@ -100,10 +99,9 @@ class DeploymentResolver {
     final Predicate<AiDeployment> predicate =
         deployment -> scenarioId.equals(deployment.getScenarioId());
     return resolveDeployment(resourceGroup, predicate)
-        .orElseThrow(
-            () ->
-                new DeploymentResolutionException(
-                    "No running deployment found for scenario: " + scenarioId));
+        .orElseThrow(() ->
+            new DeploymentResolutionException(
+                "No running deployment found for scenario: " + scenarioId));
   }
 
   @Nonnull

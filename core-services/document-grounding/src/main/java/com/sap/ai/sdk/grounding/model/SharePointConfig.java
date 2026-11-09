@@ -146,9 +146,8 @@ public class SharePointConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class SharePointConfig {\n");
     sb.append("    site: ").append(toIndentedString(site)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -168,7 +167,7 @@ public class SharePointConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (site) -> new SharePointConfig().site(site);
+    return site -> new SharePointConfig().site(site);
   }
 
   /** Builder helper class. */

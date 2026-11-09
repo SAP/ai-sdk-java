@@ -184,9 +184,8 @@ public class FilteringModuleConfig
     sb.append("class FilteringModuleConfig {\n");
     sb.append("    input: ").append(toIndentedString(input)).append("\n");
     sb.append("    output: ").append(toIndentedString(output)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -279,9 +279,8 @@ public class EmbeddingsCreate200Response
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    usage: ").append(toIndentedString(usage)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

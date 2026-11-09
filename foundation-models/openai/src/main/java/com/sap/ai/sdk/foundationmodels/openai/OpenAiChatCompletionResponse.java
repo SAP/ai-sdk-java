@@ -95,12 +95,11 @@ public class OpenAiChatCompletionResponse {
 
     final var openAiToolCalls =
         toolCalls.stream()
-            .<OpenAiToolCall>map(
-                toolCall ->
-                    new OpenAiFunctionCall(
-                        toolCall.getId(),
-                        toolCall.getFunction().getName(),
-                        toolCall.getFunction().getArguments()))
+            .<OpenAiToolCall>map(toolCall ->
+                new OpenAiFunctionCall(
+                    toolCall.getId(),
+                    toolCall.getFunction().getName(),
+                    toolCall.getFunction().getArguments()))
             .toList();
 
     return new OpenAiAssistantMessage(new OpenAiMessageContent(contentItems), openAiToolCalls);

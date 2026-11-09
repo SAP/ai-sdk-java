@@ -120,9 +120,8 @@ class OrchestrationUnitTest {
   private final Function<String, String> fileLoaderStr =
       filename ->
           Try.withResources(() -> fileLoader.apply(filename))
-              .of(
-                  stream ->
-                      new String(stream.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8))
+              .of(stream ->
+                  new String(stream.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8))
               .get();
 
   private static OrchestrationClient client;
@@ -981,14 +980,13 @@ class OrchestrationUnitTest {
               .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
       val prompt = PromptTemplate.create("HelloWorld!");
 
-      assertThatThrownBy(
-              () ->
-                  client
-                      .chatCompletion()
-                      .config(wrongConfig)
-                      .promptTemplate(prompt)
-                      .executeStream()
-                      .forEach(System.out::println))
+      assertThatThrownBy(() ->
+              client
+                  .chatCompletion()
+                  .config(wrongConfig)
+                  .promptTemplate(prompt)
+                  .executeStream()
+                  .forEach(System.out::println))
           .isExactlyInstanceOf(OrchestrationClientException.class)
           .hasMessageContaining("400")
           .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
@@ -1739,10 +1737,9 @@ class OrchestrationUnitTest {
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to parse");
 
-    assertThatThrownBy(
-            () ->
-                PromptTemplate.fromYaml(
-                    "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
+    assertThatThrownBy(() ->
+            PromptTemplate.fromYaml(
+                "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to deserialize");
   }
@@ -1913,15 +1910,14 @@ class OrchestrationUnitTest {
     final var answerChunks = new ArrayList<String>();
     final var reasoningChunks = new ArrayList<String>();
     try (var stream = client.chatCompletion().lowLevel().request(request).executeStreamDeltas()) {
-      stream.forEach(
-          delta -> {
-            if (!delta.getDeltaContent().isEmpty()) {
-              answerChunks.add(delta.getDeltaContent());
-            }
-            if (!delta.getDeltaReasoningText().isEmpty()) {
-              reasoningChunks.add(delta.getDeltaReasoningText());
-            }
-          });
+      stream.forEach(delta -> {
+        if (!delta.getDeltaContent().isEmpty()) {
+          answerChunks.add(delta.getDeltaContent());
+        }
+        if (!delta.getDeltaReasoningText().isEmpty()) {
+          reasoningChunks.add(delta.getDeltaReasoningText());
+        }
+      });
     }
 
     assertThat(answerChunks).containsExactly("42");

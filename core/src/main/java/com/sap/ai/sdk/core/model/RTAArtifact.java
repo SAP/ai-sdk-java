@@ -457,9 +457,8 @@ public class RTAArtifact
     sb.append("    kind: ").append(toIndentedString(kind)).append("\n");
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -479,11 +478,11 @@ public class RTAArtifact
    * with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (executionId) ->
-            (url) ->
-                (kind) ->
-                    (createdAt) ->
+    return name ->
+        executionId ->
+            url ->
+                kind ->
+                    createdAt ->
                         new RTAArtifact()
                             .name(name)
                             .executionId(executionId)

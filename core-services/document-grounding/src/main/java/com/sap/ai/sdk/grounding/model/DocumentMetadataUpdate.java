@@ -203,9 +203,8 @@ public class DocumentMetadataUpdate implements BatchUpdateDocumentsResponseInner
     sb.append("class DocumentMetadataUpdate {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -225,7 +224,7 @@ public class DocumentMetadataUpdate implements BatchUpdateDocumentsResponseInner
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> (metadata) -> new DocumentMetadataUpdate().id(id).metadata(metadata);
+    return id -> metadata -> new DocumentMetadataUpdate().id(id).metadata(metadata);
   }
 
   /** Builder helper class. */

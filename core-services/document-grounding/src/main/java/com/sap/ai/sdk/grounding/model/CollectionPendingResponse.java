@@ -150,9 +150,8 @@ public class CollectionPendingResponse
     final StringBuilder sb = new StringBuilder();
     sb.append("class CollectionPendingResponse {\n");
     sb.append("    monitorURL: ").append(toIndentedString(monitorURL)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -172,7 +171,7 @@ public class CollectionPendingResponse
    * CollectionPendingResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (monitorURL) -> new CollectionPendingResponse().monitorURL(monitorURL);
+    return monitorURL -> new CollectionPendingResponse().monitorURL(monitorURL);
   }
 
   /** Builder helper class. */

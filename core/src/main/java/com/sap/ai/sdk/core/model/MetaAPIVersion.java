@@ -220,9 +220,8 @@ public class MetaAPIVersion
     sb.append("    versionId: ").append(toIndentedString(versionId)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

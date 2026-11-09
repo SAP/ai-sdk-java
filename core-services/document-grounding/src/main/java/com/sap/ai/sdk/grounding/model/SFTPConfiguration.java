@@ -220,9 +220,8 @@ public class SFTPConfiguration
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
     sb.append("    sftp: ").append(toIndentedString(sftp)).append("\n");
     sb.append("    cronExpression: ").append(toIndentedString(cronExpression)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -242,7 +241,7 @@ public class SFTPConfiguration
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (destination) -> new SFTPConfiguration().destination(destination);
+    return destination -> new SFTPConfiguration().destination(destination);
   }
 
   /** Builder helper class. */

@@ -354,9 +354,8 @@ public class ErrorStreaming
         .append(toIndentedString(intermediateResults))
         .append("\n");
     sb.append("    headers: ").append(toIndentedString(headers)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -376,10 +375,10 @@ public class ErrorStreaming
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (requestId) ->
-        (code) ->
-            (message) ->
-                (location) ->
+    return requestId ->
+        code ->
+            message ->
+                location ->
                     new ErrorStreaming()
                         .requestId(requestId)
                         .code(code)

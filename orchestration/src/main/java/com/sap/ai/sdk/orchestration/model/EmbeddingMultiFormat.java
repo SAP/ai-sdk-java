@@ -399,9 +399,8 @@ public class EmbeddingMultiFormat
     sb.append("    base64: ").append(toIndentedString(base64)).append("\n");
     sb.append("    binary: ").append(toIndentedString(binary)).append("\n");
     sb.append("    ubinary: ").append(toIndentedString(ubinary)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

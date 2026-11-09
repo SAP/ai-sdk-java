@@ -328,9 +328,8 @@ public class ChatDelta
     sb.append("    refusal: ").append(toIndentedString(refusal)).append("\n");
     sb.append("    toolCalls: ").append(toIndentedString(toolCalls)).append("\n");
     sb.append("    reasoningContent: ").append(toIndentedString(reasoningContent)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -350,7 +349,7 @@ public class ChatDelta
    * with all required arguments.
    */
   public static Builder create() {
-    return (content) -> new ChatDelta().content(content);
+    return content -> new ChatDelta().content(content);
   }
 
   /** Builder helper class. */

@@ -255,9 +255,8 @@ public class ChatCompletionTokenLogprobTopLogprobsInner
     sb.append("    token: ").append(toIndentedString(token)).append("\n");
     sb.append("    logprob: ").append(toIndentedString(logprob)).append("\n");
     sb.append("    bytes: ").append(toIndentedString(bytes)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

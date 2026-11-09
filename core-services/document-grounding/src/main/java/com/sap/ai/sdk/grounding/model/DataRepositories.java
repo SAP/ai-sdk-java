@@ -201,9 +201,8 @@ public class DataRepositories
     sb.append("class DataRepositories {\n");
     sb.append("    count: ").append(toIndentedString(count)).append("\n");
     sb.append("    resources: ").append(toIndentedString(resources)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -223,7 +222,7 @@ public class DataRepositories
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (resources) -> new DataRepositories().resources(resources);
+    return resources -> new DataRepositories().resources(resources);
   }
 
   /** Builder helper class. */

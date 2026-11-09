@@ -192,9 +192,8 @@ public class OrchestrationConfigScenarioDeleteResponse
     sb.append("class OrchestrationConfigScenarioDeleteResponse {\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    deleted: ").append(toIndentedString(deleted)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -214,8 +213,8 @@ public class OrchestrationConfigScenarioDeleteResponse
    * OrchestrationConfigScenarioDeleteResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (message) ->
-        (deleted) ->
+    return message ->
+        deleted ->
             new OrchestrationConfigScenarioDeleteResponse().message(message).deleted(deleted);
   }
 

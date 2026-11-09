@@ -248,9 +248,8 @@ public class RetrievalDocumentKeyValueListPair
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    matchMode: ").append(toIndentedString(matchMode)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -270,7 +269,7 @@ public class RetrievalDocumentKeyValueListPair
    * RetrievalDocumentKeyValueListPair} instance with all required arguments.
    */
   public static Builder create() {
-    return (key) -> (value) -> new RetrievalDocumentKeyValueListPair().key(key).value(value);
+    return key -> value -> new RetrievalDocumentKeyValueListPair().key(key).value(value);
   }
 
   /** Builder helper class. */

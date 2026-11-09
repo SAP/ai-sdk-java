@@ -190,9 +190,8 @@ public class GraniteGuardian41
     sb.append("class GraniteGuardian41 {\n");
     sb.append("    enableReasoning: ").append(toIndentedString(enableReasoning)).append("\n");
     sb.append("    categories: ").append(toIndentedString(categories)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -212,7 +211,7 @@ public class GraniteGuardian41
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (categories) -> new GraniteGuardian41().categories(categories);
+    return categories -> new GraniteGuardian41().categories(categories);
   }
 
   /** Builder helper class. */

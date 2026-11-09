@@ -250,9 +250,8 @@ public class ContentFilterSeverityResult
     sb.append("class ContentFilterSeverityResult {\n");
     sb.append("    filtered: ").append(toIndentedString(filtered)).append("\n");
     sb.append("    severity: ").append(toIndentedString(severity)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

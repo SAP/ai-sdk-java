@@ -183,9 +183,8 @@ public class AiApiErrorWithId
     sb.append("class AiApiErrorWithId {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -205,7 +204,7 @@ public class AiApiErrorWithId
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> (error) -> new AiApiErrorWithId().id(id).error(error);
+    return id -> error -> new AiApiErrorWithId().id(id).error(error);
   }
 
   /** Builder helper class. */

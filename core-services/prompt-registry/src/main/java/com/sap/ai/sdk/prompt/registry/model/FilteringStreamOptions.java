@@ -150,9 +150,8 @@ public class FilteringStreamOptions
     final StringBuilder sb = new StringBuilder();
     sb.append("class FilteringStreamOptions {\n");
     sb.append("    overlap: ").append(toIndentedString(overlap)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

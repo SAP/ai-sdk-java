@@ -257,9 +257,8 @@ public class BckndTenant
     sb.append("    zoneId: ").append(toIndentedString(zoneId)).append("\n");
     sb.append("    realSubaccountId: ").append(toIndentedString(realSubaccountId)).append("\n");
     sb.append("    servicePlan: ").append(toIndentedString(servicePlan)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

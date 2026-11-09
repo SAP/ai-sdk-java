@@ -308,9 +308,8 @@ public class EmbeddingsModelDetails
     sb.append("    params: ").append(toIndentedString(params)).append("\n");
     sb.append("    timeout: ").append(toIndentedString(timeout)).append("\n");
     sb.append("    maxRetries: ").append(toIndentedString(maxRetries)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -330,7 +329,7 @@ public class EmbeddingsModelDetails
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> new EmbeddingsModelDetails().name(name);
+    return name -> new EmbeddingsModelDetails().name(name);
   }
 
   /** Builder helper class. */

@@ -282,9 +282,8 @@ public class GraniteGuardianFilterConfig implements InputFilterConfig, OutputFil
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
     sb.append("    targetSelector: ").append(toIndentedString(targetSelector)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -304,7 +303,7 @@ public class GraniteGuardianFilterConfig implements InputFilterConfig, OutputFil
    * GraniteGuardianFilterConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (config) -> new GraniteGuardianFilterConfig().type(type).config(config);
+    return type -> config -> new GraniteGuardianFilterConfig().type(type).config(config);
   }
 
   /** Builder helper class. */

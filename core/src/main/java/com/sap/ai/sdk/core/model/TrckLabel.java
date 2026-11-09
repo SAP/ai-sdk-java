@@ -188,9 +188,8 @@ public class TrckLabel
     sb.append("class TrckLabel {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -210,7 +209,7 @@ public class TrckLabel
    * with all required arguments.
    */
   public static Builder create() {
-    return (name) -> (value) -> new TrckLabel().name(name).value(value);
+    return name -> value -> new TrckLabel().name(name).value(value);
   }
 
   /** Builder helper class. */

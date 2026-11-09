@@ -298,9 +298,8 @@ public class AzureContentSafetyInput
     sb.append("    sexual: ").append(toIndentedString(sexual)).append("\n");
     sb.append("    violence: ").append(toIndentedString(violence)).append("\n");
     sb.append("    promptShield: ").append(toIndentedString(promptShield)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
