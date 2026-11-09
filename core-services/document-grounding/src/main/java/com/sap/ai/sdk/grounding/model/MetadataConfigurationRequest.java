@@ -445,9 +445,8 @@ public class MetadataConfigurationRequest
     sb.append("    dataRepositoryType: ").append(toIndentedString(dataRepositoryType)).append("\n");
     sb.append("    includePaths: ").append(toIndentedString(includePaths)).append("\n");
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -467,8 +466,8 @@ public class MetadataConfigurationRequest
    * MetadataConfigurationRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (destinationName) ->
-        (dataRepositoryType) ->
+    return destinationName ->
+        dataRepositoryType ->
             new MetadataConfigurationRequest()
                 .destinationName(destinationName)
                 .dataRepositoryType(dataRepositoryType);

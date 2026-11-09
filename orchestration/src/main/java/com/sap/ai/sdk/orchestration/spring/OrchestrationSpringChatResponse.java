@@ -62,13 +62,12 @@ public class OrchestrationSpringChatResponse extends ChatResponse {
     }
     val toolCalls =
         choice.getMessage().getToolCalls().stream()
-            .map(
-                toolCall ->
-                    new ToolCall(
-                        toolCall.getId(),
-                        toolCall.getType().getValue(),
-                        toolCall.getFunction().getName(),
-                        toolCall.getFunction().getArguments()))
+            .map(toolCall ->
+                new ToolCall(
+                    toolCall.getId(),
+                    toolCall.getType().getValue(),
+                    toolCall.getFunction().getName(),
+                    toolCall.getFunction().getArguments()))
             .toList();
 
     val message =

@@ -239,9 +239,8 @@ public class ImageContent implements MultiChatContent
     sb.append("class ImageContent {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -261,7 +260,7 @@ public class ImageContent implements MultiChatContent
    * with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (imageUrl) -> new ImageContent().type(type).imageUrl(imageUrl);
+    return type -> imageUrl -> new ImageContent().type(type).imageUrl(imageUrl);
   }
 
   /** Builder helper class. */

@@ -190,9 +190,8 @@ public class BckndArgoCDRepositoryCredentials
     sb.append("class BckndArgoCDRepositoryCredentials {\n");
     sb.append("    username: ").append(toIndentedString(username)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -212,8 +211,8 @@ public class BckndArgoCDRepositoryCredentials
    * BckndArgoCDRepositoryCredentials} instance with all required arguments.
    */
   public static Builder create() {
-    return (username) ->
-        (password) -> new BckndArgoCDRepositoryCredentials().username(username).password(password);
+    return username ->
+        password -> new BckndArgoCDRepositoryCredentials().username(username).password(password);
   }
 
   /** Builder helper class. */

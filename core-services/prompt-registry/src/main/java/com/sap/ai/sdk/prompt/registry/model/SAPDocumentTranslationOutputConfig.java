@@ -195,9 +195,8 @@ public class SAPDocumentTranslationOutputConfig
     sb.append("class SAPDocumentTranslationOutputConfig {\n");
     sb.append("    sourceLanguage: ").append(toIndentedString(sourceLanguage)).append("\n");
     sb.append("    targetLanguage: ").append(toIndentedString(targetLanguage)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -217,7 +216,7 @@ public class SAPDocumentTranslationOutputConfig
    * SAPDocumentTranslationOutputConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (targetLanguage) ->
+    return targetLanguage ->
         new SAPDocumentTranslationOutputConfig().targetLanguage(targetLanguage);
   }
 

@@ -151,9 +151,8 @@ public class AiEnactmentCreationRequest
     final StringBuilder sb = new StringBuilder();
     sb.append("class AiEnactmentCreationRequest {\n");
     sb.append("    configurationId: ").append(toIndentedString(configurationId)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -173,7 +172,7 @@ public class AiEnactmentCreationRequest
    * AiEnactmentCreationRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (configurationId) -> new AiEnactmentCreationRequest().configurationId(configurationId);
+    return configurationId -> new AiEnactmentCreationRequest().configurationId(configurationId);
   }
 
   /** Builder helper class. */

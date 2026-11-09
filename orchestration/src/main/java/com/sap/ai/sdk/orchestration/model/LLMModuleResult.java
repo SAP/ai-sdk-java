@@ -448,9 +448,8 @@ public class LLMModuleResult
     sb.append("    choices: ").append(toIndentedString(choices)).append("\n");
     sb.append("    usage: ").append(toIndentedString(usage)).append("\n");
     sb.append("    citations: ").append(toIndentedString(citations)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -470,12 +469,12 @@ public class LLMModuleResult
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (_object) ->
-            (created) ->
-                (model) ->
-                    (choices) ->
-                        (usage) ->
+    return id ->
+        _object ->
+            created ->
+                model ->
+                    choices ->
+                        usage ->
                             new LLMModuleResult()
                                 .id(id)
                                 ._object(_object)

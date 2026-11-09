@@ -321,9 +321,8 @@ public class ChatCompletionResponseMessage
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("    toolCalls: ").append(toIndentedString(toolCalls)).append("\n");
     sb.append("    functionCall: ").append(toIndentedString(functionCall)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

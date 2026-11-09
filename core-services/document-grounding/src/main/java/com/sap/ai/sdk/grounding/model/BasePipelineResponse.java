@@ -221,9 +221,8 @@ public class BasePipelineResponse
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -243,7 +242,7 @@ public class BasePipelineResponse
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> (type) -> new BasePipelineResponse().id(id).type(type);
+    return id -> type -> new BasePipelineResponse().id(id).type(type);
   }
 
   /** Builder helper class. */

@@ -272,9 +272,8 @@ public class GoogleDriveConfigurationStruct
     sb.append("    googleDrive: ").append(toIndentedString(googleDrive)).append("\n");
     sb.append("    cronExpression: ").append(toIndentedString(cronExpression)).append("\n");
     sb.append("    metadataConfigId: ").append(toIndentedString(metadataConfigId)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -294,8 +293,8 @@ public class GoogleDriveConfigurationStruct
    * GoogleDriveConfigurationStruct} instance with all required arguments.
    */
   public static Builder create() {
-    return (destination) ->
-        (googleDrive) ->
+    return destination ->
+        googleDrive ->
             new GoogleDriveConfigurationStruct().destination(destination).googleDrive(googleDrive);
   }
 

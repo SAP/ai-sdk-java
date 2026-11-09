@@ -255,9 +255,8 @@ public class RetrievalPerFilterSearchResult
     sb.append("    remoteGroundingName: ")
         .append(toIndentedString(remoteGroundingName))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -277,7 +276,7 @@ public class RetrievalPerFilterSearchResult
    * RetrievalPerFilterSearchResult} instance with all required arguments.
    */
   public static Builder create() {
-    return (filterId) -> new RetrievalPerFilterSearchResult().filterId(filterId);
+    return filterId -> new RetrievalPerFilterSearchResult().filterId(filterId);
   }
 
   /** Builder helper class. */

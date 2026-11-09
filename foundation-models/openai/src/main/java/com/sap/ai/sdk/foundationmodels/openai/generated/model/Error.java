@@ -291,9 +291,8 @@ public class Error
     sb.append("    param: ").append(toIndentedString(param)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    innerError: ").append(toIndentedString(innerError)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

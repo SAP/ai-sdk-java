@@ -160,7 +160,8 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
                            "text" : "Hello World! Why is this phrase so famous?"
                          } ]
                        } ]
-                     }""")));
+                     }\
+                    """)));
   }
 
   @Test
@@ -181,15 +182,16 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {
-                        "messages" : [ {
-                          "role" : "user",
-                          "content" : [ {
-                            "type" : "text",
-                            "text" : "First message"
-                          } ]
+                    {
+                      "messages" : [ {
+                        "role" : "user",
+                        "content" : [ {
+                          "type" : "text",
+                          "text" : "First message"
                         } ]
-                      }""")));
+                      } ]
+                    }\
+                    """)));
 
     var response = client.chatCompletion("Second message");
 
@@ -204,15 +206,16 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {
-                         "messages" : [ {
-                           "role" : "user",
-                           "content" : [ {
-                             "type" : "text",
-                             "text" : "Second message"
-                           } ]
+                    {
+                       "messages" : [ {
+                         "role" : "user",
+                         "content" : [ {
+                           "type" : "text",
+                           "text" : "Second message"
                          } ]
-                       }""")));
+                       } ]
+                     }\
+                    """)));
   }
 
   @Test
@@ -246,7 +249,8 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {"input": ["Hello World"]}""")));
+                    {"input": ["Hello World"]}\
+                    """)));
   }
 
   @Test
@@ -450,36 +454,36 @@ class OpenAiClientTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {
-                        "messages" : [ {
-                          "role" : "user",
-                          "content" : [ {
-                            "type" : "text",
-                            "text" : "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?"
-                          } ]
-                        } ],
-                        "tools" : [ {
-                          "type" : "function",
-                          "function" : {
-                            "name" : "fibonacci",
-                            "parameters" : {
-                              "type" : "object",
-                              "properties" : {
-                                "N" : {
-                                  "type" : "integer"
-                                }
+                    {
+                      "messages" : [ {
+                        "role" : "user",
+                        "content" : [ {
+                          "type" : "text",
+                          "text" : "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?"
+                        } ]
+                      } ],
+                      "tools" : [ {
+                        "type" : "function",
+                        "function" : {
+                          "name" : "fibonacci",
+                          "parameters" : {
+                            "type" : "object",
+                            "properties" : {
+                              "N" : {
+                                "type" : "integer"
                               }
                             }
                           }
-                        } ],
-                        "tool_choice" : {
-                          "function" : {
-                            "name" : "fibonacci"
-                          },
-                          "type" : "function"
                         }
+                      } ],
+                      "tool_choice" : {
+                        "function" : {
+                          "name" : "fibonacci"
+                        },
+                        "type" : "function"
                       }
-                      """)));
+                    }
+                    """)));
   }
 
   @Test

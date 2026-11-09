@@ -263,9 +263,8 @@ public class SearchDocumentKeyValueListPair
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    selectMode: ").append(toIndentedString(selectMode)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -285,7 +284,7 @@ public class SearchDocumentKeyValueListPair
    * SearchDocumentKeyValueListPair} instance with all required arguments.
    */
   public static Builder create() {
-    return (key) -> (value) -> new SearchDocumentKeyValueListPair().key(key).value(value);
+    return key -> value -> new SearchDocumentKeyValueListPair().key(key).value(value);
   }
 
   /** Builder helper class. */

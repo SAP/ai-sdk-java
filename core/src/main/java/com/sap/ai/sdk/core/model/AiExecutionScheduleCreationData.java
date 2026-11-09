@@ -308,9 +308,8 @@ public class AiExecutionScheduleCreationData
     sb.append("    configurationId: ").append(toIndentedString(configurationId)).append("\n");
     sb.append("    start: ").append(toIndentedString(start)).append("\n");
     sb.append("    end: ").append(toIndentedString(end)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -330,9 +329,9 @@ public class AiExecutionScheduleCreationData
    * AiExecutionScheduleCreationData} instance with all required arguments.
    */
   public static Builder create() {
-    return (cron) ->
-        (name) ->
-            (configurationId) ->
+    return cron ->
+        name ->
+            configurationId ->
                 new AiExecutionScheduleCreationData()
                     .cron(cron)
                     .name(name)

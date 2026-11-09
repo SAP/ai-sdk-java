@@ -201,9 +201,8 @@ public class MetadataItem
     sb.append("class MetadataItem {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -223,7 +222,7 @@ public class MetadataItem
    * with all required arguments.
    */
   public static Builder create() {
-    return (id) -> new MetadataItem().id(id);
+    return id -> new MetadataItem().id(id);
   }
 
   /** Builder helper class. */

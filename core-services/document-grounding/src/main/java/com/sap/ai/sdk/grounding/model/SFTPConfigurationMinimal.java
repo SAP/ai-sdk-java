@@ -148,9 +148,8 @@ public class SFTPConfigurationMinimal
     final StringBuilder sb = new StringBuilder();
     sb.append("class SFTPConfigurationMinimal {\n");
     sb.append("    sftp: ").append(toIndentedString(sftp)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -170,7 +169,7 @@ public class SFTPConfigurationMinimal
    * SFTPConfigurationMinimal} instance with all required arguments.
    */
   public static Builder create() {
-    return (sftp) -> new SFTPConfigurationMinimal().sftp(sftp);
+    return sftp -> new SFTPConfigurationMinimal().sftp(sftp);
   }
 
   /** Builder helper class. */
