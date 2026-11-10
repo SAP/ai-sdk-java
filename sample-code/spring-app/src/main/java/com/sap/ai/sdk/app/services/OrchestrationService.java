@@ -2,7 +2,9 @@ package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_3_8_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.SONAR;
@@ -395,7 +397,7 @@ public class OrchestrationService {
     val filterConfig =
         new GraniteGuardianFilter().config(GraniteGuardian41.create().categories(categories));
 
-    val configWithFilter = this.config.withInputFiltering(filterConfig);
+    val configWithFilter = new OrchestrationModuleConfig(GEMINI_3_8_FLASH).withInputFiltering(filterConfig);
 
     return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }

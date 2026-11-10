@@ -24,7 +24,7 @@
             }
           },
           "granite_guardian_4_1": {
-            "violence": true
+            "violence": {"verdict": true}
           }
         }
       }

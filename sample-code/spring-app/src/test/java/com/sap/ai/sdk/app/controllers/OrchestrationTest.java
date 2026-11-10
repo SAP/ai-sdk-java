@@ -434,6 +434,7 @@ class OrchestrationTest {
             OrchestrationFilterException.Input.class,
             e -> {
               assertThat(e.getGraniteGuardian41()).isNotNull();
+              assertThat(e.getGraniteGuardian41().isViolence()).isTrue();
             });
   }
 

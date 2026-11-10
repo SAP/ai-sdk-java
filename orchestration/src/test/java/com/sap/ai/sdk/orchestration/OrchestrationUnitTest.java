@@ -2127,7 +2127,7 @@ class OrchestrationUnitTest {
                                   "Sexual", 0,
                                   "Violence", 6,
                                   "userPromptAnalysis", Map.of("attackDetected", false)),
-                          "granite_guardian_4_1", Map.of("violence", true)));
+                          "granite_guardian_4_1", Map.of("violence", Map.of("verdict", true))));
 
               assertThat(e.getAzureContentSafetyInput()).isNotNull();
               assertThat(e.getAzureContentSafetyInput().getHate()).isEqualTo(NUMBER_6);
@@ -2182,7 +2182,7 @@ class OrchestrationUnitTest {
                               "Violence", 6,
                               "ProtectedMaterialCode", false),
                           "granite_guardian_4_1",
-                          Map.of("violence", true)));
+                          Map.of("violence", Map.of("verdict", true))));
               assertThat(e.getErrorResponse()).isNull();
               assertThat(e.getStatusCode()).isNull();
 

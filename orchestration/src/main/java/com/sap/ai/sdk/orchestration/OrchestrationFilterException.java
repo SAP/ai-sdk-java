@@ -4,7 +4,6 @@ import static com.sap.ai.sdk.orchestration.OrchestrationJacksonConfiguration.get
 
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyInput;
 import com.sap.ai.sdk.orchestration.model.AzureContentSafetyOutput;
-import com.sap.ai.sdk.orchestration.model.GraniteGuardian41Categories;
 import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import java.util.Map;
 import java.util.Optional;
@@ -47,16 +46,18 @@ public class OrchestrationFilterException extends OrchestrationClientException {
    * Retrieves Granite Guardian 4.1 filter details from this exception, if present. This applies to
    * both input and output filtering.
    *
-   * @return the GraniteGuardian41Categories object, or {@code null} if not found or conversion
+   * @return the GraniteGuardian41FilterResult object, or {@code null} if not found or conversion
    *     fails.
    * @throws IllegalArgumentException if the conversion of filter details to {@link
-   *     GraniteGuardian41Categories} fails due to invalid content.
+   *     GraniteGuardian41FilterResult} fails due to invalid content.
    */
   @Nullable
-  public GraniteGuardian41Categories getGraniteGuardian41() {
+  public GraniteGuardian41FilterResult getGraniteGuardian41() {
     return Optional.ofNullable(filterDetails.get("granite_guardian_4_1"))
-        .map(obj ->
-            getOrchestrationObjectMapper().convertValue(obj, GraniteGuardian41Categories.class))
+        .map(
+            obj ->
+                getOrchestrationObjectMapper()
+                    .convertValue(obj, GraniteGuardian41FilterResult.class))
         .orElse(null);
   }
 
@@ -74,8 +75,9 @@ public class OrchestrationFilterException extends OrchestrationClientException {
     @Nullable
     public AzureContentSafetyInput getAzureContentSafetyInput() {
       return Optional.ofNullable(filterDetails.get("azure_content_safety"))
-          .map(obj ->
-              getOrchestrationObjectMapper().convertValue(obj, AzureContentSafetyInput.class))
+          .map(
+              obj ->
+                  getOrchestrationObjectMapper().convertValue(obj, AzureContentSafetyInput.class))
           .orElse(null);
     }
   }
@@ -98,8 +100,9 @@ public class OrchestrationFilterException extends OrchestrationClientException {
     @Nullable
     public AzureContentSafetyOutput getAzureContentSafetyOutput() {
       return Optional.ofNullable(filterDetails.get("azure_content_safety"))
-          .map(obj ->
-              getOrchestrationObjectMapper().convertValue(obj, AzureContentSafetyOutput.class))
+          .map(
+              obj ->
+                  getOrchestrationObjectMapper().convertValue(obj, AzureContentSafetyOutput.class))
           .orElse(null);
     }
   }
