@@ -423,34 +423,6 @@ class OrchestrationTest {
     assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
   }
 
-  @Test
-  void testLlamaGuardEnabled() {
-    assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
-        .isInstanceOf(OrchestrationFilterException.Input.class)
-        .hasMessageContainingAll("Filtering", "blocked")
-        .hasMessageContaining("400 (Bad Request)")
-        .isInstanceOfSatisfying(
-            OrchestrationFilterException.Input.class,
-            e -> {
-              var llamaGuard38b = e.getLlamaGuard38b();
-              assertThat(llamaGuard38b).isNotNull();
-              assertThat(llamaGuard38b.isViolentCrimes()).isTrue();
-              assertThat(llamaGuard38b.isHate()).isFalse();
-              assertThat(llamaGuard38b.isChildExploitation()).isFalse();
-              assertThat(llamaGuard38b.isDefamation()).isFalse();
-            });
-  }
-
-  @Test
-  void testLlamaGuardDisabled() {
-    var response = service.llamaGuardInputFilter(false);
-
-    assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
-    assertThat(response.getContent()).isNotEmpty();
-
-    var filterResult = response.getOriginalResponse().getIntermediateResults().getInputFiltering();
-    assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
-  }
 
   @Test
   void testGraniteGuardianEnabled() {

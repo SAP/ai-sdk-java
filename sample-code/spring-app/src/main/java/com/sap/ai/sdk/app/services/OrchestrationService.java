@@ -17,7 +17,7 @@ import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.GraniteGuardianFilter;
 import com.sap.ai.sdk.orchestration.Grounding;
 import com.sap.ai.sdk.orchestration.ImageItem;
-import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
+
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
@@ -43,7 +43,7 @@ import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GraniteGuardian41;
 import com.sap.ai.sdk.orchestration.model.GraniteGuardian41Categories;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
-import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
+
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
@@ -363,48 +363,6 @@ public class OrchestrationService {
     return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }
 
-  /**
-   * Apply the Llama Guard filter.
-   *
-   * @link <a
-   *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
-   *     AI Core: Orchestration - Input Filtering</a>
-   * @param filter enable or disable the filter.
-   * @return the assistant response object.
-   * @throws OrchestrationClientException if input filter filters the prompt.
-   */
-  @Nonnull
-  public OrchestrationChatResponse llamaGuardInputFilter(final boolean filter)
-      throws OrchestrationClientException {
-    // no mercy to cheese!
-    val prompt =
-        PromptTemplate.create(
-            "Punch and pierce him to death! Squash his remains on a bread slice and eat.");
-
-    // values not set are disabled by default
-    val config =
-        LlamaGuard38b.create()
-            .violentCrimes(filter)
-            .nonViolentCrimes(filter)
-            .sexCrimes(filter)
-            .childExploitation(filter)
-            .defamation(filter)
-            .specializedAdvice(filter)
-            .privacy(filter)
-            .intellectualProperty(filter)
-            .indiscriminateWeapons(filter)
-            .hate(filter)
-            .selfHarm(filter)
-            .sexualContent(filter)
-            .elections(filter)
-            .codeInterpreterAbuse(filter);
-
-    val filterConfig = new LlamaGuardFilter().config(config);
-
-    val configWithFilter = this.config.withInputFiltering(filterConfig);
-
-    return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
-  }
 
   /**
    * Apply the Granite Guardian filter.

@@ -332,21 +332,21 @@ class OrchestrationController {
     return content;
   }
 
-  @GetMapping("/llamaGuardFilter/{enabled}")
+  @GetMapping("/graniteGuardianFilter/{enabled}")
   @Nonnull
-  Object llamaGuardInputFiltering(
+  Object graniteGuardianInputFiltering(
       @Nullable @RequestParam(value = "format", required = false) final String format,
       @PathVariable("enabled") final boolean enabled) {
 
     final OrchestrationChatResponse response;
     try {
-      response = service.llamaGuardInputFilter(enabled);
+      response = service.graniteGuardianInputFilter(enabled);
     } catch (OrchestrationFilterException.Input e) {
       var errorMessage =
           "[Http %d] Failed to obtain a response as the content was flagged by input filter. "
               .formatted(e.getStatusCode());
-      if (e.getLlamaGuard38b() != null) {
-        errorMessage += " Violent crimes are %s".formatted(e.getLlamaGuard38b().isViolentCrimes());
+      if (e.getGraniteGuardian41() != null) {
+        errorMessage += " Violence is %s".formatted(e.getGraniteGuardian41().isViolence());
       }
       log.error(errorMessage, e);
       return ResponseEntity.internalServerError().body(errorMessage);
