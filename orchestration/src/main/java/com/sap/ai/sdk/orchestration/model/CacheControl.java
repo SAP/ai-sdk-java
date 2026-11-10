@@ -36,7 +36,8 @@ import javax.annotation.Nullable;
  * and the Chat Completions path (GPT-5.6 models). System message cache breakpoints are not
  * supported on Azure. &#x60;CacheControl.ttl&#x60; is Anthropic-only and is ignored for Azure;
  * configure Azure cache TTL through &#x60;prompt_cache_options&#x60; where supported. Not supported
- * on PTU-M deployments.
+ * on PTU-M deployments. The prompt prefix through the breakpoint must contain at least 1,024 tokens
+ * to be cacheable.
  */
 // CHECKSTYLE:OFF
 public class CacheControl
