@@ -34,7 +34,9 @@ import javax.annotation.Nullable;
  * translated to &#x60;prompt_cache_breakpoint: {mode: explicit}&#x60; on the wire. Supported on
  * user message content blocks (text, image, file) on both the Responses API path (GPT-6+ models)
  * and the Chat Completions path (GPT-5.6 models). System message cache breakpoints are not
- * supported on Azure. Not supported on PTU-M deployments.
+ * supported on Azure. &#x60;CacheControl.ttl&#x60; is Anthropic-only and is ignored for Azure;
+ * configure Azure cache TTL through &#x60;prompt_cache_options&#x60; where supported. Not supported
+ * on PTU-M deployments.
  */
 // CHECKSTYLE:OFF
 public class CacheControl
