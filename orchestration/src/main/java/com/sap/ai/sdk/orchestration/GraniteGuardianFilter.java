@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
  *
  * <pre>{@code
  * // values not set are disabled by default
- * val categories =
+ * var categories =
  *     GraniteGuardian41Categories.create()
  *         .harm(true)
  *         .violence(true);

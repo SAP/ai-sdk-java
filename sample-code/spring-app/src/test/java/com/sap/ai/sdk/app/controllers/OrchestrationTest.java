@@ -461,7 +461,7 @@ class OrchestrationTest {
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
             e -> {
-              assertThat(e.getGraniteGuardian41()).isNull();
+              assertThat(e.getGraniteGuardian41()).isNotNull();
             });
   }
 
