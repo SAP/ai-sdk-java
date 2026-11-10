@@ -118,8 +118,8 @@ jobs:
         run: |
           BRANCH="spec-update/$SERVICE/$REF"
 
-          # try to fetch the base and the target branch (ignore failures if missing)
-          git fetch --no-tags --depth=1 origin "$BASE" || true
+          # fetch full history of BASE for accurate spec diffing
+          git fetch --unshallow origin "$BASE" || git fetch --no-tags origin "$BASE" || true
           git fetch origin "$BRANCH" || true
 
           # if remote target branch exists, base the local branch on it
@@ -225,14 +225,13 @@ jobs:
             if [ -n "$PREVIOUS_RUN" ] && [ "$PREVIOUS_RUN" != "null" ]; then
               CONCLUSION=$(echo "$PREVIOUS_RUN" | jq -r '.conclusion')
               echo "Previous run conclusion: $CONCLUSION"
+              echo "spec_diff=false" >> "$GITHUB_OUTPUT"
 
               if [ "$CONCLUSION" = "failure" ]; then
                 echo "Previous run failed and there were no spec changes since, thus failing this run as well."
-                echo "spec_diff=false" >> "$GITHUB_OUTPUT"
                 echo "prev_run_success=false" >> "$GITHUB_OUTPUT"
               else
                 echo "Previous run succeeded and there were no spec changes since, thus the current run succeeds as well."
-                echo "spec_diff=false" >> "$GITHUB_OUTPUT"
                 echo "prev_run_success=true" >> "$GITHUB_OUTPUT"
               fi
             else
