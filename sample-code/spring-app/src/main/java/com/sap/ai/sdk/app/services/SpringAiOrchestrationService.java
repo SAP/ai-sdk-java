@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 
@@ -135,7 +135,7 @@ public class SpringAiOrchestrationService {
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
     val opts =
         new OrchestrationChatOptions(
-            config.withLlmConfig(GEMINI_2_5_FLASH).withInputFiltering(filterConfig));
+            config.withLlmConfig(CLAUDE_4_5_SONNET).withInputFiltering(filterConfig));
 
     // no mercy to cheese
     val prompt =
@@ -160,7 +160,7 @@ public class SpringAiOrchestrationService {
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
     val opts =
         new OrchestrationChatOptions(
-            config.withLlmConfig(GEMINI_2_5_FLASH).withOutputFiltering(filterConfig));
+            config.withLlmConfig(CLAUDE_4_5_SONNET).withOutputFiltering(filterConfig));
 
     // no mercy for cheese!
     val prompt =
