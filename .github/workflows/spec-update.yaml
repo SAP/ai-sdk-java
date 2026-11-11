@@ -125,6 +125,7 @@ jobs:
           # if remote target branch exists, base the local branch on it
           if git ls-remote --heads origin "$BRANCH" | grep -q "refs/heads/$BRANCH"; then
             git checkout -B "$BRANCH" "origin/$BRANCH"
+            echo "branch_created=false" >> "$GITHUB_OUTPUT"
           else
             # otherwise, create the branch from origin/BASE if it exists, else from current HEAD
             if git ls-remote --heads origin "$BASE" | grep -q "refs/heads/$BASE"; then
@@ -132,6 +133,7 @@ jobs:
             else
               git checkout -B "$BRANCH"
             fi
+            echo "branch_created=true" >> "$GITHUB_OUTPUT"
           fi
 
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
@@ -175,7 +177,6 @@ jobs:
           esac
 
           echo "module_path=$MODULE_PATH" >> "$GITHUB_OUTPUT"
-          echo "file_path=$FILE_PATH" >> "$GITHUB_OUTPUT"
           echo "Downloading $SERVICE specification file from $API_URL ..."
 
           gh api "$API_URL" -H "Accept: application/vnd.github.raw" > $FILE_PATH
@@ -184,20 +185,26 @@ jobs:
         id: spec_diff
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
-          BASE: ${{ steps.pr_base.outputs.BASE }}
-          FILE_PATH: ${{ steps.download.outputs.file_path }}
         run: |
-          # Compare downloaded spec against BASE (not feature branch HEAD).
-          # This correctly detects changes even when the feature branch already has a newer spec than BASE.
-          if ! git diff --quiet "origin/$BASE" -- "$FILE_PATH"; then
+          # spec changes are compared to the existing feature branch (if it exists) to make sure to not generate unnecessarily!
+          # if there are spec changes: generate
+          # if there are no spec changes and it's the weekly run:       no generation and success
+          # if there are no spec changes and there was no previous run: no generation and success
+          # if there are no spec changes but there was a previous run:
+          #     - if previous run failed:         fail
+          #     - if previous run succeeded:      success
+          #     - if previous run can't be found: generate
+          if [[ $(git status --porcelain) ]]; then
             echo "Spec changes detected, continuing with generation."
             echo "spec_diff=true" >> "$GITHUB_OUTPUT"
           elif [[ "${{ github.event.inputs.is-weekly }}" == "true" ]]; then
             echo "No spec changes detected during weekly spec update. This run succeeds."
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "No spec changes detected. Checking status of previous run."
+          elif [[ "${{ steps.branch.outputs.branch_created }}" == "true" ]]; then
+            echo "No spec change detected and there was no previous run. This run succeeds."
             echo "spec_diff=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "No spec changes detected but there was a previous run. Checking status of previous run."
 
             # The current run of this workflow
             CURRENT_RUN=${{ github.run_id }}
@@ -218,6 +225,7 @@ jobs:
             if [ -n "$PREVIOUS_RUN" ] && [ "$PREVIOUS_RUN" != "null" ]; then
               CONCLUSION=$(echo "$PREVIOUS_RUN" | jq -r '.conclusion')
               echo "Previous run conclusion: $CONCLUSION"
+              echo "spec_diff=false" >> "$GITHUB_OUTPUT"
 
               if [ "$CONCLUSION" = "failure" ]; then
                 echo "Previous run failed and there were no spec changes since, thus failing this run as well."
@@ -227,8 +235,8 @@ jobs:
                 echo "prev_run_success=true" >> "$GITHUB_OUTPUT"
               fi
             else
-              echo "There was no previous run, thus the current run succeeds."
-              echo "prev_run_success=true" >> "$GITHUB_OUTPUT"
+              echo "Failed to find previous run. Continuing with generation."
+              echo "spec_diff=true" >> "$GITHUB_OUTPUT"
             fi
           fi
 
