@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_3_8_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
@@ -75,7 +75,7 @@ public class OrchestrationService {
 
   @Getter
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig().withLlmConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig().withLlmConfig(GEMINI_3_8_FLASH.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
