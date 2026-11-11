@@ -2,6 +2,7 @@ package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_3_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_3_8_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
@@ -78,7 +79,7 @@ public class OrchestrationService {
 
   @Getter
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig(GEMINI_3_8_FLASH.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -384,6 +385,7 @@ public class OrchestrationService {
         PromptTemplate.create(
             "Punch and pierce him to death! Squash his remains on a bread slice and eat.");
 
+    // values not set are disabled by default
     val categories =
         GraniteGuardian41Categories.create()
             .harm(filter)
@@ -397,7 +399,7 @@ public class OrchestrationService {
     val filterConfig =
         new GraniteGuardianFilter().config(GraniteGuardian41.create().categories(categories));
 
-    val configWithFilter = new OrchestrationModuleConfig(GEMINI_3_8_FLASH).withInputFiltering(filterConfig);
+    val configWithFilter = config.withInputFiltering(filterConfig);
 
     return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }
