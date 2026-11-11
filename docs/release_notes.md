@@ -12,6 +12,7 @@
 
 ### ✨ New Functionality
 
+- [Anthropic] Added `AiCoreAnthropicClient` for `messages()`.
 - [Orchestration] Added new model `SAP_ABAP_2` to `OrchestrationAiModel`.
 
 ### 📈 Improvements

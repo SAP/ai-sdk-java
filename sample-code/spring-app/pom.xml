@@ -140,6 +140,14 @@
       <artifactId>sap-rpt</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.sap.ai.sdk.foundationmodels</groupId>
+      <artifactId>anthropic</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.anthropic</groupId>
+      <artifactId>anthropic-java-core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
       <artifactId>cloudplatform-core</artifactId>
     </dependency>
