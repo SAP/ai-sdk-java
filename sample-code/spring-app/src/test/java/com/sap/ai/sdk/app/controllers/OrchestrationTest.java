@@ -2,7 +2,6 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_6_SONNET;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.*;
@@ -68,7 +67,7 @@ class OrchestrationTest {
 
   private final OrchestrationClient client = new OrchestrationClient();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig(CLAUDE_4_6_SONNET.withParam(TEMPERATURE, 0.0));
   OrchestrationService service;
 
   @BeforeEach
