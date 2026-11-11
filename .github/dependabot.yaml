@@ -24,6 +24,8 @@ updates:
         versions: [ ">=5.0.0" ]
       - dependency-name: "org.springframework.ai:spring-ai-bom"
         versions: [ ">=2.0.0" ]
+      - dependency-name: "maven-enforcer-plugin"
+        versions: [ ">=3.7.0" ] # 3.7.0 broke our optional-dependency workaround for Spring AI, see https://github.com/apache/maven-enforcer/issues/1077
     groups:
       production-minor-patch:
         dependency-type: "production"
@@ -42,7 +44,7 @@ updates:
       test:
         dependency-type: "development"
   - package-ecosystem: maven
-    target-branch: v2
+    target-branch: v1
     directory: '/'
     schedule:
       interval: weekly
