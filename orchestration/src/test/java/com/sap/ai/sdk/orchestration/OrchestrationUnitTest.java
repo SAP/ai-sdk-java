@@ -798,7 +798,6 @@ class OrchestrationUnitTest {
 
               assertThat(e.getLlamaGuard38b()).isNotNull();
               assertThat(e.getLlamaGuard38b().isViolentCrimes()).isTrue();
-              // assertException(e, "Content filter filtered the output.", null);
             });
   }
 
@@ -914,7 +913,7 @@ class OrchestrationUnitTest {
         post(anyUrl())
             .inScenario("Errors")
             .whenScenarioStateIs("3")
-            .willReturn(okXml("<xml></xml>"))
+            .willReturn(okXml("<xml/>"))
             .willSetStateTo("4"));
     stubFor(post(anyUrl()).inScenario("Errors").whenScenarioStateIs("4").willReturn(noContent()));
 

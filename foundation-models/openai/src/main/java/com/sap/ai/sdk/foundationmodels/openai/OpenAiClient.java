@@ -390,20 +390,12 @@ public final class OpenAiClient {
           request,
           new ClientResponseHandler<>(responseType, OpenAiError.class, FACTORY.apply(request)));
     } catch (SocketTimeoutException e) {
-      throw FACTORY
-          .apply(request)
-          .build(
+      throw new OpenAiClientException(
               "Request to OpenAI model took longer than 2 minutes. Please shorten your request or use streaming.",
-              e);
-      //      new OpenAiClientException(
-      //              "Request to OpenAI model took longer than 2 minutes. Please shorten your
-      // request or use streaming.",
-      //              e)
-      //          .setHttpRequest(request);
+              e)
+          .setHttpRequest(request);
     } catch (final IOException e) {
-      throw FACTORY.apply(request).build("Request to OpenAI model failed", e);
-      // throw new OpenAiClientException("Request to OpenAI model failed",
-      // e).setHttpRequest(request);
+      throw new OpenAiClientException("Request to OpenAI model failed", e).setHttpRequest(request);
     } finally {
       RequestLogContext.clear();
     }

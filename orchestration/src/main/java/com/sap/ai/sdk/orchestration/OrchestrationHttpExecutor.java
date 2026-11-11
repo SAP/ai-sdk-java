@@ -71,23 +71,18 @@ class OrchestrationHttpExecutor {
       return client.execute(request, handler);
 
     } catch (SocketTimeoutException e) {
-      throw FACTORY
-          .apply(request)
-          .build(
+      throw new OrchestrationClientException(
               "Request to Orchestration service took longer than 2 minutes. Please shorten your request or use streaming.",
-              e);
-      //      throw new OrchestrationClientException(
-      //          "Request to Orchestration service took longer than 2 minutes. Please shorten your
-      // request or use streaming.",
-      //          e).setHttpRequest(request);
+              e)
+          .setHttpRequest(request);
     } catch (DeploymentResolutionException
         | DestinationAccessException
         | DestinationNotFoundException
         | HttpClientInstantiationException
         | IOException e) {
-      throw FACTORY.apply(request).build("Request to Orchestration service failed for " + path, e);
-      //      throw new OrchestrationClientException(
-      //          "Request to Orchestration service failed for " + path, e).setHttpRequest(request);
+      throw new OrchestrationClientException(
+              "Request to Orchestration service failed for " + path, e)
+          .setHttpRequest(request);
     } finally {
       RequestLogContext.clear();
     }
