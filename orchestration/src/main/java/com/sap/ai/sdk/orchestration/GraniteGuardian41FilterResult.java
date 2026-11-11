@@ -38,37 +38,65 @@ public class GraniteGuardian41FilterResult {
   @Nullable
   GraniteGuardian41CategoryResult unethicalBehavior;
 
-  /** Returns {@code true} if the harm category was detected. */
+  /**
+   * Returns whether the harm category was detected.
+   *
+   * @return {@code true} if harm was detected, {@code false} otherwise.
+   */
   public boolean isHarm() {
     return harm != null && Boolean.TRUE.equals(harm.verdict);
   }
 
-  /** Returns {@code true} if the violence category was detected. */
+  /**
+   * Returns whether the violence category was detected.
+   *
+   * @return {@code true} if violence was detected, {@code false} otherwise.
+   */
   public boolean isViolence() {
     return violence != null && Boolean.TRUE.equals(violence.verdict);
   }
 
-  /** Returns {@code true} if jailbreak was detected. */
+  /**
+   * Returns whether jailbreak was detected.
+   *
+   * @return {@code true} if jailbreak was detected, {@code false} otherwise.
+   */
   public boolean isJailbreak() {
     return jailbreak != null && Boolean.TRUE.equals(jailbreak.verdict);
   }
 
-  /** Returns {@code true} if social bias was detected. */
+  /**
+   * Returns whether social bias was detected.
+   *
+   * @return {@code true} if social bias was detected, {@code false} otherwise.
+   */
   public boolean isSocialBias() {
     return socialBias != null && Boolean.TRUE.equals(socialBias.verdict);
   }
 
-  /** Returns {@code true} if profanity was detected. */
+  /**
+   * Returns whether profanity was detected.
+   *
+   * @return {@code true} if profanity was detected, {@code false} otherwise.
+   */
   public boolean isProfanity() {
     return profanity != null && Boolean.TRUE.equals(profanity.verdict);
   }
 
-  /** Returns {@code true} if sexual content was detected. */
+  /**
+   * Returns whether sexual content was detected.
+   *
+   * @return {@code true} if sexual content was detected, {@code false} otherwise.
+   */
   public boolean isSexualContent() {
     return sexualContent != null && Boolean.TRUE.equals(sexualContent.verdict);
   }
 
-  /** Returns {@code true} if unethical behavior was detected. */
+  /**
+   * Returns whether unethical behavior was detected.
+   *
+   * @return {@code true} if unethical behavior was detected, {@code false} otherwise.
+   */
   public boolean isUnethicalBehavior() {
     return unethicalBehavior != null && Boolean.TRUE.equals(unethicalBehavior.verdict);
   }

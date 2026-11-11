@@ -1,11 +1,8 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_3_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_3_8_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.SONAR;
@@ -20,7 +17,6 @@ import com.sap.ai.sdk.orchestration.DpiMasking;
 import com.sap.ai.sdk.orchestration.GraniteGuardianFilter;
 import com.sap.ai.sdk.orchestration.Grounding;
 import com.sap.ai.sdk.orchestration.ImageItem;
-
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
@@ -46,7 +42,6 @@ import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
 import com.sap.ai.sdk.orchestration.model.GraniteGuardian41;
 import com.sap.ai.sdk.orchestration.model.GraniteGuardian41Categories;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
-
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
@@ -365,7 +360,6 @@ public class OrchestrationService {
     val configWithFilter = config.withOutputFiltering(filterConfig);
     return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }
-
 
   /**
    * Apply the Granite Guardian filter.

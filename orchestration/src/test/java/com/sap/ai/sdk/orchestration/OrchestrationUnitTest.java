@@ -2246,4 +2246,48 @@ class OrchestrationUnitTest {
     verify(
         postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
   }
+
+  @Test
+  void graniteGuardian41FilterResultAllCategories() {
+    final var mapper = OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
+
+    // all categories detected
+    final var allDetected =
+        mapper.convertValue(
+            Map.of(
+                "harm", Map.of("verdict", true),
+                "violence", Map.of("verdict", true),
+                "jailbreak", Map.of("verdict", true),
+                "social_bias", Map.of("verdict", true),
+                "profanity", Map.of("verdict", true),
+                "sexual_content", Map.of("verdict", true),
+                "unethical_behavior", Map.of("verdict", true)),
+            GraniteGuardian41FilterResult.class);
+
+    assertThat(allDetected.isHarm()).isTrue();
+    assertThat(allDetected.isViolence()).isTrue();
+    assertThat(allDetected.isJailbreak()).isTrue();
+    assertThat(allDetected.isSocialBias()).isTrue();
+    assertThat(allDetected.isProfanity()).isTrue();
+    assertThat(allDetected.isSexualContent()).isTrue();
+    assertThat(allDetected.isUnethicalBehavior()).isTrue();
+
+    // no categories present — all return false
+    final var noneDetected = mapper.convertValue(Map.of(), GraniteGuardian41FilterResult.class);
+
+    assertThat(noneDetected.isHarm()).isFalse();
+    assertThat(noneDetected.isViolence()).isFalse();
+    assertThat(noneDetected.isJailbreak()).isFalse();
+    assertThat(noneDetected.isSocialBias()).isFalse();
+    assertThat(noneDetected.isProfanity()).isFalse();
+    assertThat(noneDetected.isSexualContent()).isFalse();
+    assertThat(noneDetected.isUnethicalBehavior()).isFalse();
+
+    // verdict explicitly false
+    final var verdictFalse =
+        mapper.convertValue(
+            Map.of("harm", Map.of("verdict", false)), GraniteGuardian41FilterResult.class);
+
+    assertThat(verdictFalse.isHarm()).isFalse();
+  }
 }

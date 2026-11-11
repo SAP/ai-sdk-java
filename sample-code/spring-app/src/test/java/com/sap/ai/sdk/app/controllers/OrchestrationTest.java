@@ -2,7 +2,6 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_6_SONNET;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_3_8_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
@@ -423,7 +422,6 @@ class OrchestrationTest {
     var filterResult = response.getOriginalResponse().getIntermediateResults().getOutputFiltering();
     assertThat(filterResult.getMessage()).contains("Filtering").containsAnyOf("passed", "skipped");
   }
-
 
   @Test
   void testGraniteGuardianEnabled() {
