@@ -75,7 +75,7 @@ public class OrchestrationChatModel implements ChatModel {
   public ChatResponse call(@Nonnull final Prompt prompt) {
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
-      val orchestrationPrompt = options.withCallbacks(toPromptTemplate(prompt));
+      val orchestrationPrompt = options.applyTo(toPromptTemplate(prompt));
 
       return new OrchestrationSpringChatResponse(
           client
@@ -96,7 +96,7 @@ public class OrchestrationChatModel implements ChatModel {
 
     if (prompt.getOptions() instanceof OrchestrationChatOptions options) {
 
-      val orchestrationPrompt = options.withCallbacks(toPromptTemplate(prompt));
+      val orchestrationPrompt = options.applyTo(toPromptTemplate(prompt));
       final Flux<OrchestrationChatCompletionDelta> flux =
           Flux.fromStream(
               () ->

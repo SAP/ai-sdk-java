@@ -78,7 +78,7 @@
     <jackson3.version>3.2.3</jackson3.version>
     <logback.version>1.6.6</logback.version>
     <commons-codec.version>1.23.0</commons-codec.version>
-    <japicmp.version>0.26.5</japicmp.version>
+    <japicmp.version>0.27.0</japicmp.version>
     <openai-java.version>4.96.0</openai-java.version>
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.4</httpcomponents-core5.version>
@@ -864,7 +864,7 @@ https://gitbox.apache.org/repos/asf?p=maven-pmd-plugin.git;a=blob_plain;f=src/ma
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.15</version>
+        <version>0.8.16</version>
         <configuration>
           <excludes>
             <!-- Exclude generated clients and end to end application from test coverage -->

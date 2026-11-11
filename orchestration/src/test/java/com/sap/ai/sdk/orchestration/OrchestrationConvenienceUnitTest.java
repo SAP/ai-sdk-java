@@ -199,6 +199,17 @@ public class OrchestrationConvenienceUnitTest {
   }
 
   @Test
+  void testResponseFormatSchemaFromString() {
+    val schemaMap = generateSchemaMap();
+    val schemaJson = new ObjectMapper().valueToTree(schemaMap);
+
+    val schemaFromString = ResponseJsonSchema.fromString(schemaJson.toString(), "schema-name");
+    val schemaFromMap = ResponseJsonSchema.fromMap(schemaMap, "schema-name");
+
+    assertThat(schemaFromString).isEqualTo(schemaFromMap);
+  }
+
+  @Test
   void testConfigWithResponseSchema() {
     val schemaFromClass = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
     val schemaMap = generateSchemaMap();
