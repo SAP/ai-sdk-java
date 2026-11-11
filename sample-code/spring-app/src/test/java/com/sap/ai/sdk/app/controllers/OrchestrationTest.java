@@ -2,7 +2,7 @@ package com.sap.ai.sdk.app.controllers;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_6_SONNET;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_3_8_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
 import static com.sap.ai.sdk.orchestration.model.AzureThreshold.*;
@@ -68,7 +68,7 @@ class OrchestrationTest {
 
   private final OrchestrationClient client = new OrchestrationClient();
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig(GEMINI_3_8_FLASH.withParam(TEMPERATURE, 0.0));
   OrchestrationService service;
 
   @BeforeEach
@@ -424,26 +424,22 @@ class OrchestrationTest {
   }
 
   @Test
-  void testLlamaGuardEnabled() {
-    assertThatThrownBy(() -> service.llamaGuardInputFilter(true))
+  void testGraniteGuardianEnabled() {
+    assertThatThrownBy(() -> service.graniteGuardianInputFilter(true))
         .isInstanceOf(OrchestrationFilterException.Input.class)
         .hasMessageContainingAll("Filtering", "blocked")
         .hasMessageContaining("400 (Bad Request)")
         .isInstanceOfSatisfying(
             OrchestrationFilterException.Input.class,
             e -> {
-              var llamaGuard38b = e.getLlamaGuard38b();
-              assertThat(llamaGuard38b).isNotNull();
-              assertThat(llamaGuard38b.isViolentCrimes()).isTrue();
-              assertThat(llamaGuard38b.isHate()).isFalse();
-              assertThat(llamaGuard38b.isChildExploitation()).isFalse();
-              assertThat(llamaGuard38b.isDefamation()).isFalse();
+              assertThat(e.getGraniteGuardian41()).isNotNull();
+              assertThat(e.getGraniteGuardian41().isViolence()).isTrue();
             });
   }
 
   @Test
-  void testLlamaGuardDisabled() {
-    var response = service.llamaGuardInputFilter(false);
+  void testGraniteGuardianDisabled() {
+    var response = service.graniteGuardianInputFilter(false);
 
     assertThat(response.getChoice().getFinishReason()).isEqualTo("stop");
     assertThat(response.getContent()).isNotEmpty();

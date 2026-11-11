@@ -59,6 +59,8 @@ import com.sap.ai.sdk.orchestration.model.ErrorResponseError;
 import com.sap.ai.sdk.orchestration.model.FilteringStreamOptions;
 import com.sap.ai.sdk.orchestration.model.GenericModuleResult;
 import com.sap.ai.sdk.orchestration.model.GlobalStreamOptions;
+import com.sap.ai.sdk.orchestration.model.GraniteGuardian41;
+import com.sap.ai.sdk.orchestration.model.GraniteGuardian41Categories;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfig;
 import com.sap.ai.sdk.orchestration.model.GroundingModuleConfigConfig;
@@ -2010,5 +2012,282 @@ class OrchestrationUnitTest {
     verify(
         postRequestedFor(urlPathEqualTo("/v2/completion"))
             .withRequestBody(equalToJson(expectedTurn2Request, true, true)));
+  }
+
+  @Test
+  void filteringLooseGraniteGuardian() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("filteringLooseResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var azureFilter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE_LOW_MEDIUM)
+            .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+            .sexual(ALLOW_SAFE_LOW_MEDIUM)
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(false);
+
+    final var graniteFilter =
+        new GraniteGuardianFilter()
+            .config(
+                GraniteGuardian41.create()
+                    .categories(GraniteGuardian41Categories.create().harm(true)));
+
+    client
+        .chatCompletion()
+        .config(
+            config.withInputFiltering(azureFilter, graniteFilter).withOutputFiltering(azureFilter))
+        .promptTemplate(prompt)
+        .execute();
+
+    final String request = fileLoaderStr.apply("filteringLooseRequestGraniteGuardian.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, true)));
+  }
+
+  @Test
+  void filteringLooseStreamGraniteGuardian() throws IOException {
+    final var res = new String(fileLoader.apply("streamChatCompletion.txt").readAllBytes());
+    stubFor(
+        post(anyUrl())
+            .willReturn(aResponse().withBody(res).withHeader("Content-Type", "application/json")));
+
+    final var azureFilter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE_LOW_MEDIUM)
+            .selfHarm(ALLOW_SAFE_LOW_MEDIUM)
+            .sexual(ALLOW_SAFE_LOW_MEDIUM)
+            .violence(ALLOW_SAFE_LOW_MEDIUM)
+            .protectedMaterialCode(false);
+
+    final var graniteFilter =
+        new GraniteGuardianFilter()
+            .config(
+                GraniteGuardian41.create()
+                    .categories(GraniteGuardian41Categories.create().harm(true)));
+
+    OrchestrationModuleConfig myConfig =
+        config
+            .withInputFiltering(azureFilter, graniteFilter)
+            .withOutputFiltering(azureFilter)
+            .withOutputFilteringStreamOptions(FilteringStreamOptions.create().overlap(1_000));
+
+    Stream<String> result =
+        client.chatCompletion().config(myConfig).promptTemplate(prompt).executeStream();
+    assertThat(result).containsExactly("", "Sure", "!");
+
+    final String request = fileLoaderStr.apply("filteringLooseRequestStreamGraniteGuardian.json");
+    verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request, true, false)));
+  }
+
+  @Test
+  void inputFilteringStrictGraniteGuardian() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                aResponse()
+                    .withBodyFile("strictInputFilterResponseGraniteGuardian.json")
+                    .withHeader("Content-Type", "application/json")
+                    .withStatus(SC_BAD_REQUEST)));
+
+    final var azureFilter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE)
+            .selfHarm(ALLOW_SAFE)
+            .sexual(ALLOW_SAFE)
+            .violence(ALLOW_SAFE);
+
+    final var graniteFilter =
+        new GraniteGuardianFilter()
+            .config(
+                GraniteGuardian41.create()
+                    .categories(GraniteGuardian41Categories.create().violence(true)));
+
+    final var configWithFilter = config.withInputFiltering(azureFilter, graniteFilter);
+
+    assertThatThrownBy(
+            () -> client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute())
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Input.class,
+            e -> {
+              assertThat(e.getMessage())
+                  .isEqualTo(
+                      "Request failed with status 400 (Bad Request): 400 - Filtering Module - Input Filter: Prompt filtered due to safety violations. Please modify the prompt and try again.");
+              assertThat(e.getStatusCode()).isEqualTo(SC_BAD_REQUEST);
+              assertThat(e.getFilterDetails())
+                  .isEqualTo(
+                      Map.of(
+                          "azure_content_safety",
+                              Map.of(
+                                  "Hate", 6,
+                                  "SelfHarm", 0,
+                                  "Sexual", 0,
+                                  "Violence", 6,
+                                  "userPromptAnalysis", Map.of("attackDetected", false)),
+                          "granite_guardian_4_1", Map.of("violence", Map.of("verdict", true))));
+
+              assertThat(e.getAzureContentSafetyInput()).isNotNull();
+              assertThat(e.getAzureContentSafetyInput().getHate()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyInput().getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyInput().getSexual()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyInput().getViolence()).isEqualTo(NUMBER_6);
+
+              assertThat(e.getGraniteGuardian41()).isNotNull();
+              assertThat(e.getGraniteGuardian41().isViolence()).isTrue();
+            });
+  }
+
+  @Test
+  void outputFilteringStrictGraniteGuardian() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(aResponse().withBodyFile("outputFilteringStrictGraniteGuardian.json")));
+
+    final var azureFilter =
+        new AzureContentFilter()
+            .hate(ALLOW_SAFE)
+            .selfHarm(ALLOW_SAFE)
+            .sexual(ALLOW_SAFE)
+            .violence(ALLOW_SAFE)
+            .protectedMaterialCode(true);
+
+    final var graniteFilter =
+        new GraniteGuardianFilter()
+            .config(
+                GraniteGuardian41.create()
+                    .categories(GraniteGuardian41Categories.create().violence(true)));
+
+    final var configWithFilter = config.withOutputFiltering(azureFilter, graniteFilter);
+
+    assertThatThrownBy(
+            client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute()
+                ::getContent)
+        .isInstanceOfSatisfying(
+            OrchestrationFilterException.Output.class,
+            e -> {
+              assertThat(e.getMessage()).isEqualTo("Content filter filtered the output.");
+              assertThat(e.getFilterDetails())
+                  .isEqualTo(
+                      Map.of(
+                          "index",
+                          0,
+                          "azure_content_safety",
+                          Map.of(
+                              "Hate", 6,
+                              "SelfHarm", 0,
+                              "Sexual", 0,
+                              "Violence", 6,
+                              "ProtectedMaterialCode", false),
+                          "granite_guardian_4_1",
+                          Map.of("violence", Map.of("verdict", true))));
+              assertThat(e.getErrorResponse()).isNull();
+              assertThat(e.getStatusCode()).isNull();
+
+              assertThat(e.getAzureContentSafetyOutput()).isNotNull();
+              assertThat(e.getAzureContentSafetyOutput().getHate()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput().getSelfHarm()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyOutput().getSexual()).isEqualTo(NUMBER_0);
+              assertThat(e.getAzureContentSafetyOutput().getViolence()).isEqualTo(NUMBER_6);
+              assertThat(e.getAzureContentSafetyOutput().isProtectedMaterialCode()).isFalse();
+
+              assertThat(e.getGraniteGuardian41()).isNotNull();
+              assertThat(e.getGraniteGuardian41().isViolence()).isTrue();
+            });
+  }
+
+  @Test
+  void testFallbackModulesGraniteGuardian() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("fallbackResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    final var prompt = PromptTemplate.create("HelloWorld! Why is this phrase so famous?");
+    final var graniteFilter =
+        new GraniteGuardianFilter()
+            .config(
+                GraniteGuardian41.create()
+                    .categories(GraniteGuardian41Categories.create().harm(true)));
+    val groundingConfig =
+        Grounding.create()
+            .filters(
+                DocumentGroundingFilter.create()
+                    .dataRepositoryType(DataRepositoryType.HELP_SAP_COM));
+
+    final var workingConfig =
+        new OrchestrationModuleConfig(GPT_5_MINI.withParam(TEMPERATURE, 0.0))
+            .withInputFiltering(graniteFilter)
+            .withGrounding(groundingConfig);
+    final var brokenConfig =
+        workingConfig.withLlmConfig(new OrchestrationAiModel("broken_name", Map.of(), "latest"));
+
+    final var response =
+        client
+            .chatCompletion()
+            .config(brokenConfig, workingConfig)
+            .promptTemplate(prompt)
+            .execute();
+
+    var intermediateFailure = response.getOriginalResponse().getIntermediateFailures().get(0);
+    assertThat(intermediateFailure.getCode()).isEqualTo(400);
+    assertThat(intermediateFailure.getLocation()).isEqualTo("Request Body");
+    assertThat(intermediateFailure.getRequestId())
+        .isEqualTo("a562703b-7fe5-97ba-b417-e8140a25fb7c");
+    assertThat(intermediateFailure.getMessage())
+        .isEqualTo("400 - Request Body: Model broken_name not supported.");
+    assertThat(intermediateFailure.getHeaders().get("Content-Type")).isEqualTo("application/json");
+
+    final String request = fileLoaderStr.apply("fallbackRequestGraniteGuardian.json");
+    verify(
+        postRequestedFor(urlPathEqualTo("/v2/completion")).withRequestBody(equalToJson(request)));
+  }
+
+  @Test
+  void graniteGuardian41FilterResultAllCategories() {
+    final var mapper = OrchestrationJacksonConfiguration.getOrchestrationObjectMapper();
+
+    // all categories detected
+    final var allDetected =
+        mapper.convertValue(
+            Map.of(
+                "harm", Map.of("verdict", true),
+                "violence", Map.of("verdict", true),
+                "jailbreak", Map.of("verdict", true),
+                "social_bias", Map.of("verdict", true),
+                "profanity", Map.of("verdict", true),
+                "sexual_content", Map.of("verdict", true),
+                "unethical_behavior", Map.of("verdict", true)),
+            GraniteGuardian41FilterResult.class);
+
+    assertThat(allDetected.isHarm()).isTrue();
+    assertThat(allDetected.isViolence()).isTrue();
+    assertThat(allDetected.isJailbreak()).isTrue();
+    assertThat(allDetected.isSocialBias()).isTrue();
+    assertThat(allDetected.isProfanity()).isTrue();
+    assertThat(allDetected.isSexualContent()).isTrue();
+    assertThat(allDetected.isUnethicalBehavior()).isTrue();
+
+    // no categories present — all return false
+    final var noneDetected = mapper.convertValue(Map.of(), GraniteGuardian41FilterResult.class);
+
+    assertThat(noneDetected.isHarm()).isFalse();
+    assertThat(noneDetected.isViolence()).isFalse();
+    assertThat(noneDetected.isJailbreak()).isFalse();
+    assertThat(noneDetected.isSocialBias()).isFalse();
+    assertThat(noneDetected.isProfanity()).isFalse();
+    assertThat(noneDetected.isSexualContent()).isFalse();
+    assertThat(noneDetected.isUnethicalBehavior()).isFalse();
+
+    // verdict explicitly false
+    final var verdictFalse =
+        mapper.convertValue(
+            Map.of("harm", Map.of("verdict", false)), GraniteGuardian41FilterResult.class);
+
+    assertThat(verdictFalse.isHarm()).isFalse();
   }
 }

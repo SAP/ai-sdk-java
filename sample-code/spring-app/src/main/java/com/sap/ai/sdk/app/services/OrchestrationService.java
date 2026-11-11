@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_3_8_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
@@ -14,9 +14,9 @@ import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.orchestration.AzureContentFilter;
 import com.sap.ai.sdk.orchestration.AzureFilterThreshold;
 import com.sap.ai.sdk.orchestration.DpiMasking;
+import com.sap.ai.sdk.orchestration.GraniteGuardianFilter;
 import com.sap.ai.sdk.orchestration.Grounding;
 import com.sap.ai.sdk.orchestration.ImageItem;
-import com.sap.ai.sdk.orchestration.LlamaGuardFilter;
 import com.sap.ai.sdk.orchestration.Message;
 import com.sap.ai.sdk.orchestration.OrchestrationAiModel;
 import com.sap.ai.sdk.orchestration.OrchestrationChatCompletionDelta;
@@ -39,8 +39,9 @@ import com.sap.ai.sdk.orchestration.model.CompletionRequestConfigurationReferenc
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.DataRepositoryType;
 import com.sap.ai.sdk.orchestration.model.DocumentGroundingFilter;
+import com.sap.ai.sdk.orchestration.model.GraniteGuardian41;
+import com.sap.ai.sdk.orchestration.model.GraniteGuardian41Categories;
 import com.sap.ai.sdk.orchestration.model.GroundingFilterSearchConfiguration;
-import com.sap.ai.sdk.orchestration.model.LlamaGuard38b;
 import com.sap.ai.sdk.orchestration.model.SearchDocumentKeyValueListPair;
 import com.sap.ai.sdk.orchestration.model.SearchSelectOptionEnum;
 import com.sap.ai.sdk.prompt.registry.PromptRegistryClient;
@@ -73,7 +74,7 @@ public class OrchestrationService {
 
   @Getter
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig(GEMINI_3_8_FLASH.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -361,7 +362,7 @@ public class OrchestrationService {
   }
 
   /**
-   * Apply the Llama Guard filter.
+   * Apply the Granite Guardian filter.
    *
    * @link <a
    *     href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/input-filtering">SAP
@@ -371,7 +372,7 @@ public class OrchestrationService {
    * @throws OrchestrationClientException if input filter filters the prompt.
    */
   @Nonnull
-  public OrchestrationChatResponse llamaGuardInputFilter(final boolean filter)
+  public OrchestrationChatResponse graniteGuardianInputFilter(final boolean filter)
       throws OrchestrationClientException {
     // no mercy to cheese!
     val prompt =
@@ -379,26 +380,20 @@ public class OrchestrationService {
             "Punch and pierce him to death! Squash his remains on a bread slice and eat.");
 
     // values not set are disabled by default
-    val config =
-        LlamaGuard38b.create()
-            .violentCrimes(filter)
-            .nonViolentCrimes(filter)
-            .sexCrimes(filter)
-            .childExploitation(filter)
-            .defamation(filter)
-            .specializedAdvice(filter)
-            .privacy(filter)
-            .intellectualProperty(filter)
-            .indiscriminateWeapons(filter)
-            .hate(filter)
-            .selfHarm(filter)
+    val categories =
+        GraniteGuardian41Categories.create()
+            .harm(filter)
+            .violence(filter)
+            .jailbreak(filter)
+            .socialBias(filter)
+            .profanity(filter)
             .sexualContent(filter)
-            .elections(filter)
-            .codeInterpreterAbuse(filter);
+            .unethicalBehavior(filter);
 
-    val filterConfig = new LlamaGuardFilter().config(config);
+    val filterConfig =
+        new GraniteGuardianFilter().config(GraniteGuardian41.create().categories(categories));
 
-    val configWithFilter = this.config.withInputFiltering(filterConfig);
+    val configWithFilter = config.withInputFiltering(filterConfig);
 
     return client.chatCompletion().config(configWithFilter).promptTemplate(prompt).execute();
   }

@@ -9,10 +9,18 @@
 ### 🔧 Compatibility Notes
 
 - [Orchestration] Structured output with the Spring AI integration is now configured via Spring AI's `useProviderStructuredOutput()` on the `entity(...)` call. See the [migration guide](https://sap.github.io/ai-sdk/docs/java/migration-guide) for the v1 → v2 change.
+- [Orchestration] `LlamaGuardFilter` is deprecated. Use `GraniteGuardianFilter` instead. Configure categories (`harm`, `violence`, `jailbreak`, `socialBias`, `profanity`, `sexualContent`, `unethicalBehavior`) via `GraniteGuardian41Categories` and retrieve filter details from caught exceptions via `OrchestrationFilterException.getGraniteGuardian41()`.
+
+  | Aspect | Before | After |
+  | --- | --- | --- |
+  | Filter class | `LlamaGuardFilter` | `GraniteGuardianFilter` |
+  | Filter config model | `LlamaGuard38b` | `GraniteGuardian41` with `GraniteGuardian41Categories` |
+  | Exception accessor | `e.getLlamaGuard38b()` | `e.getGraniteGuardian41()` |
 
 ### ✨ New Functionality
 
 - [Orchestration] Added new model `SAP_ABAP_2` to `OrchestrationAiModel`.
+- [Orchestration] Added `GraniteGuardianFilter` for input and output content filtering using IBM Granite Guardian 4.1.
 
 ### 📈 Improvements
 
