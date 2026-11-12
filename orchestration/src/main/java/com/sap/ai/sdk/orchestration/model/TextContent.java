@@ -90,6 +90,9 @@ public class TextContent
   @JsonProperty("text")
   private String text;
 
+  @JsonProperty("prompt_cache_breakpoint")
+  private PromptCacheBreakpoint promptCacheBreakpoint;
+
   @JsonProperty("cache_control")
   private CacheControl cacheControl;
 
@@ -162,6 +165,40 @@ public class TextContent
   }
 
   /**
+   * Set the promptCacheBreakpoint of this {@link TextContent} instance and return the same
+   * instance.
+   *
+   * @param promptCacheBreakpoint The promptCacheBreakpoint of this {@link TextContent}
+   * @return The same instance of this {@link TextContent} class
+   */
+  @Nonnull
+  public TextContent promptCacheBreakpoint(
+      @Nullable final PromptCacheBreakpoint promptCacheBreakpoint) {
+    this.promptCacheBreakpoint = promptCacheBreakpoint;
+    return this;
+  }
+
+  /**
+   * Get promptCacheBreakpoint
+   *
+   * @return promptCacheBreakpoint The promptCacheBreakpoint of this {@link TextContent} instance.
+   */
+  @Nonnull
+  public PromptCacheBreakpoint getPromptCacheBreakpoint() {
+    return promptCacheBreakpoint;
+  }
+
+  /**
+   * Set the promptCacheBreakpoint of this {@link TextContent} instance.
+   *
+   * @param promptCacheBreakpoint The promptCacheBreakpoint of this {@link TextContent}
+   */
+  public void setPromptCacheBreakpoint(
+      @Nullable final PromptCacheBreakpoint promptCacheBreakpoint) {
+    this.promptCacheBreakpoint = promptCacheBreakpoint;
+  }
+
+  /**
    * Set the cacheControl of this {@link TextContent} instance and return the same instance.
    *
    * @param cacheControl The cacheControl of this {@link TextContent}
@@ -177,7 +214,9 @@ public class TextContent
    * Get cacheControl
    *
    * @return cacheControl The cacheControl of this {@link TextContent} instance.
+   * @deprecated
    */
+  @Deprecated
   @Nonnull
   public CacheControl getCacheControl() {
     return cacheControl;
@@ -232,6 +271,8 @@ public class TextContent
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
     if (text != null) declaredFields.put("text", text);
+    if (promptCacheBreakpoint != null)
+      declaredFields.put("promptCacheBreakpoint", promptCacheBreakpoint);
     if (cacheControl != null) declaredFields.put("cacheControl", cacheControl);
     return declaredFields;
   }
@@ -260,12 +301,13 @@ public class TextContent
     return Objects.equals(this.cloudSdkCustomFields, textContent.cloudSdkCustomFields)
         && Objects.equals(this.type, textContent.type)
         && Objects.equals(this.text, textContent.text)
+        && Objects.equals(this.promptCacheBreakpoint, textContent.promptCacheBreakpoint)
         && Objects.equals(this.cacheControl, textContent.cacheControl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, text, cacheControl, cloudSdkCustomFields);
+    return Objects.hash(type, text, promptCacheBreakpoint, cacheControl, cloudSdkCustomFields);
   }
 
   @Override
@@ -275,6 +317,9 @@ public class TextContent
     sb.append("class TextContent {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    text: ").append(toIndentedString(text)).append("\n");
+    sb.append("    promptCacheBreakpoint: ")
+        .append(toIndentedString(promptCacheBreakpoint))
+        .append("\n");
     sb.append("    cacheControl: ").append(toIndentedString(cacheControl)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->

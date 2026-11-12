@@ -26,19 +26,18 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Cache control directive for prompt caching. When set on a content block, marks it as a cache
- * breakpoint. **Note:** this field has no equivalent in the standard OpenAI Chat Completions API.
- * It is modelled on Anthropic&#39;s prompt caching API and is a custom extension introduced by this
- * service. Supported providers: - **Anthropic Claude models** — maps to Anthropic&#39;s native
- * &#x60;cache_control&#x60; header. - **Azure OpenAI GPT-5.6+ Standard PAYG deployments** —
- * translated to &#x60;prompt_cache_breakpoint: {mode: explicit}&#x60; on the wire. Supported on
- * user message content blocks (text, image, file) on both the Responses API path (GPT-6+ models)
- * and the Chat Completions path (GPT-5.6 models). System message cache breakpoints are not
- * supported on Azure. &#x60;CacheControl.ttl&#x60; is Anthropic-only and is ignored for Azure;
- * configure Azure cache TTL through &#x60;prompt_cache_options&#x60; where supported. Not supported
- * on PTU-M deployments. The prompt prefix through the breakpoint must contain at least 1,024 tokens
- * to be cacheable.
+ * **Deprecated.** Use &#x60;prompt_cache_breakpoint: {mode: explicit}&#x60; instead.
+ * &#x60;cache_control&#x60; is Anthropic&#39;s native field name and was the original public API
+ * surface for this service. It is retained for backward compatibility with existing Anthropic
+ * consumers. New integrations should use &#x60;prompt_cache_breakpoint&#x60;. For Anthropic models,
+ * &#x60;cache_control: {type: ephemeral}&#x60; continues to work and is translated to
+ * Anthropic&#39;s native &#x60;cache_control&#x60; on the wire. The &#x60;ttl&#x60; field is
+ * supported here for backward compatibility; new integrations should use
+ * &#x60;prompt_cache_breakpoint&#x60; with its &#x60;ttl&#x60; field instead.
+ *
+ * @deprecated
  */
+@Deprecated
 // CHECKSTYLE:OFF
 public class CacheControl
 // CHECKSTYLE:ON

@@ -102,6 +102,9 @@ public class UserChatMessageContentItem
   @JsonProperty("file")
   private FileContent _file;
 
+  @JsonProperty("prompt_cache_breakpoint")
+  private PromptCacheBreakpoint promptCacheBreakpoint;
+
   @JsonProperty("cache_control")
   private CacheControl cacheControl;
 
@@ -237,6 +240,43 @@ public class UserChatMessageContentItem
   }
 
   /**
+   * Set the promptCacheBreakpoint of this {@link UserChatMessageContentItem} instance and return
+   * the same instance.
+   *
+   * @param promptCacheBreakpoint The promptCacheBreakpoint of this {@link
+   *     UserChatMessageContentItem}
+   * @return The same instance of this {@link UserChatMessageContentItem} class
+   */
+  @Nonnull
+  public UserChatMessageContentItem promptCacheBreakpoint(
+      @Nullable final PromptCacheBreakpoint promptCacheBreakpoint) {
+    this.promptCacheBreakpoint = promptCacheBreakpoint;
+    return this;
+  }
+
+  /**
+   * Get promptCacheBreakpoint
+   *
+   * @return promptCacheBreakpoint The promptCacheBreakpoint of this {@link
+   *     UserChatMessageContentItem} instance.
+   */
+  @Nonnull
+  public PromptCacheBreakpoint getPromptCacheBreakpoint() {
+    return promptCacheBreakpoint;
+  }
+
+  /**
+   * Set the promptCacheBreakpoint of this {@link UserChatMessageContentItem} instance.
+   *
+   * @param promptCacheBreakpoint The promptCacheBreakpoint of this {@link
+   *     UserChatMessageContentItem}
+   */
+  public void setPromptCacheBreakpoint(
+      @Nullable final PromptCacheBreakpoint promptCacheBreakpoint) {
+    this.promptCacheBreakpoint = promptCacheBreakpoint;
+  }
+
+  /**
    * Set the cacheControl of this {@link UserChatMessageContentItem} instance and return the same
    * instance.
    *
@@ -253,7 +293,9 @@ public class UserChatMessageContentItem
    * Get cacheControl
    *
    * @return cacheControl The cacheControl of this {@link UserChatMessageContentItem} instance.
+   * @deprecated
    */
+  @Deprecated
   @Nonnull
   public CacheControl getCacheControl() {
     return cacheControl;
@@ -312,6 +354,8 @@ public class UserChatMessageContentItem
     if (text != null) declaredFields.put("text", text);
     if (imageUrl != null) declaredFields.put("imageUrl", imageUrl);
     if (_file != null) declaredFields.put("_file", _file);
+    if (promptCacheBreakpoint != null)
+      declaredFields.put("promptCacheBreakpoint", promptCacheBreakpoint);
     if (cacheControl != null) declaredFields.put("cacheControl", cacheControl);
     return declaredFields;
   }
@@ -343,12 +387,15 @@ public class UserChatMessageContentItem
         && Objects.equals(this.text, userChatMessageContentItem.text)
         && Objects.equals(this.imageUrl, userChatMessageContentItem.imageUrl)
         && Objects.equals(this._file, userChatMessageContentItem._file)
+        && Objects.equals(
+            this.promptCacheBreakpoint, userChatMessageContentItem.promptCacheBreakpoint)
         && Objects.equals(this.cacheControl, userChatMessageContentItem.cacheControl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, text, imageUrl, _file, cacheControl, cloudSdkCustomFields);
+    return Objects.hash(
+        type, text, imageUrl, _file, promptCacheBreakpoint, cacheControl, cloudSdkCustomFields);
   }
 
   @Override
@@ -360,6 +407,9 @@ public class UserChatMessageContentItem
     sb.append("    text: ").append(toIndentedString(text)).append("\n");
     sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
     sb.append("    _file: ").append(toIndentedString(_file)).append("\n");
+    sb.append("    promptCacheBreakpoint: ")
+        .append(toIndentedString(promptCacheBreakpoint))
+        .append("\n");
     sb.append("    cacheControl: ").append(toIndentedString(cacheControl)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->

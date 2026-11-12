@@ -90,6 +90,9 @@ public class ChatCompletionTool
   @JsonProperty("function")
   private FunctionObject function;
 
+  @JsonProperty("prompt_cache_breakpoint")
+  private PromptCacheBreakpoint promptCacheBreakpoint;
+
   @JsonProperty("cache_control")
   private CacheControl cacheControl;
 
@@ -162,6 +165,41 @@ public class ChatCompletionTool
   }
 
   /**
+   * Set the promptCacheBreakpoint of this {@link ChatCompletionTool} instance and return the same
+   * instance.
+   *
+   * @param promptCacheBreakpoint The promptCacheBreakpoint of this {@link ChatCompletionTool}
+   * @return The same instance of this {@link ChatCompletionTool} class
+   */
+  @Nonnull
+  public ChatCompletionTool promptCacheBreakpoint(
+      @Nullable final PromptCacheBreakpoint promptCacheBreakpoint) {
+    this.promptCacheBreakpoint = promptCacheBreakpoint;
+    return this;
+  }
+
+  /**
+   * Get promptCacheBreakpoint
+   *
+   * @return promptCacheBreakpoint The promptCacheBreakpoint of this {@link ChatCompletionTool}
+   *     instance.
+   */
+  @Nonnull
+  public PromptCacheBreakpoint getPromptCacheBreakpoint() {
+    return promptCacheBreakpoint;
+  }
+
+  /**
+   * Set the promptCacheBreakpoint of this {@link ChatCompletionTool} instance.
+   *
+   * @param promptCacheBreakpoint The promptCacheBreakpoint of this {@link ChatCompletionTool}
+   */
+  public void setPromptCacheBreakpoint(
+      @Nullable final PromptCacheBreakpoint promptCacheBreakpoint) {
+    this.promptCacheBreakpoint = promptCacheBreakpoint;
+  }
+
+  /**
    * Set the cacheControl of this {@link ChatCompletionTool} instance and return the same instance.
    *
    * @param cacheControl The cacheControl of this {@link ChatCompletionTool}
@@ -177,7 +215,9 @@ public class ChatCompletionTool
    * Get cacheControl
    *
    * @return cacheControl The cacheControl of this {@link ChatCompletionTool} instance.
+   * @deprecated
    */
+  @Deprecated
   @Nonnull
   public CacheControl getCacheControl() {
     return cacheControl;
@@ -232,6 +272,8 @@ public class ChatCompletionTool
     final Map<String, Object> declaredFields = new LinkedHashMap<>(cloudSdkCustomFields);
     if (type != null) declaredFields.put("type", type);
     if (function != null) declaredFields.put("function", function);
+    if (promptCacheBreakpoint != null)
+      declaredFields.put("promptCacheBreakpoint", promptCacheBreakpoint);
     if (cacheControl != null) declaredFields.put("cacheControl", cacheControl);
     return declaredFields;
   }
@@ -260,12 +302,13 @@ public class ChatCompletionTool
     return Objects.equals(this.cloudSdkCustomFields, chatCompletionTool.cloudSdkCustomFields)
         && Objects.equals(this.type, chatCompletionTool.type)
         && Objects.equals(this.function, chatCompletionTool.function)
+        && Objects.equals(this.promptCacheBreakpoint, chatCompletionTool.promptCacheBreakpoint)
         && Objects.equals(this.cacheControl, chatCompletionTool.cacheControl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, function, cacheControl, cloudSdkCustomFields);
+    return Objects.hash(type, function, promptCacheBreakpoint, cacheControl, cloudSdkCustomFields);
   }
 
   @Override
@@ -275,6 +318,9 @@ public class ChatCompletionTool
     sb.append("class ChatCompletionTool {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    function: ").append(toIndentedString(function)).append("\n");
+    sb.append("    promptCacheBreakpoint: ")
+        .append(toIndentedString(promptCacheBreakpoint))
+        .append("\n");
     sb.append("    cacheControl: ").append(toIndentedString(cacheControl)).append("\n");
     cloudSdkCustomFields.forEach(
         (k, v) ->
