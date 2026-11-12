@@ -158,9 +158,8 @@ public class ChatCompletionStreamOptions
     final StringBuilder sb = new StringBuilder();
     sb.append("class ChatCompletionStreamOptions {\n");
     sb.append("    includeUsage: ").append(toIndentedString(includeUsage)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -160,9 +160,8 @@ public class CompletionRequestConfigurationReferenceByIdConfigRef
     final StringBuilder sb = new StringBuilder();
     sb.append("class CompletionRequestConfigurationReferenceByIdConfigRef {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -182,7 +181,7 @@ public class CompletionRequestConfigurationReferenceByIdConfigRef
    * CompletionRequestConfigurationReferenceByIdConfigRef} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> new CompletionRequestConfigurationReferenceByIdConfigRef().id(id);
+    return id -> new CompletionRequestConfigurationReferenceByIdConfigRef().id(id);
   }
 
   /** Builder helper class. */

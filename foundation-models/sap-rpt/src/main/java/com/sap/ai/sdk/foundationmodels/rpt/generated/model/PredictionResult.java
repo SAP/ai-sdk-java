@@ -241,9 +241,8 @@ public class PredictionResult
     sb.append("    prediction: ").append(toIndentedString(prediction)).append("\n");
     sb.append("    confidence: ").append(toIndentedString(confidence)).append("\n");
     sb.append("    confidenceInterval: ").append(toIndentedString(confidenceInterval)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -263,7 +262,7 @@ public class PredictionResult
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (prediction) -> new PredictionResult().prediction(prediction);
+    return prediction -> new PredictionResult().prediction(prediction);
   }
 
   /** Builder helper class. */

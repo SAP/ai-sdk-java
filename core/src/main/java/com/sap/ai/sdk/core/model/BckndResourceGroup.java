@@ -495,9 +495,8 @@ public class BckndResourceGroup
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    statusMessage: ").append(toIndentedString(statusMessage)).append("\n");
     sb.append("    servicePlan: ").append(toIndentedString(servicePlan)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -517,9 +516,9 @@ public class BckndResourceGroup
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (resourceGroupId) ->
-        (createdAt) ->
-            (status) ->
+    return resourceGroupId ->
+        createdAt ->
+            status ->
                 new BckndResourceGroup()
                     .resourceGroupId(resourceGroupId)
                     .createdAt(createdAt)

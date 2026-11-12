@@ -303,9 +303,8 @@ public class FunctionObject
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    parameters: ").append(toIndentedString(parameters)).append("\n");
     sb.append("    strict: ").append(toIndentedString(strict)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -325,7 +324,7 @@ public class FunctionObject
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> new FunctionObject().name(name);
+    return name -> new FunctionObject().name(name);
   }
 
   /** Builder helper class. */

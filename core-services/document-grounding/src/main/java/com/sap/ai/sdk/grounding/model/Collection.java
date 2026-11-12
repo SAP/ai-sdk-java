@@ -277,9 +277,8 @@ public class Collection
     sb.append("    embeddingConfig: ").append(toIndentedString(embeddingConfig)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -299,7 +298,7 @@ public class Collection
    * with all required arguments.
    */
   public static Builder create() {
-    return (embeddingConfig) -> (id) -> new Collection().embeddingConfig(embeddingConfig).id(id);
+    return embeddingConfig -> id -> new Collection().embeddingConfig(embeddingConfig).id(id);
   }
 
   /** Builder helper class. */

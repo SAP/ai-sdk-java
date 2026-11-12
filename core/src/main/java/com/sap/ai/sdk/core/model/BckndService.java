@@ -359,9 +359,8 @@ public class BckndService
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    statusMessage: ").append(toIndentedString(statusMessage)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

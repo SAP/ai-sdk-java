@@ -200,9 +200,8 @@ public class MetadataOperation
     sb.append("class MetadataOperation {\n");
     sb.append("    op: ").append(toIndentedString(op)).append("\n");
     sb.append("    values: ").append(toIndentedString(values)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -222,7 +221,7 @@ public class MetadataOperation
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (op) -> new MetadataOperation().op(op);
+    return op -> new MetadataOperation().op(op);
   }
 
   /** Builder helper class. */

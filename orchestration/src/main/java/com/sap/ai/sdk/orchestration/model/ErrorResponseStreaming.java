@@ -147,9 +147,8 @@ public class ErrorResponseStreaming
     final StringBuilder sb = new StringBuilder();
     sb.append("class ErrorResponseStreaming {\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -169,7 +168,7 @@ public class ErrorResponseStreaming
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (error) -> new ErrorResponseStreaming().error(error);
+    return error -> new ErrorResponseStreaming().error(error);
   }
 
   /** Builder helper class. */

@@ -228,9 +228,8 @@ public class ContentFilterDetectedWithCitationResult
     sb.append("    filtered: ").append(toIndentedString(filtered)).append("\n");
     sb.append("    detected: ").append(toIndentedString(detected)).append("\n");
     sb.append("    citation: ").append(toIndentedString(citation)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

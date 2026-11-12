@@ -153,9 +153,8 @@ public class BckndobjectStoreSecretCreationResponse
     final StringBuilder sb = new StringBuilder();
     sb.append("class BckndobjectStoreSecretCreationResponse {\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

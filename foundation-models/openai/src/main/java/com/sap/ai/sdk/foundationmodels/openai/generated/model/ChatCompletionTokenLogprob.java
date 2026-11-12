@@ -309,9 +309,8 @@ public class ChatCompletionTokenLogprob
     sb.append("    logprob: ").append(toIndentedString(logprob)).append("\n");
     sb.append("    bytes: ").append(toIndentedString(bytes)).append("\n");
     sb.append("    topLogprobs: ").append(toIndentedString(topLogprobs)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -391,9 +391,8 @@ public class ChatCompletionStreamResponseDelta
     sb.append("    toolCalls: ").append(toIndentedString(toolCalls)).append("\n");
     sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    refusal: ").append(toIndentedString(refusal)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

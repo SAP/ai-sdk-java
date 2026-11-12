@@ -193,9 +193,8 @@ public class AiModelBaseDataAllowedScenariosInner
     sb.append("class AiModelBaseDataAllowedScenariosInner {\n");
     sb.append("    scenarioId: ").append(toIndentedString(scenarioId)).append("\n");
     sb.append("    executableId: ").append(toIndentedString(executableId)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -215,8 +214,8 @@ public class AiModelBaseDataAllowedScenariosInner
    * AiModelBaseDataAllowedScenariosInner} instance with all required arguments.
    */
   public static Builder create() {
-    return (scenarioId) ->
-        (executableId) ->
+    return scenarioId ->
+        executableId ->
             new AiModelBaseDataAllowedScenariosInner()
                 .scenarioId(scenarioId)
                 .executableId(executableId);

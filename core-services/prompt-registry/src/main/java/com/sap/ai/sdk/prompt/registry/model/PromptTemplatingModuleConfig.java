@@ -191,9 +191,8 @@ public class PromptTemplatingModuleConfig
     sb.append("class PromptTemplatingModuleConfig {\n");
     sb.append("    prompt: ").append(toIndentedString(prompt)).append("\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -213,7 +212,7 @@ public class PromptTemplatingModuleConfig
    * PromptTemplatingModuleConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (model) -> new PromptTemplatingModuleConfig().model(model);
+    return model -> new PromptTemplatingModuleConfig().model(model);
   }
 
   /** Builder helper class. */

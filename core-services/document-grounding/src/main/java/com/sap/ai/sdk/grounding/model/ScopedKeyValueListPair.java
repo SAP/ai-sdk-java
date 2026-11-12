@@ -301,9 +301,8 @@ public class ScopedKeyValueListPair
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    scope: ").append(toIndentedString(scope)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -323,7 +322,7 @@ public class ScopedKeyValueListPair
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (key) -> (value) -> new ScopedKeyValueListPair().key(key).value(value);
+    return key -> value -> new ScopedKeyValueListPair().key(key).value(value);
   }
 
   /** Builder helper class. */

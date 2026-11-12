@@ -194,9 +194,8 @@ public class MSSharePointConfigurationGetResponse
     sb.append("class MSSharePointConfigurationGetResponse {\n");
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
     sb.append("    sharePoint: ").append(toIndentedString(sharePoint)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -216,8 +215,8 @@ public class MSSharePointConfigurationGetResponse
    * MSSharePointConfigurationGetResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (destination) ->
-        (sharePoint) ->
+    return destination ->
+        sharePoint ->
             new MSSharePointConfigurationGetResponse()
                 .destination(destination)
                 .sharePoint(sharePoint);

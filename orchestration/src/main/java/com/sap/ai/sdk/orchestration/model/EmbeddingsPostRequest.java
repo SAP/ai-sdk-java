@@ -184,9 +184,8 @@ public class EmbeddingsPostRequest
     sb.append("class EmbeddingsPostRequest {\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
     sb.append("    input: ").append(toIndentedString(input)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -206,7 +205,7 @@ public class EmbeddingsPostRequest
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (config) -> (input) -> new EmbeddingsPostRequest().config(config).input(input);
+    return config -> input -> new EmbeddingsPostRequest().config(config).input(input);
   }
 
   /** Builder helper class. */

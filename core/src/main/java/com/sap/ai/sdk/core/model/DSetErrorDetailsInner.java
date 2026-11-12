@@ -184,9 +184,8 @@ public class DSetErrorDetailsInner
     sb.append("class DSetErrorDetailsInner {\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -206,7 +205,7 @@ public class DSetErrorDetailsInner
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (code) -> (message) -> new DSetErrorDetailsInner().code(code).message(message);
+    return code -> message -> new DSetErrorDetailsInner().code(code).message(message);
   }
 
   /** Builder helper class. */

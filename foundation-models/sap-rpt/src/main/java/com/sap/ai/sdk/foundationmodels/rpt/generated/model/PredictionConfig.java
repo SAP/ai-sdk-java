@@ -312,9 +312,8 @@ public class PredictionConfig
     sb.append("    targetColumns: ").append(toIndentedString(targetColumns)).append("\n");
     sb.append("    contextMode: ").append(toIndentedString(contextMode)).append("\n");
     sb.append("    explanations: ").append(toIndentedString(explanations)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -334,7 +333,7 @@ public class PredictionConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (targetColumns) -> new PredictionConfig().targetColumns(targetColumns);
+    return targetColumns -> new PredictionConfig().targetColumns(targetColumns);
   }
 
   /** Builder helper class. */

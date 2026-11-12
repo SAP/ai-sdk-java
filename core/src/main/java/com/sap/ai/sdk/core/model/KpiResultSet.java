@@ -180,9 +180,8 @@ public class KpiResultSet
     sb.append("class KpiResultSet {\n");
     sb.append("    header: ").append(toIndentedString(header)).append("\n");
     sb.append("    rows: ").append(toIndentedString(rows)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

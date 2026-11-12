@@ -193,9 +193,8 @@ public class RTAModelBaseDataAllowedScenariosInner
     sb.append("class RTAModelBaseDataAllowedScenariosInner {\n");
     sb.append("    scenarioId: ").append(toIndentedString(scenarioId)).append("\n");
     sb.append("    executableId: ").append(toIndentedString(executableId)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -215,8 +214,8 @@ public class RTAModelBaseDataAllowedScenariosInner
    * RTAModelBaseDataAllowedScenariosInner} instance with all required arguments.
    */
   public static Builder create() {
-    return (scenarioId) ->
-        (executableId) ->
+    return scenarioId ->
+        executableId ->
             new RTAModelBaseDataAllowedScenariosInner()
                 .scenarioId(scenarioId)
                 .executableId(executableId);

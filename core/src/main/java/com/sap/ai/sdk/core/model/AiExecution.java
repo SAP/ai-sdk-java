@@ -765,9 +765,8 @@ public class AiExecution
     sb.append("    submissionTime: ").append(toIndentedString(submissionTime)).append("\n");
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
     sb.append("    completionTime: ").append(toIndentedString(completionTime)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -787,11 +786,11 @@ public class AiExecution
    * with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (configurationId) ->
-            (status) ->
-                (createdAt) ->
-                    (modifiedAt) ->
+    return id ->
+        configurationId ->
+            status ->
+                createdAt ->
+                    modifiedAt ->
                         new AiExecution()
                             .id(id)
                             .configurationId(configurationId)

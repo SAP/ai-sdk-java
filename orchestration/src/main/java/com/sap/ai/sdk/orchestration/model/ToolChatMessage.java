@@ -276,9 +276,8 @@ public class ToolChatMessage implements ChatMessage
     sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    toolCallId: ").append(toIndentedString(toolCallId)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -298,9 +297,9 @@ public class ToolChatMessage implements ChatMessage
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (role) ->
-        (toolCallId) ->
-            (content) -> new ToolChatMessage().role(role).toolCallId(toolCallId).content(content);
+    return role ->
+        toolCallId ->
+            content -> new ToolChatMessage().role(role).toolCallId(toolCallId).content(content);
   }
 
   /** Builder helper class. */

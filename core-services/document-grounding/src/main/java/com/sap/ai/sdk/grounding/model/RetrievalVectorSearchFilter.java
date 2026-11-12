@@ -609,9 +609,8 @@ public class RetrievalVectorSearchFilter
     sb.append("    scoringConfiguration: ")
         .append(toIndentedString(scoringConfiguration))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -631,7 +630,7 @@ public class RetrievalVectorSearchFilter
    * RetrievalVectorSearchFilter} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> new RetrievalVectorSearchFilter().id(id);
+    return id -> new RetrievalVectorSearchFilter().id(id);
   }
 
   /** Builder helper class. */
