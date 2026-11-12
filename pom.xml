@@ -62,40 +62,40 @@
     <wiremock.version>3.13.2</wiremock.version>
     <assertj-core.version>3.27.7</assertj-core.version>
     <slf4j.version>2.0.20</slf4j.version>
-    <checkstyle.version>14.3.0</checkstyle.version>
+    <checkstyle.version>14.4.0</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.6.1</surefire.version>
     <spring-ai.version>1.1.8</spring-ai.version>
-    <spring-aop.version>7.0.9</spring-aop.version>
-    <spring-context.version>7.0.9</spring-context.version>
-    <spring-expressions.version>7.0.9</spring-expressions.version>
-    <spring-core.version>7.0.9</spring-core.version>
-    <spring-beans.version>7.0.9</spring-beans.version>
-    <spring-messaging.version>7.0.9</spring-messaging.version>
-    <reactor-core.version>3.8.7</reactor-core.version>
+    <spring-aop.version>7.0.10</spring-aop.version>
+    <spring-context.version>7.0.10</spring-context.version>
+    <spring-expressions.version>7.0.10</spring-expressions.version>
+    <spring-core.version>7.0.10</spring-core.version>
+    <spring-beans.version>7.0.10</spring-beans.version>
+    <spring-messaging.version>7.0.10</spring-messaging.version>
+    <reactor-core.version>3.8.8</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.24.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
     <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
-    <jackson.version>2.22.4</jackson.version>
-    <jackson-annotations.version>2.22</jackson-annotations.version>
-    <jackson3.version>3.2.3</jackson3.version>
-    <logback.version>1.6.5</logback.version>
+    <jackson.version>2.23.0</jackson.version>
+    <jackson-annotations.version>2.23</jackson-annotations.version>
+    <jackson3.version>3.3.0</jackson3.version>
+    <logback.version>1.6.6</logback.version>
     <caffeine.version>3.3.1</caffeine.version>
     <commons-codec.version>1.23.0</commons-codec.version>
     <japicmp.version>0.27.0</japicmp.version>
-    <openai-java.version>4.86.0</openai-java.version>
+    <openai-java.version>4.101.0</openai-java.version>
     <!-- conflicts resolution -->
     <httpcomponents-core5.version>5.4.4</httpcomponents-core5.version>
     <httpcomponents-client5.version>5.6.5</httpcomponents-client5.version>
-    <micrometer.version>1.17.1</micrometer.version>
+    <micrometer.version>1.17.2</micrometer.version>
     <json.version>20260814</json.version>
     <snakeyaml.version>2.7</snakeyaml.version>
     <jspecify.version>1.0.1</jspecify.version>
     <!-- CVE fixes -->
     <bouncycastle.version>1.86</bouncycastle.version>
     <kotlin.version>2.4.21</kotlin.version>
-    <guava.version>33.7.2-jre</guava.version>
+    <guava.version>33.8.0-jre</guava.version>
     <java-jwt.version>4.6.2</java-jwt.version>
     <!-- Formatting -->
     <spotless.version>3.10.4</spotless.version>
