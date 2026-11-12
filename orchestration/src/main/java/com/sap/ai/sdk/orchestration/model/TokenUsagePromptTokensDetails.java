@@ -114,7 +114,10 @@ public class TokenUsagePromptTokensDetails
    * Set the cacheCreationTokens of this {@link TokenUsagePromptTokensDetails} instance and return
    * the same instance.
    *
-   * @param cacheCreationTokens Number of tokens written to the cache (Anthropic only).
+   * @param cacheCreationTokens Number of tokens written to the cache on this request. Populated for
+   *     Anthropic models (mapped from &#x60;cache_creation_input_tokens&#x60;) and Azure OpenAI
+   *     GPT-5.6+ Standard PAYG deployments (mapped from &#x60;cache_write_tokens&#x60; on both the
+   *     Chat Completions and Responses API paths).
    * @return The same instance of this {@link TokenUsagePromptTokensDetails} class
    */
   @Nonnull
@@ -125,7 +128,10 @@ public class TokenUsagePromptTokensDetails
   }
 
   /**
-   * Number of tokens written to the cache (Anthropic only).
+   * Number of tokens written to the cache on this request. Populated for Anthropic models (mapped
+   * from &#x60;cache_creation_input_tokens&#x60;) and Azure OpenAI GPT-5.6+ Standard PAYG
+   * deployments (mapped from &#x60;cache_write_tokens&#x60; on both the Chat Completions and
+   * Responses API paths).
    *
    * @return cacheCreationTokens The cacheCreationTokens of this {@link
    *     TokenUsagePromptTokensDetails} instance.
@@ -138,7 +144,10 @@ public class TokenUsagePromptTokensDetails
   /**
    * Set the cacheCreationTokens of this {@link TokenUsagePromptTokensDetails} instance.
    *
-   * @param cacheCreationTokens Number of tokens written to the cache (Anthropic only).
+   * @param cacheCreationTokens Number of tokens written to the cache on this request. Populated for
+   *     Anthropic models (mapped from &#x60;cache_creation_input_tokens&#x60;) and Azure OpenAI
+   *     GPT-5.6+ Standard PAYG deployments (mapped from &#x60;cache_write_tokens&#x60; on both the
+   *     Chat Completions and Responses API paths).
    */
   public void setCacheCreationTokens(@Nullable final Integer cacheCreationTokens) {
     this.cacheCreationTokens = cacheCreationTokens;
