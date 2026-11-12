@@ -285,9 +285,8 @@ public class ChatCompletionRequestUserMessage implements ChatCompletionRequestMe
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -47,14 +47,13 @@ public class TextToSpeechWebsocketHandler extends BinaryWebSocketHandler {
         channels.computeIfAbsent(
             session.getId(),
             sessionId ->
-                service.textToSpeech(
-                    (rawBytesChunk, isLast) -> {
-                      try {
-                        session.sendMessage(new BinaryMessage(rawBytesChunk, isLast));
-                      } catch (final IOException e) {
-                        log.error("Failed to send text message to realtime api", e);
-                      }
-                    }));
+                service.textToSpeech((rawBytesChunk, isLast) -> {
+                  try {
+                    session.sendMessage(new BinaryMessage(rawBytesChunk, isLast));
+                  } catch (final IOException e) {
+                    log.error("Failed to send text message to realtime api", e);
+                  }
+                }));
     channel.sendText(new String(textBytes, StandardCharsets.UTF_8));
   }
 

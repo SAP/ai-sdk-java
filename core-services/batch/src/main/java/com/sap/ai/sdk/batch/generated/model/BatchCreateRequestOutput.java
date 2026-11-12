@@ -147,9 +147,8 @@ public class BatchCreateRequestOutput
     final StringBuilder sb = new StringBuilder();
     sb.append("class BatchCreateRequestOutput {\n");
     sb.append("    uri: ").append(toIndentedString(uri)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -169,7 +168,7 @@ public class BatchCreateRequestOutput
    * BatchCreateRequestOutput} instance with all required arguments.
    */
   public static Builder create() {
-    return (uri) -> new BatchCreateRequestOutput().uri(uri);
+    return uri -> new BatchCreateRequestOutput().uri(uri);
   }
 
   /** Builder helper class. */

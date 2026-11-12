@@ -223,9 +223,8 @@ public class BckndServiceBrokerSecret
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    passwordKeyRef: ").append(toIndentedString(passwordKeyRef)).append("\n");
     sb.append("    usernameKeyRef: ").append(toIndentedString(usernameKeyRef)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

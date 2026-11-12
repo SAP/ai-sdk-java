@@ -54,9 +54,8 @@ public class OrchestrationFilterException extends OrchestrationClientException {
     @Nullable
     public AzureContentSafetyInput getAzureContentSafetyInput() {
       return Optional.ofNullable(filterDetails.get("azure_content_safety"))
-          .map(
-              obj ->
-                  getOrchestrationObjectMapper().convertValue(obj, AzureContentSafetyInput.class))
+          .map(obj ->
+              getOrchestrationObjectMapper().convertValue(obj, AzureContentSafetyInput.class))
           .orElse(null);
     }
   }
@@ -79,9 +78,8 @@ public class OrchestrationFilterException extends OrchestrationClientException {
     @Nullable
     public AzureContentSafetyOutput getAzureContentSafetyOutput() {
       return Optional.ofNullable(filterDetails.get("azure_content_safety"))
-          .map(
-              obj ->
-                  getOrchestrationObjectMapper().convertValue(obj, AzureContentSafetyOutput.class))
+          .map(obj ->
+              getOrchestrationObjectMapper().convertValue(obj, AzureContentSafetyOutput.class))
           .orElse(null);
     }
   }

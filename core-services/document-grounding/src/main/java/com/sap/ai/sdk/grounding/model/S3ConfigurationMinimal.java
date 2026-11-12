@@ -147,9 +147,8 @@ public class S3ConfigurationMinimal
     final StringBuilder sb = new StringBuilder();
     sb.append("class S3ConfigurationMinimal {\n");
     sb.append("    s3: ").append(toIndentedString(s3)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -169,7 +168,7 @@ public class S3ConfigurationMinimal
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (s3) -> new S3ConfigurationMinimal().s3(s3);
+    return s3 -> new S3ConfigurationMinimal().s3(s3);
   }
 
   /** Builder helper class. */

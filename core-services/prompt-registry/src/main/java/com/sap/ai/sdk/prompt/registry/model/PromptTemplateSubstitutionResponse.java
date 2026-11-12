@@ -212,9 +212,8 @@ public class PromptTemplateSubstitutionResponse
     sb.append("class PromptTemplateSubstitutionResponse {\n");
     sb.append("    parsedPrompt: ").append(toIndentedString(parsedPrompt)).append("\n");
     sb.append("    resource: ").append(toIndentedString(resource)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

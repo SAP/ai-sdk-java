@@ -412,9 +412,9 @@ public class OrchestrationService {
     val userMessage =
         Message.user(
             """
-    I think the SDK is good, but could use some further enhancements.
-    My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-    """);
+            I think the SDK is good, but could use some further enhancements.
+            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+            """);
 
     val prompt = new OrchestrationPrompt(systemMessage, userMessage);
     val maskingConfig = DpiMasking.anonymization().withEntities(entity);
@@ -480,19 +480,19 @@ public class OrchestrationService {
     val systemMessage =
         Message.system(
             """
-                            Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
-                            Please make sure to address the user in person and end with "Best regards, the AI SDK team".
-                            """);
+            Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
+            Please make sure to address the user in person and end with "Best regards, the AI SDK team".
+            """);
     val userMessage =
         Message.user(
             """
-                            Username: Mallory
-                            userEmail: mallory@sap.com
-                            Date: 2022-01-01
+            Username: Mallory
+            userEmail: mallory@sap.com
+            Date: 2022-01-01
 
-                            I think the SDK is good, but could use some further enhancements.
-                            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-                            """);
+            I think the SDK is good, but could use some further enhancements.
+            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+            """);
 
     val prompt = new OrchestrationPrompt(systemMessage, userMessage);
     val maskingConfig = DpiMasking.pseudonymization().withEntities(entity, DPIEntities.EMAIL);

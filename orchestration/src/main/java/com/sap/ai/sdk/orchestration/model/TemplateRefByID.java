@@ -254,9 +254,8 @@ public class TemplateRefByID implements TemplateRefTemplateRef
     sb.append("class TemplateRefByID {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    scope: ").append(toIndentedString(scope)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -276,7 +275,7 @@ public class TemplateRefByID implements TemplateRefTemplateRef
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> new TemplateRefByID().id(id);
+    return id -> new TemplateRefByID().id(id);
   }
 
   /** Builder helper class. */

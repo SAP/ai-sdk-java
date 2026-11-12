@@ -188,7 +188,8 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
                         "content" : "Hello World! Why is this phrase so famous?",
                         "role" : "user"
                       } ]
-                    }""")));
+                    }\
+                    """)));
   }
 
   @Test
@@ -209,12 +210,13 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {
-                           "messages" : [{
-                             "content" : "First message",
-                             "role" : "user"
-                           }]
-                      }""")));
+                    {
+                         "messages" : [{
+                           "content" : "First message",
+                           "role" : "user"
+                         }]
+                    }\
+                    """)));
 
     var response = client.chatCompletion(new OpenAiChatCompletionRequest("Second message"));
 
@@ -229,12 +231,13 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {
-                           "messages" : [{
-                             "content" : "Second message",
-                             "role" : "user"
-                           }]
-                      }""")));
+                    {
+                         "messages" : [{
+                           "content" : "Second message",
+                           "role" : "user"
+                         }]
+                    }\
+                    """)));
   }
 
   @Test
@@ -267,7 +270,8 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {"input": "Hello World"}""")));
+                    {"input": "Hello World"}\
+                    """)));
   }
 
   @Test
@@ -543,34 +547,34 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                  {
-                    "messages" : [ {
-                      "content" : "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?",
-                      "role" : "user"
-                    } ],
-                    "tools" : [ {
-                      "type" : "function",
-                      "function" : {
-                        "name" : "fibonacci",
-                        "parameters" : {
-                          "type" : "object",
-                          "properties" : {
-                            "N" : {
-                              "type" : "integer"
+                    {
+                      "messages" : [ {
+                        "content" : "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?",
+                        "role" : "user"
+                      } ],
+                      "tools" : [ {
+                        "type" : "function",
+                        "function" : {
+                          "name" : "fibonacci",
+                          "parameters" : {
+                            "type" : "object",
+                            "properties" : {
+                              "N" : {
+                                "type" : "integer"
+                              }
                             }
-                          }
-                        },
-                        "strict" : false
-                      }
-                    } ],
-                    "tool_choice" : {
-                      "type" : "function",
-                      "function" : {
-                        "name" : "fibonacci"
+                          },
+                          "strict" : false
+                        }
+                      } ],
+                      "tool_choice" : {
+                        "type" : "function",
+                        "function" : {
+                          "name" : "fibonacci"
+                        }
                       }
                     }
-                  }
-                  """)));
+                    """)));
   }
 
   @Test

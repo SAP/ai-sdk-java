@@ -202,9 +202,8 @@ public class RetrievalKeyValueListPair
     sb.append("class RetrievalKeyValueListPair {\n");
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -224,7 +223,7 @@ public class RetrievalKeyValueListPair
    * RetrievalKeyValueListPair} instance with all required arguments.
    */
   public static Builder create() {
-    return (key) -> (value) -> new RetrievalKeyValueListPair().key(key).value(value);
+    return key -> value -> new RetrievalKeyValueListPair().key(key).value(value);
   }
 
   /** Builder helper class. */

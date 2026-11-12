@@ -472,9 +472,8 @@ public class OrchestrationConfigGetResponse
     sb.append("    isVersionHead: ").append(toIndentedString(isVersionHead)).append("\n");
     sb.append("    resourceGroupId: ").append(toIndentedString(resourceGroupId)).append("\n");
     sb.append("    spec: ").append(toIndentedString(spec)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

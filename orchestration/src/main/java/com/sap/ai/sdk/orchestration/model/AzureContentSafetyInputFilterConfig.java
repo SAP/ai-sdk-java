@@ -248,9 +248,8 @@ public class AzureContentSafetyInputFilterConfig implements InputFilterConfig
     sb.append("class AzureContentSafetyInputFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -270,7 +269,7 @@ public class AzureContentSafetyInputFilterConfig implements InputFilterConfig
    * AzureContentSafetyInputFilterConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new AzureContentSafetyInputFilterConfig().type(type);
+    return type -> new AzureContentSafetyInputFilterConfig().type(type);
   }
 
   /** Builder helper class. */

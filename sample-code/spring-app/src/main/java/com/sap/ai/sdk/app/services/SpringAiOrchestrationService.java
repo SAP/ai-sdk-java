@@ -216,7 +216,8 @@ public class SpringAiOrchestrationService {
             Please read through the markdown files in my file system.
             Ensure to first query the allowed directories.
             Then use any `.md` files you find to answer the user's question.
-            Do **NOT** query for `*.md` since that doesn't work, ensure to query for `.md` instead.""");
+            Do **NOT** query for `*.md` since that doesn't work, ensure to query for `.md` instead.\
+            """);
     val usr = new UserMessage("How can I use Spring AI with the SAP AI SDK?");
 
     val prompt = new Prompt(List.of(sys, usr), options);

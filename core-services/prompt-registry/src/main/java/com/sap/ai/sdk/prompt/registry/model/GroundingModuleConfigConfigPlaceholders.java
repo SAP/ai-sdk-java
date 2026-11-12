@@ -209,9 +209,8 @@ public class GroundingModuleConfigConfigPlaceholders
     sb.append("class GroundingModuleConfigConfigPlaceholders {\n");
     sb.append("    input: ").append(toIndentedString(input)).append("\n");
     sb.append("    output: ").append(toIndentedString(output)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -231,8 +230,8 @@ public class GroundingModuleConfigConfigPlaceholders
    * GroundingModuleConfigConfigPlaceholders} instance with all required arguments.
    */
   public static Builder create() {
-    return (input) ->
-        (output) -> new GroundingModuleConfigConfigPlaceholders().input(input).output(output);
+    return input ->
+        output -> new GroundingModuleConfigConfigPlaceholders().input(input).output(output);
   }
 
   /** Builder helper class. */

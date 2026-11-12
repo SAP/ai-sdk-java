@@ -312,9 +312,8 @@ public class ValidationError
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    input: ").append(toIndentedString(input)).append("\n");
     sb.append("    ctx: ").append(toIndentedString(ctx)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -334,7 +333,7 @@ public class ValidationError
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (loc) -> (msg) -> (type) -> new ValidationError().loc(loc).msg(msg).type(type);
+    return loc -> msg -> type -> new ValidationError().loc(loc).msg(msg).type(type);
   }
 
   /** Builder helper class. */

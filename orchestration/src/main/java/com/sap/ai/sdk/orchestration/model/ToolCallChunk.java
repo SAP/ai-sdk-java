@@ -313,9 +313,8 @@ public class ToolCallChunk
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    function: ").append(toIndentedString(function)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -335,7 +334,7 @@ public class ToolCallChunk
    * with all required arguments.
    */
   public static Builder create() {
-    return (index) -> new ToolCallChunk().index(index);
+    return index -> new ToolCallChunk().index(index);
   }
 
   /** Builder helper class. */

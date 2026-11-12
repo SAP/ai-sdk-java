@@ -129,13 +129,12 @@ public class OpenAiController {
     final Runnable consumeStream =
         () -> {
           try (stream) {
-            stream.forEach(
-                delta -> {
-                  // Instead of getCompletionUsage(MAPPER), we now use getUsage()
-                  final var usage = delta.getCompletionUsage();
-                  totalUsage.compareAndExchange(null, usage);
-                  send(emitter, delta.getDeltaContent());
-                });
+            stream.forEach(delta -> {
+              // Instead of getCompletionUsage(MAPPER), we now use getUsage()
+              final var usage = delta.getCompletionUsage();
+              totalUsage.compareAndExchange(null, usage);
+              send(emitter, delta.getDeltaContent());
+            });
           } finally {
             send(emitter, "\n\n-----Total Usage-----\n\n" + totalUsage.get());
             emitter.complete();

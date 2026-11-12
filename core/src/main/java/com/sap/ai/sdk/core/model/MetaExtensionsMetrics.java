@@ -186,9 +186,8 @@ public class MetaExtensionsMetrics
     sb.append("class MetaExtensionsMetrics {\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    capabilities: ").append(toIndentedString(capabilities)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -208,7 +207,7 @@ public class MetaExtensionsMetrics
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (version) -> new MetaExtensionsMetrics().version(version);
+    return version -> new MetaExtensionsMetrics().version(version);
   }
 
   /** Builder helper class. */

@@ -518,9 +518,8 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
     sb.append("    verifyssl: ").append(toIndentedString(verifyssl)).append("\n");
     sb.append("    usehttps: ").append(toIndentedString(usehttps)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -541,9 +540,9 @@ public class BckndobjectStoreSecretWithSensitiveDataRequestForPostCall
    * arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (type) ->
-            (data) ->
+    return name ->
+        type ->
+            data ->
                 new BckndobjectStoreSecretWithSensitiveDataRequestForPostCall()
                     .name(name)
                     .type(type)

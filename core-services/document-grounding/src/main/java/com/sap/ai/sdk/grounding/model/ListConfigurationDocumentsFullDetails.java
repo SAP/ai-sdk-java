@@ -210,9 +210,8 @@ public class ListConfigurationDocumentsFullDetails
     sb.append("class ListConfigurationDocumentsFullDetails {\n");
     sb.append("    count: ").append(toIndentedString(count)).append("\n");
     sb.append("    resources: ").append(toIndentedString(resources)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

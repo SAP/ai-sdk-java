@@ -323,9 +323,8 @@ public class ServiceNowPipelineGetResponse implements GetPipeline
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    _configuration: ").append(toIndentedString(_configuration)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -345,9 +344,9 @@ public class ServiceNowPipelineGetResponse implements GetPipeline
    * ServiceNowPipelineGetResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (type) ->
-            (_configuration) ->
+    return id ->
+        type ->
+            _configuration ->
                 new ServiceNowPipelineGetResponse()
                     .id(id)
                     .type(type)

@@ -190,9 +190,8 @@ public class InputTranslationModuleResult
     sb.append("class InputTranslationModuleResult {\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -212,7 +211,7 @@ public class InputTranslationModuleResult
    * InputTranslationModuleResult} instance with all required arguments.
    */
   public static Builder create() {
-    return (message) -> new InputTranslationModuleResult().message(message);
+    return message -> new InputTranslationModuleResult().message(message);
   }
 
   /** Builder helper class. */

@@ -313,9 +313,8 @@ public class KubesubmitV4ApplicationsCreateRequest
     sb.append("    path: ").append(toIndentedString(path)).append("\n");
     sb.append("    applicationName: ").append(toIndentedString(applicationName)).append("\n");
     sb.append("    repositoryName: ").append(toIndentedString(repositoryName)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -335,10 +334,10 @@ public class KubesubmitV4ApplicationsCreateRequest
    * KubesubmitV4ApplicationsCreateRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (repositoryUrl) ->
-        (revision) ->
-            (path) ->
-                (repositoryName) ->
+    return repositoryUrl ->
+        revision ->
+            path ->
+                repositoryName ->
                     new KubesubmitV4ApplicationsCreateRequest()
                         .repositoryUrl(repositoryUrl)
                         .revision(revision)

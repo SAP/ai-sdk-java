@@ -363,9 +363,8 @@ public class GoogleDrivePipelineMinimalResponse implements PipelineMinimalRespon
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    _configuration: ").append(toIndentedString(_configuration)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -385,9 +384,8 @@ public class GoogleDrivePipelineMinimalResponse implements PipelineMinimalRespon
    * GoogleDrivePipelineMinimalResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (status) ->
-            (type) -> new GoogleDrivePipelineMinimalResponse().id(id).status(status).type(type);
+    return id ->
+        status -> type -> new GoogleDrivePipelineMinimalResponse().id(id).status(status).type(type);
   }
 
   /** Builder helper class. */

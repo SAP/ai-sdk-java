@@ -331,9 +331,8 @@ public class EmbeddingsResponse
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
     sb.append("    usage: ").append(toIndentedString(usage)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -353,10 +352,10 @@ public class EmbeddingsResponse
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (_object) ->
-        (data) ->
-            (model) ->
-                (usage) ->
+    return _object ->
+        data ->
+            model ->
+                usage ->
                     new EmbeddingsResponse()._object(_object).data(data).model(model).usage(usage);
   }
 

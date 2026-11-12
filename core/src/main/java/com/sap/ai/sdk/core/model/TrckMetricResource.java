@@ -380,9 +380,8 @@ public class TrckMetricResource
     sb.append("    metrics: ").append(toIndentedString(metrics)).append("\n");
     sb.append("    tags: ").append(toIndentedString(tags)).append("\n");
     sb.append("    customInfo: ").append(toIndentedString(customInfo)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -402,7 +401,7 @@ public class TrckMetricResource
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (executionId) -> new TrckMetricResource().executionId(executionId);
+    return executionId -> new TrckMetricResource().executionId(executionId);
   }
 
   /** Builder helper class. */

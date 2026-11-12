@@ -37,35 +37,33 @@ public class SpringAiConverter {
 
     // TRANSFORM TEMPLATE TO SPRING AI MESSAGES
     return res.stream()
-        .map(
-            (PromptTemplate template) -> {
-              if (template instanceof SingleChatTemplate message) {
-                return fromRole(message.getRole(), message.getContent());
-              }
-              if (template instanceof MultiChatTemplate message) {
-                return fromRole(message.getRole(), getMultiTemplateTextContent(message));
-              }
-              throw new IllegalArgumentException(
-                  "Unsupported PromptTemplate type: " + template.getClass().getName());
-            })
+        .map((PromptTemplate template) -> {
+          if (template instanceof SingleChatTemplate message) {
+            return fromRole(message.getRole(), message.getContent());
+          }
+          if (template instanceof MultiChatTemplate message) {
+            return fromRole(message.getRole(), getMultiTemplateTextContent(message));
+          }
+          throw new IllegalArgumentException(
+              "Unsupported PromptTemplate type: " + template.getClass().getName());
+        })
         .toList();
   }
 
   @Nonnull
   private static String getMultiTemplateTextContent(@Nonnull final MultiChatTemplate message) {
     return message.getContent().stream()
-        .map(
-            item -> {
-              if (item instanceof TextContent textContent) {
-                return textContent.getText();
-              }
-              if (item instanceof ImageContent) {
-                throw new UnsupportedOperationException(
-                    "MultiChatTemplate with image content is not supported by SpringAiConverter yet.");
-              }
-              throw new UnsupportedOperationException(
-                  "Unsupported MultiChatContent type: " + item.getClass().getName());
-            })
+        .map(item -> {
+          if (item instanceof TextContent textContent) {
+            return textContent.getText();
+          }
+          if (item instanceof ImageContent) {
+            throw new UnsupportedOperationException(
+                "MultiChatTemplate with image content is not supported by SpringAiConverter yet.");
+          }
+          throw new UnsupportedOperationException(
+              "Unsupported MultiChatContent type: " + item.getClass().getName());
+        })
         .collect(Collectors.joining("\n"));
   }
 

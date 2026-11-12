@@ -294,9 +294,8 @@ public class RetrievalSearchInputPostProcessingInner
     sb.append("    maxChunkCount: ").append(toIndentedString(maxChunkCount)).append("\n");
     sb.append("    strategy: ").append(toIndentedString(strategy)).append("\n");
     sb.append("    inputs: ").append(toIndentedString(inputs)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -316,8 +315,8 @@ public class RetrievalSearchInputPostProcessingInner
    * RetrievalSearchInputPostProcessingInner} instance with all required arguments.
    */
   public static Builder create() {
-    return (strategy) ->
-        (inputs) -> new RetrievalSearchInputPostProcessingInner().strategy(strategy).inputs(inputs);
+    return strategy ->
+        inputs -> new RetrievalSearchInputPostProcessingInner().strategy(strategy).inputs(inputs);
   }
 
   /** Builder helper class. */
