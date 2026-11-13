@@ -65,7 +65,7 @@
     <checkstyle.version>14.4.0</checkstyle.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.6.1</surefire.version>
-    <spring-ai.version>1.1.8</spring-ai.version>
+    <spring-ai.version>2.0.2</spring-ai.version>
     <spring-aop.version>7.0.10</spring-aop.version>
     <spring-context.version>7.0.10</spring-context.version>
     <spring-expressions.version>7.0.10</spring-expressions.version>
@@ -76,7 +76,7 @@
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.24.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
-    <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
+    <jsonschema-generator.version>5.0.0</jsonschema-generator.version>
     <jackson.version>2.23.0</jackson.version>
     <jackson-annotations.version>2.23</jackson-annotations.version>
     <jackson3.version>3.3.0</jackson3.version>
@@ -125,7 +125,7 @@
     <floor.httpcomponents-core5.version>5.4.2</floor.httpcomponents-core5.version>
     <floor.httpcomponents-client5.version>5.6</floor.httpcomponents-client5.version>
     <floor.slf4j.version>2.0.0</floor.slf4j.version>
-    <floor.spring-ai.version>1.1.0</floor.spring-ai.version>
+    <floor.spring-ai.version>2.0.2</floor.spring-ai.version>
   </properties>
 
   <dependencyManagement>
