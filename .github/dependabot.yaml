@@ -2,7 +2,7 @@
 version: 2
 updates:
   - package-ecosystem: maven
-    target-branch: main
+    target-branch: v1
     directory: '/'
     schedule:
       interval: weekly
@@ -44,7 +44,7 @@ updates:
       test:
         dependency-type: "development"
   - package-ecosystem: maven
-    target-branch: v1
+    target-branch: main
     directory: '/'
     schedule:
       interval: weekly
@@ -55,6 +55,9 @@ updates:
       prefix: 'chore: [DevOps] '
     cooldown:
       default-days: 4
+    ignore:
+      - dependency-name: "org.apache.maven.plugins:maven-enforcer-plugin"
+        versions: [ ">=3.7.0" ] # 3.7.0 broke our optional-dependency workaround for Spring AI, see https://github.com/apache/maven-enforcer/issues/1077
     groups:
       production-minor-patch:
         dependency-type: "production"
