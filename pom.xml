@@ -92,6 +92,7 @@
     <json.version>20260814</json.version>
     <snakeyaml.version>2.7</snakeyaml.version>
     <jspecify.version>1.0.1</jspecify.version>
+    <errorprone.version>2.52.0</errorprone.version>
     <!-- CVE fixes -->
     <bouncycastle.version>1.86</bouncycastle.version>
     <kotlin.version>2.4.21</kotlin.version>
@@ -223,6 +224,11 @@
         <groupId>com.fasterxml.jackson.dataformat</groupId>
         <artifactId>jackson-dataformat-yaml</artifactId>
         <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.errorprone</groupId>
+        <artifactId>error_prone_annotations</artifactId>
+        <version>${errorprone.version}</version>
       </dependency>
       <!-- Align dependency version with upper bound -->
       <dependency>
