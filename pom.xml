@@ -89,6 +89,7 @@
     <jspecify.version>1.0.1</jspecify.version>
     <json-schema-validator.version>3.0.9</json-schema-validator.version>
     <caffeine.version>3.3.1</caffeine.version>
+    <errorprone.version>2.52.0</errorprone.version>
     <!-- CVE fixes -->
     <bouncycastle.version>1.86</bouncycastle.version>
     <kotlin.version>2.4.21</kotlin.version>
@@ -230,6 +231,11 @@
         <groupId>com.fasterxml.jackson.dataformat</groupId>
         <artifactId>jackson-dataformat-yaml</artifactId>
         <version>${jackson.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.errorprone</groupId>
+        <artifactId>error_prone_annotations</artifactId>
+        <version>${errorprone.version}</version>
       </dependency>
       <!-- Align dependency version with upper bound -->
       <dependency>
