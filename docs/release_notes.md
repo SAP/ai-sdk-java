@@ -18,6 +18,7 @@
 
 - [Core] Added `CoreApi.availableAiModels()` convenience methods to make model discovery more visible. Both the scenario ID (`"foundation-models"`) and resource group (`"default"`) are pre-filled by default. Use `availableAiModels(scenarioId, resourceGroup)` to specify custom values.
 - [Orchestration] Added `ResponseJsonSchema.fromString(String jsonSchema, String name)` to build a response schema from a raw JSON schema string.
+- [Orchestration] [OpenAI] [`OrchestrationClientException.getHttpRequest()`](https://sap.github.io/ai-sdk/docs/java/orchestration/chat-completion#exception-and-error-handling) and [`OpenAiClientException.getHttpRequest()`](https://sap.github.io/ai-sdk/docs/java/foundation-models/openai/chat-completion#exception-and-error-handling) now return the request that caused the exception, if available. This is useful for debugging and logging purposes.
 
 ### 🐛 Fixed Issues
 
