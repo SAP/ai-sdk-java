@@ -220,9 +220,8 @@ public class S3Configuration
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
     sb.append("    s3: ").append(toIndentedString(s3)).append("\n");
     sb.append("    cronExpression: ").append(toIndentedString(cronExpression)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -242,7 +241,7 @@ public class S3Configuration
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (destination) -> new S3Configuration().destination(destination);
+    return destination -> new S3Configuration().destination(destination);
   }
 
   /** Builder helper class. */

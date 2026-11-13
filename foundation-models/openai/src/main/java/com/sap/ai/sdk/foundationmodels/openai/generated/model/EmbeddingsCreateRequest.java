@@ -303,9 +303,8 @@ public class EmbeddingsCreateRequest
     sb.append("    inputType: ").append(toIndentedString(inputType)).append("\n");
     sb.append("    encodingFormat: ").append(toIndentedString(encodingFormat)).append("\n");
     sb.append("    dimensions: ").append(toIndentedString(dimensions)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -241,9 +241,8 @@ public class SDMPipelineCreateRequest implements CreatePipeline
     sb.append("class SDMPipelineCreateRequest {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -263,7 +262,7 @@ public class SDMPipelineCreateRequest implements CreatePipeline
    * SDMPipelineCreateRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (metadata) -> new SDMPipelineCreateRequest().type(type).metadata(metadata);
+    return type -> metadata -> new SDMPipelineCreateRequest().type(type).metadata(metadata);
   }
 
   /** Builder helper class. */

@@ -1011,9 +1011,8 @@ public class AiDeploymentResponseWithDetails
     sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
     sb.append("    completionTime: ").append(toIndentedString(completionTime)).append("\n");
     sb.append("    statusDetails: ").append(toIndentedString(statusDetails)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -1033,11 +1032,11 @@ public class AiDeploymentResponseWithDetails
    * AiDeploymentResponseWithDetails} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (configurationId) ->
-            (status) ->
-                (createdAt) ->
-                    (modifiedAt) ->
+    return id ->
+        configurationId ->
+            status ->
+                createdAt ->
+                    modifiedAt ->
                         new AiDeploymentResponseWithDetails()
                             .id(id)
                             .configurationId(configurationId)

@@ -239,9 +239,8 @@ public class SystemChatMessage implements ChatMessage
     sb.append("class SystemChatMessage {\n");
     sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -261,7 +260,7 @@ public class SystemChatMessage implements ChatMessage
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (role) -> (content) -> new SystemChatMessage().role(role).content(content);
+    return role -> content -> new SystemChatMessage().role(role).content(content);
   }
 
   /** Builder helper class. */

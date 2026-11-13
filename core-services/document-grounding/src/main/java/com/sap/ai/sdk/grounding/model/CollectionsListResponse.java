@@ -203,9 +203,8 @@ public class CollectionsListResponse
     sb.append("class CollectionsListResponse {\n");
     sb.append("    count: ").append(toIndentedString(count)).append("\n");
     sb.append("    resources: ").append(toIndentedString(resources)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -225,7 +224,7 @@ public class CollectionsListResponse
    * CollectionsListResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (resources) -> new CollectionsListResponse().resources(resources);
+    return resources -> new CollectionsListResponse().resources(resources);
   }
 
   /** Builder helper class. */

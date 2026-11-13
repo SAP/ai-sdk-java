@@ -224,9 +224,8 @@ public class MSSharePointConfiguration
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
     sb.append("    sharePoint: ").append(toIndentedString(sharePoint)).append("\n");
     sb.append("    cronExpression: ").append(toIndentedString(cronExpression)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -246,8 +245,8 @@ public class MSSharePointConfiguration
    * MSSharePointConfiguration} instance with all required arguments.
    */
   public static Builder create() {
-    return (destination) ->
-        (sharePoint) ->
+    return destination ->
+        sharePoint ->
             new MSSharePointConfiguration().destination(destination).sharePoint(sharePoint);
   }
 

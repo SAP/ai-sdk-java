@@ -184,9 +184,8 @@ public class ImageContentImageUrl
     sb.append("class ImageContentImageUrl {\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    detail: ").append(toIndentedString(detail)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -206,7 +205,7 @@ public class ImageContentImageUrl
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (url) -> new ImageContentImageUrl().url(url);
+    return url -> new ImageContentImageUrl().url(url);
   }
 
   /** Builder helper class. */

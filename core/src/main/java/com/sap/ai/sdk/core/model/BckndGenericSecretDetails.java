@@ -309,9 +309,8 @@ public class BckndGenericSecretDetails
     sb.append("    resourceGroupSecretsSyncStatus: ")
         .append(toIndentedString(resourceGroupSecretsSyncStatus))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -331,7 +330,7 @@ public class BckndGenericSecretDetails
    * BckndGenericSecretDetails} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> (createdAt) -> new BckndGenericSecretDetails().name(name).createdAt(createdAt);
+    return name -> createdAt -> new BckndGenericSecretDetails().name(name).createdAt(createdAt);
   }
 
   /** Builder helper class. */

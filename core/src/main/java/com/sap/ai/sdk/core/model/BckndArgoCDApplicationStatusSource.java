@@ -229,9 +229,8 @@ public class BckndArgoCDApplicationStatusSource
     sb.append("    repoURL: ").append(toIndentedString(repoURL)).append("\n");
     sb.append("    path: ").append(toIndentedString(path)).append("\n");
     sb.append("    revision: ").append(toIndentedString(revision)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

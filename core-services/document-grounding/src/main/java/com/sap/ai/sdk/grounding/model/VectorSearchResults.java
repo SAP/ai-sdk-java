@@ -166,9 +166,8 @@ public class VectorSearchResults
     final StringBuilder sb = new StringBuilder();
     sb.append("class VectorSearchResults {\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -188,7 +187,7 @@ public class VectorSearchResults
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (results) -> new VectorSearchResults().results(results);
+    return results -> new VectorSearchResults().results(results);
   }
 
   /** Builder helper class. */

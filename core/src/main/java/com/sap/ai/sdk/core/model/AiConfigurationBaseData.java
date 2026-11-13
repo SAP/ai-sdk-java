@@ -349,9 +349,8 @@ public class AiConfigurationBaseData
     sb.append("    inputArtifactBindings: ")
         .append(toIndentedString(inputArtifactBindings))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -371,9 +370,9 @@ public class AiConfigurationBaseData
    * AiConfigurationBaseData} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (executableId) ->
-            (scenarioId) ->
+    return name ->
+        executableId ->
+            scenarioId ->
                 new AiConfigurationBaseData()
                     .name(name)
                     .executableId(executableId)

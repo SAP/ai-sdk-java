@@ -313,9 +313,8 @@ public class BatchCreateRequest
     sb.append("    input: ").append(toIndentedString(input)).append("\n");
     sb.append("    output: ").append(toIndentedString(output)).append("\n");
     sb.append("    spec: ").append(toIndentedString(spec)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -335,11 +334,10 @@ public class BatchCreateRequest
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (type) ->
-        (input) ->
-            (output) ->
-                (spec) ->
-                    new BatchCreateRequest().type(type).input(input).output(output).spec(spec);
+    return type ->
+        input ->
+            output ->
+                spec -> new BatchCreateRequest().type(type).input(input).output(output).spec(spec);
   }
 
   /** Builder helper class. */

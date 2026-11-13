@@ -211,9 +211,8 @@ public class BckndDeploymentResourceQuotaResponse
     sb.append("class BckndDeploymentResourceQuotaResponse {\n");
     sb.append("    usage: ").append(toIndentedString(usage)).append("\n");
     sb.append("    quotas: ").append(toIndentedString(quotas)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -233,7 +232,7 @@ public class BckndDeploymentResourceQuotaResponse
    * BckndDeploymentResourceQuotaResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (quotas) -> new BckndDeploymentResourceQuotaResponse().quotas(quotas);
+    return quotas -> new BckndDeploymentResourceQuotaResponse().quotas(quotas);
   }
 
   /** Builder helper class. */

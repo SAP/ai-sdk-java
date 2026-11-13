@@ -445,9 +445,8 @@ public class ContentFilterChoiceResults
     sb.append("    protectedMaterialCode: ")
         .append(toIndentedString(protectedMaterialCode))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

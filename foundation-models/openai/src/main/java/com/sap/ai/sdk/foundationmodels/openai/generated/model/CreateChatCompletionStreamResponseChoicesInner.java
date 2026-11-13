@@ -365,9 +365,8 @@ public class CreateChatCompletionStreamResponseChoicesInner
     sb.append("    logprobs: ").append(toIndentedString(logprobs)).append("\n");
     sb.append("    finishReason: ").append(toIndentedString(finishReason)).append("\n");
     sb.append("    index: ").append(toIndentedString(index)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

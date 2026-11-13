@@ -196,9 +196,8 @@ public class BckndServiceServiceCatalogItem
     sb.append("class BckndServiceServiceCatalogItem {\n");
     sb.append("    extendCatalog: ").append(toIndentedString(extendCatalog)).append("\n");
     sb.append("    extendCredentials: ").append(toIndentedString(extendCredentials)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

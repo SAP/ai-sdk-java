@@ -419,9 +419,8 @@ public class AiArtifactPostData
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    scenarioId: ").append(toIndentedString(scenarioId)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -441,10 +440,10 @@ public class AiArtifactPostData
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (kind) ->
-            (url) ->
-                (scenarioId) ->
+    return name ->
+        kind ->
+            url ->
+                scenarioId ->
                     new AiArtifactPostData().name(name).kind(kind).url(url).scenarioId(scenarioId);
   }
 

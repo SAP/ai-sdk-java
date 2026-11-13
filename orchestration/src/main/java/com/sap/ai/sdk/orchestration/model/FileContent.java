@@ -183,9 +183,8 @@ public class FileContent
     sb.append("class FileContent {\n");
     sb.append("    fileData: ").append(toIndentedString(fileData)).append("\n");
     sb.append("    filename: ").append(toIndentedString(filename)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -205,7 +204,7 @@ public class FileContent
    * with all required arguments.
    */
   public static Builder create() {
-    return (fileData) -> new FileContent().fileData(fileData);
+    return fileData -> new FileContent().fileData(fileData);
   }
 
   /** Builder helper class. */

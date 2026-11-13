@@ -166,9 +166,8 @@ public class BckndResourceGetResponse
     final StringBuilder sb = new StringBuilder();
     sb.append("class BckndResourceGetResponse {\n");
     sb.append("    resourcePlans: ").append(toIndentedString(resourcePlans)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -188,7 +187,7 @@ public class BckndResourceGetResponse
    * BckndResourceGetResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (resourcePlans) -> new BckndResourceGetResponse().resourcePlans(resourcePlans);
+    return resourcePlans -> new BckndResourceGetResponse().resourcePlans(resourcePlans);
   }
 
   /** Builder helper class. */

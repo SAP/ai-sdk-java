@@ -16,7 +16,6 @@ public abstract class Message {
 
   /** Internal SDK usage only. Limit inheritance visibility to package-local scope */
   Message() {}
-  ;
 
   /**
    * A convenience method to create a user message from a string.

@@ -171,10 +171,9 @@ class OrchestrationChatModelTest {
             .isInstanceOf(com.sap.ai.sdk.orchestration.OrchestrationClientException.class);
       } else {
         assertThat(client.stream(prompt).collectList().block())
-            .anySatisfy(
-                delta ->
-                    assertThat(delta.getResult().getMetadata().getFinishReason())
-                        .isEqualTo("content_filter"));
+            .anySatisfy(delta ->
+                assertThat(delta.getResult().getMetadata().getFinishReason())
+                    .isEqualTo("content_filter"));
       }
       Mockito.verify(inputStream, times(1)).close();
     }

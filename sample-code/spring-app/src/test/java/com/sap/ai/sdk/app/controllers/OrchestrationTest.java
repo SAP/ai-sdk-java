@@ -97,8 +97,7 @@ class OrchestrationTest {
     val filledDeltaCount = new AtomicInteger(0);
     stream
         // foreach consumes all elements, closing the stream at the end
-        .forEach(
-        delta -> {
+        .forEach(delta -> {
           if (!delta.isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
@@ -611,14 +610,13 @@ class OrchestrationTest {
         PromptTemplate.create(Message.user("Bad template: {{?language!@#$}}"))
             .withInputParameters(Map.of("language", "German"));
 
-    assertThatThrownBy(
-            () ->
-                client
-                    .chatCompletion()
-                    .config(config)
-                    .promptTemplate(template)
-                    .executeStream()
-                    .forEach(s -> {}))
+    assertThatThrownBy(() ->
+            client
+                .chatCompletion()
+                .config(config)
+                .promptTemplate(template)
+                .executeStream()
+                .forEach(s -> {}))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("status 400 (Bad Request)")
         .hasMessageContaining("Error processing template:");
@@ -631,14 +629,13 @@ class OrchestrationTest {
     val filterConfig = new AzureContentFilter().violence(AzureFilterThreshold.ALLOW_SAFE);
     val configWithFilter = config.withInputFiltering(filterConfig);
 
-    assertThatThrownBy(
-            () ->
-                client
-                    .chatCompletion()
-                    .config(configWithFilter)
-                    .promptTemplate(PromptTemplate.create(msg))
-                    .executeStream()
-                    .forEach(s -> {}))
+    assertThatThrownBy(() ->
+            client
+                .chatCompletion()
+                .config(configWithFilter)
+                .promptTemplate(PromptTemplate.create(msg))
+                .executeStream()
+                .forEach(s -> {}))
         .isInstanceOf(OrchestrationFilterException.Input.class)
         .hasMessageContaining("status 400 (Bad Request)")
         .hasMessageContaining("Filtering Module - Input Filter");
@@ -650,14 +647,13 @@ class OrchestrationTest {
         DpiMasking.anonymization().withEntities(DPIEntities.UNKNOWN_DEFAULT_OPEN_API);
     val configWithMasking = config.withMaskingConfig(maskingConfig);
 
-    assertThatThrownBy(
-            () ->
-                client
-                    .chatCompletion()
-                    .config(configWithMasking)
-                    .promptTemplate(PromptTemplate.create("Some message."))
-                    .executeStream()
-                    .forEach(s -> {}))
+    assertThatThrownBy(() ->
+            client
+                .chatCompletion()
+                .config(configWithMasking)
+                .promptTemplate(PromptTemplate.create("Some message."))
+                .executeStream()
+                .forEach(s -> {}))
         .isInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("status 400 (Bad Request)");
   }
@@ -704,25 +700,23 @@ class OrchestrationTest {
             .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
     val template = PromptTemplate.create("HelloWorld!");
 
-    assertThatThrownBy(
-            () ->
-                client
-                    .chatCompletion()
-                    .config(filterConfig.withLlmConfig(GPT_5.withName("wrong-model")))
-                    .promptTemplate(template)
-                    .execute())
+    assertThatThrownBy(() ->
+            client
+                .chatCompletion()
+                .config(filterConfig.withLlmConfig(GPT_5.withName("wrong-model")))
+                .promptTemplate(template)
+                .execute())
         .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400")
         .hasMessageContaining("Model name must be one of");
 
-    assertThatThrownBy(
-            () ->
-                client
-                    .chatCompletion()
-                    .config(filterConfig.withLlmConfig(GPT_5.withVersion("wrong-version")))
-                    .promptTemplate(template)
-                    .executeStream()
-                    .forEach(System.out::println))
+    assertThatThrownBy(() ->
+            client
+                .chatCompletion()
+                .config(filterConfig.withLlmConfig(GPT_5.withVersion("wrong-version")))
+                .promptTemplate(template)
+                .executeStream()
+                .forEach(System.out::println))
         .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400")
         .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
@@ -754,12 +748,11 @@ class OrchestrationTest {
   void testCompletionWithFallbackStreaming() {
     final var stream = service.streamCompletionWithFallback("HelloWorld!");
     val filledDeltaCount = new AtomicInteger(0);
-    stream.forEach(
-        delta -> {
-          if (!delta.isEmpty()) {
-            filledDeltaCount.incrementAndGet();
-          }
-        });
+    stream.forEach(delta -> {
+      if (!delta.isEmpty()) {
+        filledDeltaCount.incrementAndGet();
+      }
+    });
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
@@ -767,12 +760,11 @@ class OrchestrationTest {
   void testStreamDeltasWithInlineConfig() {
     final var stream = service.streamDeltasWithInlineConfig("HelloWorld!");
     val filledDeltaCount = new AtomicInteger(0);
-    stream.forEach(
-        delta -> {
-          if (!delta.getDeltaContent().isEmpty()) {
-            filledDeltaCount.incrementAndGet();
-          }
-        });
+    stream.forEach(delta -> {
+      if (!delta.getDeltaContent().isEmpty()) {
+        filledDeltaCount.incrementAndGet();
+      }
+    });
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
@@ -780,12 +772,11 @@ class OrchestrationTest {
   void testStreamDeltasWithReferenceById() {
     final var stream = service.streamDeltasWithReferenceById();
     val filledDeltaCount = new AtomicInteger(0);
-    stream.forEach(
-        delta -> {
-          if (!delta.getDeltaContent().isEmpty()) {
-            filledDeltaCount.incrementAndGet();
-          }
-        });
+    stream.forEach(delta -> {
+      if (!delta.getDeltaContent().isEmpty()) {
+        filledDeltaCount.incrementAndGet();
+      }
+    });
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
@@ -793,12 +784,11 @@ class OrchestrationTest {
   void testStreamDeltasWithReferenceByScenario() {
     final var stream = service.streamDeltasWithReferenceByScenario();
     val filledDeltaCount = new AtomicInteger(0);
-    stream.forEach(
-        delta -> {
-          if (!delta.getDeltaContent().isEmpty()) {
-            filledDeltaCount.incrementAndGet();
-          }
-        });
+    stream.forEach(delta -> {
+      if (!delta.getDeltaContent().isEmpty()) {
+        filledDeltaCount.incrementAndGet();
+      }
+    });
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
@@ -828,13 +818,12 @@ class OrchestrationTest {
     val answerBuilder = new StringBuilder();
     val reasoning = new ArrayList<String>();
     try (val stream = service.streamReasoning("What is 6 times 7?")) {
-      stream.forEach(
-          chunk -> {
-            answerBuilder.append(chunk.answer());
-            if (!chunk.reasoning().isEmpty()) {
-              reasoning.add(chunk.reasoning());
-            }
-          });
+      stream.forEach(chunk -> {
+        answerBuilder.append(chunk.answer());
+        if (!chunk.reasoning().isEmpty()) {
+          reasoning.add(chunk.reasoning());
+        }
+      });
     }
 
     assertThat(answerBuilder.toString()).isNotEmpty();

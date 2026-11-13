@@ -183,9 +183,8 @@ public class ReasoningBlock
     sb.append("class ReasoningBlock {\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("    signature: ").append(toIndentedString(signature)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

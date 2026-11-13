@@ -1166,9 +1166,8 @@ public class CreateChatCompletionRequest
     sb.append("    toolChoice: ").append(toIndentedString(toolChoice)).append("\n");
     sb.append("    functionCall: ").append(toIndentedString(functionCall)).append("\n");
     sb.append("    functions: ").append(toIndentedString(functions)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

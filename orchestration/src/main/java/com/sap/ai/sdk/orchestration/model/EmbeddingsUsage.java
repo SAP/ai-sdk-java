@@ -183,9 +183,8 @@ public class EmbeddingsUsage
     sb.append("class EmbeddingsUsage {\n");
     sb.append("    promptTokens: ").append(toIndentedString(promptTokens)).append("\n");
     sb.append("    totalTokens: ").append(toIndentedString(totalTokens)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -205,8 +204,8 @@ public class EmbeddingsUsage
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (promptTokens) ->
-        (totalTokens) -> new EmbeddingsUsage().promptTokens(promptTokens).totalTokens(totalTokens);
+    return promptTokens ->
+        totalTokens -> new EmbeddingsUsage().promptTokens(promptTokens).totalTokens(totalTokens);
   }
 
   /** Builder helper class. */

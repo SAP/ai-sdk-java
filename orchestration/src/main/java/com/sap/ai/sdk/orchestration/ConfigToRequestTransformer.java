@@ -43,13 +43,11 @@ final class ConfigToRequestTransformer {
 
     val modules =
         Lists.asList(config, fallbackConfigs).stream()
-            .map(
-                c ->
-                    setupModuleConfigs(
-                        c,
-                        toTemplateModuleConfig(
-                            template,
-                            ModelPromptCachingSupport.forModel(c.getLlmConfig().getName()))))
+            .map(c ->
+                setupModuleConfigs(
+                    c,
+                    toTemplateModuleConfig(
+                        template, ModelPromptCachingSupport.forModel(c.getLlmConfig().getName()))))
             .toList();
     val messageHistory =
         template.getMessageHistory().stream().map(Message::createChatMessage).toList();

@@ -305,9 +305,8 @@ public class OrchestrationConfigPostResponse
     sb.append("    scenario: ").append(toIndentedString(scenario)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -327,11 +326,11 @@ public class OrchestrationConfigPostResponse
    * OrchestrationConfigPostResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (message) ->
-        (id) ->
-            (scenario) ->
-                (name) ->
-                    (version) ->
+    return message ->
+        id ->
+            scenario ->
+                name ->
+                    version ->
                         new OrchestrationConfigPostResponse()
                             .message(message)
                             .id(id)

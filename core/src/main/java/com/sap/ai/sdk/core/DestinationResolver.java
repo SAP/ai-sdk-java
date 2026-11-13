@@ -43,11 +43,10 @@ class DestinationResolver {
         accessor.getServiceBindings().stream()
             .filter(DestinationResolver::isAiCoreService)
             .findFirst()
-            .orElseThrow(
-                () ->
-                    new ServiceBindingAccessException(
-                        "Could not find any matching service bindings for service identifier "
-                            + ServiceIdentifier.AI_CORE));
+            .orElseThrow(() ->
+                new ServiceBindingAccessException(
+                    "Could not find any matching service bindings for service identifier "
+                        + ServiceIdentifier.AI_CORE));
 
     // get a destination pointing to the AI Core service
     val opts =

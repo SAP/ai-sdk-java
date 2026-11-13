@@ -459,9 +459,8 @@ public class AiConfiguration
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    scenario: ").append(toIndentedString(scenario)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -481,11 +480,11 @@ public class AiConfiguration
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (executableId) ->
-            (scenarioId) ->
-                (id) ->
-                    (createdAt) ->
+    return name ->
+        executableId ->
+            scenarioId ->
+                id ->
+                    createdAt ->
                         new AiConfiguration()
                             .name(name)
                             .executableId(executableId)

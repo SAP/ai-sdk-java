@@ -234,9 +234,8 @@ public class BckndUsageResourcePlanItem
     sb.append("    configuredMaxReplicas: ")
         .append(toIndentedString(configuredMaxReplicas))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -256,7 +255,7 @@ public class BckndUsageResourcePlanItem
    * BckndUsageResourcePlanItem} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> new BckndUsageResourcePlanItem().id(id);
+    return id -> new BckndUsageResourcePlanItem().id(id);
   }
 
   /** Builder helper class. */

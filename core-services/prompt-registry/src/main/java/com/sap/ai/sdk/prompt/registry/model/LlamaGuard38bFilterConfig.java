@@ -286,9 +286,8 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
     sb.append("    targetSelector: ").append(toIndentedString(targetSelector)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -308,7 +307,7 @@ public class LlamaGuard38bFilterConfig implements InputFilterConfig, OutputFilte
    * LlamaGuard38bFilterConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (config) -> new LlamaGuard38bFilterConfig().type(type).config(config);
+    return type -> config -> new LlamaGuard38bFilterConfig().type(type).config(config);
   }
 
   /** Builder helper class. */
