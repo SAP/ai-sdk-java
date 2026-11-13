@@ -180,9 +180,8 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class MaskingModuleConfigMaskingProviders {\n");
     sb.append("    maskingProviders: ").append(toIndentedString(maskingProviders)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -202,7 +201,7 @@ public class MaskingModuleConfigMaskingProviders implements MaskingModuleConfig
    * MaskingModuleConfigMaskingProviders} instance with all required arguments.
    */
   public static Builder create() {
-    return (maskingProviders) ->
+    return maskingProviders ->
         new MaskingModuleConfigMaskingProviders().maskingProviders(maskingProviders);
   }
 

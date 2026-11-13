@@ -168,10 +168,9 @@ public class OrchestrationChatModel implements ChatModel {
               case TOOL:
                 val toolResponses = ((ToolResponseMessage) msg).getResponses();
                 yield toolResponses.stream()
-                    .map(
-                        r ->
-                            (com.sap.ai.sdk.orchestration.Message)
-                                new ToolMessage(r.id(), r.responseData()))
+                    .map(r ->
+                        (com.sap.ai.sdk.orchestration.Message)
+                            new ToolMessage(r.id(), r.responseData()))
                     .toList();
             };
     return messages.stream()

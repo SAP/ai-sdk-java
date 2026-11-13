@@ -153,10 +153,10 @@ class DeploymentUnitTest extends WireMockTestServer {
             .withRequestBody(
                 equalToJson(
                     """
-                          {
-                            "configurationId" : "7652a231-ba9b-4fcc-b473-2c355cb21b61"
-                          }
-                          """)));
+                    {
+                      "configurationId" : "7652a231-ba9b-4fcc-b473-2c355cb21b61"
+                    }
+                    """)));
   }
 
   @Test
@@ -191,10 +191,10 @@ class DeploymentUnitTest extends WireMockTestServer {
             .withRequestBody(
                 equalToJson(
                     """
-                          {
-                            "targetStatus": "STOPPED"
-                          }
-                          """)));
+                    {
+                      "targetStatus": "STOPPED"
+                    }
+                    """)));
   }
 
   @Test
@@ -322,10 +322,10 @@ class DeploymentUnitTest extends WireMockTestServer {
             .withRequestBody(
                 equalToJson(
                     """
-                          {
-                            "configurationId": "6ff6cb80-87db-45f0-b718-4e1d96e66332"
-                          }
-                          """)));
+                    {
+                      "configurationId": "6ff6cb80-87db-45f0-b718-4e1d96e66332"
+                    }
+                    """)));
   }
 
   @Test
@@ -436,14 +436,14 @@ class DeploymentUnitTest extends WireMockTestServer {
             .withRequestBody(
                 equalToJson(
                     """
-                          {
-                            "deployments": [
-                              {
-                                "id": "d1e736f50d15f357",
-                                "targetStatus": "STOPPED"
-                              }
-                            ]
-                          }
-                          """)));
+                    {
+                      "deployments": [
+                        {
+                          "id": "d1e736f50d15f357",
+                          "targetStatus": "STOPPED"
+                        }
+                      ]
+                    }
+                    """)));
   }
 }

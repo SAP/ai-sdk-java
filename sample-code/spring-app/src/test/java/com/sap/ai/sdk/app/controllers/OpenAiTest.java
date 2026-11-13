@@ -57,14 +57,13 @@ class OpenAiTest {
     OpenAiClient.forModel(GPT_5_MINI)
         .streamChatCompletionDeltas(prompt)
         // foreach consumes all elements, closing the stream at the end
-        .forEach(
-            delta -> {
-              usageRef.compareAndExchange(null, delta.getCompletionUsage());
-              final String deltaContent = delta.getDeltaContent();
-              if (!deltaContent.isEmpty()) {
-                filledDeltaCount.incrementAndGet();
-              }
-            });
+        .forEach(delta -> {
+          usageRef.compareAndExchange(null, delta.getCompletionUsage());
+          final String deltaContent = delta.getDeltaContent();
+          if (!deltaContent.isEmpty()) {
+            filledDeltaCount.incrementAndGet();
+          }
+        });
 
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
 

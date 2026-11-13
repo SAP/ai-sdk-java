@@ -185,9 +185,8 @@ public class AiArtifactArgumentBinding
     sb.append("class AiArtifactArgumentBinding {\n");
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    artifactId: ").append(toIndentedString(artifactId)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -207,7 +206,7 @@ public class AiArtifactArgumentBinding
    * AiArtifactArgumentBinding} instance with all required arguments.
    */
   public static Builder create() {
-    return (key) -> (artifactId) -> new AiArtifactArgumentBinding().key(key).artifactId(artifactId);
+    return key -> artifactId -> new AiArtifactArgumentBinding().key(key).artifactId(artifactId);
   }
 
   /** Builder helper class. */

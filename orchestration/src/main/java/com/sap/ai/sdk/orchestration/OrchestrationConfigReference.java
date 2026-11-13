@@ -83,7 +83,7 @@ public class OrchestrationConfigReference {
    */
   @Nonnull
   public static Builder fromScenario(@Nonnull final String scenario) {
-    return (name) -> (version) -> new OrchestrationConfigReference(null, scenario, name, version);
+    return name -> version -> new OrchestrationConfigReference(null, scenario, name, version);
   }
 
   /**

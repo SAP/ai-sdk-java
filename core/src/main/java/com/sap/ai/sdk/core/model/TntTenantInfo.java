@@ -220,9 +220,8 @@ public class TntTenantInfo
     sb.append("    tenantId: ").append(toIndentedString(tenantId)).append("\n");
     sb.append("    servicePlan: ").append(toIndentedString(servicePlan)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -242,9 +241,9 @@ public class TntTenantInfo
    * with all required arguments.
    */
   public static Builder create() {
-    return (tenantId) ->
-        (servicePlan) ->
-            (status) ->
+    return tenantId ->
+        servicePlan ->
+            status ->
                 new TntTenantInfo().tenantId(tenantId).servicePlan(servicePlan).status(status);
   }
 

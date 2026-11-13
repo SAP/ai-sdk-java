@@ -316,9 +316,8 @@ public class SAPDocumentTranslationApplyToSelector
     sb.append("    category: ").append(toIndentedString(category)).append("\n");
     sb.append("    items: ").append(toIndentedString(items)).append("\n");
     sb.append("    sourceLanguage: ").append(toIndentedString(sourceLanguage)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -338,8 +337,8 @@ public class SAPDocumentTranslationApplyToSelector
    * SAPDocumentTranslationApplyToSelector} instance with all required arguments.
    */
   public static Builder create() {
-    return (category) ->
-        (items) -> new SAPDocumentTranslationApplyToSelector().category(category).items(items);
+    return category ->
+        items -> new SAPDocumentTranslationApplyToSelector().category(category).items(items);
   }
 
   /** Builder helper class. */

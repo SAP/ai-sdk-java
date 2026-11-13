@@ -188,9 +188,8 @@ public class BckndDeploymentQuotaItem
     sb.append("class BckndDeploymentQuotaItem {\n");
     sb.append("    resourcePlanType: ").append(toIndentedString(resourcePlanType)).append("\n");
     sb.append("    deploymentQuota: ").append(toIndentedString(deploymentQuota)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -1600,11 +1600,10 @@ class OrchestrationUnitTest {
         .hasMessageContaining("Failed to parse");
 
     prompt = new OrchestrationPrompt(Map.of());
-    assertThatThrownBy(
-            () ->
-                TemplateConfig.create()
-                    .fromYaml(
-                        "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
+    assertThatThrownBy(() ->
+            TemplateConfig.create()
+                .fromYaml(
+                    "name: translator\nversion: 0.0.1\nscenario: translation scenario\nspec:\n  template: what?"))
         .isInstanceOf(IOException.class)
         .hasMessageContaining("Failed to deserialize");
   }
@@ -1759,15 +1758,14 @@ class OrchestrationUnitTest {
     final var answerChunks = new ArrayList<String>();
     final var reasoningChunks = new ArrayList<String>();
     try (var stream = client.streamChatCompletionDeltas(request)) {
-      stream.forEach(
-          delta -> {
-            if (!delta.getDeltaContent().isEmpty()) {
-              answerChunks.add(delta.getDeltaContent());
-            }
-            if (!delta.getDeltaReasoningText().isEmpty()) {
-              reasoningChunks.add(delta.getDeltaReasoningText());
-            }
-          });
+      stream.forEach(delta -> {
+        if (!delta.getDeltaContent().isEmpty()) {
+          answerChunks.add(delta.getDeltaContent());
+        }
+        if (!delta.getDeltaReasoningText().isEmpty()) {
+          reasoningChunks.add(delta.getDeltaReasoningText());
+        }
+      });
     }
 
     assertThat(answerChunks).containsExactly("42");

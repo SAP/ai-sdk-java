@@ -199,9 +199,8 @@ public class ContentFilterDetectedWithCitationResultAllOfCitation
     sb.append("class ContentFilterDetectedWithCitationResultAllOfCitation {\n");
     sb.append("    URL: ").append(toIndentedString(URL)).append("\n");
     sb.append("    license: ").append(toIndentedString(license)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

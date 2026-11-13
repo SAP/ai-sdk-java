@@ -213,9 +213,8 @@ public class AiExecutionModificationRequest
     final StringBuilder sb = new StringBuilder();
     sb.append("class AiExecutionModificationRequest {\n");
     sb.append("    targetStatus: ").append(toIndentedString(targetStatus)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -235,7 +234,7 @@ public class AiExecutionModificationRequest
    * AiExecutionModificationRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (targetStatus) -> new AiExecutionModificationRequest().targetStatus(targetStatus);
+    return targetStatus -> new AiExecutionModificationRequest().targetStatus(targetStatus);
   }
 
   /** Builder helper class. */

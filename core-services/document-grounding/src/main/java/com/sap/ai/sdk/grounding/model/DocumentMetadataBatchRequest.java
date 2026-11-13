@@ -171,9 +171,8 @@ public class DocumentMetadataBatchRequest
     final StringBuilder sb = new StringBuilder();
     sb.append("class DocumentMetadataBatchRequest {\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -193,7 +192,7 @@ public class DocumentMetadataBatchRequest
    * DocumentMetadataBatchRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (value) -> new DocumentMetadataBatchRequest().value(value);
+    return value -> new DocumentMetadataBatchRequest().value(value);
   }
 
   /** Builder helper class. */

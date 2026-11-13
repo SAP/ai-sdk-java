@@ -200,9 +200,8 @@ public class MetadataKeyUpdate
     sb.append("class MetadataKeyUpdate {\n");
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    operations: ").append(toIndentedString(operations)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -222,7 +221,7 @@ public class MetadataKeyUpdate
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (key) -> new MetadataKeyUpdate().key(key);
+    return key -> new MetadataKeyUpdate().key(key);
   }
 
   /** Builder helper class. */

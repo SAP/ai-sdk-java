@@ -585,9 +585,8 @@ public class FiltersInner
     sb.append("    scoringConfiguration: ")
         .append(toIndentedString(scoringConfiguration))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -607,8 +606,8 @@ public class FiltersInner
    * with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (dataRepositoryType) -> new FiltersInner().id(id).dataRepositoryType(dataRepositoryType);
+    return id ->
+        dataRepositoryType -> new FiltersInner().id(id).dataRepositoryType(dataRepositoryType);
   }
 
   /** Builder helper class. */

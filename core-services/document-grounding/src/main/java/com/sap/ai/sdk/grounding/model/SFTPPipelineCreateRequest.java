@@ -279,9 +279,8 @@ public class SFTPPipelineCreateRequest implements CreatePipeline
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    _configuration: ").append(toIndentedString(_configuration)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -301,9 +300,8 @@ public class SFTPPipelineCreateRequest implements CreatePipeline
    * SFTPPipelineCreateRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) ->
-        (_configuration) ->
-            new SFTPPipelineCreateRequest().type(type)._configuration(_configuration);
+    return type ->
+        _configuration -> new SFTPPipelineCreateRequest().type(type)._configuration(_configuration);
   }
 
   /** Builder helper class. */

@@ -119,10 +119,9 @@ class PolymorphicFallbackDeserializerTest {
   void testMissingSubtypeAnnotation() {
     interface NoJsonSubTypeAnnotationInterface {}
 
-    assertThatThrownBy(
-            () ->
-                PolymorphicFallbackDeserializer.fromJsonSubTypes(
-                    NoJsonSubTypeAnnotationInterface.class))
+    assertThatThrownBy(() ->
+            PolymorphicFallbackDeserializer.fromJsonSubTypes(
+                NoJsonSubTypeAnnotationInterface.class))
         .isInstanceOf(IllegalStateException.class)
         .hasMessageContaining(
             "No subtypes found for " + NoJsonSubTypeAnnotationInterface.class.getName());

@@ -229,9 +229,8 @@ public class BckndArgoCDApplicationBaseData
     sb.append("    repositoryUrl: ").append(toIndentedString(repositoryUrl)).append("\n");
     sb.append("    revision: ").append(toIndentedString(revision)).append("\n");
     sb.append("    path: ").append(toIndentedString(path)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -251,9 +250,9 @@ public class BckndArgoCDApplicationBaseData
    * BckndArgoCDApplicationBaseData} instance with all required arguments.
    */
   public static Builder create() {
-    return (repositoryUrl) ->
-        (revision) ->
-            (path) ->
+    return repositoryUrl ->
+        revision ->
+            path ->
                 new BckndArgoCDApplicationBaseData()
                     .repositoryUrl(repositoryUrl)
                     .revision(revision)

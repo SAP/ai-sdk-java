@@ -634,9 +634,8 @@ public class AiExecutable
     sb.append("    deployable: ").append(toIndentedString(deployable)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    modifiedAt: ").append(toIndentedString(modifiedAt)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -656,12 +655,12 @@ public class AiExecutable
    * with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (id) ->
-            (versionId) ->
-                (deployable) ->
-                    (createdAt) ->
-                        (modifiedAt) ->
+    return name ->
+        id ->
+            versionId ->
+                deployable ->
+                    createdAt ->
+                        modifiedAt ->
                             new AiExecutable()
                                 .name(name)
                                 .id(id)

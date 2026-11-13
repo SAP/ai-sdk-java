@@ -45,13 +45,12 @@ public class RealtimeApiTest {
     var monitor = new CountDownLatch(1);
 
     try (TextInputChannel input =
-        service.textToSpeech(
-            (byteChunk, isLast) -> {
-              outputBuffer.writeBytes(byteChunk);
-              if (isLast) {
-                monitor.countDown();
-              }
-            })) {
+        service.textToSpeech((byteChunk, isLast) -> {
+          outputBuffer.writeBytes(byteChunk);
+          if (isLast) {
+            monitor.countDown();
+          }
+        })) {
       input.sendText("Ordnung muss sein!");
       monitor.await();
     } catch (Exception e) {
@@ -116,7 +115,6 @@ public class RealtimeApiTest {
   }
 
   private record AudioMetrics(double rms, double entropy) {}
-  ;
 
   /**
    * Audio quality metrics for signed 16-bit little-endian PCM, computed on the mean-subtracted

@@ -237,9 +237,8 @@ public class ResultsInner2
     sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -259,7 +258,7 @@ public class ResultsInner2
    * with all required arguments.
    */
   public static Builder create() {
-    return (filterId) -> new ResultsInner2().filterId(filterId);
+    return filterId -> new ResultsInner2().filterId(filterId);
   }
 
   /** Builder helper class. */

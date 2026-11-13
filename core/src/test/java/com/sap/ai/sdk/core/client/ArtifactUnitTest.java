@@ -126,17 +126,17 @@ class ArtifactUnitTest extends WireMockTestServer {
                     .withHeader("content-type", "application/json")
                     .withBody(
                         """
-                            {
-                              "createdAt": "2024-08-23T09:13:21Z",
-                              "description": "",
-                              "id": "777dea85-e9b1-4a7b-9bea-14769b977633",
-                              "kind": "other",
-                              "modifiedAt": "2024-08-23T09:13:21Z",
-                              "name": "test",
-                              "scenarioId": "orchestration",
-                              "url": "https://file-examples.com/wp-content/storage/2017/10/file-sample_150kB.pdf"
-                            }
-                            """)));
+                        {
+                          "createdAt": "2024-08-23T09:13:21Z",
+                          "description": "",
+                          "id": "777dea85-e9b1-4a7b-9bea-14769b977633",
+                          "kind": "other",
+                          "modifiedAt": "2024-08-23T09:13:21Z",
+                          "name": "test",
+                          "scenarioId": "orchestration",
+                          "url": "https://file-examples.com/wp-content/storage/2017/10/file-sample_150kB.pdf"
+                        }
+                        """)));
 
     val artifact =
         new ArtifactApi(aiCoreService).get("default", "777dea85-e9b1-4a7b-9bea-14769b977633");
