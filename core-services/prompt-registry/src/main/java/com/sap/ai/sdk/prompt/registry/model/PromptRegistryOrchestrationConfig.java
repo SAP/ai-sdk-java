@@ -192,9 +192,8 @@ public class PromptRegistryOrchestrationConfig
     sb.append("class PromptRegistryOrchestrationConfig {\n");
     sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
     sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

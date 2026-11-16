@@ -251,9 +251,8 @@ public class ChatCompletionTokenLogprobTopLogprobsInner
     sb.append("    token: ").append(toIndentedString(token)).append("\n");
     sb.append("    logprob: ").append(toIndentedString(logprob)).append("\n");
     sb.append("    bytes: ").append(toIndentedString(bytes)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -273,8 +272,8 @@ public class ChatCompletionTokenLogprobTopLogprobsInner
    * ChatCompletionTokenLogprobTopLogprobsInner} instance with all required arguments.
    */
   public static Builder create() {
-    return (token) ->
-        (logprob) -> new ChatCompletionTokenLogprobTopLogprobsInner().token(token).logprob(logprob);
+    return token ->
+        logprob -> new ChatCompletionTokenLogprobTopLogprobsInner().token(token).logprob(logprob);
   }
 
   /** Builder helper class. */

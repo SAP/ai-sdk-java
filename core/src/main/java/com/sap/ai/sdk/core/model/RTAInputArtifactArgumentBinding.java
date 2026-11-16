@@ -233,9 +233,8 @@ public class RTAInputArtifactArgumentBinding
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    signature: ").append(toIndentedString(signature)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -255,7 +254,7 @@ public class RTAInputArtifactArgumentBinding
    * RTAInputArtifactArgumentBinding} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> (url) -> new RTAInputArtifactArgumentBinding().name(name).url(url);
+    return name -> url -> new RTAInputArtifactArgumentBinding().name(name).url(url);
   }
 
   /** Builder helper class. */

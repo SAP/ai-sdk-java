@@ -345,9 +345,8 @@ public class MergeStrategyReranker
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
     sb.append("    boosting: ").append(toIndentedString(boosting)).append("\n");
     sb.append("    includeAllMetaData: ").append(toIndentedString(includeAllMetaData)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

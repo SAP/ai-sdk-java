@@ -125,7 +125,8 @@ class OpenAiChatCompletionParametersTest {
     var serializedActual = OBJECT_MAPPER.writeValueAsString(params);
     var serializedExpected =
         """
-                        {"messages":[{"role":"user","content":[{"type":"text","text":"foo"}]}],"response_format":{"type":"json_object"}}""";
+        {"messages":[{"role":"user","content":[{"type":"text","text":"foo"}]}],"response_format":{"type":"json_object"}}\
+        """;
 
     assertThat(serializedActual).isEqualTo(serializedExpected);
 

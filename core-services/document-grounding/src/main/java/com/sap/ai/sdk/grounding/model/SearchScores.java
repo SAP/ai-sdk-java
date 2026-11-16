@@ -187,9 +187,8 @@ public class SearchScores
     sb.append("    denseRetrievalScore: ")
         .append(toIndentedString(denseRetrievalScore))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -209,8 +208,8 @@ public class SearchScores
    * with all required arguments.
    */
   public static Builder create() {
-    return (aggregatedScore) ->
-        (denseRetrievalScore) ->
+    return aggregatedScore ->
+        denseRetrievalScore ->
             new SearchScores()
                 .aggregatedScore(aggregatedScore)
                 .denseRetrievalScore(denseRetrievalScore);

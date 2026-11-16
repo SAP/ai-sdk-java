@@ -266,9 +266,8 @@ public class LLMChoice
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    logprobs: ").append(toIndentedString(logprobs)).append("\n");
     sb.append("    finishReason: ").append(toIndentedString(finishReason)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -288,9 +287,9 @@ public class LLMChoice
    * with all required arguments.
    */
   public static Builder create() {
-    return (index) ->
-        (message) ->
-            (finishReason) ->
+    return index ->
+        message ->
+            finishReason ->
                 new LLMChoice().index(index).message(message).finishReason(finishReason);
   }
 

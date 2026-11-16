@@ -164,9 +164,8 @@ public class BcknddockerRegistrySecretWithSensitiveDataRequestData
     final StringBuilder sb = new StringBuilder();
     sb.append("class BcknddockerRegistrySecretWithSensitiveDataRequestData {\n");
     sb.append("    dockerconfigjson: ").append(toIndentedString(dockerconfigjson)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -186,7 +185,7 @@ public class BcknddockerRegistrySecretWithSensitiveDataRequestData
    * BcknddockerRegistrySecretWithSensitiveDataRequestData} instance with all required arguments.
    */
   public static Builder create() {
-    return (dockerconfigjson) ->
+    return dockerconfigjson ->
         new BcknddockerRegistrySecretWithSensitiveDataRequestData()
             .dockerconfigjson(dockerconfigjson);
   }

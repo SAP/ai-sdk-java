@@ -222,9 +222,8 @@ public class DocumentBulkDeleteResponse
     sb.append("class DocumentBulkDeleteResponse {\n");
     sb.append("    deleted: ").append(toIndentedString(deleted)).append("\n");
     sb.append("    notFound: ").append(toIndentedString(notFound)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -244,8 +243,8 @@ public class DocumentBulkDeleteResponse
    * DocumentBulkDeleteResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (deleted) ->
-        (notFound) -> new DocumentBulkDeleteResponse().deleted(deleted).notFound(notFound);
+    return deleted ->
+        notFound -> new DocumentBulkDeleteResponse().deleted(deleted).notFound(notFound);
   }
 
   /** Builder helper class. */

@@ -278,9 +278,8 @@ public class S3PipelineCreateRequest implements CreatePipeline
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    _configuration: ").append(toIndentedString(_configuration)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -300,8 +299,8 @@ public class S3PipelineCreateRequest implements CreatePipeline
    * S3PipelineCreateRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) ->
-        (_configuration) -> new S3PipelineCreateRequest().type(type)._configuration(_configuration);
+    return type ->
+        _configuration -> new S3PipelineCreateRequest().type(type)._configuration(_configuration);
   }
 
   /** Builder helper class. */

@@ -154,47 +154,47 @@ class ScenarioUnitTest extends WireMockTestServer {
                     .withStatus(HttpStatus.SC_OK)
                     .withBody(
                         """
+                        {
+                          "count": 1,
+                          "resources": [
                             {
-                              "count": 1,
-                              "resources": [
+                               "accessType": "Remote",
+                               "allowedScenarios": [
+                                 {
+                                   "executableId": "aicore-opensource",
+                                   "scenarioId": "foundation-models"
+                                 },
+                                 {
+                                   "executableId": "orchestration",
+                                   "scenarioId": "orchestration"
+                                 }
+                               ],
+                              "description": "Mistral mixtral-8x7b-instruct-v01 model",
+                              "displayName": "Mistral FooBar",
+                              "executableId": "aicore-opensource",
+                              "model": "mistralai--mixtral-8x7b-instruct-v01",
+                              "provider": "Mistral",
+                              "versions": [
                                 {
-                                   "accessType": "Remote",
-                                   "allowedScenarios": [
-                                     {
-                                       "executableId": "aicore-opensource",
-                                       "scenarioId": "foundation-models"
-                                     },
-                                     {
-                                       "executableId": "orchestration",
-                                       "scenarioId": "orchestration"
-                                     }
-                                   ],
-                                  "description": "Mistral mixtral-8x7b-instruct-v01 model",
-                                  "displayName": "Mistral FooBar",
-                                  "executableId": "aicore-opensource",
-                                  "model": "mistralai--mixtral-8x7b-instruct-v01",
-                                  "provider": "Mistral",
-                                  "versions": [
-                                    {
-                                      "capabilities": ["text-generation"],
-                                      "orchestrationCapabilities": [],
-                                      "contextLength": 8000,
-                                      "cost": [
-                                        {"inputCost": "0.00086"},
-                                        {"outputCost": "0.00158"}
-                                      ],
-                                      "deprecated": false,
-                                      "inputTypes": ["text"],
-                                      "isLatest": true,
-                                      "name": "202407",
-                                      "retirementDate": "",
-                                      "streamingSupported": true
-                                    }
-                                  ]
+                                  "capabilities": ["text-generation"],
+                                  "orchestrationCapabilities": [],
+                                  "contextLength": 8000,
+                                  "cost": [
+                                    {"inputCost": "0.00086"},
+                                    {"outputCost": "0.00158"}
+                                  ],
+                                  "deprecated": false,
+                                  "inputTypes": ["text"],
+                                  "isLatest": true,
+                                  "name": "202407",
+                                  "retirementDate": "",
+                                  "streamingSupported": true
                                 }
                               ]
                             }
-                            """)));
+                          ]
+                        }
+                        """)));
 
     val scenarioList = new ScenarioApi(aiCoreService).queryModels("foundation-models", "default");
 

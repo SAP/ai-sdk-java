@@ -48,14 +48,13 @@ public class SpeechToSpeechWebsocketHandler extends BinaryWebSocketHandler {
         channels.computeIfAbsent(
             session.getId(),
             sessionId ->
-                service.speechToSpeech(
-                    (rawBytesChunk, isLast) -> {
-                      try {
-                        session.sendMessage(new BinaryMessage(rawBytesChunk, isLast));
-                      } catch (final IOException e) {
-                        log.error("Failed to send audio data to realtime api", e);
-                      }
-                    }));
+                service.speechToSpeech((rawBytesChunk, isLast) -> {
+                  try {
+                    session.sendMessage(new BinaryMessage(rawBytesChunk, isLast));
+                  } catch (final IOException e) {
+                    log.error("Failed to send audio data to realtime api", e);
+                  }
+                }));
     channel.inputAudio(chunkBytes);
   }
 

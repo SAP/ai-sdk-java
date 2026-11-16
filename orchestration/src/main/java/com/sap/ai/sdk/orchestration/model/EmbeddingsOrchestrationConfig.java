@@ -152,9 +152,8 @@ public class EmbeddingsOrchestrationConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class EmbeddingsOrchestrationConfig {\n");
     sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -174,7 +173,7 @@ public class EmbeddingsOrchestrationConfig
    * EmbeddingsOrchestrationConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (modules) -> new EmbeddingsOrchestrationConfig().modules(modules);
+    return modules -> new EmbeddingsOrchestrationConfig().modules(modules);
   }
 
   /** Builder helper class. */

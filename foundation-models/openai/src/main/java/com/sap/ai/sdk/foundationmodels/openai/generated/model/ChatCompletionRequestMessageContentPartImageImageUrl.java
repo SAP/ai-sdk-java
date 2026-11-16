@@ -270,9 +270,8 @@ public class ChatCompletionRequestMessageContentPartImageImageUrl
     sb.append("class ChatCompletionRequestMessageContentPartImageImageUrl {\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    detail: ").append(toIndentedString(detail)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

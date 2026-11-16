@@ -239,9 +239,8 @@ public class DPIMethodConstant implements DPIStandardEntityReplacementStrategy
     sb.append("class DPIMethodConstant {\n");
     sb.append("    method: ").append(toIndentedString(method)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -261,7 +260,7 @@ public class DPIMethodConstant implements DPIStandardEntityReplacementStrategy
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (method) -> (value) -> new DPIMethodConstant().method(method).value(value);
+    return method -> value -> new DPIMethodConstant().method(method).value(value);
   }
 
   /** Builder helper class. */

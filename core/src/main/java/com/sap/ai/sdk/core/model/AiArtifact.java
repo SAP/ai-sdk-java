@@ -655,9 +655,8 @@ public class AiArtifact
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    modifiedAt: ").append(toIndentedString(modifiedAt)).append("\n");
     sb.append("    scenario: ").append(toIndentedString(scenario)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -677,13 +676,13 @@ public class AiArtifact
    * with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (kind) ->
-            (url) ->
-                (id) ->
-                    (scenarioId) ->
-                        (createdAt) ->
-                            (modifiedAt) ->
+    return name ->
+        kind ->
+            url ->
+                id ->
+                    scenarioId ->
+                        createdAt ->
+                            modifiedAt ->
                                 new AiArtifact()
                                     .name(name)
                                     .kind(kind)

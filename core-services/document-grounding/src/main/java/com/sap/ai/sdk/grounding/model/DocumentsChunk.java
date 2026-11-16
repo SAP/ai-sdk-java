@@ -291,9 +291,8 @@ public class DocumentsChunk
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    documents: ").append(toIndentedString(documents)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -313,8 +312,8 @@ public class DocumentsChunk
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (title) -> (documents) -> new DocumentsChunk().id(id).title(title).documents(documents);
+    return id ->
+        title -> documents -> new DocumentsChunk().id(id).title(title).documents(documents);
   }
 
   /** Builder helper class. */

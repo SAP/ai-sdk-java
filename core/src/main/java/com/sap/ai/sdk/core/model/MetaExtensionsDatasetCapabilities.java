@@ -229,9 +229,8 @@ public class MetaExtensionsDatasetCapabilities
     sb.append("    upload: ").append(toIndentedString(upload)).append("\n");
     sb.append("    download: ").append(toIndentedString(download)).append("\n");
     sb.append("    delete: ").append(toIndentedString(delete)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

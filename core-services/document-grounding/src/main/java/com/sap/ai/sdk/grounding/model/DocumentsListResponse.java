@@ -166,9 +166,8 @@ public class DocumentsListResponse
     final StringBuilder sb = new StringBuilder();
     sb.append("class DocumentsListResponse {\n");
     sb.append("    documents: ").append(toIndentedString(documents)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -188,7 +187,7 @@ public class DocumentsListResponse
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (documents) -> new DocumentsListResponse().documents(documents);
+    return documents -> new DocumentsListResponse().documents(documents);
   }
 
   /** Builder helper class. */

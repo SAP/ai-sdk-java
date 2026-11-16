@@ -102,7 +102,7 @@ class EmbeddingModelTest {
   }
 
   private static <T> Consumer<T> assertRecursiveEquals(T expected) {
-    return (actual) -> {
+    return actual -> {
       assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     };
   }

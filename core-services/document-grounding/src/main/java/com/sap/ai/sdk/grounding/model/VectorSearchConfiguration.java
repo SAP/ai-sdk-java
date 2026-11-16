@@ -198,9 +198,8 @@ public class VectorSearchConfiguration
     sb.append("class VectorSearchConfiguration {\n");
     sb.append("    maxChunkCount: ").append(toIndentedString(maxChunkCount)).append("\n");
     sb.append("    maxDocumentCount: ").append(toIndentedString(maxDocumentCount)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

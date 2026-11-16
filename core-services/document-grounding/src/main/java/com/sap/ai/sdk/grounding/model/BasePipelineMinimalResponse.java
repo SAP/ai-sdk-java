@@ -187,9 +187,8 @@ public class BasePipelineMinimalResponse
     sb.append("class BasePipelineMinimalResponse {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -209,7 +208,7 @@ public class BasePipelineMinimalResponse
    * BasePipelineMinimalResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> (status) -> new BasePipelineMinimalResponse().id(id).status(status);
+    return id -> status -> new BasePipelineMinimalResponse().id(id).status(status);
   }
 
   /** Builder helper class. */

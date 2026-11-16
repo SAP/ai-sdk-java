@@ -356,9 +356,8 @@ public class DataRepository
         .append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -378,7 +377,7 @@ public class DataRepository
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> (title) -> (type) -> new DataRepository().id(id).title(title).type(type);
+    return id -> title -> type -> new DataRepository().id(id).title(title).type(type);
   }
 
   /** Builder helper class. */

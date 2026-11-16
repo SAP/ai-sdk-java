@@ -225,9 +225,8 @@ public class DocumentMetadataUpdateError implements BatchUpdateDocumentsResponse
     sb.append("    target: ").append(toIndentedString(target)).append("\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -247,10 +246,9 @@ public class DocumentMetadataUpdateError implements BatchUpdateDocumentsResponse
    * DocumentMetadataUpdateError} instance with all required arguments.
    */
   public static Builder create() {
-    return (target) ->
-        (code) ->
-            (message) ->
-                new DocumentMetadataUpdateError().target(target).code(code).message(message);
+    return target ->
+        code ->
+            message -> new DocumentMetadataUpdateError().target(target).code(code).message(message);
   }
 
   /** Builder helper class. */

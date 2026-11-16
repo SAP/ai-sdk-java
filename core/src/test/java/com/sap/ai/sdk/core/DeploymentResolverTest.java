@@ -134,10 +134,9 @@ class DeploymentResolverTest extends WireMockTestServer {
         .isExactlyInstanceOf(DeploymentResolutionException.class);
 
     var serviceWithBrokenCredentials =
-        new AiCoreService(
-            () -> {
-              throw new DestinationAccessException();
-            });
+        new AiCoreService(() -> {
+          throw new DestinationAccessException();
+        });
     resolver = new DeploymentResolver(serviceWithBrokenCredentials, cache);
 
     assertThatThrownBy(() -> resolver.reloadDeployments(DEFAULT_RESOURCE_GROUP))

@@ -200,9 +200,8 @@ public class SharePointSite
     sb.append("class SharePointSite {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    includePaths: ").append(toIndentedString(includePaths)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -222,7 +221,7 @@ public class SharePointSite
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> new SharePointSite().name(name);
+    return name -> new SharePointSite().name(name);
   }
 
   /** Builder helper class. */

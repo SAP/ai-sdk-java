@@ -164,9 +164,8 @@ public class SearchResults
     final StringBuilder sb = new StringBuilder();
     sb.append("class SearchResults {\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -186,7 +185,7 @@ public class SearchResults
    * with all required arguments.
    */
   public static Builder create() {
-    return (results) -> new SearchResults().results(results);
+    return results -> new SearchResults().results(results);
   }
 
   /** Builder helper class. */

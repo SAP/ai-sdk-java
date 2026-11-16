@@ -533,9 +533,8 @@ public class CreateChatCompletionResponse implements ChatCompletionsCreate200Res
     sb.append("    systemFingerprint: ").append(toIndentedString(systemFingerprint)).append("\n");
     sb.append("    _object: ").append(toIndentedString(_object)).append("\n");
     sb.append("    usage: ").append(toIndentedString(usage)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

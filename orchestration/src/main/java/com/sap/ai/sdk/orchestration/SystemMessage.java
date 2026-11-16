@@ -91,7 +91,7 @@ public class SystemMessage implements Message {
   @Override
   public ChatMessage createChatMessage() {
     final Function<TextItem, TextContent> toTextContent =
-        (item) -> {
+        item -> {
           final var convertedItem =
               TextContent.create().type(TextContent.TypeEnum.TEXT).text(item.text());
           final var cacheControl = item.getCacheControl();

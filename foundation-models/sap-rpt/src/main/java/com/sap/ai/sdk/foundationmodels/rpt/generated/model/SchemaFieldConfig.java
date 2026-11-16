@@ -152,9 +152,8 @@ public class SchemaFieldConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class SchemaFieldConfig {\n");
     sb.append("    dtype: ").append(toIndentedString(dtype)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -174,7 +173,7 @@ public class SchemaFieldConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (dtype) -> new SchemaFieldConfig().dtype(dtype);
+    return dtype -> new SchemaFieldConfig().dtype(dtype);
   }
 
   /** Builder helper class. */

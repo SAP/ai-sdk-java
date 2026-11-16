@@ -192,9 +192,8 @@ public class BckndCommonResourceQuotaResponse
     sb.append("class BckndCommonResourceQuotaResponse {\n");
     sb.append("    usage: ").append(toIndentedString(usage)).append("\n");
     sb.append("    quota: ").append(toIndentedString(quota)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -214,7 +213,7 @@ public class BckndCommonResourceQuotaResponse
    * BckndCommonResourceQuotaResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (quota) -> new BckndCommonResourceQuotaResponse().quota(quota);
+    return quota -> new BckndCommonResourceQuotaResponse().quota(quota);
   }
 
   /** Builder helper class. */

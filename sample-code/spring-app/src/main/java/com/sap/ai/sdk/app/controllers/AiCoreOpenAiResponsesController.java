@@ -84,11 +84,10 @@ public class AiCoreOpenAiResponsesController {
         () -> {
           try (var response = aiCoreOpenAiService.createStreamingResponse(input)) {
             response.stream()
-                .forEach(
-                    event ->
-                        event
-                            .outputTextDelta()
-                            .ifPresent(delta -> OpenAiController.send(emitter, delta.delta())));
+                .forEach(event ->
+                    event
+                        .outputTextDelta()
+                        .ifPresent(delta -> OpenAiController.send(emitter, delta.delta())));
           } finally {
             emitter.complete();
           }

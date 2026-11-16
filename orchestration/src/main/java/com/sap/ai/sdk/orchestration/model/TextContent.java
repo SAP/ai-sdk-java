@@ -276,9 +276,8 @@ public class TextContent
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    text: ").append(toIndentedString(text)).append("\n");
     sb.append("    cacheControl: ").append(toIndentedString(cacheControl)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -298,7 +297,7 @@ public class TextContent
    * with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (text) -> new TextContent().type(type).text(text);
+    return type -> text -> new TextContent().type(type).text(text);
   }
 
   /** Builder helper class. */

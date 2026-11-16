@@ -260,9 +260,8 @@ public class EmbeddingsInput
     sb.append("class EmbeddingsInput {\n");
     sb.append("    text: ").append(toIndentedString(text)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -282,7 +281,7 @@ public class EmbeddingsInput
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (text) -> new EmbeddingsInput().text(text);
+    return text -> new EmbeddingsInput().text(text);
   }
 
   /** Builder helper class. */

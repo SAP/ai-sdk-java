@@ -319,9 +319,8 @@ public class TrckMetric
     sb.append("    timestamp: ").append(toIndentedString(timestamp)).append("\n");
     sb.append("    step: ").append(toIndentedString(step)).append("\n");
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -341,7 +340,7 @@ public class TrckMetric
    * with all required arguments.
    */
   public static Builder create() {
-    return (name) -> (value) -> new TrckMetric().name(name).value(value);
+    return name -> value -> new TrckMetric().name(name).value(value);
   }
 
   /** Builder helper class. */

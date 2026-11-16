@@ -150,9 +150,8 @@ public class PerFilterSearchResultError
     final StringBuilder sb = new StringBuilder();
     sb.append("class PerFilterSearchResultError {\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -172,7 +171,7 @@ public class PerFilterSearchResultError
    * PerFilterSearchResultError} instance with all required arguments.
    */
   public static Builder create() {
-    return (message) -> new PerFilterSearchResultError().message(message);
+    return message -> new PerFilterSearchResultError().message(message);
   }
 
   /** Builder helper class. */

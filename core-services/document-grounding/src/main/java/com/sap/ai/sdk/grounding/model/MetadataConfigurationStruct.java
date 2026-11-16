@@ -192,9 +192,8 @@ public class MetadataConfigurationStruct
     sb.append("class MetadataConfigurationStruct {\n");
     sb.append("    metadataConfigId: ").append(toIndentedString(metadataConfigId)).append("\n");
     sb.append("    cronExpression: ").append(toIndentedString(cronExpression)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -214,8 +213,7 @@ public class MetadataConfigurationStruct
    * MetadataConfigurationStruct} instance with all required arguments.
    */
   public static Builder create() {
-    return (metadataConfigId) ->
-        new MetadataConfigurationStruct().metadataConfigId(metadataConfigId);
+    return metadataConfigId -> new MetadataConfigurationStruct().metadataConfigId(metadataConfigId);
   }
 
   /** Builder helper class. */

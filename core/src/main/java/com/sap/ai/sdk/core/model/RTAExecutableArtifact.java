@@ -276,9 +276,8 @@ public class RTAExecutableArtifact
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    kind: ").append(toIndentedString(kind)).append("\n");
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -298,7 +297,7 @@ public class RTAExecutableArtifact
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> new RTAExecutableArtifact().name(name);
+    return name -> new RTAExecutableArtifact().name(name);
   }
 
   /** Builder helper class. */

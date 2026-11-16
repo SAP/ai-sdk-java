@@ -109,7 +109,7 @@ class ConfigToRequestTransformerTest {
     for (var msg : withCappedCacheControl) {
       cacheableMessagesAfterConstraintsApplication +=
           msg.content().items().stream()
-              .filter((i) -> ((TextItem) i).getCacheControl() != null)
+              .filter(i -> ((TextItem) i).getCacheControl() != null)
               .count();
     }
 
@@ -135,7 +135,7 @@ class ConfigToRequestTransformerTest {
     for (var msg : withCappedCacheControl) {
       cacheableMessagesAfterConstraintsApplication +=
           msg.content().items().stream()
-              .filter((i) -> ((TextItem) i).getCacheControl() != null)
+              .filter(i -> ((TextItem) i).getCacheControl() != null)
               .count();
     }
 
@@ -160,11 +160,11 @@ class ConfigToRequestTransformerTest {
     for (var msg : withCappedCacheControl) {
       cacheableMessagesAfterConstraintsApplication +=
           msg.content().items().stream()
-              .filter((i) -> ((TextItem) i).getCacheControl().getTtl().equals(invalidTTL))
+              .filter(i -> ((TextItem) i).getCacheControl().getTtl().equals(invalidTTL))
               .count();
       correctedTTLCount +=
           msg.content().items().stream()
-              .filter((i) -> ((TextItem) i).getCacheControl().getTtl().equals(expectedTTL))
+              .filter(i -> ((TextItem) i).getCacheControl().getTtl().equals(expectedTTL))
               .count();
     }
 
@@ -187,7 +187,7 @@ class ConfigToRequestTransformerTest {
     for (var msg : withCappedCacheControl) {
       cacheableMessagesAfterConstraintsApplication +=
           msg.content().items().stream()
-              .filter((i) -> ((TextItem) i).getCacheControl() != null)
+              .filter(i -> ((TextItem) i).getCacheControl() != null)
               .count();
     }
 

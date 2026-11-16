@@ -227,9 +227,8 @@ public class EmbeddingsPostResponse
         .append(toIndentedString(intermediateResults))
         .append("\n");
     sb.append("    finalResult: ").append(toIndentedString(finalResult)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -249,8 +248,8 @@ public class EmbeddingsPostResponse
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (requestId) ->
-        (finalResult) -> new EmbeddingsPostResponse().requestId(requestId).finalResult(finalResult);
+    return requestId ->
+        finalResult -> new EmbeddingsPostResponse().requestId(requestId).finalResult(finalResult);
   }
 
   /** Builder helper class. */
