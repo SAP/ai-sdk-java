@@ -227,12 +227,11 @@ class OrchestrationUnitTest {
                     .withHeader("Content-Type", "application/json")));
 
     // set timeout to 1 second instead of 2 minutes to avoid waiting for the full timeout
-    ApacheHttpClient5Accessor.setHttpClientFactory(
-        destination ->
-            new ApacheHttpClient5FactoryBuilder()
-                .timeout(Duration.ofSeconds(1))
-                .build()
-                .createHttpClient(destination));
+    ApacheHttpClient5Accessor.setHttpClientFactory(destination ->
+        new ApacheHttpClient5FactoryBuilder()
+            .timeout(Duration.ofSeconds(1))
+            .build()
+            .createHttpClient(destination));
 
     assertThatThrownBy(
             () -> client.chatCompletion().config(config).promptTemplate(prompt).execute())
