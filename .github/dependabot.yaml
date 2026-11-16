@@ -78,7 +78,7 @@ updates:
 
 
   - package-ecosystem: github-actions
-    target-branch: main
+    target-branch: v1
     directory: "/"
     schedule:
       interval: monthly
