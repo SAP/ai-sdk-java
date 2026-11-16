@@ -34,7 +34,7 @@ jobs:
 
       - name: 'Approve and Merge PRs'
         run: |
-          PRS=$(gh pr list --app "dependabot" --state "open" --json number,title)
+          PRS=$(gh pr list --app "dependabot" --state "open" --json number,title,headRefOid)
           PR_NUMBERS=
           while IFS= read -r GROUP; do
             if [[ -z "$GROUP" ]]; then
@@ -48,14 +48,41 @@ jobs:
           done <<< "${{ env.DEPENDABOT_GROUPS }}"
           echo "[DEBUG] Approving and Merging following PRs: '$PR_NUMBERS'"
 
+          FAILED_PRS=
           while IFS= read -r PR_NUMBER; do
             if [[ -z "$PR_NUMBER" ]]; then
               continue
             fi
 
-            echo "[DEBUG] Approving and Merging PR #$PR_NUMBER"
-            gh pr merge "$PR_NUMBER" --auto --squash
+            HEAD_SHA=$(jq -r --argjson number "$PR_NUMBER" '.[] | select(.number == $number) | .headRefOid' <<< "$PRS")
+            COMMIT=$(gh api "repos/$REPO/commits/$HEAD_SHA" --jq '{author: .author.login, verified: .commit.verification.verified}')
+            LAST_AUTHOR=$(jq -r '.author' <<< "$COMMIT")
+            VERIFIED=$(jq -r '.verified' <<< "$COMMIT")
+            if [[ "$LAST_AUTHOR" != "dependabot[bot]" || "$VERIFIED" != "true" ]]; then
+              echo "[DEBUG] Skipping PR #$PR_NUMBER: commit author='$LAST_AUTHOR' verified='$VERIFIED'"
+              continue
+            fi
+
+            echo "[DEBUG] Approving and Merging PR #$PR_NUMBER at $HEAD_SHA"
             gh pr review "$PR_NUMBER" --approve
+            MERGED=false
+            for DELAY in 0 15 15 15 15 15; do
+              sleep "$DELAY"
+              if gh pr merge "$PR_NUMBER" --auto --squash --match-head-commit "$HEAD_SHA"; then
+                MERGED=true
+                break
+              fi
+            done
+            if [[ "$MERGED" != "true" ]]; then
+              echo "[DEBUG] All attempts to enable auto-merge for PR #$PR_NUMBER failed"
+              FAILED_PRS="$FAILED_PRS #$PR_NUMBER"
+            fi
           done <<< "$PR_NUMBERS"
+
+          if [[ -n "$FAILED_PRS" ]]; then
+            echo "Failed to enable auto-merge for:$FAILED_PRS"
+            exit 1
+          fi
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REPO: ${{ github.repository }}
