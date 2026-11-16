@@ -202,9 +202,8 @@ public class BckndDeploymentUsage
     sb.append("class BckndDeploymentUsage {\n");
     sb.append("    count: ").append(toIndentedString(count)).append("\n");
     sb.append("    items: ").append(toIndentedString(items)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -224,7 +223,7 @@ public class BckndDeploymentUsage
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (count) -> (items) -> new BckndDeploymentUsage().count(count).items(items);
+    return count -> items -> new BckndDeploymentUsage().count(count).items(items);
   }
 
   /** Builder helper class. */

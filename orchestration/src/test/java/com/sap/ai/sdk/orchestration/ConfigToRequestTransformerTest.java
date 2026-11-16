@@ -158,8 +158,8 @@ class ConfigToRequestTransformerTest {
     var template =
         PromptTemplate.fromJson(
             """
-        {"spec":{"template":[{"role":"user","content":"Hello"}]}}
-        """);
+            {"spec":{"template":[{"role":"user","content":"Hello"}]}}
+            """);
     var messages = template.getChatMessages();
     assertThat(messages).isNotEmpty();
     assertThat(messages.get(0)).isExactlyInstanceOf(UserChatMessage.class);

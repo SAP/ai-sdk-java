@@ -168,9 +168,8 @@ public class InputFilteringConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class InputFilteringConfig {\n");
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -190,7 +189,7 @@ public class InputFilteringConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (filters) -> new InputFilteringConfig().filters(filters);
+    return filters -> new InputFilteringConfig().filters(filters);
   }
 
   /** Builder helper class. */

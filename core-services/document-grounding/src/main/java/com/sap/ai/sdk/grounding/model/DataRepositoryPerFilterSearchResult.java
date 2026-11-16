@@ -210,9 +210,8 @@ public class DataRepositoryPerFilterSearchResult
     sb.append("class DataRepositoryPerFilterSearchResult {\n");
     sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    results: ").append(toIndentedString(results)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -232,7 +231,7 @@ public class DataRepositoryPerFilterSearchResult
    * DataRepositoryPerFilterSearchResult} instance with all required arguments.
    */
   public static Builder create() {
-    return (filterId) -> new DataRepositoryPerFilterSearchResult().filterId(filterId);
+    return filterId -> new DataRepositoryPerFilterSearchResult().filterId(filterId);
   }
 
   /** Builder helper class. */

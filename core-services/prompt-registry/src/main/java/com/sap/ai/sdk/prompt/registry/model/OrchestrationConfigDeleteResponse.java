@@ -153,9 +153,8 @@ public class OrchestrationConfigDeleteResponse
     final StringBuilder sb = new StringBuilder();
     sb.append("class OrchestrationConfigDeleteResponse {\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -175,7 +174,7 @@ public class OrchestrationConfigDeleteResponse
    * OrchestrationConfigDeleteResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (message) -> new OrchestrationConfigDeleteResponse().message(message);
+    return message -> new OrchestrationConfigDeleteResponse().message(message);
   }
 
   /** Builder helper class. */

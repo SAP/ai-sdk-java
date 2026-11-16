@@ -185,9 +185,8 @@ public class EmbeddingsModuleConfigs
     sb.append("class EmbeddingsModuleConfigs {\n");
     sb.append("    embeddings: ").append(toIndentedString(embeddings)).append("\n");
     sb.append("    masking: ").append(toIndentedString(masking)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -207,7 +206,7 @@ public class EmbeddingsModuleConfigs
    * EmbeddingsModuleConfigs} instance with all required arguments.
    */
   public static Builder create() {
-    return (embeddings) -> new EmbeddingsModuleConfigs().embeddings(embeddings);
+    return embeddings -> new EmbeddingsModuleConfigs().embeddings(embeddings);
   }
 
   /** Builder helper class. */

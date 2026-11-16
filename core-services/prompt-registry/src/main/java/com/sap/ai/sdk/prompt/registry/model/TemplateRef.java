@@ -146,9 +146,8 @@ public class TemplateRef implements PartialPromptTemplatingModuleConfigPrompt
     final StringBuilder sb = new StringBuilder();
     sb.append("class TemplateRef {\n");
     sb.append("    templateRef: ").append(toIndentedString(templateRef)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -168,7 +167,7 @@ public class TemplateRef implements PartialPromptTemplatingModuleConfigPrompt
    * with all required arguments.
    */
   public static Builder create() {
-    return (templateRef) -> new TemplateRef().templateRef(templateRef);
+    return templateRef -> new TemplateRef().templateRef(templateRef);
   }
 
   /** Builder helper class. */

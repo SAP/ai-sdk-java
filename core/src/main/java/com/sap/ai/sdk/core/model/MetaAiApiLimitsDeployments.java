@@ -153,9 +153,8 @@ public class MetaAiApiLimitsDeployments
     final StringBuilder sb = new StringBuilder();
     sb.append("class MetaAiApiLimitsDeployments {\n");
     sb.append("    maxRunningCount: ").append(toIndentedString(maxRunningCount)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

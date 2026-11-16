@@ -192,9 +192,8 @@ public class OrchestrationConfigHistoryDeleteResponse
     sb.append("class OrchestrationConfigHistoryDeleteResponse {\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    deleted: ").append(toIndentedString(deleted)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -214,9 +213,8 @@ public class OrchestrationConfigHistoryDeleteResponse
    * OrchestrationConfigHistoryDeleteResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (message) ->
-        (deleted) ->
-            new OrchestrationConfigHistoryDeleteResponse().message(message).deleted(deleted);
+    return message ->
+        deleted -> new OrchestrationConfigHistoryDeleteResponse().message(message).deleted(deleted);
   }
 
   /** Builder helper class. */

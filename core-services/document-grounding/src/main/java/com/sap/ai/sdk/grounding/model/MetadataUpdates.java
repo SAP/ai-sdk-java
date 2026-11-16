@@ -164,9 +164,8 @@ public class MetadataUpdates
     final StringBuilder sb = new StringBuilder();
     sb.append("class MetadataUpdates {\n");
     sb.append("    updates: ").append(toIndentedString(updates)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -186,7 +185,7 @@ public class MetadataUpdates
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (updates) -> new MetadataUpdates().updates(updates);
+    return updates -> new MetadataUpdates().updates(updates);
   }
 
   /** Builder helper class. */

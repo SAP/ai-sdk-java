@@ -349,9 +349,8 @@ public class RTAScenario
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    modifiedAt: ").append(toIndentedString(modifiedAt)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -371,10 +370,10 @@ public class RTAScenario
    * with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (name) ->
-            (createdAt) ->
-                (modifiedAt) ->
+    return id ->
+        name ->
+            createdAt ->
+                modifiedAt ->
                     new RTAScenario().id(id).name(name).createdAt(createdAt).modifiedAt(modifiedAt);
   }
 

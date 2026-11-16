@@ -248,9 +248,8 @@ public class AzureContentSafetyOutputFilterConfig implements OutputFilterConfig
     sb.append("class AzureContentSafetyOutputFilterConfig {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -270,7 +269,7 @@ public class AzureContentSafetyOutputFilterConfig implements OutputFilterConfig
    * AzureContentSafetyOutputFilterConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new AzureContentSafetyOutputFilterConfig().type(type);
+    return type -> new AzureContentSafetyOutputFilterConfig().type(type);
   }
 
   /** Builder helper class. */

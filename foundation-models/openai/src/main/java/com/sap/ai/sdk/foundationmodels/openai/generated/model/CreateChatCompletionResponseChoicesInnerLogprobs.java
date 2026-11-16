@@ -232,9 +232,8 @@ public class CreateChatCompletionResponseChoicesInnerLogprobs
     sb.append("class CreateChatCompletionResponseChoicesInnerLogprobs {\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("    refusal: ").append(toIndentedString(refusal)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

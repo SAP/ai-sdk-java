@@ -180,9 +180,8 @@ public class MetadataConfigurationMetadata
     sb.append("    dataRepositoryMetadata: ")
         .append(toIndentedString(dataRepositoryMetadata))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -202,7 +201,7 @@ public class MetadataConfigurationMetadata
    * MetadataConfigurationMetadata} instance with all required arguments.
    */
   public static Builder create() {
-    return (dataRepositoryMetadata) ->
+    return dataRepositoryMetadata ->
         new MetadataConfigurationMetadata().dataRepositoryMetadata(dataRepositoryMetadata);
   }
 

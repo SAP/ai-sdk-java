@@ -352,9 +352,8 @@ public class AiScenario
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    modifiedAt: ").append(toIndentedString(modifiedAt)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -374,10 +373,10 @@ public class AiScenario
    * with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (id) ->
-            (createdAt) ->
-                (modifiedAt) ->
+    return name ->
+        id ->
+            createdAt ->
+                modifiedAt ->
                     new AiScenario().name(name).id(id).createdAt(createdAt).modifiedAt(modifiedAt);
   }
 

@@ -548,9 +548,8 @@ public class DPIConfig
     sb.append("    maskFileInputMethod: ")
         .append(toIndentedString(maskFileInputMethod))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -570,8 +569,8 @@ public class DPIConfig
    * with all required arguments.
    */
   public static Builder create() {
-    return (type) ->
-        (method) -> (entities) -> new DPIConfig().type(type).method(method).entities(entities);
+    return type ->
+        method -> entities -> new DPIConfig().type(type).method(method).entities(entities);
   }
 
   /** Builder helper class. */

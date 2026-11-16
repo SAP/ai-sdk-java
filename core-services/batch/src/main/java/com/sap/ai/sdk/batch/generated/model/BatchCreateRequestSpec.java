@@ -184,9 +184,8 @@ public class BatchCreateRequestSpec
     sb.append("class BatchCreateRequestSpec {\n");
     sb.append("    provider: ").append(toIndentedString(provider)).append("\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -206,7 +205,7 @@ public class BatchCreateRequestSpec
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (provider) -> (model) -> new BatchCreateRequestSpec().provider(provider).model(model);
+    return provider -> model -> new BatchCreateRequestSpec().provider(provider).model(model);
   }
 
   /** Builder helper class. */

@@ -1,6 +1,6 @@
 package com.sap.ai.sdk.app.services;
 
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_3_8_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_4O;
 
@@ -134,7 +134,7 @@ public class SpringAiOrchestrationService {
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
     val opts =
         new OrchestrationChatOptions(
-            config.withLlmConfig(GEMINI_2_5_FLASH).withInputFiltering(filterConfig));
+            config.withLlmConfig(GEMINI_3_8_FLASH).withInputFiltering(filterConfig));
 
     // no mercy to cheese
     val prompt =
@@ -159,7 +159,7 @@ public class SpringAiOrchestrationService {
         new AzureContentFilter().hate(policy).selfHarm(policy).sexual(policy).violence(policy);
     val opts =
         new OrchestrationChatOptions(
-            config.withLlmConfig(GEMINI_2_5_FLASH).withOutputFiltering(filterConfig));
+            config.withLlmConfig(GEMINI_3_8_FLASH).withOutputFiltering(filterConfig));
 
     // no mercy for cheese!
     val prompt =
@@ -246,7 +246,8 @@ public class SpringAiOrchestrationService {
             Please read through the markdown files in my file system.
             Ensure to first query the allowed directories.
             Then use any `.md` files you find to answer the user's question.
-            Do **NOT** query for `*.md` since that doesn't work, ensure to query for `.md` instead.""");
+            Do **NOT** query for `*.md` since that doesn't work, ensure to query for `.md` instead.\
+            """);
     val usr = new UserMessage("How can I use Spring AI with the SAP AI SDK?");
 
     val prompt = new Prompt(List.of(sys, usr), options);

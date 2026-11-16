@@ -303,9 +303,8 @@ public class PartialModuleConfigs
     sb.append("    masking: ").append(toIndentedString(masking)).append("\n");
     sb.append("    grounding: ").append(toIndentedString(grounding)).append("\n");
     sb.append("    translation: ").append(toIndentedString(translation)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -158,9 +158,8 @@ public class LastMessagesTargetSelector implements InputFilterTargetSelector
     final StringBuilder sb = new StringBuilder();
     sb.append("class LastMessagesTargetSelector {\n");
     sb.append("    lastMessages: ").append(toIndentedString(lastMessages)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -180,7 +179,7 @@ public class LastMessagesTargetSelector implements InputFilterTargetSelector
    * LastMessagesTargetSelector} instance with all required arguments.
    */
   public static Builder create() {
-    return (lastMessages) -> new LastMessagesTargetSelector().lastMessages(lastMessages);
+    return lastMessages -> new LastMessagesTargetSelector().lastMessages(lastMessages);
   }
 
   /** Builder helper class. */

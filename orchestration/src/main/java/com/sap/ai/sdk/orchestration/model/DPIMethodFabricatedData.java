@@ -203,9 +203,8 @@ public class DPIMethodFabricatedData implements DPIStandardEntityReplacementStra
     final StringBuilder sb = new StringBuilder();
     sb.append("class DPIMethodFabricatedData {\n");
     sb.append("    method: ").append(toIndentedString(method)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -225,7 +224,7 @@ public class DPIMethodFabricatedData implements DPIStandardEntityReplacementStra
    * DPIMethodFabricatedData} instance with all required arguments.
    */
   public static Builder create() {
-    return (method) -> new DPIMethodFabricatedData().method(method);
+    return method -> new DPIMethodFabricatedData().method(method);
   }
 
   /** Builder helper class. */

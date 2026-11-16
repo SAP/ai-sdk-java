@@ -147,9 +147,8 @@ public class EmbeddingsModelConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class EmbeddingsModelConfig {\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -169,7 +168,7 @@ public class EmbeddingsModelConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (model) -> new EmbeddingsModelConfig().model(model);
+    return model -> new EmbeddingsModelConfig().model(model);
   }
 
   /** Builder helper class. */

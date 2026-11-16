@@ -386,9 +386,8 @@ public class LLMModelDetails
     sb.append("    dropUnsupportedParams: ")
         .append(toIndentedString(dropUnsupportedParams))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -408,7 +407,7 @@ public class LLMModelDetails
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> new LLMModelDetails().name(name);
+    return name -> new LLMModelDetails().name(name);
   }
 
   /** Builder helper class. */

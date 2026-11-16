@@ -186,9 +186,8 @@ public class CollectionCreatedResponse
     sb.append("class CollectionCreatedResponse {\n");
     sb.append("    collectionURL: ").append(toIndentedString(collectionURL)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -208,8 +207,8 @@ public class CollectionCreatedResponse
    * CollectionCreatedResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (collectionURL) ->
-        (status) -> new CollectionCreatedResponse().collectionURL(collectionURL).status(status);
+    return collectionURL ->
+        status -> new CollectionCreatedResponse().collectionURL(collectionURL).status(status);
   }
 
   /** Builder helper class. */

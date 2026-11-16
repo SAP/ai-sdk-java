@@ -317,9 +317,8 @@ public class PredictResponsePayload
     sb.append("    predictions: ").append(toIndentedString(predictions)).append("\n");
     sb.append("    explanations: ").append(toIndentedString(explanations)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -339,10 +338,10 @@ public class PredictResponsePayload
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (status) ->
-            (predictions) ->
-                (metadata) ->
+    return id ->
+        status ->
+            predictions ->
+                metadata ->
                     new PredictResponsePayload()
                         .id(id)
                         .status(status)

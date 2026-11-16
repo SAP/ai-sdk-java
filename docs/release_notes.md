@@ -12,7 +12,7 @@
 
 ### ✨ New Functionality
 
-- [Orchestration] Added new model `SAP_ABAP_2` to `OrchestrationAiModel`.
+- [Orchestration] Added new models `SAP_ABAP_2` and `QWEN_3_8_FLASH` to `OrchestrationAiModel`.
 
 ### 📈 Improvements
 

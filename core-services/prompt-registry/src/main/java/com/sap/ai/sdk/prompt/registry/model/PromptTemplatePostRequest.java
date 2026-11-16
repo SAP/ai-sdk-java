@@ -260,9 +260,8 @@ public class PromptTemplatePostRequest
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    scenario: ").append(toIndentedString(scenario)).append("\n");
     sb.append("    spec: ").append(toIndentedString(spec)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -282,10 +281,10 @@ public class PromptTemplatePostRequest
    * PromptTemplatePostRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (version) ->
-            (scenario) ->
-                (spec) ->
+    return name ->
+        version ->
+            scenario ->
+                spec ->
                     new PromptTemplatePostRequest()
                         .name(name)
                         .version(version)

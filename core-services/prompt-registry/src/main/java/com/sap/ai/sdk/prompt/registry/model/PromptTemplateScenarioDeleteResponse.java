@@ -191,9 +191,8 @@ public class PromptTemplateScenarioDeleteResponse
     sb.append("class PromptTemplateScenarioDeleteResponse {\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    deleted: ").append(toIndentedString(deleted)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -213,8 +212,8 @@ public class PromptTemplateScenarioDeleteResponse
    * PromptTemplateScenarioDeleteResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (message) ->
-        (deleted) -> new PromptTemplateScenarioDeleteResponse().message(message).deleted(deleted);
+    return message ->
+        deleted -> new PromptTemplateScenarioDeleteResponse().message(message).deleted(deleted);
   }
 
   /** Builder helper class. */

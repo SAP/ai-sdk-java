@@ -565,9 +565,8 @@ public class BckndInternalResourceGroup
     sb.append("    statusMessage: ").append(toIndentedString(statusMessage)).append("\n");
     sb.append("    servicePlan: ").append(toIndentedString(servicePlan)).append("\n");
     sb.append("    annotations: ").append(toIndentedString(annotations)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -587,9 +586,9 @@ public class BckndInternalResourceGroup
    * BckndInternalResourceGroup} instance with all required arguments.
    */
   public static Builder create() {
-    return (resourceGroupId) ->
-        (createdAt) ->
-            (status) ->
+    return resourceGroupId ->
+        createdAt ->
+            status ->
                 new BckndInternalResourceGroup()
                     .resourceGroupId(resourceGroupId)
                     .createdAt(createdAt)

@@ -408,9 +408,8 @@ public class CreateChatCompletionResponseChoicesInner
         .append(toIndentedString(contentFilterResults))
         .append("\n");
     sb.append("    logprobs: ").append(toIndentedString(logprobs)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

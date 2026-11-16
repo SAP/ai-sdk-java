@@ -406,22 +406,22 @@ public class OrchestrationConvenienceUnitTest {
   void testTemplateFromLocalFileWithJsonObject() throws IOException {
     String promptTemplateWithJsonObject =
         """
- name: translator
- version: 0.0.1
- scenario: translation scenario
- spec:
-  template:
-    - role: "system"
-      content: |-
-        You are a language translator.
-    - role: "user"
-      content: |-
-        Whats {{ ?word }} in {{ ?language }}?
-  defaults:
-    word: "apple"
-  response_format:
-    type: json_object
- """;
+        name: translator
+        version: 0.0.1
+        scenario: translation scenario
+        spec:
+         template:
+           - role: "system"
+             content: |-
+               You are a language translator.
+           - role: "user"
+             content: |-
+               Whats {{ ?word }} in {{ ?language }}?
+         defaults:
+           word: "apple"
+         response_format:
+           type: json_object
+        """;
     var templateWithJsonObject = PromptTemplate.fromYaml(promptTemplateWithJsonObject);
     var expectedTemplateWithJsonObject =
         PromptTemplate.create(

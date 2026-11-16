@@ -168,9 +168,8 @@ public class BckndResourcePatchBody
     final StringBuilder sb = new StringBuilder();
     sb.append("class BckndResourcePatchBody {\n");
     sb.append("    resourcePlans: ").append(toIndentedString(resourcePlans)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -190,7 +189,7 @@ public class BckndResourcePatchBody
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (resourcePlans) -> new BckndResourcePatchBody().resourcePlans(resourcePlans);
+    return resourcePlans -> new BckndResourcePatchBody().resourcePlans(resourcePlans);
   }
 
   /** Builder helper class. */

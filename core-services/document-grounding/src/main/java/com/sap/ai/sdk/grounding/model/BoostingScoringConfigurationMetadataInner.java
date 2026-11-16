@@ -348,9 +348,8 @@ public class BoostingScoringConfigurationMetadataInner
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    scope: ").append(toIndentedString(scope)).append("\n");
     sb.append("    weight: ").append(toIndentedString(weight)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -370,9 +369,9 @@ public class BoostingScoringConfigurationMetadataInner
    * BoostingScoringConfigurationMetadataInner} instance with all required arguments.
    */
   public static Builder create() {
-    return (key) ->
-        (value) ->
-            (weight) ->
+    return key ->
+        value ->
+            weight ->
                 new BoostingScoringConfigurationMetadataInner()
                     .key(key)
                     .value(value)

@@ -68,28 +68,26 @@ public class ClientStreamingHandler<
     return IterableStreamConverter.lines(response, exceptionFactory)
         // half of the lines are empty newlines, the last line is "data: [DONE]"
         .filter(line -> !line.isEmpty() && !"data: [DONE]".equals(line.trim()))
-        .peek(
-            line -> {
-              if (!line.startsWith("data: ")) {
-                final String msg = "Failed to parse response";
-                throw exceptionFactory.build(msg).setHttpResponse(response);
-              }
-            })
-        .map(
-            line -> {
-              final String data = line.substring(5); // remove "data: "
-              try {
-                final JsonNode jsonNode = objectMapper.readTree(data);
-                if (jsonNode.has("error")) {
-                  throwErrorType(response, data);
-                }
-                return objectMapper.treeToValue(jsonNode, successType);
-              } catch (final IOException e) {
-                log.error("Failed to parse delta chunk to type {}.", successType);
-                final String message = "Failed to parse delta chunk";
-                throw exceptionFactory.build(message, e).setHttpResponse(response);
-              }
-            });
+        .peek(line -> {
+          if (!line.startsWith("data: ")) {
+            final String msg = "Failed to parse response";
+            throw exceptionFactory.build(msg).setHttpResponse(response);
+          }
+        })
+        .map(line -> {
+          final String data = line.substring(5); // remove "data: "
+          try {
+            final JsonNode jsonNode = objectMapper.readTree(data);
+            if (jsonNode.has("error")) {
+              throwErrorType(response, data);
+            }
+            return objectMapper.treeToValue(jsonNode, successType);
+          } catch (final IOException e) {
+            log.error("Failed to parse delta chunk to type {}.", successType);
+            final String message = "Failed to parse delta chunk";
+            throw exceptionFactory.build(message, e).setHttpResponse(response);
+          }
+        });
   }
 
   private void throwErrorType(final @Nonnull ClassicHttpResponse response, final String data)

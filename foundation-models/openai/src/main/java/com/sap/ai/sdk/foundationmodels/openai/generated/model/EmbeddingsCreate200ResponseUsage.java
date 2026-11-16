@@ -188,9 +188,8 @@ public class EmbeddingsCreate200ResponseUsage
     sb.append("class EmbeddingsCreate200ResponseUsage {\n");
     sb.append("    promptTokens: ").append(toIndentedString(promptTokens)).append("\n");
     sb.append("    totalTokens: ").append(toIndentedString(totalTokens)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

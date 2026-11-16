@@ -307,9 +307,8 @@ public class CacheControl
     sb.append("class CacheControl {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    ttl: ").append(toIndentedString(ttl)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -329,7 +328,7 @@ public class CacheControl
    * with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new CacheControl().type(type);
+    return type -> new CacheControl().type(type);
   }
 
   /** Builder helper class. */

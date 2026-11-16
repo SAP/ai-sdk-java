@@ -183,9 +183,8 @@ public class ErrorResponse
     sb.append("class ErrorResponse {\n");
     sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -205,7 +204,7 @@ public class ErrorResponse
    * with all required arguments.
    */
   public static Builder create() {
-    return (requestId) -> (message) -> new ErrorResponse().requestId(requestId).message(message);
+    return requestId -> message -> new ErrorResponse().requestId(requestId).message(message);
   }
 
   /** Builder helper class. */

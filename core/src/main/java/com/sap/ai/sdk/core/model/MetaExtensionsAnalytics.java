@@ -147,9 +147,8 @@ public class MetaExtensionsAnalytics
     final StringBuilder sb = new StringBuilder();
     sb.append("class MetaExtensionsAnalytics {\n");
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -169,7 +168,7 @@ public class MetaExtensionsAnalytics
    * MetaExtensionsAnalytics} instance with all required arguments.
    */
   public static Builder create() {
-    return (version) -> new MetaExtensionsAnalytics().version(version);
+    return version -> new MetaExtensionsAnalytics().version(version);
   }
 
   /** Builder helper class. */

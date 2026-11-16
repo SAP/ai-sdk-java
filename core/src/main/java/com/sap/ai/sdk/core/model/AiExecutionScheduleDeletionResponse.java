@@ -191,9 +191,8 @@ public class AiExecutionScheduleDeletionResponse
     sb.append("class AiExecutionScheduleDeletionResponse {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -213,7 +212,7 @@ public class AiExecutionScheduleDeletionResponse
    * AiExecutionScheduleDeletionResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> (message) -> new AiExecutionScheduleDeletionResponse().id(id).message(message);
+    return id -> message -> new AiExecutionScheduleDeletionResponse().id(id).message(message);
   }
 
   /** Builder helper class. */

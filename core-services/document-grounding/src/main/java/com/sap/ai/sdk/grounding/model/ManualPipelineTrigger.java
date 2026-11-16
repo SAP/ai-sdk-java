@@ -185,9 +185,8 @@ public class ManualPipelineTrigger
     sb.append("class ManualPipelineTrigger {\n");
     sb.append("    pipelineId: ").append(toIndentedString(pipelineId)).append("\n");
     sb.append("    metadataOnly: ").append(toIndentedString(metadataOnly)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
