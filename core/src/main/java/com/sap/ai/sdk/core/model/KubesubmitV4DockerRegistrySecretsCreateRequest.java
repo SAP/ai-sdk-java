@@ -194,9 +194,8 @@ public class KubesubmitV4DockerRegistrySecretsCreateRequest
     sb.append("class KubesubmitV4DockerRegistrySecretsCreateRequest {\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -216,8 +215,8 @@ public class KubesubmitV4DockerRegistrySecretsCreateRequest
    * KubesubmitV4DockerRegistrySecretsCreateRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (data) ->
-        (name) -> new KubesubmitV4DockerRegistrySecretsCreateRequest().data(data).name(name);
+    return data ->
+        name -> new KubesubmitV4DockerRegistrySecretsCreateRequest().data(data).name(name);
   }
 
   /** Builder helper class. */

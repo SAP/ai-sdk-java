@@ -190,9 +190,8 @@ public class PerFilterSearchResultWithError
     sb.append("class PerFilterSearchResultWithError {\n");
     sb.append("    filterId: ").append(toIndentedString(filterId)).append("\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -212,7 +211,7 @@ public class PerFilterSearchResultWithError
    * PerFilterSearchResultWithError} instance with all required arguments.
    */
   public static Builder create() {
-    return (filterId) -> new PerFilterSearchResultWithError().filterId(filterId);
+    return filterId -> new PerFilterSearchResultWithError().filterId(filterId);
   }
 
   /** Builder helper class. */

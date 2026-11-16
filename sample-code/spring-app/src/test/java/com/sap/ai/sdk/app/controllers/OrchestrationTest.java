@@ -94,8 +94,7 @@ class OrchestrationTest {
     val filledDeltaCount = new AtomicInteger(0);
     stream
         // foreach consumes all elements, closing the stream at the end
-        .forEach(
-        delta -> {
+        .forEach(delta -> {
           if (!delta.isEmpty()) {
             filledDeltaCount.incrementAndGet();
           }
@@ -671,20 +670,18 @@ class OrchestrationTest {
             .withInputFiltering(new AzureContentFilter().hate(AzureFilterThreshold.ALLOW_SAFE));
     val prompt = new OrchestrationPrompt("HelloWorld!");
 
-    assertThatThrownBy(
-            () ->
-                client.chatCompletion(
-                    prompt, filterConfig.withLlmConfig(GPT_5.withName("wrong-model"))))
+    assertThatThrownBy(() ->
+            client.chatCompletion(
+                prompt, filterConfig.withLlmConfig(GPT_5.withName("wrong-model"))))
         .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400")
         .hasMessageContaining("Model name must be one of");
 
-    assertThatThrownBy(
-            () ->
-                client
-                    .streamChatCompletion(
-                        prompt, filterConfig.withLlmConfig(GPT_5.withVersion("wrong-version")))
-                    .forEach(System.out::println))
+    assertThatThrownBy(() ->
+            client
+                .streamChatCompletion(
+                    prompt, filterConfig.withLlmConfig(GPT_5.withVersion("wrong-version")))
+                .forEach(System.out::println))
         .isExactlyInstanceOf(OrchestrationClientException.class)
         .hasMessageContaining("400")
         .hasMessageContaining("Model gpt-5 in version wrong-version not found.");
@@ -716,12 +713,11 @@ class OrchestrationTest {
   void testCompletionWithFallbackStreaming() {
     final var stream = service.streamCompletionWithFallback("HelloWorld!");
     val filledDeltaCount = new AtomicInteger(0);
-    stream.forEach(
-        delta -> {
-          if (!delta.isEmpty()) {
-            filledDeltaCount.incrementAndGet();
-          }
-        });
+    stream.forEach(delta -> {
+      if (!delta.isEmpty()) {
+        filledDeltaCount.incrementAndGet();
+      }
+    });
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
@@ -729,12 +725,11 @@ class OrchestrationTest {
   void testStreamDeltasWithInlineConfig() {
     final var stream = service.streamDeltasWithInlineConfig("HelloWorld!");
     val filledDeltaCount = new AtomicInteger(0);
-    stream.forEach(
-        delta -> {
-          if (!delta.getDeltaContent().isEmpty()) {
-            filledDeltaCount.incrementAndGet();
-          }
-        });
+    stream.forEach(delta -> {
+      if (!delta.getDeltaContent().isEmpty()) {
+        filledDeltaCount.incrementAndGet();
+      }
+    });
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
@@ -742,12 +737,11 @@ class OrchestrationTest {
   void testStreamDeltasWithReferenceById() {
     final var stream = service.streamDeltasWithReferenceById();
     val filledDeltaCount = new AtomicInteger(0);
-    stream.forEach(
-        delta -> {
-          if (!delta.getDeltaContent().isEmpty()) {
-            filledDeltaCount.incrementAndGet();
-          }
-        });
+    stream.forEach(delta -> {
+      if (!delta.getDeltaContent().isEmpty()) {
+        filledDeltaCount.incrementAndGet();
+      }
+    });
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
@@ -755,12 +749,11 @@ class OrchestrationTest {
   void testStreamDeltasWithReferenceByScenario() {
     final var stream = service.streamDeltasWithReferenceByScenario();
     val filledDeltaCount = new AtomicInteger(0);
-    stream.forEach(
-        delta -> {
-          if (!delta.getDeltaContent().isEmpty()) {
-            filledDeltaCount.incrementAndGet();
-          }
-        });
+    stream.forEach(delta -> {
+      if (!delta.getDeltaContent().isEmpty()) {
+        filledDeltaCount.incrementAndGet();
+      }
+    });
     assertThat(filledDeltaCount.get()).isGreaterThan(0);
   }
 
@@ -790,13 +783,12 @@ class OrchestrationTest {
     val answerBuilder = new StringBuilder();
     val reasoning = new ArrayList<String>();
     try (val stream = service.streamReasoning("What is 6 times 7?")) {
-      stream.forEach(
-          chunk -> {
-            answerBuilder.append(chunk.answer());
-            if (!chunk.reasoning().isEmpty()) {
-              reasoning.add(chunk.reasoning());
-            }
-          });
+      stream.forEach(chunk -> {
+        answerBuilder.append(chunk.answer());
+        if (!chunk.reasoning().isEmpty()) {
+          reasoning.add(chunk.reasoning());
+        }
+      });
     }
 
     assertThat(answerBuilder.toString()).isNotEmpty();

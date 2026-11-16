@@ -191,9 +191,8 @@ public class MetaAiApiLimitsTimeToLiveDeployments
     sb.append("class MetaAiApiLimitsTimeToLiveDeployments {\n");
     sb.append("    minimum: ").append(toIndentedString(minimum)).append("\n");
     sb.append("    maximum: ").append(toIndentedString(maximum)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -205,9 +205,8 @@ public class DocumentWithoutChunks
     sb.append("class DocumentWithoutChunks {\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -227,7 +226,7 @@ public class DocumentWithoutChunks
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (metadata) -> (id) -> new DocumentWithoutChunks().metadata(metadata).id(id);
+    return metadata -> id -> new DocumentWithoutChunks().metadata(metadata).id(id);
   }
 
   /** Builder helper class. */

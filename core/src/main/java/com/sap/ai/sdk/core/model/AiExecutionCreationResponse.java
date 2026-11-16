@@ -225,9 +225,8 @@ public class AiExecutionCreationResponse
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -247,7 +246,7 @@ public class AiExecutionCreationResponse
    * AiExecutionCreationResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> (message) -> new AiExecutionCreationResponse().id(id).message(message);
+    return id -> message -> new AiExecutionCreationResponse().id(id).message(message);
   }
 
   /** Builder helper class. */

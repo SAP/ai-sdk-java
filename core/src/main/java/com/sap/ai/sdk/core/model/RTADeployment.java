@@ -717,9 +717,8 @@ public class RTADeployment
     sb.append("    lastOperation: ").append(toIndentedString(lastOperation)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    modifiedAt: ").append(toIndentedString(modifiedAt)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -739,10 +738,10 @@ public class RTADeployment
    * with all required arguments.
    */
   public static Builder create() {
-    return (scenarioId) ->
-        (executableId) ->
-            (createdAt) ->
-                (modifiedAt) ->
+    return scenarioId ->
+        executableId ->
+            createdAt ->
+                modifiedAt ->
                     new RTADeployment()
                         .scenarioId(scenarioId)
                         .executableId(executableId)

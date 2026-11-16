@@ -52,13 +52,12 @@ class OpenAiDeprecatedTest {
         .streamChatCompletionDeltas(request)
         .peek(totalOutput::addDelta)
         // foreach consumes all elements, closing the stream at the end
-        .forEach(
-            delta -> {
-              final String deltaContent = delta.getDeltaContent();
-              if (!deltaContent.isEmpty()) {
-                filledDeltaCount.incrementAndGet();
-              }
-            });
+        .forEach(delta -> {
+          final String deltaContent = delta.getDeltaContent();
+          if (!deltaContent.isEmpty()) {
+            filledDeltaCount.incrementAndGet();
+          }
+        });
 
     // the first two and the last delta don't have any content
     // see OpenAiChatCompletionDelta#getDeltaContent

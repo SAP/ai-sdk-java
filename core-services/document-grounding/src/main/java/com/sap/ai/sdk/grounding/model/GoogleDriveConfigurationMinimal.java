@@ -153,9 +153,8 @@ public class GoogleDriveConfigurationMinimal
     final StringBuilder sb = new StringBuilder();
     sb.append("class GoogleDriveConfigurationMinimal {\n");
     sb.append("    googleDrive: ").append(toIndentedString(googleDrive)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -175,7 +174,7 @@ public class GoogleDriveConfigurationMinimal
    * GoogleDriveConfigurationMinimal} instance with all required arguments.
    */
   public static Builder create() {
-    return (googleDrive) -> new GoogleDriveConfigurationMinimal().googleDrive(googleDrive);
+    return googleDrive -> new GoogleDriveConfigurationMinimal().googleDrive(googleDrive);
   }
 
   /** Builder helper class. */

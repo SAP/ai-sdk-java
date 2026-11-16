@@ -257,9 +257,8 @@ public class MetaExtensions
     sb.append("    resourceGroups: ").append(toIndentedString(resourceGroups)).append("\n");
     sb.append("    dataset: ").append(toIndentedString(dataset)).append("\n");
     sb.append("    metrics: ").append(toIndentedString(metrics)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

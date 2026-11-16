@@ -237,9 +237,8 @@ public class Chunk
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -259,7 +258,7 @@ public class Chunk
    * all required arguments.
    */
   public static Builder create() {
-    return (id) -> (content) -> new Chunk().id(id).content(content);
+    return id -> content -> new Chunk().id(id).content(content);
   }
 
   /** Builder helper class. */

@@ -202,7 +202,7 @@ public class UserMessage implements Message {
     final var contentList = new LinkedList<UserChatMessageContentItem>();
 
     final Function<TextItem, UserChatMessageContentItem> toContentItem =
-        (textItem) -> {
+        textItem -> {
           final var contentItem =
               UserChatMessageContentItem.create().type(TEXT).text(textItem.text());
           final var cacheControl = textItem.getCacheControl();

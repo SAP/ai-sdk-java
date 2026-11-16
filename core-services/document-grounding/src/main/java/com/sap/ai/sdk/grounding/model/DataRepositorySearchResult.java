@@ -151,9 +151,8 @@ public class DataRepositorySearchResult
     final StringBuilder sb = new StringBuilder();
     sb.append("class DataRepositorySearchResult {\n");
     sb.append("    dataRepository: ").append(toIndentedString(dataRepository)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -173,7 +172,7 @@ public class DataRepositorySearchResult
    * DataRepositorySearchResult} instance with all required arguments.
    */
   public static Builder create() {
-    return (dataRepository) -> new DataRepositorySearchResult().dataRepository(dataRepository);
+    return dataRepository -> new DataRepositorySearchResult().dataRepository(dataRepository);
   }
 
   /** Builder helper class. */

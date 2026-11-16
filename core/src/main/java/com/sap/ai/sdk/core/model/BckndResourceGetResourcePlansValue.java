@@ -192,9 +192,8 @@ public class BckndResourceGetResourcePlansValue
     sb.append("class BckndResourceGetResourcePlansValue {\n");
     sb.append("    provisioned: ").append(toIndentedString(provisioned)).append("\n");
     sb.append("    requested: ").append(toIndentedString(requested)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -214,8 +213,8 @@ public class BckndResourceGetResourcePlansValue
    * BckndResourceGetResourcePlansValue} instance with all required arguments.
    */
   public static Builder create() {
-    return (provisioned) ->
-        (requested) ->
+    return provisioned ->
+        requested ->
             new BckndResourceGetResourcePlansValue().provisioned(provisioned).requested(requested);
   }
 

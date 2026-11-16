@@ -195,9 +195,8 @@ public class AiDeploymentModificationRequest
     sb.append("class AiDeploymentModificationRequest {\n");
     sb.append("    targetStatus: ").append(toIndentedString(targetStatus)).append("\n");
     sb.append("    configurationId: ").append(toIndentedString(configurationId)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -675,9 +675,8 @@ public class AiModelVersion
     sb.append("    orchestrationCapabilities: ")
         .append(toIndentedString(orchestrationCapabilities))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -697,10 +696,9 @@ public class AiModelVersion
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (isLatest) ->
-            (deprecated) ->
-                new AiModelVersion().name(name).isLatest(isLatest).deprecated(deprecated);
+    return name ->
+        isLatest ->
+            deprecated -> new AiModelVersion().name(name).isLatest(isLatest).deprecated(deprecated);
   }
 
   /** Builder helper class. */

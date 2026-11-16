@@ -364,9 +364,8 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    _configuration: ").append(toIndentedString(_configuration)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -386,10 +385,10 @@ public class MSSharePointPipelineMinimalResponse implements PipelineMinimalRespo
    * MSSharePointPipelineMinimalResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (status) ->
-            (type) ->
-                (_configuration) ->
+    return id ->
+        status ->
+            type ->
+                _configuration ->
                     new MSSharePointPipelineMinimalResponse()
                         .id(id)
                         .status(status)

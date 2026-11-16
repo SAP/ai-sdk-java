@@ -106,14 +106,13 @@ class TextToSpeechRealtimeClientUnitTest {
     assertThat(sent).isNotEmpty();
     final var conversationCreate =
         sent.stream()
-            .map(
-                s -> {
-                  try {
-                    return MAPPER.readTree(s);
-                  } catch (Exception e) {
-                    throw new RuntimeException(e);
-                  }
-                })
+            .map(s -> {
+              try {
+                return MAPPER.readTree(s);
+              } catch (Exception e) {
+                throw new RuntimeException(e);
+              }
+            })
             .filter(n -> "conversation.item.create".equals(n.get("type").asText()))
             .findFirst();
     assertThat(conversationCreate).isPresent();
@@ -128,14 +127,13 @@ class TextToSpeechRealtimeClientUnitTest {
     final var sent = captureAllSentTexts();
     final var types =
         sent.stream()
-            .map(
-                s -> {
-                  try {
-                    return MAPPER.readTree(s).get("type").asText();
-                  } catch (Exception e) {
-                    throw new RuntimeException(e);
-                  }
-                })
+            .map(s -> {
+              try {
+                return MAPPER.readTree(s).get("type").asText();
+              } catch (Exception e) {
+                throw new RuntimeException(e);
+              }
+            })
             .toList();
     assertThat(types).contains("conversation.item.create", "response.create");
   }
@@ -147,14 +145,13 @@ class TextToSpeechRealtimeClientUnitTest {
     final var sent = captureAllSentTexts();
     final var types =
         sent.stream()
-            .map(
-                s -> {
-                  try {
-                    return MAPPER.readTree(s).get("type").asText();
-                  } catch (Exception e) {
-                    throw new RuntimeException(e);
-                  }
-                })
+            .map(s -> {
+              try {
+                return MAPPER.readTree(s).get("type").asText();
+              } catch (Exception e) {
+                throw new RuntimeException(e);
+              }
+            })
             .toList();
     assertThat(types).contains("conversation.item.create");
     assertThat(types).doesNotContain("response.create");
@@ -168,14 +165,13 @@ class TextToSpeechRealtimeClientUnitTest {
     final var sent = captureAllSentTexts();
     final var conversationCreate =
         sent.stream()
-            .map(
-                s -> {
-                  try {
-                    return MAPPER.readTree(s);
-                  } catch (Exception e) {
-                    throw new RuntimeException(e);
-                  }
-                })
+            .map(s -> {
+              try {
+                return MAPPER.readTree(s);
+              } catch (Exception e) {
+                throw new RuntimeException(e);
+              }
+            })
             .filter(n -> "conversation.item.create".equals(n.get("type").asText()))
             .findFirst()
             .orElseThrow();

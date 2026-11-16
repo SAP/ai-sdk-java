@@ -191,9 +191,8 @@ public class ServiceNowConfigurationMinimal
     sb.append("class ServiceNowConfigurationMinimal {\n");
     sb.append("    destination: ").append(toIndentedString(destination)).append("\n");
     sb.append("    serviceNow: ").append(toIndentedString(serviceNow)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -213,7 +212,7 @@ public class ServiceNowConfigurationMinimal
    * ServiceNowConfigurationMinimal} instance with all required arguments.
    */
   public static Builder create() {
-    return (destination) -> new ServiceNowConfigurationMinimal().destination(destination);
+    return destination -> new ServiceNowConfigurationMinimal().destination(destination);
   }
 
   /** Builder helper class. */

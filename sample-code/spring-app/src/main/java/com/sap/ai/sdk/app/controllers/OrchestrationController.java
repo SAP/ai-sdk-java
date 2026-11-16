@@ -134,27 +134,26 @@ class OrchestrationController {
           final var lastLabel = new String[] {""};
 
           try (var stream = service.streamReasoning(topic)) {
-            stream.forEach(
-                chunk -> {
-                  if (json) {
-                    sendJsonLine(emitter, chunk);
-                    return;
-                  }
-                  if (!chunk.answer().isEmpty()) {
-                    if (!"answer".equals(lastLabel[0])) {
-                      send(emitter, "\n-----ANSWER-----\n");
-                      lastLabel[0] = "answer";
-                    }
-                    send(emitter, chunk.answer());
-                  }
-                  if (!chunk.reasoning().isEmpty()) {
-                    if (!"reasoning".equals(lastLabel[0])) {
-                      send(emitter, "\n----REASONING----\n");
-                      lastLabel[0] = "reasoning";
-                    }
-                    send(emitter, chunk.reasoning());
-                  }
-                });
+            stream.forEach(chunk -> {
+              if (json) {
+                sendJsonLine(emitter, chunk);
+                return;
+              }
+              if (!chunk.answer().isEmpty()) {
+                if (!"answer".equals(lastLabel[0])) {
+                  send(emitter, "\n-----ANSWER-----\n");
+                  lastLabel[0] = "answer";
+                }
+                send(emitter, chunk.answer());
+              }
+              if (!chunk.reasoning().isEmpty()) {
+                if (!"reasoning".equals(lastLabel[0])) {
+                  send(emitter, "\n----REASONING----\n");
+                  lastLabel[0] = "reasoning";
+                }
+                send(emitter, chunk.reasoning());
+              }
+            });
           } finally {
             emitter.complete();
           }

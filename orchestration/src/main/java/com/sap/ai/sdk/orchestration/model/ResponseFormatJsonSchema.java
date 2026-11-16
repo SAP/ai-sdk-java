@@ -242,9 +242,8 @@ public class ResponseFormatJsonSchema implements TemplateResponseFormat
     sb.append("class ResponseFormatJsonSchema {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    jsonSchema: ").append(toIndentedString(jsonSchema)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -264,8 +263,7 @@ public class ResponseFormatJsonSchema implements TemplateResponseFormat
    * ResponseFormatJsonSchema} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) ->
-        (jsonSchema) -> new ResponseFormatJsonSchema().type(type).jsonSchema(jsonSchema);
+    return type -> jsonSchema -> new ResponseFormatJsonSchema().type(type).jsonSchema(jsonSchema);
   }
 
   /** Builder helper class. */

@@ -77,8 +77,8 @@ abstract class BaseOpenAiClientTest {
   static void stubForErrorHandling() {
     final var errorJson =
         """
-            { "error": { "code": null, "message": "foo", "type": "invalid stuff" } }
-            """;
+        { "error": { "code": null, "message": "foo", "type": "invalid stuff" } }
+        """;
     stubFor(
         post(anyUrl())
             .inScenario("Errors")

@@ -220,9 +220,8 @@ public class BckndGenericSecretPatchBody
     sb.append("class BckndGenericSecretPatchBody {\n");
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -242,7 +241,7 @@ public class BckndGenericSecretPatchBody
    * BckndGenericSecretPatchBody} instance with all required arguments.
    */
   public static Builder create() {
-    return (data) -> new BckndGenericSecretPatchBody().data(data);
+    return data -> new BckndGenericSecretPatchBody().data(data);
   }
 
   /** Builder helper class. */

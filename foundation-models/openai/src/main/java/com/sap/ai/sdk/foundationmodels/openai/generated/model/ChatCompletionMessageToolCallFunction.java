@@ -196,9 +196,8 @@ public class ChatCompletionMessageToolCallFunction
     sb.append("class ChatCompletionMessageToolCallFunction {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    arguments: ").append(toIndentedString(arguments)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

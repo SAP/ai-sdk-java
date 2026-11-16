@@ -204,9 +204,8 @@ public class ResponseFormatJsonObject
     final StringBuilder sb = new StringBuilder();
     sb.append("class ResponseFormatJsonObject {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -226,7 +225,7 @@ public class ResponseFormatJsonObject
    * ResponseFormatJsonObject} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new ResponseFormatJsonObject().type(type);
+    return type -> new ResponseFormatJsonObject().type(type);
   }
 
   /** Builder helper class. */

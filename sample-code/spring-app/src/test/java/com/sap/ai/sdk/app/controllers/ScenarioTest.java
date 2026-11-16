@@ -79,10 +79,9 @@ class ScenarioTest {
 
     val availableOrchestrationModels =
         aiModelList.stream()
-            .filter(
-                model ->
-                    model.getAllowedScenarios().stream()
-                        .anyMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
+            .filter(model ->
+                model.getAllowedScenarios().stream()
+                    .anyMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
             .filter(model -> !model.getModel().contains("embed"))
             .filter(model -> !internalOnlyModels.contains(model.getModel()))
             .collect(
@@ -106,10 +105,9 @@ class ScenarioTest {
     // Gather models that are available but NOT allowed for orchestration scenario
     val nonOrchestrationModels =
         aiModelList.stream()
-            .filter(
-                model ->
-                    model.getAllowedScenarios().stream()
-                        .noneMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
+            .filter(model ->
+                model.getAllowedScenarios().stream()
+                    .noneMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
             .map(AiModelBaseData::getModel)
             .collect(Collectors.toSet());
     // intersect of both sets

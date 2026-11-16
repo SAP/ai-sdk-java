@@ -247,9 +247,8 @@ public class GlobalStreamOptions
     sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
     sb.append("    chunkSize: ").append(toIndentedString(chunkSize)).append("\n");
     sb.append("    delimiters: ").append(toIndentedString(delimiters)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

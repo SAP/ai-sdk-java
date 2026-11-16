@@ -195,9 +195,8 @@ public class PartialPromptTemplatingModuleConfig
     sb.append("class PartialPromptTemplatingModuleConfig {\n");
     sb.append("    prompt: ").append(toIndentedString(prompt)).append("\n");
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

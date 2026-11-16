@@ -226,9 +226,8 @@ public class MetaAiApi
     sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("    capabilities: ").append(toIndentedString(capabilities)).append("\n");
     sb.append("    limits: ").append(toIndentedString(limits)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -248,7 +247,7 @@ public class MetaAiApi
    * with all required arguments.
    */
   public static Builder create() {
-    return (version) -> new MetaAiApi().version(version);
+    return version -> new MetaAiApi().version(version);
   }
 
   /** Builder helper class. */

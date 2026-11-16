@@ -361,9 +361,8 @@ public class PredictRequestPayloadOneOf implements PredictRequestPayload
     sb.append("    parseDataTypes: ").append(toIndentedString(parseDataTypes)).append("\n");
     sb.append("    dataSchema: ").append(toIndentedString(dataSchema)).append("\n");
     sb.append("    rows: ").append(toIndentedString(rows)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -383,8 +382,8 @@ public class PredictRequestPayloadOneOf implements PredictRequestPayload
    * PredictRequestPayloadOneOf} instance with all required arguments.
    */
   public static Builder create() {
-    return (predictionConfig) ->
-        (rows) -> new PredictRequestPayloadOneOf().predictionConfig(predictionConfig).rows(rows);
+    return predictionConfig ->
+        rows -> new PredictRequestPayloadOneOf().predictionConfig(predictionConfig).rows(rows);
   }
 
   /** Builder helper class. */

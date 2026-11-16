@@ -220,9 +220,8 @@ public class MetadataUpdateItem
     sb.append("class MetadataUpdateItem {\n");
     sb.append("    ids: ").append(toIndentedString(ids)).append("\n");
     sb.append("    metadataUpdates: ").append(toIndentedString(metadataUpdates)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -242,8 +241,8 @@ public class MetadataUpdateItem
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (ids) ->
-        (metadataUpdates) -> new MetadataUpdateItem().ids(ids).metadataUpdates(metadataUpdates);
+    return ids ->
+        metadataUpdates -> new MetadataUpdateItem().ids(ids).metadataUpdates(metadataUpdates);
   }
 
   /** Builder helper class. */

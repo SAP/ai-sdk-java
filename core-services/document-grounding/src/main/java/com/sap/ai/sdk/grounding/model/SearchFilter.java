@@ -411,9 +411,8 @@ public class SearchFilter
     sb.append("    collectionMetadata: ").append(toIndentedString(collectionMetadata)).append("\n");
     sb.append("    documentMetadata: ").append(toIndentedString(documentMetadata)).append("\n");
     sb.append("    chunkMetadata: ").append(toIndentedString(chunkMetadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -433,9 +432,9 @@ public class SearchFilter
    * with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (collectionIds) ->
-            (_configuration) ->
+    return id ->
+        collectionIds ->
+            _configuration ->
                 new SearchFilter()
                     .id(id)
                     .collectionIds(collectionIds)

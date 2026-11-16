@@ -297,9 +297,8 @@ public class MetaCapabilities
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    aiApi: ").append(toIndentedString(aiApi)).append("\n");
     sb.append("    extensions: ").append(toIndentedString(extensions)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -319,7 +318,7 @@ public class MetaCapabilities
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (aiApi) -> new MetaCapabilities().aiApi(aiApi);
+    return aiApi -> new MetaCapabilities().aiApi(aiApi);
   }
 
   /** Builder helper class. */

@@ -257,9 +257,8 @@ public class LLMChoiceStreaming
     sb.append("    delta: ").append(toIndentedString(delta)).append("\n");
     sb.append("    logprobs: ").append(toIndentedString(logprobs)).append("\n");
     sb.append("    finishReason: ").append(toIndentedString(finishReason)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -279,7 +278,7 @@ public class LLMChoiceStreaming
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (index) -> (delta) -> new LLMChoiceStreaming().index(index).delta(delta);
+    return index -> delta -> new LLMChoiceStreaming().index(index).delta(delta);
   }
 
   /** Builder helper class. */

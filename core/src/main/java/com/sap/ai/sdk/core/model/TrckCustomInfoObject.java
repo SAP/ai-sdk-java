@@ -187,9 +187,8 @@ public class TrckCustomInfoObject
     sb.append("class TrckCustomInfoObject {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -209,7 +208,7 @@ public class TrckCustomInfoObject
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> (value) -> new TrckCustomInfoObject().name(name).value(value);
+    return name -> value -> new TrckCustomInfoObject().name(name).value(value);
   }
 
   /** Builder helper class. */

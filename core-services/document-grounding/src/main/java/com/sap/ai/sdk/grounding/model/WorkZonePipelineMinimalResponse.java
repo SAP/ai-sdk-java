@@ -322,9 +322,8 @@ public class WorkZonePipelineMinimalResponse implements PipelineMinimalResponse
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -344,9 +343,8 @@ public class WorkZonePipelineMinimalResponse implements PipelineMinimalResponse
    * WorkZonePipelineMinimalResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (status) ->
-            (type) -> new WorkZonePipelineMinimalResponse().id(id).status(status).type(type);
+    return id ->
+        status -> type -> new WorkZonePipelineMinimalResponse().id(id).status(status).type(type);
   }
 
   /** Builder helper class. */

@@ -195,9 +195,8 @@ public class RTAOutputArtifactArgumentBinding
     sb.append("class RTAOutputArtifactArgumentBinding {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -217,7 +216,7 @@ public class RTAOutputArtifactArgumentBinding
    * RTAOutputArtifactArgumentBinding} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> new RTAOutputArtifactArgumentBinding().name(name);
+    return name -> new RTAOutputArtifactArgumentBinding().name(name);
   }
 
   /** Builder helper class. */

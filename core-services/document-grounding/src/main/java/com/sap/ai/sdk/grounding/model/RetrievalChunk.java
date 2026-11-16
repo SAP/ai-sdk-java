@@ -315,9 +315,8 @@ public class RetrievalChunk
     sb.append("    postProcessingScore: ")
         .append(toIndentedString(postProcessingScore))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -337,7 +336,7 @@ public class RetrievalChunk
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> (content) -> new RetrievalChunk().id(id).content(content);
+    return id -> content -> new RetrievalChunk().id(id).content(content);
   }
 
   /** Builder helper class. */

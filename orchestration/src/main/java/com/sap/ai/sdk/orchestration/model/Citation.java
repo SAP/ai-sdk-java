@@ -294,9 +294,8 @@ public class Citation
     sb.append("    url: ").append(toIndentedString(url)).append("\n");
     sb.append("    startIndex: ").append(toIndentedString(startIndex)).append("\n");
     sb.append("    endIndex: ").append(toIndentedString(endIndex)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -316,7 +315,7 @@ public class Citation
    * all required arguments.
    */
   public static Builder create() {
-    return (title) -> (url) -> new Citation().title(title).url(url);
+    return title -> url -> new Citation().title(title).url(url);
   }
 
   /** Builder helper class. */

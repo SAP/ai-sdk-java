@@ -140,12 +140,11 @@ class OrchestrationEmbeddingTest {
     assertThat(finalResult.getObject()).isEqualTo(LIST);
     assertThat(finalResult.getData())
         .hasSize(2)
-        .allSatisfy(
-            embeddingData -> {
-              assertThat(embeddingData.getObject()).isEqualTo(EMBEDDING);
-              assertThat(embeddingData.getEmbedding()).isNotNull();
-              assertThat(embeddingData.getIndex()).isIn(0, 1);
-            });
+        .allSatisfy(embeddingData -> {
+          assertThat(embeddingData.getObject()).isEqualTo(EMBEDDING);
+          assertThat(embeddingData.getEmbedding()).isNotNull();
+          assertThat(embeddingData.getIndex()).isIn(0, 1);
+        });
 
     final var moduleResults = response.getOriginalResponse().getIntermediateResults();
     assertThat(moduleResults).isNotNull();

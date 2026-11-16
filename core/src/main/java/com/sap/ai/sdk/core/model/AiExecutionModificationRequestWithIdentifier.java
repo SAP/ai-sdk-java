@@ -260,9 +260,8 @@ public class AiExecutionModificationRequestWithIdentifier
     sb.append("class AiExecutionModificationRequestWithIdentifier {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    targetStatus: ").append(toIndentedString(targetStatus)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -282,8 +281,8 @@ public class AiExecutionModificationRequestWithIdentifier
    * AiExecutionModificationRequestWithIdentifier} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (targetStatus) ->
+    return id ->
+        targetStatus ->
             new AiExecutionModificationRequestWithIdentifier().id(id).targetStatus(targetStatus);
   }
 

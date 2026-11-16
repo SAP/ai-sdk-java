@@ -146,9 +146,8 @@ public class PipelineId
     final StringBuilder sb = new StringBuilder();
     sb.append("class PipelineId {\n");
     sb.append("    pipelineId: ").append(toIndentedString(pipelineId)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

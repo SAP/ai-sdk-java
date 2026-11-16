@@ -184,9 +184,8 @@ public class BckndResourcePatchNodes
     sb.append("class BckndResourcePatchNodes {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    request: ").append(toIndentedString(request)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -206,7 +205,7 @@ public class BckndResourcePatchNodes
    * BckndResourcePatchNodes} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> (request) -> new BckndResourcePatchNodes().name(name).request(request);
+    return name -> request -> new BckndResourcePatchNodes().name(name).request(request);
   }
 
   /** Builder helper class. */

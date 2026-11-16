@@ -296,9 +296,8 @@ public class GoogleDriveConfig
     sb.append("    resourceType: ").append(toIndentedString(resourceType)).append("\n");
     sb.append("    resourceId: ").append(toIndentedString(resourceId)).append("\n");
     sb.append("    includePaths: ").append(toIndentedString(includePaths)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -318,7 +317,7 @@ public class GoogleDriveConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (resourceType) -> new GoogleDriveConfig().resourceType(resourceType);
+    return resourceType -> new GoogleDriveConfig().resourceType(resourceType);
   }
 
   /** Builder helper class. */

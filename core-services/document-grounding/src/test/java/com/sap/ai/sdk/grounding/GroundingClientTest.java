@@ -56,17 +56,15 @@ class GroundingClientTest {
     assertThat(collections.getResources())
         .isNotNull()
         .hasSize(1)
-        .satisfiesExactly(
-            c -> {
-              assertThat(c).isNotNull();
-              assertThat(c.getId()).isNotNull();
-              assertThat(c.getTitle()).isEqualTo("test-collection");
-              assertThat(c.getEmbeddingConfig()).isNotNull();
-              assertThat(c.getEmbeddingConfig().getModelName()).isEqualTo("text-embedding-ada-999");
-              final var meta =
-                  VectorKeyValueListPair.create().key("purpose").value("grounding test");
-              assertThat(c.getMetadata()).isNotNull().containsExactly(meta);
-            });
+        .satisfiesExactly(c -> {
+          assertThat(c).isNotNull();
+          assertThat(c.getId()).isNotNull();
+          assertThat(c.getTitle()).isEqualTo("test-collection");
+          assertThat(c.getEmbeddingConfig()).isNotNull();
+          assertThat(c.getEmbeddingConfig().getModelName()).isEqualTo("text-embedding-ada-999");
+          final var meta = VectorKeyValueListPair.create().key("purpose").value("grounding test");
+          assertThat(c.getMetadata()).isNotNull().containsExactly(meta);
+        });
 
     final UUID collectionId = collections.getResources().get(0).getId();
     final Documents documents = api.getAllDocuments("resourceGroup", collectionId);
@@ -79,12 +77,11 @@ class GroundingClientTest {
     assertThat(documents.getResources())
         .isNotNull()
         .hasSize(1)
-        .satisfiesExactly(
-            d -> {
-              assertThat(d).isNotNull();
-              assertThat(d.getId()).isNotNull();
-              assertThat(d.getMetadata()).isNotNull().containsExactly(documentMeta);
-            });
+        .satisfiesExactly(d -> {
+          assertThat(d).isNotNull();
+          assertThat(d.getId()).isNotNull();
+          assertThat(d.getMetadata()).isNotNull().containsExactly(documentMeta);
+        });
 
     final UUID documentId = documents.getResources().get(0).getId();
     final DocumentResponse document =
