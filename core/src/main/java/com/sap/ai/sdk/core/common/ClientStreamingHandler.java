@@ -97,6 +97,6 @@ public class ClientStreamingHandler<
         (error != null && error.getMessage() != null)
             ? error.getMessage()
             : "Error, unable to parse http response.";
-    throw exceptionFactory.build(msg).setHttpResponse(response);
+    throw exceptionFactory.build(msg).setHttpResponse(response).setClientError(error);
   }
 }
