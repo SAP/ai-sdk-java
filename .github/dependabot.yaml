@@ -89,7 +89,7 @@ updates:
         patterns:
           - "*"
   - package-ecosystem: github-actions
-    target-branch: v2
+    target-branch: main
     directory: "/"
     schedule:
       interval: monthly
