@@ -67,7 +67,7 @@
     <pmd.version>7.29.0</pmd.version>
     <system-stubs.version>2.1.3</system-stubs.version>
     <surefire.version>3.6.1</surefire.version>
-    <spring-ai.version>2.0.1</spring-ai.version>
+    <spring-ai.version>2.0.2</spring-ai.version>
     <reactor-core.version>3.8.8</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.24.0</mockito.version>
@@ -75,7 +75,7 @@
     <jsonschema-generator.version>5.0.0</jsonschema-generator.version>
     <jackson.version>2.23.0</jackson.version>
     <jackson-annotations.version>2.23</jackson-annotations.version>
-    <jackson3.version>3.2.3</jackson3.version>
+    <jackson3.version>3.3.0</jackson3.version>
     <logback.version>1.6.6</logback.version>
     <commons-codec.version>1.23.0</commons-codec.version>
     <japicmp.version>0.27.0</japicmp.version>
@@ -91,7 +91,7 @@
     <caffeine.version>3.3.1</caffeine.version>
     <errorprone.version>2.52.0</errorprone.version>
     <!-- CVE fixes -->
-    <bouncycastle.version>1.86</bouncycastle.version>
+    <bouncycastle.version>1.87</bouncycastle.version>
     <kotlin.version>2.4.21</kotlin.version>
     <guava.version>33.8.0-jre</guava.version>
     <java-jwt.version>4.6.2</java-jwt.version>
