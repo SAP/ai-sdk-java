@@ -1,9 +1,20 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.foundationmodels.rpt.RptModel.SAP_RPT_1_5;
+import static com.sap.ai.sdk.foundationmodels.rpt.RptModel.SAP_RPT_DECISIONS;
 import static com.sap.ai.sdk.foundationmodels.rpt.generated.model.TargetColumnConfig.TaskTypeEnum.CLASSIFICATION;
 
 import com.sap.ai.sdk.foundationmodels.rpt.RptClient;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.AnswersValue1;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.CriteriaValue;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.Instructions;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.State;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.State1;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.SystemOneChoiceQuestion;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.SystemOneChoiceQuestion.TypeEnum;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.SystemOneExample;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.SystemOneRequest;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.SystemOneResponse;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.ColumnType;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.ExplanationConfig;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayloadOneOf;
@@ -27,6 +38,7 @@ import org.springframework.stereotype.Service;
 public class RptService {
 
   static final RptClient rptClient = RptClient.forModel(SAP_RPT_1_5);
+  static final RptClient decisionsClient = RptClient.forModel(SAP_RPT_DECISIONS);
 
   /**
    * Makes a prediction request to the RPT model. *
@@ -117,5 +129,60 @@ public class RptService {
     } catch (final URISyntaxException e) {
       throw new IllegalArgumentException("Failed to load Parquet file for prediction", e);
     }
+  }
+
+  /**
+   * Assigns a cost center to an order using labeled examples of previous orders.
+   *
+   * @return the decision response containing the predicted cost center.
+   */
+  @Nonnull
+  public SystemOneResponse decision() {
+    return decisionsClient.decision(
+        SystemOneRequest.create()
+            .state(
+                State1.createInnerMapOfStringAndObject(
+                    Map.of(
+                        "PRODUCT", "Couch",
+                        "PRICE", BigDecimal.valueOf(999.99),
+                        "ORDERDATE", "2025-11-28",
+                        "ID", "35")))
+            .questions(
+                Map.of(
+                    "COSTCENTER",
+                    SystemOneChoiceQuestion.create()
+                        .type(TypeEnum.CHOICE)
+                        .instructions(
+                            Instructions.create(
+                                "Which cost center should this order be assigned to?"))
+                        .criteria(
+                            Map.of(
+                                "Office Furniture",
+                                CriteriaValue.create(
+                                    "Furniture for offices and shared workspaces, such as chairs,"
+                                        + " desks, and couches."),
+                                "Data Infrastructure",
+                                CriteriaValue.create(
+                                    "Equipment for data centers and IT infrastructure, such as"
+                                        + " servers and server racks.")))))
+            .examples(
+                SystemOneExample.create()
+                    .state(
+                        State.createInnerMapOfStringAndObject(
+                            Map.of(
+                                "PRODUCT", "Office Chair",
+                                "PRICE", BigDecimal.valueOf(150.8),
+                                "ORDERDATE", "2025-11-02",
+                                "ID", "44")))
+                    .answers(Map.of("COSTCENTER", AnswersValue1.create("Office Furniture"))),
+                SystemOneExample.create()
+                    .state(
+                        State.createInnerMapOfStringAndObject(
+                            Map.of(
+                                "PRODUCT", "Server Rack",
+                                "PRICE", BigDecimal.valueOf(2200.00),
+                                "ORDERDATE", "2025-11-01",
+                                "ID", "104")))
+                    .answers(Map.of("COSTCENTER", AnswersValue1.create("Data Infrastructure")))));
   }
 }
