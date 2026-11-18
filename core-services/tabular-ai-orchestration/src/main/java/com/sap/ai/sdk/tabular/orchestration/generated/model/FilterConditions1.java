@@ -194,7 +194,7 @@ public class FilterConditions1
   /**
    * Set the value of this {@link FilterConditions1} instance and return the same instance.
    *
-   * @param value The value of this {@link FilterConditions1}
+   * @param value Value to compare against
    * @return The same instance of this {@link FilterConditions1} class
    */
   @Nonnull
@@ -204,7 +204,7 @@ public class FilterConditions1
   }
 
   /**
-   * Get value
+   * Value to compare against
    *
    * @return value The value of this {@link FilterConditions1} instance.
    */
@@ -216,7 +216,7 @@ public class FilterConditions1
   /**
    * Set the value of this {@link FilterConditions1} instance.
    *
-   * @param value The value of this {@link FilterConditions1}
+   * @param value Value to compare against
    */
   public void setValue(@Nullable final Object value) {
     this.value = value;
@@ -406,7 +406,7 @@ public class FilterConditions1
     /**
      * Set the value of this {@link FilterConditions1} instance.
      *
-     * @param value The value of this {@link FilterConditions1}
+     * @param value Value to compare against
      * @return The FilterConditions1 instance.
      */
     FilterConditions1 value(@Nullable final Object value);

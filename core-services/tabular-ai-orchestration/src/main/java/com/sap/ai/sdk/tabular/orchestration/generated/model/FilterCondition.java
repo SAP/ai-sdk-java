@@ -108,7 +108,7 @@ public class FilterCondition
   /**
    * Set the value of this {@link FilterCondition} instance and return the same instance.
    *
-   * @param value The value of this {@link FilterCondition}
+   * @param value Value to compare against
    * @return The same instance of this {@link FilterCondition} class
    */
   @Nonnull
@@ -118,7 +118,7 @@ public class FilterCondition
   }
 
   /**
-   * Get value
+   * Value to compare against
    *
    * @return value The value of this {@link FilterCondition} instance.
    */
@@ -130,7 +130,7 @@ public class FilterCondition
   /**
    * Set the value of this {@link FilterCondition} instance.
    *
-   * @param value The value of this {@link FilterCondition}
+   * @param value Value to compare against
    */
   public void setValue(@Nullable final Object value) {
     this.value = value;
@@ -272,7 +272,7 @@ public class FilterCondition
     /**
      * Set the value of this {@link FilterCondition} instance.
      *
-     * @param value The value of this {@link FilterCondition}
+     * @param value Value to compare against
      * @return The FilterCondition instance.
      */
     FilterCondition value(@Nullable final Object value);

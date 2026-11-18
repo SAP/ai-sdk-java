@@ -117,7 +117,7 @@ public class ConditionsInner
   /**
    * Set the value of this {@link ConditionsInner} instance and return the same instance.
    *
-   * @param value The value of this {@link ConditionsInner}
+   * @param value Value to compare against
    * @return The same instance of this {@link ConditionsInner} class
    */
   @Nonnull
@@ -127,7 +127,7 @@ public class ConditionsInner
   }
 
   /**
-   * Get value
+   * Value to compare against
    *
    * @return value The value of this {@link ConditionsInner} instance.
    */
@@ -139,7 +139,7 @@ public class ConditionsInner
   /**
    * Set the value of this {@link ConditionsInner} instance.
    *
-   * @param value The value of this {@link ConditionsInner}
+   * @param value Value to compare against
    */
   public void setValue(@Nullable final Object value) {
     this.value = value;
@@ -374,7 +374,7 @@ public class ConditionsInner
     /**
      * Set the value of this {@link ConditionsInner} instance.
      *
-     * @param value The value of this {@link ConditionsInner}
+     * @param value Value to compare against
      * @return The ConditionsInner builder.
      */
     Builder3 value(@Nullable final Object value);

@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Tabular AI Orchestration
-  version: 1.9.1
+  version: 1.11.2
   description: The Tabular AI Orchestration service acts as the unified tabular inference
     layer for the AI Core platform, exposing a single prediction endpoint that handles
     request validation, context selection, and Tabular Foundation Model interface
@@ -19,9 +19,51 @@ paths:
       tags:
         - Predict
       summary: Make predictions using a Tabular Foundation Model
-      description: "Make predictions for tabular data using a deployed Tabular Foundation\
-        \ Model.\n\n    Required Headers:\n    - ai-resource-group: AI Core resource\
-        \ group identifier"
+      description: "Make predictions with a supported Tabular Foundation Model using\
+        \ rows or columns.\n\n    **TabPFN**\n\n    Select modelName: tabpfn-3.5-plus.\
+        \ TabPFN supports exactly one target column per request. Set the target\n\
+        \    task_type to classification or regression; the default is classification.\
+        \ Supply labelled training rows through\n    contextRows/contextColumns, labelled\
+        \ query rows, or context selection. At least one labelled training row and\n\
+        \    one query row containing the prediction placeholder are required. Regression\
+        \ training targets must be numeric.\n    Classification training targets must\
+        \ not be null or empty; entirely numeric targets are rejected by this\n  \
+        \  orchestrator's classification preprocessing.\n\n    **Response format**\n\
+        \n    responseFormat defaults to native, which returns the model-native response.\
+        \ Select harmonized\n    for the common response schema. The legacy spelling\
+        \ harmonised is also accepted and normalized to harmonized.\n    For TabPFN,\
+        \ native responses contain metadata, prediction, usage, and optionally model_id.\
+        \ Harmonized responses\n    contain id, modelName, metadata, predictions,\
+        \ and explanations. TabPFN currently returns null for id and\n    explanations\
+        \ in harmonized responses.\n\n    **Output types**\n\n    Set modelConfig.task_config.predict_params.output_type.\
+        \ Native classification supports probas,\n    preds, and top_k. Harmonized\
+        \ classification supports top_k only. Native regression supports mean, median,\
+        \ mode,\n    quantiles, full, and main. Harmonized regression supports main,\
+        \ mean, median, and mode. When neither the request\n    nor deployment defaults\
+        \ supply output_type, native classification defaults to probas and native\
+        \ regression to\n    mean; harmonized classification defaults to top_k and\
+        \ harmonized regression to main. Omit output_type to use\n    these defaults.\
+        \ For harmonized regression, main uses the model's mean and the first and\
+        \ last quantile arrays as\n    confidenceInterval (10th and 90th percentiles\
+        \ with the model's default quantiles). mean, median, and mode return\n   \
+        \ the selected statistic without confidenceInterval. They do not trigger a\
+        \ second inference request for intervals.\n\n    **Configuration**\n\n   \
+        \ TabPFN configuration is passed under modelConfig.task_config.tabpfn_config\
+        \ and\n    modelConfig.task_config.predict_params. Do not send RPT-only options\
+        \ such as data_schema, parse_data_types, or\n    context_mode. balance_probabilities\
+        \ is classification-only. Set predictionConfig.targetColumns[].top_k for\n\
+        \    classification; an explicit modelConfig.task_config.predict_params.top_k\
+        \ takes precedence. When neither is set,\n    top_k defaults to 1. modelConfig.index_column\
+        \ identifies a column to exclude from model features; it is not\n    forwarded\
+        \ to TabPFN.\n\n    **Data format**\n\n    Use either rows with contextRows,\
+        \ or columns with contextColumns. Query and supplied context data\n    must\
+        \ have the same column names. Target-column keys task_type, prediction_placeholder,\
+        \ and top_k also accept the\n    camelCase aliases taskType, predictionPlaceholder,\
+        \ and topK. Use contextSelectionConfig.strategy: none when all\n    training\
+        \ context is supplied in the request.\n\n    Required header: ai-resource-group.\
+        \ Authenticate with OAuth2 through the SAP AI Core deployment endpoint. The\n\
+        \    request and response examples use synthetic data and illustrative predictions;\
+        \ they are not accuracy guarantees."
       operationId: predict.v1.predict_endpoints.predict
       parameters:
         - name: ai-resource-group
@@ -38,13 +80,1075 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/PredictRequest'
+            examples:
+              rptExisting:
+                summary: Existing RPT example
+                value:
+                  modelName: sap-rpt-1.5
+                  scenarioConfigName: sample_scenario_config
+                  contextSelectionConfig:
+                    strategy: random
+                  predictionConfig:
+                    targetColumns:
+                      - name: division
+                        predictionPlaceholder: '[PREDICT]'
+                        taskType: classification
+                  modelConfig:
+                    __notes__: This is a sample sap-rpt-1.5 modelConfig
+                    index_column: code
+                    data_schema:
+                      __notes__: 'Available dtyes are: string, numeric, or date.'
+                      baseUnitOfMeasureCode:
+                        dtype: string
+                      catalogVersion:
+                        dtype: string
+                      catalogId:
+                        dtype: string
+                      division:
+                        dtype: string
+                      gtin:
+                        dtype: string
+                      code:
+                        dtype: string
+                      keywords:
+                        dtype: string
+                      manufacturerAID:
+                        dtype: string
+                      manufacturerName:
+                        dtype: string
+                      name:
+                        dtype: string
+                      summary:
+                        dtype: string
+                      superCategories:
+                        dtype: string
+                      price:
+                        dtype: numeric
+                      currency:
+                        dtype: string
+                      userPriceGroup:
+                        dtype: string
+                      minQuantity:
+                        dtype: numeric
+                      baseUnitOfMeasure:
+                        dtype: string
+                      priceStartDate:
+                        dtype: date
+                      priceEndDate:
+                        dtype: date
+                    prediction_config:
+                      explanations:
+                        top_column_scores: 3
+                        top_relevant_context_rows: 2
+                  columns:
+                    baseUnitOfMeasureCode:
+                      - EA
+                    catalogVersion:
+                      - Draft
+                    catalogId:
+                      - default-source-catalog
+                    division:
+                      - '[PREDICT]'
+                    gtin:
+                      - ''
+                    code:
+                      - BK-211-M
+                    keywords:
+                      - cycling,gloves,hands,grip,protection,comfort
+                    manufacturerAID:
+                      - ACC-CSPW
+                    manufacturerName:
+                      - Ritchey
+                    name:
+                      - BK Cycling Gloves - Size Medium
+                    summary:
+                      - Treat your hands to a comfortable pair of cycling gloves. Size
+                        medium.
+                    superCategories:
+                      - all-products:Draft:sample-b2c-usSalesCatalog,gear:Draft:sample-b2c-usSalesCatalog,weight-dimensions:Draft:sample-b2c-usSalesCatalog,all-products:Draft:sample-b2c-usSalesCatalog,gear:Draft:sample-b2c-usSalesCatalog,weight-dimensions:Draft:sample-b2c-usSalesCatalog,all-products:Draft:sample-b2c-usSalesCatalog,gear:Draft:sample-b2c-usSalesCatalog,weight-dimensions:Draft:sample-b2c-usSalesCatalog
+                    price:
+                      - 21.1
+                    currency:
+                      - USD
+                    userPriceGroup:
+                      - ''
+                    minQuantity:
+                      - 1
+                    baseUnitOfMeasure:
+                      - EA
+                    priceStartDate:
+                      - 08-08-2025
+                    priceEndDate:
+                      - 31-12-2099
+              tabpfnRegressionHarmonizedMain:
+                summary: Regression / harmonized / main
+                value:
+                  modelName: tabpfn-3.5-plus
+                  responseFormat: harmonized
+                  contextSelectionConfig:
+                    strategy: none
+                  predictionConfig:
+                    targetColumns:
+                      - name: target
+                        task_type: regression
+                  modelConfig:
+                    task_config:
+                      tabpfn_config:
+                        n_estimators: 1
+                      predict_params:
+                        output_type: main
+                  columns:
+                    feature1:
+                      - 2.5
+                      - 8.5
+                    feature2:
+                      - 1.0
+                      - 2.0
+                    target:
+                      - '[PREDICT]'
+                      - '[PREDICT]'
+                  contextColumns:
+                    feature1:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 3.0
+                      - 4.0
+                      - 5.0
+                      - 6.0
+                      - 7.0
+                      - 8.0
+                      - 9.0
+                      - 10.0
+                      - 11.0
+                    feature2:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                    target:
+                      - 0.0
+                      - 3.0
+                      - 6.0
+                      - 6.0
+                      - 9.0
+                      - 12.0
+                      - 12.0
+                      - 15.0
+                      - 18.0
+                      - 18.0
+                      - 21.0
+                      - 24.0
+              tabpfnRegressionHarmonizedMean:
+                summary: Regression / harmonized / mean
+                value:
+                  modelName: tabpfn-3.5-plus
+                  responseFormat: harmonized
+                  contextSelectionConfig:
+                    strategy: none
+                  predictionConfig:
+                    targetColumns:
+                      - name: target
+                        task_type: regression
+                  modelConfig:
+                    task_config:
+                      tabpfn_config:
+                        n_estimators: 1
+                      predict_params:
+                        output_type: mean
+                  columns:
+                    feature1:
+                      - 2.5
+                      - 8.5
+                    feature2:
+                      - 1.0
+                      - 2.0
+                    target:
+                      - '[PREDICT]'
+                      - '[PREDICT]'
+                  contextColumns:
+                    feature1:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 3.0
+                      - 4.0
+                      - 5.0
+                      - 6.0
+                      - 7.0
+                      - 8.0
+                      - 9.0
+                      - 10.0
+                      - 11.0
+                    feature2:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                    target:
+                      - 0.0
+                      - 3.0
+                      - 6.0
+                      - 6.0
+                      - 9.0
+                      - 12.0
+                      - 12.0
+                      - 15.0
+                      - 18.0
+                      - 18.0
+                      - 21.0
+                      - 24.0
+              tabpfnRegressionHarmonizedMedian:
+                summary: Regression / harmonized / median
+                value:
+                  modelName: tabpfn-3.5-plus
+                  responseFormat: harmonized
+                  contextSelectionConfig:
+                    strategy: none
+                  predictionConfig:
+                    targetColumns:
+                      - name: target
+                        task_type: regression
+                  modelConfig:
+                    task_config:
+                      tabpfn_config:
+                        n_estimators: 1
+                      predict_params:
+                        output_type: median
+                  columns:
+                    feature1:
+                      - 2.5
+                      - 8.5
+                    feature2:
+                      - 1.0
+                      - 2.0
+                    target:
+                      - '[PREDICT]'
+                      - '[PREDICT]'
+                  contextColumns:
+                    feature1:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 3.0
+                      - 4.0
+                      - 5.0
+                      - 6.0
+                      - 7.0
+                      - 8.0
+                      - 9.0
+                      - 10.0
+                      - 11.0
+                    feature2:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                    target:
+                      - 0.0
+                      - 3.0
+                      - 6.0
+                      - 6.0
+                      - 9.0
+                      - 12.0
+                      - 12.0
+                      - 15.0
+                      - 18.0
+                      - 18.0
+                      - 21.0
+                      - 24.0
+              tabpfnRegressionHarmonizedMode:
+                summary: Regression / harmonized / mode
+                value:
+                  modelName: tabpfn-3.5-plus
+                  responseFormat: harmonized
+                  contextSelectionConfig:
+                    strategy: none
+                  predictionConfig:
+                    targetColumns:
+                      - name: target
+                        task_type: regression
+                  modelConfig:
+                    task_config:
+                      tabpfn_config:
+                        n_estimators: 1
+                      predict_params:
+                        output_type: mode
+                  columns:
+                    feature1:
+                      - 2.5
+                      - 8.5
+                    feature2:
+                      - 1.0
+                      - 2.0
+                    target:
+                      - '[PREDICT]'
+                      - '[PREDICT]'
+                  contextColumns:
+                    feature1:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 3.0
+                      - 4.0
+                      - 5.0
+                      - 6.0
+                      - 7.0
+                      - 8.0
+                      - 9.0
+                      - 10.0
+                      - 11.0
+                    feature2:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                    target:
+                      - 0.0
+                      - 3.0
+                      - 6.0
+                      - 6.0
+                      - 9.0
+                      - 12.0
+                      - 12.0
+                      - 15.0
+                      - 18.0
+                      - 18.0
+                      - 21.0
+                      - 24.0
+              tabpfnClassificationHarmonizedTopK:
+                summary: Classification / harmonized / top_k
+                value:
+                  modelName: tabpfn-3.5-plus
+                  responseFormat: harmonized
+                  contextSelectionConfig:
+                    strategy: none
+                  predictionConfig:
+                    targetColumns:
+                      - name: category
+                        task_type: classification
+                        top_k: 2
+                  modelConfig:
+                    task_config:
+                      predict_params:
+                        output_type: top_k
+                  columns:
+                    feature1:
+                      - 1.5
+                      - 3.5
+                    feature2:
+                      - 0.0
+                      - 1.0
+                    category:
+                      - '[PREDICT]'
+                      - '[PREDICT]'
+                  contextColumns:
+                    feature1:
+                      - 1.0
+                      - 2.0
+                      - 3.0
+                      - 4.0
+                    feature2:
+                      - 0.0
+                      - 0.0
+                      - 1.0
+                      - 1.0
+                    category:
+                      - Cat
+                      - Cat
+                      - Dog
+                      - Dog
+              tabpfnRegressionNativeMain:
+                summary: Regression / native / main
+                value:
+                  modelName: tabpfn-3.5-plus
+                  responseFormat: native
+                  contextSelectionConfig:
+                    strategy: none
+                  predictionConfig:
+                    targetColumns:
+                      - name: target
+                        task_type: regression
+                  modelConfig:
+                    task_config:
+                      tabpfn_config:
+                        n_estimators: 1
+                      predict_params:
+                        output_type: main
+                  columns:
+                    feature1:
+                      - 2.5
+                      - 8.5
+                    feature2:
+                      - 1.0
+                      - 2.0
+                    target:
+                      - '[PREDICT]'
+                      - '[PREDICT]'
+                  contextColumns:
+                    feature1:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 3.0
+                      - 4.0
+                      - 5.0
+                      - 6.0
+                      - 7.0
+                      - 8.0
+                      - 9.0
+                      - 10.0
+                      - 11.0
+                    feature2:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                    target:
+                      - 0.0
+                      - 3.0
+                      - 6.0
+                      - 6.0
+                      - 9.0
+                      - 12.0
+                      - 12.0
+                      - 15.0
+                      - 18.0
+                      - 18.0
+                      - 21.0
+                      - 24.0
+              tabpfnRegressionNativeMean:
+                summary: Regression / native / mean
+                value:
+                  modelName: tabpfn-3.5-plus
+                  responseFormat: native
+                  contextSelectionConfig:
+                    strategy: none
+                  predictionConfig:
+                    targetColumns:
+                      - name: target
+                        task_type: regression
+                  modelConfig:
+                    task_config:
+                      tabpfn_config:
+                        n_estimators: 1
+                      predict_params:
+                        output_type: mean
+                  columns:
+                    feature1:
+                      - 2.5
+                      - 8.5
+                    feature2:
+                      - 1.0
+                      - 2.0
+                    target:
+                      - '[PREDICT]'
+                      - '[PREDICT]'
+                  contextColumns:
+                    feature1:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 3.0
+                      - 4.0
+                      - 5.0
+                      - 6.0
+                      - 7.0
+                      - 8.0
+                      - 9.0
+                      - 10.0
+                      - 11.0
+                    feature2:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                    target:
+                      - 0.0
+                      - 3.0
+                      - 6.0
+                      - 6.0
+                      - 9.0
+                      - 12.0
+                      - 12.0
+                      - 15.0
+                      - 18.0
+                      - 18.0
+                      - 21.0
+                      - 24.0
+              tabpfnRegressionNativeMedian:
+                summary: Regression / native / median
+                value:
+                  modelName: tabpfn-3.5-plus
+                  responseFormat: native
+                  contextSelectionConfig:
+                    strategy: none
+                  predictionConfig:
+                    targetColumns:
+                      - name: target
+                        task_type: regression
+                  modelConfig:
+                    task_config:
+                      tabpfn_config:
+                        n_estimators: 1
+                      predict_params:
+                        output_type: median
+                  columns:
+                    feature1:
+                      - 2.5
+                      - 8.5
+                    feature2:
+                      - 1.0
+                      - 2.0
+                    target:
+                      - '[PREDICT]'
+                      - '[PREDICT]'
+                  contextColumns:
+                    feature1:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 3.0
+                      - 4.0
+                      - 5.0
+                      - 6.0
+                      - 7.0
+                      - 8.0
+                      - 9.0
+                      - 10.0
+                      - 11.0
+                    feature2:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                    target:
+                      - 0.0
+                      - 3.0
+                      - 6.0
+                      - 6.0
+                      - 9.0
+                      - 12.0
+                      - 12.0
+                      - 15.0
+                      - 18.0
+                      - 18.0
+                      - 21.0
+                      - 24.0
+              tabpfnRegressionNativeMode:
+                summary: Regression / native / mode
+                value:
+                  modelName: tabpfn-3.5-plus
+                  responseFormat: native
+                  contextSelectionConfig:
+                    strategy: none
+                  predictionConfig:
+                    targetColumns:
+                      - name: target
+                        task_type: regression
+                  modelConfig:
+                    task_config:
+                      tabpfn_config:
+                        n_estimators: 1
+                      predict_params:
+                        output_type: mode
+                  columns:
+                    feature1:
+                      - 2.5
+                      - 8.5
+                    feature2:
+                      - 1.0
+                      - 2.0
+                    target:
+                      - '[PREDICT]'
+                      - '[PREDICT]'
+                  contextColumns:
+                    feature1:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 3.0
+                      - 4.0
+                      - 5.0
+                      - 6.0
+                      - 7.0
+                      - 8.0
+                      - 9.0
+                      - 10.0
+                      - 11.0
+                    feature2:
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                      - 0.0
+                      - 1.0
+                      - 2.0
+                    target:
+                      - 0.0
+                      - 3.0
+                      - 6.0
+                      - 6.0
+                      - 9.0
+                      - 12.0
+                      - 12.0
+                      - 15.0
+                      - 18.0
+                      - 18.0
+                      - 21.0
+                      - 24.0
+              tabpfnClassificationNativeTopK:
+                summary: Classification / native / top_k
+                value:
+                  modelName: tabpfn-3.5-plus
+                  responseFormat: native
+                  contextSelectionConfig:
+                    strategy: none
+                  predictionConfig:
+                    targetColumns:
+                      - name: category
+                        task_type: classification
+                        top_k: 2
+                  modelConfig:
+                    task_config:
+                      predict_params:
+                        output_type: top_k
+                  columns:
+                    feature1:
+                      - 1.5
+                      - 3.5
+                    feature2:
+                      - 0.0
+                      - 1.0
+                    category:
+                      - '[PREDICT]'
+                      - '[PREDICT]'
+                  contextColumns:
+                    feature1:
+                      - 1.0
+                      - 2.0
+                      - 3.0
+                      - 4.0
+                    feature2:
+                      - 0.0
+                      - 0.0
+                      - 1.0
+                      - 1.0
+                    category:
+                      - Cat
+                      - Cat
+                      - Dog
+                      - Dog
       responses:
         '200':
-          description: Successful Response
+          description: Prediction response selected by responseFormat. Native TabPFN
+            uses TabPFN3p5plusResponse; native RPT uses its corresponding RPT schema.
+            Harmonized uses PredictResponse.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PredictResponse'
+                anyOf:
+                  - $ref: '#/components/schemas/PredictResponse'
+                  - $ref: '#/components/schemas/RPT1Response'
+                  - $ref: '#/components/schemas/RPT1P5Response'
+                  - $ref: '#/components/schemas/RPT1P6Response'
+                  - $ref: '#/components/schemas/TabPFN3p5plusResponse'
+                title: Response Predict.V1.Predict Endpoints.Predict
+              examples:
+                tabpfnRegressionHarmonizedMain:
+                  summary: Regression / harmonized / main (illustrative)
+                  value:
+                    id: null
+                    modelName: tabpfn-3.5-plus
+                    metadata:
+                      numColumns: 3
+                      numTargetColumns: 1
+                      numRows: 14
+                      numQueryRows: 2
+                      numPredictions: 2
+                    predictions:
+                      - target:
+                          - prediction: 5.797427177429199
+                            confidenceInterval:
+                              - 5.182552814483643
+                              - 6.271775245666504
+                      - target:
+                          - prediction: 18.615245819091797
+                            confidenceInterval:
+                              - 18.092172622680664
+                              - 19.247833251953125
+                    explanations: null
+                tabpfnRegressionHarmonizedMean:
+                  summary: Regression / harmonized / mean (illustrative)
+                  value:
+                    id: null
+                    modelName: tabpfn-3.5-plus
+                    metadata:
+                      numColumns: 3
+                      numTargetColumns: 1
+                      numRows: 14
+                      numQueryRows: 2
+                      numPredictions: 2
+                    predictions:
+                      - target:
+                          - prediction: 5.797427177429199
+                      - target:
+                          - prediction: 18.615245819091797
+                    explanations: null
+                tabpfnRegressionHarmonizedMedian:
+                  summary: Regression / harmonized / median (illustrative)
+                  value:
+                    id: null
+                    modelName: tabpfn-3.5-plus
+                    metadata:
+                      numColumns: 3
+                      numTargetColumns: 1
+                      numRows: 14
+                      numQueryRows: 2
+                      numPredictions: 2
+                    predictions:
+                      - target:
+                          - prediction: 5.904270172119141
+                      - target:
+                          - prediction: 18.576749801635742
+                    explanations: null
+                tabpfnRegressionHarmonizedMode:
+                  summary: Regression / harmonized / mode (illustrative)
+                  value:
+                    id: null
+                    modelName: tabpfn-3.5-plus
+                    metadata:
+                      numColumns: 3
+                      numTargetColumns: 1
+                      numRows: 14
+                      numQueryRows: 2
+                      numPredictions: 2
+                    predictions:
+                      - target:
+                          - prediction: 5.998343467712402
+                      - target:
+                          - prediction: 18.232086181640625
+                    explanations: null
+                tabpfnClassificationHarmonizedTopK:
+                  summary: Classification / harmonized / top_k (illustrative)
+                  value:
+                    id: null
+                    modelName: tabpfn-3.5-plus
+                    metadata:
+                      numColumns: 3
+                      numTargetColumns: 1
+                      numRows: 6
+                      numQueryRows: 2
+                      numPredictions: 2
+                    predictions:
+                      - category:
+                          - prediction: Cat
+                            confidence: 0.8
+                          - prediction: Dog
+                            confidence: 0.2
+                      - category:
+                          - prediction: Dog
+                            confidence: 0.9
+                          - prediction: Cat
+                            confidence: 0.1
+                    explanations: null
+                tabpfnRegressionNativeMain:
+                  summary: Regression / native / main (illustrative)
+                  value:
+                    metadata:
+                      task: regression
+                      test_set_num_cols: 2
+                      test_set_num_rows: 2
+                      n_estimators: 1
+                      classes: null
+                      top_k: null
+                      tabpfn_config:
+                        average_before_softmax: false
+                        categorical_features_indices: []
+                        fit_mode: fit_preprocessors
+                        ignore_pretraining_limits: true
+                        inference_config: null
+                        inference_precision: auto
+                        memory_saving_mode: false
+                        n_estimators: 1
+                        n_preprocessing_jobs: 4
+                        random_state: 0
+                        softmax_temperature: null
+                    model_id: null
+                    prediction:
+                      mean:
+                        - 5.797427177429199
+                        - 18.615245819091797
+                      median:
+                        - 5.904270172119141
+                        - 18.576749801635742
+                      mode:
+                        - 5.998343467712402
+                        - 18.232086181640625
+                      quantiles:
+                        - - 5.182552814483643
+                          - 18.092172622680664
+                        - - 5.486508846282959
+                          - 18.216461181640625
+                        - - 5.655404090881348
+                          - 18.31843376159668
+                        - - 5.791805267333984
+                          - 18.439559936523438
+                        - - 5.904270172119141
+                          - 18.576749801635742
+                        - - 5.9727349281311035
+                          - 18.72661018371582
+                        - - 6.0309247970581055
+                          - 18.8501033782959
+                        - - 6.104699611663818
+                          - 18.99350929260254
+                        - - 6.271775245666504
+                          - 19.247833251953125
+                    usage:
+                      X_test:
+                        num_cells: 4
+                        num_cols: 2
+                        num_rows: 2
+                      X_train:
+                        num_cells: 24
+                        num_cols: 2
+                        num_rows: 12
+                      y_train:
+                        num_cells: 12
+                        num_cols: 1
+                        num_rows: 12
+                      n_estimators: 1
+                      num_cells: 40
+                      num_predictions: 2
+                tabpfnRegressionNativeMean:
+                  summary: Regression / native / mean (illustrative)
+                  value:
+                    metadata:
+                      task: regression
+                      test_set_num_cols: 2
+                      test_set_num_rows: 2
+                      n_estimators: 1
+                      classes: null
+                      top_k: null
+                      tabpfn_config:
+                        average_before_softmax: false
+                        categorical_features_indices: []
+                        fit_mode: fit_preprocessors
+                        ignore_pretraining_limits: true
+                        inference_config: null
+                        inference_precision: auto
+                        memory_saving_mode: false
+                        n_estimators: 1
+                        n_preprocessing_jobs: 4
+                        random_state: 0
+                        softmax_temperature: null
+                    model_id: null
+                    prediction:
+                      - 5.797427177429199
+                      - 18.615245819091797
+                    usage:
+                      X_test:
+                        num_cells: 4
+                        num_cols: 2
+                        num_rows: 2
+                      X_train:
+                        num_cells: 24
+                        num_cols: 2
+                        num_rows: 12
+                      y_train:
+                        num_cells: 12
+                        num_cols: 1
+                        num_rows: 12
+                      n_estimators: 1
+                      num_cells: 40
+                      num_predictions: 2
+                tabpfnRegressionNativeMedian:
+                  summary: Regression / native / median (illustrative)
+                  value:
+                    metadata:
+                      task: regression
+                      test_set_num_cols: 2
+                      test_set_num_rows: 2
+                      n_estimators: 1
+                      classes: null
+                      top_k: null
+                      tabpfn_config:
+                        average_before_softmax: false
+                        categorical_features_indices: []
+                        fit_mode: fit_preprocessors
+                        ignore_pretraining_limits: true
+                        inference_config: null
+                        inference_precision: auto
+                        memory_saving_mode: false
+                        n_estimators: 1
+                        n_preprocessing_jobs: 4
+                        random_state: 0
+                        softmax_temperature: null
+                    model_id: null
+                    prediction:
+                      - 5.904270172119141
+                      - 18.576749801635742
+                    usage:
+                      X_test:
+                        num_cells: 4
+                        num_cols: 2
+                        num_rows: 2
+                      X_train:
+                        num_cells: 24
+                        num_cols: 2
+                        num_rows: 12
+                      y_train:
+                        num_cells: 12
+                        num_cols: 1
+                        num_rows: 12
+                      n_estimators: 1
+                      num_cells: 40
+                      num_predictions: 2
+                tabpfnRegressionNativeMode:
+                  summary: Regression / native / mode (illustrative)
+                  value:
+                    metadata:
+                      task: regression
+                      test_set_num_cols: 2
+                      test_set_num_rows: 2
+                      n_estimators: 1
+                      classes: null
+                      top_k: null
+                      tabpfn_config:
+                        average_before_softmax: false
+                        categorical_features_indices: []
+                        fit_mode: fit_preprocessors
+                        ignore_pretraining_limits: true
+                        inference_config: null
+                        inference_precision: auto
+                        memory_saving_mode: false
+                        n_estimators: 1
+                        n_preprocessing_jobs: 4
+                        random_state: 0
+                        softmax_temperature: null
+                    model_id: null
+                    prediction:
+                      - 5.998343467712402
+                      - 18.232086181640625
+                    usage:
+                      X_test:
+                        num_cells: 4
+                        num_cols: 2
+                        num_rows: 2
+                      X_train:
+                        num_cells: 24
+                        num_cols: 2
+                        num_rows: 12
+                      y_train:
+                        num_cells: 12
+                        num_cols: 1
+                        num_rows: 12
+                      n_estimators: 1
+                      num_cells: 40
+                      num_predictions: 2
+                tabpfnClassificationNativeTopK:
+                  summary: Classification / native / top_k (illustrative)
+                  value:
+                    metadata:
+                      task: classification
+                      test_set_num_cols: 2
+                      test_set_num_rows: 2
+                      n_estimators: 8
+                      tabpfn_config: {}
+                      classes: null
+                      top_k: 2
+                    model_id: null
+                    prediction:
+                      classes:
+                        - Cat
+                        - Dog
+                      probabilities:
+                        - - 0.8
+                          - 0.2
+                        - - 0.9
+                          - 0.1
+                      values:
+                        - - 0
+                          - 1
+                        - - 1
+                          - 0
+                    usage:
+                      X_test:
+                        num_cells: 4
+                        num_cols: 2
+                        num_rows: 2
+                      X_train:
+                        num_cells: 8
+                        num_cols: 2
+                        num_rows: 4
+                      y_train:
+                        num_cells: 4
+                        num_cols: 1
+                        num_rows: 4
+                      n_estimators: 8
+                      num_cells: 16
+                      num_predictions: 2
         '400':
           description: Invalid request data
         '401':
@@ -64,13 +1168,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
       security:
-        - Oauth2: [ ]
+        - Oauth2: []
       x-sap-cloud-sdk-operation-name: predict
 components:
   schemas:
     ColumnarData:
       additionalProperties:
-        items: { }
+        items: {}
         type: array
       type: object
       title: ColumnarData
@@ -98,10 +1202,10 @@ components:
           description: Sampling strategy for context selection.
           default: random
         strategyConfig:
-          anyOf:
+          oneOf:
+            - $ref: '#/components/schemas/SamplingNoneConfig'
             - $ref: '#/components/schemas/SamplingRandomConfig'
             - $ref: '#/components/schemas/SamplingHeuristicConfig'
-            - $ref: '#/components/schemas/SamplingNoneConfig'
           title: Strategyconfig
           description: Strategy-specific configuration parameters.
         filterConditions:
@@ -112,6 +1216,8 @@ components:
           description: Filter conditions for context selection
           nullable: true
       type: object
+      required:
+        - strategyConfig
       title: ContextSelectionConfig
       description: Configuration for context selection.
     ContextSelectionStrategyEnum:
@@ -172,6 +1278,11 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ModelConfig:
+      properties: {}
+      additionalProperties: true
+      type: object
+      title: ModelConfig
     ModelRpt1:
       properties:
         index_column:
@@ -334,37 +1445,40 @@ components:
       additionalProperties: true
       type: object
       title: ModelRpt1_6PredictionConfig
-    PredictMetadata:
+    ModelTabPfn:
       properties:
-        num_columns:
-          type: integer
-          title: Num Columns
-        num_rows:
-          type: integer
-          title: Num Rows
-        num_predictions:
-          type: integer
-          title: Num Predictions
-        num_query_rows:
-          type: integer
-          title: Num Query Rows
+        task_config:
+          $ref: '#/components/schemas/TabpfnTaskConfig'
+          description: (Optional) TabPFN task configuration.
+        index_column:
+          type: string
+          description: Optional query/context column to exclude from model features.
+            The column must exist. It is consumed by the orchestrator and is not sent
+            to TabPFN.
+      additionalProperties: true
       type: object
-      required:
-        - num_columns
-        - num_rows
-        - num_predictions
-        - num_query_rows
-      title: PredictMetadata
-      description: Metadata about the prediction.
+      title: ModelTabPfn
+      description: 'Model-specific options for tabpfn-3.5-plus. Configure task_config.tabpfn_config
+        and task_config.predict_params.
+
+        The orchestrator derives the task and training/test arrays from predictionConfig
+        and rows/columns. index_column
+
+        is an optional top-level modelConfig field consumed by the orchestrator and
+        excluded from TabPFN features and
+
+        payloads. Unsupported RPT options are rejected.'
     PredictRequest:
       properties:
         modelName:
           $ref: '#/components/schemas/TFMEnum'
           description: Name of the deployed model
         scenarioConfigName:
-          type: string
           title: Scenarioconfigname
-          description: Scenario configuration identifier
+          description: Scenario configuration identifier. Required to retrieve TabularArtifact,
+            required to perform Context Selection.
+          type: string
+          nullable: true
         contextSelectionConfig:
           description: Context selection configuration
           $ref: '#/components/schemas/ContextSelectionConfig'
@@ -372,15 +1486,25 @@ components:
         predictionConfig:
           $ref: '#/components/schemas/PredictionConfig'
           description: Prediction configuration
+        responseFormat:
+          $ref: '#/components/schemas/ResponseFormatEnum'
+          description: 'Response representation: native (default) preserves the selected
+            model response; harmonized uses the common schema. The spelling harmonised
+            is accepted as an alias. TabPFN output_type must be compatible with the
+            selected task and response format; see the operation description.'
+          default: native
         modelConfig:
-          title: Modelconfig
-          description: (Optional) Any additional TFM-specific configurations that
-            will be passed to the selected TFM.
           oneOf:
-            - $ref: '#/components/schemas/ModelRpt1_6'
-            - $ref: '#/components/schemas/ModelRpt1_5'
+            - $ref: '#/components/schemas/ModelConfig'
             - $ref: '#/components/schemas/ModelRpt1'
-          nullable: true
+            - $ref: '#/components/schemas/ModelRpt1_5'
+            - $ref: '#/components/schemas/ModelRpt1_6'
+            - $ref: '#/components/schemas/ModelTabPfn'
+          title: Modelconfig
+          description: Optional model-specific configuration. For tabpfn-3.5-plus,
+            use task_config.tabpfn_config and task_config.predict_params. Omitted
+            modelConfig is treated as an empty object. RPT-specific options are not
+            supported by TabPFN.
         columns:
           description: Query-only rows in columnar form. An object mapping from column
             name to array of column values.
@@ -405,10 +1529,120 @@ components:
       type: object
       required:
         - modelName
-        - scenarioConfigName
         - predictionConfig
       title: PredictRequest
-      description: Request schema for prediction endpoint.
+      description: 'Make predictions with a supported Tabular Foundation Model using
+        rows or columns.
+
+
+        **TabPFN**
+
+
+        Select modelName: tabpfn-3.5-plus. TabPFN supports exactly one target column
+        per request. Set the target
+
+        task_type to classification or regression; the default is classification.
+        Supply labelled training rows through
+
+        contextRows/contextColumns, labelled query rows, or context selection. At
+        least one labelled training row and
+
+        one query row containing the prediction placeholder are required. Regression
+        training targets must be numeric.
+
+        Classification training targets must not be null or empty; entirely numeric
+        targets are rejected by this
+
+        orchestrator''s classification preprocessing.
+
+
+        **Response format**
+
+
+        responseFormat defaults to native, which returns the model-native response.
+        Select harmonized
+
+        for the common response schema. The legacy spelling harmonised is also accepted
+        and normalized to harmonized.
+
+        For TabPFN, native responses contain metadata, prediction, usage, and optionally
+        model_id. Harmonized responses
+
+        contain id, modelName, metadata, predictions, and explanations. TabPFN currently
+        returns null for id and
+
+        explanations in harmonized responses.
+
+
+        **Output types**
+
+
+        Set modelConfig.task_config.predict_params.output_type. Native classification
+        supports probas,
+
+        preds, and top_k. Harmonized classification supports top_k only. Native regression
+        supports mean, median, mode,
+
+        quantiles, full, and main. Harmonized regression supports main, mean, median,
+        and mode. When neither the request
+
+        nor deployment defaults supply output_type, native classification defaults
+        to probas and native regression to
+
+        mean; harmonized classification defaults to top_k and harmonized regression
+        to main. Omit output_type to use
+
+        these defaults. For harmonized regression, main uses the model''s mean and
+        the first and last quantile arrays as
+
+        confidenceInterval (10th and 90th percentiles with the model''s default quantiles).
+        mean, median, and mode return
+
+        the selected statistic without confidenceInterval. They do not trigger a second
+        inference request for intervals.
+
+
+        **Configuration**
+
+
+        TabPFN configuration is passed under modelConfig.task_config.tabpfn_config
+        and
+
+        modelConfig.task_config.predict_params. Do not send RPT-only options such
+        as data_schema, parse_data_types, or
+
+        context_mode. balance_probabilities is classification-only. Set predictionConfig.targetColumns[].top_k
+        for
+
+        classification; an explicit modelConfig.task_config.predict_params.top_k takes
+        precedence. When neither is set,
+
+        top_k defaults to 1. modelConfig.index_column identifies a column to exclude
+        from model features; it is not
+
+        forwarded to TabPFN.
+
+
+        **Data format**
+
+
+        Use either rows with contextRows, or columns with contextColumns. Query and
+        supplied context data
+
+        must have the same column names. Target-column keys task_type, prediction_placeholder,
+        and top_k also accept the
+
+        camelCase aliases taskType, predictionPlaceholder, and topK. Use contextSelectionConfig.strategy:
+        none when all
+
+        training context is supplied in the request.
+
+
+        Required header: ai-resource-group. Authenticate with OAuth2 through the SAP
+        AI Core deployment endpoint. The
+
+        request and response examples use synthetic data and illustrative predictions;
+        they are not accuracy guarantees.'
       example:
         columns:
           baseUnitOfMeasure:
@@ -508,54 +1742,120 @@ components:
     PredictResponse:
       properties:
         id:
-          type: string
           title: Id
+          description: Response identifier. TabPFN currently returns null in harmonized
+            responses; RPT preserves the identifier supplied by the model.
+          type: string
+          nullable: true
+        modelName:
+          $ref: '#/components/schemas/TFMEnum'
         metadata:
-          $ref: '#/components/schemas/PredictMetadata'
+          $ref: '#/components/schemas/PredictResponseMetadata'
         predictions:
           items:
-            additionalProperties: true
+            additionalProperties:
+              anyOf:
+                - items:
+                    anyOf:
+                      - $ref: '#/components/schemas/PredictResponseClassification'
+                      - $ref: '#/components/schemas/PredictResponseRegression'
+                  type: array
+                - {}
             type: object
           type: array
           title: Predictions
-        status:
-          $ref: '#/components/schemas/PredictStatus'
-        additional_information:
-          items:
-            type: string
-          type: array
-          title: Additional Information
-          description: Warnings or informational messages from context selection
-          default: [ ]
-      additionalProperties: true
+        explanations:
+          title: Explanations
+          description: Model explanations when available. TabPFN harmonized responses
+            return null.
+      additionalProperties: false
       type: object
       required:
         - id
+        - modelName
         - metadata
         - predictions
-        - status
+        - explanations
       title: PredictResponse
-      description: "Response schema for prediction endpoint.\n\nExample response:\n\
-        {\n  \"id\": \"8f15bafd-5fb8-4a35-bd2f-43c3b5887584\",\n  \"metadata\": {\n\
-        \    \"num_columns\": 5,\n    \"num_predictions\": 1,\n    \"num_query_rows\"\
-        : 1,\n    \"num_rows\": 3\n  },\n  \"predictions\": [\n    {\n      \"category\"\
-        : [\n        {\n          \"confidence\": 0.71,\n          \"prediction\"\
-        : \"Electronics\"\n        }\n      ],\n      \"id\": 4\n    }\n  ],\n  \"\
-        status\": {\n    \"code\": 0,\n    \"message\": \"ok\"\n  }\n}"
-    PredictStatus:
+      description: 'Common response returned when responseFormat is harmonized. Metadata
+        uses camelCase. Native RPT and TabPFN
+
+        responses have separate schemas. The harmonized response does not include
+        status or additional_information.'
+    PredictResponseClassification:
       properties:
-        code:
-          type: integer
-          title: Code
-        message:
-          type: string
-          title: Message
+        prediction:
+          title: Prediction
+        confidence:
+          type: number
+          title: Confidence
+      additionalProperties: false
       type: object
       required:
-        - code
-        - message
-      title: PredictStatus
-      description: Status of the prediction.
+        - prediction
+        - confidence
+      title: PredictResponseClassification
+      description: 'One classification candidate with its probability. TabPFN top_k
+        class indices are mapped back to class labels;
+
+        one query row may have multiple candidates.'
+    PredictResponseMetadata:
+      properties:
+        numColumns:
+          title: Numcolumns
+          type: integer
+          nullable: true
+        numTargetColumns:
+          title: Numtargetcolumns
+          type: integer
+          nullable: true
+        numRows:
+          title: Numrows
+          type: integer
+          nullable: true
+        numQueryRows:
+          title: Numqueryrows
+          type: integer
+          nullable: true
+        numPredictions:
+          title: Numpredictions
+          type: integer
+          nullable: true
+      additionalProperties: false
+      type: object
+      required:
+        - numColumns
+        - numTargetColumns
+        - numRows
+        - numQueryRows
+        - numPredictions
+      title: PredictResponseMetadata
+      description: 'Harmonized metadata uses camelCase. For TabPFN, counts are derived
+        from native usage; numRows includes training
+
+        and predicted rows, and numColumns includes feature and target columns.'
+    PredictResponseRegression:
+      properties:
+        prediction:
+          title: Prediction
+        confidenceInterval:
+          title: Confidenceinterval
+          description: Optional interval from model quantiles. For TabPFN main, this
+            contains the first and last returned quantiles (10th and 90th percentiles
+            with default quantiles). Omitted for TabPFN mean, median, and mode.
+          items:
+            type: number
+          type: array
+          nullable: true
+      additionalProperties: false
+      type: object
+      required:
+        - prediction
+      title: PredictResponseRegression
+      description: 'One regression prediction per target and query row. confidenceInterval
+        is included only when the model output
+
+        supplies an interval.'
     PredictionConfig:
       properties:
         targetColumns:
@@ -564,7 +1864,8 @@ components:
           type: array
           minItems: 1
           title: Targetcolumns
-          description: List of target columns with prediction configuration
+          description: Target columns to predict. TabPFN supports exactly one target
+            column; this restriction is model-specific and does not limit RPT requests.
       additionalProperties: false
       type: object
       required:
@@ -573,9 +1874,165 @@ components:
       description: 'Configuration for what to predict.
 
 
-        Model-agnostic prediction config. Only contains fields shared across
+        Model-agnostic prediction config. Only contains fields shared across all TFMs.
+        Model-specific fields belong in
 
-        all TFMs. Model-specific fields belong in `PredictRequest.modelConfig`.'
+        `PredictRequest.modelConfig`.'
+    PredictionTask:
+      type: string
+      enum:
+        - classification
+        - regression
+    RPT1Metadata:
+      properties:
+        num_columns:
+          type: integer
+          title: Num Columns
+        num_rows:
+          type: integer
+          title: Num Rows
+        num_predictions:
+          type: integer
+          title: Num Predictions
+        num_query_rows:
+          type: integer
+          title: Num Query Rows
+      additionalProperties: true
+      type: object
+      required:
+        - num_columns
+        - num_rows
+        - num_predictions
+        - num_query_rows
+      title: RPT1Metadata
+      description: Metadata about the prediction.
+    RPT1P5Explanations:
+      properties:
+        top_column_scores:
+          items:
+            additionalProperties:
+              type: number
+            type: object
+          type: array
+          title: Top Column Scores
+        top_relevant_context_rows:
+          items:
+            items: {}
+            type: array
+          type: array
+          title: Top Relevant Context Rows
+      additionalProperties: true
+      type: object
+      required:
+        - top_column_scores
+        - top_relevant_context_rows
+      title: RPT1P5Explanations
+    RPT1P5Response:
+      properties:
+        id:
+          type: string
+          title: Id
+        metadata:
+          $ref: '#/components/schemas/RPT1Metadata'
+        predictions:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Predictions
+        status:
+          $ref: '#/components/schemas/RPT1Status'
+        explanations:
+          $ref: '#/components/schemas/RPT1P5Explanations'
+          nullable: true
+      additionalProperties: true
+      type: object
+      required:
+        - id
+        - metadata
+        - predictions
+        - status
+        - explanations
+      title: RPT1P5Response
+      description: 'Reference:
+
+        Sample response is available at RPT1P5Response.get_sample()'
+    RPT1P6Response:
+      properties:
+        id:
+          type: string
+          title: Id
+        metadata:
+          $ref: '#/components/schemas/RPT1Metadata'
+        predictions:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Predictions
+        status:
+          $ref: '#/components/schemas/RPT1Status'
+        explanations:
+          $ref: '#/components/schemas/RPT1P5Explanations'
+          nullable: true
+      additionalProperties: true
+      type: object
+      required:
+        - id
+        - metadata
+        - predictions
+        - status
+        - explanations
+      title: RPT1P6Response
+      description: RPT1.6 has the same output schema as RPT1.5
+    RPT1Response:
+      properties:
+        id:
+          type: string
+          title: Id
+        metadata:
+          $ref: '#/components/schemas/RPT1Metadata'
+        predictions:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Predictions
+        status:
+          $ref: '#/components/schemas/RPT1Status'
+      additionalProperties: true
+      type: object
+      required:
+        - id
+        - metadata
+        - predictions
+        - status
+      title: RPT1Response
+      description: 'Reference: https://help.sap.com/docs/sap-ai-core/generative-ai/example-payloads-for-inferencing-sap-rpt-1?locale=en-US#status-codes-and-messages
+
+        Sample response is available at RPT1Response.get_sample()'
+    RPT1Status:
+      properties:
+        code:
+          type: integer
+          title: Code
+        message:
+          type: string
+          title: Message
+      additionalProperties: true
+      type: object
+      required:
+        - code
+        - message
+      title: RPT1Status
+      description: Status of the prediction.
+    ResponseFormatEnum:
+      type: string
+      enum:
+        - native
+        - harmonized
+      title: ResponseFormatEnum
+      description: Response formats for predictions.
     RowData:
       items:
         additionalProperties: true
@@ -600,18 +2057,6 @@ components:
           description: Numeric fuzzy threshold as a fraction of the absolute query
             value. E.g. 0.1 = ±10%.
           default: 0.1
-        chunkSize:
-          type: integer
-          title: Chunksize
-          description: Max CASE WHEN expressions per subquery chunk (avoids HANA parse-tree
-            depth limit).
-          default: 100
-        chunkThreshold:
-          type: integer
-          title: Chunkthreshold
-          description: Column count above which chunked SQL is used instead of a flat
-            query.
-          default: 150
         poolSize:
           title: Poolsize
           description: If set, scoring runs against a random subsample of this many
@@ -635,7 +2080,7 @@ components:
       type: object
       title: SamplingHeuristicConfig
     SamplingNoneConfig:
-      properties: { }
+      properties: {}
       additionalProperties: true
       type: object
       title: SamplingNoneConfig
@@ -660,6 +2105,13 @@ components:
       additionalProperties: true
       type: object
       title: SamplingRandomConfig
+    Scalar:
+      anyOf:
+        - type: string
+        - type: integer
+        - type: number
+        - type: boolean
+      nullable: true
     TFMEnum:
       type: string
       enum:
@@ -669,8 +2121,276 @@ components:
         - sap-rpt-1.5-large
         - sap-rpt-1.6
         - sap-rpt-1.6-large
+        - tabpfn-3.5-plus
       title: TFMEnum
       description: Supported Tabular Foundation Models.
+    TabPFN3p5plusResponse:
+      properties:
+        metadata:
+          $ref: '#/components/schemas/TabPFNResponseMetadata'
+        model_id:
+          title: Model Id
+          type: string
+          nullable: true
+        prediction:
+          anyOf:
+            - $ref: '#/components/schemas/TabPFNHarmonisedClassificationPrediction'
+            - $ref: '#/components/schemas/TabPFNHarmonisedRegressionPrediction'
+            - $ref: '#/components/schemas/TabPFNNonHarmonisedPrediction'
+          title: Prediction
+          description: 'For native regression mean, median, or mode: a numeric array
+            with one value per predicted row. main: an object containing mean, median,
+            mode, and quantiles. For classification top_k: classes, values (class
+            indices), and probabilities. probas: class-probability arrays; preds:
+            class-label arrays. quantiles and full preserve the model-native distribution
+            output.'
+        usage:
+          $ref: '#/components/schemas/TabPFNResponseUsage'
+      additionalProperties: true
+      type: object
+      required:
+        - metadata
+        - prediction
+        - usage
+      title: TabPFN3p5plusResponse
+      description: 'Native TabPFN response, returned when responseFormat is native.
+        prediction depends on
+
+        task_config.predict_params.output_type; the native structure and extra model
+        fields are preserved.'
+    TabPFNHarmonisedClassificationPrediction:
+      properties:
+        classes:
+          items:
+            $ref: '#/components/schemas/Scalar'
+          type: array
+          title: Classes
+        probabilities:
+          items:
+            items:
+              type: number
+            type: array
+          type: array
+          title: Probabilities
+        values:
+          items:
+            items:
+              type: integer
+            type: array
+          type: array
+          title: Values
+      additionalProperties: true
+      type: object
+      required:
+        - classes
+        - probabilities
+        - values
+      title: TabPFNHarmonisedClassificationPrediction
+      description: 'The native top_k classification payload, despite the internal
+        schema name. values contains indices into classes;
+
+        probabilities contains the probability for each returned candidate.'
+    TabPFNHarmonisedRegressionPrediction:
+      properties:
+        mean:
+          items:
+            type: number
+          type: array
+          title: Mean
+        median:
+          items:
+            type: number
+          type: array
+          title: Median
+        mode:
+          items:
+            type: number
+          type: array
+          title: Mode
+        quantiles:
+          items:
+            items:
+              type: number
+            type: array
+          type: array
+          title: Quantiles
+      additionalProperties: true
+      type: object
+      required:
+        - mean
+        - median
+        - mode
+        - quantiles
+      title: TabPFNHarmonisedRegressionPrediction
+      description: 'The native main regression payload, despite the internal schema
+        name. Quantiles are arranged by quantile level
+
+        and then by query row. Harmonized processing uses mean and the first and last
+        quantile arrays.'
+    TabPFNNonHarmonisedPrediction: {}
+    TabPFNResponseMetadata:
+      properties:
+        task:
+          $ref: '#/components/schemas/PredictionTask'
+        test_set_num_cols:
+          type: integer
+          title: Test Set Num Cols
+        test_set_num_rows:
+          type: integer
+          title: Test Set Num Rows
+        n_estimators:
+          type: integer
+          title: N Estimators
+        tabpfn_config:
+          additionalProperties: true
+          type: object
+          title: Tabpfn Config
+        classes:
+          title: Classes
+          items:
+            $ref: '#/components/schemas/Scalar'
+          type: array
+          nullable: true
+        top_k:
+          title: Top K
+          type: integer
+          nullable: true
+      additionalProperties: true
+      type: object
+      required:
+        - task
+        - test_set_num_cols
+        - test_set_num_rows
+        - n_estimators
+        - tabpfn_config
+      title: TabPFNResponseMetadata
+    TabPFNResponseUsage:
+      properties:
+        X_test:
+          $ref: '#/components/schemas/TabPFNUsageDimensions'
+        X_train:
+          $ref: '#/components/schemas/TabPFNUsageDimensions'
+        y_train:
+          $ref: '#/components/schemas/TabPFNUsageDimensions'
+        n_estimators:
+          type: integer
+          title: N Estimators
+        num_cells:
+          type: integer
+          title: Num Cells
+        num_predictions:
+          type: integer
+          title: Num Predictions
+      additionalProperties: true
+      type: object
+      required:
+        - X_test
+        - X_train
+        - y_train
+        - n_estimators
+        - num_cells
+        - num_predictions
+      title: TabPFNResponseUsage
+    TabPFNUsageDimensions:
+      properties:
+        num_cells:
+          type: integer
+          title: Num Cells
+        num_cols:
+          type: integer
+          title: Num Cols
+        num_rows:
+          type: integer
+          title: Num Rows
+      additionalProperties: true
+      type: object
+      required:
+        - num_cells
+        - num_cols
+        - num_rows
+      title: TabPFNUsageDimensions
+    TabpfnConfig:
+      properties:
+        n_estimators:
+          type: integer
+          title: N Estimators
+          description: '(Optional, TabPFN default: 8) Number of estimators in the
+            ensemble.'
+          default: 8
+        fit_mode:
+          type: string
+          title: Fit Mode
+          description: '(Optional, TabPFN default: ''fit_preprocessors'') How the
+            model is fitted before inference.'
+          default: fit_preprocessors
+        inference_precision:
+          type: string
+          title: Inference Precision
+          description: '(Optional, TabPFN default: ''auto'') Numerical precision used
+            during inference.'
+          default: auto
+        softmax_temperature:
+          type: number
+          title: Softmax Temperature
+          description: '(Optional, TabPFN default: 0.9) Temperature applied to the
+            softmax over class logits.'
+          default: 0.9
+        average_before_softmax:
+          type: boolean
+          title: Average Before Softmax
+          description: '(Optional, TabPFN default: False) Whether to average ensemble
+            logits before applying softmax.'
+          default: false
+        balance_probabilities:
+          type: boolean
+          title: Balance Probabilities
+          description: '(Optional, TabPFN default: False) Whether to rebalance predicted
+            class probabilities.'
+          default: false
+      additionalProperties: true
+      type: object
+      title: TabpfnConfig
+      description: 'TabPFN model hyperparameters. Only explicitly supplied fields
+        are forwarded; unset fields are resolved by
+
+        deployment or model defaults. balance_probabilities must not be supplied for
+        regression, even when false.'
+    TabpfnPredictParams:
+      properties:
+        output_type:
+          title: Output Type
+          description: 'Native classification: probas, preds, top_k. Harmonized classification:
+            top_k. Native regression: mean, median, mode, quantiles, full, main. Harmonized
+            regression: main, mean, median, mode. When no request or deployment value
+            is supplied, defaults are probas/mean for native classification/regression
+            and top_k/main for harmonized classification/regression. main supplies
+            mean plus available quantiles; mean, median and mode supply prediction
+            values only. Omit the field to use defaults.'
+          type: string
+          nullable: true
+        top_k:
+          type: integer
+          description: Optional model-specific number of classification candidates
+            when output_type is top_k. Takes precedence over predictionConfig.targetColumns[].top_k.
+      additionalProperties: true
+      type: object
+      title: TabpfnPredictParams
+      description: 'Parameters controlling the TabPFN prediction output. Compatibility
+        with task_type and responseFormat is
+
+        validated at the API boundary. Extra model-specific options are passed through
+        subject to capability validation.'
+    TabpfnTaskConfig:
+      properties:
+        tabpfn_config:
+          $ref: '#/components/schemas/TabpfnConfig'
+          description: (Optional) TabPFN model hyperparameters.
+        predict_params:
+          $ref: '#/components/schemas/TabpfnPredictParams'
+          description: (Optional) Parameters controlling the predict call.
+      additionalProperties: true
+      type: object
+      title: TabpfnTaskConfig
     TargetColumn:
       properties:
         name:
@@ -680,16 +2400,22 @@ components:
         prediction_placeholder:
           type: string
           title: Prediction Placeholder
-          description: (Optional) Placeholder value indicating cells to predict
+          description: (Optional) Placeholder value indicating cells to predict. Also
+            accepts predictionPlaceholder. For TabPFN, query rows with this target
+            value are predicted; other query rows are used as training rows.
           default: '[PREDICT]'
         task_type:
           $ref: '#/components/schemas/TaskTypeEnum'
-          description: (Optional) Type of prediction task (classification or regression)
+          description: (Optional) Type of prediction task (classification or regression).
+            Also accepts taskType. For TabPFN regression, training labels must be
+            numeric; entirely numeric classification targets are rejected.
           default: classification
         top_k:
           title: Top K
           description: (Optional) Controls how many labels to predict for each column
-            in each row. Only applicable to 'classification' task type.
+            in each row. Only applicable to 'classification' task type. Also accepts
+            topK. TabPFN applies it when output_type is top_k; predict_params.top_k
+            takes precedence and the fallback is 1.
           type: integer
           nullable: true
       type: object
@@ -738,7 +2464,7 @@ components:
       flows:
         clientCredentials:
           tokenUrl: https://(subdomain_identity_zone).authentication.(host)/oauth/token
-          scopes: { }
+          scopes: {}
 x-sap-shortText: A runtime orchestration layer that performs predictions with Tabular
   Foundation Models using structured data with no dataset-specific training required.
 externalDocs:
