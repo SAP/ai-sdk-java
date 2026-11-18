@@ -183,9 +183,8 @@ public class AutoDefinition implements CSNDefinition
     sb.append("class AutoDefinition {\n");
     sb.append("    definitionType: ").append(toIndentedString(definitionType)).append("\n");
     sb.append("    autoConfig: ").append(toIndentedString(autoConfig)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -205,7 +204,7 @@ public class AutoDefinition implements CSNDefinition
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (definitionType) -> new AutoDefinition().definitionType(definitionType);
+    return definitionType -> new AutoDefinition().definitionType(definitionType);
   }
 
   /** Builder helper class. */

@@ -149,9 +149,8 @@ public class AutoDefinitionAutoConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class AutoDefinitionAutoConfig {\n");
     sb.append("    csvOptions: ").append(toIndentedString(csvOptions)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

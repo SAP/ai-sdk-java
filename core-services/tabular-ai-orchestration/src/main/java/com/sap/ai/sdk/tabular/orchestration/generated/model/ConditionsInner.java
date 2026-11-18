@@ -312,9 +312,8 @@ public class ConditionsInner
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    logic: ").append(toIndentedString(logic)).append("\n");
     sb.append("    conditions: ").append(toIndentedString(conditions)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -334,11 +333,11 @@ public class ConditionsInner
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (field) ->
-        (op) ->
-            (value) ->
-                (logic) ->
-                    (conditions) ->
+    return field ->
+        op ->
+            value ->
+                logic ->
+                    conditions ->
                         new ConditionsInner()
                             .field(field)
                             .op(op)

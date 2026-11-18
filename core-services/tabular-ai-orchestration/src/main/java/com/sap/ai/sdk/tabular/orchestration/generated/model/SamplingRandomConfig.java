@@ -190,9 +190,8 @@ public class SamplingRandomConfig
     sb.append("class SamplingRandomConfig {\n");
     sb.append("    indexColumn: ").append(toIndentedString(indexColumn)).append("\n");
     sb.append("    deterministic: ").append(toIndentedString(deterministic)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

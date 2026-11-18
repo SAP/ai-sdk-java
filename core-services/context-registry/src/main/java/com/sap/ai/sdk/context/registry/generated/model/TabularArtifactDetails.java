@@ -773,9 +773,8 @@ public class TabularArtifactDetails
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -795,16 +794,16 @@ public class TabularArtifactDetails
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (name) ->
-            (tenantId) ->
-                (resourceGroupId) ->
-                    (dataDestinationName) ->
-                        (path) ->
-                            (type) ->
-                                (status) ->
-                                    (createdAt) ->
-                                        (updatedAt) ->
+    return id ->
+        name ->
+            tenantId ->
+                resourceGroupId ->
+                    dataDestinationName ->
+                        path ->
+                            type ->
+                                status ->
+                                    createdAt ->
+                                        updatedAt ->
                                             new TabularArtifactDetails()
                                                 .id(id)
                                                 .name(name)

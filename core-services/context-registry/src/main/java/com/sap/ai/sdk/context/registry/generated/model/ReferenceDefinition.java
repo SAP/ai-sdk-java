@@ -188,9 +188,8 @@ public class ReferenceDefinition implements CSNDefinition
     sb.append("class ReferenceDefinition {\n");
     sb.append("    definitionType: ").append(toIndentedString(definitionType)).append("\n");
     sb.append("    documentReference: ").append(toIndentedString(documentReference)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -210,8 +209,8 @@ public class ReferenceDefinition implements CSNDefinition
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (definitionType) ->
-        (documentReference) ->
+    return definitionType ->
+        documentReference ->
             new ReferenceDefinition()
                 .definitionType(definitionType)
                 .documentReference(documentReference);

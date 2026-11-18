@@ -264,9 +264,8 @@ public class TargetColumn
         .append("\n");
     sb.append("    taskType: ").append(toIndentedString(taskType)).append("\n");
     sb.append("    topK: ").append(toIndentedString(topK)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -286,7 +285,7 @@ public class TargetColumn
    * with all required arguments.
    */
   public static Builder create() {
-    return (name) -> new TargetColumn().name(name);
+    return name -> new TargetColumn().name(name);
   }
 
   /** Builder helper class. */

@@ -187,9 +187,8 @@ public class ControllersDataDestinationV1EndpointsSearchDataDestinationsRequest
     final StringBuilder sb = new StringBuilder();
     sb.append("class ControllersDataDestinationV1EndpointsSearchDataDestinationsRequest {\n");
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -210,7 +209,7 @@ public class ControllersDataDestinationV1EndpointsSearchDataDestinationsRequest
    * arguments.
    */
   public static Builder create() {
-    return (labels) ->
+    return labels ->
         new ControllersDataDestinationV1EndpointsSearchDataDestinationsRequest().labels(labels);
   }
 

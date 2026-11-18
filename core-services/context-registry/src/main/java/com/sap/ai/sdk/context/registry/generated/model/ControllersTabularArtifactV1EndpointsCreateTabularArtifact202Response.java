@@ -167,9 +167,8 @@ public class ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Respon
     final StringBuilder sb = new StringBuilder();
     sb.append("class ControllersTabularArtifactV1EndpointsCreateTabularArtifact202Response {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

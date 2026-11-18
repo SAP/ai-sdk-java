@@ -201,9 +201,8 @@ public class FilterConditions
     sb.append("class FilterConditions {\n");
     sb.append("    logic: ").append(toIndentedString(logic)).append("\n");
     sb.append("    conditions: ").append(toIndentedString(conditions)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -223,7 +222,7 @@ public class FilterConditions
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (logic) -> (conditions) -> new FilterConditions().logic(logic).conditions(conditions);
+    return logic -> conditions -> new FilterConditions().logic(logic).conditions(conditions);
   }
 
   /** Builder helper class. */

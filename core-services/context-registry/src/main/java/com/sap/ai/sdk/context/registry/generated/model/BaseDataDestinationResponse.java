@@ -403,9 +403,8 @@ public class BaseDataDestinationResponse
     sb.append("    errorMessage: ").append(toIndentedString(errorMessage)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -425,9 +424,9 @@ public class BaseDataDestinationResponse
    * BaseDataDestinationResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (createdAt) ->
-            (updatedAt) ->
+    return name ->
+        createdAt ->
+            updatedAt ->
                 new BaseDataDestinationResponse()
                     .name(name)
                     .createdAt(createdAt)

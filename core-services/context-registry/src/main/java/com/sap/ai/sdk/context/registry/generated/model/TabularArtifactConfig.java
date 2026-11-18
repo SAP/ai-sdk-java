@@ -147,9 +147,8 @@ public class TabularArtifactConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class TabularArtifactConfig {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -169,7 +168,7 @@ public class TabularArtifactConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) -> new TabularArtifactConfig().name(name);
+    return name -> new TabularArtifactConfig().name(name);
   }
 
   /** Builder helper class. */

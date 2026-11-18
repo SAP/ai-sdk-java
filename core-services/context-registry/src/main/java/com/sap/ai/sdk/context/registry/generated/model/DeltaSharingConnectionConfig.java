@@ -249,9 +249,8 @@ public class DeltaSharingConnectionConfig
     sb.append("class DeltaSharingConnectionConfig {\n");
     sb.append("    host: ").append(toIndentedString(host)).append("\n");
     sb.append("    provider: ").append(toIndentedString(provider)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -271,7 +270,7 @@ public class DeltaSharingConnectionConfig
    * DeltaSharingConnectionConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (host) -> new DeltaSharingConnectionConfig().host(host);
+    return host -> new DeltaSharingConnectionConfig().host(host);
   }
 
   /** Builder helper class. */

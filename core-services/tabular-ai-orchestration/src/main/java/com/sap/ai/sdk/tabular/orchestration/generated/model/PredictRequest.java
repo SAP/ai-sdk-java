@@ -557,9 +557,8 @@ public class PredictRequest
     sb.append("    contextColumns: ").append(toIndentedString(contextColumns)).append("\n");
     sb.append("    rows: ").append(toIndentedString(rows)).append("\n");
     sb.append("    contextRows: ").append(toIndentedString(contextRows)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -579,9 +578,9 @@ public class PredictRequest
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (modelName) ->
-        (scenarioConfigName) ->
-            (predictionConfig) ->
+    return modelName ->
+        scenarioConfigName ->
+            predictionConfig ->
                 new PredictRequest()
                     .modelName(modelName)
                     .scenarioConfigName(scenarioConfigName)

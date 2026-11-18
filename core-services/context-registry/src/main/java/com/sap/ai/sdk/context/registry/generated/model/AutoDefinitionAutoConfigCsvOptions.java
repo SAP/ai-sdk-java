@@ -197,9 +197,8 @@ public class AutoDefinitionAutoConfigCsvOptions
         .append(toIndentedString(columnListInFirstRow))
         .append("\n");
     sb.append("    delimiter: ").append(toIndentedString(delimiter)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

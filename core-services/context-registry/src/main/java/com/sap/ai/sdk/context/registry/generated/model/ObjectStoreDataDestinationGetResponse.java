@@ -608,9 +608,8 @@ public class ObjectStoreDataDestinationGetResponse implements GetDataDestination
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    adapterType: ").append(toIndentedString(adapterType)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -630,10 +629,10 @@ public class ObjectStoreDataDestinationGetResponse implements GetDataDestination
    * ObjectStoreDataDestinationGetResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (createdAt) ->
-            (updatedAt) ->
-                (type) ->
+    return name ->
+        createdAt ->
+            updatedAt ->
+                type ->
                     new ObjectStoreDataDestinationGetResponse()
                         .name(name)
                         .createdAt(createdAt)

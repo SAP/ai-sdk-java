@@ -240,9 +240,8 @@ public class ValidationFailedResponse implements ValidateDataDestinationResponse
     sb.append("class ValidationFailedResponse {\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    reason: ").append(toIndentedString(reason)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -262,7 +261,7 @@ public class ValidationFailedResponse implements ValidateDataDestinationResponse
    * ValidationFailedResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (status) -> (reason) -> new ValidationFailedResponse().status(status).reason(reason);
+    return status -> reason -> new ValidationFailedResponse().status(status).reason(reason);
   }
 
   /** Builder helper class. */

@@ -370,9 +370,8 @@ public class SamplingHeuristicConfig
     sb.append("    allowTimeoutFallback: ")
         .append(toIndentedString(allowTimeoutFallback))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -392,7 +391,7 @@ public class SamplingHeuristicConfig
    * SamplingHeuristicConfig} instance with all required arguments.
    */
   public static Builder create() {
-    return (indexColumn) -> new SamplingHeuristicConfig().indexColumn(indexColumn);
+    return indexColumn -> new SamplingHeuristicConfig().indexColumn(indexColumn);
   }
 
   /** Builder helper class. */

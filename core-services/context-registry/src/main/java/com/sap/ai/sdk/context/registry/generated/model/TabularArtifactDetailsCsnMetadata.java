@@ -249,9 +249,8 @@ public class TabularArtifactDetailsCsnMetadata
     sb.append("    entityName: ").append(toIndentedString(entityName)).append("\n");
     sb.append("    selectedColumns: ").append(toIndentedString(selectedColumns)).append("\n");
     sb.append("    definition: ").append(toIndentedString(definition)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

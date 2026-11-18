@@ -220,9 +220,8 @@ public class FilterCondition
     sb.append("    field: ").append(toIndentedString(field)).append("\n");
     sb.append("    op: ").append(toIndentedString(op)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -242,7 +241,7 @@ public class FilterCondition
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (field) -> (op) -> (value) -> new FilterCondition().field(field).op(op).value(value);
+    return field -> op -> value -> new FilterCondition().field(field).op(op).value(value);
   }
 
   /** Builder helper class. */

@@ -342,9 +342,8 @@ public class PredictResponse
     sb.append("    additionalInformation: ")
         .append(toIndentedString(additionalInformation))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -364,10 +363,10 @@ public class PredictResponse
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (metadata) ->
-            (predictions) ->
-                (status) ->
+    return id ->
+        metadata ->
+            predictions ->
+                status ->
                     new PredictResponse()
                         .id(id)
                         .metadata(metadata)

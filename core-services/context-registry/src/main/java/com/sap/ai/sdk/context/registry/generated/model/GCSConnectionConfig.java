@@ -201,9 +201,8 @@ public class GCSConnectionConfig
     sb.append("    base64EncodedPrivateKeyData: ")
         .append(toIndentedString(base64EncodedPrivateKeyData))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -223,8 +222,8 @@ public class GCSConnectionConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (bucket) ->
-        (base64EncodedPrivateKeyData) ->
+    return bucket ->
+        base64EncodedPrivateKeyData ->
             new GCSConnectionConfig()
                 .bucket(bucket)
                 .base64EncodedPrivateKeyData(base64EncodedPrivateKeyData);

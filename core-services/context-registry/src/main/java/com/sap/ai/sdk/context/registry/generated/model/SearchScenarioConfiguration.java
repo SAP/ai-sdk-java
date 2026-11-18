@@ -168,9 +168,8 @@ public class SearchScenarioConfiguration
     final StringBuilder sb = new StringBuilder();
     sb.append("class SearchScenarioConfiguration {\n");
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -190,7 +189,7 @@ public class SearchScenarioConfiguration
    * SearchScenarioConfiguration} instance with all required arguments.
    */
   public static Builder create() {
-    return (labels) -> new SearchScenarioConfiguration().labels(labels);
+    return labels -> new SearchScenarioConfiguration().labels(labels);
   }
 
   /** Builder helper class. */

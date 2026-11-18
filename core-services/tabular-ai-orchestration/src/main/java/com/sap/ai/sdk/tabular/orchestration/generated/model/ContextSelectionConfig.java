@@ -302,9 +302,8 @@ public class ContextSelectionConfig
     sb.append("    strategyConfigs: ").append(toIndentedString(strategyConfigs)).append("\n");
     sb.append("    filterConditions: ").append(toIndentedString(filterConditions)).append("\n");
     sb.append("    verbose: ").append(toIndentedString(verbose)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -651,9 +651,8 @@ public class HDLDataDestinationGetResponse implements GetDataDestination
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    adapterType: ").append(toIndentedString(adapterType)).append("\n");
     sb.append("    subjectPatterns: ").append(toIndentedString(subjectPatterns)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -673,10 +672,10 @@ public class HDLDataDestinationGetResponse implements GetDataDestination
    * HDLDataDestinationGetResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (createdAt) ->
-            (updatedAt) ->
-                (type) ->
+    return name ->
+        createdAt ->
+            updatedAt ->
+                type ->
                     new HDLDataDestinationGetResponse()
                         .name(name)
                         .createdAt(createdAt)

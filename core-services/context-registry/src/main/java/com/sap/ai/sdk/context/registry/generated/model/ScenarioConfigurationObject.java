@@ -509,9 +509,8 @@ public class ScenarioConfigurationObject
     sb.append("    errorMessage: ").append(toIndentedString(errorMessage)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -531,10 +530,10 @@ public class ScenarioConfigurationObject
    * ScenarioConfigurationObject} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (tabularArtifacts) ->
-            (createdAt) ->
-                (updatedAt) ->
+    return name ->
+        tabularArtifacts ->
+            createdAt ->
+                updatedAt ->
                     new ScenarioConfigurationObject()
                         .name(name)
                         .tabularArtifacts(tabularArtifacts)

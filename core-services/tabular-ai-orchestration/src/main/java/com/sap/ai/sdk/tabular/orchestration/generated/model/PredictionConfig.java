@@ -167,9 +167,8 @@ public class PredictionConfig
     final StringBuilder sb = new StringBuilder();
     sb.append("class PredictionConfig {\n");
     sb.append("    targetColumns: ").append(toIndentedString(targetColumns)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -189,7 +188,7 @@ public class PredictionConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (targetColumns) -> new PredictionConfig().targetColumns(targetColumns);
+    return targetColumns -> new PredictionConfig().targetColumns(targetColumns);
   }
 
   /** Builder helper class. */
