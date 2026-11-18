@@ -94,7 +94,7 @@
     <jspecify.version>1.0.1</jspecify.version>
     <errorprone.version>2.52.0</errorprone.version>
     <!-- CVE fixes -->
-    <bouncycastle.version>1.86</bouncycastle.version>
+    <bouncycastle.version>1.87</bouncycastle.version>
     <kotlin.version>2.4.21</kotlin.version>
     <guava.version>33.8.0-jre</guava.version>
     <java-jwt.version>4.6.2</java-jwt.version>
@@ -318,13 +318,13 @@
         <artifactId>jspecify</artifactId>
         <version>${jspecify.version}</version>
       </dependency>
-      <!-- CVE-2025-48988, CVE-2026-103612, CVE-2026-103614, CVE-2026-103616, CVE-2026-103617 -->
+      <!-- CVE-2025-48988, CVE-2026-103611, CVE-2026-103612, CVE-2026-103613, CVE-2026-103614, CVE-2026-103616, CVE-2026-103617 -->
       <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcprov-jdk18on</artifactId>
         <version>${bouncycastle.version}</version>
       </dependency>
-      <!-- CVE-2026-71889, CVE-2026-103617 -->
+      <!-- CVE-2026-71889, CVE-2026-103606, CVE-2026-103610, CVE-2026-103615, CVE-2026-103617 -->
       <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcpkix-jdk18on</artifactId>
