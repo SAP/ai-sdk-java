@@ -465,11 +465,12 @@ class OrchestrationTest {
   @Test
   void testImageInputBase64() {
     String dataUrl = "";
-    try (InputStream inputStream = new FileInputStream("src/test/resources/fixtures/Sap-logo-700x700.jpg")) {
-        byte[] imageBytes = inputStream.readAllBytes();
-        byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
-        String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
-        dataUrl = "data:image/jpeg;base64," + encodedString;
+    try (InputStream inputStream =
+        new FileInputStream("src/test/resources/fixtures/Sap-logo-700x700.jpg")) {
+      byte[] imageBytes = inputStream.readAllBytes();
+      byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
+      String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
+      dataUrl = "data:image/jpeg;base64," + encodedString;
     } catch (Exception e) {
       System.out.println("Error reading the image fixtures: " + e.getMessage());
     }
