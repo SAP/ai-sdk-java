@@ -31,6 +31,7 @@ import com.sap.ai.sdk.orchestration.UserMessage;
 import com.sap.ai.sdk.orchestration.model.DPIEntities;
 import com.sap.ai.sdk.orchestration.model.InputTranslationModuleResult;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -464,19 +465,14 @@ class OrchestrationTest {
   @Test
   void testImageInputBase64() {
     String dataUrl = "";
-    try {
-      URL url = new URL("https://upload.wikimedia.org/wikipedia/commons/c/c9/Sap-logo-700x700.jpg");
-      // the "User-Agent" header is required to avoid a 403
-      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-      connection.setRequestProperty("User-Agent", "Test implementation");
-      try (InputStream inputStream = connection.getInputStream()) {
-        byte[] imageBytes = inputStream.readAllBytes();
-        byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
-        String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
-        dataUrl = "data:image/jpeg;base64," + encodedString;
-      }
+    try (InputStream inputStream =
+        new FileInputStream("src/test/resources/fixtures/Sap-logo-700x700.jpg")) {
+      byte[] imageBytes = inputStream.readAllBytes();
+      byte[] encodedBytes = Base64.getEncoder().encode(imageBytes);
+      String encodedString = new String(encodedBytes, StandardCharsets.UTF_8);
+      dataUrl = "data:image/jpeg;base64," + encodedString;
     } catch (Exception e) {
-      System.out.println("Error fetching or reading the image from URL: " + e.getMessage());
+      System.out.println("Error reading the image fixtures: " + e.getMessage());
     }
     val result = service.imageInput(dataUrl).getOriginalResponse();
     val choices = (result.getFinalResult()).getChoices();
