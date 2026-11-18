@@ -604,9 +604,8 @@ public class DeltaSharingDataDestinationGetResponse implements GetDataDestinatio
     sb.append("    updatedAt: ").append(toIndentedString(updatedAt)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    adapterType: ").append(toIndentedString(adapterType)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -626,10 +625,10 @@ public class DeltaSharingDataDestinationGetResponse implements GetDataDestinatio
    * DeltaSharingDataDestinationGetResponse} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (createdAt) ->
-            (updatedAt) ->
-                (type) ->
+    return name ->
+        createdAt ->
+            updatedAt ->
+                type ->
                     new DeltaSharingDataDestinationGetResponse()
                         .name(name)
                         .createdAt(createdAt)

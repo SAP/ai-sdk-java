@@ -314,9 +314,8 @@ public class TabularArtifactDetailsMetadataInnerColumnsInner
     sb.append("    length: ").append(toIndentedString(length)).append("\n");
     sb.append("    precision: ").append(toIndentedString(precision)).append("\n");
     sb.append("    scale: ").append(toIndentedString(scale)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -336,8 +335,8 @@ public class TabularArtifactDetailsMetadataInnerColumnsInner
    * TabularArtifactDetailsMetadataInnerColumnsInner} instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (cdsType) ->
+    return name ->
+        cdsType ->
             new TabularArtifactDetailsMetadataInnerColumnsInner().name(name).cdsType(cdsType);
   }
 

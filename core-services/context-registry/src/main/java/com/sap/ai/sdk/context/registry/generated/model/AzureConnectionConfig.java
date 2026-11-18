@@ -232,9 +232,8 @@ public class AzureConnectionConfig
     sb.append("    accountName: ").append(toIndentedString(accountName)).append("\n");
     sb.append("    containerUri: ").append(toIndentedString(containerUri)).append("\n");
     sb.append("    sasToken: ").append(toIndentedString(sasToken)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -254,9 +253,9 @@ public class AzureConnectionConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (accountName) ->
-        (containerUri) ->
-            (sasToken) ->
+    return accountName ->
+        containerUri ->
+            sasToken ->
                 new AzureConnectionConfig()
                     .accountName(accountName)
                     .containerUri(containerUri)

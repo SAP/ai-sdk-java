@@ -310,9 +310,8 @@ public class CreateScenarioConfiguration
         .append("\n");
     sb.append("    tabularArtifacts: ").append(toIndentedString(tabularArtifacts)).append("\n");
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -332,8 +331,7 @@ public class CreateScenarioConfiguration
    * CreateScenarioConfiguration} instance with all required arguments.
    */
   public static Builder create() {
-    return (tabularArtifacts) ->
-        new CreateScenarioConfiguration().tabularArtifacts(tabularArtifacts);
+    return tabularArtifacts -> new CreateScenarioConfiguration().tabularArtifacts(tabularArtifacts);
   }
 
   /** Builder helper class. */

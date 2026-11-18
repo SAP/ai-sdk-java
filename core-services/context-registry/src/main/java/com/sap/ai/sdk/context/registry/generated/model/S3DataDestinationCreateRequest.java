@@ -434,9 +434,8 @@ public class S3DataDestinationCreateRequest implements CreateDataDestination
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -456,7 +455,7 @@ public class S3DataDestinationCreateRequest implements CreateDataDestination
    * S3DataDestinationCreateRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (config) -> new S3DataDestinationCreateRequest().type(type).config(config);
+    return type -> config -> new S3DataDestinationCreateRequest().type(type).config(config);
   }
 
   /** Builder helper class. */

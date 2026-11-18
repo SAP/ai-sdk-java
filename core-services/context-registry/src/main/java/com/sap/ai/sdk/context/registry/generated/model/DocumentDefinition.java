@@ -186,9 +186,8 @@ public class DocumentDefinition implements CSNDefinition
     sb.append("class DocumentDefinition {\n");
     sb.append("    definitionType: ").append(toIndentedString(definitionType)).append("\n");
     sb.append("    document: ").append(toIndentedString(document)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -208,8 +207,8 @@ public class DocumentDefinition implements CSNDefinition
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (definitionType) ->
-        (document) -> new DocumentDefinition().definitionType(definitionType).document(document);
+    return definitionType ->
+        document -> new DocumentDefinition().definitionType(definitionType).document(document);
   }
 
   /** Builder helper class. */

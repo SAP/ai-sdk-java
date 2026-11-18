@@ -212,9 +212,8 @@ public class TabularArtifactDetailsMetadataInner
     sb.append("class TabularArtifactDetailsMetadataInner {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    columns: ").append(toIndentedString(columns)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -234,8 +233,7 @@ public class TabularArtifactDetailsMetadataInner
    * TabularArtifactDetailsMetadataInner} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) ->
-        (columns) -> new TabularArtifactDetailsMetadataInner().type(type).columns(columns);
+    return type -> columns -> new TabularArtifactDetailsMetadataInner().type(type).columns(columns);
   }
 
   /** Builder helper class. */

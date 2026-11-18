@@ -203,9 +203,8 @@ public class ValidationOkResponse implements ValidateDataDestinationResponse
     final StringBuilder sb = new StringBuilder();
     sb.append("class ValidationOkResponse {\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -225,7 +224,7 @@ public class ValidationOkResponse implements ValidateDataDestinationResponse
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (status) -> new ValidationOkResponse().status(status);
+    return status -> new ValidationOkResponse().status(status);
   }
 
   /** Builder helper class. */

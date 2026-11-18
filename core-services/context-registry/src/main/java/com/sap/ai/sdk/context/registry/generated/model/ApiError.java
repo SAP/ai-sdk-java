@@ -311,9 +311,8 @@ public class ApiError
     sb.append("    requestId: ").append(toIndentedString(requestId)).append("\n");
     sb.append("    target: ").append(toIndentedString(target)).append("\n");
     sb.append("    details: ").append(toIndentedString(details)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -333,7 +332,7 @@ public class ApiError
    * all required arguments.
    */
   public static Builder create() {
-    return (code) -> (message) -> new ApiError().code(code).message(message);
+    return code -> message -> new ApiError().code(code).message(message);
   }
 
   /** Builder helper class. */

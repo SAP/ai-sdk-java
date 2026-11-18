@@ -153,9 +153,8 @@ public class ReferenceDefinitionDocumentReference
     final StringBuilder sb = new StringBuilder();
     sb.append("class ReferenceDefinitionDocumentReference {\n");
     sb.append("    path: ").append(toIndentedString(path)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -175,7 +174,7 @@ public class ReferenceDefinitionDocumentReference
    * ReferenceDefinitionDocumentReference} instance with all required arguments.
    */
   public static Builder create() {
-    return (path) -> new ReferenceDefinitionDocumentReference().path(path);
+    return path -> new ReferenceDefinitionDocumentReference().path(path);
   }
 
   /** Builder helper class. */

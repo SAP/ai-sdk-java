@@ -331,9 +331,8 @@ public class CreateTARequest
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    path: ").append(toIndentedString(path)).append("\n");
     sb.append("    csnMetadata: ").append(toIndentedString(csnMetadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -353,10 +352,10 @@ public class CreateTARequest
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (dataDestinationName) ->
-        (type) ->
-            (path) ->
-                (csnMetadata) ->
+    return dataDestinationName ->
+        type ->
+            path ->
+                csnMetadata ->
                     new CreateTARequest()
                         .dataDestinationName(dataDestinationName)
                         .type(type)

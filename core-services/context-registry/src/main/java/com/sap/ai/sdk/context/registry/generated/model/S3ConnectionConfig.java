@@ -258,9 +258,8 @@ public class S3ConnectionConfig
     sb.append("    region: ").append(toIndentedString(region)).append("\n");
     sb.append("    accessKeyId: ").append(toIndentedString(accessKeyId)).append("\n");
     sb.append("    secretAccessKey: ").append(toIndentedString(secretAccessKey)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -280,10 +279,10 @@ public class S3ConnectionConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (bucket) ->
-        (region) ->
-            (accessKeyId) ->
-                (secretAccessKey) ->
+    return bucket ->
+        region ->
+            accessKeyId ->
+                secretAccessKey ->
                     new S3ConnectionConfig()
                         .bucket(bucket)
                         .region(region)

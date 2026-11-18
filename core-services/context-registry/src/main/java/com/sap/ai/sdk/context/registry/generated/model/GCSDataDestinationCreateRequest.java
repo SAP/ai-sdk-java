@@ -435,9 +435,8 @@ public class GCSDataDestinationCreateRequest implements CreateDataDestination
     sb.append("    labels: ").append(toIndentedString(labels)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -457,7 +456,7 @@ public class GCSDataDestinationCreateRequest implements CreateDataDestination
    * GCSDataDestinationCreateRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> (config) -> new GCSDataDestinationCreateRequest().type(type).config(config);
+    return type -> config -> new GCSDataDestinationCreateRequest().type(type).config(config);
   }
 
   /** Builder helper class. */
