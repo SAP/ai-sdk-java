@@ -48,22 +48,21 @@ class AiCoreOpenAiTest {
   void testCreateStreamingResponse() {
     try (var stream = service.createStreamingResponse("What is the capital of France?")) {
       stream.stream()
-          .forEach(
-              event -> {
-                assertThat(event.isValid()).isTrue();
+          .forEach(event -> {
+            assertThat(event.isValid()).isTrue();
 
-                if (event.isCompleted()) {
-                  final var response = event.asCompleted().response();
-                  assertThat(response.output()).isNotEmpty();
-                  final var message =
-                      response.output().stream().filter(ResponseOutputItem::isMessage).findFirst();
-                  assertThat(message).isPresent();
-                  final var content = message.get().asMessage().content();
-                  assertThat(content).isNotEmpty();
-                  assertThat(content.get(0).isOutputText()).isTrue();
-                  assertThat(content.get(0).asOutputText().text()).containsIgnoringCase("Paris");
-                }
-              });
+            if (event.isCompleted()) {
+              final var response = event.asCompleted().response();
+              assertThat(response.output()).isNotEmpty();
+              final var message =
+                  response.output().stream().filter(ResponseOutputItem::isMessage).findFirst();
+              assertThat(message).isPresent();
+              final var content = message.get().asMessage().content();
+              assertThat(content).isNotEmpty();
+              assertThat(content.get(0).isOutputText()).isTrue();
+              assertThat(content.get(0).asOutputText().text()).containsIgnoringCase("Paris");
+            }
+          });
     }
   }
 

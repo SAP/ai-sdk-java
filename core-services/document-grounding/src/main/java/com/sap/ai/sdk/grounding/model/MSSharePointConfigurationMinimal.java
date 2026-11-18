@@ -153,9 +153,8 @@ public class MSSharePointConfigurationMinimal
     final StringBuilder sb = new StringBuilder();
     sb.append("class MSSharePointConfigurationMinimal {\n");
     sb.append("    sharePoint: ").append(toIndentedString(sharePoint)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -175,7 +174,7 @@ public class MSSharePointConfigurationMinimal
    * MSSharePointConfigurationMinimal} instance with all required arguments.
    */
   public static Builder create() {
-    return (sharePoint) -> new MSSharePointConfigurationMinimal().sharePoint(sharePoint);
+    return sharePoint -> new MSSharePointConfigurationMinimal().sharePoint(sharePoint);
   }
 
   /** Builder helper class. */

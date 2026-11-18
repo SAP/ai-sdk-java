@@ -53,6 +53,25 @@ public class ResponseJsonSchema {
   }
 
   /**
+   * Create a new instance of {@link ResponseJsonSchema} from a raw JSON schema string.
+   *
+   * @param jsonSchema the JSON schema as a string.
+   * @param name the name of the schema.
+   * @return the new instance of {@link ResponseJsonSchema}.
+   */
+  @Nonnull
+  public static ResponseJsonSchema fromString(
+      @Nonnull final String jsonSchema, @Nonnull final String name) {
+    final Map<String, Object> schemaMap;
+    try {
+      schemaMap = new ObjectMapper().readValue(jsonSchema, new TypeReference<>() {});
+    } catch (final JsonProcessingException e) {
+      throw new IllegalArgumentException("Failed to parse the JSON schema string", e);
+    }
+    return fromMap(schemaMap, name);
+  }
+
+  /**
    * Create a new instance of {@link ResponseJsonSchema} from a given class.
    *
    * <p>⚠️ Fields of the schema class should be annotated with {@code @JsonProperty(required =

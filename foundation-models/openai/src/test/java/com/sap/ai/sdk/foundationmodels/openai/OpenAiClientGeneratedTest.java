@@ -6,6 +6,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.exactly;
 import static com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath;
+import static com.github.tomakehurst.wiremock.client.WireMock.ok;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
@@ -33,8 +34,11 @@ import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompleti
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.CreateChatCompletionStreamResponseChoicesInner;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.FunctionObject;
 import com.sap.ai.sdk.foundationmodels.openai.generated.model.PromptFilterResult;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
+import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5FactoryBuilder;
 import io.vavr.control.Try;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -78,6 +82,28 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
   void chatCompletionErrorHandling(@Nonnull final Runnable request) {
     stubForErrorHandling();
     assertForErrorHandling(request);
+  }
+
+  @Test
+  void chatCompletionTimeoutErrorHandling() {
+    stubFor(
+        post(anyUrl())
+            .willReturn(
+                ok().withFixedDelay(122_000) // 2 minutes + 2 seconds
+                    .withHeader("Content-Type", "application/json")));
+
+    // set timeout to 1 second instead of 2 minutes to avoid waiting for the full timeout
+    ApacheHttpClient5Accessor.setHttpClientFactory(destination ->
+        new ApacheHttpClient5FactoryBuilder()
+            .timeout(Duration.ofSeconds(1))
+            .build()
+            .createHttpClient(destination));
+
+    assertThatThrownBy(() -> client.chatCompletion(new OpenAiChatCompletionRequest("")))
+        .describedAs("Timeouts should be handled")
+        .isInstanceOfSatisfying(OpenAiClientException.class, e -> assertException(e, null, null))
+        .hasMessageContaining(
+            "Request to OpenAI model took longer than 2 minutes. Please shorten your request or use streaming.");
   }
 
   @Test
@@ -181,7 +207,8 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
                         "content" : "Hello World! Why is this phrase so famous?",
                         "role" : "user"
                       } ]
-                    }""")));
+                    }\
+                    """)));
   }
 
   @Test
@@ -202,12 +229,13 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {
-                           "messages" : [{
-                             "content" : "First message",
-                             "role" : "user"
-                           }]
-                      }""")));
+                    {
+                         "messages" : [{
+                           "content" : "First message",
+                           "role" : "user"
+                         }]
+                    }\
+                    """)));
 
     var response = client.chatCompletion(new OpenAiChatCompletionRequest("Second message"));
 
@@ -222,12 +250,13 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {
-                           "messages" : [{
-                             "content" : "Second message",
-                             "role" : "user"
-                           }]
-                      }""")));
+                    {
+                         "messages" : [{
+                           "content" : "Second message",
+                           "role" : "user"
+                         }]
+                    }\
+                    """)));
   }
 
   @Test
@@ -260,7 +289,8 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                      {"input": "Hello World"}""")));
+                    {"input": "Hello World"}\
+                    """)));
   }
 
   @Test
@@ -536,34 +566,34 @@ class OpenAiClientGeneratedTest extends BaseOpenAiClientTest {
             .withRequestBody(
                 equalToJson(
                     """
-                  {
-                    "messages" : [ {
-                      "content" : "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?",
-                      "role" : "user"
-                    } ],
-                    "tools" : [ {
-                      "type" : "function",
-                      "function" : {
-                        "name" : "fibonacci",
-                        "parameters" : {
-                          "type" : "object",
-                          "properties" : {
-                            "N" : {
-                              "type" : "integer"
+                    {
+                      "messages" : [ {
+                        "content" : "A pair of rabbits is placed in a field. Each month, every pair produces one new pair, starting from the second month. How many rabbits will there be after 12 months?",
+                        "role" : "user"
+                      } ],
+                      "tools" : [ {
+                        "type" : "function",
+                        "function" : {
+                          "name" : "fibonacci",
+                          "parameters" : {
+                            "type" : "object",
+                            "properties" : {
+                              "N" : {
+                                "type" : "integer"
+                              }
                             }
-                          }
-                        },
-                        "strict" : false
-                      }
-                    } ],
-                    "tool_choice" : {
-                      "type" : "function",
-                      "function" : {
-                        "name" : "fibonacci"
+                          },
+                          "strict" : false
+                        }
+                      } ],
+                      "tool_choice" : {
+                        "type" : "function",
+                        "function" : {
+                          "name" : "fibonacci"
+                        }
                       }
                     }
-                  }
-                  """)));
+                    """)));
   }
 
   @Test

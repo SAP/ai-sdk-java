@@ -22,7 +22,8 @@
             "n" : 1
           },
           "timeout" : 600,
-          "max_retries" : 2
+          "max_retries" : 2,
+          "drop_unsupported_params" : true
         }
       },
       "grounding" : {

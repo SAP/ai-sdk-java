@@ -23,7 +23,12 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-/** Filter configuration for Llama Guard 3 8B */
+/**
+ * Filter configuration for Llama Guard 3 8B **DEPRECATED**: will be removed 2027-09-20.
+ *
+ * @deprecated
+ */
+@Deprecated
 // CHECKSTYLE:OFF
 public class LlamaGuard38b
 // CHECKSTYLE:ON
@@ -654,9 +659,8 @@ public class LlamaGuard38b
     sb.append("    codeInterpreterAbuse: ")
         .append(toIndentedString(codeInterpreterAbuse))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -1,7 +1,7 @@
 package com.sap.ai.sdk.app.services;
 
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.CLAUDE_4_5_SONNET;
-import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_2_5_FLASH;
+import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GEMINI_3_8_FLASH;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_41_NANO;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.GPT_5_MINI;
 import static com.sap.ai.sdk.orchestration.OrchestrationAiModel.Parameter.TEMPERATURE;
@@ -73,7 +73,7 @@ public class OrchestrationService {
 
   @Getter
   private final OrchestrationModuleConfig config =
-      new OrchestrationModuleConfig(GEMINI_2_5_FLASH.withParam(TEMPERATURE, 0.0));
+      new OrchestrationModuleConfig(GEMINI_3_8_FLASH.withParam(TEMPERATURE, 0.0));
 
   /**
    * Chat request to OpenAI through the Orchestration service with a simple prompt.
@@ -240,24 +240,23 @@ public class OrchestrationService {
       @Nonnull final String firstQuestion, @Nonnull final String followUp) {
     val reasoningConfig =
         config.withLlmConfig(CLAUDE_4_5_SONNET.withReasoningEffort(ReasoningEffort.MEDIUM));
+    val clientWithConfig = client.chatCompletion().config(reasoningConfig);
 
     // Turn 1
     val firstPrompt = PromptTemplate.create(firstQuestion);
-    val firstResponse =
-        client.chatCompletion().config(reasoningConfig).promptTemplate(firstPrompt).execute();
+    val firstResponse = clientWithConfig.promptTemplate(firstPrompt).execute();
 
     // Turn 2 feeds the whole history back. getAllMessages() already carries the reasoning content
     // on the final assistant message.
     val followUpPrompt =
         PromptTemplate.create(followUp).withMessageHistory(firstResponse.getAllMessages());
-    val followUpResponse =
-        client.chatCompletion().config(reasoningConfig).promptTemplate(followUpPrompt).execute();
+    val followUpResponse = clientWithConfig.promptTemplate(followUpPrompt).execute();
 
     return new ReasoningOutput(followUpResponse.getContent(), followUpResponse.getReasoningText());
   }
 
   /**
-   * Chat request to OpenAI through the Orchestration service with a template.
+   * Chat request to OpenAI through the Orchestration service using a template.
    *
    * @link <a href="https://help.sap.com/docs/sap-ai-core/sap-ai-core-service-guide/templating">SAP
    *     AI Core: Orchestration - Templating</a>
@@ -287,15 +286,16 @@ public class OrchestrationService {
   @Nonnull
   public OrchestrationChatResponse messagesHistory(@Nonnull final String prevMessage) {
     val prompt = PromptTemplate.create(Message.user(prevMessage));
+    val clientWithConfig = client.chatCompletion().config(config);
 
-    val result = client.chatCompletion().config(config).promptTemplate(prompt).execute();
+    val result = clientWithConfig.promptTemplate(prompt).execute();
 
     // Let's presume a user asks the following follow-up question
     val nextPrompt =
         PromptTemplate.create(Message.user("What is the typical food there?"))
             .withMessageHistory(result.getAllMessages());
 
-    return client.chatCompletion().config(config).promptTemplate(nextPrompt).execute();
+    return clientWithConfig.promptTemplate(nextPrompt).execute();
   }
 
   /**
@@ -423,9 +423,9 @@ public class OrchestrationService {
     val userMessage =
         Message.user(
             """
-    I think the SDK is good, but could use some further enhancements.
-    My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-    """);
+            I think the SDK is good, but could use some further enhancements.
+            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+            """);
 
     val prompt = PromptTemplate.create(systemMessage, userMessage);
     val maskingConfig = DpiMasking.anonymization().withEntities(entity);
@@ -491,19 +491,19 @@ public class OrchestrationService {
     val systemMessage =
         Message.system(
             """
-                            Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
-                            Please make sure to address the user in person and end with "Best regards, the AI SDK team".
-                            """);
+            Please write an initial response to the below user feedback, stating that we are working on the feedback and will get back to them soon.
+            Please make sure to address the user in person and end with "Best regards, the AI SDK team".
+            """);
     val userMessage =
         Message.user(
             """
-                            Username: Mallory
-                            userEmail: mallory@sap.com
-                            Date: 2022-01-01
+            Username: Mallory
+            userEmail: mallory@sap.com
+            Date: 2022-01-01
 
-                            I think the SDK is good, but could use some further enhancements.
-                            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
-                            """);
+            I think the SDK is good, but could use some further enhancements.
+            My architect Alice and manager Bob pointed out that we need the grounding capabilities, which aren't supported yet.
+            """);
 
     val prompt = PromptTemplate.create(systemMessage, userMessage);
     val maskingConfig = DpiMasking.pseudonymization().withEntities(entity, DPIEntities.EMAIL);

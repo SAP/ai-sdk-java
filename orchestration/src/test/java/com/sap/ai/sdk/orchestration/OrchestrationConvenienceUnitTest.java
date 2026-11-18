@@ -199,6 +199,17 @@ public class OrchestrationConvenienceUnitTest {
   }
 
   @Test
+  void testResponseFormatSchemaFromString() {
+    val schemaMap = generateSchemaMap();
+    val schemaJson = new ObjectMapper().valueToTree(schemaMap);
+
+    val schemaFromString = ResponseJsonSchema.fromString(schemaJson.toString(), "schema-name");
+    val schemaFromMap = ResponseJsonSchema.fromMap(schemaMap, "schema-name");
+
+    assertThat(schemaFromString).isEqualTo(schemaFromMap);
+  }
+
+  @Test
   void testConfigWithResponseSchema() {
     val schemaFromClass = ResponseJsonSchema.fromType(TestClassForSchemaGeneration.class);
     val schemaMap = generateSchemaMap();
@@ -395,22 +406,22 @@ public class OrchestrationConvenienceUnitTest {
   void testTemplateFromLocalFileWithJsonObject() throws IOException {
     String promptTemplateWithJsonObject =
         """
- name: translator
- version: 0.0.1
- scenario: translation scenario
- spec:
-  template:
-    - role: "system"
-      content: |-
-        You are a language translator.
-    - role: "user"
-      content: |-
-        Whats {{ ?word }} in {{ ?language }}?
-  defaults:
-    word: "apple"
-  response_format:
-    type: json_object
- """;
+        name: translator
+        version: 0.0.1
+        scenario: translation scenario
+        spec:
+         template:
+           - role: "system"
+             content: |-
+               You are a language translator.
+           - role: "user"
+             content: |-
+               Whats {{ ?word }} in {{ ?language }}?
+         defaults:
+           word: "apple"
+         response_format:
+           type: json_object
+        """;
     var templateWithJsonObject = PromptTemplate.fromYaml(promptTemplateWithJsonObject);
     var expectedTemplateWithJsonObject =
         PromptTemplate.create(

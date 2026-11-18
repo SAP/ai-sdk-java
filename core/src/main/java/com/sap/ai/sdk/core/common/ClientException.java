@@ -45,7 +45,7 @@ public class ClientException extends RuntimeException {
   private ClassicHttpRequest httpRequest;
 
   /**
-   * Sets the original HTTP request that caused this exception.
+   * Sets the parsed response that caused this exception.
    *
    * @param clientError the original structured error payload received from the remote service, can
    *     be null if not available.
@@ -60,7 +60,7 @@ public class ClientException extends RuntimeException {
   }
 
   /**
-   * Sets the original HTTP request that caused this exception.
+   * Sets the original HTTP response that caused this exception.
    *
    * @param httpResponse the original HTTP response that caused this exception. Can be {@code null}
    *     if not available.

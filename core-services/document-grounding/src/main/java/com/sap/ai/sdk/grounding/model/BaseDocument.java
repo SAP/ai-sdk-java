@@ -216,9 +216,8 @@ public class BaseDocument
     sb.append("class BaseDocument {\n");
     sb.append("    chunks: ").append(toIndentedString(chunks)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -238,7 +237,7 @@ public class BaseDocument
    * with all required arguments.
    */
   public static Builder create() {
-    return (chunks) -> new BaseDocument().chunks(chunks);
+    return chunks -> new BaseDocument().chunks(chunks);
   }
 
   /** Builder helper class. */

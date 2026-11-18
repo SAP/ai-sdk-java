@@ -202,9 +202,8 @@ public class AiConfigurationList
     sb.append("class AiConfigurationList {\n");
     sb.append("    count: ").append(toIndentedString(count)).append("\n");
     sb.append("    resources: ").append(toIndentedString(resources)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -224,7 +223,7 @@ public class AiConfigurationList
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (count) -> (resources) -> new AiConfigurationList().count(count).resources(resources);
+    return count -> resources -> new AiConfigurationList().count(count).resources(resources);
   }
 
   /** Builder helper class. */

@@ -309,9 +309,8 @@ public class OpenAiChatCompletionRequest {
    */
   CreateChatCompletionRequest createCreateChatCompletionRequest() {
     final var request = new CreateChatCompletionRequest();
-    this.messages.forEach(
-        message ->
-            request.addMessagesItem(OpenAiUtils.createChatCompletionRequestMessage(message)));
+    this.messages.forEach(message ->
+        request.addMessagesItem(OpenAiUtils.createChatCompletionRequestMessage(message)));
 
     if (stop != null) {
       request.stop(CreateChatCompletionRequestAllOfStop.createListOfStrings(this.stop));

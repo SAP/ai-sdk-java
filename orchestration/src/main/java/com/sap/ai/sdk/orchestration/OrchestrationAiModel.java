@@ -222,6 +222,9 @@ public class OrchestrationAiModel {
   /** SAP ABAP 1 model. */
   public static final OrchestrationAiModel SAP_ABAP_1 = new OrchestrationAiModel("sap-abap-1");
 
+  /** SAP ABAP 2 model. */
+  public static final OrchestrationAiModel SAP_ABAP_2 = new OrchestrationAiModel("sap-abap-2");
+
   /** Alibaba Qwen 3 max model. */
   public static final OrchestrationAiModel QWEN_3_MAX = new OrchestrationAiModel("qwen3-max");
 
@@ -240,6 +243,10 @@ public class OrchestrationAiModel {
 
   /** Alibaba Qwen 3.8 max model. */
   public static final OrchestrationAiModel QWEN_3_8_MAX = new OrchestrationAiModel("qwen3.8-max");
+
+  /** Alibaba Qwen 3.8 flash model. */
+  public static final OrchestrationAiModel QWEN_3_8_FLASH =
+      new OrchestrationAiModel("qwen3.8-flash");
 
   OrchestrationAiModel(@Nonnull final String name) {
     this(name, Map.of(), "latest");

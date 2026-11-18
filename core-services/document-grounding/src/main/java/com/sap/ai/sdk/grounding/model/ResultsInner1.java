@@ -281,9 +281,8 @@ public class ResultsInner1
         .append(toIndentedString(remoteGroundingName))
         .append("\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -303,7 +302,7 @@ public class ResultsInner1
    * with all required arguments.
    */
   public static Builder create() {
-    return (filterId) -> new ResultsInner1().filterId(filterId);
+    return filterId -> new ResultsInner1().filterId(filterId);
   }
 
   /** Builder helper class. */

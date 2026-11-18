@@ -184,9 +184,8 @@ public class OrchestrationConfig
     sb.append("class OrchestrationConfig {\n");
     sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
     sb.append("    stream: ").append(toIndentedString(stream)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -206,7 +205,7 @@ public class OrchestrationConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (modules) -> new OrchestrationConfig().modules(modules);
+    return modules -> new OrchestrationConfig().modules(modules);
   }
 
   /** Builder helper class. */

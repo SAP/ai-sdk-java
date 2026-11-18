@@ -255,9 +255,8 @@ public class DocumentOutput
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
     sb.append("    chunks: ").append(toIndentedString(chunks)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -277,7 +276,7 @@ public class DocumentOutput
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (id) -> (chunks) -> new DocumentOutput().id(id).chunks(chunks);
+    return id -> chunks -> new DocumentOutput().id(id).chunks(chunks);
   }
 
   /** Builder helper class. */

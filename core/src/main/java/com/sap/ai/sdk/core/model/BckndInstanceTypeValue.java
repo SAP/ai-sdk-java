@@ -265,9 +265,8 @@ public class BckndInstanceTypeValue
     sb.append("    billableUnitsPerHour: ")
         .append(toIndentedString(billableUnitsPerHour))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -287,10 +286,10 @@ public class BckndInstanceTypeValue
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (memory) ->
-        (cpu) ->
-            (gpu) ->
-                (billableUnitsPerHour) ->
+    return memory ->
+        cpu ->
+            gpu ->
+                billableUnitsPerHour ->
                     new BckndInstanceTypeValue()
                         .memory(memory)
                         .cpu(cpu)

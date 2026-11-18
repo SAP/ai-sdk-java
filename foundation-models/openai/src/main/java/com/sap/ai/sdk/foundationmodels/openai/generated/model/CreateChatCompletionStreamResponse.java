@@ -435,9 +435,8 @@ public class CreateChatCompletionStreamResponse implements ChatCompletionsCreate
     sb.append("    model: ").append(toIndentedString(model)).append("\n");
     sb.append("    systemFingerprint: ").append(toIndentedString(systemFingerprint)).append("\n");
     sb.append("    _object: ").append(toIndentedString(_object)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

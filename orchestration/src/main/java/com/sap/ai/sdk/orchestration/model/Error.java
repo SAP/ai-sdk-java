@@ -351,9 +351,8 @@ public class Error
         .append(toIndentedString(intermediateResults))
         .append("\n");
     sb.append("    headers: ").append(toIndentedString(headers)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -373,10 +372,10 @@ public class Error
    * all required arguments.
    */
   public static Builder create() {
-    return (requestId) ->
-        (code) ->
-            (message) ->
-                (location) ->
+    return requestId ->
+        code ->
+            message ->
+                location ->
                     new Error().requestId(requestId).code(code).message(message).location(location);
   }
 

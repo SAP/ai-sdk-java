@@ -246,9 +246,8 @@ public class WorkZonePipelineCreateRequest implements CreatePipeline
     sb.append("class WorkZonePipelineCreateRequest {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -268,8 +267,7 @@ public class WorkZonePipelineCreateRequest implements CreatePipeline
    * WorkZonePipelineCreateRequest} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) ->
-        (metadata) -> new WorkZonePipelineCreateRequest().type(type).metadata(metadata);
+    return type -> metadata -> new WorkZonePipelineCreateRequest().type(type).metadata(metadata);
   }
 
   /** Builder helper class. */

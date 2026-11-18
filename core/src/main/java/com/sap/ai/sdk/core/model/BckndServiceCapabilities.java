@@ -184,9 +184,8 @@ public class BckndServiceCapabilities
     sb.append("class BckndServiceCapabilities {\n");
     sb.append("    logs: ").append(toIndentedString(logs)).append("\n");
     sb.append("    basic: ").append(toIndentedString(basic)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

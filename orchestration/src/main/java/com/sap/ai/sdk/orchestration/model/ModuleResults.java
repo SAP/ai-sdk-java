@@ -485,9 +485,8 @@ public class ModuleResults
     sb.append("    outputTranslation: ").append(toIndentedString(outputTranslation)).append("\n");
     sb.append("    llm: ").append(toIndentedString(llm)).append("\n");
     sb.append("    outputUnmasking: ").append(toIndentedString(outputUnmasking)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

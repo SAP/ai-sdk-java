@@ -468,9 +468,8 @@ public class Right
     sb.append("    key: ").append(toIndentedString(key)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("    scope: ").append(toIndentedString(scope)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -490,11 +489,11 @@ public class Right
    * all required arguments.
    */
   public static Builder create() {
-    return (operator) ->
-        (left) ->
-            (right) ->
-                (key) ->
-                    (value) ->
+    return operator ->
+        left ->
+            right ->
+                key ->
+                    value ->
                         new Right()
                             .operator(operator)
                             .left(left)

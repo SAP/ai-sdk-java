@@ -46,11 +46,8 @@ class IterableStreamConverterTest {
 
     final var streamCounter = new AtomicInteger(0);
     sut.peek(s -> streamCounter.incrementAndGet())
-        .forEach(
-            s ->
-                assertThat(s)
-                    .containsAnyOf("THIS", "IS", "A", "TEST")
-                    .doesNotContainAnyWhitespaces());
+        .forEach(s ->
+            assertThat(s).containsAnyOf("THIS", "IS", "A", "TEST").doesNotContainAnyWhitespaces());
 
     assertThat(streamCounter).hasValue(IterableStreamConverter.BUFFER_SIZE * 4);
     verify(inputStream, times(TEMPLATE.length() + 1))
@@ -65,13 +62,12 @@ class IterableStreamConverterTest {
     final var TEMPLATE = "Foo Bar\n";
     final var inputStream = mock(InputStream.class);
     when(inputStream.read(any(), anyInt(), anyInt()))
-        .thenAnswer(
-            arg -> {
-              byte[] ar = arg.getArgument(0, byte[].class);
-              byte[] bytes = TEMPLATE.getBytes(StandardCharsets.UTF_8);
-              for (int i = 0; i < ar.length; i++) ar[i] = bytes[i % bytes.length];
-              return ar.length;
-            });
+        .thenAnswer(arg -> {
+          byte[] ar = arg.getArgument(0, byte[].class);
+          byte[] bytes = TEMPLATE.getBytes(StandardCharsets.UTF_8);
+          for (int i = 0; i < ar.length; i++) ar[i] = bytes[i % bytes.length];
+          return ar.length;
+        });
 
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);
     final var response = new BasicClassicHttpResponse(200, "OK");
@@ -90,13 +86,12 @@ class IterableStreamConverterTest {
     final var TEMPLATE = "Foo Bar\n";
     final var inputStream = mock(InputStream.class);
     when(inputStream.read(any(), anyInt(), anyInt()))
-        .thenAnswer(
-            arg -> {
-              byte[] ar = arg.getArgument(0, byte[].class);
-              byte[] bytes = TEMPLATE.getBytes(StandardCharsets.UTF_8);
-              for (int i = 0; i < ar.length; i++) ar[i] = bytes[i % bytes.length];
-              return ar.length;
-            })
+        .thenAnswer(arg -> {
+          byte[] ar = arg.getArgument(0, byte[].class);
+          byte[] bytes = TEMPLATE.getBytes(StandardCharsets.UTF_8);
+          for (int i = 0; i < ar.length; i++) ar[i] = bytes[i % bytes.length];
+          return ar.length;
+        })
         .thenThrow(new IOException("Ups!"));
 
     final var entity = new InputStreamEntity(inputStream, ContentType.TEXT_PLAIN);

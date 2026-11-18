@@ -575,9 +575,8 @@ public class ChatCompletionsRequestCommon
     sb.append("    frequencyPenalty: ").append(toIndentedString(frequencyPenalty)).append("\n");
     sb.append("    logitBias: ").append(toIndentedString(logitBias)).append("\n");
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

@@ -99,10 +99,9 @@ class AiCoreHttpClientImpl implements HttpClient {
         ALLOWED_OPERATIONS.entrySet().stream()
             .filter(entry -> endpoint.matches(entry.getKey()))
             .findFirst()
-            .orElseThrow(
-                () ->
-                    new UnsupportedOperationException(
-                        String.format("Endpoint %s is not supported in AI Core", endpoint)));
+            .orElseThrow(() ->
+                new UnsupportedOperationException(
+                    String.format("Endpoint %s is not supported in AI Core", endpoint)));
 
     // Validate method
     if (!matchingEntry.getValue().contains(method)) {

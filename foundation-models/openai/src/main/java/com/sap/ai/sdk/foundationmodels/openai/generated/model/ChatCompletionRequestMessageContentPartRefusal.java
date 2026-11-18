@@ -250,9 +250,8 @@ public class ChatCompletionRequestMessageContentPartRefusal
     sb.append("class ChatCompletionRequestMessageContentPartRefusal {\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    refusal: ").append(toIndentedString(refusal)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }

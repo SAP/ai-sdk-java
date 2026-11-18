@@ -165,9 +165,8 @@ public class DocumentCreateRequest
     final StringBuilder sb = new StringBuilder();
     sb.append("class DocumentCreateRequest {\n");
     sb.append("    documents: ").append(toIndentedString(documents)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -187,7 +186,7 @@ public class DocumentCreateRequest
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (documents) -> new DocumentCreateRequest().documents(documents);
+    return documents -> new DocumentCreateRequest().documents(documents);
   }
 
   /** Builder helper class. */

@@ -1,6 +1,6 @@
 /*
- * Prompt Registry API
- * Prompt Storage service for Design time & Runtime prompt templates.
+ * Prompt Registry
+ * The Prompt Registry simplifies the lifecycle management of prompt templates across design and runtime environments. It comes with an imperative and declarative interface. This API specification describes the imperative API for managing prompt templates and also allows the retrieval of declarative managed prompt templates. A prompt template consists of chat messages where placeholders can be defined together with default values. Additional information such as metadata tags can be added to the resource as well.
  *
  *
  *
@@ -206,9 +206,8 @@ public class OutputFilteringConfig
     sb.append("class OutputFilteringConfig {\n");
     sb.append("    filters: ").append(toIndentedString(filters)).append("\n");
     sb.append("    streamOptions: ").append(toIndentedString(streamOptions)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -228,7 +227,7 @@ public class OutputFilteringConfig
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (filters) -> new OutputFilteringConfig().filters(filters);
+    return filters -> new OutputFilteringConfig().filters(filters);
   }
 
   /** Builder helper class. */

@@ -272,9 +272,8 @@ public class ServiceNowConfigurationStruct
     sb.append("    serviceNow: ").append(toIndentedString(serviceNow)).append("\n");
     sb.append("    metadataConfigId: ").append(toIndentedString(metadataConfigId)).append("\n");
     sb.append("    cronExpression: ").append(toIndentedString(cronExpression)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -294,7 +293,7 @@ public class ServiceNowConfigurationStruct
    * ServiceNowConfigurationStruct} instance with all required arguments.
    */
   public static Builder create() {
-    return (destination) -> new ServiceNowConfigurationStruct().destination(destination);
+    return destination -> new ServiceNowConfigurationStruct().destination(destination);
   }
 
   /** Builder helper class. */

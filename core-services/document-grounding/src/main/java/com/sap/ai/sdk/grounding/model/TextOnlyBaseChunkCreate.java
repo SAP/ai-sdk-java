@@ -202,9 +202,8 @@ public class TextOnlyBaseChunkCreate
     sb.append("class TextOnlyBaseChunkCreate {\n");
     sb.append("    content: ").append(toIndentedString(content)).append("\n");
     sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -224,7 +223,7 @@ public class TextOnlyBaseChunkCreate
    * TextOnlyBaseChunkCreate} instance with all required arguments.
    */
   public static Builder create() {
-    return (content) -> new TextOnlyBaseChunkCreate().content(content);
+    return content -> new TextOnlyBaseChunkCreate().content(content);
   }
 
   /** Builder helper class. */

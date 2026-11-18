@@ -301,9 +301,8 @@ public class CompletionPostResponseStreaming
     sb.append("    intermediateFailures: ")
         .append(toIndentedString(intermediateFailures))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -323,7 +322,7 @@ public class CompletionPostResponseStreaming
    * CompletionPostResponseStreaming} instance with all required arguments.
    */
   public static Builder create() {
-    return (requestId) -> new CompletionPostResponseStreaming().requestId(requestId);
+    return requestId -> new CompletionPostResponseStreaming().requestId(requestId);
   }
 
   /** Builder helper class. */

@@ -1,6 +1,6 @@
 /*
- * Prompt Registry API
- * Prompt Storage service for Design time & Runtime prompt templates.
+ * Prompt Registry
+ * The Prompt Registry simplifies the lifecycle management of prompt templates across design and runtime environments. It comes with an imperative and declarative interface. This API specification describes the imperative API for managing prompt templates and also allows the retrieval of declarative managed prompt templates. A prompt template consists of chat messages where placeholders can be defined together with default values. Additional information such as metadata tags can be added to the resource as well.
  *
  *
  *
@@ -361,9 +361,8 @@ public class UserChatMessageContentItem
     sb.append("    imageUrl: ").append(toIndentedString(imageUrl)).append("\n");
     sb.append("    _file: ").append(toIndentedString(_file)).append("\n");
     sb.append("    cacheControl: ").append(toIndentedString(cacheControl)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -383,7 +382,7 @@ public class UserChatMessageContentItem
    * UserChatMessageContentItem} instance with all required arguments.
    */
   public static Builder create() {
-    return (type) -> new UserChatMessageContentItem().type(type);
+    return type -> new UserChatMessageContentItem().type(type);
   }
 
   /** Builder helper class. */

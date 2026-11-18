@@ -230,9 +230,8 @@ public class AiDeploymentModificationResponseListInner
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    error: ").append(toIndentedString(error)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -252,9 +251,9 @@ public class AiDeploymentModificationResponseListInner
    * AiDeploymentModificationResponseListInner} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (message) ->
-            (error) ->
+    return id ->
+        message ->
+            error ->
                 new AiDeploymentModificationResponseListInner()
                     .id(id)
                     .message(message)

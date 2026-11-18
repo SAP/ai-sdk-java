@@ -321,9 +321,8 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
     sb.append("    config: ").append(toIndentedString(config)).append("\n");
     sb.append("    placeholderValues: ").append(toIndentedString(placeholderValues)).append("\n");
     sb.append("    messagesHistory: ").append(toIndentedString(messagesHistory)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -343,7 +342,7 @@ public class CompletionRequestConfigurationReferenceById implements CompletionPo
    * CompletionRequestConfigurationReferenceById} instance with all required arguments.
    */
   public static Builder create() {
-    return (configRef) -> new CompletionRequestConfigurationReferenceById().configRef(configRef);
+    return configRef -> new CompletionRequestConfigurationReferenceById().configRef(configRef);
   }
 
   /** Builder helper class. */

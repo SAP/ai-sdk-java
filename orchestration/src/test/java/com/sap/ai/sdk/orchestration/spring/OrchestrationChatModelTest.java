@@ -3,6 +3,7 @@ package com.sap.ai.sdk.orchestration.spring;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.anyUrl;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
+import static com.github.tomakehurst.wiremock.client.WireMock.exactly;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.postRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
@@ -170,10 +171,9 @@ class OrchestrationChatModelTest {
             .isInstanceOf(com.sap.ai.sdk.orchestration.OrchestrationClientException.class);
       } else {
         assertThat(client.stream(prompt).collectList().block())
-            .anySatisfy(
-                delta ->
-                    assertThat(delta.getResult().getMetadata().getFinishReason())
-                        .isEqualTo("content_filter"));
+            .anySatisfy(delta ->
+                assertThat(delta.getResult().getMetadata().getFinishReason())
+                    .isEqualTo("content_filter"));
       }
       Mockito.verify(inputStream, times(1)).close();
     }
@@ -220,6 +220,72 @@ class OrchestrationChatModelTest {
       }
     }
   }
+
+  @Test
+  void testUseProviderStructuredOutputPopulatesSchema() throws IOException {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .willReturn(
+                aResponse()
+                    .withBodyFile("jsonSchemaResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val translation =
+        ChatClient.builder(client)
+            .build()
+            .prompt(new Prompt("Whats 'apple' in German?", defaultOptions))
+            .call()
+            .entity(Translation.class, spec -> spec.useProviderStructuredOutput());
+
+    assertThat(translation).isNotNull();
+    assertThat(translation.translation()).isEqualTo("Apfel");
+    assertThat(translation.language()).isEqualTo("German");
+
+    // useProviderStructuredOutput() must send the schema as a native json_schema response format.
+    try (var requestInputStream = fileLoader.apply("springResponseFormatRequest.json")) {
+      final String request = new String(requestInputStream.readAllBytes());
+      verify(postRequestedFor(anyUrl()).withRequestBody(equalToJson(request)));
+    }
+  }
+
+  @Test
+  void testStructuredOutputValidationRetries() {
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .inScenario("Schema Validation Retry")
+            .whenScenarioStateIs(STARTED)
+            .willReturn(
+                aResponse()
+                    .withBodyFile("responseFormatTextResponse.json")
+                    .withHeader("Content-Type", "application/json"))
+            .willSetStateTo("Second Call"));
+
+    stubFor(
+        post(urlPathEqualTo("/v2/completion"))
+            .inScenario("Schema Validation Retry")
+            .whenScenarioStateIs("Second Call")
+            .willReturn(
+                aResponse()
+                    .withBodyFile("jsonSchemaResponse.json")
+                    .withHeader("Content-Type", "application/json")));
+
+    val translation =
+        ChatClient.builder(client)
+            .build()
+            .prompt(new Prompt("Whats 'apple' in German?", defaultOptions))
+            .call()
+            .entity(Translation.class, spec -> spec.validateSchema());
+
+    assertThat(translation).isNotNull();
+    assertThat(translation.translation()).isEqualTo("Apfel");
+    assertThat(translation.language()).isEqualTo("German");
+    // First response failed validation, so validateSchema re-prompted: exactly two completion
+    // calls.
+    verify(exactly(2), postRequestedFor(urlPathEqualTo("/v2/completion")));
+  }
+
+  /** Target type for structured output tests. */
+  public record Translation(String translation, String language) {}
 
   @Test
   void testChatMemory() throws IOException {

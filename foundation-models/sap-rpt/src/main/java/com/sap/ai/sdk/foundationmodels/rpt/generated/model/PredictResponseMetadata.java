@@ -300,9 +300,8 @@ public class PredictResponseMetadata
     sb.append("    numPredictions: ").append(toIndentedString(numPredictions)).append("\n");
     sb.append("    numQueryRows: ").append(toIndentedString(numQueryRows)).append("\n");
     sb.append("    contextMode: ").append(toIndentedString(contextMode)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -322,10 +321,10 @@ public class PredictResponseMetadata
    * PredictResponseMetadata} instance with all required arguments.
    */
   public static Builder create() {
-    return (numColumns) ->
-        (numRows) ->
-            (numPredictions) ->
-                (numQueryRows) ->
+    return numColumns ->
+        numRows ->
+            numPredictions ->
+                numQueryRows ->
                     new PredictResponseMetadata()
                         .numColumns(numColumns)
                         .numRows(numRows)

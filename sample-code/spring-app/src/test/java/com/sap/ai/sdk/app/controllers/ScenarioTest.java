@@ -91,10 +91,9 @@ class ScenarioTest {
 
     val availableOrchestrationModels =
         aiModelList.stream()
-            .filter(
-                model ->
-                    model.getAllowedScenarios().stream()
-                        .anyMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
+            .filter(model ->
+                model.getAllowedScenarios().stream()
+                    .anyMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
             .filter(model -> !model.getModel().contains("embed"))
             .filter(model -> !internalOnlyModels.contains(model.getModel()))
             .filter(model -> !servedDeprecatedModels.contains(model.getModel()))
@@ -119,10 +118,9 @@ class ScenarioTest {
     // Gather models that are available but NOT allowed for orchestration scenario
     val nonOrchestrationModels =
         aiModelList.stream()
-            .filter(
-                model ->
-                    model.getAllowedScenarios().stream()
-                        .noneMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
+            .filter(model ->
+                model.getAllowedScenarios().stream()
+                    .noneMatch(scenario -> scenario.getScenarioId().equals("orchestration")))
             .map(AiModelBaseData::getModel)
             .collect(Collectors.toSet());
     // intersect of both sets
@@ -163,7 +161,7 @@ class ScenarioTest {
     // Gather AI Core's list of available RPT models
     val aiModelList = new ScenarioController().getModels().getResources();
 
-    val internalOnlyModels = Set.of("sap-rpt-1.1-preview", "sap-rpt-ts");
+    val internalOnlyModels = Set.of("sap-rpt-1.1-preview", "sap-rpt-ts", "sap-rpt-decisions");
 
     val availableRptModels =
         aiModelList.stream()

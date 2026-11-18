@@ -383,9 +383,8 @@ public class DataRepositoryWithDocuments
         .append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    documents: ").append(toIndentedString(documents)).append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -405,10 +404,9 @@ public class DataRepositoryWithDocuments
    * DataRepositoryWithDocuments} instance with all required arguments.
    */
   public static Builder create() {
-    return (id) ->
-        (title) ->
-            (documents) ->
-                new DataRepositoryWithDocuments().id(id).title(title).documents(documents);
+    return id ->
+        title ->
+            documents -> new DataRepositoryWithDocuments().id(id).title(title).documents(documents);
   }
 
   /** Builder helper class. */

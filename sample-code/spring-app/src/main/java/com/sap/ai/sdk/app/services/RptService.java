@@ -31,6 +31,9 @@ public class RptService {
   /**
    * Makes a prediction request to the RPT model. *
    *
+   * @link <a
+   *     href="https://sap.github.io/ai-sdk/docs/java/foundation-models/sap-rpt/table-completion">SAP
+   *     AI SDK for Java: RPT - Table Completion</a>
    * @return the prediction response payload from the RPT model.
    */
   @Nonnull
@@ -87,6 +90,9 @@ public class RptService {
   /**
    * Makes a prediction request to the RPT model using a Parquet file as input.
    *
+   * @link <a
+   *     href="https://sap.github.io/ai-sdk/docs/java/foundation-models/sap-rpt/table-completion">SAP
+   *     AI SDK for Java: RPT - Table Completion</a>
    * @return the prediction response payload from the RPT model.
    */
   @Nonnull

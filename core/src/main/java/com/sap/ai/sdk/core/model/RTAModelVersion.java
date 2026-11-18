@@ -676,9 +676,8 @@ public class RTAModelVersion
     sb.append("    orchestrationCapabilities: ")
         .append(toIndentedString(orchestrationCapabilities))
         .append("\n");
-    cloudSdkCustomFields.forEach(
-        (k, v) ->
-            sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
+    cloudSdkCustomFields.forEach((k, v) ->
+        sb.append("    ").append(k).append(": ").append(toIndentedString(v)).append("\n"));
     sb.append("}");
     return sb.toString();
   }
@@ -698,9 +697,9 @@ public class RTAModelVersion
    * instance with all required arguments.
    */
   public static Builder create() {
-    return (name) ->
-        (isLatest) ->
-            (deprecated) ->
+    return name ->
+        isLatest ->
+            deprecated ->
                 new RTAModelVersion().name(name).isLatest(isLatest).deprecated(deprecated);
   }
 
