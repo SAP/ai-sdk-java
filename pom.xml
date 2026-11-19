@@ -94,7 +94,7 @@
     <jspecify.version>1.0.1</jspecify.version>
     <errorprone.version>2.52.0</errorprone.version>
     <!-- CVE fixes -->
-    <bouncycastle.version>1.86</bouncycastle.version>
+    <bouncycastle.version>1.87</bouncycastle.version>
     <kotlin.version>2.4.21</kotlin.version>
     <guava.version>33.8.0-jre</guava.version>
     <java-jwt.version>4.6.2</java-jwt.version>
