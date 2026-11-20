@@ -2,8 +2,8 @@ name: "End-to-end Tests"
 on:
   workflow_dispatch:
   schedule:
-    - cron: 15 21 * * MON-FRI # v1, runs one hour before main
-    - cron: 15 22 * * MON-FRI # main
+    - cron: 15 20 * * MON-FRI # v1, runs one hour before main
+    - cron: 15 21 * * MON-FRI # main
 
 env:
   MVN_MULTI_THREADED_ARGS: --batch-mode --no-transfer-progress --fail-at-end --show-version --threads 1C
