@@ -209,6 +209,7 @@
           <plugin>
             <groupId>com.sap.cloud.sdk.datamodel</groupId>
             <artifactId>openapi-generator-maven-plugin</artifactId>
+            <version>5.34.0-SNAPSHOT</version>
             <configuration>
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
               <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
@@ -235,6 +236,30 @@
                     <useOneOfCreators>true</useOneOfCreators>
                     <useFloatArrays>true</useFloatArrays>
                     <excludeProperties>TargetColumnConfig.top_k</excludeProperties>
+                  </additionalProperties>
+                </configuration>
+              </execution>
+              <execution>
+                <id>sap-rpt-decisions</id>
+                <goals>
+                  <goal>generate</goal>
+                </goals>
+                <phase>generate-sources</phase>
+                <configuration>
+                  <inputSpec>${project.basedir}/src/main/resources/spec/sap-rpt-decisions_openapi.json</inputSpec>
+                  <modelPackage>com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model</modelPackage>
+                  <apiPackage>com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.client</apiPackage>
+                  <compileScope>COMPILE</compileScope>
+                  <deleteOutputDirectory>true</deleteOutputDirectory>
+                  <enableOneOfAnyOfGeneration>true</enableOneOfAnyOfGeneration>
+                  <additionalProperties>
+                    <library>apache-httpclient</library>
+                    <pojoBuilderMethodName>create</pojoBuilderMethodName>
+                    <pojoConstructorVisibility>protected</pojoConstructorVisibility>
+                    <enumUnknownDefaultCase>true</enumUnknownDefaultCase>
+                    <useOneOfInterfaces>true</useOneOfInterfaces>
+                    <useOneOfCreators>true</useOneOfCreators>
+                    <useFloatArrays>true</useFloatArrays>
                   </additionalProperties>
                 </configuration>
               </execution>
