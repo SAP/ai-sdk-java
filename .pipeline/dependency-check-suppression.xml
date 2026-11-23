@@ -55,4 +55,16 @@
     <notes><![CDATA[CVE-2026-118042 has no official record yet on cve.org. The flagged dependency (guava-33.7.2-jre) also has no newer version at the moment.]]></notes>
     <cve>CVE-2026-118042</cve>
   </suppress>
+  <suppress>
+    <notes><![CDATA[CVE-2026-59345 affects spring-ai-commons < 2.0. 1.1.8 is the last 1.x release; no fix available without Spring AI 2 migration.]]></notes>
+    <cve>CVE-2026-59345</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[CVE-2026-59340 affects spring-ai-model < 2.0. 1.1.8 is the last 1.x release; no fix available without Spring AI 2 migration.]]></notes>
+    <cve>CVE-2026-59340</cve>
+  </suppress>
+  <suppress>
+    <notes><![CDATA[CVE-2026-59417 affects spring-ai-model < 2.0. 1.1.8 is the last 1.x release; no fix available without Spring AI 2 migration.]]></notes>
+    <cve>CVE-2026-59417</cve>
+  </suppress>
 </suppressions>
