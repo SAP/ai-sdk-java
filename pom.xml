@@ -72,7 +72,7 @@
     <spring-core.version>7.0.10</spring-core.version>
     <spring-beans.version>7.0.10</spring-beans.version>
     <spring-messaging.version>7.0.10</spring-messaging.version>
-    <reactor-core.version>3.8.8</reactor-core.version>
+    <reactor-core.version>3.9.0</reactor-core.version>
     <dotenv-java.version>3.2.0</dotenv-java.version>
     <mockito.version>5.24.0</mockito.version>
     <javaparser.version>3.28.2</javaparser.version>
