@@ -1,8 +1,9 @@
 name: 'Weekly Spec Update'
 
 on:
-  schedule:
-    - cron: '0 0 * * SUN' # Every Sunday at midnight UTC
+  # Temporarily disable scheduled spec update until required repos unblock access
+  #schedule:
+  #  - cron: '0 0 * * SUN' # Every Sunday at midnight UTC
   workflow_dispatch:
 
 jobs:
