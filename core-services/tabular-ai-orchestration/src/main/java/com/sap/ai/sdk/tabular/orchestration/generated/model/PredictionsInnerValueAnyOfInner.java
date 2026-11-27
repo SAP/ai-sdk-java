@@ -16,8 +16,9 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -37,7 +38,7 @@ public class PredictionsInnerValueAnyOfInner
   private BigDecimal confidence;
 
   @JsonProperty("confidenceInterval")
-  private float[] confidenceInterval;
+  private List<BigDecimal> confidenceInterval;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -120,8 +121,24 @@ public class PredictionsInnerValueAnyOfInner
    */
   @Nonnull
   public PredictionsInnerValueAnyOfInner confidenceInterval(
-      @Nullable final float[] confidenceInterval) {
+      @Nullable final List<BigDecimal> confidenceInterval) {
     this.confidenceInterval = confidenceInterval;
+    return this;
+  }
+
+  /**
+   * Add one confidenceInterval instance to this {@link PredictionsInnerValueAnyOfInner}.
+   *
+   * @param confidenceIntervalItem The confidenceInterval that should be added
+   * @return The same instance of type {@link PredictionsInnerValueAnyOfInner}
+   */
+  @Nonnull
+  public PredictionsInnerValueAnyOfInner addConfidenceIntervalItem(
+      @Nonnull final BigDecimal confidenceIntervalItem) {
+    if (this.confidenceInterval == null) {
+      this.confidenceInterval = new ArrayList<>();
+    }
+    this.confidenceInterval.add(confidenceIntervalItem);
     return this;
   }
 
@@ -134,7 +151,7 @@ public class PredictionsInnerValueAnyOfInner
    *     PredictionsInnerValueAnyOfInner} instance.
    */
   @Nullable
-  public float[] getConfidenceInterval() {
+  public List<BigDecimal> getConfidenceInterval() {
     return confidenceInterval;
   }
 
@@ -145,7 +162,7 @@ public class PredictionsInnerValueAnyOfInner
    *     contains the first and last returned quantiles (10th and 90th percentiles with default
    *     quantiles). Omitted for TabPFN mean, median, and mode.
    */
-  public void setConfidenceInterval(@Nullable final float[] confidenceInterval) {
+  public void setConfidenceInterval(@Nullable final List<BigDecimal> confidenceInterval) {
     this.confidenceInterval = confidenceInterval;
   }
 
@@ -222,14 +239,13 @@ public class PredictionsInnerValueAnyOfInner
             this.cloudSdkCustomFields, predictionsInnerValueAnyOfInner.cloudSdkCustomFields)
         && Objects.equals(this.prediction, predictionsInnerValueAnyOfInner.prediction)
         && Objects.equals(this.confidence, predictionsInnerValueAnyOfInner.confidence)
-        && Arrays.equals(
+        && Objects.equals(
             this.confidenceInterval, predictionsInnerValueAnyOfInner.confidenceInterval);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        prediction, confidence, Arrays.hashCode(confidenceInterval), cloudSdkCustomFields);
+    return Objects.hash(prediction, confidence, confidenceInterval, cloudSdkCustomFields);
   }
 
   @Override

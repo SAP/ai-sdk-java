@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
  * options are rejected.
  */
 // CHECKSTYLE:OFF
-public class ModelTabPfn implements Modelconfig
+public class ModelTabPfn implements Modelconfig1
 // CHECKSTYLE:ON
 {
   @JsonProperty("task_config")

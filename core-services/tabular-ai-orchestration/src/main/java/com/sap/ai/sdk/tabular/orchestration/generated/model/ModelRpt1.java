@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
  * https://help.sap.com/docs/sap-ai-core/generative-ai/example-payloads-for-inferencing-sap-rpt-1?locale&#x3D;en-US#parameters
  */
 // CHECKSTYLE:OFF
-public class ModelRpt1 implements Modelconfig
+public class ModelRpt1 implements Modelconfig1
 // CHECKSTYLE:ON
 {
   @JsonProperty("index_column")

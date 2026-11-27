@@ -83,7 +83,7 @@ public class PredictRequest
   private ResponseFormatEnum responseFormat;
 
   @JsonProperty("modelConfig")
-  private Modelconfig modelConfig;
+  private Modelconfig1 modelConfig;
 
   @JsonProperty("columns")
   private Map<String, List<Object>> columns = new HashMap<>();
@@ -273,7 +273,7 @@ public class PredictRequest
    * @return The same instance of this {@link PredictRequest} class
    */
   @Nonnull
-  public PredictRequest modelConfig(@Nullable final Modelconfig modelConfig) {
+  public PredictRequest modelConfig(@Nullable final Modelconfig1 modelConfig) {
     this.modelConfig = modelConfig;
     return this;
   }
@@ -284,7 +284,7 @@ public class PredictRequest
    * @return modelConfig The modelConfig of this {@link PredictRequest} instance.
    */
   @Nonnull
-  public Modelconfig getModelConfig() {
+  public Modelconfig1 getModelConfig() {
     return modelConfig;
   }
 
@@ -293,7 +293,7 @@ public class PredictRequest
    *
    * @param modelConfig The modelConfig of this {@link PredictRequest}
    */
-  public void setModelConfig(@Nullable final Modelconfig modelConfig) {
+  public void setModelConfig(@Nullable final Modelconfig1 modelConfig) {
     this.modelConfig = modelConfig;
   }
 

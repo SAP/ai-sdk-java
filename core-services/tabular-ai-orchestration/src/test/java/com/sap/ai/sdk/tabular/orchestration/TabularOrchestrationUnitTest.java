@@ -1,17 +1,17 @@
 package com.sap.ai.sdk.tabular.orchestration;
 
+import static com.sap.ai.sdk.tabular.orchestration.generated.model.TFMEnum.SAP_RPT_1_6;
 import static com.sap.ai.sdk.tabular.orchestration.generated.model.TaskTypeEnum.CLASSIFICATION;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.sap.ai.sdk.tabular.orchestration.generated.model.ContextSelectionConfig;
-import com.sap.ai.sdk.tabular.orchestration.generated.model.ContextSelectionStrategyEnum;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.ModelRpt16;
 import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictRequest;
-import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictResponse;
 import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictionConfig;
-import com.sap.ai.sdk.tabular.orchestration.generated.model.StrategyConfigs;
-import com.sap.ai.sdk.tabular.orchestration.generated.model.TFMEnum;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.ResponsePredictV1PredictEndpointsPredict;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.SamplingRandomConfig;
 import com.sap.ai.sdk.tabular.orchestration.generated.model.TargetColumn;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Accessor;
 import com.sap.cloud.sdk.cloudplatform.connectivity.ApacheHttpClient5Cache;
@@ -40,18 +40,15 @@ public class TabularOrchestrationUnitTest {
   void testPredict() {
     val request =
         PredictRequest.create()
-            .modelName(TFMEnum._1_5)
-            .scenarioConfigName(scenarioConfigName)
+            .modelName(SAP_RPT_1_6)
             .predictionConfig(
                 PredictionConfig.create()
                     .targetColumns(
                         TargetColumn.create().name("salesgroup").taskType(CLASSIFICATION)))
+            .scenarioConfigName(scenarioConfigName)
             .contextSelectionConfig(
                 ContextSelectionConfig.create()
-                    .numRows(3)
-                    .strategy(ContextSelectionStrategyEnum.RANDOM)
-                    .strategyConfigs(
-                        StrategyConfigs.create().indexColumn("id").deterministic(true)))
+                    .strategyConfig(SamplingRandomConfig.create().deterministic(true)))
             .rows(
                 List.of(
                     Map.of(
@@ -72,15 +69,16 @@ public class TabularOrchestrationUnitTest {
                         "date", "2024-12-05",
                         "id", "689",
                         "salesgroup", "[PREDICT]")))
-            .modelConfig(Map.of());
+            .modelConfig(ModelRpt16.create());
 
-    final PredictResponse response = client.predict().predict(request);
+    final ResponsePredictV1PredictEndpointsPredict response =
+        client.predict().predict("default", request);
     assertThat(response.getId()).isEqualTo("babec616-8085-43ad-a36a-57f0c1484202");
 
-    assertThat(response.getMetadata().getNumColumns()).isEqualTo(5);
-    assertThat(response.getMetadata().getNumRows()).isEqualTo(6);
-    assertThat(response.getMetadata().getNumPredictions()).isEqualTo(3);
-    assertThat(response.getMetadata().getNumQueryRows()).isEqualTo(3);
+    assertThat(response.getMetadata().getTestSetNumCols()).isEqualTo(5);
+    assertThat(response.getMetadata().getTestSetNumRows()).isEqualTo(6);
+    assertThat(response.getMetadata().getnEstimators()).isEqualTo(3);
+    assertThat(response.getMetadata().getTopK()).isEqualTo(3);
 
     final List<Map<String, Object>> predictions = response.getPredictions();
     assertThat(predictions).hasSize(3);
@@ -105,7 +103,6 @@ public class TabularOrchestrationUnitTest {
 
     assertThat(response.getStatus().getCode()).isEqualTo(0);
     assertThat(response.getStatus().getMessage()).isEqualTo("ok");
-    assertThat(response.getAdditionalInformation()).isEmpty();
   }
 
   //  @Test

@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 
 /** ModelRpt16 */
 // CHECKSTYLE:OFF
-public class ModelRpt16 implements Modelconfig
+public class ModelRpt16 implements Modelconfig1
 // CHECKSTYLE:ON
 {
   @JsonProperty("index_column")

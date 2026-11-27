@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 
 /** Filter conditions for context selection */
 // CHECKSTYLE:OFF
-public class Filterconditions
+public class Filterconditions1
 // CHECKSTYLE:ON
 {
   @JsonProperty("logic")
@@ -49,17 +49,17 @@ public class Filterconditions
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
 
-  /** Default constructor for Filterconditions. */
-  protected Filterconditions() {}
+  /** Default constructor for Filterconditions1. */
+  protected Filterconditions1() {}
 
   /**
-   * Set the logic of this {@link Filterconditions} instance and return the same instance.
+   * Set the logic of this {@link Filterconditions1} instance and return the same instance.
    *
    * @param logic Logical operator to combine conditions (&#39;and&#39; or &#39;or&#39;)
-   * @return The same instance of this {@link Filterconditions} class
+   * @return The same instance of this {@link Filterconditions1} class
    */
   @Nonnull
-  public Filterconditions logic(@Nonnull final String logic) {
+  public Filterconditions1 logic(@Nonnull final String logic) {
     this.logic = logic;
     return this;
   }
@@ -67,7 +67,7 @@ public class Filterconditions
   /**
    * Logical operator to combine conditions (&#39;and&#39; or &#39;or&#39;)
    *
-   * @return logic The logic of this {@link Filterconditions} instance.
+   * @return logic The logic of this {@link Filterconditions1} instance.
    */
   @Nonnull
   public String getLogic() {
@@ -75,7 +75,7 @@ public class Filterconditions
   }
 
   /**
-   * Set the logic of this {@link Filterconditions} instance.
+   * Set the logic of this {@link Filterconditions1} instance.
    *
    * @param logic Logical operator to combine conditions (&#39;and&#39; or &#39;or&#39;)
    */
@@ -84,25 +84,25 @@ public class Filterconditions
   }
 
   /**
-   * Set the conditions of this {@link Filterconditions} instance and return the same instance.
+   * Set the conditions of this {@link Filterconditions1} instance and return the same instance.
    *
    * @param conditions List of filter conditions
-   * @return The same instance of this {@link Filterconditions} class
+   * @return The same instance of this {@link Filterconditions1} class
    */
   @Nonnull
-  public Filterconditions conditions(@Nonnull final List<ConditionsInner> conditions) {
+  public Filterconditions1 conditions(@Nonnull final List<ConditionsInner> conditions) {
     this.conditions = conditions;
     return this;
   }
 
   /**
-   * Add one conditions instance to this {@link Filterconditions}.
+   * Add one conditions instance to this {@link Filterconditions1}.
    *
    * @param conditionsItem The conditions that should be added
-   * @return The same instance of type {@link Filterconditions}
+   * @return The same instance of type {@link Filterconditions1}
    */
   @Nonnull
-  public Filterconditions addConditionsItem(@Nonnull final ConditionsInner conditionsItem) {
+  public Filterconditions1 addConditionsItem(@Nonnull final ConditionsInner conditionsItem) {
     if (this.conditions == null) {
       this.conditions = new ArrayList<>();
     }
@@ -113,7 +113,7 @@ public class Filterconditions
   /**
    * List of filter conditions
    *
-   * @return conditions The conditions of this {@link Filterconditions} instance.
+   * @return conditions The conditions of this {@link Filterconditions1} instance.
    */
   @Nonnull
   public List<ConditionsInner> getConditions() {
@@ -121,7 +121,7 @@ public class Filterconditions
   }
 
   /**
-   * Set the conditions of this {@link Filterconditions} instance.
+   * Set the conditions of this {@link Filterconditions1} instance.
    *
    * @param conditions List of filter conditions
    */
@@ -130,13 +130,13 @@ public class Filterconditions
   }
 
   /**
-   * Set the field of this {@link Filterconditions} instance and return the same instance.
+   * Set the field of this {@link Filterconditions1} instance and return the same instance.
    *
    * @param field Field name to filter on
-   * @return The same instance of this {@link Filterconditions} class
+   * @return The same instance of this {@link Filterconditions1} class
    */
   @Nonnull
-  public Filterconditions field(@Nonnull final String field) {
+  public Filterconditions1 field(@Nonnull final String field) {
     this.field = field;
     return this;
   }
@@ -144,7 +144,7 @@ public class Filterconditions
   /**
    * Field name to filter on
    *
-   * @return field The field of this {@link Filterconditions} instance.
+   * @return field The field of this {@link Filterconditions1} instance.
    */
   @Nonnull
   public String getField() {
@@ -152,7 +152,7 @@ public class Filterconditions
   }
 
   /**
-   * Set the field of this {@link Filterconditions} instance.
+   * Set the field of this {@link Filterconditions1} instance.
    *
    * @param field Field name to filter on
    */
@@ -161,13 +161,13 @@ public class Filterconditions
   }
 
   /**
-   * Set the op of this {@link Filterconditions} instance and return the same instance.
+   * Set the op of this {@link Filterconditions1} instance and return the same instance.
    *
    * @param op Filter operator (e.g., &#39;eq&#39;, &#39;gte&#39;, &#39;lte&#39;)
-   * @return The same instance of this {@link Filterconditions} class
+   * @return The same instance of this {@link Filterconditions1} class
    */
   @Nonnull
-  public Filterconditions op(@Nonnull final String op) {
+  public Filterconditions1 op(@Nonnull final String op) {
     this.op = op;
     return this;
   }
@@ -175,7 +175,7 @@ public class Filterconditions
   /**
    * Filter operator (e.g., &#39;eq&#39;, &#39;gte&#39;, &#39;lte&#39;)
    *
-   * @return op The op of this {@link Filterconditions} instance.
+   * @return op The op of this {@link Filterconditions1} instance.
    */
   @Nonnull
   public String getOp() {
@@ -183,7 +183,7 @@ public class Filterconditions
   }
 
   /**
-   * Set the op of this {@link Filterconditions} instance.
+   * Set the op of this {@link Filterconditions1} instance.
    *
    * @param op Filter operator (e.g., &#39;eq&#39;, &#39;gte&#39;, &#39;lte&#39;)
    */
@@ -192,13 +192,13 @@ public class Filterconditions
   }
 
   /**
-   * Set the value of this {@link Filterconditions} instance and return the same instance.
+   * Set the value of this {@link Filterconditions1} instance and return the same instance.
    *
    * @param value Value to compare against
-   * @return The same instance of this {@link Filterconditions} class
+   * @return The same instance of this {@link Filterconditions1} class
    */
   @Nonnull
-  public Filterconditions value(@Nullable final Object value) {
+  public Filterconditions1 value(@Nullable final Object value) {
     this.value = value;
     return this;
   }
@@ -206,7 +206,7 @@ public class Filterconditions
   /**
    * Value to compare against
    *
-   * @return value The value of this {@link Filterconditions} instance.
+   * @return value The value of this {@link Filterconditions1} instance.
    */
   @Nullable
   public Object getValue() {
@@ -214,7 +214,7 @@ public class Filterconditions
   }
 
   /**
-   * Set the value of this {@link Filterconditions} instance.
+   * Set the value of this {@link Filterconditions1} instance.
    *
    * @param value Value to compare against
    */
@@ -223,7 +223,7 @@ public class Filterconditions
   }
 
   /**
-   * Get the names of the unrecognizable properties of the {@link Filterconditions}.
+   * Get the names of the unrecognizable properties of the {@link Filterconditions1}.
    *
    * @return The set of properties names
    */
@@ -234,7 +234,7 @@ public class Filterconditions
   }
 
   /**
-   * Get the value of an unrecognizable property of this {@link Filterconditions} instance.
+   * Get the value of an unrecognizable property of this {@link Filterconditions1} instance.
    *
    * @deprecated Use {@link #toMap()} instead.
    * @param name The name of the property
@@ -245,13 +245,13 @@ public class Filterconditions
   @Deprecated
   public Object getCustomField(@Nonnull final String name) throws NoSuchElementException {
     if (!cloudSdkCustomFields.containsKey(name)) {
-      throw new NoSuchElementException("Filterconditions has no field with name '" + name + "'.");
+      throw new NoSuchElementException("Filterconditions1 has no field with name '" + name + "'.");
     }
     return cloudSdkCustomFields.get(name);
   }
 
   /**
-   * Get the value of all properties of this {@link Filterconditions} instance including
+   * Get the value of all properties of this {@link Filterconditions1} instance including
    * unrecognized properties.
    *
    * @return The map of all properties
@@ -269,8 +269,8 @@ public class Filterconditions
   }
 
   /**
-   * Set an unrecognizable property of this {@link Filterconditions} instance. If the map previously
-   * contained a mapping for the key, the old value is replaced by the specified value.
+   * Set an unrecognizable property of this {@link Filterconditions1} instance. If the map
+   * previously contained a mapping for the key, the old value is replaced by the specified value.
    *
    * @param customFieldName The name of the property
    * @param customFieldValue The value of the property
@@ -288,7 +288,7 @@ public class Filterconditions
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    final Filterconditions filterconditions = (Filterconditions) o;
+    final Filterconditions1 filterconditions = (Filterconditions1) o;
     return Objects.equals(this.cloudSdkCustomFields, filterconditions.cloudSdkCustomFields)
         && Objects.equals(this.logic, filterconditions.logic)
         && Objects.equals(this.conditions, filterconditions.conditions)
@@ -306,7 +306,7 @@ public class Filterconditions
   @Nonnull
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    sb.append("class Filterconditions {\n");
+    sb.append("class Filterconditions1 {\n");
     sb.append("    logic: ").append(toIndentedString(logic)).append("\n");
     sb.append("    conditions: ").append(toIndentedString(conditions)).append("\n");
     sb.append("    field: ").append(toIndentedString(field)).append("\n");
@@ -329,7 +329,7 @@ public class Filterconditions
   }
 
   /**
-   * Create a type-safe, fluent-api builder object to construct a new {@link Filterconditions}
+   * Create a type-safe, fluent-api builder object to construct a new {@link Filterconditions1}
    * instance with all required arguments.
    */
   public static Builder create() {
@@ -338,7 +338,7 @@ public class Filterconditions
             field ->
                 op ->
                     value ->
-                        new Filterconditions()
+                        new Filterconditions1()
                             .logic(logic)
                             .conditions(conditions)
                             .field(field)
@@ -349,10 +349,10 @@ public class Filterconditions
   /** Builder helper class. */
   public interface Builder {
     /**
-     * Set the logic of this {@link Filterconditions} instance.
+     * Set the logic of this {@link Filterconditions1} instance.
      *
      * @param logic Logical operator to combine conditions (&#39;and&#39; or &#39;or&#39;)
-     * @return The Filterconditions builder.
+     * @return The Filterconditions1 builder.
      */
     Builder1 logic(@Nonnull final String logic);
   }
@@ -360,18 +360,18 @@ public class Filterconditions
   /** Builder helper class. */
   public interface Builder1 {
     /**
-     * Set the conditions of this {@link Filterconditions} instance.
+     * Set the conditions of this {@link Filterconditions1} instance.
      *
      * @param conditions List of filter conditions
-     * @return The Filterconditions builder.
+     * @return The Filterconditions1 builder.
      */
     Builder2 conditions(@Nonnull final List<ConditionsInner> conditions);
 
     /**
-     * Set the conditions of this {@link Filterconditions} instance.
+     * Set the conditions of this {@link Filterconditions1} instance.
      *
      * @param conditions List of filter conditions
-     * @return The Filterconditions builder.
+     * @return The Filterconditions1 builder.
      */
     default Builder2 conditions(@Nonnull final ConditionsInner... conditions) {
       return conditions(Arrays.asList(conditions));
@@ -381,10 +381,10 @@ public class Filterconditions
   /** Builder helper class. */
   public interface Builder2 {
     /**
-     * Set the field of this {@link Filterconditions} instance.
+     * Set the field of this {@link Filterconditions1} instance.
      *
      * @param field Field name to filter on
-     * @return The Filterconditions builder.
+     * @return The Filterconditions1 builder.
      */
     Builder3 field(@Nonnull final String field);
   }
@@ -392,10 +392,10 @@ public class Filterconditions
   /** Builder helper class. */
   public interface Builder3 {
     /**
-     * Set the op of this {@link Filterconditions} instance.
+     * Set the op of this {@link Filterconditions1} instance.
      *
      * @param op Filter operator (e.g., &#39;eq&#39;, &#39;gte&#39;, &#39;lte&#39;)
-     * @return The Filterconditions builder.
+     * @return The Filterconditions1 builder.
      */
     Builder4 op(@Nonnull final String op);
   }
@@ -403,11 +403,11 @@ public class Filterconditions
   /** Builder helper class. */
   public interface Builder4 {
     /**
-     * Set the value of this {@link Filterconditions} instance.
+     * Set the value of this {@link Filterconditions1} instance.
      *
      * @param value Value to compare against
-     * @return The Filterconditions instance.
+     * @return The Filterconditions1 instance.
      */
-    Filterconditions value(@Nullable final Object value);
+    Filterconditions1 value(@Nullable final Object value);
   }
 }

@@ -120,7 +120,7 @@ public class TabPFNHarmonisedClassificationPrediction
    */
   @Nonnull
   public TabPFNHarmonisedClassificationPrediction addProbabilitiesItem(
-      @Nonnull final float[] probabilitiesItem) {
+      @Nonnull final List<BigDecimal> probabilitiesItem) {
     if (this.probabilities == null) {
       this.probabilities = new ArrayList<>();
     }
@@ -358,7 +358,7 @@ public class TabPFNHarmonisedClassificationPrediction
      *     TabPFNHarmonisedClassificationPrediction}
      * @return The TabPFNHarmonisedClassificationPrediction builder.
      */
-    default Builder2 probabilities(@Nonnull final float[]... probabilities) {
+    default Builder2 probabilities(@Nonnull final List<BigDecimal>... probabilities) {
       return probabilities(Arrays.asList(probabilities));
     }
   }

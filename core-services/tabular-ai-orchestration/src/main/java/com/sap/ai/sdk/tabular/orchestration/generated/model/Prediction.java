@@ -47,13 +47,13 @@ public class Prediction
   private List<List<Integer>> values = new ArrayList<>();
 
   @JsonProperty("mean")
-  private float[] mean;
+  private List<BigDecimal> mean = new ArrayList<>();
 
   @JsonProperty("median")
-  private float[] median;
+  private List<BigDecimal> median = new ArrayList<>();
 
   @JsonProperty("mode")
-  private float[] mode;
+  private List<BigDecimal> mode = new ArrayList<>();
 
   @JsonProperty("quantiles")
   private List<List<BigDecimal>> quantiles = new ArrayList<>();
@@ -129,7 +129,7 @@ public class Prediction
    * @return The same instance of type {@link Prediction}
    */
   @Nonnull
-  public Prediction addProbabilitiesItem(@Nonnull final float[] probabilitiesItem) {
+  public Prediction addProbabilitiesItem(@Nonnull final List<BigDecimal> probabilitiesItem) {
     if (this.probabilities == null) {
       this.probabilities = new ArrayList<>();
     }
@@ -209,8 +209,23 @@ public class Prediction
    * @return The same instance of this {@link Prediction} class
    */
   @Nonnull
-  public Prediction mean(@Nonnull final float[] mean) {
+  public Prediction mean(@Nonnull final List<BigDecimal> mean) {
     this.mean = mean;
+    return this;
+  }
+
+  /**
+   * Add one mean instance to this {@link Prediction}.
+   *
+   * @param meanItem The mean that should be added
+   * @return The same instance of type {@link Prediction}
+   */
+  @Nonnull
+  public Prediction addMeanItem(@Nonnull final BigDecimal meanItem) {
+    if (this.mean == null) {
+      this.mean = new ArrayList<>();
+    }
+    this.mean.add(meanItem);
     return this;
   }
 
@@ -220,7 +235,7 @@ public class Prediction
    * @return mean The mean of this {@link Prediction} instance.
    */
   @Nonnull
-  public float[] getMean() {
+  public List<BigDecimal> getMean() {
     return mean;
   }
 
@@ -229,7 +244,7 @@ public class Prediction
    *
    * @param mean The mean of this {@link Prediction}
    */
-  public void setMean(@Nonnull final float[] mean) {
+  public void setMean(@Nonnull final List<BigDecimal> mean) {
     this.mean = mean;
   }
 
@@ -240,8 +255,23 @@ public class Prediction
    * @return The same instance of this {@link Prediction} class
    */
   @Nonnull
-  public Prediction median(@Nonnull final float[] median) {
+  public Prediction median(@Nonnull final List<BigDecimal> median) {
     this.median = median;
+    return this;
+  }
+
+  /**
+   * Add one median instance to this {@link Prediction}.
+   *
+   * @param medianItem The median that should be added
+   * @return The same instance of type {@link Prediction}
+   */
+  @Nonnull
+  public Prediction addMedianItem(@Nonnull final BigDecimal medianItem) {
+    if (this.median == null) {
+      this.median = new ArrayList<>();
+    }
+    this.median.add(medianItem);
     return this;
   }
 
@@ -251,7 +281,7 @@ public class Prediction
    * @return median The median of this {@link Prediction} instance.
    */
   @Nonnull
-  public float[] getMedian() {
+  public List<BigDecimal> getMedian() {
     return median;
   }
 
@@ -260,7 +290,7 @@ public class Prediction
    *
    * @param median The median of this {@link Prediction}
    */
-  public void setMedian(@Nonnull final float[] median) {
+  public void setMedian(@Nonnull final List<BigDecimal> median) {
     this.median = median;
   }
 
@@ -271,8 +301,23 @@ public class Prediction
    * @return The same instance of this {@link Prediction} class
    */
   @Nonnull
-  public Prediction mode(@Nonnull final float[] mode) {
+  public Prediction mode(@Nonnull final List<BigDecimal> mode) {
     this.mode = mode;
+    return this;
+  }
+
+  /**
+   * Add one mode instance to this {@link Prediction}.
+   *
+   * @param modeItem The mode that should be added
+   * @return The same instance of type {@link Prediction}
+   */
+  @Nonnull
+  public Prediction addModeItem(@Nonnull final BigDecimal modeItem) {
+    if (this.mode == null) {
+      this.mode = new ArrayList<>();
+    }
+    this.mode.add(modeItem);
     return this;
   }
 
@@ -282,7 +327,7 @@ public class Prediction
    * @return mode The mode of this {@link Prediction} instance.
    */
   @Nonnull
-  public float[] getMode() {
+  public List<BigDecimal> getMode() {
     return mode;
   }
 
@@ -291,7 +336,7 @@ public class Prediction
    *
    * @param mode The mode of this {@link Prediction}
    */
-  public void setMode(@Nonnull final float[] mode) {
+  public void setMode(@Nonnull final List<BigDecimal> mode) {
     this.mode = mode;
   }
 
@@ -314,7 +359,7 @@ public class Prediction
    * @return The same instance of type {@link Prediction}
    */
   @Nonnull
-  public Prediction addQuantilesItem(@Nonnull final float[] quantilesItem) {
+  public Prediction addQuantilesItem(@Nonnull final List<BigDecimal> quantilesItem) {
     if (this.quantiles == null) {
       this.quantiles = new ArrayList<>();
     }
@@ -414,23 +459,16 @@ public class Prediction
         && Objects.equals(this.classes, prediction.classes)
         && Objects.equals(this.probabilities, prediction.probabilities)
         && Objects.equals(this.values, prediction.values)
-        && Arrays.equals(this.mean, prediction.mean)
-        && Arrays.equals(this.median, prediction.median)
-        && Arrays.equals(this.mode, prediction.mode)
+        && Objects.equals(this.mean, prediction.mean)
+        && Objects.equals(this.median, prediction.median)
+        && Objects.equals(this.mode, prediction.mode)
         && Objects.equals(this.quantiles, prediction.quantiles);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(
-        classes,
-        probabilities,
-        values,
-        Arrays.hashCode(mean),
-        Arrays.hashCode(median),
-        Arrays.hashCode(mode),
-        quantiles,
-        cloudSdkCustomFields);
+        classes, probabilities, values, mean, median, mode, quantiles, cloudSdkCustomFields);
   }
 
   @Override
@@ -520,7 +558,7 @@ public class Prediction
      * @param probabilities The probabilities of this {@link Prediction}
      * @return The Prediction builder.
      */
-    default Builder2 probabilities(@Nonnull final float[]... probabilities) {
+    default Builder2 probabilities(@Nonnull final List<BigDecimal>... probabilities) {
       return probabilities(Arrays.asList(probabilities));
     }
   }
@@ -554,7 +592,7 @@ public class Prediction
      * @param mean The mean of this {@link Prediction}
      * @return The Prediction builder.
      */
-    Builder4 mean(@Nonnull final float[] mean);
+    Builder4 mean(@Nonnull final List<BigDecimal> mean);
 
     /**
      * Set the mean of this {@link Prediction} instance.
@@ -575,7 +613,7 @@ public class Prediction
      * @param median The median of this {@link Prediction}
      * @return The Prediction builder.
      */
-    Builder5 median(@Nonnull final float[] median);
+    Builder5 median(@Nonnull final List<BigDecimal> median);
 
     /**
      * Set the median of this {@link Prediction} instance.
@@ -596,7 +634,7 @@ public class Prediction
      * @param mode The mode of this {@link Prediction}
      * @return The Prediction builder.
      */
-    Builder6 mode(@Nonnull final float[] mode);
+    Builder6 mode(@Nonnull final List<BigDecimal> mode);
 
     /**
      * Set the mode of this {@link Prediction} instance.
@@ -625,7 +663,7 @@ public class Prediction
      * @param quantiles The quantiles of this {@link Prediction}
      * @return The Prediction instance.
      */
-    default Prediction quantiles(@Nonnull final float[]... quantiles) {
+    default Prediction quantiles(@Nonnull final List<BigDecimal>... quantiles) {
       return quantiles(Arrays.asList(quantiles));
     }
   }

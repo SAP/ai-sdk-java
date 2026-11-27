@@ -41,7 +41,7 @@ public class ContextSelectionConfig
   private Strategyconfig strategyConfig;
 
   @JsonProperty("filterConditions")
-  private Filterconditions filterConditions;
+  private Filterconditions1 filterConditions;
 
   @JsonAnySetter @JsonAnyGetter
   private final Map<String, Object> cloudSdkCustomFields = new LinkedHashMap<>();
@@ -190,7 +190,7 @@ public class ContextSelectionConfig
    */
   @Nonnull
   public ContextSelectionConfig filterConditions(
-      @Nullable final Filterconditions filterConditions) {
+      @Nullable final Filterconditions1 filterConditions) {
     this.filterConditions = filterConditions;
     return this;
   }
@@ -201,7 +201,7 @@ public class ContextSelectionConfig
    * @return filterConditions The filterConditions of this {@link ContextSelectionConfig} instance.
    */
   @Nullable
-  public Filterconditions getFilterConditions() {
+  public Filterconditions1 getFilterConditions() {
     return filterConditions;
   }
 
@@ -210,7 +210,7 @@ public class ContextSelectionConfig
    *
    * @param filterConditions The filterConditions of this {@link ContextSelectionConfig}
    */
-  public void setFilterConditions(@Nullable final Filterconditions filterConditions) {
+  public void setFilterConditions(@Nullable final Filterconditions1 filterConditions) {
     this.filterConditions = filterConditions;
   }
 

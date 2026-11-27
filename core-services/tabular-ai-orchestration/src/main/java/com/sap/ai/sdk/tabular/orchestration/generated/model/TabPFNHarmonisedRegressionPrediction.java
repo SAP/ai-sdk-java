@@ -37,13 +37,13 @@ public class TabPFNHarmonisedRegressionPrediction
 // CHECKSTYLE:ON
 {
   @JsonProperty("mean")
-  private float[] mean;
+  private List<BigDecimal> mean = new ArrayList<>();
 
   @JsonProperty("median")
-  private float[] median;
+  private List<BigDecimal> median = new ArrayList<>();
 
   @JsonProperty("mode")
-  private float[] mode;
+  private List<BigDecimal> mode = new ArrayList<>();
 
   @JsonProperty("quantiles")
   private List<List<BigDecimal>> quantiles = new ArrayList<>();
@@ -62,8 +62,23 @@ public class TabPFNHarmonisedRegressionPrediction
    * @return The same instance of this {@link TabPFNHarmonisedRegressionPrediction} class
    */
   @Nonnull
-  public TabPFNHarmonisedRegressionPrediction mean(@Nonnull final float[] mean) {
+  public TabPFNHarmonisedRegressionPrediction mean(@Nonnull final List<BigDecimal> mean) {
     this.mean = mean;
+    return this;
+  }
+
+  /**
+   * Add one mean instance to this {@link TabPFNHarmonisedRegressionPrediction}.
+   *
+   * @param meanItem The mean that should be added
+   * @return The same instance of type {@link TabPFNHarmonisedRegressionPrediction}
+   */
+  @Nonnull
+  public TabPFNHarmonisedRegressionPrediction addMeanItem(@Nonnull final BigDecimal meanItem) {
+    if (this.mean == null) {
+      this.mean = new ArrayList<>();
+    }
+    this.mean.add(meanItem);
     return this;
   }
 
@@ -73,7 +88,7 @@ public class TabPFNHarmonisedRegressionPrediction
    * @return mean The mean of this {@link TabPFNHarmonisedRegressionPrediction} instance.
    */
   @Nonnull
-  public float[] getMean() {
+  public List<BigDecimal> getMean() {
     return mean;
   }
 
@@ -82,7 +97,7 @@ public class TabPFNHarmonisedRegressionPrediction
    *
    * @param mean The mean of this {@link TabPFNHarmonisedRegressionPrediction}
    */
-  public void setMean(@Nonnull final float[] mean) {
+  public void setMean(@Nonnull final List<BigDecimal> mean) {
     this.mean = mean;
   }
 
@@ -94,8 +109,23 @@ public class TabPFNHarmonisedRegressionPrediction
    * @return The same instance of this {@link TabPFNHarmonisedRegressionPrediction} class
    */
   @Nonnull
-  public TabPFNHarmonisedRegressionPrediction median(@Nonnull final float[] median) {
+  public TabPFNHarmonisedRegressionPrediction median(@Nonnull final List<BigDecimal> median) {
     this.median = median;
+    return this;
+  }
+
+  /**
+   * Add one median instance to this {@link TabPFNHarmonisedRegressionPrediction}.
+   *
+   * @param medianItem The median that should be added
+   * @return The same instance of type {@link TabPFNHarmonisedRegressionPrediction}
+   */
+  @Nonnull
+  public TabPFNHarmonisedRegressionPrediction addMedianItem(@Nonnull final BigDecimal medianItem) {
+    if (this.median == null) {
+      this.median = new ArrayList<>();
+    }
+    this.median.add(medianItem);
     return this;
   }
 
@@ -105,7 +135,7 @@ public class TabPFNHarmonisedRegressionPrediction
    * @return median The median of this {@link TabPFNHarmonisedRegressionPrediction} instance.
    */
   @Nonnull
-  public float[] getMedian() {
+  public List<BigDecimal> getMedian() {
     return median;
   }
 
@@ -114,7 +144,7 @@ public class TabPFNHarmonisedRegressionPrediction
    *
    * @param median The median of this {@link TabPFNHarmonisedRegressionPrediction}
    */
-  public void setMedian(@Nonnull final float[] median) {
+  public void setMedian(@Nonnull final List<BigDecimal> median) {
     this.median = median;
   }
 
@@ -126,8 +156,23 @@ public class TabPFNHarmonisedRegressionPrediction
    * @return The same instance of this {@link TabPFNHarmonisedRegressionPrediction} class
    */
   @Nonnull
-  public TabPFNHarmonisedRegressionPrediction mode(@Nonnull final float[] mode) {
+  public TabPFNHarmonisedRegressionPrediction mode(@Nonnull final List<BigDecimal> mode) {
     this.mode = mode;
+    return this;
+  }
+
+  /**
+   * Add one mode instance to this {@link TabPFNHarmonisedRegressionPrediction}.
+   *
+   * @param modeItem The mode that should be added
+   * @return The same instance of type {@link TabPFNHarmonisedRegressionPrediction}
+   */
+  @Nonnull
+  public TabPFNHarmonisedRegressionPrediction addModeItem(@Nonnull final BigDecimal modeItem) {
+    if (this.mode == null) {
+      this.mode = new ArrayList<>();
+    }
+    this.mode.add(modeItem);
     return this;
   }
 
@@ -137,7 +182,7 @@ public class TabPFNHarmonisedRegressionPrediction
    * @return mode The mode of this {@link TabPFNHarmonisedRegressionPrediction} instance.
    */
   @Nonnull
-  public float[] getMode() {
+  public List<BigDecimal> getMode() {
     return mode;
   }
 
@@ -146,7 +191,7 @@ public class TabPFNHarmonisedRegressionPrediction
    *
    * @param mode The mode of this {@link TabPFNHarmonisedRegressionPrediction}
    */
-  public void setMode(@Nonnull final float[] mode) {
+  public void setMode(@Nonnull final List<BigDecimal> mode) {
     this.mode = mode;
   }
 
@@ -172,7 +217,7 @@ public class TabPFNHarmonisedRegressionPrediction
    */
   @Nonnull
   public TabPFNHarmonisedRegressionPrediction addQuantilesItem(
-      @Nonnull final float[] quantilesItem) {
+      @Nonnull final List<BigDecimal> quantilesItem) {
     if (this.quantiles == null) {
       this.quantiles = new ArrayList<>();
     }
@@ -272,20 +317,15 @@ public class TabPFNHarmonisedRegressionPrediction
         (TabPFNHarmonisedRegressionPrediction) o;
     return Objects.equals(
             this.cloudSdkCustomFields, tabPFNHarmonisedRegressionPrediction.cloudSdkCustomFields)
-        && Arrays.equals(this.mean, tabPFNHarmonisedRegressionPrediction.mean)
-        && Arrays.equals(this.median, tabPFNHarmonisedRegressionPrediction.median)
-        && Arrays.equals(this.mode, tabPFNHarmonisedRegressionPrediction.mode)
+        && Objects.equals(this.mean, tabPFNHarmonisedRegressionPrediction.mean)
+        && Objects.equals(this.median, tabPFNHarmonisedRegressionPrediction.median)
+        && Objects.equals(this.mode, tabPFNHarmonisedRegressionPrediction.mode)
         && Objects.equals(this.quantiles, tabPFNHarmonisedRegressionPrediction.quantiles);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(
-        Arrays.hashCode(mean),
-        Arrays.hashCode(median),
-        Arrays.hashCode(mode),
-        quantiles,
-        cloudSdkCustomFields);
+    return Objects.hash(mean, median, mode, quantiles, cloudSdkCustomFields);
   }
 
   @Override
@@ -337,7 +377,7 @@ public class TabPFNHarmonisedRegressionPrediction
      * @param mean The mean of this {@link TabPFNHarmonisedRegressionPrediction}
      * @return The TabPFNHarmonisedRegressionPrediction builder.
      */
-    Builder1 mean(@Nonnull final float[] mean);
+    Builder1 mean(@Nonnull final List<BigDecimal> mean);
 
     /**
      * Set the mean of this {@link TabPFNHarmonisedRegressionPrediction} instance.
@@ -358,7 +398,7 @@ public class TabPFNHarmonisedRegressionPrediction
      * @param median The median of this {@link TabPFNHarmonisedRegressionPrediction}
      * @return The TabPFNHarmonisedRegressionPrediction builder.
      */
-    Builder2 median(@Nonnull final float[] median);
+    Builder2 median(@Nonnull final List<BigDecimal> median);
 
     /**
      * Set the median of this {@link TabPFNHarmonisedRegressionPrediction} instance.
@@ -379,7 +419,7 @@ public class TabPFNHarmonisedRegressionPrediction
      * @param mode The mode of this {@link TabPFNHarmonisedRegressionPrediction}
      * @return The TabPFNHarmonisedRegressionPrediction builder.
      */
-    Builder3 mode(@Nonnull final float[] mode);
+    Builder3 mode(@Nonnull final List<BigDecimal> mode);
 
     /**
      * Set the mode of this {@link TabPFNHarmonisedRegressionPrediction} instance.
@@ -408,7 +448,8 @@ public class TabPFNHarmonisedRegressionPrediction
      * @param quantiles The quantiles of this {@link TabPFNHarmonisedRegressionPrediction}
      * @return The TabPFNHarmonisedRegressionPrediction instance.
      */
-    default TabPFNHarmonisedRegressionPrediction quantiles(@Nonnull final float[]... quantiles) {
+    default TabPFNHarmonisedRegressionPrediction quantiles(
+        @Nonnull final List<BigDecimal>... quantiles) {
       return quantiles(Arrays.asList(quantiles));
     }
   }

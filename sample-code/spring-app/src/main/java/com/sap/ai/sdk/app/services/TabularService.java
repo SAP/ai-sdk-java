@@ -3,7 +3,7 @@ package com.sap.ai.sdk.app.services;
 import static com.sap.ai.sdk.context.registry.generated.model.CreateTARequest.TypeEnum.PARQUET;
 import static com.sap.ai.sdk.context.registry.generated.model.DefinitionType.DOCUMENT;
 import static com.sap.ai.sdk.context.registry.generated.model.HDLDataDestinationCreateRequest.TypeEnum.HDL;
-import static com.sap.ai.sdk.tabular.orchestration.generated.model.ContextSelectionStrategyEnum.RANDOM;
+import static com.sap.ai.sdk.tabular.orchestration.generated.model.TFMEnum.SAP_RPT_1_6;
 import static com.sap.ai.sdk.tabular.orchestration.generated.model.TaskTypeEnum.CLASSIFICATION;
 
 import com.sap.ai.sdk.context.registry.ContextRegistryClient;
@@ -27,11 +27,11 @@ import com.sap.ai.sdk.context.registry.generated.model.TabularArtifactListRespon
 import com.sap.ai.sdk.tabular.orchestration.TabularOrchestrationClient;
 import com.sap.ai.sdk.tabular.orchestration.generated.client.PredictApi;
 import com.sap.ai.sdk.tabular.orchestration.generated.model.ContextSelectionConfig;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.ModelRpt16;
 import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictRequest;
-import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictResponse;
 import com.sap.ai.sdk.tabular.orchestration.generated.model.PredictionConfig;
-import com.sap.ai.sdk.tabular.orchestration.generated.model.StrategyConfigs;
-import com.sap.ai.sdk.tabular.orchestration.generated.model.TFMEnum;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.ResponsePredictV1PredictEndpointsPredict;
+import com.sap.ai.sdk.tabular.orchestration.generated.model.SamplingRandomConfig;
 import com.sap.ai.sdk.tabular.orchestration.generated.model.TargetColumn;
 import com.sap.cloud.sdk.services.openapi.apache.core.OpenApiResponse;
 import java.util.List;
@@ -250,21 +250,18 @@ public class TabularService {
      * @return The prediction response.
      */
     @Nonnull
-    public PredictResponse predict() {
+    public ResponsePredictV1PredictEndpointsPredict predict() {
       val request =
           PredictRequest.create()
-              .modelName(TFMEnum._1_5)
-              .scenarioConfigName(scenarioConfigName)
+              .modelName(SAP_RPT_1_6)
               .predictionConfig(
                   PredictionConfig.create()
                       .targetColumns(
                           TargetColumn.create().name("salesgroup").taskType(CLASSIFICATION)))
+              .scenarioConfigName(scenarioConfigName)
               .contextSelectionConfig(
                   ContextSelectionConfig.create()
-                      .numRows(3)
-                      .strategy(RANDOM)
-                      .strategyConfigs(
-                          StrategyConfigs.create().indexColumn("id").deterministic(true)))
+                      .strategyConfig(SamplingRandomConfig.create().deterministic(true)))
               .rows(
                   List.of(
                       Map.of(
@@ -285,8 +282,8 @@ public class TabularService {
                           "date", "2024-12-05",
                           "id", "689",
                           "salesgroup", "[PREDICT]")))
-              .modelConfig(Map.of());
-      return PREDICT_CLIENT.predict(request);
+              .modelConfig(ModelRpt16.create());
+      return PREDICT_CLIENT.predict("default", request);
     }
   }
 }
