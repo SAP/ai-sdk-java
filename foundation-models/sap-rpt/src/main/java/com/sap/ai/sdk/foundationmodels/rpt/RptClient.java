@@ -7,6 +7,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sap.ai.sdk.core.AiCoreService;
 import com.sap.ai.sdk.core.DeploymentResolutionException;
 import com.sap.ai.sdk.core.JacksonConfiguration;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.SystemOneRequest;
+import com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.model.SystemOneResponse;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.client.DefaultApi;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayload;
 import com.sap.ai.sdk.foundationmodels.rpt.generated.model.PredictRequestPayloadOneOf;
@@ -31,6 +33,11 @@ import lombok.RequiredArgsConstructor;
 public class RptClient {
   @Nonnull private final DefaultApi api;
   @Nonnull private final DefaultApi apiWithGzipEncoding;
+
+  @Nonnull
+  private final com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.client.DefaultApi
+      decisionsApi;
+
   private final boolean contextModePossible;
 
   private static final Set<RptModel> MODELS_WITH_CONTEXT_MODE = Set.of(SAP_RPT_1_6_LARGE);
@@ -61,7 +68,25 @@ public class RptClient {
     final var apiClient = ApiClient.create(destination).withObjectMapper(getDefaultObjectMapper());
     final var api = new DefaultApi(apiClient);
     return new RptClient(
-        api, api.withDefaultHeaders(Map.of("Content-Encoding", "gzip")), contextModePossible);
+        api,
+        api.withDefaultHeaders(Map.of("Content-Encoding", "gzip")),
+        new com.sap.ai.sdk.foundationmodels.rpt.decisions.generated.client.DefaultApi(apiClient),
+        contextModePossible);
+  }
+
+  // TODO: should be in its own module and class
+  /**
+   * Answers questions about a state using SAP RPT Decisions and labeled examples.
+   *
+   * @param requestBody the decision request, including at least two labeled examples.
+   * @return the decision response from the RPT model.
+   * @throws com.sap.cloud.sdk.services.openapi.apache.core.OpenApiRequestException if the request
+   *     fails, including invalid input, server errors, or timeouts.
+   */
+  @Nonnull
+  @SuppressWarnings("PMD.PublicApiExposesModelType") // we consider model class stable
+  public SystemOneResponse decision(@Nonnull final SystemOneRequest requestBody) {
+    return decisionsApi.systemone(requestBody);
   }
 
   /**
