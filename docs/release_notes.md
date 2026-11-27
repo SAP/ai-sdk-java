@@ -15,6 +15,8 @@
 ### ✨ New Functionality
 
 - [Orchestration] Added new models `SAP_ABAP_2` and `QWEN_3_8_FLASH` to `OrchestrationAiModel`.
+- [Tabular AI Orchestration] Added `ContextRegistryClient` in `com.sap.ai.sdk:tabular-ai-orchestration` for tabular predictions.
+- [Context Registry] Added `ContextRegistryClient` in `com.sap.ai.sdk:context-registry` for setting up tabular predictions.
 
 ### 📈 Improvements
 

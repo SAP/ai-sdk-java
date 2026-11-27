@@ -1,17 +1,22 @@
 package com.sap.ai.sdk.app.controllers;
 
+import static com.sap.ai.sdk.core.model.AiDeploymentTargetStatus.STOPPED;
+import static com.sap.ai.sdk.tabular.orchestration.generated.model.TFMEnum.SAP_RPT_1_6;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sap.ai.sdk.core.client.ConfigurationApi;
+import com.sap.ai.sdk.core.client.DeploymentApi;
 import com.sap.ai.sdk.core.model.AiConfigurationBaseData;
 import com.sap.ai.sdk.core.model.AiDeployment;
+import com.sap.ai.sdk.core.model.AiDeploymentCreationRequest;
+import com.sap.ai.sdk.core.model.AiDeploymentModificationRequest;
 import com.sap.ai.sdk.core.model.AiDeploymentStatus;
-import com.sap.ai.sdk.foundationmodels.openai.OpenAiModel;
+import com.sap.ai.sdk.core.model.AiParameterArgumentBinding;
 import org.junit.jupiter.api.Test;
 
 class DeploymentTest {
   /** Java end-to-end test specific configuration ID. "name":"config-java-e2e-test-gpt-5" */
-  public static final String CONFIG_ID = "e88f7dba-fd9c-4068-ab18-3306f2aa46bd";
+  public static final String CONFIG_ID = "c9311361-d8dc-440a-9c9a-7ecd8eea5f88";
 
   /**
    * Manual execution to create a new config for a new model when the current model gets deprecated.
@@ -22,7 +27,7 @@ class DeploymentTest {
    */
   // @Test
   void createConfiguration() {
-    String modelToDeploy = OpenAiModel.GPT_5.name();
+    String modelToDeploy = SAP_RPT_1_6.getValue();
     var response =
         new ConfigurationApi()
             .create(
@@ -30,8 +35,36 @@ class DeploymentTest {
                 AiConfigurationBaseData.create()
                     .name("config-java-e2e-test-" + modelToDeploy)
                     .executableId("azure-openai")
-                    .scenarioId("foundation-models"));
+                    .scenarioId("foundation-models")
+                    .addParameterBindingsItem(
+                        AiParameterArgumentBinding.create().key("modelName").value(modelToDeploy)));
     System.out.println("Created configuration with ID: " + response.getId());
+  }
+
+  @Test
+  void createDeployment() {
+    // Create a deployment from the configuration
+    final var deploymentCreationRequest =
+        AiDeploymentCreationRequest.create().configurationId(CONFIG_ID);
+
+    new DeploymentApi().create("default", deploymentCreationRequest);
+  }
+
+  @Test
+  void deleteDeployment() {
+    new DeploymentApi()
+        .modify(
+            "default",
+            "df9fdb3f93a25049",
+            AiDeploymentModificationRequest.create().targetStatus(STOPPED));
+    new DeploymentApi().delete("default", "df9fdb3f93a25049");
+  }
+
+  @Test
+  void deletedDeployment() {
+    // new DeploymentApi().modify("default", "decf2bc4ca20dbcf",
+    // AiDeploymentModificationRequest.create().targetStatus(STOPPED));
+    new DeploymentApi().delete("default", "decf2bc4ca20dbcf");
   }
 
   @Test
